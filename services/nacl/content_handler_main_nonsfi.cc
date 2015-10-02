@@ -9,11 +9,9 @@
 #include "mojo/application/content_handler_factory.h"
 #include "mojo/data_pipe_utils/data_pipe_utils.h"
 #include "mojo/message_pump/message_pump_mojo.h"
-#include "mojo/nacl/irt_mojo_nonsfi.h"
+#include "mojo/nacl/nexe_launcher_nonsfi.h"
 #include "mojo/public/c/system/main.h"
 #include "mojo/public/cpp/application/application_impl.h"
-#include "native_client/src/public/irt_core.h"
-#include "native_client/src/public/nonsfi/elf_loader.h"
 
 namespace nacl {
 namespace content_handler {
@@ -59,19 +57,10 @@ class NaClContentHandler : public mojo::ApplicationDelegate,
       LOG(FATAL) << "Failed to close temp file";
     }
 
-    // Run -- also, closes the fd, removing the temp file.
-    uintptr_t entry = NaClLoadElfFile(fd);
-
-    MojoSetInitialHandle(
-        application_request.PassMessagePipe().release().value());
-    int argc = 1;
-    char* argvp = const_cast<char*>("NaClMain");
-    char* envp = nullptr;
-    nacl_irt_nonsfi_entry(argc, &argvp, &envp,
-                          reinterpret_cast<nacl_entry_func_t>(entry),
-                          MojoIrtNonsfiQuery);
-    abort();
-    NOTREACHED();
+    MojoHandle handle =
+        application_request.PassMessagePipe().release().value();
+    // MojoLaunchNexeNonsfi takes ownership of the fd.
+    MojoLaunchNexeNonsfi(fd, handle);
   }
 
   mojo::ContentHandlerFactory content_handler_factory_;

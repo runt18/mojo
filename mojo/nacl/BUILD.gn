@@ -93,9 +93,11 @@ static_library("irt_mojo_nonsfi") {
   sources = [
     "irt_mojo_nonsfi.cc",
     "irt_mojo_nonsfi.h",
+    "nexe_launcher_nonsfi.cc",
   ]
 
   deps = [
+    "//base",
     "//mojo/public/c/system",
     "//mojo/public/platform/nacl:mojo_irt_header",
     "//native_client/src/nonsfi/irt:irt_interfaces",
