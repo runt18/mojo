@@ -18,6 +18,7 @@
 #include "mojo/services/url_response_disk_cache/public/interfaces/url_response_disk_cache.mojom.h"
 #include "shell/application_manager/application_loader.h"
 #include "shell/application_manager/identity.h"
+#include "shell/application_manager/native_application_options.h"
 #include "shell/application_manager/native_runner.h"
 #include "shell/native_application_support.h"
 #include "url/gurl.h"
@@ -117,18 +118,18 @@ class ApplicationManager {
                           const std::string& scheme);
   // These strings will be passed to the Initialize() method when an Application
   // is instantiated.
-  // TODO(vtl): Maybe we should store/compare resolved URLs, like
-  // SetNativeOptionsForURL() below?
+  // TODO(vtl): Maybe we should store/compare resolved URLs?
   void SetArgsForURL(const std::vector<std::string>& args, const GURL& url);
   // These options will be used in running any native application at |url|
   // (which shouldn't contain a query string). (|url| will be mapped and
   // resolved, and any application whose base resolved URL matches it will have
   // |options| applied.)
+  // Note: Calling this for a URL will add (default) options for that URL if
+  // necessary.
   // TODO(vtl): This may not do what's desired if the resolved URL results in an
   // HTTP redirect. Really, we want options to be identified with a particular
   // implementation, maybe via a signed manifest or something like that.
-  void SetNativeOptionsForURL(const NativeRunnerFactory::Options& options,
-                              const GURL& url);
+  NativeApplicationOptions* GetNativeApplicationOptionsForURL(const GURL& url);
 
   // Destroys all Shell-ends of connections established with Applications.
   // Applications connected by this ApplicationManager will observe pipe errors
@@ -141,15 +142,15 @@ class ApplicationManager {
  private:
   class ContentHandlerConnection;
 
-  typedef std::map<GURL, scoped_ptr<ApplicationLoader>> URLToLoaderMap;
-  typedef std::map<std::string, scoped_ptr<ApplicationLoader>>
-      SchemeToLoaderMap;
-  typedef std::map<Identity, scoped_ptr<ShellImpl>> IdentityToShellImplMap;
-  typedef std::map<GURL, scoped_ptr<ContentHandlerConnection>>
-      URLToContentHandlerMap;
-  typedef std::map<GURL, std::vector<std::string>> URLToArgsMap;
-  typedef std::map<std::string, GURL> MimeTypeToURLMap;
-  typedef std::map<GURL, NativeRunnerFactory::Options> URLToNativeOptionsMap;
+  using URLToLoaderMap = std::map<GURL, scoped_ptr<ApplicationLoader>>;
+  using SchemeToLoaderMap =
+      std::map<std::string, scoped_ptr<ApplicationLoader>>;
+  using IdentityToShellImplMap = std::map<Identity, scoped_ptr<ShellImpl>>;
+  using URLToContentHandlerMap =
+      std::map<GURL, scoped_ptr<ContentHandlerConnection>>;
+  using URLToArgsMap = std::map<GURL, std::vector<std::string>>;
+  using MimeTypeToURLMap = std::map<std::string, GURL>;
+  using URLToNativeOptionsMap = std::map<GURL, NativeApplicationOptions>;
 
   void ConnectToApplicationWithParameters(
       const GURL& application_url,
@@ -201,7 +202,7 @@ class ApplicationManager {
 
   void RunNativeApplication(
       mojo::InterfaceRequest<mojo::Application> application_request,
-      const NativeRunnerFactory::Options& options,
+      const NativeApplicationOptions& options,
       scoped_ptr<Fetcher> fetcher,
       const base::FilePath& file_path,
       bool path_exists);

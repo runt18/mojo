@@ -19,6 +19,7 @@ source_set("application_manager") {
     "identity.h",
     "local_fetcher.cc",
     "local_fetcher.h",
+    "native_application_options.h",
     "native_runner.h",
     "network_fetcher.cc",
     "network_fetcher.h",

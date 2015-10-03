@@ -50,7 +50,8 @@ class InProcessNativeRunnerFactory : public NativeRunnerFactory {
   explicit InProcessNativeRunnerFactory(Context* context) : context_(context) {}
   ~InProcessNativeRunnerFactory() override {}
 
-  scoped_ptr<NativeRunner> Create(const Options& options) override;
+  scoped_ptr<NativeRunner> Create(
+      const NativeApplicationOptions& options) override;
 
  private:
   Context* const context_;

@@ -9,6 +9,7 @@
 #include "base/files/file_path.h"
 #include "base/macros.h"
 #include "base/memory/scoped_ptr.h"
+#include "shell/application_manager/native_application_options.h"
 #include "shell/application_manager/native_runner.h"
 
 namespace shell {
@@ -20,7 +21,8 @@ class ChildProcessHost;
 // file system) in a separate process (of its own).
 class OutOfProcessNativeRunner : public NativeRunner {
  public:
-  explicit OutOfProcessNativeRunner(Context* context);
+  OutOfProcessNativeRunner(Context* context,
+                           const NativeApplicationOptions& options);
   ~OutOfProcessNativeRunner() override;
 
   // |NativeRunner| method:
@@ -33,6 +35,7 @@ class OutOfProcessNativeRunner : public NativeRunner {
   void AppCompleted(int32_t result);
 
   Context* const context_;
+  NativeApplicationOptions const options_;
 
   base::FilePath app_path_;
   base::Closure app_completed_callback_;
@@ -48,7 +51,8 @@ class OutOfProcessNativeRunnerFactory : public NativeRunnerFactory {
       : context_(context) {}
   ~OutOfProcessNativeRunnerFactory() override {}
 
-  scoped_ptr<NativeRunner> Create(const Options& options) override;
+  scoped_ptr<NativeRunner> Create(
+      const NativeApplicationOptions& options) override;
 
  private:
   Context* const context_;

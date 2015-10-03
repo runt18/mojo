@@ -17,6 +17,8 @@ class FilePath;
 
 namespace shell {
 
+struct NativeApplicationOptions;
+
 // ApplicationManager requires implementations of NativeRunner and
 // NativeRunnerFactory to run native applications.
 class NativeRunner {
@@ -39,17 +41,9 @@ class NativeRunner {
 
 class NativeRunnerFactory {
  public:
-  // Options for running the native app. (This will contain, e.g., information
-  // about the sandbox profile, etc.)
-  struct Options {
-    // Constructs with default options.
-    Options() : force_in_process(false) {}
-
-    bool force_in_process;
-  };
-
   virtual ~NativeRunnerFactory() {}
-  virtual scoped_ptr<NativeRunner> Create(const Options& options) = 0;
+  virtual scoped_ptr<NativeRunner> Create(
+      const NativeApplicationOptions& options) = 0;
 };
 
 }  // namespace shell

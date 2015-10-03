@@ -19,6 +19,7 @@
 namespace shell {
 
 class Context;
+struct NativeApplicationOptions;
 
 // Child process host: parent-process representation of a child process, which
 // hosts/runs a native Mojo application loaded from the file system. This class
@@ -40,7 +41,7 @@ class ChildProcessHost {
   // TODO(vtl): Consider using weak pointers and removing this requirement.
   // TODO(vtl): This should probably take a callback instead.
   // TODO(vtl): Consider merging this with |StartApp()|.
-  void Start(bool require_32_bit);
+  void Start(const NativeApplicationOptions& options);
 
   // Waits for the child process to terminate, and returns its exit code.
   // Note: If |Start()| has been called, this must not be called until the

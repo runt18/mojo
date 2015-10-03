@@ -16,9 +16,11 @@
 #include "base/process/launch.h"
 #include "base/task_runner.h"
 #include "base/task_runner_util.h"
+#include "build/build_config.h"
 #include "mojo/edk/embedder/embedder.h"
 #include "mojo/edk/embedder/platform_channel_pair.h"
 #include "mojo/public/cpp/system/message_pipe.h"
+#include "shell/application_manager/native_application_options.h"
 #include "shell/child_switches.h"
 #include "shell/context.h"
 #include "shell/task_runners.h"
@@ -29,6 +31,7 @@ struct ChildProcessHost::LaunchData {
   LaunchData() {}
   ~LaunchData() {}
 
+  NativeApplicationOptions options;
   base::FilePath child_path;
   mojo::embedder::PlatformChannelPair platform_channel_pair;
   std::string child_connection_id;
@@ -42,15 +45,17 @@ ChildProcessHost::~ChildProcessHost() {
   DCHECK(!child_process_.IsValid());
 }
 
-void ChildProcessHost::Start(bool require_32_bit) {
+void ChildProcessHost::Start(const NativeApplicationOptions& options) {
   DCHECK(!child_process_.IsValid());
 
   scoped_ptr<LaunchData> launch_data(new LaunchData());
+  launch_data->options = options;
   launch_data->child_path = context_->mojo_shell_child_path();
 #if defined(ARCH_CPU_64_BITS)
-  if (require_32_bit)
+  if (options.require_32_bit) {
     launch_data->child_path =
         context_->mojo_shell_child_path().InsertBeforeExtensionASCII("_32");
+  }
 #endif
   // TODO(vtl): Add something for |slave_info|.
   // TODO(vtl): The "unretained this" is wrong (see also below).
@@ -136,6 +141,9 @@ base::Process ChildProcessHost::DoLaunch(scoped_ptr<LaunchData> launch_data) {
 
   base::LaunchOptions options;
   options.fds_to_remap = &handle_passing_info;
+#if defined(OS_LINUX)
+  options.allow_new_privs = launch_data->options.allow_new_privs;
+#endif
   DVLOG(2) << "Launching child with command line: "
            << child_command_line.GetCommandLineString();
   base::Process child_process =

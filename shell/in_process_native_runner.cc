@@ -62,7 +62,7 @@ void InProcessNativeRunner::Run() {
 }
 
 scoped_ptr<NativeRunner> InProcessNativeRunnerFactory::Create(
-    const Options& options) {
+    const NativeApplicationOptions& /*options*/) {
   return make_scoped_ptr(new InProcessNativeRunner(context_));
 }
 

@@ -18,36 +18,37 @@
 
 namespace {
 
-// Determines if content handler must be run as 32 bit application
-// based on elf header. Returns false on error.
+// Determines if content handler must be run as 32 bit application based on the
+// ELF header. Defaults to false on error.
 bool Require32Bit(const base::FilePath& app_path) {
   if (sizeof(void*) == 4) {
-    // CPU arch is already 32 bits
+    // CPU arch is already 32 bits.
     return true;
-  } else {
-    char data[EI_NIDENT];
-    // Read e_ident from the elf file
-    if (sizeof(data) != ReadFile(app_path, data, sizeof(data))) {
-      DCHECK(false);
-      return false;
-    }
-    // Check the magic elf number
-    if (memcmp(data, ELFMAG, SELFMAG)) {
-      DCHECK(false);
-      return false;
-    }
-    // Identify the architecture required
-    return data[EI_CLASS] == ELFCLASS32;
   }
+
+  char data[EI_NIDENT];
+  // Read e_ident from the ELF file.
+  if (ReadFile(app_path, data, sizeof(data)) != sizeof(data)) {
+    DCHECK(false) << "Failed to read ELF header";
+    return false;
+  }
+  // Check the magic ELF number.
+  if (memcmp(data, ELFMAG, SELFMAG)) {
+    DCHECK(false) << "Not an ELF file?";
+    return false;
+  }
+  // Identify the architecture required.
+  return data[EI_CLASS] == ELFCLASS32;
 }
 
 }  // namespace
 
 namespace shell {
 
-OutOfProcessNativeRunner::OutOfProcessNativeRunner(Context* context)
-    : context_(context) {
-}
+OutOfProcessNativeRunner::OutOfProcessNativeRunner(
+    Context* context,
+    const NativeApplicationOptions& options)
+    : context_(context), options_(options) {}
 
 OutOfProcessNativeRunner::~OutOfProcessNativeRunner() {
   if (child_process_host_) {
@@ -68,7 +69,11 @@ void OutOfProcessNativeRunner::Start(
   app_completed_callback_ = app_completed_callback;
 
   child_process_host_.reset(new ChildProcessHost(context_));
-  child_process_host_->Start(Require32Bit(app_path));
+
+  NativeApplicationOptions options = options_;
+  if (Require32Bit(app_path))
+    options.require_32_bit = true;
+  child_process_host_->Start(options);
 
   // TODO(vtl): |app_path.AsUTF8Unsafe()| is unsafe.
   child_process_host_->StartApp(
@@ -91,11 +96,11 @@ void OutOfProcessNativeRunner::AppCompleted(int32_t result) {
 }
 
 scoped_ptr<NativeRunner> OutOfProcessNativeRunnerFactory::Create(
-    const Options& options) {
+    const NativeApplicationOptions& options) {
   if (options.force_in_process)
     return make_scoped_ptr(new InProcessNativeRunner(context_));
 
-  return make_scoped_ptr(new OutOfProcessNativeRunner(context_));
+  return make_scoped_ptr(new OutOfProcessNativeRunner(context_, options));
 }
 
 }  // namespace shell

@@ -32,6 +32,7 @@
 #include "mojo/services/tracing/public/interfaces/tracing.mojom.h"
 #include "shell/application_manager/application_loader.h"
 #include "shell/application_manager/application_manager.h"
+#include "shell/application_manager/native_application_options.h"
 #include "shell/background_application_loader.h"
 #include "shell/command_line_util.h"
 #include "shell/filename_util.h"
@@ -179,17 +180,20 @@ void InitNativeOptions(ApplicationManager* manager,
   base::SplitString(command_line.GetSwitchValueASCII(switches::kForceInProcess),
                     ',', &force_in_process_url_list);
   for (const auto& force_in_process_url : force_in_process_url_list) {
-    GURL gurl(force_in_process_url);
-    if (!gurl.is_valid()) {
+    GURL url(force_in_process_url);
+    if (!url.is_valid()) {
       LOG(ERROR) << "Invalid value for switch " << switches::kForceInProcess
                  << ": '" << force_in_process_url << "'is not a valid URL.";
       return;
     }
 
-    NativeRunnerFactory::Options options;
-    options.force_in_process = true;
-    manager->SetNativeOptionsForURL(options, gurl);
+    manager->GetNativeApplicationOptionsForURL(url)->force_in_process = true;
   }
+
+  // TODO(vtl): This is a total hack. We should have a systematic way of
+  // configuring options for native apps.
+  manager->GetNativeApplicationOptionsForURL(GURL("mojo:native_support"))
+      ->allow_new_privs = true;
 }
 
 class TracingServiceProvider : public ServiceProvider {

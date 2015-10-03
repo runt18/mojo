@@ -4,6 +4,7 @@
 
 #include "base/files/scoped_temp_dir.h"
 #include "shell/application_manager/application_manager.h"
+#include "shell/application_manager/native_application_options.h"
 #include "shell/context.h"
 #include "shell/filename_util.h"
 #include "testing/gtest/include/gtest/gtest.h"
@@ -45,7 +46,8 @@ class TestNativeRunnerFactory : public NativeRunnerFactory {
  public:
   explicit TestNativeRunnerFactory(TestState* state) : state_(state) {}
   ~TestNativeRunnerFactory() override {}
-  scoped_ptr<NativeRunner> Create(const Options& options) override {
+  scoped_ptr<NativeRunner> Create(
+      const NativeApplicationOptions& /*options*/) override {
     return scoped_ptr<NativeRunner>(new TestNativeRunner(state_));
   }
 
