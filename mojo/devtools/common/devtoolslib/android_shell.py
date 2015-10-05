@@ -220,6 +220,21 @@ class AndroidShell(Shell):
     return len(subprocess.check_output(self._adb_command([
         'shell', 'pm', 'list', 'packages', _MOJO_SHELL_PACKAGE_NAME]))) > 0
 
+  @staticmethod
+  def get_tmp_dir_path():
+    """Returns a path to a cache directory owned by the shell where temporary
+    files can be stored.
+    """
+    return '/data/data/%s/cache/tmp/' % _MOJO_SHELL_PACKAGE_NAME
+
+  def pull_file(self, device_path, destination_path, remove_original=False):
+    """Copies or moves the specified file on the device to the host."""
+    subprocess.check_call(self._adb_command([
+        'pull', device_path, destination_path]))
+    if remove_original:
+      subprocess.check_call(self._adb_command([
+          'shell', 'rm', device_path]))
+
   def check_device(self, require_root=False):
     """Verifies if the device configuration allows adb to run.
 

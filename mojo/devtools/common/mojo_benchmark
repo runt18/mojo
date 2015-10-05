@@ -9,6 +9,7 @@ import argparse
 import logging
 import sys
 import time
+import os.path
 
 from devtoolslib import shell_arguments
 from devtoolslib import shell_config
@@ -53,8 +54,16 @@ _NETWORK_SERVICE_URL = 'mojo:network_service'
 _EXTRA_TIMEOUT = 20
 
 
+def _get_output_file(shell, name, cold_start):
+    file_name = 'benchmark-%s-%s-%s.trace' % (
+        name.replace(' ', '_'),
+        'cold_start' if cold_start else 'warm_start',
+        time.strftime('%Y%m%d%H%M%S'))
+    return file_name
+
+
 def _run_benchmark(shell, shell_args, name, app, duration_seconds, measurements,
-                   cold_start, verbose, save_traces):
+                   cold_start, verbose, android, save_traces):
   """Runs `benchmark.mojo` in shell with correct arguments, parses and
   presents the benchmark results.
   """
@@ -62,12 +71,16 @@ def _run_benchmark(shell, shell_args, name, app, duration_seconds, measurements,
   benchmark_args = []
   benchmark_args.append('--app=' + app)
   benchmark_args.append('--duration=' + str(duration_seconds))
+
+  output_file = None
+  device_output_file = None
   if save_traces:
-    trace_output_file = 'benchmark-%s-%s-%s.trace' % (
-        name.replace(' ', '_'),
-        'cold_start' if cold_start else 'warm_start',
-        time.strftime('%Y%m%d%H%M%S'))
-    benchmark_args.append('--trace-output=' + trace_output_file)
+    output_file = _get_output_file(shell, name, cold_start)
+    if android:
+      device_output_file = os.path.join(shell.get_tmp_dir_path(), output_file)
+      benchmark_args.append('--trace-output=' + device_output_file)
+    else:
+      benchmark_args.append('--trace-output=' + output_file)
 
   for measurement in measurements:
     benchmark_args.append(measurement)
@@ -102,6 +115,9 @@ def _run_benchmark(shell, shell_args, name, app, duration_seconds, measurements,
   for line in output_lines:
     if line.strip().startswith('measurement:') or 'WARNING' in line:
       print line
+
+  if device_output_file:
+    shell.pull_file(device_output_file, output_file, remove_original=True)
   return True
 
 
@@ -139,9 +155,11 @@ def main():
     measurements = benchmark_spec['measurements']
     _run_benchmark(shell, shell_args, name, app, duration, measurements,
                    cold_start=True, verbose=script_args.verbose,
+                   android=script_args.android,
                    save_traces=script_args.save_traces)
     _run_benchmark(shell, shell_args, name, app, duration, measurements,
                    cold_start=False, verbose=script_args.verbose,
+                   android=script_args.android,
                    save_traces=script_args.save_traces)
 
   return 0 if succeeded else 1
