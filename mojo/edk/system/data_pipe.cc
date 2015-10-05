@@ -545,6 +545,8 @@ MojoResult DataPipe::ConsumerEndReadData(uint32_t num_bytes_read) {
   if (!consumer_in_two_phase_read_no_lock())
     return MOJO_RESULT_FAILED_PRECONDITION;
 
+  HandleSignalsState old_consumer_state =
+      impl_->ConsumerGetHandleSignalsState();
   HandleSignalsState old_producer_state =
       impl_->ProducerGetHandleSignalsState();
   MojoResult rv;
@@ -561,7 +563,7 @@ MojoResult DataPipe::ConsumerEndReadData(uint32_t num_bytes_read) {
   // during the two-phase read), so awake consumer awakables.
   HandleSignalsState new_consumer_state =
       impl_->ConsumerGetHandleSignalsState();
-  if (new_consumer_state.satisfies(MOJO_HANDLE_SIGNAL_READABLE))
+  if (!new_consumer_state.equals(old_consumer_state))
     AwakeConsumerAwakablesForStateChangeNoLock(new_consumer_state);
   HandleSignalsState new_producer_state =
       impl_->ProducerGetHandleSignalsState();

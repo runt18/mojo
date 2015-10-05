@@ -2064,6 +2064,223 @@ TYPED_TEST(DataPipeImplTest, WriteCloseProducerReadNoData) {
   this->ConsumerClose();
 }
 
+// Tests the behavior of writing, reading (all the data), closing the producer,
+// and then waiting for more data (with no data remaining).
+TYPED_TEST(DataPipeImplTest, WriteReadCloseProducerWaitNoData) {
+  const int64_t kTestData = 123456789012345LL;
+  const uint32_t kTestDataSize = static_cast<uint32_t>(sizeof(kTestData));
+
+  const MojoCreateDataPipeOptions options = {
+      kSizeOfOptions,                           // |struct_size|.
+      MOJO_CREATE_DATA_PIPE_OPTIONS_FLAG_NONE,  // |flags|.
+      kTestDataSize,                            // |element_num_bytes|.
+      100u * kTestDataSize                      // |capacity_num_bytes|.
+  };
+  this->Create(options);
+  this->DoTransfer();
+
+  Waiter waiter;
+  HandleSignalsState hss;
+
+  // Add waiter.
+  waiter.Init();
+  ASSERT_EQ(MOJO_RESULT_OK,
+            this->ConsumerAddAwakable(&waiter, MOJO_HANDLE_SIGNAL_READABLE, 0,
+                                      nullptr));
+
+  // Write some data, so we'll have something to read.
+  uint32_t num_bytes = kTestDataSize;
+  EXPECT_EQ(MOJO_RESULT_OK,
+            this->ProducerWriteData(UserPointer<const void>(&kTestData),
+                                    MakeUserPointer(&num_bytes), false));
+  EXPECT_EQ(kTestDataSize, num_bytes);
+
+  // Wait.
+  EXPECT_EQ(MOJO_RESULT_OK, waiter.Wait(test::TinyDeadline(), nullptr));
+  hss = HandleSignalsState();
+  this->ConsumerRemoveAwakable(&waiter, &hss);
+  EXPECT_EQ(MOJO_HANDLE_SIGNAL_READABLE, hss.satisfied_signals);
+  EXPECT_EQ(MOJO_HANDLE_SIGNAL_READABLE | MOJO_HANDLE_SIGNAL_PEER_CLOSED,
+            hss.satisfiable_signals);
+
+  // Read that data.
+  int64_t data[10] = {};
+  num_bytes = static_cast<uint32_t>(sizeof(data));
+  EXPECT_EQ(MOJO_RESULT_OK,
+            this->ConsumerReadData(UserPointer<void>(data),
+                                   MakeUserPointer(&num_bytes), false, false));
+  EXPECT_EQ(kTestDataSize, num_bytes);
+  EXPECT_EQ(kTestData, data[0]);
+
+  // Add waiter again.
+  waiter.Init();
+  ASSERT_EQ(MOJO_RESULT_OK,
+            this->ConsumerAddAwakable(&waiter, MOJO_HANDLE_SIGNAL_READABLE, 0,
+                                      nullptr));
+
+  // Close the producer.
+  this->ProducerClose();
+
+  // Wait.
+  EXPECT_EQ(MOJO_RESULT_FAILED_PRECONDITION,
+            waiter.Wait(test::TinyDeadline(), nullptr));
+  hss = HandleSignalsState();
+  this->ConsumerRemoveAwakable(&waiter, &hss);
+  EXPECT_EQ(MOJO_HANDLE_SIGNAL_PEER_CLOSED, hss.satisfied_signals);
+  EXPECT_EQ(MOJO_HANDLE_SIGNAL_PEER_CLOSED, hss.satisfiable_signals);
+
+  this->ConsumerClose();
+}
+
+// During a two-phase read, the consumer is not readable so it may be waited
+// upon (to become readable again). If the producer is closed and the two-phase
+// read consumes the remaining data, that wait should become unsatisfiable.
+TYPED_TEST(DataPipeImplTest, BeginReadCloseProducerWaitEndReadNoData) {
+  const int64_t kTestData = 123456789012345LL;
+  const uint32_t kTestDataSize = static_cast<uint32_t>(sizeof(kTestData));
+
+  const MojoCreateDataPipeOptions options = {
+      kSizeOfOptions,                           // |struct_size|.
+      MOJO_CREATE_DATA_PIPE_OPTIONS_FLAG_NONE,  // |flags|.
+      kTestDataSize,                            // |element_num_bytes|.
+      100u * kTestDataSize                      // |capacity_num_bytes|.
+  };
+  this->Create(options);
+  this->DoTransfer();
+
+  Waiter waiter;
+  HandleSignalsState hss;
+
+  // Add waiter (for the consumer to become readable).
+  waiter.Init();
+  ASSERT_EQ(MOJO_RESULT_OK,
+            this->ConsumerAddAwakable(&waiter, MOJO_HANDLE_SIGNAL_READABLE, 0,
+                                      nullptr));
+
+  // Write some data, so we'll have something to read.
+  uint32_t num_bytes = kTestDataSize;
+  EXPECT_EQ(MOJO_RESULT_OK,
+            this->ProducerWriteData(UserPointer<const void>(&kTestData),
+                                    MakeUserPointer(&num_bytes), false));
+  EXPECT_EQ(kTestDataSize, num_bytes);
+
+  // Wait.
+  EXPECT_EQ(MOJO_RESULT_OK, waiter.Wait(test::TinyDeadline(), nullptr));
+  hss = HandleSignalsState();
+  this->ConsumerRemoveAwakable(&waiter, &hss);
+  EXPECT_EQ(MOJO_HANDLE_SIGNAL_READABLE, hss.satisfied_signals);
+  EXPECT_EQ(MOJO_HANDLE_SIGNAL_READABLE | MOJO_HANDLE_SIGNAL_PEER_CLOSED,
+            hss.satisfiable_signals);
+
+  // Start a two-phase read.
+  num_bytes = 0u;
+  const void* read_ptr = nullptr;
+  EXPECT_EQ(MOJO_RESULT_OK,
+            this->ConsumerBeginReadData(MakeUserPointer(&read_ptr),
+                                        MakeUserPointer(&num_bytes)));
+  EXPECT_EQ(kTestDataSize, num_bytes);
+  EXPECT_EQ(kTestData, static_cast<const int64_t*>(read_ptr)[0]);
+
+  // Add waiter (for the producer to be closed).
+  waiter.Init();
+  ASSERT_EQ(MOJO_RESULT_OK,
+            this->ConsumerAddAwakable(&waiter, MOJO_HANDLE_SIGNAL_PEER_CLOSED,
+                                      0, nullptr));
+
+  // Close the producer.
+  this->ProducerClose();
+
+  // Wait for producer close to be detected.
+  EXPECT_EQ(MOJO_RESULT_OK, waiter.Wait(test::TinyDeadline(), nullptr));
+  hss = HandleSignalsState();
+  this->ConsumerRemoveAwakable(&waiter, &hss);
+  EXPECT_EQ(MOJO_HANDLE_SIGNAL_PEER_CLOSED, hss.satisfied_signals);
+  EXPECT_EQ(MOJO_HANDLE_SIGNAL_READABLE | MOJO_HANDLE_SIGNAL_PEER_CLOSED,
+            hss.satisfiable_signals);
+
+  // Add waiter (for the consumer to become readable).
+  waiter.Init();
+  ASSERT_EQ(MOJO_RESULT_OK,
+            this->ConsumerAddAwakable(&waiter, MOJO_HANDLE_SIGNAL_READABLE, 0,
+                                      nullptr));
+
+  // Complete the two-phase read.
+  EXPECT_EQ(MOJO_RESULT_OK, this->ConsumerEndReadData(kTestDataSize));
+
+  // Wait.
+  EXPECT_EQ(MOJO_RESULT_FAILED_PRECONDITION,
+            waiter.Wait(test::TinyDeadline(), nullptr));
+  hss = HandleSignalsState();
+  this->ConsumerRemoveAwakable(&waiter, &hss);
+  EXPECT_EQ(MOJO_HANDLE_SIGNAL_PEER_CLOSED, hss.satisfied_signals);
+  EXPECT_EQ(MOJO_HANDLE_SIGNAL_PEER_CLOSED, hss.satisfiable_signals);
+
+  this->ConsumerClose();
+}
+
+// During a two-phase write, the producer is not writable so it may be waited
+// upon (to become writable again). If the consumer is closed, that wait should
+// become unsatisfiable.
+TYPED_TEST(DataPipeImplTest, BeginWriteCloseConsumerWaitEndWrite) {
+  const MojoCreateDataPipeOptions options = {
+      kSizeOfOptions,                           // |struct_size|.
+      MOJO_CREATE_DATA_PIPE_OPTIONS_FLAG_NONE,  // |flags|.
+      1u,                                       // |element_num_bytes|.
+      100u                                      // |capacity_num_bytes|.
+  };
+  this->Create(options);
+  this->DoTransfer();
+
+  Waiter waiter1;
+  Waiter waiter2;
+  HandleSignalsState hss;
+
+  // Start a two-phase write.
+  void* write_ptr = nullptr;
+  uint32_t num_bytes = 0u;
+  EXPECT_EQ(MOJO_RESULT_OK,
+            this->ProducerBeginWriteData(MakeUserPointer(&write_ptr),
+                                         MakeUserPointer(&num_bytes)));
+
+  // Add waiter (for the consumer to be closed).
+  waiter1.Init();
+  ASSERT_EQ(MOJO_RESULT_OK,
+            this->ProducerAddAwakable(&waiter1, MOJO_HANDLE_SIGNAL_PEER_CLOSED,
+                                      0, nullptr));
+
+  // Add a separate waiter (for the producer to become writable).
+  waiter2.Init();
+  ASSERT_EQ(MOJO_RESULT_OK,
+            this->ProducerAddAwakable(&waiter2, MOJO_HANDLE_SIGNAL_WRITABLE, 0,
+                                      nullptr));
+
+  // Close the consumer.
+  this->ConsumerClose();
+
+  // Wait for the consumer close to be detected.
+  // Note: If we didn't wait for the consumer close to be detected before
+  // completing the two-phase write, wait might succeed (in the remote cases).
+  // This is because the first |Awake()| "wins".
+  EXPECT_EQ(MOJO_RESULT_OK, waiter1.Wait(test::TinyDeadline(), nullptr));
+  hss = HandleSignalsState();
+  this->ProducerRemoveAwakable(&waiter1, &hss);
+  EXPECT_EQ(MOJO_HANDLE_SIGNAL_PEER_CLOSED, hss.satisfied_signals);
+  EXPECT_EQ(MOJO_HANDLE_SIGNAL_PEER_CLOSED, hss.satisfiable_signals);
+
+  // Complete the two-phase write (with nothing written).
+  EXPECT_EQ(MOJO_RESULT_OK, this->ProducerEndWriteData(0u));
+
+  // Wait.
+  EXPECT_EQ(MOJO_RESULT_FAILED_PRECONDITION,
+            waiter2.Wait(test::TinyDeadline(), nullptr));
+  hss = HandleSignalsState();
+  this->ProducerRemoveAwakable(&waiter2, &hss);
+  EXPECT_EQ(MOJO_HANDLE_SIGNAL_PEER_CLOSED, hss.satisfied_signals);
+  EXPECT_EQ(MOJO_HANDLE_SIGNAL_PEER_CLOSED, hss.satisfiable_signals);
+
+  this->ProducerClose();
+}
+
 // Test that two-phase reads/writes behave correctly when given invalid
 // arguments.
 TYPED_TEST(DataPipeImplTest, TwoPhaseMoreInvalidArguments) {
