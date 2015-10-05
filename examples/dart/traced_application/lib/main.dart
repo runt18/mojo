@@ -22,18 +22,25 @@ import 'package:mojo/core.dart';
 
 class TestUsingTracingApp extends Application {
   TracingHelper _tracing;
+  Timer _timer;
 
   TestUsingTracingApp.fromHandle(MojoHandle handle) : super.fromHandle(handle);
 
   void initialize(List<String> args, String url) {
     // This sets up a connection between this application and the Mojo
     // tracing service.
-    _tracing = new TracingHelper.fromApplication(
-        this, "example_traced_application");
+    _tracing =
+        new TracingHelper.fromApplication(this, "example_traced_application");
     _tracing.traceInstant("initialized", "traced_application");
 
     // Now we schedule some random work just so we have something to trace.
-    new Timer.periodic(new Duration(seconds: 1), (t) => function1());
+    _timer = new Timer.periodic(new Duration(seconds: 1), (t) => function1());
+
+    onError = (() {
+      if (_timer != null) {
+        _timer.cancel();
+      }
+    });
   }
 
   @override
@@ -41,7 +48,6 @@ class TestUsingTracingApp extends Application {
       ApplicationConnection connection) {
     _tracing.traceInstant("connected", "traced_application");
   }
-
 
   Future function1() {
     return _tracing.traceAsync("function1", "traced_application", () async {

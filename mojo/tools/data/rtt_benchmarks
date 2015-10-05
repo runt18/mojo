@@ -1,0 +1,43 @@
+# This file contains a list of Mojo benchmarks. For description of the file
+# format, see `mojo_benchmark --help`.
+
+benchmarks = [
+  {
+    'name': 'C++ <=> C++ IPC Round Trip Time',
+    'app': 'https://core.mojoapps.io/echo_benchmark.mojo',
+    'duration': 10,
+    'measurements': [
+      'avg_duration/echo_benchmark/ping',
+    ],
+    'shell-args': [
+      '--args-for=https://core.mojoapps.io/echo_benchmark.mojo --early-tracing',
+    ]
+  },
+  {
+    'name': 'Dart <=> Dart IPC Round Trip Time',
+    'app': 'https://core.mojoapps.io/dart_rtt_benchmark.mojo',
+    'duration': 10,
+    'measurements': [
+      'avg_duration/mojo_rtt_benchmark/ping',
+    ]
+  },
+  {
+    'name': 'Dart <=> C++ IPC Round Trip Time',
+    'app': 'https://core.mojoapps.io/dart_rtt_benchmark.mojo',
+    'duration': 10,
+    'measurements': [
+      'avg_duration/mojo_rtt_benchmark/ping',
+    ],
+    'shell-args': [
+      '--args-for=https://core.mojoapps.io/dart_rtt_benchmark.mojo --cpp-server',
+    ]
+  },
+  {
+    'name': 'Dart Isolate Message Round Trip Time',
+    'app': 'https://core.mojoapps.io/dart_isolate_rtt_benchmark.mojo',
+    'duration': 10,
+    'measurements': [
+      'avg_duration/isolate_rtt_benchmark/ping',
+    ]
+  },
+]

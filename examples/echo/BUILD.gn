@@ -7,8 +7,27 @@ import("//mojo/public/tools/bindings/mojom.gni")
 
 group("echo") {
   deps = [
+    ":benchmark",
     ":client",
     ":server",
+  ]
+}
+
+mojo_native_application("benchmark") {
+  output_name = "echo_benchmark"
+
+  deps = [
+    ":bindings",
+    "//base",
+    "//mojo/application:application",
+    "//mojo/common:tracing_impl",
+    "//mojo/public/cpp/application",
+    "//mojo/public/cpp/bindings",
+    "//mojo/public/cpp/utility",
+  ]
+
+  sources = [
+    "echo_benchmark.cc",
   ]
 }
 
