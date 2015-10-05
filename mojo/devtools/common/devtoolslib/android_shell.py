@@ -38,6 +38,9 @@ _LOGCAT_NATIVE_TAGS = [
 
 _MOJO_SHELL_PACKAGE_NAME = 'org.chromium.mojo.shell'
 
+# Used to parse the output of `adb devices`.
+_ADB_DEVICES_HEADER = 'List of devices attached'
+
 
 _logger = logging.getLogger()
 
@@ -62,6 +65,24 @@ def _find_available_port(netstat_output, max_attempts=10000):
 def _find_available_host_port():
   netstat_output = subprocess.check_output(['netstat'])
   return _find_available_port(netstat_output)
+
+def parse_adb_devices_output(adb_devices_output):
+  """Parses the output of the `adb devices` command, returning a dictionary
+  mapping device id to the status of the device, as printed by `adb devices`.
+  """
+  # Split into lines skipping empty ones.
+  lines = [line.strip() for line in adb_devices_output.split('\n')
+           if line.strip()]
+
+  if _ADB_DEVICES_HEADER not in lines:
+    return None
+
+  # The header can be preceeded by output informing of adb server being spawned,
+  # but all non-empty lines after the header describe connected devices.
+  device_specs = lines[lines.index(_ADB_DEVICES_HEADER) + 1:]
+  split_specs = [spec.split() for spec in device_specs]
+  return {split_spec[0]: split_spec[1] for split_spec in split_specs
+          if len(split_spec) == 2}
 
 
 class AndroidShell(Shell):
@@ -213,25 +234,24 @@ class AndroidShell(Shell):
     """
     adb_devices_output = subprocess.check_output(
         self._adb_command(['devices']))
-    # Skip the header line, strip empty lines at the end.
-    device_list = [line.strip() for line in adb_devices_output.split('\n')[1:]
-                   if line.strip()]
+    devices = parse_adb_devices_output(adb_devices_output)
+
+    if not devices:
+      return False, 'No devices connected.'
 
     if self.target_device:
-      if any([line.startswith(self.target_device) and
-              line.endswith('device') for line in device_list]):
+      if (self.target_device in devices and
+          devices[self.target_device] == 'device'):
         return True, None
       else:
-        return False, 'Cannot connect to the selected device.'
+        return False, ('Cannot connect to the selected device, status: ' +
+                       devices[self.target_device])
 
-    if len(device_list) > 1:
+    if len(devices) > 1:
       return False, ('More than one device connected and target device not '
                      'specified.')
 
-    if not len(device_list):
-      return False, 'No devices connected.'
-
-    if not device_list[0].endswith('device'):
+    if not devices.itervalues().next() == 'device':
       return False, 'Connected device is not available.'
 
     if require_root and not self._run_adb_as_root():
