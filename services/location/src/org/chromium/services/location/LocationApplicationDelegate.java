@@ -5,7 +5,7 @@
 package org.chromium.services.location;
 
 import android.content.Context;
-import android.os.Looper;
+import android.os.HandlerThread;
 import android.util.Log;
 
 import com.google.android.gms.common.ConnectionResult;
@@ -31,54 +31,14 @@ public class LocationApplicationDelegate implements ApplicationDelegate {
     private final Core mCore;
 
     /**
-     * Android looper thread class to get callbacks from google play services api.
+     * Thread to get callbacks from google play services api.
      */
-    private static class LooperThread extends Thread {
-        private Looper mLooper;
-
-        @Override
-        public void run() {
-            synchronized (this) {
-                Looper.prepare();
-                mLooper = Looper.myLooper();
-                this.notify();
-            }
-            Looper.loop();
-        }
-
-        public Looper getLooper() {
-            synchronized (this) {
-                while (mLooper == null) {
-                    try {
-                        this.wait();
-                    } catch (InterruptedException e) {
-                        Log.e(TAG, e.getMessage(), e);
-                    }
-                }
-            }
-            return mLooper;
-        }
-
-        public void quitSoon() {
-            synchronized (this) {
-                while (mLooper == null) {
-                    try {
-                        this.wait();
-                    } catch (InterruptedException e) {
-                        Log.e(TAG, e.getMessage(), e);
-                    }
-                }
-            }
-            mLooper.quitSafely();
-        }
-    }
-
-    private final LooperThread mLooperThread = new LooperThread();
+    private final HandlerThread mHandlerThread = new HandlerThread("LocationThread");
 
     public LocationApplicationDelegate(Context context, Core core) {
         // TODO(alhaad): Create a test mode which uses mock locations instead of real locations.
-        mGoogleApiClient =
-                new GoogleApiClient.Builder(context).addApi(LocationServices.API).build();
+        mGoogleApiClient = new GoogleApiClient.Builder(context).addApi(LocationServices.API)
+                .build();
         mCore = core;
     }
 
@@ -90,11 +50,11 @@ public class LocationApplicationDelegate implements ApplicationDelegate {
         ConnectionResult connectionResult = mGoogleApiClient.blockingConnect();
         if (!connectionResult.isSuccess()) {
             Log.e(TAG, "Could not connect to Google play services. ConnectionResult: "
-                            + connectionResult.toString());
+                    + connectionResult.toString());
             mCore.getCurrentRunLoop().quit();
             return;
         }
-        mLooperThread.start();
+        mHandlerThread.start();
     }
 
     /**
@@ -106,7 +66,7 @@ public class LocationApplicationDelegate implements ApplicationDelegate {
             @Override
             public void bind(InterfaceRequest<LocationService> request) {
                 LocationService.MANAGER.bind(
-                        new LocationServiceImpl(mGoogleApiClient, mLooperThread.getLooper(),
+                        new LocationServiceImpl(mGoogleApiClient, mHandlerThread.getLooper(),
                                 mCore.getCurrentRunLoop()),
                         request);
             }
@@ -125,9 +85,9 @@ public class LocationApplicationDelegate implements ApplicationDelegate {
     @Override
     public void quit() {
         mGoogleApiClient.disconnect();
-        mLooperThread.quitSoon();
+        mHandlerThread.quitSafely();
         try {
-            mLooperThread.join();
+            mHandlerThread.join();
         } catch (InterruptedException e) {
             Log.e(TAG, e.getMessage(), e);
         }
