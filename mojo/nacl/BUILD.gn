@@ -126,8 +126,13 @@ group("mojo_pnacl_tests") {
 action("translate_mojo_pnacl_tests_to_native") {
   testonly = true
 
-  script = rebase_path("//") +
-           "native_client/toolchain/linux_x86/pnacl_newlib/bin/pydir/loader.py"
+  # Leaving default as linux for OSes which are similar to linux, but do
+  # not self-identify as linux through host_os.
+  nacl_toolchain_host_os = "linux"
+  if (host_os == "mac") {
+    nacl_toolchain_host_os = "mac"
+  }
+  script = rebase_path("//") + "native_client/toolchain/${nacl_toolchain_host_os}_x86/pnacl_newlib/bin/pydir/loader.py"
   input = rebase_path(root_build_dir) + "/newlib_pnacl/monacl_test.pexe"
   inputs = [
     input,
