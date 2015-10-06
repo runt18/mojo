@@ -46,7 +46,7 @@ public class MojoShellActivity extends Activity implements ShellService.IShellBi
     @Override
     public void onShellBound(ShellService shellService) {
         mShellService = shellService;
-        finish();
+        finishAndRemoveTask();
         communicateWithShell();
         unbindService(mShellServiceConnection);
     }

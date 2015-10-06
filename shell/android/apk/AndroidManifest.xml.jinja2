@@ -28,7 +28,7 @@
         <activity android:name="org.chromium.mojo.shell.MojoShellActivity"
                   android:launchMode="standard"
                   android:documentLaunchMode="none"
-                  android:theme="@android:style/Theme.NoDisplay">
+                  android:theme="@style/Theme.Transparent">
             <intent-filter>
                 <!-- A mojo://host/path url will load the app at the
                      https://host/path URL.
@@ -46,7 +46,7 @@
                   android:hardwareAccelerated="true">
         </activity>
         <activity android:name="org.chromium.mojo.shell.NfcReceiverActivity"
-                  android:theme="@android:style/Theme.NoDisplay" >
+                  android:theme="@style/Theme.Transparent" >
             <intent-filter>
                 <action android:name="android.nfc.action.NDEF_DISCOVERED"/>
                 <category android:name="android.intent.category.DEFAULT"/>
@@ -54,7 +54,7 @@
             </intent-filter>
         </activity>
         <activity android:name="org.chromium.mojo.shell.SharingActivity"
-                  android:theme="@android:style/Theme.NoDisplay"
+                  android:theme="@style/Theme.Transparent"
                   android:enabled="false">
             <intent-filter>
                 <action android:name="android.intent.action.SEND"/>
@@ -63,7 +63,7 @@
             </intent-filter>
         </activity>
         <activity android:name="org.chromium.mojo.shell.IntentReceiverActivity"
-                  android:theme="@android:style/Theme.NoDisplay">
+                  android:theme="@style/Theme.Transparent">
         </activity>
         <service android:name="org.chromium.mojo.shell.ShellService" />
     </application>
