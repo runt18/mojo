@@ -12,6 +12,13 @@
 
 namespace dart {
 
+class DartTimelineController {
+ public:
+  static void Enable(const mojo::String& categories);
+  static void EnableAll();
+  static void Disable();
+};
+
 class DartTraceProvider : public tracing::TraceProvider {
  public:
   DartTraceProvider();

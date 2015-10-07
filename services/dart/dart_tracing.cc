@@ -9,6 +9,20 @@
 
 namespace dart {
 
+void DartTimelineController::Enable(const mojo::String& categories) {
+  // TODO(johnmccutchan): Respect |categories|.
+  EnableAll();
+}
+
+void DartTimelineController::EnableAll() {
+  Dart_GlobalTimelineSetRecordedStreams(DART_TIMELINE_STREAM_ALL |
+                                        DART_TIMELINE_STREAM_VM);
+}
+
+void DartTimelineController::Disable() {
+  Dart_GlobalTimelineSetRecordedStreams(DART_TIMELINE_STREAM_DISABLE);
+}
+
 DartTraceProvider::DartTraceProvider()
     : binding_(this) {
 }
@@ -30,9 +44,7 @@ void DartTraceProvider::StartTracing(const mojo::String& categories,
                                      tracing::TraceRecorderPtr recorder) {
   DCHECK(!recorder_.get());
   recorder_ = recorder.Pass();
-  // TODO(johnmccutchan): Respect |categories|.
-  Dart_GlobalTimelineSetRecordedStreams(DART_TIMELINE_STREAM_ALL |
-                                        DART_TIMELINE_STREAM_VM);
+  DartTimelineController::Enable(categories);
 }
 
 static void AppendStreamConsumer(Dart_StreamConsumer_State state,
@@ -58,7 +70,7 @@ static void AppendStreamConsumer(Dart_StreamConsumer_State state,
 // tracing::TraceProvider implementation:
 void DartTraceProvider::StopTracing() {
   DCHECK(recorder_);
-  Dart_GlobalTimelineSetRecordedStreams(DART_TIMELINE_STREAM_DISABLE);
+  DartTimelineController::Disable();
   std::vector<uint8_t> data;
   bool got_trace = Dart_GlobalTimelineGetTrace(AppendStreamConsumer, &data);
   if (got_trace) {

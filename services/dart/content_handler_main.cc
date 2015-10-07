@@ -27,6 +27,9 @@
 
 namespace dart {
 
+const char kEnableStrictMode[] = "--enable-strict-mode";
+const char kTraceStartup[] = "--trace-startup";
+
 static bool IsDartZip(std::string url) {
   // If the url doesn't end with ".dart" we assume it is a zipped up
   // dart application.
@@ -103,9 +106,7 @@ class DartContentHandlerApp : public mojo::ApplicationDelegate {
     // application.
     TRACE_EVENT0("dart_content_handler", "DartContentHandler::Initialize");
 
-    default_strict_ = std::find(app->args().begin(), app->args().end(),
-                                "--enable-strict-mode") != app->args().end();
-
+    default_strict_ = app->HasArg(kEnableStrictMode);
     content_handler_.set_handler_task_runner(
         base::MessageLoop::current()->task_runner());
     strict_content_handler_.set_handler_task_runner(
@@ -115,6 +116,9 @@ class DartContentHandlerApp : public mojo::ApplicationDelegate {
     service_connector_ = new ContentHandlerAppServiceConnector(app);
     bool success = mojo::dart::DartController::Initialize(service_connector_,
                                                           default_strict_);
+    if (app->HasArg(kTraceStartup)) {
+      DartTimelineController::EnableAll();
+    }
     if (!success) {
       LOG(ERROR) << "Dart VM Initialization failed";
     }
