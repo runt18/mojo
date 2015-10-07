@@ -2,8 +2,9 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-// This example makes use of mojo:camera_roll which is available only when
-// running on Android.
+// This example makes use of mojo:camera which is available only when
+// running on Android. It repeatedly captures camera video frame images
+// and displays it in a mojo view.
 //
 // Example usage:
 //   pub get
@@ -13,19 +14,20 @@
 import 'dart:sky';
 import 'dart:typed_data';
 
-import 'package:mojo_services/mojo/camera_roll.mojom.dart';
+import 'package:mojo_services/mojo/camera.mojom.dart';
 import 'package:sky/services.dart';
 
-final CameraRollServiceProxy cameraRoll = new CameraRollServiceProxy.unbound();
-Image currentImage;
-int photoIndex = 0;
+Image image = null;
+final CameraServiceProxy camera = new CameraServiceProxy.unbound();
 
 Picture paint(Rect paintBounds) {
   PictureRecorder recorder = new PictureRecorder();
-  Canvas canvas = new Canvas(recorder, paintBounds);
-  Paint paint = new Paint()..color = const Color.fromARGB(255, 0, 255, 0);
-  if (currentImage != null) {
-    canvas.drawImage(currentImage, new Point(0.0, 0.0), paint);
+  if (image != null) {
+    Canvas canvas = new Canvas(recorder, paintBounds);
+    canvas.translate(paintBounds.width / 2.0, paintBounds.height / 2.0);
+    canvas.scale(0.3, 0.3);
+    Paint paint = new Paint()..color = const Color.fromARGB(255, 0, 255, 0);
+    canvas.drawImage(image, new Point(-image.width / 2.0, -image.height / 2.0), paint);
   }
   return recorder.endRecording();
 }
@@ -53,44 +55,25 @@ void beginFrame(double timeStamp) {
   view.scene = scene;
 }
 
-void getPhoto() {
-  var future = cameraRoll.ptr.getPhoto(photoIndex);
+void drawNextPhoto() {
+  var future = camera.ptr.getLatestFrame();
   future.then((response) {
-    if (response.photo == null) {
-      print("Photo $photoIndex not found, returning to the first photo.");
-      cameraRoll.ptr.update();
-      photoIndex = 0;
-      getPhoto();
+    if (response.content == null) {
+      drawNextPhoto();
       return;
     }
-
-    new ImageDecoder(response.photo.content.handle.h, (image) {
-      if (image != null) {
-        currentImage = image;
-        print("view.scheduleFrame");
+    new ImageDecoder(response.content.handle.h, (frame) {
+      if (frame != null) {
+        image = frame;
         view.scheduleFrame();
+        drawNextPhoto();
       }
     });
   });
 }
 
-bool handleEvent(Event event) {
-  if (event.type == 'pointerdown') {
-    return true;
-  }
-
-  if (event.type == 'pointerup') {
-    photoIndex++;
-    getPhoto();
-    return true;
-  }
-
-  return false;
-}
-
 void main() {
-  embedder.connectToService("mojo:camera", cameraRoll);
   view.setFrameCallback(beginFrame);
-  view.setEventCallback(handleEvent);
-  getPhoto();
+  embedder.connectToService("mojo:camera", camera);
+  drawNextPhoto();
 }

@@ -28,3 +28,10 @@ interface CameraRollService {
   // if such an index is out-of-bounds.
   GetPhoto(uint32 index) => (Photo? photo);
 };
+
+// |CameraService| provides access to the device's camera video stream.
+interface CameraService {
+  // Returns the most recent frame captured by the device's camera
+  // in preview mode.
+  GetLatestFrame() => (handle<data_pipe_consumer>? content);
+};
