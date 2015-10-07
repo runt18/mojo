@@ -11,6 +11,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.content.res.AssetManager;
+import android.net.Uri;
 import android.os.Binder;
 import android.os.IBinder;
 import android.util.JsonReader;
@@ -41,6 +42,9 @@ import java.util.List;
 @JNINamespace("shell")
 public class ShellService extends Service {
     private static final String TAG = "ShellService";
+
+    // Name of the intent extra used to hold the application url to start.
+    public static final String APPLICATION_URL_EXTRA = "application_url";
 
     // Directory where applications bundled with the shell will be extracted.
     private static final String LOCAL_APP_DIRECTORY = "local_apps";
@@ -167,6 +171,12 @@ public class ShellService extends Service {
         // only the first set of parameters will ever be taken into account.
         // TODO(eseidel): ShellService can fail, but we're ignoring the return.
         ensureStarted(getApplicationContext(), getParametersFromIntent(intent));
+        if (intent.hasExtra(APPLICATION_URL_EXTRA)) {
+            // This intent requests we start an application.
+            String urlExtra = intent.getStringExtra(APPLICATION_URL_EXTRA);
+            Uri applicationUri = Uri.parse(urlExtra).buildUpon().scheme("https").build();
+            startApplicationURL(applicationUri.toString());
+        }
         return Service.START_STICKY;
     }
 
