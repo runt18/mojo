@@ -414,7 +414,7 @@ Dart_Isolate DartController::IsolateCreateCallback(const char* script_uri,
   }
   // Inherit parameters from parent isolate (if any).
   void* dart_app = nullptr;
-  bool strict_compilation = true;
+  bool strict_compilation = false;
   // TODO(johnmccutchan): Use parent's setting?
   bool use_network_loader = false;
   IsolateCallbacks callbacks;

@@ -28,9 +28,11 @@ class EchoImpl implements Echo {
 
 class EchoApplication extends Application {
   List<EchoImpl> _echoServices;
+  bool _closing;
 
   EchoApplication.fromHandle(MojoHandle handle)
-      : _echoServices = [],
+      : _closing = false,
+        _echoServices = [],
         super.fromHandle(handle) {
     onError = _errorHandler;
   }
@@ -42,16 +44,23 @@ class EchoApplication extends Application {
   }
 
   void removeService(EchoImpl service) {
-    _echoServices.remove(service);
+    if (!_closing) {
+      _echoServices.remove(service);
+    }
   }
 
   EchoImpl _createService(MojoMessagePipeEndpoint endpoint) {
+    if (_closing) {
+      endpoint.close();
+      return null;
+    }
     var echoService = new EchoImpl(this, endpoint);
     _echoServices.add(echoService);
     return echoService;
   }
 
   _errorHandler() async {
+    _closing = true;
     for (var service in _echoServices) {
       await service.close();
     }
