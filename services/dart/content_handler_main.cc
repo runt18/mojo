@@ -67,7 +67,8 @@ class DartContentHandlerApp : public mojo::ApplicationDelegate {
         strict_content_handler_(this, true),
         content_handler_factory_(&content_handler_),
         strict_content_handler_factory_(&strict_content_handler_),
-        service_connector_(nullptr) {}
+        service_connector_(nullptr),
+        default_strict_(false) {}
 
   ~DartContentHandlerApp() override {}
 
@@ -102,6 +103,9 @@ class DartContentHandlerApp : public mojo::ApplicationDelegate {
     // application.
     TRACE_EVENT0("dart_content_handler", "DartContentHandler::Initialize");
 
+    default_strict_ = std::find(app->args().begin(), app->args().end(),
+                                "--enable-strict-mode") != app->args().end();
+
     content_handler_.set_handler_task_runner(
         base::MessageLoop::current()->task_runner());
     strict_content_handler_.set_handler_task_runner(
@@ -109,8 +113,8 @@ class DartContentHandlerApp : public mojo::ApplicationDelegate {
     app->ConnectToService("mojo:url_response_disk_cache",
                           &url_response_disk_cache_);
     service_connector_ = new ContentHandlerAppServiceConnector(app);
-    bool success =
-        mojo::dart::DartController::Initialize(service_connector_, false);
+    bool success = mojo::dart::DartController::Initialize(service_connector_,
+                                                          default_strict_);
     if (!success) {
       LOG(ERROR) << "Dart VM Initialization failed";
     }
@@ -133,7 +137,7 @@ class DartContentHandlerApp : public mojo::ApplicationDelegate {
   bool ConfigureIncomingConnection(
       mojo::ApplicationConnection* connection) override {
     bool strict = HasStrictQueryParam(connection->GetConnectionURL());
-    if (strict) {
+    if (default_strict_ || strict) {
       connection->AddService(&strict_content_handler_factory_);
     } else {
       connection->AddService(&content_handler_factory_);
@@ -156,6 +160,7 @@ class DartContentHandlerApp : public mojo::ApplicationDelegate {
   mojo::URLResponseDiskCachePtr url_response_disk_cache_;
   ContentHandlerAppServiceConnector* service_connector_;
   DartTracingImpl dart_tracing_;
+  bool default_strict_;
 
   DISALLOW_COPY_AND_ASSIGN(DartContentHandlerApp);
 };
