@@ -64,6 +64,15 @@ class BenchmarkApp : public mojo::ApplicationDelegate,
         new TraceCollectorClient(this, trace_collector.Pass()));
     trace_collector_client_->Start(categories_str);
 
+    // Start tracing the application with 1 sec of delay.
+    base::MessageLoop::current()->PostDelayedTask(
+        FROM_HERE,
+        base::Bind(&BenchmarkApp::StartTracedApplication,
+            base::Unretained(this), app),
+        base::TimeDelta::FromSeconds(1));
+  }
+
+  void StartTracedApplication(mojo::ApplicationImpl* app) {
     // Record the time origin for measurements just before connecting to the app
     // being benchmarked.
     time_origin_ = base::TimeTicks::FromInternalValue(MojoGetTimeTicksNow());
