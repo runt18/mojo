@@ -5,6 +5,7 @@
 #include <stdio.h>
 
 #include "base/logging.h"
+#include "base/strings/string_number_conversions.h"
 #include "base/trace_event/trace_event.h"
 #include "examples/echo/echo.mojom.h"
 #include "mojo/application/application_runner_chromium.h"
@@ -27,62 +28,127 @@ class EchoClientDelegate;
 
 class EchoResponse {
  public:
-  EchoResponse(EchoClientDelegate* echo, bool traced)
-      : echo_(echo), traced_(traced) {}
+  EchoResponse(EchoClientDelegate* echo, int idx, bool traced)
+      : echoDelegate_(echo), idx_(idx), traced_(traced) {}
 
   void Run(const String& value) const;
 
  private:
-  EchoClientDelegate* echo_;
+  EchoClientDelegate* echoDelegate_;
+  int idx_;
   bool traced_;
 };
 
 class EchoClientDelegate : public ApplicationDelegate {
  public:
-  EchoClientDelegate() : warmup_(true) {}
+  EchoClientDelegate()
+      : warmup_(true),
+        num_clients_(1),
+        num_active_clients_(1),
+        use_dart_server_(false) {}
 
   void Initialize(ApplicationImpl* app) override {
     tracing_.Initialize(app);
-    app->ConnectToService("mojo:echo_server", &echo_);
-    BeginEcho();
+
+    ParseArguments(app);
+
+    for (int i = 0; i < num_clients_; i++) {
+      EchoPtr echo;
+      if (use_dart_server_) {
+        app->ConnectToService("mojo:dart_echo_server", &echo);
+      } else {
+        app->ConnectToService("mojo:echo_server", &echo);
+      }
+      echoClients_.push_back(echo.Pass());
+    }
+    BeginEcho(0);
     base::MessageLoop::current()->PostDelayedTask(
         FROM_HERE,
         base::Bind(&EchoClientDelegate::EndWarmup, base::Unretained(this)),
         kWarmupTime);
   }
 
-  void BeginEcho() {
+  void BeginEcho(int idx) {
+    if (idx == num_active_clients_) {
+      idx = 0;
+    }
     base::MessageLoop::current()->PostDelayedTask(
-        FROM_HERE, base::Bind(&EchoClientDelegate::Run, base::Unretained(this)),
+        FROM_HERE,
+        base::Bind(&EchoClientDelegate::Run, base::Unretained(this), idx),
         kDelayTime);
   }
 
-  void EndEcho(bool traced) {
+  void EndEcho(int idx, bool traced) {
     if (traced) {
-      TRACE_EVENT_ASYNC_END0("echo_benchmark", "ping", echo_.get());
+      TRACE_EVENT_ASYNC_END0("echo_benchmark", "ping", echoClients_[idx].get());
     }
   }
 
  private:
-  void Run() {
+  void Run(int idx) {
     if (warmup_) {
-      echo_->EchoString("ping", EchoResponse(this, false));
+      echoClients_[idx]->EchoString("ping", EchoResponse(this, idx, false));
     } else {
-      TRACE_EVENT_ASYNC_BEGIN0("echo_benchmark", "ping", echo_.get());
-      echo_->EchoString("ping", EchoResponse(this, true));
+      TRACE_EVENT_ASYNC_BEGIN0("echo_benchmark", "ping",
+                               echoClients_[idx].get());
+      echoClients_[idx]->EchoString("ping", EchoResponse(this, idx, true));
+    }
+  }
+
+  bool GetBoolArgument(const std::string& argument,
+                       const std::string& flag,
+                       bool* value) {
+    size_t start_pos = argument.find(flag);
+    if (start_pos != std::string::npos) {
+      *value = true;
+      return true;
+    }
+    return false;
+  }
+
+  bool GetIntegerArgument(const std::string& argument,
+                          const std::string& flag,
+                          int* value) {
+    size_t start_pos = argument.find(flag);
+    if (start_pos != std::string::npos) {
+      size_t equals_pos = argument.find("=", start_pos);
+      if (equals_pos != std::string::npos) {
+        base::StringToInt(argument.substr(equals_pos + 1), value);
+        return true;
+      }
+    }
+    return false;
+  }
+
+  void ParseArguments(ApplicationImpl* app) {
+    for (size_t i = 0; i < app->args().size(); i++) {
+      const std::string& argument = app->args()[i];
+      if (GetBoolArgument(argument, "--dart-server", &use_dart_server_)) {
+        continue;
+      }
+      if (GetIntegerArgument(argument, "--num-clients", &num_clients_)) {
+        continue;
+      }
+      if (GetIntegerArgument(argument, "--num-active-clients",
+                             &num_active_clients_)) {
+        continue;
+      }
     }
   }
 
   void EndWarmup() { warmup_ = false; }
 
   bool warmup_;
-  EchoPtr echo_;
+  int num_clients_;
+  int num_active_clients_;
+  bool use_dart_server_;
+  std::vector<EchoPtr> echoClients_;
   mojo::TracingImpl tracing_;
 };
 
 void EchoResponse::Run(const String& value) const {
-  echo_->EndEcho(traced_);
-  echo_->BeginEcho();
+  echoDelegate_->EndEcho(idx_, traced_);
+  echoDelegate_->BeginEcho(idx_ + 1);
 }
 
 }  // namespace examples

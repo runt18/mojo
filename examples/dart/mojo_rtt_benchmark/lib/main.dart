@@ -3,12 +3,15 @@
 // found in the LICENSE file.
 
 // This Mojo app is a benchmark of Mojo/Dart IPC Round Trip Times.
+// It creates many proxies from a single isolate, and makes requests using those
+// proxies round-robin.
 // To run it, and the other RTT benchmarks:
 //
 // $ ./mojo/devtools/common/mojo_benchmark [--release] mojo/tools/data/rtt_benchmarks
 
 import 'dart:async';
 
+import 'package:args/args.dart' as args;
 import 'package:common/tracing_helper.dart';
 import 'package:mojo/application.dart';
 import 'package:mojo/bindings.dart';
@@ -16,65 +19,85 @@ import 'package:mojo/core.dart';
 import 'package:mojom/mojo/examples/echo.mojom.dart';
 
 class EchoTracingApp extends Application {
-  static const Duration _WARMUP_DURATION = const Duration(seconds: 1);
-  static const Duration _DELAY = const Duration(microseconds: 50);
+  static const Duration kWarmupDuration = const Duration(seconds: 1);
+  static const Duration kDelay = const Duration(microseconds: 50);
   TracingHelper _tracing;
-  EchoProxy _echoProxy;
+  List<EchoProxy> _echoProxies;
   bool _doEcho;
   bool _warmup;
+  int _numClients;
+  int _numActiveClients;
 
   EchoTracingApp.fromHandle(MojoHandle handle) : super.fromHandle(handle) {
     onError = _errorHandler;
+    _echoProxies = [];
   }
 
-  void initialize(List<String> args, String url) {
+  void initialize(List<String> arguments, String url) {
     // Initialize tracing.
     _tracing = new TracingHelper.fromApplication(this, "mojo_rtt_benchmark");
     _tracing.traceInstant("initialized", "traced_application");
 
+    var parser = new args.ArgParser(allowTrailingOptions: true);
+    parser.addFlag('cpp-server', defaultsTo: false, negatable: false);
+    parser.addOption('num-clients', defaultsTo: "1");
+    parser.addOption('num-active-clients', defaultsTo: "1");
+    var argResults = parser.parse(arguments);
+
     String echoUrl = "mojo:dart_echo_server";
-    if (args.contains("--cpp-server")) {
+    if (argResults["cpp-server"]) {
       echoUrl = "mojo:echo_server";
     }
+    _numClients = int.parse(argResults["num-clients"]);
+    _numActiveClients = int.parse(argResults["num-active-clients"]);
 
     // Setup the connection to the echo app.
-    _echoProxy = new EchoProxy.unbound();
-    connectToService(echoUrl, _echoProxy);
+    for (int i = 0; i < _numClients; i++) {
+      var newProxy = new EchoProxy.unbound();
+      connectToService(echoUrl, newProxy);
+      _echoProxies.add(newProxy);
+    }
 
     // Start echoing.
     _doEcho = true;
-    Timer.run(_run);
+    Timer.run(() => _run(0));
 
-    // Begin tracing echo rtts after waiting for _WARMUP_DURATION.
+    // Begin tracing echo rtts after waiting for kWarmupDuration.
     _warmup = true;
-    new Timer(_WARMUP_DURATION, () => _warmup = false);
+    new Timer(kWarmupDuration, () => _warmup = false);
   }
 
-  _run() {
+  _run(int idx) {
+    if (idx == _numActiveClients) {
+      idx = 0;
+    }
     if (_doEcho) {
       if (_warmup) {
-        _echo("ping").then((_) => new Timer(_DELAY, _run));
+        _echo(idx, "ping").then((_) => new Timer(kDelay, () => _run(idx + 1)));
       } else {
-        _tracedEcho().then((_) => new Timer(_DELAY, _run));
+        _tracedEcho(idx).then((_) => new Timer(kDelay, () => _run(idx + 1)));
       }
     }
   }
 
-  Future _tracedEcho() {
+  Future _tracedEcho(int idx) {
     int start = getTimeTicksNow();
-    return _echo("ping").then((_) {
+    return _echo(idx, "ping").then((_) {
       int end = getTimeTicksNow();
       _tracing.traceDuration("ping", "mojo_rtt_benchmark", start, end);
     });
   }
 
-  Future _echo(String s) {
-    return _echoProxy.ptr.echoString(s).catchError((_) => _errorHandler());
+  Future _echo(int idx, String s) {
+    return _echoProxies[idx]
+        .ptr
+        .echoString(s)
+        .catchError((_) => _errorHandler());
   }
 
   _errorHandler() {
     _doEcho = false;
-    return _echoProxy.close().then((_) {
+    return Future.wait(_echoProxies.map((p) => p.close())).then((_) {
       assert(MojoHandle.reportLeakedHandles());
     });
   }

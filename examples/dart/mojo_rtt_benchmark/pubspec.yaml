@@ -1,5 +1,6 @@
 name: mojo_rtt_benchmark
 author: Chromium Authors <mojo-dev@googlegroups.com>
 dependencies:
+  args: '>=0.13.0 <1.0.0'
   mojo: '>=0.1.0 <0.2.0'
   mojom: '>=0.1.0 <0.2.0'
