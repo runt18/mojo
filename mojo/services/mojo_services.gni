@@ -8,7 +8,6 @@
 # //mojo/services/X/public/interfaces to this list.
 
 mojo_services = [
-  "//mojo/services/accessibility/public/interfaces",
   "//mojo/services/asset_bundle/public/interfaces",
   "//mojo/services/authenticating_url_loader_interceptor/public/interfaces",
   "//mojo/services/authentication/public/interfaces",
