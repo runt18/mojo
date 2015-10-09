@@ -26,6 +26,6 @@ dart_pkg("dart_apptests") {
     "//services/dart/test/echo",
     "//services/dart/test/pingpong",
     "//services/dart/test/pingpong_target",
-    "//services/dart/test/service_test_interfaces",
+    "//services/dart/test/dart/service_test_interfaces",
   ]
 }

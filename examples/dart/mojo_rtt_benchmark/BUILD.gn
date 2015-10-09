@@ -26,6 +26,5 @@ dart_pkg("mojo_rtt_benchmark") {
     "//examples/echo:bindings",
     "//mojo/common/dart",
     "//mojo/public/dart",
-    "//services/dart/test/service_test_interfaces",
   ]
 }

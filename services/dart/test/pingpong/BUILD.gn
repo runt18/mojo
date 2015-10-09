@@ -14,6 +14,6 @@ dart_pkg("pingpong") {
   ]
   deps = [
     "//mojo/public/dart",
-    "//services/dart/test/service_test_interfaces",
+    "//services/dart/test/dart/service_test_interfaces",
   ]
 }
