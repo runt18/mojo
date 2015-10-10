@@ -9,10 +9,10 @@
 #include "mojo/public/cpp/application/application_test_base.h"
 #include "mojo/public/cpp/application/service_provider_impl.h"
 #include "mojo/public/cpp/system/macros.h"
-#include "mojo/services/view_manager/public/cpp/view.h"
-#include "mojo/services/view_manager/public/cpp/view_manager_client_factory.h"
-#include "mojo/services/view_manager/public/cpp/view_manager_delegate.h"
-#include "mojo/services/window_manager/public/interfaces/window_manager.mojom.h"
+#include "mojo/services/view_manager/cpp/view.h"
+#include "mojo/services/view_manager/cpp/view_manager_client_factory.h"
+#include "mojo/services/view_manager/cpp/view_manager_delegate.h"
+#include "mojo/services/window_manager/interfaces/window_manager.mojom.h"
 
 namespace mojo {
 namespace {

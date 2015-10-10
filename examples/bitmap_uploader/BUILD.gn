@@ -23,8 +23,8 @@ source_set("bitmap_uploader") {
     "//mojo/services/input_events/interfaces",
     "//mojo/services/surfaces/cpp",
     "//mojo/services/surfaces/interfaces:surface_id",
-    "//mojo/services/view_manager/public/cpp",
-    "//mojo/services/view_manager/public/interfaces",
+    "//mojo/services/view_manager/cpp",
+    "//mojo/services/view_manager/interfaces",
     "//ui/gfx/geometry",
   ]
 }

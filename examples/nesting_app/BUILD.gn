@@ -18,7 +18,7 @@ mojo_native_application("nesting_app") {
     "//mojo/public/cpp/utility",
     "//mojo/services/geometry/interfaces",
     "//mojo/services/navigation/interfaces",
-    "//mojo/services/view_manager/public/cpp",
+    "//mojo/services/view_manager/cpp",
     "//skia",
     "//url",
   ]

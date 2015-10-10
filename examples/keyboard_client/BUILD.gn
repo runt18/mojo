@@ -20,7 +20,7 @@ mojo_native_application("keyboard_client") {
     "//mojo/services/surfaces/cpp",
     "//mojo/services/surfaces/interfaces:interfaces_cpp_sources",
     "//mojo/services/surfaces/interfaces:surface_id_cpp_sources",
-    "//mojo/services/view_manager/public/cpp",
+    "//mojo/services/view_manager/cpp",
     "//mojo/skia:skia",
     "//skia",
   ]

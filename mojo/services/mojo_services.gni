@@ -41,7 +41,7 @@ mojo_services = [
   "//mojo/services/terminal/interfaces",
   "//mojo/services/tracing/interfaces",
   "//mojo/services/url_response_disk_cache/interfaces",
-  "//mojo/services/vanadium/security/public/interfaces",
-  "//mojo/services/view_manager/public/interfaces",
-  "//mojo/services/window_manager/public/interfaces",
+  "//mojo/services/vanadium/security/interfaces",
+  "//mojo/services/view_manager/interfaces",
+  "//mojo/services/window_manager/interfaces",
 ]

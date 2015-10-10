@@ -17,7 +17,7 @@ mojo_native_application("nfc_sender") {
     "//mojo/public/interfaces/application:application__generator",
     "//mojo/services/geometry/interfaces",
     "//mojo/services/nfc/interfaces",
-    "//mojo/services/view_manager/public/cpp",
+    "//mojo/services/view_manager/cpp",
     "//mojo/skia",
     "//skia",
     "//ui/gfx/geometry",

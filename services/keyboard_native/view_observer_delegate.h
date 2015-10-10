@@ -8,7 +8,7 @@
 #include "base/time/time.h"
 #include "mojo/gpu/texture_cache.h"
 #include "mojo/gpu/texture_uploader.h"
-#include "mojo/services/view_manager/public/cpp/view_observer.h"
+#include "mojo/services/view_manager/cpp/view_observer.h"
 #include "mojo/skia/ganesh_context.h"
 #include "services/keyboard_native/key_layout.h"
 #include "services/keyboard_native/material_splash_animation.h"

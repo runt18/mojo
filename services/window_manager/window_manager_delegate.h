@@ -8,7 +8,7 @@
 #include "base/memory/scoped_ptr.h"
 #include "mojo/public/cpp/bindings/string.h"
 #include "mojo/public/interfaces/application/service_provider.mojom.h"
-#include "mojo/services/view_manager/public/cpp/view_manager_delegate.h"
+#include "mojo/services/view_manager/cpp/view_manager_delegate.h"
 
 namespace mojo {
 class ApplicationConnection;

@@ -20,7 +20,7 @@ import (
 	auth "mojo/services/authentication/interfaces/authentication"
 	network "mojo/services/network/public/interfaces/network_service"
 	"mojo/services/network/public/interfaces/url_loader"
-	vpkg "mojo/services/vanadium/security/public/interfaces/principal"
+	vpkg "mojo/services/vanadium/security/interfaces/principal"
 )
 
 //#include "mojo/public/c/system/types.h"

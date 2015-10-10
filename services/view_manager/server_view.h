@@ -10,7 +10,7 @@
 #include "base/logging.h"
 #include "base/observer_list.h"
 #include "cc/surfaces/surface_id.h"
-#include "mojo/services/view_manager/public/interfaces/view_manager.mojom.h"
+#include "mojo/services/view_manager/interfaces/view_manager.mojom.h"
 #include "services/view_manager/ids.h"
 #include "ui/gfx/geometry/rect.h"
 #include "ui/gfx/transform.h"

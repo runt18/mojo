@@ -8,7 +8,7 @@
 #include "examples/ganesh_app/texture_uploader.h"
 #include "mojo/gpu/gl_context.h"
 #include "mojo/services/surfaces/interfaces/surface_id.mojom.h"
-#include "mojo/services/view_manager/public/cpp/view_observer.h"
+#include "mojo/services/view_manager/cpp/view_observer.h"
 #include "mojo/skia/ganesh_context.h"
 
 namespace mojo {

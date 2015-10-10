@@ -19,7 +19,7 @@ mojo_native_application("pdf_viewer") {
     "//mojo/services/content_handler/interfaces",
     "//mojo/services/input_events/interfaces",
     "//mojo/services/network/public/interfaces",
-    "//mojo/services/view_manager/public/cpp",
+    "//mojo/services/view_manager/cpp",
     "//third_party/pdfium",
   ]
 }

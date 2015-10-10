@@ -5,8 +5,8 @@
 #ifndef SERVICES_VIEW_MANAGER_IDS_H_
 #define SERVICES_VIEW_MANAGER_IDS_H_
 
-#include "mojo/services/view_manager/public/cpp/types.h"
-#include "mojo/services/view_manager/public/cpp/util.h"
+#include "mojo/services/view_manager/cpp/types.h"
+#include "mojo/services/view_manager/cpp/util.h"
 
 namespace view_manager {
 

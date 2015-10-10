@@ -11,8 +11,8 @@
 #include "mojo/public/cpp/application/interface_factory.h"
 #include "mojo/public/cpp/application/service_provider_impl.h"
 #include "mojo/public/cpp/bindings/interface_request.h"
-#include "mojo/services/view_manager/public/cpp/view_manager_client_factory.h"
-#include "mojo/services/view_manager/public/cpp/view_manager_delegate.h"
+#include "mojo/services/view_manager/cpp/view_manager_client_factory.h"
+#include "mojo/services/view_manager/cpp/view_manager_delegate.h"
 #include "services/keyboard_native/keyboard_service_impl.h"
 
 namespace keyboard {

@@ -27,11 +27,11 @@
 #include "mojo/services/files/interfaces/types.mojom.h"
 #include "mojo/services/terminal/interfaces/terminal.mojom.h"
 #include "mojo/services/terminal/interfaces/terminal_client.mojom.h"
-#include "mojo/services/view_manager/public/cpp/view.h"
-#include "mojo/services/view_manager/public/cpp/view_manager.h"
-#include "mojo/services/view_manager/public/cpp/view_manager_client_factory.h"
-#include "mojo/services/view_manager/public/cpp/view_manager_delegate.h"
-#include "mojo/services/view_manager/public/cpp/view_observer.h"
+#include "mojo/services/view_manager/cpp/view.h"
+#include "mojo/services/view_manager/cpp/view_manager.h"
+#include "mojo/services/view_manager/cpp/view_manager_client_factory.h"
+#include "mojo/services/view_manager/cpp/view_manager_delegate.h"
+#include "mojo/services/view_manager/cpp/view_observer.h"
 
 // Kind of like |fputs()| (doesn't wait for result).
 void Fputs(mojo::files::File* file, const char* s) {

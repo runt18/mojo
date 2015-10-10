@@ -11,6 +11,6 @@ go_mojo_application("principal_service") {
     "wire_blessings.go",
   ]
   deps = [
-    "//mojo/services/vanadium/security/public/interfaces",
+    "//mojo/services/vanadium/security/interfaces",
   ]
 }

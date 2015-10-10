@@ -4,7 +4,7 @@
 
 #include "services/kiosk_wm/kiosk_wm.h"
 
-#include "mojo/services/window_manager/public/interfaces/window_manager.mojom.h"
+#include "mojo/services/window_manager/interfaces/window_manager.mojom.h"
 #include "services/kiosk_wm/kiosk_wm_controller.h"
 #include "services/window_manager/window_manager_delegate.h"
 

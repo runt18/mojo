@@ -8,7 +8,7 @@
 #include <string>
 
 #include "mojo/public/cpp/bindings/interface_request.h"
-#include "mojo/services/view_manager/public/cpp/types.h"
+#include "mojo/services/view_manager/cpp/types.h"
 
 namespace mojo {
 class ViewManagerService;

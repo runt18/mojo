@@ -16,11 +16,11 @@
 #include "mojo/public/cpp/application/connect.h"
 #include "mojo/public/cpp/application/service_provider_impl.h"
 #include "mojo/services/navigation/interfaces/navigation.mojom.h"
-#include "mojo/services/view_manager/public/cpp/view.h"
-#include "mojo/services/view_manager/public/cpp/view_manager.h"
-#include "mojo/services/view_manager/public/cpp/view_manager_client_factory.h"
-#include "mojo/services/view_manager/public/cpp/view_manager_delegate.h"
-#include "mojo/services/view_manager/public/cpp/view_observer.h"
+#include "mojo/services/view_manager/cpp/view.h"
+#include "mojo/services/view_manager/cpp/view_manager.h"
+#include "mojo/services/view_manager/cpp/view_manager_client_factory.h"
+#include "mojo/services/view_manager/cpp/view_manager_delegate.h"
+#include "mojo/services/view_manager/cpp/view_observer.h"
 #include "url/gurl.h"
 
 namespace mojo {

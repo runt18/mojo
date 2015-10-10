@@ -5,7 +5,7 @@
 #include "services/window_manager/window_manager_impl.h"
 
 #include "base/bind.h"
-#include "mojo/services/view_manager/public/cpp/view.h"
+#include "mojo/services/view_manager/cpp/view.h"
 #include "services/window_manager/capture_controller.h"
 #include "services/window_manager/focus_controller.h"
 #include "services/window_manager/window_manager_root.h"

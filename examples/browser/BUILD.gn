@@ -19,8 +19,8 @@ mojo_native_application("browser") {
     "//mojo/converters/geometry",
     "//mojo/services/geometry/interfaces",
     "//mojo/services/navigation/interfaces",
-    "//mojo/services/view_manager/public/cpp",
-    "//mojo/services/view_manager/public/interfaces",
+    "//mojo/services/view_manager/cpp",
+    "//mojo/services/view_manager/interfaces",
     "//third_party/icu",
     "//url",
   ]

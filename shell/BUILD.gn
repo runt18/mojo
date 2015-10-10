@@ -76,7 +76,7 @@ if (!mojo_use_prebuilt_mojo_shell) {
                ":jni_headers",
                "//gpu/config",
                "//mojo/android:libsystem_java",
-               "//mojo/services/window_manager/public/interfaces:interfaces",
+               "//mojo/services/window_manager/interfaces:interfaces",
                "//services/native_viewport:lib",
                "//shell/application_manager",
                "//ui/gl",

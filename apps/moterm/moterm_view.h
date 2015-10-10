@@ -17,7 +17,7 @@
 #include "mojo/public/cpp/bindings/interface_request.h"
 #include "mojo/services/surfaces/interfaces/surface_id.mojom.h"
 #include "mojo/services/terminal/interfaces/terminal.mojom.h"
-#include "mojo/services/view_manager/public/cpp/view_observer.h"
+#include "mojo/services/view_manager/cpp/view_observer.h"
 #include "skia/ext/refptr.h"
 #include "third_party/skia/include/core/SkBitmapDevice.h"
 #include "third_party/skia/include/core/SkTypeface.h"

@@ -8,8 +8,8 @@
 #include "base/logging.h"
 #include "base/macros.h"
 #include "mojo/public/cpp/bindings/binding.h"
-#include "mojo/services/view_manager/public/cpp/types.h"
-#include "mojo/services/window_manager/public/interfaces/window_manager.mojom.h"
+#include "mojo/services/view_manager/cpp/types.h"
+#include "mojo/services/window_manager/interfaces/window_manager.mojom.h"
 
 namespace window_manager {
 

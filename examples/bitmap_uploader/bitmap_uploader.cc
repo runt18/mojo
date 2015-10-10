@@ -17,7 +17,7 @@
 #include "mojo/public/interfaces/application/shell.mojom.h"
 #include "mojo/services/geometry/cpp/geometry_util.h"
 #include "mojo/services/surfaces/cpp/surfaces_utils.h"
-#include "mojo/services/view_manager/public/cpp/lib/view_manager_client_impl.h"
+#include "mojo/services/view_manager/cpp/lib/view_manager_client_impl.h"
 #include "ui/gfx/geometry/rect.h"
 
 #define TRANSPARENT_COLOR 0x00000000

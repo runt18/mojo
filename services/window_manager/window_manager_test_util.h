@@ -7,8 +7,8 @@
 
 #include <set>
 
-#include "mojo/services/view_manager/public/cpp/lib/view_private.h"
-#include "mojo/services/view_manager/public/cpp/view.h"
+#include "mojo/services/view_manager/cpp/lib/view_private.h"
+#include "mojo/services/view_manager/cpp/view.h"
 #include "services/window_manager/view_target.h"
 
 namespace gfx {

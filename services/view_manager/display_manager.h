@@ -14,7 +14,7 @@
 #include "mojo/public/cpp/bindings/callback.h"
 #include "mojo/services/native_viewport/interfaces/native_viewport.mojom.h"
 #include "mojo/services/surfaces/interfaces/display.mojom.h"
-#include "mojo/services/view_manager/public/interfaces/view_manager.mojom.h"
+#include "mojo/services/view_manager/interfaces/view_manager.mojom.h"
 #include "ui/gfx/rect.h"
 
 namespace cc {

@@ -9,7 +9,7 @@
 #include "mojo/public/cpp/application/application_connection.h"
 #include "mojo/public/cpp/application/application_delegate.h"
 #include "mojo/public/cpp/application/application_impl.h"
-#include "mojo/services/window_manager/public/interfaces/window_manager.mojom.h"
+#include "mojo/services/window_manager/interfaces/window_manager.mojom.h"
 #include "services/window_manager/window_manager_delegate.h"
 
 namespace window_manager {

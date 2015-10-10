@@ -1,4 +1,8 @@
 #!mojo mojo:js_content_handler
+// Copyright 2014 The Chromium Authors. All rights reserved.
+// Use of this source code is governed by a BSD-style license that can be
+// found in the LICENSE file.
+
 // Demonstrate using the mojo window_manager application to "embed" a view that
 // displays an image. To run this application set BUILD_DIR to the build
 // directory (like "src/out/Debug") and append a PNG image URL as the url
@@ -13,7 +17,7 @@
 define("main", [
   "mojo/services/public/js/application",
   "mojo/services/public/js/service_provider",
-  "mojo/services/window_manager/public/interfaces/window_manager.mojom",
+  "mojo/services/window_manager/interfaces/window_manager.mojom",
   "third_party/js/url",
 ], function(application, serviceProvider, windowManager, url) {
 

@@ -23,8 +23,8 @@ mojo_native_application("view_manager") {
     "//mojo/environment:chromium",
     "//mojo/converters/geometry",
     "//mojo/public/cpp/bindings:bindings",
-    "//mojo/services/view_manager/public/interfaces",
-    "//mojo/services/window_manager/public/interfaces",
+    "//mojo/services/view_manager/interfaces",
+    "//mojo/services/window_manager/interfaces",
   ]
 }
 
@@ -70,7 +70,7 @@ source_set("view_manager_lib") {
   ]
 
   public_deps = [
-    "//mojo/services/view_manager/public/cpp",
+    "//mojo/services/view_manager/cpp",
   ]
 
   deps = [
@@ -89,9 +89,9 @@ source_set("view_manager_lib") {
     "//mojo/services/native_viewport/interfaces",
     "//mojo/services/surfaces/cpp",
     "//mojo/services/surfaces/interfaces",
-    "//mojo/services/view_manager/public/interfaces",
-    "//mojo/services/view_manager/public/cpp:common",
-    "//mojo/services/window_manager/public/interfaces",
+    "//mojo/services/view_manager/interfaces",
+    "//mojo/services/view_manager/cpp:common",
+    "//mojo/services/window_manager/interfaces",
     "//ui/gfx",
     "//ui/gfx/geometry",
   ]
@@ -110,9 +110,9 @@ source_set("test_support") {
     "//mojo/converters/array_string",
     "//mojo/public/cpp/bindings:bindings",
     "//mojo/services/geometry/interfaces",
-    "//mojo/services/view_manager/public/cpp",
-    "//mojo/services/view_manager/public/cpp:common",
-    "//mojo/services/view_manager/public/interfaces",
+    "//mojo/services/view_manager/cpp",
+    "//mojo/services/view_manager/cpp:common",
+    "//mojo/services/view_manager/interfaces",
   ]
 }
 
@@ -143,9 +143,9 @@ test("view_manager_service_unittests") {
     "//mojo/services/geometry/interfaces",
     "//mojo/services/input_events/interfaces",
     "//mojo/services/native_viewport/cpp:args",
-    "//mojo/services/view_manager/public/cpp",
-    "//mojo/services/view_manager/public/interfaces",
-    "//mojo/services/window_manager/public/interfaces",
+    "//mojo/services/view_manager/cpp",
+    "//mojo/services/view_manager/interfaces",
+    "//mojo/services/window_manager/interfaces",
     "//testing/gtest",
     "//ui/gfx",
     "//ui/gfx:test_support",
@@ -170,7 +170,7 @@ mojo_native_application("mojo_view_manager_client_apptests") {
     "//mojo/application",
     "//mojo/application:test_support",
     "//mojo/services/geometry/cpp",
-    "//mojo/services/view_manager/public/cpp",
+    "//mojo/services/view_manager/cpp",
   ]
 }
 
@@ -189,8 +189,8 @@ mojo_native_application("view_manager_service_apptests") {
     "//mojo/common",
     "//mojo/public/cpp/bindings",
     "//mojo/services/geometry/interfaces",
-    "//mojo/services/view_manager/public/cpp",
-    "//mojo/services/view_manager/public/interfaces",
-    "//mojo/services/window_manager/public/interfaces",
+    "//mojo/services/view_manager/cpp",
+    "//mojo/services/view_manager/interfaces",
+    "//mojo/services/window_manager/interfaces",
   ]
 }

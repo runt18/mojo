@@ -12,7 +12,7 @@
 #include "mojo/public/cpp/application/interface_factory.h"
 #include "mojo/public/cpp/bindings/strong_binding.h"
 #include "mojo/public/cpp/utility/run_loop.h"
-#include "mojo/services/vanadium/security/public/interfaces/principal.mojom.h"
+#include "mojo/services/vanadium/security/interfaces/principal.mojom.h"
 
 namespace examples {
 

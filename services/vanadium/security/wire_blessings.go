@@ -4,7 +4,7 @@
 
 package main
 
-import vpkg "mojo/services/vanadium/security/public/interfaces/principal"
+import vpkg "mojo/services/vanadium/security/interfaces/principal"
 
 // wireBlessings encapsulates wire format of a set of a Vanadium blessings
 // and the corresponding cryptographic proof that binds them to a principal

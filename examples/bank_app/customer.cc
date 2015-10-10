@@ -9,7 +9,7 @@
 #include "mojo/public/cpp/application/application_impl.h"
 #include "mojo/public/cpp/application/application_runner.h"
 #include "mojo/public/cpp/utility/run_loop.h"
-#include "mojo/services/vanadium/security/public/interfaces/principal.mojom.h"
+#include "mojo/services/vanadium/security/interfaces/principal.mojom.h"
 
 namespace examples {
 
