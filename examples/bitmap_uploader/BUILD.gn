@@ -12,7 +12,7 @@ source_set("bitmap_uploader") {
     "//base",
     "//mojo/public/c/gpu",
     "//mojo/services/gpu/interfaces",
-    "//mojo/services/surfaces/public/interfaces",
+    "//mojo/services/surfaces/interfaces",
   ]
   deps = [
     "//mojo/application",
@@ -21,8 +21,8 @@ source_set("bitmap_uploader") {
     "//mojo/services/geometry/cpp",
     "//mojo/services/geometry/interfaces",
     "//mojo/services/input_events/interfaces",
-    "//mojo/services/surfaces/public/cpp",
-    "//mojo/services/surfaces/public/interfaces:surface_id",
+    "//mojo/services/surfaces/cpp",
+    "//mojo/services/surfaces/interfaces:surface_id",
     "//mojo/services/view_manager/public/cpp",
     "//mojo/services/view_manager/public/interfaces",
     "//ui/gfx/geometry",

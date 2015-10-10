@@ -9,7 +9,7 @@
 #include "mojo/public/c/system/main.h"
 #include "mojo/public/cpp/application/application_delegate.h"
 #include "mojo/public/cpp/application/application_impl.h"
-#include "mojo/services/notifications/public/interfaces/notifications.mojom.h"
+#include "mojo/services/notifications/interfaces/notifications.mojom.h"
 
 namespace examples {
 

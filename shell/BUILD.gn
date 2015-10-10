@@ -204,7 +204,7 @@ source_set("parent_lib") {
     "//mojo/public/cpp/bindings",
     "//mojo/public/interfaces/application",
     "//mojo/services/network/public/interfaces",
-    "//mojo/services/tracing/public/interfaces",
+    "//mojo/services/tracing/interfaces",
     "//services/url_response_disk_cache",
     "//shell/application_manager",
     "//url",
@@ -361,7 +361,7 @@ if (is_android) {
       "//services/native_viewport:interfaces_java",
       "//services/nfc_message_sink:bindings_java",
       "//services/sharing_sink:bindings_java",
-      "//mojo/services/nfc/public/interfaces:interfaces_java",
+      "//mojo/services/nfc/interfaces:interfaces_java",
       "//services/keyboard",
       "//services/native_viewport:native_viewport_java",
     ]
@@ -664,7 +664,7 @@ mojo_native_application("shell_nfc_apptests") {
     "//mojo/public/cpp/bindings:callback",
     "//mojo/public/cpp/environment",
     "//mojo/public/cpp/system:system",
-    "//mojo/services/nfc/public/interfaces",
+    "//mojo/services/nfc/interfaces",
     "//shell/test:bindings",
   ]
 }

@@ -10,7 +10,7 @@
 #include "base/callback.h"
 #include "mojo/public/cpp/application/connect.h"
 #include "mojo/public/interfaces/application/shell.mojom.h"
-#include "mojo/services/prediction/public/interfaces/prediction.mojom.h"
+#include "mojo/services/prediction/interfaces/prediction.mojom.h"
 #include "services/keyboard_native/key_layout.h"
 
 namespace keyboard {

@@ -25,8 +25,8 @@
 #include "mojo/converters/surfaces/surfaces_type_converters.h"
 #include "mojo/public/cpp/application/application_connection.h"
 #include "mojo/public/cpp/environment/environment.h"
-#include "mojo/services/surfaces/public/interfaces/surface_id.mojom.h"
-#include "mojo/services/surfaces/public/interfaces/surfaces.mojom.h"
+#include "mojo/services/surfaces/interfaces/surface_id.mojom.h"
+#include "mojo/services/surfaces/interfaces/surfaces.mojom.h"
 #include "ui/gfx/rect.h"
 #include "ui/gfx/transform.h"
 

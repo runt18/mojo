@@ -16,6 +16,6 @@ mojom("interfaces") {
     "../../geometry/interfaces",
     "../../gpu/interfaces",
     "../../input_events/interfaces",
-    "../../surfaces/public/interfaces:surface_id",
+    "../../surfaces/interfaces:surface_id",
   ]
 }

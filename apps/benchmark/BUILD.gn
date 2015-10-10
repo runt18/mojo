@@ -22,7 +22,7 @@ source_set("lib") {
   ]
 
   public_deps = [
-    "//mojo/services/tracing/public/interfaces",
+    "//mojo/services/tracing/interfaces",
   ]
 }
 

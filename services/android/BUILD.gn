@@ -22,7 +22,7 @@ mojo_android_application("java_handler") {
     "//mojo/public/cpp/bindings",
     "//mojo/public/cpp/system",
     "//mojo/services/content_handler/interfaces",
-    "//mojo/services/url_response_disk_cache/public/interfaces",
+    "//mojo/services/url_response_disk_cache/interfaces",
   ]
 
   java_sources = [ "java/src/org/chromium/services/android/JavaHandler.java" ]

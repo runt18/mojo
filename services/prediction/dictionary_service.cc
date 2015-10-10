@@ -12,7 +12,7 @@
 #include "base/path_service.h"
 #include "base/strings/string16.h"
 #include "base/strings/utf_string_conversions.h"
-#include "mojo/services/prediction/public/interfaces/prediction.mojom.h"
+#include "mojo/services/prediction/interfaces/prediction.mojom.h"
 #include "mojo/tools/embed/data.h"
 #include "services/prediction/dictionary_service.h"
 #include "services/prediction/input_info.h"

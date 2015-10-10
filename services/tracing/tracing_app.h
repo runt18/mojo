@@ -12,7 +12,7 @@
 #include "mojo/public/cpp/application/application_delegate.h"
 #include "mojo/public/cpp/application/application_impl.h"
 #include "mojo/public/cpp/bindings/strong_binding.h"
-#include "mojo/services/tracing/public/interfaces/tracing.mojom.h"
+#include "mojo/services/tracing/interfaces/tracing.mojom.h"
 #include "services/tracing/trace_data_sink.h"
 #include "services/tracing/trace_recorder_impl.h"
 

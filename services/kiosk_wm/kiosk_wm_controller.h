@@ -10,7 +10,7 @@
 #include "mojo/public/cpp/application/connect.h"
 #include "mojo/public/cpp/application/service_provider_impl.h"
 #include "mojo/services/input_events/interfaces/input_events.mojom.h"
-#include "mojo/services/navigation/public/interfaces/navigation.mojom.h"
+#include "mojo/services/navigation/interfaces/navigation.mojom.h"
 #include "mojo/services/view_manager/public/cpp/view_manager.h"
 #include "mojo/services/view_manager/public/cpp/view_manager_delegate.h"
 #include "mojo/services/view_manager/public/cpp/view_observer.h"

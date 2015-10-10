@@ -2,7 +2,7 @@
 
 `mojo_benchmark` allows you to run performance tests for any Mojo application
 that participates in the [tracing
-ecosystem](https://github.com/domokit/mojo/blob/master/mojo/services/tracing/public/interfaces/tracing.mojom)
+ecosystem](https://github.com/domokit/mojo/blob/master/mojo/services/tracing/interfaces/tracing.mojom)
 with no app changes required.
 
 The script reads a list of benchmarks to run from a file, runs each benchmark in

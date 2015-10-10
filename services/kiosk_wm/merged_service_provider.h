@@ -9,7 +9,7 @@
 #include "mojo/public/cpp/application/interface_factory.h"
 #include "mojo/public/cpp/bindings/binding.h"
 #include "mojo/public/interfaces/application/service_provider.mojom.h"
-#include "mojo/services/navigation/public/interfaces/navigation.mojom.h"
+#include "mojo/services/navigation/interfaces/navigation.mojom.h"
 
 namespace kiosk_wm {
 

@@ -24,7 +24,7 @@
 #include "mojo/public/cpp/application/application_connection.h"
 #include "mojo/public/cpp/application/application_delegate.h"
 #include "mojo/public/cpp/application/application_impl.h"
-#include "mojo/services/tracing/public/interfaces/tracing.mojom.h"
+#include "mojo/services/tracing/interfaces/tracing.mojom.h"
 
 namespace benchmark {
 namespace {

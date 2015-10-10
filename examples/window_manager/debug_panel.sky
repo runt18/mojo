@@ -7,7 +7,7 @@
 <sky>
 
 <import src="/gen/examples/window_manager/debug_panel_host.mojom.sky" as="example" />
-<import src="/mojo/services/navigation/public/interfaces/navigation.mojom.sky" as="navigation" />
+<import src="/mojo/services/navigation/interfaces/navigation.mojom.sky" as="navigation" />
 
 <import src="/sky/framework/embedder.sky" as="embedder" />
 <import src="/sky/framework/sky-box.sky" as="SkyBox" />

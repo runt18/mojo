@@ -20,7 +20,7 @@ if (is_android) {
     deps = [
       "//mojo/public/interfaces/application:application_java",
       "//mojo/public/java:application",
-      "//mojo/services/notifications/public/interfaces:interfaces_java",
+      "//mojo/services/notifications/interfaces:interfaces_java",
       "//services/intent_receiver:bindings_java",
     ]
   }
@@ -42,7 +42,7 @@ if (is_android) {
       "//mojo/public/cpp/bindings:callback",
       "//mojo/public/cpp/environment",
       "//mojo/public/cpp/system:system",
-      "//mojo/services/notifications/public/interfaces:interfaces_cpp_sources",
+      "//mojo/services/notifications/interfaces:interfaces_cpp_sources",
       "//shell/test:bindings",
     ]
   }

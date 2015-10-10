@@ -19,9 +19,9 @@
 #include "mojo/services/geometry/interfaces/geometry.mojom.h"
 #include "mojo/services/gpu/interfaces/context_provider.mojom.h"
 #include "mojo/services/native_viewport/interfaces/native_viewport.mojom.h"
-#include "mojo/services/surfaces/public/interfaces/display.mojom.h"
-#include "mojo/services/surfaces/public/interfaces/quads.mojom.h"
-#include "mojo/services/surfaces/public/interfaces/surfaces.mojom.h"
+#include "mojo/services/surfaces/interfaces/display.mojom.h"
+#include "mojo/services/surfaces/interfaces/quads.mojom.h"
+#include "mojo/services/surfaces/interfaces/surfaces.mojom.h"
 
 namespace {
 

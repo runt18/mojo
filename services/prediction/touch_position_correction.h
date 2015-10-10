@@ -5,7 +5,7 @@
 #ifndef SERVICES_PREDICTION_TOUCH_POSITION_CORRECTION_H_
 #define SERVICES_PREDICTION_TOUCH_POSITION_CORRECTION_H_
 
-#include "mojo/services/prediction/public/interfaces/prediction.mojom.h"
+#include "mojo/services/prediction/interfaces/prediction.mojom.h"
 
 // NOTE: This class has been translated to C++ and modified from the Android
 // Open Source Project. Specifically from some functions of the following file:

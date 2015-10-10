@@ -7,7 +7,7 @@
 
 #include "base/memory/scoped_ptr.h"
 #include "cc/surfaces/surface_id.h"
-#include "mojo/services/surfaces/public/interfaces/display.mojom.h"
+#include "mojo/services/surfaces/interfaces/display.mojom.h"
 #include "ui/gfx/size.h"
 
 namespace mojo {

@@ -14,7 +14,7 @@
 #include "mojo/public/cpp/application/interface_factory.h"
 #include "mojo/services/files/interfaces/file.mojom.h"
 #include "mojo/services/files/interfaces/types.mojom.h"
-#include "mojo/services/terminal/public/interfaces/terminal_client.mojom.h"
+#include "mojo/services/terminal/interfaces/terminal_client.mojom.h"
 
 const uint32_t kMaxBytesToRead = 1000;
 

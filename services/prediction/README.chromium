@@ -1,6 +1,6 @@
 PredictionService interface provides only one function GetPredictionList 
 which takes infos about previous words and current word (format details in 
-mojo/services/prediction/public/interfaces/prediction.mojom). 
+mojo/services/prediction/interfaces/prediction.mojom). 
 Connect to "mojo:prediction_service" to use the service.
 
 Description of each class:

@@ -8,7 +8,7 @@
 #include "base/message_loop/message_loop.h"
 #include "mojo/public/cpp/application/application_impl.h"
 #include "mojo/public/cpp/application/application_test_base.h"
-#include "mojo/services/prediction/public/interfaces/prediction.mojom.h"
+#include "mojo/services/prediction/interfaces/prediction.mojom.h"
 
 namespace prediction {
 

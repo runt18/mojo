@@ -12,7 +12,7 @@
 #include "mojo/public/cpp/bindings/strong_binding.h"
 #include "mojo/services/gpu/interfaces/command_buffer.mojom.h"
 #include "mojo/services/gpu/interfaces/viewport_parameter_listener.mojom.h"
-#include "mojo/services/surfaces/public/interfaces/surfaces.mojom.h"
+#include "mojo/services/surfaces/interfaces/surfaces.mojom.h"
 
 namespace cc {
 class Display;

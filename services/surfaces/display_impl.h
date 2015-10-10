@@ -10,7 +10,7 @@
 #include "cc/surfaces/surface_factory.h"
 #include "cc/surfaces/surface_factory_client.h"
 #include "mojo/public/cpp/bindings/strong_binding.h"
-#include "mojo/services/surfaces/public/interfaces/display.mojom.h"
+#include "mojo/services/surfaces/interfaces/display.mojom.h"
 
 namespace cc {
 class Display;

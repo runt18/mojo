@@ -8,7 +8,7 @@
 #include "base/memory/weak_ptr.h"
 #include "mojo/common/binding_set.h"
 #include "mojo/public/cpp/bindings/interface_request.h"
-#include "mojo/services/navigation/public/interfaces/navigation.mojom.h"
+#include "mojo/services/navigation/interfaces/navigation.mojom.h"
 
 namespace kiosk_wm {
 class KioskWMController;

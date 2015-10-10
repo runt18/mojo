@@ -6,7 +6,7 @@
 #define SERVICES_SURFACES_DISPLAY_FACTORY_IMPL_H_
 
 #include "mojo/public/cpp/bindings/strong_binding.h"
-#include "mojo/services/surfaces/public/interfaces/display.mojom.h"
+#include "mojo/services/surfaces/interfaces/display.mojom.h"
 #include "services/surfaces/display_impl.h"
 
 namespace cc {

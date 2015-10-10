@@ -10,7 +10,7 @@
 #include "mojo/public/cpp/application/application_impl.h"
 #include "mojo/public/cpp/application/application_test_base.h"
 #include "mojo/public/cpp/application/connect.h"
-#include "mojo/services/surfaces/public/interfaces/surface_id.mojom.h"
+#include "mojo/services/surfaces/interfaces/surface_id.mojom.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 namespace {

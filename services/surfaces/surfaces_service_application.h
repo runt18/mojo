@@ -10,8 +10,8 @@
 #include "mojo/common/tracing_impl.h"
 #include "mojo/public/cpp/application/application_delegate.h"
 #include "mojo/public/cpp/application/interface_factory.h"
-#include "mojo/services/surfaces/public/interfaces/display.mojom.h"
-#include "mojo/services/surfaces/public/interfaces/surfaces.mojom.h"
+#include "mojo/services/surfaces/interfaces/display.mojom.h"
+#include "mojo/services/surfaces/interfaces/surfaces.mojom.h"
 
 namespace mojo {
 class ApplicationConnection;

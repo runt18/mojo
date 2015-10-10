@@ -4,7 +4,7 @@
 
 module mojo.examples;
 
-import "mojo/services/navigation/public/interfaces/navigation.mojom";
+import "mojo/services/navigation/interfaces/navigation.mojom";
 
 interface DebugPanelHost {
   // Closes the top.

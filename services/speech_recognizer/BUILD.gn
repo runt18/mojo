@@ -17,6 +17,6 @@ mojo_android_java_application("speech_recognizer") {
     "//base:base_java",
     "//mojo/public/interfaces/application:application_java",
     "//mojo/public/java:application",
-    "//mojo/services/speech_recognizer/public/interfaces:interfaces_java",
+    "//mojo/services/speech_recognizer/interfaces:interfaces_java",
   ]
 }

@@ -9,7 +9,7 @@
 #include "mojo/public/cpp/bindings/callback.h"
 #include "mojo/public/cpp/environment/logging.h"
 #include "mojo/public/cpp/system/macros.h"
-#include "mojo/services/nfc/public/interfaces/nfc.mojom.h"
+#include "mojo/services/nfc/interfaces/nfc.mojom.h"
 
 namespace mojo {
 namespace {

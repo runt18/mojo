@@ -69,8 +69,8 @@ if (is_android) {
     if (use_ozone) {
       sources += [ "ozone/app_delegate_ozone.cc" ]
       deps += [
-        "//mojo/services/ozone_drm_gpu/public/interfaces",
-        "//mojo/services/ozone_drm_host/public/interfaces",
+        "//mojo/services/ozone_drm_gpu/interfaces",
+        "//mojo/services/ozone_drm_host/interfaces",
         "//ui/events/ozone:events_ozone_evdev",
         "//ui/ozone",
       ]

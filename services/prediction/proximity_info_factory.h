@@ -5,7 +5,7 @@
 #ifndef SERVICES_PREDICTION_PROXIMITY_INFO_FACTORY_H_
 #define SERVICES_PREDICTION_PROXIMITY_INFO_FACTORY_H_
 
-#include "mojo/services/prediction/public/interfaces/prediction.mojom.h"
+#include "mojo/services/prediction/interfaces/prediction.mojom.h"
 #include "services/prediction/key_set.h"
 #include "third_party/android_prediction/suggest/core/layout/proximity_info.h"
 

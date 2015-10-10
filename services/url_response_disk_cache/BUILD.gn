@@ -37,7 +37,7 @@ source_set("url_response_disk_cache") {
     "//mojo/public/cpp/application",
     "//mojo/public/cpp/system",
     "//mojo/public/interfaces/network",
-    "//mojo/services/url_response_disk_cache/public/interfaces",
+    "//mojo/services/url_response_disk_cache/interfaces",
     "//third_party/zlib:zip",
     "//url:url",
   ]
@@ -83,7 +83,7 @@ mojo_native_application("apptests") {
     "//mojo/public/cpp/bindings",
     "//mojo/public/cpp/system:system",
     "//mojo/services/network/public/interfaces:interfaces",
-    "//mojo/services/url_response_disk_cache/public/interfaces",
+    "//mojo/services/url_response_disk_cache/interfaces",
   ]
 
   data_deps = [ ":url_response_disk_cache" ]

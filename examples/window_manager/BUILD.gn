@@ -24,7 +24,7 @@ mojo_native_application("window_manager") {
     "//mojo/public/cpp/utility",
     "//mojo/services/geometry/interfaces",
     "//mojo/services/input_events/interfaces",
-    "//mojo/services/navigation/public/interfaces",
+    "//mojo/services/navigation/interfaces",
     "//mojo/services/view_manager/public/cpp",
     "//services/window_manager:lib",
     "//ui/events:events",
@@ -40,7 +40,7 @@ mojom("bindings") {
   import_dirs = [ get_path_info("../../mojo/services", "abspath") ]
   deps = [
     "//mojo/services/geometry/interfaces",
-    "//mojo/services/navigation/public/interfaces",
+    "//mojo/services/navigation/interfaces",
     "//mojo/services/network/public/interfaces",
   ]
 }

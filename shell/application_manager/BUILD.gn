@@ -37,7 +37,7 @@ source_set("application_manager") {
     "//mojo/services/authenticating_url_loader_interceptor/interfaces",
     "//mojo/services/authentication/interfaces",
     "//mojo/services/network/public/interfaces",
-    "//mojo/services/url_response_disk_cache/public/interfaces",
+    "//mojo/services/url_response_disk_cache/interfaces",
     "//url",
   ]
   deps = [

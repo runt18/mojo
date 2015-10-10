@@ -20,8 +20,8 @@
 #include "mojo/services/gpu/interfaces/command_buffer.mojom.h"
 #include "mojo/services/gpu/interfaces/gpu.mojom.h"
 #include "mojo/services/native_viewport/interfaces/native_viewport.mojom.h"
-#include "mojo/services/surfaces/public/interfaces/display.mojom.h"
-#include "mojo/services/surfaces/public/interfaces/surfaces.mojom.h"
+#include "mojo/services/surfaces/interfaces/display.mojom.h"
+#include "mojo/services/surfaces/interfaces/surfaces.mojom.h"
 #include "ui/gfx/rect.h"
 
 namespace mojo {

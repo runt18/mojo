@@ -24,8 +24,8 @@ mojo_native_application("moterm") {
     "//mojo/public/cpp/bindings",
     "//mojo/public/cpp/bindings:callback",
     "//mojo/services/files/interfaces",
-    "//mojo/services/surfaces/public/interfaces:surface_id",
-    "//mojo/services/terminal/public/interfaces",
+    "//mojo/services/surfaces/interfaces:surface_id",
+    "//mojo/services/terminal/interfaces",
     "//mojo/services/view_manager/public/cpp",
     "//skia",
     "//third_party/dejavu-fonts-ttf-2.34:DejaVuSansMonoRegular",
@@ -44,7 +44,7 @@ mojo_native_application("gl_helper_test_app") {
     "//mojo/services/geometry/interfaces",
     "//mojo/services/gpu/interfaces",
     "//mojo/services/native_viewport/interfaces",
-    "//mojo/services/surfaces/public/interfaces",
+    "//mojo/services/surfaces/interfaces",
   ]
 }
 
@@ -72,13 +72,13 @@ source_set("gl_helper") {
     "//mojo/public/c/gpu",
     "//mojo/public/interfaces/application",
     "//mojo/services/gpu/interfaces",
-    "//mojo/services/surfaces/public/interfaces",
+    "//mojo/services/surfaces/interfaces",
   ]
 
   forward_dependent_configs_from = [
     "//mojo/public/c/gpu",
     "//mojo/services/gpu/interfaces",
-    "//mojo/services/surfaces/public/interfaces",
+    "//mojo/services/surfaces/interfaces",
   ]
 
   public_deps = [
@@ -86,8 +86,8 @@ source_set("gl_helper") {
     "//mojo/public/c/gpu:GLES2",
     "//mojo/services/geometry/cpp",
     "//mojo/services/geometry/interfaces",
-    "//mojo/services/surfaces/public/cpp",
-    "//mojo/services/surfaces/public/interfaces:surface_id",
+    "//mojo/services/surfaces/cpp",
+    "//mojo/services/surfaces/interfaces:surface_id",
   ]
 }
 

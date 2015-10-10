@@ -11,7 +11,7 @@ mojo_native_application("echo_terminal") {
     "//mojo/common",
     "//mojo/public/cpp/application",
     "//mojo/public/cpp/system",
-    "//mojo/services/terminal/public/interfaces",
+    "//mojo/services/terminal/interfaces",
   ]
 
   sources = [

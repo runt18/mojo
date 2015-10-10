@@ -21,7 +21,7 @@
 #include "mojo/services/files/interfaces/types.mojom.h"
 #include "mojo/services/input_events/interfaces/input_event_constants.mojom.h"
 #include "mojo/services/input_events/interfaces/input_events.mojom.h"
-#include "mojo/services/terminal/public/interfaces/terminal_client.mojom.h"
+#include "mojo/services/terminal/interfaces/terminal_client.mojom.h"
 #include "skia/ext/refptr.h"
 #include "third_party/dejavu-fonts-ttf-2.34/kDejaVuSansMonoRegular.h"
 #include "third_party/skia/include/core/SkBitmap.h"

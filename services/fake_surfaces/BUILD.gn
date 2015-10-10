@@ -18,6 +18,6 @@ mojo_native_application("fake_surfaces") {
     "//mojo/environment:chromium",
     "//mojo/public/cpp/bindings",
     "//mojo/services/gpu/interfaces",
-    "//mojo/services/surfaces/public/interfaces",
+    "//mojo/services/surfaces/interfaces",
   ]
 }

@@ -20,6 +20,6 @@ mojom("interfaces") {
     "../../../geometry/interfaces",
     "../../../input_events/interfaces",
     "../../../native_viewport/interfaces",
-    "../../../surfaces/public/interfaces:surface_id",
+    "../../../surfaces/interfaces:surface_id",
   ]
 }

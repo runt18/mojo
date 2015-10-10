@@ -5,7 +5,7 @@
 #ifndef SERVICES_PREDICTION_INPUT_INFO_H_
 #define SERVICES_PREDICTION_INPUT_INFO_H_
 
-#include "mojo/services/prediction/public/interfaces/prediction.mojom.h"
+#include "mojo/services/prediction/interfaces/prediction.mojom.h"
 
 namespace prediction {
 

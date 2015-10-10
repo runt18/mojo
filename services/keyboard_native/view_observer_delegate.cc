@@ -11,7 +11,7 @@
 #include "mojo/gpu/gl_texture.h"
 #include "mojo/public/cpp/application/application_impl.h"
 #include "mojo/public/cpp/application/connect.h"
-#include "mojo/services/prediction/public/interfaces/prediction.mojom.h"
+#include "mojo/services/prediction/interfaces/prediction.mojom.h"
 #include "mojo/skia/ganesh_surface.h"
 #include "services/keyboard_native/clip_animation.h"
 #include "services/keyboard_native/keyboard_service_impl.h"

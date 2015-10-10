@@ -10,7 +10,7 @@
 
 #include "base/memory/scoped_ptr.h"
 #include "mojo/data_pipe_utils/data_pipe_drainer.h"
-#include "mojo/services/tracing/public/interfaces/tracing.mojom.h"
+#include "mojo/services/tracing/interfaces/tracing.mojom.h"
 
 // Connects to trace collector in tracing.mojo to get traces and returns the
 // results as a single string to the receiver.

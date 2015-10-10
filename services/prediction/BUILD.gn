@@ -26,7 +26,7 @@ mojo_native_application("prediction") {
     ":dict_file",
     "//base",
     "//mojo/application",
-    "//mojo/services/prediction/public/interfaces",
+    "//mojo/services/prediction/interfaces",
     "//third_party/android_prediction:suggest",
   ]
 }
@@ -44,7 +44,7 @@ mojo_native_application("apptests") {
     "//base",
     "//mojo/application",
     "//mojo/application:test_support",
-    "//mojo/services/prediction/public/interfaces",
+    "//mojo/services/prediction/interfaces",
   ]
 
   data_deps = [ ":prediction($default_toolchain)" ]

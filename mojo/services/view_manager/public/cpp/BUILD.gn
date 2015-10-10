@@ -37,7 +37,7 @@ mojo_sdk_source_set("cpp") {
     "../interfaces",
     "../../../geometry/interfaces",
     "../../../input_events/interfaces",
-    "../../../surfaces/public/interfaces:surface_id",
+    "../../../surfaces/interfaces:surface_id",
     "../../../window_manager/public/interfaces",
     "//base",
   ]

@@ -10,7 +10,7 @@
 #include "base/memory/ref_counted.h"
 #include "base/task_runner.h"
 #include "mojo/public/cpp/bindings/strong_binding.h"
-#include "mojo/services/url_response_disk_cache/public/interfaces/url_response_disk_cache.mojom.h"
+#include "mojo/services/url_response_disk_cache/interfaces/url_response_disk_cache.mojom.h"
 #include "services/url_response_disk_cache/url_response_disk_cache_db.h"
 #include "services/url_response_disk_cache/url_response_disk_cache_delegate.h"
 

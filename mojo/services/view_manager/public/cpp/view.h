@@ -13,7 +13,7 @@
 #include "mojo/public/cpp/bindings/array.h"
 #include "mojo/public/cpp/system/macros.h"
 #include "mojo/public/interfaces/application/service_provider.mojom.h"
-#include "surfaces/public/interfaces/surface_id.mojom.h"
+#include "surfaces/interfaces/surface_id.mojom.h"
 #include "view_manager/public/cpp/types.h"
 #include "view_manager/public/interfaces/view_manager.mojom.h"
 #include "view_manager/public/interfaces/view_manager_constants.mojom.h"

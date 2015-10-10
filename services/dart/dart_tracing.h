@@ -8,7 +8,7 @@
 #include "base/trace_event/trace_event.h"
 #include "mojo/common/tracing_impl.h"
 #include "mojo/public/cpp/bindings/interface_request.h"
-#include "mojo/services/tracing/public/interfaces/tracing.mojom.h"
+#include "mojo/services/tracing/interfaces/tracing.mojom.h"
 
 namespace dart {
 

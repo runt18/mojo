@@ -13,7 +13,7 @@
 #include "mojo/public/cpp/application/application_delegate.h"
 #include "mojo/public/cpp/application/application_impl.h"
 #include "mojo/public/cpp/application/interface_factory.h"
-#include "mojo/services/url_response_disk_cache/public/interfaces/url_response_disk_cache.mojom.h"
+#include "mojo/services/url_response_disk_cache/interfaces/url_response_disk_cache.mojom.h"
 #include "services/url_response_disk_cache/url_response_disk_cache_db.h"
 #include "services/url_response_disk_cache/url_response_disk_cache_delegate.h"
 

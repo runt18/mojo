@@ -11,7 +11,7 @@
 #include "base/memory/weak_ptr.h"
 #include "mojo/services/network/public/interfaces/network_service.mojom.h"
 #include "mojo/services/network/public/interfaces/url_loader.mojom.h"
-#include "mojo/services/url_response_disk_cache/public/interfaces/url_response_disk_cache.mojom.h"
+#include "mojo/services/url_response_disk_cache/interfaces/url_response_disk_cache.mojom.h"
 #include "url/gurl.h"
 
 namespace shell {

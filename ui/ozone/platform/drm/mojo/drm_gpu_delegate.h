@@ -6,7 +6,7 @@
 #define UI_OZONE_PLATFORM_DRM_MOJO_DRM_GPU_DELEGATE_H_
 
 #include "base/macros.h"
-#include "mojo/services/ozone_drm_host/public/interfaces/ozone_drm_host.mojom.h"
+#include "mojo/services/ozone_drm_host/interfaces/ozone_drm_host.mojom.h"
 #include "ui/ozone/platform/drm/gpu/drm_gpu_platform_support.h"
 
 namespace ui {

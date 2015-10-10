@@ -8,7 +8,7 @@
 #include "mojo/public/c/system/main.h"
 #include "mojo/public/cpp/application/application_connection.h"
 #include "mojo/public/cpp/bindings/strong_binding.h"
-#include "mojo/services/surfaces/public/interfaces/surfaces.mojom.h"
+#include "mojo/services/surfaces/interfaces/surfaces.mojom.h"
 
 using mojo::ApplicationConnection;
 using mojo::Display;

@@ -7,7 +7,7 @@
 
 #include "base/macros.h"
 #include "mojo/public/cpp/bindings/strong_binding.h"
-#include "mojo/services/ozone_drm_host/public/interfaces/ozone_drm_host.mojom.h"
+#include "mojo/services/ozone_drm_host/interfaces/ozone_drm_host.mojom.h"
 #include "ui/ozone/platform/drm/host/drm_gpu_platform_support_host.h"
 
 namespace ui {

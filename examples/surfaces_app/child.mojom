@@ -3,8 +3,8 @@
 // found in the LICENSE file.
 
 import "mojo/services/geometry/interfaces/geometry.mojom";
-import "mojo/services/surfaces/public/interfaces/quads.mojom";
-import "mojo/services/surfaces/public/interfaces/surface_id.mojom";
+import "mojo/services/surfaces/interfaces/quads.mojom";
+import "mojo/services/surfaces/interfaces/surface_id.mojom";
 
 interface Child {
   ProduceFrame(mojo.Color color, mojo.Size size) =>

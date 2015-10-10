@@ -12,8 +12,8 @@
 #include "mojo/gpu/gl_texture.h"
 #include "mojo/public/cpp/bindings/binding.h"
 #include "mojo/services/geometry/interfaces/geometry.mojom.h"
-#include "mojo/services/surfaces/public/interfaces/surface_id.mojom.h"
-#include "mojo/services/surfaces/public/interfaces/surfaces.mojom.h"
+#include "mojo/services/surfaces/interfaces/surface_id.mojom.h"
+#include "mojo/services/surfaces/interfaces/surfaces.mojom.h"
 
 namespace mojo {
 class Shell;
