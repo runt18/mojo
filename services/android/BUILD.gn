@@ -21,7 +21,7 @@ mojo_android_application("java_handler") {
     "//mojo/public/c/system:for_shared_library",
     "//mojo/public/cpp/bindings",
     "//mojo/public/cpp/system",
-    "//mojo/services/content_handler/public/interfaces",
+    "//mojo/services/content_handler/interfaces",
     "//mojo/services/url_response_disk_cache/public/interfaces",
   ]
 

@@ -14,7 +14,7 @@
 #include "mojo/public/cpp/application/application_test_base.h"
 #include "mojo/public/cpp/bindings/strong_binding.h"
 #include "mojo/public/cpp/system/data_pipe.h"
-#include "mojo/services/authenticating_url_loader_interceptor/public/interfaces/authenticating_url_loader_interceptor_meta_factory.mojom.h"
+#include "mojo/services/authenticating_url_loader_interceptor/interfaces/authenticating_url_loader_interceptor_meta_factory.mojom.h"
 #include "mojo/services/network/public/interfaces/network_service.mojom.h"
 #include "testing/gtest/include/gtest/gtest.h"
 

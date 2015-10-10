@@ -5,7 +5,7 @@
 [DartPackage="mojo_services"]
 module mojo.terminal;
 
-import "files/public/interfaces/file.mojom";
+import "files/interfaces/file.mojom";
 
 // Interface for applications that want to be able to be connected to by a
 // terminal. (Once connected, such an application will be able to write to/read

@@ -15,7 +15,7 @@ if (is_android) {
     deps = [
       "//mojo/public/interfaces/application:application_java",
       "//mojo/public/java:application",
-      "//mojo/services/device_info/public/interfaces:interfaces_java",
+      "//mojo/services/device_info/interfaces:interfaces_java",
     ]
   }
 }
@@ -33,7 +33,7 @@ if (is_linux) {
       "//mojo/common",
       "//mojo/public/cpp/application:standalone",
       "//mojo/public/cpp/bindings",
-      "//mojo/services/device_info/public/interfaces",
+      "//mojo/services/device_info/interfaces",
     ]
   }
 }

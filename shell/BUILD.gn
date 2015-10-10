@@ -234,7 +234,7 @@ source_set("parent_lib") {
       ":jni_headers",
       ":run_android_application_function",
       "//mojo/application:content_handler",
-      "//mojo/services/content_handler/public/interfaces",
+      "//mojo/services/content_handler/interfaces",
       "//mojo/services/gpu/public/interfaces",
       "//mojo/services/native_viewport/public/interfaces",
       "//services/gles2",

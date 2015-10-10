@@ -5,8 +5,8 @@
 #include "services/files/files_test_base.h"
 
 #include "mojo/public/cpp/application/application_impl.h"
-#include "mojo/services/files/public/interfaces/directory.mojom.h"
-#include "mojo/services/files/public/interfaces/types.mojom.h"
+#include "mojo/services/files/interfaces/directory.mojom.h"
+#include "mojo/services/files/interfaces/types.mojom.h"
 
 namespace mojo {
 namespace files {

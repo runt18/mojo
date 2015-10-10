@@ -14,7 +14,7 @@ mojo_native_application("native_run_app") {
     "//mojo/application",
     "//mojo/public/cpp/bindings",
     "//mojo/public/interfaces/application",
-    "//mojo/services/files/public/interfaces",
+    "//mojo/services/files/interfaces",
     "//mojo/services/native_support/public/interfaces",
     "//mojo/services/terminal/public/interfaces",
   ]

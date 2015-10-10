@@ -14,7 +14,7 @@
 #include "mojo/public/cpp/bindings/binding.h"
 #include "mojo/public/cpp/utility/run_loop.h"
 #include "mojo/public/interfaces/application/application.mojom.h"
-#include "mojo/services/content_handler/public/interfaces/content_handler.mojom.h"
+#include "mojo/services/content_handler/interfaces/content_handler.mojom.h"
 
 namespace mojo {
 namespace examples {

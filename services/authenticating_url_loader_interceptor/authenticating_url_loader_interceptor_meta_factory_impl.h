@@ -10,8 +10,8 @@
 #include "base/callback.h"
 #include "mojo/public/cpp/bindings/interface_request.h"
 #include "mojo/public/cpp/bindings/strong_binding.h"
-#include "mojo/services/authenticating_url_loader_interceptor/public/interfaces/authenticating_url_loader_interceptor_meta_factory.mojom.h"
-#include "mojo/services/authentication/public/interfaces/authentication.mojom.h"
+#include "mojo/services/authenticating_url_loader_interceptor/interfaces/authenticating_url_loader_interceptor_meta_factory.mojom.h"
+#include "mojo/services/authentication/interfaces/authentication.mojom.h"
 #include "url/gurl.h"
 
 namespace mojo {

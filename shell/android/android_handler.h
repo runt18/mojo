@@ -11,7 +11,7 @@
 #include "mojo/application/content_handler_factory.h"
 #include "mojo/public/cpp/application/application_delegate.h"
 #include "mojo/public/cpp/application/interface_factory_impl.h"
-#include "mojo/services/content_handler/public/interfaces/content_handler.mojom.h"
+#include "mojo/services/content_handler/interfaces/content_handler.mojom.h"
 #include "mojo/services/url_response_disk_cache/public/interfaces/url_response_disk_cache.mojom.h"
 
 namespace base {

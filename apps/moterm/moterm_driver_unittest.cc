@@ -14,8 +14,8 @@
 #include "mojo/public/cpp/application/application_test_base.h"
 #include "mojo/public/cpp/bindings/callback.h"
 #include "mojo/public/cpp/bindings/type_converter.h"
-#include "mojo/services/files/public/interfaces/file.mojom.h"
-#include "mojo/services/files/public/interfaces/types.mojom.h"
+#include "mojo/services/files/interfaces/file.mojom.h"
+#include "mojo/services/files/interfaces/types.mojom.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 namespace {

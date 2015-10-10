@@ -17,7 +17,7 @@ mojo_android_java_application("camera") {
     "//base:base_java",
     "//mojo/public/interfaces/application:application_java",
     "//mojo/public/java:application",
-    "//mojo/services/camera/public/interfaces:interfaces_java",
+    "//mojo/services/camera/interfaces:interfaces_java",
   ]
 }
 
@@ -31,6 +31,6 @@ mojo_android_java_application("camera_roll") {
   deps = [
     "//mojo/public/interfaces/application:application_java",
     "//mojo/public/java:application",
-    "//mojo/services/camera/public/interfaces:interfaces_java",
+    "//mojo/services/camera/interfaces:interfaces_java",
   ]
 }

@@ -23,5 +23,5 @@ files and file descriptors to them).
 ## See also
 
 * [//examples/moterm_example_app](../../examples/moterm_example_app)
-* [//mojo/services/files/public/interfaces](../../mojo/services/files/public/interfaces)
+* [//mojo/services/files/interfaces](../../mojo/services/files/interfaces)
 * [//mojo/services/terminal/public/interfaces](../../mojo/services/terminal/public/interfaces)

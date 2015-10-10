@@ -9,7 +9,7 @@
 #include "mojo/public/cpp/application/application_connection.h"
 #include "mojo/public/cpp/application/application_delegate.h"
 #include "mojo/public/cpp/application/interface_factory.h"
-#include "mojo/services/authenticating_url_loader_interceptor/public/interfaces/authenticating_url_loader_interceptor_meta_factory.mojom.h"
+#include "mojo/services/authenticating_url_loader_interceptor/interfaces/authenticating_url_loader_interceptor_meta_factory.mojom.h"
 #include "services/authenticating_url_loader_interceptor/authenticating_url_loader_interceptor_meta_factory_impl.h"
 
 namespace mojo {

@@ -9,7 +9,7 @@
 #include "mojo/public/cpp/application/application_runner.h"
 #include "mojo/public/cpp/application/interface_factory.h"
 #include "mojo/public/cpp/system/macros.h"
-#include "mojo/services/authentication/public/interfaces/authentication.mojom.h"
+#include "mojo/services/authentication/interfaces/authentication.mojom.h"
 
 namespace authentication {
 namespace {

@@ -5,8 +5,8 @@
 [DartPackage="mojo_services"]
 module native_support;
 
-import "files/public/interfaces/file.mojom";
-import "files/public/interfaces/types.mojom";
+import "files/interfaces/file.mojom";
+import "files/interfaces/types.mojom";
 
 // Interface for dealing with (e.g., starting) "native" processes.
 interface Process {

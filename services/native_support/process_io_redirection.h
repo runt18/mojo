@@ -9,7 +9,7 @@
 
 #include "base/files/scoped_file.h"
 #include "base/macros.h"
-#include "mojo/services/files/public/interfaces/file.mojom.h"
+#include "mojo/services/files/interfaces/file.mojom.h"
 #include "services/native_support/redirectors.h"
 
 namespace native_support {

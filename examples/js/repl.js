@@ -27,7 +27,7 @@
 
 define("main", [
   "mojo/services/public/js/application",
-  "mojo/services/files/public/interfaces/types.mojom",
+  "mojo/services/files/interfaces/types.mojom",
   "mojo/services/terminal/public/interfaces/terminal_client.mojom",
 ], function(application, files_types, terminal_client) {
   const Application = application.Application;

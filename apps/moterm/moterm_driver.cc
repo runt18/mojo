@@ -8,8 +8,8 @@
 #include <limits>
 
 #include "base/logging.h"
-#include "mojo/services/files/public/interfaces/ioctl.mojom.h"
-#include "mojo/services/files/public/interfaces/ioctl_terminal.mojom.h"
+#include "mojo/services/files/interfaces/ioctl.mojom.h"
+#include "mojo/services/files/interfaces/ioctl_terminal.mojom.h"
 
 // Character constants:
 const uint8_t kEOT = 4;

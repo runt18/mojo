@@ -21,7 +21,7 @@
 #include "base/process/launch.h"
 #include "base/process/process.h"
 #include "build/build_config.h"
-#include "mojo/services/files/public/interfaces/types.mojom.h"
+#include "mojo/services/files/interfaces/types.mojom.h"
 #include "services/native_support/make_pty_pair.h"
 #include "services/native_support/process_controller_impl.h"
 #include "services/native_support/process_io_redirection.h"

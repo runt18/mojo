@@ -42,7 +42,7 @@ mojo_native_application("js_content_handler") {
     "//mojo/public/cpp/system",
     "//mojo/public/cpp/utility",
     "//mojo/public/interfaces/application",
-    "//mojo/services/content_handler/public/interfaces",
+    "//mojo/services/content_handler/interfaces",
     "//mojo/services/network/public/interfaces",
     "//services/js/modules/clock",
     "//services/js/modules/gl",

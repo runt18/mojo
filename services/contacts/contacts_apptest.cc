@@ -5,7 +5,7 @@
 #include "base/run_loop.h"
 #include "mojo/public/cpp/application/application_impl.h"
 #include "mojo/public/cpp/application/application_test_base.h"
-#include "mojo/services/contacts/public/interfaces/contacts.mojom.h"
+#include "mojo/services/contacts/interfaces/contacts.mojom.h"
 
 namespace contacts {
 

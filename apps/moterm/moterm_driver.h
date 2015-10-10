@@ -20,8 +20,8 @@
 #include "base/memory/weak_ptr.h"
 #include "mojo/public/cpp/bindings/interface_request.h"
 #include "mojo/public/cpp/bindings/strong_binding.h"
-#include "mojo/services/files/public/interfaces/file.mojom.h"
-#include "mojo/services/files/public/interfaces/types.mojom.h"
+#include "mojo/services/files/interfaces/file.mojom.h"
+#include "mojo/services/files/interfaces/types.mojom.h"
 
 // TODO(vtl): Maybe we should Mojo-fy the driver and run it as a separate app?
 class MotermDriver : public mojo::files::File {

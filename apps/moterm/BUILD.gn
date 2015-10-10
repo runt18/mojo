@@ -23,7 +23,7 @@ mojo_native_application("moterm") {
     "//mojo/public/cpp/application",
     "//mojo/public/cpp/bindings",
     "//mojo/public/cpp/bindings:callback",
-    "//mojo/services/files/public/interfaces",
+    "//mojo/services/files/interfaces",
     "//mojo/services/surfaces/public/interfaces:surface_id",
     "//mojo/services/terminal/public/interfaces",
     "//mojo/services/view_manager/public/cpp",
@@ -57,7 +57,7 @@ source_set("driver") {
   public_deps = [
     "//base",
     "//mojo/public/cpp/bindings",
-    "//mojo/services/files/public/interfaces",
+    "//mojo/services/files/interfaces",
   ]
 }
 

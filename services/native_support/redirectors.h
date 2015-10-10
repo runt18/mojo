@@ -14,8 +14,8 @@
 #include "base/memory/weak_ptr.h"
 #include "base/message_loop/message_loop.h"
 #include "mojo/public/cpp/bindings/array.h"
-#include "mojo/services/files/public/interfaces/file.mojom.h"
-#include "mojo/services/files/public/interfaces/types.mojom.h"
+#include "mojo/services/files/interfaces/file.mojom.h"
+#include "mojo/services/files/interfaces/types.mojom.h"
 
 namespace native_support {
 

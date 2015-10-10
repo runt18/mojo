@@ -17,7 +17,7 @@ import (
 	"mojo/public/go/bindings"
 	"mojo/public/go/system"
 	"mojo/public/interfaces/network/url_request"
-	auth "mojo/services/authentication/public/interfaces/authentication"
+	auth "mojo/services/authentication/interfaces/authentication"
 	network "mojo/services/network/public/interfaces/network_service"
 	"mojo/services/network/public/interfaces/url_loader"
 	vpkg "mojo/services/vanadium/security/public/interfaces/principal"

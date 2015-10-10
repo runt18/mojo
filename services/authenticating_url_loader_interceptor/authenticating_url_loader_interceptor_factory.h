@@ -10,7 +10,7 @@
 #include "base/callback.h"
 #include "mojo/public/cpp/bindings/interface_request.h"
 #include "mojo/public/cpp/bindings/strong_binding.h"
-#include "mojo/services/authentication/public/interfaces/authentication.mojom.h"
+#include "mojo/services/authentication/interfaces/authentication.mojom.h"
 #include "mojo/services/network/public/interfaces/network_service.mojom.h"
 #include "url/gurl.h"
 

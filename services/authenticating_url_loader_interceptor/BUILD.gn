@@ -25,8 +25,8 @@ mojo_native_application("authenticating_url_loader_interceptor") {
     "//mojo/public/c/system",
     "//mojo/public/cpp/application",
     "//mojo/public/cpp/bindings",
-    "//mojo/services/authenticating_url_loader_interceptor/public/interfaces",
-    "//mojo/services/authentication/public/interfaces",
+    "//mojo/services/authenticating_url_loader_interceptor/interfaces",
+    "//mojo/services/authentication/interfaces",
     "//mojo/services/network/public/interfaces",
     "//url",
   ]
@@ -47,7 +47,7 @@ mojo_native_application("apptests") {
     "//mojo/public/cpp/application",
     "//mojo/public/cpp/bindings",
     "//mojo/public/cpp/system",
-    "//mojo/services/authenticating_url_loader_interceptor/public/interfaces",
+    "//mojo/services/authenticating_url_loader_interceptor/interfaces",
     "//mojo/services/network/public/interfaces",
     "//testing/gtest",
   ]

@@ -17,7 +17,7 @@ mojo_android_java_application("contacts") {
     "//mojo/public/java:bindings",
     "//mojo/public/java:system",
     "//mojo/public/java:application",
-    "//mojo/services/contacts/public/interfaces:interfaces_java",
+    "//mojo/services/contacts/interfaces:interfaces_java",
   ]
 }
 
@@ -35,7 +35,7 @@ mojo_native_application("apptests") {
     "//mojo/application",
     "//mojo/application:test_support",
     "//mojo/public/cpp/bindings",
-    "//mojo/services/contacts/public/interfaces",
+    "//mojo/services/contacts/interfaces",
   ]
 
   data_deps = [ ":contacts($default_toolchain)" ]

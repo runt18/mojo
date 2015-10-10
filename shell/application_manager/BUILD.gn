@@ -34,8 +34,8 @@ source_set("application_manager") {
     "//mojo/converters/url",
     "//mojo/data_pipe_utils",
     "//mojo/public/interfaces/application:application",
-    "//mojo/services/authenticating_url_loader_interceptor/public/interfaces",
-    "//mojo/services/authentication/public/interfaces",
+    "//mojo/services/authenticating_url_loader_interceptor/interfaces",
+    "//mojo/services/authentication/interfaces",
     "//mojo/services/network/public/interfaces",
     "//mojo/services/url_response_disk_cache/public/interfaces",
     "//url",
@@ -46,7 +46,7 @@ source_set("application_manager") {
     "//url",
     "//mojo/edk/system",
     "//mojo/environment:chromium",
-    "//mojo/services/content_handler/public/interfaces",
+    "//mojo/services/content_handler/interfaces",
     "//shell:native_application_support",
   ]
 }

@@ -11,9 +11,9 @@
 #include "mojo/public/cpp/bindings/interface_request.h"
 #include "mojo/public/cpp/bindings/type_converter.h"
 #include "mojo/public/cpp/system/macros.h"
-#include "mojo/services/files/public/cpp/output_stream_file.h"
-#include "mojo/services/files/public/interfaces/file.mojom.h"
-#include "mojo/services/files/public/interfaces/types.mojom.h"
+#include "mojo/services/files/cpp/output_stream_file.h"
+#include "mojo/services/files/interfaces/file.mojom.h"
+#include "mojo/services/files/interfaces/types.mojom.h"
 #include "services/native_support/process_test_base.h"
 
 namespace native_support {

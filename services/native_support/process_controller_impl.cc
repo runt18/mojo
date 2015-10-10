@@ -17,7 +17,7 @@
 #include "base/message_loop/message_loop.h"
 #include "base/task_runner.h"
 #include "base/threading/simple_thread.h"
-#include "mojo/services/files/public/interfaces/types.mojom.h"
+#include "mojo/services/files/interfaces/types.mojom.h"
 #include "services/native_support/process_io_redirection.h"
 
 namespace native_support {

@@ -7,7 +7,7 @@
 
 #include "base/macros.h"
 #include "mojo/public/cpp/application/application_test_base.h"
-#include "mojo/services/files/public/interfaces/files.mojom.h"
+#include "mojo/services/files/interfaces/files.mojom.h"
 
 namespace mojo {
 namespace files {

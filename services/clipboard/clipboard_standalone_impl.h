@@ -9,7 +9,7 @@
 #include <string>
 
 #include "mojo/public/cpp/bindings/strong_binding.h"
-#include "mojo/services/clipboard/public/interfaces/clipboard.mojom.h"
+#include "mojo/services/clipboard/interfaces/clipboard.mojom.h"
 
 namespace clipboard {
 

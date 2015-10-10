@@ -10,7 +10,7 @@
 #include "mojo/public/cpp/application/application_delegate.h"
 #include "mojo/public/cpp/application/application_runner.h"
 #include "mojo/public/cpp/application/interface_factory.h"
-#include "mojo/services/device_info/public/interfaces/device_info.mojom.h"
+#include "mojo/services/device_info/interfaces/device_info.mojom.h"
 
 namespace mojo {
 namespace services {

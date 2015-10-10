@@ -26,7 +26,7 @@ mojo_native_application("native_support") {
     "//mojo/public/cpp/application",
     "//mojo/public/cpp/bindings:callback",
     "//mojo/public/cpp/system",
-    "//mojo/services/files/public/interfaces",
+    "//mojo/services/files/interfaces",
     "//mojo/services/native_support/public/interfaces",
   ]
 }
@@ -49,8 +49,8 @@ mojo_native_application("apptests") {
     "//mojo/application:test_support",
     "//mojo/public/cpp/bindings",
     "//mojo/public/cpp/system",
-    "//mojo/services/files/public/cpp:files_impl",
-    "//mojo/services/files/public/interfaces",
+    "//mojo/services/files/cpp:files_impl",
+    "//mojo/services/files/interfaces",
     "//mojo/services/native_support/public/interfaces",
   ]
 

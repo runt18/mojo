@@ -5,8 +5,8 @@
 [DartPackage="mojo_services"]
 module mojo.terminal;
 
-import "files/public/interfaces/file.mojom";
-import "files/public/interfaces/types.mojom";
+import "files/interfaces/file.mojom";
+import "files/interfaces/types.mojom";
 import "terminal/public/interfaces/terminal_client.mojom";
 
 // Interface for actual terminal programs, in particular, for a single terminal

@@ -28,7 +28,7 @@ mojo_native_application("files") {
     "//mojo/public/cpp/application",
     "//mojo/public/cpp/bindings:callback",
     "//mojo/public/cpp/system",
-    "//mojo/services/files/public/interfaces",
+    "//mojo/services/files/interfaces",
   ]
 }
 
@@ -49,7 +49,7 @@ mojo_native_application("apptests") {
     "//mojo/application",
     "//mojo/application:test_support",
     "//mojo/public/cpp/bindings",
-    "//mojo/services/files/public/interfaces",
+    "//mojo/services/files/interfaces",
   ]
 
   data_deps = [ ":files($default_toolchain)" ]
