@@ -11,7 +11,7 @@
 #include <GLES2/gl2.h>
 #include <GLES2/gl2extmojo.h>
 
-#include "mojo/services/geometry/public/cpp/geometry_util.h"
+#include "mojo/services/geometry/cpp/geometry_util.h"
 #include "mojo/services/surfaces/public/cpp/surfaces_utils.h"
 
 namespace mojo {

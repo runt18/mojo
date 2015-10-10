@@ -4,7 +4,7 @@
 
 module examples;
 
-import "mojo/services/geometry/public/interfaces/geometry.mojom";
+import "mojo/services/geometry/interfaces/geometry.mojom";
 
 interface IWindowManager {
   CloseWindow(uint32 node_id);

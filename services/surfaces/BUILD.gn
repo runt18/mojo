@@ -40,8 +40,8 @@ mojo_native_application("surfaces") {
     "//mojo/public/cpp/bindings",
     "//mojo/public/cpp/environment",
     "//mojo/public/cpp/system",
-    "//mojo/services/geometry/public/interfaces",
-    "//mojo/services/gpu/public/interfaces",
+    "//mojo/services/geometry/interfaces",
+    "//mojo/services/gpu/interfaces",
     "//mojo/services/surfaces/public/interfaces",
     "//ui/gfx/geometry",
   ]

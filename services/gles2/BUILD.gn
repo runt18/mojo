@@ -31,8 +31,8 @@ source_set("gles2") {
     "//gpu/command_buffer/service",
     "//mojo/converters/geometry",
     "//mojo/public/cpp/bindings",
-    "//mojo/services/geometry/public/interfaces",
-    "//mojo/services/gpu/public/interfaces",
+    "//mojo/services/geometry/interfaces",
+    "//mojo/services/gpu/interfaces",
     "//ui/gfx",
     "//ui/gfx/geometry",
     "//ui/gl",
@@ -52,6 +52,6 @@ source_set("lib") {
     "//gpu/command_buffer/common",
     "//mojo/public/cpp/bindings",
     "//mojo/public/cpp/system",
-    "//mojo/services/gpu/public/interfaces",
+    "//mojo/services/gpu/interfaces",
   ]
 }

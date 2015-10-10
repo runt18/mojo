@@ -5,7 +5,7 @@
 [DartPackage="mojo_services"]
 module mojo;
 
-import "input_events/public/interfaces/input_events.mojom";
+import "input_events/interfaces/input_events.mojom";
 import "mojo/public/interfaces/application/service_provider.mojom";
 
 interface WindowManager {

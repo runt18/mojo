@@ -5,7 +5,7 @@
 #include "services/http_server/http_server_factory_impl.h"
 
 #include "base/stl_util.h"
-#include "mojo/services/http_server/public/interfaces/http_server.mojom.h"
+#include "mojo/services/http_server/interfaces/http_server.mojom.h"
 #include "services/http_server/http_server_impl.h"
 
 namespace http_server {

@@ -8,7 +8,7 @@
 #include "base/logging.h"
 #include "mojo/public/cpp/application/application_impl.h"
 #include "mojo/public/cpp/system/data_pipe.h"
-#include "mojo/services/http_server/public/cpp/http_server_util.h"
+#include "mojo/services/http_server/cpp/http_server_util.h"
 #include "services/http_server/connection.h"
 #include "services/http_server/http_server_factory_impl.h"
 

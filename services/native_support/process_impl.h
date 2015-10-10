@@ -13,7 +13,7 @@
 #include "base/task_runner.h"
 #include "mojo/public/cpp/bindings/interface_request.h"
 #include "mojo/public/cpp/bindings/strong_binding.h"
-#include "mojo/services/native_support/public/interfaces/process.mojom.h"
+#include "mojo/services/native_support/interfaces/process.mojom.h"
 
 namespace mojo {
 class ApplicationConnection;

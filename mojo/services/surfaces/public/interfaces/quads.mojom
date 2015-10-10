@@ -5,7 +5,7 @@
 [DartPackage="mojo_services"]
 module mojo;
 
-import "geometry/public/interfaces/geometry.mojom";
+import "geometry/interfaces/geometry.mojom";
 import "surfaces/public/interfaces/surface_id.mojom";
 
 struct Color {

@@ -6,8 +6,8 @@
 #define SERVICES_NATIVE_VIEWPORT_ONSCREEN_CONTEXT_PROVIDER_H_
 
 #include "base/memory/ref_counted.h"
-#include "mojo/services/gpu/public/interfaces/context_provider.mojom.h"
-#include "mojo/services/gpu/public/interfaces/viewport_parameter_listener.mojom.h"
+#include "mojo/services/gpu/interfaces/context_provider.mojom.h"
+#include "mojo/services/gpu/interfaces/viewport_parameter_listener.mojom.h"
 #include "services/gles2/command_buffer_impl.h"
 #include "ui/gfx/native_widget_types.h"
 #include "ui/gl/gl_surface.h"

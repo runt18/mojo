@@ -7,7 +7,7 @@
 
 #include "base/macros.h"
 #include "mojo/public/cpp/application/application_test_base.h"
-#include "mojo/services/native_support/public/interfaces/process.mojom.h"
+#include "mojo/services/native_support/interfaces/process.mojom.h"
 
 namespace native_support {
 

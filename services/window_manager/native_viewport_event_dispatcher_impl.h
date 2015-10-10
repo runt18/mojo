@@ -7,7 +7,7 @@
 
 #include "base/basictypes.h"
 #include "mojo/public/cpp/bindings/strong_binding.h"
-#include "mojo/services/native_viewport/public/interfaces/native_viewport.mojom.h"
+#include "mojo/services/native_viewport/interfaces/native_viewport.mojom.h"
 #include "ui/events/event_source.h"
 
 namespace window_manager {

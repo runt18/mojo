@@ -14,7 +14,7 @@ mojo_sdk_source_set("cpp") {
   ]
 
   deps = [
-    "../../../geometry/public/interfaces",
+    "../../../geometry/interfaces",
     "../../../surfaces/public/interfaces",
   ]
 }

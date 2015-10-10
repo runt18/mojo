@@ -16,7 +16,7 @@
 #include "mojo/public/cpp/application/application_impl.h"
 #include "mojo/public/cpp/application/application_test_base.h"
 #include "mojo/public/cpp/application/service_provider_impl.h"
-#include "mojo/services/geometry/public/cpp/geometry_util.h"
+#include "mojo/services/geometry/cpp/geometry_util.h"
 #include "mojo/services/view_manager/public/cpp/lib/view_manager_client_impl.h"
 #include "mojo/services/view_manager/public/cpp/view_manager_client_factory.h"
 #include "mojo/services/view_manager/public/cpp/view_manager_context.h"

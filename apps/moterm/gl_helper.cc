@@ -18,7 +18,7 @@
 #include "base/task_runner.h"
 #include "mojo/public/cpp/application/connect.h"
 #include "mojo/public/interfaces/application/shell.mojom.h"
-#include "mojo/services/geometry/public/cpp/geometry_util.h"
+#include "mojo/services/geometry/cpp/geometry_util.h"
 #include "mojo/services/surfaces/public/cpp/surfaces_utils.h"
 
 // Maximum number of (live) textures to keep around.

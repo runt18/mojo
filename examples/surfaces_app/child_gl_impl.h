@@ -16,7 +16,7 @@
 #include "examples/surfaces_app/child.mojom.h"
 #include "mojo/public/cpp/bindings/string.h"
 #include "mojo/public/cpp/bindings/strong_binding.h"
-#include "mojo/services/gpu/public/interfaces/command_buffer.mojom.h"
+#include "mojo/services/gpu/interfaces/command_buffer.mojom.h"
 #include "mojo/services/surfaces/public/interfaces/surface_id.mojom.h"
 #include "mojo/services/surfaces/public/interfaces/surfaces.mojom.h"
 #include "third_party/skia/include/core/SkColor.h"

@@ -18,9 +18,9 @@ mojo_native_application("wm") {
   output_name = "wm_flow_wm"
 
   sources = [
-    "wm/wm.cc",
     "wm/frame_controller.cc",
     "wm/frame_controller.h",
+    "wm/wm.cc",
   ]
 
   deps = [
@@ -29,7 +29,7 @@ mojo_native_application("wm") {
     "//mojo/application",
     "//mojo/converters/geometry",
     "//mojo/public/interfaces/application",
-    "//mojo/services/input_events/public/interfaces",
+    "//mojo/services/input_events/interfaces",
     "//mojo/services/view_manager/public/cpp",
     "//services/window_manager:lib",
     "//skia",

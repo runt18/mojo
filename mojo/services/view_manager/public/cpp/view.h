@@ -9,7 +9,7 @@
 #include <vector>
 
 #include "base/observer_list.h"
-#include "geometry/public/interfaces/geometry.mojom.h"
+#include "geometry/interfaces/geometry.mojom.h"
 #include "mojo/public/cpp/bindings/array.h"
 #include "mojo/public/cpp/system/macros.h"
 #include "mojo/public/interfaces/application/service_provider.mojom.h"

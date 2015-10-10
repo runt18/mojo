@@ -7,8 +7,8 @@
 
 #include "mojo/public/cpp/application/application_delegate.h"
 #include "mojo/public/cpp/application/interface_factory.h"
-#include "mojo/services/gpu/public/interfaces/gpu.mojom.h"
-#include "mojo/services/native_viewport/public/interfaces/native_viewport.mojom.h"
+#include "mojo/services/gpu/interfaces/gpu.mojom.h"
+#include "mojo/services/native_viewport/interfaces/native_viewport.mojom.h"
 #include "services/gles2/gpu_impl.h"
 #include "shell/application_manager/application_loader.h"
 

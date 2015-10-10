@@ -41,9 +41,9 @@ mojo_native_application("gl_helper_test_app") {
     ":gl_helper",
     "//base",
     "//mojo/application",
-    "//mojo/services/geometry/public/interfaces",
-    "//mojo/services/gpu/public/interfaces",
-    "//mojo/services/native_viewport/public/interfaces",
+    "//mojo/services/geometry/interfaces",
+    "//mojo/services/gpu/interfaces",
+    "//mojo/services/native_viewport/interfaces",
     "//mojo/services/surfaces/public/interfaces",
   ]
 }
@@ -71,21 +71,21 @@ source_set("gl_helper") {
     "//mojo/public/cpp/application",
     "//mojo/public/c/gpu",
     "//mojo/public/interfaces/application",
-    "//mojo/services/gpu/public/interfaces",
+    "//mojo/services/gpu/interfaces",
     "//mojo/services/surfaces/public/interfaces",
   ]
 
   forward_dependent_configs_from = [
     "//mojo/public/c/gpu",
-    "//mojo/services/gpu/public/interfaces",
+    "//mojo/services/gpu/interfaces",
     "//mojo/services/surfaces/public/interfaces",
   ]
 
   public_deps = [
     "//base",
     "//mojo/public/c/gpu:GLES2",
-    "//mojo/services/geometry/public/cpp",
-    "//mojo/services/geometry/public/interfaces",
+    "//mojo/services/geometry/cpp",
+    "//mojo/services/geometry/interfaces",
     "//mojo/services/surfaces/public/cpp",
     "//mojo/services/surfaces/public/interfaces:surface_id",
   ]
@@ -102,7 +102,7 @@ source_set("key_util") {
   ]
 
   public_deps = [
-    "//mojo/services/input_events/public/interfaces",
+    "//mojo/services/input_events/interfaces",
   ]
 }
 

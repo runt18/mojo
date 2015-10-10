@@ -17,7 +17,7 @@ mojo_native_application("moterm_example_app") {
     "//mojo/public/cpp/utility",
     "//mojo/public/interfaces/application",
     "//mojo/services/files/interfaces",
-    "//mojo/services/geometry/public/interfaces",
+    "//mojo/services/geometry/interfaces",
     "//mojo/services/view_manager/public/cpp",
     "//mojo/services/terminal/public/interfaces",
   ]

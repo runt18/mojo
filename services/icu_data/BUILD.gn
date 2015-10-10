@@ -26,7 +26,7 @@ mojo_native_application("icu_data") {
     "//mojo/application",
     "//mojo/common",
     "//mojo/environment:chromium",
-    "//mojo/services/icu_data/public/interfaces",
+    "//mojo/services/icu_data/interfaces",
     ":embed_icu_data",
   ]
 }

@@ -1,11 +1,14 @@
 #!mojo mojo:js_content_handler
+// Copyright 2014 The Chromium Authors. All rights reserved.
+// Use of this source code is governed by a BSD-style license that can be
+// found in the LICENSE file.
 
 define("main", [
   "console",
   "mojo/public/js/core",
   "mojo/public/js/unicode",
-  "mojo/services/location/public/interfaces/geocoder.mojom",
-  "mojo/services/location/public/interfaces/location.mojom",
+  "mojo/services/location/interfaces/geocoder.mojom",
+  "mojo/services/location/interfaces/location.mojom",
   "mojo/services/public/js/application",
   "mojo/services/network/public/interfaces/network_service.mojom",
   "mojo/services/network/public/interfaces/url_loader.mojom",

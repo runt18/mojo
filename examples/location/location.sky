@@ -11,7 +11,7 @@ import 'dart:sky';
 
 import 'package:sky/framework/embedder.dart';
 
-import 'package:mojo/services/location/public/interfaces/location_service.mojom.dart';
+import 'package:mojo/services/location/interfaces/location_service.mojom.dart';
 
 main() async {
   var locationService = new LocationServiceProxy.unbound();

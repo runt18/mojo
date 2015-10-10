@@ -5,8 +5,8 @@
 #include "apps/moterm/key_util.h"
 
 #include "base/logging.h"
-#include "mojo/services/input_events/public/interfaces/input_events.mojom.h"
-#include "mojo/services/input_events/public/interfaces/input_key_codes.mojom.h"
+#include "mojo/services/input_events/interfaces/input_events.mojom.h"
+#include "mojo/services/input_events/interfaces/input_key_codes.mojom.h"
 
 // TODO(vtl): Handle more stuff and verify that we're consistent about the
 // sequences we generate.

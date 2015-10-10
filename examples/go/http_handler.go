@@ -12,10 +12,10 @@ import (
 	"mojo/public/go/bindings"
 	"mojo/public/go/system"
 
-	"mojo/services/http_server/public/interfaces/http_request"
-	"mojo/services/http_server/public/interfaces/http_response"
-	"mojo/services/http_server/public/interfaces/http_server"
-	"mojo/services/http_server/public/interfaces/http_server_factory"
+	"mojo/services/http_server/interfaces/http_request"
+	"mojo/services/http_server/interfaces/http_response"
+	"mojo/services/http_server/interfaces/http_server"
+	"mojo/services/http_server/interfaces/http_server_factory"
 	"mojo/services/network/public/interfaces/net_address"
 )
 

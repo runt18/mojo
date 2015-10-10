@@ -9,7 +9,7 @@
 #include "mojo/converters/surfaces/surfaces_type_converters.h"
 #include "mojo/public/cpp/application/application_connection.h"
 #include "mojo/public/cpp/application/application_impl.h"
-#include "mojo/services/gpu/public/interfaces/gpu.mojom.h"
+#include "mojo/services/gpu/interfaces/gpu.mojom.h"
 #include "mojo/services/surfaces/public/cpp/surfaces_utils.h"
 #include "mojo/services/surfaces/public/interfaces/quads.mojom.h"
 #include "mojo/services/surfaces/public/interfaces/surfaces.mojom.h"

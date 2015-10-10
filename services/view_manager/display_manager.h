@@ -12,7 +12,7 @@
 #include "base/memory/weak_ptr.h"
 #include "base/timer/timer.h"
 #include "mojo/public/cpp/bindings/callback.h"
-#include "mojo/services/native_viewport/public/interfaces/native_viewport.mojom.h"
+#include "mojo/services/native_viewport/interfaces/native_viewport.mojom.h"
 #include "mojo/services/surfaces/public/interfaces/display.mojom.h"
 #include "mojo/services/view_manager/public/interfaces/view_manager.mojom.h"
 #include "ui/gfx/rect.h"

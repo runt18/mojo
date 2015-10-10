@@ -7,8 +7,8 @@
 
 #include "examples/spinning_cube/spinning_cube.h"
 #include "mojo/public/c/gpu/MGL/mgl.h"
-#include "mojo/services/geometry/public/interfaces/geometry.mojom.h"
-#include "mojo/services/native_viewport/public/interfaces/native_viewport.mojom.h"
+#include "mojo/services/geometry/interfaces/geometry.mojom.h"
+#include "mojo/services/native_viewport/interfaces/native_viewport.mojom.h"
 
 namespace examples {
 

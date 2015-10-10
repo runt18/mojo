@@ -6,8 +6,8 @@
 #define SERVICES_NATIVE_VIEWPORT_PLATFORM_VIEWPORT_H_
 
 #include "base/memory/scoped_ptr.h"
-#include "mojo/services/input_events/public/interfaces/input_events.mojom.h"
-#include "mojo/services/native_viewport/public/interfaces/native_viewport.mojom.h"
+#include "mojo/services/input_events/interfaces/input_events.mojom.h"
+#include "mojo/services/native_viewport/interfaces/native_viewport.mojom.h"
 #include "ui/gfx/native_widget_types.h"
 #include "ui/gfx/size.h"
 

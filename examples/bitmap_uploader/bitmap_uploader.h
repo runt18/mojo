@@ -11,8 +11,8 @@
 #include "base/containers/hash_tables.h"
 #include "base/memory/scoped_ptr.h"
 #include "mojo/public/cpp/bindings/binding.h"
-#include "mojo/services/geometry/public/interfaces/geometry.mojom.h"
-#include "mojo/services/gpu/public/interfaces/gpu.mojom.h"
+#include "mojo/services/geometry/interfaces/geometry.mojom.h"
+#include "mojo/services/gpu/interfaces/gpu.mojom.h"
 #include "mojo/services/surfaces/public/interfaces/surface_id.mojom.h"
 #include "mojo/services/surfaces/public/interfaces/surfaces.mojom.h"
 

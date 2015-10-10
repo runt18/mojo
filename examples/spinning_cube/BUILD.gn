@@ -21,8 +21,8 @@ mojo_native_application("spinning_cube") {
     "//mojo/public/cpp/environment",
     "//mojo/public/cpp/system",
     "//mojo/public/cpp/utility",
-    "//mojo/services/geometry/public/interfaces",
-    "//mojo/services/native_viewport/public/interfaces",
+    "//mojo/services/geometry/interfaces",
+    "//mojo/services/native_viewport/interfaces",
   ]
 }
 

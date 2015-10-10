@@ -10,9 +10,9 @@
 #include "base/threading/thread.h"
 #include "mojo/public/cpp/bindings/interface_request.h"
 #include "mojo/public/cpp/bindings/strong_binding.h"
-#include "mojo/services/geometry/public/interfaces/geometry.mojom.h"
-#include "mojo/services/gpu/public/interfaces/command_buffer.mojom.h"
-#include "mojo/services/gpu/public/interfaces/gpu.mojom.h"
+#include "mojo/services/geometry/interfaces/geometry.mojom.h"
+#include "mojo/services/gpu/interfaces/command_buffer.mojom.h"
+#include "mojo/services/gpu/interfaces/gpu.mojom.h"
 #include "services/gles2/gpu_state.h"
 
 namespace gfx {

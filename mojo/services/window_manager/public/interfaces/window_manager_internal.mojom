@@ -5,8 +5,8 @@
 [DartPackage="mojo_services"]
 module mojo;
 
-import "geometry/public/interfaces/geometry.mojom";
-import "input_events/public/interfaces/input_events.mojom";
+import "geometry/interfaces/geometry.mojom";
+import "input_events/interfaces/input_events.mojom";
 
 // WindowManagerInternal is an interface provided by the WindowManager
 // exclusively to the ViewManager.

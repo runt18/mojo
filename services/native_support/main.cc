@@ -11,7 +11,7 @@
 #include "mojo/public/cpp/application/application_connection.h"
 #include "mojo/public/cpp/application/application_delegate.h"
 #include "mojo/public/cpp/application/interface_factory.h"
-#include "mojo/services/native_support/public/interfaces/process.mojom.h"
+#include "mojo/services/native_support/interfaces/process.mojom.h"
 #include "services/native_support/process_impl.h"
 
 namespace native_support {

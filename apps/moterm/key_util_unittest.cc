@@ -6,8 +6,8 @@
 
 #include <string>
 
-#include "mojo/services/input_events/public/interfaces/input_events.mojom.h"
-#include "mojo/services/input_events/public/interfaces/input_key_codes.mojom.h"
+#include "mojo/services/input_events/interfaces/input_events.mojom.h"
+#include "mojo/services/input_events/interfaces/input_key_codes.mojom.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 namespace {

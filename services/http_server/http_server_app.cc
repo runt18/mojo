@@ -8,7 +8,7 @@
 #include "mojo/public/cpp/application/application_impl.h"
 #include "mojo/public/cpp/application/application_runner.h"
 #include "mojo/public/cpp/application/interface_factory.h"
-#include "mojo/services/http_server/public/interfaces/http_server_factory.mojom.h"
+#include "mojo/services/http_server/interfaces/http_server_factory.mojom.h"
 #include "services/http_server/http_server_factory_impl.h"
 #include "services/http_server/http_server_impl.h"
 

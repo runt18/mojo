@@ -17,7 +17,7 @@ mojo_native_application("fake_surfaces") {
     "//mojo/common:tracing_impl",
     "//mojo/environment:chromium",
     "//mojo/public/cpp/bindings",
-    "//mojo/services/gpu/public/interfaces",
+    "//mojo/services/gpu/interfaces",
     "//mojo/services/surfaces/public/interfaces",
   ]
 }

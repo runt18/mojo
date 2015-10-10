@@ -16,7 +16,7 @@
 #include "mojo/public/cpp/bindings/strong_binding.h"
 #include "mojo/services/files/interfaces/file.mojom.h"
 #include "mojo/services/files/interfaces/types.mojom.h"
-#include "mojo/services/native_support/public/interfaces/process.mojom.h"
+#include "mojo/services/native_support/interfaces/process.mojom.h"
 
 namespace native_support {
 

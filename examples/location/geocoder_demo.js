@@ -1,5 +1,9 @@
 #!mojo mojo:js_content_handler
-// Demonstate a Mojo wrapper for the Geocoder JSON API. The application
+// Copyright 2014 The Chromium Authors. All rights reserved.
+// Use of this source code is governed by a BSD-style license that can be
+// found in the LICENSE file.
+
+// Demonstrate a Mojo wrapper for the Geocoder JSON API. The application
 // connects to geocoder_service.js which implements geocoder.mojom.
 // To run this application with mojo_shell, set DIR to be the absolute path
 // for this directory, then:
@@ -9,8 +13,8 @@ define("main", [
   "console",
   "mojo/public/js/core",
   "mojo/public/js/unicode",
-  "mojo/services/location/public/interfaces/geocoder.mojom",
-  "mojo/services/location/public/interfaces/location.mojom",
+  "mojo/services/location/interfaces/geocoder.mojom",
+  "mojo/services/location/interfaces/location.mojom",
   "mojo/services/public/js/application",
   "third_party/js/url",
 ], function(console, core, unicode, geocoder, location, application, url) {

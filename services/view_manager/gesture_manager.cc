@@ -6,7 +6,7 @@
 
 #include <algorithm>
 
-#include "mojo/services/input_events/public/interfaces/input_events.mojom.h"
+#include "mojo/services/input_events/interfaces/input_events.mojom.h"
 #include "mojo/services/view_manager/public/cpp/keys.h"
 #include "services/view_manager/gesture_manager_delegate.h"
 #include "services/view_manager/server_view.h"

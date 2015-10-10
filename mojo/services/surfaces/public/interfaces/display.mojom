@@ -5,8 +5,8 @@
 [DartPackage="mojo_services"]
 module mojo;
 
-import "gpu/public/interfaces/context_provider.mojom";
-import "gpu/public/interfaces/viewport_parameter_listener.mojom";
+import "gpu/interfaces/context_provider.mojom";
+import "gpu/interfaces/viewport_parameter_listener.mojom";
 import "surfaces/public/interfaces/surfaces.mojom";
 
 interface Display {

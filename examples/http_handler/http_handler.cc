@@ -9,9 +9,9 @@
 #include "mojo/public/cpp/application/application_impl.h"
 #include "mojo/public/cpp/bindings/interface_ptr.h"
 #include "mojo/public/cpp/system/message_pipe.h"
-#include "mojo/services/http_server/public/cpp/http_server_util.h"
-#include "mojo/services/http_server/public/interfaces/http_server.mojom.h"
-#include "mojo/services/http_server/public/interfaces/http_server_factory.mojom.h"
+#include "mojo/services/http_server/cpp/http_server_util.h"
+#include "mojo/services/http_server/interfaces/http_server.mojom.h"
+#include "mojo/services/http_server/interfaces/http_server_factory.mojom.h"
 #include "mojo/services/network/public/interfaces/net_address.mojom.h"
 
 namespace mojo {

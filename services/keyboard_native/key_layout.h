@@ -10,7 +10,7 @@
 
 #include "base/callback.h"
 #include "base/memory/weak_ptr.h"
-#include "mojo/services/geometry/public/interfaces/geometry.mojom.h"
+#include "mojo/services/geometry/interfaces/geometry.mojom.h"
 #include "ui/gfx/geometry/rect_f.h"
 
 class SkCanvas;

@@ -14,7 +14,7 @@
 #include "mojo/public/cpp/application/application_delegate.h"
 #include "mojo/public/cpp/application/application_impl.h"
 #include "mojo/public/cpp/application/connect.h"
-#include "mojo/services/keyboard/public/interfaces/keyboard.mojom.h"
+#include "mojo/services/keyboard/interfaces/keyboard.mojom.h"
 #include "mojo/services/view_manager/public/cpp/view.h"
 #include "mojo/services/view_manager/public/cpp/view_manager.h"
 #include "mojo/services/view_manager/public/cpp/view_manager_client_factory.h"

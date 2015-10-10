@@ -33,7 +33,7 @@
 #include "mojo/services/files/interfaces/ioctl.mojom.h"
 #include "mojo/services/files/interfaces/ioctl_terminal.mojom.h"
 #include "mojo/services/files/interfaces/types.mojom.h"
-#include "mojo/services/native_support/public/interfaces/process.mojom.h"
+#include "mojo/services/native_support/interfaces/process.mojom.h"
 #include "mojo/services/terminal/public/interfaces/terminal_client.mojom.h"
 
 using mojo::terminal::TerminalClient;

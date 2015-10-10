@@ -8,7 +8,7 @@
 #include "base/macros.h"
 #include "mojo/public/cpp/bindings/interface_request.h"
 #include "mojo/public/cpp/bindings/strong_binding.h"
-#include "mojo/services/keyboard/public/interfaces/keyboard.mojom.h"
+#include "mojo/services/keyboard/interfaces/keyboard.mojom.h"
 #include "services/keyboard_native/view_observer_delegate.h"
 
 namespace keyboard {
