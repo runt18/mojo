@@ -117,7 +117,7 @@ void AuthenticatingURLLoaderInterceptorFactory::OnAccountSelected(
     return;
   }
   cached_accounts_[origin] = account;
-  mojo::Array<mojo::String> scopes(1);
+  auto scopes = mojo::Array<mojo::String>::New(1);
   scopes[0] = "https://www.googleapis.com/auth/userinfo.email";
   authentication_service_->GetOAuth2Token(
       account, scopes.Pass(),

@@ -83,7 +83,7 @@ Array<uint8_t> PathToArray(const base::FilePath& path) {
   if (path.empty())
     return Array<uint8_t>();
   const std::string& string = path.value();
-  Array<uint8_t> result(string.size());
+  auto result = Array<uint8_t>::New(string.size());
   memcpy(&result.front(), string.data(), string.size());
   return result.Pass();
 }

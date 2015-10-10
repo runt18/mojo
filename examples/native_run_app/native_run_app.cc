@@ -52,7 +52,7 @@ class TerminalConnection {
  private:
   void Write(const char* s, mojo::files::File::WriteCallback callback) {
     size_t length = strlen(s);
-    mojo::Array<uint8_t> a(length);
+    auto a = mojo::Array<uint8_t>::New(length);
     memcpy(&a[0], s, length);
     terminal_->Write(a.Pass(), 0, mojo::files::Whence::FROM_CURRENT, callback);
   }

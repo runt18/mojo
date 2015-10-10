@@ -77,7 +77,7 @@ void FDToMojoFileRedirector::DoWrite() {
   size_t num_bytes_to_write = num_bytes_ - offset_;
 
   // TODO(vtl): Is there a more natural (or efficient) way to do this?
-  mojo::Array<uint8_t> bytes_to_write(num_bytes_to_write);
+  auto bytes_to_write = mojo::Array<uint8_t>::New(num_bytes_to_write);
   memcpy(&bytes_to_write[offset_], buffer_.get(), num_bytes_to_write);
 
   file_->Write(bytes_to_write.Pass(), 0, mojo::files::Whence::FROM_CURRENT,

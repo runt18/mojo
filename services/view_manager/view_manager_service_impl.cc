@@ -403,7 +403,7 @@ void ViewManagerServiceImpl::RemoveChildrenAsPartOfEmbed(
 
 Array<ViewDataPtr> ViewManagerServiceImpl::ViewsToViewDatas(
     const std::vector<const ServerView*>& views) {
-  Array<ViewDataPtr> array(views.size());
+  auto array = Array<ViewDataPtr>::New(views.size());
   for (size_t i = 0; i < views.size(); ++i)
     array[i] = ViewToViewData(views[i]).Pass();
   return array.Pass();

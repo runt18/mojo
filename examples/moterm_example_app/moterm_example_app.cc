@@ -36,7 +36,7 @@
 // Kind of like |fputs()| (doesn't wait for result).
 void Fputs(mojo::files::File* file, const char* s) {
   size_t length = strlen(s);
-  mojo::Array<uint8_t> a(length);
+  auto a = mojo::Array<uint8_t>::New(length);
   memcpy(&a[0], s, length);
 
   file->Write(a.Pass(), 0, mojo::files::Whence::FROM_CURRENT,

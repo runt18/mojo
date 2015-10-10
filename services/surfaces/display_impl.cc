@@ -127,7 +127,7 @@ void DisplayImpl::ReturnResources(const cc::ReturnedResourceArray& resources) {
     return;
   DCHECK(returner_);
 
-  mojo::Array<mojo::ReturnedResourcePtr> ret(resources.size());
+  auto ret = mojo::Array<mojo::ReturnedResourcePtr>::New(resources.size());
   for (size_t i = 0; i < resources.size(); ++i) {
     ret[i] = mojo::ReturnedResource::From(resources[i]);
   }

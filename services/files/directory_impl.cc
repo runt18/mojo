@@ -125,7 +125,7 @@ void DirectoryImpl::Read(const ReadCallback& callback) {
     return;
   }
 
-  Array<DirectoryEntryPtr> result(0);
+  auto result = Array<DirectoryEntryPtr>::New(0);
 
 // Warning: This is not portable (per POSIX.1 -- |buffer| may not be large
 // enough), but it's fine for Linux.

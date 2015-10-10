@@ -283,7 +283,7 @@ void ReaperImpl::Create(mojo::ApplicationConnection* connection,
 
 void ReaperImpl::DumpNodes(
     const mojo::Callback<void(mojo::Array<NodePtr>)>& callback) {
-  mojo::Array<NodePtr> result(0u);
+  auto result = mojo::Array<NodePtr>::New(0u);
   for (const auto& app : nodes_) {
     for (const auto& node_info : app.second) {
       NodePtr node(Node::New());

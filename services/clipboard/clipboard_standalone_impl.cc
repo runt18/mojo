@@ -25,7 +25,7 @@ class ClipboardStandaloneImpl::ClipboardData {
   ~ClipboardData() {}
 
   Array<String> GetMimeTypes() const {
-    Array<String> types(data_types_.size());
+    auto types = Array<String>::New(data_types_.size());
     int i = 0;
     for (auto it = data_types_.cbegin(); it != data_types_.cend(); ++it, ++i)
       types[i] = it.GetKey();

@@ -134,7 +134,7 @@ void MotermDriver::CompletePendingReads() {
 
     size_t data_size = std::min(static_cast<size_t>(pending_read.num_bytes),
                                 send_data_queue_.size());
-    mojo::Array<uint8_t> data(data_size);
+    auto data = mojo::Array<uint8_t>::New(data_size);
     for (size_t i = 0; i < data_size; i++) {
       data[i] = send_data_queue_[i];
       // In canonical mode, each read only gets a single line.

@@ -181,7 +181,7 @@ mojio_ssize_t FileFDImpl::Write(const void* buf, size_t count) {
   }
 
   // TODO(vtl): Is there a more natural (or efficient) way to do this?
-  mojo::Array<uint8_t> bytes_to_write(count);
+  auto bytes_to_write = mojo::Array<uint8_t>::New(count);
   if (count > 0)
     memcpy(&bytes_to_write[0], buf, count);
 

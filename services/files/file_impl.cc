@@ -98,7 +98,7 @@ void FileImpl::Read(uint32_t num_bytes_to_read,
     }
   }
 
-  Array<uint8_t> bytes_read(num_bytes_to_read);
+  auto bytes_read = Array<uint8_t>::New(num_bytes_to_read);
   ssize_t num_bytes_read = HANDLE_EINTR(
       read(file_fd_.get(), &bytes_read.front(), num_bytes_to_read));
   if (num_bytes_read < 0) {

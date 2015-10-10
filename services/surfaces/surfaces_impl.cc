@@ -67,7 +67,7 @@ void SurfacesImpl::DestroySurface(uint32_t local_id) {
 void SurfacesImpl::ReturnResources(const cc::ReturnedResourceArray& resources) {
   if (resources.empty() || !returner_)
     return;
-  mojo::Array<mojo::ReturnedResourcePtr> ret(resources.size());
+  auto ret = mojo::Array<mojo::ReturnedResourcePtr>::New(resources.size());
   for (size_t i = 0; i < resources.size(); ++i) {
     ret[i] = mojo::ReturnedResource::From(resources[i]);
   }
