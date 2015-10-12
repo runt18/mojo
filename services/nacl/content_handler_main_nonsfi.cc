@@ -9,7 +9,7 @@
 #include "mojo/application/content_handler_factory.h"
 #include "mojo/data_pipe_utils/data_pipe_utils.h"
 #include "mojo/message_pump/message_pump_mojo.h"
-#include "mojo/nacl/nexe_launcher_nonsfi.h"
+#include "mojo/nacl/nonsfi/nexe_launcher_nonsfi.h"
 #include "mojo/public/c/system/main.h"
 #include "mojo/public/cpp/application/application_impl.h"
 

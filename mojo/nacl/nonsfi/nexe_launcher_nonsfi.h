@@ -2,8 +2,8 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-#ifndef MOJO_NACL_NEXE_LAUNCHER_NONSFI_H_
-#define MOJO_NACL_NEXE_LAUNCHER_NONSFI_H_
+#ifndef MOJO_NACL_NONSFI_NEXE_LAUNCHER_NONSFI_H_
+#define MOJO_NACL_NONSFI_NEXE_LAUNCHER_NONSFI_H_
 
 #include "mojo/public/c/system/types.h"
 
@@ -17,4 +17,4 @@ void MojoLaunchNexeNonsfi(int nexe_fd, MojoHandle initial_handle);
 
 } // namespace nacl
 
-#endif  // MOJO_NACL_NEXE_LAUNCHER_NONSFI_H_
+#endif  // MOJO_NACL_NONSFI_NEXE_LAUNCHER_NONSFI_H_

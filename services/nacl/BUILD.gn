@@ -19,12 +19,11 @@ if (!is_nacl) {
       "//mojo/message_pump",
       "//mojo/public/platform/native:system_impl_private",
       "//mojo/services/network/public/interfaces",
-      "//nacl_bindings:monacl_sel",
+      "//mojo/nacl/sfi/nacl_bindings:monacl_sel",
       "//url",
     ]
 
-    data_deps =
-        [ "//nacl_bindings:irt_mojo(//build/toolchain/nacl:irt_${target_cpu})" ]
+    data_deps = [ "//mojo/nacl/sfi/nacl_bindings:irt_mojo(//build/toolchain/nacl:irt_${target_cpu})" ]
   }
 
   if (current_cpu == "x86" || current_cpu == "arm") {
@@ -41,7 +40,7 @@ if (!is_nacl) {
         "//mojo/application:content_handler",
         "//mojo/data_pipe_utils",
         "//mojo/message_pump",
-        "//mojo/nacl:irt_mojo_nonsfi",
+        "//mojo/nacl/nonsfi:irt_mojo_nonsfi",
         "//mojo/public/cpp/application:application",
         "//native_client/src/nonsfi/loader:elf_loader",
       ]

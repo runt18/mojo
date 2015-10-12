@@ -2,9 +2,9 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-#include "nacl_bindings/monacl_sel_main.h"
+#include "mojo/nacl/sfi/nacl_bindings/monacl_sel_main.h"
 
-#include "nacl_bindings/mojo_syscall.h"
+#include "mojo/nacl/sfi/nacl_bindings/mojo_syscall.h"
 #include "native_client/src/public/chrome_main.h"
 #include "native_client/src/public/nacl_app.h"
 

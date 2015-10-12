@@ -2,10 +2,10 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-#include "mojo/nacl/nexe_launcher_nonsfi.h"
+#include "mojo/nacl/nonsfi/nexe_launcher_nonsfi.h"
 
 #include "base/files/file_util.h"
-#include "mojo/nacl/irt_mojo_nonsfi.h"
+#include "mojo/nacl/nonsfi/irt_mojo_nonsfi.h"
 #include "mojo/public/c/system/types.h"
 #include "native_client/src/public/irt_core.h"
 #include "native_client/src/public/nonsfi/elf_loader.h"

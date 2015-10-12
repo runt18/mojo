@@ -2,8 +2,8 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-#ifndef MOJO_NACL_MOJO_SYSCALL_H_
-#define MOJO_NACL_MOJO_SYSCALL_H_
+#ifndef MOJO_NACL_SFI_NACL_BINDINGS_MOJO_SYSCALL_H_
+#define MOJO_NACL_SFI_NACL_BINDINGS_MOJO_SYSCALL_H_
 
 #include "mojo/public/c/system/types.h"
 
@@ -18,4 +18,4 @@ MojoResult InjectMojo(struct NaClApp* nap, MojoHandle handle);
 // more straightforward in the case where Mojo is not enabled for NaCl plugins.
 void InjectDisabledMojo(struct NaClApp* nap);
 
-#endif  // MOJO_NACL_MOJO_SYSCALL_H_
+#endif  // MOJO_NACL_SFI_NACL_BINDINGS_MOJO_SYSCALL_H_

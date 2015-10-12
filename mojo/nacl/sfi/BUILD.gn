@@ -1,0 +1,36 @@
+# Copyright 2015 The Chromium Authors. All rights reserved.
+# Use of this source code is governed by a BSD-style license that can be
+# found in the LICENSE file.
+
+# Trusted code
+if (!is_nacl) {
+  # A simple shell for running untrusted binaries that talk to the Mojo
+  # embedder. (No services.)
+  executable("monacl_shell") {
+    testonly = true
+    sources = [
+      "monacl_shell.cc",
+    ]
+    deps = [
+      "//base:base",
+      "//mojo/edk/system:system",
+      "//mojo/nacl/sfi/nacl_bindings:monacl_sel",
+    ]
+
+    data_deps = [ "//mojo/nacl/sfi/nacl_bindings:irt_mojo(//build/toolchain/nacl:irt_${target_cpu})" ]
+  }
+}
+
+group("mojo_nacl") {
+  deps = [
+    "//services/nacl:nacl_content_handler",
+  ]
+}
+
+group("mojo_nacl_tests") {
+  testonly = true
+  deps = [
+    "//mojo/nacl:mojo_nacl_tests_untrusted(//build/toolchain/nacl:clang_newlib_${current_cpu})",
+    ":monacl_shell",
+  ]
+}

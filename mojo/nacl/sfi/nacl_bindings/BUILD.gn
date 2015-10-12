@@ -12,7 +12,8 @@ if (!is_nacl) {
       "monacl_sel_main.cc",
     ]
     deps = [
-      "../mojo/public/c/system",
+      "//mojo/public/c/system",
+      "//mojo/public/platform/native:system_impl_private_api",
 
       # This target makes sure we have all the pre-processor defines needed to
       # use NaCl's headers.
@@ -28,12 +29,12 @@ if (is_nacl) {
   executable("irt_mojo") {
     cflags_c = [ "-std=c99" ]
     sources = [
-      "../mojo/public/platform/nacl/mojo_irt.h",
+      "../../../../mojo/public/platform/nacl/mojo_irt.h",
       "irt_entry_mojo.c",
       "mojo_irt.c",
     ]
     deps = [
-      "../mojo/public/c/system",
+      "//mojo/public/c/system",
       "//build/config/nacl:nacl_base",
       "//native_client/src/untrusted/irt:irt_core_lib",
       "//native_client/src/untrusted/nacl:imc_syscalls",

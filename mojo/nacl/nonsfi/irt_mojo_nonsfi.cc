@@ -2,7 +2,7 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-#include "mojo/nacl/irt_mojo_nonsfi.h"
+#include "mojo/nacl/nonsfi/irt_mojo_nonsfi.h"
 
 #include "mojo/public/c/system/functions.h"
 #include "mojo/public/platform/nacl/mojo_irt.h"

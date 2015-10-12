@@ -7,7 +7,7 @@
 
 #include "mojo/edk/embedder/embedder.h"
 #include "mojo/edk/embedder/simple_platform_support.h"
-#include "mojo/nacl/irt_mojo_nonsfi.h"
+#include "mojo/nacl/nonsfi/irt_mojo_nonsfi.h"
 #include "native_client/src/public/irt_core.h"
 #include "native_client/src/public/nonsfi/elf_loader.h"
 

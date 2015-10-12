@@ -2,8 +2,8 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-#ifndef MOJO_NACL_IRT_MOJO_NONSFI_H_
-#define MOJO_NACL_IRT_MOJO_NONSFI_H_
+#ifndef MOJO_NACL_NONSFI_IRT_MOJO_NONSFI_H_
+#define MOJO_NACL_NONSFI_IRT_MOJO_NONSFI_H_
 
 #include "mojo/public/c/system/functions.h"
 
@@ -20,4 +20,4 @@ size_t MojoIrtNonsfiQuery(const char* interface_ident,
                           size_t tablesize);
 
 }  // namespace nacl
-#endif  // MOJO_NACL_IRT_MOJO_NONSFI_H_
+#endif  // MOJO_NACL_NONSFI_IRT_MOJO_NONSFI_H_
