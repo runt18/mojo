@@ -12,6 +12,7 @@ import math
 import os.path
 import socket
 import subprocess
+import sys
 import tempfile
 import threading
 
@@ -237,8 +238,16 @@ def start_http_server(mappings, host_port=0):
     print 'Failed to start http server for %s on port %d: %s.' % (
         str(mappings), host_port, os.strerror(error_code))
     if error_code == errno.EADDRINUSE:
-      print ('  Run `fuser %d/tcp` to find out which process is using the port;'
-             % host_port)
-      print ('  or `fuser -k %d/tcp` terminate it.' % host_port)
+      if sys.platform == 'darwin':
+        find_cmd = 'lsof -i :%d' % host_port
+        terminate_cmd = (
+            'lsof -i :%d | grep LISTEN | awk \'{print $2}\' | xargs kill -9'
+            % host_port)
+      else:
+        find_cmd = 'fuser %d/tcp' % host_port
+        terminate_cmd = 'fuser -k %d/tcp' % host_port
+      print ('  Run `%s` to find out which process is using the port;'
+             % find_cmd)
+      print ('  or `%s` terminate it.' % terminate_cmd)
     print '---'
     raise
