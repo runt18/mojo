@@ -117,8 +117,16 @@ def GetTestList(config, verbose_count=0):
   if (target_os == Config.OS_LINUX and
       config.sanitizer != Config.SANITIZER_ASAN and
       ShouldRunTest(Config.TEST_TYPE_DEFAULT, Config.TEST_TYPE_UNIT, "go")):
-    AddEntry("Go unit tests",
+    # Go system tests:
+    AddEntry("Go system tests",
              [os.path.join(build_dir, "obj", "mojo", "go", "system_test")])
+
+    # Pure Go unit tests:
+    assert paths.go_tool_path is not None
+    go_tool = paths.go_tool_path
+    AddEntry("Go unit tests",
+             ["python", os.path.join("mojo", "tools", "run_pure_go_tests.py"),
+              go_tool, os.path.join("mojo", "tools", "data", "gotests")])
 
   # Python unit tests:
   if ShouldRunTest(Config.TEST_TYPE_DEFAULT, Config.TEST_TYPE_UNIT, "python"):

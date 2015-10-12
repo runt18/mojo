@@ -19,6 +19,16 @@ class Paths(object):
     self.adb_path = os.path.join(self.src_root, 'third_party', 'android_tools',
                                  'sdk', 'platform-tools', 'adb')
 
+    self.go_tool_path = None
+    if config:
+      if (config.target_os == Config.OS_LINUX and
+          config.target_cpu == Config.ARCH_X64):
+        self.go_tool_path = os.path.join(self.src_root, "third_party",
+            "go", "tool", "linux_amd64", "bin", "go")
+      elif config.target_os == Config.OS_ANDROID:
+        self.go_tool_path = os.path.join(self.src_root, "third_party",
+            "go", "tool", "android_arm", "bin", "go")
+
     if config:
       self.build_dir = BuildDirectoryForConfig(config, self.src_root)
     elif build_dir is not None:
