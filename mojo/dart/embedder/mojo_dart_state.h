@@ -12,7 +12,7 @@
 #include "base/macros.h"
 #include "mojo/public/c/system/types.h"
 #include "mojo/public/cpp/system/message_pipe.h"
-#include "mojo/services/network/public/interfaces/network_service.mojom.h"
+#include "mojo/services/network/interfaces/network_service.mojom.h"
 #include "tonic/dart_library_provider.h"
 #include "tonic/dart_state.h"
 

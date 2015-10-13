@@ -38,7 +38,7 @@ go_mojo_application("go_http_handler") {
   ]
   deps = [
     "//mojo/services/http_server/interfaces",
-    "//mojo/services/network/public/interfaces",
+    "//mojo/services/network/interfaces",
   ]
 }
 
@@ -47,6 +47,6 @@ go_mojo_application("go_http_server") {
     "http_server.go",
   ]
   deps = [
-    "//mojo/services/network/public/interfaces",
+    "//mojo/services/network/interfaces",
   ]
 }

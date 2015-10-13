@@ -63,7 +63,7 @@ source_set("tonic") {
     "//mojo/data_pipe_utils",
     "//mojo/message_pump",
     "//mojo/public/cpp/system",
-    "//mojo/services/network/public/interfaces",
+    "//mojo/services/network/interfaces",
     "//url",
   ]
 

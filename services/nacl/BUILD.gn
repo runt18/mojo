@@ -18,7 +18,7 @@ if (!is_nacl) {
       "//mojo/data_pipe_utils",
       "//mojo/message_pump",
       "//mojo/public/platform/native:system_impl_private",
-      "//mojo/services/network/public/interfaces",
+      "//mojo/services/network/interfaces",
       "//mojo/nacl/sfi/nacl_bindings:monacl_sel",
       "//url",
     ]

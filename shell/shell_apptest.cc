@@ -17,7 +17,7 @@
 #include "mojo/services/http_server/cpp/http_server_util.h"
 #include "mojo/services/http_server/interfaces/http_server.mojom.h"
 #include "mojo/services/http_server/interfaces/http_server_factory.mojom.h"
-#include "mojo/services/network/public/interfaces/net_address.mojom.h"
+#include "mojo/services/network/interfaces/net_address.mojom.h"
 #include "shell/kPingable.h"
 #include "shell/test/pingable.mojom.h"
 

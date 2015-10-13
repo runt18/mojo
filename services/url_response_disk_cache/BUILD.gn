@@ -82,7 +82,7 @@ mojo_native_application("apptests") {
     "//mojo/application:test_support",
     "//mojo/public/cpp/bindings",
     "//mojo/public/cpp/system:system",
-    "//mojo/services/network/public/interfaces:interfaces",
+    "//mojo/services/network/interfaces:interfaces",
     "//mojo/services/url_response_disk_cache/interfaces",
   ]
 

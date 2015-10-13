@@ -6,7 +6,7 @@
 
 #include "base/location.h"
 #include "mojo/public/cpp/bindings/interface_request.h"
-#include "mojo/services/network/public/interfaces/network_service.mojom.h"
+#include "mojo/services/network/interfaces/network_service.mojom.h"
 
 namespace dart {
 

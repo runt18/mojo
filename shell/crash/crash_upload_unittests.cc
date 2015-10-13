@@ -12,7 +12,7 @@
 #include "mojo/data_pipe_utils/data_pipe_utils.h"
 #include "mojo/message_pump/message_pump_mojo.h"
 #include "mojo/public/cpp/bindings/binding.h"
-#include "mojo/services/network/public/interfaces/network_service.mojom.h"
+#include "mojo/services/network/interfaces/network_service.mojom.h"
 #include "shell/crash/crash_upload.h"
 #include "testing/gtest/include/gtest/gtest.h"
 

@@ -9,7 +9,7 @@
 #include "mojo/public/cpp/application/application_impl.h"
 #include "mojo/public/cpp/application/application_test_base.h"
 #include "mojo/public/cpp/system/data_pipe.h"
-#include "mojo/services/network/public/interfaces/url_loader.mojom.h"
+#include "mojo/services/network/interfaces/url_loader.mojom.h"
 #include "mojo/services/url_response_disk_cache/interfaces/url_response_disk_cache.mojom.h"
 #include "services/url_response_disk_cache/kTestData.h"
 

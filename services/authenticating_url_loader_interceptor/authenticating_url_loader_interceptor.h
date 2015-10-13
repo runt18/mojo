@@ -6,7 +6,7 @@
 #define SERVICES_AUTHENTICATING_URL_LOADER_INTERCEPTOR_AUTHENTICATING_URL_LOADER_INTERCEPTOR_H_
 
 #include "mojo/public/cpp/bindings/binding.h"
-#include "mojo/services/network/public/interfaces/url_loader.mojom.h"
+#include "mojo/services/network/interfaces/url_loader.mojom.h"
 #include "services/authenticating_url_loader_interceptor/authenticating_url_loader_interceptor_factory.h"
 #include "url/gurl.h"
 

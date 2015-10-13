@@ -18,8 +18,8 @@ import (
 	"mojo/public/go/system"
 	"mojo/public/interfaces/network/url_request"
 	auth "mojo/services/authentication/interfaces/authentication"
-	network "mojo/services/network/public/interfaces/network_service"
-	"mojo/services/network/public/interfaces/url_loader"
+	network "mojo/services/network/interfaces/network_service"
+	"mojo/services/network/interfaces/url_loader"
 	vpkg "mojo/services/vanadium/security/interfaces/principal"
 )
 

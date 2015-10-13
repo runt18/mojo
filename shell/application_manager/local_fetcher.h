@@ -6,7 +6,7 @@
 #define SHELL_APPLICATION_MANAGER_LOCAL_FETCHER_H_
 
 #include "base/files/file_path.h"
-#include "mojo/services/network/public/interfaces/url_loader.mojom.h"
+#include "mojo/services/network/interfaces/url_loader.mojom.h"
 #include "shell/application_manager/fetcher.h"
 #include "url/gurl.h"
 

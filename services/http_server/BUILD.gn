@@ -29,7 +29,7 @@ mojo_native_application("http_server") {
     "//mojo/public/cpp/utility",
     "//mojo/services/http_server/cpp",
     "//mojo/services/http_server/interfaces",
-    "//mojo/services/network/public/interfaces",
+    "//mojo/services/network/interfaces",
     "//third_party/re2",
   ]
 
@@ -60,7 +60,7 @@ mojo_native_application("apptests") {
     "//mojo/public/cpp/system",
     "//mojo/services/http_server/cpp",
     "//mojo/services/http_server/interfaces",
-    "//mojo/services/network/public/interfaces",
+    "//mojo/services/network/interfaces",
   ]
 
   data_deps = [ ":http_server($default_toolchain)" ]

@@ -15,11 +15,11 @@ import (
 	"mojo/public/go/bindings"
 	"mojo/public/go/system"
 
-	"mojo/services/network/public/interfaces/net_address"
-	"mojo/services/network/public/interfaces/network_service"
-	"mojo/services/network/public/interfaces/tcp_bound_socket"
-	"mojo/services/network/public/interfaces/tcp_connected_socket"
-	"mojo/services/network/public/interfaces/tcp_server_socket"
+	"mojo/services/network/interfaces/net_address"
+	"mojo/services/network/interfaces/network_service"
+	"mojo/services/network/interfaces/tcp_bound_socket"
+	"mojo/services/network/interfaces/tcp_connected_socket"
+	"mojo/services/network/interfaces/tcp_server_socket"
 )
 
 //#include "mojo/public/c/system/types.h"

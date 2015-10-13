@@ -203,7 +203,7 @@ source_set("parent_lib") {
     "//mojo/edk/system",
     "//mojo/public/cpp/bindings",
     "//mojo/public/interfaces/application",
-    "//mojo/services/network/public/interfaces",
+    "//mojo/services/network/interfaces",
     "//mojo/services/tracing/interfaces",
     "//services/url_response_disk_cache",
     "//shell/application_manager",
@@ -639,7 +639,7 @@ mojo_native_application("apptests") {
     "//mojo/public/cpp/system:system",
     "//mojo/services/http_server/cpp",
     "//mojo/services/http_server/interfaces",
-    "//mojo/services/network/public/interfaces",
+    "//mojo/services/network/interfaces",
     "//shell/test:bindings",
     ":embed_pingable",
   ]

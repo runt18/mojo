@@ -15,8 +15,8 @@
 #include "mojo/public/cpp/application/application_connection.h"
 #include "mojo/public/cpp/application/application_delegate.h"
 #include "mojo/public/cpp/application/application_impl.h"
-#include "mojo/services/network/public/interfaces/network_service.mojom.h"
-#include "mojo/services/network/public/interfaces/url_loader.mojom.h"
+#include "mojo/services/network/interfaces/network_service.mojom.h"
+#include "mojo/services/network/interfaces/url_loader.mojom.h"
 #include "native_client/src/public/nacl_desc.h"
 #include "url/gurl.h"
 

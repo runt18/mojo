@@ -115,7 +115,7 @@ service you need the JS module based on network_service.mojom:
 
 ```javascript
   define("main", [
-    "mojo/services/network/public/interfaces/network_service.mojom",
+    "mojo/services/network/interfaces/network_service.mojom",
     "mojo/services/public/js/application",
   ]
     function(net, application) {
@@ -332,7 +332,7 @@ another application.
 
 ```javascript
   define("main", [
-    "mojo/services/network/public/interfaces/network_service.mojom",
+    "mojo/services/network/interfaces/network_service.mojom",
     "mojo/services/public/js/application",
   ]
     function(net, application) {

@@ -11,8 +11,8 @@
 #include "mojo/services/http_server/interfaces/http_request.mojom.h"
 #include "mojo/services/http_server/interfaces/http_response.mojom.h"
 #include "mojo/services/http_server/interfaces/http_server.mojom.h"
-#include "mojo/services/network/public/interfaces/net_address.mojom.h"
-#include "mojo/services/network/public/interfaces/network_service.mojom.h"
+#include "mojo/services/network/interfaces/net_address.mojom.h"
+#include "mojo/services/network/interfaces/network_service.mojom.h"
 #include "third_party/re2/re2/re2.h"
 
 namespace mojo {

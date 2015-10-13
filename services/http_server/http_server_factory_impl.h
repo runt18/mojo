@@ -13,7 +13,7 @@
 #include "mojo/common/binding_set.h"
 #include "mojo/public/cpp/bindings/interface_request.h"
 #include "mojo/services/http_server/interfaces/http_server_factory.mojom.h"
-#include "mojo/services/network/public/interfaces/net_address.mojom.h"
+#include "mojo/services/network/interfaces/net_address.mojom.h"
 
 namespace mojo {
 class ApplicationImpl;

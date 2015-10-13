@@ -41,6 +41,6 @@ mojom("bindings") {
   deps = [
     "//mojo/services/geometry/interfaces",
     "//mojo/services/navigation/interfaces",
-    "//mojo/services/network/public/interfaces",
+    "//mojo/services/network/interfaces",
   ]
 }

@@ -18,6 +18,6 @@ mojo_native_application("forwarding_content_handler") {
     "//mojo/public/cpp/utility",
     "//mojo/public/interfaces/application:application",
     "//mojo/services/content_handler/interfaces",
-    "//mojo/services/network/public/interfaces",
+    "//mojo/services/network/interfaces",
   ]
 }

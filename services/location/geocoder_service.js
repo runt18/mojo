@@ -10,8 +10,8 @@ define("main", [
   "mojo/services/location/interfaces/geocoder.mojom",
   "mojo/services/location/interfaces/location.mojom",
   "mojo/services/public/js/application",
-  "mojo/services/network/public/interfaces/network_service.mojom",
-  "mojo/services/network/public/interfaces/url_loader.mojom",
+  "mojo/services/network/interfaces/network_service.mojom",
+  "mojo/services/network/interfaces/url_loader.mojom",
   "third_party/js/url",
 ], function(console, core, unicode, geocoder, location, application, network,
   loader, url) {

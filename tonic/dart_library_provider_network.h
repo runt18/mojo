@@ -7,7 +7,7 @@
 
 #include <unordered_set>
 
-#include "mojo/services/network/public/interfaces/network_service.mojom.h"
+#include "mojo/services/network/interfaces/network_service.mojom.h"
 #include "tonic/dart_library_provider.h"
 
 namespace tonic {

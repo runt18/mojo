@@ -8,7 +8,7 @@
 #include "base/callback.h"
 #include "base/memory/scoped_ptr.h"
 
-#include "mojo/services/network/public/interfaces/url_loader.mojom.h"
+#include "mojo/services/network/interfaces/url_loader.mojom.h"
 
 class GURL;
 

@@ -16,7 +16,7 @@ mojo_native_application("http_handler") {
     "//mojo/public/cpp/system",
     "//mojo/services/http_server/cpp",
     "//mojo/services/http_server/interfaces",
-    "//mojo/services/network/public/interfaces",
+    "//mojo/services/network/interfaces",
     "//services/http_server",
   ]
 }

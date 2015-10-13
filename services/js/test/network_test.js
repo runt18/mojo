@@ -3,7 +3,7 @@
 define("main", [
   "mojo/public/interfaces/network/url_request.mojom",
   "mojo/public/js/core",
-  "mojo/services/network/public/interfaces/network_service.mojom",
+  "mojo/services/network/interfaces/network_service.mojom",
   "mojo/services/public/js/application",
   "services/js/test/network_test_service.mojom",
 ], function(urlRequestMojom,

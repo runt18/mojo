@@ -14,7 +14,7 @@ define("main", [
   "console",
   "mojo/services/public/js/application",
   "mojo/public/js/core",
-  "mojo/services/network/public/interfaces/network_service.mojom",
+  "mojo/services/network/interfaces/network_service.mojom",
   "mojo/public/interfaces/network/url_request.mojom",
 ], function(console, application, core, network, request) {
 

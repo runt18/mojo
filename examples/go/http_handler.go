@@ -16,7 +16,7 @@ import (
 	"mojo/services/http_server/interfaces/http_response"
 	"mojo/services/http_server/interfaces/http_server"
 	"mojo/services/http_server/interfaces/http_server_factory"
-	"mojo/services/network/public/interfaces/net_address"
+	"mojo/services/network/interfaces/net_address"
 )
 
 //#include "mojo/public/c/system/types.h"

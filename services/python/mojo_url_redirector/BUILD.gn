@@ -16,7 +16,7 @@ python_packaged_application("mojo_url_redirector") {
     "//mojo/public/python:packaged_bindings",
     "//mojo/python:packaged_utils",
     "//mojo/services/http_server/interfaces:interfaces_python",
-    "//mojo/services/network/public/interfaces:interfaces_python",
+    "//mojo/services/network/interfaces:interfaces_python",
   ]
   datadeps = [
     "//services/python/content_handler",
@@ -40,7 +40,7 @@ mojo_native_application("apptests") {
     "//mojo/data_pipe_utils",
     "//mojo/services/http_server/cpp",
     "//mojo/services/http_server/interfaces",
-    "//mojo/services/network/public/interfaces",
+    "//mojo/services/network/interfaces",
   ]
 
   data_deps = [
