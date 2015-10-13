@@ -25,7 +25,7 @@ def main():
                       help="a file listing directories containing go tests "
                       "to run")
   args = parser.parse_args()
-  go_tool = args.go_tool_path
+  go_tool = os.path.abspath(args.go_tool_path)
 
   # Execute the Python script specified in args.test_list_file.
   # This will populate a list of Go directories.
@@ -41,7 +41,7 @@ def main():
     test_dir = os.path.join(src_root, *path.split('/'))
     os.chdir(test_dir)
     print "Running Go tests in %s..." % test_dir
-    call_result = InvokeGo(go_tool, ["test"])
+    call_result = InvokeGo(go_tool, ["test"], src_root=src_root)
     if call_result:
       return call_result
 
