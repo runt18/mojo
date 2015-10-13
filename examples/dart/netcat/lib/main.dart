@@ -85,10 +85,11 @@ class Connector {
   }
 
   void _startReadingFromTerminal() {
-    // TODO(vtl): Handle terminal errors.
+    // TODO(vtl): Do we have to do something on error?
     _terminal.ptr
         .read(_writeBuffer.lengthInBytes, 0, files.Whence.FROM_CURRENT)
-        .then(_onReadFromTerminal);
+        .then(_onReadFromTerminal)
+        .catchError((e) {});
   }
 
   void _onReadFromTerminal(files.FileReadResponseParams p) {
@@ -96,11 +97,6 @@ class Connector {
       // TODO(vtl): Do terminal errors.
       return;
     }
-
-    // TODO(vtl): Temporary hack: echo, since we don't have built-in echo
-    // support.
-    ignoreFuture(
-        _terminal.ptr.write(p.bytesRead, 0, files.Whence.FROM_CURRENT));
 
     // TODO(vtl): Verify that |bytesRead.length| is within the expected range.
     for (var i = 0, j = 0; i < p.bytesRead.length; i++, j++) {
@@ -171,14 +167,14 @@ class TerminalClientImpl implements TerminalClient {
     }
 
     // TODO(vtl): Currently, we only do IPv4, so this should work.
-    fputs(terminal.ptr, 'Connecting to: ' +
-        remote_address.ipv4.addr.join('.') +
-        ':' +
-        remote_address.ipv4.port.toString() +
-        '...');
+    fputs(terminal.ptr,
+          'Connecting to: ' + remote_address.ipv4.addr.join('.') + ':' +
+              remote_address.ipv4.port.toString() + '...');
 
     var connector = new Connector(_application, terminal);
-    connector.connect(remote_address);
+    // TODO(vtl): Do we have to do something on error?
+    connector.connect(remote_address)
+        .catchError((e) {});
   }
 
   // Note: May throw all sorts of things.
