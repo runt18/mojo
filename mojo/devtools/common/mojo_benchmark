@@ -36,6 +36,8 @@ Available measurement types are:
 
   - 'time_until' - time until the first occurence of the targeted event
   - 'avg_duration' - average duration of the targeted event
+  - 'percentile_duration' - value at XXth percentile of the targeted event where
+    XX is from the measurement spec, i.e. .../<event name>/0.XX
 
 |benchmark_list_file| may reference the |target_os| global that will be any of
 ['android', 'linux'], indicating the system on which the benchmarks are to be

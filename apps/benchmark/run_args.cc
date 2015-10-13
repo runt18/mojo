@@ -53,6 +53,20 @@ bool GetMeasurement(const std::string& measurement_spec, Measurement* result) {
       return false;
     *result = Measurement(MeasurementType::AVG_DURATION,
                           EventSpec(parts[2], parts[1]));
+  } else if (parts[0] == "percentile_duration") {
+    if (!CheckMeasurementFormat(parts[0], 4, parts.size()))
+      return false;
+    *result = Measurement(MeasurementType::PERCENTILE_DURATION,
+                          EventSpec(parts[2], parts[1]));
+    if (!base::StringToDouble(parts[3], &result->param)) {
+      LOG(ERROR) << "Expected '" << parts[3]
+                 << "'' to be a number in: " << measurement_spec;
+      return false;
+    }
+    if ((result->param < 0.0) || (result->param > 1.0)) {
+      LOG(ERROR) << "Expected '" << result->param << "' to be >=0.0 and <=1.0 "
+                 << "in " << measurement_spec;
+    }
   } else {
     LOG(ERROR) << "Could not recognize the measurement type: " << parts[0];
     return false;

@@ -25,7 +25,12 @@ struct EventSpec {
   ~EventSpec();
 };
 
-enum class MeasurementType { TIME_UNTIL, TIME_BETWEEN, AVG_DURATION };
+enum class MeasurementType {
+  TIME_UNTIL,
+  TIME_BETWEEN,
+  AVG_DURATION,
+  PERCENTILE_DURATION,
+};
 
 // Represents a single measurement to be performed on the collected trace.
 struct Measurement {
@@ -34,6 +39,8 @@ struct Measurement {
   // Second event targeted by the measurement, meaningful only for binary
   // measurement types (TIME_BETWEEN).
   EventSpec second_event;
+  // Optional parameter to the measurement.
+  double param;
   // Optional string from which this measurement was parsed. Can be used for
   // presentation purposes.
   std::string spec;
@@ -53,15 +60,16 @@ class Measurements {
 
   // Performs the given measurement. Returns the result in milliseconds or -1.0
   // if the measurement failed, e.g. because no events were matched.
-  double Measure(const Measurement& measurement);
+  double Measure(const Measurement& measurement) const;
 
  private:
   bool EarliestOccurence(const EventSpec& event_spec,
-                         base::TimeTicks* earliest);
-  double TimeUntil(const EventSpec& event_spec);
+                         base::TimeTicks* earliest) const;
+  double TimeUntil(const EventSpec& event_spec) const;
   double TimeBetween(const EventSpec& first_event_spec,
-                     const EventSpec& second_event_spec);
-  double AvgDuration(const EventSpec& event_spec);
+                     const EventSpec& second_event_spec) const;
+  double AvgDuration(const EventSpec& event_spec) const;
+  double Percentile(const EventSpec& event_spec, double percentile) const;
 
   std::vector<Event> events_;
   base::TimeTicks time_origin_;

@@ -22,18 +22,23 @@ base::TimeDelta Delta(int64 value) {
 class MeasurementsTest : public ::testing::Test {
  protected:
   void SetUp() override {
-    events_.resize(8);
+    events_.resize(11);
     events_[0] = Event(EventType::COMPLETE, "a", "some", Ticks(10), Delta(2));
     events_[1] = Event(EventType::COMPLETE, "a", "some", Ticks(11), Delta(4));
     events_[2] = Event(EventType::COMPLETE, "a", "other", Ticks(12), Delta(8));
     events_[3] = Event(EventType::COMPLETE, "b", "some", Ticks(3), Delta(16));
     events_[4] = Event(EventType::COMPLETE, "b", "some", Ticks(13), Delta(32));
-    events_[5] =
+
+    events_[5] = Event(EventType::COMPLETE, "c", "some", Ticks(14), Delta(10));
+    events_[6] = Event(EventType::COMPLETE, "c", "some", Ticks(16), Delta(11));
+    events_[7] = Event(EventType::COMPLETE, "c", "some", Ticks(18), Delta(12));
+
+    events_[8] =
         Event(EventType::INSTANT, "instant", "another", Ticks(20), Delta(0));
-    events_[6] = Event(EventType::INSTANT, "multi_occurence", "another",
+    events_[9] = Event(EventType::INSTANT, "multi_occurence", "another",
                        Ticks(30), Delta(0));
-    events_[7] = Event(EventType::INSTANT, "multi_occurence", "another",
-                       Ticks(40), Delta(0));
+    events_[10] = Event(EventType::INSTANT, "multi_occurence", "another",
+                        Ticks(40), Delta(0));
 
     reversed_ = events_;
     reverse(reversed_.begin(), reversed_.end());
@@ -135,6 +140,38 @@ TEST_F(MeasurementsTest, MeasureAvgDuration) {
   EXPECT_DOUBLE_EQ(0.024,
                    reversed.Measure(Measurement(MeasurementType::AVG_DURATION,
                                                 EventSpec("b", "some"))));
+}
+
+TEST_F(MeasurementsTest, MeasurePercentileDuration) {
+  // The results should be the same regardless of the order of events.
+  Measurements regular(events_, base::TimeTicks::FromInternalValue(2));
+  Measurements reversed(reversed_, base::TimeTicks::FromInternalValue(2));
+
+  Measurement measurement(MeasurementType::PERCENTILE_DURATION,
+                          EventSpec("c", "some"));
+  measurement.param = 0.10;
+  EXPECT_DOUBLE_EQ(0.010, regular.Measure(measurement));
+  measurement.param = 0.50;
+  EXPECT_DOUBLE_EQ(0.011, regular.Measure(measurement));
+  measurement.param = 0.90;
+  EXPECT_DOUBLE_EQ(0.012, regular.Measure(measurement));
+
+  measurement.param = 0.10;
+  EXPECT_DOUBLE_EQ(0.010, reversed.Measure(measurement));
+  measurement.param = 0.50;
+  EXPECT_DOUBLE_EQ(0.011, reversed.Measure(measurement));
+  measurement.param = 0.90;
+  EXPECT_DOUBLE_EQ(0.012, reversed.Measure(measurement));
+
+  measurement.param = 1.0;
+  EXPECT_DOUBLE_EQ(0.012, regular.Measure(measurement));
+  measurement.param = 0.0;
+  EXPECT_DOUBLE_EQ(0.010, regular.Measure(measurement));
+
+  measurement.param = 1.0;
+  EXPECT_DOUBLE_EQ(0.012, reversed.Measure(measurement));
+  measurement.param = 0.0;
+  EXPECT_DOUBLE_EQ(0.010, reversed.Measure(measurement));
 }
 
 TEST_F(MeasurementsTest, NoMatchingEvent) {

@@ -8,6 +8,9 @@ benchmarks = [
     'duration': 10,
     'measurements': [
       'avg_duration/echo_benchmark/ping',
+      'percentile_duration/echo_benchmark/ping/0.10',
+      'percentile_duration/echo_benchmark/ping/0.50',
+      'percentile_duration/echo_benchmark/ping/0.90',
     ],
     'shell-args': [
       '--args-for=https://core.mojoapps.io/echo_benchmark.mojo --early-tracing',
@@ -19,6 +22,9 @@ benchmarks = [
     'duration': 10,
     'measurements': [
       'avg_duration/echo_benchmark/ping',
+      'percentile_duration/echo_benchmark/ping/0.10',
+      'percentile_duration/echo_benchmark/ping/0.50',
+      'percentile_duration/echo_benchmark/ping/0.90',
     ],
     'shell-args': [
       '--args-for=https://core.mojoapps.io/echo_benchmark.mojo --early-tracing --dart-server',
@@ -30,6 +36,9 @@ benchmarks = [
     'duration': 10,
     'measurements': [
       'avg_duration/mojo_rtt_benchmark/ping',
+      'percentile_duration/mojo_rtt_benchmark/ping/0.10',
+      'percentile_duration/mojo_rtt_benchmark/ping/0.50',
+      'percentile_duration/mojo_rtt_benchmark/ping/0.90',
     ]
   },
   {
@@ -38,6 +47,9 @@ benchmarks = [
     'duration': 10,
     'measurements': [
       'avg_duration/mojo_rtt_benchmark/ping',
+      'percentile_duration/mojo_rtt_benchmark/ping/0.10',
+      'percentile_duration/mojo_rtt_benchmark/ping/0.50',
+      'percentile_duration/mojo_rtt_benchmark/ping/0.90',
     ],
     'shell-args': [
       '--args-for=https://core.mojoapps.io/dart_rtt_benchmark.mojo --cpp-server',
@@ -49,6 +61,9 @@ benchmarks = [
     'duration': 10,
     'measurements': [
       'avg_duration/isolate_rtt_benchmark/ping',
+      'percentile_duration/isolate_rtt_benchmark/ping/0.10',
+      'percentile_duration/isolate_rtt_benchmark/ping/0.50',
+      'percentile_duration/isolate_rtt_benchmark/ping/0.90',
     ]
   },
   {
@@ -57,6 +72,9 @@ benchmarks = [
     'duration': 10,
     'measurements': [
       'avg_duration/echo_benchmark/ping',
+      'percentile_duration/echo_benchmark/ping/0.10',
+      'percentile_duration/echo_benchmark/ping/0.50',
+      'percentile_duration/echo_benchmark/ping/0.90',
     ],
     'shell-args': [
       '--args-for=https://core.mojoapps.io/echo_benchmark.mojo --early-tracing --num-clients=100 --num-active-clients=100',
@@ -68,6 +86,9 @@ benchmarks = [
     'duration': 10,
     'measurements': [
       'avg_duration/mojo_rtt_benchmark/ping',
+      'percentile_duration/mojo_rtt_benchmark/ping/0.10',
+      'percentile_duration/mojo_rtt_benchmark/ping/0.50',
+      'percentile_duration/mojo_rtt_benchmark/ping/0.90',
     ],
     'shell-args': [
       '--args-for=https://core.mojoapps.io/dart_rtt_benchmark.mojo --num-clients=100 --num-active-clients=100',
@@ -79,6 +100,9 @@ benchmarks = [
     'duration': 10,
     'measurements': [
       'avg_duration/mojo_rtt_benchmark/ping',
+      'percentile_duration/mojo_rtt_benchmark/ping/0.10',
+      'percentile_duration/mojo_rtt_benchmark/ping/0.50',
+      'percentile_duration/mojo_rtt_benchmark/ping/0.90',
     ],
     'shell-args': [
       '--args-for=https://core.mojoapps.io/dart_rtt_benchmark.mojo --cpp-server --num-clients=100 --num-active-clients=100',

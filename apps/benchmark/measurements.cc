@@ -4,10 +4,12 @@
 
 #include "apps/benchmark/measurements.h"
 
+#include <algorithm>
+
 namespace benchmark {
 namespace {
 
-bool Match(const Event& event, const EventSpec& spec) {
+static bool Match(const Event& event, const EventSpec& spec) {
   return event.name == spec.name && event.categories == spec.categories;
 }
 
@@ -38,7 +40,7 @@ Measurements::Measurements(std::vector<Event> events,
 
 Measurements::~Measurements() {}
 
-double Measurements::Measure(const Measurement& measurement) {
+double Measurements::Measure(const Measurement& measurement) const {
   switch (measurement.type) {
     case MeasurementType::TIME_UNTIL:
       return TimeUntil(measurement.target_event);
@@ -46,6 +48,8 @@ double Measurements::Measure(const Measurement& measurement) {
       return TimeBetween(measurement.target_event, measurement.second_event);
     case MeasurementType::AVG_DURATION:
       return AvgDuration(measurement.target_event);
+    case MeasurementType::PERCENTILE_DURATION:
+      return Percentile(measurement.target_event, measurement.param);
     default:
       NOTREACHED();
       return double();
@@ -53,7 +57,7 @@ double Measurements::Measure(const Measurement& measurement) {
 }
 
 bool Measurements::EarliestOccurence(const EventSpec& event_spec,
-                                     base::TimeTicks* earliest) {
+                                     base::TimeTicks* earliest) const {
   base::TimeTicks result;
   bool found = false;
   for (const Event& event : events_) {
@@ -73,7 +77,7 @@ bool Measurements::EarliestOccurence(const EventSpec& event_spec,
   return true;
 }
 
-double Measurements::TimeUntil(const EventSpec& event_spec) {
+double Measurements::TimeUntil(const EventSpec& event_spec) const {
   base::TimeTicks earliest;
   if (!EarliestOccurence(event_spec, &earliest))
     return -1.0;
@@ -81,7 +85,7 @@ double Measurements::TimeUntil(const EventSpec& event_spec) {
 }
 
 double Measurements::TimeBetween(const EventSpec& first_event_spec,
-                                 const EventSpec& second_event_spec) {
+                                 const EventSpec& second_event_spec) const {
   base::TimeTicks earliest_first_event;
   if (!EarliestOccurence(first_event_spec, &earliest_first_event))
     return -1.0;
@@ -93,7 +97,7 @@ double Measurements::TimeBetween(const EventSpec& first_event_spec,
   return (earliest_second_event - earliest_first_event).InMillisecondsF();
 }
 
-double Measurements::AvgDuration(const EventSpec& event_spec) {
+double Measurements::AvgDuration(const EventSpec& event_spec) const {
   double sum = 0.0;
   int count = 0;
   for (const Event& event : events_) {
@@ -110,6 +114,35 @@ double Measurements::AvgDuration(const EventSpec& event_spec) {
   if (!count)
     return -1.0;
   return sum / count;
+}
+
+double Measurements::Percentile(const EventSpec& event_spec,
+                                double percentile) const {
+  DCHECK_GE(percentile, 0.0);
+  DCHECK_LE(percentile, 1.0);
+  std::vector<double> durations;
+
+  for (const Event& event : events_) {
+    if (event.type != EventType::COMPLETE)
+      continue;
+
+    if (!Match(event, event_spec))
+      continue;
+
+    durations.push_back(event.duration.InMillisecondsF());
+  }
+  if (durations.size() == 0) {
+    return -1.0;
+  }
+
+  // Nearest-rank method from:
+  // https://en.wikipedia.org/wiki/Percentile
+  double size = static_cast<double>(durations.size());
+  size_t rank = static_cast<size_t>(ceil(size * percentile));
+  size_t index = std::max(size_t{1}, rank) - 1;
+  std::nth_element(durations.begin(), durations.begin() + index,
+                   durations.end());
+  return durations[index];
 }
 
 }  // namespace benchmark

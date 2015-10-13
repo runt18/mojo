@@ -36,6 +36,10 @@ The following measurement types are available:
  - `avg_duration/<trace_event_category>/<trace_event_name>` - measures average
    duration of all events named `trace_event_name` in category
    `trace_event_category`.
+ - `percentile_duration/<trace_event_category>/<trace_event_name>/0.XX` -
+   measures the value at the XXth percentile of all events named
+   `trace_event_name` in category `trace_event_category`. E.g.
+   `.../<trace_event_name/0.50` will give the 50th percentile.
 
 ## Runner script
 
