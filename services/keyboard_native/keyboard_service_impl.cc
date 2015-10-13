@@ -25,6 +25,12 @@ void KeyboardServiceImpl::ShowByRequest() {
 void KeyboardServiceImpl::Hide() {
 }
 
+void KeyboardServiceImpl::SetText(const mojo::String& text) {
+}
+
+void KeyboardServiceImpl::SetSelection(int32_t start, int32_t end) {
+}
+
 void KeyboardServiceImpl::OnKey(const char* key) {
   client_->CommitText(key, 1);
 }

@@ -246,6 +246,8 @@ class KeyboardDelegate : public mojo::ApplicationDelegate,
 
   void SetSelection(int32_t start, int32_t end) override { DrawText(); }
 
+  void Submit(keyboard::SubmitAction action) override {}
+
   // mojo::ViewObserver implementation.
   void OnViewDestroyed(mojo::View* view) override {
     if (view == text_view_) {

@@ -22,6 +22,8 @@ class KeyboardServiceImpl : public KeyboardService {
   void Show(KeyboardClientPtr client, KeyboardType type) override;
   void ShowByRequest() override;
   void Hide() override;
+  void SetText(const mojo::String& text) override;
+  void SetSelection(int32_t start, int32_t end) override;
 
   void OnKey(const char* key);
   void OnDelete();
