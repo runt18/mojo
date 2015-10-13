@@ -52,7 +52,8 @@ def main():
                          target_android=args.android)
   if call_result != 0:
     return call_result
-  out_files = sorted([ f for f in os.listdir(build_dir) if os.path.isfile(f)])
+  file_list = [os.path.join(build_dir, f) for f in os.listdir(build_dir)]
+  out_files = sorted([f for f in file_list if os.path.isfile(f)])
   if (len(out_files) > 0):
     shutil.move(out_files[0], out_file)
   try:
