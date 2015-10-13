@@ -1,4 +1,8 @@
 #!mojo mojo:js_content_handler
+// Copyright 2014 The Chromium Authors. All rights reserved.
+// Use of this source code is governed by a BSD-style license that can be
+// found in the LICENSE file.
+
 // A JavaScript version of the C++ echo example. Connect to the echo_server.js
 // application, call it's echoString() method, and then quit. To run this
 // application with mojo_shell, set DIR to be the absolute path for this

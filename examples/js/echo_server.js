@@ -1,4 +1,8 @@
 #!mojo mojo:js_content_handler
+// Copyright 2014 The Chromium Authors. All rights reserved.
+// Use of this source code is governed by a BSD-style license that can be
+// found in the LICENSE file.
+
 // Demonstrate using the ServiceProvider returned by the Shell
 // connectToApplication() method to provide a service to the
 // target application and to request a service from the target
