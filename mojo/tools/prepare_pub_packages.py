@@ -46,6 +46,7 @@ def main():
                         default='.')
     parser.add_argument(
         '--packages',
+        nargs='*',
         default=['mojo', 'mojo_apptest', 'mojo_services', 'mojom'])
     parser.add_argument('--out-dir',
                         default=None)
