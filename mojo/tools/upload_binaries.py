@@ -180,6 +180,15 @@ def upload_app(app_binary_path, config, dry_run):
   upload(config, app_binary_path, gsutil_app_location, dry_run)
 
 
+def upload_system_thunks_lib(config, dry_run):
+  paths = Paths(config)
+  version = Version().version
+  dest = ("gs://mojo/system_thunks/%s/%s/libsystem_thunks.a" %
+      (target(config), version))
+  source_path = paths.build_dir + "/obj/mojo/libsystem_thunks.a"
+  upload(config, source_path, dest, dry_run)
+
+
 def write_file_to_gs(file_contents, dest, config, dry_run):
   with tempfile.NamedTemporaryFile() as temp_version_file:
     temp_version_file.write(file_contents)
@@ -232,6 +241,8 @@ def main():
                  args.symbols_upload_url, args.dry_run)
 
   upload_dart_snapshotter(config, args.dry_run, args.verbose)
+
+  upload_system_thunks_lib(config, args.dry_run)
 
   return 0
 
