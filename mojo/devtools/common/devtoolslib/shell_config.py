@@ -37,6 +37,7 @@ class ShellConfig(object):
     self.target_device = None
     self.logcat_tags = None
     self.require_root = False
+    self.free_host_ports = False
 
     # Desktop-only.
     self.use_osmesa = None
@@ -77,6 +78,9 @@ def add_shell_arguments(parser):
   android_group.add_argument('--target-device', help='Device to run on.')
   android_group.add_argument('--logcat-tags', help='Comma-separated list of '
                              'additional logcat tags to display.')
+  android_group.add_argument('--free-host-ports', action='store_true',
+                             help='Use system-allocated ports on the host when '
+                             'spawning local servers.')
 
   desktop_group = parser.add_argument_group('Desktop-only',
       'These arguments apply only when running on desktop.')
@@ -156,6 +160,7 @@ def get_shell_config(script_args):
                            'adb')
   shell_config.target_device = script_args.target_device
   shell_config.logcat_tags = script_args.logcat_tags
+  shell_config.free_host_ports = script_args.free_host_ports
 
   # Desktop-only.
   shell_config.use_osmesa = script_args.use_osmesa

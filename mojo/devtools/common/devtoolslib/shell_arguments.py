@@ -26,7 +26,7 @@ def _is_web_url(dest):
   return True if urlparse.urlparse(dest).scheme else False
 
 
-def _host_local_url_destination(shell, dest_file, port):
+def _host_local_url_destination(shell, dest_file, port, free_host_port):
   """Starts a local server to host |dest_file|.
 
   Returns:
@@ -36,20 +36,20 @@ def _host_local_url_destination(shell, dest_file, port):
   if not os.path.exists(directory):
     raise ValueError('local path passed as --map-url destination '
                      'does not exist')
-  server_url = shell.serve_local_directory(directory, port)
+  server_url = shell.serve_local_directory(directory, port, free_host_port)
   return server_url + os.path.relpath(dest_file, directory)
 
 
-def _host_local_origin_destination(shell, dest_dir, port):
+def _host_local_origin_destination(shell, dest_dir, port, free_host_port):
   """Starts a local server to host |dest_dir|.
 
   Returns:
     Url of the hosted directory.
   """
-  return shell.serve_local_directory(dest_dir, port)
+  return shell.serve_local_directory(dest_dir, port, free_host_port)
 
 
-def _rewrite(mapping, host_destination_functon, shell, port):
+def _rewrite(mapping, host_destination_functon, shell, port, free_host_port):
   """Takes a mapping given as <src>=<dest> and rewrites the <dest> part to be
   hosted locally using the given function if <dest> is not a web url.
   """
@@ -62,11 +62,12 @@ def _rewrite(mapping, host_destination_functon, shell, port):
     return mapping
 
   src = parts[0]
-  dest = host_destination_functon(shell, parts[1], port)
+  dest = host_destination_functon(shell, parts[1], port, free_host_port)
   return src + '=' + dest
 
 
-def _apply_mappings(shell, original_arguments, map_urls, map_origins):
+def _apply_mappings(shell, original_arguments, map_urls, map_origins,
+                    free_host_ports):
   """Applies mappings for specified urls and origins. For each local path
   specified as destination a local server will be spawned and the mapping will
   be rewritten accordingly.
@@ -75,7 +76,7 @@ def _apply_mappings(shell, original_arguments, map_urls, map_origins):
     shell: The shell that is being configured.
     original_arguments: Current list of shell arguments.
     map_urls: List of url mappings, each in the form of
-      <url>=<url-or-local-path>.
+        <url>=<url-or-local-path>.
     map_origins: List of origin mappings, each in the form of
         <origin>=<url-or-local-path>.
 
@@ -87,7 +88,8 @@ def _apply_mappings(shell, original_arguments, map_urls, map_origins):
   if map_urls:
     # Sort the mappings to preserve caching regardless of argument order.
     for map_url in sorted(map_urls):
-      mapping = _rewrite(map_url, _host_local_url_destination, shell, next_port)
+      mapping = _rewrite(map_url, _host_local_url_destination, shell, next_port,
+                         free_host_ports)
       next_port += 1
       # All url mappings need to be coalesced into one shell argument.
       args = append_to_argument(args, '--url-mappings=', mapping)
@@ -95,14 +97,14 @@ def _apply_mappings(shell, original_arguments, map_urls, map_origins):
   if map_origins:
     for map_origin in sorted(map_origins):
       mapping = _rewrite(map_origin, _host_local_origin_destination, shell,
-                         next_port)
+                         next_port, free_host_ports)
       next_port += 1
       # Origin mappings are specified as separate, repeated shell arguments.
       args.append('--map-origin=' + mapping)
   return args
 
 
-def configure_local_origin(shell, local_dir, fixed_port=True):
+def configure_local_origin(shell, local_dir, free_host_port):
   """Sets up a local http server to serve files in |local_dir| along with
   device port forwarding if needed.
 
@@ -111,7 +113,7 @@ def configure_local_origin(shell, local_dir, fixed_port=True):
   """
 
   origin_url = shell.serve_local_directory(
-      local_dir, _LOCAL_ORIGIN_PORT if fixed_port else 0)
+      local_dir, _LOCAL_ORIGIN_PORT, free_host_port)
   return ["--origin=" + origin_url]
 
 
@@ -145,7 +147,8 @@ def append_to_argument(arguments, key, value, delimiter=","):
   return arguments
 
 
-def _configure_dev_server(shell, shell_args, dev_server_config, verbose):
+def _configure_dev_server(shell, shell_args, dev_server_config, free_host_port,
+                          verbose):
   """Sets up a dev server on the host according to |dev_server_config|.
 
   Args:
@@ -159,7 +162,8 @@ def _configure_dev_server(shell, shell_args, dev_server_config, verbose):
   """
   port = dev_server_config.port if dev_server_config.port else 0
   server_url = shell.serve_local_directories(dev_server_config.mappings,
-                                             port=port)
+                                             port=port,
+                                             free_host_port=free_host_port)
   shell_args.append('--map-origin=%s=%s' % (dev_server_config.host, server_url))
 
   if verbose:
@@ -210,14 +214,15 @@ def get_shell(shell_config, shell_args):
       shell_args.append('--args-for=mojo:native_viewport_service --use-osmesa')
 
   shell_args = _apply_mappings(shell, shell_args, shell_config.map_url_list,
-                               shell_config.map_origin_list)
+                               shell_config.map_origin_list,
+                               shell_config.free_host_ports)
 
   if shell_config.origin:
     if _is_web_url(shell_config.origin):
       shell_args.append('--origin=' + shell_config.origin)
     else:
       shell_args.extend(configure_local_origin(shell, shell_config.origin,
-                                               fixed_port=True))
+                                               shell_config.free_host_ports))
 
   if shell_config.content_handlers:
     for (mime_type,
@@ -228,6 +233,7 @@ def get_shell(shell_config, shell_args):
 
   for dev_server_config in shell_config.dev_servers:
     shell_args = _configure_dev_server(shell, shell_args, dev_server_config,
+                                       shell_config.free_host_ports,
                                        shell_config.verbose)
 
   return shell, shell_args

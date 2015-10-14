@@ -6,7 +6,7 @@
 class Shell(object):
   """Represents an abstract Mojo shell."""
 
-  def serve_local_directory(self, local_dir_path, port=0):
+  def serve_local_directory(self, local_dir_path, port=0, free_host_port=False):
     """Serves the content of the local (host) directory, making it available to
     the shell under the url returned by the function.
 
@@ -15,14 +15,19 @@ class Shell(object):
 
     Args:
       local_dir_path: path to the directory to be served
-      port: port at which the server will be available to the shell
+      port: port at which the server will be available to the shell. On Android
+          this can be different from the port on which the server runs on the
+          host.
+      free_host_port: spawn the server a system allocated port. This is ignored
+          on Linux, where |port| indicates the port on which the server will be
+          spawned.
 
     Returns:
       The url that the shell can use to access the content of |local_dir_path|.
     """
     raise NotImplementedError()
 
-  def serve_local_directories(self, mappings, port=0):
+  def serve_local_directories(self, mappings, port=0, free_host_port=False):
     """Serves the content of the local (host) directories, making it available
     to the shell under the url returned by the function.
 
@@ -35,7 +40,12 @@ class Shell(object):
           |local_base_path_list|. The prefixes should skip the leading slash.
           The first matching prefix and the first location that contains the
           requested file will be used each time.
-      port: port at which the server will be available to the shell
+      port: port at which the server will be available to the shell. On Android
+          this can be different from the port on which the server runs on the
+          host.
+      free_host_port: spawn the server a system allocated port. This is ignored
+          on Linux, where |port| indicates the port on which the server will be
+          spawned.
 
     Returns:
       The url that the shell can use to access the server.
