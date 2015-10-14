@@ -75,7 +75,7 @@ void ChannelThread::InitChannelOnIOThread(
   CHECK(platform_handle.is_valid());
 
   // Create and initialize |Channel|.
-  channel_ = new Channel(platform_support_);
+  channel_ = MakeRefCounted<Channel>(platform_support_);
   channel_->Init(RawChannel::Create(platform_handle.Pass()));
 
   // Start the bootstrap endpoint.

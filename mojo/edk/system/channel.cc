@@ -29,13 +29,6 @@ struct SerializedEndpoint {
 
 }  // namespace
 
-Channel::Channel(embedder::PlatformSupport* platform_support)
-    : platform_support_(platform_support),
-      is_running_(false),
-      is_shutting_down_(false),
-      channel_manager_(nullptr) {
-}
-
 void Channel::Init(std::unique_ptr<RawChannel> raw_channel) {
   DCHECK(creation_thread_checker_.CalledOnValidThread());
   DCHECK(raw_channel);
@@ -148,11 +141,11 @@ void Channel::DetachEndpoint(ChannelEndpoint* endpoint,
                              ChannelEndpointId local_id,
                              ChannelEndpointId remote_id) {
   // Keep a reference to |this| to prevent this |Channel| from being deleted
-  // while this function is running.  Without this, if |Shutdown()| is started
-  // on the IO thread immediately after |mutex_| is released below and finishes
+  // while this function is running. Without this, if |Shutdown()| is started on
+  // the I/O thread immediately after |mutex_| is released below and finishes
   // before |SendControlMessage()| gets to run, |this| could be deleted while
   // this function is still running.
-  scoped_refptr<Channel> self(this);
+  RefPtr<Channel> self(this);
 
   if (!DetachEndpointInternal(endpoint, local_id, remote_id))
     return;
@@ -256,6 +249,12 @@ size_t Channel::GetSerializedPlatformHandleSize() const {
   MutexLocker locker(&mutex_);
   return raw_channel_->GetSerializedPlatformHandleSize();
 }
+
+Channel::Channel(embedder::PlatformSupport* platform_support)
+    : platform_support_(platform_support),
+      is_running_(false),
+      is_shutting_down_(false),
+      channel_manager_(nullptr) {}
 
 Channel::~Channel() {
   // The channel should have been shut down first.

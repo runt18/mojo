@@ -78,7 +78,7 @@ class ChannelManager {
   // pipe. Returns the newly-created |Channel|.
   // TODO(vtl): Maybe get rid of the others (and bootstrap message pipes in
   // general).
-  scoped_refptr<Channel> CreateChannelWithoutBootstrapOnIOThread(
+  RefPtr<Channel> CreateChannelWithoutBootstrapOnIOThread(
       ChannelId channel_id,
       embedder::ScopedPlatformHandle platform_handle);
 
@@ -93,7 +93,7 @@ class ChannelManager {
       scoped_refptr<base::TaskRunner> callback_thread_task_runner);
 
   // Gets the |Channel| with the given ID (which must exist).
-  scoped_refptr<Channel> GetChannel(ChannelId channel_id) const;
+  RefPtr<Channel> GetChannel(ChannelId channel_id) const;
 
   // Informs the channel manager (and thus channel) that it will be shutdown
   // soon (by calling |ShutdownChannel()|). Calling this is optional (and may in
@@ -128,7 +128,7 @@ class ChannelManager {
   // Used by |CreateChannelOnIOThread()| and |CreateChannelHelper()|. Called on
   // the I/O thread. |bootstrap_channel_endpoint| is optional and may be null.
   // Returns the newly-created |Channel|.
-  scoped_refptr<Channel> CreateChannelOnIOThreadHelper(
+  RefPtr<Channel> CreateChannelOnIOThreadHelper(
       ChannelId channel_id,
       embedder::ScopedPlatformHandle platform_handle,
       RefPtr<ChannelEndpoint>&& bootstrap_channel_endpoint);
@@ -154,8 +154,7 @@ class ChannelManager {
   // https://github.com/domokit/mojo/issues/313
   mutable Mutex mutex_;
 
-  using ChannelIdToChannelMap =
-      std::unordered_map<ChannelId, scoped_refptr<Channel>>;
+  using ChannelIdToChannelMap = std::unordered_map<ChannelId, RefPtr<Channel>>;
   ChannelIdToChannelMap channels_ MOJO_GUARDED_BY(mutex_);
 
   MOJO_DISALLOW_COPY_AND_ASSIGN(ChannelManager);

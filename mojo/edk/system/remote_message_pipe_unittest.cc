@@ -26,6 +26,7 @@
 #include "mojo/edk/system/message_pipe_dispatcher.h"
 #include "mojo/edk/system/platform_handle_dispatcher.h"
 #include "mojo/edk/system/raw_channel.h"
+#include "mojo/edk/system/ref_ptr.h"
 #include "mojo/edk/system/shared_buffer_dispatcher.h"
 #include "mojo/edk/system/test_utils.h"
 #include "mojo/edk/system/waiter.h"
@@ -126,7 +127,7 @@ class RemoteMessagePipeTest : public testing::Test {
     CHECK(channel_index == 0 || channel_index == 1);
     CHECK(!channels_[channel_index]);
 
-    channels_[channel_index] = new Channel(&platform_support_);
+    channels_[channel_index] = MakeRefCounted<Channel>(&platform_support_);
     channels_[channel_index]->Init(
         RawChannel::Create(platform_handles_[channel_index].Pass()));
   }
@@ -167,7 +168,7 @@ class RemoteMessagePipeTest : public testing::Test {
   embedder::SimplePlatformSupport platform_support_;
   mojo::test::TestIOThread io_thread_;
   embedder::ScopedPlatformHandle platform_handles_[2];
-  scoped_refptr<Channel> channels_[2];
+  RefPtr<Channel> channels_[2];
 
   MOJO_DISALLOW_COPY_AND_ASSIGN(RemoteMessagePipeTest);
 };

@@ -19,6 +19,7 @@
 #include "mojo/edk/system/message_in_transit.h"
 #include "mojo/edk/system/mutex.h"
 #include "mojo/edk/system/raw_channel.h"
+#include "mojo/edk/system/ref_counted.h"
 #include "mojo/edk/system/ref_ptr.h"
 #include "mojo/public/c/system/types.h"
 #include "mojo/public/cpp/system/macros.h"
@@ -50,11 +51,10 @@ class MessageInTransitQueue;
 // |ChannelEndpointClient| (e.g., |MessagePipe|), |ChannelEndpoint|, |Channel|.
 // Thus |Channel| may not call into |ChannelEndpoint| with |Channel|'s lock
 // held.
-class Channel final : public base::RefCountedThreadSafe<Channel>,
+class Channel final : public RefCountedThreadSafe<Channel>,
                       public RawChannel::Delegate {
  public:
-  // |platform_support| must remain alive until after |Shutdown()| is called.
-  explicit Channel(embedder::PlatformSupport* platform_support);
+  // Note: Use |MakeRefCounted<Channel>()|.
 
   // This must be called on the creation thread before any other methods are
   // called, and before references to this object are given to any other
@@ -175,7 +175,11 @@ class Channel final : public base::RefCountedThreadSafe<Channel>,
   }
 
  private:
-  friend class base::RefCountedThreadSafe<Channel>;
+  FRIEND_REF_COUNTED_THREAD_SAFE(Channel);
+  FRIEND_MAKE_REF_COUNTED(Channel);
+
+  // |platform_support| must remain alive until after |Shutdown()| is called.
+  explicit Channel(embedder::PlatformSupport* platform_support);
   ~Channel() override;
 
   // Helper for |DetachEndpoint()| (returns true if a "remove" should be sent).

@@ -23,6 +23,7 @@
 #include "mojo/edk/system/memory.h"
 #include "mojo/edk/system/message_pipe.h"
 #include "mojo/edk/system/raw_channel.h"
+#include "mojo/edk/system/ref_ptr.h"
 #include "mojo/edk/system/test_utils.h"
 #include "mojo/edk/system/waiter.h"
 #include "mojo/edk/test/test_io_thread.h"
@@ -95,10 +96,10 @@ class RemoteDataPipeImplTest : public testing::Test {
     CHECK_EQ(base::MessageLoop::current(), io_thread_.message_loop());
 
     embedder::PlatformChannelPair channel_pair;
-    channels_[0] = new Channel(&platform_support_);
+    channels_[0] = MakeRefCounted<Channel>(&platform_support_);
     channels_[0]->Init(RawChannel::Create(channel_pair.PassServerHandle()));
     channels_[0]->SetBootstrapEndpoint(std::move(ep0));
-    channels_[1] = new Channel(&platform_support_);
+    channels_[1] = MakeRefCounted<Channel>(&platform_support_);
     channels_[1]->Init(RawChannel::Create(channel_pair.PassClientHandle()));
     channels_[1]->SetBootstrapEndpoint(std::move(ep1));
   }
@@ -118,7 +119,7 @@ class RemoteDataPipeImplTest : public testing::Test {
 
   embedder::SimplePlatformSupport platform_support_;
   mojo::test::TestIOThread io_thread_;
-  scoped_refptr<Channel> channels_[2];
+  RefPtr<Channel> channels_[2];
   scoped_refptr<MessagePipe> message_pipes_[2];
 
   MOJO_DISALLOW_COPY_AND_ASSIGN(RemoteDataPipeImplTest);

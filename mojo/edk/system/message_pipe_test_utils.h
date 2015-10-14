@@ -44,7 +44,7 @@ class ChannelThread {
 
   embedder::PlatformSupport* const platform_support_;
   mojo::test::TestIOThread test_io_thread_;
-  scoped_refptr<Channel> channel_;
+  RefPtr<Channel> channel_;
 
   MOJO_DISALLOW_COPY_AND_ASSIGN(ChannelThread);
 };
