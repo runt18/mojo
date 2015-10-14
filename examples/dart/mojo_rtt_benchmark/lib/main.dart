@@ -19,7 +19,7 @@ import 'package:mojo/core.dart';
 import 'package:mojom/mojo/examples/echo.mojom.dart';
 
 class EchoTracingApp extends Application {
-  static const Duration kWarmupDuration = const Duration(seconds: 5);
+  static const Duration kWarmupDuration = const Duration(seconds: 1);
   static const Duration kDelay = const Duration(microseconds: 50);
   TracingHelper _tracing;
   List<EchoProxy> _echoProxies;

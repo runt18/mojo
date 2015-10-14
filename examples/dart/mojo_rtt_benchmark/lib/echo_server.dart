@@ -18,8 +18,8 @@ class EchoImpl implements Echo {
     _stub.onError = _errorHandler;
   }
 
-  Future echoString(String value, [Function responseFactory]) =>
-      new Future.value(responseFactory(value));
+  echoString(String value, [Function responseFactory]) =>
+      responseFactory(value);
 
   Future close() => _stub.close();
 
