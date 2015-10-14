@@ -6,10 +6,207 @@ package lexer
 
 import "testing"
 
-// TODO(rudominer) This dummy test is here in order to be able to test the
-// go unit test infrastructure. It will eventually be replaced by a real test.
-func TestDummyLexerTest(t *testing.T) {
-	if 5.1 > 2.1*3.1 {
-		t.Fatalf("Something is wrong.")
+func checkEq(t *testing.T, expected, actual interface{}) {
+	if expected != actual {
+		t.Fatalf("Failed check: Expected (%v), Actual (%v)", expected, actual)
 	}
+}
+
+// pumpTokens pumps all the tokens from a channel into a slice.
+func pumpTokens(tokensChan chan Token) []Token {
+	tokens := []Token{}
+	for token := range tokensChan {
+		tokens = append(tokens, token)
+	}
+	return tokens
+}
+
+// TestAllSingleTokens tests for each token that a valid string is accepted as
+// the correct token.
+func TestAllSingleTokens(t *testing.T) {
+	testData := []struct {
+		source string
+		token  TokenKind
+	}{
+		{"(", LParen},
+		{")", RParen},
+		{"[", LBracket},
+		{"]", RBracket},
+		{"{", LBrace},
+		{"}", RBrace},
+		{"<", LAngle},
+		{">", RAngle},
+		{";", Semi},
+		{",", Comma},
+		{".", Dot},
+		{"-", Minus},
+		{"+", Plus},
+		{"&", Amp},
+		{"?", Qstn},
+		{"=", Equals},
+		{"=>", Response},
+		{"somet_hi3ng", Name},
+		{"import", Import},
+		{"module", Module},
+		{"struct", Struct},
+		{"union", Union},
+		{"interface", Interface},
+		{"enum", Enum},
+		{"const", Const},
+		{"true", True},
+		{"false", False},
+		{"default", Default},
+		{"@10", Ordinal},
+		{"10", IntConstDec},
+		{"0", IntConstDec},
+		{"0xA10", IntConstHex},
+		{"0xa10", IntConstHex},
+		{"0XA10", IntConstHex},
+		{"0Xa10", IntConstHex},
+		{"10.5", FloatConst},
+		{"10e5", FloatConst},
+		{"0.5", FloatConst},
+		{"0e5", FloatConst},
+		{"10e+5", FloatConst},
+		{"10e-5", FloatConst},
+		{"\"hello world\"", StringLiteral},
+		{"\"hello \\\"real\\\" world\"", StringLiteral},
+	}
+
+	for i := range testData {
+		l := lexer{source: testData[i].source, tokens: make(chan Token)}
+		go l.run()
+		tokens := pumpTokens(l.tokens)
+
+		if len(tokens) != 1 {
+			t.Fatalf("Source('%v'): Expected 1 token but got %v instead: %v",
+				testData[i].source, len(tokens), tokens)
+		}
+
+		checkEq(t, testData[i].source, tokens[0].Text)
+		checkEq(t, testData[i].token, tokens[0].Kind)
+	}
+}
+
+// TestTokenPosition tests that the position in the source string, the line
+// number and the position in the line of the lexed token are correctly found.
+func TestTokenPosition(t *testing.T) {
+	source := "  \n  ."
+	l := lexer{source: source, tokens: make(chan Token)}
+	go l.run()
+	tokens := pumpTokens(l.tokens)
+	token := tokens[0]
+
+	checkEq(t, 5, token.CharPos)
+	checkEq(t, 1, token.LineNo)
+	checkEq(t, 2, token.LinePos)
+}
+
+// TestTokenPositionChineseString tests that CharPos is expressed as a number
+// of runes and not a number of bytes.
+func TestTokenPositionChineseString(t *testing.T) {
+	source := "\"您好\" is"
+	ts := Tokenize(source)
+	checkEq(t, StringLiteral, ts.PeekNext().Kind)
+	ts.ConsumeNext()
+	checkEq(t, 5, ts.PeekNext().CharPos)
+}
+
+// TestSkipSkippable tests that all skippable characters are skipped.
+func TestSkipSkippable(t *testing.T) {
+	source := "  \t  \r \n  ."
+	l := lexer{source: source, tokens: make(chan Token)}
+	go l.run()
+	tokens := pumpTokens(l.tokens)
+
+	checkEq(t, Dot, tokens[0].Kind)
+}
+
+// TestTokenize tests that a single token embedded in a larger string is
+// correctly lexed.
+func TestTokenize(t *testing.T) {
+	ts := Tokenize("   \t .   ")
+	token := ts.PeekNext()
+	checkEq(t, Dot, token.Kind)
+
+	ts.ConsumeNext()
+	token = ts.PeekNext()
+	checkEq(t, EOF, token.Kind)
+}
+
+// TestTokenizeBadUTF8String tests that an invalid UTF8 string is handled.
+func TestTokenizeBadUTF8String(t *testing.T) {
+	ts := Tokenize("\xF0")
+	checkEq(t, ErrorIllegalChar, ts.PeekNext().Kind)
+}
+
+// TestTokenizeEmptyString tests that empty strings are handled correctly.
+func TestTokenizeEmptyString(t *testing.T) {
+	ts := Tokenize("")
+	checkEq(t, EOF, ts.PeekNext().Kind)
+}
+
+// TestTokenizeMoreThanOne tests that more than one token is correctly lexed.
+func TestTokenizeMoreThanOne(t *testing.T) {
+	ts := Tokenize("()")
+	checkEq(t, LParen, ts.PeekNext().Kind)
+	ts.ConsumeNext()
+	checkEq(t, RParen, ts.PeekNext().Kind)
+	ts.ConsumeNext()
+	checkEq(t, EOF, ts.PeekNext().Kind)
+}
+
+// TestIllegalChar tests that an illegal character is correctly spotted.
+func TestIllegalChar(t *testing.T) {
+	ts := Tokenize("   \t $   ")
+	checkEq(t, ErrorIllegalChar, ts.PeekNext().Kind)
+}
+
+// TestUnterminatedStringLiteralEos tests that the correct error is emitted if
+// a quoted string is never closed.
+func TestUnterminatedStringLiteralEos(t *testing.T) {
+	ts := Tokenize("\"hello world")
+	checkEq(t, ErrorUnterminatedStringLiteral, ts.PeekNext().Kind)
+}
+
+// TestUnterminatedStringLiteralEol tests that the correct error is emitted if
+// a quoted string is closed on a subsequent line.
+func TestUnterminatedStringLiteralEol(t *testing.T) {
+	ts := Tokenize("\"hello\n world\"")
+	checkEq(t, ErrorUnterminatedStringLiteral, ts.PeekNext().Kind)
+}
+
+// TestSingleLineComment tests that single line comments are correctly skipped.
+func TestSingleLineComment(t *testing.T) {
+	ts := Tokenize("( // some stuff\n)")
+	checkEq(t, LParen, ts.PeekNext().Kind)
+	ts.ConsumeNext()
+	checkEq(t, RParen, ts.PeekNext().Kind)
+}
+
+// TestMultiLineComment tests that multi line comments are correctly skipped.
+func TestMultiLineComment(t *testing.T) {
+	ts := Tokenize("( /* hello world/  * *\n */)")
+	checkEq(t, LParen, ts.PeekNext().Kind)
+	ts.ConsumeNext()
+	checkEq(t, RParen, ts.PeekNext().Kind)
+}
+
+// TestUnterminatedMultiLineComment tests that unterminated multiline comments
+// emit the correct error.
+func TestUnterminatedMultiLineComment(t *testing.T) {
+	ts := Tokenize("( /* hello world/  * *\n )")
+	checkEq(t, LParen, ts.PeekNext().Kind)
+	ts.ConsumeNext()
+	checkEq(t, ErrorUnterminatedComment, ts.PeekNext().Kind)
+}
+
+// TestUnterminatedMultiLineCommentAtStar tests that if the string ends at a *
+// (which could be the beginning of the close of a multiline comment) the right
+// error is emitted.
+func TestUnterminatedMultiLineCommentAtStar(t *testing.T) {
+	ts := Tokenize("( /* hello world/  *")
+	checkEq(t, LParen, ts.PeekNext().Kind)
+	ts.ConsumeNext()
+	checkEq(t, ErrorUnterminatedComment, ts.PeekNext().Kind)
 }
