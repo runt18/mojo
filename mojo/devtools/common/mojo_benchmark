@@ -50,22 +50,46 @@ _BENCHMARK_APP = 'https://core.mojoapps.io/benchmark.mojo'
 _CACHE_SERVICE_URL = 'mojo:url_response_disk_cache'
 _NETWORK_SERVICE_URL = 'mojo:network_service'
 
+_COLD_START_SHELL_ARGS = [
+  '--args-for=%s %s' % (_CACHE_SERVICE_URL, '--clear'),
+  '--args-for=%s %s' % (_NETWORK_SERVICE_URL, '--clear'),
+]
+
 # Additional time in seconds allocated per shell run to accommodate start-up.
 # The shell should terminate before hitting this time out, it is an error if it
 # doesn't.
 _EXTRA_TIMEOUT = 20
 
 
-def _get_output_file(shell, name, cold_start):
-    file_name = 'benchmark-%s-%s-%s.trace' % (
-        name.replace(' ', '_'),
-        'cold_start' if cold_start else 'warm_start',
-        time.strftime('%Y%m%d%H%M%S'))
-    return file_name
+def _generate_benchmark_variants(benchmark_spec):
+  """Generates benchmark specifications for individual variants of the given
+  benchmark: cold start and warm start.
+
+  Returns:
+    A list of benchmark specs corresponding to individual variants of the given
+        benchmark.
+  """
+  variants = []
+  # Cold start.
+  variants.append({
+    'name': benchmark_spec['name'] + ' (cold start)',
+    'app': benchmark_spec['app'],
+    'duration': benchmark_spec['duration'],
+    'measurements': benchmark_spec['measurements'],
+    'shell-args': benchmark_spec.get('shell-args',
+                                     []) + _COLD_START_SHELL_ARGS})
+  # Warm start.
+  variants.append({
+    'name': benchmark_spec['name'] + ' (warm start)',
+    'app': benchmark_spec['app'],
+    'duration': benchmark_spec['duration'],
+    'measurements': benchmark_spec['measurements'],
+    'shell-args': benchmark_spec.get('shell-args', [])})
+  return variants
 
 
 def _run_benchmark(shell, shell_args, name, app, duration_seconds, measurements,
-                   cold_start, verbose, android, save_traces):
+                   verbose, android, save_traces):
   """Runs `benchmark.mojo` in shell with correct arguments, parses and
   presents the benchmark results.
   """
@@ -77,7 +101,8 @@ def _run_benchmark(shell, shell_args, name, app, duration_seconds, measurements,
   output_file = None
   device_output_file = None
   if save_traces:
-    output_file = _get_output_file(shell, name, cold_start)
+    output_file = 'benchmark-%s-%s.trace' % (name.replace(' ', '_'),
+        time.strftime('%Y%m%d%H%M%S'))
     if android:
       device_output_file = os.path.join(shell.get_tmp_dir_path(), output_file)
       benchmark_args.append('--trace-output=' + device_output_file)
@@ -93,13 +118,9 @@ def _run_benchmark(shell, shell_args, name, app, duration_seconds, measurements,
   shell_args.append('--args-for=%s %s' % (_BENCHMARK_APP,
                                           ' '.join(benchmark_args)))
 
-  if cold_start:
-    shell_args.append('--args-for=%s %s' % (_CACHE_SERVICE_URL, '--clear'))
-    shell_args.append('--args-for=%s %s' % (_NETWORK_SERVICE_URL, '--clear'))
-
   if verbose:
     print 'shell arguments: ' + str(shell_args)
-  print '[ %s ] %s' % (name, 'cold start' if cold_start else 'warm start')
+  print '[ %s ]' % name
   return_code, output, did_time_out = shell.run_and_get_output(
       shell_args, timeout=timeout)
   output_lines = [line.strip() for line in output.split('\n')]
@@ -146,23 +167,18 @@ def main():
   target_os = 'android' if script_args.android else 'linux'
   benchmark_list_params = {"target_os": target_os}
   exec script_args.benchmark_list_file in benchmark_list_params
-  benchmark_list = benchmark_list_params['benchmarks']
 
   succeeded = True
-  for benchmark_spec in benchmark_list:
-    name = benchmark_spec['name']
-    app = benchmark_spec['app']
-    duration = benchmark_spec['duration']
-    shell_args = benchmark_spec.get('shell-args', []) + common_shell_args
-    measurements = benchmark_spec['measurements']
-    _run_benchmark(shell, shell_args, name, app, duration, measurements,
-                   cold_start=True, verbose=script_args.verbose,
-                   android=script_args.android,
-                   save_traces=script_args.save_traces)
-    _run_benchmark(shell, shell_args, name, app, duration, measurements,
-                   cold_start=False, verbose=script_args.verbose,
-                   android=script_args.android,
-                   save_traces=script_args.save_traces)
+  for benchmark_spec in benchmark_list_params['benchmarks']:
+    for variant_spec in _generate_benchmark_variants(benchmark_spec):
+      name = variant_spec['name']
+      app = variant_spec['app']
+      duration = variant_spec['duration']
+      shell_args = variant_spec.get('shell-args', []) + common_shell_args
+      measurements = variant_spec['measurements']
+      _run_benchmark(shell, shell_args, name, app, duration, measurements,
+                     script_args.verbose, script_args.android,
+                     script_args.save_traces)
 
   return 0 if succeeded else 1
 
