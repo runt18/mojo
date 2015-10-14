@@ -28,8 +28,10 @@ class TraceProviderImpl implements TraceProvider {
     _enqueuing = true;
     new Future(() {
       new Future.delayed(const Duration(seconds: 1), () {
-      _enqueuing = false;
-      _message_queue.clear();
+        if (_enqueuing) {
+          _enqueuing = false;
+          _message_queue.clear();
+        }
       });
     });
   }
@@ -44,19 +46,18 @@ class TraceProviderImpl implements TraceProvider {
     assert(_recorder == null);
     _recorder = recorder;
     _categories = categories;
-
-    for (String message in _message_queue) {
-      _recorder.ptr.record(message);
-    }
     _enqueuing = false;
-    _message_queue.clear();
   }
 
   @override
   void stopTracing() {
     assert(_recorder != null);
+    for (String message in _message_queue) {
+      _recorder.ptr.record(message);
+    }
     _recorder.close();
     _recorder = null;
+    _message_queue.clear();
   }
 
   bool isActive() {
@@ -64,9 +65,7 @@ class TraceProviderImpl implements TraceProvider {
   }
 
   void sendTraceMessage(String message) {
-    if (_recorder != null) {
-      _recorder.ptr.record(message);
-    } else if (_enqueuing) {
+    if (isActive()) {
       _message_queue.add(message);
     }
   }
