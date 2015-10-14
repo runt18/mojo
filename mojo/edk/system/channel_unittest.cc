@@ -4,6 +4,8 @@
 
 #include "mojo/edk/system/channel.h"
 
+#include <utility>
+
 #include "mojo/edk/system/channel_endpoint.h"
 #include "mojo/edk/system/channel_endpoint_id.h"
 #include "mojo/edk/system/channel_test_base.h"
@@ -38,13 +40,13 @@ TEST_F(ChannelTest, CloseBeforeRun) {
   PostMethodToIOThreadAndWait(FROM_HERE,
                               &ChannelTest::CreateAndInitChannelOnIOThread, 0);
 
-  scoped_refptr<ChannelEndpoint> channel_endpoint;
+  RefPtr<ChannelEndpoint> channel_endpoint;
   scoped_refptr<MessagePipe> mp(
       MessagePipe::CreateLocalProxy(&channel_endpoint));
 
   mp->Close(0);
 
-  channel(0)->SetBootstrapEndpoint(channel_endpoint);
+  channel(0)->SetBootstrapEndpoint(std::move(channel_endpoint));
 
   PostMethodToIOThreadAndWait(FROM_HERE,
                               &ChannelTest::ShutdownChannelOnIOThread, 0);
@@ -58,11 +60,11 @@ TEST_F(ChannelTest, ShutdownAfterAttach) {
   PostMethodToIOThreadAndWait(FROM_HERE,
                               &ChannelTest::CreateAndInitChannelOnIOThread, 0);
 
-  scoped_refptr<ChannelEndpoint> channel_endpoint;
+  RefPtr<ChannelEndpoint> channel_endpoint;
   scoped_refptr<MessagePipe> mp(
       MessagePipe::CreateLocalProxy(&channel_endpoint));
 
-  channel(0)->SetBootstrapEndpoint(channel_endpoint);
+  channel(0)->SetBootstrapEndpoint(std::move(channel_endpoint));
 
   Waiter waiter;
   waiter.Init();
@@ -93,11 +95,11 @@ TEST_F(ChannelTest, WaitAfterAttachRunAndShutdown) {
   PostMethodToIOThreadAndWait(FROM_HERE,
                               &ChannelTest::CreateAndInitChannelOnIOThread, 0);
 
-  scoped_refptr<ChannelEndpoint> channel_endpoint;
+  RefPtr<ChannelEndpoint> channel_endpoint;
   scoped_refptr<MessagePipe> mp(
       MessagePipe::CreateLocalProxy(&channel_endpoint));
 
-  channel(0)->SetBootstrapEndpoint(channel_endpoint);
+  channel(0)->SetBootstrapEndpoint(std::move(channel_endpoint));
 
   PostMethodToIOThreadAndWait(FROM_HERE,
                               &ChannelTest::ShutdownChannelOnIOThread, 0);
@@ -127,11 +129,11 @@ TEST_F(ChannelTest, EndpointChannelShutdownRace) {
     PostMethodToIOThreadAndWait(
         FROM_HERE, &ChannelTest::CreateAndInitChannelOnIOThread, 0);
 
-    scoped_refptr<ChannelEndpoint> channel_endpoint;
+    RefPtr<ChannelEndpoint> channel_endpoint;
     scoped_refptr<MessagePipe> mp(
         MessagePipe::CreateLocalProxy(&channel_endpoint));
 
-    channel(0)->SetBootstrapEndpoint(channel_endpoint);
+    channel(0)->SetBootstrapEndpoint(std::move(channel_endpoint));
 
     io_thread()->PostTask(
         FROM_HERE, base::Bind(&ChannelTest::ShutdownAndReleaseChannelOnIOThread,

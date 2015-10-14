@@ -104,7 +104,7 @@ DataPipe* DataPipe::CreateLocal(
 DataPipe* DataPipe::CreateRemoteProducerFromExisting(
     const MojoCreateDataPipeOptions& validated_options,
     MessageInTransitQueue* message_queue,
-    ChannelEndpoint* channel_endpoint) {
+    RefPtr<ChannelEndpoint>&& channel_endpoint) {
   std::unique_ptr<char, base::AlignedFreeDeleter> buffer;
   size_t buffer_num_bytes = 0;
   if (!RemoteProducerDataPipeImpl::ProcessMessagesFromIncomingEndpoint(
@@ -121,7 +121,7 @@ DataPipe* DataPipe::CreateRemoteProducerFromExisting(
   DataPipe* data_pipe = new DataPipe(
       false, true, validated_options,
       util::MakeUnique<RemoteProducerDataPipeImpl>(
-          channel_endpoint, std::move(buffer), 0, buffer_num_bytes));
+          channel_endpoint.Clone(), std::move(buffer), 0, buffer_num_bytes));
   if (channel_endpoint) {
     if (!channel_endpoint->ReplaceClient(data_pipe, 0))
       data_pipe->OnDetachFromChannel(0);
@@ -136,7 +136,7 @@ DataPipe* DataPipe::CreateRemoteConsumerFromExisting(
     const MojoCreateDataPipeOptions& validated_options,
     size_t consumer_num_bytes,
     MessageInTransitQueue* message_queue,
-    ChannelEndpoint* channel_endpoint) {
+    RefPtr<ChannelEndpoint>&& channel_endpoint) {
   if (!RemoteConsumerDataPipeImpl::ProcessMessagesFromIncomingEndpoint(
           validated_options, &consumer_num_bytes, message_queue))
     return nullptr;
@@ -148,10 +148,10 @@ DataPipe* DataPipe::CreateRemoteConsumerFromExisting(
   // ongoing call to |IncomingEndpoint::OnReadMessage()| return false. This will
   // make |ChannelEndpoint::OnReadMessage()| retry, until its |ReplaceClient()|
   // is called.
-  DataPipe* data_pipe =
-      new DataPipe(true, false, validated_options,
-                   util::MakeUnique<RemoteConsumerDataPipeImpl>(
-                       channel_endpoint, consumer_num_bytes, nullptr, 0));
+  DataPipe* data_pipe = new DataPipe(
+      true, false, validated_options,
+      util::MakeUnique<RemoteConsumerDataPipeImpl>(
+          channel_endpoint.Clone(), consumer_num_bytes, nullptr, 0));
   if (channel_endpoint) {
     if (!channel_endpoint->ReplaceClient(data_pipe, 0))
       data_pipe->OnDetachFromChannel(0);

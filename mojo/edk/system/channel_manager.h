@@ -14,6 +14,7 @@
 #include "mojo/edk/embedder/scoped_platform_handle.h"
 #include "mojo/edk/system/channel_id.h"
 #include "mojo/edk/system/mutex.h"
+#include "mojo/edk/system/ref_ptr.h"
 #include "mojo/public/cpp/system/macros.h"
 
 namespace base {
@@ -130,13 +131,15 @@ class ChannelManager {
   scoped_refptr<Channel> CreateChannelOnIOThreadHelper(
       ChannelId channel_id,
       embedder::ScopedPlatformHandle platform_handle,
-      scoped_refptr<system::ChannelEndpoint> bootstrap_channel_endpoint);
+      RefPtr<ChannelEndpoint>&& bootstrap_channel_endpoint);
 
   // Used by |CreateChannel()|. Called on the I/O thread.
+  // TODO(vtl): |bootstrap_channel_endpoint| should be an rvalue reference, but
+  // that doesn't currently work correctly with base::Bind.
   void CreateChannelHelper(
       ChannelId channel_id,
       embedder::ScopedPlatformHandle platform_handle,
-      scoped_refptr<system::ChannelEndpoint> bootstrap_channel_endpoint,
+      RefPtr<ChannelEndpoint> bootstrap_channel_endpoint,
       const base::Closure& callback,
       scoped_refptr<base::TaskRunner> callback_thread_task_runner);
 

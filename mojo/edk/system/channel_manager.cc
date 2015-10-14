@@ -4,6 +4,8 @@
 
 #include "mojo/edk/system/channel_manager.h"
 
+#include <utility>
+
 #include "base/bind.h"
 #include "base/bind_helpers.h"
 #include "base/location.h"
@@ -78,12 +80,12 @@ void ChannelManager::Shutdown(
 scoped_refptr<MessagePipeDispatcher> ChannelManager::CreateChannelOnIOThread(
     ChannelId channel_id,
     embedder::ScopedPlatformHandle platform_handle) {
-  scoped_refptr<system::ChannelEndpoint> bootstrap_channel_endpoint;
-  scoped_refptr<system::MessagePipeDispatcher> dispatcher =
-      system::MessagePipeDispatcher::CreateRemoteMessagePipe(
+  RefPtr<ChannelEndpoint> bootstrap_channel_endpoint;
+  scoped_refptr<MessagePipeDispatcher> dispatcher =
+      MessagePipeDispatcher::CreateRemoteMessagePipe(
           &bootstrap_channel_endpoint);
   CreateChannelOnIOThreadHelper(channel_id, platform_handle.Pass(),
-                                bootstrap_channel_endpoint);
+                                std::move(bootstrap_channel_endpoint));
   return dispatcher;
 }
 
@@ -102,15 +104,15 @@ scoped_refptr<MessagePipeDispatcher> ChannelManager::CreateChannel(
   DCHECK(!callback.is_null());
   // (|callback_thread_task_runner| may be null.)
 
-  scoped_refptr<system::ChannelEndpoint> bootstrap_channel_endpoint;
-  scoped_refptr<system::MessagePipeDispatcher> dispatcher =
-      system::MessagePipeDispatcher::CreateRemoteMessagePipe(
+  RefPtr<ChannelEndpoint> bootstrap_channel_endpoint;
+  scoped_refptr<MessagePipeDispatcher> dispatcher =
+      MessagePipeDispatcher::CreateRemoteMessagePipe(
           &bootstrap_channel_endpoint);
   bool ok = io_thread_task_runner_->PostTask(
       FROM_HERE,
       base::Bind(&ChannelManager::CreateChannelHelper, base::Unretained(this),
                  channel_id, base::Passed(&platform_handle),
-                 bootstrap_channel_endpoint, callback,
+                 base::Passed(&bootstrap_channel_endpoint), callback,
                  callback_thread_task_runner));
   DCHECK(ok);
   return dispatcher;
@@ -173,16 +175,15 @@ void ChannelManager::ShutdownHelper(
 scoped_refptr<Channel> ChannelManager::CreateChannelOnIOThreadHelper(
     ChannelId channel_id,
     embedder::ScopedPlatformHandle platform_handle,
-    scoped_refptr<system::ChannelEndpoint> bootstrap_channel_endpoint) {
+    RefPtr<ChannelEndpoint>&& bootstrap_channel_endpoint) {
   DCHECK_NE(channel_id, kInvalidChannelId);
   DCHECK(platform_handle.is_valid());
 
-  // Create and initialize a |system::Channel|.
-  scoped_refptr<system::Channel> channel =
-      new system::Channel(platform_support_);
-  channel->Init(system::RawChannel::Create(platform_handle.Pass()));
+  // Create and initialize a |Channel|.
+  scoped_refptr<Channel> channel = new Channel(platform_support_);
+  channel->Init(RawChannel::Create(platform_handle.Pass()));
   if (bootstrap_channel_endpoint)
-    channel->SetBootstrapEndpoint(bootstrap_channel_endpoint);
+    channel->SetBootstrapEndpoint(std::move(bootstrap_channel_endpoint));
 
   {
     MutexLocker locker(&mutex_);
@@ -196,11 +197,11 @@ scoped_refptr<Channel> ChannelManager::CreateChannelOnIOThreadHelper(
 void ChannelManager::CreateChannelHelper(
     ChannelId channel_id,
     embedder::ScopedPlatformHandle platform_handle,
-    scoped_refptr<system::ChannelEndpoint> bootstrap_channel_endpoint,
+    RefPtr<ChannelEndpoint> bootstrap_channel_endpoint,
     const base::Closure& callback,
     scoped_refptr<base::TaskRunner> callback_thread_task_runner) {
   CreateChannelOnIOThreadHelper(channel_id, platform_handle.Pass(),
-                                bootstrap_channel_endpoint);
+                                std::move(bootstrap_channel_endpoint));
   if (callback_thread_task_runner) {
     bool ok = callback_thread_task_runner->PostTask(FROM_HERE, callback);
     DCHECK(ok);

@@ -7,11 +7,11 @@
 
 #include <memory>
 
-#include "base/memory/ref_counted.h"
 #include "mojo/edk/system/channel_endpoint.h"
 #include "mojo/edk/system/channel_endpoint_client.h"
 #include "mojo/edk/system/message_in_transit_queue.h"
 #include "mojo/edk/system/mutex.h"
+#include "mojo/edk/system/ref_ptr.h"
 #include "mojo/public/cpp/system/macros.h"
 
 namespace base {
@@ -27,7 +27,7 @@ class TestChannelEndpointClient final : public ChannelEndpointClient {
   TestChannelEndpointClient();
 
   // Initializes with the given port and endpoint.
-  void Init(unsigned port, ChannelEndpoint* endpoint);
+  void Init(unsigned port, RefPtr<ChannelEndpoint>&& endpoint);
 
   // Returns true if we're detached from the |ChannelEndpoint|.
   bool IsDetached() const;
@@ -53,7 +53,7 @@ class TestChannelEndpointClient final : public ChannelEndpointClient {
   mutable Mutex mutex_;
 
   unsigned port_ MOJO_GUARDED_BY(mutex_);
-  scoped_refptr<ChannelEndpoint> endpoint_ MOJO_GUARDED_BY(mutex_);
+  RefPtr<ChannelEndpoint> endpoint_ MOJO_GUARDED_BY(mutex_);
 
   MessageInTransitQueue messages_ MOJO_GUARDED_BY(mutex_);
 

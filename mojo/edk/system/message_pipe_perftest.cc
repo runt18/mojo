@@ -8,6 +8,7 @@
 
 #include <memory>
 #include <string>
+#include <utility>
 #include <vector>
 
 #include "base/bind.h"
@@ -22,6 +23,7 @@
 #include "mojo/edk/system/message_pipe_test_utils.h"
 #include "mojo/edk/system/proxy_message_pipe_endpoint.h"
 #include "mojo/edk/system/raw_channel.h"
+#include "mojo/edk/system/ref_ptr.h"
 #include "mojo/edk/system/test_utils.h"
 #include "mojo/edk/test/test_utils.h"
 #include "testing/gtest/include/gtest/gtest.h"
@@ -98,9 +100,9 @@ MOJO_MULTIPROCESS_TEST_CHILD_MAIN(PingPongClient) {
   embedder::ScopedPlatformHandle client_platform_handle =
       mojo::test::MultiprocessTestHelper::client_platform_handle.Pass();
   CHECK(client_platform_handle.is_valid());
-  scoped_refptr<ChannelEndpoint> ep;
+  RefPtr<ChannelEndpoint> ep;
   scoped_refptr<MessagePipe> mp(MessagePipe::CreateLocalProxy(&ep));
-  channel_thread.Start(client_platform_handle.Pass(), ep);
+  channel_thread.Start(client_platform_handle.Pass(), std::move(ep));
 
   std::string buffer(1000000, '\0');
   int rv = 0;
@@ -146,9 +148,9 @@ MOJO_MULTIPROCESS_TEST_CHILD_MAIN(PingPongClient) {
 TEST_F(MultiprocessMessagePipePerfTest, MAYBE_PingPong) {
   helper()->StartChild("PingPongClient");
 
-  scoped_refptr<ChannelEndpoint> ep;
+  RefPtr<ChannelEndpoint> ep;
   scoped_refptr<MessagePipe> mp(MessagePipe::CreateLocalProxy(&ep));
-  Init(ep);
+  Init(std::move(ep));
 
   // This values are set to align with one at ipc_pertests.cc for comparison.
   const size_t kMsgSize[5] = {12, 144, 1728, 20736, 248832};

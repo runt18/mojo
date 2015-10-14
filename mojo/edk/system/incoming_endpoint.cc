@@ -4,6 +4,8 @@
 
 #include "mojo/edk/system/incoming_endpoint.h"
 
+#include <utility>
+
 #include "base/logging.h"
 #include "mojo/edk/system/channel_endpoint.h"
 #include "mojo/edk/system/data_pipe.h"
@@ -17,8 +19,8 @@ namespace system {
 IncomingEndpoint::IncomingEndpoint() {
 }
 
-scoped_refptr<ChannelEndpoint> IncomingEndpoint::Init() {
-  endpoint_ = new ChannelEndpoint(this, 0);
+RefPtr<ChannelEndpoint> IncomingEndpoint::Init() {
+  endpoint_ = MakeRefCounted<ChannelEndpoint>(this, 0);
   return endpoint_;
 }
 
@@ -26,9 +28,8 @@ scoped_refptr<MessagePipe> IncomingEndpoint::ConvertToMessagePipe() {
   MutexLocker locker(&mutex_);
   scoped_refptr<MessagePipe> message_pipe(
       MessagePipe::CreateLocalProxyFromExisting(&message_queue_,
-                                                endpoint_.get()));
+                                                std::move(endpoint_)));
   DCHECK(message_queue_.IsEmpty());
-  endpoint_ = nullptr;
   return message_pipe;
 }
 
@@ -37,9 +38,9 @@ scoped_refptr<DataPipe> IncomingEndpoint::ConvertToDataPipeProducer(
     size_t consumer_num_bytes) {
   MutexLocker locker(&mutex_);
   scoped_refptr<DataPipe> data_pipe(DataPipe::CreateRemoteConsumerFromExisting(
-      validated_options, consumer_num_bytes, &message_queue_, endpoint_.get()));
+      validated_options, consumer_num_bytes, &message_queue_,
+      std::move(endpoint_)));
   DCHECK(message_queue_.IsEmpty());
-  endpoint_ = nullptr;
   return data_pipe;
 }
 
@@ -47,9 +48,8 @@ scoped_refptr<DataPipe> IncomingEndpoint::ConvertToDataPipeConsumer(
     const MojoCreateDataPipeOptions& validated_options) {
   MutexLocker locker(&mutex_);
   scoped_refptr<DataPipe> data_pipe(DataPipe::CreateRemoteProducerFromExisting(
-      validated_options, &message_queue_, endpoint_.get()));
+      validated_options, &message_queue_, std::move(endpoint_)));
   DCHECK(message_queue_.IsEmpty());
-  endpoint_ = nullptr;
   return data_pipe;
 }
 

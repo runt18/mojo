@@ -15,19 +15,6 @@
 namespace mojo {
 namespace system {
 
-ChannelEndpoint::ChannelEndpoint(ChannelEndpointClient* client,
-                                 unsigned client_port,
-                                 MessageInTransitQueue* message_queue)
-    : state_(State::PAUSED),
-      client_(client),
-      client_port_(client_port),
-      channel_(nullptr) {
-  DCHECK(client_ || message_queue);
-
-  if (message_queue)
-    channel_message_queue_.Swap(message_queue);
-}
-
 bool ChannelEndpoint::EnqueueMessage(
     std::unique_ptr<MessageInTransit> message) {
   DCHECK(message);
@@ -142,6 +129,19 @@ void ChannelEndpoint::DetachFromChannel() {
   // |OnDetachFromChannel()|.)
   if (client)
     client->OnDetachFromChannel(client_port);
+}
+
+ChannelEndpoint::ChannelEndpoint(ChannelEndpointClient* client,
+                                 unsigned client_port,
+                                 MessageInTransitQueue* message_queue)
+    : state_(State::PAUSED),
+      client_(client),
+      client_port_(client_port),
+      channel_(nullptr) {
+  DCHECK(client_ || message_queue);
+
+  if (message_queue)
+    channel_message_queue_.Swap(message_queue);
 }
 
 ChannelEndpoint::~ChannelEndpoint() {

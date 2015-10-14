@@ -8,6 +8,7 @@
 #include "base/memory/ref_counted.h"
 #include "mojo/edk/system/dispatcher.h"
 #include "mojo/edk/system/memory.h"
+#include "mojo/edk/system/ref_ptr.h"
 #include "mojo/public/cpp/system/macros.h"
 
 namespace mojo {
@@ -53,7 +54,7 @@ class MessagePipeDispatcher final : public Dispatcher {
   // TODO(vtl): This currently uses |kDefaultCreateOptions|, which is okay since
   // there aren't any options, but eventually options should be plumbed through.
   static scoped_refptr<MessagePipeDispatcher> CreateRemoteMessagePipe(
-      scoped_refptr<ChannelEndpoint>* channel_endpoint);
+      RefPtr<ChannelEndpoint>* channel_endpoint);
 
   // The "opposite" of |SerializeAndClose()|. (Typically this is called by
   // |Dispatcher::Deserialize()|.)

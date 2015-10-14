@@ -20,6 +20,7 @@
 #include "mojo/edk/system/message_in_transit.h"
 #include "mojo/edk/system/message_pipe_endpoint.h"
 #include "mojo/edk/system/mutex.h"
+#include "mojo/edk/system/ref_ptr.h"
 #include "mojo/public/c/system/message_pipe.h"
 #include "mojo/public/c/system/types.h"
 #include "mojo/public/cpp/system/macros.h"
@@ -44,7 +45,7 @@ class MessagePipe final : public ChannelEndpointClient {
   // |ProxyMessagePipeEndpoint| on port 1. |*channel_endpoint| is set to the
   // (newly-created) |ChannelEndpoint| for the latter.
   static MessagePipe* CreateLocalProxy(
-      scoped_refptr<ChannelEndpoint>* channel_endpoint);
+      RefPtr<ChannelEndpoint>* channel_endpoint);
 
   // Similar to |CreateLocalProxy()|, except that it'll do so from an existing
   // |ChannelEndpoint| (whose |ReplaceClient()| it'll call) and take
@@ -52,7 +53,7 @@ class MessagePipe final : public ChannelEndpointClient {
   // |channel_endpoint| is null, this will create a "half-open" message pipe.
   static MessagePipe* CreateLocalProxyFromExisting(
       MessageInTransitQueue* message_queue,
-      ChannelEndpoint* channel_endpoint);
+      RefPtr<ChannelEndpoint>&& channel_endpoint);
 
   // Creates a |MessagePipe| with a |ProxyMessagePipeEndpoint| on port 0 and a
   // |LocalMessagePipeEndpoint| on port 1. |*channel_endpoint| is set to the
@@ -61,7 +62,7 @@ class MessagePipe final : public ChannelEndpointClient {
   // configuration arises from a local message pipe having its port 0
   // "converted" using |ConvertLocalToProxy()|).
   static MessagePipe* CreateProxyLocal(
-      scoped_refptr<ChannelEndpoint>* channel_endpoint);
+      RefPtr<ChannelEndpoint>* channel_endpoint);
 
   // Gets the other port number (i.e., 0 -> 1, 1 -> 0).
   static unsigned GetPeerPort(unsigned port);

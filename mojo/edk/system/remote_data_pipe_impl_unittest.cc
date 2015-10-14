@@ -7,6 +7,8 @@
 
 #include <stdint.h>
 
+#include <utility>
+
 #include "base/bind.h"
 #include "base/location.h"
 #include "base/logging.h"
@@ -42,13 +44,14 @@ class RemoteDataPipeImplTest : public testing::Test {
   ~RemoteDataPipeImplTest() override {}
 
   void SetUp() override {
-    scoped_refptr<ChannelEndpoint> ep[2];
+    RefPtr<ChannelEndpoint> ep[2];
     message_pipes_[0] = MessagePipe::CreateLocalProxy(&ep[0]);
     message_pipes_[1] = MessagePipe::CreateLocalProxy(&ep[1]);
 
     io_thread_.PostTaskAndWait(
         FROM_HERE, base::Bind(&RemoteDataPipeImplTest::SetUpOnIOThread,
-                              base::Unretained(this), ep[0], ep[1]));
+                              base::Unretained(this), base::Passed(&ep[0]),
+                              base::Passed(&ep[1])));
   }
 
   void TearDown() override {
@@ -85,17 +88,19 @@ class RemoteDataPipeImplTest : public testing::Test {
   }
 
  private:
-  void SetUpOnIOThread(scoped_refptr<ChannelEndpoint> ep0,
-                       scoped_refptr<ChannelEndpoint> ep1) {
+  // TODO(vtl): The arguments should be rvalue references, but that doesn't
+  // currently work correctly with base::Bind.
+  void SetUpOnIOThread(RefPtr<ChannelEndpoint> ep0,
+                       RefPtr<ChannelEndpoint> ep1) {
     CHECK_EQ(base::MessageLoop::current(), io_thread_.message_loop());
 
     embedder::PlatformChannelPair channel_pair;
     channels_[0] = new Channel(&platform_support_);
     channels_[0]->Init(RawChannel::Create(channel_pair.PassServerHandle()));
-    channels_[0]->SetBootstrapEndpoint(ep0);
+    channels_[0]->SetBootstrapEndpoint(std::move(ep0));
     channels_[1] = new Channel(&platform_support_);
     channels_[1]->Init(RawChannel::Create(channel_pair.PassClientHandle()));
-    channels_[1]->SetBootstrapEndpoint(ep1);
+    channels_[1]->SetBootstrapEndpoint(std::move(ep1));
   }
 
   void TearDownOnIOThread() {

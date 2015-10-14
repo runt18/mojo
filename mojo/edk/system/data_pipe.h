@@ -15,6 +15,7 @@
 #include "mojo/edk/system/handle_signals_state.h"
 #include "mojo/edk/system/memory.h"
 #include "mojo/edk/system/mutex.h"
+#include "mojo/edk/system/ref_ptr.h"
 #include "mojo/edk/system/thread_annotations.h"
 #include "mojo/public/c/system/data_pipe.h"
 #include "mojo/public/c/system/types.h"
@@ -69,7 +70,7 @@ class DataPipe final : public ChannelEndpointClient {
   static DataPipe* CreateRemoteProducerFromExisting(
       const MojoCreateDataPipeOptions& validated_options,
       MessageInTransitQueue* message_queue,
-      ChannelEndpoint* channel_endpoint);
+      RefPtr<ChannelEndpoint>&& channel_endpoint);
 
   // Creates a data pipe with a local producer and a remote consumer, using an
   // existing |ChannelEndpoint| (whose |ReplaceClient()| it'll call) and taking
@@ -81,7 +82,7 @@ class DataPipe final : public ChannelEndpointClient {
       const MojoCreateDataPipeOptions& validated_options,
       size_t consumer_num_bytes,
       MessageInTransitQueue* message_queue,
-      ChannelEndpoint* channel_endpoint);
+      RefPtr<ChannelEndpoint>&& channel_endpoint);
 
   // Used by |DataPipeProducerDispatcher::Deserialize()|. Returns true on
   // success (in which case, |*data_pipe| is set appropriately) and false on

@@ -69,7 +69,7 @@ Dispatcher::Type MessagePipeDispatcher::GetType() const {
 // static
 scoped_refptr<MessagePipeDispatcher>
 MessagePipeDispatcher::CreateRemoteMessagePipe(
-    scoped_refptr<ChannelEndpoint>* channel_endpoint) {
+    RefPtr<ChannelEndpoint>* channel_endpoint) {
   scoped_refptr<MessagePipe> message_pipe(
       MessagePipe::CreateLocalProxy(channel_endpoint));
   scoped_refptr<MessagePipeDispatcher> dispatcher =

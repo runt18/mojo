@@ -4,6 +4,8 @@
 
 #include "mojo/edk/system/test_channel_endpoint_client.h"
 
+#include <utility>
+
 #include "base/synchronization/waitable_event.h"
 #include "mojo/edk/system/message_in_transit.h"
 #include "testing/gtest/include/gtest/gtest.h"
@@ -16,12 +18,13 @@ TestChannelEndpointClient::TestChannelEndpointClient()
     : port_(0), read_event_(nullptr) {
 }
 
-void TestChannelEndpointClient::Init(unsigned port, ChannelEndpoint* endpoint) {
+void TestChannelEndpointClient::Init(unsigned port,
+                                     RefPtr<ChannelEndpoint>&& endpoint) {
   MutexLocker locker(&mutex_);
   ASSERT_EQ(0u, port_);
   ASSERT_FALSE(endpoint_);
   port_ = port;
-  endpoint_ = endpoint;
+  endpoint_ = std::move(endpoint);
 }
 
 bool TestChannelEndpointClient::IsDetached() const {

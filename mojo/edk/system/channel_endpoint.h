@@ -11,6 +11,7 @@
 #include "mojo/edk/system/channel_endpoint_id.h"
 #include "mojo/edk/system/message_in_transit_queue.h"
 #include "mojo/edk/system/mutex.h"
+#include "mojo/edk/system/ref_counted.h"
 #include "mojo/public/cpp/system/macros.h"
 
 namespace mojo {
@@ -108,20 +109,9 @@ class MessageInTransit;
 //         simultaneously, and both sides send "remove" messages). In that
 //         case, it must still remain alive until it receives the "remove
 //         ack" (and it must ack the "remove" message that it received).
-class ChannelEndpoint final
-    : public base::RefCountedThreadSafe<ChannelEndpoint> {
+class ChannelEndpoint final : public RefCountedThreadSafe<ChannelEndpoint> {
  public:
-  // Constructor for a |ChannelEndpoint| with the given client (specified by
-  // |client| and |client_port|). Optionally takes messages from
-  // |*message_queue| if |message_queue| is non-null.
-  //
-  // |client| may be null if this endpoint will never need to receive messages,
-  // in which case |message_queue| should not be null. In that case, this
-  // endpoint will simply send queued messages upon being attached to a
-  // |Channel| and immediately detach itself.
-  ChannelEndpoint(ChannelEndpointClient* client,
-                  unsigned client_port,
-                  MessageInTransitQueue* message_queue = nullptr);
+  // Note: Use |MakeRefCounted<ChannelEndpoint>()|.
 
   // Methods called by |ChannelEndpointClient|:
 
@@ -159,6 +149,21 @@ class ChannelEndpoint final
   void DetachFromChannel();
 
  private:
+  FRIEND_REF_COUNTED_THREAD_SAFE(ChannelEndpoint);
+  FRIEND_MAKE_REF_COUNTED(ChannelEndpoint);
+
+  // Constructor for a |ChannelEndpoint| with the given client (specified by
+  // |client| and |client_port|). Optionally takes messages from
+  // |*message_queue| if |message_queue| is non-null.
+  //
+  // |client| may be null if this endpoint will never need to receive messages,
+  // in which case |message_queue| should not be null. In that case, this
+  // endpoint will simply send queued messages upon being attached to a
+  // |Channel| and immediately detach itself.
+  ChannelEndpoint(ChannelEndpointClient* client,
+                  unsigned client_port,
+                  MessageInTransitQueue* message_queue = nullptr);
+
   friend class base::RefCountedThreadSafe<ChannelEndpoint>;
   ~ChannelEndpoint();
 

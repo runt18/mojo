@@ -4,6 +4,8 @@
 
 #include "mojo/edk/system/message_pipe_test_utils.h"
 
+#include <utility>
+
 #include "base/bind.h"
 #include "mojo/edk/system/channel.h"
 #include "mojo/edk/system/channel_endpoint.h"
@@ -42,12 +44,13 @@ ChannelThread::~ChannelThread() {
 }
 
 void ChannelThread::Start(embedder::ScopedPlatformHandle platform_handle,
-                          scoped_refptr<ChannelEndpoint> channel_endpoint) {
+                          RefPtr<ChannelEndpoint>&& channel_endpoint) {
   test_io_thread_.Start();
   test_io_thread_.PostTaskAndWait(
       FROM_HERE,
       base::Bind(&ChannelThread::InitChannelOnIOThread, base::Unretained(this),
-                 base::Passed(&platform_handle), channel_endpoint));
+                 base::Passed(&platform_handle),
+                 base::Passed(&channel_endpoint)));
 }
 
 void ChannelThread::Stop() {
@@ -67,7 +70,7 @@ void ChannelThread::Stop() {
 
 void ChannelThread::InitChannelOnIOThread(
     embedder::ScopedPlatformHandle platform_handle,
-    scoped_refptr<ChannelEndpoint> channel_endpoint) {
+    RefPtr<ChannelEndpoint> channel_endpoint) {
   CHECK_EQ(base::MessageLoop::current(), test_io_thread_.message_loop());
   CHECK(platform_handle.is_valid());
 
@@ -81,7 +84,7 @@ void ChannelThread::InitChannelOnIOThread(
   // *must* be done here -- otherwise, the |Channel| may receive/process
   // messages (which it can do as soon as it's hooked up to the IO thread
   // message loop, and that message loop runs) before the endpoint is attached.
-  channel_->SetBootstrapEndpoint(channel_endpoint);
+  channel_->SetBootstrapEndpoint(std::move(channel_endpoint));
 }
 
 void ChannelThread::ShutdownChannelOnIOThread() {
@@ -98,8 +101,8 @@ MultiprocessMessagePipeTestBase::MultiprocessMessagePipeTestBase()
 MultiprocessMessagePipeTestBase::~MultiprocessMessagePipeTestBase() {
 }
 
-void MultiprocessMessagePipeTestBase::Init(scoped_refptr<ChannelEndpoint> ep) {
-  channel_thread_.Start(helper_.server_platform_handle.Pass(), ep);
+void MultiprocessMessagePipeTestBase::Init(RefPtr<ChannelEndpoint>&& ep) {
+  channel_thread_.Start(helper_.server_platform_handle.Pass(), std::move(ep));
 }
 #endif
 
