@@ -57,22 +57,23 @@ public class CameraServiceImpl implements CameraService {
             new ImageReader.OnImageAvailableListener() {
                 @Override
                 public void onImageAvailable(ImageReader reader) {
-                    DataPipe.ProducerHandle handle;
+                    DataPipe.ProducerHandle handle = null;
                     synchronized (this) {
-                        if (mProducerHandle == null) {
-                            return;
-                        }
                         handle = mProducerHandle;
                         mProducerHandle = null;
                     }
                     try (Image img = reader.acquireLatestImage()) {
-                        // TODO: Dont write the image data as a single block.
-                        ByteBuffer buffer = img.getPlanes()[0].getBuffer();
-                        handle.writeData(buffer, DataPipe.WriteFlags.none());
+                        if (handle != null) {
+                            // TODO: Dont write the image data as a single block.
+                            ByteBuffer buffer = img.getPlanes()[0].getBuffer();
+                            handle.writeData(buffer, DataPipe.WriteFlags.none());
+                        }
                     } catch (MojoException e) {
                         Log.e(TAG, "Failed to write to producer", e);
                     } finally {
-                        handle.close();
+                        if (handle != null) {
+                            handle.close();
+                        }
                     }
                 }
             };
