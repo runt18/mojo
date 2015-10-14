@@ -45,7 +45,7 @@ void fputs(files.File f, String s) {
 //   full).
 class Connector {
   final Application _application;
-  final files.FileProxy _terminal;
+  files.FileProxy _terminal;
   TcpConnectedSocketProxy _socket;
   MojoDataPipeProducer _socketSender;
   MojoDataPipeConsumer _socketReceiver;
@@ -59,29 +59,33 @@ class Connector {
         _writeBuffer = new ByteData(16 * 1024);
 
   Future connect(NetAddress remote_address) async {
-    var networkService = new NetworkServiceProxy.unbound();
-    _application.connectToService('mojo:network_service', networkService);
+    try {
+      var networkService = new NetworkServiceProxy.unbound();
+      _application.connectToService('mojo:network_service', networkService);
 
-    NetAddress local_address = makeIPv4NetAddress([0, 0, 0, 0], 0);
-    var boundSocket = new TcpBoundSocketProxy.unbound();
-    await networkService.ptr.createTcpBoundSocket(local_address, boundSocket);
-    await networkService.close();
+      NetAddress local_address = makeIPv4NetAddress([0, 0, 0, 0], 0);
+      var boundSocket = new TcpBoundSocketProxy.unbound();
+      await networkService.ptr.createTcpBoundSocket(local_address, boundSocket);
+      await networkService.close();
 
-    var sendDataPipe = new MojoDataPipe();
-    _socketSender = sendDataPipe.producer;
-    var receiveDataPipe = new MojoDataPipe();
-    _socketReceiver = receiveDataPipe.consumer;
-    _socket = new TcpConnectedSocketProxy.unbound();
-    await boundSocket.ptr.connect(remote_address, sendDataPipe.consumer,
-        receiveDataPipe.producer, _socket);
-    await boundSocket.close();
+      var sendDataPipe = new MojoDataPipe();
+      _socketSender = sendDataPipe.producer;
+      var receiveDataPipe = new MojoDataPipe();
+      _socketReceiver = receiveDataPipe.consumer;
+      _socket = new TcpConnectedSocketProxy.unbound();
+      await boundSocket.ptr.connect(remote_address, sendDataPipe.consumer,
+          receiveDataPipe.producer, _socket);
+      await boundSocket.close();
 
-    // Set up reading from the terminal.
-    _startReadingFromTerminal();
+      // Set up reading from the terminal.
+      _startReadingFromTerminal();
 
-    // Set up reading from the socket.
-    _socketReceiverEventStream = new MojoEventStream(_socketReceiver.handle);
-    _socketReceiverEventStream.listen(_onSocketReceiverEvent);
+      // Set up reading from the socket.
+      _socketReceiverEventStream = new MojoEventStream(_socketReceiver.handle);
+      _socketReceiverEventStream.listen(_onSocketReceiverEvent);
+    } catch (e) {
+      _shutDown();
+    }
   }
 
   void _startReadingFromTerminal() {
@@ -89,7 +93,7 @@ class Connector {
     _terminal.ptr
         .read(_writeBuffer.lengthInBytes, 0, files.Whence.FROM_CURRENT)
         .then(_onReadFromTerminal)
-        .catchError((e) {});
+        .catchError((e) { _shutDown(); });
   }
 
   void _onReadFromTerminal(files.FileReadResponseParams p) {
@@ -118,26 +122,46 @@ class Connector {
 
   void _onSocketReceiverEvent(List<int> event) {
     var mojoSignals = new MojoHandleSignals(event[1]);
-    var shouldClose = false;
+    var shouldShutDown = false;
     if (mojoSignals.isReadable) {
       var numBytesRead = _socketReceiver.read(_readBuffer);
       if (_socketReceiver.status.isOk) {
         assert(numBytesRead > 0);
         _terminal.ptr.write(_readBuffer.buffer.asUint8List(0, numBytesRead), 0,
-            files.Whence.FROM_CURRENT);
+                            files.Whence.FROM_CURRENT)
+            .catchError((e) { _shutDown(); });
         _socketReceiverEventStream.enableReadEvents();
       } else {
-        shouldClose = true;
+        shouldShutDown = true;
       }
     } else if (mojoSignals.isPeerClosed) {
-      shouldClose = true;
+      shouldShutDown = true;
     } else {
       throw 'Unexpected handle event: $mojoSignals';
     }
-    if (shouldClose) {
-      _socketReceiverEventStream.close();
+    if (shouldShutDown) {
+      _shutDown();
+    }
+  }
+
+  void _shutDown() {
+    if (_socketReceiverEventStream != null) {
+      ignoreFuture(_socketReceiverEventStream.close());
       _socketReceiverEventStream = null;
-      fputs(_terminal.ptr, 'Connection closed.');
+    }
+    if (_socketSender != null) {
+      if (_socketSender.handle.isValid)
+        _socketSender.handle.close();
+      _socketSender = null;
+    }
+    if (_socketReceiver != null) {
+      if (_socketReceiver.handle.isValid)
+        _socketReceiver.handle.close();
+      _socketReceiver = null;
+    }
+    if (_terminal != null) {
+      ignoreFuture(_terminal.close());
+      _terminal = null;
     }
   }
 }
