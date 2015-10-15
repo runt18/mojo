@@ -15,8 +15,8 @@ import 'package:service_test_interfaces/test/echo_service.mojom.dart';
 echoApptests(Application application, String url) {
   group('Echo Service Apptests', () {
     test('String', () async {
-      var echoProxy = new EchoServiceProxy.unbound();
-      application.connectToService("mojo:dart_echo", echoProxy);
+      var echoProxy =
+          new EchoServiceProxy.connectToService(application, "mojo:dart_echo");
 
       var v = await echoProxy.ptr.echoString("foo");
       expect(v.value, equals("foo"));
@@ -28,8 +28,8 @@ echoApptests(Application application, String url) {
     });
 
     test('Empty String', () async {
-      var echoProxy = new EchoServiceProxy.unbound();
-      application.connectToService("mojo:dart_echo", echoProxy);
+      var echoProxy =
+          new EchoServiceProxy.connectToService(application, "mojo:dart_echo");
 
       var v = await echoProxy.ptr.echoString("");
       expect(v.value, equals(""));
@@ -41,8 +41,8 @@ echoApptests(Application application, String url) {
     });
 
     test('Null String', () async {
-      var echoProxy = new EchoServiceProxy.unbound();
-      application.connectToService("mojo:dart_echo", echoProxy);
+      var echoProxy =
+          new EchoServiceProxy.connectToService(application, "mojo:dart_echo");
 
       var v = await echoProxy.ptr.echoString(null);
       expect(v.value, equals(null));
@@ -54,8 +54,8 @@ echoApptests(Application application, String url) {
     });
 
     test('Delayed Success', () async {
-      var echoProxy = new EchoServiceProxy.unbound();
-      application.connectToService("mojo:dart_echo", echoProxy);
+      var echoProxy =
+          new EchoServiceProxy.connectToService(application, "mojo:dart_echo");
 
       var milliseconds = 100;
       var watch = new Stopwatch()..start();
@@ -71,8 +71,8 @@ echoApptests(Application application, String url) {
     });
 
     test('Delayed Close', () {
-      var echoProxy = new EchoServiceProxy.unbound();
-      application.connectToService("mojo:dart_echo", echoProxy);
+      var echoProxy =
+          new EchoServiceProxy.connectToService(application, "mojo:dart_echo");
 
       var milliseconds = 100;
       echoProxy.ptr.delayedEchoString("quit", milliseconds).then((_) {
