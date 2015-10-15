@@ -10,6 +10,7 @@ import logging
 import sys
 import time
 import os.path
+import re
 
 from devtoolslib import shell_arguments
 from devtoolslib import shell_config
@@ -60,6 +61,16 @@ _COLD_START_SHELL_ARGS = [
 # doesn't.
 _EXTRA_TIMEOUT = 20
 
+_MEASUREMENT_RESULT_FORMAT = r"""
+^              # Beginning of the line.
+measurement:   # Hard-coded tag.
+\s+(\S+)       # Match measurement name.
+\s+(\S+)       # Match measurement result.
+$              # End of the line.
+"""
+
+_MEASUREMENT_REGEX = re.compile(_MEASUREMENT_RESULT_FORMAT, re.VERBOSE)
+
 
 def _generate_benchmark_variants(benchmark_spec):
   """Generates benchmark specifications for individual variants of the given
@@ -90,8 +101,11 @@ def _generate_benchmark_variants(benchmark_spec):
 
 def _run_benchmark(shell, shell_args, name, app, duration_seconds, measurements,
                    verbose, android, save_traces):
-  """Runs `benchmark.mojo` in shell with correct arguments, parses and
-  presents the benchmark results.
+  """Runs the given benchmark by running `benchmark.mojo` in mojo shell with
+  appropriate arguments and returns the produced output.
+
+  Returns:
+    A tuple of (succeeded, error_msg, output).
   """
   timeout = duration_seconds + _EXTRA_TIMEOUT
   benchmark_args = []
@@ -120,28 +134,37 @@ def _run_benchmark(shell, shell_args, name, app, duration_seconds, measurements,
 
   if verbose:
     print 'shell arguments: ' + str(shell_args)
-  print '[ %s ]' % name
   return_code, output, did_time_out = shell.run_and_get_output(
       shell_args, timeout=timeout)
-  output_lines = [line.strip() for line in output.split('\n')]
 
-  if return_code or did_time_out or 'benchmark succeeded' not in output_lines:
-    print 'timed out' if did_time_out else 'failed'
-    if return_code:
-      print 'Return code: ' + str(return_code)
-    print 'Output: '
-    print output
-    print '-' * 72
-    return False
+  if did_time_out:
+    return False, 'timed out', output
+  if return_code:
+    return False, 'return code: ' + str(return_code), output
 
-  # Echo measurement results.
-  for line in output_lines:
-    if line.strip().startswith('measurement:') or 'WARNING' in line:
-      print line
-
+  # Pull the trace file even if some measurements are missing, as it can be
+  # useful in debugging.
   if device_output_file:
     shell.pull_file(device_output_file, output_file, remove_original=True)
-  return True
+
+  return True, None, output
+
+def _parse_measurement_results(output):
+  """Parses the measurement results present in the benchmark output and returns
+  the dictionary of correctly recognized and parsed results.
+  """
+  measurement_results = {}
+  output_lines = [line.strip() for line in output.split('\n')]
+  for line in output_lines:
+    match = re.match(_MEASUREMENT_REGEX, line)
+    if match:
+      measurement_name = match.group(1)
+      measurement_result = match.group(2)
+      try:
+        measurement_results[measurement_name] = float(measurement_result)
+      except ValueError:
+        pass
+  return measurement_results
 
 
 def main():
@@ -168,7 +191,7 @@ def main():
   benchmark_list_params = {"target_os": target_os}
   exec script_args.benchmark_list_file in benchmark_list_params
 
-  succeeded = True
+  exit_code = 0
   for benchmark_spec in benchmark_list_params['benchmarks']:
     for variant_spec in _generate_benchmark_variants(benchmark_spec):
       name = variant_spec['name']
@@ -176,11 +199,38 @@ def main():
       duration = variant_spec['duration']
       shell_args = variant_spec.get('shell-args', []) + common_shell_args
       measurements = variant_spec['measurements']
-      _run_benchmark(shell, shell_args, name, app, duration, measurements,
-                     script_args.verbose, script_args.android,
-                     script_args.save_traces)
+      benchmark_succeeded, benchmark_error, output = _run_benchmark(
+          shell, shell_args, name, app, duration, measurements,
+          script_args.verbose, script_args.android,
+          script_args.save_traces)
 
-  return 0 if succeeded else 1
+      print '[ %s ]' % name
+
+      some_measurements_failed = False
+      if benchmark_succeeded:
+        measurement_results = _parse_measurement_results(output)
+        # Iterate over the list of specs, not the dictionary, to detect missing
+        # results and preserve the required order.
+        for measurement_spec in measurements:
+          if measurement_spec in measurement_results:
+            print '%s %s' % (measurement_spec,
+                             measurement_results[measurement_spec])
+          else:
+            print '%s ?' % measurement_spec
+            some_measurements_failed = True
+
+      if not benchmark_succeeded or some_measurements_failed:
+        if not benchmark_succeeded:
+          print 'benchmark failed: ' + benchmark_error
+        if some_measurements_failed:
+          print 'some measurements failed'
+        print 'output: '
+        print '-' * 72
+        print output
+        print '-' * 72
+        exit_code = 1
+
+  return exit_code
 
 if __name__ == '__main__':
   sys.exit(main())
