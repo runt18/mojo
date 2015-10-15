@@ -121,9 +121,6 @@ if target_os != 'android':
       "type": "gtest_isolated",
     },
     {
-      "test": "mojo:reaper_apptests",
-    },
-    {
       "test": "mojo:dart_apptests",
       "type": "dart",
     },
