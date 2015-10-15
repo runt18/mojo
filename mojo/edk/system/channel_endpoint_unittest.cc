@@ -48,15 +48,13 @@ class ChannelEndpointTest : public test::ChannelTestBase {
 };
 
 TEST_F(ChannelEndpointTest, Basic) {
-  scoped_refptr<test::TestChannelEndpointClient> client0(
-      new test::TestChannelEndpointClient());
-  auto endpoint0 = MakeRefCounted<ChannelEndpoint>(client0.get(), 0);
+  auto client0 = MakeRefCounted<test::TestChannelEndpointClient>();
+  auto endpoint0 = MakeRefCounted<ChannelEndpoint>(client0.Clone(), 0);
   client0->Init(0, endpoint0.Clone());
   channel(0)->SetBootstrapEndpoint(std::move(endpoint0));
 
-  scoped_refptr<test::TestChannelEndpointClient> client1(
-      new test::TestChannelEndpointClient());
-  auto endpoint1 = MakeRefCounted<ChannelEndpoint>(client1.get(), 1);
+  auto client1 = MakeRefCounted<test::TestChannelEndpointClient>();
+  auto endpoint1 = MakeRefCounted<ChannelEndpoint>(client1.Clone(), 1);
   client1->Init(1, endpoint1.Clone());
   channel(1)->SetBootstrapEndpoint(endpoint1.Clone());
 
@@ -92,9 +90,8 @@ TEST_F(ChannelEndpointTest, Basic) {
 // are all sent/received (and in the correct order). (Note: Due to the way
 // bootstrap endpoints work, the receiving side has to be set up first.)
 TEST_F(ChannelEndpointTest, Prequeued) {
-  scoped_refptr<test::TestChannelEndpointClient> client0(
-      new test::TestChannelEndpointClient());
-  auto endpoint0 = MakeRefCounted<ChannelEndpoint>(client0.get(), 0);
+  auto client0 = MakeRefCounted<test::TestChannelEndpointClient>();
+  auto endpoint0 = MakeRefCounted<ChannelEndpoint>(client0.Clone(), 0);
   client0->Init(0, endpoint0.Clone());
 
   channel(0)->SetBootstrapEndpoint(std::move(endpoint0));
@@ -102,10 +99,9 @@ TEST_F(ChannelEndpointTest, Prequeued) {
   prequeued_messages.AddMessage(test::MakeTestMessage(1));
   prequeued_messages.AddMessage(test::MakeTestMessage(2));
 
-  scoped_refptr<test::TestChannelEndpointClient> client1(
-      new test::TestChannelEndpointClient());
+  auto client1 = MakeRefCounted<test::TestChannelEndpointClient>();
   auto endpoint1 =
-      MakeRefCounted<ChannelEndpoint>(client1.get(), 1, &prequeued_messages);
+      MakeRefCounted<ChannelEndpoint>(client1.Clone(), 1, &prequeued_messages);
   client1->Init(1, endpoint1.Clone());
 
   EXPECT_TRUE(endpoint1->EnqueueMessage(test::MakeTestMessage(3)));

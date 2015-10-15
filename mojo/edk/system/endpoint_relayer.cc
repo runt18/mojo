@@ -13,9 +13,6 @@
 namespace mojo {
 namespace system {
 
-EndpointRelayer::EndpointRelayer() {
-}
-
 // static
 unsigned EndpointRelayer::GetPeerPort(unsigned port) {
   DCHECK(port == 0 || port == 1);
@@ -76,6 +73,8 @@ void EndpointRelayer::OnDetachFromChannel(unsigned port) {
     endpoints_[peer_port] = nullptr;
   }
 }
+
+EndpointRelayer::EndpointRelayer() {}
 
 EndpointRelayer::~EndpointRelayer() {
   DCHECK(!endpoints_[0]);

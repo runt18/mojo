@@ -11,6 +11,7 @@
 #include "mojo/edk/system/channel_test_base.h"
 #include "mojo/edk/system/message_in_transit_queue.h"
 #include "mojo/edk/system/message_in_transit_test_utils.h"
+#include "mojo/edk/system/ref_ptr.h"
 #include "mojo/edk/system/test_channel_endpoint_client.h"
 #include "mojo/edk/util/make_unique.h"
 #include "mojo/public/cpp/system/macros.h"
@@ -43,17 +44,17 @@ class EndpointRelayerTest : public test::ChannelTestBase {
     ChannelEndpointId ida = id_generator.GetNext();
     ChannelEndpointId idb = id_generator.GetNext();
 
-    relayer_ = new EndpointRelayer();
-    endpoint0a_ = MakeRefCounted<ChannelEndpoint>(relayer_.get(), 0);
-    endpoint0b_ = MakeRefCounted<ChannelEndpoint>(relayer_.get(), 1);
+    relayer_ = MakeRefCounted<EndpointRelayer>();
+    endpoint0a_ = MakeRefCounted<ChannelEndpoint>(relayer_.Clone(), 0);
+    endpoint0b_ = MakeRefCounted<ChannelEndpoint>(relayer_.Clone(), 1);
     relayer_->Init(endpoint0a_.Clone(), endpoint0b_.Clone());
     channel(0)->SetBootstrapEndpointWithIds(endpoint0a_.Clone(), ida, ida);
     channel(0)->SetBootstrapEndpointWithIds(endpoint0b_.Clone(), idb, idb);
 
-    client1a_ = new test::TestChannelEndpointClient();
-    client1b_ = new test::TestChannelEndpointClient();
-    endpoint1a_ = MakeRefCounted<ChannelEndpoint>(client1a_.get(), 0);
-    endpoint1b_ = MakeRefCounted<ChannelEndpoint>(client1b_.get(), 0);
+    client1a_ = MakeRefCounted<test::TestChannelEndpointClient>();
+    client1b_ = MakeRefCounted<test::TestChannelEndpointClient>();
+    endpoint1a_ = MakeRefCounted<ChannelEndpoint>(client1a_.Clone(), 0);
+    endpoint1b_ = MakeRefCounted<ChannelEndpoint>(client1b_.Clone(), 0);
     client1a_->Init(0, endpoint1a_.Clone());
     client1b_->Init(0, endpoint1b_.Clone());
     channel(1)->SetBootstrapEndpointWithIds(endpoint1a_.Clone(), ida, ida);
@@ -77,11 +78,11 @@ class EndpointRelayerTest : public test::ChannelTestBase {
   ChannelEndpoint* endpoint1b() { return endpoint1b_.get(); }
 
  private:
-  scoped_refptr<EndpointRelayer> relayer_;
+  RefPtr<EndpointRelayer> relayer_;
   RefPtr<ChannelEndpoint> endpoint0a_;
   RefPtr<ChannelEndpoint> endpoint0b_;
-  scoped_refptr<test::TestChannelEndpointClient> client1a_;
-  scoped_refptr<test::TestChannelEndpointClient> client1b_;
+  RefPtr<test::TestChannelEndpointClient> client1a_;
+  RefPtr<test::TestChannelEndpointClient> client1b_;
   RefPtr<ChannelEndpoint> endpoint1a_;
   RefPtr<ChannelEndpoint> endpoint1b_;
 

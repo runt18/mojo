@@ -10,6 +10,7 @@
 #include "mojo/edk/system/channel_endpoint_id.h"
 #include "mojo/edk/system/channel_test_base.h"
 #include "mojo/edk/system/message_pipe.h"
+#include "mojo/edk/system/ref_ptr.h"
 #include "mojo/edk/system/test_utils.h"
 #include "mojo/edk/system/waiter.h"
 
@@ -41,8 +42,7 @@ TEST_F(ChannelTest, CloseBeforeRun) {
                               &ChannelTest::CreateAndInitChannelOnIOThread, 0);
 
   RefPtr<ChannelEndpoint> channel_endpoint;
-  scoped_refptr<MessagePipe> mp(
-      MessagePipe::CreateLocalProxy(&channel_endpoint));
+  auto mp = MessagePipe::CreateLocalProxy(&channel_endpoint);
 
   mp->Close(0);
 
@@ -61,8 +61,7 @@ TEST_F(ChannelTest, ShutdownAfterAttach) {
                               &ChannelTest::CreateAndInitChannelOnIOThread, 0);
 
   RefPtr<ChannelEndpoint> channel_endpoint;
-  scoped_refptr<MessagePipe> mp(
-      MessagePipe::CreateLocalProxy(&channel_endpoint));
+  auto mp = MessagePipe::CreateLocalProxy(&channel_endpoint);
 
   channel(0)->SetBootstrapEndpoint(std::move(channel_endpoint));
 
@@ -96,8 +95,7 @@ TEST_F(ChannelTest, WaitAfterAttachRunAndShutdown) {
                               &ChannelTest::CreateAndInitChannelOnIOThread, 0);
 
   RefPtr<ChannelEndpoint> channel_endpoint;
-  scoped_refptr<MessagePipe> mp(
-      MessagePipe::CreateLocalProxy(&channel_endpoint));
+  auto mp = MessagePipe::CreateLocalProxy(&channel_endpoint);
 
   channel(0)->SetBootstrapEndpoint(std::move(channel_endpoint));
 
@@ -130,8 +128,7 @@ TEST_F(ChannelTest, EndpointChannelShutdownRace) {
         FROM_HERE, &ChannelTest::CreateAndInitChannelOnIOThread, 0);
 
     RefPtr<ChannelEndpoint> channel_endpoint;
-    scoped_refptr<MessagePipe> mp(
-        MessagePipe::CreateLocalProxy(&channel_endpoint));
+    auto mp = MessagePipe::CreateLocalProxy(&channel_endpoint);
 
     channel(0)->SetBootstrapEndpoint(std::move(channel_endpoint));
 

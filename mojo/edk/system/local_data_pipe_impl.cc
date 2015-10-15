@@ -182,8 +182,9 @@ bool LocalDataPipeImpl::ProducerEndSerialize(
   s->consumer_num_bytes = current_num_bytes_;
   // Note: We don't use |port|.
   RefPtr<ChannelEndpoint> channel_endpoint =
-      channel->SerializeEndpointWithLocalPeer(destination_for_endpoint, nullptr,
-                                              channel_endpoint_client(), 0);
+      channel->SerializeEndpointWithLocalPeer(
+          destination_for_endpoint, nullptr,
+          RefPtr<ChannelEndpointClient>(channel_endpoint_client()), 0);
   // Note: Keep |*this| alive until the end of this method, to make things
   // slightly easier on ourselves.
   std::unique_ptr<DataPipeImpl> self(
@@ -360,9 +361,9 @@ bool LocalDataPipeImpl::ConsumerEndSerialize(
 
   // Note: We don't use |port|.
   RefPtr<ChannelEndpoint> channel_endpoint =
-      channel->SerializeEndpointWithLocalPeer(destination_for_endpoint,
-                                              &message_queue,
-                                              channel_endpoint_client(), 0);
+      channel->SerializeEndpointWithLocalPeer(
+          destination_for_endpoint, &message_queue,
+          RefPtr<ChannelEndpointClient>(channel_endpoint_client()), 0);
   // Note: Keep |*this| alive until the end of this method, to make things
   // slightly easier on ourselves.
   std::unique_ptr<DataPipeImpl> self(

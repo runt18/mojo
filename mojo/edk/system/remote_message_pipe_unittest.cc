@@ -187,9 +187,9 @@ TEST_F(RemoteMessagePipeTest, Basic) {
   // MP 0, port 0 and MP 1, port 1 as the "user-facing" endpoints.
 
   RefPtr<ChannelEndpoint> ep0;
-  scoped_refptr<MessagePipe> mp0(MessagePipe::CreateLocalProxy(&ep0));
+  auto mp0 = MessagePipe::CreateLocalProxy(&ep0);
   RefPtr<ChannelEndpoint> ep1;
-  scoped_refptr<MessagePipe> mp1(MessagePipe::CreateProxyLocal(&ep1));
+  auto mp1 = MessagePipe::CreateProxyLocal(&ep1);
   BootstrapChannelEndpoints(std::move(ep0), std::move(ep1));
 
   // Write in one direction: MP 0, port 0 -> ... -> MP 1, port 1.
@@ -286,9 +286,9 @@ TEST_F(RemoteMessagePipeTest, PeerClosed) {
   // MP 0, port 0 and MP 1, port 1 as the "user-facing" endpoints.
 
   RefPtr<ChannelEndpoint> ep0;
-  scoped_refptr<MessagePipe> mp0(MessagePipe::CreateLocalProxy(&ep0));
+  auto mp0 = MessagePipe::CreateLocalProxy(&ep0);
   RefPtr<ChannelEndpoint> ep1;
-  scoped_refptr<MessagePipe> mp1(MessagePipe::CreateProxyLocal(&ep1));
+  auto mp1 = MessagePipe::CreateProxyLocal(&ep1);
   BootstrapChannelEndpoints(std::move(ep0), std::move(ep1));
 
   // Close MP 0, port 0.
@@ -324,9 +324,9 @@ TEST_F(RemoteMessagePipeTest, Multiplex) {
   // Connect message pipes as in the |Basic| test.
 
   RefPtr<ChannelEndpoint> ep0;
-  scoped_refptr<MessagePipe> mp0(MessagePipe::CreateLocalProxy(&ep0));
+  auto mp0 = MessagePipe::CreateLocalProxy(&ep0);
   RefPtr<ChannelEndpoint> ep1;
-  scoped_refptr<MessagePipe> mp1(MessagePipe::CreateProxyLocal(&ep1));
+  auto mp1 = MessagePipe::CreateProxyLocal(&ep1);
   BootstrapChannelEndpoints(std::move(ep0), std::move(ep1));
 
   // Now put another message pipe on the channel.
@@ -336,7 +336,7 @@ TEST_F(RemoteMessagePipeTest, Multiplex) {
   // via |ep0| (i.e., sent using |mp0|, port 0) with this remote ID. Upon
   // receiving this message, |PassIncomingMessagePipe()| is used to obtain the
   // message pipe on the other side.
-  scoped_refptr<MessagePipe> mp2(MessagePipe::CreateLocalLocal());
+  auto mp2 = MessagePipe::CreateLocalLocal();
   ASSERT_TRUE(channels(0));
   size_t max_endpoint_info_size;
   size_t max_platform_handle_count;
@@ -380,10 +380,10 @@ TEST_F(RemoteMessagePipeTest, Multiplex) {
                       endpoint_info_size));
 
   // Warning: The local side of mp3 is port 0, not port 1.
-  scoped_refptr<IncomingEndpoint> incoming_endpoint =
+  RefPtr<IncomingEndpoint> incoming_endpoint =
       channels(1)->DeserializeEndpoint(received_endpoint_info.get());
   ASSERT_TRUE(incoming_endpoint);
-  scoped_refptr<MessagePipe> mp3 = incoming_endpoint->ConvertToMessagePipe();
+  RefPtr<MessagePipe> mp3 = incoming_endpoint->ConvertToMessagePipe();
   ASSERT_TRUE(mp3);
 
   // Write: MP 2, port 0 -> MP 3, port 1.
@@ -497,7 +497,7 @@ TEST_F(RemoteMessagePipeTest, CloseBeforeAttachAndRun) {
   // MP 0, port 0 and MP 1, port 1 as the "user-facing" endpoints.
 
   RefPtr<ChannelEndpoint> ep0;
-  scoped_refptr<MessagePipe> mp0(MessagePipe::CreateLocalProxy(&ep0));
+  auto mp0 = MessagePipe::CreateLocalProxy(&ep0);
 
   // Write to MP 0, port 0.
   EXPECT_EQ(
@@ -511,7 +511,7 @@ TEST_F(RemoteMessagePipeTest, CloseBeforeAttachAndRun) {
   BootstrapChannelEndpointNoWait(0, std::move(ep0));
 
   RefPtr<ChannelEndpoint> ep1;
-  scoped_refptr<MessagePipe> mp1(MessagePipe::CreateProxyLocal(&ep1));
+  auto mp1 = MessagePipe::CreateProxyLocal(&ep1);
 
   // Prepare to wait on MP 1, port 1. (Add the waiter now. Otherwise, if we do
   // it later, it might already be readable.)
@@ -559,7 +559,7 @@ TEST_F(RemoteMessagePipeTest, CloseBeforeConnect) {
   // MP 0, port 0 and MP 1, port 1 as the "user-facing" endpoints.
 
   RefPtr<ChannelEndpoint> ep0;
-  scoped_refptr<MessagePipe> mp0(MessagePipe::CreateLocalProxy(&ep0));
+  auto mp0 = MessagePipe::CreateLocalProxy(&ep0);
 
   // Write to MP 0, port 0.
   EXPECT_EQ(
@@ -573,7 +573,7 @@ TEST_F(RemoteMessagePipeTest, CloseBeforeConnect) {
   mp0->Close(0);
 
   RefPtr<ChannelEndpoint> ep1;
-  scoped_refptr<MessagePipe> mp1(MessagePipe::CreateProxyLocal(&ep1));
+  auto mp1 = MessagePipe::CreateProxyLocal(&ep1);
 
   // Prepare to wait on MP 1, port 1. (Add the waiter now. Otherwise, if we do
   // it later, it might already be readable.)
@@ -615,17 +615,17 @@ TEST_F(RemoteMessagePipeTest, HandlePassing) {
   uint32_t context = 0;
 
   RefPtr<ChannelEndpoint> ep0;
-  scoped_refptr<MessagePipe> mp0(MessagePipe::CreateLocalProxy(&ep0));
+  auto mp0 = MessagePipe::CreateLocalProxy(&ep0);
   RefPtr<ChannelEndpoint> ep1;
-  scoped_refptr<MessagePipe> mp1(MessagePipe::CreateProxyLocal(&ep1));
+  auto mp1 = MessagePipe::CreateProxyLocal(&ep1);
   BootstrapChannelEndpoints(std::move(ep0), std::move(ep1));
 
   // We'll try to pass this dispatcher.
   scoped_refptr<MessagePipeDispatcher> dispatcher =
       MessagePipeDispatcher::Create(
           MessagePipeDispatcher::kDefaultCreateOptions);
-  scoped_refptr<MessagePipe> local_mp(MessagePipe::CreateLocalLocal());
-  dispatcher->Init(local_mp, 0);
+  auto local_mp = MessagePipe::CreateLocalLocal();
+  dispatcher->Init(local_mp.Clone(), 0);
 
   // Prepare to wait on MP 1, port 1. (Add the waiter now. Otherwise, if we do
   // it later, it might already be readable.)
@@ -769,8 +769,8 @@ TEST_F(RemoteMessagePipeTest, HandlePassingHalfClosed) {
   scoped_refptr<MessagePipeDispatcher> dispatcher =
       MessagePipeDispatcher::Create(
           MessagePipeDispatcher::kDefaultCreateOptions);
-  scoped_refptr<MessagePipe> local_mp(MessagePipe::CreateLocalLocal());
-  dispatcher->Init(local_mp, 0);
+  auto local_mp = MessagePipe::CreateLocalLocal();
+  dispatcher->Init(local_mp.Clone(), 0);
 
   hss = local_mp->GetHandleSignalsState(0);
   EXPECT_EQ(MOJO_HANDLE_SIGNAL_WRITABLE, hss.satisfied_signals);
@@ -797,9 +797,9 @@ TEST_F(RemoteMessagePipeTest, HandlePassingHalfClosed) {
   local_mp->Close(1);
 
   RefPtr<ChannelEndpoint> ep0;
-  scoped_refptr<MessagePipe> mp0(MessagePipe::CreateLocalProxy(&ep0));
+  auto mp0 = MessagePipe::CreateLocalProxy(&ep0);
   RefPtr<ChannelEndpoint> ep1;
-  scoped_refptr<MessagePipe> mp1(MessagePipe::CreateProxyLocal(&ep1));
+  auto mp1 = MessagePipe::CreateProxyLocal(&ep1);
   BootstrapChannelEndpoints(std::move(ep0), std::move(ep1));
 
   // Prepare to wait on MP 1, port 1. (Add the waiter now. Otherwise, if we do
@@ -906,9 +906,9 @@ TEST_F(RemoteMessagePipeTest, SharedBufferPassing) {
   uint32_t context = 0;
 
   RefPtr<ChannelEndpoint> ep0;
-  scoped_refptr<MessagePipe> mp0(MessagePipe::CreateLocalProxy(&ep0));
+  auto mp0 = MessagePipe::CreateLocalProxy(&ep0);
   RefPtr<ChannelEndpoint> ep1;
-  scoped_refptr<MessagePipe> mp1(MessagePipe::CreateProxyLocal(&ep1));
+  auto mp1 = MessagePipe::CreateProxyLocal(&ep1);
   BootstrapChannelEndpoints(std::move(ep0), std::move(ep1));
 
   // We'll try to pass this dispatcher.
@@ -1027,9 +1027,9 @@ TEST_F(RemoteMessagePipeTest, PlatformHandlePassing) {
   HandleSignalsState hss;
 
   RefPtr<ChannelEndpoint> ep0;
-  scoped_refptr<MessagePipe> mp0(MessagePipe::CreateLocalProxy(&ep0));
+  auto mp0 = MessagePipe::CreateLocalProxy(&ep0);
   RefPtr<ChannelEndpoint> ep1;
-  scoped_refptr<MessagePipe> mp1(MessagePipe::CreateProxyLocal(&ep1));
+  auto mp1 = MessagePipe::CreateProxyLocal(&ep1);
   BootstrapChannelEndpoints(std::move(ep0), std::move(ep1));
 
   util::ScopedFILE fp(test_dir.CreateFile());
@@ -1126,11 +1126,11 @@ TEST_F(RemoteMessagePipeTest, RacingClosesStress) {
   for (unsigned i = 0; i < 256; i++) {
     DVLOG(2) << "---------------------------------------- " << i;
     RefPtr<ChannelEndpoint> ep0;
-    scoped_refptr<MessagePipe> mp0(MessagePipe::CreateLocalProxy(&ep0));
+    auto mp0 = MessagePipe::CreateLocalProxy(&ep0);
     BootstrapChannelEndpointNoWait(0, std::move(ep0));
 
     RefPtr<ChannelEndpoint> ep1;
-    scoped_refptr<MessagePipe> mp1(MessagePipe::CreateProxyLocal(&ep1));
+    auto mp1 = MessagePipe::CreateProxyLocal(&ep1);
     BootstrapChannelEndpointNoWait(1, std::move(ep1));
 
     if (i & 1u) {
@@ -1166,17 +1166,17 @@ TEST_F(RemoteMessagePipeTest, PassMessagePipeHandleAcrossAndBack) {
   uint32_t context = 0;
 
   RefPtr<ChannelEndpoint> ep0;
-  scoped_refptr<MessagePipe> mp0(MessagePipe::CreateLocalProxy(&ep0));
+  auto mp0 = MessagePipe::CreateLocalProxy(&ep0);
   RefPtr<ChannelEndpoint> ep1;
-  scoped_refptr<MessagePipe> mp1(MessagePipe::CreateProxyLocal(&ep1));
+  auto mp1 = MessagePipe::CreateProxyLocal(&ep1);
   BootstrapChannelEndpoints(std::move(ep0), std::move(ep1));
 
   // We'll try to pass this dispatcher.
   scoped_refptr<MessagePipeDispatcher> dispatcher =
       MessagePipeDispatcher::Create(
           MessagePipeDispatcher::kDefaultCreateOptions);
-  scoped_refptr<MessagePipe> local_mp(MessagePipe::CreateLocalLocal());
-  dispatcher->Init(local_mp, 0);
+  auto local_mp = MessagePipe::CreateLocalLocal();
+  dispatcher->Init(local_mp.Clone(), 0);
 
   // Prepare to wait on MP 1, port 1. (Add the waiter now. Otherwise, if we do
   // it later, it might already be readable.)

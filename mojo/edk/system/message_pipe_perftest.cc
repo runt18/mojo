@@ -45,7 +45,7 @@ class MultiprocessMessagePipePerfTest
   }
 
  protected:
-  void WriteWaitThenRead(scoped_refptr<MessagePipe> mp) {
+  void WriteWaitThenRead(MessagePipe* mp) {
     CHECK_EQ(mp->WriteMessage(0, UserPointer<const void>(payload_.data()),
                               static_cast<uint32_t>(payload_.size()), nullptr,
                               MOJO_WRITE_MESSAGE_FLAG_NONE),
@@ -61,13 +61,13 @@ class MultiprocessMessagePipePerfTest
     CHECK_EQ(read_buffer_size, static_cast<uint32_t>(payload_.size()));
   }
 
-  void SendQuitMessage(scoped_refptr<MessagePipe> mp) {
+  void SendQuitMessage(MessagePipe* mp) {
     CHECK_EQ(mp->WriteMessage(0, UserPointer<const void>(""), 0, nullptr,
                               MOJO_WRITE_MESSAGE_FLAG_NONE),
              MOJO_RESULT_OK);
   }
 
-  void Measure(scoped_refptr<MessagePipe> mp) {
+  void Measure(MessagePipe* mp) {
     // Have one ping-pong to ensure channel being established.
     WriteWaitThenRead(mp);
 
@@ -101,7 +101,7 @@ MOJO_MULTIPROCESS_TEST_CHILD_MAIN(PingPongClient) {
       mojo::test::MultiprocessTestHelper::client_platform_handle.Pass();
   CHECK(client_platform_handle.is_valid());
   RefPtr<ChannelEndpoint> ep;
-  scoped_refptr<MessagePipe> mp(MessagePipe::CreateLocalProxy(&ep));
+  auto mp = MessagePipe::CreateLocalProxy(&ep);
   channel_thread.Start(client_platform_handle.Pass(), std::move(ep));
 
   std::string buffer(1000000, '\0');
@@ -110,7 +110,7 @@ MOJO_MULTIPROCESS_TEST_CHILD_MAIN(PingPongClient) {
     // Wait for our end of the message pipe to be readable.
     HandleSignalsState hss;
     MojoResult result =
-        test::WaitIfNecessary(mp, MOJO_HANDLE_SIGNAL_READABLE, &hss);
+        test::WaitIfNecessary(mp.get(), MOJO_HANDLE_SIGNAL_READABLE, &hss);
     if (result != MOJO_RESULT_OK) {
       rv = result;
       break;
@@ -149,7 +149,7 @@ TEST_F(MultiprocessMessagePipePerfTest, MAYBE_PingPong) {
   helper()->StartChild("PingPongClient");
 
   RefPtr<ChannelEndpoint> ep;
-  scoped_refptr<MessagePipe> mp(MessagePipe::CreateLocalProxy(&ep));
+  auto mp = MessagePipe::CreateLocalProxy(&ep);
   Init(std::move(ep));
 
   // This values are set to align with one at ipc_pertests.cc for comparison.
@@ -158,10 +158,10 @@ TEST_F(MultiprocessMessagePipePerfTest, MAYBE_PingPong) {
 
   for (size_t i = 0; i < 5; i++) {
     SetUpMeasurement(kMessageCount[i], kMsgSize[i]);
-    Measure(mp);
+    Measure(mp.get());
   }
 
-  SendQuitMessage(mp);
+  SendQuitMessage(mp.get());
   mp->Close(0);
   EXPECT_EQ(0, helper()->WaitForChildShutdown());
 }

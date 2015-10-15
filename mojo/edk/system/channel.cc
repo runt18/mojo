@@ -176,14 +176,14 @@ void Channel::SerializeEndpointWithClosedPeer(
 RefPtr<ChannelEndpoint> Channel::SerializeEndpointWithLocalPeer(
     void* destination,
     MessageInTransitQueue* message_queue,
-    ChannelEndpointClient* endpoint_client,
+    RefPtr<ChannelEndpointClient>&& endpoint_client,
     unsigned endpoint_client_port) {
   DCHECK(destination);
   // Allow |endpoint_client| to be null, for use by
   // |SerializeEndpointWithClosedPeer()|.
 
   auto endpoint = MakeRefCounted<ChannelEndpoint>(
-      endpoint_client, endpoint_client_port, message_queue);
+      std::move(endpoint_client), endpoint_client_port, message_queue);
 
   SerializedEndpoint* s = static_cast<SerializedEndpoint*>(destination);
   s->receiver_endpoint_id = AttachAndRunEndpoint(endpoint.Clone());
@@ -206,11 +206,11 @@ void Channel::SerializeEndpointWithRemotePeer(
   // TODO(vtl): If we were to own/track the relayer directly (rather than owning
   // it via its |ChannelEndpoint|s), then we might be able to make
   // |ChannelEndpoint|'s |client_| pointer a raw pointer.
-  scoped_refptr<EndpointRelayer> relayer(new EndpointRelayer());
+  auto relayer = MakeRefCounted<EndpointRelayer>();
   auto endpoint =
-      MakeRefCounted<ChannelEndpoint>(relayer.get(), 0, message_queue);
+      MakeRefCounted<ChannelEndpoint>(relayer.Clone(), 0, message_queue);
   relayer->Init(endpoint.Clone(), peer_endpoint.Clone());
-  peer_endpoint->ReplaceClient(relayer.get(), 1);
+  peer_endpoint->ReplaceClient(std::move(relayer), 1);
 
   SerializedEndpoint* s = static_cast<SerializedEndpoint*>(destination);
   s->receiver_endpoint_id = AttachAndRunEndpoint(std::move(endpoint));
@@ -218,8 +218,7 @@ void Channel::SerializeEndpointWithRemotePeer(
            << s->receiver_endpoint_id << ")";
 }
 
-scoped_refptr<IncomingEndpoint> Channel::DeserializeEndpoint(
-    const void* source) {
+RefPtr<IncomingEndpoint> Channel::DeserializeEndpoint(const void* source) {
   const SerializedEndpoint* s = static_cast<const SerializedEndpoint*>(source);
   ChannelEndpointId local_id = s->receiver_endpoint_id;
   // No need to check the validity of |local_id| -- if it's not valid, it simply
@@ -237,8 +236,7 @@ scoped_refptr<IncomingEndpoint> Channel::DeserializeEndpoint(
 
   DVLOG(2) << "Deserializing endpoint (new local ID = " << local_id << ")";
 
-  scoped_refptr<IncomingEndpoint> rv;
-  rv.swap(it->second);
+  RefPtr<IncomingEndpoint> rv = std::move(it->second);
   incoming_endpoints_.erase(it);
   return rv;
 }
@@ -469,7 +467,7 @@ bool Channel::OnAttachAndRunEndpoint(ChannelEndpointId local_id,
 
   // Create/initialize an |IncomingEndpoint| and thus an endpoint (outside the
   // lock).
-  scoped_refptr<IncomingEndpoint> incoming_endpoint(new IncomingEndpoint());
+  auto incoming_endpoint = MakeRefCounted<IncomingEndpoint>();
   RefPtr<ChannelEndpoint> endpoint = incoming_endpoint->Init();
 
   bool success = true;

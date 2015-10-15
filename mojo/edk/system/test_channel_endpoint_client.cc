@@ -14,10 +14,6 @@ namespace mojo {
 namespace system {
 namespace test {
 
-TestChannelEndpointClient::TestChannelEndpointClient()
-    : port_(0), read_event_(nullptr) {
-}
-
 void TestChannelEndpointClient::Init(unsigned port,
                                      RefPtr<ChannelEndpoint>&& endpoint) {
   MutexLocker locker(&mutex_);
@@ -71,6 +67,9 @@ void TestChannelEndpointClient::OnDetachFromChannel(unsigned port) {
   endpoint_->DetachFromClient();
   endpoint_ = nullptr;
 }
+
+TestChannelEndpointClient::TestChannelEndpointClient()
+    : port_(0), read_event_(nullptr) {}
 
 TestChannelEndpointClient::~TestChannelEndpointClient() {
   EXPECT_FALSE(endpoint_);

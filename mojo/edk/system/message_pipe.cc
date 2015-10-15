@@ -23,31 +23,32 @@ namespace mojo {
 namespace system {
 
 // static
-MessagePipe* MessagePipe::CreateLocalLocal() MOJO_NO_THREAD_SAFETY_ANALYSIS {
-  MessagePipe* message_pipe = new MessagePipe();
+RefPtr<MessagePipe> MessagePipe::CreateLocalLocal()
+    MOJO_NO_THREAD_SAFETY_ANALYSIS {
+  RefPtr<MessagePipe> message_pipe = AdoptRef(new MessagePipe());
   message_pipe->endpoints_[0].reset(new LocalMessagePipeEndpoint());
   message_pipe->endpoints_[1].reset(new LocalMessagePipeEndpoint());
   return message_pipe;
 }
 
 // static
-MessagePipe* MessagePipe::CreateLocalProxy(
+RefPtr<MessagePipe> MessagePipe::CreateLocalProxy(
     RefPtr<ChannelEndpoint>* channel_endpoint) MOJO_NO_THREAD_SAFETY_ANALYSIS {
   DCHECK(!*channel_endpoint);  // Not technically wrong, but unlikely.
-  MessagePipe* message_pipe = new MessagePipe();
+  RefPtr<MessagePipe> message_pipe = AdoptRef(new MessagePipe());
   message_pipe->endpoints_[0].reset(new LocalMessagePipeEndpoint());
-  *channel_endpoint = MakeRefCounted<ChannelEndpoint>(message_pipe, 1);
+  *channel_endpoint = MakeRefCounted<ChannelEndpoint>(message_pipe.Clone(), 1);
   message_pipe->endpoints_[1].reset(
       new ProxyMessagePipeEndpoint(channel_endpoint->Clone()));
   return message_pipe;
 }
 
 // static
-MessagePipe* MessagePipe::CreateLocalProxyFromExisting(
+RefPtr<MessagePipe> MessagePipe::CreateLocalProxyFromExisting(
     MessageInTransitQueue* message_queue,
     RefPtr<ChannelEndpoint>&& channel_endpoint) MOJO_NO_THREAD_SAFETY_ANALYSIS {
   DCHECK(message_queue);
-  MessagePipe* message_pipe = new MessagePipe();
+  RefPtr<MessagePipe> message_pipe = AdoptRef(new MessagePipe());
   message_pipe->endpoints_[0].reset(
       new LocalMessagePipeEndpoint(message_queue));
   if (channel_endpoint) {
@@ -67,10 +68,10 @@ MessagePipe* MessagePipe::CreateLocalProxyFromExisting(
 }
 
 // static
-MessagePipe* MessagePipe::CreateProxyLocal(
+RefPtr<MessagePipe> MessagePipe::CreateProxyLocal(
     RefPtr<ChannelEndpoint>* channel_endpoint) MOJO_NO_THREAD_SAFETY_ANALYSIS {
   DCHECK(!*channel_endpoint);  // Not technically wrong, but unlikely.
-  MessagePipe* message_pipe = new MessagePipe();
+  RefPtr<MessagePipe> message_pipe = AdoptRef(new MessagePipe());
   *channel_endpoint = MakeRefCounted<ChannelEndpoint>(message_pipe, 0);
   message_pipe->endpoints_[0].reset(
       new ProxyMessagePipeEndpoint(channel_endpoint->Clone()));
@@ -88,7 +89,7 @@ unsigned MessagePipe::GetPeerPort(unsigned port) {
 bool MessagePipe::Deserialize(Channel* channel,
                               const void* source,
                               size_t size,
-                              scoped_refptr<MessagePipe>* message_pipe,
+                              RefPtr<MessagePipe>* message_pipe,
                               unsigned* port) {
   DCHECK(!*message_pipe);  // Not technically wrong, but unlikely.
 
@@ -97,7 +98,7 @@ bool MessagePipe::Deserialize(Channel* channel,
     return false;
   }
 
-  scoped_refptr<IncomingEndpoint> incoming_endpoint =
+  RefPtr<IncomingEndpoint> incoming_endpoint =
       channel->DeserializeEndpoint(source);
   if (!incoming_endpoint)
     return false;
@@ -251,8 +252,9 @@ bool MessagePipe::EndSerialize(
     // with a |ProxyMessagePipeEndpoint| hooked up to the |ChannelEndpoint| that
     // the |Channel| returns to us.
     RefPtr<ChannelEndpoint> channel_endpoint =
-        channel->SerializeEndpointWithLocalPeer(destination, message_queue,
-                                                this, port);
+        channel->SerializeEndpointWithLocalPeer(
+            destination, message_queue, RefPtr<ChannelEndpointClient>(this),
+            port);
     replacement_endpoint =
         new ProxyMessagePipeEndpoint(std::move(channel_endpoint));
   } else {

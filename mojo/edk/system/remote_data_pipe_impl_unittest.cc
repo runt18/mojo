@@ -64,7 +64,8 @@ class RemoteDataPipeImplTest : public testing::Test {
   }
 
  protected:
-  static DataPipe* CreateLocal(size_t element_size, size_t num_elements) {
+  static RefPtr<DataPipe> CreateLocal(size_t element_size,
+                                      size_t num_elements) {
     const MojoCreateDataPipeOptions options = {
         static_cast<uint32_t>(sizeof(MojoCreateDataPipeOptions)),
         MOJO_CREATE_DATA_PIPE_OPTIONS_FLAG_NONE,
@@ -77,9 +78,7 @@ class RemoteDataPipeImplTest : public testing::Test {
     return DataPipe::CreateLocal(validated_options);
   }
 
-  scoped_refptr<MessagePipe> message_pipe(size_t i) {
-    return message_pipes_[i];
-  }
+  RefPtr<MessagePipe> message_pipe(size_t i) { return message_pipes_[i]; }
 
   void EnsureMessagePipeClosed(size_t i) {
     if (!message_pipes_[i])
@@ -120,7 +119,7 @@ class RemoteDataPipeImplTest : public testing::Test {
   embedder::SimplePlatformSupport platform_support_;
   mojo::test::TestIOThread io_thread_;
   RefPtr<Channel> channels_[2];
-  scoped_refptr<MessagePipe> message_pipes_[2];
+  RefPtr<MessagePipe> message_pipes_[2];
 
   MOJO_DISALLOW_COPY_AND_ASSIGN(RemoteDataPipeImplTest);
 };
@@ -173,11 +172,11 @@ TEST_F(RemoteDataPipeImplTest, SendConsumerWithClosedProducer) {
   HandleSignalsState hss;
   uint32_t context = 0;
 
-  scoped_refptr<DataPipe> dp(CreateLocal(sizeof(int32_t), 1000));
+  RefPtr<DataPipe> dp(CreateLocal(sizeof(int32_t), 1000));
   // This is the consumer dispatcher we'll send.
   scoped_refptr<DataPipeConsumerDispatcher> consumer =
       DataPipeConsumerDispatcher::Create();
-  consumer->Init(dp);
+  consumer->Init(dp.Clone());
 
   // Write to the producer and close it, before sending the consumer.
   int32_t elements[10] = {123};
@@ -291,11 +290,11 @@ TEST_F(RemoteDataPipeImplTest, SendConsumerDuringTwoPhaseWrite) {
   HandleSignalsState hss;
   uint32_t context = 0;
 
-  scoped_refptr<DataPipe> dp(CreateLocal(sizeof(int32_t), 1000));
+  RefPtr<DataPipe> dp(CreateLocal(sizeof(int32_t), 1000));
   // This is the consumer dispatcher we'll send.
   scoped_refptr<DataPipeConsumerDispatcher> consumer =
       DataPipeConsumerDispatcher::Create();
-  consumer->Init(dp);
+  consumer->Init(dp.Clone());
 
   void* write_ptr = nullptr;
   uint32_t num_bytes = 0u;
@@ -401,11 +400,11 @@ TEST_F(RemoteDataPipeImplTest, SendConsumerDuringSecondTwoPhaseWrite) {
   HandleSignalsState hss;
   uint32_t context = 0;
 
-  scoped_refptr<DataPipe> dp(CreateLocal(sizeof(int32_t), 1000));
+  RefPtr<DataPipe> dp(CreateLocal(sizeof(int32_t), 1000));
   // This is the consumer dispatcher we'll send.
   scoped_refptr<DataPipeConsumerDispatcher> consumer =
       DataPipeConsumerDispatcher::Create();
-  consumer->Init(dp);
+  consumer->Init(dp.Clone());
 
   void* write_ptr = nullptr;
   uint32_t num_bytes = 0u;

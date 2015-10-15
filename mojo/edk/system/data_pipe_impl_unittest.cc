@@ -213,7 +213,7 @@ class LocalDataPipeImplTestHelper : public DataPipeImplTestHelper {
   void ConsumerClose() override { dp_->ConsumerClose(); }
 
  private:
-  scoped_refptr<DataPipe> dp_;
+  RefPtr<DataPipe> dp_;
 
   MOJO_DISALLOW_COPY_AND_ASSIGN(LocalDataPipeImplTestHelper);
 };
@@ -306,10 +306,8 @@ class RemoteDataPipeImplTestHelper : public DataPipeImplTestHelper {
     *to_receive = read_dispatchers[0];
   }
 
-  scoped_refptr<MessagePipe> message_pipe(size_t i) {
-    return message_pipes_[i];
-  }
-  scoped_refptr<DataPipe> dp() { return dp_; }
+  RefPtr<MessagePipe> message_pipe(size_t i) { return message_pipes_[i]; }
+  RefPtr<DataPipe> dp() { return dp_; }
 
  private:
   void EnsureMessagePipeClosed(size_t i) {
@@ -350,9 +348,9 @@ class RemoteDataPipeImplTestHelper : public DataPipeImplTestHelper {
   embedder::SimplePlatformSupport platform_support_;
   mojo::test::TestIOThread io_thread_;
   RefPtr<Channel> channels_[2];
-  scoped_refptr<MessagePipe> message_pipes_[2];
+  RefPtr<MessagePipe> message_pipes_[2];
 
-  scoped_refptr<DataPipe> dp_;
+  RefPtr<DataPipe> dp_;
 
   MOJO_DISALLOW_COPY_AND_ASSIGN(RemoteDataPipeImplTestHelper);
 };

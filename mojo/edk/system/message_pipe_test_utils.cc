@@ -17,7 +17,7 @@ namespace mojo {
 namespace system {
 namespace test {
 
-MojoResult WaitIfNecessary(scoped_refptr<MessagePipe> mp,
+MojoResult WaitIfNecessary(MessagePipe* mp,
                            MojoHandleSignals signals,
                            HandleSignalsState* signals_state) {
   Waiter waiter;

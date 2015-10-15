@@ -58,7 +58,7 @@ class DataPipe final : public ChannelEndpointClient {
   // |ValidateOptions()|. In particular: |struct_size| is ignored (so
   // |validated_options| must be the current version of the struct) and
   // |capacity_num_bytes| must be nonzero.
-  static DataPipe* CreateLocal(
+  static RefPtr<DataPipe> CreateLocal(
       const MojoCreateDataPipeOptions& validated_options);
 
   // Creates a data pipe with a remote producer and a local consumer, using an
@@ -67,7 +67,7 @@ class DataPipe final : public ChannelEndpointClient {
   // |channel_endpoint| is null, this will create a "half-open" data pipe (with
   // only the consumer open). Note that this may fail, in which case it returns
   // null.
-  static DataPipe* CreateRemoteProducerFromExisting(
+  static RefPtr<DataPipe> CreateRemoteProducerFromExisting(
       const MojoCreateDataPipeOptions& validated_options,
       MessageInTransitQueue* message_queue,
       RefPtr<ChannelEndpoint>&& channel_endpoint);
@@ -78,7 +78,7 @@ class DataPipe final : public ChannelEndpointClient {
   // (|message_queue| may be null). If |channel_endpoint| is null, this will
   // create a "half-open" data pipe (with only the producer open). Note that
   // this may fail, in which case it returns null.
-  static DataPipe* CreateRemoteConsumerFromExisting(
+  static RefPtr<DataPipe> CreateRemoteConsumerFromExisting(
       const MojoCreateDataPipeOptions& validated_options,
       size_t consumer_num_bytes,
       MessageInTransitQueue* message_queue,
@@ -90,7 +90,7 @@ class DataPipe final : public ChannelEndpointClient {
   static bool ProducerDeserialize(Channel* channel,
                                   const void* source,
                                   size_t size,
-                                  scoped_refptr<DataPipe>* data_pipe);
+                                  RefPtr<DataPipe>* data_pipe);
 
   // Used by |DataPipeConsumerDispatcher::Deserialize()|. Returns true on
   // success (in which case, |*data_pipe| is set appropriately) and false on
@@ -98,7 +98,7 @@ class DataPipe final : public ChannelEndpointClient {
   static bool ConsumerDeserialize(Channel* channel,
                                   const void* source,
                                   size_t size,
-                                  scoped_refptr<DataPipe>* data_pipe);
+                                  RefPtr<DataPipe>* data_pipe);
 
   // These are called by the producer dispatcher to implement its methods of
   // corresponding names.

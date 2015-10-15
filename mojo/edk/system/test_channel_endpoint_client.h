@@ -24,7 +24,7 @@ namespace test {
 
 class TestChannelEndpointClient final : public ChannelEndpointClient {
  public:
-  TestChannelEndpointClient();
+  // Note: Use |MakeRefCounted<TestChannelEndpointClient>()|.
 
   // Initializes with the given port and endpoint.
   void Init(unsigned port, RefPtr<ChannelEndpoint>&& endpoint);
@@ -48,6 +48,9 @@ class TestChannelEndpointClient final : public ChannelEndpointClient {
   void OnDetachFromChannel(unsigned port) override;
 
  private:
+  FRIEND_MAKE_REF_COUNTED(TestChannelEndpointClient);
+
+  TestChannelEndpointClient();
   ~TestChannelEndpointClient() override;
 
   mutable Mutex mutex_;

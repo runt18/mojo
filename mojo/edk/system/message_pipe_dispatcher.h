@@ -42,7 +42,7 @@ class MessagePipeDispatcher final : public Dispatcher {
       MojoCreateMessagePipeOptions* out_options);
 
   // Must be called before any other methods. (This method is not thread-safe.)
-  void Init(scoped_refptr<MessagePipe> message_pipe,
+  void Init(RefPtr<MessagePipe>&& message_pipe,
             unsigned port) MOJO_NOT_THREAD_SAFE;
 
   // |Dispatcher| public methods:
@@ -110,7 +110,7 @@ class MessagePipeDispatcher final : public Dispatcher {
       MOJO_NOT_THREAD_SAFE;
 
   // This will be null if closed.
-  scoped_refptr<MessagePipe> message_pipe_ MOJO_GUARDED_BY(mutex());
+  RefPtr<MessagePipe> message_pipe_ MOJO_GUARDED_BY(mutex());
   unsigned port_ MOJO_GUARDED_BY(mutex());
 
   MOJO_DISALLOW_COPY_AND_ASSIGN(MessagePipeDispatcher);

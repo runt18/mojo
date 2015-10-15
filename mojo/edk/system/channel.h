@@ -10,7 +10,6 @@
 #include <memory>
 #include <unordered_map>
 
-#include "base/memory/ref_counted.h"
 #include "base/threading/thread_checker.h"
 #include "mojo/edk/embedder/scoped_platform_handle.h"
 #include "mojo/edk/system/channel_endpoint.h"
@@ -153,7 +152,7 @@ class Channel final : public RefCountedThreadSafe<Channel>,
   RefPtr<ChannelEndpoint> SerializeEndpointWithLocalPeer(
       void* destination,
       MessageInTransitQueue* message_queue,
-      ChannelEndpointClient* endpoint_client,
+      RefPtr<ChannelEndpointClient>&& endpoint_client,
       unsigned endpoint_client_port);
   void SerializeEndpointWithRemotePeer(void* destination,
                                        MessageInTransitQueue* message_queue,
@@ -165,7 +164,7 @@ class Channel final : public RefCountedThreadSafe<Channel>,
   // |GetSerializedEndpointSize()| bytes. This returns the deserialized
   // |IncomingEndpoint| (which can be converted into a |MessagePipe|) or null on
   // error.
-  scoped_refptr<IncomingEndpoint> DeserializeEndpoint(const void* source);
+  RefPtr<IncomingEndpoint> DeserializeEndpoint(const void* source);
 
   // See |RawChannel::GetSerializedPlatformHandleSize()|.
   size_t GetSerializedPlatformHandleSize() const;
@@ -266,7 +265,7 @@ class Channel final : public RefCountedThreadSafe<Channel>,
   LocalChannelEndpointIdGenerator local_id_generator_ MOJO_GUARDED_BY(mutex_);
 
   using IdToIncomingEndpointMap =
-      std::unordered_map<ChannelEndpointId, scoped_refptr<IncomingEndpoint>>;
+      std::unordered_map<ChannelEndpointId, RefPtr<IncomingEndpoint>>;
   // Map from local IDs to incoming endpoints (i.e., those received inside other
   // messages, but not yet claimed via |DeserializeEndpoint()|).
   IdToIncomingEndpointMap incoming_endpoints_ MOJO_GUARDED_BY(mutex_);

@@ -16,39 +16,36 @@
 namespace mojo {
 namespace system {
 
-IncomingEndpoint::IncomingEndpoint() {
-}
-
 RefPtr<ChannelEndpoint> IncomingEndpoint::Init() {
-  endpoint_ = MakeRefCounted<ChannelEndpoint>(this, 0);
+  endpoint_ =
+      MakeRefCounted<ChannelEndpoint>(RefPtr<IncomingEndpoint>(this), 0);
   return endpoint_;
 }
 
-scoped_refptr<MessagePipe> IncomingEndpoint::ConvertToMessagePipe() {
+RefPtr<MessagePipe> IncomingEndpoint::ConvertToMessagePipe() {
   MutexLocker locker(&mutex_);
-  scoped_refptr<MessagePipe> message_pipe(
-      MessagePipe::CreateLocalProxyFromExisting(&message_queue_,
-                                                std::move(endpoint_)));
+  RefPtr<MessagePipe> message_pipe = MessagePipe::CreateLocalProxyFromExisting(
+      &message_queue_, std::move(endpoint_));
   DCHECK(message_queue_.IsEmpty());
   return message_pipe;
 }
 
-scoped_refptr<DataPipe> IncomingEndpoint::ConvertToDataPipeProducer(
+RefPtr<DataPipe> IncomingEndpoint::ConvertToDataPipeProducer(
     const MojoCreateDataPipeOptions& validated_options,
     size_t consumer_num_bytes) {
   MutexLocker locker(&mutex_);
-  scoped_refptr<DataPipe> data_pipe(DataPipe::CreateRemoteConsumerFromExisting(
+  auto data_pipe = DataPipe::CreateRemoteConsumerFromExisting(
       validated_options, consumer_num_bytes, &message_queue_,
-      std::move(endpoint_)));
+      std::move(endpoint_));
   DCHECK(message_queue_.IsEmpty());
   return data_pipe;
 }
 
-scoped_refptr<DataPipe> IncomingEndpoint::ConvertToDataPipeConsumer(
+RefPtr<DataPipe> IncomingEndpoint::ConvertToDataPipeConsumer(
     const MojoCreateDataPipeOptions& validated_options) {
   MutexLocker locker(&mutex_);
-  scoped_refptr<DataPipe> data_pipe(DataPipe::CreateRemoteProducerFromExisting(
-      validated_options, &message_queue_, std::move(endpoint_)));
+  auto data_pipe = DataPipe::CreateRemoteProducerFromExisting(
+      validated_options, &message_queue_, std::move(endpoint_));
   DCHECK(message_queue_.IsEmpty());
   return data_pipe;
 }
@@ -75,8 +72,9 @@ void IncomingEndpoint::OnDetachFromChannel(unsigned /*port*/) {
   Close();
 }
 
-IncomingEndpoint::~IncomingEndpoint() {
-}
+IncomingEndpoint::IncomingEndpoint() {}
+
+IncomingEndpoint::~IncomingEndpoint() {}
 
 }  // namespace system
 }  // namespace mojo

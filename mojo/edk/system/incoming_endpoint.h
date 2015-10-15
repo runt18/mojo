@@ -27,16 +27,16 @@ class MessagePipe;
 // |MessagePipe|s or |DataPipe|s.
 class IncomingEndpoint final : public ChannelEndpointClient {
  public:
-  IncomingEndpoint();
+  // Note: Use |MakeRefCounted<IncomingEndpoint>()|.
 
   // Must be called before any other method.
   RefPtr<ChannelEndpoint> Init() MOJO_NOT_THREAD_SAFE;
 
-  scoped_refptr<MessagePipe> ConvertToMessagePipe();
-  scoped_refptr<DataPipe> ConvertToDataPipeProducer(
+  RefPtr<MessagePipe> ConvertToMessagePipe();
+  RefPtr<DataPipe> ConvertToDataPipeProducer(
       const MojoCreateDataPipeOptions& validated_options,
       size_t consumer_num_bytes);
-  scoped_refptr<DataPipe> ConvertToDataPipeConsumer(
+  RefPtr<DataPipe> ConvertToDataPipeConsumer(
       const MojoCreateDataPipeOptions& validated_options);
 
   // Must be called before destroying this object if |ConvertToMessagePipe()|
@@ -48,6 +48,9 @@ class IncomingEndpoint final : public ChannelEndpointClient {
   void OnDetachFromChannel(unsigned port) override;
 
  private:
+  FRIEND_MAKE_REF_COUNTED(IncomingEndpoint);
+
+  IncomingEndpoint();
   ~IncomingEndpoint() override;
 
   Mutex mutex_;

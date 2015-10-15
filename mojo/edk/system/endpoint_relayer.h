@@ -7,7 +7,6 @@
 
 #include <memory>
 
-#include "base/memory/ref_counted.h"
 #include "mojo/edk/system/channel_endpoint_client.h"
 #include "mojo/edk/system/mutex.h"
 #include "mojo/edk/system/ref_ptr.h"
@@ -62,7 +61,7 @@ class EndpointRelayer final : public ChannelEndpointClient {
     MOJO_DISALLOW_COPY_AND_ASSIGN(Filter);
   };
 
-  EndpointRelayer();
+  // Note: Use |MakeRefCounted<EndpointRelayer>()|.
 
   // Gets the other port number (i.e., 0 -> 1, 1 -> 0).
   static unsigned GetPeerPort(unsigned port);
@@ -80,6 +79,9 @@ class EndpointRelayer final : public ChannelEndpointClient {
   void OnDetachFromChannel(unsigned port) override;
 
  private:
+  FRIEND_MAKE_REF_COUNTED(EndpointRelayer);
+
+  EndpointRelayer();
   ~EndpointRelayer() override;
 
   Mutex mutex_;
