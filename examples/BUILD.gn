@@ -9,7 +9,6 @@ group("examples") {
 
   deps = [
     "//examples/apptest",
-    "//examples/browser",
     "//examples/content_handler_demo",
     "//examples/dart",
     "//examples/echo",
@@ -22,7 +21,6 @@ group("examples") {
     "//examples/keyboard_client",
     "//examples/moterm_example_app",
     "//examples/native_run_app",
-    "//examples/nesting_app",
     "//examples/nfc_sender",
     "//examples/notification_generator",
     "//examples/png_viewer",
@@ -46,11 +44,7 @@ group("examples") {
   }
 
   if (is_linux || is_android) {
-    deps += [
-      "//examples/surfaces_app",
-      "//examples/window_manager",
-      "//examples/wm_flow",
-    ]
+    deps += [ "//examples/surfaces_app" ]
   }
 
   if (defined(go_build_tool) && go_build_tool != "") {
