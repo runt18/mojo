@@ -29,8 +29,8 @@ class TestUsingTracingApp extends Application {
   void initialize(List<String> args, String url) {
     // This sets up a connection between this application and the Mojo
     // tracing service.
-    _tracing =
-        new TracingHelper.fromApplication(this, "example_traced_application");
+    _tracing = new TracingHelper.fromApplication(
+        this, "example_traced_application", TraceSendTiming.AT_END);
     _tracing.traceInstant("initialized", "traced_application");
 
     // Now we schedule some random work just so we have something to trace.
