@@ -108,6 +108,10 @@ template("go_test_binary") {
 #   static_library_sources: list of C sources needed for the static library
 #                           (optional)
 #   deps: dependencies (optional)
+#   deps: output_binary_name (optional) name to use for the generated binary.
+#         If not provided the name ${target_name}_go will be used.
+#         Do not specify this to be equal to target_name or Ninja will
+#         give a warning about multiple targets generating the same output.
 template("go_binary") {
   assert(is_linux)
   assert(defined(invoker.sources))
@@ -126,7 +130,7 @@ template("go_binary") {
     }
   }
 
-  go_binary_name = target_name + "_go"
+  go_binary_name = target_name + "_go_temp"
   action(go_binary_name) {
     deps = [
       ":${static_library_name}",
@@ -165,6 +169,11 @@ template("go_binary") {
   }
 
   copy(target_name) {
+    output_binary_name = target_name + "_go"
+    if (defined(invoker.output_binary_name)) {
+      output_binary_name = invoker.output_binary_name
+    }
+
     deps = [
       ":${go_binary_name}",
     ]
@@ -172,7 +181,7 @@ template("go_binary") {
       "${target_out_dir}/${go_binary_name}",
     ]
     outputs = [
-      "${root_out_dir}/${target_name}",
+      "${root_out_dir}/${output_binary_name}",
     ]
   }
 }
