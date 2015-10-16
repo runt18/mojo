@@ -34,6 +34,7 @@ namespace dart {
   V(MojoMessagePipe_Create, 1)             \
   V(MojoMessagePipe_Write, 5)              \
   V(MojoMessagePipe_Read, 5)               \
+  V(MojoMessagePipe_QueryAndRead, 2)       \
   V(Mojo_GetTimeTicksNow, 0)               \
   V(MojoHandle_Close, 1)                   \
   V(MojoHandle_Wait, 3)                    \
@@ -735,6 +736,68 @@ struct MojoWaitManyState {
  private:
   DISALLOW_COPY_AND_ASSIGN(MojoWaitManyState);
 };
+
+void MojoMessagePipe_QueryAndRead(Dart_NativeArguments arguments) {
+  int64_t dart_handle;
+  int64_t flags = 0;
+  CHECK_INTEGER_ARGUMENT(arguments, 0, &dart_handle, Null);
+  CHECK_INTEGER_ARGUMENT(arguments, 1, &flags, Null);
+
+  // Query the number of bytes and handles available.
+  uint32_t blen = 0;
+  uint32_t hlen = 0;
+  MojoResult res =
+      MojoReadMessage(static_cast<MojoHandle>(dart_handle), nullptr, &blen,
+                      nullptr, &hlen, static_cast<MojoReadMessageFlags>(flags));
+
+  if ((res != MOJO_RESULT_OK) && (res != MOJO_RESULT_RESOURCE_EXHAUSTED)) {
+    Dart_Handle list = Dart_NewList(3);
+    Dart_ListSetAt(list, 0, Dart_NewInteger(res));
+    Dart_SetReturnValue(arguments, list);
+    return;
+  }
+
+  Dart_Handle data = Dart_Null();
+  if (blen > 0) {
+    data = Dart_NewTypedData(Dart_TypedData_kByteData, blen);
+  }
+
+  Dart_Handle handles = Dart_Null();
+  if (hlen > 0) {
+    handles = Dart_NewTypedData(Dart_TypedData_kUint32, hlen);
+  }
+
+  Dart_TypedData_Type typ;
+  void* bytes = nullptr;
+  intptr_t byte_data_len = 0;
+  if (blen > 0) {
+    Dart_TypedDataAcquireData(data, &typ, &bytes, &byte_data_len);
+  }
+
+  void* handle_bytes = nullptr;
+  intptr_t handle_bytes_len = 0;
+  if (hlen > 0) {
+    Dart_TypedDataAcquireData(handles, &typ, &handle_bytes, &handle_bytes_len);
+  }
+
+  res = MojoReadMessage(static_cast<MojoHandle>(dart_handle), bytes, &blen,
+                        reinterpret_cast<MojoHandle*>(handle_bytes), &hlen,
+                        static_cast<MojoReadMessageFlags>(flags));
+
+  if (byte_data_len > 0) {
+    Dart_TypedDataReleaseData(data);
+  }
+
+  if (handle_bytes_len > 0) {
+    Dart_TypedDataReleaseData(handles);
+  }
+
+  Dart_Handle list = Dart_NewList(3);
+  Dart_ListSetAt(list, 0, Dart_NewInteger(res));
+  Dart_ListSetAt(list, 1, data);
+  Dart_ListSetAt(list, 2, handles);
+  Dart_SetReturnValue(arguments, list);
+}
 
 // This global is safe because it is only accessed by the single handle watcher
 // isolate. If multiple handle watcher isolates are ever needed, it will need
