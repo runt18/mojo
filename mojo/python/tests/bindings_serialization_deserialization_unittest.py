@@ -100,3 +100,15 @@ class SerializationDeserializationTest(mojo_unittest.MojoTestCase):
   def testFooDeserializationError(self):
     with self.assertRaises(Exception):
       sample_service_mojom.Foo.Deserialize("", [])
+
+  def testNonNullableNullMapSerialization(self):
+    struct = sample_service_mojom.NonNullableMapStruct()
+    with self.assertRaises(Exception):
+      struct.Serialize()
+
+  def testNonNullableEmptyMapSerialization(self):
+    struct = sample_service_mojom.NonNullableMapStruct(map_field={})
+    (data, handles) = struct.Serialize()
+    context = serialization.RootDeserializationContext(data, handles)
+    struct2 = sample_service_mojom.NonNullableMapStruct.Deserialize(context)
+    self.assertEquals(struct, struct2)
