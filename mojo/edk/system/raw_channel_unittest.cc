@@ -14,7 +14,6 @@
 #include "base/bind.h"
 #include "base/location.h"
 #include "base/logging.h"
-#include "base/memory/scoped_vector.h"
 #include "base/synchronization/waitable_event.h"
 #include "mojo/edk/embedder/platform_channel_pair.h"
 #include "mojo/edk/embedder/platform_handle.h"
@@ -386,9 +385,9 @@ TEST_F(RawChannelTest, WriteMessageAndOnReadMessage) {
                                           base::Unretained(&reader_delegate)));
 
   {
-    ScopedVector<RawChannelWriterThread> writer_threads;
+    std::vector<std::unique_ptr<RawChannelWriterThread>> writer_threads;
     for (size_t i = 0; i < kNumWriterThreads; i++) {
-      writer_threads.push_back(new RawChannelWriterThread(
+      writer_threads.push_back(util::MakeUnique<RawChannelWriterThread>(
           writer_rc.get(), kNumWriteMessagesPerThread));
     }
     for (size_t i = 0; i < writer_threads.size(); i++)

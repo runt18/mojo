@@ -5,14 +5,15 @@
 #include "mojo/edk/system/dispatcher.h"
 
 #include <memory>
+#include <vector>
 
 #include "base/memory/ref_counted.h"
-#include "base/memory/scoped_vector.h"
 #include "base/synchronization/waitable_event.h"
 #include "mojo/edk/embedder/platform_shared_buffer.h"
 #include "mojo/edk/system/memory.h"
 #include "mojo/edk/system/waiter.h"
 #include "mojo/edk/test/simple_test_thread.h"
+#include "mojo/edk/util/make_unique.h"
 #include "mojo/public/cpp/system/macros.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
@@ -256,12 +257,13 @@ TEST(DispatcherTest, ThreadSafetyStress) {
     scoped_refptr<Dispatcher> d(new TrivialDispatcher());
 
     {
-      ScopedVector<ThreadSafetyStressThread> threads;
+      std::vector<std::unique_ptr<ThreadSafetyStressThread>> threads;
       for (size_t j = 0; j < kNumThreads; j++) {
         ThreadSafetyStressThread::DispatcherOp op =
             static_cast<ThreadSafetyStressThread::DispatcherOp>(
                 (i + j) % ThreadSafetyStressThread::DISPATCHER_OP_COUNT);
-        threads.push_back(new ThreadSafetyStressThread(&event, d, op));
+        threads.push_back(
+            util::MakeUnique<ThreadSafetyStressThread>(&event, d, op));
         threads.back()->Start();
       }
       // Kicks off real work on the threads:
@@ -283,13 +285,14 @@ TEST(DispatcherTest, ThreadSafetyStressNoClose) {
     scoped_refptr<Dispatcher> d(new TrivialDispatcher());
 
     {
-      ScopedVector<ThreadSafetyStressThread> threads;
+      std::vector<std::unique_ptr<ThreadSafetyStressThread>> threads;
       for (size_t j = 0; j < kNumThreads; j++) {
         ThreadSafetyStressThread::DispatcherOp op =
             static_cast<ThreadSafetyStressThread::DispatcherOp>(
                 (i + j) % (ThreadSafetyStressThread::DISPATCHER_OP_COUNT - 1) +
                 1);
-        threads.push_back(new ThreadSafetyStressThread(&event, d, op));
+        threads.push_back(
+            util::MakeUnique<ThreadSafetyStressThread>(&event, d, op));
         threads.back()->Start();
       }
       // Kicks off real work on the threads:

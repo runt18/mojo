@@ -9,12 +9,15 @@
 
 #include "mojo/edk/system/simple_dispatcher.h"
 
+#include <memory>
+#include <vector>
+
 #include "base/logging.h"
 #include "base/memory/ref_counted.h"
-#include "base/memory/scoped_vector.h"
 #include "mojo/edk/system/test_utils.h"
 #include "mojo/edk/system/waiter.h"
 #include "mojo/edk/system/waiter_test_utils.h"
+#include "mojo/edk/util/make_unique.h"
 #include "mojo/public/cpp/system/macros.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
@@ -446,9 +449,9 @@ TEST(SimpleDispatcherTest, MultipleWaiters) {
   // All wait for readable and becomes readable after some time.
   {
     scoped_refptr<MockSimpleDispatcher> d(new MockSimpleDispatcher());
-    ScopedVector<test::WaiterThread> threads;
+    std::vector<std::unique_ptr<test::WaiterThread>> threads;
     for (uint32_t i = 0; i < kNumWaiters; i++) {
-      threads.push_back(new test::WaiterThread(
+      threads.push_back(util::MakeUnique<test::WaiterThread>(
           d, MOJO_HANDLE_SIGNAL_READABLE, MOJO_DEADLINE_INDEFINITE, i,
           &did_wait[i], &result[i], &context[i], &hss[i]));
       threads.back()->Start();
@@ -469,15 +472,15 @@ TEST(SimpleDispatcherTest, MultipleWaiters) {
   // time.
   {
     scoped_refptr<MockSimpleDispatcher> d(new MockSimpleDispatcher());
-    ScopedVector<test::WaiterThread> threads;
+    std::vector<std::unique_ptr<test::WaiterThread>> threads;
     for (uint32_t i = 0; i < kNumWaiters / 2; i++) {
-      threads.push_back(new test::WaiterThread(
+      threads.push_back(util::MakeUnique<test::WaiterThread>(
           d, MOJO_HANDLE_SIGNAL_READABLE, MOJO_DEADLINE_INDEFINITE, i,
           &did_wait[i], &result[i], &context[i], &hss[i]));
       threads.back()->Start();
     }
     for (uint32_t i = kNumWaiters / 2; i < kNumWaiters; i++) {
-      threads.push_back(new test::WaiterThread(
+      threads.push_back(util::MakeUnique<test::WaiterThread>(
           d, MOJO_HANDLE_SIGNAL_WRITABLE, MOJO_DEADLINE_INDEFINITE, i,
           &did_wait[i], &result[i], &context[i], &hss[i]));
       threads.back()->Start();
@@ -506,15 +509,15 @@ TEST(SimpleDispatcherTest, MultipleWaiters) {
   // never-writable after some time.
   {
     scoped_refptr<MockSimpleDispatcher> d(new MockSimpleDispatcher());
-    ScopedVector<test::WaiterThread> threads;
+    std::vector<std::unique_ptr<test::WaiterThread>> threads;
     for (uint32_t i = 0; i < kNumWaiters / 2; i++) {
-      threads.push_back(new test::WaiterThread(
+      threads.push_back(util::MakeUnique<test::WaiterThread>(
           d, MOJO_HANDLE_SIGNAL_READABLE, MOJO_DEADLINE_INDEFINITE, i,
           &did_wait[i], &result[i], &context[i], &hss[i]));
       threads.back()->Start();
     }
     for (uint32_t i = kNumWaiters / 2; i < kNumWaiters; i++) {
-      threads.push_back(new test::WaiterThread(
+      threads.push_back(util::MakeUnique<test::WaiterThread>(
           d, MOJO_HANDLE_SIGNAL_WRITABLE, MOJO_DEADLINE_INDEFINITE, i,
           &did_wait[i], &result[i], &context[i], &hss[i]));
       threads.back()->Start();
@@ -544,15 +547,15 @@ TEST(SimpleDispatcherTest, MultipleWaiters) {
   // time.
   {
     scoped_refptr<MockSimpleDispatcher> d(new MockSimpleDispatcher());
-    ScopedVector<test::WaiterThread> threads;
+    std::vector<std::unique_ptr<test::WaiterThread>> threads;
     for (uint32_t i = 0; i < kNumWaiters / 2; i++) {
-      threads.push_back(new test::WaiterThread(
+      threads.push_back(util::MakeUnique<test::WaiterThread>(
           d, MOJO_HANDLE_SIGNAL_READABLE, 3 * test::EpsilonDeadline(), i,
           &did_wait[i], &result[i], &context[i], &hss[i]));
       threads.back()->Start();
     }
     for (uint32_t i = kNumWaiters / 2; i < kNumWaiters; i++) {
-      threads.push_back(new test::WaiterThread(
+      threads.push_back(util::MakeUnique<test::WaiterThread>(
           d, MOJO_HANDLE_SIGNAL_WRITABLE, 1 * test::EpsilonDeadline(), i,
           &did_wait[i], &result[i], &context[i], &hss[i]));
       threads.back()->Start();

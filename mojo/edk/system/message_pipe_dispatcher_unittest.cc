@@ -12,15 +12,17 @@
 #include <string.h>
 
 #include <limits>
+#include <memory>
 #include <utility>
+#include <vector>
 
 #include "base/memory/ref_counted.h"
-#include "base/memory/scoped_vector.h"
 #include "mojo/edk/system/message_pipe.h"
 #include "mojo/edk/system/test_utils.h"
 #include "mojo/edk/system/waiter.h"
 #include "mojo/edk/system/waiter_test_utils.h"
 #include "mojo/edk/test/simple_test_thread.h"
+#include "mojo/edk/util/make_unique.h"
 #include "mojo/public/cpp/system/macros.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
@@ -629,17 +631,17 @@ TEST(MessagePipeDispatcherTest, Stress) {
   size_t bytes_read[kNumReaders];
   {
     // Make writers.
-    ScopedVector<WriterThread> writers;
+    std::vector<std::unique_ptr<WriterThread>> writers;
     for (size_t i = 0; i < kNumWriters; i++) {
-      writers.push_back(
-          new WriterThread(d_write, &messages_written[i], &bytes_written[i]));
+      writers.push_back(util::MakeUnique<WriterThread>(
+          d_write, &messages_written[i], &bytes_written[i]));
     }
 
     // Make readers.
-    ScopedVector<ReaderThread> readers;
+    std::vector<std::unique_ptr<ReaderThread>> readers;
     for (size_t i = 0; i < kNumReaders; i++) {
-      readers.push_back(
-          new ReaderThread(d_read, &messages_read[i], &bytes_read[i]));
+      readers.push_back(util::MakeUnique<ReaderThread>(
+          d_read, &messages_read[i], &bytes_read[i]));
     }
 
     // Start writers.
