@@ -10,7 +10,6 @@
 #include <vector>
 
 #include "base/callback.h"
-#include "base/macros.h"
 #include "mojo/public/c/system/types.h"
 #include "mojo/public/cpp/system/message_pipe.h"
 #include "mojo/services/network/interfaces/network_service.mojom.h"

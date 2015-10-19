@@ -3,7 +3,10 @@
 // found in the LICENSE file.
 
 #include <stdint.h>
+#include <string.h>
+
 #include "mojo/dart/embedder/common.h"
+#include "mojo/public/cpp/environment/logging.h"
 
 namespace mojo {
 namespace dart {
@@ -77,7 +80,7 @@ void DartEmbedder::SetStringField(Dart_Handle handle,
 }
 
 Dart_Handle DartEmbedder::NewCString(const char* str) {
-  CHECK(str != nullptr);
+  MOJO_CHECK(str != nullptr);
   Dart_Handle result = Dart_NewStringFromCString(str);
   if (Dart_IsError(result)) {
     Dart_PropagateError(result);
@@ -97,7 +100,7 @@ void DartEmbedder::SetCStringReturn(Dart_NativeArguments arguments,
 const char* DartEmbedder::GetStringArgument(Dart_NativeArguments arguments,
                                             intptr_t index) {
   Dart_Handle str_arg = Dart_GetNativeArgument(arguments, index);
-  const char* cstring = NULL;
+  const char* cstring = nullptr;
   Dart_Handle result = Dart_StringToCString(str_arg, &cstring);
   if (Dart_IsError(result)) {
     Dart_PropagateError(result);
@@ -110,7 +113,7 @@ void DartEmbedder::GetTypedDataListArgument(Dart_NativeArguments arguments,
                                             uint8_t** out,
                                             intptr_t* out_len) {
   // Initialize outputs.
-  *out = NULL;
+  *out = nullptr;
   *out_len = 0;
   Dart_Handle list_arg = Dart_GetNativeArgument(arguments, index);
   if (Dart_IsError(list_arg)) {
@@ -119,7 +122,7 @@ void DartEmbedder::GetTypedDataListArgument(Dart_NativeArguments arguments,
   }
   // Acquire data.
   Dart_TypedData_Type type = Dart_TypedData_kInvalid;
-  void* data = NULL;
+  void* data = nullptr;
   intptr_t data_len = 0;
   Dart_Handle result =
       Dart_TypedDataAcquireData(list_arg, &type, &data, &data_len);

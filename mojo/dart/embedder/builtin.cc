@@ -24,7 +24,7 @@ extern ResourcesEntry __dart_embedder_patch_resources_[];
 // Returns -1 if resource could not be found.
 static int FindResource(const char* path, const uint8_t** resource) {
   ResourcesEntry* table = &__dart_embedder_patch_resources_[0];
-  for (int i = 0; table[i].path_ != NULL; i++) {
+  for (int i = 0; table[i].path_ != nullptr; i++) {
     const ResourcesEntry& entry = table[i];
     if (strcmp(path, entry.path_) == 0) {
       *resource = reinterpret_cast<const uint8_t*>(entry.resource_);
@@ -32,13 +32,13 @@ static int FindResource(const char* path, const uint8_t** resource) {
       return entry.length_;
     }
   }
-  *resource = NULL;
+  *resource = nullptr;
   return -1;
 }
 
 const char* Builtin::mojo_core_patch_resource_names_[] = {
     "/core/natives_patch.dart",
-    NULL,
+    nullptr,
 };
 
 const char* Builtin::mojo_io_patch_resource_names_[] = {
@@ -48,7 +48,7 @@ const char* Builtin::mojo_io_patch_resource_names_[] = {
     "/io/process_patch.dart",
     "/io/socket_patch.dart",
     "/io/server_socket_patch.dart",
-    NULL,
+    nullptr,
 };
 
 Builtin::builtin_lib_props Builtin::builtin_libraries_[] = {
@@ -109,11 +109,11 @@ Dart_Handle Builtin::GetStringResource(const char* resource_name) {
 void Builtin::LoadPatchFiles(Dart_Handle library,
                              const char* patch_uri,
                              const char** patch_resources) {
-  for (intptr_t j = 0; patch_resources[j] != NULL; j++) {
+  for (intptr_t j = 0; patch_resources[j] != nullptr; j++) {
     Dart_Handle patch_src = GetStringResource(patch_resources[j]);
     DART_CHECK_VALID(patch_src);
     // Prepend the patch library URI to form a unique script URI for the patch.
-    intptr_t len = snprintf(NULL, 0, "%s%s", patch_uri, patch_resources[j]);
+    intptr_t len = snprintf(nullptr, 0, "%s%s", patch_uri, patch_resources[j]);
     char* patch_filename = reinterpret_cast<char*>(malloc(len + 1));
     snprintf(patch_filename, len + 1, "%s%s", patch_uri, patch_resources[j]);
     Dart_Handle patch_file_uri = Dart_NewStringFromCString(patch_filename);

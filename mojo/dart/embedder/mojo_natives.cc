@@ -4,17 +4,18 @@
 
 #include <stdio.h>
 #include <string.h>
+
+#include <memory>
 #include <set>
 #include <vector>
 
-#include "base/logging.h"
-#include "base/macros.h"
-#include "base/memory/scoped_ptr.h"
 #include "dart/runtime/include/dart_api.h"
 #include "mojo/dart/embedder/builtin.h"
 #include "mojo/dart/embedder/mojo_dart_state.h"
 #include "mojo/public/c/system/core.h"
+#include "mojo/public/cpp/environment/logging.h"
 #include "mojo/public/cpp/system/core.h"
+#include "mojo/public/cpp/system/macros.h"
 
 namespace mojo {
 namespace dart {
@@ -61,10 +62,10 @@ Dart_NativeFunction MojoNativeLookup(Dart_Handle name,
   const char* function_name = nullptr;
   Dart_Handle result = Dart_StringToCString(name, &function_name);
   DART_CHECK_VALID(result);
-  DCHECK(function_name != nullptr);
-  DCHECK(auto_setup_scope != nullptr);
+  assert(function_name != nullptr);
+  assert(auto_setup_scope != nullptr);
   *auto_setup_scope = true;
-  size_t num_entries = arraysize(MojoEntries);
+  size_t num_entries = MOJO_ARRAYSIZE(MojoEntries);
   for (size_t i = 0; i < num_entries; ++i) {
     const struct NativeEntries& entry = MojoEntries[i];
     if (!strcmp(function_name, entry.name) &&
@@ -76,7 +77,7 @@ Dart_NativeFunction MojoNativeLookup(Dart_Handle name,
 }
 
 const uint8_t* MojoNativeSymbol(Dart_NativeFunction nf) {
-  size_t num_entries = arraysize(MojoEntries);
+  size_t num_entries = MOJO_ARRAYSIZE(MojoEntries);
   for (size_t i = 0; i < num_entries; ++i) {
     const struct NativeEntries& entry = MojoEntries[i];
     if (entry.function == nf) {
@@ -128,8 +129,8 @@ static void MojoHandleCloserCallback(void* isolate_data,
     if (res == MOJO_RESULT_OK) {
       // If this finalizer callback successfully closes a handle, it means that
       // the handle has leaked from the Dart code, which is an error.
-      LOG(ERROR) << "Handle Finalizer closing handle:\n\tisolate: "
-                 << "\n\thandle: " << callback_peer->handle;
+      MOJO_LOG(ERROR) << "Handle Finalizer closing handle:\n\tisolate: "
+                      << "\n\thandle: " << callback_peer->handle;
     }
   }
   delete callback_peer;
@@ -154,7 +155,7 @@ void MojoHandle_Register(Dart_NativeArguments arguments) {
   // Add the handle to this isolate's set.
   MojoHandle handle = static_cast<MojoHandle>(raw_handle);
   auto isolate_data = MojoDartState::Current();
-  DCHECK(isolate_data != nullptr);
+  assert(isolate_data != nullptr);
   isolate_data->unclosed_handles().insert(handle);
 
   // Set up a finalizer.
@@ -179,7 +180,7 @@ void MojoHandle_Close(Dart_NativeArguments arguments) {
   // Remove the handle from this isolate's set.
   MojoHandle handle = static_cast<MojoHandle>(raw_handle);
   auto isolate_data = MojoDartState::Current();
-  DCHECK(isolate_data != nullptr);
+  assert(isolate_data != nullptr);
   isolate_data->unclosed_handles().erase(handle);
 
   MojoResult res = MojoClose(handle);
@@ -615,7 +616,7 @@ void MojoMessagePipe_Write(Dart_NativeArguments arguments) {
   }
 
   // Grab the handles if there are any.
-  scoped_ptr<MojoHandle[]> mojo_handles;
+  std::unique_ptr<MojoHandle[]> mojo_handles;
   intptr_t handles_len = 0;
   if (!Dart_IsNull(handles)) {
     Dart_ListLength(handles, &handles_len);
@@ -689,7 +690,7 @@ void MojoMessagePipe_Read(Dart_NativeArguments arguments) {
   uint32_t blen = static_cast<uint32_t>(num_bytes);
 
   // Grab the handles if there are any.
-  scoped_ptr<MojoHandle[]> mojo_handles;
+  std::unique_ptr<MojoHandle[]> mojo_handles;
   intptr_t handles_len = 0;
   if (!Dart_IsNull(handles)) {
     Dart_ListLength(handles, &handles_len);

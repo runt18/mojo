@@ -5,8 +5,6 @@
 #ifndef MOJO_DART_EMBEDDER_COMMON_H_
 #define MOJO_DART_EMBEDDER_COMMON_H_
 
-#include "base/logging.h"
-#include "base/macros.h"
 #include "dart/runtime/include/dart_api.h"
 
 namespace mojo {

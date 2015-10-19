@@ -5,14 +5,12 @@
 #include <stdio.h>
 #include <string.h>
 
-#include "base/logging.h"
-#include "base/macros.h"
 #include "dart/runtime/include/dart_api.h"
 #include "mojo/dart/embedder/builtin.h"
 #include "mojo/dart/embedder/common.h"
 #include "mojo/dart/embedder/io/internet_address.h"
 #include "mojo/dart/embedder/mojo_dart_state.h"
-
+#include "mojo/public/cpp/system/macros.h"
 
 namespace mojo {
 namespace dart {
@@ -45,10 +43,10 @@ Dart_NativeFunction MojoIoNativeLookup(Dart_Handle name,
   const char* function_name = nullptr;
   Dart_Handle result = Dart_StringToCString(name, &function_name);
   DART_CHECK_VALID(result);
-  DCHECK(function_name != nullptr);
-  DCHECK(auto_setup_scope != nullptr);
+  assert(function_name != nullptr);
+  assert(auto_setup_scope != nullptr);
   *auto_setup_scope = true;
-  size_t num_entries = arraysize(MojoEntries);
+  size_t num_entries = MOJO_ARRAYSIZE(MojoEntries);
   for (size_t i = 0; i < num_entries; ++i) {
     const struct NativeEntries& entry = MojoEntries[i];
     if (!strcmp(function_name, entry.name) &&
@@ -60,7 +58,7 @@ Dart_NativeFunction MojoIoNativeLookup(Dart_Handle name,
 }
 
 const uint8_t* MojoIoNativeSymbol(Dart_NativeFunction nf) {
-  size_t num_entries = arraysize(MojoEntries);
+  size_t num_entries = MOJO_ARRAYSIZE(MojoEntries);
   for (size_t i = 0; i < num_entries; ++i) {
     const struct NativeEntries& entry = MojoEntries[i];
     if (entry.function == nf) {
@@ -72,9 +70,9 @@ const uint8_t* MojoIoNativeSymbol(Dart_NativeFunction nf) {
 
 void InternetAddress_Parse(Dart_NativeArguments arguments) {
   const char* address = DartEmbedder::GetStringArgument(arguments, 0);
-  CHECK(address != NULL);
+  CHECK(address != nullptr);
   RawAddr raw;
-  int type = strchr(address, ':') == NULL ? InternetAddress::TYPE_IPV4
+  int type = strchr(address, ':') == nullptr ? InternetAddress::TYPE_IPV4
                                           : InternetAddress::TYPE_IPV6;
   intptr_t length = (type == InternetAddress::TYPE_IPV4) ?
       IPV4_RAW_ADDR_LENGTH : IPV6_RAW_ADDR_LENGTH;
@@ -88,7 +86,7 @@ void InternetAddress_Parse(Dart_NativeArguments arguments) {
 }
 
 void InternetAddress_Reverse(Dart_NativeArguments arguments) {
-  uint8_t* addr = NULL;
+  uint8_t* addr = nullptr;
   intptr_t addr_len = 0;
   DartEmbedder::GetTypedDataListArgument(arguments, 0, &addr, &addr_len);
   if (addr_len == 0) {
@@ -106,7 +104,7 @@ void InternetAddress_Reverse(Dart_NativeArguments arguments) {
   const intptr_t kMaxHostLength = 1025;
   char host[kMaxHostLength];
   intptr_t error_code = 0;
-  const char* error_description = NULL;
+  const char* error_description = nullptr;
   bool success = InternetAddress::Reverse(raw_addr, addr_len,
                                           &host[0], kMaxHostLength,
                                           &error_code, &error_description);
@@ -160,7 +158,7 @@ void Platform_ExecutableArguments(Dart_NativeArguments arguments) {
 
 void Platform_PackageRoot(Dart_NativeArguments arguments) {
   auto isolate_data = MojoDartState::Current();
-  DCHECK(isolate_data != nullptr);
+  assert(isolate_data != nullptr);
   Dart_SetReturnValue(
       arguments,
       Dart_NewStringFromCString(isolate_data->package_root().c_str()));

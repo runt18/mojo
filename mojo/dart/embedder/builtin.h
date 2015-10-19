@@ -9,7 +9,6 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "base/macros.h"
 #include "dart/runtime/include/dart_api.h"
 
 namespace mojo {
@@ -76,7 +75,8 @@ class Builtin {
   static const char* mojo_core_patch_resource_names_[];
   static const char* mojo_io_patch_resource_names_[];
 
-  DISALLOW_IMPLICIT_CONSTRUCTORS(Builtin);
+  // This type cannot be instantiated.
+  Builtin() = delete;
 };
 
 }  // namespace dart
