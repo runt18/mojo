@@ -13,6 +13,9 @@
     'mojo': {
       'filepath': 'mojo',
     },
+    'mojo_public': {
+      'filepath': 'mojo/public',
+    },
     'services': {
       'filepath': 'services',
     },
@@ -31,12 +34,10 @@
              'darin@chromium.org',
              'qsr+mojo@chromium.org',
              'viettrungluu+watch@chromium.org',
-             'gregsimon@chromium.org',
-             'yzshen+watch@chromium.org'],
-    'services': ['qsr+mojo@chromium.org',
-                 'yzshen+watch@chromium.org'],
-    'shell': ['qsr+mojo@chromium.org',
-              'yzshen+watch@chromium.org'],
+             'gregsimon@chromium.org'],
+    'mojo_public': ['yzshen+mojopublicwatch@chromium.org'],
+    'services': ['qsr+mojo@chromium.org'],
+    'shell': ['qsr+mojo@chromium.org'],
     'sky': ['abarth@chromium.org',
             'gregsimon@chromium.org',
             'jackson@chromium.org',
