@@ -8,51 +8,54 @@
 //
 // Example usage:
 //   pub get
-//   pub run sky_tools build
-//   pub run sky_tools run_mojo --mojo-path=../../.. --android
+//   pub run flutter build
+//   pub run flutter run_mojo --mojo-path=../../.. --android
 
-import 'dart:sky';
 import 'dart:typed_data';
+import 'dart:ui' as ui;
 
+import 'package:flutter/painting.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter/widgets.dart';
 import 'package:mojo_services/mojo/camera.mojom.dart';
-import 'package:sky/services.dart';
 
-Image image = null;
+ui.Image image = null;
 final CameraServiceProxy camera = new CameraServiceProxy.unbound();
 
-Picture paint(Rect paintBounds) {
-  PictureRecorder recorder = new PictureRecorder();
+ui.Picture paint(ui.Rect paintBounds) {
+  ui.PictureRecorder recorder = new ui.PictureRecorder();
   if (image != null) {
-    Canvas canvas = new Canvas(recorder, paintBounds);
+    ui.Canvas canvas = new ui.Canvas(recorder, paintBounds);
     canvas.translate(paintBounds.width / 2.0, paintBounds.height / 2.0);
     canvas.scale(0.3, 0.3);
-    Paint paint = new Paint()..color = const Color.fromARGB(255, 0, 255, 0);
-    canvas.drawImage(image, new Point(-image.width / 2.0, -image.height / 2.0), paint);
+    ui.Paint paint = new Paint()..color = const Color.fromARGB(255, 0, 255, 0);
+    canvas.drawImage(
+        image, new Point(-image.width / 2.0, -image.height / 2.0), paint);
   }
   return recorder.endRecording();
 }
 
-Scene composite(Picture picture, Rect paintBounds) {
-  final double devicePixelRatio = view.devicePixelRatio;
-  Rect sceneBounds = new Rect.fromLTWH(
-      0.0, 0.0, view.width * devicePixelRatio, view.height * devicePixelRatio);
-  Float32List deviceTransform = new Float32List(16)
+ui.Scene composite(ui.Picture picture, ui.Rect paintBounds) {
+  final double devicePixelRatio = ui.view.devicePixelRatio;
+  ui.Rect sceneBounds = new ui.Rect.fromLTWH(0.0, 0.0,
+      ui.view.width * devicePixelRatio, ui.view.height * devicePixelRatio);
+  Float64List deviceTransform = new Float64List(16)
     ..[0] = devicePixelRatio
     ..[5] = devicePixelRatio
     ..[10] = 1.0
     ..[15] = 1.0;
-  SceneBuilder sceneBuilder = new SceneBuilder(sceneBounds)
+  ui.SceneBuilder sceneBuilder = new ui.SceneBuilder(sceneBounds)
     ..pushTransform(deviceTransform)
-    ..addPicture(Offset.zero, picture, paintBounds)
+    ..addPicture(ui.Offset.zero, picture, paintBounds)
     ..pop();
   return sceneBuilder.build();
 }
 
 void beginFrame(double timeStamp) {
-  Rect paintBounds = new Rect.fromLTWH(0.0, 0.0, view.width, view.height);
+  Rect paintBounds = new Rect.fromLTWH(0.0, 0.0, ui.view.width, ui.view.height);
   Picture picture = paint(paintBounds);
-  Scene scene = composite(picture, paintBounds);
-  view.scene = scene;
+  ui.Scene scene = composite(picture, paintBounds);
+  ui.view.scene = scene;
 }
 
 void drawNextPhoto() {
@@ -62,10 +65,12 @@ void drawNextPhoto() {
       drawNextPhoto();
       return;
     }
-    new ImageDecoder(response.content.handle.h, (frame) {
+
+    final imageFrame = decodeImageFromDataPipe(response.content);
+    imageFrame.then((frame) {
       if (frame != null) {
         image = frame;
-        view.scheduleFrame();
+        ui.view.scheduleFrame();
         drawNextPhoto();
       }
     });
@@ -73,7 +78,7 @@ void drawNextPhoto() {
 }
 
 void main() {
-  view.setFrameCallback(beginFrame);
   embedder.connectToService("mojo:camera", camera);
   drawNextPhoto();
+  ui.view.setFrameCallback(beginFrame);
 }

@@ -49,6 +49,10 @@ packages:
     description: either
     source: hosted
     version: "0.1.8"
+  flutter:
+    description: flutter
+    source: hosted
+    version: "0.0.6"
   glob:
     description: glob
     source: hosted
@@ -88,15 +92,15 @@ packages:
   mojo:
     description: mojo
     source: hosted
-    version: "0.1.0"
+    version: "0.2.0"
   mojo_services:
     description: mojo_services
     source: hosted
-    version: "0.1.0"
+    version: "0.3.0"
   mojom:
     description: mojom
     source: hosted
-    version: "0.1.0"
+    version: "0.2.1"
   mustache4dart:
     description: mustache4dart
     source: hosted
@@ -120,7 +124,7 @@ packages:
   petitparser:
     description: petitparser
     source: hosted
-    version: "1.4.3"
+    version: "1.5.0"
   plugin:
     description: plugin
     source: hosted
@@ -157,22 +161,18 @@ packages:
     description: shelf_web_socket
     source: hosted
     version: "0.0.1+4"
-  sky:
-    description: sky
-    source: hosted
-    version: "0.0.51"
   sky_engine:
     description: sky_engine
     source: hosted
-    version: "0.0.29"
+    version: "0.0.37"
   sky_services:
     description: sky_services
     source: hosted
-    version: "0.0.29"
+    version: "0.0.37"
   sky_tools:
     description: sky_tools
     source: hosted
-    version: "0.0.15"
+    version: "0.0.24"
   source_map_stack_trace:
     description: source_map_stack_trace
     source: hosted
