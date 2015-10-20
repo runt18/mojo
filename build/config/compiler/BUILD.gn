@@ -939,6 +939,20 @@ if (is_clang) {
     # TODO(hans): Get this cleaned up.
     "-Wno-inconsistent-missing-override",
   ]
+
+  # NaCl's Clang compiler and Chrome's hermetic Clang compiler will almost
+  # always have different versions. Certain flags may not be recognized by
+  # one version or the other.
+  if (!is_nacl) {
+    # Flags NaCl (Clang 3.7) does not recognize.
+    default_warning_flags += [
+      # TODO(smklein): Enable this, crbug.com/507717
+      "-Wno-shift-negative-value",
+
+      # TODO(smklein): Consider enabling this once not broken by third party
+      "-Wno-bitfield-width",
+    ]
+  }
 }
 
 # chromium_code ---------------------------------------------------------------
@@ -1006,7 +1020,10 @@ config("no_chromium_code") {
     # off by default in some gccs but on by default in others. BSD systems do
     # not support this option, since they are usually using gcc 4.2.1, which
     # does not have this flag yet.
-    cflags += [ "-Wno-unused-result" ]
+    cflags += [
+      "-Wno-logical-not-parentheses",
+      "-Wno-unused-result",
+    ]
   }
 
   if (is_linux || is_android) {

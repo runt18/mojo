@@ -58,6 +58,13 @@ def PrintTarProgress(tarinfo):
 
 
 def main():
+  if sys.platform == 'win32':
+    try:
+      subprocess.check_output(['grep', '--help'], shell=True)
+    except subprocess.CalledProcessError:
+      print 'Add gnuwin32 to your PATH, then try again.'
+      return 1
+
   parser = argparse.ArgumentParser(description='build and package clang')
   parser.add_argument('--gcc-toolchain',
                       help="the prefix for the GCC version used for building. "
@@ -75,10 +82,13 @@ def main():
            log, fail_hard=False)
     TeeCmd(['svn', 'diff', os.path.join(LLVM_DIR, 'tools', 'clang')],
            log, fail_hard=False)
+    # TODO(thakis): compiler-rt is in projects/compiler-rt on Windows but
+    # llvm/compiler-rt elsewhere. So this diff call is currently only right on
+    # Windows.
     Tee('Diff in llvm/compiler-rt:\n', log)
-    TeeCmd(['svn', 'stat', os.path.join(LLVM_DIR, 'compiler-rt')],
+    TeeCmd(['svn', 'stat', os.path.join(LLVM_DIR, 'projects', 'compiler-rt')],
            log, fail_hard=False)
-    TeeCmd(['svn', 'diff', os.path.join(LLVM_DIR, 'compiler-rt')],
+    TeeCmd(['svn', 'diff', os.path.join(LLVM_DIR, 'projects', 'compiler-rt')],
            log, fail_hard=False)
     Tee('Diff in llvm/projects/libcxx:\n', log)
     TeeCmd(['svn', 'stat', os.path.join(LLVM_DIR, 'projects', 'libcxx')],
@@ -115,11 +125,13 @@ def main():
   exe_ext = '.exe' if sys.platform == 'win32' else ''
   want = ['bin/llvm-symbolizer' + exe_ext,
           'lib/clang/*/asan_blacklist.txt',
+          'lib/clang/*/cfi_blacklist.txt',
           # Copy built-in headers (lib/clang/3.x.y/include).
           'lib/clang/*/include/*',
           ]
   if sys.platform == 'win32':
     want.append('bin/clang-cl.exe')
+    want.append('bin/lld-link.exe')
   else:
     so_ext = 'dylib' if sys.platform == 'darwin' else 'so'
     want.extend(['bin/clang',
@@ -183,6 +195,7 @@ def main():
   # Set up symlinks.
   if sys.platform != 'win32':
     os.symlink('clang', os.path.join(pdir, 'bin', 'clang++'))
+    os.symlink('clang', os.path.join(pdir, 'bin', 'clang-cl'))
   if sys.platform == 'darwin':
     os.symlink('libc++.1.dylib', os.path.join(pdir, 'bin', 'libc++.dylib'))
     # Also copy libc++ headers.
