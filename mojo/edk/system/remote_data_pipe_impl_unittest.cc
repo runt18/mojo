@@ -10,7 +10,6 @@
 #include <utility>
 
 #include "base/bind.h"
-#include "base/location.h"
 #include "base/logging.h"
 #include "base/message_loop/message_loop.h"
 #include "mojo/edk/embedder/platform_channel_pair.h"
@@ -49,18 +48,16 @@ class RemoteDataPipeImplTest : public testing::Test {
     message_pipes_[0] = MessagePipe::CreateLocalProxy(&ep[0]);
     message_pipes_[1] = MessagePipe::CreateLocalProxy(&ep[1]);
 
-    io_thread_.PostTaskAndWait(
-        FROM_HERE, base::Bind(&RemoteDataPipeImplTest::SetUpOnIOThread,
-                              base::Unretained(this), base::Passed(&ep[0]),
-                              base::Passed(&ep[1])));
+    io_thread_.PostTaskAndWait(base::Bind(
+        &RemoteDataPipeImplTest::SetUpOnIOThread, base::Unretained(this),
+        base::Passed(&ep[0]), base::Passed(&ep[1])));
   }
 
   void TearDown() override {
     EnsureMessagePipeClosed(0);
     EnsureMessagePipeClosed(1);
-    io_thread_.PostTaskAndWait(
-        FROM_HERE, base::Bind(&RemoteDataPipeImplTest::TearDownOnIOThread,
-                              base::Unretained(this)));
+    io_thread_.PostTaskAndWait(base::Bind(
+        &RemoteDataPipeImplTest::TearDownOnIOThread, base::Unretained(this)));
   }
 
  protected:

@@ -11,7 +11,6 @@
 #include <vector>
 
 #include "base/bind.h"
-#include "base/location.h"
 #include "base/logging.h"
 #include "base/message_loop/message_loop.h"
 #include "mojo/edk/embedder/platform_channel_pair.h"
@@ -52,15 +51,13 @@ class RemoteMessagePipeTest : public testing::Test {
   ~RemoteMessagePipeTest() override {}
 
   void SetUp() override {
-    io_thread_.PostTaskAndWait(
-        FROM_HERE, base::Bind(&RemoteMessagePipeTest::SetUpOnIOThread,
-                              base::Unretained(this)));
+    io_thread_.PostTaskAndWait(base::Bind(
+        &RemoteMessagePipeTest::SetUpOnIOThread, base::Unretained(this)));
   }
 
   void TearDown() override {
-    io_thread_.PostTaskAndWait(
-        FROM_HERE, base::Bind(&RemoteMessagePipeTest::TearDownOnIOThread,
-                              base::Unretained(this)));
+    io_thread_.PostTaskAndWait(base::Bind(
+        &RemoteMessagePipeTest::TearDownOnIOThread, base::Unretained(this)));
   }
 
  protected:
@@ -70,7 +67,6 @@ class RemoteMessagePipeTest : public testing::Test {
   void BootstrapChannelEndpoints(RefPtr<ChannelEndpoint>&& ep0,
                                  RefPtr<ChannelEndpoint>&& ep1) {
     io_thread_.PostTaskAndWait(
-        FROM_HERE,
         base::Bind(&RemoteMessagePipeTest::BootstrapChannelEndpointsOnIOThread,
                    base::Unretained(this), base::Passed(ep0),
                    base::Passed(ep1)));
@@ -82,14 +78,12 @@ class RemoteMessagePipeTest : public testing::Test {
   void BootstrapChannelEndpointNoWait(unsigned channel_index,
                                       RefPtr<ChannelEndpoint>&& ep) {
     io_thread_.PostTask(
-        FROM_HERE,
         base::Bind(&RemoteMessagePipeTest::BootstrapChannelEndpointOnIOThread,
                    base::Unretained(this), channel_index, base::Passed(&ep)));
   }
 
   void RestoreInitialState() {
     io_thread_.PostTaskAndWait(
-        FROM_HERE,
         base::Bind(&RemoteMessagePipeTest::RestoreInitialStateOnIOThread,
                    base::Unretained(this)));
   }
@@ -1134,8 +1128,7 @@ TEST_F(RemoteMessagePipeTest, RacingClosesStress) {
     BootstrapChannelEndpointNoWait(1, std::move(ep1));
 
     if (i & 1u) {
-      io_thread()->task_runner()->PostTask(FROM_HERE,
-                                           base::Bind(&test::Sleep, delay));
+      io_thread()->PostTask(base::Bind(&test::Sleep, delay));
     }
     if (i & 2u)
       test::Sleep(delay);
@@ -1143,8 +1136,7 @@ TEST_F(RemoteMessagePipeTest, RacingClosesStress) {
     mp0->Close(0);
 
     if (i & 4u) {
-      io_thread()->task_runner()->PostTask(FROM_HERE,
-                                           base::Bind(&test::Sleep, delay));
+      io_thread()->PostTask(base::Bind(&test::Sleep, delay));
     }
     if (i & 8u)
       test::Sleep(delay);

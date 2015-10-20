@@ -10,7 +10,6 @@
 
 #include "base/bind.h"
 #include "base/command_line.h"
-#include "base/location.h"
 #include "base/logging.h"
 #include "base/synchronization/waitable_event.h"
 #include "base/test/test_timeouts.h"
@@ -196,7 +195,6 @@ class TestSlaveConnection {
     WaitForChannelToSlave();
 
     test_io_thread_->PostTaskAndWait(
-        FROM_HERE,
         base::Bind(&ChannelManager::ShutdownChannelOnIOThread,
                    base::Unretained(master_ipc_support_->channel_manager()),
                    slave_id_));
@@ -262,7 +260,6 @@ class TestSlave {
     WaitForChannelToMaster();
 
     test_io_thread_->PostTaskAndWait(
-        FROM_HERE,
         base::Bind(&ChannelManager::ShutdownChannelOnIOThread,
                    base::Unretained(slave_ipc_support_.channel_manager()),
                    kMasterProcessIdentifier));
@@ -271,8 +268,8 @@ class TestSlave {
   // No other methods may be called after this.
   void ShutdownIPCSupport() {
     test_io_thread_->PostTaskAndWait(
-        FROM_HERE, base::Bind(&IPCSupport::ShutdownOnIOThread,
-                              base::Unretained(&slave_ipc_support_)));
+        base::Bind(&IPCSupport::ShutdownOnIOThread,
+                   base::Unretained(&slave_ipc_support_)));
   }
 
  private:
@@ -390,8 +387,8 @@ class IPCSupportTest : public testing::Test {
 
   void ShutdownMasterIPCSupport() {
     test_io_thread_.PostTaskAndWait(
-        FROM_HERE, base::Bind(&IPCSupport::ShutdownOnIOThread,
-                              base::Unretained(&master_ipc_support_)));
+        base::Bind(&IPCSupport::ShutdownOnIOThread,
+                   base::Unretained(&master_ipc_support_)));
   }
 
   embedder::SimplePlatformSupport& platform_support() {
@@ -617,9 +614,8 @@ TEST_F(IPCSupportTest, MasterSlaveInternal) {
   EXPECT_EQ(1u, n);
   EXPECT_EQ('x', c);
 
-  test_io_thread().PostTaskAndWait(
-      FROM_HERE, base::Bind(&IPCSupport::ShutdownOnIOThread,
-                            base::Unretained(&slave_ipc_support)));
+  test_io_thread().PostTaskAndWait(base::Bind(
+      &IPCSupport::ShutdownOnIOThread, base::Unretained(&slave_ipc_support)));
 
   EXPECT_TRUE(master_process_delegate().TryWaitForOnSlaveDisconnect());
 
@@ -712,8 +708,7 @@ MOJO_MULTIPROCESS_TEST_CHILD_TEST(MultiprocessMasterSlaveInternal) {
       mojo::test::BlockingWrite(second_platform_handle.get(), "!", 1, &n));
   EXPECT_EQ(1u, n);
 
-  test_io_thread.PostTaskAndWait(FROM_HERE,
-                                 base::Bind(&IPCSupport::ShutdownOnIOThread,
+  test_io_thread.PostTaskAndWait(base::Bind(&IPCSupport::ShutdownOnIOThread,
                                             base::Unretained(&ipc_support)));
 }
 
