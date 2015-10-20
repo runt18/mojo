@@ -12,7 +12,6 @@
 #include <vector>
 
 #include "base/bind.h"
-#include "base/location.h"
 #include "base/logging.h"
 #include "build/build_config.h"  // TODO(vtl): Remove this.
 #include "mojo/edk/embedder/platform_shared_buffer.h"

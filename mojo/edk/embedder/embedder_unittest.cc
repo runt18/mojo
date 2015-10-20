@@ -135,7 +135,7 @@ class EmbedderTest : public testing::Test {
 
  protected:
   TestIOThread& test_io_thread() { return test_io_thread_; }
-  scoped_refptr<base::TaskRunner> test_io_task_runner() {
+  PlatformTaskRunnerRefPtr test_io_task_runner() {
     return test_io_thread_.task_runner();
   }
 

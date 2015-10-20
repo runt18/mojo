@@ -11,6 +11,7 @@
 
 #include "base/callback_forward.h"
 #include "base/memory/ref_counted.h"
+#include "mojo/edk/embedder/platform_task_runner.h"
 #include "mojo/edk/embedder/scoped_platform_handle.h"
 #include "mojo/edk/system/channel_id.h"
 #include "mojo/edk/system/mutex.h"
@@ -44,7 +45,7 @@ class ChannelManager {
   // optional and may be null. All arguments (if non-null) must remain alive at
   // least until after shutdown completion.
   ChannelManager(embedder::PlatformSupport* platform_support,
-                 scoped_refptr<base::TaskRunner> io_thread_task_runner,
+                 embedder::PlatformTaskRunnerRefPtr io_thread_task_runner,
                  ConnectionManager* connection_manager);
   ~ChannelManager();
 
@@ -63,7 +64,7 @@ class ChannelManager {
   // TODO(vtl): Consider if this is really necessary, since it only has one use
   // (in tests).
   void Shutdown(const base::Closure& callback,
-                scoped_refptr<base::TaskRunner> callback_thread_task_runner);
+                embedder::PlatformTaskRunnerRefPtr callback_thread_task_runner);
 
   // Creates a |Channel| and adds it to the set of channels managed by this
   // |ChannelManager|. This must be called from the I/O thread (given to the
@@ -90,7 +91,7 @@ class ChannelManager {
       ChannelId channel_id,
       embedder::ScopedPlatformHandle platform_handle,
       const base::Closure& callback,
-      scoped_refptr<base::TaskRunner> callback_thread_task_runner);
+      embedder::PlatformTaskRunnerRefPtr callback_thread_task_runner);
 
   // Gets the |Channel| with the given ID (which must exist).
   RefPtr<Channel> GetChannel(ChannelId channel_id) const;
@@ -115,7 +116,7 @@ class ChannelManager {
   void ShutdownChannel(
       ChannelId channel_id,
       const base::Closure& callback,
-      scoped_refptr<base::TaskRunner> callback_thread_task_runner);
+      embedder::PlatformTaskRunnerRefPtr callback_thread_task_runner);
 
   ConnectionManager* connection_manager() const { return connection_manager_; }
 
@@ -123,7 +124,7 @@ class ChannelManager {
   // Used by |Shutdown()|. Called on the I/O thread.
   void ShutdownHelper(
       const base::Closure& callback,
-      scoped_refptr<base::TaskRunner> callback_thread_task_runner);
+      embedder::PlatformTaskRunnerRefPtr callback_thread_task_runner);
 
   // Used by |CreateChannelOnIOThread()| and |CreateChannelHelper()|. Called on
   // the I/O thread. |bootstrap_channel_endpoint| is optional and may be null.
@@ -141,11 +142,11 @@ class ChannelManager {
       embedder::ScopedPlatformHandle platform_handle,
       RefPtr<ChannelEndpoint> bootstrap_channel_endpoint,
       const base::Closure& callback,
-      scoped_refptr<base::TaskRunner> callback_thread_task_runner);
+      embedder::PlatformTaskRunnerRefPtr callback_thread_task_runner);
 
   // Note: These must not be used after shutdown.
   embedder::PlatformSupport* const platform_support_;
-  const scoped_refptr<base::TaskRunner> io_thread_task_runner_;
+  const embedder::PlatformTaskRunnerRefPtr io_thread_task_runner_;
   ConnectionManager* const connection_manager_;
 
   // Note: |Channel| methods should not be called under |mutex_|.
