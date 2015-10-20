@@ -17,7 +17,9 @@ def ScriptDir():
 
 
 def RepoRoot():
-  return os.path.dirname(ScriptDir())
+  # Go up 4 levels, to get out of "mojo/nacl/sfi/nacl_bindings_generator".
+  return os.path.dirname(os.path.dirname(os.path.dirname(
+      os.path.dirname(ScriptDir()))))
 
 
 def _AddThirdPartyImportPath():
@@ -533,7 +535,7 @@ def main():
   root_dir = RepoRoot()
 
   platform_dir = 'mojo/public/platform/nacl'
-  bindings_dir = 'nacl_bindings'
+  bindings_dir = 'mojo/nacl/sfi/nacl_bindings'
 
   full_platform_dir = os.path.join(root_dir, platform_dir)
   full_bindings_dir = os.path.join(root_dir, bindings_dir)
