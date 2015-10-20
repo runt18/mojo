@@ -59,7 +59,7 @@ def main():
     package_root = tempfile.mkdtemp(prefix='pub_packages-')
 
     run(SRC_ROOT, [
-        'mojo/tools/prepare_pub_packages.py',
+        'mojo/dart/tools/prepare_pub_packages.py',
         '--out-dir',
         package_root,
         'out',
