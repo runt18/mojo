@@ -17,6 +17,7 @@
 #include "mojo/edk/system/channel_id.h"
 #include "mojo/edk/system/connection_identifier.h"
 #include "mojo/edk/system/process_identifier.h"
+#include "mojo/edk/system/ref_ptr.h"
 #include "mojo/public/cpp/system/macros.h"
 
 namespace mojo {
@@ -99,7 +100,7 @@ class IPCSupport {
   //
   // TODO(vtl): Add some more channel management functionality to this class.
   // Maybe make this callback interface more sane.
-  scoped_refptr<system::MessagePipeDispatcher> ConnectToSlave(
+  RefPtr<MessagePipeDispatcher> ConnectToSlave(
       const ConnectionIdentifier& connection_id,
       embedder::SlaveInfo slave_info,
       embedder::ScopedPlatformHandle platform_handle,
@@ -115,7 +116,7 @@ class IPCSupport {
   // |ConnectToSlave()|.
   //
   // TODO(vtl): |ConnectToSlave()|'s channel management TODO also applies here.
-  scoped_refptr<system::MessagePipeDispatcher> ConnectToMaster(
+  RefPtr<MessagePipeDispatcher> ConnectToMaster(
       const ConnectionIdentifier& connection_id,
       const base::Closure& callback,
       scoped_refptr<base::TaskRunner> callback_thread_task_runner,

@@ -61,23 +61,29 @@ MojoResult SharedBufferDispatcher::ValidateCreateOptions(
 }
 
 // static
-MojoResult SharedBufferDispatcher::Create(
+RefPtr<SharedBufferDispatcher> SharedBufferDispatcher::Create(
     embedder::PlatformSupport* platform_support,
     const MojoCreateSharedBufferOptions& /*validated_options*/,
     uint64_t num_bytes,
-    scoped_refptr<SharedBufferDispatcher>* result) {
-  if (!num_bytes)
-    return MOJO_RESULT_INVALID_ARGUMENT;
-  if (num_bytes > GetConfiguration().max_shared_memory_num_bytes)
-    return MOJO_RESULT_RESOURCE_EXHAUSTED;
+    MojoResult* result) {
+  if (!num_bytes) {
+    *result = MOJO_RESULT_INVALID_ARGUMENT;
+    return nullptr;
+  }
+  if (num_bytes > GetConfiguration().max_shared_memory_num_bytes) {
+    *result = MOJO_RESULT_RESOURCE_EXHAUSTED;
+    return nullptr;
+  }
 
   scoped_refptr<embedder::PlatformSharedBuffer> shared_buffer(
       platform_support->CreateSharedBuffer(static_cast<size_t>(num_bytes)));
-  if (!shared_buffer)
-    return MOJO_RESULT_RESOURCE_EXHAUSTED;
+  if (!shared_buffer) {
+    *result = MOJO_RESULT_RESOURCE_EXHAUSTED;
+    return nullptr;
+  }
 
-  *result = CreateInternal(shared_buffer.Pass());
-  return MOJO_RESULT_OK;
+  *result = MOJO_RESULT_OK;
+  return CreateInternal(shared_buffer.Pass());
 }
 
 Dispatcher::Type SharedBufferDispatcher::GetType() const {
@@ -85,7 +91,7 @@ Dispatcher::Type SharedBufferDispatcher::GetType() const {
 }
 
 // static
-scoped_refptr<SharedBufferDispatcher> SharedBufferDispatcher::Deserialize(
+RefPtr<SharedBufferDispatcher> SharedBufferDispatcher::Deserialize(
     Channel* channel,
     const void* source,
     size_t size,
@@ -181,7 +187,7 @@ void SharedBufferDispatcher::CloseImplNoLock() {
   shared_buffer_ = nullptr;
 }
 
-scoped_refptr<Dispatcher>
+RefPtr<Dispatcher>
 SharedBufferDispatcher::CreateEquivalentDispatcherAndCloseImplNoLock() {
   mutex().AssertHeld();
   DCHECK(shared_buffer_);
@@ -190,7 +196,7 @@ SharedBufferDispatcher::CreateEquivalentDispatcherAndCloseImplNoLock() {
 
 MojoResult SharedBufferDispatcher::DuplicateBufferHandleImplNoLock(
     UserPointer<const MojoDuplicateBufferHandleOptions> options,
-    scoped_refptr<Dispatcher>* new_dispatcher) {
+    RefPtr<Dispatcher>* new_dispatcher) {
   mutex().AssertHeld();
 
   MojoDuplicateBufferHandleOptions validated_options;
@@ -233,7 +239,7 @@ void SharedBufferDispatcher::StartSerializeImplNoLock(
     Channel* /*channel*/,
     size_t* max_size,
     size_t* max_platform_handles) {
-  DCHECK(HasOneRef());  // Only one ref => no need to take the lock.
+  AssertHasOneRef();  // Only one ref => no need to take the lock.
   *max_size = sizeof(SerializedSharedBufferDispatcher);
   *max_platform_handles = 1;
 }
@@ -243,7 +249,7 @@ bool SharedBufferDispatcher::EndSerializeAndCloseImplNoLock(
     void* destination,
     size_t* actual_size,
     embedder::PlatformHandleVector* platform_handles) {
-  DCHECK(HasOneRef());  // Only one ref => no need to take the lock.
+  AssertHasOneRef();  // Only one ref => no need to take the lock.
   DCHECK(shared_buffer_);
 
   SerializedSharedBufferDispatcher* serialization =

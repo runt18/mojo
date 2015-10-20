@@ -23,6 +23,7 @@
 #include "mojo/edk/system/message_pipe_dispatcher.h"
 #include "mojo/edk/system/platform_handle_dispatcher.h"
 #include "mojo/edk/system/raw_channel.h"
+#include "mojo/edk/system/ref_ptr.h"
 
 namespace mojo {
 namespace embedder {
@@ -102,11 +103,11 @@ MojoResult CreatePlatformHandleWrapper(
     MojoHandle* platform_handle_wrapper_handle) {
   DCHECK(platform_handle_wrapper_handle);
 
-  scoped_refptr<system::Dispatcher> dispatcher =
+  auto dispatcher =
       system::PlatformHandleDispatcher::Create(platform_handle.Pass());
 
   DCHECK(internal::g_core);
-  MojoHandle h = internal::g_core->AddDispatcher(dispatcher);
+  MojoHandle h = internal::g_core->AddDispatcher(dispatcher.get());
   if (h == MOJO_HANDLE_INVALID) {
     LOG(ERROR) << "Handle table full";
     dispatcher->Close();
@@ -122,8 +123,8 @@ MojoResult PassWrappedPlatformHandle(MojoHandle platform_handle_wrapper_handle,
   DCHECK(platform_handle);
 
   DCHECK(internal::g_core);
-  scoped_refptr<system::Dispatcher> dispatcher(
-      internal::g_core->GetDispatcher(platform_handle_wrapper_handle));
+  auto dispatcher =
+      internal::g_core->GetDispatcher(platform_handle_wrapper_handle);
   if (!dispatcher)
     return MOJO_RESULT_INVALID_ARGUMENT;
 
@@ -184,7 +185,7 @@ ScopedMessagePipeHandle ConnectToSlave(
       internal::g_ipc_support->GenerateConnectionIdentifier();
   *platform_connection_id = connection_id.ToString();
   system::ChannelId channel_id = system::kInvalidChannelId;
-  scoped_refptr<system::MessagePipeDispatcher> dispatcher =
+  system::RefPtr<system::MessagePipeDispatcher> dispatcher =
       internal::g_ipc_support->ConnectToSlave(
           connection_id, slave_info, platform_handle.Pass(),
           did_connect_to_slave_callback, did_connect_to_slave_runner.Pass(),
@@ -192,11 +193,9 @@ ScopedMessagePipeHandle ConnectToSlave(
   *channel_info = new ChannelInfo(channel_id);
 
   ScopedMessagePipeHandle rv(
-      MessagePipeHandle(internal::g_core->AddDispatcher(dispatcher)));
+      MessagePipeHandle(internal::g_core->AddDispatcher(dispatcher.get())));
   CHECK(rv.is_valid());
-  // TODO(vtl): The |.Pass()| below is only needed due to an MSVS bug; remove it
-  // once that's fixed.
-  return rv.Pass();
+  return rv;
 }
 
 ScopedMessagePipeHandle ConnectToMaster(
@@ -213,18 +212,16 @@ ScopedMessagePipeHandle ConnectToMaster(
   CHECK(ok);
 
   system::ChannelId channel_id = system::kInvalidChannelId;
-  scoped_refptr<system::MessagePipeDispatcher> dispatcher =
+  system::RefPtr<system::MessagePipeDispatcher> dispatcher =
       internal::g_ipc_support->ConnectToMaster(
           connection_id, did_connect_to_master_callback,
           did_connect_to_master_runner.Pass(), &channel_id);
   *channel_info = new ChannelInfo(channel_id);
 
   ScopedMessagePipeHandle rv(
-      MessagePipeHandle(internal::g_core->AddDispatcher(dispatcher)));
+      MessagePipeHandle(internal::g_core->AddDispatcher(dispatcher.get())));
   CHECK(rv.is_valid());
-  // TODO(vtl): The |.Pass()| below is only needed due to an MSVS bug; remove it
-  // once that's fixed.
-  return rv.Pass();
+  return rv;
 }
 
 // TODO(vtl): Write tests for this.
@@ -239,16 +236,14 @@ ScopedMessagePipeHandle CreateChannelOnIOThread(
       internal::g_ipc_support->channel_manager();
 
   *channel_info = new ChannelInfo(MakeChannelId());
-  scoped_refptr<system::MessagePipeDispatcher> dispatcher =
+  system::RefPtr<system::MessagePipeDispatcher> dispatcher =
       channel_manager->CreateChannelOnIOThread((*channel_info)->channel_id,
                                                platform_handle.Pass());
 
   ScopedMessagePipeHandle rv(
-      MessagePipeHandle(internal::g_core->AddDispatcher(dispatcher)));
+      MessagePipeHandle(internal::g_core->AddDispatcher(dispatcher.get())));
   CHECK(rv.is_valid());
-  // TODO(vtl): The |.Pass()| below is only needed due to an MSVS bug; remove it
-  // once that's fixed.
-  return rv.Pass();
+  return rv;
 }
 
 ScopedMessagePipeHandle CreateChannel(
@@ -264,7 +259,7 @@ ScopedMessagePipeHandle CreateChannel(
 
   system::ChannelId channel_id = MakeChannelId();
   std::unique_ptr<ChannelInfo> channel_info(new ChannelInfo(channel_id));
-  scoped_refptr<system::MessagePipeDispatcher> dispatcher =
+  system::RefPtr<system::MessagePipeDispatcher> dispatcher =
       channel_manager->CreateChannel(
           channel_id, platform_handle.Pass(),
           base::Bind(did_create_channel_callback,
@@ -272,11 +267,9 @@ ScopedMessagePipeHandle CreateChannel(
           did_create_channel_runner);
 
   ScopedMessagePipeHandle rv(
-      MessagePipeHandle(internal::g_core->AddDispatcher(dispatcher)));
+      MessagePipeHandle(internal::g_core->AddDispatcher(dispatcher.get())));
   CHECK(rv.is_valid());
-  // TODO(vtl): The |.Pass()| below is only needed due to an MSVS bug; remove it
-  // once that's fixed.
-  return rv.Pass();
+  return rv;
 }
 
 // TODO(vtl): Write tests for this.

@@ -79,13 +79,12 @@ void ChannelManager::Shutdown(
   DCHECK(ok);
 }
 
-scoped_refptr<MessagePipeDispatcher> ChannelManager::CreateChannelOnIOThread(
+RefPtr<MessagePipeDispatcher> ChannelManager::CreateChannelOnIOThread(
     ChannelId channel_id,
     embedder::ScopedPlatformHandle platform_handle) {
   RefPtr<ChannelEndpoint> bootstrap_channel_endpoint;
-  scoped_refptr<MessagePipeDispatcher> dispatcher =
-      MessagePipeDispatcher::CreateRemoteMessagePipe(
-          &bootstrap_channel_endpoint);
+  auto dispatcher = MessagePipeDispatcher::CreateRemoteMessagePipe(
+      &bootstrap_channel_endpoint);
   CreateChannelOnIOThreadHelper(channel_id, platform_handle.Pass(),
                                 std::move(bootstrap_channel_endpoint));
   return dispatcher;
@@ -98,7 +97,7 @@ RefPtr<Channel> ChannelManager::CreateChannelWithoutBootstrapOnIOThread(
                                        nullptr);
 }
 
-scoped_refptr<MessagePipeDispatcher> ChannelManager::CreateChannel(
+RefPtr<MessagePipeDispatcher> ChannelManager::CreateChannel(
     ChannelId channel_id,
     embedder::ScopedPlatformHandle platform_handle,
     const base::Closure& callback,
@@ -107,9 +106,8 @@ scoped_refptr<MessagePipeDispatcher> ChannelManager::CreateChannel(
   // (|callback_thread_task_runner| may be null.)
 
   RefPtr<ChannelEndpoint> bootstrap_channel_endpoint;
-  scoped_refptr<MessagePipeDispatcher> dispatcher =
-      MessagePipeDispatcher::CreateRemoteMessagePipe(
-          &bootstrap_channel_endpoint);
+  auto dispatcher = MessagePipeDispatcher::CreateRemoteMessagePipe(
+      &bootstrap_channel_endpoint);
   bool ok = io_thread_task_runner_->PostTask(
       FROM_HERE,
       base::Bind(&ChannelManager::CreateChannelHelper, base::Unretained(this),

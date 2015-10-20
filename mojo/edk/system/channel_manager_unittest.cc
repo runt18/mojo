@@ -48,9 +48,8 @@ TEST_F(ChannelManagerTest, Basic) {
   embedder::PlatformChannelPair channel_pair;
 
   const ChannelId id = 1;
-  scoped_refptr<MessagePipeDispatcher> d =
-      channel_manager().CreateChannelOnIOThread(
-          id, channel_pair.PassServerHandle());
+  RefPtr<MessagePipeDispatcher> d = channel_manager().CreateChannelOnIOThread(
+      id, channel_pair.PassServerHandle());
 
   RefPtr<Channel> ch = channel_manager().GetChannel(id);
   EXPECT_TRUE(ch);
@@ -68,14 +67,12 @@ TEST_F(ChannelManagerTest, TwoChannels) {
   embedder::PlatformChannelPair channel_pair;
 
   const ChannelId id1 = 1;
-  scoped_refptr<MessagePipeDispatcher> d1 =
-      channel_manager().CreateChannelOnIOThread(
-          id1, channel_pair.PassServerHandle());
+  RefPtr<MessagePipeDispatcher> d1 = channel_manager().CreateChannelOnIOThread(
+      id1, channel_pair.PassServerHandle());
 
   const ChannelId id2 = 2;
-  scoped_refptr<MessagePipeDispatcher> d2 =
-      channel_manager().CreateChannelOnIOThread(
-          id2, channel_pair.PassClientHandle());
+  RefPtr<MessagePipeDispatcher> d2 = channel_manager().CreateChannelOnIOThread(
+      id2, channel_pair.PassClientHandle());
 
   RefPtr<Channel> ch1 = channel_manager().GetChannel(id1);
   EXPECT_TRUE(ch1);
@@ -144,9 +141,8 @@ TEST_F(ChannelManagerTest, CallsFromOtherThread) {
   embedder::PlatformChannelPair channel_pair;
 
   const ChannelId id = 1;
-  scoped_refptr<MessagePipeDispatcher> d =
-      channel_manager().CreateChannelOnIOThread(
-          id, channel_pair.PassServerHandle());
+  RefPtr<MessagePipeDispatcher> d = channel_manager().CreateChannelOnIOThread(
+      id, channel_pair.PassServerHandle());
 
   base::RunLoop run_loop;
   OtherThread thread(base::ThreadTaskRunnerHandle::Get(), &channel_manager(),

@@ -70,7 +70,7 @@ class ChannelManager {
   // constructor). |channel_id| should be a valid |ChannelId| (i.e., nonzero)
   // not "assigned" to any other |Channel| being managed by this
   // |ChannelManager|.
-  scoped_refptr<MessagePipeDispatcher> CreateChannelOnIOThread(
+  RefPtr<MessagePipeDispatcher> CreateChannelOnIOThread(
       ChannelId channel_id,
       embedder::ScopedPlatformHandle platform_handle);
 
@@ -86,7 +86,7 @@ class ChannelManager {
   // completion, will call |callback| (using |callback_thread_task_runner| if it
   // is non-null, else on the I/O thread). Note: This will always post a task to
   // the I/O thread, even if called from that thread.
-  scoped_refptr<MessagePipeDispatcher> CreateChannel(
+  RefPtr<MessagePipeDispatcher> CreateChannel(
       ChannelId channel_id,
       embedder::ScopedPlatformHandle platform_handle,
       const base::Closure& callback,

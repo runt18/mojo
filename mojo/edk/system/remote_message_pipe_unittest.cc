@@ -621,9 +621,8 @@ TEST_F(RemoteMessagePipeTest, HandlePassing) {
   BootstrapChannelEndpoints(std::move(ep0), std::move(ep1));
 
   // We'll try to pass this dispatcher.
-  scoped_refptr<MessagePipeDispatcher> dispatcher =
-      MessagePipeDispatcher::Create(
-          MessagePipeDispatcher::kDefaultCreateOptions);
+  auto dispatcher = MessagePipeDispatcher::Create(
+      MessagePipeDispatcher::kDefaultCreateOptions);
   auto local_mp = MessagePipe::CreateLocalLocal();
   dispatcher->Init(local_mp.Clone(), 0);
 
@@ -650,7 +649,7 @@ TEST_F(RemoteMessagePipeTest, HandlePassing) {
 
     // |dispatcher| should have been closed. This is |DCHECK()|ed when the
     // |dispatcher| is destroyed.
-    EXPECT_TRUE(dispatcher->HasOneRef());
+    dispatcher->AssertHasOneRef();
     dispatcher = nullptr;
   }
 
@@ -678,10 +677,11 @@ TEST_F(RemoteMessagePipeTest, HandlePassing) {
   EXPECT_EQ(1u, read_dispatchers.size());
   EXPECT_EQ(1u, read_num_dispatchers);
   ASSERT_TRUE(read_dispatchers[0]);
-  EXPECT_TRUE(read_dispatchers[0]->HasOneRef());
+  read_dispatchers[0]->AssertHasOneRef();
 
   EXPECT_EQ(Dispatcher::Type::MESSAGE_PIPE, read_dispatchers[0]->GetType());
-  dispatcher = static_cast<MessagePipeDispatcher*>(read_dispatchers[0].get());
+  dispatcher = RefPtr<MessagePipeDispatcher>(
+      static_cast<MessagePipeDispatcher*>(read_dispatchers[0].get()));
 
   // Add the waiter now, before it becomes readable to avoid a race.
   waiter.Init();
@@ -766,9 +766,8 @@ TEST_F(RemoteMessagePipeTest, HandlePassingHalfClosed) {
   uint32_t context = 0;
 
   // We'll try to pass this dispatcher.
-  scoped_refptr<MessagePipeDispatcher> dispatcher =
-      MessagePipeDispatcher::Create(
-          MessagePipeDispatcher::kDefaultCreateOptions);
+  auto dispatcher = MessagePipeDispatcher::Create(
+      MessagePipeDispatcher::kDefaultCreateOptions);
   auto local_mp = MessagePipe::CreateLocalLocal();
   dispatcher->Init(local_mp.Clone(), 0);
 
@@ -825,7 +824,7 @@ TEST_F(RemoteMessagePipeTest, HandlePassingHalfClosed) {
 
     // |dispatcher| should have been closed. This is |DCHECK()|ed when the
     // |dispatcher| is destroyed.
-    EXPECT_TRUE(dispatcher->HasOneRef());
+    dispatcher->AssertHasOneRef();
     dispatcher = nullptr;
   }
 
@@ -853,10 +852,11 @@ TEST_F(RemoteMessagePipeTest, HandlePassingHalfClosed) {
   EXPECT_EQ(1u, read_dispatchers.size());
   EXPECT_EQ(1u, read_num_dispatchers);
   ASSERT_TRUE(read_dispatchers[0]);
-  EXPECT_TRUE(read_dispatchers[0]->HasOneRef());
+  read_dispatchers[0]->AssertHasOneRef();
 
   EXPECT_EQ(Dispatcher::Type::MESSAGE_PIPE, read_dispatchers[0]->GetType());
-  dispatcher = static_cast<MessagePipeDispatcher*>(read_dispatchers[0].get());
+  dispatcher = RefPtr<MessagePipeDispatcher>(
+      static_cast<MessagePipeDispatcher*>(read_dispatchers[0].get()));
 
   // |dispatcher| should already be readable and not writable.
   hss = dispatcher->GetHandleSignalsState();
@@ -912,11 +912,11 @@ TEST_F(RemoteMessagePipeTest, SharedBufferPassing) {
   BootstrapChannelEndpoints(std::move(ep0), std::move(ep1));
 
   // We'll try to pass this dispatcher.
-  scoped_refptr<SharedBufferDispatcher> dispatcher;
-  EXPECT_EQ(MOJO_RESULT_OK, SharedBufferDispatcher::Create(
-                                platform_support(),
-                                SharedBufferDispatcher::kDefaultCreateOptions,
-                                100, &dispatcher));
+  MojoResult result = MOJO_RESULT_INTERNAL;
+  auto dispatcher = SharedBufferDispatcher::Create(
+      platform_support(), SharedBufferDispatcher::kDefaultCreateOptions, 100,
+      &result);
+  EXPECT_EQ(MOJO_RESULT_OK, result);
   ASSERT_TRUE(dispatcher);
 
   // Make a mapping.
@@ -953,7 +953,7 @@ TEST_F(RemoteMessagePipeTest, SharedBufferPassing) {
 
     // |dispatcher| should have been closed. This is |DCHECK()|ed when the
     // |dispatcher| is destroyed.
-    EXPECT_TRUE(dispatcher->HasOneRef());
+    dispatcher->AssertHasOneRef();
     dispatcher = nullptr;
   }
 
@@ -981,10 +981,11 @@ TEST_F(RemoteMessagePipeTest, SharedBufferPassing) {
   EXPECT_EQ(1u, read_dispatchers.size());
   EXPECT_EQ(1u, read_num_dispatchers);
   ASSERT_TRUE(read_dispatchers[0]);
-  EXPECT_TRUE(read_dispatchers[0]->HasOneRef());
+  read_dispatchers[0]->AssertHasOneRef();
 
   EXPECT_EQ(Dispatcher::Type::SHARED_BUFFER, read_dispatchers[0]->GetType());
-  dispatcher = static_cast<SharedBufferDispatcher*>(read_dispatchers[0].get());
+  dispatcher = RefPtr<SharedBufferDispatcher>(
+      static_cast<SharedBufferDispatcher*>(read_dispatchers[0].get()));
 
   // Make another mapping.
   std::unique_ptr<embedder::PlatformSharedBufferMapping> mapping1;
@@ -1036,9 +1037,8 @@ TEST_F(RemoteMessagePipeTest, PlatformHandlePassing) {
   EXPECT_EQ(sizeof(kHello), fwrite(kHello, 1, sizeof(kHello), fp.get()));
   // We'll try to pass this dispatcher, which will cause a |PlatformHandle| to
   // be passed.
-  scoped_refptr<PlatformHandleDispatcher> dispatcher =
-      PlatformHandleDispatcher::Create(
-          mojo::test::PlatformHandleFromFILE(fp.Pass()));
+  auto dispatcher = PlatformHandleDispatcher::Create(
+      mojo::test::PlatformHandleFromFILE(fp.Pass()));
 
   // Prepare to wait on MP 1, port 1. (Add the waiter now. Otherwise, if we do
   // it later, it might already be readable.)
@@ -1063,7 +1063,7 @@ TEST_F(RemoteMessagePipeTest, PlatformHandlePassing) {
 
     // |dispatcher| should have been closed. This is |DCHECK()|ed when the
     // |dispatcher| is destroyed.
-    EXPECT_TRUE(dispatcher->HasOneRef());
+    dispatcher->AssertHasOneRef();
     dispatcher = nullptr;
   }
 
@@ -1091,11 +1091,11 @@ TEST_F(RemoteMessagePipeTest, PlatformHandlePassing) {
   EXPECT_EQ(1u, read_dispatchers.size());
   EXPECT_EQ(1u, read_num_dispatchers);
   ASSERT_TRUE(read_dispatchers[0]);
-  EXPECT_TRUE(read_dispatchers[0]->HasOneRef());
+  read_dispatchers[0]->AssertHasOneRef();
 
   EXPECT_EQ(Dispatcher::Type::PLATFORM_HANDLE, read_dispatchers[0]->GetType());
-  dispatcher =
-      static_cast<PlatformHandleDispatcher*>(read_dispatchers[0].get());
+  dispatcher = RefPtr<PlatformHandleDispatcher>(
+      static_cast<PlatformHandleDispatcher*>(read_dispatchers[0].get()));
 
   embedder::ScopedPlatformHandle h = dispatcher->PassPlatformHandle().Pass();
   EXPECT_TRUE(h.is_valid());
@@ -1172,9 +1172,8 @@ TEST_F(RemoteMessagePipeTest, PassMessagePipeHandleAcrossAndBack) {
   BootstrapChannelEndpoints(std::move(ep0), std::move(ep1));
 
   // We'll try to pass this dispatcher.
-  scoped_refptr<MessagePipeDispatcher> dispatcher =
-      MessagePipeDispatcher::Create(
-          MessagePipeDispatcher::kDefaultCreateOptions);
+  auto dispatcher = MessagePipeDispatcher::Create(
+      MessagePipeDispatcher::kDefaultCreateOptions);
   auto local_mp = MessagePipe::CreateLocalLocal();
   dispatcher->Init(local_mp.Clone(), 0);
 
@@ -1201,7 +1200,7 @@ TEST_F(RemoteMessagePipeTest, PassMessagePipeHandleAcrossAndBack) {
 
     // |dispatcher| should have been closed. This is |DCHECK()|ed when the
     // |dispatcher| is destroyed.
-    EXPECT_TRUE(dispatcher->HasOneRef());
+    dispatcher->AssertHasOneRef();
     dispatcher = nullptr;
   }
 
@@ -1229,10 +1228,11 @@ TEST_F(RemoteMessagePipeTest, PassMessagePipeHandleAcrossAndBack) {
   EXPECT_EQ(1u, read_dispatchers.size());
   EXPECT_EQ(1u, read_num_dispatchers);
   ASSERT_TRUE(read_dispatchers[0]);
-  EXPECT_TRUE(read_dispatchers[0]->HasOneRef());
+  read_dispatchers[0]->AssertHasOneRef();
 
   EXPECT_EQ(Dispatcher::Type::MESSAGE_PIPE, read_dispatchers[0]->GetType());
-  dispatcher = static_cast<MessagePipeDispatcher*>(read_dispatchers[0].get());
+  dispatcher = RefPtr<MessagePipeDispatcher>(
+      static_cast<MessagePipeDispatcher*>(read_dispatchers[0].get()));
   read_dispatchers.clear();
 
   // Now pass it back.
@@ -1260,7 +1260,7 @@ TEST_F(RemoteMessagePipeTest, PassMessagePipeHandleAcrossAndBack) {
 
     // |dispatcher| should have been closed. This is |DCHECK()|ed when the
     // |dispatcher| is destroyed.
-    EXPECT_TRUE(dispatcher->HasOneRef());
+    dispatcher->AssertHasOneRef();
     dispatcher = nullptr;
   }
 
@@ -1286,10 +1286,11 @@ TEST_F(RemoteMessagePipeTest, PassMessagePipeHandleAcrossAndBack) {
   EXPECT_EQ(1u, read_dispatchers.size());
   EXPECT_EQ(1u, read_num_dispatchers);
   ASSERT_TRUE(read_dispatchers[0]);
-  EXPECT_TRUE(read_dispatchers[0]->HasOneRef());
+  read_dispatchers[0]->AssertHasOneRef();
 
   EXPECT_EQ(Dispatcher::Type::MESSAGE_PIPE, read_dispatchers[0]->GetType());
-  dispatcher = static_cast<MessagePipeDispatcher*>(read_dispatchers[0].get());
+  dispatcher = RefPtr<MessagePipeDispatcher>(
+      static_cast<MessagePipeDispatcher*>(read_dispatchers[0].get()));
   read_dispatchers.clear();
 
   // Add the waiter now, before it becomes readable to avoid a race.

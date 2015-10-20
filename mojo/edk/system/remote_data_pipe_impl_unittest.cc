@@ -174,8 +174,7 @@ TEST_F(RemoteDataPipeImplTest, SendConsumerWithClosedProducer) {
 
   RefPtr<DataPipe> dp(CreateLocal(sizeof(int32_t), 1000));
   // This is the consumer dispatcher we'll send.
-  scoped_refptr<DataPipeConsumerDispatcher> consumer =
-      DataPipeConsumerDispatcher::Create();
+  auto consumer = DataPipeConsumerDispatcher::Create();
   consumer->Init(dp.Clone());
 
   // Write to the producer and close it, before sending the consumer.
@@ -208,7 +207,7 @@ TEST_F(RemoteDataPipeImplTest, SendConsumerWithClosedProducer) {
 
     // |consumer| should have been closed. This is |DCHECK()|ed when it is
     // destroyed.
-    EXPECT_TRUE(consumer->HasOneRef());
+    consumer->AssertHasOneRef();
     consumer = nullptr;
   }
   EXPECT_EQ(MOJO_RESULT_OK, waiter.Wait(test::ActionDeadline(), &context));
@@ -227,12 +226,12 @@ TEST_F(RemoteDataPipeImplTest, SendConsumerWithClosedProducer) {
   EXPECT_EQ(1u, read_dispatchers.size());
   EXPECT_EQ(1u, read_num_dispatchers);
   ASSERT_TRUE(read_dispatchers[0]);
-  EXPECT_TRUE(read_dispatchers[0]->HasOneRef());
+  read_dispatchers[0]->AssertHasOneRef();
 
   EXPECT_EQ(Dispatcher::Type::DATA_PIPE_CONSUMER,
             read_dispatchers[0]->GetType());
-  consumer =
-      static_cast<DataPipeConsumerDispatcher*>(read_dispatchers[0].get());
+  consumer = RefPtr<DataPipeConsumerDispatcher>(
+      static_cast<DataPipeConsumerDispatcher*>(read_dispatchers[0].get()));
   read_dispatchers.clear();
 
   waiter.Init();
@@ -292,8 +291,7 @@ TEST_F(RemoteDataPipeImplTest, SendConsumerDuringTwoPhaseWrite) {
 
   RefPtr<DataPipe> dp(CreateLocal(sizeof(int32_t), 1000));
   // This is the consumer dispatcher we'll send.
-  scoped_refptr<DataPipeConsumerDispatcher> consumer =
-      DataPipeConsumerDispatcher::Create();
+  auto consumer = DataPipeConsumerDispatcher::Create();
   consumer->Init(dp.Clone());
 
   void* write_ptr = nullptr;
@@ -324,7 +322,7 @@ TEST_F(RemoteDataPipeImplTest, SendConsumerDuringTwoPhaseWrite) {
 
     // |consumer| should have been closed. This is |DCHECK()|ed when it is
     // destroyed.
-    EXPECT_TRUE(consumer->HasOneRef());
+    consumer->AssertHasOneRef();
     consumer = nullptr;
   }
   EXPECT_EQ(MOJO_RESULT_OK, waiter.Wait(test::ActionDeadline(), &context));
@@ -343,12 +341,12 @@ TEST_F(RemoteDataPipeImplTest, SendConsumerDuringTwoPhaseWrite) {
   EXPECT_EQ(1u, read_dispatchers.size());
   EXPECT_EQ(1u, read_num_dispatchers);
   ASSERT_TRUE(read_dispatchers[0]);
-  EXPECT_TRUE(read_dispatchers[0]->HasOneRef());
+  read_dispatchers[0]->AssertHasOneRef();
 
   EXPECT_EQ(Dispatcher::Type::DATA_PIPE_CONSUMER,
             read_dispatchers[0]->GetType());
-  consumer =
-      static_cast<DataPipeConsumerDispatcher*>(read_dispatchers[0].get());
+  consumer = RefPtr<DataPipeConsumerDispatcher>(
+      static_cast<DataPipeConsumerDispatcher*>(read_dispatchers[0].get()));
   read_dispatchers.clear();
 
   // Now actually write the data, complete the two-phase write, and close the
@@ -402,8 +400,7 @@ TEST_F(RemoteDataPipeImplTest, SendConsumerDuringSecondTwoPhaseWrite) {
 
   RefPtr<DataPipe> dp(CreateLocal(sizeof(int32_t), 1000));
   // This is the consumer dispatcher we'll send.
-  scoped_refptr<DataPipeConsumerDispatcher> consumer =
-      DataPipeConsumerDispatcher::Create();
+  auto consumer = DataPipeConsumerDispatcher::Create();
   consumer->Init(dp.Clone());
 
   void* write_ptr = nullptr;
@@ -444,7 +441,7 @@ TEST_F(RemoteDataPipeImplTest, SendConsumerDuringSecondTwoPhaseWrite) {
 
     // |consumer| should have been closed. This is |DCHECK()|ed when it is
     // destroyed.
-    EXPECT_TRUE(consumer->HasOneRef());
+    consumer->AssertHasOneRef();
     consumer = nullptr;
   }
   EXPECT_EQ(MOJO_RESULT_OK, waiter.Wait(test::ActionDeadline(), &context));
@@ -463,12 +460,12 @@ TEST_F(RemoteDataPipeImplTest, SendConsumerDuringSecondTwoPhaseWrite) {
   EXPECT_EQ(1u, read_dispatchers.size());
   EXPECT_EQ(1u, read_num_dispatchers);
   ASSERT_TRUE(read_dispatchers[0]);
-  EXPECT_TRUE(read_dispatchers[0]->HasOneRef());
+  read_dispatchers[0]->AssertHasOneRef();
 
   EXPECT_EQ(Dispatcher::Type::DATA_PIPE_CONSUMER,
             read_dispatchers[0]->GetType());
-  consumer =
-      static_cast<DataPipeConsumerDispatcher*>(read_dispatchers[0].get());
+  consumer = RefPtr<DataPipeConsumerDispatcher>(
+      static_cast<DataPipeConsumerDispatcher*>(read_dispatchers[0].get()));
   read_dispatchers.clear();
 
   // Now actually write the data, complete the two-phase write, and close the

@@ -88,7 +88,7 @@ ConnectionIdentifier IPCSupport::GenerateConnectionIdentifier() {
   return connection_manager()->GenerateConnectionIdentifier();
 }
 
-scoped_refptr<system::MessagePipeDispatcher> IPCSupport::ConnectToSlave(
+RefPtr<MessagePipeDispatcher> IPCSupport::ConnectToSlave(
     const ConnectionIdentifier& connection_id,
     embedder::SlaveInfo slave_info,
     embedder::ScopedPlatformHandle platform_handle,
@@ -109,7 +109,7 @@ scoped_refptr<system::MessagePipeDispatcher> IPCSupport::ConnectToSlave(
       callback_thread_task_runner);
 }
 
-scoped_refptr<system::MessagePipeDispatcher> IPCSupport::ConnectToMaster(
+RefPtr<MessagePipeDispatcher> IPCSupport::ConnectToMaster(
     const ConnectionIdentifier& connection_id,
     const base::Closure& callback,
     scoped_refptr<base::TaskRunner> callback_thread_task_runner,
