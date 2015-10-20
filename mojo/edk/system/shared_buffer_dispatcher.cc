@@ -19,9 +19,9 @@ namespace system {
 
 namespace {
 
-struct SerializedSharedBufferDispatcher {
-  size_t num_bytes;
-  size_t platform_handle_index;
+struct MOJO_ALIGNAS(8) SerializedSharedBufferDispatcher {
+  uint64_t num_bytes;
+  uint32_t platform_handle_index;
 };
 
 }  // namespace
@@ -105,8 +105,24 @@ RefPtr<SharedBufferDispatcher> SharedBufferDispatcher::Deserialize(
 
   const SerializedSharedBufferDispatcher* serialization =
       static_cast<const SerializedSharedBufferDispatcher*>(source);
-  size_t num_bytes = serialization->num_bytes;
-  size_t platform_handle_index = serialization->platform_handle_index;
+
+  if (serialization->num_bytes >
+      static_cast<uint64_t>(std::numeric_limits<size_t>::max())) {
+    LOG(ERROR)
+        << "Invalid serialized shared buffer dispatcher (num_bytes too large)";
+    return nullptr;
+  }
+
+  if (static_cast<size_t>(serialization->platform_handle_index) >
+      std::numeric_limits<size_t>::max()) {
+    LOG(ERROR) << "Invalid serialized shared buffer dispatcher"
+                  " (platform_handle_index too large)";
+    return nullptr;
+  }
+
+  size_t num_bytes = static_cast<size_t>(serialization->num_bytes);
+  size_t platform_handle_index =
+      static_cast<size_t>(serialization->platform_handle_index);
 
   if (!num_bytes) {
     LOG(ERROR)
