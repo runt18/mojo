@@ -12,8 +12,8 @@ import subprocess
 import sys
 import tempfile
 
-MOJO_TOOLS_DIR = os.path.dirname(os.path.abspath(__file__))
-SRC_ROOT = os.path.dirname(os.path.dirname(MOJO_TOOLS_DIR))
+SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
+SRC_ROOT = os.path.dirname(os.path.dirname(os.path.dirname(SCRIPT_DIR)))
 DART_SDK = os.path.join(SRC_ROOT, 'third_party', 'dart-sdk', 'dart-sdk', 'bin')
 PUB = os.path.join(DART_SDK, 'pub')
 
