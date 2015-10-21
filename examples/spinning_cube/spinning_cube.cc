@@ -22,16 +22,46 @@
 #include <stdlib.h>
 #include <string.h>
 
+#include "mojo/public/c/gpu/MGL/mgl.h"
 #include "mojo/public/cpp/environment/logging.h"
 
 namespace examples {
+
+#define VISIT_GL_CALL(Function, ReturnType, PARAMETERS, ARGUMENTS) \
+  using Function##Type = ReturnType (*)PARAMETERS;
+#include "mojo/public/platform/native/gles2/call_visitor_autogen.h"
+#undef VISIT_GL_CALL
+
+class GLInterface {
+ public:
+  GLInterface() {
+#define VISIT_GL_CALL(Function, ReturnType, PARAMETERS, ARGUMENTS) \
+    Function = nullptr;
+#include "mojo/public/platform/native/gles2/call_visitor_autogen.h"
+#undef VISIT_GL_CALL
+  }
+
+  void Init() {
+#define VISIT_GL_CALL(Function, ReturnType, PARAMETERS, ARGUMENTS) \
+    Function = reinterpret_cast<Function##Type>( \
+        MGLGetProcAddress("gl"#Function));
+#include "mojo/public/platform/native/gles2/call_visitor_autogen.h"
+#undef VISIT_GL_CALL
+  }
+
+#define VISIT_GL_CALL(Function, ReturnType, PARAMETERS, ARGUMENTS) \
+  Function##Type Function;
+#include "mojo/public/platform/native/gles2/call_visitor_autogen.h"
+#undef VISIT_GL_CALL
+};
 
 namespace {
 
 const float kPi = 3.14159265359f;
 const int kNumVertices = 24;
 
-int GenerateCube(GLuint *vbo_vertices,
+int GenerateCube(const scoped_ptr<GLInterface>& gl,
+                 GLuint *vbo_vertices,
                  GLuint *vbo_indices) {
   const int num_indices = 36;
 
@@ -138,90 +168,94 @@ int GenerateCube(GLuint *vbo_vertices,
   };
 
   if (vbo_vertices) {
-    glGenBuffers(1, vbo_vertices);
-    glBindBuffer(GL_ARRAY_BUFFER, *vbo_vertices);
-    glBufferData(GL_ARRAY_BUFFER,
+    gl->GenBuffers(1, vbo_vertices);
+    gl->BindBuffer(GL_ARRAY_BUFFER, *vbo_vertices);
+    gl->BufferData(GL_ARRAY_BUFFER,
                  sizeof(cube_vertices) + sizeof(vertex_normals),
                  nullptr,
                  GL_STATIC_DRAW);
-    glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(cube_vertices), cube_vertices);
-    glBufferSubData(GL_ARRAY_BUFFER, sizeof(cube_vertices),
+    gl->BufferSubData(GL_ARRAY_BUFFER, 0, sizeof(cube_vertices), cube_vertices);
+    gl->BufferSubData(GL_ARRAY_BUFFER, sizeof(cube_vertices),
                     sizeof(vertex_normals), vertex_normals);
-    glBindBuffer(GL_ARRAY_BUFFER, 0);
+    gl->BindBuffer(GL_ARRAY_BUFFER, 0);
   }
 
   if (vbo_indices) {
-    glGenBuffers(1, vbo_indices);
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, *vbo_indices);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER,
+    gl->GenBuffers(1, vbo_indices);
+    gl->BindBuffer(GL_ELEMENT_ARRAY_BUFFER, *vbo_indices);
+    gl->BufferData(GL_ELEMENT_ARRAY_BUFFER,
                  sizeof(cube_indices),
                  cube_indices,
                  GL_STATIC_DRAW);
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+    gl->BindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
   }
 
   return num_indices;
 }
 
-GLuint LoadShader(GLenum type,
+GLuint LoadShader(const scoped_ptr<GLInterface>& gl,
+                  GLenum type,
                   const char* shader_source) {
-  GLuint shader = glCreateShader(type);
-  glShaderSource(shader, 1, &shader_source, NULL);
-  glCompileShader(shader);
+  GLuint shader = gl->CreateShader(type);
+  gl->ShaderSource(shader, 1, &shader_source, NULL);
+  gl->CompileShader(shader);
 
   GLint compiled = 0;
-  glGetShaderiv(shader, GL_COMPILE_STATUS, &compiled);
+  gl->GetShaderiv(shader, GL_COMPILE_STATUS, &compiled);
 
   if (!compiled) {
     GLsizei expected_length = 0;
-    glGetShaderiv(shader, GL_INFO_LOG_LENGTH, &expected_length);
+    gl->GetShaderiv(shader, GL_INFO_LOG_LENGTH, &expected_length);
     std::string log;
     log.resize(expected_length);  // Includes null terminator.
     GLsizei actual_length = 0;
-    glGetShaderInfoLog(shader, expected_length, &actual_length, &log[0]);
+    gl->GetShaderInfoLog(shader, expected_length, &actual_length, &log[0]);
     log.resize(actual_length);  // Excludes null terminator.
     MOJO_LOG(FATAL) << "Compilation of shader failed: " << log;
-    glDeleteShader(shader);
+    gl->DeleteShader(shader);
     return 0;
   }
 
   return shader;
 }
 
-GLuint LoadProgram(const char* vertex_shader_source,
+GLuint LoadProgram(const scoped_ptr<GLInterface>& gl,
+                   const char* vertex_shader_source,
                    const char* fragment_shader_source) {
-  GLuint vertex_shader = LoadShader(GL_VERTEX_SHADER,
+  GLuint vertex_shader = LoadShader(gl,
+                                    GL_VERTEX_SHADER,
                                     vertex_shader_source);
   if (!vertex_shader)
     return 0;
 
-  GLuint fragment_shader = LoadShader(GL_FRAGMENT_SHADER,
+  GLuint fragment_shader = LoadShader(gl,
+                                      GL_FRAGMENT_SHADER,
                                       fragment_shader_source);
   if (!fragment_shader) {
-    glDeleteShader(vertex_shader);
+    gl->DeleteShader(vertex_shader);
     return 0;
   }
 
-  GLuint program_object = glCreateProgram();
-  glAttachShader(program_object, vertex_shader);
-  glAttachShader(program_object, fragment_shader);
-  glLinkProgram(program_object);
-  glDeleteShader(vertex_shader);
-  glDeleteShader(fragment_shader);
+  GLuint program_object = gl->CreateProgram();
+  gl->AttachShader(program_object, vertex_shader);
+  gl->AttachShader(program_object, fragment_shader);
+  gl->LinkProgram(program_object);
+  gl->DeleteShader(vertex_shader);
+  gl->DeleteShader(fragment_shader);
 
   GLint linked = 0;
-  glGetProgramiv(program_object, GL_LINK_STATUS, &linked);
+  gl->GetProgramiv(program_object, GL_LINK_STATUS, &linked);
   if (!linked) {
     GLsizei expected_length = 0;
-    glGetProgramiv(program_object, GL_INFO_LOG_LENGTH, &expected_length);
+    gl->GetProgramiv(program_object, GL_INFO_LOG_LENGTH, &expected_length);
     std::string log;
     log.resize(expected_length);  // Includes null terminator.
     GLsizei actual_length = 0;
-    glGetProgramInfoLog(program_object, expected_length, &actual_length,
+    gl->GetProgramInfoLog(program_object, expected_length, &actual_length,
                         &log[0]);
     log.resize(actual_length);  // Excludes null terminator.
     MOJO_LOG(FATAL) << "Linking program failed: " << log;
-    glDeleteProgram(program_object);
+    gl->DeleteProgram(program_object);
     return 0;
   }
 
@@ -421,6 +455,7 @@ SpinningCube::SpinningCube()
     : initialized_(false),
       width_(0),
       height_(0),
+      gl_(new GLInterface()),
       state_(new GLState()),
       fling_multiplier_(1.0f),
       direction_(1),
@@ -433,11 +468,11 @@ SpinningCube::~SpinningCube() {
   if (!initialized_)
     return;
   if (state_->vbo_vertices_)
-    glDeleteBuffers(1, &state_->vbo_vertices_);
+    gl_->DeleteBuffers(1, &state_->vbo_vertices_);
   if (state_->vbo_indices_)
-    glDeleteBuffers(1, &state_->vbo_indices_);
+    gl_->DeleteBuffers(1, &state_->vbo_indices_);
   if (state_->program_object_)
-    glDeleteProgram(state_->program_object_);
+    gl_->DeleteProgram(state_->program_object_);
 }
 
 void SpinningCube::Init() {
@@ -468,21 +503,22 @@ void SpinningCube::Init() {
       "   gl_FragColor = v_color;                          \n"
       "}                                                   \n";
 
+  gl_->Init();
   state_->program_object_ = LoadProgram(
-      vertex_shader_source, fragment_shader_source);
-  state_->position_location_ = glGetAttribLocation(
+      gl_, vertex_shader_source, fragment_shader_source);
+  state_->position_location_ = gl_->GetAttribLocation(
       state_->program_object_, "a_position");
-  state_->normal_location_ = glGetAttribLocation(
+  state_->normal_location_ = gl_->GetAttribLocation(
       state_->program_object_, "a_normal");
-  state_->color_location_ = glGetUniformLocation(
+  state_->color_location_ = gl_->GetUniformLocation(
       state_->program_object_, "u_color");
-  state_->mvp_location_ = glGetUniformLocation(
+  state_->mvp_location_ = gl_->GetUniformLocation(
       state_->program_object_, "u_mvpMatrix");
   state_->num_indices_ = GenerateCube(
-      &state_->vbo_vertices_, &state_->vbo_indices_);
+      gl_, &state_->vbo_vertices_, &state_->vbo_indices_);
 
-  glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
-  glEnable(GL_DEPTH_TEST);
+  gl_->ClearColor(0.0f, 0.0f, 0.0f, 0.0f);
+  gl_->Enable(GL_DEPTH_TEST);
   initialized_ = true;
 }
 
@@ -525,23 +561,23 @@ void SpinningCube::UpdateForDragDistance(float distance) {
 }
 
 void SpinningCube::Draw() {
-  glViewport(0, 0, width_, height_);
-  glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-  glUseProgram(state_->program_object_);
-  glBindBuffer(GL_ARRAY_BUFFER, state_->vbo_vertices_);
-  glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, state_->vbo_indices_);
-  glVertexAttribPointer(state_->position_location_, 3, GL_FLOAT, GL_FALSE,
+  gl_->Viewport(0, 0, width_, height_);
+  gl_->Clear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+  gl_->UseProgram(state_->program_object_);
+  gl_->BindBuffer(GL_ARRAY_BUFFER, state_->vbo_vertices_);
+  gl_->BindBuffer(GL_ELEMENT_ARRAY_BUFFER, state_->vbo_indices_);
+  gl_->VertexAttribPointer(state_->position_location_, 3, GL_FLOAT, GL_FALSE,
                         3 * sizeof(GLfloat), 0);
-  glVertexAttribPointer(state_->normal_location_, 3, GL_FLOAT, GL_FALSE,
+  gl_->VertexAttribPointer(state_->normal_location_, 3, GL_FLOAT, GL_FALSE,
                         3 * sizeof(GLfloat),
                         reinterpret_cast<void*>(3 * sizeof(GLfloat) *
                                                 kNumVertices));
-  glEnableVertexAttribArray(state_->position_location_);
-  glEnableVertexAttribArray(state_->normal_location_);
-  glUniformMatrix4fv(state_->mvp_location_, 1, GL_FALSE,
+  gl_->EnableVertexAttribArray(state_->position_location_);
+  gl_->EnableVertexAttribArray(state_->normal_location_);
+  gl_->UniformMatrix4fv(state_->mvp_location_, 1, GL_FALSE,
                      static_cast<GLfloat*>(&state_->mvp_matrix_.m[0][0]));
-  glUniform3fv(state_->color_location_, 1, color_);
-  glDrawElements(GL_TRIANGLES, state_->num_indices_, GL_UNSIGNED_SHORT, 0);
+  gl_->Uniform3fv(state_->color_location_, 1, color_);
+  gl_->DrawElements(GL_TRIANGLES, state_->num_indices_, GL_UNSIGNED_SHORT, 0);
 }
 
 void SpinningCube::Update() {

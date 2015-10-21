@@ -11,6 +11,8 @@
 
 namespace examples {
 
+class GLInterface;
+
 class SpinningCube {
  public:
   SpinningCube();
@@ -42,6 +44,7 @@ class SpinningCube {
   bool initialized_;
   uint32_t width_;
   uint32_t height_;
+  scoped_ptr<GLInterface> gl_;
   scoped_ptr<GLState> state_;
   float fling_multiplier_;
   int direction_;

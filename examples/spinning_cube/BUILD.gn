@@ -35,6 +35,7 @@ source_set("lib") {
   deps = [
     "//base",
     "//mojo/public/c/gpu",
+    "//mojo/public/c/gpu:MGL",
     "//mojo/public/cpp/environment",
   ]
 }
