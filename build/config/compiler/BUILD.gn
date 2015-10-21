@@ -1195,6 +1195,15 @@ config("no_size_t_to_int_warning") {
   }
 }
 
+# Some code presumes that pointers to structures/objects are compatible
+# regardless of whether what they point to is already known to be valid.
+config("no_incompatible_pointer_warnings") {
+  cflags = []
+  if (is_clang) {
+    cflags += [ "-Wno-incompatible-pointer-types" ]
+  }
+}
+
 # Optimization -----------------------------------------------------------------
 #
 # Note that BUILDCONFIG.gn sets up a variable "default_optimization_config"
