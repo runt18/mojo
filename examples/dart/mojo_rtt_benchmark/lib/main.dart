@@ -75,15 +75,14 @@ class EchoTracingApp extends Application {
       if (_warmup) {
         _echo(idx, "ping").then((_) => new Timer(kDelay, () => _run(idx + 1)));
       } else {
-        _tracedEcho(idx, "ping")
-            .then((_) => new Timer(kDelay, () => _run(idx + 1)));
+        _tracedEcho(idx).then((_) => new Timer(kDelay, () => _run(idx + 1)));
       }
     }
   }
 
-  Future _tracedEcho(int idx, String s) {
+  Future _tracedEcho(int idx) {
     int start = getTimeTicksNow();
-    return _echo(idx, s).then((_) {
+    return _echo(idx, "ping").then((_) {
       int end = getTimeTicksNow();
       _tracing.traceDuration("ping", "mojo_rtt_benchmark", start, end);
     });
