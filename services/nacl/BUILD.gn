@@ -23,7 +23,9 @@ if (!is_nacl) {
       "//url",
     ]
 
-    data_deps = [ "//mojo/nacl/sfi/nacl_bindings:irt_mojo(//build/toolchain/nacl:irt_${target_cpu})" ]
+    data_deps = [
+      "//mojo/nacl/sfi/nacl_bindings:irt_mojo(//build/toolchain/nacl:irt_${target_cpu})",
+    ]
   }
 
   if (current_cpu == "x86" || current_cpu == "arm") {
@@ -39,6 +41,8 @@ if (!is_nacl) {
         "//mojo/application:application",
         "//mojo/application:content_handler",
         "//mojo/data_pipe_utils",
+        "//mojo/public/platform/native:mgl_thunks",
+        "//mojo/public/platform/native:mgl_onscreen_thunks",
         "//mojo/message_pump",
         "//mojo/nacl/nonsfi:irt_mojo_nonsfi",
         "//mojo/public/cpp/application:application",

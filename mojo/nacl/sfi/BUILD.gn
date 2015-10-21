@@ -14,10 +14,14 @@ if (!is_nacl) {
     deps = [
       "//base:base",
       "//mojo/edk/system:system",
+      "//mojo/gles2:mgl",
       "//mojo/nacl/sfi/nacl_bindings:monacl_sel",
+      "//mojo/public/cpp/environment:standalone",
     ]
 
-    data_deps = [ "//mojo/nacl/sfi/nacl_bindings:irt_mojo(//build/toolchain/nacl:irt_${target_cpu})" ]
+    data_deps = [
+      "//mojo/nacl/sfi/nacl_bindings:irt_mojo(//build/toolchain/nacl:irt_${target_cpu})",
+    ]
   }
 }
 

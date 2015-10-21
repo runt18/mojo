@@ -5,6 +5,7 @@
 #include "mojo/nacl/nonsfi/irt_mojo_nonsfi.h"
 
 #include "mojo/public/c/system/functions.h"
+#include "mojo/public/platform/nacl/mgl_irt.h"
 #include "mojo/public/platform/nacl/mojo_irt.h"
 #include "native_client/src/public/irt_core.h"
 
@@ -39,8 +40,31 @@ const struct nacl_irt_mojo kIrtMojo = {
     _MojoGetInitialHandle,
 };
 
+const struct nacl_irt_mgl kIrtMGL = {
+    MGLCreateContext,
+    MGLDestroyContext,
+    MGLMakeCurrent,
+    MGLGetCurrentContext,
+    MGLGetProcAddress,
+};
+
+const struct nacl_irt_mgl_onscreen kIrtMGLOnScreen = {
+    MGLResizeSurface,
+    MGLSwapBuffers,
+};
+
+const struct nacl_irt_mgl_signal_sync_point kIrtMGLSignalSyncPoint = {
+    MGLSignalSyncPoint,
+};
+
 const struct nacl_irt_interface kIrtInterfaces[] = {
-    {NACL_IRT_MOJO_v0_1, &kIrtMojo, sizeof(kIrtMojo), nullptr}};
+    {NACL_IRT_MOJO_v0_1, &kIrtMojo, sizeof(kIrtMojo), nullptr},
+    {NACL_IRT_MGL_v0_1, &kIrtMGL, sizeof(kIrtMGL), nullptr},
+    {NACL_IRT_MGL_ONSCREEN_v0_1, &kIrtMGLOnScreen, sizeof(kIrtMGLOnScreen),
+      nullptr},
+    {NACL_IRT_MGL_SIGNAL_SYNC_POINT_v0_1, &kIrtMGLSignalSyncPoint,
+      sizeof(kIrtMGLSignalSyncPoint), nullptr},
+};
 
 }  // namespace
 

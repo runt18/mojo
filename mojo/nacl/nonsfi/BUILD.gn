@@ -17,6 +17,8 @@ if (!is_nacl) {
       deps = [
         ":irt_mojo_nonsfi",
         "//mojo/edk/system",
+        "//mojo/gles2:mgl",
+        "//mojo/public/cpp/environment:standalone",
         "//native_client/src/nonsfi/loader:elf_loader",
       ]
     }
@@ -46,6 +48,9 @@ static_library("irt_mojo_nonsfi") {
 
   deps = [
     "//base",
+    "//mojo/public/c/gpu:MGL",
+    "//mojo/public/c/gpu:MGL_onscreen",
+    "//mojo/public/c/gpu:MGL_signal_sync_point",
     "//mojo/public/c/system",
     "//mojo/public/platform/nacl:mojo_irt_header",
     "//native_client/src/nonsfi/irt:irt_interfaces",
