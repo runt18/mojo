@@ -30,6 +30,7 @@ class MojoPythonTestRunner(object):
 
     src_root = mopy.paths.Paths().src_root
     pylib_dir = os.path.abspath(os.path.join(src_root, self._test_dir))
+
     if args.tests:
       if pylib_dir not in sys.path:
         sys.path.append(pylib_dir)
@@ -37,11 +38,14 @@ class MojoPythonTestRunner(object):
       for test_name in args.tests:
         suite.addTests(loader.loadTestsFromName(test_name))
     else:
-      suite = loader.discover(pylib_dir, pattern='*_unittest.py')
+      suite = self.get_test_suite(loader, pylib_dir)
 
     runner = unittest.runner.TextTestRunner(verbosity=(args.verbose + 1))
     result = runner.run(suite)
     return 0 if result.wasSuccessful() else 1
+
+  def get_test_suite(self, loader, pylib_dir):
+    return loader.discover(pylib_dir, pattern='*_unittest.py')
 
   def add_custom_commandline_options(self, parser):
     """Allow to add custom option to the runner script."""

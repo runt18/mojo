@@ -146,6 +146,12 @@ def GetTestList(config, verbose_count=0):
                            "run_mojo_python_bindings_tests.py"),
               "--build-dir=" + build_dir])
 
+    AddEntry("Mojom translator python tests",
+             ["python",
+              os.path.join("mojo", "tools",
+                           "run_mojom_translator_python_tests.py"),
+              "--build-dir=" + build_dir])
+
   # mojo tools unit tests:
   if ShouldRunTest(Config.TEST_TYPE_DEFAULT, Config.TEST_TYPE_UNIT, "tools"):
     AddEntry("Mojo tools unit tests",
