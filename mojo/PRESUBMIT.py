@@ -193,6 +193,8 @@ def _CheckSourceSetsAreOfCorrectType(input_api, output_api, package):
 
   problems = []
   for f in _AffectedBuildFilesWithinPackage(input_api, package):
+    if f.LocalPath() == "mojo/public/tools/bindings/mojom.gni":
+      continue
     for line_num, line in f.ChangedContents():
       m = re.search(r"[a-z_]*source_set\(", line)
       if not m:
