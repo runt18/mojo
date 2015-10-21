@@ -20,9 +20,9 @@
 vars = {
   'chromium_git': 'https://chromium.googlesource.com',
   'skia_revision': '2ced78866fcadd98895777c8dffe92e229775181',
-  'v8_revision': '230d131d173ab2d60291d303177bc04ec3f6e519',
+  'v8_revision': '3f036fc0ba4ca4483fe77822f8605c277d37ee24',
   'angle_revision': 'bdd419f9f5b006e913606e7363125942c8ae06bc',
-  'buildtools_revision': '565d04e8741429fb1b4f26d102f2c6c3b849edeb',
+  'buildtools_revision': 'ef7f1f539cff0441c4401d8c052e54cfd01bff07',
   'dart_revision': '9416219c28e500a354ff0086765601efa5b1378e',
   'dart_root_certificates_revision': 'c3a41df63afacec62fcb8135196177e35fe72f71',
   'dart_observatory_packages_revision': '5c199c5954146747f75ed127871207718dc87786',
@@ -30,7 +30,7 @@ vars = {
   'boringssl_revision': '642f1498d056dbba3e50ed5a232ab2f482626dec',
   'lss_revision': '6f97298fe3794e92c8c896a6bc06e0b36e4c3de3',
   'nss_revision': 'bb4e75a43d007518ae7d618665ea2f25b0c60b63',
-  'nacl_revision': '19d52fd1ca55c92c4cb086084657d9a121096ef7',
+  'nacl_revision': '71fa851c91658c498758494b790ddba548aae7be',
 }
 
 # Only these hosts are allowed for dependencies in this DEPS file.
@@ -55,7 +55,7 @@ deps = {
    Var('chromium_git') + '/angle/angle.git' + '@' +  Var('angle_revision'),
 
   'src/third_party/icu':
-   Var('chromium_git') + '/chromium/deps/icu.git' + '@' + 'c3f79166089e5360c09e3053fce50e6e296c3204',
+   Var('chromium_git') + '/chromium/deps/icu.git' + '@' + '94e4b770ce2f6065d4261d29c32683a6099b9d93',
 
   'src/tools/grit':
     Var('chromium_git') + '/external/grit-i18n.git' + '@' + 'c1b1591a05209c1ad467e845ba8543c22f9072af', # from svn revision 189

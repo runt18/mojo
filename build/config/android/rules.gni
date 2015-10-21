@@ -324,7 +324,7 @@ template("java_cpp_template") {
     if (defined(invoker.visibility)) {
       visibility = invoker.visibility
     }
-    deps = [
+    public_deps = [
       ":$zip_srcjar_target_name",
     ]
   }
@@ -411,7 +411,7 @@ template("java_cpp_enum") {
     if (defined(invoker.visibility)) {
       visibility = invoker.visibility
     }
-    deps = [
+    public_deps = [
       ":$zip_srcjar_target_name",
     ]
   }
@@ -1860,7 +1860,9 @@ template("unittest_apk") {
     if (defined(invoker.deps)) {
       deps += invoker.deps
     }
-    data_deps = [ "//tools/android/md5sum" ]
+    data_deps = [
+      "//tools/android/md5sum",
+    ]
     if (host_os == "linux") {
       data_deps += [ "//tools/android/forwarder2" ]
     }

@@ -7,8 +7,9 @@ declare_args() {
   # is assumed to be the default one; use this to determine whether Glibc
   # is being used instead.
   is_nacl_glibc = false
-
-  # Native Client has a portable (PNaCl) and native variant; use this to
-  # determine which one is currently being used.
-  is_pnacl = false
 }
+
+nacl_toolchain_dir = "//native_client/toolchain/${host_os}_x86"
+
+nacl_irt_toolchain = "//build/toolchain/nacl:irt_" + target_cpu
+is_nacl_irt = current_toolchain == nacl_irt_toolchain

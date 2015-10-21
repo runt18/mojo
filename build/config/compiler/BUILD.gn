@@ -13,7 +13,7 @@ if (current_cpu == "mipsel" || current_cpu == "mips64el") {
 if (is_posix) {
   import("//build/config/gcc/gcc_version.gni")
 }
-
+import("//build/config/nacl/config.gni")
 import("//build/toolchain/ccache.gni")
 import("//build/config/sanitizers/sanitizers.gni")
 
@@ -84,6 +84,7 @@ if (!is_win) {
 # where stuff should go. Put warning related stuff in the "warnings" config.
 
 config("compiler") {
+  asmflags = []
   cflags = []
   cflags_c = []
   cflags_cc = []
@@ -574,11 +575,119 @@ config("compiler") {
       }
     }
   }
+
+  # Assign any flags set for the C compiler to asmflags so that they are sent
+  # to the assembler.
+  asmflags += cflags
+  asmflags += cflags_c
+}
+
+# This provides the basic options to select the target CPU and ABI.
+# It is factored out of "compiler" so that special cases can use this
+# without using everything that "compiler" brings in.  Options that
+# tweak code generation for a particular CPU do not belong here!
+# See "compiler_codegen", below.
+config("compiler_cpu_abi") {
+  cflags = []
+  ldflags = []
+
+  if (is_posix && !(is_mac || is_ios)) {
+    # CPU architecture. We may or may not be doing a cross compile now, so for
+    # simplicity we always explicitly set the architecture.
+    if (current_cpu == "x64") {
+      cflags += [
+        "-m64",
+        "-march=x86-64",
+      ]
+      ldflags += [ "-m64" ]
+    } else if (current_cpu == "x86") {
+      cflags += [ "-m32" ]
+      ldflags += [ "-m32" ]
+    } else if (current_cpu == "arm") {
+      if (is_clang && !is_android && !is_nacl) {
+        cflags += [
+          "-target",
+          "arm-linux-gnueabihf",
+        ]
+        ldflags += [
+          "-target",
+          "arm-linux-gnueabihf",
+        ]
+      }
+      if (!is_nacl) {
+        cflags += [
+          "-march=$arm_arch",
+          "-mfloat-abi=$arm_float_abi",
+        ]
+        if (arm_use_thumb) {
+          cflags += [ "-mthumb" ]
+          if (is_android && !is_clang) {
+            # Clang doesn't support this option.
+            cflags += [ "-mthumb-interwork" ]
+          }
+        }
+      }
+      if (arm_tune != "") {
+        cflags += [ "-mtune=$arm_tune" ]
+      }
+    } else if (current_cpu == "mipsel") {
+      if (mips_arch_variant == "r6") {
+        cflags += [
+          "-mips32r6",
+          "-Wa,-mips32r6",
+        ]
+        if (is_android) {
+          ldflags += [
+            "-mips32r6",
+            "-Wl,-melf32ltsmip",
+          ]
+        }
+      } else if (mips_arch_variant == "r2") {
+        cflags += [
+          "-mips32r2",
+          "-Wa,-mips32r2",
+        ]
+        if (mips_float_abi == "hard" && mips_fpu_mode != "") {
+          cflags += [ "-m$mips_fpu_mode" ]
+        }
+      } else if (mips_arch_variant == "r1") {
+        cflags += [
+          "-mips32",
+          "-Wa,-mips32",
+        ]
+      }
+
+      if (mips_dsp_rev == 1) {
+        cflags += [ "-mdsp" ]
+      } else if (mips_dsp_rev == 2) {
+        cflags += [ "-mdspr2" ]
+      }
+
+      cflags += [ "-m${mips_float_abi}-float" ]
+    } else if (current_cpu == "mips64el") {
+      if (mips_arch_variant == "r6") {
+        cflags += [
+          "-mips64r6",
+          "-Wa,-mips64r6",
+        ]
+        ldflags += [ "-mips64r6" ]
+      } else if (mips_arch_variant == "r2") {
+        cflags += [
+          "-mips64r2",
+          "-Wa,-mips64r2",
+        ]
+        ldflags += [ "-mips64r2" ]
+      }
+    }
+  }
+
+  asmflags = cflags
 }
 
 config("compiler_arm_fpu") {
   if (current_cpu == "arm" && !is_ios) {
     cflags = [ "-mfpu=$arm_fpu" ]
+    asmflags = cflags
   }
 }
 
@@ -1234,6 +1343,20 @@ config("optimize_max") {
   }
 }
 
+# The default optimization applied to all targets. This will be equivalent to
+# either "optimize" or "no_optimize", depending on the build flags.
+config("default_optimization") {
+  if (is_nacl_irt) {
+    # The NaCl IRT is a special case and always wants its own config.
+    # It gets optimized the same way regardless of the type of build.
+    configs = [ "//build/config/nacl:irt_optimize" ]
+  } else if (is_debug) {
+    configs = [ ":no_optimize" ]
+  } else {
+    configs = [ ":optimize" ]
+  }
+}
+
 # Symbols ----------------------------------------------------------------------
 
 config("symbols") {
@@ -1250,6 +1373,8 @@ config("symbols") {
     if (use_debug_fission) {
       cflags += [ "-gsplit-dwarf" ]
     }
+    asmflags = cflags
+    ldflags = []
   }
 }
 
@@ -1262,11 +1387,27 @@ config("minimal_symbols") {
     if (use_debug_fission) {
       cflags += [ "-gsplit-dwarf" ]
     }
+    asmflags = cflags
+    ldflags = []
   }
 }
 
 config("no_symbols") {
   if (!is_win) {
     cflags = [ "-g0" ]
+    asmflags = cflags
+  }
+}
+
+# Default symbols.
+config("default_symbols") {
+  if (symbol_level == 0) {
+    configs = [ ":no_symbols" ]
+  } else if (symbol_level == 1) {
+    configs = [ ":minimal_symbols" ]
+  } else if (symbol_level == 2) {
+    configs = [ ":symbols" ]
+  } else {
+    assert(false)
   }
 }

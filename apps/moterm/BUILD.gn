@@ -75,18 +75,15 @@ source_set("gl_helper") {
     "//mojo/services/surfaces/interfaces",
   ]
 
-  forward_dependent_configs_from = [
-    "//mojo/public/c/gpu",
-    "//mojo/services/gpu/interfaces",
-    "//mojo/services/surfaces/interfaces",
-  ]
-
   public_deps = [
     "//base",
+    "//mojo/public/c/gpu",
     "//mojo/public/c/gpu:GLES2",
     "//mojo/services/geometry/cpp",
     "//mojo/services/geometry/interfaces",
+    "//mojo/services/gpu/interfaces",
     "//mojo/services/surfaces/cpp",
+    "//mojo/services/surfaces/interfaces",
     "//mojo/services/surfaces/interfaces:surface_id",
   ]
 }
@@ -116,10 +113,9 @@ source_set("model") {
     "//third_party/libteken",
   ]
 
-  forward_dependent_configs_from = [ "//third_party/libteken" ]
-
   public_deps = [
     "//base",
+    "//third_party/libteken",
   ]
 }
 

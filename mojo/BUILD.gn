@@ -5,16 +5,17 @@
 import("//build/module_args/mojo.gni")
 import("//mojo/public/mojo.gni")
 
+declare_args() {
+  mojo_use_go = false
+
+  # TODO(ncbray): support ASAN once NaCl's GN build is unforked.
+  mojo_use_nacl = is_linux && !is_asan
+  mojo_use_nacl_nonsfi = (is_linux || is_android) && !is_asan
+}
+
 group("mojo") {
   # Meta-target, don't link into production code.
   testonly = true
-  declare_args() {
-    mojo_use_go = false
-
-    # TODO(ncbray): support ASAN once NaCl's GN build is unforked.
-    mojo_use_nacl = is_linux && !is_asan
-    mojo_use_nacl_nonsfi = (is_linux || is_android) && !is_asan
-  }
   deps = [
     ":system_thunks",
     ":tests",

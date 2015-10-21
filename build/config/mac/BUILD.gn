@@ -11,6 +11,7 @@ config("sdk") {
     "-mmacosx-version-min=10.9",
   ]
 
+  asmflags = common_flags
   cflags = common_flags
   ldflags = common_flags
 }

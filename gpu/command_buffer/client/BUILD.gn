@@ -46,6 +46,7 @@ source_set("gles2_cmd_helper_sources") {
   visibility = [
     ":gles2_cmd_helper",
     "//gpu",
+    "//mojo/gles2:control_thunks",
   ]
   sources = [
     "gles2_cmd_helper.cc",

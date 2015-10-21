@@ -75,9 +75,6 @@ template("test") {
       if (defined(invoker.direct_dependent_configs)) {
         direct_dependent_configs = invoker.direct_dependent_configs
       }
-      if (defined(invoker.forward_dependent_configs_from)) {
-        forward_dependent_configs_from = invoker.forward_dependent_configs_from
-      }
       if (defined(invoker.include_dirs)) {
         include_dirs = invoker.include_dirs
       }
@@ -214,9 +211,6 @@ template("test") {
       }
       if (defined(invoker.direct_dependent_configs)) {
         direct_dependent_configs = invoker.direct_dependent_configs
-      }
-      if (defined(invoker.forward_dependent_configs_from)) {
-        forward_dependent_configs_from = invoker.forward_dependent_configs_from
       }
       if (defined(invoker.include_dirs)) {
         include_dirs = invoker.include_dirs
