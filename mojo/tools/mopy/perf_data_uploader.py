@@ -3,7 +3,12 @@
 # Use of this source code is governed by a BSD-style license that can be
 # found in the LICENSE file.
 
-"""A tool that uploads data to the performance dashboard."""
+"""A tool that uploads data to the performance dashboard.
+
+By default the script uploads to a local testing dashboard assumed to be running
+on the host. To run such server, check out Catapult and follow instructions at
+https://github.com/catapult-project/catapult/blob/master/dashboard/README.md .
+"""
 
 import argparse
 import httplib
@@ -28,7 +33,7 @@ _PERF_LINE_FORMAT = r"""^\s*([^\s/]+)  # chart name
                         \s*$"""
 
 _PRODUCTION_SERVER = "https://chromeperf.appspot.com"
-_TESTING_SERVER = "https://chrome-perf.googleplex.com"
+_TESTING_SERVER = "http://127.0.0.1:8080"
 
 
 def UploadPerfData(master_name, perf_id, test_name, builder_name, build_number,
