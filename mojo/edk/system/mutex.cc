@@ -5,34 +5,54 @@
 #include "mojo/edk/system/mutex.h"
 
 #if !defined(NDEBUG) || defined(DCHECK_ALWAYS_ON)
+#include <errno.h>
+#include <string.h>
 
 #include "base/logging.h"
 
 namespace mojo {
 namespace system {
 
-Mutex::Mutex() : lock_() {
+Mutex::Mutex() {
+  pthread_mutexattr_t attr;
+  int error = pthread_mutexattr_init(&attr);
+  DCHECK(!error) << "pthread_mutexattr_init: " << strerror(error);
+  error = pthread_mutexattr_settype(&attr, PTHREAD_MUTEX_ERRORCHECK);
+  DCHECK(!error) << "pthread_mutexattr_settype: " << strerror(error);
+  error = pthread_mutex_init(&impl_, &attr);
+  DCHECK(!error) << "pthread_mutex_init: " << strerror(error);
+  error = pthread_mutexattr_destroy(&attr);
+  DCHECK(!error) << "pthread_mutexattr_destroy: " << strerror(error);
 }
 
 Mutex::~Mutex() {
-  DCHECK(owning_thread_ref_.is_null());
+  int error = pthread_mutex_destroy(&impl_);
+  DCHECK(!error) << "pthread_mutex_destroy: " << strerror(error);
 }
 
-void Mutex::AssertHeld() const {
-  DCHECK(owning_thread_ref_ == base::PlatformThread::CurrentRef());
+void Mutex::Lock() MOJO_EXCLUSIVE_LOCK_FUNCTION() {
+  int error = pthread_mutex_lock(&impl_);
+  DCHECK(!error) << "pthread_mutex_lock: " << strerror(error);
 }
 
-void Mutex::CheckHeldAndUnmark() {
-  DCHECK(owning_thread_ref_ == base::PlatformThread::CurrentRef());
-  owning_thread_ref_ = base::PlatformThreadRef();
+void Mutex::Unlock() MOJO_UNLOCK_FUNCTION() {
+  int error = pthread_mutex_unlock(&impl_);
+  DCHECK(!error) << "pthread_mutex_unlock: " << strerror(error);
 }
 
-void Mutex::CheckUnheldAndMark() {
-  DCHECK(owning_thread_ref_.is_null());
-  owning_thread_ref_ = base::PlatformThread::CurrentRef();
+bool Mutex::TryLock() MOJO_EXCLUSIVE_TRYLOCK_FUNCTION(true) {
+  int error = pthread_mutex_trylock(&impl_);
+  DCHECK(!error || error == EBUSY) << "pthread_mutex_trylock: "
+                                   << strerror(error);
+  return !error;
+}
+
+void Mutex::AssertHeld() MOJO_ASSERT_EXCLUSIVE_LOCK() {
+  int error = pthread_mutex_lock(&impl_);
+  DCHECK_EQ(error, EDEADLK) << ". pthread_mutex_lock: " << strerror(error);
 }
 
 }  // namespace system
 }  // namespace mojo
 
-#endif  // !NDEBUG || DCHECK_ALWAYS_ON
+#endif  // !defined(NDEBUG) || defined(DCHECK_ALWAYS_ON)

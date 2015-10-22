@@ -4,16 +4,13 @@
 
 // A mutex class, with support for thread annotations.
 //
-// TODO(vtl): Currently, this is a fork of Chromium's
-// base/synchronization/lock.h (with names changed and minor modifications; it
-// still cheats and uses Chromium's lock_impl.*), but eventually we'll want our
-// own and, e.g., add support for non-exclusive (reader) locks.
+// TODO(vtl): Add support for non-exclusive (reader) locks.
 
 #ifndef MOJO_EDK_SYSTEM_MUTEX_H_
 #define MOJO_EDK_SYSTEM_MUTEX_H_
 
-#include "base/synchronization/lock_impl.h"
-#include "base/threading/platform_thread.h"
+#include <pthread.h>
+
 #include "mojo/edk/system/thread_annotations.h"
 #include "mojo/public/cpp/system/macros.h"
 
@@ -25,47 +22,37 @@ namespace system {
 class MOJO_LOCKABLE Mutex {
  public:
 #if defined(NDEBUG) && !defined(DCHECK_ALWAYS_ON)
-  Mutex() : lock_() {}
-  ~Mutex() {}
+  Mutex() { pthread_mutex_init(&impl_, nullptr); }
+  ~Mutex() { pthread_mutex_destroy(&impl_); }
 
-  void Lock() MOJO_EXCLUSIVE_LOCK_FUNCTION() { lock_.Lock(); }
-  void Unlock() MOJO_UNLOCK_FUNCTION() { lock_.Unlock(); }
+  // Takes an exclusive lock.
+  void Lock() MOJO_EXCLUSIVE_LOCK_FUNCTION() { pthread_mutex_lock(&impl_); }
 
-  bool TryLock() MOJO_EXCLUSIVE_TRYLOCK_FUNCTION(true) { return lock_.Try(); }
+  // Releases a lock.
+  void Unlock() MOJO_UNLOCK_FUNCTION() { pthread_mutex_unlock(&impl_); }
 
-  void AssertHeld() const MOJO_ASSERT_EXCLUSIVE_LOCK() {}
+  // Tries to take an exclusive lock, returning true if successful.
+  bool TryLock() MOJO_EXCLUSIVE_TRYLOCK_FUNCTION(true) {
+    return !pthread_mutex_trylock(&impl_);
+  }
+
+  // Asserts that an exclusive lock is held by the calling thread. (Does nothing
+  // for non-Debug builds.)
+  void AssertHeld() MOJO_ASSERT_EXCLUSIVE_LOCK() {}
 #else
   Mutex();
   ~Mutex();
 
-  void Lock() MOJO_EXCLUSIVE_LOCK_FUNCTION() {
-    lock_.Lock();
-    CheckUnheldAndMark();
-  }
-  void Unlock() MOJO_UNLOCK_FUNCTION() {
-    CheckHeldAndUnmark();
-    lock_.Unlock();
-  }
+  void Lock() MOJO_EXCLUSIVE_LOCK_FUNCTION();
+  void Unlock() MOJO_UNLOCK_FUNCTION();
 
-  bool TryLock() MOJO_EXCLUSIVE_TRYLOCK_FUNCTION(true) {
-    bool rv = lock_.Try();
-    if (rv)
-      CheckUnheldAndMark();
-    return rv;
-  }
+  bool TryLock() MOJO_EXCLUSIVE_TRYLOCK_FUNCTION(true);
 
-  void AssertHeld() const MOJO_ASSERT_EXCLUSIVE_LOCK();
-#endif  // NDEBUG && !DCHECK_ALWAYS_ON
+  void AssertHeld() MOJO_ASSERT_EXCLUSIVE_LOCK();
+#endif  // defined(NDEBUG) && !defined(DCHECK_ALWAYS_ON)
 
  private:
-#if !defined(NDEBUG) || defined(DCHECK_ALWAYS_ON)
-  void CheckHeldAndUnmark();
-  void CheckUnheldAndMark();
-
-  base::PlatformThreadRef owning_thread_ref_;
-#endif  // !NDEBUG || DCHECK_ALWAYS_ON
-
-  base::internal::LockImpl lock_;
+  pthread_mutex_t impl_;
 
   MOJO_DISALLOW_COPY_AND_ASSIGN(Mutex);
 };

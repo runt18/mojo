@@ -102,6 +102,20 @@ TEST(MutexTest, Basic) {
   EXPECT_GE(thread.acquired(), 20);
 }
 
+TEST(MutexTest, AssertHeld) {
+  Mutex mutex;
+
+#if defined(NDEBUG) && !defined(DCHECK_ALWAYS_ON)
+  // For non-Debug builds, |AssertHeld()| should do nothing.
+  mutex.AssertHeld();
+#else
+  EXPECT_DEATH_IF_SUPPORTED({ mutex.AssertHeld(); }, "Check failed");
+#endif  // defined(NDEBUG) && !defined(DCHECK_ALWAYS_ON)
+
+  // TODO(vtl): Should also test the case when the mutex is held by another
+  // thread, though this is more annoying since it requires synchronization.
+}
+
 // Test that TryLock() works as expected ---------------------------------------
 
 class TryLockTestThread : public base::PlatformThread::Delegate {
