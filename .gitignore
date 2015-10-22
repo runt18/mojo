@@ -60,7 +60,7 @@ v8.log
 /third_party/pyelftools/
 /third_party/pywebsocket/src/
 /third_party/requests/src/
-/third_party/robolectric/src/
+/third_party/robolectric/lib/
 /third_party/skia/
 /third_party/smhasher/src/
 /third_party/snappy/src/
