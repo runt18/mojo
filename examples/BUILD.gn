@@ -60,7 +60,7 @@ group("examples") {
     deps += [ "//examples/python" ]
   }
 
-  if (is_linux && !is_asan) {
+  if (is_linux && !is_asan && !is_fnl) {
     deps += [ "//examples/spinning_cube(//build/toolchain/nacl:newlib_pnacl)" ]
   }
 }
