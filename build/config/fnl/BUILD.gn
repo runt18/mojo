@@ -22,7 +22,7 @@ config("sdk") {
                              "value") ]
   }
 
-  defines = []
+  defines = [ "FNL_MUSL" ]
 
   if (use_ozone) {
     defines += [ "MESA_EGL_NO_X11_HEADERS" ]

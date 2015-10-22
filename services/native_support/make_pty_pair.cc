@@ -23,11 +23,15 @@ bool MakePtyPair(base::ScopedFD* master_fd,
   DCHECK(!slave_fd->is_valid());  // Not very wrong, but unlikely.
   DCHECK(errno_value);
 
-  // TODO(vtl): |getpt()| is a glibc extension.
+#if defined(FNL_MUSL)
+  base::ScopedFD master(posix_openpt(O_RDWR | O_NOCTTY));
+#else
+  // Android doesn't yet have posix_openpt
   base::ScopedFD master(getpt());
+#endif
   if (!master.is_valid()) {
     *errno_value = errno;
-    PLOG(ERROR) << "getpt()";
+    PLOG(ERROR) << "posix_openpt/getpt";
     return false;
   }
 

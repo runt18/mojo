@@ -20,3 +20,5 @@ Local modifications:
 * teken/teken.h: |extern "C"| guards added for C++.
 * teken/gensequences: made executable, to placate checkperms.py.
 * teken/{demo, libteken, stress}: removed.
+* teken.c: remove sys/cdefs.h to fix fnl/musl build
+  (http://wiki.musl-libc.org/wiki/FAQ#Q:_I.27m_trying_to_compile_something_against_musl_and_I_get_error_messages_about_sys.2Fcdefs.h)

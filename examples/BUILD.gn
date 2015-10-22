@@ -32,7 +32,8 @@ group("examples") {
     "//examples/wget",
   ]
 
-  if (!is_android) {
+  # TODO(cstout) - javascript/v8 build support for fnl/musl
+  if (!is_android && !is_fnl) {
     deps += [ "//examples/pdf_viewer" ]
   }
 

@@ -60,7 +60,8 @@ group("services") {
   # TODO(jamesr): We only support building V8 snapshot data on a linux host
   # since it needs a 32 bit toolchain and we don't have one configured for mac
   # hosts.
-  if (host_os == "linux") {
+  # TODO(cstout): javascript/v8 build support for fnl/musl
+  if (!is_fnl && host_os == "linux") {
     deps += [ "//services/js" ]
   }
 }
@@ -96,7 +97,8 @@ group("tests") {
 
   # TODO(jamesr): We only support building V8 snapshot data on a linux host since it
   # needs a 32 bit toolchain and we don't have one configured for mac hosts.
-  if (host_os == "linux") {
+  # TODO(cstout): javascript/v8 build support for fnl/musl
+  if (!is_fnl && host_os == "linux") {
     deps += [ "//services/js:tests" ]
   }
 

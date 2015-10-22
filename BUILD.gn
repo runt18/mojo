@@ -19,14 +19,15 @@ group("default") {
     "//shell",
   ]
 
-  if (is_linux) {
+  # TODO(cstout): fix sandbox build for fnl/musl
+  if (is_linux && !is_fnl) {
     deps += [
       "//sandbox/linux:sandbox",
       "//sandbox/linux:sandbox_linux_unittests",
     ]
-    if (!use_ozone) {
-      deps += [ "//tools/xdisplaycheck" ]
-    }
+  }
+  if (is_linux && !use_ozone) {
+    deps += [ "//tools/xdisplaycheck" ]
   }
 
   if (is_linux || is_android) {

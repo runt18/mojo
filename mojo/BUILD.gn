@@ -9,8 +9,9 @@ declare_args() {
   mojo_use_go = false
 
   # TODO(ncbray): support ASAN once NaCl's GN build is unforked.
-  mojo_use_nacl = is_linux && !is_asan
-  mojo_use_nacl_nonsfi = (is_linux || is_android) && !is_asan
+  # TODO(cstout): support fnl/musl build in nacl
+  mojo_use_nacl = is_linux && !is_asan && !is_fnl
+  mojo_use_nacl_nonsfi = (is_linux || is_android) && !is_asan && !is_fnl
 }
 
 group("mojo") {

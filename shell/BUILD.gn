@@ -39,7 +39,9 @@ group("tests") {
     "//shell/application_manager:mojo_application_manager_unittests",
   ]
 
-  if (is_android || is_linux) {
+  # TODO(cstout): fix breakpad build for fnl/musl
+  # https://code.google.com/p/google-breakpad/issues/detail?id=631
+  if ((is_android || is_linux) && !is_fnl) {
     deps += [ "//shell/crash:crash_unittests" ]
   }
 }
@@ -60,7 +62,9 @@ if (!mojo_use_prebuilt_mojo_shell) {
   ]
   shell_common_data_deps = [ ":mojo_shell_child" ]
 
-  if (is_android || is_linux) {
+  # TODO(cstout): fix breakpad build for fnl/musl
+  # (see comment above)
+  if ((is_android || is_linux) && !is_fnl) {
     shell_common_deps += [ "//shell/crash" ]
   }
 
