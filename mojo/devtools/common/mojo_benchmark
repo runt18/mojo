@@ -14,6 +14,7 @@ import re
 
 from devtoolslib import shell_arguments
 from devtoolslib import shell_config
+from devtoolslib import performance_dashboard
 
 
 _DESCRIPTION = """Runner for Mojo application benchmarks.
@@ -175,6 +176,9 @@ def main():
                       help='a file listing benchmarks to run')
   parser.add_argument('--save-traces', action='store_true',
                       help='save the traces produced by benchmarks to disk')
+  parser.add_argument('--chart-data-output-file', type=argparse.FileType('w'),
+                      help='file to write chart data for the performance '
+                      'dashboard to')
 
   # Common shell configuration arguments.
   shell_config.add_shell_arguments(parser)
@@ -190,6 +194,10 @@ def main():
   target_os = 'android' if script_args.android else 'linux'
   benchmark_list_params = {"target_os": target_os}
   exec script_args.benchmark_list_file in benchmark_list_params
+
+  chart_data_recorder = None
+  if script_args.chart_data_output_file:
+    chart_data_recorder = performance_dashboard.ChartDataRecorder()
 
   exit_code = 0
   for benchmark_spec in benchmark_list_params['benchmarks']:
@@ -213,8 +221,13 @@ def main():
         # results and preserve the required order.
         for measurement_spec in measurements:
           if measurement_spec in measurement_results:
-            print '%s %s' % (measurement_spec,
-                             measurement_results[measurement_spec])
+            result = measurement_results[measurement_spec]
+            print '%s %s' % (measurement_spec, result)
+
+            if chart_data_recorder:
+              measurement_name = measurement_spec.replace('/', '-')
+              chart_data_recorder.record_scalar(name, measurement_name, 'ms',
+                                                result)
           else:
             print '%s ?' % measurement_spec
             some_measurements_failed = True
@@ -229,6 +242,9 @@ def main():
         print output
         print '-' * 72
         exit_code = 1
+
+  if script_args.chart_data_output_file:
+    script_args.chart_data_output_file.write(chart_data_recorder.get_json())
 
   return exit_code
 
