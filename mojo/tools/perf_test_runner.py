@@ -8,15 +8,58 @@ performance dashboard.
 """
 
 import argparse
-from mopy import perf_data_uploader
-from mopy.version import Version
 import subprocess
 import sys
+import re
+
+from mopy import perf_data_uploader
+from mopy.version import Version
+
+_PERF_LINE_FORMAT = r"""^\s*([^\s/]+)  # chart name
+                        (/([^\s/]+))?  # trace name (optional, separated with
+                                       # the chart name by a '/')
+                        \s+(\S+)       # value
+                        \s+(\S+)       # units
+                        \s*$"""
+
+_PERF_LINE_REGEX = re.compile(_PERF_LINE_FORMAT, re.VERBOSE)
 
 
 def _GetCurrentCommitCount():
   return subprocess.check_output(
       ["git", "rev-list", "HEAD", "--count"]).strip()
+
+
+def _ConvertPerfDataToChartFormat(perf_data, test_name):
+  """Converts the perf data produced by a perf test to the "chart_data" format
+  accepted by the performance dashboard, see:
+  http://www.chromium.org/developers/speed-infra/performance-dashboard/sending-data-to-the-performance-dashboard.
+
+  Returns:
+    A dictionary that (after being converted to JSON) conforms to the server
+    format.
+  """
+  charts = {}
+  for line in perf_data:
+    match = re.match(_PERF_LINE_REGEX, line)
+    assert match, "Unable to parse the following input: %s" % line
+
+    chart_name = match.group(1)
+    trace_name = match.group(3) if match.group(3) else "summary"
+
+    if chart_name not in charts:
+      charts[chart_name] = {}
+    charts[chart_name][trace_name] = {
+        "type": "scalar",
+        "value": float(match.group(4)),
+        "units": match.group(5)
+    }
+
+  return {
+      "format_version": "1.0",
+      "benchmark_name": test_name,
+      "charts": charts
+  }
 
 
 def main():
@@ -46,6 +89,10 @@ def main():
   parser.add_argument(
       "--perf-data-path",
       help="The path to the perf data that the perf test generates.")
+  parser.add_argument(
+      "--dry-run", action="store_true", default=False,
+      help="Display the server URL and the data to upload, but do not actually "
+           "upload the data.")
   server_group = parser.add_mutually_exclusive_group()
   server_group.add_argument(
       "--testing-dashboard", action="store_true", default=True,
@@ -70,12 +117,13 @@ def main():
     return 0
 
   revision = Version().version
-  perf_data = open(args.perf_data_path, "r")
   point_id = _GetCurrentCommitCount()
+  with open(args.perf_data_path, "r") as perf_data:
+    chart_data = _ConvertPerfDataToChartFormat(perf_data, args.test_name)
 
   result = perf_data_uploader.UploadPerfData(
       args.master_name, args.perf_id, args.test_name, args.builder_name,
-      args.build_number, revision, perf_data, point_id, False,
+      args.build_number, revision, chart_data, point_id, args.dry_run,
       args.testing_dashboard)
 
   return 0 if result else 1
