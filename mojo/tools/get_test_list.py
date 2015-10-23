@@ -18,6 +18,9 @@ import sys
 from mopy.config import Config
 from mopy.paths import Paths
 
+# Url of the performance dashboard server to upload results of perftests to.
+_PERFORMANCE_DASHBOARD_URL = "https://chromeperf.appspot.com"
+
 
 def GetTestList(config, verbose_count=0):
   """Gets the list of tests to run for the given config. The test list (which is
@@ -211,11 +214,11 @@ def GetTestList(config, verbose_count=0):
     for test_name in test_names:
       command = ["python",
                  os.path.join("mojo", "tools", "perf_test_runner.py"),
+                 "--server-url", _PERFORMANCE_DASHBOARD_URL,
                  "--perf-id", perf_id,
                  "--test-name", test_name,
                  "--perf-data-path",
-                 os.path.join(build_dir, test_name + "_perf.log"),
-                 "--production-dashboard"]
+                 os.path.join(build_dir, test_name + "_perf.log")]
       if config.values.get("builder_name"):
         command += ["--builder-name", config.values["builder_name"]]
       if config.values.get("build_number"):

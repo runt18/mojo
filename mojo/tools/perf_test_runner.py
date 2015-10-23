@@ -5,15 +5,27 @@
 
 """A tool that runs a perf test and uploads the resulting data to the
 performance dashboard.
+
+By default uploads to a local testing dashboard assumed to be running on the
+host. To run such server, check out Catapult and follow instructions at
+https://github.com/catapult-project/catapult/blob/master/dashboard/README.md .
 """
+
+# TODO(yzshen): The following are missing currently:
+#     (1) CL range on the dashboard;
+#     (2) improvement direction on the dashboard;
+#     (3) a link from the build step pointing to the dashboard page.
 
 import argparse
 import subprocess
 import sys
 import re
 
-from mopy import perf_data_uploader
 from mopy.version import Version
+
+import devtools
+devtools.add_lib_to_path()
+from devtoolslib import perf_dashboard
 
 _PERF_LINE_FORMAT = r"""^\s*([^\s/]+)  # chart name
                         (/([^\s/]+))?  # trace name (optional, separated with
@@ -67,39 +79,10 @@ def main():
       description="A tool that runs a perf test and uploads the resulting data "
                   "to the performance dashboard.")
 
-  parser.add_argument(
-      "--master-name",
-      help="Buildbot master name, used to construct link to buildbot log by "
-           "the dashboard, and also as the top-level category for the data.")
-  parser.add_argument(
-      "--perf-id",
-      help="Used as the second-level category for the data, usually the "
-           "platform type.")
-  parser.add_argument(
-      "--test-name",
-      help="Name of the test that the perf data was generated from.")
-  parser.add_argument(
-      "--builder-name",
-      help="Buildbot builder name, used to construct link to buildbot log by "
-           "the dashboard.")
-  parser.add_argument(
-      "--build-number", type=int,
-      help="Build number, used to construct link to buildbot log by the "
-           "dashboard.")
+  perf_dashboard.add_argparse_server_arguments(parser)
   parser.add_argument(
       "--perf-data-path",
       help="The path to the perf data that the perf test generates.")
-  parser.add_argument(
-      "--dry-run", action="store_true", default=False,
-      help="Display the server URL and the data to upload, but do not actually "
-           "upload the data.")
-  server_group = parser.add_mutually_exclusive_group()
-  server_group.add_argument(
-      "--testing-dashboard", action="store_true", default=True,
-      help="Upload the data to the testing dashboard (default).")
-  server_group.add_argument(
-      "--production-dashboard", dest="testing_dashboard", action="store_false",
-      default=False, help="Upload the data to the production dashboard.")
   parser.add_argument("command", nargs=argparse.REMAINDER)
   args = parser.parse_args()
 
@@ -121,10 +104,10 @@ def main():
   with open(args.perf_data_path, "r") as perf_data:
     chart_data = _ConvertPerfDataToChartFormat(perf_data, args.test_name)
 
-  result = perf_data_uploader.UploadPerfData(
+  result = perf_dashboard.upload_chart_data(
       args.master_name, args.perf_id, args.test_name, args.builder_name,
-      args.build_number, revision, chart_data, point_id, args.dry_run,
-      args.testing_dashboard)
+      args.build_number, revision, chart_data, point_id, args.server_url,
+      args.dry_run)
 
   return 0 if result else 1
 
