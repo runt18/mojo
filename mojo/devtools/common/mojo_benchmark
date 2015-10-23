@@ -14,7 +14,7 @@ import re
 
 from devtoolslib import shell_arguments
 from devtoolslib import shell_config
-from devtoolslib import performance_dashboard
+from devtoolslib import perf_dashboard
 
 
 _DESCRIPTION = """Runner for Mojo application benchmarks.
@@ -195,10 +195,6 @@ def main():
   benchmark_list_params = {"target_os": target_os}
   exec script_args.benchmark_list_file in benchmark_list_params
 
-  chart_data_recorder = None
-  if script_args.chart_data_output_file:
-    chart_data_recorder = performance_dashboard.ChartDataRecorder()
-
   exit_code = 0
   for benchmark_spec in benchmark_list_params['benchmarks']:
     for variant_spec in _generate_benchmark_variants(benchmark_spec):
@@ -207,6 +203,10 @@ def main():
       duration = variant_spec['duration']
       shell_args = variant_spec.get('shell-args', []) + common_shell_args
       measurements = variant_spec['measurements']
+
+      chart_data_recorder = None
+      if script_args.chart_data_output_file:
+        chart_data_recorder = perf_dashboard.ChartDataRecorder(name)
       benchmark_succeeded, benchmark_error, output = _run_benchmark(
           shell, shell_args, name, app, duration, measurements,
           script_args.verbose, script_args.android,
@@ -243,8 +243,9 @@ def main():
         print '-' * 72
         exit_code = 1
 
-  if script_args.chart_data_output_file:
-    script_args.chart_data_output_file.write(chart_data_recorder.get_json())
+      if script_args.chart_data_output_file:
+        script_args.chart_data_output_file.write(chart_data_recorder.get_json())
+        script_args.chart_data_output_file.write('\n')
 
   return exit_code
 
