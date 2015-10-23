@@ -76,6 +76,7 @@ if (is_linux) {
       "tests/testutil_test.go",
       "tests/union_test.go",
       "tests/validation_test.go",
+      "tests/validation_type_test.go",
     ]
     static_library_sources = [
       "c_embedder/c_embedder.cc",
