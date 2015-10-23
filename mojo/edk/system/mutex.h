@@ -17,6 +17,9 @@
 namespace mojo {
 namespace system {
 
+// So |Mutex| can friend it.
+class CondVar;
+
 // Mutex -----------------------------------------------------------------------
 
 class MOJO_LOCKABLE Mutex {
@@ -52,6 +55,8 @@ class MOJO_LOCKABLE Mutex {
 #endif  // defined(NDEBUG) && !defined(DCHECK_ALWAYS_ON)
 
  private:
+  friend class CondVar;
+
   pthread_mutex_t impl_;
 
   MOJO_DISALLOW_COPY_AND_ASSIGN(Mutex);
