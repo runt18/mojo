@@ -10,8 +10,6 @@ mojo_edk_source_set("util") {
     "scoped_file.h",
   ]
 
-  defines = [ "MOJO_SYSTEM_IMPLEMENTATION" ]
-
   mojo_edk_configs = [ "mojo/edk/system:system_config" ]
 
   deps = [

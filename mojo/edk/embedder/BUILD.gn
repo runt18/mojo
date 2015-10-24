@@ -26,8 +26,6 @@ mojo_edk_source_set("embedder") {
     "test_embedder.h",
   ]
 
-  defines = [ "MOJO_SYSTEM_IMPLEMENTATION" ]
-
   mojo_edk_configs = [ "mojo/edk/system:system_config" ]
 
   public_deps = [

@@ -10,11 +10,8 @@ if (is_android) {
   import("//build/config/android/rules.gni")
 }
 
+# TODO(vtl): Should we get rid of this?
 config("system_config") {
-  defines = [
-    # Ensures that dependent projects import the core functions on Windows.
-    "MOJO_USE_SYSTEM_IMPL",
-  ]
 }
 
 component("system") {
@@ -119,8 +116,6 @@ component("system") {
     "waiter.cc",
     "waiter.h",
   ]
-
-  defines = [ "MOJO_SYSTEM_IMPLEMENTATION" ]
 
   all_dependent_configs = [ ":system_config" ]
 
