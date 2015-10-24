@@ -53,7 +53,7 @@ TEST_F(TextureUploaderTest, Base) {
   scoped_ptr<mojo::TextureCache::TextureInfo> texture_info(
       texture_cache_->GetTexture(size).Pass());
   mojo::FramePtr frame = mojo::TextureUploader::GetUploadFrame(
-      gl_context_, texture_info->ResourceId(), texture_info->Texture());
+      gl_context_, texture_info->resource_id(), texture_info->TakeTexture());
   EXPECT_FALSE(frame.is_null());
 }
 

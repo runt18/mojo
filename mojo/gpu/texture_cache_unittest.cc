@@ -55,7 +55,7 @@ TEST_F(TextureCacheTest, GetTextureOnce) {
   size.height = 100;
   scoped_ptr<mojo::TextureCache::TextureInfo> texture_info(
       texture_cache.GetTexture(size).Pass());
-  EXPECT_NE(texture_info->Texture().get(), nullptr);
+  EXPECT_NE(texture_info->TakeTexture().get(), nullptr);
 }
 
 TEST_F(TextureCacheTest, GetTextureTwice) {
@@ -65,15 +65,15 @@ TEST_F(TextureCacheTest, GetTextureTwice) {
   size.height = 100;
   scoped_ptr<mojo::TextureCache::TextureInfo> texture_info_1(
       texture_cache.GetTexture(size).Pass());
-  scoped_ptr<mojo::GLTexture> texture_1(texture_info_1->Texture().Pass());
+  scoped_ptr<mojo::GLTexture> texture_1(texture_info_1->TakeTexture().Pass());
   scoped_ptr<mojo::TextureCache::TextureInfo> texture_info_2(
       texture_cache.GetTexture(size).Pass());
-  scoped_ptr<mojo::GLTexture> texture_2(texture_info_2->Texture().Pass());
+  scoped_ptr<mojo::GLTexture> texture_2(texture_info_2->TakeTexture().Pass());
 
   EXPECT_NE(texture_1.get(), nullptr);
   EXPECT_NE(texture_2.get(), nullptr);
   EXPECT_NE(texture_1.get(), texture_2.get());
-  EXPECT_NE(texture_info_1->ResourceId(), texture_info_2->ResourceId());
+  EXPECT_NE(texture_info_1->resource_id(), texture_info_2->resource_id());
 }
 
 TEST_F(TextureCacheTest, GetTextureAfterReturnSameSize) {
@@ -86,20 +86,20 @@ TEST_F(TextureCacheTest, GetTextureAfterReturnSameSize) {
   // get a texture
   scoped_ptr<mojo::TextureCache::TextureInfo> texture_info_1(
       texture_cache.GetTexture(size).Pass());
-  scoped_ptr<mojo::GLTexture> texture(texture_info_1->Texture().Pass());
+  scoped_ptr<mojo::GLTexture> texture(texture_info_1->TakeTexture().Pass());
   mojo::GLTexture* texture_ptr = texture.get();
   EXPECT_NE(texture_ptr, nullptr);
 
   mojo::Array<mojo::ReturnedResourcePtr> resources;
   mojo::ReturnedResourcePtr returnedResource = mojo::ReturnedResource::New();
-  returnedResource->id = texture_info_1->ResourceId();
+  returnedResource->id = texture_info_1->resource_id();
   returnedResource->sync_point = 0u;
   returnedResource->count = 1u;
   returnedResource->lost = false;
   resources.push_back(returnedResource.Pass());
 
   // return the texture via resource id
-  texture_cache.NotifyPendingResourceReturn(texture_info_1->ResourceId(),
+  texture_cache.NotifyPendingResourceReturn(texture_info_1->resource_id(),
                                             texture.Pass());
   resource_returner->ReturnResources(resources.Pass());
 
@@ -108,12 +108,12 @@ TEST_F(TextureCacheTest, GetTextureAfterReturnSameSize) {
   // get a texture of the same size - it should be the same one as before
   scoped_ptr<mojo::TextureCache::TextureInfo> texture_info_2(
       texture_cache.GetTexture(size).Pass());
-  scoped_ptr<mojo::GLTexture> texture_2(texture_info_2->Texture().Pass());
+  scoped_ptr<mojo::GLTexture> texture_2(texture_info_2->TakeTexture().Pass());
 
   EXPECT_NE(texture_2.get(), nullptr);
   EXPECT_EQ(size.width, texture_2->size().width);
   EXPECT_EQ(size.height, texture_2->size().height);
-  EXPECT_EQ(texture_info_1->ResourceId(), texture_info_2->ResourceId());
+  EXPECT_EQ(texture_info_1->resource_id(), texture_info_2->resource_id());
 }
 
 TEST_F(TextureCacheTest, GetTextureAfterReturnDifferentSize) {
@@ -126,20 +126,20 @@ TEST_F(TextureCacheTest, GetTextureAfterReturnDifferentSize) {
   // get a texture
   scoped_ptr<mojo::TextureCache::TextureInfo> texture_info_1(
       texture_cache.GetTexture(size).Pass());
-  scoped_ptr<mojo::GLTexture> texture(texture_info_1->Texture().Pass());
+  scoped_ptr<mojo::GLTexture> texture(texture_info_1->TakeTexture().Pass());
   mojo::GLTexture* texture_ptr = texture.get();
   EXPECT_NE(texture_ptr, nullptr);
 
   mojo::Array<mojo::ReturnedResourcePtr> resources;
   mojo::ReturnedResourcePtr returnedResource = mojo::ReturnedResource::New();
-  returnedResource->id = texture_info_1->ResourceId();
+  returnedResource->id = texture_info_1->resource_id();
   returnedResource->sync_point = 0u;
   returnedResource->count = 1u;
   returnedResource->lost = false;
   resources.push_back(returnedResource.Pass());
 
   // return the texture via resource id
-  texture_cache.NotifyPendingResourceReturn(texture_info_1->ResourceId(),
+  texture_cache.NotifyPendingResourceReturn(texture_info_1->resource_id(),
                                             texture.Pass());
   resource_returner->ReturnResources(resources.Pass());
 
@@ -153,14 +153,14 @@ TEST_F(TextureCacheTest, GetTextureAfterReturnDifferentSize) {
   // before
   scoped_ptr<mojo::TextureCache::TextureInfo> texture_info_2(
       texture_cache.GetTexture(different_size).Pass());
-  scoped_ptr<mojo::GLTexture> texture_2(texture_info_2->Texture().Pass());
+  scoped_ptr<mojo::GLTexture> texture_2(texture_info_2->TakeTexture().Pass());
 
   EXPECT_NE(texture_2.get(), nullptr);
   EXPECT_NE(size.width, texture_2->size().width);
   EXPECT_NE(size.height, texture_2->size().height);
   EXPECT_EQ(different_size.width, texture_2->size().width);
   EXPECT_EQ(different_size.height, texture_2->size().height);
-  EXPECT_NE(texture_info_1->ResourceId(), texture_info_2->ResourceId());
+  EXPECT_NE(texture_info_1->resource_id(), texture_info_2->resource_id());
 }
 
 TEST_F(TextureCacheTest, GetTextureReleasedGlContext) {
@@ -183,7 +183,7 @@ TEST_F(TextureCacheTest, ReturnResourcesReleasedGlContext) {
   // get a texture
   scoped_ptr<mojo::TextureCache::TextureInfo> texture_info(
       texture_cache.GetTexture(size).Pass());
-  scoped_ptr<mojo::GLTexture> texture(texture_info->Texture().Pass());
+  scoped_ptr<mojo::GLTexture> texture(texture_info->TakeTexture().Pass());
   mojo::GLTexture* texture_ptr = texture.get();
   EXPECT_NE(texture_ptr, nullptr);
 
@@ -191,14 +191,14 @@ TEST_F(TextureCacheTest, ReturnResourcesReleasedGlContext) {
 
   mojo::Array<mojo::ReturnedResourcePtr> resources;
   mojo::ReturnedResourcePtr returnedResource = mojo::ReturnedResource::New();
-  returnedResource->id = texture_info->ResourceId();
+  returnedResource->id = texture_info->resource_id();
   returnedResource->sync_point = 0u;
   returnedResource->count = 1u;
   returnedResource->lost = false;
   resources.push_back(returnedResource.Pass());
 
   // return the texture via resource id
-  texture_cache.NotifyPendingResourceReturn(texture_info->ResourceId(),
+  texture_cache.NotifyPendingResourceReturn(texture_info->resource_id(),
                                             texture.Pass());
   resource_returner->ReturnResources(resources.Pass());
 

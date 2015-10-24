@@ -58,8 +58,7 @@ ViewObserverDelegate::ViewObserverDelegate()
                                       weak_factory_.GetWeakPtr());
 }
 
-ViewObserverDelegate::~ViewObserverDelegate() {
-}
+ViewObserverDelegate::~ViewObserverDelegate() {}
 
 void ViewObserverDelegate::SetKeyboardServiceImpl(
     KeyboardServiceImpl* keyboard_service_impl) {
@@ -164,7 +163,7 @@ void ViewObserverDelegate::DrawState() {
   scoped_ptr<mojo::TextureCache::TextureInfo> texture_info(
       texture_cache_->GetTexture(size).Pass());
   mojo::GaneshSurface surface(gr_context_.get(),
-                              texture_info->Texture().Pass());
+                              texture_info->TakeTexture().Pass());
 
   gr_context_.get()->gr()->resetContext(kTextureBinding_GrGLBackendState);
 
@@ -204,8 +203,8 @@ void ViewObserverDelegate::DrawState() {
   canvas->flush();
   scoped_ptr<mojo::GLTexture> surface_texture(surface.TakeTexture().Pass());
   mojo::FramePtr frame = mojo::TextureUploader::GetUploadFrame(
-      gl_context_, texture_info->ResourceId(), surface_texture);
-  texture_cache_->NotifyPendingResourceReturn(texture_info->ResourceId(),
+      gl_context_, texture_info->resource_id(), surface_texture);
+  texture_cache_->NotifyPendingResourceReturn(texture_info->resource_id(),
                                               surface_texture.Pass());
   surface_->SubmitFrame(surface_id_, frame.Pass(), submit_frame_callback_);
 }

@@ -14,14 +14,11 @@
 
 namespace mojo {
 
-TextureCache::TextureInfo::TextureInfo() : texture_(), resource_id_(0u) {
-}
+TextureCache::TextureInfo::TextureInfo() : texture_(), resource_id_(0u) {}
 TextureCache::TextureInfo::TextureInfo(scoped_ptr<mojo::GLTexture> texture,
                                        uint32_t resource_id)
-    : texture_(texture.Pass()), resource_id_(resource_id) {
-}
-TextureCache::TextureInfo::~TextureInfo() {
-}
+    : texture_(texture.Pass()), resource_id_(resource_id) {}
+TextureCache::TextureInfo::~TextureInfo() {}
 
 TextureCache::TextureCache(base::WeakPtr<mojo::GLContext> gl_context,
                            mojo::ResourceReturnerPtr* out_resource_returner)
@@ -31,8 +28,7 @@ TextureCache::TextureCache(base::WeakPtr<mojo::GLContext> gl_context,
   }
 }
 
-TextureCache::~TextureCache() {
-}
+TextureCache::~TextureCache() {}
 
 scoped_ptr<TextureCache::TextureInfo> TextureCache::GetTexture(
     const mojo::Size& requested_size) {

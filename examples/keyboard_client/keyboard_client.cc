@@ -60,7 +60,7 @@ class ViewTextureUploader {
     scoped_ptr<mojo::TextureCache::TextureInfo> texture_info(
         texture_cache_->GetTexture(view_size).Pass());
     mojo::GaneshSurface ganesh_surface(gr_context_.get(),
-                                       texture_info->Texture().Pass());
+                                       texture_info->TakeTexture().Pass());
 
     gr_context_->gr()->resetContext(kTextureBinding_GrGLBackendState);
     SkCanvas* canvas = ganesh_surface.canvas();
@@ -69,8 +69,8 @@ class ViewTextureUploader {
     scoped_ptr<mojo::GLTexture> surface_texture(
         ganesh_surface.TakeTexture().Pass());
     mojo::FramePtr frame = mojo::TextureUploader::GetUploadFrame(
-        gl_context_, texture_info->ResourceId(), surface_texture);
-    texture_cache_->NotifyPendingResourceReturn(texture_info->ResourceId(),
+        gl_context_, texture_info->resource_id(), surface_texture);
+    texture_cache_->NotifyPendingResourceReturn(texture_info->resource_id(),
                                                 surface_texture.Pass());
     (*surface_)->SubmitFrame(surface_id, frame.Pass(), submit_frame_callback_);
   }
@@ -207,8 +207,7 @@ class KeyboardDelegate : public mojo::ApplicationDelegate,
     DrawText();
   }
 
-  void OnViewManagerDisconnected(mojo::ViewManager* view_manager) override {
-  }
+  void OnViewManagerDisconnected(mojo::ViewManager* view_manager) override {}
 
   // keyboard::KeyboardClient implementation.
   void CommitCompletion(keyboard::CompletionDataPtr completion) override {

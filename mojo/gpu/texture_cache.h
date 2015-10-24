@@ -36,8 +36,8 @@ class TextureCache : public mojo::ResourceReturner {
     TextureInfo();
     TextureInfo(scoped_ptr<mojo::GLTexture> texture, uint32_t resource_id);
     ~TextureInfo();
-    scoped_ptr<mojo::GLTexture> Texture() { return texture_.Pass(); }
-    uint32_t ResourceId() { return resource_id_; }
+    scoped_ptr<mojo::GLTexture> TakeTexture() { return texture_.Pass(); }
+    uint32_t resource_id() { return resource_id_; }
 
    private:
     scoped_ptr<mojo::GLTexture> texture_;
