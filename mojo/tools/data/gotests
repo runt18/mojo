@@ -7,5 +7,6 @@
 # path separator.
 test_dirs = [
    'mojom/mojom_parser/lexer',
+   'mojom/mojom_parser/mojom',
    'mojom/mojom_parser/parser'
 ]

@@ -26,31 +26,91 @@ type MojomFile struct {
 	// |mojomFilesByName| field of |Descriptor|
 	FileName string
 
+	// The module namespace is the identifier declared via the "module"
+	// declaration in the .mojom file.
+	ModuleNamespace string
+
+	// Attributes declared in the Mojom file at the module level.
+	Attributes *Attributes
+
 	// The list of other MojomFiles imported by this one. The elements
 	// of the array are the |FileName|s. The corresponding MojomFile may
 	// be obtained from the |mojomFilesByName| field of |Descriptor|.
 	Imports []string
 
-	// TODO(rudominer) This struct is a stub. It will be fully implemented in a later CL.
+	// The lexical scope corresponding to this file.
+	FileScope *Scope
+
+	// These are lists of *top-level* types  and constants defined in the file;
+	// they do not include enums and constants defined within structs
+	// and interfaces. The contained enums and constant may be found in the
+	// |Enums| and |Constants|  fields of their containing object.
+	Interfaces []*MojomInterface
+	Structs    []*MojomStruct
+	Unions     []*MojomUnion
+	Enums      []*MojomEnum
+	Constants  []*UserDefinedConstant
 }
 
 func NewMojomFile(fileName string, descriptor *MojomDescriptor) *MojomFile {
 	mojomFile := new(MojomFile)
 	mojomFile.FileName = fileName
 	mojomFile.Descriptor = descriptor
+	mojomFile.ModuleNamespace = ""
 	mojomFile.Imports = make([]string, 0)
-
-	// TODO(rudominer) This method is a stub. It will be fully implemented in a later CL.
+	mojomFile.Interfaces = make([]*MojomInterface, 0)
+	mojomFile.Structs = make([]*MojomStruct, 0)
+	mojomFile.Unions = make([]*MojomUnion, 0)
+	mojomFile.Enums = make([]*MojomEnum, 0)
+	mojomFile.Constants = make([]*UserDefinedConstant, 0)
 	return mojomFile
 }
 
 func (f *MojomFile) String() string {
-	// TODO(rudominer) This will be implemented in a later CL.
-	return "MojomFile"
+	s := fmt.Sprintf("file name: %s\n", f.FileName)
+	s += fmt.Sprintf("module: %s\n", f.ModuleNamespace)
+	s += fmt.Sprintf("attributes: %s\n", f.Attributes)
+	s += fmt.Sprintf("imports: %s\n", f.Imports)
+	s += fmt.Sprintf("interfaces: %s\n", f.Interfaces)
+	s += fmt.Sprintf("structs: %s\n", f.Structs)
+	s += fmt.Sprintf("enums: %s\n", f.Enums)
+	s += fmt.Sprintf("constants: %s\n", f.Constants)
+	return s
+}
+
+func (f *MojomFile) SetModuleNamespace(namespace string) *Scope {
+	f.ModuleNamespace = namespace
+	f.FileScope = NewLexicalScope(ScopeFileModule, nil, namespace, f)
+	return f.FileScope
 }
 
 func (f *MojomFile) AddImport(fileName string) {
 	f.Imports = append(f.Imports, fileName)
+}
+
+func (f *MojomFile) AddInterface(mojomInterface *MojomInterface) *DuplicateNameError {
+	f.Interfaces = append(f.Interfaces, mojomInterface)
+	return mojomInterface.RegisterInScope(f.FileScope)
+}
+
+func (f *MojomFile) AddStruct(mojomStruct *MojomStruct) *DuplicateNameError {
+	f.Structs = append(f.Structs, mojomStruct)
+	return mojomStruct.RegisterInScope(f.FileScope)
+}
+
+func (f *MojomFile) AddEnum(mojomEnum *MojomEnum) *DuplicateNameError {
+	f.Enums = append(f.Enums, mojomEnum)
+	return mojomEnum.RegisterInScope(f.FileScope)
+}
+
+func (f *MojomFile) AddUnion(mojomUnion *MojomUnion) *DuplicateNameError {
+	f.Unions = append(f.Unions, mojomUnion)
+	return mojomUnion.RegisterInScope(f.FileScope)
+}
+
+func (f *MojomFile) AddConstant(declaredConst *UserDefinedConstant) *DuplicateNameError {
+	f.Constants = append(f.Constants, declaredConst)
+	return declaredConst.RegisterInScope(f.FileScope)
 }
 
 //////////////////////////////////////////////////////////////////
@@ -64,6 +124,11 @@ func (f *MojomFile) AddImport(fileName string) {
 // ParseResult the main field of which is a MojomDescriptor. The MojomDescriptor
 // is then serialized and passed to the backend of the Mojom compiler.
 type MojomDescriptor struct {
+	// All of the UserDefinedTypes keyed by type key
+	TypesByKey map[string]UserDefinedType
+
+	// All of the UserDefinedValues keyed by value key
+	valuesByKey map[string]UserDefinedValue
 
 	// All of the MojomFiles in the order they were visited.
 	mojomFiles []*MojomFile
@@ -71,18 +136,56 @@ type MojomDescriptor struct {
 	// All of the MojomFiles keyed by FileName
 	mojomFilesByName map[string]*MojomFile
 
-	// TODO(rudominer) This struct is a stub. It will be fully implemented in a later CL.
+	// The abstract module namespace scopes keyed by scope name. These are
+	// the scopes that are not lexical scopes (i.e. files, structs, interfaces)
+	// but rather the ancestor's of the file scopes that are implicit in the
+	// dotted name of the file's module namespace. For example if a file's
+	// module namespace is "foo.bar" then the chain of ancestors of the
+	// file scope is as follows:
+	// [file "foo.bar"] -> [module "foo.bar"] -> [module "foo"] -> [module ""]
+	// The field |abstractScopesByName| will contain the last three of these
+	// scopes but not the first. The last scope [module ""] is called the
+	// global scope. The reason for both a [file "foo.bar"] and a
+	// [module "foo.bar"] is that multiple files might have a module namespace
+	// that is a descendent of [module "foo.bar"].
+	abstractScopesByName map[string]*Scope
+
+	// When new type and value references are encountered during parsing they
+	// are added to these slices. After parsing completes the resolution
+	// step attempts to resolve all of these references. If these slices are
+	// not empty by the time ParserDriver.ParseFiles() completes it means that
+	// there are unresolved references in the .mojom files.
+	unresolvedTypeReferences  []*UserTypeRef
+	unresolvedValueReferences []*UserValueRef
 }
 
 func NewMojomDescriptor() *MojomDescriptor {
 	descriptor := new(MojomDescriptor)
 
+	descriptor.TypesByKey = make(map[string]UserDefinedType)
+	descriptor.valuesByKey = make(map[string]UserDefinedValue)
 	descriptor.mojomFiles = make([]*MojomFile, 0)
 	descriptor.mojomFilesByName = make(map[string]*MojomFile)
+	descriptor.abstractScopesByName = make(map[string]*Scope)
+	// The global namespace scope.
+	descriptor.abstractScopesByName[""] = NewAbstractModuleScope("", descriptor)
 
-	// TODO(rudominer) This method is a stub. It will be fully implemented in a later CL.
-
+	descriptor.unresolvedTypeReferences = make([]*UserTypeRef, 0)
+	descriptor.unresolvedValueReferences = make([]*UserValueRef, 0)
 	return descriptor
+}
+
+func (d *MojomDescriptor) getAbstractModuleScope(fullyQualifiedName string) *Scope {
+	if scope, ok := d.abstractScopesByName[fullyQualifiedName]; ok {
+		return scope
+	}
+	scope := NewAbstractModuleScope(fullyQualifiedName, d)
+	d.abstractScopesByName[fullyQualifiedName] = scope
+	return scope
+}
+
+func (d *MojomDescriptor) getGlobalScobe() *Scope {
+	return d.abstractScopesByName[""]
 }
 
 func (d *MojomDescriptor) AddMojomFile(fileName string) *MojomFile {
@@ -96,12 +199,239 @@ func (d *MojomDescriptor) AddMojomFile(fileName string) *MojomFile {
 	return mojomFile
 }
 
+func (d *MojomDescriptor) RegisterUnresolvedTypeReference(typeReference *UserTypeRef) {
+	d.unresolvedTypeReferences = append(d.unresolvedTypeReferences, typeReference)
+}
+
+func (d *MojomDescriptor) RegisterUnresolvedValueReference(valueReference *UserValueRef) {
+	d.unresolvedValueReferences = append(d.unresolvedValueReferences, valueReference)
+}
+
 func (d *MojomDescriptor) ContainsFile(fileName string) bool {
 	_, ok := d.mojomFilesByName[fileName]
 	return ok
 }
 
+/////////////////////////////////////////
+/// Type and Value Resolution
+////////////////////////////////////////
+
+// Resolve() should be invoked after all of the parsing has been done. It
+// attempts to resolve all of the entries in |d.unresolvedTypeReferences| and
+// |d.unresolvedValueReferences|. Returns a non-nil error if there are any
+// remaining unresolved references or if after resolution it was discovered
+// that a type or value was used in an inappropriate way.
+func (d *MojomDescriptor) Resolve() error {
+	// Resolve the types
+	unresolvedTypeReferences, err := d.resolveTypeReferences()
+	if err != nil {
+		// For one of the type references we discovered after resolution that
+		// the resolved type was used in an inappropriate way.
+		return err
+	}
+	numUnresolvedTypeReferences := len(unresolvedTypeReferences)
+
+	// Resolve the values
+	unresolvedValueReferences, err := d.resolveValueReferences()
+	if err != nil {
+		// For one of the value references we discovered after resolution that
+		// the resolved value was used in an inappropriate way.
+		return err
+	}
+	numUnresolvedValueReferences := len(unresolvedValueReferences)
+	// Because values may be defined in terms of user-defined constants which
+	// may themselves be defined in terms of other user-defined constants,
+	// we may have to perform the value resolution step multiple times in
+	// order to propogage concrete values to all declarations. To make sure that
+	// this process terminates we keep iterating only as long as the number
+	// of unresolved value references decreases.
+	for numUnresolvedValueReferences > 0 {
+		unresolvedValueReferences, _ = d.resolveValueReferences()
+		if len(unresolvedValueReferences) < numUnresolvedValueReferences {
+			numUnresolvedValueReferences = len(unresolvedValueReferences)
+		} else {
+			break
+		}
+	}
+
+	d.unresolvedTypeReferences = unresolvedTypeReferences[0:numUnresolvedTypeReferences]
+	d.unresolvedValueReferences = unresolvedValueReferences[0:numUnresolvedValueReferences]
+
+	if numUnresolvedTypeReferences+numUnresolvedValueReferences == 0 {
+		return nil
+	}
+
+	errorMessage := "There are still some unresolved references.\n"
+	if numUnresolvedTypeReferences > 0 {
+		errorMessage += "\nNo defintion found for the following types:\n"
+		errorMessage += "-------------------------------------------------------\n"
+		for _, ref := range d.unresolvedTypeReferences {
+			errorMessage += fmt.Sprintf("%s\n", ref.LongString())
+		}
+	}
+	if numUnresolvedValueReferences > 0 {
+		errorMessage += "\nNo defintion found for the following values:\n"
+		errorMessage += "-----------------------------------------------------------\n"
+		for _, ref := range d.unresolvedValueReferences {
+			errorMessage += fmt.Sprintf("%s\n", ref.LongString())
+		}
+	}
+
+	return fmt.Errorf(errorMessage)
+}
+
+func (d *MojomDescriptor) resolveTypeReferences() (unresolvedReferences []*UserTypeRef, postResolutionValidationError error) {
+	unresolvedReferences = make([]*UserTypeRef, len(d.unresolvedTypeReferences))
+	numUnresolved := 0
+	for _, ref := range d.unresolvedTypeReferences {
+		if ref != nil {
+			if !d.resolveTypeRef(ref) {
+				unresolvedReferences[numUnresolved] = ref
+				numUnresolved++
+			} else {
+				if postResolutionValidationError = ref.validateAfterResolution(); postResolutionValidationError != nil {
+					break
+				}
+			}
+		}
+	}
+	unresolvedReferences = unresolvedReferences[0:numUnresolved]
+	return
+}
+
+func (d *MojomDescriptor) resolveValueReferences() (unresolvedReferences []*UserValueRef, postResolutionValidationError error) {
+	unresolvedReferences = make([]*UserValueRef, len(d.unresolvedValueReferences))
+	numUnresolved := 0
+	for _, ref := range d.unresolvedValueReferences {
+		if ref != nil {
+			if !d.resolveValueRef(ref) {
+				unresolvedReferences[numUnresolved] = ref
+				numUnresolved++
+			} else {
+				if postResolutionValidationError = ref.validateAfterResolution(); postResolutionValidationError != nil {
+					break
+				}
+			}
+		}
+	}
+	unresolvedReferences = unresolvedReferences[0:numUnresolved]
+	return
+}
+
+func (d *MojomDescriptor) resolveTypeRef(ref *UserTypeRef) (success bool) {
+	ref.resolvedType = ref.scope.LookupType(ref.identifier)
+	return ref.resolvedType != nil
+}
+
+// There are two steps to resolving a value. First resolve the identifier to
+// to a target declaration, then resolve the target declaration to a
+// concrte value.
+func (d *MojomDescriptor) resolveValueRef(ref *UserValueRef) (resolved bool) {
+	// Step 1: Find resolvedDeclaredValue
+	if ref.resolvedDeclaredValue == nil {
+		userDefinedValue := ref.scope.LookupValue(ref.identifier, ref.assigneeType)
+		if userDefinedValue == nil {
+			lookupValue, ok := LookupBuiltInConstantValue(ref.identifier)
+			if !ok {
+				return false
+			}
+			userDefinedValue = lookupValue
+		}
+		ref.resolvedDeclaredValue = userDefinedValue
+	}
+
+	// Step 2: Find resolvedConcreteValue.
+	switch value := ref.resolvedDeclaredValue.(type) {
+	case *UserDefinedConstant:
+		// The identifier resolved to a user-declared constant. We use
+		// the (possibly nil) resolved value of that constant as
+		// resolvedConcreteValue. Since this may be nil it is possible that
+		// ref is still unresolved.
+		ref.resolvedConcreteValue = value.valueRef.ResolvedConcreteValue()
+	case *EnumValue:
+		// The identifier resolved to an enum value. We use the enum value
+		// itself (not the integer value of the enum value) as the
+		// resolvedConcreteValue. Since this cannot be nil we know that
+		// ref is now fully resolved.
+		ref.resolvedConcreteValue = value
+	case *BuiltInConstantValue:
+		// The identifier resolved to a built-in. We use the built-in value
+		// itself (not the integer value of the enum value) as the
+		// resolvedConcreteValue. Since this cannot be nil we know that
+		// ref is now fully resolved.
+		ref.resolvedConcreteValue = value
+	default:
+		panic("ref.resolvedDeclaredValue is neither a DelcaredConstant, an EnumValue, nor a BuiltInConstantValue.")
+	}
+
+	return ref.resolvedConcreteValue != nil
+}
+
+//////////////////////////////////////
+// Debug printing of a MojomDescriptor
+//////////////////////////////////////
+
+func (d *MojomDescriptor) debugPrintMojomFiles() (s string) {
+	for _, f := range d.mojomFiles {
+		s += fmt.Sprintf("\n%s\n", f)
+	}
+	return
+}
+
+func (d *MojomDescriptor) debugPrintUnresolvedTypeReference() (s string) {
+	for _, r := range d.unresolvedTypeReferences {
+		s += fmt.Sprintf("%s\n", r.LongString())
+	}
+	return
+}
+
+func debugPrintTypeMap(m map[string]UserDefinedType) (s string) {
+	for key, value := range m {
+		s += fmt.Sprintf("%s : %s %s\n", key, value.SimpleName(), value.Kind())
+	}
+	return
+}
+
+func debugPrintValueMap(m map[string]UserDefinedValue) (s string) {
+	for key, value := range m {
+		s += fmt.Sprintf("%s : %s\n", key, value.SimpleName())
+	}
+	return
+}
+
 func (d *MojomDescriptor) String() string {
-	// TODO(rudominer) This will be implemented in a later CL.
-	return "MojomDescriptor"
+	message :=
+		`
+TypesByKey:
+----------------
+%s
+ValuesByKey:
+----------------
+%s
+Files:
+---------------
+%s
+`
+	return fmt.Sprintf(message, debugPrintTypeMap(d.TypesByKey), debugPrintValueMap(d.valuesByKey), d.debugPrintMojomFiles())
+}
+
+///////////////////////////////////////////////////////////////////////
+/// Miscelleneous utilities
+/// //////////////////////////////////////////////////////////////////
+
+func computeTypeKey(fullyQualifiedName string) (typeKey string) {
+	if typeKey, ok := fqnToTypeKey[fullyQualifiedName]; ok == true {
+		return typeKey
+	}
+	typeKey = fmt.Sprintf("%d", nextKey)
+	nextKey++
+	fqnToTypeKey[fullyQualifiedName] = typeKey
+	return
+}
+
+var fqnToTypeKey map[string]string
+var nextKey int
+
+func init() {
+	fqnToTypeKey = make(map[string]string)
 }

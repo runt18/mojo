@@ -59,8 +59,7 @@ type Parser struct {
 	mojomFile *mojom.MojomFile
 
 	// The top of the Scope stack.
-	// TODO(rudominer) This will be uncommented in a later CL.
-	//currentScope *mojom.Scope
+	currentScope *mojom.Scope
 
 	debugMode bool
 	used      bool
@@ -108,7 +107,7 @@ func (p *Parser) Parse() {
 		token := p.peekNextToken("")
 		message := fmt.Sprintf("Extraneous token at %s: %v.",
 			token.LongLocationString(), token)
-		p.err = &ParseError{E_EXTRANEOUS_TOKEN, message}
+		p.err = &ParseError{ParserErrorCodeExtraneousToken, message}
 	}
 }
 
@@ -153,38 +152,38 @@ type ParseErrorCode int
 
 const (
 	// An attributes section appeared in a location it is not allowed.
-	E_BAD_ATTRIBUTE_LOCATION = iota
+	ParserErrorCodeBadAttributeLocation = iota
 
 	// Two types or values with the same fully qualified name were declared.
-	E_DUPLICATE_DECLARATION
+	ParserErrorCodeDuplicateDeclaration
 
 	// Unexpected end-of-file
-	E_EOF
+	ParserErrorCodeEOF
 
 	// A simple name was expected but an identifier contained a dot.
-	E_EXPECTED_SIMPLE_NAME
+	ParserErrorCodeExpectedSimpleName
 
 	// After what appears to be a complete mojom file there were extra tokens.
-	E_EXTRANEOUS_TOKEN
+	ParserErrorCodeExtraneousToken
 
 	// An integer literal value was too large
-	E_INTEGER_OUT_OF_RANGE
+	ParserErrorCodeIntegerOutOfRange
 
 	// An integer literal value was ill-formed.
 	// TODO(azani) This is only necessary because the lexer allows some
 	// illegal tokens such as "0x"
-	E_INTEGER_PARSE_ERROR
+	ParserErrorCodeIntegerParseError
 
 	// A semicolon was missing.
 	// TODO(rudominer) Consider elimintating most semicolons from the language.
-	E_MISSING_SEMI_COLON
+	ParserErrorCodeMissingSemi
 
 	// The type of a value is not compatible with the type of the variable
 	// to which it is being assigned.
-	E_TYPE_NOT_ASSIGNMENT_COMPATIBLE
+	ParserErrorCodeNotAssignmentCompatible
 
 	// An unexpected token was encountered. This is the most common error.
-	E_UNEXPECTED_TOKEN
+	ParserErrorCodeUnexpectedToken
 )
 
 ////////////////////////////////////////////////////////////////////////////
@@ -194,7 +193,7 @@ const (
 // Returns the next available token in the stream without advancing the
 // stream cursor. In case the stream cursor is already past the end
 // the returned Token will be the EOF token. In this case the global
-// error state will be set to E_EOF error code with the message
+// error state will be set to ParserErrorCodeEOF error code with the message
 // "Unexpected end-of-file " concatenated with |eofMessage|. In case of
 // any other type of error the returned token is unspecified and the
 // global error state will be set with more details.
@@ -202,7 +201,7 @@ func (p *Parser) peekNextToken(eofMessage string) (nextToken lexer.Token) {
 	nextToken = p.inputStream.PeekNext()
 	if nextToken.EOF() {
 		errorMessage := "Unexpected end-of-file. " + eofMessage
-		p.err = &ParseError{E_EOF, errorMessage}
+		p.err = &ParseError{ParserErrorCodeEOF, errorMessage}
 	}
 	p.lastSeen = nextToken
 	return
