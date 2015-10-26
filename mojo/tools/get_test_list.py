@@ -206,7 +206,7 @@ def GetTestList(config, verbose_count=0):
   # Perf tests -----------------------------------------------------------------
 
   if target_os == Config.OS_LINUX and ShouldRunTest(Config.TEST_TYPE_PERF):
-    perf_id = "linux_%s" % ("debug" if config.is_debug else "release")
+    bot_name = "linux_%s" % ("debug" if config.is_debug else "release")
     test_names = ["mojo_public_system_perftests",
                   "mojo_public_bindings_perftests",
                   "mojo_system_perftests"]
@@ -214,8 +214,9 @@ def GetTestList(config, verbose_count=0):
     for test_name in test_names:
       command = ["python",
                  os.path.join("mojo", "tools", "perf_test_runner.py"),
+                 "--upload",
                  "--server-url", _PERFORMANCE_DASHBOARD_URL,
-                 "--perf-id", perf_id,
+                 "--bot-name", bot_name,
                  "--test-name", test_name,
                  "--perf-data-path",
                  os.path.join(build_dir, test_name + "_perf.log")]

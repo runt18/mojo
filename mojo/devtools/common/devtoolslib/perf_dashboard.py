@@ -59,6 +59,10 @@ def add_argparse_server_arguments(parser):
       'to upload the results to.')
 
   dashboard_group.add_argument(
+      '--upload', action='store_true',
+      help='Upload the results to performance dashboard. Further arguments '
+           'in this group are relevant only if --upload is passed.')
+  dashboard_group.add_argument(
       '--server-url',
       help='Url of the server instance to upload the results to. By default a '
            'local instance is assumed to be running on port 8080.')
@@ -67,9 +71,8 @@ def add_argparse_server_arguments(parser):
       help='Buildbot master name, used to construct link to buildbot log by '
            'the dashboard, and also as the top-level category for the data.')
   dashboard_group.add_argument(
-      '--perf-id',
-      help='Used as the second-level category for the data, usually the '
-           'platform type.')
+      '--bot-name',
+      help='Used as the second-level category for the data.')
   dashboard_group.add_argument(
       '--test-name',
       help='Name of the test that the perf data was generated from.')
@@ -87,7 +90,7 @@ def add_argparse_server_arguments(parser):
            'upload the data.')
 
 
-def upload_chart_data(master_name, perf_id, test_name, builder_name,
+def upload_chart_data(master_name, bot_name, test_name, builder_name,
                       build_number, revision, chart_data, point_id,
                       server_url=None, dry_run=False):
   """Uploads the provided chart data to an instance of performance dashboard.
@@ -128,7 +131,7 @@ def upload_chart_data(master_name, perf_id, test_name, builder_name,
   # Wrap the |chart_data| with meta data as required by the spec.
   formatted_data = {
       "master": master_name,
-      "bot": perf_id,
+      "bot": bot_name,
       "masterid": master_name,
       "buildername": builder_name,
       "buildnumber": build_number,
@@ -159,7 +162,7 @@ def upload_chart_data(master_name, perf_id, test_name, builder_name,
 
     dashboard_params = urllib.urlencode({
         "masters": master_name,
-        "bots": perf_id,
+        "bots": bot_name,
         "tests": test_name,
         "rev": point_id
     })

@@ -88,16 +88,19 @@ def main():
 
   subprocess.check_call(args.command)
 
+  if not args.upload:
+    return 0
+
   if args.master_name is None or \
-     args.perf_id is None or \
+     args.bot_name is None or \
      args.test_name is None or \
      args.builder_name is None or \
      args.build_number is None or \
      args.perf_data_path is None:
-    print "Won't upload perf data to the dashboard because not all of the " \
+    print "Can't upload perf data to the dashboard because not all of the " \
           "following values are specified: master-name, perf-id, test-name, " \
           "builder-name, build-number, perf-data-path."
-    return 0
+    return 1
 
   revision = Version().version
   point_id = _GetCurrentCommitCount()
@@ -105,7 +108,7 @@ def main():
     chart_data = _ConvertPerfDataToChartFormat(perf_data, args.test_name)
 
   result = perf_dashboard.upload_chart_data(
-      args.master_name, args.perf_id, args.test_name, args.builder_name,
+      args.master_name, args.bot_name, args.test_name, args.builder_name,
       args.build_number, revision, chart_data, point_id, args.server_url,
       args.dry_run)
 
