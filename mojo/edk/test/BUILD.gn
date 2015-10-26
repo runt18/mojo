@@ -51,8 +51,6 @@ mojo_edk_source_set("run_all_unittests") {
   ]
 
   mojo_edk_deps = [ "mojo/edk/system" ]
-
-  mojo_sdk_deps = [ "mojo/public/c/test_support" ]
 }
 
 mojo_edk_source_set("run_all_perftests") {
@@ -64,8 +62,6 @@ mojo_edk_source_set("run_all_perftests") {
   ]
 
   mojo_edk_deps = [ "mojo/edk/system" ]
-
-  mojo_sdk_deps = [ "mojo/public/c/test_support" ]
 
   sources = [
     "run_all_perftests.cc",
@@ -79,13 +75,17 @@ mojo_edk_source_set("test_support_impl") {
     "//base/test:test_support",
   ]
 
-  mojo_sdk_deps = [ "mojo/public/c/test_support" ]
+  mojo_sdk_deps = [ "mojo/public/cpp/test_support" ]
 
   mojo_sdk_public_deps = [ "mojo/public/cpp/system" ]
 
   sources = [
     "test_support_impl.cc",
-    "test_support_impl.h",
+  ]
+
+  visibility = [
+    ":run_all_unittests",
+    ":run_all_perftests",
   ]
 }
 

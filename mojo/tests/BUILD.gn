@@ -9,11 +9,10 @@ test("mojo_task_tracker_perftests") {
   deps = [
     "//base/test:test_support",
     "//mojo/edk/system",
+    "//mojo/edk/test:run_all_perftests",
     "//mojo/edk/test:test_support",
-    "//mojo/edk/test:test_support_impl",
     "//mojo/environment:chromium",
     "//mojo/message_pump",
-    "//mojo/public/c/test_support",
     "//mojo/public/cpp/bindings",
     "//mojo/public/cpp/bindings:callback",
     "//mojo/public/cpp/environment",
@@ -26,7 +25,6 @@ test("mojo_task_tracker_perftests") {
   ]
 
   sources = [
-    "../edk/test/run_all_perftests.cc",
     "task_tracker_perftest.cc",
   ]
 }
