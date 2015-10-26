@@ -13,7 +13,6 @@
 #include "mojo/public/cpp/environment/environment.h"
 #include "mojo/public/cpp/environment/task_tracker.h"
 #include "mojo/public/cpp/test_support/test_support.h"
-#include "mojo/public/cpp/test_support/test_utils.h"
 #include "mojo/public/interfaces/bindings/tests/sample_interfaces.mojom.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
