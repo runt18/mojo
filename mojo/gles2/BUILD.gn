@@ -85,13 +85,9 @@ source_set("mgl") {
 test("mgl_unittests") {
   deps = [
     ":mgl",
-    "//base",
-    "//base/test:test_support",
     "//mojo/edk/system",
     "//mojo/edk/test:run_all_unittests",
-    "//mojo/edk/test:test_support_impl",
     "//mojo/public/c/gpu:MGL",
-    "//mojo/public/c/test_support:test_support",
     "//mojo/public/cpp/environment:standalone",
     "//testing/gtest:gtest",
   ]
