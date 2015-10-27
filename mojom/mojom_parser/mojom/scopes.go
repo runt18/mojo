@@ -181,7 +181,7 @@ func (s *Scope) String() string {
 	}
 	fileNameString := ""
 	if s.file != nil {
-		fileNameString = fmt.Sprintf(" in %s", s.file.FileName)
+		fileNameString = fmt.Sprintf(" in %s", s.file.CanonicalFileName)
 	}
 	return fmt.Sprintf("%s %s%s", s.kind, s.shortName, fileNameString)
 }

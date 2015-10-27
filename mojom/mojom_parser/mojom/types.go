@@ -580,7 +580,7 @@ func (ref *UserTypeRef) validateAfterResolution() error {
 	if ref.variableAssignment != nil && !ref.resolvedType.IsAssignmentCompatibleWith(ref.variableAssignment.assignedValue) {
 		fileName := "unknown file"
 		if ref.scope != nil && ref.scope.file != nil {
-			fileName = ref.scope.file.FileName
+			fileName = ref.scope.file.CanonicalFileName
 		}
 		return fmt.Errorf("Type validation error\n"+
 			"%s:%s: Illegal assignment: %s %s of type %s may not be assigned the value %v of type %s.",
@@ -610,7 +610,7 @@ func (t *UserTypeRef) String() string {
 
 func (t *UserTypeRef) LongString() string {
 	return fmt.Sprintf("%s %s:%s. (In %s.)", t.identifier,
-		t.scope.file.FileName, t.token.ShortLocationString(), t.scope)
+		t.scope.file.CanonicalFileName, t.token.ShortLocationString(), t.scope)
 }
 
 /////////////////////////////////////////////////////////////
@@ -702,7 +702,7 @@ func (v *UserValueRef) String() string {
 
 func (v *UserValueRef) LongString() string {
 	return fmt.Sprintf("%s %s:%s. (In %s.)", v.identifier,
-		v.scope.file.FileName, v.token.ShortLocationString(), v.scope)
+		v.scope.file.CanonicalFileName, v.token.ShortLocationString(), v.scope)
 }
 
 func NewUserValueRef(assigneeType TypeRef, identifier string, scope *Scope,

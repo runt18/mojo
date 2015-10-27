@@ -21,10 +21,9 @@ type MojomFile struct {
 	// The associated MojomDescriptor
 	Descriptor *MojomDescriptor
 
-	// The |FileName| is (derived from) the file name of the corresponding
-	// .mojom file. It is the unique identifier for this module within the
-	// |MojomFilesByName| field of |Descriptor|
-	FileName string
+	// The |CanonicalFileName| is the unique identifier for this module
+	// within the |MojomFilesByName| field of |Descriptor|
+	CanonicalFileName string
 
 	// The module namespace is the identifier declared via the "module"
 	// declaration in the .mojom file.
@@ -33,16 +32,13 @@ type MojomFile struct {
 	// Attributes declared in the Mojom file at the module level.
 	Attributes *Attributes
 
-	// The set of other MojomFiles imported by this one. The keys to the map
-	// are the file names as they appear in the importing .mojom file. The
-	// values are the canonicalized |FileName|s.  The corresponding MojomFile may
-	// be obtained from the |MojomFilesByName| field of |Descriptor| using this
-	// canonicalized |FileName|. Note that when a .mojom file is first parsed
-	// only the keys of this map are populated because we don't know the
-	// canonicalized name of the imported file yet. It is only when the imported
-	// file is pre-processed in parser_driver.go that we discover the canonicalized
-	// name and add it to this map.
-	Imports map[string]string
+	// The set of other MojomFiles imported by this one. The corresponding
+	// MojomFile may be obtained from the |MojomFilesByName| field of
+	// |Descriptor| using the |CanonicalFileName| field of ImportedFile.
+	Imports []*ImportedFile
+
+	// importsBySpecifiedName facilitates the lookup of an ImportedFile given its |SpecifiedName|
+	importsBySpecifiedName map[string]*ImportedFile
 
 	// The lexical scope corresponding to this file.
 	FileScope *Scope
@@ -58,12 +54,27 @@ type MojomFile struct {
 	Constants  []*UserDefinedConstant
 }
 
+// An ImportedFile represents an element of the "import" list of a .mojom file.
+type ImportedFile struct {
+	// The name as specified in the import statement.
+	SpecifiedName string
+
+	// The canonical file name of the imported file. This string is the unique identifier for the
+	// corresponding MojomFile object. Note that when a .mojom file is first parsed
+	// only the |SpecifiedFileName| of each of its imports is populated because we don't yet know the
+	// canonical file names of the imported files. It is only when an imported
+	// file itself is processed that |CanonicalFileName| field is populated within each of the
+	// importing MojomFiles.
+	CanonicalFileName string
+}
+
 func NewMojomFile(fileName string, descriptor *MojomDescriptor) *MojomFile {
 	mojomFile := new(MojomFile)
-	mojomFile.FileName = fileName
+	mojomFile.CanonicalFileName = fileName
 	mojomFile.Descriptor = descriptor
 	mojomFile.ModuleNamespace = ""
-	mojomFile.Imports = make(map[string]string)
+	mojomFile.Imports = make([]*ImportedFile, 0)
+	mojomFile.importsBySpecifiedName = make(map[string]*ImportedFile)
 	mojomFile.Interfaces = make([]*MojomInterface, 0)
 	mojomFile.Structs = make([]*MojomStruct, 0)
 	mojomFile.Unions = make([]*MojomUnion, 0)
@@ -73,7 +84,7 @@ func NewMojomFile(fileName string, descriptor *MojomDescriptor) *MojomFile {
 }
 
 func (f *MojomFile) String() string {
-	s := fmt.Sprintf("file name: %s\n", f.FileName)
+	s := fmt.Sprintf("file name: %s\n", f.CanonicalFileName)
 	s += fmt.Sprintf("module: %s\n", f.ModuleNamespace)
 	s += fmt.Sprintf("attributes: %s\n", f.Attributes)
 	s += fmt.Sprintf("imports: %s\n", f.Imports)
@@ -90,8 +101,23 @@ func (f *MojomFile) SetModuleNamespace(namespace string) *Scope {
 	return f.FileScope
 }
 
-func (f *MojomFile) AddImport(fileName string) {
-	f.Imports[fileName] = ""
+func (f *MojomFile) AddImport(specifiedFileName string) {
+	importedFile := new(ImportedFile)
+	importedFile.SpecifiedName = specifiedFileName
+	f.Imports = append(f.Imports, importedFile)
+	f.importsBySpecifiedName[specifiedFileName] = importedFile
+}
+
+// SetCanonicalImportName sets the |CanonicalFileName| field of the |ImportedFile|
+// with the given |SpecifiedName|. This method will usually be invoked later than
+// the other methods in this file becuase it is only when the imported file itself
+// is processed that we discover its canonical name.
+func (f *MojomFile) SetCanonicalImportName(specifiedName, canoncialName string) {
+	importedFile, ok := f.importsBySpecifiedName[specifiedName]
+	if !ok {
+		panic(fmt.Sprintf("There is no imported file with the specifiedName '%s'.", specifiedName))
+	}
+	importedFile.CanonicalFileName = canoncialName
 }
 
 func (f *MojomFile) AddInterface(mojomInterface *MojomInterface) *DuplicateNameError {
@@ -139,7 +165,7 @@ type MojomDescriptor struct {
 	// All of the MojomFiles in the order they were visited.
 	mojomFiles []*MojomFile
 
-	// All of the MojomFiles keyed by FileName
+	// All of the MojomFiles keyed by CanonicalFileName
 	MojomFilesByName map[string]*MojomFile
 
 	// The abstract module namespace scopes keyed by scope name. These are
@@ -198,10 +224,10 @@ func (d *MojomDescriptor) AddMojomFile(fileName string) *MojomFile {
 	mojomFile := NewMojomFile(fileName, d)
 	mojomFile.Descriptor = d
 	d.mojomFiles = append(d.mojomFiles, mojomFile)
-	if _, ok := d.MojomFilesByName[mojomFile.FileName]; ok {
-		panic(fmt.Sprintf("The file %v has already been processed.", mojomFile.FileName))
+	if _, ok := d.MojomFilesByName[mojomFile.CanonicalFileName]; ok {
+		panic(fmt.Sprintf("The file %v has already been processed.", mojomFile.CanonicalFileName))
 	}
-	d.MojomFilesByName[mojomFile.FileName] = mojomFile
+	d.MojomFilesByName[mojomFile.CanonicalFileName] = mojomFile
 	return mojomFile
 }
 

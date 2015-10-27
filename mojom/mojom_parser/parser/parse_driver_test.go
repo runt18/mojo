@@ -17,7 +17,7 @@ type FakeFileProvider struct {
 }
 
 // FakeFileProvider implements provideContents by recording the name of the file
-// whose contents are being requested.
+// whose contents are being requested and then returning the empty string.
 func (f *FakeFileProvider) provideContents(fileRef *FileReference) (contents string, fileReadError error) {
 	f.requestedFileNames = append(f.requestedFileNames, fileRef.specifiedPath)
 	return "", nil
@@ -60,7 +60,7 @@ func (f *FakeFileExtractor) appendImportsToFile(fileName string, imports ...stri
 // in the map |importNames|.
 func (f *FakeFileExtractor) extractMojomFile(parser *Parser) *mojom.MojomFile {
 	file := parser.GetMojomFile()
-	for _, importName := range f.importNames[file.FileName] {
+	for _, importName := range f.importNames[file.CanonicalFileName] {
 		file.AddImport(importName)
 	}
 	return file
@@ -74,7 +74,7 @@ func TestExpectedFilesParsed(t *testing.T) {
 	fakeFileExtractor := makeFakeFileExtractor()
 	// Our fake file1 will import file3, file4, file5
 	fakeFileExtractor.appendImportsToFile("file1", "file3", "file4", "file5")
-	// Our fake file5 will import file1 and file5
+	// Our fake file5 will import file1 and file6
 	fakeFileExtractor.appendImportsToFile("file5", "file1", "file6")
 
 	// Construct the driver under test

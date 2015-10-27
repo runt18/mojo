@@ -104,7 +104,7 @@ func (d *ParseDriver) ParseFiles(fileNames []string) (descriptor *mojom.MojomDes
 			// Note that we must do this even if the imported file has already been processed
 			// because a given file may be imported by multiple files and each of those need
 			// to be told about the absolute path of the imported file.
-			currentFile.importedFrom.mojomFile.Imports[currentFile.specifiedPath] = currentFile.absolutePath
+			currentFile.importedFrom.mojomFile.SetCanonicalImportName(currentFile.specifiedPath, currentFile.absolutePath)
 		}
 
 		if !descriptor.ContainsFile(currentFile.absolutePath) {
@@ -129,14 +129,14 @@ func (d *ParseDriver) ParseFiles(fileNames []string) (descriptor *mojom.MojomDes
 				return
 			}
 			currentFile.mojomFile = d.fileExtractor.extractMojomFile(&parser)
-			for importedFile, _ := range currentFile.mojomFile.Imports {
+			for _, importedFile := range currentFile.mojomFile.Imports {
 				// Note that it is important that we append all of the imported files here even
 				// if some of them have already been processed. That is because when the imported
 				// file is pulled from the queue it will be pre-processed during which time the
 				// absolute path to the file will be discovered and this absolute path will be
 				// set in |mojomFile| which is necessary for serializing mojomFile.
 				filesToProcess = append(filesToProcess,
-					&FileReference{importedFrom: currentFile, specifiedPath: importedFile})
+					&FileReference{importedFrom: currentFile, specifiedPath: importedFile.SpecifiedName})
 			}
 		}
 	}
