@@ -2,8 +2,8 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-#ifndef MOJO_EDK_EMBEDDER_PLATFORM_CHANNEL_UTILS_POSIX_H_
-#define MOJO_EDK_EMBEDDER_PLATFORM_CHANNEL_UTILS_POSIX_H_
+#ifndef MOJO_EDK_EMBEDDER_PLATFORM_CHANNEL_UTILS_H_
+#define MOJO_EDK_EMBEDDER_PLATFORM_CHANNEL_UTILS_H_
 
 #include <stddef.h>
 #include <sys/types.h>  // For |ssize_t|.
@@ -71,4 +71,4 @@ ssize_t PlatformChannelRecvmsg(PlatformHandle h,
 }  // namespace embedder
 }  // namespace mojo
 
-#endif  // MOJO_EDK_EMBEDDER_PLATFORM_CHANNEL_UTILS_POSIX_H_
+#endif  // MOJO_EDK_EMBEDDER_PLATFORM_CHANNEL_UTILS_H_

@@ -57,8 +57,8 @@ mojo_edk_source_set("platform") {
   sources = [
     "platform_channel_pair.cc",
     "platform_channel_pair.h",
-    "platform_channel_utils_posix.cc",
-    "platform_channel_utils_posix.h",
+    "platform_channel_utils.cc",
+    "platform_channel_utils.h",
     "platform_handle.cc",
     "platform_handle.h",
     "platform_handle_utils.h",
