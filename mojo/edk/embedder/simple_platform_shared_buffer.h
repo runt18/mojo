@@ -39,8 +39,6 @@ class SimplePlatformSharedBuffer final : public PlatformSharedBuffer {
   explicit SimplePlatformSharedBuffer(size_t num_bytes);
   ~SimplePlatformSharedBuffer() override;
 
-  // Implemented in simple_platform_shared_buffer_{posix,win}.cc:
-
   // This is called by |Create()| before this object is given to anyone.
   bool Init();
 
@@ -48,10 +46,6 @@ class SimplePlatformSharedBuffer final : public PlatformSharedBuffer {
   // should verify that |platform_handle| is an appropriate handle for the
   // claimed |num_bytes_|.)
   bool InitFromPlatformHandle(ScopedPlatformHandle platform_handle);
-
-  // The platform-dependent part of |Map()|; doesn't check arguments.
-  std::unique_ptr<PlatformSharedBufferMapping> MapImpl(size_t offset,
-                                                       size_t length);
 
   const size_t num_bytes_;
 

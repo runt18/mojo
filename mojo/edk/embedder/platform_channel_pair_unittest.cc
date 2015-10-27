@@ -38,10 +38,10 @@ void WaitReadable(PlatformHandle h) {
   CHECK_EQ(poll(&pfds, 1, -1), 1);
 }
 
-class PlatformChannelPairPosixTest : public testing::Test {
+class PlatformChannelPairTest : public testing::Test {
  public:
-  PlatformChannelPairPosixTest() {}
-  ~PlatformChannelPairPosixTest() override {}
+  PlatformChannelPairTest() {}
+  ~PlatformChannelPairTest() override {}
 
   void SetUp() override {
     // Make sure |SIGPIPE| isn't being ignored.
@@ -58,10 +58,10 @@ class PlatformChannelPairPosixTest : public testing::Test {
  private:
   struct sigaction old_action_;
 
-  MOJO_DISALLOW_COPY_AND_ASSIGN(PlatformChannelPairPosixTest);
+  MOJO_DISALLOW_COPY_AND_ASSIGN(PlatformChannelPairTest);
 };
 
-TEST_F(PlatformChannelPairPosixTest, NoSigPipe) {
+TEST_F(PlatformChannelPairTest, NoSigPipe) {
   PlatformChannelPair channel_pair;
   ScopedPlatformHandle server_handle = channel_pair.PassServerHandle().Pass();
   ScopedPlatformHandle client_handle = channel_pair.PassClientHandle().Pass();
@@ -102,7 +102,7 @@ TEST_F(PlatformChannelPairPosixTest, NoSigPipe) {
     PLOG(WARNING) << "write (expected EPIPE)";
 }
 
-TEST_F(PlatformChannelPairPosixTest, SendReceiveData) {
+TEST_F(PlatformChannelPairTest, SendReceiveData) {
   PlatformChannelPair channel_pair;
   ScopedPlatformHandle server_handle = channel_pair.PassServerHandle().Pass();
   ScopedPlatformHandle client_handle = channel_pair.PassClientHandle().Pass();
@@ -126,7 +126,7 @@ TEST_F(PlatformChannelPairPosixTest, SendReceiveData) {
   }
 }
 
-TEST_F(PlatformChannelPairPosixTest, SendReceiveFDs) {
+TEST_F(PlatformChannelPairTest, SendReceiveFDs) {
   mojo::test::ScopedTestDir test_dir;
 
   static const char kHello[] = "hello";
@@ -189,7 +189,7 @@ TEST_F(PlatformChannelPairPosixTest, SendReceiveFDs) {
   }
 }
 
-TEST_F(PlatformChannelPairPosixTest, AppendReceivedFDs) {
+TEST_F(PlatformChannelPairTest, AppendReceivedFDs) {
   mojo::test::ScopedTestDir test_dir;
 
   static const char kHello[] = "hello";
