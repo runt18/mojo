@@ -16,6 +16,7 @@
 #include "mojo/dart/embedder/builtin.h"
 #include "mojo/dart/embedder/dart_controller.h"
 #include "mojo/dart/embedder/mojo_dart_state.h"
+#include "mojo/dart/embedder/observatory_archive.h"
 #include "mojo/dart/embedder/vmservice.h"
 #include "mojo/message_pump/message_pump_mojo.h"
 #include "mojo/public/c/system/core.h"
@@ -589,6 +590,34 @@ void DartController::StopHandleWatcherIsolate() {
   Dart_ShutdownIsolate();
 }
 
+static Dart_Handle MakeUint8Array(const uint8_t* buffer,
+                                  unsigned int buffer_len) {
+  const intptr_t len = static_cast<intptr_t>(buffer_len);
+  Dart_Handle array = Dart_NewTypedData(Dart_TypedData_kUint8, len);
+  DART_CHECK_VALID(array);
+  {
+    Dart_TypedData_Type td_type;
+    void* td_data = nullptr;
+    intptr_t td_len = 0;
+    Dart_Handle result =
+        Dart_TypedDataAcquireData(array, &td_type, &td_data, &td_len);
+    DART_CHECK_VALID(result);
+    CHECK_EQ(td_type, Dart_TypedData_kUint8);
+    CHECK(td_data != nullptr);
+    CHECK_EQ(td_len, len);
+    memmove(td_data, buffer, td_len);
+    result = Dart_TypedDataReleaseData(array);
+    DART_CHECK_VALID(result);
+  }
+  return array;
+}
+
+static Dart_Handle GetVMServiceAssetsArchiveCallback() {
+  return MakeUint8Array(
+      ::dart::observatory::observatory_assets_archive,
+      ::dart::observatory::observatory_assets_archive_len);
+}
+
 void DartController::InitVmIfNeeded(Dart_EntropySource entropy,
                                     const char** vm_flags,
                                     int vm_flags_count) {
@@ -628,7 +657,8 @@ void DartController::InitVmIfNeeded(Dart_EntropySource entropy,
       IsolateShutdownCallback,
       // File IO callbacks.
       nullptr, nullptr, nullptr, nullptr,
-      entropy);
+      entropy,
+      GetVMServiceAssetsArchiveCallback);
   CHECK(error == nullptr);
   initialized_ = true;
 }
