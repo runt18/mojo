@@ -52,11 +52,8 @@ mojo_native_application("js_content_handler") {
 
 test("js_services_unittests") {
   deps = [
-    "//base",
     "//gin:gin_test",
     "//mojo/edk/test:run_all_unittests",
-    "//mojo/edk/test:test_support",
-    "//mojo/public/cpp/utility",
     "//mojo/environment:chromium",
     "//mojo/public/interfaces/bindings/tests:test_interfaces",
     "//services/js/modules/clock/test",
