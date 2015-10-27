@@ -2,20 +2,18 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-#include "base/at_exit.h"
+#include <stdint.h>
+
 #include "base/bind.h"
 #include "base/files/file_path.h"
-#include "base/files/file_util.h"
 #include "base/macros.h"
 #include "base/message_loop/message_loop.h"
 #include "base/path_service.h"
 #include "base/rand_util.h"
 #include "base/run_loop.h"
-#include "base/strings/utf_string_conversions.h"
 #include "base/threading/thread.h"
 #include "mojo/dart/embedder/dart_controller.h"
 #include "mojo/dart/embedder/test/dart_to_cpp.mojom.h"
-#include "mojo/edk/test/test_utils.h"
 #include "mojo/public/cpp/bindings/strong_binding.h"
 #include "mojo/public/cpp/system/core.h"
 #include "mojo/public/cpp/system/macros.h"
@@ -26,23 +24,23 @@ namespace dart {
 
 // Global value updated by some checks to prevent compilers from optimizing
 // reads out of existence.
-uint32 g_waste_accumulator = 0;
+uint32_t g_waste_accumulator = 0;
 
 namespace {
 
 // Negative numbers with different values in each byte, the last of
 // which can survive promotion to double and back.
-const int8  kExpectedInt8Value = -65;
-const int16 kExpectedInt16Value = -16961;
-const int32 kExpectedInt32Value = -1145258561;
-const int64 kExpectedInt64Value = -77263311946305LL;
+const int8_t kExpectedInt8Value = -65;
+const int16_t kExpectedInt16Value = -16961;
+const int32_t kExpectedInt32Value = -1145258561;
+const int64_t kExpectedInt64Value = -77263311946305LL;
 
 // Positive numbers with different values in each byte, the last of
 // which can survive promotion to double and back.
-const uint8  kExpectedUInt8Value = 65;
-const uint16 kExpectedUInt16Value = 16961;
-const uint32 kExpectedUInt32Value = 1145258561;
-const uint64 kExpectedUInt64Value = 77263311946305LL;
+const uint8_t kExpectedUInt8Value = 65;
+const uint16_t kExpectedUInt16Value = 16961;
+const uint32_t kExpectedUInt32Value = 1145258561;
+const uint64_t kExpectedUInt64Value = 77263311946305LL;
 
 // Double/float values, including special case constants.
 const double kExpectedDoubleVal = 3.14159265358979323846;
@@ -277,7 +275,7 @@ class DartToCppTest : public testing::Test {
   }
 
   static bool GenerateEntropy(uint8_t* buffer, intptr_t length) {
-    base::RandBytes(reinterpret_cast<void*>(buffer), length);
+    base::RandBytes(static_cast<void*>(buffer), length);
     return true;
   }
 

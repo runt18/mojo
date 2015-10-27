@@ -2,9 +2,7 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-#include <stdio.h>
-
-#include <algorithm>
+#include <set>
 #include <string>
 #include <vector>
 
@@ -37,12 +35,12 @@ std::string GetPath() {
   return path.AsUTF8Unsafe();
 }
 
-static bool generateEntropy(uint8_t* buffer, intptr_t length) {
-  base::RandBytes(reinterpret_cast<void*>(buffer), length);
+bool GenerateEntropy(uint8_t* buffer, intptr_t length) {
+  base::RandBytes(static_cast<void*>(buffer), length);
   return true;
 }
 
-static void exceptionCallback(bool* exception, Dart_Handle error) {
+void ExceptionCallback(bool* exception, Dart_Handle error) {
   *exception = true;
 }
 
@@ -52,7 +50,7 @@ static void exceptionCallback(bool* exception, Dart_Handle error) {
 // [0] -> test name.
 // [1] -> contents of test's .data file.
 // [2] -> contents of test's .expected file.
-static std::vector<std::string> CollectTests(base::FilePath path) {
+std::vector<std::string> CollectTests(base::FilePath path) {
   base::FileEnumerator enumerator(path, false, base::FileEnumerator::FILES);
   std::set<std::string> tests;
   while (true) {
@@ -93,7 +91,7 @@ static std::vector<std::string> CollectTests(base::FilePath path) {
   return result;
 }
 
-static void RunTest(const std::string& test) {
+void RunTest(const std::string& test) {
   // Gather test data.
   std::vector<std::string> arguments = CollectTests(base::FilePath(test));
   DCHECK(arguments.size() > 0);
@@ -127,8 +125,8 @@ static void RunTest(const std::string& test) {
   config.script_uri = path.value();
   config.package_root = package_root.AsUTF8Unsafe();
   config.callbacks.exception =
-      base::Bind(&exceptionCallback, &unhandled_exception);
-  config.entropy = generateEntropy;
+      base::Bind(&ExceptionCallback, &unhandled_exception);
+  config.entropy = GenerateEntropy;
   config.SetVmFlags(nullptr, 0);
   config.error = &error;
   config.SetScriptFlags(arguments_c_str.data(), arguments_c_str.size());
