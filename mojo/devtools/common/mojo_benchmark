@@ -83,17 +83,15 @@ def _generate_benchmark_variants(benchmark_spec):
         benchmark.
   """
   variants = []
-  # Cold start.
   variants.append({
-    'name': benchmark_spec['name'] + ' (cold start)',
+    'variant_name': 'cold start',
     'app': benchmark_spec['app'],
     'duration': benchmark_spec['duration'],
     'measurements': benchmark_spec['measurements'],
     'shell-args': benchmark_spec.get('shell-args',
                                      []) + _COLD_START_SHELL_ARGS})
-  # Warm start.
   variants.append({
-    'name': benchmark_spec['name'] + ' (warm start)',
+    'variant_name': 'warm start',
     'app': benchmark_spec['app'],
     'duration': benchmark_spec['duration'],
     'measurements': benchmark_spec['measurements'],
@@ -102,7 +100,7 @@ def _generate_benchmark_variants(benchmark_spec):
 
 
 def _run_benchmark(shell, shell_args, name, app, duration_seconds, measurements,
-                   verbose, android, save_traces):
+                   verbose, android, output_file):
   """Runs the given benchmark by running `benchmark.mojo` in mojo shell with
   appropriate arguments and returns the produced output.
 
@@ -114,11 +112,8 @@ def _run_benchmark(shell, shell_args, name, app, duration_seconds, measurements,
   benchmark_args.append('--app=' + app)
   benchmark_args.append('--duration=' + str(duration_seconds))
 
-  output_file = None
   device_output_file = None
-  if save_traces:
-    output_file = 'benchmark-%s-%s.trace' % (name.replace(' ', '_'),
-        time.strftime('%Y%m%d%H%M%S'))
+  if output_file:
     if android:
       device_output_file = os.path.join(shell.get_tmp_dir_path(), output_file)
       benchmark_args.append('--trace-output=' + device_output_file)
@@ -198,22 +193,29 @@ def main():
 
   exit_code = 0
   for benchmark_spec in benchmark_list_params['benchmarks']:
+    benchmark_name = benchmark_spec['name']
+    chart_data_recorder = None
+    if script_args.chart_data_output_file:
+      chart_data_recorder = perf_dashboard.ChartDataRecorder(benchmark_name)
+
     for variant_spec in _generate_benchmark_variants(benchmark_spec):
-      name = variant_spec['name']
+      variant_name = variant_spec['variant_name']
       app = variant_spec['app']
       duration = variant_spec['duration']
       shell_args = variant_spec.get('shell-args', []) + common_shell_args
       measurements = variant_spec['measurements']
 
-      chart_data_recorder = None
-      if script_args.chart_data_output_file:
-        chart_data_recorder = perf_dashboard.ChartDataRecorder(name)
+      output_file = None
+      if script_args.save_traces:
+        output_file = 'benchmark-%s-%s-%s.trace' % (
+            benchmark_name.replace(' ', '_'),
+            variant_name.replace(' ', '_'),
+            time.strftime('%Y%m%d%H%M%S'))
       benchmark_succeeded, benchmark_error, output = _run_benchmark(
-          shell, shell_args, name, app, duration, measurements,
-          script_args.verbose, script_args.android,
-          script_args.save_traces)
+          shell, shell_args, variant_name, app, duration, measurements,
+          script_args.verbose, script_args.android, output_file)
 
-      print '[ %s ]' % name
+      print '[ %s ] %s ' % (benchmark_name, variant_name)
 
       some_measurements_failed = False
       if benchmark_succeeded:
@@ -227,8 +229,8 @@ def main():
 
             if chart_data_recorder:
               measurement_name = measurement_spec.replace('/', '-')
-              chart_data_recorder.record_scalar(name, measurement_name, 'ms',
-                                                result)
+              chart_data_recorder.record_scalar(variant_name, measurement_name,
+                                                'ms', result)
           else:
             print '%s ?' % measurement_spec
             some_measurements_failed = True
