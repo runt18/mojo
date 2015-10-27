@@ -21,8 +21,6 @@ import subprocess
 import sys
 import re
 
-from mopy.version import Version
-
 import devtools
 devtools.add_lib_to_path()
 from devtoolslib import perf_dashboard
@@ -35,11 +33,6 @@ _PERF_LINE_FORMAT = r"""^\s*([^\s/]+)  # chart name
                         \s*$"""
 
 _PERF_LINE_REGEX = re.compile(_PERF_LINE_FORMAT, re.VERBOSE)
-
-
-def _GetCurrentCommitCount():
-  return subprocess.check_output(
-      ["git", "rev-list", "HEAD", "--count"]).strip()
 
 
 def _ConvertPerfDataToChartFormat(perf_data, test_name):
@@ -91,25 +84,17 @@ def main():
   if not args.upload:
     return 0
 
-  if args.master_name is None or \
-     args.bot_name is None or \
-     args.test_name is None or \
-     args.builder_name is None or \
-     args.build_number is None or \
-     args.perf_data_path is None:
-    print "Can't upload perf data to the dashboard because not all of the " \
-          "following values are specified: master-name, perf-id, test-name, " \
-          "builder-name, build-number, perf-data-path."
+  if not args.test_name or not args.perf_data_path:
+    print ("Can't upload perf data to the dashboard because not all of the "
+           "following values are specified: test-name, perf-data-path.")
     return 1
 
-  revision = Version().version
-  point_id = _GetCurrentCommitCount()
   with open(args.perf_data_path, "r") as perf_data:
     chart_data = _ConvertPerfDataToChartFormat(perf_data, args.test_name)
 
   result = perf_dashboard.upload_chart_data(
       args.master_name, args.bot_name, args.test_name, args.builder_name,
-      args.build_number, revision, chart_data, point_id, args.server_url,
+      args.build_number, chart_data, args.server_url,
       args.dry_run)
 
   return 0 if result else 1

@@ -13,6 +13,7 @@ See http://www.chromium.org/developers/speed-infra/performance-dashboard/sending
 import httplib
 import json
 import pprint
+import subprocess
 import urllib
 import urllib2
 
@@ -90,9 +91,19 @@ def add_argparse_server_arguments(parser):
            'upload the data.')
 
 
+def _get_commit_count():
+  """Returns the number of git commits in the repository of the cwd."""
+  return subprocess.check_output(
+      ["git", "rev-list", "HEAD", "--count"]).strip()
+
+
+def _get_current_commit():
+  """Returns the hash of the current commit in the repository of the cwd."""
+  return subprocess.check_output(["git", "rev-parse", "HEAD"]).strip()
+
+
 def upload_chart_data(master_name, bot_name, test_name, builder_name,
-                      build_number, revision, chart_data, point_id,
-                      server_url=None, dry_run=False):
+                      build_number, chart_data, server_url=None, dry_run=False):
   """Uploads the provided chart data to an instance of performance dashboard.
   See the argparse help above for description of the arguments.
 
@@ -128,6 +139,16 @@ def upload_chart_data(master_name, bot_name, test_name, builder_name,
     except httplib.HTTPException as e:
       raise _UploadException("HTTPException for JSON %s\n" % json_data)
 
+  if (not master_name or not bot_name or not test_name or not builder_name or
+      not build_number):
+    print ('Cannot upload perf data to the dashboard because not all of the '
+           'following values are specified: master-name, bot-name, test_name, '
+           'builder-name, build-number.')
+    return False
+
+  point_id = _get_commit_count()
+  cur_commit = _get_current_commit()
+
   # Wrap the |chart_data| with meta data as required by the spec.
   formatted_data = {
       "master": master_name,
@@ -136,11 +157,11 @@ def upload_chart_data(master_name, bot_name, test_name, builder_name,
       "buildername": builder_name,
       "buildnumber": build_number,
       "versions": {
-          "mojo": revision
+          "mojo": cur_commit,
       },
       "point_id": point_id,
       "supplemental": {},
-      "chart_data": chart_data
+      "chart_data": chart_data,
   }
 
   upload_url = server_url if server_url else _LOCAL_SERVER
