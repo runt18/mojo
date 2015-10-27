@@ -66,7 +66,6 @@ group("tests") {
     "//mojo/dart/embedder/test:dart_unittests",
     "//mojo/public/cpp/bindings/tests:versioning_apptests",
     "//mojo/services/view_manager/cpp/tests:mojo_view_manager_lib_unittests",
-    "//mojo/tests:mojo_task_tracker_perftests",
     "//mojo/tools:message_generator",
     "//mojo/gles2:mgl_unittests",
     "//mojo/gpu:apptests",
