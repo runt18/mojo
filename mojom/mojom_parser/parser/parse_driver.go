@@ -44,6 +44,7 @@ import (
 type ParseDriver struct {
 	fileProvider  FileProvider
 	fileExtractor FileExtractor
+	parseInvoker  ParseInvoker
 	importDirs    []string
 	debugMode     bool
 }
@@ -60,13 +61,14 @@ type ParseDriver struct {
 func NewDriver(importDirectories []string, debugMode bool) *ParseDriver {
 	fileProvider := new(OSFileProvider)
 	fileProvider.importDirs = importDirectories
-	return newDriver(importDirectories, debugMode, fileProvider, DefaultFileExtractor(0))
+	return newDriver(importDirectories, debugMode, fileProvider,
+		DefaultFileExtractor(0), DefaultParseInvoker(0))
 }
 
 // This version of the factory is used in tests.
-func newDriver(importDirectories []string, debugMode bool,
-	fileProvider FileProvider, fileExtractor FileExtractor) *ParseDriver {
-	p := ParseDriver{fileProvider: fileProvider, fileExtractor: fileExtractor,
+func newDriver(importDirectories []string, debugMode bool, fileProvider FileProvider,
+	fileExtractor FileExtractor, parseInvoker ParseInvoker) *ParseDriver {
+	p := ParseDriver{fileProvider: fileProvider, fileExtractor: fileExtractor, parseInvoker: parseInvoker,
 		importDirs: importDirectories, debugMode: debugMode}
 	return &p
 
@@ -97,6 +99,14 @@ func (d *ParseDriver) ParseFiles(fileNames []string) (descriptor *mojom.MojomDes
 			return
 		}
 
+		if currentFile.importedFrom != nil {
+			// Tell the importing file about the absolute path of the imported file.
+			// Note that we must do this even if the imported file has already been processed
+			// because a given file may be imported by multiple files and each of those need
+			// to be told about the absolute path of the imported file.
+			currentFile.importedFrom.mojomFile.Imports[currentFile.specifiedPath] = currentFile.absolutePath
+		}
+
 		if !descriptor.ContainsFile(currentFile.absolutePath) {
 			contents, fileReadError := d.fileProvider.provideContents(currentFile)
 			if fileReadError != nil {
@@ -105,7 +115,8 @@ func (d *ParseDriver) ParseFiles(fileNames []string) (descriptor *mojom.MojomDes
 			}
 			parser := MakeParser(currentFile.absolutePath, contents, descriptor)
 			parser.SetDebugMode(d.debugMode)
-			parser.Parse()
+			// Invoke parser.Parse() (but skip doing so in tests sometimes.)
+			d.parseInvoker.invokeParse(&parser)
 
 			if d.debugMode {
 				fmt.Printf("\nParseTree for %s:", currentFile)
@@ -117,8 +128,13 @@ func (d *ParseDriver) ParseFiles(fileNames []string) (descriptor *mojom.MojomDes
 					currentFile, parser.GetError().Error())
 				return
 			}
-			mojomFile := d.fileExtractor.extractMojomFile(&parser)
-			for _, importedFile := range mojomFile.Imports {
+			currentFile.mojomFile = d.fileExtractor.extractMojomFile(&parser)
+			for importedFile, _ := range currentFile.mojomFile.Imports {
+				// Note that it is important that we append all of the imported files here even
+				// if some of them have already been processed. That is because when the imported
+				// file is pulled from the queue it will be pre-processed during which time the
+				// absolute path to the file will be discovered and this absolute path will be
+				// set in |mojomFile| which is necessary for serializing mojomFile.
 				filesToProcess = append(filesToProcess,
 					&FileReference{importedFrom: currentFile, specifiedPath: importedFile})
 			}
@@ -136,6 +152,7 @@ func (d *ParseDriver) ParseFiles(fileNames []string) (descriptor *mojom.MojomDes
 }
 
 type FileReference struct {
+	mojomFile     *mojom.MojomFile
 	importedFrom  *FileReference
 	specifiedPath string
 	absolutePath  string
@@ -161,6 +178,18 @@ type DefaultFileExtractor int
 
 func (DefaultFileExtractor) extractMojomFile(parser *Parser) *mojom.MojomFile {
 	return parser.GetMojomFile()
+}
+
+// ParseInvoker is an abstraction that allows us to skip actually invoking
+// the parse method in tests of the driver.
+type ParseInvoker interface {
+	invokeParse(parser *Parser)
+}
+
+type DefaultParseInvoker int
+
+func (DefaultParseInvoker) invokeParse(parser *Parser) {
+	parser.Parse()
 }
 
 // FileProvider is an abstraction that allows us to mock out the file system

@@ -23,7 +23,7 @@ type MojomFile struct {
 
 	// The |FileName| is (derived from) the file name of the corresponding
 	// .mojom file. It is the unique identifier for this module within the
-	// |mojomFilesByName| field of |Descriptor|
+	// |MojomFilesByName| field of |Descriptor|
 	FileName string
 
 	// The module namespace is the identifier declared via the "module"
@@ -33,10 +33,16 @@ type MojomFile struct {
 	// Attributes declared in the Mojom file at the module level.
 	Attributes *Attributes
 
-	// The list of other MojomFiles imported by this one. The elements
-	// of the array are the |FileName|s. The corresponding MojomFile may
-	// be obtained from the |mojomFilesByName| field of |Descriptor|.
-	Imports []string
+	// The set of other MojomFiles imported by this one. The keys to the map
+	// are the file names as they appear in the importing .mojom file. The
+	// values are the canonicalized |FileName|s.  The corresponding MojomFile may
+	// be obtained from the |MojomFilesByName| field of |Descriptor| using this
+	// canonicalized |FileName|. Note that when a .mojom file is first parsed
+	// only the keys of this map are populated because we don't know the
+	// canonicalized name of the imported file yet. It is only when the imported
+	// file is pre-processed in parser_driver.go that we discover the canonicalized
+	// name and add it to this map.
+	Imports map[string]string
 
 	// The lexical scope corresponding to this file.
 	FileScope *Scope
@@ -57,7 +63,7 @@ func NewMojomFile(fileName string, descriptor *MojomDescriptor) *MojomFile {
 	mojomFile.FileName = fileName
 	mojomFile.Descriptor = descriptor
 	mojomFile.ModuleNamespace = ""
-	mojomFile.Imports = make([]string, 0)
+	mojomFile.Imports = make(map[string]string)
 	mojomFile.Interfaces = make([]*MojomInterface, 0)
 	mojomFile.Structs = make([]*MojomStruct, 0)
 	mojomFile.Unions = make([]*MojomUnion, 0)
@@ -85,7 +91,7 @@ func (f *MojomFile) SetModuleNamespace(namespace string) *Scope {
 }
 
 func (f *MojomFile) AddImport(fileName string) {
-	f.Imports = append(f.Imports, fileName)
+	f.Imports[fileName] = ""
 }
 
 func (f *MojomFile) AddInterface(mojomInterface *MojomInterface) *DuplicateNameError {
@@ -128,13 +134,13 @@ type MojomDescriptor struct {
 	TypesByKey map[string]UserDefinedType
 
 	// All of the UserDefinedValues keyed by value key
-	valuesByKey map[string]UserDefinedValue
+	ValuesByKey map[string]UserDefinedValue
 
 	// All of the MojomFiles in the order they were visited.
 	mojomFiles []*MojomFile
 
 	// All of the MojomFiles keyed by FileName
-	mojomFilesByName map[string]*MojomFile
+	MojomFilesByName map[string]*MojomFile
 
 	// The abstract module namespace scopes keyed by scope name. These are
 	// the scopes that are not lexical scopes (i.e. files, structs, interfaces)
@@ -163,9 +169,9 @@ func NewMojomDescriptor() *MojomDescriptor {
 	descriptor := new(MojomDescriptor)
 
 	descriptor.TypesByKey = make(map[string]UserDefinedType)
-	descriptor.valuesByKey = make(map[string]UserDefinedValue)
+	descriptor.ValuesByKey = make(map[string]UserDefinedValue)
 	descriptor.mojomFiles = make([]*MojomFile, 0)
-	descriptor.mojomFilesByName = make(map[string]*MojomFile)
+	descriptor.MojomFilesByName = make(map[string]*MojomFile)
 	descriptor.abstractScopesByName = make(map[string]*Scope)
 	// The global namespace scope.
 	descriptor.abstractScopesByName[""] = NewAbstractModuleScope("", descriptor)
@@ -192,10 +198,10 @@ func (d *MojomDescriptor) AddMojomFile(fileName string) *MojomFile {
 	mojomFile := NewMojomFile(fileName, d)
 	mojomFile.Descriptor = d
 	d.mojomFiles = append(d.mojomFiles, mojomFile)
-	if _, ok := d.mojomFilesByName[mojomFile.FileName]; ok {
+	if _, ok := d.MojomFilesByName[mojomFile.FileName]; ok {
 		panic(fmt.Sprintf("The file %v has already been processed.", mojomFile.FileName))
 	}
-	d.mojomFilesByName[mojomFile.FileName] = mojomFile
+	d.MojomFilesByName[mojomFile.FileName] = mojomFile
 	return mojomFile
 }
 
@@ -208,7 +214,7 @@ func (d *MojomDescriptor) RegisterUnresolvedValueReference(valueReference *UserV
 }
 
 func (d *MojomDescriptor) ContainsFile(fileName string) bool {
-	_, ok := d.mojomFilesByName[fileName]
+	_, ok := d.MojomFilesByName[fileName]
 	return ok
 }
 
@@ -412,7 +418,7 @@ Files:
 ---------------
 %s
 `
-	return fmt.Sprintf(message, debugPrintTypeMap(d.TypesByKey), debugPrintValueMap(d.valuesByKey), d.debugPrintMojomFiles())
+	return fmt.Sprintf(message, debugPrintTypeMap(d.TypesByKey), debugPrintValueMap(d.ValuesByKey), d.debugPrintMojomFiles())
 }
 
 ///////////////////////////////////////////////////////////////////////

@@ -30,6 +30,10 @@ func (f *FakeFileProvider) findFile(fileRef *FileReference) error {
 	return nil
 }
 
+type NoOpParseInvoker int
+
+func (NoOpParseInvoker) invokeParse(parser *Parser) {}
+
 // FakeFileExtractor implements FileExtractor
 type FakeFileExtractor struct {
 	// This field maps a file name to the set of import names that we want to
@@ -74,7 +78,7 @@ func TestExpectedFilesParsed(t *testing.T) {
 	fakeFileExtractor.appendImportsToFile("file5", "file1", "file6")
 
 	// Construct the driver under test
-	driver := newDriver([]string{}, false, &fakeFileProvider, &fakeFileExtractor)
+	driver := newDriver([]string{}, false, &fakeFileProvider, &fakeFileExtractor, NoOpParseInvoker(0))
 
 	// Invoke ParseFiles
 	driver.ParseFiles([]string{"file1", "file2", "file3"})

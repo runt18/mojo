@@ -151,12 +151,12 @@ type MojomStruct struct {
 	UserDefinedTypeBase
 	DeclarationContainer
 
-	fields []*StructField
+	Fields []*StructField
 }
 
 func NewMojomStruct(simpleName string, attributes *Attributes) *MojomStruct {
 	mojomStruct := new(MojomStruct)
-	mojomStruct.fields = make([]*StructField, 0)
+	mojomStruct.Fields = make([]*StructField, 0)
 	mojomStruct.Init(simpleName, mojomStruct, attributes)
 	return mojomStruct
 }
@@ -170,7 +170,7 @@ func (s *MojomStruct) AddField(field *StructField) {
 	if field == nil {
 		return
 	}
-	s.fields = append(s.fields, field)
+	s.Fields = append(s.Fields, field)
 }
 
 func (MojomStruct) Kind() UserDefinedTypeKind {
@@ -193,7 +193,7 @@ func (m MojomStruct) String() string {
 	s += fmt.Sprintf("%s\n", m.UserDefinedTypeBase)
 	s += "     Fields\n"
 	s += "     ------\n"
-	for _, field := range m.fields {
+	for _, field := range m.Fields {
 		s += fmt.Sprintf("     %s\n", field)
 	}
 	s += "     Enums\n"
@@ -213,7 +213,7 @@ func (m MojomStruct) String() string {
 // is being used to represent the parameters to a method.
 func (s MojomStruct) ParameterString() string {
 	str := ""
-	for i, f := range s.fields {
+	for i, f := range s.Fields {
 		if i > 0 {
 			str += ", "
 		}
@@ -225,7 +225,7 @@ func (s MojomStruct) ParameterString() string {
 		if f.declaredOrdinal >= 0 {
 			ordinalString = fmt.Sprintf("@%d", f.declaredOrdinal)
 		}
-		str += fmt.Sprintf("%s%s %s%s", attributesString, f.fieldType,
+		str += fmt.Sprintf("%s%s %s%s", attributesString, f.FieldType,
 			f.simpleName, ordinalString)
 	}
 	return str
@@ -234,39 +234,40 @@ func (s MojomStruct) ParameterString() string {
 type StructField struct {
 	VariableDeclarationData
 
-	fieldType    TypeRef
-	defaultValue ValueRef
-	offset       int32
+	FieldType    TypeRef
+	DefaultValue ValueRef
+	// TODO(rudominer) Implement struct field offset computation.
+	Offset int32
 }
 
-func NewStructField(fieldType TypeRef, name string, ordinal int64, attributes *Attributes, defaultValue ValueRef) *StructField {
-	field := StructField{fieldType: fieldType, defaultValue: defaultValue}
+func NewStructField(FieldType TypeRef, name string, ordinal int64, attributes *Attributes, defaultValue ValueRef) *StructField {
+	field := StructField{FieldType: FieldType, DefaultValue: defaultValue}
 	field.InitVariableDeclarationData(name, attributes, ordinal)
 	return &field
 }
 
 func (f *StructField) ValidateDefaultValue() (ok bool) {
-	if f.defaultValue == nil {
+	if f.DefaultValue == nil {
 		return true
 	}
-	if literalValue, ok := f.defaultValue.(LiteralValue); ok {
+	if literalValue, ok := f.DefaultValue.(LiteralValue); ok {
 		// The default value is a literal value. It is only this case we have to
 		// handle now because if the default value were instead a reference then
 		// it was already marked with the field type as it's assignee type and
 		// it will be validated after resolution.
 		assignment := LiteralAssignment{assignedValue: literalValue,
 			variableName: f.SimpleName(), kind: LiteralAssignmentKindDefaultStructField}
-		return f.fieldType.MarkTypeCompatible(assignment)
+		return f.FieldType.MarkTypeCompatible(assignment)
 	}
 	return true
 }
 
 func (f StructField) String() string {
 	defaultValueString := ""
-	if f.defaultValue != nil {
-		defaultValueString = fmt.Sprintf(" = %s", f.defaultValue)
+	if f.DefaultValue != nil {
+		defaultValueString = fmt.Sprintf(" = %s", f.DefaultValue)
 	}
-	return fmt.Sprintf("%s %s%s", f.fieldType, f.simpleName, defaultValueString)
+	return fmt.Sprintf("%s %s%s", f.FieldType, f.simpleName, defaultValueString)
 }
 
 /////////////////////////////////////////////////////////////
@@ -403,22 +404,22 @@ func (m *MojomMethod) String() string {
 type MojomUnion struct {
 	UserDefinedTypeBase
 
-	fields []UnionField
+	Fields []UnionField
 }
 
 func NewMojomUnion(simpleName string, attributes *Attributes) *MojomUnion {
 	mojomUnion := new(MojomUnion)
-	mojomUnion.fields = make([]UnionField, 0)
+	mojomUnion.Fields = make([]UnionField, 0)
 	mojomUnion.Init(simpleName, mojomUnion, attributes)
 	return mojomUnion
 }
 
 // Adds a UnionField to this Union
-func (u *MojomUnion) AddField(fieldType TypeRef, fieldName string,
+func (u *MojomUnion) AddField(FieldType TypeRef, fieldName string,
 	tag int64, attributes *Attributes) {
-	field := UnionField{fieldType: fieldType}
+	field := UnionField{FieldType: FieldType}
 	field.InitVariableDeclarationData(fieldName, attributes, tag)
-	u.fields = append(u.fields, field)
+	u.Fields = append(u.Fields, field)
 }
 
 // This should be invoked some time after all of the fields have been added
@@ -439,7 +440,7 @@ func (MojomUnion) IsAssignmentCompatibleWith(value LiteralValue) bool {
 type UnionField struct {
 	VariableDeclarationData
 
-	fieldType TypeRef
+	FieldType TypeRef
 }
 
 /////////////////////////////////////////////////////////////
@@ -528,6 +529,20 @@ type EnumValue struct {
 	UserDefinedValueBase
 
 	enumType *MojomEnum
+}
+
+func (ev *EnumValue) EnumType() *MojomEnum {
+	return ev.enumType
+}
+
+func (ev *EnumValue) Int32Value() int32 {
+	if ev.valueRef.ResolvedConcreteValue() == nil {
+		return -1
+	}
+	if x, ok := ev.valueRef.ResolvedConcreteValue().Value().(int32); ok {
+		return x
+	}
+	panic(fmt.Sprintf("Unexpected type %T", ev.valueRef.ResolvedConcreteValue().Value()))
 }
 
 // EnumValue implements ConcreteValue
@@ -628,7 +643,7 @@ func (v *UserDefinedValueBase) RegisterInScope(scope *Scope) *DuplicateNameError
 
 	v.fullyQualifiedName = buildDottedName(scope.fullyQualifiedName, v.simpleName)
 	v.valueKey = computeTypeKey(v.fullyQualifiedName)
-	scope.file.Descriptor.valuesByKey[v.valueKey] = v.thisValue
+	scope.file.Descriptor.ValuesByKey[v.valueKey] = v.thisValue
 	return nil
 }
 
@@ -664,6 +679,10 @@ func (b UserDefinedValueBase) ValueKey() string {
 	return b.valueKey
 }
 
+func (b UserDefinedValueBase) ValueRef() ValueRef {
+	return b.valueRef
+}
+
 /////////////////////////////////////////////////////////////
 //Declared Constants
 /////////////////////////////////////////////////////////////
@@ -685,6 +704,10 @@ func NewUserDefinedConstant(name string, declaredType TypeRef, value ValueRef,
 
 func (b *UserDefinedConstant) String() string {
 	return b.toString(0)
+}
+
+func (b *UserDefinedConstant) DeclaredType() TypeRef {
+	return b.declaredType
 }
 
 func (b *UserDefinedConstant) toString(indentLevel int) string {

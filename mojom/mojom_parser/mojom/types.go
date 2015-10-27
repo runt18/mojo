@@ -665,8 +665,16 @@ type UserValueRef struct {
 	resolvedConcreteValue ConcreteValue
 }
 
+func (v UserValueRef) Identifier() string {
+	return v.identifier
+}
+
 func (v UserValueRef) ResolvedConcreteValue() ConcreteValue {
 	return v.resolvedConcreteValue
+}
+
+func (v UserValueRef) ResolvedDeclaredValue() UserDefinedValue {
+	return v.resolvedDeclaredValue
 }
 
 func (v *UserValueRef) MarkUsedAsEnumValueInitializer() bool {
