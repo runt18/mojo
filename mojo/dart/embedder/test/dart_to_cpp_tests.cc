@@ -270,8 +270,12 @@ class DartToCppTest : public testing::Test {
   base::MessageLoop loop;
   base::RunLoop run_loop_;
 
-  static void UnhandledExceptionCallback(bool* exception, Dart_Handle error) {
+  static void UnhandledExceptionCallback(bool* exception,
+                                         int64_t* closed_handles,
+                                         Dart_Handle error,
+                                         int64_t count) {
     *exception = true;
+    *closed_handles = count;
   }
 
   static bool GenerateEntropy(uint8_t* buffer, intptr_t length) {
@@ -285,6 +289,7 @@ class DartToCppTest : public testing::Test {
                                    const char** arguments,
                                    int arguments_count,
                                    bool* unhandled_exception,
+                                   int64_t* closed_handles,
                                    char** error) {
     base::FilePath path;
     PathService::Get(base::DIR_SOURCE_ROOT, &path);
@@ -305,8 +310,8 @@ class DartToCppTest : public testing::Test {
     config->strict_compilation = true;
     config->script_uri = path.AsUTF8Unsafe();
     config->package_root = package_root.AsUTF8Unsafe();
-    config->callbacks.exception =
-        base::Bind(&UnhandledExceptionCallback, unhandled_exception);
+    config->callbacks.exception = base::Bind(
+        &UnhandledExceptionCallback, unhandled_exception, closed_handles);
     config->entropy = GenerateEntropy;
     config->handle = handle;
     config->SetVmFlags(arguments, arguments_count);
@@ -334,14 +339,10 @@ class DartToCppTest : public testing::Test {
     DartControllerConfig config;
     char* error;
     bool unhandled_exception = false;
+    int64_t closed_handles;
     InitializeDartConfig(
-        &config,
-        test,
-        dart_side_request.PassMessagePipe().release().value(),
-        nullptr,
-        0,
-        &unhandled_exception,
-        &error);
+        &config, test, dart_side_request.PassMessagePipe().release().value(),
+        nullptr, 0, &unhandled_exception, &closed_handles, &error);
 
     dart_thread->Start();
     dart_thread->message_loop()->PostTask(FROM_HERE,

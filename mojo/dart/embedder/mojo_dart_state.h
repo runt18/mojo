@@ -19,7 +19,7 @@ namespace mojo {
 namespace dart {
 
 struct IsolateCallbacks {
-  base::Callback<void(Dart_Handle)> exception;
+  base::Callback<void(Dart_Handle, int64_t)> exception;
 };
 
 // State associated with an isolate (retrieved via |Dart_CurrentIsolateData|).
@@ -43,14 +43,6 @@ class MojoDartState : public tonic::DartState {
   const IsolateCallbacks& callbacks() const { return callbacks_; }
   const std::string& script_uri() const { return script_uri_; }
   const std::string& package_root() const { return package_root_; }
-  std::set<MojoHandle>& unclosed_handles() {
-    return unclosed_handles_;
-  }
-
-  const std::set<MojoHandle>& unclosed_handles() const {
-    return unclosed_handles_;
-  }
-
 
   void set_library_provider(tonic::DartLibraryProvider* library_provider) {
     library_provider_.reset(library_provider);
@@ -99,7 +91,6 @@ class MojoDartState : public tonic::DartState {
   IsolateCallbacks callbacks_;
   std::string script_uri_;
   std::string package_root_;
-  std::set<MojoHandle> unclosed_handles_;
   std::unique_ptr<tonic::DartLibraryProvider> library_provider_;
   mojo::NetworkServicePtr network_service_;
 };

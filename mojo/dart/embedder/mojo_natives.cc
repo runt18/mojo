@@ -6,12 +6,10 @@
 #include <string.h>
 
 #include <memory>
-#include <set>
 #include <vector>
 
 #include "dart/runtime/include/dart_api.h"
 #include "mojo/dart/embedder/builtin.h"
-#include "mojo/dart/embedder/mojo_dart_state.h"
 #include "mojo/public/c/system/core.h"
 #include "mojo/public/cpp/environment/logging.h"
 #include "mojo/public/cpp/system/core.h"
@@ -38,7 +36,7 @@ namespace dart {
   V(Mojo_GetTimeTicksNow, 0)               \
   V(MojoHandle_Close, 1)                   \
   V(MojoHandle_Wait, 3)                    \
-  V(MojoHandle_Register, 2)                \
+  V(MojoHandle_RegisterFinalizer, 2)       \
   V(MojoHandle_WaitMany, 3)                \
   V(MojoHandleWatcher_GrowStateArrays, 1)  \
   V(MojoHandleWatcher_WaitMany, 2)         \
@@ -137,7 +135,7 @@ static void MojoHandleCloserCallback(void* isolate_data,
 
 // Setup a weak persistent handle for a MojoHandle that calls MojoClose on the
 // handle when the MojoHandle is GC'd or the VM is going down.
-void MojoHandle_Register(Dart_NativeArguments arguments) {
+void MojoHandle_RegisterFinalizer(Dart_NativeArguments arguments) {
   Dart_Handle mojo_handle_instance = Dart_GetNativeArgument(arguments, 0);
   if (!Dart_IsInstance(mojo_handle_instance)) {
     SetInvalidArgumentReturn(arguments);
@@ -153,9 +151,6 @@ void MojoHandle_Register(Dart_NativeArguments arguments) {
 
   // Add the handle to this isolate's set.
   MojoHandle handle = static_cast<MojoHandle>(raw_handle);
-  auto isolate_data = MojoDartState::Current();
-  assert(isolate_data != nullptr);
-  isolate_data->unclosed_handles().insert(handle);
 
   // Set up a finalizer.
   CloserCallbackPeer* callback_peer = new CloserCallbackPeer();
@@ -178,10 +173,6 @@ void MojoHandle_Close(Dart_NativeArguments arguments) {
 
   // Remove the handle from this isolate's set.
   MojoHandle handle = static_cast<MojoHandle>(raw_handle);
-  auto isolate_data = MojoDartState::Current();
-  assert(isolate_data != nullptr);
-  isolate_data->unclosed_handles().erase(handle);
-
   MojoResult res = MojoClose(handle);
 
   Dart_SetIntegerReturnValue(arguments, static_cast<int64_t>(res));
@@ -734,7 +725,7 @@ struct MojoWaitManyState {
   static MojoWaitManyState* GetInstance();
 
  private:
-  DISALLOW_COPY_AND_ASSIGN(MojoWaitManyState);
+  MOJO_DISALLOW_COPY_AND_ASSIGN(MojoWaitManyState);
 };
 
 // This global is safe because it is only accessed by the single handle watcher

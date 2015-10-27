@@ -22,13 +22,19 @@ static bool generateEntropy(uint8_t* buffer, intptr_t length) {
   return true;
 }
 
-static void exceptionCallback(bool* exception, Dart_Handle error) {
+static void exceptionCallback(bool* exception,
+                              int64_t* closed_handles,
+                              Dart_Handle error,
+                              int64_t count) {
   *exception = true;
+  *closed_handles = count;
 }
 
 static void RunTest(const std::string& test,
-                    const char** extra_args,
-                    int num_extra_args) {
+                    const char** extra_args = nullptr,
+                    int num_extra_args = 0,
+                    bool expect_unhandled_exception = false,
+                    int expected_unclosed_handles = 0) {
   base::FilePath path;
   PathService::Get(base::DIR_SOURCE_ROOT, &path);
   path = path.AppendASCII("mojo")
@@ -45,6 +51,7 @@ static void RunTest(const std::string& test,
 
   char* error = NULL;
   bool unhandled_exception = false;
+  int64_t closed_handles = 0;
   DartControllerConfig config;
   // Run with strict compilation even in Release mode so that ASAN testing gets
   // coverage of Dart asserts, type-checking, etc.
@@ -52,69 +59,70 @@ static void RunTest(const std::string& test,
   config.script_uri = path.AsUTF8Unsafe();
   config.package_root = package_root.AsUTF8Unsafe();
   config.callbacks.exception =
-      base::Bind(&exceptionCallback, &unhandled_exception);
+      base::Bind(&exceptionCallback, &unhandled_exception, &closed_handles);
   config.entropy = generateEntropy;
   config.SetVmFlags(extra_args, num_extra_args);
   config.error = &error;
 
   bool success = DartController::RunSingleDartScript(config);
   EXPECT_TRUE(success) << error;
-  EXPECT_FALSE(unhandled_exception);
+  EXPECT_EQ(expect_unhandled_exception, unhandled_exception);
+  EXPECT_EQ(expected_unclosed_handles, closed_handles);
 }
 
 // TODO(zra): instead of listing all these tests, search //mojo/dart/test for
 // _test.dart files.
 
 TEST(DartTest, hello_mojo) {
-  RunTest("hello_mojo.dart", nullptr, 0);
+  RunTest("hello_mojo.dart");
 }
 
 TEST(DartTest, core_types_test) {
-  RunTest("core_types_test.dart", nullptr, 0);
+  RunTest("core_types_test.dart");
 }
 
 TEST(DartTest, async_test) {
-  RunTest("async_test.dart", nullptr, 0);
+  RunTest("async_test.dart");
 }
 
 TEST(DartTest, isolate_test) {
-  RunTest("isolate_test.dart", nullptr, 0);
+  RunTest("isolate_test.dart");
 }
 
 TEST(DartTest, import_mojo) {
-  RunTest("import_mojo.dart", nullptr, 0);
+  RunTest("import_mojo.dart");
 }
 
 TEST(DartTest, simple_handle_watcher_test) {
-  RunTest("simple_handle_watcher_test.dart", nullptr, 0);
+  RunTest("simple_handle_watcher_test.dart");
 }
 
 TEST(DartTest, ping_pong_test) {
-  RunTest("ping_pong_test.dart", nullptr, 0);
+  RunTest("ping_pong_test.dart");
 }
 
 TEST(DartTest, timer_test) {
-  RunTest("timer_test.dart", nullptr, 0);
+  RunTest("timer_test.dart");
 }
 
 TEST(DartTest, async_await_test) {
-  RunTest("async_await_test.dart", nullptr, 0);
+  RunTest("async_await_test.dart");
 }
 
 TEST(DartTest, core_test) {
-  RunTest("core_test.dart", nullptr, 0);
+  RunTest("core_test.dart");
 }
 
 TEST(DartTest, codec_test) {
-  RunTest("codec_test.dart", nullptr, 0);
+  RunTest("codec_test.dart");
 }
 
 TEST(DartTest, handle_watcher_test) {
-  RunTest("handle_watcher_test.dart", nullptr, 0);
+  RunTest("handle_watcher_test.dart");
 }
 
 TEST(DartTest, bindings_generation_test) {
-  RunTest("bindings_generation_test.dart",  nullptr, 0);
+  RunTest("bindings_generation_test.dart");
 }
 
 TEST(DartTest, compile_all_interfaces_test) {
@@ -123,15 +131,15 @@ TEST(DartTest, compile_all_interfaces_test) {
 }
 
 TEST(DartTest, uri_base_test) {
-  RunTest("uri_base_test.dart", nullptr, 0);
+  RunTest("uri_base_test.dart");
 }
 
 TEST(DartTest, exception_test) {
-  RunTest("exception_test.dart", nullptr, 0);
+  RunTest("exception_test.dart");
 }
 
 TEST(DartTest, control_messages_test) {
-  RunTest("control_messages_test.dart", nullptr, 0);
+  RunTest("control_messages_test.dart");
 }
 
 TEST(DartTest, handle_finalizer_test) {
@@ -140,6 +148,10 @@ TEST(DartTest, handle_finalizer_test) {
   args[0] = "--new-gen-semi-max-size=1";
   args[1] = "--old_gen_growth_rate=1";
   RunTest("handle_finalizer_test.dart", args, kNumArgs);
+}
+
+TEST(DartTest, unhandled_exception_test) {
+  RunTest("unhandled_exception_test.dart", nullptr, 0, true, 2);
 }
 
 }  // namespace

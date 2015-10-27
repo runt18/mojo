@@ -40,8 +40,12 @@ bool GenerateEntropy(uint8_t* buffer, intptr_t length) {
   return true;
 }
 
-void ExceptionCallback(bool* exception, Dart_Handle error) {
+void ExceptionCallback(bool* exception,
+                       int64_t* closed_handles,
+                       Dart_Handle error,
+                       int64_t count) {
   *exception = true;
+  *closed_handles = count;
 }
 
 // Enumerates files inside |path| and collects all data needed to run
@@ -118,6 +122,7 @@ void RunTest(const std::string& test) {
 
   char* error = NULL;
   bool unhandled_exception = false;
+  int64_t closed_handles = 0;
   DartControllerConfig config;
   // Run with strict compilation even in Release mode so that ASAN testing gets
   // coverage of Dart asserts, type-checking, etc.
@@ -125,7 +130,7 @@ void RunTest(const std::string& test) {
   config.script_uri = path.value();
   config.package_root = package_root.AsUTF8Unsafe();
   config.callbacks.exception =
-      base::Bind(&ExceptionCallback, &unhandled_exception);
+      base::Bind(&ExceptionCallback, &unhandled_exception, &closed_handles);
   config.entropy = GenerateEntropy;
   config.SetVmFlags(nullptr, 0);
   config.error = &error;
@@ -134,6 +139,7 @@ void RunTest(const std::string& test) {
   bool success = DartController::RunSingleDartScript(config);
   EXPECT_TRUE(success) << error;
   EXPECT_FALSE(unhandled_exception);
+  EXPECT_EQ(closed_handles, 0);
 }
 
 TEST(DartTest, validation) {
