@@ -3,28 +3,22 @@
 // found in the LICENSE file.
 
 #include <stdint.h>
-#include <stdio.h>
-#include <string.h>
 
-#include <memory>
 #include <string>
 #include <utility>
-#include <vector>
 
 #include "base/bind.h"
 #include "base/logging.h"
 #include "base/strings/stringprintf.h"
 #include "base/test/perf_time_logger.h"
 #include "mojo/edk/embedder/scoped_platform_handle.h"
-#include "mojo/edk/system/channel.h"
 #include "mojo/edk/system/local_message_pipe_endpoint.h"
 #include "mojo/edk/system/message_pipe.h"
 #include "mojo/edk/system/message_pipe_test_utils.h"
 #include "mojo/edk/system/proxy_message_pipe_endpoint.h"
-#include "mojo/edk/system/raw_channel.h"
 #include "mojo/edk/system/ref_ptr.h"
-#include "mojo/edk/system/test_utils.h"
 #include "mojo/edk/test/test_utils.h"
+#include "mojo/public/cpp/system/macros.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 namespace mojo {
@@ -86,7 +80,8 @@ class MultiprocessMessagePipePerfTest
   size_t message_size_;
   std::string payload_;
   std::string read_buffer_;
-  std::unique_ptr<base::PerfTimeLogger> perf_logger_;
+
+  MOJO_DISALLOW_COPY_AND_ASSIGN(MultiprocessMessagePipePerfTest);
 };
 
 // For each message received, sends a reply message with the same contents
