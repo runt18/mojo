@@ -63,7 +63,7 @@ mojo::URLRequestPtr GetRequest(const GURL& url, bool disable_cache) {
   headers.push_back(architecture_header.Pass());
   request->headers = headers.Pass();
 
-  return request.Pass();
+  return request;
 }
 
 // Clone an URLResponse, except for the body.
@@ -79,7 +79,7 @@ mojo::URLResponsePtr CloneResponse(const mojo::URLResponsePtr& response) {
   cloned->redirect_method = response->redirect_method;
   cloned->redirect_url = response->redirect_url;
   cloned->redirect_referrer = response->redirect_referrer;
-  return cloned.Pass();
+  return cloned;
 }
 
 // This class is self owned and will delete itself after having tried to update

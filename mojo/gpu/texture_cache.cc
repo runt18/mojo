@@ -57,7 +57,7 @@ scoped_ptr<TextureCache::TextureInfo> TextureCache::GetTexture(
     if (texture_size.width == requested_size.width &&
         texture_size.height == requested_size.height) {
       glWaitSyncPointCHROMIUM(sync_point);
-      return texture_info.Pass();
+      return texture_info;
     }
   }
 
@@ -72,7 +72,7 @@ scoped_ptr<TextureCache::TextureInfo> TextureCache::GetTexture(
   next_resource_id_++;
   scoped_ptr<TextureInfo> texture_info(
       new TextureInfo(new_texture.Pass(), next_resource_id_));
-  return texture_info.Pass();
+  return texture_info;
 }
 
 void TextureCache::NotifyPendingResourceReturn(

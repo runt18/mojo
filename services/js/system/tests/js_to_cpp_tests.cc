@@ -98,7 +98,7 @@ js_to_cpp::EchoArgsPtr BuildSampleEchoArgs() {
   string_array[1] = "two";
   string_array[2] = "three";
   args->string_array = string_array.Pass();
-  return args.Pass();
+  return args;
 }
 
 void CheckSampleEchoArgs(const js_to_cpp::EchoArgs& arg) {

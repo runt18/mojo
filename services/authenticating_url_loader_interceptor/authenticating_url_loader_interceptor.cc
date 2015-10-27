@@ -185,7 +185,7 @@ URLRequestPtr AuthenticatingURLLoaderInterceptor::BuildRequest(
   request->cache_mode = cache_mode_;
   request->headers = headers.Pass();
 
-  return request.Pass();
+  return request;
 }
 
 void AuthenticatingURLLoaderInterceptor::StartRequest(

@@ -60,7 +60,7 @@ mojo::EventPtr CloneEventForView(const mojo::Event& event,
       ConvertPointFBetweenViews(view->GetRoot(), view, location));
   result->pointer_data->x = target_location.x();
   result->pointer_data->y = target_location.y();
-  return result.Pass();
+  return result;
 }
 
 }  // namespace

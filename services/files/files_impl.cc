@@ -32,7 +32,7 @@ base::ScopedFD CreateAndOpenTemporaryDirectory(
       open((*temp_dir)->path().value().c_str(), O_RDONLY | O_DIRECTORY, 0)));
   PCHECK(temp_dir_fd.is_valid());
   DVLOG(1) << "Made a temporary directory: " << (*temp_dir)->path().value();
-  return temp_dir_fd.Pass();
+  return temp_dir_fd;
 }
 
 #ifndef NDEBUG

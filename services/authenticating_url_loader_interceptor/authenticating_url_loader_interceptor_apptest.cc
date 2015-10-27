@@ -310,7 +310,7 @@ class AuthenticatingURLLoaderInterceptorAppTest
       });
       loop.Run();
     }
-    return response.Pass();
+    return response;
   }
 
   template <class I>

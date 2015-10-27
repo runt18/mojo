@@ -406,7 +406,7 @@ Array<ViewDataPtr> ViewManagerServiceImpl::ViewsToViewDatas(
   auto array = Array<ViewDataPtr>::New(views.size());
   for (size_t i = 0; i < views.size(); ++i)
     array[i] = ViewToViewData(views[i]).Pass();
-  return array.Pass();
+  return array;
 }
 
 ViewDataPtr ViewManagerServiceImpl::ViewToViewData(const ServerView* view) {
@@ -426,7 +426,7 @@ ViewDataPtr ViewManagerServiceImpl::ViewToViewData(const ServerView* view) {
   view_data->drawn = view->IsDrawn(connection_manager_->root());
   view_data->viewport_metrics =
       connection_manager_->display_manager()->GetViewportMetrics().Clone();
-  return view_data.Pass();
+  return view_data;
 }
 
 void ViewManagerServiceImpl::GetViewTreeImpl(

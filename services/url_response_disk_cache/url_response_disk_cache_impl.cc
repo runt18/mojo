@@ -85,7 +85,7 @@ Array<uint8_t> PathToArray(const base::FilePath& path) {
   const std::string& string = path.value();
   auto result = Array<uint8_t>::New(string.size());
   memcpy(&result.front(), string.data(), string.size());
-  return result.Pass();
+  return result;
 }
 
 // This method remove the query string of an url if one is present. It does
@@ -207,7 +207,7 @@ mojo::URLResponsePtr GetMinimalResponse(const std::string& url) {
   mojo::URLResponsePtr response = mojo::URLResponse::New();
   response->url = url;
   response->status_code = 200;
-  return response.Pass();
+  return response;
 }
 
 void RunMojoCallbackWithResponse(

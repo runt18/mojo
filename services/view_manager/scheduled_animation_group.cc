@@ -296,7 +296,7 @@ scoped_ptr<ScheduledAnimationGroup> ScheduledAnimationGroup::Create(
     DCHECK_NE(0u, transport_sequence.elements.size());
     ConvertSequenceToScheduled(transport_sequence, now, &group->sequences_[i]);
   }
-  return group.Pass();
+  return group;
 }
 
 void ScheduledAnimationGroup::ObtainStartValues() {

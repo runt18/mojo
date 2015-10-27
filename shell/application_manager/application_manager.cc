@@ -271,7 +271,7 @@ InterfaceRequest<Application> ApplicationManager::RegisterShell(
   shell->InitializeApplication(mojo::Array<mojo::String>::From(parameters));
   ConnectToClient(shell, resolved_url, requestor_url, services.Pass(),
                   exposed_services.Pass());
-  return application_request.Pass();
+  return application_request;
 }
 
 ShellImpl* ApplicationManager::GetShellImpl(const GURL& url) {

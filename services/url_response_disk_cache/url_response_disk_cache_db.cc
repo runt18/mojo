@@ -190,7 +190,7 @@ CacheEntryPtr URLResponseDiskCacheDB::Get(CacheKeyPtr key) {
   DCHECK(status.ok());
   CacheEntryPtr result;
   Deserialize(entry_string, &result);
-  return result.Pass();
+  return result;
 }
 
 void URLResponseDiskCacheDB::PutNew(const std::string& request_origin,
@@ -225,7 +225,7 @@ CacheEntryPtr URLResponseDiskCacheDB::GetNewest(
       }
     }
   }
-  return result.Pass();
+  return result;
 }
 
 void URLResponseDiskCacheDB::Delete(CacheKeyPtr key) {

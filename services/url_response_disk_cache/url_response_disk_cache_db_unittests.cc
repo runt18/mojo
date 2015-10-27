@@ -29,7 +29,7 @@ class URLResponseDiskCacheDBTest : public ::testing::Test {
     entry->response = URLResponse::New();
     entry->entry_directory = "/cache";
     entry->response_body_path = "/cache/content";
-    return entry.Pass();
+    return entry;
   }
 
   base::ScopedTempDir tmp_dir_;

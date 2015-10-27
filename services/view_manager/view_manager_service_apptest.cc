@@ -456,7 +456,7 @@ class ViewManagerServiceAppTest
         owner == vm1() ? "mojo:window_manager" : application_impl()->url();
     EXPECT_EQ("OnEmbed creator=" + expected_creator,
               SingleChangeToDescription(*client->tracker()->changes()));
-    return client.Pass();
+    return client;
   }
 
   // ApplicationTestBase:

@@ -17,7 +17,7 @@ TypeConverter<CommandBufferStatePtr, gpu::CommandBuffer::State>::Convert(
   result->error = input.error;
   result->context_lost_reason = input.context_lost_reason;
   result->generation = input.generation;
-  return result.Pass();
+  return result;
 }
 
 gpu::CommandBuffer::State
@@ -40,7 +40,7 @@ TypeConverter<GpuShaderPrecisionPtr, gpu::Capabilities::ShaderPrecision>::
   result->min_range = input.min_range;
   result->max_range = input.max_range;
   result->precision = input.precision;
-  return result.Pass();
+  return result;
 }
 
 gpu::Capabilities::ShaderPrecision TypeConverter<
@@ -63,7 +63,7 @@ TypeConverter<GpuPerStagePrecisionsPtr, gpu::Capabilities::PerStagePrecisions>::
   result->low_float = GpuShaderPrecision::From(input.low_float);
   result->medium_float = GpuShaderPrecision::From(input.medium_float);
   result->high_float = GpuShaderPrecision::From(input.high_float);
-  return result.Pass();
+  return result;
 }
 
 gpu::Capabilities::PerStagePrecisions TypeConverter<
@@ -121,7 +121,7 @@ TypeConverter<GpuCapabilitiesPtr, gpu::Capabilities>::Convert(
   result->blend_equation_advanced = input.blend_equation_advanced;
   result->blend_equation_advanced_coherent =
       input.blend_equation_advanced_coherent;
-  return result.Pass();
+  return result;
 }
 
 gpu::Capabilities TypeConverter<gpu::Capabilities, GpuCapabilitiesPtr>::Convert(

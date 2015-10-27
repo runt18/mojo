@@ -91,7 +91,7 @@ scoped_ptr<ViewTargeter> ViewTarget::SetEventTargeter(
     scoped_ptr<ViewTargeter> targeter) {
   scoped_ptr<ViewTargeter> old_targeter = targeter_.Pass();
   targeter_ = targeter.Pass();
-  return old_targeter.Pass();
+  return old_targeter;
 }
 
 bool ViewTarget::CanAcceptEvent(const ui::Event& event) {

@@ -68,14 +68,14 @@ class TestAnimationRunnerObserver : public AnimationRunnerObserver {
 AnimationValuePtr FloatAnimationValue(float float_value) {
   AnimationValuePtr value(AnimationValue::New());
   value->float_value = float_value;
-  return value.Pass();
+  return value;
 }
 
 // Creates an AnimationValuePtr from the specified transform.
 AnimationValuePtr TransformAnimationValue(const gfx::Transform& transform) {
   AnimationValuePtr value(AnimationValue::New());
   value->transform = Transform::From(transform);
-  return value.Pass();
+  return value;
 }
 
 // Adds an AnimationElement to |group|s last sequence with the specified value.

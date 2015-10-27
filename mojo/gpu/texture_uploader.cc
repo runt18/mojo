@@ -88,7 +88,7 @@ mojo::FramePtr TextureUploader::GetUploadFrame(
   pass->quads.push_back(quad.Pass());
 
   frame->passes.push_back(pass.Pass());
-  return frame.Pass();
+  return frame;
 }
 
 }  // namespace mojo

@@ -70,7 +70,7 @@ mojo::EventPtr CreateEvent(mojo::EventType type,
   event->pointer_data->pointer_id = pointer_id;
   event->pointer_data->x = x;
   event->pointer_data->y = y;
-  return event.Pass();
+  return event;
 }
 
 struct CompareViewByConnectionId {

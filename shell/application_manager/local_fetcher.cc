@@ -81,7 +81,7 @@ mojo::URLResponsePtr LocalFetcher::AsURLResponse(base::TaskRunner* task_runner,
   }
   mojo::common::CopyFromFile(path_, data_pipe.producer_handle.Pass(), skip,
                              task_runner, base::Bind(&IgnoreResult));
-  return response.Pass();
+  return response;
 }
 
 void LocalFetcher::AsPath(

@@ -30,7 +30,7 @@ class ClipboardStandaloneImpl::ClipboardData {
     for (auto it = data_types_.cbegin(); it != data_types_.cend(); ++it, ++i)
       types[i] = it.GetKey();
 
-    return types.Pass();
+    return types;
   }
 
   void SetData(Map<String, Array<uint8_t>> data) { data_types_ = data.Pass(); }

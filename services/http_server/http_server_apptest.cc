@@ -125,7 +125,7 @@ http_server::HttpServerPtr HttpServerApplicationTest::CreateHttpServer() {
   local_address->ipv4->port = 0;
   http_server_factory_->CreateHttpServer(GetProxy(&http_server).Pass(),
                                          local_address.Pass());
-  return http_server.Pass();
+  return http_server;
 }
 
 void CheckServerResponse(mojo::URLResponsePtr response) {

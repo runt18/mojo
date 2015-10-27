@@ -18,7 +18,7 @@ MergedServiceProvider::~MergedServiceProvider() {
 mojo::ServiceProviderPtr MergedServiceProvider::GetServiceProviderPtr() {
   mojo::ServiceProviderPtr sp;
   binding_.reset(new mojo::Binding<mojo::ServiceProvider>(this, GetProxy(&sp)));
-  return sp.Pass();
+  return sp;
 }
 
 void MergedServiceProvider::ConnectToService(

@@ -78,7 +78,7 @@ mojo::Array<mojo::String> DictionaryService::GetDictionarySuggestion(
     default_dictionary_ = scoped_ptr<latinime::Dictionary>(
         OpenDictionary(path, 0, prediction::kDictFile.size, false));
     if (!default_dictionary_) {
-      return suggestion_words.Clone().Pass();
+      return suggestion_words;
     }
   }
 
@@ -166,7 +166,7 @@ mojo::Array<mojo::String> DictionaryService::GetDictionarySuggestion(
     suggestion_words.push_back(mojo::String(*it));
   }
 
-  return suggestion_words.Clone().Pass();
+  return suggestion_words;
 }
 
 // modified from Android JniDataUtils::constructPrevWordsInfo
