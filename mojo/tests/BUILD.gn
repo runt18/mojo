@@ -10,7 +10,6 @@ test("mojo_task_tracker_perftests") {
     "//base/test:test_support",
     "//mojo/edk/system",
     "//mojo/edk/test:run_all_perftests",
-    "//mojo/edk/test:test_support",
     "//mojo/environment:chromium",
     "//mojo/message_pump",
     "//mojo/public/cpp/bindings",

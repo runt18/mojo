@@ -52,7 +52,6 @@ source_set("js_unittests") {
 
   deps = [
     ":system",
-    "//mojo/edk/test:test_support",
     "//mojo/public/cpp/system",
     "//testing/gtest",
   ]
