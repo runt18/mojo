@@ -6,11 +6,12 @@
 """Runner for Mojo application benchmarks."""
 
 import argparse
+import json
 import logging
-import sys
-import time
 import os.path
 import re
+import sys
+import time
 
 from devtoolslib import shell_arguments
 from devtoolslib import shell_config
@@ -244,7 +245,8 @@ def main():
         exit_code = 1
 
       if script_args.chart_data_output_file:
-        script_args.chart_data_output_file.write(chart_data_recorder.get_json())
+        script_args.chart_data_output_file.write(
+            json.dumps(chart_data_recorder.get_chart_data()))
         script_args.chart_data_output_file.write('\n')
 
   return exit_code

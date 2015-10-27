@@ -10,7 +10,6 @@ format.
 See http://www.chromium.org/developers/speed-infra/performance-dashboard/sending-data-to-the-performance-dashboard.
 """
 
-from collections import defaultdict
 import httplib
 import json
 import pprint
@@ -28,18 +27,19 @@ class ChartDataRecorder(object):
   """
 
   def __init__(self, benchmark_name):
-    self.charts = defaultdict(list)
+    self.charts = {}
     self.benchmark_name = benchmark_name
 
   def record_scalar(self, chart_name, value_name, units, value):
     """Records a single measurement value of a scalar type."""
-    self.charts[chart_name].append({
+    if chart_name not in self.charts:
+      self.charts[chart_name] = {}
+    self.charts[chart_name][value_name] = {
         'type': 'scalar',
-        'name': value_name,
         'units': units,
-        'value': value})
+        'value': value}
 
-  def get_json(self):
+  def get_chart_data(self):
     """Returns the JSON string representing the recorded chart data, wrapping
     it with the required meta data."""
     chart_data = {
@@ -47,7 +47,7 @@ class ChartDataRecorder(object):
         'benchmark_name': self.benchmark_name,
         'charts': self.charts
     }
-    return json.dumps(chart_data)
+    return chart_data
 
 
 def add_argparse_server_arguments(parser):
