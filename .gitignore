@@ -19,7 +19,6 @@ Session.vim
 tags
 Thumbs.db
 v8.log
-/build/util/LASTCHANGE*
 
 # directories pulled in via deps or hooks
 /build/linux/bin/eu-strip

@@ -198,14 +198,6 @@ hooks = [
     # directory and zip file to .gitignore in third_party/android_tools.
     'action': ['python', 'src/build/download_sdk_extras.py'],
   },
-  {
-    # Update LASTCHANGE. This is also run by export_tarball.py in
-    # src/tools/export_tarball - please keep them in sync.
-    'name': 'lastchange',
-    'pattern': '.',
-    'action': ['python', 'src/build/util/lastchange.py',
-               '-o', 'src/build/util/LASTCHANGE'],
-  },
   # Pull GN binaries. This needs to be before running GYP below.
   {
     'name': 'gn_linux64',
