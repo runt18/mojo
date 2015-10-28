@@ -5,17 +5,17 @@
 #ifndef MOJO_EDK_TEST_SIMPLE_TEST_THREAD_
 #define MOJO_EDK_TEST_SIMPLE_TEST_THREAD_
 
-#include "base/threading/simple_thread.h"
+#include <thread>
+
 #include "mojo/public/cpp/system/macros.h"
 
 namespace mojo {
 namespace test {
 
 // Class to help simple threads (with no message loops) in tests.
-class SimpleTestThread : public base::DelegateSimpleThread::Delegate {
+class SimpleTestThread {
  public:
-  SimpleTestThread();
-  ~SimpleTestThread() override;
+  virtual ~SimpleTestThread();
 
   // Starts the thread.
   void Start();
@@ -23,13 +23,14 @@ class SimpleTestThread : public base::DelegateSimpleThread::Delegate {
   // Joins the thread; this must be called if the thread was started.
   void Join();
 
-  // Note: Subclasses must implement:
-  //   virtual void Run() = 0;
-  // TODO(vtl): When we stop using |base::DelegateSimpleThread|, this will
-  // directly become part of our interface.
+ protected:
+  SimpleTestThread();
+
+  // Code to run in the thread.
+  virtual void Run() = 0;
 
  private:
-  base::DelegateSimpleThread thread_;
+  std::thread thread_;
 
   MOJO_DISALLOW_COPY_AND_ASSIGN(SimpleTestThread);
 };

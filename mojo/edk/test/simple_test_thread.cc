@@ -9,17 +9,21 @@
 namespace mojo {
 namespace test {
 
-SimpleTestThread::SimpleTestThread() : thread_(this, "SimpleTestThread") {}
-
-SimpleTestThread::~SimpleTestThread() {}
+SimpleTestThread::~SimpleTestThread() {
+  DCHECK(!thread_.joinable());
+}
 
 void SimpleTestThread::Start() {
-  thread_.Start();
+  DCHECK(!thread_.joinable());
+  thread_ = std::thread([this]() { Run(); });
 }
 
 void SimpleTestThread::Join() {
-  thread_.Join();
+  DCHECK(thread_.joinable());
+  thread_.join();
 }
+
+SimpleTestThread::SimpleTestThread() {}
 
 }  // namespace test
 }  // namespace mojo
