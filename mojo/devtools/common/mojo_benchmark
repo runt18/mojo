@@ -6,7 +6,6 @@
 """Runner for Mojo application benchmarks."""
 
 import argparse
-import json
 import logging
 import os.path
 import re
@@ -71,8 +70,8 @@ _CACHE_SERVICE_URL = 'mojo:url_response_disk_cache'
 _NETWORK_SERVICE_URL = 'mojo:network_service'
 
 _COLD_START_SHELL_ARGS = [
-  '--args-for=%s %s' % (_CACHE_SERVICE_URL, '--clear'),
-  '--args-for=%s %s' % (_NETWORK_SERVICE_URL, '--clear'),
+    '--args-for=%s %s' % (_CACHE_SERVICE_URL, '--clear'),
+    '--args-for=%s %s' % (_NETWORK_SERVICE_URL, '--clear'),
 ]
 
 # Additional time in seconds allocated per shell run to accommodate start-up.
@@ -101,22 +100,22 @@ def _generate_benchmark_variants(benchmark_spec):
   """
   variants = []
   variants.append({
-    'variant_name': 'cold start',
-    'app': benchmark_spec['app'],
-    'duration': benchmark_spec['duration'],
-    'measurements': benchmark_spec['measurements'],
-    'shell-args': benchmark_spec.get('shell-args',
-                                     []) + _COLD_START_SHELL_ARGS})
+      'variant_name': 'cold start',
+      'app': benchmark_spec['app'],
+      'duration': benchmark_spec['duration'],
+      'measurements': benchmark_spec['measurements'],
+      'shell-args': benchmark_spec.get('shell-args',
+                                       []) + _COLD_START_SHELL_ARGS})
   variants.append({
-    'variant_name': 'warm start',
-    'app': benchmark_spec['app'],
-    'duration': benchmark_spec['duration'],
-    'measurements': benchmark_spec['measurements'],
-    'shell-args': benchmark_spec.get('shell-args', [])})
+      'variant_name': 'warm start',
+      'app': benchmark_spec['app'],
+      'duration': benchmark_spec['duration'],
+      'measurements': benchmark_spec['measurements'],
+      'shell-args': benchmark_spec.get('shell-args', [])})
   return variants
 
 
-def _run_benchmark(shell, shell_args, name, app, duration_seconds, measurements,
+def _run_benchmark(shell, shell_args, app, duration_seconds, measurements,
                    verbose, android, output_file):
   """Runs the given benchmark by running `benchmark.mojo` in mojo shell with
   appropriate arguments and returns the produced output.
@@ -162,6 +161,7 @@ def _run_benchmark(shell, shell_args, name, app, duration_seconds, measurements,
     shell.pull_file(device_output_file, output_file, remove_original=True)
 
   return True, None, output
+
 
 def _parse_measurement_results(output):
   """Parses the measurement results present in the benchmark output and returns
@@ -230,8 +230,8 @@ def main():
             script_args.test_name)
 
       benchmark_succeeded, benchmark_error, output = _run_benchmark(
-          shell, shell_args, variant_name, app, duration, measurements,
-          script_args.verbose, script_args.android, output_file)
+          shell, shell_args, app, duration, measurements, script_args.verbose,
+          script_args.android, output_file)
 
       print '[ %s ] %s ' % (benchmark_name, variant_name)
 

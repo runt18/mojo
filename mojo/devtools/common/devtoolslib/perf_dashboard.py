@@ -107,7 +107,7 @@ def normalize_label(label):
 def _get_commit_count():
   """Returns the number of git commits in the repository of the cwd."""
   return subprocess.check_output(
-      ["git", "rev-list", "HEAD", "--count"]).strip()
+      ['git', 'rev-list', 'HEAD', '--count']).strip()
 
 
 def _get_current_commit():
@@ -144,13 +144,13 @@ def upload_chart_data(master_name, bot_name, test_name, builder_name,
     try:
       urllib2.urlopen(req)
     except urllib2.HTTPError as e:
-      raise _UploadException("HTTPError: %d. Response: %s\n"
-                             "JSON: %s\n" % (e.code, e.read(), json_data))
+      raise _UploadException('HTTPError: %d. Response: %s\n'
+                             'JSON: %s\n' % (e.code, e.read(), json_data))
     except urllib2.URLError as e:
-      raise _UploadException("URLError: %s for JSON %s\n" %
+      raise _UploadException('URLError: %s for JSON %s\n' %
                              (str(e.reason), json_data))
     except httplib.HTTPException as e:
-      raise _UploadException("HTTPException for JSON %s\n" % json_data)
+      raise _UploadException('HTTPException for JSON %s\n' % json_data)
 
   if (not master_name or not bot_name or not test_name or not builder_name or
       not build_number):
@@ -164,28 +164,28 @@ def upload_chart_data(master_name, bot_name, test_name, builder_name,
 
   # Wrap the |chart_data| with meta data as required by the spec.
   formatted_data = {
-      "master": master_name,
-      "bot": bot_name,
-      "masterid": master_name,
-      "buildername": builder_name,
-      "buildnumber": build_number,
-      "versions": {
-          "mojo": cur_commit,
+      'master': master_name,
+      'bot': bot_name,
+      'masterid': master_name,
+      'buildername': builder_name,
+      'buildnumber': build_number,
+      'versions': {
+          'mojo': cur_commit,
       },
-      "point_id": point_id,
-      "supplemental": {},
-      "chart_data": chart_data,
+      'point_id': point_id,
+      'supplemental': {},
+      'chart_data': chart_data,
   }
 
   upload_url = server_url if server_url else _LOCAL_SERVER
 
   if dry_run:
-    print "Won't upload because --dry-run is specified."
-    print "Server: %s" % upload_url
-    print "Data:"
+    print 'Will not upload because --dry-run is specified.'
+    print 'Server: %s' % upload_url
+    print 'Data:'
     pprint.pprint(formatted_data)
   else:
-    print "Uploading data to %s ..." % upload_url
+    print 'Uploading data to %s ...' % upload_url
     try:
       _upload(upload_url, json.dumps(formatted_data))
     except _UploadException as e:
@@ -195,11 +195,11 @@ def upload_chart_data(master_name, bot_name, test_name, builder_name,
     print "Done."
 
     dashboard_params = urllib.urlencode({
-        "masters": master_name,
-        "bots": bot_name,
-        "tests": test_name,
-        "rev": point_id
+        'masters': master_name,
+        'bots': bot_name,
+        'tests': test_name,
+        'rev': point_id
     })
-    print "Results Dashboard: %s/report?%s" % (upload_url, dashboard_params)
+    print 'Results Dashboard: %s/report?%s' % (upload_url, dashboard_params)
 
   return True
