@@ -4,6 +4,7 @@
 
 group("ui") {
   deps = [
+    "//services/ui/launcher",
     "//services/ui/view_manager",
   ]
 }
