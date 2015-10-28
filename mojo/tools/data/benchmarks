@@ -3,7 +3,7 @@
 
 benchmarks = [
   {
-    'name': 'Dart app initialization',
+    'name': 'dart init',
     'app': 'https://core.mojoapps.io/dart_traced_application.mojo',
     'duration': 10,
     'measurements': [
@@ -12,7 +12,7 @@ benchmarks = [
     ]
   },
   {
-    'name': 'Dart app initialization with handler already running',
+    'name': 'dart init with handler',
     'app': 'https://core.mojoapps.io/dart_handler_running.mojo',
     'duration': 10,
     'measurements': [
@@ -20,7 +20,7 @@ benchmarks = [
     ]
   },
   {
-    'name': 'C++ app initialization',
+    'name': 'cpp init',
     'app': 'https://core.mojoapps.io/trace_me.mojo',
     'duration': 10,
     'measurements': [
