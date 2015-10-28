@@ -134,7 +134,6 @@ class ViewRegistry {
                           mojo::ui::ViewLayoutInfoPtr info);
   void OnViewTreeLayoutResult(base::WeakPtr<ViewTreeState> tree_state_weak);
 
-#if DCHECK_IS_ON()
   bool IsViewStateRegisteredDebug(ViewState* view_state) {
     return view_state && FindView(view_state->view_token_value());
   }
@@ -145,7 +144,6 @@ class ViewRegistry {
                                        return tree_state == other;
                                      });
   }
-#endif
 
   SurfaceManager* surface_manager_;
 
