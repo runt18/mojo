@@ -8,7 +8,7 @@
 
 #include <thread>
 
-#include "mojo/edk/system/test_utils.h"
+#include "mojo/edk/system/test/sleep.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 namespace mojo {
@@ -17,7 +17,7 @@ namespace {
 
 // Sleeps for a "very small" amount of time.
 void EpsilonRandomSleep() {
-  test::Sleep(test::DeadlineFromMilliseconds(rand() % 20));
+  test::SleepMilliseconds(static_cast<unsigned>(rand()) % 20u);
 }
 
 // Basic test to make sure that Lock()/Unlock()/TryLock() don't crash ----------

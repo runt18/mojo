@@ -2,7 +2,7 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-#include "mojo/edk/system/test_utils.h"
+#include "mojo/edk/system/test/random.h"
 
 #include <limits>
 
@@ -13,7 +13,7 @@ namespace system {
 namespace test {
 namespace {
 
-TEST(TestUtilsTest, RandomInt) {
+TEST(RandomTest, RandomInt) {
   static const int kMin = -3;
   static const int kMax = 6;
   static const unsigned kNumBuckets = kMax - kMin + 1;
@@ -37,7 +37,7 @@ TEST(TestUtilsTest, RandomInt) {
   }
 }
 
-TEST(TestUtilsTest, RandomIntSameValues) {
+TEST(RandomTest, RandomIntSameValues) {
   static const int kIntMin = std::numeric_limits<int>::min();
   EXPECT_EQ(kIntMin, RandomInt(kIntMin, kIntMin));
 

@@ -6,7 +6,8 @@
 
 #include "base/test/perf_log.h"
 #include "mojo/edk/system/ref_counted.h"
-#include "mojo/edk/system/test_utils.h"
+#include "mojo/edk/system/test/stopwatch.h"
+#include "mojo/edk/system/test/timeouts.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 namespace mojo {

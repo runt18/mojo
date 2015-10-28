@@ -19,7 +19,8 @@
 #include "mojo/edk/embedder/scoped_platform_handle.h"
 #include "mojo/edk/system/message_in_transit.h"
 #include "mojo/edk/system/mutex.h"
-#include "mojo/edk/system/test_utils.h"
+#include "mojo/edk/system/test/random.h"
+#include "mojo/edk/system/test/sleep.h"
 #include "mojo/edk/system/transport_data.h"
 #include "mojo/edk/test/scoped_test_dir.h"
 #include "mojo/edk/test/simple_test_thread.h"
@@ -170,7 +171,7 @@ class TestMessageReaderAndChecker {
 
       if (static_cast<size_t>(read_size) < sizeof(buffer)) {
         i++;
-        test::Sleep(test::DeadlineFromMilliseconds(kMessageReaderSleepMs));
+        test::SleepMilliseconds(kMessageReaderSleepMs);
       }
     }
 
@@ -391,7 +392,7 @@ TEST_F(RawChannelTest, WriteMessageAndOnReadMessage) {
 
   // Sleep a bit, to let any extraneous reads be processed. (There shouldn't be
   // any, but we want to know about them.)
-  test::Sleep(test::DeadlineFromMilliseconds(100));
+  test::SleepMilliseconds(100u);
 
   // Wait for reading to finish.
   reader_delegate.Wait();
@@ -481,7 +482,7 @@ TEST_F(RawChannelTest, OnError) {
 
   // Sleep a bit, to make sure we don't get another |OnError()|
   // notification. (If we actually get another one, |OnError()| crashes.)
-  test::Sleep(test::DeadlineFromMilliseconds(20));
+  test::SleepMilliseconds(20u);
 
   io_thread()->PostTaskAndWait(
       base::Bind(&RawChannel::Shutdown, base::Unretained(rc.get())));

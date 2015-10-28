@@ -144,27 +144,6 @@ group("tests") {
   ]
 }
 
-mojo_edk_source_set("test_utils") {
-  testonly = true
-
-  sources = [
-    "test_utils.cc",
-    "test_utils.h",
-  ]
-
-  mojo_sdk_public_deps = [
-    "mojo/public/c/system",
-    "mojo/public/cpp/system",
-  ]
-
-  deps = [
-    "//base",
-    "//base/test:test_support",
-  ]
-
-  mojo_edk_deps = [ "mojo/edk/embedder:platform" ]
-}
-
 test("mojo_system_unittests") {
   sources = [
     "../test/multiprocess_test_helper_unittest.cc",
@@ -206,7 +185,6 @@ test("mojo_system_unittests") {
     "simple_dispatcher_unittest.cc",
     "test_channel_endpoint_client.cc",
     "test_channel_endpoint_client.h",
-    "test_utils_unittest.cc",
     "thread_annotations_unittest.cc",
     "unique_identifier_unittest.cc",
     "waiter_test_utils.cc",
@@ -216,10 +194,11 @@ test("mojo_system_unittests") {
 
   deps = [
     ":system",
-    ":test_utils",
     "../embedder:embedder_unittests",
     "../test:test_support",
     "../util",
+    "test",
+    "test:unittests",
     "//base",
     "//base/test:test_support",
     "//testing/gtest",
@@ -238,8 +217,8 @@ test("mojo_system_perftests") {
 
   deps = [
     ":system",
-    ":test_utils",
     "../test:test_support",
+    "test",
     "//base",
     "//base/test:test_support",
     "//base/test:test_support_perf",

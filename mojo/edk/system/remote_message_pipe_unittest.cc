@@ -27,7 +27,8 @@
 #include "mojo/edk/system/raw_channel.h"
 #include "mojo/edk/system/ref_ptr.h"
 #include "mojo/edk/system/shared_buffer_dispatcher.h"
-#include "mojo/edk/system/test_utils.h"
+#include "mojo/edk/system/test/sleep.h"
+#include "mojo/edk/system/test/timeouts.h"
 #include "mojo/edk/system/waiter.h"
 #include "mojo/edk/test/scoped_test_dir.h"
 #include "mojo/edk/test/test_io_thread.h"
@@ -1115,7 +1116,7 @@ TEST_F(RemoteMessagePipeTest, PlatformHandlePassing) {
 // itself (not in the test). Also, any logged warnings/errors would also
 // probably be indicative of bugs.
 TEST_F(RemoteMessagePipeTest, RacingClosesStress) {
-  MojoDeadline delay = test::DeadlineFromMilliseconds(5);
+  MojoDeadline delay = test::DeadlineFromMilliseconds(5u);
 
   for (unsigned i = 0; i < 256; i++) {
     DVLOG(2) << "---------------------------------------- " << i;

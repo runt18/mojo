@@ -12,7 +12,9 @@
 #include <vector>
 
 #include "mojo/edk/system/mutex.h"
-#include "mojo/edk/system/test_utils.h"
+#include "mojo/edk/system/test/sleep.h"
+#include "mojo/edk/system/test/stopwatch.h"
+#include "mojo/edk/system/test/timeouts.h"
 #include "mojo/public/cpp/system/macros.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
@@ -22,7 +24,7 @@ namespace {
 
 // Sleeps for a "very small" amount of time.
 void EpsilonRandomSleep() {
-  test::Sleep(test::DeadlineFromMilliseconds(rand() % 20));
+  test::SleepMilliseconds(static_cast<unsigned>(rand()) % 20u);
 }
 
 // We'll use |MojoDeadline| with |uint64_t| (for |CondVar::WaitWithTimeout()|'s
@@ -86,7 +88,7 @@ TEST(CondVarTest, Basic) {
       }
     } else {
       while (!condition) {
-        EXPECT_FALSE(cv.WaitWithTimeout(&mu, test::TinyDeadline()));
+        EXPECT_FALSE(cv.WaitWithTimeout(&mu, test::TinyTimeout()));
         mu.AssertHeld();
       }
     }
@@ -115,7 +117,7 @@ TEST(CondVarTest, SignalAll) {
             }
           } else {
             while (!condition) {
-              EXPECT_FALSE(cv.WaitWithTimeout(&mu, test::TinyDeadline()));
+              EXPECT_FALSE(cv.WaitWithTimeout(&mu, test::TinyTimeout()));
               mu.AssertHeld();
             }
           }
@@ -157,7 +159,7 @@ TEST(CondVarTest, Timeouts) {
     // It should time out after *at least* the specified amount of time.
     EXPECT_GE(elapsed, timeout);
     // But we expect that it should time out soon after that amount of time.
-    EXPECT_LT(elapsed, timeout + test::EpsilonDeadline());
+    EXPECT_LT(elapsed, timeout + test::EpsilonTimeout());
   }
 }
 

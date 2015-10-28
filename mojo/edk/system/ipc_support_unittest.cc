@@ -23,7 +23,7 @@
 #include "mojo/edk/system/message_pipe.h"
 #include "mojo/edk/system/message_pipe_dispatcher.h"
 #include "mojo/edk/system/process_identifier.h"
-#include "mojo/edk/system/test_utils.h"
+#include "mojo/edk/system/test/timeouts.h"
 #include "mojo/edk/system/waiter.h"
 #include "mojo/edk/test/multiprocess_test_helper.h"
 #include "mojo/edk/test/test_io_thread.h"
@@ -58,7 +58,7 @@ void TestWriteReadMessage(MessagePipeDispatcher* write_mp,
                                    MOJO_WRITE_MESSAGE_FLAG_NONE));
 
   // Wait for it to arrive.
-  EXPECT_EQ(MOJO_RESULT_OK, waiter.Wait(test::ActionDeadline(), nullptr));
+  EXPECT_EQ(MOJO_RESULT_OK, waiter.Wait(test::ActionTimeout(), nullptr));
   read_mp->RemoveAwakable(&waiter, nullptr);
 
   // Read the message from the read end.
@@ -102,7 +102,7 @@ RefPtr<MessagePipeDispatcher> SendMessagePipeDispatcher(
   mp_to_send = nullptr;
 
   // Wait for it to arrive.
-  CHECK_EQ(waiter.Wait(test::ActionDeadline(), nullptr), MOJO_RESULT_OK);
+  CHECK_EQ(waiter.Wait(test::ActionTimeout(), nullptr), MOJO_RESULT_OK);
   read_mp->RemoveAwakable(&waiter, nullptr);
 
   // Read the message from the read end.

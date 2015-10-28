@@ -8,7 +8,6 @@
 #include "mojo/edk/embedder/simple_platform_support.h"
 #include "mojo/edk/system/channel.h"
 #include "mojo/edk/system/ref_ptr.h"
-#include "mojo/edk/system/test_utils.h"
 #include "mojo/edk/test/multiprocess_test_helper.h"
 #include "mojo/edk/test/test_io_thread.h"
 #include "mojo/public/cpp/system/macros.h"

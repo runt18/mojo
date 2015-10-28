@@ -17,7 +17,7 @@
 #include "mojo/edk/embedder/platform_channel_pair.h"
 #include "mojo/edk/embedder/test_embedder.h"
 #include "mojo/edk/system/mutex.h"
-#include "mojo/edk/system/test_utils.h"
+#include "mojo/edk/system/test/timeouts.h"
 #include "mojo/edk/test/multiprocess_test_helper.h"
 #include "mojo/edk/test/scoped_ipc_support.h"
 #include "mojo/edk/test/test_io_thread.h"
@@ -424,9 +424,8 @@ TEST_F(EmbedderTest, MAYBE_MultiprocessMasterSlave) {
                                             MOJO_WRITE_MESSAGE_FLAG_NONE));
 
   // Wait for a response.
-  EXPECT_EQ(MOJO_RESULT_OK,
-            Wait(mp.get(), MOJO_HANDLE_SIGNAL_READABLE,
-                 mojo::system::test::ActionDeadline(), nullptr));
+  EXPECT_EQ(MOJO_RESULT_OK, Wait(mp.get(), MOJO_HANDLE_SIGNAL_READABLE,
+                                 mojo::system::test::ActionTimeout(), nullptr));
 
   // The response message should say "world".
   char buffer[100];
@@ -498,7 +497,7 @@ MOJO_MULTIPROCESS_TEST_CHILD_TEST(MultiprocessMasterSlave) {
     // Wait for the master to send us a message.
     EXPECT_EQ(MOJO_RESULT_OK,
               Wait(mp.get(), MOJO_HANDLE_SIGNAL_READABLE,
-                   mojo::system::test::ActionDeadline(), nullptr));
+                   mojo::system::test::ActionTimeout(), nullptr));
 
     // It should say "hello".
     char buffer[100];

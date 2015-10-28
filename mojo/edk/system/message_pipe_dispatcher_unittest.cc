@@ -3,7 +3,7 @@
 // found in the LICENSE file.
 
 // NOTE(vtl): Some of these tests are inherently flaky (e.g., if run on a
-// heavily-loaded system). Sorry. |test::EpsilonDeadline()| may be increased to
+// heavily-loaded system). Sorry. |test::EpsilonTimeout()| may be increased to
 // increase tolerance and reduce observed flakiness (though doing so reduces the
 // meaningfulness of the test).
 
@@ -18,7 +18,10 @@
 
 #include "mojo/edk/system/message_pipe.h"
 #include "mojo/edk/system/ref_ptr.h"
-#include "mojo/edk/system/test_utils.h"
+#include "mojo/edk/system/test/random.h"
+#include "mojo/edk/system/test/sleep.h"
+#include "mojo/edk/system/test/stopwatch.h"
+#include "mojo/edk/system/test/timeouts.h"
 #include "mojo/edk/system/waiter.h"
 #include "mojo/edk/system/waiter_test_utils.h"
 #include "mojo/edk/test/simple_test_thread.h"
@@ -77,7 +80,7 @@ TEST(MessagePipeDispatcherTest, Basic) {
     stopwatch.Start();
     EXPECT_EQ(MOJO_RESULT_OK, w.Wait(MOJO_DEADLINE_INDEFINITE, &context));
     EXPECT_EQ(1u, context);
-    EXPECT_LT(stopwatch.Elapsed(), test::EpsilonDeadline());
+    EXPECT_LT(stopwatch.Elapsed(), test::EpsilonTimeout());
     hss = HandleSignalsState();
     d0->RemoveAwakable(&w, &hss);
     EXPECT_EQ(MOJO_HANDLE_SIGNAL_READABLE | MOJO_HANDLE_SIGNAL_WRITABLE,
@@ -110,7 +113,7 @@ TEST(MessagePipeDispatcherTest, Basic) {
               d0->AddAwakable(&w, MOJO_HANDLE_SIGNAL_READABLE, 3, nullptr));
     stopwatch.Start();
     EXPECT_EQ(MOJO_RESULT_DEADLINE_EXCEEDED, w.Wait(0, nullptr));
-    EXPECT_LT(stopwatch.Elapsed(), test::EpsilonDeadline());
+    EXPECT_LT(stopwatch.Elapsed(), test::EpsilonTimeout());
     hss = HandleSignalsState();
     d0->RemoveAwakable(&w, &hss);
     EXPECT_EQ(MOJO_HANDLE_SIGNAL_WRITABLE, hss.satisfied_signals);
@@ -122,10 +125,10 @@ TEST(MessagePipeDispatcherTest, Basic) {
               d0->AddAwakable(&w, MOJO_HANDLE_SIGNAL_READABLE, 3, nullptr));
     stopwatch.Start();
     EXPECT_EQ(MOJO_RESULT_DEADLINE_EXCEEDED,
-              w.Wait(2 * test::EpsilonDeadline(), nullptr));
+              w.Wait(2 * test::EpsilonTimeout(), nullptr));
     MojoDeadline elapsed = stopwatch.Elapsed();
-    EXPECT_GT(elapsed, (2 - 1) * test::EpsilonDeadline());
-    EXPECT_LT(elapsed, (2 + 1) * test::EpsilonDeadline());
+    EXPECT_GT(elapsed, (2 - 1) * test::EpsilonTimeout());
+    EXPECT_LT(elapsed, (2 + 1) * test::EpsilonTimeout());
     hss = HandleSignalsState();
     d0->RemoveAwakable(&w, &hss);
     EXPECT_EQ(MOJO_HANDLE_SIGNAL_WRITABLE, hss.satisfied_signals);
@@ -140,7 +143,7 @@ TEST(MessagePipeDispatcherTest, Basic) {
     EXPECT_EQ(MOJO_RESULT_OK, d1->Close());
 
     // It should be signaled.
-    EXPECT_EQ(MOJO_RESULT_OK, w.Wait(test::TinyDeadline(), &context));
+    EXPECT_EQ(MOJO_RESULT_OK, w.Wait(test::TinyTimeout(), &context));
     EXPECT_EQ(12u, context);
     hss = HandleSignalsState();
     d0->RemoveAwakable(&w, &hss);
@@ -371,7 +374,7 @@ TEST(MessagePipeDispatcherTest, BasicThreaded) {
                                 &context, &hss);
       stopwatch.Start();
       thread.Start();
-      test::Sleep(2 * test::EpsilonDeadline());
+      test::Sleep(2 * test::EpsilonTimeout());
       // Wake it up by writing to |d0|.
       buffer[0] = 123456789;
       EXPECT_EQ(MOJO_RESULT_OK,
@@ -379,8 +382,8 @@ TEST(MessagePipeDispatcherTest, BasicThreaded) {
                                  nullptr, MOJO_WRITE_MESSAGE_FLAG_NONE));
     }  // Joins the thread.
     elapsed = stopwatch.Elapsed();
-    EXPECT_GT(elapsed, (2 - 1) * test::EpsilonDeadline());
-    EXPECT_LT(elapsed, (2 + 1) * test::EpsilonDeadline());
+    EXPECT_GT(elapsed, (2 - 1) * test::EpsilonTimeout());
+    EXPECT_LT(elapsed, (2 + 1) * test::EpsilonTimeout());
     EXPECT_TRUE(did_wait);
     EXPECT_EQ(MOJO_RESULT_OK, result);
     EXPECT_EQ(1u, context);
@@ -396,7 +399,7 @@ TEST(MessagePipeDispatcherTest, BasicThreaded) {
       stopwatch.Start();
       thread.Start();
     }  // Joins the thread.
-    EXPECT_LT(stopwatch.Elapsed(), test::EpsilonDeadline());
+    EXPECT_LT(stopwatch.Elapsed(), test::EpsilonTimeout());
     EXPECT_FALSE(did_wait);
     EXPECT_EQ(MOJO_RESULT_ALREADY_EXISTS, result);
     EXPECT_EQ(MOJO_HANDLE_SIGNAL_READABLE | MOJO_HANDLE_SIGNAL_WRITABLE,
@@ -421,12 +424,12 @@ TEST(MessagePipeDispatcherTest, BasicThreaded) {
                                 &context, &hss);
       stopwatch.Start();
       thread.Start();
-      test::Sleep(2 * test::EpsilonDeadline());
+      test::Sleep(2 * test::EpsilonTimeout());
       EXPECT_EQ(MOJO_RESULT_OK, d0->Close());
     }  // Joins the thread.
     elapsed = stopwatch.Elapsed();
-    EXPECT_GT(elapsed, (2 - 1) * test::EpsilonDeadline());
-    EXPECT_LT(elapsed, (2 + 1) * test::EpsilonDeadline());
+    EXPECT_GT(elapsed, (2 - 1) * test::EpsilonTimeout());
+    EXPECT_LT(elapsed, (2 + 1) * test::EpsilonTimeout());
     EXPECT_TRUE(did_wait);
     EXPECT_EQ(MOJO_RESULT_FAILED_PRECONDITION, result);
     EXPECT_EQ(3u, context);
@@ -455,12 +458,12 @@ TEST(MessagePipeDispatcherTest, BasicThreaded) {
                                 &context, &hss);
       stopwatch.Start();
       thread.Start();
-      test::Sleep(2 * test::EpsilonDeadline());
+      test::Sleep(2 * test::EpsilonTimeout());
       EXPECT_EQ(MOJO_RESULT_OK, d1->Close());
     }  // Joins the thread.
     elapsed = stopwatch.Elapsed();
-    EXPECT_GT(elapsed, (2 - 1) * test::EpsilonDeadline());
-    EXPECT_LT(elapsed, (2 + 1) * test::EpsilonDeadline());
+    EXPECT_GT(elapsed, (2 - 1) * test::EpsilonTimeout());
+    EXPECT_LT(elapsed, (2 + 1) * test::EpsilonTimeout());
     EXPECT_TRUE(did_wait);
     EXPECT_EQ(MOJO_RESULT_CANCELLED, result);
     EXPECT_EQ(4u, context);

@@ -11,7 +11,6 @@
 #include "mojo/edk/system/channel_test_base.h"
 #include "mojo/edk/system/message_pipe.h"
 #include "mojo/edk/system/ref_ptr.h"
-#include "mojo/edk/system/test_utils.h"
 #include "mojo/edk/system/waiter.h"
 
 namespace mojo {
