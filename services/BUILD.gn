@@ -49,6 +49,7 @@ group("services") {
       "//services/device_info",
       "//services/files",
       "//services/kiosk_wm",
+      "//services/ui",
       "//services/native_viewport",
       "//services/surfaces",
       "//services/url_response_disk_cache",
