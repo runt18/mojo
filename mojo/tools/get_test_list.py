@@ -205,8 +205,9 @@ def GetTestList(config, verbose_count=0):
 
   # Perf tests -----------------------------------------------------------------
 
+  bot_name = "linux_%s" % ("debug" if config.is_debug else "release")
+
   if target_os == Config.OS_LINUX and ShouldRunTest(Config.TEST_TYPE_PERF):
-    bot_name = "linux_%s" % ("debug" if config.is_debug else "release")
     test_names = ["mojo_public_system_perftests",
                   "mojo_public_bindings_perftests",
                   "mojo_system_perftests"]
@@ -229,6 +230,29 @@ def GetTestList(config, verbose_count=0):
       command += [os.path.join(build_dir, test_name)]
 
       AddEntry(test_name, command)
+
+  # Benchmarks -----------------------------------------------------------------
+
+  if target_os == Config.OS_LINUX and ShouldRunTest(Config.TEST_TYPE_PERF):
+    command = ["python",
+               os.path.join("mojo", "devtools", "common", "mojo_benchmark"),
+               os.path.join("mojo", "tools", "data", "benchmarks"),
+               "--upload",
+               "--server-url", _PERFORMANCE_DASHBOARD_URL,
+               "--bot-name", bot_name,
+               "--test-name", "mojo_benchmarks"]
+
+    if config.values.get("builder_name"):
+      command += ["--builder-name", config.values["builder_name"]]
+    if config.values.get("build_number"):
+      command += ["--build-number", config.values["build_number"]]
+    if config.values.get("master_name"):
+      command += ["--master-name", config.values["master_name"]]
+
+    if not config.is_debug:
+      command += ["--release"]
+
+    AddEntry("Benchmarks", command)
 
   # Integration tests ----------------------------------------------------------
 
