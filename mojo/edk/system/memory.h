@@ -75,6 +75,8 @@ class UserPointer {
   using NonVoidType = typename internal::VoidToChar<Type>::type;
 
  public:
+  static_assert(!std::is_volatile<Type>::value, "Type must not be volatile");
+
   // Instead of explicitly using these constructors, you can often use
   // |MakeUserPointer()| (or |NullUserPointer()| for null pointers). (The common
   // exception is when you have, e.g., a |char*| and want to get a
@@ -260,15 +262,17 @@ class UserPointerReader {
   using TypeNoConst = typename std::remove_const<Type>::type;
 
  public:
+  static_assert(!std::is_volatile<Type>::value, "Type must not be volatile");
+
   // Note: If |count| is zero, |GetPointer()| will always return null.
-  UserPointerReader(UserPointer<const Type> user_pointer, size_t count) {
+  UserPointerReader(UserPointer<const TypeNoConst> user_pointer, size_t count) {
     Init(user_pointer.pointer_, count, true);
   }
   UserPointerReader(UserPointer<TypeNoConst> user_pointer, size_t count) {
     Init(user_pointer.pointer_, count, true);
   }
 
-  const Type* GetPointer() const { return buffer_.get(); }
+  const TypeNoConst* GetPointer() const { return buffer_.get(); }
 
  private:
   template <class Options>
@@ -276,21 +280,22 @@ class UserPointerReader {
 
   struct NoCheck {};
   UserPointerReader(NoCheck,
-                    UserPointer<const Type> user_pointer,
+                    UserPointer<const TypeNoConst> user_pointer,
                     size_t count) {
     Init(user_pointer.pointer_, count, false);
   }
 
-  void Init(const Type* user_pointer, size_t count, bool check) {
+  void Init(const TypeNoConst* user_pointer, size_t count, bool check) {
     if (count == 0)
       return;
 
     if (check) {
-      internal::CheckUserPointerWithCount<sizeof(Type), MOJO_ALIGNOF(Type)>(
+      internal::CheckUserPointerWithCount<sizeof(TypeNoConst),
+                                          MOJO_ALIGNOF(TypeNoConst)>(
           user_pointer, count);
     }
     buffer_.reset(new TypeNoConst[count]);
-    memcpy(buffer_.get(), user_pointer, count * sizeof(Type));
+    memcpy(buffer_.get(), user_pointer, count * sizeof(TypeNoConst));
   }
 
   std::unique_ptr<TypeNoConst[]> buffer_;
@@ -302,6 +307,9 @@ class UserPointerReader {
 template <typename Type>
 class UserPointerWriter {
  public:
+  static_assert(!std::is_volatile<Type>::value, "Type must not be volatile");
+  static_assert(!std::is_const<Type>::value, "Type must not be const");
+
   // Note: If |count| is zero, |GetPointer()| will always return null.
   UserPointerWriter(UserPointer<Type> user_pointer, size_t count)
       : user_pointer_(user_pointer), count_(count) {
@@ -331,6 +339,9 @@ class UserPointerWriter {
 template <typename Type>
 class UserPointerReaderWriter {
  public:
+  static_assert(!std::is_volatile<Type>::value, "Type must not be volatile");
+  static_assert(!std::is_const<Type>::value, "Type must not be const");
+
   // Note: If |count| is zero, |GetPointer()| will always return null.
   UserPointerReaderWriter(UserPointer<Type> user_pointer, size_t count)
       : user_pointer_(user_pointer), count_(count) {
