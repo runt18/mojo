@@ -10,6 +10,8 @@ mojo_edk_source_set("test") {
   sources = [
     "random.cc",
     "random.h",
+    "simple_test_thread.cc",
+    "simple_test_thread.h",
     "sleep.cc",
     "sleep.h",
     "stopwatch.cc",

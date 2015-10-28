@@ -14,7 +14,7 @@
 #include "mojo/edk/system/channel.h"
 #include "mojo/edk/system/channel_endpoint.h"
 #include "mojo/edk/system/message_pipe_dispatcher.h"
-#include "mojo/edk/test/simple_test_thread.h"
+#include "mojo/edk/system/test/simple_test_thread.h"
 #include "mojo/public/cpp/system/macros.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
@@ -94,7 +94,7 @@ TEST_F(ChannelManagerTest, TwoChannels) {
   EXPECT_EQ(MOJO_RESULT_OK, d2->Close());
 }
 
-class OtherThread : public mojo::test::SimpleTestThread {
+class OtherThread : public test::SimpleTestThread {
  public:
   // Note: There should be no other refs to the channel identified by
   // |channel_id| outside the channel manager.

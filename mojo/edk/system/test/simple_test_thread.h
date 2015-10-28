@@ -2,14 +2,15 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-#ifndef MOJO_EDK_TEST_SIMPLE_TEST_THREAD_
-#define MOJO_EDK_TEST_SIMPLE_TEST_THREAD_
+#ifndef MOJO_EDK_SYSTEM_TEST_SIMPLE_TEST_THREAD_
+#define MOJO_EDK_SYSTEM_TEST_SIMPLE_TEST_THREAD_
 
 #include <thread>
 
 #include "mojo/public/cpp/system/macros.h"
 
 namespace mojo {
+namespace system {
 namespace test {
 
 // Class to help simple threads (with no message loops) in tests.
@@ -36,6 +37,7 @@ class SimpleTestThread {
 };
 
 }  // namespace test
+}  // namespace system
 }  // namespace mojo
 
-#endif  // MOJO_EDK_TEST_SIMPLE_TEST_THREAD_
+#endif  // MOJO_EDK_TEST_SYSTEM_SIMPLE_TEST_THREAD_

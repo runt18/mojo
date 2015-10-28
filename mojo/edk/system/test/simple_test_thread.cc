@@ -2,11 +2,12 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-#include "mojo/edk/test/simple_test_thread.h"
+#include "mojo/edk/system/test/simple_test_thread.h"
 
 #include "base/logging.h"
 
 namespace mojo {
+namespace system {
 namespace test {
 
 SimpleTestThread::~SimpleTestThread() {
@@ -26,4 +27,5 @@ void SimpleTestThread::Join() {
 SimpleTestThread::SimpleTestThread() {}
 
 }  // namespace test
+}  // namespace system
 }  // namespace mojo

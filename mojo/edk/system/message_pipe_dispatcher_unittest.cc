@@ -19,12 +19,12 @@
 #include "mojo/edk/system/message_pipe.h"
 #include "mojo/edk/system/ref_ptr.h"
 #include "mojo/edk/system/test/random.h"
+#include "mojo/edk/system/test/simple_test_thread.h"
 #include "mojo/edk/system/test/sleep.h"
 #include "mojo/edk/system/test/stopwatch.h"
 #include "mojo/edk/system/test/timeouts.h"
 #include "mojo/edk/system/waiter.h"
 #include "mojo/edk/system/waiter_test_utils.h"
-#include "mojo/edk/test/simple_test_thread.h"
 #include "mojo/edk/util/make_unique.h"
 #include "mojo/public/cpp/system/macros.h"
 #include "testing/gtest/include/gtest/gtest.h"
@@ -478,7 +478,7 @@ TEST(MessagePipeDispatcherTest, BasicThreaded) {
 
 const size_t kMaxMessageSize = 2000;
 
-class WriterThread : public mojo::test::SimpleTestThread {
+class WriterThread : public test::SimpleTestThread {
  public:
   // |*messages_written| and |*bytes_written| belong to the thread while it's
   // alive.
@@ -528,7 +528,7 @@ class WriterThread : public mojo::test::SimpleTestThread {
   MOJO_DISALLOW_COPY_AND_ASSIGN(WriterThread);
 };
 
-class ReaderThread : public mojo::test::SimpleTestThread {
+class ReaderThread : public test::SimpleTestThread {
  public:
   // |*messages_read| and |*bytes_read| belong to the thread while it's alive.
   ReaderThread(RefPtr<Dispatcher> read_dispatcher,

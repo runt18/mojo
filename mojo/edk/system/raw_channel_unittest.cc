@@ -20,10 +20,10 @@
 #include "mojo/edk/system/message_in_transit.h"
 #include "mojo/edk/system/mutex.h"
 #include "mojo/edk/system/test/random.h"
+#include "mojo/edk/system/test/simple_test_thread.h"
 #include "mojo/edk/system/test/sleep.h"
 #include "mojo/edk/system/transport_data.h"
 #include "mojo/edk/test/scoped_test_dir.h"
-#include "mojo/edk/test/simple_test_thread.h"
 #include "mojo/edk/test/test_io_thread.h"
 #include "mojo/edk/test/test_utils.h"
 #include "mojo/edk/util/make_unique.h"
@@ -305,7 +305,7 @@ TEST_F(RawChannelTest, OnReadMessage) {
 
 // RawChannelTest.WriteMessageAndOnReadMessage ---------------------------------
 
-class RawChannelWriterThread : public mojo::test::SimpleTestThread {
+class RawChannelWriterThread : public test::SimpleTestThread {
  public:
   RawChannelWriterThread(RawChannel* raw_channel, size_t write_count)
       : raw_channel_(raw_channel), left_to_write_(write_count) {}
