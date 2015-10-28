@@ -46,7 +46,10 @@ group("examples") {
   }
 
   if (is_linux || is_android) {
-    deps += [ "//examples/surfaces_app" ]
+    deps += [
+      "//examples/ui/spinning_cube",
+      "//examples/surfaces_app",
+    ]
   }
 
   if (defined(go_build_tool) && go_build_tool != "") {

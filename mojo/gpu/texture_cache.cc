@@ -56,6 +56,7 @@ scoped_ptr<TextureCache::TextureInfo> TextureCache::GetTexture(
     // If the texture is the right size, use it.
     if (texture_size.width == requested_size.width &&
         texture_size.height == requested_size.height) {
+      gl_context_->MakeCurrent();
       glWaitSyncPointCHROMIUM(sync_point);
       return texture_info;
     }
