@@ -202,7 +202,7 @@ hooks = [
   {
     'name': 'gn_linux64',
     'pattern': '.',
-    'action': [ 'download_from_google_storage',
+    'action': [ 'src/tools/download_from_google_storage.py',
                 '--no_resume',
                 '--quiet',
                 '--platform=linux*',
@@ -214,7 +214,7 @@ hooks = [
   {
     'name': 'gn_mac',
     'pattern': '.',
-    'action': [ 'download_from_google_storage',
+    'action': [ 'src/tools/download_from_google_storage.py',
                 '--no_resume',
                 '--quiet',
                 '--platform=darwin',
@@ -226,7 +226,7 @@ hooks = [
   {
     'name': 'gn_win',
     'pattern': '.',
-    'action': [ 'download_from_google_storage',
+    'action': [ 'src/tools/download_from_google_storage.py',
                 '--no_resume',
                 '--quiet',
                 '--platform=win*',
@@ -239,7 +239,7 @@ hooks = [
   {
     'name': 'clang_format_linux',
     'pattern': '.',
-    'action': [ 'download_from_google_storage',
+    'action': [ 'src/tools/download_from_google_storage.py',
                 '--no_resume',
                 '--quiet',
                 '--platform=linux*',
@@ -251,7 +251,7 @@ hooks = [
   {
     'name': 'clang_format_mac',
     'pattern': '.',
-    'action': [ 'download_from_google_storage',
+    'action': [ 'src/tools/download_from_google_storage.py',
                 '--no_resume',
                 '--quiet',
                 '--platform=darwin',
@@ -275,7 +275,7 @@ hooks = [
   {
     'name': 'eu-strip',
     'pattern': '.',
-    'action': [ 'download_from_google_storage',
+    'action': [ 'src/tools/download_from_google_storage.py',
                 '--no_resume',
                 '--quiet',
                 '--platform=linux*',
@@ -330,7 +330,7 @@ hooks = [
   {
     'name': 'dejavu-fonts',
     'pattern': '',
-    'action': [ 'download_from_google_storage',
+    'action': [ 'src/tools/download_from_google_storage.py',
                 '--no_resume',
                 '--quiet',
                 '--no_auth',
@@ -342,7 +342,7 @@ hooks = [
   {
     'name': 'keyboard_native_resources',
     'pattern': '',
-    'action': [ 'download_from_google_storage',
+    'action': [ 'src/tools/download_from_google_storage.py',
                 '--no_resume',
                 '--quiet',
                 '--no_auth',
@@ -354,7 +354,7 @@ hooks = [
   {
     'name': 'dump_syms_linux64',
     'pattern': '.',
-    'action': [ 'download_from_google_storage',
+    'action': [ 'src/tools/download_from_google_storage.py',
                 '--no_resume',
                 '--quiet',
                 '--platform=linux*',
@@ -367,7 +367,7 @@ hooks = [
   {
     'name': 'symupload_linux64',
     'pattern': '.',
-    'action': [ 'download_from_google_storage',
+    'action': [ 'src/tools/download_from_google_storage.py',
                 '--no_resume',
                 '--quiet',
                 '--platform=linux*',
@@ -380,7 +380,7 @@ hooks = [
   {
     'name': 'prediction_resources',
     'pattern': '',
-    'action': [ 'download_from_google_storage',
+    'action': [ 'src/tools/download_from_google_storage.py',
                 '--no_resume',
                 '--quiet',
                 '--no_auth',
