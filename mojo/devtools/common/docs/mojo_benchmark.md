@@ -72,3 +72,31 @@ benchmarks = [
   },
 ]
 ```
+
+## Dashboard
+
+`mojo_benchmark` supports uploading the results to an instance of a Catapult
+performance dashboard. In order to upload the results of a run to performance
+dashboard, pass the `--upload` flag along with required meta-data describing the
+data being uploaded:
+
+```sh
+mojo_benchmark \
+--upload \
+--master-name my-master \
+--bot-name my-bot \
+--test-name my-test-suite
+--builder-name my-builder \
+--build-number my-build
+--server-url http://my-server.example.com
+```
+
+If no `--server-url` is specified, the script assumes that a local instance of
+the dashboard is running at `http://localhost:8080`. The script assumes that the
+working directory from which it is called is a git repository and queries it to
+determine the sequential number identifying the revision (as the number of
+commits in the current branch in the repository).
+
+For more information refer to:
+
+ - [Catapult project](https://github.com/catapult-project/catapult)

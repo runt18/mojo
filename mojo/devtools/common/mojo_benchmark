@@ -172,9 +172,7 @@ def main():
                       help='a file listing benchmarks to run')
   parser.add_argument('--save-traces', action='store_true',
                       help='save the traces produced by benchmarks to disk')
-  parser.add_argument('--chart-data-output-file', type=argparse.FileType('w'),
-                      help='file to write chart data for the performance '
-                      'dashboard to')
+  perf_dashboard.add_argparse_server_arguments(parser)
 
   # Common shell configuration arguments.
   shell_config.add_shell_arguments(parser)
@@ -194,9 +192,6 @@ def main():
   exit_code = 0
   for benchmark_spec in benchmark_list_params['benchmarks']:
     benchmark_name = benchmark_spec['name']
-    chart_data_recorder = None
-    if script_args.chart_data_output_file:
-      chart_data_recorder = perf_dashboard.ChartDataRecorder(benchmark_name)
 
     for variant_spec in _generate_benchmark_variants(benchmark_spec):
       variant_name = variant_spec['variant_name']
@@ -211,6 +206,12 @@ def main():
             benchmark_name.replace(' ', '_'),
             variant_name.replace(' ', '_'),
             time.strftime('%Y%m%d%H%M%S'))
+
+      chart_data_recorder = None
+      if script_args.upload:
+        chart_data_recorder = perf_dashboard.ChartDataRecorder(
+            script_args.test_name)
+
       benchmark_succeeded, benchmark_error, output = _run_benchmark(
           shell, shell_args, variant_name, app, duration, measurements,
           script_args.verbose, script_args.android, output_file)
@@ -228,9 +229,11 @@ def main():
             print '%s %s' % (measurement_spec, result)
 
             if chart_data_recorder:
-              measurement_name = measurement_spec.replace('/', '-')
-              chart_data_recorder.record_scalar(variant_name, measurement_name,
-                                                'ms', result)
+              chart_name = benchmark_name + '__' + variant_name
+              chart_data_recorder.record_scalar(
+                  perf_dashboard.normalize_label(chart_name),
+                  perf_dashboard.normalize_label(measurement_spec),
+                  'ms', result)
           else:
             print '%s ?' % measurement_spec
             some_measurements_failed = True
@@ -246,10 +249,12 @@ def main():
         print '-' * 72
         exit_code = 1
 
-      if script_args.chart_data_output_file:
-        script_args.chart_data_output_file.write(
-            json.dumps(chart_data_recorder.get_chart_data()))
-        script_args.chart_data_output_file.write('\n')
+      if script_args.upload:
+        perf_dashboard.upload_chart_data(
+            script_args.master_name, script_args.bot_name,
+            script_args.test_name, script_args.builder_name,
+            script_args.build_number, chart_data_recorder.get_chart_data(),
+            script_args.server_url, script_args.dry_run)
 
   return exit_code
 

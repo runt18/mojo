@@ -91,6 +91,19 @@ def add_argparse_server_arguments(parser):
            'upload the data.')
 
 
+def normalize_label(label):
+  """Normalizes a label to be used for data sent to performance dashboard.
+
+  This replaces:
+    '/' -> '-', as slashes are used to denote test/sub-test relation.
+    ' ' -> '_', as there is a convention of not using spaces in test names.
+
+  Returns:
+    Normalized label.
+  """
+  return label.replace('/', '-').replace(' ', '_')
+
+
 def _get_commit_count():
   """Returns the number of git commits in the repository of the cwd."""
   return subprocess.check_output(
