@@ -3,10 +3,11 @@
 # found in the LICENSE file.
 
 import("//mojo/public/mojo_application.gni")
+import("//mojo/public/tools/bindings/mojom.gni")
 
 # Trusted code
 if (!is_nacl) {
-  mojo_native_application("nacl_content_handler") {
+  mojo_native_application("content_handler_sfi") {
     sources = [
       "content_handler_main.cc",
     ]
@@ -31,7 +32,8 @@ if (!is_nacl) {
   if (current_cpu == "x86" || current_cpu == "arm") {
     # Non-SFI NaCl can only be executed by a 32-bit process, so our
     # content handler must be built and launched as a 32-bit process as well.
-    mojo_native_application("nacl_content_handler_nonsfi_32_bit") {
+    mojo_native_application("content_handler_nonsfi_32_bit") {
+      output_name = "content_handler_nonsfi_nexe"
       sources = [
         "content_handler_main_nonsfi.cc",
       ]
@@ -41,42 +43,127 @@ if (!is_nacl) {
         "//mojo/application:application",
         "//mojo/application:content_handler",
         "//mojo/data_pipe_utils",
-        "//mojo/public/platform/native:mgl_thunks",
-        "//mojo/public/platform/native:mgl_onscreen_thunks",
         "//mojo/message_pump",
         "//mojo/nacl/nonsfi:irt_mojo_nonsfi",
         "//mojo/public/cpp/application:application",
         "//native_client/src/nonsfi/loader:elf_loader",
       ]
     }
-
-    # Copy to the root build directory so that the '#!' prefix line for invoking
-    # our content handler can simply be "mojo:nacl_content_handler_nonsfi".
-    copy("nacl_content_handler_nonsfi_copy") {
+    mojo_native_application("content_handler_nonsfi_pexe_32_bit") {
+      output_name = "content_handler_nonsfi_pexe"
       sources = [
-        "${root_out_dir}/nacl_content_handler_nonsfi_32_bit.mojo",
+        "content_handler_main_nonsfi_pexe.cc",
+      ]
+
+      deps = [
+        ":pnacl_translator_bindings",
+        "//base",
+        "//mojo/application:application",
+        "//mojo/application:content_handler",
+        "//mojo/data_pipe_utils",
+        "//mojo/message_pump",
+        "//mojo/nacl/nonsfi:irt_mojo_nonsfi",
+        "//mojo/services/files/c:mojio",
+        "//native_client/src/nonsfi/loader:elf_loader",
+      ]
+    }
+    mojo_native_application("pnacl_compile_32_bit") {
+      output_name = "pnacl_compile"
+      sources = [
+        "pnacl_compile.cc",
+      ]
+
+      deps = [
+        ":pnacl_translator_bindings",
+        "//base",
+        "//mojo/nacl/nonsfi:irt_mojo_nonsfi",
+        "//mojo/public/cpp/application:standalone",
+        "//native_client/src/nonsfi/loader:elf_loader",
+      ]
+    }
+    mojo_native_application("pnacl_link_32_bit") {
+      output_name = "pnacl_link"
+      sources = [
+        "pnacl_link.cc",
+      ]
+
+      deps = [
+        ":pnacl_translator_bindings",
+        "//base",
+        "//mojo/nacl/nonsfi:irt_mojo_nonsfi",
+        "//mojo/public/cpp/application:standalone",
+        "//native_client/src/nonsfi/loader:elf_loader",
+      ]
+    }
+
+    # Copy all files necessary for pnacl translation into the output directory.
+    copy("pnacl_translation_files") {
+      file_location_prefix = "//native_client/toolchain/linux_x86/pnacl_translator/translator/x86-32-nonsfi"
+      sources = [
+        "${file_location_prefix}/bin/ld.nexe",
+        "${file_location_prefix}/bin/pnacl-llc.nexe",
+        "${file_location_prefix}/lib/crtbegin.o",
+        "${file_location_prefix}/lib/crtbegin_for_eh.o",
+        "${file_location_prefix}/lib/crtend.o",
+        "${file_location_prefix}/lib/libcrt_platform.a",
+        "${file_location_prefix}/lib/libgcc.a",
+        "${file_location_prefix}/lib/libpnacl_irt_shim_dummy.a",
       ]
       outputs = [
-        "${root_build_dir}/nacl_content_handler_nonsfi.mojo",
+        "${root_build_dir}/pnacl_translation_files/{{source_file_part}}",
       ]
-      deps = [
-        ":nacl_content_handler_nonsfi_32_bit",
-      ]
+    }
+
+    # Copy to the root build directory so that the '#!' prefix line for invoking
+    # our content handler can simply be "mojo:content_handler_nonsfi".
+    # Either way, build the same dependencies.
+    shared_deps = [
+      ":content_handler_nonsfi_32_bit",
+      ":content_handler_nonsfi_pexe_32_bit",
+      ":pnacl_compile_32_bit",
+      ":pnacl_link_32_bit",
+      ":pnacl_translation_files",
+    ]
+    if (root_out_dir != root_build_dir) {
+      copy("content_handler_nonsfi_copy") {
+        sources = [
+          "${root_out_dir}/content_handler_nonsfi_nexe.mojo",
+          "${root_out_dir}/content_handler_nonsfi_pexe.mojo",
+          "${root_out_dir}/pnacl_compile.mojo",
+          "${root_out_dir}/pnacl_link.mojo",
+        ]
+        outputs = [
+          "${root_build_dir}/{{source_file_part}}",
+        ]
+        deps = shared_deps
+      }
+    } else {
+      group("content_handler_nonsfi_copy") {
+        deps = shared_deps
+      }
     }
   }
 }
 
 # This group serves as a 64 to 32 bit transformation for Linux. If we are
 # using a 64 bit toolchain, build the nonsfi nacl content handler as 32 bit.
-group("nacl_content_handler_nonsfi") {
+group("content_handler_nonsfi") {
   deps = []
   if ((target_cpu == "x64" || target_cpu == "x86") && is_linux) {
     # The toolchain is hardcoded as 32-bit clang here -- although it must
     # be 32 bit (for nonsfi), it assumes clang. Ideally, the toolchain would
     # be defined as the 32 bit variant of whatever is being used (be it clang,
     # gcc, or something else).
-    deps += [ ":nacl_content_handler_nonsfi_copy(//build/toolchain/linux:clang_x86)" ]
+    deps +=
+        [ ":content_handler_nonsfi_copy(//build/toolchain/linux:clang_x86)" ]
   } else {
-    deps += [ ":nacl_content_handler_nonsfi_copy" ]
+    deps += [ ":content_handler_nonsfi_copy" ]
   }
+}
+
+mojom("pnacl_translator_bindings") {
+  sources = [
+    "pnacl_compile.mojom",
+    "pnacl_link.mojom",
+  ]
 }

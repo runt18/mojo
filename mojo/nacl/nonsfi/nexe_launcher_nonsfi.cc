@@ -12,10 +12,15 @@
 
 namespace nacl {
 
-void MojoLaunchNexeNonsfi(int nexe_fd, MojoHandle initial_handle) {
+void MojoLaunchNexeNonsfi(int nexe_fd, MojoHandle initial_handle,
+                          bool enable_translate_irt) {
   // Run -- also, closes the nexe_fd, removing the temp file.
   uintptr_t entry = NaClLoadElfFile(nexe_fd);
 
+  // Enable the translation section of the IRT, if requested.
+  if (enable_translate_irt) {
+    MojoPnaclTranslatorEnable();
+  }
   MojoSetInitialHandle(initial_handle);
   int argc = 1;
   char* argvp = const_cast<char*>("NaClMain");

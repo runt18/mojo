@@ -13,7 +13,8 @@ namespace nacl {
  * Takes a fd to a nexe, and launches the nexe with the given
  * MojoHandle.
  */
-void MojoLaunchNexeNonsfi(int nexe_fd, MojoHandle initial_handle);
+void MojoLaunchNexeNonsfi(int nexe_fd, MojoHandle initial_handle,
+                          bool enable_translate_irt);
 
 } // namespace nacl
 

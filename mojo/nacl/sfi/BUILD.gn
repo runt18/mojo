@@ -27,7 +27,7 @@ if (!is_nacl) {
 
 group("mojo_nacl") {
   deps = [
-    "//services/nacl:nacl_content_handler",
+    "//services/nacl:content_handler_sfi",
   ]
 }
 

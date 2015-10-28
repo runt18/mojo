@@ -6,12 +6,26 @@
 #define MOJO_NACL_NONSFI_IRT_MOJO_NONSFI_H_
 
 #include "mojo/public/c/system/functions.h"
+#include "native_client/src/untrusted/irt/irt_dev.h"
 
 namespace nacl {
+
+extern const struct nacl_irt_private_pnacl_translator_compile
+    nacl_irt_private_pnacl_translator_compile;
+extern const struct nacl_irt_private_pnacl_translator_link
+    nacl_irt_private_pnacl_translator_link;
+extern const struct nacl_irt_resource_open
+    nacl_irt_resource_open;
 
 // Used to pass handle to application. If uncalled,
 // the handle defaults to MOJO_HANDLE_INVALID.
 void MojoSetInitialHandle(MojoHandle handle);
+
+MojoResult MojoGetInitialHandle(MojoHandle* handle);
+
+// Mechanism to control when nexes get access to the PNaCl translation
+// IRT functions.
+void MojoPnaclTranslatorEnable();
 
 // IRT interface query function which may be passed to nacl_irt_nonsfi_entry.
 // Queries for a mojo interface, then for the irt core.

@@ -17,7 +17,6 @@ if (!is_nacl) {
       deps = [
         ":irt_mojo_nonsfi",
         "//mojo/edk/system",
-        "//mojo/gles2:mgl",
         "//mojo/public/cpp/environment:standalone",
         "//native_client/src/nonsfi/loader:elf_loader",
       ]
@@ -43,6 +42,9 @@ static_library("irt_mojo_nonsfi") {
   sources = [
     "irt_mojo_nonsfi.cc",
     "irt_mojo_nonsfi.h",
+    "irt_pnacl_translator_compile.cc",
+    "irt_pnacl_translator_link.cc",
+    "irt_resource_open.cc",
     "nexe_launcher_nonsfi.cc",
   ]
 
@@ -52,14 +54,18 @@ static_library("irt_mojo_nonsfi") {
     "//mojo/public/c/gpu:MGL_onscreen",
     "//mojo/public/c/gpu:MGL_signal_sync_point",
     "//mojo/public/c/system",
+    "//mojo/public/cpp/utility",
     "//mojo/public/platform/nacl:mojo_irt_header",
+    "//mojo/public/platform/native:mgl_thunks",
+    "//mojo/public/platform/native:mgl_onscreen_thunks",
     "//native_client/src/nonsfi/irt:irt_interfaces",
+    "//services/nacl:pnacl_translator_bindings",
   ]
 }
 
 group("mojo_nacl_nonsfi") {
   deps = [
-    "//services/nacl:nacl_content_handler_nonsfi",
+    "//services/nacl:content_handler_nonsfi",
   ]
 }
 
@@ -121,7 +127,7 @@ action("prepend_shebang_to_nexe") {
     output,
   ]
 
-  line = "#!mojo mojo:nacl_content_handler_nonsfi"
+  line = "#!mojo mojo:content_handler_nonsfi_nexe"
   args = [
     "--input=" + rebase_path(input, root_build_dir),
     "--output=" + rebase_path(output, root_build_dir),

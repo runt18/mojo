@@ -314,6 +314,7 @@ hooks = [
     'action': [
         'python', 'src/build/download_nacl_toolchains.py',
         '--packages', 'pnacl_newlib',
+        '--packages', 'pnacl_translator',
         'sync', '--extract',
     ],
   },

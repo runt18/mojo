@@ -60,7 +60,7 @@ class NaClContentHandler : public mojo::ApplicationDelegate,
     MojoHandle handle =
         application_request.PassMessagePipe().release().value();
     // MojoLaunchNexeNonsfi takes ownership of the fd.
-    MojoLaunchNexeNonsfi(fd, handle);
+    MojoLaunchNexeNonsfi(fd, handle, false /* enable_translation_irt */);
   }
 
   mojo::ContentHandlerFactory content_handler_factory_;

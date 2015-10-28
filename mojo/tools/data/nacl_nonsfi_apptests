@@ -1,12 +1,46 @@
 # This file contains a list of Non-SFI NaCl Mojo gtest app tests.
 # This must be a valid python dictionary.
+#
+# Multiprocess mode is required for the nonsfi nacl tests: the content
+# handler for these tests must exist in a 32-bit process but the parent
+# may be a 64-bit process. This makes multithreading insufficient for
+# these tests.
 tests = [
   {
     "test": "mojo:monacl_test_nonsfi",
-    # Multiprocess mode is required for the nonsfi nacl tests: the content
-    # handler for these tests must exist in a 32-bit process but the parent
-    # may be a 64-bit process. This makes multithreading insufficient for
-    # these tests.
     "shell-args": ["--enable-multiprocess"],
   },
+
+  {
+    "test": "mojo:shell_apptests.pexe",
+    "shell-args": ["--enable-multiprocess"],
+  },
+  {
+    "test": "mojo:http_server_apptests.pexe",
+    "shell-args": ["--enable-multiprocess"],
+  },
+  {
+    "test": "mojo:clipboard_apptests.pexe",
+    "shell-args": ["--enable-multiprocess"],
+  },
+  {
+    "test": "mojo:example_apptests.pexe",
+    # ExampleApplicationTest.CheckCommandLineArg checks --example_apptest_arg.
+    "shell-args": ["--enable-multiprocess"],
+    "test-args": ["--example_apptest_arg"],
+  },
+  {
+    "test": "mojo:files_apptests.pexe",
+    "shell-args": ["--enable-multiprocess"],
+  },
+  {
+    "test": "mojo:mojo_view_manager_client_apptests.pexe",
+    "shell-args": ["--enable-multiprocess", "--args-for=mojo:native_viewport_service --use-headless-config --use-osmesa"],
+  },
+  # TODO(smklein) Include "view_manager_service_apptests" once it isn't as slow.
+  {
+    "test": "mojo:window_manager_apptests.pexe",
+    "shell-args": ["--enable-multiprocess"],
+  },
+
 ]

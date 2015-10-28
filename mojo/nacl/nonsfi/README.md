@@ -44,7 +44,7 @@ this content (i.e., how does the mojo_shell know it is dealing with a nonsfi
 nexe?).
 
 The BUILD.gn files in Mojo automatically make this pexe, translate it to a
-nexe, and prepend a line ("#!mojo mojo:nacl_content_handler_nonsfi") to the
+nexe, and prepend a line ("#!mojo mojo:content_handler_nonsfi_nexe") to the
 front of the file, at which point it is also runnable through the mojo_shell.
 These files, which start with this "#!" line, are ".mojo" files. The nexes can
 be run like this:
@@ -56,8 +56,6 @@ $  ./out/Debug/mojo_shell --enable-multiprocess out/Debug/FOOBAR.mojo
 TODO
 ====
 
-* Enable content handling of Non-SFI pexes, which should be translated and run
-as nexes.
-  * Use subzero (a NaCl project to improve translation speed) for pexe
-  translation.
-  * Enable caching of translated pexes.
+* Use subzero (a NaCl project to improve translation speed) for pexe
+translation.
+* Enable caching of translated pexes.
