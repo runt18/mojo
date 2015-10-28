@@ -31,16 +31,33 @@ global variable, containing entries of the following form:
 
     # List of measurements to make.
     'measurements': [
-      '<measurement type>/<event category>/<event name>',
+      {
+        'name': my_measurement,
+        'spec': spec,
+      },
+      (...)
     ]
   }
 
+For each measurement, 'name' is a label used for presentation purposes. 'spec'
+defines the measurement.
+
 Available measurement types are:
 
-  - 'time_until' - time until the first occurence of the targeted event
-  - 'avg_duration' - average duration of the targeted event
-  - 'percentile_duration' - value at XXth percentile of the targeted event where
-    XX is from the measurement spec, i.e. .../<event name>/0.XX
+'time_until' - time until the first occurence of the targeted event. The spec
+takes the following format:
+
+  'time_until/category/event'
+
+'avg_duration' - average duration of the targeted event. The spec takes the
+following format:
+
+  'avg_duration/category/event'
+
+'percentile_duration' - value at the given percentile of the targeted event. The
+spec takes the following format:
+
+  'percentile_duration/category/event/percentile'
 
 |benchmark_list_file| may reference the |target_os| global that will be any of
 ['android', 'linux'], indicating the system on which the benchmarks are to be
@@ -66,7 +83,7 @@ _EXTRA_TIMEOUT = 20
 _MEASUREMENT_RESULT_FORMAT = r"""
 ^              # Beginning of the line.
 measurement:   # Hard-coded tag.
-\s+(\S+)       # Match measurement name.
+\s+(\S+)       # Match measurement spec.
 \s+(\S+)       # Match measurement result.
 $              # End of the line.
 """
@@ -121,7 +138,7 @@ def _run_benchmark(shell, shell_args, name, app, duration_seconds, measurements,
       benchmark_args.append('--trace-output=' + output_file)
 
   for measurement in measurements:
-    benchmark_args.append(measurement)
+    benchmark_args.append(measurement['spec'])
 
   shell_args = list(shell_args)
   shell_args.append(_BENCHMARK_APP)
@@ -155,10 +172,10 @@ def _parse_measurement_results(output):
   for line in output_lines:
     match = re.match(_MEASUREMENT_REGEX, line)
     if match:
-      measurement_name = match.group(1)
+      measurement_spec = match.group(1)
       measurement_result = match.group(2)
       try:
-        measurement_results[measurement_name] = float(measurement_result)
+        measurement_results[measurement_spec] = float(measurement_result)
       except ValueError:
         pass
   return measurement_results
@@ -223,19 +240,19 @@ def main():
         measurement_results = _parse_measurement_results(output)
         # Iterate over the list of specs, not the dictionary, to detect missing
         # results and preserve the required order.
-        for measurement_spec in measurements:
-          if measurement_spec in measurement_results:
-            result = measurement_results[measurement_spec]
-            print '%s %s' % (measurement_spec, result)
+        for measurement in measurements:
+          if measurement['spec'] in measurement_results:
+            result = measurement_results[measurement['spec']]
+            print '%10.4f  %s' % (result, measurement['name'])
 
             if chart_data_recorder:
               chart_name = benchmark_name + '__' + variant_name
               chart_data_recorder.record_scalar(
                   perf_dashboard.normalize_label(chart_name),
-                  perf_dashboard.normalize_label(measurement_spec),
+                  perf_dashboard.normalize_label(measurement['name']),
                   'ms', result)
           else:
-            print '%s ?' % measurement_spec
+            print '?  %s' % measurement['name']
             some_measurements_failed = True
 
       if not benchmark_succeeded or some_measurements_failed:

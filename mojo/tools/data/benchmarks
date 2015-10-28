@@ -7,8 +7,14 @@ benchmarks = [
     'app': 'https://core.mojoapps.io/dart_traced_application.mojo',
     'duration': 10,
     'measurements': [
-      'time_until/traced_application/initialized',
-      'time_between/traced_application/initialized/traced_application/connected',
+      {
+        'name': 'initialize',
+        'spec': 'time_until/traced_application/initialized'
+      },
+      {
+        'name': 'accept connection',
+        'spec': 'time_between/traced_application/initialized/traced_application/connected',
+      }
     ]
   },
   {
@@ -16,7 +22,10 @@ benchmarks = [
     'app': 'https://core.mojoapps.io/dart_handler_running.mojo',
     'duration': 10,
     'measurements': [
-      'time_between/dart_handler_running/connecting/traced_application/initialized',
+      {
+        'name': 'initialize',
+        'spec': 'time_between/dart_handler_running/connecting/traced_application/initialized',
+      }
     ]
   },
   {
@@ -24,8 +33,14 @@ benchmarks = [
     'app': 'https://core.mojoapps.io/trace_me.mojo',
     'duration': 10,
     'measurements': [
-      'time_until/trace_me/initialized',
-      'time_between/trace_me/initialized/trace_me/connected',
+      {
+        'name': 'initialize',
+        'spec': 'time_until/trace_me/initialized',
+      },
+      {
+        'name': 'accept connection',
+        'spec': 'time_between/trace_me/initialized/trace_me/connected',
+      }
     ],
     'shell-args': [
       '--args-for=https://core.mojoapps.io/trace_me.mojo --early-tracing',
