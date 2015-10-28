@@ -20,47 +20,8 @@ from devtoolslib import perf_dashboard
 _DESCRIPTION = """Runner for Mojo application benchmarks.
 
 |benchmark_list_file| has to be a valid Python program that sets a |benchmarks|
-global variable, containing entries of the following form:
-
-  {
-    'name': '<name of the benchmark>',
-    'app': '<url of the app to benchmark>',
-    'shell-args': [],
-    'duration': <duration in seconds>,
-
-    # List of measurements to make.
-    'measurements': [
-      {
-        'name': my_measurement,
-        'spec': spec,
-      },
-      (...)
-    ]
-  }
-
-For each measurement, 'name' is a label used for presentation purposes. 'spec'
-defines the measurement.
-
-Available measurement types are:
-
-'time_until' - time until the first occurence of the targeted event. The spec
-takes the following format:
-
-  'time_until/category/event'
-
-'avg_duration' - average duration of the targeted event. The spec takes the
-following format:
-
-  'avg_duration/category/event'
-
-'percentile_duration' - value at the given percentile of the targeted event. The
-spec takes the following format:
-
-  'percentile_duration/category/event/percentile'
-
-|benchmark_list_file| may reference the |target_os| global that will be any of
-['android', 'linux'], indicating the system on which the benchmarks are to be
-run.
+dictionary. For description of the required format see
+https://github.com/domokit/devtools/blob/master/docs/mojo_benchmark.md .
 """
 
 _logger = logging.getLogger()
