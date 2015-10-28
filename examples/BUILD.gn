@@ -48,6 +48,7 @@ group("examples") {
   if (is_linux || is_android) {
     deps += [
       "//examples/ui/spinning_cube",
+      "//examples/ui/tile",
       "//examples/surfaces_app",
     ]
   }
