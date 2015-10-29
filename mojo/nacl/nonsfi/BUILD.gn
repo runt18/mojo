@@ -85,8 +85,9 @@ action("translate_mojo_pnacl_tests_to_native") {
   if (host_os == "mac") {
     nacl_toolchain_host_os = "mac"
   }
-  script = rebase_path("//") + "native_client/toolchain/${nacl_toolchain_host_os}_x86/pnacl_newlib/bin/pydir/loader.py"
-  input = rebase_path(root_build_dir) + "/newlib_pnacl/monacl_test.pexe"
+  script = rebase_path(
+          "//native_client/toolchain/${nacl_toolchain_host_os}_x86/pnacl_newlib/bin/pydir/loader.py")
+  input = rebase_path("${root_build_dir}/newlib_pnacl/monacl_test.pexe")
   inputs = [
     input,
   ]
@@ -116,7 +117,7 @@ action("translate_mojo_pnacl_tests_to_native") {
 action("prepend_shebang_to_nexe") {
   testonly = true
 
-  script = rebase_path("//") + "mojo/public/tools/prepend.py"
+  script = rebase_path("//mojo/public/tools/prepend.py")
   nexe_path = "$root_out_dir/monacl_test_nonsfi"
   input = "${nexe_path}.nexe"
   inputs = [
