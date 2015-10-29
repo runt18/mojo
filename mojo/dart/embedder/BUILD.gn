@@ -21,8 +21,6 @@ source_set("dart_controller_no_snapshot") {
     "mojo_dart_state.h",
     "mojo_io_natives.cc",
     "mojo_io_natives.h",
-    "mojo_natives.cc",
-    "mojo_natives.h",
     "vmservice.cc",
     "vmservice.h",
   ]
@@ -40,6 +38,7 @@ source_set("dart_controller_no_snapshot") {
     "//mojo/public/c/system",
     "//mojo/public/cpp/environment",
     "//mojo/public/cpp/system",
+    "//mojo/public/platform/dart:mojo_internal_impl",
     "//mojo/services/network/interfaces",
     "//tonic",
   ]

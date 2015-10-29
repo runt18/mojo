@@ -15,7 +15,6 @@
 #include "base/rand_util.h"
 #include "dart/runtime/include/dart_api.h"
 #include "mojo/dart/embedder/builtin.h"
-#include "mojo/dart/embedder/mojo_natives.h"
 
 #if defined(OS_ANDROID)
 #include <android/log.h>

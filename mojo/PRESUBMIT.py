@@ -112,6 +112,12 @@ def _FindIllegalAbsolutePathsInBuildFiles(input_api, package):
         if package == "EDK":
           continue
 
+        dart_reference_allowed = (f.LocalPath() == "mojo/public/mojo_sdk.gni" or
+            os.path.dirname(f.LocalPath()) == "mojo/public/platform/dart")
+
+        if referenced_path.startswith("//dart") and dart_reference_allowed:
+          continue
+
         # Determine if this is a whitelisted external path.
         if referenced_path in _PACKAGE_WHITELISTED_EXTERNAL_PATHS[package]:
           continue

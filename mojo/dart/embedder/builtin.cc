@@ -8,7 +8,7 @@
 #include "dart/runtime/include/dart_api.h"
 #include "mojo/dart/embedder/builtin.h"
 #include "mojo/dart/embedder/mojo_io_natives.h"
-#include "mojo/dart/embedder/mojo_natives.h"
+#include "mojo/public/platform/dart/mojo_natives.h"
 
 namespace mojo {
 namespace dart {

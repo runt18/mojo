@@ -9,7 +9,6 @@
 #include <vector>
 
 #include "dart/runtime/include/dart_api.h"
-#include "mojo/dart/embedder/builtin.h"
 #include "mojo/public/c/system/core.h"
 #include "mojo/public/cpp/environment/logging.h"
 #include "mojo/public/cpp/system/core.h"
@@ -17,6 +16,11 @@
 
 namespace mojo {
 namespace dart {
+
+#define REGISTER_FUNCTION(name, count)                                         \
+  { "" #name, name, count },
+#define DECLARE_FUNCTION(name, count)                                          \
+  extern void name(Dart_NativeArguments args);
 
 #define MOJO_NATIVE_LIST(V)                \
   V(MojoSharedBuffer_Create, 2)            \

@@ -2,8 +2,8 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-#ifndef MOJO_DART_EMBEDDER_MOJO_NATIVES_H_
-#define MOJO_DART_EMBEDDER_MOJO_NATIVES_H_
+#ifndef MOJO_PUBLIC_PLATFORM_DART_MOJO_NATIVES_H_
+#define MOJO_PUBLIC_PLATFORM_DART_MOJO_NATIVES_H_
 
 #include "dart/runtime/include/dart_api.h"
 
@@ -19,4 +19,4 @@ const uint8_t* MojoNativeSymbol(Dart_NativeFunction nf);
 }  // namespace dart
 }  // namespace mojo
 
-#endif  // MOJO_DART_EMBEDDER_MOJO_NATIVES_H_
+#endif  // MOJO_PUBLIC_PLATFORM_DART_MOJO_NATIVES_H_
