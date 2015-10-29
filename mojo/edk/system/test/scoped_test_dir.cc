@@ -2,13 +2,14 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-#include "mojo/edk/test/scoped_test_dir.h"
+#include "mojo/edk/system/test/scoped_test_dir.h"
 
 #include "base/files/file_path.h"
 #include "base/files/file_util.h"
 #include "base/logging.h"
 
 namespace mojo {
+namespace system {
 namespace test {
 
 ScopedTestDir::ScopedTestDir() {
@@ -24,4 +25,5 @@ util::ScopedFILE ScopedTestDir::CreateFile() {
 }
 
 }  // namespace test
+}  // namespace system
 }  // namespace mojo

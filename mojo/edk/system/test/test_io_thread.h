@@ -2,8 +2,8 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-#ifndef MOJO_EDK_TEST_TEST_IO_THREAD_H_
-#define MOJO_EDK_TEST_TEST_IO_THREAD_H_
+#ifndef MOJO_EDK_SYSTEM_TEST_TEST_IO_THREAD_H_
+#define MOJO_EDK_SYSTEM_TEST_TEST_IO_THREAD_H_
 
 #include "base/callback_forward.h"
 #include "base/memory/ref_counted.h"
@@ -12,6 +12,7 @@
 #include "mojo/public/cpp/system/macros.h"
 
 namespace mojo {
+namespace system {
 namespace test {
 
 // Class to help create/run threads with I/O |MessageLoop|s in tests.
@@ -50,6 +51,7 @@ class TestIOThread {
 };
 
 }  // namespace test
+}  // namespace system
 }  // namespace mojo
 
-#endif  // MOJO_EDK_TEST_TEST_IO_THREAD_H_
+#endif  // MOJO_EDK_SYSTEM_TEST_TEST_IO_THREAD_H_

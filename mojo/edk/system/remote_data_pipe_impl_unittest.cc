@@ -23,9 +23,9 @@
 #include "mojo/edk/system/message_pipe.h"
 #include "mojo/edk/system/raw_channel.h"
 #include "mojo/edk/system/ref_ptr.h"
+#include "mojo/edk/system/test/test_io_thread.h"
 #include "mojo/edk/system/test/timeouts.h"
 #include "mojo/edk/system/waiter.h"
-#include "mojo/edk/test/test_io_thread.h"
 #include "mojo/public/cpp/system/macros.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
@@ -39,8 +39,7 @@ const MojoHandleSignals kAllSignals = MOJO_HANDLE_SIGNAL_READABLE |
 
 class RemoteDataPipeImplTest : public testing::Test {
  public:
-  RemoteDataPipeImplTest()
-      : io_thread_(mojo::test::TestIOThread::StartMode::AUTO) {}
+  RemoteDataPipeImplTest() : io_thread_(test::TestIOThread::StartMode::AUTO) {}
   ~RemoteDataPipeImplTest() override {}
 
   void SetUp() override {
@@ -114,7 +113,7 @@ class RemoteDataPipeImplTest : public testing::Test {
   }
 
   embedder::SimplePlatformSupport platform_support_;
-  mojo::test::TestIOThread io_thread_;
+  test::TestIOThread io_thread_;
   RefPtr<Channel> channels_[2];
   RefPtr<MessagePipe> message_pipes_[2];
 

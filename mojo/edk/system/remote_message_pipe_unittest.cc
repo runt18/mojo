@@ -27,11 +27,11 @@
 #include "mojo/edk/system/raw_channel.h"
 #include "mojo/edk/system/ref_ptr.h"
 #include "mojo/edk/system/shared_buffer_dispatcher.h"
+#include "mojo/edk/system/test/scoped_test_dir.h"
 #include "mojo/edk/system/test/sleep.h"
+#include "mojo/edk/system/test/test_io_thread.h"
 #include "mojo/edk/system/test/timeouts.h"
 #include "mojo/edk/system/waiter.h"
-#include "mojo/edk/test/scoped_test_dir.h"
-#include "mojo/edk/test/test_io_thread.h"
 #include "mojo/edk/test/test_utils.h"
 #include "mojo/edk/util/scoped_file.h"
 #include "mojo/public/cpp/system/macros.h"
@@ -47,8 +47,7 @@ const MojoHandleSignals kAllSignals = MOJO_HANDLE_SIGNAL_READABLE |
 
 class RemoteMessagePipeTest : public testing::Test {
  public:
-  RemoteMessagePipeTest()
-      : io_thread_(mojo::test::TestIOThread::StartMode::AUTO) {}
+  RemoteMessagePipeTest() : io_thread_(test::TestIOThread::StartMode::AUTO) {}
   ~RemoteMessagePipeTest() override {}
 
   void SetUp() override {
@@ -90,7 +89,7 @@ class RemoteMessagePipeTest : public testing::Test {
   }
 
   embedder::PlatformSupport* platform_support() { return &platform_support_; }
-  mojo::test::TestIOThread* io_thread() { return &io_thread_; }
+  test::TestIOThread* io_thread() { return &io_thread_; }
   // Warning: It's up to the caller to ensure that the returned channel
   // is/remains valid.
   Channel* channels(size_t i) { return channels_[i].get(); }
@@ -161,7 +160,7 @@ class RemoteMessagePipeTest : public testing::Test {
   }
 
   embedder::SimplePlatformSupport platform_support_;
-  mojo::test::TestIOThread io_thread_;
+  test::TestIOThread io_thread_;
   embedder::ScopedPlatformHandle platform_handles_[2];
   RefPtr<Channel> channels_[2];
 
@@ -1014,7 +1013,7 @@ TEST_F(RemoteMessagePipeTest, SharedBufferPassing) {
 }
 
 TEST_F(RemoteMessagePipeTest, PlatformHandlePassing) {
-  mojo::test::ScopedTestDir test_dir;
+  test::ScopedTestDir test_dir;
 
   static const char kHello[] = "hello";
   static const char kWorld[] = "world";

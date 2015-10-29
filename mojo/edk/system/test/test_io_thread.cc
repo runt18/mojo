@@ -2,7 +2,7 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-#include "mojo/edk/test/test_io_thread.h"
+#include "mojo/edk/system/test/test_io_thread.h"
 
 #include "base/bind.h"
 #include "base/callback.h"
@@ -10,6 +10,7 @@
 #include "base/synchronization/waitable_event.h"
 
 namespace mojo {
+namespace system {
 namespace test {
 
 namespace {
@@ -63,4 +64,5 @@ void TestIOThread::PostTaskAndWait(const base::Closure& task) {
 }
 
 }  // namespace test
+}  // namespace system
 }  // namespace mojo

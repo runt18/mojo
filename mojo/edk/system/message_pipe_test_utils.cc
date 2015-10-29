@@ -38,7 +38,7 @@ MojoResult WaitIfNecessary(MessagePipe* mp,
 
 ChannelThread::ChannelThread(embedder::PlatformSupport* platform_support)
     : platform_support_(platform_support),
-      test_io_thread_(mojo::test::TestIOThread::StartMode::MANUAL) {}
+      test_io_thread_(TestIOThread::StartMode::MANUAL) {}
 
 ChannelThread::~ChannelThread() {
   Stop();

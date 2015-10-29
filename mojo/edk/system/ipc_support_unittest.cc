@@ -23,18 +23,15 @@
 #include "mojo/edk/system/message_pipe.h"
 #include "mojo/edk/system/message_pipe_dispatcher.h"
 #include "mojo/edk/system/process_identifier.h"
+#include "mojo/edk/system/test/test_io_thread.h"
 #include "mojo/edk/system/test/timeouts.h"
 #include "mojo/edk/system/waiter.h"
 #include "mojo/edk/test/multiprocess_test_helper.h"
-#include "mojo/edk/test/test_io_thread.h"
 #include "mojo/edk/test/test_utils.h"
 #include "mojo/public/cpp/system/macros.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 namespace mojo {
-
-using test::TestIOThread;
-
 namespace system {
 namespace {
 
@@ -161,7 +158,7 @@ class TestSlaveProcessDelegate : public embedder::SlaveProcessDelegate {
 // Represents the master's side of its connection to a slave.
 class TestSlaveConnection {
  public:
-  TestSlaveConnection(TestIOThread* test_io_thread,
+  TestSlaveConnection(test::TestIOThread* test_io_thread,
                       IPCSupport* master_ipc_support)
       : test_io_thread_(test_io_thread),
         master_ipc_support_(master_ipc_support),
@@ -207,7 +204,7 @@ class TestSlaveConnection {
   const ConnectionIdentifier& connection_id() const { return connection_id_; }
 
  private:
-  TestIOThread* const test_io_thread_;
+  test::TestIOThread* const test_io_thread_;
   IPCSupport* const master_ipc_support_;
   const ConnectionIdentifier connection_id_;
   // The master's message pipe dispatcher.
@@ -225,7 +222,7 @@ class TestSlave {
  public:
   // Note: Before destruction, |ShutdownIPCSupport()| must be called.
   TestSlave(embedder::PlatformSupport* platform_support,
-            TestIOThread* test_io_thread,
+            test::TestIOThread* test_io_thread,
             embedder::ScopedPlatformHandle platform_handle)
       : test_io_thread_(test_io_thread),
         slave_ipc_support_(platform_support,
@@ -273,7 +270,7 @@ class TestSlave {
   }
 
  private:
-  TestIOThread* const test_io_thread_;
+  test::TestIOThread* const test_io_thread_;
   TestSlaveProcessDelegate slave_process_delegate_;
   IPCSupport slave_ipc_support_;
   base::WaitableEvent event_;
@@ -285,7 +282,7 @@ class TestSlave {
 class TestSlaveSetup {
  public:
   TestSlaveSetup(embedder::SimplePlatformSupport* platform_support,
-                 TestIOThread* test_io_thread,
+                 test::TestIOThread* test_io_thread,
                  TestMasterProcessDelegate* master_process_delegate,
                  IPCSupport* master_ipc_support)
       : platform_support_(platform_support),
@@ -351,7 +348,7 @@ class TestSlaveSetup {
 
  private:
   embedder::SimplePlatformSupport* const platform_support_;
-  TestIOThread* const test_io_thread_;
+  test::TestIOThread* const test_io_thread_;
   TestMasterProcessDelegate* const master_process_delegate_;
   IPCSupport* const master_ipc_support_;
 
@@ -368,7 +365,7 @@ class IPCSupportTest : public testing::Test {
  public:
   // Note: Run master process delegate methods on the I/O thread.
   IPCSupportTest()
-      : test_io_thread_(TestIOThread::StartMode::AUTO),
+      : test_io_thread_(test::TestIOThread::StartMode::AUTO),
         master_ipc_support_(&platform_support_,
                             embedder::ProcessType::MASTER,
                             test_io_thread_.task_runner(),
@@ -394,7 +391,7 @@ class IPCSupportTest : public testing::Test {
   embedder::SimplePlatformSupport& platform_support() {
     return platform_support_;
   }
-  TestIOThread& test_io_thread() { return test_io_thread_; }
+  test::TestIOThread& test_io_thread() { return test_io_thread_; }
   TestMasterProcessDelegate& master_process_delegate() {
     return master_process_delegate_;
   }
@@ -402,7 +399,7 @@ class IPCSupportTest : public testing::Test {
 
  private:
   embedder::SimplePlatformSupport platform_support_;
-  TestIOThread test_io_thread_;
+  test::TestIOThread test_io_thread_;
 
   // All tests require a master.
   TestMasterProcessDelegate master_process_delegate_;
@@ -675,7 +672,7 @@ MOJO_MULTIPROCESS_TEST_CHILD_TEST(MultiprocessMasterSlaveInternal) {
   ASSERT_TRUE(client_platform_handle.is_valid());
 
   embedder::SimplePlatformSupport platform_support;
-  TestIOThread test_io_thread(TestIOThread::StartMode::AUTO);
+  test::TestIOThread test_io_thread(test::TestIOThread::StartMode::AUTO);
   TestSlaveProcessDelegate slave_process_delegate;
   // Note: Run process delegate methods on the I/O thread.
   IPCSupport ipc_support(&platform_support, embedder::ProcessType::SLAVE,

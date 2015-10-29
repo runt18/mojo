@@ -21,7 +21,7 @@
 #include "mojo/edk/embedder/platform_handle.h"
 #include "mojo/edk/embedder/platform_handle_vector.h"
 #include "mojo/edk/embedder/scoped_platform_handle.h"
-#include "mojo/edk/test/scoped_test_dir.h"
+#include "mojo/edk/system/test/scoped_test_dir.h"
 #include "mojo/edk/test/test_utils.h"
 #include "mojo/edk/util/scoped_file.h"
 #include "mojo/public/cpp/system/macros.h"
@@ -127,7 +127,7 @@ TEST_F(PlatformChannelPairTest, SendReceiveData) {
 }
 
 TEST_F(PlatformChannelPairTest, SendReceiveFDs) {
-  mojo::test::ScopedTestDir test_dir;
+  mojo::system::test::ScopedTestDir test_dir;
 
   static const char kHello[] = "hello";
 
@@ -190,7 +190,7 @@ TEST_F(PlatformChannelPairTest, SendReceiveFDs) {
 }
 
 TEST_F(PlatformChannelPairTest, AppendReceivedFDs) {
-  mojo::test::ScopedTestDir test_dir;
+  mojo::system::test::ScopedTestDir test_dir;
 
   static const char kHello[] = "hello";
 

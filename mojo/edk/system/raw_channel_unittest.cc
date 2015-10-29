@@ -20,11 +20,11 @@
 #include "mojo/edk/system/message_in_transit.h"
 #include "mojo/edk/system/mutex.h"
 #include "mojo/edk/system/test/random.h"
+#include "mojo/edk/system/test/scoped_test_dir.h"
 #include "mojo/edk/system/test/simple_test_thread.h"
 #include "mojo/edk/system/test/sleep.h"
+#include "mojo/edk/system/test/test_io_thread.h"
 #include "mojo/edk/system/transport_data.h"
-#include "mojo/edk/test/scoped_test_dir.h"
-#include "mojo/edk/test/test_io_thread.h"
 #include "mojo/edk/test/test_utils.h"
 #include "mojo/edk/util/make_unique.h"
 #include "mojo/edk/util/scoped_file.h"
@@ -72,7 +72,7 @@ bool WriteTestMessageToHandle(const embedder::PlatformHandle& handle,
 
 class RawChannelTest : public testing::Test {
  public:
-  RawChannelTest() : io_thread_(mojo::test::TestIOThread::StartMode::MANUAL) {}
+  RawChannelTest() : io_thread_(test::TestIOThread::StartMode::MANUAL) {}
   ~RawChannelTest() override {}
 
   void SetUp() override {
@@ -89,12 +89,12 @@ class RawChannelTest : public testing::Test {
   }
 
  protected:
-  mojo::test::TestIOThread* io_thread() { return &io_thread_; }
+  test::TestIOThread* io_thread() { return &io_thread_; }
 
   embedder::ScopedPlatformHandle handles[2];
 
  private:
-  mojo::test::TestIOThread io_thread_;
+  test::TestIOThread io_thread_;
 
   MOJO_DISALLOW_COPY_AND_ASSIGN(RawChannelTest);
 };
@@ -779,7 +779,7 @@ class ReadPlatformHandlesCheckerRawChannelDelegate
 };
 
 TEST_F(RawChannelTest, ReadWritePlatformHandles) {
-  mojo::test::ScopedTestDir test_dir;
+  test::ScopedTestDir test_dir;
 
   WriteOnlyRawChannelDelegate write_delegate;
   std::unique_ptr<RawChannel> rc_write(RawChannel::Create(handles[0].Pass()));

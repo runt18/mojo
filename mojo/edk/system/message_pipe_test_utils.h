@@ -8,8 +8,8 @@
 #include "mojo/edk/embedder/simple_platform_support.h"
 #include "mojo/edk/system/channel.h"
 #include "mojo/edk/system/ref_ptr.h"
+#include "mojo/edk/system/test/test_io_thread.h"
 #include "mojo/edk/test/multiprocess_test_helper.h"
-#include "mojo/edk/test/test_io_thread.h"
 #include "mojo/public/cpp/system/macros.h"
 
 namespace mojo {
@@ -42,7 +42,7 @@ class ChannelThread {
   void ShutdownChannelOnIOThread();
 
   embedder::PlatformSupport* const platform_support_;
-  mojo::test::TestIOThread test_io_thread_;
+  TestIOThread test_io_thread_;
   RefPtr<Channel> channel_;
 
   MOJO_DISALLOW_COPY_AND_ASSIGN(ChannelThread);

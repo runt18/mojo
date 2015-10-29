@@ -10,12 +10,16 @@ mojo_edk_source_set("test") {
   sources = [
     "random.cc",
     "random.h",
+    "scoped_test_dir.cc",
+    "scoped_test_dir.h",
     "simple_test_thread.cc",
     "simple_test_thread.h",
     "sleep.cc",
     "sleep.h",
     "stopwatch.cc",
     "stopwatch.h",
+    "test_io_thread.cc",
+    "test_io_thread.h",
     "timeouts.cc",
     "timeouts.h",
   ]
@@ -30,7 +34,10 @@ mojo_edk_source_set("test") {
     "//base/test:test_support",
   ]
 
-  mojo_edk_deps = [ "mojo/edk/embedder:platform" ]
+  mojo_edk_deps = [
+    "mojo/edk/embedder:platform",
+    "mojo/edk/util",
+  ]
 }
 
 mojo_edk_source_set("unittests") {
