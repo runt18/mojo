@@ -15,6 +15,7 @@ import sys
 import tempfile
 import threading
 import time
+import uuid
 
 from devtoolslib.http_server import start_http_server
 from devtoolslib.shell import Shell
@@ -349,8 +350,20 @@ class AndroidShell(Shell):
     parameters.extend(arguments)
 
     if parameters:
-      encodedParameters = json.dumps(parameters)
-      cmd += ['--es', 'encodedParameters', encodedParameters]
+      device_filename = (
+          '/sdcard/%s/args_%s' % (_MOJO_SHELL_PACKAGE_NAME, str(uuid.uuid4())))
+      with tempfile.NamedTemporaryFile(delete=False) as temp:
+        try:
+          for parameter in parameters:
+            temp.write(parameter)
+            temp.write('\n')
+          temp.close()
+          subprocess.check_call(self._adb_command(
+              ['push', temp.name, device_filename]))
+        finally:
+          os.remove(temp.name)
+
+      cmd += ['--es', 'argsFile', device_filename]
 
     subprocess.check_call(cmd, stdout=self.verbose_pipe)
 

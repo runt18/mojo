@@ -14,7 +14,6 @@ import android.content.res.AssetManager;
 import android.net.Uri;
 import android.os.Binder;
 import android.os.IBinder;
-import android.util.JsonReader;
 import android.util.Log;
 
 import org.chromium.base.ApplicationStatus;
@@ -28,9 +27,10 @@ import org.chromium.mojo.system.impl.CoreImpl;
 import org.chromium.mojom.mojo.ServiceProvider;
 import org.chromium.mojom.mojo.Shell;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileReader;
 import java.io.IOException;
-import java.io.StringReader;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -168,9 +168,9 @@ public class ShellService extends Service {
     public int onStartCommand(Intent intent, int flags, int startId) {
         // A client is starting this service; make sure the shell is initialized.
         // Note that ensureInitialized is gated by the mInitialized boolean flag. This means that
-        // only the first set of parameters will ever be taken into account.
+        // only the first set of arguments will ever be taken into account.
         // TODO(eseidel): ShellService can fail, but we're ignoring the return.
-        ensureStarted(getApplicationContext(), getParametersFromIntent(intent));
+        ensureStarted(getApplicationContext(), getArgsFromIntent(intent));
         if (intent.hasExtra(APPLICATION_URL_EXTRA)) {
             // This intent requests we start an application.
             String urlExtra = intent.getStringExtra(APPLICATION_URL_EXTRA);
@@ -200,7 +200,7 @@ public class ShellService extends Service {
     /**
      * Initializes the native system and starts the shell.
      **/
-    private void ensureStarted(Context applicationContext, String[] parameters) {
+    private void ensureStarted(Context applicationContext, String[] args) {
         if (mInitialized) return;
         try {
             FileHelper.extractFromAssets(applicationContext, NETWORK_LIBRARY_APP,
@@ -212,22 +212,21 @@ public class ShellService extends Service {
             // The shell child executable needs to be ... executable.
             mojoShellChild.setExecutable(true, true);
 
-            List<String> parametersList = new ArrayList<String>();
+            List<String> argsList = new ArrayList<String>();
 
-            parametersList.add("--args-for=mojo:notifications " + R.mipmap.ic_launcher);
+            argsList.add("--args-for=mojo:notifications " + R.mipmap.ic_launcher);
 
             // Program name.
-            if (parameters != null) {
-                parametersList.addAll(Arrays.asList(parameters));
+            if (args != null) {
+                argsList.addAll(Arrays.asList(args));
             } else {
-                // Apply default parameters.
-                parametersList.add("--origin=" + DEFAULT_ORIGIN);
-                parametersList.add("--url-mappings=mojo:window_manager=" + DEFAULT_WM);
+                // Apply default arguments.
+                argsList.add("--origin=" + DEFAULT_ORIGIN);
+                argsList.add("--url-mappings=mojo:window_manager=" + DEFAULT_WM);
             }
 
             nativeStart(applicationContext, applicationContext.getAssets(),
-                    mojoShellChild.getAbsolutePath(),
-                    parametersList.toArray(new String[parametersList.size()]),
+                    mojoShellChild.getAbsolutePath(), argsList.toArray(new String[argsList.size()]),
                     getLocalAppsDir(applicationContext).getAbsolutePath(),
                     getTmpDir(applicationContext).getAbsolutePath(),
                     getHomeDir(applicationContext).getAbsolutePath());
@@ -238,28 +237,31 @@ public class ShellService extends Service {
         }
     }
 
-    private static String[] getParametersFromIntent(Intent intent) {
+    private static String[] getArgsFromIntent(Intent intent) {
         if (intent == null) {
             return null;
         }
-        String[] parameters = intent.getStringArrayExtra("parameters");
-        if (parameters != null) {
-            return parameters;
-        }
-        String encodedParameters = intent.getStringExtra("encodedParameters");
-        if (encodedParameters != null) {
-            JsonReader reader = new JsonReader(new StringReader(encodedParameters));
-            List<String> parametersList = new ArrayList<String>();
+        String argsFile = intent.getStringExtra("argsFile");
+        if (argsFile != null) {
+            File file = new File(argsFile);
+            if (!file.isFile()) {
+                return null;
+            }
             try {
-                reader.beginArray();
-                while (reader.hasNext()) {
-                    parametersList.add(reader.nextString());
+                List<String> argsList = new ArrayList<String>();
+                try (BufferedReader bufferedReader = new BufferedReader(new FileReader(file))) {
+                    String line;
+                    while ((line = bufferedReader.readLine()) != null) {
+                        argsList.add(line);
+                    }
+                    return argsList.toArray(new String[argsList.size()]);
+                } catch (IOException e) {
+                    Log.w(TAG, e.getMessage(), e);
                 }
-                reader.endArray();
-                reader.close();
-                return parametersList.toArray(new String[parametersList.size()]);
-            } catch (IOException e) {
-                Log.w(TAG, e.getMessage(), e);
+            } finally {
+                if (!file.delete()) {
+                    Log.w(TAG, "Unable to delete args file.");
+                }
             }
         }
         return null;
@@ -320,8 +322,8 @@ public class ShellService extends Service {
      * Initializes the native system. This API should be called only once per process.
      **/
     private static native void nativeStart(Context context, AssetManager assetManager,
-            String mojoShellChildPath, String[] parameters, String bundledAppsDirectory,
-            String tmpDir, String homeDir);
+            String mojoShellChildPath, String[] args, String bundledAppsDirectory, String tmpDir,
+            String homeDir);
 
     private static native void nativeAddApplicationURL(String url);
 
