@@ -44,17 +44,13 @@ class BenchmarkApp : public mojo::ApplicationDelegate,
       return;
     }
 
-    // Calculate a list of trace categories we want to collect: a union of all
-    // categories targeted in measurements.
-    std::set<std::string> category_set;
-    for (const Measurement& measurement : args_.measurements) {
-      std::vector<std::string> categories;
-      base::SplitString(measurement.target_event.categories, ',', &categories);
-      category_set.insert(categories.begin(), categories.end());
+    // Don't compute the categories string if all categories should be traced.
+    std::string categories_str;
+    if (args_.write_output_file) {
+      categories_str = "*";
+    } else {
+      categories_str = ComputeCategoriesStr();
     }
-    std::vector<std::string> unique_categories(category_set.begin(),
-                                               category_set.end());
-    std::string categories_str = JoinString(unique_categories, ',');
 
     // Connect to trace collector, which will fetch the trace events produced by
     // the app being benchmarked.
@@ -66,10 +62,23 @@ class BenchmarkApp : public mojo::ApplicationDelegate,
 
     // Start tracing the application with 1 sec of delay.
     base::MessageLoop::current()->PostDelayedTask(
-        FROM_HERE,
-        base::Bind(&BenchmarkApp::StartTracedApplication,
-            base::Unretained(this), app),
+        FROM_HERE, base::Bind(&BenchmarkApp::StartTracedApplication,
+                              base::Unretained(this), app),
         base::TimeDelta::FromSeconds(1));
+  }
+
+  // Computes the string of trace categories we want to collect: a union of all
+  // categories targeted in measurements.
+  std::string ComputeCategoriesStr() {
+    std::set<std::string> category_set;
+    for (const Measurement& measurement : args_.measurements) {
+      std::vector<std::string> categories;
+      base::SplitString(measurement.target_event.categories, ',', &categories);
+      category_set.insert(categories.begin(), categories.end());
+    }
+    std::vector<std::string> unique_categories(category_set.begin(),
+                                               category_set.end());
+    return JoinString(unique_categories, ',');
   }
 
   void StartTracedApplication(mojo::ApplicationImpl* app) {

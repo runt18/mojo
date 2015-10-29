@@ -148,7 +148,7 @@ def main():
       description=_DESCRIPTION)
   parser.add_argument('benchmark_list_file', type=file,
                       help='a file listing benchmarks to run')
-  parser.add_argument('--save-traces', action='store_true',
+  parser.add_argument('--save-all-traces', action='store_true',
                       help='save the traces produced by benchmarks to disk')
   perf_dashboard.add_argparse_server_arguments(parser)
 
@@ -179,7 +179,7 @@ def main():
       measurements = variant_spec['measurements']
 
       output_file = None
-      if script_args.save_traces:
+      if script_args.save_all_traces:
         output_file = 'benchmark-%s-%s-%s.trace' % (
             benchmark_name.replace(' ', '_'),
             variant_name.replace(' ', '_'),
