@@ -60,8 +60,8 @@ TEST(CondVarTest, Basic) {
     mu.AssertHeld();
   }
 
-  // Wait using |Wait()| or |WaitWithTimeout()|, to be signalled by |Signal()|
-  // or |SignalAll()|.
+  // Wait using |Wait()| or |WaitWithTimeout()|, to be signaled by |Signal()| or
+  // |SignalAll()|.
   for (size_t i = 0; i < 30; i++) {
     Mutex mu;
     CondVar cv;
@@ -103,9 +103,9 @@ TEST(CondVarTest, SignalAll) {
   bool condition = false;
 
   for (size_t i = 0; i < 10; i++) {
-    for (size_t num_waiters = 1; i < 5; i++) {
+    for (size_t num_waiters = 1; num_waiters < 5; num_waiters++) {
       std::vector<std::thread> threads;
-      for (size_t i = 0; i < num_waiters; i++) {
+      for (size_t j = 0; j < num_waiters; j++) {
         threads.push_back(std::thread([&mu, &cv, &condition]() {
           EpsilonRandomSleep();
 

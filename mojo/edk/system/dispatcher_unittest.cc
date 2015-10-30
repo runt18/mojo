@@ -254,7 +254,7 @@ TEST(DispatcherTest, ThreadSafetyStress) {
   static const size_t kNumThreads = 100;
 
   for (size_t i = 0; i < kRepeatCount; i++) {
-    // Manual reset, not initially signalled.
+    // Manual reset, not initially signaled.
     base::WaitableEvent event(true, false);
     auto d = MakeRefCounted<TrivialDispatcher>();
 
@@ -282,7 +282,7 @@ TEST(DispatcherTest, ThreadSafetyStressNoClose) {
   static const size_t kNumThreads = 100;
 
   for (size_t i = 0; i < kRepeatCount; i++) {
-    // Manual reset, not initially signalled.
+    // Manual reset, not initially signaled.
     base::WaitableEvent event(true, false);
     auto d = MakeRefCounted<TrivialDispatcher>();
 

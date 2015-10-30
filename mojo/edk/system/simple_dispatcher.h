@@ -16,8 +16,8 @@ namespace system {
 
 // A base class for simple dispatchers. "Simple" means that there's a one-to-one
 // correspondence between handles and dispatchers (see the explanatory comment
-// in core.cc). This class implements the standard waiter-signalling mechanism
-// in that case.
+// in core.cc). This class implements the standard waiter-signaling mechanism in
+// that case.
 class SimpleDispatcher : public Dispatcher {
  protected:
   SimpleDispatcher();

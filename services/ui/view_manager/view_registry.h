@@ -124,7 +124,7 @@ class ViewRegistry {
   void IssueNextViewLayoutRequest(ViewState* view_state);
   void IssueNextViewTreeLayoutRequest(ViewTreeState* tree_state);
 
-  // SIGNALLING
+  // SIGNALING
 
   void SendChildUnavailable(ViewState* parent_state, uint32_t child_key);
   void SendRootUnavailable(ViewTreeState* tree_state, uint32_t root_key);

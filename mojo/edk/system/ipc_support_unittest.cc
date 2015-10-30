@@ -437,7 +437,7 @@ TEST_F(IPCSupportTest, MasterSlave) {
 
   // A message was sent through the message pipe, |Channel|s must have been
   // established on both sides. The events have thus almost certainly been
-  // signalled, but we'll wait just to be sure.
+  // signaled, but we'll wait just to be sure.
   s->slave_connection()->WaitForChannelToSlave();
   s->slave()->WaitForChannelToMaster();
 

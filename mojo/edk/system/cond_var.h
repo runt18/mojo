@@ -35,13 +35,13 @@ class CondVar {
   void Wait(Mutex* mutex) MOJO_EXCLUSIVE_LOCKS_REQUIRED(mutex);
 
   // Like |Wait()|, but will also unblock when |timeout_microseconds| have
-  // elapsed without this condition variable being signalled. Returns true on
+  // elapsed without this condition variable being signaled. Returns true on
   // timeout; this is somewhat counterintuitive, but the false case is
-  // non-specific: the condition variable may or may not have been signalled and
+  // non-specific: the condition variable may or may not have been signaled and
   // |timeout_microseconds| may or may not have already elapsed (spurious
   // wakeups are possible).
   // TODO(vtl): A version with an absolute deadline time would be more efficient
-  // for users who want to wait to be signalled or a timeout to have definitely
+  // for users who want to wait to be signaled or a timeout to have definitely
   // elapsed. With this API, users have to recalculate the timeout when they
   // detect a spurious wakeup.
   bool WaitWithTimeout(Mutex* mutex, uint64_t timeout_microseconds)

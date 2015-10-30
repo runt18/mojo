@@ -101,7 +101,7 @@ void InitIPCSupport(ProcessType process_type,
 void ShutdownIPCSupportOnIOThread();
 
 // Like |ShutdownIPCSupportOnIOThread()|, but may be called from any thread,
-// signalling shutdown completion via the process delegate's
+// signaling shutdown completion via the process delegate's
 // |OnShutdownComplete()|.
 void ShutdownIPCSupport();
 

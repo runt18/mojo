@@ -95,7 +95,7 @@ define('services/js/system/tests/js_to_cpp_tests', [
     var dataPipe;
     var messagePipe;
     var proto = connector.Connector.prototype;
-    var stopSignalled = false;
+    var stopSignaled = false;
 
     proto.realAccept = proto.accept;
     proto.accept = function (message) {
@@ -108,11 +108,11 @@ define('services/js/system/tests/js_to_cpp_tests', [
         message.buffer.setUint8(offset, value);
         return this.realAccept(message);
       }
-      stopSignalled = true;
+      stopSignaled = true;
       return false;
     };
 
-    while (!stopSignalled) {
+    while (!stopSignaled) {
       dataPipe = core.createDataPipe(DATA_PIPE_PARAMS);
       messagePipe = core.createMessagePipe();
       writeDataPipe(dataPipe, sampleData);
@@ -137,7 +137,7 @@ define('services/js/system/tests/js_to_cpp_tests', [
     var dataPipe;
     var messagePipe;
     var proto = connector.Connector.prototype;
-    var stopSignalled = false;
+    var stopSignaled = false;
 
     proto.realAccept = proto.accept;
     proto.accept = function (message) {
@@ -148,11 +148,11 @@ define('services/js/system/tests/js_to_cpp_tests', [
         message.buffer.dataView.setUint32(offset + 4, 0xffffffff, true);
         return this.realAccept(message);
       }
-      stopSignalled = true;
+      stopSignaled = true;
       return false;
     };
 
-    while (!stopSignalled) {
+    while (!stopSignaled) {
       dataPipe = core.createDataPipe(DATA_PIPE_PARAMS);
       messagePipe = core.createMessagePipe();
       writeDataPipe(dataPipe, sampleData);

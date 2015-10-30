@@ -70,7 +70,7 @@ TEST_F(ChannelEndpointTest, Basic) {
   // Check that our test utility works (at least in one direction).
   test::VerifyTestMessage(send_message.get(), message_id);
 
-  // Event shouldn't be signalled yet.
+  // Event shouldn't be signaled yet.
   EXPECT_FALSE(read_event.IsSignaled());
 
   // Send it through channel/endpoint 1.
