@@ -13,7 +13,6 @@
 #include "base/location.h"
 #include "base/logging.h"
 #include "base/message_loop/message_loop.h"
-#include "base/synchronization/waitable_event.h"
 #include "mojo/edk/embedder/master_process_delegate.h"
 #include "mojo/edk/embedder/platform_channel_pair.h"
 #include "mojo/edk/embedder/platform_handle.h"
@@ -22,6 +21,7 @@
 #include "mojo/edk/system/message_in_transit.h"
 #include "mojo/edk/system/raw_channel.h"
 #include "mojo/edk/system/transport_data.h"
+#include "mojo/edk/system/waitable_event.h"
 #include "mojo/edk/util/make_unique.h"
 #include "mojo/public/cpp/system/macros.h"
 
@@ -371,7 +371,7 @@ ProcessIdentifier MasterConnectionManager::AddSlave(
 
   // We have to wait for the task to be executed, in case someone calls
   // |AddSlave()| followed immediately by |Shutdown()|.
-  base::WaitableEvent event(false, false);
+  AutoResetWaitableEvent event;
   private_thread_.message_loop()->PostTask(
       FROM_HERE,
       base::Bind(&MasterConnectionManager::AddSlaveOnPrivateThread,
@@ -671,7 +671,7 @@ void MasterConnectionManager::AddSlaveOnPrivateThread(
     embedder::SlaveInfo slave_info,
     embedder::ScopedPlatformHandle platform_handle,
     ProcessIdentifier slave_process_identifier,
-    base::WaitableEvent* event) {
+    AutoResetWaitableEvent* event) {
   DCHECK(platform_handle.is_valid());
   DCHECK(event);
   AssertOnPrivateThread();

@@ -13,7 +13,6 @@
 
 #include "base/bind.h"
 #include "base/logging.h"
-#include "base/synchronization/waitable_event.h"
 #include "mojo/edk/embedder/platform_channel_pair.h"
 #include "mojo/edk/embedder/platform_handle.h"
 #include "mojo/edk/embedder/scoped_platform_handle.h"
@@ -25,6 +24,7 @@
 #include "mojo/edk/system/test/sleep.h"
 #include "mojo/edk/system/test/test_io_thread.h"
 #include "mojo/edk/system/transport_data.h"
+#include "mojo/edk/system/waitable_event.h"
 #include "mojo/edk/test/test_utils.h"
 #include "mojo/edk/util/make_unique.h"
 #include "mojo/edk/util/scoped_file.h"
@@ -216,7 +216,7 @@ TEST_F(RawChannelTest, WriteMessage) {
 
 class ReadCheckerRawChannelDelegate : public RawChannel::Delegate {
  public:
-  ReadCheckerRawChannelDelegate() : done_event_(false, false), position_(0) {}
+  ReadCheckerRawChannelDelegate() : position_(0) {}
   ~ReadCheckerRawChannelDelegate() override {}
 
   // |RawChannel::Delegate| implementation (called on the I/O thread):
@@ -264,7 +264,7 @@ class ReadCheckerRawChannelDelegate : public RawChannel::Delegate {
   }
 
  private:
-  base::WaitableEvent done_event_;
+  AutoResetWaitableEvent done_event_;
 
   Mutex mutex_;
   std::vector<uint32_t> expected_sizes_ MOJO_GUARDED_BY(mutex_);
@@ -331,7 +331,7 @@ class RawChannelWriterThread : public test::SimpleTestThread {
 class ReadCountdownRawChannelDelegate : public RawChannel::Delegate {
  public:
   explicit ReadCountdownRawChannelDelegate(size_t expected_count)
-      : done_event_(false, false), expected_count_(expected_count), count_(0) {}
+      : expected_count_(expected_count), count_(0) {}
   ~ReadCountdownRawChannelDelegate() override {}
 
   // |RawChannel::Delegate| implementation (called on the I/O thread):
@@ -358,7 +358,7 @@ class ReadCountdownRawChannelDelegate : public RawChannel::Delegate {
   void Wait() { done_event_.Wait(); }
 
  private:
-  base::WaitableEvent done_event_;
+  AutoResetWaitableEvent done_event_;
   size_t expected_count_;
   size_t count_;
 
@@ -413,8 +413,6 @@ class ErrorRecordingRawChannelDelegate
                                    bool expect_read_error,
                                    bool expect_write_error)
       : ReadCountdownRawChannelDelegate(expected_read_count),
-        got_read_error_event_(false, false),
-        got_write_error_event_(false, false),
         expecting_read_error_(expect_read_error),
         expecting_write_error_(expect_write_error) {}
 
@@ -451,8 +449,8 @@ class ErrorRecordingRawChannelDelegate
   void WaitForWriteError() { got_write_error_event_.Wait(); }
 
  private:
-  base::WaitableEvent got_read_error_event_;
-  base::WaitableEvent got_write_error_event_;
+  AutoResetWaitableEvent got_read_error_event_;
+  AutoResetWaitableEvent got_write_error_event_;
 
   bool expecting_read_error_;
   bool expecting_write_error_;
@@ -547,7 +545,6 @@ class ShutdownOnReadMessageRawChannelDelegate : public RawChannel::Delegate {
                                                    bool should_destroy)
       : raw_channel_(raw_channel),
         should_destroy_(should_destroy),
-        done_event_(false, false),
         did_shutdown_(false) {}
   ~ShutdownOnReadMessageRawChannelDelegate() override {}
 
@@ -578,7 +575,7 @@ class ShutdownOnReadMessageRawChannelDelegate : public RawChannel::Delegate {
  private:
   RawChannel* const raw_channel_;
   const bool should_destroy_;
-  base::WaitableEvent done_event_;
+  AutoResetWaitableEvent done_event_;
   bool did_shutdown_;
 
   MOJO_DISALLOW_COPY_AND_ASSIGN(ShutdownOnReadMessageRawChannelDelegate);
@@ -622,7 +619,6 @@ class ShutdownOnErrorRawChannelDelegate : public RawChannel::Delegate {
       : raw_channel_(raw_channel),
         should_destroy_(should_destroy),
         shutdown_on_error_type_(shutdown_on_error_type),
-        done_event_(false, false),
         did_shutdown_(false) {}
   ~ShutdownOnErrorRawChannelDelegate() override {}
 
@@ -653,7 +649,7 @@ class ShutdownOnErrorRawChannelDelegate : public RawChannel::Delegate {
   RawChannel* const raw_channel_;
   const bool should_destroy_;
   const Error shutdown_on_error_type_;
-  base::WaitableEvent done_event_;
+  AutoResetWaitableEvent done_event_;
   bool did_shutdown_;
 
   MOJO_DISALLOW_COPY_AND_ASSIGN(ShutdownOnErrorRawChannelDelegate);
@@ -724,7 +720,7 @@ TEST_F(RawChannelTest, ShutdownAndDestroyOnErrorWrite) {
 class ReadPlatformHandlesCheckerRawChannelDelegate
     : public RawChannel::Delegate {
  public:
-  ReadPlatformHandlesCheckerRawChannelDelegate() : done_event_(false, false) {}
+  ReadPlatformHandlesCheckerRawChannelDelegate() {}
   ~ReadPlatformHandlesCheckerRawChannelDelegate() override {}
 
   // |RawChannel::Delegate| implementation (called on the I/O thread):
@@ -773,7 +769,7 @@ class ReadPlatformHandlesCheckerRawChannelDelegate
   void Wait() { done_event_.Wait(); }
 
  private:
-  base::WaitableEvent done_event_;
+  AutoResetWaitableEvent done_event_;
 
   MOJO_DISALLOW_COPY_AND_ASSIGN(ReadPlatformHandlesCheckerRawChannelDelegate);
 };

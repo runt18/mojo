@@ -27,9 +27,7 @@ SlaveConnectionManager::SlaveConnectionManager(
       ack_result_(nullptr),
       ack_peer_process_identifier_(nullptr),
       ack_is_first_(nullptr),
-      ack_platform_handle_(nullptr),
-      event_(false, false) {  // Auto-reset, not initially signaled.
-}
+      ack_platform_handle_(nullptr) {}
 
 SlaveConnectionManager::~SlaveConnectionManager() {
   DCHECK(!delegate_thread_task_runner_);
