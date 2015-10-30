@@ -797,9 +797,9 @@ TEST_F(RawChannelTest, ReadWritePlatformHandles) {
     embedder::ScopedPlatformHandleVectorPtr platform_handles(
         new embedder::PlatformHandleVector());
     platform_handles->push_back(
-        mojo::test::PlatformHandleFromFILE(fp1.Pass()).release());
+        mojo::test::PlatformHandleFromFILE(std::move(fp1)).release());
     platform_handles->push_back(
-        mojo::test::PlatformHandleFromFILE(fp2.Pass()).release());
+        mojo::test::PlatformHandleFromFILE(std::move(fp2)).release());
 
     std::unique_ptr<MessageInTransit> message(
         new MessageInTransit(MessageInTransit::Type::ENDPOINT_CLIENT,

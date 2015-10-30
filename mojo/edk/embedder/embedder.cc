@@ -134,8 +134,7 @@ MojoResult PassWrappedPlatformHandle(MojoHandle platform_handle_wrapper_handle,
 
   *platform_handle =
       static_cast<system::PlatformHandleDispatcher*>(dispatcher.get())
-          ->PassPlatformHandle()
-          .Pass();
+          ->PassPlatformHandle();
   return MOJO_RESULT_OK;
 }
 

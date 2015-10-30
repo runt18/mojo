@@ -11,8 +11,4 @@ mojo_edk_source_set("util") {
   ]
 
   mojo_edk_configs = [ "mojo/edk/system:system_config" ]
-
-  deps = [
-    "//base",
-  ]
 }

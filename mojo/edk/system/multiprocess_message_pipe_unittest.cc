@@ -425,7 +425,7 @@ MOJO_MULTIPROCESS_TEST_CHILD_MAIN(CheckPlatformHandleFile) {
 
     RefPtr<PlatformHandleDispatcher> dispatcher(
         static_cast<PlatformHandleDispatcher*>(dispatchers[i].get()));
-    embedder::ScopedPlatformHandle h = dispatcher->PassPlatformHandle().Pass();
+    embedder::ScopedPlatformHandle h = dispatcher->PassPlatformHandle();
     CHECK(h.is_valid());
     dispatcher->Close();
 
@@ -467,7 +467,7 @@ TEST_P(MultiprocessMessagePipeTestWithPipeCount, PlatformHandlePassing) {
 
     auto dispatcher =
         PlatformHandleDispatcher::Create(embedder::ScopedPlatformHandle(
-            mojo::test::PlatformHandleFromFILE(fp.Pass())));
+            mojo::test::PlatformHandleFromFILE(std::move(fp))));
     dispatchers.push_back(dispatcher);
     DispatcherTransport transport(
         test::DispatcherTryStartTransport(dispatcher.get()));

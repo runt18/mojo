@@ -1032,7 +1032,7 @@ TEST_F(RemoteMessagePipeTest, PlatformHandlePassing) {
   // We'll try to pass this dispatcher, which will cause a |PlatformHandle| to
   // be passed.
   auto dispatcher = PlatformHandleDispatcher::Create(
-      mojo::test::PlatformHandleFromFILE(fp.Pass()));
+      mojo::test::PlatformHandleFromFILE(std::move(fp)));
 
   // Prepare to wait on MP 1, port 1. (Add the waiter now. Otherwise, if we do
   // it later, it might already be readable.)
@@ -1091,10 +1091,10 @@ TEST_F(RemoteMessagePipeTest, PlatformHandlePassing) {
   dispatcher = RefPtr<PlatformHandleDispatcher>(
       static_cast<PlatformHandleDispatcher*>(read_dispatchers[0].get()));
 
-  embedder::ScopedPlatformHandle h = dispatcher->PassPlatformHandle().Pass();
+  embedder::ScopedPlatformHandle h = dispatcher->PassPlatformHandle();
   EXPECT_TRUE(h.is_valid());
 
-  fp = mojo::test::FILEFromPlatformHandle(h.Pass(), "rb").Pass();
+  fp = mojo::test::FILEFromPlatformHandle(h.Pass(), "rb");
   EXPECT_FALSE(h.is_valid());
   EXPECT_TRUE(fp);
 

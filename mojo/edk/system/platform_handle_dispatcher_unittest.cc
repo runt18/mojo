@@ -6,6 +6,8 @@
 
 #include <stdio.h>
 
+#include <utility>
+
 #include "base/memory/ref_counted.h"
 #include "mojo/edk/system/test/scoped_test_dir.h"
 #include "mojo/edk/test/test_utils.h"
@@ -27,7 +29,7 @@ TEST(PlatformHandleDispatcherTest, Basic) {
             fwrite(kHelloWorld, 1, sizeof(kHelloWorld), fp.get()));
 
   embedder::ScopedPlatformHandle h(
-      mojo::test::PlatformHandleFromFILE(fp.Pass()));
+      mojo::test::PlatformHandleFromFILE(std::move(fp)));
   EXPECT_FALSE(fp);
   ASSERT_TRUE(h.is_valid());
 
@@ -35,10 +37,10 @@ TEST(PlatformHandleDispatcherTest, Basic) {
   EXPECT_FALSE(h.is_valid());
   EXPECT_EQ(Dispatcher::Type::PLATFORM_HANDLE, dispatcher->GetType());
 
-  h = dispatcher->PassPlatformHandle().Pass();
+  h = dispatcher->PassPlatformHandle();
   EXPECT_TRUE(h.is_valid());
 
-  fp = mojo::test::FILEFromPlatformHandle(h.Pass(), "rb").Pass();
+  fp = mojo::test::FILEFromPlatformHandle(h.Pass(), "rb");
   EXPECT_FALSE(h.is_valid());
   EXPECT_TRUE(fp);
 
@@ -49,7 +51,7 @@ TEST(PlatformHandleDispatcherTest, Basic) {
   EXPECT_STREQ(kHelloWorld, read_buffer);
 
   // Try getting the handle again. (It should fail cleanly.)
-  h = dispatcher->PassPlatformHandle().Pass();
+  h = dispatcher->PassPlatformHandle();
   EXPECT_FALSE(h.is_valid());
 
   EXPECT_EQ(MOJO_RESULT_OK, dispatcher->Close());
@@ -64,7 +66,7 @@ TEST(PlatformHandleDispatcherTest, CreateEquivalentDispatcherAndClose) {
   EXPECT_EQ(sizeof(kFooBar), fwrite(kFooBar, 1, sizeof(kFooBar), fp.get()));
 
   auto dispatcher = PlatformHandleDispatcher::Create(
-      mojo::test::PlatformHandleFromFILE(fp.Pass()));
+      mojo::test::PlatformHandleFromFILE(std::move(fp)));
 
   DispatcherTransport transport(
       test::DispatcherTryStartTransport(dispatcher.get()));
@@ -84,7 +86,7 @@ TEST(PlatformHandleDispatcherTest, CreateEquivalentDispatcherAndClose) {
       static_cast<PlatformHandleDispatcher*>(generic_dispatcher.get()));
 
   fp = mojo::test::FILEFromPlatformHandle(dispatcher->PassPlatformHandle(),
-                                          "rb").Pass();
+                                          "rb");
   EXPECT_TRUE(fp);
 
   rewind(fp.get());
