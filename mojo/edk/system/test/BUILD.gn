@@ -4,8 +4,10 @@
 
 import("../../mojo_edk.gni")
 
+# Utilties for use by EDK internal (unit and perf) tests.
 mojo_edk_source_set("test") {
   testonly = true
+  mojo_edk_visibility = [ "mojo/edk/*" ]
 
   sources = [
     "random.cc",
@@ -32,11 +34,56 @@ mojo_edk_source_set("test") {
   deps = [
     "//base",
     "//base/test:test_support",
+    "//testing/gtest",
   ]
 
   mojo_edk_deps = [
     "mojo/edk/embedder:platform",
     "mojo/edk/util",
+  ]
+}
+
+# Utilities for use by EDK internal perf tests (for use with
+# :run_all_perftests).
+mojo_edk_source_set("perf") {
+  testonly = true
+  mojo_edk_visibility = [ "mojo/edk/*" ]
+
+  sources = [
+    "perf_log.cc",
+    "perf_log.h",
+  ]
+
+  deps = [
+    "//base/test:test_support",
+  ]
+}
+
+mojo_edk_source_set("run_all_unittests") {
+  testonly = true
+  mojo_edk_visibility = [ "mojo/edk/*" ]
+
+  sources = [
+    "run_all_unittests.cc",
+  ]
+
+  deps = [
+    "//base",
+    "//base/test:test_support",
+    "//testing/gtest",
+  ]
+}
+
+mojo_edk_source_set("run_all_perftests") {
+  testonly = true
+  mojo_edk_visibility = [ "mojo/edk/*" ]
+
+  sources = [
+    "run_all_perftests.cc",
+  ]
+
+  deps = [
+    "//base/test:test_support",
   ]
 }
 

@@ -8,11 +8,12 @@
 #include <utility>
 
 #include "base/synchronization/waitable_event.h"
-#include "base/test/test_timeouts.h"
+#include "base/time/time.h"
 #include "mojo/edk/system/channel_test_base.h"
 #include "mojo/edk/system/message_in_transit_queue.h"
 #include "mojo/edk/system/message_in_transit_test_utils.h"
 #include "mojo/edk/system/ref_ptr.h"
+#include "mojo/edk/system/test/timeouts.h"
 #include "mojo/edk/system/test_channel_endpoint_client.h"
 #include "mojo/public/cpp/system/macros.h"
 
@@ -76,7 +77,8 @@ TEST_F(ChannelEndpointTest, Basic) {
   EXPECT_TRUE(endpoint1->EnqueueMessage(std::move(send_message)));
 
   // Wait to receive it.
-  EXPECT_TRUE(read_event.TimedWait(TestTimeouts::tiny_timeout()));
+  EXPECT_TRUE(read_event.TimedWait(base::TimeDelta::FromMicroseconds(
+      static_cast<int64_t>(test::TinyTimeout()))));
   client0->SetReadEvent(nullptr);
 
   // Check the received message.
@@ -116,7 +118,8 @@ TEST_F(ChannelEndpointTest, Prequeued) {
   base::WaitableEvent read_event(true, false);
   client0->SetReadEvent(&read_event);
   for (size_t i = 0; client0->NumMessages() < 6 && i < 6; i++) {
-    EXPECT_TRUE(read_event.TimedWait(TestTimeouts::tiny_timeout()));
+    EXPECT_TRUE(read_event.TimedWait(base::TimeDelta::FromMicroseconds(
+        static_cast<int64_t>(test::TinyTimeout()))));
     read_event.Reset();
   }
   client0->SetReadEvent(nullptr);

@@ -4,8 +4,8 @@
 
 #include <stdint.h>
 
-#include "base/test/perf_log.h"
 #include "mojo/edk/system/ref_counted.h"
+#include "mojo/edk/system/test/perf_log.h"
 #include "mojo/edk/system/test/stopwatch.h"
 #include "mojo/edk/system/test/timeouts.h"
 #include "testing/gtest/include/gtest/gtest.h"
@@ -40,7 +40,7 @@ TEST(RefCountedPerfTest, OneThreadCreateAdoptDestroy) {
   } while (stopwatch.Elapsed() < test::DeadlineFromMilliseconds(1000));
   double elapsed = stopwatch.Elapsed() / 1000000.0;
 
-  base::LogPerfResult("OneThreadCreateAdoptDestroy", iterations / elapsed,
+  test::LogPerfResult("OneThreadCreateAdoptDestroy", iterations / elapsed,
                       "iterations/s");
 }
 
@@ -57,7 +57,7 @@ TEST(RefCountedPerfTest, OneThreadAssignRefPtr) {
   } while (stopwatch.Elapsed() < test::DeadlineFromMilliseconds(1000));
   double elapsed = stopwatch.Elapsed() / 1000000.0;
 
-  base::LogPerfResult("OneThreadAssignRefPtr", iterations / elapsed,
+  test::LogPerfResult("OneThreadAssignRefPtr", iterations / elapsed,
                       "iterations/s");
 }
 

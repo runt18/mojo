@@ -12,7 +12,7 @@
 #include "base/command_line.h"
 #include "base/logging.h"
 #include "base/synchronization/waitable_event.h"
-#include "base/test/test_timeouts.h"
+#include "base/time/time.h"
 #include "mojo/edk/embedder/master_process_delegate.h"
 #include "mojo/edk/embedder/platform_channel_pair.h"
 #include "mojo/edk/embedder/simple_platform_support.h"
@@ -125,7 +125,9 @@ class TestMasterProcessDelegate : public embedder::MasterProcessDelegate {
   // Warning: There's only one slave disconnect event (which resets
   // automatically).
   bool TryWaitForOnSlaveDisconnect() {
-    return on_slave_disconnect_event_.TimedWait(TestTimeouts::action_timeout());
+    return on_slave_disconnect_event_.TimedWait(
+        base::TimeDelta::FromMicroseconds(
+            static_cast<int64_t>(test::ActionTimeout())));
   }
 
  private:
@@ -184,7 +186,8 @@ class TestSlaveConnection {
   }
 
   void WaitForChannelToSlave() {
-    EXPECT_TRUE(event_.TimedWait(TestTimeouts::action_timeout()));
+    EXPECT_TRUE(event_.TimedWait(base::TimeDelta::FromMicroseconds(
+        static_cast<int64_t>(test::ActionTimeout()))));
   }
 
   void ShutdownChannelToSlave() {
@@ -249,7 +252,8 @@ class TestSlave {
   }
 
   void WaitForChannelToMaster() {
-    EXPECT_TRUE(event_.TimedWait(TestTimeouts::action_timeout()));
+    EXPECT_TRUE(event_.TimedWait(base::TimeDelta::FromMicroseconds(
+        static_cast<int64_t>(test::ActionTimeout()))));
   }
 
   void ShutdownChannelToMaster() {

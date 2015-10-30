@@ -180,7 +180,6 @@ test("mojo_system_unittests") {
     "ref_counted_unittest.cc",
     "remote_data_pipe_impl_unittest.cc",
     "remote_message_pipe_unittest.cc",
-    "run_all_unittests.cc",
     "shared_buffer_dispatcher_unittest.cc",
     "simple_dispatcher_unittest.cc",
     "test_channel_endpoint_client.cc",
@@ -198,13 +197,11 @@ test("mojo_system_unittests") {
     "../test:test_support",
     "../util",
     "test",
+    "test:run_all_unittests",
     "test:unittests",
     "//base",
-    "//base/test:test_support",
     "//testing/gtest",
   ]
-
-  allow_circular_includes_from = [ "../embedder:embedder_unittests" ]
 }
 
 test("mojo_system_perftests") {
@@ -219,9 +216,9 @@ test("mojo_system_perftests") {
     ":system",
     "../test:test_support",
     "test",
+    "test:perf",
+    "test:run_all_perftests",
     "//base",
-    "//base/test:test_support",
-    "//base/test:test_support_perf",
     "//testing/gtest",
   ]
 }

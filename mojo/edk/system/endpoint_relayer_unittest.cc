@@ -6,12 +6,13 @@
 
 #include "base/logging.h"
 #include "base/synchronization/waitable_event.h"
-#include "base/test/test_timeouts.h"
+#include "base/time/time.h"
 #include "mojo/edk/system/channel_endpoint_id.h"
 #include "mojo/edk/system/channel_test_base.h"
 #include "mojo/edk/system/message_in_transit_queue.h"
 #include "mojo/edk/system/message_in_transit_test_utils.h"
 #include "mojo/edk/system/ref_ptr.h"
+#include "mojo/edk/system/test/timeouts.h"
 #include "mojo/edk/system/test_channel_endpoint_client.h"
 #include "mojo/edk/util/make_unique.h"
 #include "mojo/public/cpp/system/macros.h"
@@ -96,7 +97,8 @@ TEST_F(EndpointRelayerTest, Basic) {
 
   EXPECT_TRUE(endpoint1a()->EnqueueMessage(test::MakeTestMessage(12345)));
 
-  EXPECT_TRUE(read_event.TimedWait(TestTimeouts::tiny_timeout()));
+  EXPECT_TRUE(read_event.TimedWait(base::TimeDelta::FromMicroseconds(
+      static_cast<int64_t>(test::TinyTimeout()))));
   client1b()->SetReadEvent(nullptr);
 
   ASSERT_EQ(1u, client1b()->NumMessages());
@@ -111,7 +113,8 @@ TEST_F(EndpointRelayerTest, Basic) {
 
   EXPECT_TRUE(endpoint1b()->EnqueueMessage(test::MakeTestMessage(67890)));
 
-  EXPECT_TRUE(read_event.TimedWait(TestTimeouts::tiny_timeout()));
+  EXPECT_TRUE(read_event.TimedWait(base::TimeDelta::FromMicroseconds(
+      static_cast<int64_t>(test::TinyTimeout()))));
   client1a()->SetReadEvent(nullptr);
 
   ASSERT_EQ(1u, client1a()->NumMessages());
@@ -130,7 +133,8 @@ TEST_F(EndpointRelayerTest, MultipleMessages) {
   base::WaitableEvent read_event(true, false);
   client1b()->SetReadEvent(&read_event);
   for (size_t i = 0; client1b()->NumMessages() < 5 && i < 5; i++) {
-    EXPECT_TRUE(read_event.TimedWait(TestTimeouts::tiny_timeout()));
+    EXPECT_TRUE(read_event.TimedWait(base::TimeDelta::FromMicroseconds(
+        static_cast<int64_t>(test::TinyTimeout()))));
     read_event.Reset();
   }
   client1b()->SetReadEvent(nullptr);
@@ -201,7 +205,8 @@ TEST_F(EndpointRelayerTest, Filter) {
   base::WaitableEvent read_event(true, false);
   client1b()->SetReadEvent(&read_event);
   for (size_t i = 0; client1b()->NumMessages() < 5 && i < 5; i++) {
-    EXPECT_TRUE(read_event.TimedWait(TestTimeouts::tiny_timeout()));
+    EXPECT_TRUE(read_event.TimedWait(base::TimeDelta::FromMicroseconds(
+        static_cast<int64_t>(test::TinyTimeout()))));
     read_event.Reset();
   }
   client1b()->SetReadEvent(nullptr);
