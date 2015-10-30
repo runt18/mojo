@@ -6,7 +6,7 @@
 #include "mojo/edk/embedder/embedder_internal.h"
 #include "mojo/edk/system/core.h"
 #include "mojo/edk/system/dispatcher.h"
-#include "mojo/edk/system/ref_ptr.h"
+#include "mojo/edk/util/ref_ptr.h"
 #include "mojo/public/c/system/buffer.h"
 #include "mojo/public/c/system/data_pipe.h"
 #include "mojo/public/c/system/functions.h"
@@ -17,7 +17,7 @@ using mojo::embedder::internal::g_core;
 using mojo::system::Core;
 using mojo::system::Dispatcher;
 using mojo::system::MakeUserPointer;
-using mojo::system::RefPtr;
+using mojo::util::RefPtr;
 
 // Definitions of the system functions, but with an explicit parameter for the
 // core object rather than using the default singleton. Also includes functions

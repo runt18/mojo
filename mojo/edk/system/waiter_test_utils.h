@@ -9,9 +9,9 @@
 
 #include "mojo/edk/system/dispatcher.h"
 #include "mojo/edk/system/handle_signals_state.h"
-#include "mojo/edk/system/ref_ptr.h"
 #include "mojo/edk/system/test/simple_test_thread.h"
 #include "mojo/edk/system/waiter.h"
+#include "mojo/edk/util/ref_ptr.h"
 #include "mojo/public/c/system/types.h"
 #include "mojo/public/cpp/system/macros.h"
 
@@ -70,7 +70,7 @@ class WaiterThread : public test::SimpleTestThread {
   // Note: |*did_wait_out|, |*result_out|, |*context_out| and
   // |*signals_state_out| "belong" to this object (i.e., may be modified by, on
   // some other thread) while it's alive.
-  WaiterThread(RefPtr<Dispatcher>&& dispatcher,
+  WaiterThread(util::RefPtr<Dispatcher>&& dispatcher,
                MojoHandleSignals handle_signals,
                MojoDeadline deadline,
                uint32_t context,
@@ -83,7 +83,7 @@ class WaiterThread : public test::SimpleTestThread {
  private:
   void Run() override;
 
-  const RefPtr<Dispatcher> dispatcher_;
+  const util::RefPtr<Dispatcher> dispatcher_;
   const MojoHandleSignals handle_signals_;
   const MojoDeadline deadline_;
   const uint32_t context_;

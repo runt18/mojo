@@ -9,7 +9,6 @@
 
 #include <unordered_map>
 
-#include "base/memory/ref_counted.h"
 #include "base/threading/thread.h"
 #include "mojo/edk/embedder/platform_task_runner.h"
 #include "mojo/edk/embedder/scoped_platform_handle.h"

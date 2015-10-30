@@ -14,6 +14,9 @@
 #include "mojo/edk/system/test/timeouts.h"
 #include "mojo/edk/system/waiter.h"
 
+using mojo::util::MakeRefCounted;
+using mojo::util::RefPtr;
+
 namespace mojo {
 namespace system {
 namespace test {

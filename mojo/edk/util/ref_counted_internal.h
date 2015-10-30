@@ -4,8 +4,8 @@
 
 // Internal implementation details for ref_counted.h.
 
-#ifndef MOJO_EDK_SYSTEM_REF_COUNTED_INTERNAL_H_
-#define MOJO_EDK_SYSTEM_REF_COUNTED_INTERNAL_H_
+#ifndef MOJO_EDK_UTIL_REF_COUNTED_INTERNAL_H_
+#define MOJO_EDK_UTIL_REF_COUNTED_INTERNAL_H_
 
 #include <assert.h>
 
@@ -14,7 +14,7 @@
 #include "mojo/public/cpp/system/macros.h"
 
 namespace mojo {
-namespace system {
+namespace util {
 namespace internal {
 
 class RefCountedThreadSafeBase {
@@ -95,7 +95,7 @@ inline RefCountedThreadSafeBase::~RefCountedThreadSafeBase() {
 }
 
 }  // namespace internal
-}  // namespace system
+}  // namespace util
 }  // namespace mojo
 
-#endif  // MOJO_EDK_SYSTEM_REF_COUNTED_INTERNAL_H_
+#endif  // MOJO_EDK_UTIL_REF_COUNTED_INTERNAL_H_

@@ -4,20 +4,20 @@
 
 // Provides a base class for reference-counted classes.
 
-#ifndef MOJO_EDK_SYSTEM_REF_COUNTED_H_
-#define MOJO_EDK_SYSTEM_REF_COUNTED_H_
+#ifndef MOJO_EDK_UTIL_REF_COUNTED_H_
+#define MOJO_EDK_UTIL_REF_COUNTED_H_
 
 #include <assert.h>
 
 #include <cstddef>
 #include <utility>
 
-#include "mojo/edk/system/ref_counted_internal.h"
-#include "mojo/edk/system/ref_ptr.h"
+#include "mojo/edk/util/ref_counted_internal.h"
+#include "mojo/edk/util/ref_ptr.h"
 #include "mojo/public/cpp/system/macros.h"
 
 namespace mojo {
-namespace system {
+namespace util {
 
 // A base class for (thread-safe) reference-counted classes. Use like:
 //
@@ -109,15 +109,15 @@ class RefCountedThreadSafe : public internal::RefCountedThreadSafeBase {
 // If you subclass |RefCountedThreadSafe| and want to keep your destructor
 // private, use this. (See the example above |RefCountedThreadSafe|.)
 #define FRIEND_REF_COUNTED_THREAD_SAFE(T) \
-  friend class ::mojo::system::RefCountedThreadSafe<T>
+  friend class ::mojo::util::RefCountedThreadSafe<T>
 
 // If you want to keep your constructor(s) private and still want to use
 // |MakeRefCounted<T>()|, use this. (See the example above
 // |RefCountedThreadSafe|.)
 #define FRIEND_MAKE_REF_COUNTED(T) \
-  friend class ::mojo::system::internal::MakeRefCountedHelper<T>
+  friend class ::mojo::util::internal::MakeRefCountedHelper<T>
 
-}  // namespace system
+}  // namespace util
 }  // namespace mojo
 
-#endif  // MOJO_EDK_SYSTEM_REF_COUNTED_H_
+#endif  // MOJO_EDK_UTIL_REF_COUNTED_H_

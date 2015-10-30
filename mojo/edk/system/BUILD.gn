@@ -93,10 +93,6 @@ component("system") {
     "raw_channel.cc",
     "raw_channel.h",
     "raw_channel_posix.cc",
-    "ref_counted.h",
-    "ref_counted_internal.h",
-    "ref_ptr.h",
-    "ref_ptr_internal.h",
     "remote_consumer_data_pipe_impl.cc",
     "remote_consumer_data_pipe_impl.h",
     "remote_data_pipe_ack.h",
@@ -179,7 +175,6 @@ test("mojo_system_unittests") {
     "options_validation_unittest.cc",
     "platform_handle_dispatcher_unittest.cc",
     "raw_channel_unittest.cc",
-    "ref_counted_unittest.cc",
     "remote_data_pipe_impl_unittest.cc",
     "remote_message_pipe_unittest.cc",
     "shared_buffer_dispatcher_unittest.cc",
@@ -196,9 +191,10 @@ test("mojo_system_unittests") {
 
   deps = [
     ":system",
-    "../embedder:embedder_unittests",
+    "../embedder:unittests",
     "../test:test_support",
     "../util",
+    "../util:unittests",
     "test",
     "test:run_all_unittests",
     "test:unittests",
@@ -212,12 +208,12 @@ test("mojo_system_perftests") {
     "message_pipe_perftest.cc",
     "message_pipe_test_utils.cc",
     "message_pipe_test_utils.h",
-    "ref_counted_perftest.cc",
   ]
 
   deps = [
     ":system",
     "../test:test_support",
+    "../util:perftests",
     "test",
     "test:perf",
     "test:run_all_perftests",

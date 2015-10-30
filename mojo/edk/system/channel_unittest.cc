@@ -10,8 +10,10 @@
 #include "mojo/edk/system/channel_endpoint_id.h"
 #include "mojo/edk/system/channel_test_base.h"
 #include "mojo/edk/system/message_pipe.h"
-#include "mojo/edk/system/ref_ptr.h"
 #include "mojo/edk/system/waiter.h"
+#include "mojo/edk/util/ref_ptr.h"
+
+using mojo::util::RefPtr;
 
 namespace mojo {
 namespace system {

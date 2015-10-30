@@ -8,11 +8,12 @@
 
 #include <utility>
 
-#include "base/memory/ref_counted.h"
 #include "mojo/edk/system/test/scoped_test_dir.h"
 #include "mojo/edk/test/test_utils.h"
 #include "mojo/edk/util/scoped_file.h"
 #include "testing/gtest/include/gtest/gtest.h"
+
+using mojo::util::RefPtr;
 
 namespace mojo {
 namespace system {

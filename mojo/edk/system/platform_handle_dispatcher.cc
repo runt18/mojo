@@ -8,6 +8,8 @@
 
 #include "base/logging.h"
 
+using mojo::util::RefPtr;
+
 namespace mojo {
 namespace system {
 

@@ -2,15 +2,15 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-#ifndef MOJO_EDK_SYSTEM_REF_PTR_INTERNAL_H_
-#define MOJO_EDK_SYSTEM_REF_PTR_INTERNAL_H_
+#ifndef MOJO_EDK_UTIL_REF_PTR_INTERNAL_H_
+#define MOJO_EDK_UTIL_REF_PTR_INTERNAL_H_
 
 #include <utility>
 
 #include "mojo/public/cpp/system/macros.h"
 
 namespace mojo {
-namespace system {
+namespace util {
 
 template <typename T>
 class RefPtr;
@@ -34,7 +34,7 @@ class MakeRefCountedHelper {
 };
 
 }  // namespace internal
-}  // namespace system
+}  // namespace util
 }  // namespace mojo
 
-#endif  // MOJO_EDK_SYSTEM_REF_PTR_INTERNAL_H_
+#endif  // MOJO_EDK_UTIL_REF_PTR_INTERNAL_H_

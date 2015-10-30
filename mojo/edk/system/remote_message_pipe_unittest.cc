@@ -25,7 +25,6 @@
 #include "mojo/edk/system/message_pipe_dispatcher.h"
 #include "mojo/edk/system/platform_handle_dispatcher.h"
 #include "mojo/edk/system/raw_channel.h"
-#include "mojo/edk/system/ref_ptr.h"
 #include "mojo/edk/system/shared_buffer_dispatcher.h"
 #include "mojo/edk/system/test/scoped_test_dir.h"
 #include "mojo/edk/system/test/sleep.h"
@@ -33,9 +32,13 @@
 #include "mojo/edk/system/test/timeouts.h"
 #include "mojo/edk/system/waiter.h"
 #include "mojo/edk/test/test_utils.h"
+#include "mojo/edk/util/ref_ptr.h"
 #include "mojo/edk/util/scoped_file.h"
 #include "mojo/public/cpp/system/macros.h"
 #include "testing/gtest/include/gtest/gtest.h"
+
+using mojo::util::MakeRefCounted;
+using mojo::util::RefPtr;
 
 namespace mojo {
 namespace system {

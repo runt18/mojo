@@ -10,11 +10,13 @@
 #include "mojo/edk/system/channel_test_base.h"
 #include "mojo/edk/system/message_in_transit_queue.h"
 #include "mojo/edk/system/message_in_transit_test_utils.h"
-#include "mojo/edk/system/ref_ptr.h"
 #include "mojo/edk/system/test/timeouts.h"
 #include "mojo/edk/system/test_channel_endpoint_client.h"
 #include "mojo/edk/system/waitable_event.h"
+#include "mojo/edk/util/ref_ptr.h"
 #include "mojo/public/cpp/system/macros.h"
+
+using mojo::util::MakeRefCounted;
 
 namespace mojo {
 namespace system {

@@ -10,13 +10,16 @@
 #include "base/logging.h"
 #include "mojo/edk/embedder/platform_shared_buffer.h"
 #include "mojo/edk/system/memory.h"
-#include "mojo/edk/system/ref_ptr.h"
 #include "mojo/edk/system/test/simple_test_thread.h"
 #include "mojo/edk/system/waitable_event.h"
 #include "mojo/edk/system/waiter.h"
 #include "mojo/edk/util/make_unique.h"
+#include "mojo/edk/util/ref_ptr.h"
 #include "mojo/public/cpp/system/macros.h"
 #include "testing/gtest/include/gtest/gtest.h"
+
+using mojo::util::MakeRefCounted;
+using mojo::util::RefPtr;
 
 namespace mojo {
 namespace system {

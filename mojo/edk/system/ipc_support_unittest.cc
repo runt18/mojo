@@ -30,6 +30,8 @@
 #include "mojo/public/cpp/system/macros.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
+using mojo::util::RefPtr;
+
 namespace mojo {
 namespace system {
 namespace {

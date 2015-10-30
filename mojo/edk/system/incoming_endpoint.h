@@ -10,7 +10,7 @@
 #include "mojo/edk/system/channel_endpoint_client.h"
 #include "mojo/edk/system/message_in_transit_queue.h"
 #include "mojo/edk/system/mutex.h"
-#include "mojo/edk/system/ref_ptr.h"
+#include "mojo/edk/util/ref_ptr.h"
 #include "mojo/public/cpp/system/macros.h"
 
 struct MojoCreateDataPipeOptions;
@@ -27,16 +27,16 @@ class MessagePipe;
 // |MessagePipe|s or |DataPipe|s.
 class IncomingEndpoint final : public ChannelEndpointClient {
  public:
-  // Note: Use |MakeRefCounted<IncomingEndpoint>()|.
+  // Note: Use |util::MakeRefCounted<IncomingEndpoint>()|.
 
   // Must be called before any other method.
-  RefPtr<ChannelEndpoint> Init() MOJO_NOT_THREAD_SAFE;
+  util::RefPtr<ChannelEndpoint> Init() MOJO_NOT_THREAD_SAFE;
 
-  RefPtr<MessagePipe> ConvertToMessagePipe();
-  RefPtr<DataPipe> ConvertToDataPipeProducer(
+  util::RefPtr<MessagePipe> ConvertToMessagePipe();
+  util::RefPtr<DataPipe> ConvertToDataPipeProducer(
       const MojoCreateDataPipeOptions& validated_options,
       size_t consumer_num_bytes);
-  RefPtr<DataPipe> ConvertToDataPipeConsumer(
+  util::RefPtr<DataPipe> ConvertToDataPipeConsumer(
       const MojoCreateDataPipeOptions& validated_options);
 
   // Must be called before destroying this object if |ConvertToMessagePipe()|
@@ -54,7 +54,7 @@ class IncomingEndpoint final : public ChannelEndpointClient {
   ~IncomingEndpoint() override;
 
   Mutex mutex_;
-  RefPtr<ChannelEndpoint> endpoint_ MOJO_GUARDED_BY(mutex_);
+  util::RefPtr<ChannelEndpoint> endpoint_ MOJO_GUARDED_BY(mutex_);
   MessageInTransitQueue message_queue_ MOJO_GUARDED_BY(mutex_);
 
   MOJO_DISALLOW_COPY_AND_ASSIGN(IncomingEndpoint);

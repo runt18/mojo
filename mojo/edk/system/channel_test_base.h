@@ -10,8 +10,8 @@
 #include "base/bind.h"
 #include "mojo/edk/embedder/simple_platform_support.h"
 #include "mojo/edk/system/channel.h"
-#include "mojo/edk/system/ref_ptr.h"
 #include "mojo/edk/system/test/test_io_thread.h"
+#include "mojo/edk/util/ref_ptr.h"
 #include "mojo/public/cpp/system/macros.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
@@ -45,7 +45,7 @@ class ChannelTestBase : public testing::Test {
 
   TestIOThread* io_thread() { return &io_thread_; }
   Channel* channel(unsigned i) { return channels_[i].get(); }
-  RefPtr<Channel>* mutable_channel(unsigned i) { return &channels_[i]; }
+  util::RefPtr<Channel>* mutable_channel(unsigned i) { return &channels_[i]; }
 
  private:
   void SetUpOnIOThread();
@@ -53,7 +53,7 @@ class ChannelTestBase : public testing::Test {
   embedder::SimplePlatformSupport platform_support_;
   TestIOThread io_thread_;
   std::unique_ptr<RawChannel> raw_channels_[2];
-  RefPtr<Channel> channels_[2];
+  util::RefPtr<Channel> channels_[2];
 
   MOJO_DISALLOW_COPY_AND_ASSIGN(ChannelTestBase);
 };

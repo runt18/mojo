@@ -4,19 +4,19 @@
 
 // Provides a smart pointer class for intrusively reference-counted objects.
 
-#ifndef MOJO_EDK_SYSTEM_REF_PTR_H_
-#define MOJO_EDK_SYSTEM_REF_PTR_H_
+#ifndef MOJO_EDK_UTIL_REF_PTR_H_
+#define MOJO_EDK_UTIL_REF_PTR_H_
 
 #include <assert.h>
 
 #include <cstddef>
 #include <utility>
 
-#include "mojo/edk/system/ref_ptr_internal.h"
+#include "mojo/edk/util/ref_ptr_internal.h"
 #include "mojo/public/cpp/system/macros.h"
 
 namespace mojo {
-namespace system {
+namespace util {
 
 // A smart pointer class for intrusively reference-counted objects (e.g., those
 // subclassing |RefCountedThreadSafe| -- see ref_counted.h).
@@ -227,7 +227,7 @@ RefPtr<T> MakeRefCounted(Args&&... args) {
       std::forward<Args>(args)...);
 }
 
-}  // namespace system
+}  // namespace util
 }  // namespace mojo
 
-#endif  // MOJO_EDK_SYSTEM_REF_PTR_H_
+#endif  // MOJO_EDK_UTIL_REF_PTR_H_

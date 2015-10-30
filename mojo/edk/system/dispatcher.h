@@ -16,8 +16,8 @@
 #include "mojo/edk/system/handle_signals_state.h"
 #include "mojo/edk/system/memory.h"
 #include "mojo/edk/system/mutex.h"
-#include "mojo/edk/system/ref_counted.h"
-#include "mojo/edk/system/ref_ptr.h"
+#include "mojo/edk/util/ref_counted.h"
+#include "mojo/edk/util/ref_ptr.h"
 #include "mojo/public/c/system/buffer.h"
 #include "mojo/public/c/system/data_pipe.h"
 #include "mojo/public/c/system/message_pipe.h"
@@ -42,7 +42,7 @@ class ProxyMessagePipeEndpoint;
 class TransportData;
 class Awakable;
 
-using DispatcherVector = std::vector<RefPtr<Dispatcher>>;
+using DispatcherVector = std::vector<util::RefPtr<Dispatcher>>;
 
 namespace test {
 
@@ -56,7 +56,7 @@ DispatcherTransport DispatcherTryStartTransport(Dispatcher* dispatcher);
 // object is thread-safe, with its state being protected by a single mutex
 // |mutex_|, which is also made available to implementation subclasses (via the
 // |mutex()| method).
-class Dispatcher : public RefCountedThreadSafe<Dispatcher> {
+class Dispatcher : public util::RefCountedThreadSafe<Dispatcher> {
  public:
   enum class Type {
     UNKNOWN = 0,
@@ -114,7 +114,7 @@ class Dispatcher : public RefCountedThreadSafe<Dispatcher> {
   // new handle on success).
   MojoResult DuplicateBufferHandle(
       UserPointer<const MojoDuplicateBufferHandleOptions> options,
-      RefPtr<Dispatcher>* new_dispatcher);
+      util::RefPtr<Dispatcher>* new_dispatcher);
   MojoResult MapBuffer(
       uint64_t offset,
       uint64_t num_bytes,
@@ -204,7 +204,7 @@ class Dispatcher : public RefCountedThreadSafe<Dispatcher> {
     // Deserialization API.
     // Note: This "clears" (i.e., reset to the invalid handle) any platform
     // handles that it takes ownership of.
-    static RefPtr<Dispatcher> Deserialize(
+    static util::RefPtr<Dispatcher> Deserialize(
         Channel* channel,
         int32_t type,
         const void* source,
@@ -222,7 +222,8 @@ class Dispatcher : public RefCountedThreadSafe<Dispatcher> {
   virtual void CancelAllAwakablesNoLock() MOJO_EXCLUSIVE_LOCKS_REQUIRED(mutex_);
   virtual void CloseImplNoLock() MOJO_EXCLUSIVE_LOCKS_REQUIRED(mutex_);
 
-  virtual RefPtr<Dispatcher> CreateEquivalentDispatcherAndCloseImplNoLock()
+  virtual util::RefPtr<Dispatcher>
+  CreateEquivalentDispatcherAndCloseImplNoLock()
       MOJO_EXCLUSIVE_LOCKS_REQUIRED(mutex_) = 0;
 
   // These are to be overridden by subclasses (if necessary). They are never
@@ -261,7 +262,8 @@ class Dispatcher : public RefCountedThreadSafe<Dispatcher> {
       MOJO_EXCLUSIVE_LOCKS_REQUIRED(mutex_);
   virtual MojoResult DuplicateBufferHandleImplNoLock(
       UserPointer<const MojoDuplicateBufferHandleOptions> options,
-      RefPtr<Dispatcher>* new_dispatcher) MOJO_EXCLUSIVE_LOCKS_REQUIRED(mutex_);
+      util::RefPtr<Dispatcher>* new_dispatcher)
+      MOJO_EXCLUSIVE_LOCKS_REQUIRED(mutex_);
   virtual MojoResult MapBufferImplNoLock(
       uint64_t offset,
       uint64_t num_bytes,
@@ -325,7 +327,7 @@ class Dispatcher : public RefCountedThreadSafe<Dispatcher> {
   // dispatcher will look as though it was closed, but the resource it
   // represents will be assigned to the new dispatcher. This must be called
   // under the dispatcher's lock.
-  RefPtr<Dispatcher> CreateEquivalentDispatcherAndCloseNoLock()
+  util::RefPtr<Dispatcher> CreateEquivalentDispatcherAndCloseNoLock()
       MOJO_EXCLUSIVE_LOCKS_REQUIRED(mutex_);
 
   // API to serialize dispatchers to a |Channel|, exposed to only
@@ -396,7 +398,8 @@ class DispatcherTransport {
     return dispatcher_->IsBusyNoLock();
   }
   void Close() MOJO_NOT_THREAD_SAFE { dispatcher_->CloseNoLock(); }
-  RefPtr<Dispatcher> CreateEquivalentDispatcherAndClose() MOJO_NOT_THREAD_SAFE {
+  util::RefPtr<Dispatcher> CreateEquivalentDispatcherAndClose()
+      MOJO_NOT_THREAD_SAFE {
     return dispatcher_->CreateEquivalentDispatcherAndCloseNoLock();
   }
 

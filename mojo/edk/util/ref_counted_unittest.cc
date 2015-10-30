@@ -6,7 +6,7 @@
 // TODO(vtl): Possibly we could separate these tests out better, since a lot of
 // it is actually testing |RefPtr|.
 
-#include "mojo/edk/system/ref_counted.h"
+#include "mojo/edk/util/ref_counted.h"
 
 #include "build/build_config.h"
 #include "mojo/public/cpp/system/macros.h"
@@ -31,7 +31,7 @@
 #endif
 
 namespace mojo {
-namespace system {
+namespace util {
 namespace {
 
 class MyClass : public RefCountedThreadSafe<MyClass> {
@@ -606,5 +606,5 @@ TEST(RefCountedTest, MAYBE_DebugChecks) {
 // TODO(vtl): Add (threaded) stress tests.
 
 }  // namespace
-}  // namespace system
+}  // namespace util
 }  // namespace mojo

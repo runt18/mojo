@@ -12,6 +12,8 @@
 #include "mojo/edk/system/platform_handle_dispatcher.h"
 #include "mojo/edk/system/shared_buffer_dispatcher.h"
 
+using mojo::util::RefPtr;
+
 namespace mojo {
 namespace system {
 

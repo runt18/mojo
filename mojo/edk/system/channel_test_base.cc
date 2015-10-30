@@ -11,6 +11,8 @@
 #include "mojo/edk/embedder/platform_channel_pair.h"
 #include "mojo/edk/system/raw_channel.h"
 
+using mojo::util::MakeRefCounted;
+
 namespace mojo {
 namespace system {
 namespace test {

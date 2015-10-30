@@ -17,7 +17,6 @@
 #include <vector>
 
 #include "mojo/edk/system/message_pipe.h"
-#include "mojo/edk/system/ref_ptr.h"
 #include "mojo/edk/system/test/random.h"
 #include "mojo/edk/system/test/simple_test_thread.h"
 #include "mojo/edk/system/test/sleep.h"
@@ -26,8 +25,11 @@
 #include "mojo/edk/system/waiter.h"
 #include "mojo/edk/system/waiter_test_utils.h"
 #include "mojo/edk/util/make_unique.h"
+#include "mojo/edk/util/ref_ptr.h"
 #include "mojo/public/cpp/system/macros.h"
 #include "testing/gtest/include/gtest/gtest.h"
+
+using mojo::util::RefPtr;
 
 namespace mojo {
 namespace system {
