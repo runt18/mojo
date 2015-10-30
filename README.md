@@ -110,6 +110,12 @@ $ mojo/tools/mojob.py build --android
 The result will be in out/android_Debug. If you see javac compile errors,
 [make sure you have an up-to-date JDK](https://code.google.com/p/chromium/wiki/AndroidBuildInstructions#Install_Java_JDK)
 
+#### Marshmallow
+Running mojo on Marshmallow might raise an Exception `"Unable to find fifo"`. As
+a temporary solution, you can go to `Settings` -> `Apps` -> `Mojo Shell (dev)`
+-> `Permissions` and allow for `Storage`.
+See this [bug](https://github.com/domokit/mojo/issues/500) for more information.
+
 ### Goma (Googlers only)
 
 If you're a Googler, you can use Goma, a distributed compiler service for
