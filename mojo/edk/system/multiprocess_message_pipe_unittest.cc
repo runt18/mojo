@@ -339,7 +339,7 @@ TEST_F(MultiprocessMessagePipeTest, MAYBE_SharedBufferPassing) {
                              MOJO_WRITE_MESSAGE_FLAG_NONE));
   transport.End();
 
-  dispatcher->AssertHasOneRef();
+  EXPECT_TRUE(dispatcher->HasOneRef());
   dispatcher = nullptr;
 
   // Wait for a message from the child.
@@ -486,7 +486,7 @@ TEST_P(MultiprocessMessagePipeTestWithPipeCount, PlatformHandlePassing) {
 
   for (size_t i = 0; i < pipe_count; ++i) {
     transports[i].End();
-    dispatchers[i]->AssertHasOneRef();
+    EXPECT_TRUE(dispatchers[i]->HasOneRef());
   }
 
   dispatchers.clear();

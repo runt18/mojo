@@ -206,7 +206,7 @@ TEST_F(RemoteDataPipeImplTest, SendConsumerWithClosedProducer) {
 
     // |consumer| should have been closed. This is |DCHECK()|ed when it is
     // destroyed.
-    consumer->AssertHasOneRef();
+    EXPECT_TRUE(consumer->HasOneRef());
     consumer = nullptr;
   }
   EXPECT_EQ(MOJO_RESULT_OK, waiter.Wait(test::ActionTimeout(), &context));
@@ -225,7 +225,7 @@ TEST_F(RemoteDataPipeImplTest, SendConsumerWithClosedProducer) {
   EXPECT_EQ(1u, read_dispatchers.size());
   EXPECT_EQ(1u, read_num_dispatchers);
   ASSERT_TRUE(read_dispatchers[0]);
-  read_dispatchers[0]->AssertHasOneRef();
+  EXPECT_TRUE(read_dispatchers[0]->HasOneRef());
 
   EXPECT_EQ(Dispatcher::Type::DATA_PIPE_CONSUMER,
             read_dispatchers[0]->GetType());
@@ -321,7 +321,7 @@ TEST_F(RemoteDataPipeImplTest, SendConsumerDuringTwoPhaseWrite) {
 
     // |consumer| should have been closed. This is |DCHECK()|ed when it is
     // destroyed.
-    consumer->AssertHasOneRef();
+    EXPECT_TRUE(consumer->HasOneRef());
     consumer = nullptr;
   }
   EXPECT_EQ(MOJO_RESULT_OK, waiter.Wait(test::ActionTimeout(), &context));
@@ -340,7 +340,7 @@ TEST_F(RemoteDataPipeImplTest, SendConsumerDuringTwoPhaseWrite) {
   EXPECT_EQ(1u, read_dispatchers.size());
   EXPECT_EQ(1u, read_num_dispatchers);
   ASSERT_TRUE(read_dispatchers[0]);
-  read_dispatchers[0]->AssertHasOneRef();
+  EXPECT_TRUE(read_dispatchers[0]->HasOneRef());
 
   EXPECT_EQ(Dispatcher::Type::DATA_PIPE_CONSUMER,
             read_dispatchers[0]->GetType());
@@ -440,7 +440,7 @@ TEST_F(RemoteDataPipeImplTest, SendConsumerDuringSecondTwoPhaseWrite) {
 
     // |consumer| should have been closed. This is |DCHECK()|ed when it is
     // destroyed.
-    consumer->AssertHasOneRef();
+    EXPECT_TRUE(consumer->HasOneRef());
     consumer = nullptr;
   }
   EXPECT_EQ(MOJO_RESULT_OK, waiter.Wait(test::ActionTimeout(), &context));
@@ -459,7 +459,7 @@ TEST_F(RemoteDataPipeImplTest, SendConsumerDuringSecondTwoPhaseWrite) {
   EXPECT_EQ(1u, read_dispatchers.size());
   EXPECT_EQ(1u, read_num_dispatchers);
   ASSERT_TRUE(read_dispatchers[0]);
-  read_dispatchers[0]->AssertHasOneRef();
+  EXPECT_TRUE(read_dispatchers[0]->HasOneRef());
 
   EXPECT_EQ(Dispatcher::Type::DATA_PIPE_CONSUMER,
             read_dispatchers[0]->GetType());

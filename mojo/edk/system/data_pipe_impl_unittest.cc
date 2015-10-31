@@ -303,7 +303,7 @@ class RemoteDataPipeImplTestHelper : public DataPipeImplTestHelper {
     ASSERT_EQ(1u, read_dispatchers.size());
     ASSERT_EQ(1u, read_num_dispatchers);
     ASSERT_TRUE(read_dispatchers[0]);
-    read_dispatchers[0]->AssertHasOneRef();
+    EXPECT_TRUE(read_dispatchers[0]->HasOneRef());
 
     *to_receive = read_dispatchers[0];
   }
@@ -376,7 +376,7 @@ class RemoteProducerDataPipeImplTestHelper
     SendDispatcher(0, to_send, &to_receive);
     // |to_send| should have been closed. This is |DCHECK()|ed when it is
     // destroyed.
-    to_send->AssertHasOneRef();
+    EXPECT_TRUE(to_send->HasOneRef());
     to_send = nullptr;
 
     ASSERT_EQ(Dispatcher::Type::DATA_PIPE_PRODUCER, to_receive->GetType());
@@ -425,7 +425,7 @@ class RemoteConsumerDataPipeImplTestHelper
     SendDispatcher(0, to_send, &to_receive);
     // |to_send| should have been closed. This is |DCHECK()|ed when it is
     // destroyed.
-    to_send->AssertHasOneRef();
+    EXPECT_TRUE(to_send->HasOneRef());
     to_send = nullptr;
 
     ASSERT_EQ(Dispatcher::Type::DATA_PIPE_CONSUMER, to_receive->GetType());
@@ -479,7 +479,7 @@ class RemoteProducerDataPipeImplTestHelper2
     SendDispatcher(0, to_send, &to_receive);
     // |to_send| should have been closed. This is |DCHECK()|ed when it is
     // destroyed.
-    to_send->AssertHasOneRef();
+    EXPECT_TRUE(to_send->HasOneRef());
     to_send = nullptr;
     ASSERT_EQ(Dispatcher::Type::DATA_PIPE_PRODUCER, to_receive->GetType());
     to_send = RefPtr<DataPipeProducerDispatcher>(
@@ -490,7 +490,7 @@ class RemoteProducerDataPipeImplTestHelper2
     SendDispatcher(1, to_send, &to_receive);
     // |producer_dispatcher_| should have been closed. This is |DCHECK()|ed when
     // it is destroyed.
-    to_send->AssertHasOneRef();
+    EXPECT_TRUE(to_send->HasOneRef());
     to_send = nullptr;
 
     ASSERT_EQ(Dispatcher::Type::DATA_PIPE_PRODUCER, to_receive->GetType());
@@ -526,7 +526,7 @@ class RemoteConsumerDataPipeImplTestHelper2
     SendDispatcher(0, to_send, &to_receive);
     // |to_send| should have been closed. This is |DCHECK()|ed when it is
     // destroyed.
-    to_send->AssertHasOneRef();
+    EXPECT_TRUE(to_send->HasOneRef());
     to_send = nullptr;
     ASSERT_EQ(Dispatcher::Type::DATA_PIPE_CONSUMER, to_receive->GetType());
     to_send = RefPtr<DataPipeConsumerDispatcher>(
@@ -537,7 +537,7 @@ class RemoteConsumerDataPipeImplTestHelper2
     SendDispatcher(1, to_send, &to_receive);
     // |consumer_dispatcher_| should have been closed. This is |DCHECK()|ed when
     // it is destroyed.
-    to_send->AssertHasOneRef();
+    EXPECT_TRUE(to_send->HasOneRef());
     to_send = nullptr;
 
     ASSERT_EQ(Dispatcher::Type::DATA_PIPE_CONSUMER, to_receive->GetType());

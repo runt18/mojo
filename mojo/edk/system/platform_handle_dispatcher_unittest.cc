@@ -79,7 +79,7 @@ TEST(PlatformHandleDispatcherTest, CreateEquivalentDispatcherAndClose) {
   ASSERT_TRUE(generic_dispatcher);
 
   transport.End();
-  dispatcher->AssertHasOneRef();
+  EXPECT_TRUE(dispatcher->HasOneRef());
   dispatcher = nullptr;
 
   ASSERT_EQ(Dispatcher::Type::PLATFORM_HANDLE, generic_dispatcher->GetType());

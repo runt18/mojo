@@ -497,10 +497,12 @@ TEST(RefCountedTest, Mix) {
   bool was_destroyed = false;
   RefPtr<MySubclass> r1(MakeRefCounted<MySubclass>(&created, &was_destroyed));
   ASSERT_FALSE(was_destroyed);
+  EXPECT_TRUE(created->HasOneRef());
   created->AssertHasOneRef();
 
   RefPtr<MySubclass> r2 = r1;
   ASSERT_FALSE(was_destroyed);
+  EXPECT_FALSE(created->HasOneRef());
 
   r1 = nullptr;
   ASSERT_FALSE(was_destroyed);
@@ -508,18 +510,23 @@ TEST(RefCountedTest, Mix) {
 
   {
     RefPtr<MyClass> r3 = r2;
+    EXPECT_FALSE(created->HasOneRef());
     {
       RefPtr<MyClass> r4(r3);
       r2 = nullptr;
       ASSERT_FALSE(was_destroyed);
+      EXPECT_FALSE(created->HasOneRef());
     }
     ASSERT_FALSE(was_destroyed);
+    EXPECT_TRUE(created->HasOneRef());
     created->AssertHasOneRef();
 
     r1 = RefPtr<MySubclass>(static_cast<MySubclass*>(r3.get()));
     ASSERT_FALSE(was_destroyed);
+    EXPECT_FALSE(created->HasOneRef());
   }
   ASSERT_FALSE(was_destroyed);
+  EXPECT_TRUE(created->HasOneRef());
   created->AssertHasOneRef();
 
   EXPECT_EQ(created, r1.get());

@@ -77,6 +77,24 @@ class RefCountedThreadSafe : public internal::RefCountedThreadSafeBase {
       delete static_cast<const T*>(this);
   }
 
+  // Returns true if there is exactly one reference to this object. Use of this
+  // is subtle, and should usually be avoided. To assert that there is only one
+  // reference (typically held by the calling thread, possibly in a local
+  // variable), use |AssertHasOneRef()| instead. However, a use is:
+  //
+  //   if (foo->HasOneRef()) {
+  //     // Do something "fast", since |foo| is the only reference and no other
+  //     // thread can get another reference.
+  //     ...
+  //   } else {
+  //     // Do something slower, but still valid even if there were only one
+  //     // reference.
+  //     ...
+  //   }
+  //
+  // Inherited from the internal superclass:
+  //   bool HasOneRef();
+
   // Asserts that there is exactly one reference to this object; does nothing in
   // Release builds (when |NDEBUG| is defined).
   // Inherited from the internal superclass:

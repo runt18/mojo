@@ -646,7 +646,7 @@ TEST_F(RemoteMessagePipeTest, HandlePassing) {
 
     // |dispatcher| should have been closed. This is |DCHECK()|ed when the
     // |dispatcher| is destroyed.
-    dispatcher->AssertHasOneRef();
+    EXPECT_TRUE(dispatcher->HasOneRef());
     dispatcher = nullptr;
   }
 
@@ -674,7 +674,7 @@ TEST_F(RemoteMessagePipeTest, HandlePassing) {
   EXPECT_EQ(1u, read_dispatchers.size());
   EXPECT_EQ(1u, read_num_dispatchers);
   ASSERT_TRUE(read_dispatchers[0]);
-  read_dispatchers[0]->AssertHasOneRef();
+  EXPECT_TRUE(read_dispatchers[0]->HasOneRef());
 
   EXPECT_EQ(Dispatcher::Type::MESSAGE_PIPE, read_dispatchers[0]->GetType());
   dispatcher = RefPtr<MessagePipeDispatcher>(
@@ -821,7 +821,7 @@ TEST_F(RemoteMessagePipeTest, HandlePassingHalfClosed) {
 
     // |dispatcher| should have been closed. This is |DCHECK()|ed when the
     // |dispatcher| is destroyed.
-    dispatcher->AssertHasOneRef();
+    EXPECT_TRUE(dispatcher->HasOneRef());
     dispatcher = nullptr;
   }
 
@@ -849,7 +849,7 @@ TEST_F(RemoteMessagePipeTest, HandlePassingHalfClosed) {
   EXPECT_EQ(1u, read_dispatchers.size());
   EXPECT_EQ(1u, read_num_dispatchers);
   ASSERT_TRUE(read_dispatchers[0]);
-  read_dispatchers[0]->AssertHasOneRef();
+  EXPECT_TRUE(read_dispatchers[0]->HasOneRef());
 
   EXPECT_EQ(Dispatcher::Type::MESSAGE_PIPE, read_dispatchers[0]->GetType());
   dispatcher = RefPtr<MessagePipeDispatcher>(
@@ -950,7 +950,7 @@ TEST_F(RemoteMessagePipeTest, SharedBufferPassing) {
 
     // |dispatcher| should have been closed. This is |DCHECK()|ed when the
     // |dispatcher| is destroyed.
-    dispatcher->AssertHasOneRef();
+    EXPECT_TRUE(dispatcher->HasOneRef());
     dispatcher = nullptr;
   }
 
@@ -978,7 +978,7 @@ TEST_F(RemoteMessagePipeTest, SharedBufferPassing) {
   EXPECT_EQ(1u, read_dispatchers.size());
   EXPECT_EQ(1u, read_num_dispatchers);
   ASSERT_TRUE(read_dispatchers[0]);
-  read_dispatchers[0]->AssertHasOneRef();
+  EXPECT_TRUE(read_dispatchers[0]->HasOneRef());
 
   EXPECT_EQ(Dispatcher::Type::SHARED_BUFFER, read_dispatchers[0]->GetType());
   dispatcher = RefPtr<SharedBufferDispatcher>(
@@ -1060,7 +1060,7 @@ TEST_F(RemoteMessagePipeTest, PlatformHandlePassing) {
 
     // |dispatcher| should have been closed. This is |DCHECK()|ed when the
     // |dispatcher| is destroyed.
-    dispatcher->AssertHasOneRef();
+    EXPECT_TRUE(dispatcher->HasOneRef());
     dispatcher = nullptr;
   }
 
@@ -1088,7 +1088,7 @@ TEST_F(RemoteMessagePipeTest, PlatformHandlePassing) {
   EXPECT_EQ(1u, read_dispatchers.size());
   EXPECT_EQ(1u, read_num_dispatchers);
   ASSERT_TRUE(read_dispatchers[0]);
-  read_dispatchers[0]->AssertHasOneRef();
+  EXPECT_TRUE(read_dispatchers[0]->HasOneRef());
 
   EXPECT_EQ(Dispatcher::Type::PLATFORM_HANDLE, read_dispatchers[0]->GetType());
   dispatcher = RefPtr<PlatformHandleDispatcher>(
@@ -1195,7 +1195,7 @@ TEST_F(RemoteMessagePipeTest, PassMessagePipeHandleAcrossAndBack) {
 
     // |dispatcher| should have been closed. This is |DCHECK()|ed when the
     // |dispatcher| is destroyed.
-    dispatcher->AssertHasOneRef();
+    EXPECT_TRUE(dispatcher->HasOneRef());
     dispatcher = nullptr;
   }
 
@@ -1223,7 +1223,7 @@ TEST_F(RemoteMessagePipeTest, PassMessagePipeHandleAcrossAndBack) {
   EXPECT_EQ(1u, read_dispatchers.size());
   EXPECT_EQ(1u, read_num_dispatchers);
   ASSERT_TRUE(read_dispatchers[0]);
-  read_dispatchers[0]->AssertHasOneRef();
+  EXPECT_TRUE(read_dispatchers[0]->HasOneRef());
 
   EXPECT_EQ(Dispatcher::Type::MESSAGE_PIPE, read_dispatchers[0]->GetType());
   dispatcher = RefPtr<MessagePipeDispatcher>(
@@ -1255,7 +1255,7 @@ TEST_F(RemoteMessagePipeTest, PassMessagePipeHandleAcrossAndBack) {
 
     // |dispatcher| should have been closed. This is |DCHECK()|ed when the
     // |dispatcher| is destroyed.
-    dispatcher->AssertHasOneRef();
+    EXPECT_TRUE(dispatcher->HasOneRef());
     dispatcher = nullptr;
   }
 
@@ -1281,7 +1281,7 @@ TEST_F(RemoteMessagePipeTest, PassMessagePipeHandleAcrossAndBack) {
   EXPECT_EQ(1u, read_dispatchers.size());
   EXPECT_EQ(1u, read_num_dispatchers);
   ASSERT_TRUE(read_dispatchers[0]);
-  read_dispatchers[0]->AssertHasOneRef();
+  EXPECT_TRUE(read_dispatchers[0]->HasOneRef());
 
   EXPECT_EQ(Dispatcher::Type::MESSAGE_PIPE, read_dispatchers[0]->GetType());
   dispatcher = RefPtr<MessagePipeDispatcher>(

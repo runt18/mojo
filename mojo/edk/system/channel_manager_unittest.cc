@@ -55,12 +55,16 @@ TEST_F(ChannelManagerTest, Basic) {
 
   RefPtr<Channel> ch = channel_manager().GetChannel(id);
   EXPECT_TRUE(ch);
+  // |ChannelManager| should have a ref.
+  EXPECT_FALSE(ch->HasOneRef());
 
   channel_manager().WillShutdownChannel(id);
+  // |ChannelManager| should still have a ref.
+  EXPECT_FALSE(ch->HasOneRef());
 
   channel_manager().ShutdownChannelOnIOThread(id);
   // |ChannelManager| should have given up its ref.
-  ch->AssertHasOneRef();
+  EXPECT_TRUE(ch->HasOneRef());
 
   EXPECT_EQ(MOJO_RESULT_OK, d->Close());
 }
@@ -85,12 +89,13 @@ TEST_F(ChannelManagerTest, TwoChannels) {
   // Calling |WillShutdownChannel()| multiple times (on |id1|) is okay.
   channel_manager().WillShutdownChannel(id1);
   channel_manager().WillShutdownChannel(id1);
+  EXPECT_FALSE(ch1->HasOneRef());
   // Not calling |WillShutdownChannel()| (on |id2|) is okay too.
 
   channel_manager().ShutdownChannelOnIOThread(id1);
-  ch1->AssertHasOneRef();
+  EXPECT_TRUE(ch1->HasOneRef());
   channel_manager().ShutdownChannelOnIOThread(id2);
-  ch2->AssertHasOneRef();
+  EXPECT_TRUE(ch2->HasOneRef());
 
   EXPECT_EQ(MOJO_RESULT_OK, d1->Close());
   EXPECT_EQ(MOJO_RESULT_OK, d2->Close());
@@ -117,8 +122,12 @@ class OtherThread : public test::SimpleTestThread {
 
     // You can use any unique, nonzero value as the ID.
     RefPtr<Channel> ch = channel_manager_->GetChannel(channel_id_);
+    // |ChannelManager| should have a ref.
+    EXPECT_FALSE(ch->HasOneRef());
 
     channel_manager_->WillShutdownChannel(channel_id_);
+    // |ChannelManager| should still have a ref.
+    EXPECT_FALSE(ch->HasOneRef());
 
     {
       base::MessageLoop message_loop;

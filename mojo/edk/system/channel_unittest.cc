@@ -30,7 +30,7 @@ TEST_F(ChannelTest, InitShutdown) {
   PostMethodToIOThreadAndWait(&ChannelTest::ShutdownChannelOnIOThread, 0);
 
   // Okay to destroy |Channel| on not-the-I/O-thread.
-  channel(0)->AssertHasOneRef();
+  EXPECT_TRUE(channel(0)->HasOneRef());
   *mutable_channel(0) = nullptr;
 }
 
@@ -48,7 +48,7 @@ TEST_F(ChannelTest, CloseBeforeRun) {
 
   PostMethodToIOThreadAndWait(&ChannelTest::ShutdownChannelOnIOThread, 0);
 
-  channel(0)->AssertHasOneRef();
+  EXPECT_TRUE(channel(0)->HasOneRef());
 }
 
 // ChannelTest.ShutdownAfterAttachAndRun ---------------------------------------
@@ -80,7 +80,7 @@ TEST_F(ChannelTest, ShutdownAfterAttach) {
 
   mp->Close(0);
 
-  channel(0)->AssertHasOneRef();
+  EXPECT_TRUE(channel(0)->HasOneRef());
 }
 
 // ChannelTest.WaitAfterAttachRunAndShutdown -----------------------------------
@@ -106,7 +106,7 @@ TEST_F(ChannelTest, WaitAfterAttachRunAndShutdown) {
 
   mp->Close(0);
 
-  channel(0)->AssertHasOneRef();
+  EXPECT_TRUE(channel(0)->HasOneRef());
 }
 
 // ChannelTest.EndpointChannelShutdownRace -------------------------------------

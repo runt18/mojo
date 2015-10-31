@@ -17,6 +17,7 @@ namespace mojo {
 namespace util {
 namespace internal {
 
+// See ref_counted.h for comments on the public methods.
 class RefCountedThreadSafeBase {
  public:
   void AddRef() const {
@@ -25,9 +26,11 @@ class RefCountedThreadSafeBase {
     ref_count_.fetch_add(1u, std::memory_order_relaxed);
   }
 
-  void AssertHasOneRef() const {
-    assert(ref_count_.load(std::memory_order_acquire) == 1u);
+  bool HasOneRef() const {
+    return ref_count_.load(std::memory_order_acquire) == 1u;
   }
+
+  void AssertHasOneRef() const { assert(HasOneRef()); }
 
  protected:
   RefCountedThreadSafeBase();
