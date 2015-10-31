@@ -74,6 +74,7 @@ class PexeCompilerImpl : public mojo::nacl::PexeCompiler {
 
     // Return the name of the object file.
     callback.Run(mojo::String(obj_file_name.value()));
+    mojo::RunLoop::current()->Quit();
   }
  private:
   const struct nacl_irt_pnacl_compile_funcs* funcs_;
@@ -91,7 +92,7 @@ void ServeTranslateRequest(const struct nacl_irt_pnacl_compile_funcs* funcs) {
   PexeCompilerImpl impl(
       mojo::ScopedMessagePipeHandle(mojo::MessagePipeHandle(handle)).Pass(),
       funcs);
-  mojo::RunLoop::current()->RunUntilIdle();
+  mojo::RunLoop::current()->Run();
 }
 
 }  // namespace anonymous

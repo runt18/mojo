@@ -47,6 +47,7 @@ class PexeLinkerImpl : public mojo::nacl::PexeLinker {
 
     // Return the name of the nexe file.
     callback.Run(mojo::String(nexe_file_name.value()));
+    mojo::RunLoop::current()->Quit();
   }
  private:
   LinkerCallback func_;
@@ -64,7 +65,7 @@ void ServeLinkRequest(LinkerCallback func) {
   PexeLinkerImpl impl(
       mojo::ScopedMessagePipeHandle(mojo::MessagePipeHandle(handle)).Pass(),
       func);
-  mojo::RunLoop::current()->RunUntilIdle();
+  mojo::RunLoop::current()->Run();
 }
 
 }  // namespace anonymous

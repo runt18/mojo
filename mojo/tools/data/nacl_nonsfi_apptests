@@ -10,37 +10,36 @@ tests = [
     "test": "mojo:monacl_test_nonsfi",
     "shell-args": ["--enable-multiprocess"],
   },
-# TODO(smklein): Re-enable these tests once fixed on Linux Build Bot.
-#  {
-#    "test": "mojo:shell_apptests.pexe",
-#    "shell-args": ["--enable-multiprocess"],
-#  },
-#  {
-#    "test": "mojo:http_server_apptests.pexe",
-#    "shell-args": ["--enable-multiprocess"],
-#  },
-#  {
-#    "test": "mojo:clipboard_apptests.pexe",
-#    "shell-args": ["--enable-multiprocess"],
-#  },
-#  {
-#    "test": "mojo:example_apptests.pexe",
-#    # ExampleApplicationTest.CheckCommandLineArg checks --example_apptest_arg.
-#    "shell-args": ["--enable-multiprocess"],
-#    "test-args": ["--example_apptest_arg"],
-#  },
-#  {
-#    "test": "mojo:files_apptests.pexe",
-#    "shell-args": ["--enable-multiprocess"],
-#  },
-#  {
-#    "test": "mojo:mojo_view_manager_client_apptests.pexe",
-#    "shell-args": ["--enable-multiprocess", "--args-for=mojo:native_viewport_service --use-headless-config --use-osmesa"],
-#  },
-#  # TODO(smklein) Include "view_manager_service_apptests" once it isn't as slow.
-#  {
-#    "test": "mojo:window_manager_apptests.pexe",
-#    "shell-args": ["--enable-multiprocess"],
-#  },
-#
+  {
+    "test": "mojo:shell_apptests.pexe",
+    "shell-args": ["--enable-multiprocess"],
+  },
+  {
+    "test": "mojo:http_server_apptests.pexe",
+    "shell-args": ["--enable-multiprocess"],
+  },
+  {
+    "test": "mojo:clipboard_apptests.pexe",
+    "shell-args": ["--enable-multiprocess"],
+  },
+  {
+    "test": "mojo:example_apptests.pexe",
+    # ExampleApplicationTest.CheckCommandLineArg checks --example_apptest_arg.
+    "shell-args": ["--enable-multiprocess"],
+    "test-args": ["--example_apptest_arg"],
+  },
+  {
+    "test": "mojo:files_apptests.pexe",
+    "shell-args": ["--enable-multiprocess"],
+  },
+  {
+    "test": "mojo:mojo_view_manager_client_apptests.pexe",
+    "shell-args": ["--enable-multiprocess", "--args-for=mojo:native_viewport_service --use-headless-config --use-osmesa"],
+  },
+  # TODO(smklein) Include "view_manager_service_apptests" once it isn't as slow.
+  {
+    "test": "mojo:window_manager_apptests.pexe",
+    "shell-args": ["--enable-multiprocess"],
+  },
+
 ]
