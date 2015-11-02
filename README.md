@@ -61,6 +61,22 @@ Pull down all of the packages with this command:
 $ gclient sync
 ```
 
+## Update your checkout
+
+You can update your checkout like this. The order is important. You must do the
+`git pull` first because `gclient sync` is dependent on the current revision.
+
+```
+# Fetch changes from upstream and rebase the current branch on top
+$ git pull --rebase
+# Update all modules as directed by the DEPS file
+$ gclient sync
+```
+
+You do not need to rerun `gn gen out/Debug` - ninja does so automatically each
+time you build. You might need to rerun `mojo/tools/mojob.py gn` if the GN
+flags have changed.
+
 ## <a name="buildmojo"></a>Build Mojo
 
 ### Linux
@@ -138,21 +154,6 @@ $ ninja -C out/Debug -j 1000
 Official builds for android generate a signed Mojo Shell intended for
 distribution. You normally should not need to produce one. If you have any
 questions, reach out to [etiennej@chromium.org](mailto:etiennej@chromium.org).
-
-## Update your checkout
-
-You can update your checkout like this. The order is important. You must do the
-`git pull` first because `gclient sync` is dependent on the current revision.
-```
-# Fetch changes from upstream and rebase the current branch on top
-$ git pull --rebase
-# Update all modules as directed by the DEPS file
-$ gclient sync
-```
-
-You do not need to rerun `gn gen out/Debug` - ninja does so automatically each
-time you build. You might need to rerun `mojo/tools/mojob.py gn` if the GN
-flags have changed.
 
 ## Run Mojo Shell
 
