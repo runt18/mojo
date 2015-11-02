@@ -67,7 +67,7 @@ def _rewrite(mapping, host_destination_functon, shell, port, free_host_port):
 
 
 def _apply_mappings(shell, original_arguments, map_urls, map_origins,
-                    free_host_ports):
+                    free_ports, free_host_ports):
   """Applies mappings for specified urls and origins. For each local path
   specified as destination a local server will be spawned and the mapping will
   be rewritten accordingly.
@@ -79,18 +79,24 @@ def _apply_mappings(shell, original_arguments, map_urls, map_origins,
         <url>=<url-or-local-path>.
     map_origins: List of origin mappings, each in the form of
         <origin>=<url-or-local-path>.
+    free_ports: Iff True, run local development servers on system-allocated
+        ports. This defeats any performance benefits from caching.
+    free_host_ports: Only applicable on Android. Iff True, local development
+        servers are run on system-allocated ports, but are still forwarded from
+        fixed ports on the device.
 
   Returns:
     The updated argument list.
   """
-  next_port = _MAPPINGS_BASE_PORT
+  next_port = 0 if free_ports else _MAPPINGS_BASE_PORT
   args = original_arguments
   if map_urls:
     # Sort the mappings to preserve caching regardless of argument order.
     for map_url in sorted(map_urls):
       mapping = _rewrite(map_url, _host_local_url_destination, shell, next_port,
                          free_host_ports)
-      next_port += 1
+      if not free_ports:
+        next_port += 1
       # All url mappings need to be coalesced into one shell argument.
       args = append_to_argument(args, '--url-mappings=', mapping)
 
@@ -98,13 +104,14 @@ def _apply_mappings(shell, original_arguments, map_urls, map_origins,
     for map_origin in sorted(map_origins):
       mapping = _rewrite(map_origin, _host_local_origin_destination, shell,
                          next_port, free_host_ports)
-      next_port += 1
+      if not free_ports:
+        next_port += 1
       # Origin mappings are specified as separate, repeated shell arguments.
       args.append('--map-origin=' + mapping)
   return args
 
 
-def configure_local_origin(shell, local_dir, free_host_port):
+def configure_local_origin(shell, local_dir, port, free_host_port):
   """Sets up a local http server to serve files in |local_dir| along with
   device port forwarding if needed.
 
@@ -112,8 +119,7 @@ def configure_local_origin(shell, local_dir, free_host_port):
     The list of arguments to be appended to the shell argument list.
   """
 
-  origin_url = shell.serve_local_directory(
-      local_dir, _LOCAL_ORIGIN_PORT, free_host_port)
+  origin_url = shell.serve_local_directory(local_dir, port, free_host_port)
   return ["--origin=" + origin_url]
 
 
@@ -215,13 +221,16 @@ def get_shell(shell_config, shell_args):
 
   shell_args = _apply_mappings(shell, shell_args, shell_config.map_url_list,
                                shell_config.map_origin_list,
+                               shell_config.free_ports,
                                shell_config.free_host_ports)
 
   if shell_config.origin:
     if _is_web_url(shell_config.origin):
       shell_args.append('--origin=' + shell_config.origin)
     else:
+      local_origin_port = 0 if shell_config.free_ports else _LOCAL_ORIGIN_PORT
       shell_args.extend(configure_local_origin(shell, shell_config.origin,
+                                               local_origin_port,
                                                shell_config.free_host_ports))
 
   if shell_config.content_handlers:
