@@ -8,14 +8,14 @@
 
    The following packages are currently installed:
 
-  - Android SDK Tools 24.3.2
-  - Android SDK platform-tools 22 Rev.2
-  - Android SDK Build-tools 22.0.1
-  - Android 5.1.1 (API 22)
-    - SDK Platform 22
+  - Android SDK Tools 24.4.1
+  - Android SDK platform-tools 23.0.1
+  - Android SDK Build-tools 23.0.1
+  - Android 6.0 (API 23)
+    - SDK Platform 23
   - Extras
-    - Android Support Library 22.2
-    - Google Play services 25
+    - Android Support Library 23.1
+    - Google Play services 27
 
 3. Run upload_android_tools.py -t sdk
 

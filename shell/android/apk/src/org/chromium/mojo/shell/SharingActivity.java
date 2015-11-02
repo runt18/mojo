@@ -4,11 +4,9 @@
 
 package org.chromium.mojo.shell;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
-import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
 
@@ -21,17 +19,19 @@ import java.util.ArrayDeque;
 /**
  * Activity for sharing data with shell apps.
  */
-public final class SharingActivity extends Activity implements ShellService.IShellBindingActivity {
+public final class SharingActivity
+        extends BaseActivity implements ShellService.IShellBindingActivity {
     private static final String TAG = "SharingActivity";
 
     private ArrayDeque<Intent> mPendingIntents = new ArrayDeque<Intent>();
     private ShellService mShellService;
     private ServiceConnection mShellServiceConnection;
 
+    /**
+     * @see BaseActivity#onCreateWithPermissions()
+     */
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
+    void onCreateWithPermissions() {
         Intent serviceIntent = new Intent(this, ShellService.class);
         startService(serviceIntent);
         mShellServiceConnection = new ShellService.ShellServiceConnection(this);

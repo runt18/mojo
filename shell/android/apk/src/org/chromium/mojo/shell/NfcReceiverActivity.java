@@ -4,14 +4,12 @@
 
 package org.chromium.mojo.shell;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.nfc.NdefMessage;
 import android.nfc.NdefRecord;
 import android.nfc.NfcAdapter;
-import android.os.Bundle;
 import android.os.Parcelable;
 
 import org.chromium.mojo.application.ShellHelper;
@@ -23,15 +21,17 @@ import java.util.ArrayDeque;
 /**
  * Activity for receiving nfc messages.
  */
-public class NfcReceiverActivity extends Activity implements ShellService.IShellBindingActivity {
+public class NfcReceiverActivity
+        extends BaseActivity implements ShellService.IShellBindingActivity {
     private ArrayDeque<Intent> mPendingIntents = new ArrayDeque<Intent>();
     private ShellService mShellService;
     private ServiceConnection mShellServiceConnection;
 
+    /**
+     * @see BaseActivity#onCreateWithPermissions()
+     */
     @Override
-    protected void onCreate(final Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
+    void onCreateWithPermissions() {
         Intent serviceIntent = new Intent(this, ShellService.class);
         startService(serviceIntent);
         mShellServiceConnection = new ShellService.ShellServiceConnection(this);

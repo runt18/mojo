@@ -331,6 +331,7 @@ if (is_android) {
   android_library("java") {
     java_files = [
       "android/apk/src/org/chromium/mojo/shell/AndroidHandler.java",
+      "android/apk/src/org/chromium/mojo/shell/BaseActivity.java",
       "android/apk/src/org/chromium/mojo/shell/FileHelper.java",
       "android/apk/src/org/chromium/mojo/shell/IntentReceiverActivity.java",
       "android/apk/src/org/chromium/mojo/shell/IntentReceiverRegistry.java",
@@ -368,6 +369,7 @@ if (is_android) {
       "//mojo/services/nfc/interfaces:interfaces_java",
       "//services/keyboard",
       "//services/native_viewport:native_viewport_java",
+      "//third_party/android_tools:android_support_v13_java",
     ]
   }
 
@@ -648,7 +650,9 @@ mojo_native_application("apptests") {
     ":embed_pingable",
   ]
 
-  data_deps = [ "//services/http_server:http_server($default_toolchain)" ]
+  data_deps = [
+    "//services/http_server:http_server($default_toolchain)",
+  ]
 }
 
 mojo_native_application("shell_nfc_apptests") {

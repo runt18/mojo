@@ -4,18 +4,17 @@
 
 package org.chromium.mojo.shell;
 
-import android.app.Activity;
 import android.content.Intent;
-import android.os.Bundle;
 
 /**
  * Entry point for the Mojo Shell application.
  */
-public class MojoShellActivity extends Activity {
+public class MojoShellActivity extends BaseActivity {
+    /**
+     * @see BaseActivity#onCreateWithPermissions()
+     */
     @Override
-    protected void onCreate(final Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
+    protected void onCreateWithPermissions() {
         Intent serviceIntent = new Intent(this, ShellService.class);
         // Copy potential startup arguments.
         serviceIntent.putExtras(getIntent());
