@@ -213,6 +213,10 @@ type StringType struct {
 	nullable bool
 }
 
+func (s StringType) Nullable() bool {
+	return s.nullable
+}
+
 // StringLiteralType is a global singleton representing the unique LiteralType string.
 var StringLiteralType LiteralType = StringType{}
 
@@ -280,6 +284,14 @@ type HandleTypeRef struct {
 	nullable bool
 
 	kind HandleKind
+}
+
+func (h HandleTypeRef) Nullable() bool {
+	return h.nullable
+}
+
+func (h HandleTypeRef) HandleKind() HandleKind {
+	return h.kind
 }
 
 func (HandleTypeRef) TypeRefKind() TypeKind {
@@ -390,6 +402,18 @@ func NewArrayTypeRef(elementType TypeRef, fixedSize int, nullable bool) *ArrayTy
 	return &ArrayTypeRef{nullable, fixedSize, elementType}
 }
 
+func (a ArrayTypeRef) Nullable() bool {
+	return a.nullable
+}
+
+func (a ArrayTypeRef) FixedLength() int {
+	return a.fixedLength
+}
+
+func (a ArrayTypeRef) ElementType() TypeRef {
+	return a.elementType
+}
+
 // An ArrayTypeRef is a TypeRef:
 
 func (ArrayTypeRef) TypeRefKind() TypeKind {
@@ -406,10 +430,6 @@ func (ArrayTypeRef) MarkUsedAsConstantType() bool {
 
 func (ArrayTypeRef) MarkTypeCompatible(assignment LiteralAssignment) bool {
 	return assignment.assignedValue.IsDefault()
-}
-
-func (a ArrayTypeRef) Nullable() bool {
-	return a.nullable
 }
 
 func (a ArrayTypeRef) String() string {
@@ -441,6 +461,18 @@ func NewMapTypeRef(keyType TypeRef, valueType TypeRef, nullable bool) *MapTypeRe
 	return &MapTypeRef{nullable, keyType, valueType}
 }
 
+func (m MapTypeRef) Nullable() bool {
+	return m.nullable
+}
+
+func (m MapTypeRef) KeyType() TypeRef {
+	return m.keyType
+}
+
+func (m MapTypeRef) ValueType() TypeRef {
+	return m.valueType
+}
+
 // A MapTypeRef is a TypeRef:
 
 func (MapTypeRef) TypeRefKind() TypeKind {
@@ -457,10 +489,6 @@ func (MapTypeRef) MarkUsedAsConstantType() bool {
 
 func (MapTypeRef) MarkTypeCompatible(assignment LiteralAssignment) bool {
 	return assignment.assignedValue.IsDefault()
-}
-
-func (m MapTypeRef) Nullable() bool {
-	return m.nullable
 }
 
 func (m MapTypeRef) String() string {
@@ -521,6 +549,18 @@ func NewResolvedUserTypeRef(identifier string, resolvedType UserDefinedType) *Us
 	return &UserTypeRef{identifier: identifier, resolvedType: resolvedType}
 }
 
+func (t *UserTypeRef) Nullable() bool {
+	return t.nullable
+}
+
+func (t *UserTypeRef) IsInterfaceRequest() bool {
+	return t.interfaceRequest
+}
+
+func (t *UserTypeRef) Identifier() string {
+	return t.identifier
+}
+
 // A UserTypeRef is a TypeRef:
 
 func (UserTypeRef) TypeRefKind() TypeKind {
@@ -553,10 +593,6 @@ func (t *UserTypeRef) MarkTypeCompatible(assignment LiteralAssignment) bool {
 
 	t.variableAssignment = &assignment
 	return true
-}
-
-func (t *UserTypeRef) Nullable() bool {
-	return t.nullable
 }
 
 func (ref *UserTypeRef) validateAfterResolution() error {

@@ -295,6 +295,7 @@ func (p *Parser) parseAttributes() (attributes *mojom.Attributes) {
 		var value mojom.ConcreteValue
 		if p.peekNextToken("Expecting to find an attribute value.").Kind == lexer.Name {
 			text := p.readName()
+			// TODO(rudominer) Do not throw away the distinction between a name and a string literal.
 			value = mojom.MakeStringLiteralValue(text)
 		} else {
 			value = p.parseLiteral()
