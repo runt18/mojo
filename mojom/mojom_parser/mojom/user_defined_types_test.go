@@ -15,10 +15,10 @@ func TestUserDefinedTypeSimpleName(t *testing.T) {
 		userDefinedType UserDefinedType
 		simpleName      string
 	}{
-		{NewMojomStruct("struct", nil), "struct"},
-		{NewMojomInterface("interface", nil), "interface"},
-		{NewMojomUnion("union", nil), "union"},
-		{NewMojomEnum("enum", nil), "enum"},
+		{NewTestStruct("struct"), "struct"},
+		{NewTestInterface("interface"), "interface"},
+		{NewTestUnion("union"), "union"},
+		{NewTestEnum("enum"), "enum"},
 	}
 	for _, c := range cases {
 		got := c.userDefinedType.SimpleName()
@@ -33,10 +33,10 @@ func TestUserDefinedTypeKind(t *testing.T) {
 		userDefinedType UserDefinedType
 		kind            UserDefinedTypeKind
 	}{
-		{NewMojomStruct("struct", nil), UserDefinedTypeKindStruct},
-		{NewMojomInterface("interface", nil), UserDefinedTypeKindInterface},
-		{NewMojomUnion("union", nil), UserDefinedTypeKindUnion},
-		{NewMojomEnum("enum", nil), UserDefinedTypeKindEnum},
+		{NewTestStruct("struct"), UserDefinedTypeKindStruct},
+		{NewTestInterface("interface"), UserDefinedTypeKindInterface},
+		{NewTestUnion("union"), UserDefinedTypeKindUnion},
+		{NewTestEnum("enum"), UserDefinedTypeKindEnum},
 	}
 	for _, c := range cases {
 		got := c.userDefinedType.Kind()
@@ -58,10 +58,10 @@ func TestIsAssignmentCompatibleWith(t *testing.T) {
 		userDefinedType UserDefinedType
 		allowed         []bool
 	}{
-		{NewMojomStruct("struct", nil), []bool{false, false, false, false, true}},
-		{NewMojomInterface("interface", nil), []bool{false, false, false, false, false}},
-		{NewMojomUnion("union", nil), []bool{false, false, false, false, true}},
-		{NewMojomEnum("enum", nil), []bool{false, false, true, false, true}},
+		{NewTestStruct("struct"), []bool{false, false, false, false, true}},
+		{NewTestInterface("interface"), []bool{false, false, false, false, false}},
+		{NewTestUnion("union"), []bool{false, false, false, false, true}},
+		{NewTestEnum("enum"), []bool{false, false, true, false, true}},
 	}
 	for _, c := range cases {
 		for i, v := range literalValues {
@@ -80,10 +80,10 @@ func TestUserDefinedTypeRegisterInScope(t *testing.T) {
 		userDefinedType    UserDefinedType
 		fullyQualifiedName string
 	}{
-		{NewMojomStruct("struct", nil), fmt.Sprintf("%s.%s", scopeName, "struct")},
-		{NewMojomInterface("interface", nil), fmt.Sprintf("%s.%s", scopeName, "interface")},
-		{NewMojomUnion("union", nil), fmt.Sprintf("%s.%s", scopeName, "union")},
-		{NewMojomEnum("enum", nil), fmt.Sprintf("%s.%s", scopeName, "enum")},
+		{NewTestStruct("struct"), fmt.Sprintf("%s.%s", scopeName, "struct")},
+		{NewTestInterface("interface"), fmt.Sprintf("%s.%s", scopeName, "interface")},
+		{NewTestUnion("union"), fmt.Sprintf("%s.%s", scopeName, "union")},
+		{NewTestEnum("enum"), fmt.Sprintf("%s.%s", scopeName, "enum")},
 	}
 	for _, c := range cases {
 		c.userDefinedType.RegisterInScope(scope)
@@ -118,7 +118,9 @@ func TestStructFieldValidateDefaultValue(t *testing.T) {
 		{StringType{}, NewUserValueRef(StringType{}, "some.type", nil, lexer.Token{}), true},
 	}
 	for i, c := range cases {
-		structField := NewStructField(c.fieldType, fmt.Sprintf("field%d", i), int64(i), nil, c.defaultValue)
+		structField := NewStructField(
+			DeclTestDataWithOrdinal(fmt.Sprintf("field%d", i), int64(i)),
+			c.fieldType, c.defaultValue)
 		got := structField.ValidateDefaultValue()
 		if got != c.expectOK {
 			t.Errorf("field %d, type %v, value %v, expected %v", i, c.fieldType, c.defaultValue, c.expectOK)
@@ -127,7 +129,7 @@ func TestStructFieldValidateDefaultValue(t *testing.T) {
 }
 
 func TestInterfaceComputeMethodOridnals(t *testing.T) {
-	myInterface := NewMojomInterface("MyInterface", nil)
+	myInterface := NewTestInterface("MyInterface")
 	cases := []struct {
 		assignedOrdinal int64
 		expectedOrdinal uint32
@@ -141,7 +143,9 @@ func TestInterfaceComputeMethodOridnals(t *testing.T) {
 		{-1, 4},
 	}
 	for i, c := range cases {
-		myInterface.AddMethod(NewMojomMethod(fmt.Sprintf("Method%d", i), c.assignedOrdinal, nil, nil))
+		myInterface.AddMethod(NewMojomMethod(
+			DeclTestDataWithOrdinal(fmt.Sprintf("Method%d", i), c.assignedOrdinal),
+			nil, nil))
 	}
 	if err := myInterface.ComputeMethodOrdinals(); err != nil {
 		t.Error(err.Error())
@@ -164,8 +168,8 @@ func TestUserDefinedValueSimpleName(t *testing.T) {
 		userDefinedValue UserDefinedValue
 		simpleName       string
 	}{
-		{NewUserDefinedConstant("const", SimpleTypeInt64, MakeInt64LiteralValue(42), nil), "const"},
-		{NewEnumValue("foo"), "foo"},
+		{NewTestConstant("const", 42), "const"},
+		{NewTestEnumValue("foo"), "foo"},
 		{SimpleTypeFloat_INFINITY, "float.INFINITY"},
 	}
 	for _, c := range cases {
@@ -181,8 +185,8 @@ func TestUserDefinedValueKind(t *testing.T) {
 		userDefinedValue UserDefinedValue
 		kind             UserDefinedValueKind
 	}{
-		{NewUserDefinedConstant("const", SimpleTypeInt64, MakeInt64LiteralValue(42), nil), UserDefinedValueKindDeclaredConst},
-		{NewEnumValue("foo"), UserDefinedValueKindEnum},
+		{NewTestConstant("const", 42), UserDefinedValueKindDeclaredConst},
+		{NewTestEnumValue("foo"), UserDefinedValueKindEnum},
 		{SimpleTypeFloat_INFINITY, UserDefinedValueKindBuiltInConst},
 	}
 	for _, c := range cases {
@@ -196,15 +200,15 @@ func TestUserDefinedValueKind(t *testing.T) {
 func TestUserDefinedValueRegisterInScope(t *testing.T) {
 	const scopeName = "test.scope"
 	scope := NewTestFileScope(scopeName)
-	mojomEnum := NewMojomEnum("MyEnum", nil)
+	mojomEnum := NewTestEnum("MyEnum")
 	mojomEnum.InitAsScope(scope)
-	mojomEnum.AddEnumValue("TheValue", nil, nil)
+	mojomEnum.AddEnumValue(DeclTestData("TheValue"), nil)
 	enumValue := mojomEnum.values[0]
 	cases := []struct {
 		userDefinedValue   UserDefinedValue
 		fullyQualifiedName string
 	}{
-		{NewUserDefinedConstant("const", SimpleTypeInt64, MakeInt64LiteralValue(42), nil), fmt.Sprintf("%s.%s", scopeName, "const")},
+		{NewTestConstant("const", 42), fmt.Sprintf("%s.%s", scopeName, "const")},
 		{enumValue, "test.scope.MyEnum.TheValue"},
 		{SimpleTypeFloat_INFINITY, "float.INFINITY"},
 	}
@@ -246,7 +250,7 @@ func TestUserDefinedConstantValidateValue(t *testing.T) {
 		{StringType{}, NewUserValueRef(StringType{}, "some.type", nil, lexer.Token{}), true},
 	}
 	for i, c := range cases {
-		constant := NewUserDefinedConstant(fmt.Sprintf("constant%d", i), c.declaredType, c.value, nil)
+		constant := NewUserDefinedConstant(DeclTestData(fmt.Sprintf("constant%d", i)), c.declaredType, c.value)
 		got := constant.ValidateValue()
 		if got != c.expectOK {
 			t.Errorf("constant %d, type %v, value %v, expected %v", i, c.declaredType, c.value, c.expectOK)

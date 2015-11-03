@@ -6,6 +6,7 @@ package mojom
 
 import (
 	"fmt"
+	"mojom/mojom_parser/lexer"
 	"strings"
 )
 
@@ -186,36 +187,75 @@ func (s *Scope) String() string {
 	return fmt.Sprintf("%s %s%s", s.kind, s.shortName, fileNameString)
 }
 
-// This structure represents a duplicate name defintion error for a type or
-// a value. Exactly one of the two fields will be non-nil.
-type DuplicateNameError struct {
-	existingType  UserDefinedType
+type DuplicateNameError interface {
+	error
+
+	// NameToken() returns the token corresponding to the name of the
+	// duplicate object.
+	NameToken() lexer.Token
+
+	// The MojomFile containing the duplicate definition.
+	OwningFile() *MojomFile
+}
+
+type DuplicateNameErrorBase struct {
+	nameToken  lexer.Token
+	owningFile *MojomFile
+}
+
+func (e *DuplicateNameErrorBase) NameToken() lexer.Token {
+	return e.nameToken
+}
+
+func (e *DuplicateNameErrorBase) OwningFile() *MojomFile {
+	return e.owningFile
+}
+
+type DuplicateTypeNameError struct {
+	DuplicateNameErrorBase
+	existingType UserDefinedType
+}
+
+func (e *DuplicateTypeNameError) Error() string {
+	return fmt.Sprintf("%s:%s. Duplicate definition for name '%s'. "+
+		"The fully-qualified name of this type would be the same as "+
+		"an existing type definition: "+
+		"%s %s in %s.", e.owningFile.CanonicalFileName,
+		e.nameToken.ShortLocationString(), e.nameToken.Text,
+		e.existingType.Kind(),
+		e.existingType.FullyQualifiedName(),
+		e.existingType.Scope())
+}
+
+type DuplicateValueNameError struct {
+	DuplicateNameErrorBase
 	existingValue UserDefinedValue
 }
 
-func (e *DuplicateNameError) Error() string {
-	if e.existingType != nil {
-		return fmt.Sprintf("A type with the name %s already exists.", e.existingType.FullyQualifiedName)
-	} else if e.existingValue != nil {
-		return fmt.Sprintf("A value with the name %s already exists.", e.existingValue.FullyQualifiedName)
-	} else {
-		return "Malformed DuplicateNameError."
-	}
-}
-
-func (d *DuplicateNameError) ExistingType() UserDefinedType {
-	return d.existingType
-}
-
-func (d *DuplicateNameError) ExistingValue() UserDefinedValue {
-	return d.existingValue
+func (e *DuplicateValueNameError) Error() string {
+	return fmt.Sprintf("%s:%s. Duplicate definition for name '%s'. "+
+		"The fully-qualified name of this value would be the same as "+
+		"an existing value definition: "+
+		"%s %s in %s.", e.owningFile.CanonicalFileName,
+		e.nameToken.ShortLocationString(), e.nameToken.Text,
+		e.existingValue.Kind(),
+		e.existingValue.FullyQualifiedName(),
+		e.existingValue.Scope())
 }
 
 // registerTypeWithNamePrefix is a recursive helper method used by RegisterType.
-func (scope *Scope) registerTypeWithNamePrefix(userDefinedType UserDefinedType, namePrefix string) *DuplicateNameError {
+func (scope *Scope) registerTypeWithNamePrefix(userDefinedType UserDefinedType, namePrefix string) DuplicateNameError {
+	if scope == nil {
+		panic("scope is nil")
+	}
+	if scope.typesByName == nil {
+		panic("Init() must be called for this Scope before this method may be invoked.")
+	}
 	registrationName := namePrefix + userDefinedType.SimpleName()
 	if existingType := scope.typesByName[registrationName]; existingType != nil {
-		return &DuplicateNameError{existingType: existingType}
+		return &DuplicateTypeNameError{
+			DuplicateNameErrorBase{nameToken: userDefinedType.NameToken(), owningFile: userDefinedType.Scope().file},
+			existingType}
 	}
 	scope.typesByName[registrationName] = userDefinedType
 	if scope.parentScope != nil {
@@ -241,10 +281,12 @@ func (scope *Scope) registerTypeWithNamePrefix(userDefinedType UserDefinedType, 
 }
 
 // registerValueWithNamePrefix is a recursive helper method used by RegisterValue.
-func (scope *Scope) registerValueWithNamePrefix(value UserDefinedValue, namePrefix string) *DuplicateNameError {
+func (scope *Scope) registerValueWithNamePrefix(value UserDefinedValue, namePrefix string) DuplicateNameError {
 	registrationName := namePrefix + value.SimpleName()
 	if existingVal := scope.valuesByName[registrationName]; existingVal != nil {
-		return &DuplicateNameError{existingValue: existingVal}
+		return &DuplicateValueNameError{
+			DuplicateNameErrorBase{nameToken: value.NameToken(), owningFile: value.Scope().file},
+			existingVal}
 	}
 	scope.valuesByName[registrationName] = value
 	if scope.parentScope != nil {
@@ -287,7 +329,10 @@ func (scope *Scope) registerValueWithNamePrefix(value UserDefinedValue, namePref
 // abstract module scope:   "foo.bar"      registration name: Bazz.Joe
 // file lexical scope:      "foo.bar"      registration name: Bazz.Joe
 // interface lexical scope: "foo.bar.Baz"  registration name: Joe
-func (scope *Scope) RegisterType(userDefinedType UserDefinedType) *DuplicateNameError {
+func (scope *Scope) RegisterType(userDefinedType UserDefinedType) DuplicateNameError {
+	if scope == nil {
+		panic("scope is nil")
+	}
 	return scope.registerTypeWithNamePrefix(userDefinedType, "")
 }
 
@@ -310,7 +355,7 @@ func (scope *Scope) RegisterType(userDefinedType UserDefinedType) *DuplicateName
 // file lexical scope:      "foo.bar"          registration name: Bazz.Joe.FROG
 // interface lexical scope: "foo.bar.Baz"      registration name: Joe.FROG
 // enum lexical scope:      "foo.bar.Baz.Joe"  registration name: FROG
-func (scope *Scope) RegisterValue(value UserDefinedValue) *DuplicateNameError {
+func (scope *Scope) RegisterValue(value UserDefinedValue) DuplicateNameError {
 	return scope.registerValueWithNamePrefix(value, "")
 }
 

@@ -8,6 +8,7 @@ import (
 	"errors"
 	"fmt"
 	"math"
+	"mojom/mojom_parser/lexer"
 	"strings"
 )
 
@@ -50,32 +51,29 @@ func (k UserDefinedTypeKind) String() string {
 /////////////////////////////////////////////////////////////
 type UserDefinedType interface {
 	SimpleName() string
+	NameToken() lexer.Token
 	FullyQualifiedName() string
 	Kind() UserDefinedTypeKind
 	TypeKey() string
 	Scope() *Scope
 	IsAssignmentCompatibleWith(value LiteralValue) bool
-	RegisterInScope(scope *Scope) *DuplicateNameError
+	RegisterInScope(scope *Scope) DuplicateNameError
 }
 
 // This struct is embedded in each of MojomStruct, MojomInterface
 // MojomEnum and MojomUnion
 type UserDefinedTypeBase struct {
-	attributes         *Attributes
-	thisType           UserDefinedType
-	simpleName         string
-	fullyQualifiedName string
-	typeKey            string
-	scope              *Scope
+	DeclarationData
+	thisType UserDefinedType
+	typeKey  string
+	scope    *Scope
 }
 
 // This method is invoked from the constructors for the containing types:
 // NewMojomInterface, NewMojomStruct, NewMojomEnum, NewMojomUnion
-func (b *UserDefinedTypeBase) Init(simpleName string, thisType UserDefinedType,
-	attributes *Attributes) {
+func (b *UserDefinedTypeBase) Init(declData DeclarationData, thisType UserDefinedType) {
 	b.thisType = thisType
-	b.simpleName = simpleName
-	b.attributes = attributes
+	b.DeclarationData = declData
 }
 
 func (b *UserDefinedTypeBase) TypeKind() TypeKind {
@@ -87,7 +85,11 @@ func (b *UserDefinedTypeBase) TypeKind() TypeKind {
 //
 // This method is invoked when a UserDefinedType is added to its container,
 // which may be either a file or a different UserDefinedType.
-func (b *UserDefinedTypeBase) RegisterInScope(scope *Scope) *DuplicateNameError {
+func (b *UserDefinedTypeBase) RegisterInScope(scope *Scope) DuplicateNameError {
+	if scope == nil {
+		panic("scope is nil")
+	}
+
 	// Register in the given scope with the given namePrefix.
 	if err := scope.RegisterType(b.thisType); err != nil {
 		return err
@@ -112,14 +114,6 @@ func (b *UserDefinedTypeBase) TypeKey() string {
 	return b.typeKey
 }
 
-func (b UserDefinedTypeBase) SimpleName() string {
-	return b.simpleName
-}
-
-func (b UserDefinedTypeBase) FullyQualifiedName() string {
-	return b.fullyQualifiedName
-}
-
 func (b UserDefinedTypeBase) Scope() *Scope {
 	return b.scope
 }
@@ -133,13 +127,13 @@ type DeclarationContainer struct {
 }
 
 // Adds an enum to this type, which must be an interface or struct.
-func (c *DeclarationContainer) AddEnum(mojomEnum *MojomEnum) *DuplicateNameError {
+func (c *DeclarationContainer) AddEnum(mojomEnum *MojomEnum) DuplicateNameError {
 	c.Enums = append(c.Enums, mojomEnum)
 	return mojomEnum.RegisterInScope(c.containedScope)
 }
 
 // Adds a declared constant to this type, which must be an interface or struct.
-func (c *DeclarationContainer) AddConstant(declaredConst *UserDefinedConstant) *DuplicateNameError {
+func (c *DeclarationContainer) AddConstant(declaredConst *UserDefinedConstant) DuplicateNameError {
 	c.Constants = append(c.Constants, declaredConst)
 	return declaredConst.RegisterInScope(c.containedScope)
 }
@@ -154,10 +148,10 @@ type MojomStruct struct {
 	Fields []*StructField
 }
 
-func NewMojomStruct(simpleName string, attributes *Attributes) *MojomStruct {
+func NewMojomStruct(declData DeclarationData) *MojomStruct {
 	mojomStruct := new(MojomStruct)
 	mojomStruct.Fields = make([]*StructField, 0)
-	mojomStruct.Init(simpleName, mojomStruct, attributes)
+	mojomStruct.Init(declData, mojomStruct)
 	return mojomStruct
 }
 
@@ -232,7 +226,7 @@ func (s MojomStruct) ParameterString() string {
 }
 
 type StructField struct {
-	VariableDeclarationData
+	DeclarationData
 
 	FieldType    TypeRef
 	DefaultValue ValueRef
@@ -240,9 +234,9 @@ type StructField struct {
 	Offset int32
 }
 
-func NewStructField(FieldType TypeRef, name string, ordinal int64, attributes *Attributes, defaultValue ValueRef) *StructField {
-	field := StructField{FieldType: FieldType, DefaultValue: defaultValue}
-	field.InitVariableDeclarationData(name, attributes, ordinal)
+func NewStructField(declData DeclarationData, fieldType TypeRef, defaultValue ValueRef) *StructField {
+	field := StructField{FieldType: fieldType, DefaultValue: defaultValue}
+	field.DeclarationData = declData
 	return &field
 }
 
@@ -263,11 +257,19 @@ func (f *StructField) ValidateDefaultValue() (ok bool) {
 }
 
 func (f StructField) String() string {
+	attributeString := ""
+	if f.attributes != nil {
+		attributeString = f.attributes.String()
+	}
 	defaultValueString := ""
 	if f.DefaultValue != nil {
 		defaultValueString = fmt.Sprintf(" = %s", f.DefaultValue)
 	}
-	return fmt.Sprintf("%s %s%s", f.FieldType, f.simpleName, defaultValueString)
+	ordinalString := ""
+	if f.declaredOrdinal >= 0 {
+		ordinalString = fmt.Sprintf("@%d", f.declaredOrdinal)
+	}
+	return fmt.Sprintf("%s%s %s%s%s", attributeString, f.FieldType, f.simpleName, ordinalString, defaultValueString)
 }
 
 /////////////////////////////////////////////////////////////
@@ -285,11 +287,11 @@ type MojomInterface struct {
 	methodsByLexicalOrder []*MojomMethod
 }
 
-func NewMojomInterface(simpleName string, attributes *Attributes) *MojomInterface {
+func NewMojomInterface(declData DeclarationData) *MojomInterface {
 	mojomInterface := new(MojomInterface)
 	mojomInterface.methodsByOrdinal = make(map[uint32]*MojomMethod)
 	mojomInterface.methodsByName = make(map[string]*MojomMethod)
-	mojomInterface.Init(simpleName, mojomInterface, attributes)
+	mojomInterface.Init(declData, mojomInterface)
 	return mojomInterface
 }
 
@@ -299,9 +301,28 @@ func (i *MojomInterface) InitAsScope(parentScope *Scope) *Scope {
 	return i.containedScope
 }
 
-func (i *MojomInterface) AddMethod(method *MojomMethod) {
+type DuplicateMethodNameError struct {
+	DuplicateNameErrorBase
+	owningInterface *MojomInterface
+}
+
+func (e *DuplicateMethodNameError) Error() string {
+	return fmt.Sprintf("%s:%s. Duplicate definition of method '%s'. "+
+		"There is already a method with that name in interface %s.",
+		e.owningFile.CanonicalFileName,
+		e.nameToken.ShortLocationString(), e.nameToken.Text,
+		e.owningInterface.simpleName)
+}
+
+func (i *MojomInterface) AddMethod(method *MojomMethod) DuplicateNameError {
+	if _, ok := i.methodsByName[method.simpleName]; ok {
+		return &DuplicateMethodNameError{
+			DuplicateNameErrorBase{nameToken: method.NameToken(), owningFile: method.OwningFile()},
+			i}
+	}
 	i.methodsByName[method.simpleName] = method
 	i.methodsByLexicalOrder = append(i.methodsByLexicalOrder, method)
+	return nil
 }
 
 func (MojomInterface) Kind() UserDefinedTypeKind {
@@ -317,36 +338,54 @@ var ErrOrdinalDuplicate = errors.New("duplicate ordinal value")
 
 type MethodOrdinalError struct {
 	Ord            int64        // The attemted ordinal
+	InterfaceName  string       // The name of the interface in which the problem occurs.
 	Method         *MojomMethod // The method with the attempted ordinal
 	ExistingMethod *MojomMethod // Used if Err == ErrOrdinalDuplicate
 	Err            error        // the type of error (ErrOrdinalRange, ErrOrdinalDuplicate)
 }
 
-// Make MethodOrdinalError implement error.
+// MethodOrdinalError implements error.
 func (e *MethodOrdinalError) Error() string {
 	switch e.Err {
 	case ErrOrdinalRange:
+		return fmt.Sprintf("%s:%s. Invalid method ordinal for method %s: %d. "+
+			"A method ordinal must be a non-negative 32-bit integer value.",
+			e.Method.OwningFile().CanonicalFileName,
+			e.Method.NameToken().ShortLocationString(),
+			e.Method.SimpleName(),
+			e.Ord)
 	case ErrOrdinalDuplicate:
+		return fmt.Sprintf("%s:%s. Invalid method ordinal for method %s: %d. "+
+			"There is already a method in interface %s, with that ordinal: %s.",
+			e.Method.OwningFile().CanonicalFileName,
+			e.Method.NameToken().ShortLocationString(),
+			e.Method.SimpleName(),
+			e.Ord, e.InterfaceName,
+			e.ExistingMethod.SimpleName())
+	default:
+		panic(fmt.Sprintf("Unrecognized type of MethodOrdinalError %v", e.Err))
 	}
-	return ""
 }
 
-func (m *MojomInterface) ComputeMethodOrdinals() error {
+func (intrfc *MojomInterface) ComputeMethodOrdinals() error {
 	nextOrdinal := uint32(0)
-	for _, method := range m.methodsByLexicalOrder {
+	for _, method := range intrfc.methodsByLexicalOrder {
 		if method.declaredOrdinal < 0 {
 			method.ordinal = nextOrdinal
 		} else {
 			if method.declaredOrdinal >= math.MaxUint32 {
-				return &MethodOrdinalError{Ord: method.declaredOrdinal, Method: method, Err: ErrOrdinalRange}
+				return &MethodOrdinalError{Ord: method.declaredOrdinal,
+					InterfaceName: intrfc.SimpleName(), Method: method,
+					Err: ErrOrdinalRange}
 			}
 			method.ordinal = uint32(method.declaredOrdinal)
 		}
-		if existingMethod, ok := m.methodsByOrdinal[method.ordinal]; ok {
-			return &MethodOrdinalError{Ord: int64(method.ordinal), Method: method,
+		if existingMethod, ok := intrfc.methodsByOrdinal[method.ordinal]; ok {
+			return &MethodOrdinalError{Ord: int64(method.ordinal),
+				InterfaceName: intrfc.SimpleName(), Method: method,
 				ExistingMethod: existingMethod, Err: ErrOrdinalDuplicate}
 		}
-		m.methodsByOrdinal[method.ordinal] = method
+		intrfc.methodsByOrdinal[method.ordinal] = method
 		nextOrdinal = method.ordinal + 1
 	}
 	return nil
@@ -367,10 +406,10 @@ func (m *MojomInterface) String() string {
 }
 
 type MojomMethod struct {
-	VariableDeclarationData
+	DeclarationData
 
 	// The ordinal field differs from the declaredOrdinal field
-	// in VariableDeclarationData because every method eventually gets
+	// in DeclarationData because every method eventually gets
 	// assigned an ordinal whereas the declaredOrdinal is only set
 	// if the user explicitly sets it in the .mojom file.
 	ordinal uint32
@@ -380,10 +419,9 @@ type MojomMethod struct {
 	responseParameters *MojomStruct
 }
 
-func NewMojomMethod(name string, ordinalValue int64, params,
-	responseParams *MojomStruct) *MojomMethod {
+func NewMojomMethod(declData DeclarationData, params, responseParams *MojomStruct) *MojomMethod {
 	mojomMethod := new(MojomMethod)
-	mojomMethod.InitVariableDeclarationData(name, nil, ordinalValue)
+	mojomMethod.DeclarationData = declData
 	mojomMethod.parameters = params
 	mojomMethod.responseParameters = responseParams
 	return mojomMethod
@@ -407,18 +445,17 @@ type MojomUnion struct {
 	Fields []UnionField
 }
 
-func NewMojomUnion(simpleName string, attributes *Attributes) *MojomUnion {
+func NewMojomUnion(declData DeclarationData) *MojomUnion {
 	mojomUnion := new(MojomUnion)
 	mojomUnion.Fields = make([]UnionField, 0)
-	mojomUnion.Init(simpleName, mojomUnion, attributes)
+	mojomUnion.Init(declData, mojomUnion)
 	return mojomUnion
 }
 
 // Adds a UnionField to this Union
-func (u *MojomUnion) AddField(FieldType TypeRef, fieldName string,
-	tag int64, attributes *Attributes) {
+func (u *MojomUnion) AddField(declData DeclarationData, FieldType TypeRef) {
 	field := UnionField{FieldType: FieldType}
-	field.InitVariableDeclarationData(fieldName, attributes, tag)
+	field.DeclarationData = declData
 	u.Fields = append(u.Fields, field)
 }
 
@@ -438,7 +475,7 @@ func (MojomUnion) IsAssignmentCompatibleWith(value LiteralValue) bool {
 }
 
 type UnionField struct {
-	VariableDeclarationData
+	DeclarationData
 
 	FieldType TypeRef
 }
@@ -453,10 +490,10 @@ type MojomEnum struct {
 	scopeForValues *Scope
 }
 
-func NewMojomEnum(simpleName string, attributes *Attributes) *MojomEnum {
+func NewMojomEnum(declData DeclarationData) *MojomEnum {
 	mojomEnum := new(MojomEnum)
 	mojomEnum.values = make([]*EnumValue, 0)
-	mojomEnum.Init(simpleName, mojomEnum, attributes)
+	mojomEnum.Init(declData, mojomEnum)
 	return mojomEnum
 }
 
@@ -491,10 +528,9 @@ func (e *MojomEnum) InitAsScope(parentScope *Scope) *Scope {
 }
 
 // Adds an EnumValue to this enum
-func (e *MojomEnum) AddEnumValue(name string, valueRef ValueRef,
-	attributes *Attributes) *DuplicateNameError {
+func (e *MojomEnum) AddEnumValue(declData DeclarationData, valueRef ValueRef) DuplicateNameError {
 	enumValue := new(EnumValue)
-	enumValue.Init(name, UserDefinedValueKindEnum, enumValue, valueRef, attributes)
+	enumValue.Init(declData, UserDefinedValueKindEnum, enumValue, valueRef)
 	e.values = append(e.values, enumValue)
 	enumValue.enumType = e
 	if e.scopeForValues == nil {
@@ -587,20 +623,19 @@ func (k UserDefinedValueKind) String() string {
 // BuiltInConstantValue
 type UserDefinedValue interface {
 	SimpleName() string
+	NameToken() lexer.Token
 	FullyQualifiedName() string
 	Kind() UserDefinedValueKind
 	Scope() *Scope
 	ValueKey() string
-	RegisterInScope(scope *Scope) *DuplicateNameError
+	RegisterInScope(scope *Scope) DuplicateNameError
 }
 
 type UserDefinedValueBase struct {
-	attributes         *Attributes
-	thisValue          UserDefinedValue
-	simpleName         string
-	fullyQualifiedName string
-	kind               UserDefinedValueKind
-	valueKey           string
+	DeclarationData
+	thisValue UserDefinedValue
+	kind      UserDefinedValueKind
+	valueKey  string
 	// This is the value specified in the right-hand-side of the value
 	// declaration. For an enum value it will be an integer literal. For
 	// a constant declartion it may be a literal or it may be a reference.
@@ -610,17 +645,15 @@ type UserDefinedValueBase struct {
 
 // This method is invoked from the constructors for the containing types:
 // NewMojomInterface, NewMojomStruct, NewMojomEnum, NewMojomUnion
-func (b *UserDefinedValueBase) Init(simpleName string,
-	kind UserDefinedValueKind, thisValue UserDefinedValue,
-	valueRef ValueRef, attributes *Attributes) {
-	b.attributes = attributes
+func (b *UserDefinedValueBase) Init(declData DeclarationData, kind UserDefinedValueKind,
+	thisValue UserDefinedValue, valueRef ValueRef) {
+	b.DeclarationData = declData
 	b.thisValue = thisValue
-	b.simpleName = simpleName
 	b.kind = kind
 	b.valueRef = valueRef
 }
 
-func (v *UserDefinedValueBase) RegisterInScope(scope *Scope) *DuplicateNameError {
+func (v *UserDefinedValueBase) RegisterInScope(scope *Scope) DuplicateNameError {
 	if err := scope.RegisterValue(v.thisValue); err != nil {
 		return err
 	}
@@ -663,14 +696,6 @@ func (b *UserDefinedValueBase) Kind() UserDefinedValueKind {
 	return b.kind
 }
 
-func (b *UserDefinedValueBase) SimpleName() string {
-	return b.simpleName
-}
-
-func (b *UserDefinedValueBase) FullyQualifiedName() string {
-	return b.fullyQualifiedName
-}
-
 func (b UserDefinedValueBase) Scope() *Scope {
 	return b.scope
 }
@@ -694,10 +719,9 @@ type UserDefinedConstant struct {
 	declaredType TypeRef
 }
 
-func NewUserDefinedConstant(name string, declaredType TypeRef, value ValueRef,
-	attributes *Attributes) *UserDefinedConstant {
+func NewUserDefinedConstant(declData DeclarationData, declaredType TypeRef, value ValueRef) *UserDefinedConstant {
 	constant := new(UserDefinedConstant)
-	constant.Init(name, UserDefinedValueKindDeclaredConst, constant, value, attributes)
+	constant.Init(declData, UserDefinedValueKindDeclaredConst, constant, value)
 	constant.declaredType = declaredType
 	return constant
 }
@@ -814,6 +838,10 @@ func (b BuiltInConstantValue) SimpleName() string {
 	return b.String()
 }
 
+func (b BuiltInConstantValue) NameToken() lexer.Token {
+	panic("Do not ask for the NameToken of a BuiltInConstantValue.")
+}
+
 func (b BuiltInConstantValue) FullyQualifiedName() string {
 	return b.String()
 }
@@ -830,7 +858,7 @@ func (b BuiltInConstantValue) ValueKey() string {
 	return "built-in-value:" + b.String()
 }
 
-func (b BuiltInConstantValue) RegisterInScope(scope *Scope) *DuplicateNameError {
+func (b BuiltInConstantValue) RegisterInScope(scope *Scope) DuplicateNameError {
 	panic("Do not register a BuiltInConstantValue in a scope.")
 }
 
@@ -838,24 +866,60 @@ func (b BuiltInConstantValue) RegisterInScope(scope *Scope) *DuplicateNameError 
 // Declaration Data
 /////////////////////////////////////////////////////////////
 
-type VariableDeclarationData struct {
-	simpleName string
-	attributes *Attributes
+// This struct is embedded in UserDefinedTypeBase, UserDefinedValueBase,
+// StructField, UnionField and MojomMethod.
+type DeclarationData struct {
+	attributes         *Attributes
+	simpleName         string
+	fullyQualifiedName string
+	owningFile         *MojomFile
+	nameToken          lexer.Token
 
 	// We use int64 here because valid ordinals are uint32 and we want to
 	// be able to represent an unset value as -1.
 	declaredOrdinal int64
 }
 
-func (v *VariableDeclarationData) InitVariableDeclarationData(simpleName string,
-	attributes *Attributes, ordinal int64) {
-	v.simpleName = simpleName
-	v.attributes = attributes
-	v.declaredOrdinal = ordinal
+func DeclData(name string, owningFile *MojomFile, nameToken lexer.Token, attributes *Attributes) DeclarationData {
+	return DeclDataWithOrdinal(name, owningFile, nameToken, attributes, -1)
 }
 
-func (v *VariableDeclarationData) SimpleName() string {
-	return v.simpleName
+func DeclDataWithOrdinal(name string, owningFile *MojomFile, nameToken lexer.Token,
+	attributes *Attributes, declaredOrdinal int64) DeclarationData {
+	return DeclarationData{simpleName: name, owningFile: owningFile, nameToken: nameToken,
+		attributes: attributes, declaredOrdinal: declaredOrdinal}
+}
+
+func (d *DeclarationData) SimpleName() string {
+	return d.simpleName
+}
+
+func (d *DeclarationData) NameToken() lexer.Token {
+	return d.nameToken
+}
+
+func (d *DeclarationData) LineNumber() uint32 {
+	return uint32(d.nameToken.LineNo)
+}
+
+func (d *DeclarationData) ColumnNumber() uint32 {
+	return uint32(d.nameToken.LinePos)
+}
+
+func (d *DeclarationData) FullyQualifiedName() string {
+	return d.fullyQualifiedName
+}
+
+func (d *DeclarationData) Attributes() *Attributes {
+	return d.attributes
+}
+
+func (d *DeclarationData) DeclaredOrdinal() int64 {
+	return d.declaredOrdinal
+}
+
+func (d *DeclarationData) OwningFile() *MojomFile {
+	return d.owningFile
 }
 
 type Attributes struct {

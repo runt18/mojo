@@ -19,6 +19,7 @@ go_binary("mojom_parser") {
     "mojom/user_defined_types.go",
     "parser/parse_driver.go",
     "parser/parser.go",
+    "parser/parsing.go",
     "serialization/serialization.go",
   ]
   deps = [

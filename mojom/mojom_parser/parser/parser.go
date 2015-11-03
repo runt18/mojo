@@ -99,8 +99,7 @@ func (p *Parser) Parse() {
 	p.used = true
 
 	// Perform the recursive descent.
-	// TODO(rudominer) This will be uncommented in a later CL.
-	// p.parseMojomFile()
+	p.parseMojomFile()
 
 	// Check if there are any extraneous tokens left in the stream.
 	if p.OK() && !p.checkEOF() {
@@ -181,6 +180,10 @@ const (
 	// The type of a value is not compatible with the type of the variable
 	// to which it is being assigned.
 	ParserErrorCodeNotAssignmentCompatible
+
+	// Either an explicitly specified ordinal is out of range, or else the
+	// combination of explicitly specified ordinals is inconsistent.
+	ParserErrorCodeBadOrdinal
 
 	// An unexpected token was encountered. This is the most common error.
 	ParserErrorCodeUnexpectedToken
@@ -285,22 +288,34 @@ func (p *Parser) pushRootNode(name string) {
 }
 
 func (p *Parser) pushChildNode(name string) {
-	if p.currentNode != nil {
-		tokenCopy := p.lastSeen
-		childNode := p.currentNode.appendChild(name, &(tokenCopy))
-		p.currentNode = childNode
+	if !p.debugMode {
+		return
 	}
+	if p.currentNode == nil {
+		panic("pushRootNode() must be invoked first.")
+	}
+	tokenCopy := p.lastSeen
+	childNode := p.currentNode.appendChild(name, &(tokenCopy))
+	p.currentNode = childNode
 }
 
 func (p *Parser) attachToken() {
-	if p.currentNode != nil {
-		tokenCopy := p.lastSeen
-		p.currentNode.tokens = append(p.currentNode.tokens, &tokenCopy)
+	if !p.debugMode {
+		return
 	}
+	if p.currentNode == nil {
+		panic("Stack is empty.")
+	}
+	tokenCopy := p.lastSeen
+	p.currentNode.tokens = append(p.currentNode.tokens, &tokenCopy)
 }
 
 func (p *Parser) popNode() {
-	if p.currentNode != nil {
-		p.currentNode = p.currentNode.parent
+	if !p.debugMode {
+		return
 	}
+	if p.currentNode == nil {
+		panic("stack is empty.")
+	}
+	p.currentNode = p.currentNode.parent
 }

@@ -52,7 +52,7 @@ func TestConcreteTypeKind(t *testing.T) {
 		{SimpleTypeUInt32, TypeKindSimple},
 		{SimpleTypeUInt64, TypeKindSimple},
 		{StringLiteralType, TypeKindString},
-		{NewMojomEnum("", nil), TypeKindUserDefined},
+		{NewMojomEnum(DeclTestData("")), TypeKindUserDefined},
 		{BuiltInConstant, TypeKindUserDefined},
 	}
 	for _, c := range cases {
@@ -270,8 +270,8 @@ func TestResolvedConcreteValue(t *testing.T) {
 }
 
 func TestValueType(t *testing.T) {
-	mojomEnum := NewMojomEnum("foo", nil)
-	mojomEnum.AddEnumValue("bar", nil, nil)
+	mojomEnum := NewTestEnum("foo")
+	mojomEnum.AddEnumValue(DeclTestData("bar"), nil)
 	cases := []struct {
 		concreteValue ConcreteValue
 		concreteType  ConcreteType
@@ -293,7 +293,7 @@ func TestValueType(t *testing.T) {
 }
 
 func TestValue(t *testing.T) {
-	enumValue := NewEnumValue("foo")
+	enumValue := NewTestEnumValue("foo")
 	cases := []struct {
 		concreteValue ConcreteValue
 		value         interface{}

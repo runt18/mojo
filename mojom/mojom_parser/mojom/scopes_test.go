@@ -38,7 +38,7 @@ func TestLookupType(t *testing.T) {
 	checkParent(rootScope, nil, t)
 
 	// Create an Enum
-	mojomEnum := NewMojomEnum("MyEnum", nil)
+	mojomEnum := NewTestEnum("MyEnum")
 	mojomEnum.RegisterInScope(interfaceScope)
 
 	if mojomEnum.FullyQualifiedName() != "foo.bar.MyInterface.MyEnum" {
@@ -116,12 +116,12 @@ func TestLookupValue(t *testing.T) {
 	rootScope := fileScope.descriptor.abstractScopesByName[""]
 
 	// Create an Enum
-	mojomEnum := NewMojomEnum("MyEnum", nil)
+	mojomEnum := NewTestEnum("MyEnum")
 	mojomEnum.RegisterInScope(interfaceScope)
 
 	// Create an EnumValue
 	mojomEnum.InitAsScope(interfaceScope)
-	mojomEnum.AddEnumValue("TheValue", nil, nil)
+	mojomEnum.AddEnumValue(DeclTestData("TheValue"), nil)
 	enumValue := mojomEnum.values[0]
 
 	if enumValue.FullyQualifiedName() != "foo.bar.MyInterface.MyEnum.TheValue" {

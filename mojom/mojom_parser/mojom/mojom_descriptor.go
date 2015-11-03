@@ -68,6 +68,10 @@ type ImportedFile struct {
 	CanonicalFileName string
 }
 
+func (f *ImportedFile) String() string {
+	return fmt.Sprintf("%q, ", f.SpecifiedName)
+}
+
 func NewMojomFile(fileName string, descriptor *MojomDescriptor) *MojomFile {
 	mojomFile := new(MojomFile)
 	mojomFile.CanonicalFileName = fileName
@@ -88,16 +92,20 @@ func (f *MojomFile) String() string {
 	s += fmt.Sprintf("module: %s\n", f.ModuleNamespace)
 	s += fmt.Sprintf("attributes: %s\n", f.Attributes)
 	s += fmt.Sprintf("imports: %s\n", f.Imports)
+	s += fmt.Sprintf("scope: %s\n", f.FileScope)
 	s += fmt.Sprintf("interfaces: %s\n", f.Interfaces)
 	s += fmt.Sprintf("structs: %s\n", f.Structs)
+	s += fmt.Sprintf("unions: %s\n", f.Unions)
 	s += fmt.Sprintf("enums: %s\n", f.Enums)
 	s += fmt.Sprintf("constants: %s\n", f.Constants)
 	return s
 }
 
-func (f *MojomFile) SetModuleNamespace(namespace string) *Scope {
-	f.ModuleNamespace = namespace
-	f.FileScope = NewLexicalScope(ScopeFileModule, nil, namespace, f)
+// InitializeFileScope must be invoked before any of the Add*
+// methods below may invoked. |moduleNamespace| may be the empty string.
+func (f *MojomFile) InitializeFileScope(moduleNamespace string) *Scope {
+	f.ModuleNamespace = moduleNamespace
+	f.FileScope = NewLexicalScope(ScopeFileModule, nil, moduleNamespace, f)
 	return f.FileScope
 }
 
@@ -120,29 +128,40 @@ func (f *MojomFile) SetCanonicalImportName(specifiedName, canoncialName string) 
 	importedFile.CanonicalFileName = canoncialName
 }
 
-func (f *MojomFile) AddInterface(mojomInterface *MojomInterface) *DuplicateNameError {
+func (f *MojomFile) AddInterface(mojomInterface *MojomInterface) DuplicateNameError {
 	f.Interfaces = append(f.Interfaces, mojomInterface)
+	f.checkInit()
 	return mojomInterface.RegisterInScope(f.FileScope)
 }
 
-func (f *MojomFile) AddStruct(mojomStruct *MojomStruct) *DuplicateNameError {
+func (f *MojomFile) AddStruct(mojomStruct *MojomStruct) DuplicateNameError {
 	f.Structs = append(f.Structs, mojomStruct)
+	f.checkInit()
 	return mojomStruct.RegisterInScope(f.FileScope)
 }
 
-func (f *MojomFile) AddEnum(mojomEnum *MojomEnum) *DuplicateNameError {
+func (f *MojomFile) AddEnum(mojomEnum *MojomEnum) DuplicateNameError {
 	f.Enums = append(f.Enums, mojomEnum)
+	f.checkInit()
 	return mojomEnum.RegisterInScope(f.FileScope)
 }
 
-func (f *MojomFile) AddUnion(mojomUnion *MojomUnion) *DuplicateNameError {
+func (f *MojomFile) AddUnion(mojomUnion *MojomUnion) DuplicateNameError {
 	f.Unions = append(f.Unions, mojomUnion)
+	f.checkInit()
 	return mojomUnion.RegisterInScope(f.FileScope)
 }
 
-func (f *MojomFile) AddConstant(declaredConst *UserDefinedConstant) *DuplicateNameError {
+func (f *MojomFile) AddConstant(declaredConst *UserDefinedConstant) DuplicateNameError {
 	f.Constants = append(f.Constants, declaredConst)
+	f.checkInit()
 	return declaredConst.RegisterInScope(f.FileScope)
+}
+
+func (f *MojomFile) checkInit() {
+	if f.FileScope == nil {
+		panic("InitializeFileScope must be invoked first.")
+	}
 }
 
 //////////////////////////////////////////////////////////////////
