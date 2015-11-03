@@ -146,6 +146,11 @@ func (d *ParseDriver) ParseFiles(fileNames []string) (descriptor *mojom.MojomDes
 		return
 	}
 
+	// Compute enum value integers.
+	if err = descriptor.ComputeEnumValueIntegers(); err != nil {
+		return
+	}
+
 	// Compute data for generators.
 	err = descriptor.ComputeDataForGenerators()
 	return

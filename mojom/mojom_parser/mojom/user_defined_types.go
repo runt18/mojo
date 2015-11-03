@@ -280,7 +280,7 @@ type MojomInterface struct {
 	UserDefinedTypeBase
 	DeclarationContainer
 
-	methodsByOrdinal map[uint32]*MojomMethod
+	MethodsByOrdinal map[uint32]*MojomMethod
 
 	methodsByName map[string]*MojomMethod
 
@@ -289,7 +289,7 @@ type MojomInterface struct {
 
 func NewMojomInterface(declData DeclarationData) *MojomInterface {
 	mojomInterface := new(MojomInterface)
-	mojomInterface.methodsByOrdinal = make(map[uint32]*MojomMethod)
+	mojomInterface.MethodsByOrdinal = make(map[uint32]*MojomMethod)
 	mojomInterface.methodsByName = make(map[string]*MojomMethod)
 	mojomInterface.Init(declData, mojomInterface)
 	return mojomInterface
@@ -371,22 +371,22 @@ func (intrfc *MojomInterface) ComputeMethodOrdinals() error {
 	nextOrdinal := uint32(0)
 	for _, method := range intrfc.methodsByLexicalOrder {
 		if method.declaredOrdinal < 0 {
-			method.ordinal = nextOrdinal
+			method.Ordinal = nextOrdinal
 		} else {
 			if method.declaredOrdinal >= math.MaxUint32 {
 				return &MethodOrdinalError{Ord: method.declaredOrdinal,
 					InterfaceName: intrfc.SimpleName(), Method: method,
 					Err: ErrOrdinalRange}
 			}
-			method.ordinal = uint32(method.declaredOrdinal)
+			method.Ordinal = uint32(method.declaredOrdinal)
 		}
-		if existingMethod, ok := intrfc.methodsByOrdinal[method.ordinal]; ok {
-			return &MethodOrdinalError{Ord: int64(method.ordinal),
+		if existingMethod, ok := intrfc.MethodsByOrdinal[method.Ordinal]; ok {
+			return &MethodOrdinalError{Ord: int64(method.Ordinal),
 				InterfaceName: intrfc.SimpleName(), Method: method,
 				ExistingMethod: existingMethod, Err: ErrOrdinalDuplicate}
 		}
-		intrfc.methodsByOrdinal[method.ordinal] = method
-		nextOrdinal = method.ordinal + 1
+		intrfc.MethodsByOrdinal[method.Ordinal] = method
+		nextOrdinal = method.Ordinal + 1
 	}
 	return nil
 }
@@ -412,26 +412,26 @@ type MojomMethod struct {
 	// in DeclarationData because every method eventually gets
 	// assigned an ordinal whereas the declaredOrdinal is only set
 	// if the user explicitly sets it in the .mojom file.
-	ordinal uint32
+	Ordinal uint32
 
-	parameters *MojomStruct
+	Parameters *MojomStruct
 
-	responseParameters *MojomStruct
+	ResponseParameters *MojomStruct
 }
 
 func NewMojomMethod(declData DeclarationData, params, responseParams *MojomStruct) *MojomMethod {
 	mojomMethod := new(MojomMethod)
 	mojomMethod.DeclarationData = declData
-	mojomMethod.parameters = params
-	mojomMethod.responseParameters = responseParams
+	mojomMethod.Parameters = params
+	mojomMethod.ResponseParameters = responseParams
 	return mojomMethod
 }
 
 func (m *MojomMethod) String() string {
-	parameterString := m.parameters.ParameterString()
+	parameterString := m.Parameters.ParameterString()
 	responseString := ""
-	if m.responseParameters != nil {
-		responseString = fmt.Sprintf(" => (%s)", m.responseParameters.ParameterString())
+	if m.ResponseParameters != nil {
+		responseString = fmt.Sprintf(" => (%s)", m.ResponseParameters.ParameterString())
 	}
 	return fmt.Sprintf("%s(%s)%s", m.simpleName, parameterString, responseString)
 }
@@ -478,6 +478,7 @@ type UnionField struct {
 	DeclarationData
 
 	FieldType TypeRef
+	Tag       uint32
 }
 
 /////////////////////////////////////////////////////////////
@@ -486,13 +487,13 @@ type UnionField struct {
 type MojomEnum struct {
 	UserDefinedTypeBase
 
-	values         []*EnumValue
+	Values         []*EnumValue
 	scopeForValues *Scope
 }
 
 func NewMojomEnum(declData DeclarationData) *MojomEnum {
 	mojomEnum := new(MojomEnum)
-	mojomEnum.values = make([]*EnumValue, 0)
+	mojomEnum.Values = make([]*EnumValue, 0)
 	mojomEnum.Init(declData, mojomEnum)
 	return mojomEnum
 }
@@ -531,16 +532,13 @@ func (e *MojomEnum) InitAsScope(parentScope *Scope) *Scope {
 func (e *MojomEnum) AddEnumValue(declData DeclarationData, valueRef ValueRef) DuplicateNameError {
 	enumValue := new(EnumValue)
 	enumValue.Init(declData, UserDefinedValueKindEnum, enumValue, valueRef)
-	e.values = append(e.values, enumValue)
+	enumValue.ComputedIntValue = -1
+	e.Values = append(e.Values, enumValue)
 	enumValue.enumType = e
 	if e.scopeForValues == nil {
 		return nil
 	}
 	return enumValue.RegisterInScope(e.scopeForValues)
-}
-
-func (e *MojomEnum) ComputeEnumValues() {
-	// TODO(rudominer) Implement MojomEnum.ComputeEnumValues().
 }
 
 func (e *MojomEnum) String() string {
@@ -554,7 +552,7 @@ func (e *MojomEnum) toString(indentLevel int) string {
 	s := fmt.Sprintf("%s%s\n", indent, e.UserDefinedTypeBase)
 	s += indent + "     Values\n"
 	s += indent + "     ------\n"
-	for _, value := range e.values {
+	for _, value := range e.Values {
 		s += fmt.Sprintf(indent+"     %s", value)
 	}
 	return s
@@ -565,6 +563,12 @@ type EnumValue struct {
 	UserDefinedValueBase
 
 	enumType *MojomEnum
+
+	// After all values in the MojomDescriptor have been resolved,
+	// MojomDescriptor.ComputeEnumValueIntegers() should be invoked. This
+	// computes |ComputedIntValue| for all EnumValues. This field is
+	// initialized to -1 to indicate it has not yet been computed.
+	ComputedIntValue int32
 }
 
 func (ev *EnumValue) EnumType() *MojomEnum {
@@ -572,11 +576,22 @@ func (ev *EnumValue) EnumType() *MojomEnum {
 }
 
 func (ev *EnumValue) Int32Value() int32 {
-	if ev.valueRef.ResolvedConcreteValue() == nil {
+	// TODO(rudominer) EnumValue.Int32Value() should not be needed as is.
+	// Currently this method computes the integer value of the specified value.
+	// What we really want is the integer value whether or not a value was
+	// specified. This should be computed by MojomDescriptor.ComputeEnumValue().
+	if ev.valueRef == nil {
 		return -1
+	}
+	if ev.valueRef.ResolvedConcreteValue() == nil {
+		panic("The EnumValue has not yet been resolved.")
 	}
 	if x, ok := ev.valueRef.ResolvedConcreteValue().Value().(int32); ok {
 		return x
+	}
+	if x, ok := ev.valueRef.ResolvedConcreteValue().Value().(int64); ok {
+		// TODO(rudominer) Which class of integer values are allowed for enum value initializers?
+		return int32(x)
 	}
 	panic(fmt.Sprintf("Unexpected type %T", ev.valueRef.ResolvedConcreteValue().Value()))
 }

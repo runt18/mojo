@@ -122,7 +122,7 @@ func TestLookupValue(t *testing.T) {
 	// Create an EnumValue
 	mojomEnum.InitAsScope(interfaceScope)
 	mojomEnum.AddEnumValue(DeclTestData("TheValue"), nil)
-	enumValue := mojomEnum.values[0]
+	enumValue := mojomEnum.Values[0]
 
 	if enumValue.FullyQualifiedName() != "foo.bar.MyInterface.MyEnum.TheValue" {
 		t.Errorf("enumValue.FullyQualifiedName()=%q", mojomEnum.FullyQualifiedName())

@@ -154,11 +154,11 @@ func TestInterfaceComputeMethodOridnals(t *testing.T) {
 		method := myInterface.methodsByName[fmt.Sprintf("Method%d", i)]
 		if method == nil {
 			t.Error("Missing Method%d", i)
-		} else if method.ordinal != c.expectedOrdinal {
-			t.Errorf("Method%d.ordinal=%d, expected %d", i, method.ordinal, c.expectedOrdinal)
+		} else if method.Ordinal != c.expectedOrdinal {
+			t.Errorf("Method%d.ordinal=%d, expected %d", i, method.Ordinal, c.expectedOrdinal)
 		}
-		if method != myInterface.methodsByOrdinal[method.ordinal] {
-			t.Errorf("methodsByOrdinal[%v] =%v", method.ordinal, myInterface.methodsByOrdinal[method.ordinal])
+		if method != myInterface.MethodsByOrdinal[method.Ordinal] {
+			t.Errorf("methodsByOrdinal[%v] =%v", method.Ordinal, myInterface.MethodsByOrdinal[method.Ordinal])
 		}
 	}
 }
@@ -203,7 +203,7 @@ func TestUserDefinedValueRegisterInScope(t *testing.T) {
 	mojomEnum := NewTestEnum("MyEnum")
 	mojomEnum.InitAsScope(scope)
 	mojomEnum.AddEnumValue(DeclTestData("TheValue"), nil)
-	enumValue := mojomEnum.values[0]
+	enumValue := mojomEnum.Values[0]
 	cases := []struct {
 		userDefinedValue   UserDefinedValue
 		fullyQualifiedName string

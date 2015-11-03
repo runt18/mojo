@@ -281,7 +281,7 @@ func TestValueType(t *testing.T) {
 		{MakeInt64LiteralValue(42), SimpleTypeInt64},
 		{MakeDoubleLiteralValue(3.14), SimpleTypeDouble},
 		{MakeDefaultLiteral(), StringLiteralType},
-		{mojomEnum.values[0], mojomEnum},
+		{mojomEnum.Values[0], mojomEnum},
 		{SimpleTypeFloat_INFINITY, BuiltInConstant},
 	}
 	for _, c := range cases {

@@ -60,7 +60,7 @@ func NewTestEnum(name string) *MojomEnum {
 func NewTestEnumValue(name string) *EnumValue {
 	mojomEnum := NewMojomEnum(DeclData("foo", nil, lexer.Token{}, nil))
 	mojomEnum.AddEnumValue(DeclData(name, nil, lexer.Token{}, nil), nil)
-	return mojomEnum.values[0]
+	return mojomEnum.Values[0]
 }
 
 func NewTestConstant(name string, value int64) *UserDefinedConstant {

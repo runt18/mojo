@@ -957,9 +957,6 @@ func (p *Parser) parseEnumBody(mojomEnum *mojom.MojomEnum) bool {
 			return false
 		}
 	}
-	if p.OK() {
-		mojomEnum.ComputeEnumValues()
-	}
 	return p.OK()
 }
 
