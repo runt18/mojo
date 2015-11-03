@@ -55,6 +55,9 @@ class PexeCompilerImpl : public mojo::nacl::PexeCompiler {
       LOG(FATAL) << "Could not unlink temporary pexe file";
     if (pexe_file_stream == nullptr)
       LOG(FATAL) << "Could not open pexe for reading";
+    // TODO(smklein): Remove these LOG statements once translation speed
+    // is improved.
+    LOG(INFO) << "Starting compilation of pexe into nexe";
     for (;;) {
       size_t num_bytes_from_pexe = fread(buf.get(), 1, kBufferSize,
                                          pexe_file_stream);
@@ -65,6 +68,7 @@ class PexeCompilerImpl : public mojo::nacl::PexeCompiler {
         break;
       }
       funcs_->data_callback(buf.get(), num_bytes_from_pexe);
+      LOG(INFO) << "Compiled " << num_bytes_from_pexe << " bytes";
     }
     buf.reset();
 

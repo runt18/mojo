@@ -81,7 +81,7 @@ class PexeContentHandler : public mojo::ApplicationDelegate,
     return true;
   }
 
-  // Overridden from ContentHandlerFactory::ManagedDelegate:
+  // Overridden from ContentHandlerFactory::Delegate:
   void RunApplication(
       mojo::InterfaceRequest<mojo::Application> application_request,
       mojo::URLResponsePtr response) override {
