@@ -11,6 +11,7 @@
 //   pub run flutter build
 //   pub run flutter run_mojo --mojo-path=../../.. --android
 
+import 'dart:math' as math;
 import 'dart:typed_data';
 import 'dart:ui' as ui;
 
@@ -27,8 +28,10 @@ ui.Picture paint(ui.Rect paintBounds) {
   if (image != null) {
     ui.Canvas canvas = new ui.Canvas(recorder, paintBounds);
     canvas.translate(paintBounds.width / 2.0, paintBounds.height / 2.0);
-    canvas.scale(0.3, 0.3);
     ui.Paint paint = new Paint()..color = const Color.fromARGB(255, 0, 255, 0);
+    // TODO(alhaad): Use orientation information from Flutter.
+    if (ui.view.width < ui.view.height)
+      canvas.rotate(math.PI / 2);
     canvas.drawImage(
         image, new Point(-image.width / 2.0, -image.height / 2.0), paint);
   }
