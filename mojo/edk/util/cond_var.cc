@@ -2,7 +2,7 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-#include "mojo/edk/system/cond_var.h"
+#include "mojo/edk/util/cond_var.h"
 
 #include <errno.h>
 #include <string.h>
@@ -10,12 +10,12 @@
 
 #include <limits>
 
-#include "base/logging.h"
 #include "build/build_config.h"
-#include "mojo/edk/system/mutex.h"
+#include "mojo/edk/util/logging_internal.h"
+#include "mojo/edk/util/mutex.h"
 
 namespace mojo {
-namespace system {
+namespace util {
 
 namespace {
 
@@ -27,8 +27,8 @@ bool RelativeTimedWait(const struct timespec& timeout_rel,
 #if defined(OS_MACOSX)
   int error = pthread_cond_timedwait_relative_np(posix_cond_var, posix_mutex,
                                                  &timeout_rel);
-  DCHECK(error == 0 || error == ETIMEDOUT || error == EINTR)
-      << ". pthread_cond_timedwait_relative_np: " << strerror(error);
+  INTERNAL_DCHECK_WITH_ERRNO(error == 0 || error == ETIMEDOUT || error == EINTR,
+                             "pthread_cond_timedwait_relative_np", error);
   return error == ETIMEDOUT;
 #else
   static const long kNanosecondsPerSecond = 1000000000L;
@@ -45,15 +45,15 @@ bool RelativeTimedWait(const struct timespec& timeout_rel,
   struct timespec timeout_abs;
   int error = clock_gettime(kClockType, &timeout_abs);
   // Note: The return value of |clock_gettime()| is *not* an error code, unlike
-  // the pthreads functions.
-  DPCHECK(!error) << "clock_gettime";
+  // the pthreads functions (however, it sets errno).
+  INTERNAL_DCHECK_WITH_ERRNO(!error, "clock_gettime", errno);
 
   timeout_abs.tv_sec += timeout_rel.tv_sec;
   timeout_abs.tv_nsec += timeout_rel.tv_nsec;
   if (timeout_abs.tv_nsec >= kNanosecondsPerSecond) {
     timeout_abs.tv_sec++;
     timeout_abs.tv_nsec -= kNanosecondsPerSecond;
-    DCHECK_LT(timeout_abs.tv_nsec, kNanosecondsPerSecond);
+    INTERNAL_DCHECK(timeout_abs.tv_nsec < kNanosecondsPerSecond);
   }
 
 // Older Android doesn't have |pthread_condattr_setclock()|, but they have
@@ -61,12 +61,12 @@ bool RelativeTimedWait(const struct timespec& timeout_rel,
 #if defined(OS_ANDROID) && defined(HAVE_PTHREAD_COND_TIMEDWAIT_MONOTONIC)
   error = pthread_cond_timedwait_monotonic_np(posix_cond_var, posix_mutex,
                                               &timeout_abs);
-  DCHECK(error == 0 || error == ETIMEDOUT || error == EINTR)
-      << ". pthread_cond_timedwait_monotonic_np: " << strerror(error);
+  INTERNAL_DCHECK_WITH_ERRNO(error == 0 || error == ETIMEDOUT || error == EINTR,
+                             "pthread_cond_timedwait_monotonic_np", error);
 #else
   error = pthread_cond_timedwait(posix_cond_var, posix_mutex, &timeout_abs);
-  DCHECK(error == 0 || error == ETIMEDOUT || error == EINTR)
-      << ". pthread_cond_timedwait: " << strerror(error);
+  INTERNAL_DCHECK_WITH_ERRNO(error == 0 || error == ETIMEDOUT || error == EINTR,
+                             "pthread_cond_timedwait", error);
 #endif  // defined(OS_ANDROID) && defined(HAVE_PTHREAD_COND_TIMEDWAIT_MONOTONIC)
   return error == ETIMEDOUT;
 #endif  // defined(OS_MACOSX)
@@ -81,30 +81,30 @@ CondVar::CondVar() {
     !(defined(OS_ANDROID) && defined(HAVE_PTHREAD_COND_TIMEDWAIT_MONOTONIC))
   pthread_condattr_t attr;
   int error = pthread_condattr_init(&attr);
-  DCHECK(!error) << "pthread_condattr_init: " << strerror(error);
+  INTERNAL_DCHECK_WITH_ERRNO(!error, "pthread_condattr_init", error);
   error = pthread_condattr_setclock(&attr, CLOCK_MONOTONIC);
-  DCHECK(!error) << "pthread_condattr_setclock: " << strerror(error);
+  INTERNAL_DCHECK_WITH_ERRNO(!error, "pthread_condattr_setclock", error);
   error = pthread_cond_init(&impl_, &attr);
-  DCHECK(!error) << "pthread_cond_init: " << strerror(error);
+  INTERNAL_DCHECK_WITH_ERRNO(!error, "pthread_cond_init", error);
   error = pthread_condattr_destroy(&attr);
-  DCHECK(!error) << "pthread_condattr_destroy: " << strerror(error);
+  INTERNAL_DCHECK_WITH_ERRNO(!error, "pthread_condattr_destroy", error);
 #else
   int error = pthread_cond_init(&impl_, nullptr);
-  DCHECK(!error) << "pthread_cond_init: " << strerror(error);
+  INTERNAL_DCHECK_WITH_ERRNO(!error, "pthread_cond_init", error);
 #endif  // !defined(OS_MACOSX) && !defined(OS_NACL) && !(defined(OS_ANDROID)...)
 }
 
 CondVar::~CondVar() {
   int error = pthread_cond_destroy(&impl_);
-  DCHECK(!error) << "pthread_cond_destroy: " << strerror(error);
+  INTERNAL_DCHECK_WITH_ERRNO(!error, "pthread_cond_destroy", error);
 }
 
 void CondVar::Wait(Mutex* mutex) {
-  DCHECK(mutex);
+  INTERNAL_DCHECK(mutex);
   mutex->AssertHeld();
 
   int error = pthread_cond_wait(&impl_, &mutex->impl_);
-  DCHECK(!error) << "pthread_cond_wait: " << strerror(error);
+  INTERNAL_DCHECK_WITH_ERRNO(!error, "pthread_cond_wait", error);
 }
 
 bool CondVar::WaitWithTimeout(Mutex* mutex, uint64_t timeout_microseconds) {
@@ -122,7 +122,7 @@ bool CondVar::WaitWithTimeout(Mutex* mutex, uint64_t timeout_microseconds) {
     return false;  // Did *not* time out.
   }
 
-  DCHECK(mutex);
+  INTERNAL_DCHECK(mutex);
   mutex->AssertHeld();
 
   struct timespec timeout_rel = {};
@@ -135,13 +135,13 @@ bool CondVar::WaitWithTimeout(Mutex* mutex, uint64_t timeout_microseconds) {
 
 void CondVar::Signal() {
   int error = pthread_cond_signal(&impl_);
-  DCHECK(!error) << "pthread_cond_signal: " << strerror(error);
+  INTERNAL_DCHECK_WITH_ERRNO(!error, "pthread_cond_signal", error);
 }
 
 void CondVar::SignalAll() {
   int error = pthread_cond_broadcast(&impl_);
-  DCHECK(!error) << "pthread_cond_broadcast: " << strerror(error);
+  INTERNAL_DCHECK_WITH_ERRNO(!error, "pthread_cond_broadcast", error);
 }
 
-}  // namespace system
+}  // namespace util
 }  // namespace mojo

@@ -2,19 +2,19 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-// A condition variable class (to be used with |mojo::system::Mutex|).
+// A condition variable class (to be used with |mojo::util::Mutex|).
 
-#ifndef MOJO_EDK_SYSTEM_COND_VAR_H_
-#define MOJO_EDK_SYSTEM_COND_VAR_H_
+#ifndef MOJO_EDK_UTIL_COND_VAR_H_
+#define MOJO_EDK_UTIL_COND_VAR_H_
 
 #include <pthread.h>
 #include <stdint.h>
 
-#include "mojo/edk/system/thread_annotations.h"
+#include "mojo/edk/util/thread_annotations.h"
 #include "mojo/public/cpp/system/macros.h"
 
 namespace mojo {
-namespace system {
+namespace util {
 
 class Mutex;
 
@@ -60,7 +60,7 @@ class CondVar {
   MOJO_DISALLOW_COPY_AND_ASSIGN(CondVar);
 };
 
-}  // namespace system
+}  // namespace util
 }  // namespace mojo
 
-#endif  // MOJO_EDK_SYSTEM_COND_VAR_H_
+#endif  // MOJO_EDK_UTIL_COND_VAR_H_

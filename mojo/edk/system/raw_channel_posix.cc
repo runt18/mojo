@@ -25,6 +25,8 @@
 #include "mojo/edk/util/make_unique.h"
 #include "mojo/public/cpp/system/macros.h"
 
+using mojo::util::MutexLocker;
+
 namespace mojo {
 namespace system {
 

@@ -2,7 +2,7 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-#include "mojo/edk/system/cond_var.h"
+#include "mojo/edk/util/cond_var.h"
 
 #include <stdint.h>
 #include <stdlib.h>
@@ -11,20 +11,20 @@
 #include <type_traits>
 #include <vector>
 
-#include "mojo/edk/system/mutex.h"
 #include "mojo/edk/system/test/sleep.h"
 #include "mojo/edk/system/test/stopwatch.h"
 #include "mojo/edk/system/test/timeouts.h"
+#include "mojo/edk/util/mutex.h"
 #include "mojo/public/cpp/system/macros.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 namespace mojo {
-namespace system {
+namespace util {
 namespace {
 
 // Sleeps for a "very small" amount of time.
 void EpsilonRandomSleep() {
-  test::SleepMilliseconds(static_cast<unsigned>(rand()) % 20u);
+  system::test::SleepMilliseconds(static_cast<unsigned>(rand()) % 20u);
 }
 
 // We'll use |MojoDeadline| with |uint64_t| (for |CondVar::WaitWithTimeout()|'s
@@ -56,7 +56,8 @@ TEST(CondVarTest, Basic) {
     // happen if we're interrupted, e.g., by ^Z.)
     EXPECT_TRUE(cv.WaitWithTimeout(&mu, 0));
     mu.AssertHeld();
-    EXPECT_TRUE(cv.WaitWithTimeout(&mu, test::DeadlineFromMilliseconds(1)));
+    EXPECT_TRUE(
+        cv.WaitWithTimeout(&mu, system::test::DeadlineFromMilliseconds(1)));
     mu.AssertHeld();
   }
 
@@ -88,7 +89,7 @@ TEST(CondVarTest, Basic) {
       }
     } else {
       while (!condition) {
-        EXPECT_FALSE(cv.WaitWithTimeout(&mu, test::TinyTimeout()));
+        EXPECT_FALSE(cv.WaitWithTimeout(&mu, system::test::TinyTimeout()));
         mu.AssertHeld();
       }
     }
@@ -117,7 +118,8 @@ TEST(CondVarTest, SignalAll) {
             }
           } else {
             while (!condition) {
-              EXPECT_FALSE(cv.WaitWithTimeout(&mu, test::TinyTimeout()));
+              EXPECT_FALSE(
+                  cv.WaitWithTimeout(&mu, system::test::TinyTimeout()));
               mu.AssertHeld();
             }
           }
@@ -141,7 +143,7 @@ TEST(CondVarTest, SignalAll) {
 TEST(CondVarTest, Timeouts) {
   static const unsigned kTestTimeoutsMs[] = {0, 10, 20, 40, 80, 160};
 
-  test::Stopwatch stopwatch;
+  system::test::Stopwatch stopwatch;
 
   Mutex mu;
   CondVar cv;
@@ -149,7 +151,8 @@ TEST(CondVarTest, Timeouts) {
   MutexLocker locker(&mu);
 
   for (size_t i = 0; i < MOJO_ARRAYSIZE(kTestTimeoutsMs); i++) {
-    uint64_t timeout = test::DeadlineFromMilliseconds(kTestTimeoutsMs[i]);
+    uint64_t timeout =
+        system::test::DeadlineFromMilliseconds(kTestTimeoutsMs[i]);
 
     stopwatch.Start();
     // See note in CondVarTest.Basic about spurious wakeups.
@@ -159,12 +162,12 @@ TEST(CondVarTest, Timeouts) {
     // It should time out after *at least* the specified amount of time.
     EXPECT_GE(elapsed, timeout);
     // But we expect that it should time out soon after that amount of time.
-    EXPECT_LT(elapsed, timeout + test::EpsilonTimeout());
+    EXPECT_LT(elapsed, timeout + system::test::EpsilonTimeout());
   }
 }
 
 // TODO(vtl): Test that |Signal()| (usually) wakes only one waiter.
 
 }  // namespace
-}  // namespace system
+}  // namespace util
 }  // namespace mojo

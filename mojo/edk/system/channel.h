@@ -16,10 +16,11 @@
 #include "mojo/edk/system/channel_endpoint_id.h"
 #include "mojo/edk/system/incoming_endpoint.h"
 #include "mojo/edk/system/message_in_transit.h"
-#include "mojo/edk/system/mutex.h"
 #include "mojo/edk/system/raw_channel.h"
+#include "mojo/edk/util/mutex.h"
 #include "mojo/edk/util/ref_counted.h"
 #include "mojo/edk/util/ref_ptr.h"
+#include "mojo/edk/util/thread_annotations.h"
 #include "mojo/public/c/system/types.h"
 #include "mojo/public/cpp/system/macros.h"
 
@@ -248,7 +249,7 @@ class Channel final : public util::RefCountedThreadSafe<Channel>,
   // TODO(vtl): Annotate the above rule using |MOJO_ACQUIRED_{BEFORE,AFTER}()|,
   // once clang actually checks such annotations.
   // https://github.com/domokit/mojo/issues/313
-  mutable Mutex mutex_;
+  mutable util::Mutex mutex_;
 
   std::unique_ptr<RawChannel> raw_channel_ MOJO_GUARDED_BY(mutex_);
   bool is_running_ MOJO_GUARDED_BY(mutex_);

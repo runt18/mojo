@@ -9,9 +9,10 @@
 
 #include "mojo/edk/system/channel_endpoint_id.h"
 #include "mojo/edk/system/message_in_transit_queue.h"
-#include "mojo/edk/system/mutex.h"
+#include "mojo/edk/util/mutex.h"
 #include "mojo/edk/util/ref_counted.h"
 #include "mojo/edk/util/ref_ptr.h"
+#include "mojo/edk/util/thread_annotations.h"
 #include "mojo/public/cpp/system/macros.h"
 
 namespace mojo {
@@ -178,7 +179,7 @@ class ChannelEndpoint final
   // this does not call |channel_->DetachEndpoint()|.
   void DieNoLock() MOJO_EXCLUSIVE_LOCKS_REQUIRED(mutex_);
 
-  Mutex mutex_;
+  util::Mutex mutex_;
 
   enum class State {
     // |AttachAndRun()| has not been called yet (|channel_| is null).

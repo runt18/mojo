@@ -10,8 +10,9 @@
 #include "mojo/edk/system/channel_endpoint.h"
 #include "mojo/edk/system/channel_endpoint_client.h"
 #include "mojo/edk/system/message_in_transit_queue.h"
-#include "mojo/edk/system/mutex.h"
+#include "mojo/edk/util/mutex.h"
 #include "mojo/edk/util/ref_ptr.h"
+#include "mojo/edk/util/thread_annotations.h"
 #include "mojo/public/cpp/system/macros.h"
 
 namespace mojo {
@@ -52,7 +53,7 @@ class TestChannelEndpointClient final : public ChannelEndpointClient {
   TestChannelEndpointClient();
   ~TestChannelEndpointClient() override;
 
-  mutable Mutex mutex_;
+  mutable util::Mutex mutex_;
 
   unsigned port_ MOJO_GUARDED_BY(mutex_);
   util::RefPtr<ChannelEndpoint> endpoint_ MOJO_GUARDED_BY(mutex_);

@@ -8,9 +8,9 @@
 #include <stdint.h>
 
 #include "mojo/edk/system/awakable.h"
-#include "mojo/edk/system/cond_var.h"
-#include "mojo/edk/system/mutex.h"
-#include "mojo/edk/system/thread_annotations.h"
+#include "mojo/edk/util/cond_var.h"
+#include "mojo/edk/util/mutex.h"
+#include "mojo/edk/util/thread_annotations.h"
 #include "mojo/public/c/system/types.h"
 #include "mojo/public/cpp/system/macros.h"
 
@@ -61,8 +61,8 @@ class Waiter final : public Awakable {
   bool Awake(MojoResult result, uintptr_t context) override;
 
  private:
-  CondVar cv_;  // Associated to |mutex_|.
-  Mutex mutex_;
+  util::CondVar cv_;  // Associated to |mutex_|.
+  util::Mutex mutex_;
 #ifndef NDEBUG
   bool initialized_ MOJO_GUARDED_BY(mutex_);
 #endif

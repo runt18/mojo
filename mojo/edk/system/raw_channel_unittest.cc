@@ -17,7 +17,6 @@
 #include "mojo/edk/embedder/platform_handle.h"
 #include "mojo/edk/embedder/scoped_platform_handle.h"
 #include "mojo/edk/system/message_in_transit.h"
-#include "mojo/edk/system/mutex.h"
 #include "mojo/edk/system/test/random.h"
 #include "mojo/edk/system/test/scoped_test_dir.h"
 #include "mojo/edk/system/test/simple_test_thread.h"
@@ -27,9 +26,13 @@
 #include "mojo/edk/system/waitable_event.h"
 #include "mojo/edk/test/test_utils.h"
 #include "mojo/edk/util/make_unique.h"
+#include "mojo/edk/util/mutex.h"
 #include "mojo/edk/util/scoped_file.h"
 #include "mojo/public/cpp/system/macros.h"
 #include "testing/gtest/include/gtest/gtest.h"
+
+using mojo::util::Mutex;
+using mojo::util::MutexLocker;
 
 namespace mojo {
 namespace system {

@@ -10,9 +10,9 @@
 #ifndef MOJO_EDK_SYSTEM_WAITABLE_EVENT_H_
 #define MOJO_EDK_SYSTEM_WAITABLE_EVENT_H_
 
-#include "mojo/edk/system/cond_var.h"
-#include "mojo/edk/system/mutex.h"
-#include "mojo/edk/system/thread_annotations.h"
+#include "mojo/edk/util/cond_var.h"
+#include "mojo/edk/util/mutex.h"
+#include "mojo/edk/util/thread_annotations.h"
 #include "mojo/public/cpp/system/macros.h"
 
 namespace mojo {
@@ -62,8 +62,8 @@ class AutoResetWaitableEvent {
   bool IsSignaledForTest();
 
  private:
-  CondVar cv_;
-  Mutex mutex_;
+  util::CondVar cv_;
+  util::Mutex mutex_;
 
   // True if this event is in the signaled state.
   bool signaled_ MOJO_GUARDED_BY(mutex_) = false;
@@ -104,8 +104,8 @@ class ManualResetWaitableEvent {
   bool IsSignaledForTest();
 
  private:
-  CondVar cv_;
-  Mutex mutex_;
+  util::CondVar cv_;
+  util::Mutex mutex_;
 
   // True if this event is in the signaled state.
   bool signaled_ MOJO_GUARDED_BY(mutex_) = false;

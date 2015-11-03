@@ -10,6 +10,7 @@
 #include "mojo/edk/system/waitable_event.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
+using mojo::util::MutexLocker;
 using mojo::util::RefPtr;
 
 namespace mojo {

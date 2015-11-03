@@ -10,9 +10,9 @@
 // So instead we have some cheesy macros that you can define to enable
 // individual compilation failures.
 
-#include "mojo/edk/system/thread_annotations.h"
+#include "mojo/edk/util/thread_annotations.h"
 
-#include "mojo/edk/system/mutex.h"
+#include "mojo/edk/util/mutex.h"
 #include "mojo/public/cpp/system/macros.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
@@ -24,7 +24,7 @@
 // #define NC_ACQUIRED_BEFORE
 
 namespace mojo {
-namespace system {
+namespace util {
 namespace {
 
 // Test MOJO_GUARDED_BY --------------------------------------------------------
@@ -120,5 +120,5 @@ TEST(ThreadAnnotationsTest, AcquiredBefore) {
 // TODO(vtl): Test more things.
 
 }  // namespace
-}  // namespace system
+}  // namespace util
 }  // namespace mojo

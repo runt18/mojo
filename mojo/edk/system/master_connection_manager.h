@@ -13,7 +13,8 @@
 #include "mojo/edk/embedder/platform_task_runner.h"
 #include "mojo/edk/embedder/scoped_platform_handle.h"
 #include "mojo/edk/system/connection_manager.h"
-#include "mojo/edk/system/mutex.h"
+#include "mojo/edk/util/mutex.h"
+#include "mojo/edk/util/thread_annotations.h"
 #include "mojo/public/cpp/system/macros.h"
 
 namespace base {
@@ -147,7 +148,7 @@ class MasterConnectionManager final : public ConnectionManager {
 
   // Note: |mutex_| is not needed in the constructor, |Init()|,
   // |Shutdown()|/|ShutdownOnPrivateThread()|, or the destructor
-  Mutex mutex_;
+  util::Mutex mutex_;
 
   ProcessIdentifier next_process_identifier_ MOJO_GUARDED_BY(mutex_);
 

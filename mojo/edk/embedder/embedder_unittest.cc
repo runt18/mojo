@@ -14,12 +14,13 @@
 #include "base/message_loop/message_loop.h"
 #include "mojo/edk/embedder/platform_channel_pair.h"
 #include "mojo/edk/embedder/test_embedder.h"
-#include "mojo/edk/system/mutex.h"
 #include "mojo/edk/system/test/test_io_thread.h"
 #include "mojo/edk/system/test/timeouts.h"
 #include "mojo/edk/system/waitable_event.h"
 #include "mojo/edk/test/multiprocess_test_helper.h"
 #include "mojo/edk/test/scoped_ipc_support.h"
+#include "mojo/edk/util/mutex.h"
+#include "mojo/edk/util/thread_annotations.h"
 #include "mojo/public/c/system/core.h"
 #include "mojo/public/cpp/system/handle.h"
 #include "mojo/public/cpp/system/macros.h"
@@ -27,6 +28,8 @@
 #include "testing/gtest/include/gtest/gtest.h"
 
 using mojo::system::test::TestIOThread;
+using mojo::util::Mutex;
+using mojo::util::MutexLocker;
 
 namespace mojo {
 namespace embedder {
@@ -196,7 +199,7 @@ class TestAsyncWaiter {
   TestAsyncWaiter() : wait_result_(MOJO_RESULT_UNKNOWN) {}
 
   void Awake(MojoResult result) {
-    system::MutexLocker l(&wait_result_mutex_);
+    MutexLocker l(&wait_result_mutex_);
     wait_result_ = result;
     event_.Signal();
   }
@@ -206,14 +209,14 @@ class TestAsyncWaiter {
   }
 
   MojoResult wait_result() const {
-    system::MutexLocker l(&wait_result_mutex_);
+    MutexLocker l(&wait_result_mutex_);
     return wait_result_;
   }
 
  private:
   mojo::system::ManualResetWaitableEvent event_;
 
-  mutable system::Mutex wait_result_mutex_;
+  mutable Mutex wait_result_mutex_;
   MojoResult wait_result_ MOJO_GUARDED_BY(wait_result_mutex_);
 
   MOJO_DISALLOW_COPY_AND_ASSIGN(TestAsyncWaiter);

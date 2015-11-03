@@ -14,9 +14,9 @@
 #include "mojo/edk/system/channel_endpoint_client.h"
 #include "mojo/edk/system/handle_signals_state.h"
 #include "mojo/edk/system/memory.h"
-#include "mojo/edk/system/mutex.h"
-#include "mojo/edk/system/thread_annotations.h"
+#include "mojo/edk/util/mutex.h"
 #include "mojo/edk/util/ref_ptr.h"
+#include "mojo/edk/util/thread_annotations.h"
 #include "mojo/public/c/system/data_pipe.h"
 #include "mojo/public/c/system/types.h"
 #include "mojo/public/cpp/system/macros.h"
@@ -265,7 +265,7 @@ class DataPipe final : public ChannelEndpointClient {
   MSVC_SUPPRESS_WARNING(4324)
   const MojoCreateDataPipeOptions validated_options_;
 
-  mutable Mutex mutex_;
+  mutable util::Mutex mutex_;
   // *Known* state of producer or consumer.
   bool producer_open_ MOJO_GUARDED_BY(mutex_);
   bool consumer_open_ MOJO_GUARDED_BY(mutex_);

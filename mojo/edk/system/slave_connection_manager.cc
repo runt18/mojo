@@ -13,6 +13,8 @@
 #include "mojo/edk/system/message_in_transit.h"
 #include "mojo/edk/util/make_unique.h"
 
+using mojo::util::MutexLocker;
+
 namespace mojo {
 namespace system {
 

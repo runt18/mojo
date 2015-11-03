@@ -9,8 +9,9 @@
 
 #include "mojo/edk/system/channel_endpoint_client.h"
 #include "mojo/edk/system/message_in_transit_queue.h"
-#include "mojo/edk/system/mutex.h"
+#include "mojo/edk/util/mutex.h"
 #include "mojo/edk/util/ref_ptr.h"
+#include "mojo/edk/util/thread_annotations.h"
 #include "mojo/public/cpp/system/macros.h"
 
 struct MojoCreateDataPipeOptions;
@@ -53,7 +54,7 @@ class IncomingEndpoint final : public ChannelEndpointClient {
   IncomingEndpoint();
   ~IncomingEndpoint() override;
 
-  Mutex mutex_;
+  util::Mutex mutex_;
   util::RefPtr<ChannelEndpoint> endpoint_ MOJO_GUARDED_BY(mutex_);
   MessageInTransitQueue message_queue_ MOJO_GUARDED_BY(mutex_);
 

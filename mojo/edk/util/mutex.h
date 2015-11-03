@@ -6,21 +6,20 @@
 //
 // TODO(vtl): Add support for non-exclusive (reader) locks.
 
-#ifndef MOJO_EDK_SYSTEM_MUTEX_H_
-#define MOJO_EDK_SYSTEM_MUTEX_H_
+#ifndef MOJO_EDK_UTIL_MUTEX_H_
+#define MOJO_EDK_UTIL_MUTEX_H_
 
 #include <pthread.h>
 
-#include "mojo/edk/system/thread_annotations.h"
+#include "mojo/edk/util/thread_annotations.h"
 #include "mojo/public/cpp/system/macros.h"
 
 namespace mojo {
-namespace system {
-
-// So |Mutex| can friend it.
-class CondVar;
+namespace util {
 
 // Mutex -----------------------------------------------------------------------
+
+class CondVar;
 
 class MOJO_LOCKABLE Mutex {
  public:
@@ -78,7 +77,7 @@ class MOJO_SCOPED_LOCKABLE MutexLocker {
   MOJO_DISALLOW_COPY_AND_ASSIGN(MutexLocker);
 };
 
-}  // namespace system
+}  // namespace util
 }  // namespace mojo
 
-#endif  // MOJO_EDK_SYSTEM_MUTEX_H_
+#endif  // MOJO_EDK_UTIL_MUTEX_H_

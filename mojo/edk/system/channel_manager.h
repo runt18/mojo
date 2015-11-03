@@ -13,8 +13,9 @@
 #include "mojo/edk/embedder/platform_task_runner.h"
 #include "mojo/edk/embedder/scoped_platform_handle.h"
 #include "mojo/edk/system/channel_id.h"
-#include "mojo/edk/system/mutex.h"
+#include "mojo/edk/util/mutex.h"
 #include "mojo/edk/util/ref_ptr.h"
+#include "mojo/edk/util/thread_annotations.h"
 #include "mojo/public/cpp/system/macros.h"
 
 namespace base {
@@ -152,7 +153,7 @@ class ChannelManager {
   // TODO(vtl): Annotate the above rule using |MOJO_ACQUIRED_{BEFORE,AFTER}()|,
   // once clang actually checks such annotations.
   // https://github.com/domokit/mojo/issues/313
-  mutable Mutex mutex_;
+  mutable util::Mutex mutex_;
 
   using ChannelIdToChannelMap =
       std::unordered_map<ChannelId, util::RefPtr<Channel>>;

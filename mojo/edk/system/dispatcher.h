@@ -15,9 +15,10 @@
 #include "mojo/edk/embedder/platform_handle_vector.h"
 #include "mojo/edk/system/handle_signals_state.h"
 #include "mojo/edk/system/memory.h"
-#include "mojo/edk/system/mutex.h"
+#include "mojo/edk/util/mutex.h"
 #include "mojo/edk/util/ref_counted.h"
 #include "mojo/edk/util/ref_ptr.h"
+#include "mojo/edk/util/thread_annotations.h"
 #include "mojo/public/c/system/buffer.h"
 #include "mojo/public/c/system/data_pipe.h"
 #include "mojo/public/c/system/message_pipe.h"
@@ -310,7 +311,7 @@ class Dispatcher : public util::RefCountedThreadSafe<Dispatcher> {
   // handle from being sent over a message pipe (with status "busy").
   virtual bool IsBusyNoLock() const MOJO_SHARED_LOCKS_REQUIRED(mutex_);
 
-  Mutex& mutex() const MOJO_LOCK_RETURNED(mutex_) { return mutex_; }
+  util::Mutex& mutex() const MOJO_LOCK_RETURNED(mutex_) { return mutex_; }
 
  private:
   FRIEND_REF_COUNTED_THREAD_SAFE(Dispatcher);
@@ -375,7 +376,7 @@ class Dispatcher : public util::RefCountedThreadSafe<Dispatcher> {
 
   // This protects the following members as well as any state added by
   // subclasses.
-  mutable Mutex mutex_;
+  mutable util::Mutex mutex_;
   bool is_closed_ MOJO_GUARDED_BY(mutex_);
 
   MOJO_DISALLOW_COPY_AND_ASSIGN(Dispatcher);

@@ -14,6 +14,7 @@
 #include "mojo/edk/system/remote_producer_data_pipe_impl.h"
 
 using mojo::util::MakeRefCounted;
+using mojo::util::MutexLocker;
 using mojo::util::RefPtr;
 
 namespace mojo {

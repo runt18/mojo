@@ -2,7 +2,7 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-#include "mojo/edk/system/mutex.h"
+#include "mojo/edk/util/mutex.h"
 
 #include <stdlib.h>
 
@@ -12,12 +12,12 @@
 #include "testing/gtest/include/gtest/gtest.h"
 
 namespace mojo {
-namespace system {
+namespace util {
 namespace {
 
 // Sleeps for a "very small" amount of time.
 void EpsilonRandomSleep() {
-  test::SleepMilliseconds(static_cast<unsigned>(rand()) % 20u);
+  system::test::SleepMilliseconds(static_cast<unsigned>(rand()) % 20u);
 }
 
 // Basic test to make sure that Lock()/Unlock()/TryLock() don't crash ----------
@@ -93,7 +93,7 @@ TEST(MutexTest, AssertHeld) {
   // For non-Debug builds, |AssertHeld()| should do nothing.
   mutex.AssertHeld();
 #else
-  EXPECT_DEATH_IF_SUPPORTED({ mutex.AssertHeld(); }, "Check failed");
+  EXPECT_DEATH_IF_SUPPORTED({ mutex.AssertHeld(); }, "pthread_mutex_lock");
 #endif  // defined(NDEBUG) && !defined(DCHECK_ALWAYS_ON)
 
   // TODO(vtl): Should also test the case when the mutex is held by another
@@ -197,5 +197,5 @@ TEST(MutexTest, MutexLocker) {
 }
 
 }  // namespace
-}  // namespace system
+}  // namespace util
 }  // namespace mojo

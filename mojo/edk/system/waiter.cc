@@ -7,6 +7,8 @@
 #include "base/logging.h"
 #include "base/time/time.h"
 
+using mojo::util::MutexLocker;
+
 namespace mojo {
 namespace system {
 

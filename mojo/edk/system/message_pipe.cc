@@ -20,6 +20,7 @@
 #include "mojo/edk/util/make_unique.h"
 
 using mojo::util::MakeRefCounted;
+using mojo::util::MutexLocker;
 using mojo::util::RefPtr;
 
 namespace mojo {

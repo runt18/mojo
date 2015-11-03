@@ -18,8 +18,9 @@
 #include "mojo/edk/system/memory.h"
 #include "mojo/edk/system/message_in_transit.h"
 #include "mojo/edk/system/message_pipe_endpoint.h"
-#include "mojo/edk/system/mutex.h"
+#include "mojo/edk/util/mutex.h"
 #include "mojo/edk/util/ref_ptr.h"
+#include "mojo/edk/util/thread_annotations.h"
 #include "mojo/public/c/system/message_pipe.h"
 #include "mojo/public/c/system/types.h"
 #include "mojo/public/cpp/system/macros.h"
@@ -137,7 +138,7 @@ class MessagePipe final : public ChannelEndpointClient {
       std::vector<DispatcherTransport>* transports)
       MOJO_EXCLUSIVE_LOCKS_REQUIRED(mutex_);
 
-  mutable Mutex mutex_;
+  mutable util::Mutex mutex_;
   std::unique_ptr<MessagePipeEndpoint> endpoints_[2] MOJO_GUARDED_BY(mutex_);
 
   MOJO_DISALLOW_COPY_AND_ASSIGN(MessagePipe);

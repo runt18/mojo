@@ -11,13 +11,16 @@
 
 #include <stdint.h>
 
-#include "mojo/edk/system/mutex.h"
 #include "mojo/edk/system/test/simple_test_thread.h"
 #include "mojo/edk/system/test/sleep.h"
 #include "mojo/edk/system/test/stopwatch.h"
 #include "mojo/edk/system/test/timeouts.h"
+#include "mojo/edk/util/mutex.h"
 #include "mojo/public/cpp/system/macros.h"
 #include "testing/gtest/include/gtest/gtest.h"
+
+using mojo::util::Mutex;
+using mojo::util::MutexLocker;
 
 namespace mojo {
 namespace system {

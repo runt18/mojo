@@ -16,15 +16,16 @@
 #include "mojo/edk/system/test/sleep.h"
 #include "mojo/edk/system/test/stopwatch.h"
 #include "mojo/edk/system/test/timeouts.h"
-#include "mojo/edk/system/thread_annotations.h"
 #include "mojo/edk/system/waiter.h"
 #include "mojo/edk/system/waiter_test_utils.h"
 #include "mojo/edk/util/make_unique.h"
 #include "mojo/edk/util/ref_ptr.h"
+#include "mojo/edk/util/thread_annotations.h"
 #include "mojo/public/cpp/system/macros.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 using mojo::util::MakeRefCounted;
+using mojo::util::MutexLocker;
 using mojo::util::RefPtr;
 
 namespace mojo {

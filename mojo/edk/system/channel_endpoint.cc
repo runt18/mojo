@@ -12,6 +12,7 @@
 #include "mojo/edk/system/channel_endpoint_client.h"
 #include "mojo/public/cpp/system/macros.h"
 
+using mojo::util::MutexLocker;
 using mojo::util::RefPtr;
 
 namespace mojo {

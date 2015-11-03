@@ -11,8 +11,9 @@
 #include "mojo/edk/system/handle_table.h"
 #include "mojo/edk/system/mapping_table.h"
 #include "mojo/edk/system/memory.h"
-#include "mojo/edk/system/mutex.h"
+#include "mojo/edk/util/mutex.h"
 #include "mojo/edk/util/ref_ptr.h"
+#include "mojo/edk/util/thread_annotations.h"
 #include "mojo/public/c/system/buffer.h"
 #include "mojo/public/c/system/data_pipe.h"
 #include "mojo/public/c/system/message_pipe.h"
@@ -175,10 +176,10 @@ class Core {
 
   // TODO(vtl): |handle_table_mutex_| should be a reader-writer lock (if only we
   // had them).
-  Mutex handle_table_mutex_;
+  util::Mutex handle_table_mutex_;
   HandleTable handle_table_ MOJO_GUARDED_BY(handle_table_mutex_);
 
-  Mutex mapping_table_mutex_;
+  util::Mutex mapping_table_mutex_;
   MappingTable mapping_table_ MOJO_GUARDED_BY(mapping_table_mutex_);
 
   MOJO_DISALLOW_COPY_AND_ASSIGN(Core);

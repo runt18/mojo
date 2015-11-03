@@ -120,7 +120,6 @@ mojo_edk_source_set("unittests") {
 
   deps = [
     "//base",
-    "//base/test:test_support",
     "//testing/gtest",
   ]
 
