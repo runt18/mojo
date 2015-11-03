@@ -5,6 +5,8 @@
 #ifndef MOJO_EDK_SYSTEM_SHARED_BUFFER_DISPATCHER_H_
 #define MOJO_EDK_SYSTEM_SHARED_BUFFER_DISPATCHER_H_
 
+#include <utility>
+
 #include "mojo/edk/embedder/platform_shared_buffer.h"
 #include "mojo/edk/system/memory.h"
 #include "mojo/edk/system/simple_dispatcher.h"
@@ -60,12 +62,12 @@ class SharedBufferDispatcher final : public SimpleDispatcher {
 
  private:
   static util::RefPtr<SharedBufferDispatcher> CreateInternal(
-      scoped_refptr<embedder::PlatformSharedBuffer> shared_buffer) {
-    return AdoptRef(new SharedBufferDispatcher(shared_buffer.Pass()));
+      util::RefPtr<embedder::PlatformSharedBuffer>&& shared_buffer) {
+    return AdoptRef(new SharedBufferDispatcher(std::move(shared_buffer)));
   }
 
   explicit SharedBufferDispatcher(
-      scoped_refptr<embedder::PlatformSharedBuffer> shared_buffer);
+      util::RefPtr<embedder::PlatformSharedBuffer>&& shared_buffer);
   ~SharedBufferDispatcher() override;
 
   // Validates and/or sets default options for
@@ -100,7 +102,7 @@ class SharedBufferDispatcher final : public SimpleDispatcher {
       embedder::PlatformHandleVector* platform_handles) override
       MOJO_NOT_THREAD_SAFE;
 
-  scoped_refptr<embedder::PlatformSharedBuffer> shared_buffer_
+  util::RefPtr<embedder::PlatformSharedBuffer> shared_buffer_
       MOJO_GUARDED_BY(mutex());
 
   MOJO_DISALLOW_COPY_AND_ASSIGN(SharedBufferDispatcher);

@@ -28,6 +28,8 @@
 #include "third_party/ashmem/ashmem.h"
 #endif  // defined(OS_ANDROID)
 
+using mojo::util::RefPtr;
+
 // We assume that |size_t| and |off_t| (type for |ftruncate()|) fits in a
 // |uint64_t|.
 static_assert(sizeof(size_t) <= sizeof(uint64_t), "size_t too big");
@@ -39,37 +41,25 @@ namespace embedder {
 // SimplePlatformSharedBuffer --------------------------------------------------
 
 // static
-SimplePlatformSharedBuffer* SimplePlatformSharedBuffer::Create(
+RefPtr<SimplePlatformSharedBuffer> SimplePlatformSharedBuffer::Create(
     size_t num_bytes) {
   DCHECK_GT(num_bytes, 0u);
 
-  SimplePlatformSharedBuffer* rv = new SimplePlatformSharedBuffer(num_bytes);
-  if (!rv->Init()) {
-    // We can't just delete it directly, due to the "in destructor" (debug)
-    // check.
-    scoped_refptr<SimplePlatformSharedBuffer> deleter(rv);
-    return nullptr;
-  }
-
-  return rv;
+  RefPtr<SimplePlatformSharedBuffer> rv(
+      AdoptRef(new SimplePlatformSharedBuffer(num_bytes)));
+  return rv->Init() ? rv : nullptr;
 }
 
 // static
-SimplePlatformSharedBuffer*
+RefPtr<SimplePlatformSharedBuffer>
 SimplePlatformSharedBuffer::CreateFromPlatformHandle(
     size_t num_bytes,
     ScopedPlatformHandle platform_handle) {
   DCHECK_GT(num_bytes, 0u);
 
-  SimplePlatformSharedBuffer* rv = new SimplePlatformSharedBuffer(num_bytes);
-  if (!rv->InitFromPlatformHandle(std::move(platform_handle))) {
-    // We can't just delete it directly, due to the "in destructor" (debug)
-    // check.
-    scoped_refptr<SimplePlatformSharedBuffer> deleter(rv);
-    return nullptr;
-  }
-
-  return rv;
+  RefPtr<SimplePlatformSharedBuffer> rv(
+      AdoptRef(new SimplePlatformSharedBuffer(num_bytes)));
+  return rv->InitFromPlatformHandle(std::move(platform_handle)) ? rv : nullptr;
 }
 
 size_t SimplePlatformSharedBuffer::GetNumBytes() const {

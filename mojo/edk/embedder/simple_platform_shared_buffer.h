@@ -8,6 +8,7 @@
 #include <stddef.h>
 
 #include "mojo/edk/embedder/platform_shared_buffer.h"
+#include "mojo/edk/util/ref_ptr.h"
 #include "mojo/public/cpp/system/macros.h"
 
 namespace mojo {
@@ -18,9 +19,9 @@ class SimplePlatformSharedBuffer final : public PlatformSharedBuffer {
  public:
   // Creates a shared buffer of size |num_bytes| bytes (initially zero-filled).
   // |num_bytes| must be nonzero. Returns null on failure.
-  static SimplePlatformSharedBuffer* Create(size_t num_bytes);
+  static util::RefPtr<SimplePlatformSharedBuffer> Create(size_t num_bytes);
 
-  static SimplePlatformSharedBuffer* CreateFromPlatformHandle(
+  static util::RefPtr<SimplePlatformSharedBuffer> CreateFromPlatformHandle(
       size_t num_bytes,
       ScopedPlatformHandle platform_handle);
 

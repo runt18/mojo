@@ -9,7 +9,6 @@
 #include <string>
 
 #include "base/callback.h"
-#include "base/memory/ref_counted.h"
 #include "base/task_runner.h"
 #include "mojo/edk/embedder/channel_info_forward.h"
 #include "mojo/edk/embedder/platform_task_runner.h"
