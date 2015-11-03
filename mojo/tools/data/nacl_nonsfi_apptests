@@ -11,10 +11,6 @@ tests = [
     "shell-args": ["--enable-multiprocess"],
   },
   {
-    "test": "mojo:shell_apptests.pexe",
-    "shell-args": ["--enable-multiprocess"],
-  },
-  {
     "test": "mojo:http_server_apptests.pexe",
     "shell-args": ["--enable-multiprocess"],
   },
@@ -32,14 +28,9 @@ tests = [
     "test": "mojo:files_apptests.pexe",
     "shell-args": ["--enable-multiprocess"],
   },
-  {
-    "test": "mojo:mojo_view_manager_client_apptests.pexe",
-    "shell-args": ["--enable-multiprocess", "--args-for=mojo:native_viewport_service --use-headless-config --use-osmesa"],
-  },
-  # TODO(smklein) Include "view_manager_service_apptests" once it isn't as slow.
-  {
-    "test": "mojo:window_manager_apptests.pexe",
-    "shell-args": ["--enable-multiprocess"],
-  },
-
+  # TODO(smklein): Include "mojo_view_manager_client_apptests.pexe",
+  # "window_manager_apptests.pexe", and "shell_apptests.pexe" once flake is
+  # reduced on bots for the Non-NaCl multiprocess version of the test.
+  # TODO(smklein): Include "view_manager_service_apptests" once it isn't as
+  # slow.
 ]
