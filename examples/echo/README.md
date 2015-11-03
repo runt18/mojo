@@ -4,6 +4,9 @@ Example Echo Client & Server
 This echo client/server demonstrate how to create and use a mojom interface,
 as well as demonstrating one way to communicate between mojo applications.
 
+For a deeper dive into this code, refer to the [Mojo
+Tutorial](https://docs.google.com/document/d/1mufrtxTk8w9qa3jcnlgqsYkWlyhwEpc7aWNaSOks7ug).
+
 ## Running the Echo Client & Server
 
 ```
@@ -175,3 +178,9 @@ This server creates an `EchoImpl` object, like the `SingletonServer`, but uses a
 single `Binding`, rather than a `BindingSet`. This means that when a new client
 connects to the OneAtATimeServer, the previous binding is closed, and a new
 binding is made between the new client and the interface implementation.
+
+The OneAtATimeServer demonstrates a pattern that should be avoided because it
+contains a race condition for multiple clients.  If a new client binds to the
+server before the first client managed to call EchoString, the first client's
+call would cause an error. Unless you have a specific use case for this
+behavior, it is advised to avoid creating a server like this.
