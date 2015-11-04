@@ -10,3 +10,7 @@ downloaded from https://golang.org/src and modified by the Mojo authors as
 described below.
 
 Local Changes:
+- The fmt package has been modified with regards to how it uses reflection
+to deep print Go structures. Firstly instead of only following pointers
+for one level we now follow pointers for 50 levels. Secondly instead of
+printing the address of a string pointer we print the string.

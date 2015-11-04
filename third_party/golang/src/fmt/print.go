@@ -998,7 +998,10 @@ BigSwitch:
 		v := f.Pointer()
 		// pointer to array or slice or struct?  ok at top level
 		// but not embedded (avoid loops)
-		if v != 0 && depth == 100 {
+		// Note(rudominer) Local change. Deep print structures
+		// that contain pointers.  Original code reads:
+		// if v != 0 && depth == 0 {
+		if v != 0 && depth < 50 {
 			switch a := f.Elem(); a.Kind() {
 			case reflect.Array, reflect.Slice:
 				p.buf.WriteByte('&')
@@ -1009,6 +1012,11 @@ BigSwitch:
 				p.printValue(a, verb, depth+1)
 				break BigSwitch
 			case reflect.Map:
+				p.buf.WriteByte('&')
+				p.printValue(a, verb, depth+1)
+				break BigSwitch
+			// Note(rudominer) Local change. Deep print pointers to strings.
+			case reflect.String:
 				p.buf.WriteByte('&')
 				p.printValue(a, verb, depth+1)
 				break BigSwitch
