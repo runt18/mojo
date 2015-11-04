@@ -189,12 +189,6 @@ dev_list="${dev_list} libgbm-dev${mesa_variant}
           mesa-common-dev${mesa_variant}"
 nacl_list="${nacl_list} libgl1-mesa-glx${mesa_variant}:i386"
 
-# Some package names have changed over time
-if package_exists ttf-mscorefonts-installer; then
-  dev_list="${dev_list} ttf-mscorefonts-installer"
-else
-  dev_list="${dev_list} msttcorefonts"
-fi
 if package_exists libnspr4-dbg; then
   dbg_list="${dbg_list} libnspr4-dbg libnss3-dbg"
   lib_list="${lib_list} libnspr4 libnss3"
