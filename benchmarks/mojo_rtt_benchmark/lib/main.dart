@@ -54,6 +54,9 @@ class EchoTracingApp extends Application {
     // Setup the connection to the echo app.
     for (int i = 0; i < _numClients; i++) {
       var newProxy = new EchoProxy.unbound();
+      newProxy.errorFuture.then((e) {
+        _errorHandler();
+      });
       connectToService(echoUrl, newProxy);
       _echoProxies.add(newProxy);
     }
@@ -73,26 +76,28 @@ class EchoTracingApp extends Application {
     }
     if (_doEcho) {
       if (_warmup) {
-        _echo(idx, "ping").then((_) => new Timer(kDelay, () => _run(idx + 1)));
+        _echo(idx, "ping").then((r) {
+          new Timer(kDelay, () => _run(idx + 1));
+        });
       } else {
-        _tracedEcho(idx).then((_) => new Timer(kDelay, () => _run(idx + 1)));
+        _tracedEcho(idx, "ping").then((r) {
+          new Timer(kDelay, () => _run(idx + 1));
+        });
       }
     }
   }
 
-  Future _tracedEcho(int idx) {
+  Future _tracedEcho(int idx, String s) {
     int start = getTimeTicksNow();
-    return _echo(idx, "ping").then((_) {
+    return _echo(idx, s).then((r) {
       int end = getTimeTicksNow();
       _tracing.traceDuration("ping", "mojo_rtt_benchmark", start, end);
+      return r;
     });
   }
 
   Future _echo(int idx, String s) {
-    return _echoProxies[idx]
-        .ptr
-        .echoString(s)
-        .catchError((e) => _errorHandler());
+    return _echoProxies[idx].ptr.echoString(s);
   }
 
   _errorHandler() {

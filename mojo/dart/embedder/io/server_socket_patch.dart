@@ -102,11 +102,11 @@ class _MojoRawServerSocket extends Stream<RawSocket>
     rawSocket._tracePipeOut();
     var response;
     try {
-      response = await
+      response = await _tcpServerSocket.responseOrError(
           _tcpServerSocket.ptr.accept(rawSocket._pipeOut.consumer,
                                       rawSocket._pipeIn.producer,
-                                      rawSocket._tcpConnectedSocket);
-    } on ProxyCloseException catch (e) {
+                                      rawSocket._tcpConnectedSocket));
+    } on ProxyError catch (e) {
       rawSocket.destroy();
       await _destroy();
       return;

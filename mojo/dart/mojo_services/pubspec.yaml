@@ -5,4 +5,4 @@ dependencies:
 description: Generated bindings for mojo services
 homepage: https://github.com/domokit/mojo
 name: mojo_services
-version: 0.4.1
+version: 0.4.2
