@@ -1,0 +1,12 @@
+Name: Go
+URL: https://golang.org/src
+Version: 1.5.1
+License: BSD-style
+License File: LICENSE
+
+Description:
+The src subdirectory contains a small number of Go source files
+downloaded from https://golang.org/src and modified by the Mojo authors as
+described below.
+
+Local Changes:
