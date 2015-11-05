@@ -33,14 +33,10 @@ class BankImpl : public Bank {
 class BankUser {
  public:
   explicit BankUser(std::string* user) : user_(user) { }
-  void Run(const vanadium::BlessingPtr& b) const {
+  void Run(const vanadium::UserPtr& user) const {
     user_->clear();
-    if (b && b->chain.size() > 0) {
-      user_->append(b->chain[0]->extension);
-      for (size_t i = 1; i < b->chain.size(); i++) {
-        user_->append(vanadium::ChainSeparator);
-        user_->append(b->chain[i]->extension);
-      }
+    if (user) {
+      *user_ = user->email;
     }
   }
  private:
@@ -64,7 +60,7 @@ class BankApp : public mojo::ApplicationDelegate,
       vanadium::AppInstanceNamePtr app(vanadium::AppInstanceName::New());
       app->url = url;
       std::string user;
-      login_service_->GetUserBlessing(app.Pass(), BankUser(&user));
+      login_service_->GetUser(app.Pass(), BankUser(&user));
       // Check and see whether we got a valid user blessing.
       if (!login_service_.WaitForIncomingResponse()) {
         MOJO_LOG(INFO) << "Failed to get a valid user blessing";

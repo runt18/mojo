@@ -54,14 +54,19 @@ type caveat struct {
 	ParamVom []byte   // VOM-encoded bytes of the parameters to be provided to the validation function.
 }
 
-func newBlessing(wb *wireBlessings) *vpkg.Blessing {
+func newBlessing(wb *wireBlessings) vpkg.Blessing {
+	if wb == nil || len(wb.CertificateChains) == 0 {
+		return vpkg.Blessing{}
+	}
 	// TODO(ataly, gauthamt): Below we only consider the first certificate chain
 	// in the wireBlessings object. We should handle the case when the wireBlessings
-	// object has more than one certificate chain.
-	// TODO(ataly, gauthamt): We should validate all caveats present in the certificates.
+	// object has more than one certificate chain. This issue would become moot
+	// if the vpkg.Blessing type matched the wireBlessing type.
+	// TODO(ataly, gauthamt): We should validate all caveats present in the
+	// certificates.
 	var chain []vpkg.Certificate
 	for _, c := range wb.CertificateChains[0] {
 		chain = append(chain, vpkg.Certificate{Extension: c.Extension})
 	}
-	return &vpkg.Blessing{chain}
+	return vpkg.Blessing{chain}
 }

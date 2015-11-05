@@ -6,6 +6,8 @@ import("//mojo/go/rules.gni")
 
 go_mojo_application("principal_service") {
   sources = [
+    "conventions.go",
+    "principal.go",
     "principal_service.go",
     "public_key.go",
     "wire_blessings.go",

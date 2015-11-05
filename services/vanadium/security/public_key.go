@@ -6,9 +6,7 @@ package main
 
 import (
 	"crypto/ecdsa"
-	"crypto/elliptic"
 	"crypto/md5"
-	"crypto/rand"
 	"crypto/x509"
 	"encoding"
 	"errors"
@@ -24,15 +22,6 @@ const (
 	sha384Hash = hash("SHA384") // sha384 cryptographic hash function defined in FIPS 180-2.
 	sha512Hash = hash("SHA512") // sha512 cryptographic hash function defined in FIPS 180-2.
 )
-
-// newPrincipalKey generates an ECDSA (public, private) key pair.
-func newPrincipalKey() (publicKey, *ecdsa.PrivateKey, error) {
-	priv, err := ecdsa.GenerateKey(elliptic.P256(), rand.Reader)
-	if err != nil {
-		return nil, nil, err
-	}
-	return newECDSAPublicKey(&priv.PublicKey), priv, nil
-}
 
 // publicKey represents a public key using an unspecified algorithm.
 //

@@ -5,9 +5,9 @@
 package main
 
 import (
-	"crypto/ecdsa"
 	"encoding/base64"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"log"
 	"net/url"
@@ -33,10 +33,10 @@ type principalServiceImpl struct {
 	psd *principalServiceDelegate
 }
 
-func (pImpl *principalServiceImpl) Login() (*vpkg.Blessing, error) {
-	if b := pImpl.psd.getBlessing(pImpl.app); b != nil {
-		// The app has already logged in.
-		return b, nil
+func (pImpl *principalServiceImpl) Login() (*vpkg.User, error) {
+	p, err := pImpl.psd.initPrincipal(pImpl.app)
+	if err != nil {
+		return nil, err
 	}
 
 	token, err := pImpl.psd.getOAuth2Token()
@@ -44,27 +44,53 @@ func (pImpl *principalServiceImpl) Login() (*vpkg.Blessing, error) {
 		return nil, err
 	}
 
-	pub, priv, err := newPrincipalKey()
+	wb, err := pImpl.psd.getBlessings(token, p.publicKey())
 	if err != nil {
 		return nil, err
 	}
 
-	wb, err := pImpl.psd.fetchWireBlessings(token, pub)
+	email, err := emailFromBlessings(wb)
 	if err != nil {
 		return nil, err
 	}
 
-	pImpl.psd.addPrincipal(pImpl.app, &principal{wb, priv})
-	return newBlessing(wb), nil
+	user := vpkg.User{Email: email, Blessing: newBlessing(wb)}
+	p.addUser(user)
+	return &user, nil
+}
+
+func (pImpl *principalServiceImpl) GetLoggedInUsers() ([]vpkg.User, error) {
+	if p := pImpl.psd.principal(pImpl.app); p != nil {
+		users := p.users()
+		return users, nil
+	}
+	return nil, fmt.Errorf("no principal available for app %v", pImpl.app)
+}
+
+func (pImpl *principalServiceImpl) SetUser(user vpkg.User) (*string, error) {
+	if p := pImpl.psd.principal(pImpl.app); p != nil {
+		return p.setCurrentUser(user), nil
+	}
+	str := fmt.Sprintf("no principal available for app %v; please invoke Login()", pImpl.app)
+	return &str, errors.New(str)
 }
 
 func (pImpl *principalServiceImpl) Logout() (err error) {
-	pImpl.psd.deletePrincipal(pImpl.app)
-	return
+	if p := pImpl.psd.principal(pImpl.app); p != nil {
+		p.clearCurrentUser()
+	}
+	return nil
 }
 
-func (pImpl *principalServiceImpl) GetUserBlessing(app vpkg.AppInstanceName) (*vpkg.Blessing, error) {
-	return pImpl.psd.getBlessing(app), nil
+func (pImpl *principalServiceImpl) GetUser(app *vpkg.AppInstanceName) (*vpkg.User, error) {
+	if app == nil {
+		app = &pImpl.app
+	}
+	p := pImpl.psd.principal(*app)
+	if p == nil {
+		return nil, fmt.Errorf("no principal available for app %v", pImpl.app)
+	}
+	return p.curr, nil
 }
 
 func (pImpl *principalServiceImpl) Create(req vpkg.PrincipalService_Request) {
@@ -83,20 +109,15 @@ func (pImpl *principalServiceImpl) Create(req vpkg.PrincipalService_Request) {
 	}()
 }
 
-type principal struct {
-	blessing *wireBlessings
-	private  *ecdsa.PrivateKey
-}
-
 type principalServiceDelegate struct {
-	table map[vpkg.AppInstanceName]*principal
-	Ctx   application.Context
-	mu    sync.Mutex
-	stubs []*bindings.Stub
+	Ctx           application.Context
+	mu            sync.Mutex
+	stubs         []*bindings.Stub                    // GUARDED_BY(mu)
+	appPrincipals map[vpkg.AppInstanceName]*principal // GUARDED_BY(mu)
 }
 
 func (psd *principalServiceDelegate) Initialize(context application.Context) {
-	psd.table = make(map[vpkg.AppInstanceName]*principal)
+	psd.appPrincipals = make(map[vpkg.AppInstanceName]*principal)
 	psd.Ctx = context
 }
 
@@ -114,6 +135,26 @@ func (psd *principalServiceDelegate) addStubForCleanup(stub *bindings.Stub) {
 	psd.stubs = append(psd.stubs, stub)
 }
 
+func (psd *principalServiceDelegate) principal(app vpkg.AppInstanceName) *principal {
+	psd.mu.Lock()
+	defer psd.mu.Unlock()
+	return psd.appPrincipals[app]
+}
+
+func (psd *principalServiceDelegate) initPrincipal(app vpkg.AppInstanceName) (*principal, error) {
+	psd.mu.Lock()
+	defer psd.mu.Unlock()
+	if p, ok := psd.appPrincipals[app]; ok {
+		return p, nil
+	}
+	p, err := newPrincipal()
+	if err != nil {
+		return nil, err
+	}
+	psd.appPrincipals[app] = p
+	return p, nil
+}
+
 func (psd *principalServiceDelegate) getOAuth2Token() (string, error) {
 	authReq, authPtr := auth.CreateMessagePipeForAuthenticationService()
 	psd.Ctx.ConnectToApplication("mojo:authentication").ConnectToService(&authReq)
@@ -121,70 +162,49 @@ func (psd *principalServiceDelegate) getOAuth2Token() (string, error) {
 
 	name, errString, _ := authProxy.SelectAccount(false /*return_last_selected*/)
 	if name == nil {
-		return "", fmt.Errorf("Failed to select an account for user:%s", errString)
+		return "", fmt.Errorf("failed to select an account for user:%s", errString)
 	}
-
 	token, errString, _ := authProxy.GetOAuth2Token(*name, []string{"email"})
 	if token == nil {
-		return "", fmt.Errorf("Failed to obtain OAuth2 token for selected account:%s", errString)
+		return "", fmt.Errorf("failed to obtain OAuth2 token for selected account:%s", errString)
 	}
 	return *token, nil
 }
 
-func (psd *principalServiceDelegate) fetchWireBlessings(token string, pub publicKey) (*wireBlessings, error) {
+func (psd *principalServiceDelegate) getBlessings(token string, pub publicKey) (*wireBlessings, error) {
 	networkReq, networkPtr := network.CreateMessagePipeForNetworkService()
 	psd.Ctx.ConnectToApplication("mojo:network_service").ConnectToService(&networkReq)
 	networkProxy := network.NewNetworkServiceProxy(networkPtr, bindings.GetAsyncWaiter())
 
 	urlLoaderReq, urlLoaderPtr := url_loader.CreateMessagePipeForUrlLoader()
 	if err := networkProxy.CreateUrlLoader(urlLoaderReq); err != nil {
-		return nil, fmt.Errorf("Failed to create url loader: %v", err)
+		return nil, fmt.Errorf("failed to create url loader: %v", err)
 	}
-	urlLoaderProxy := url_loader.NewUrlLoaderProxy(urlLoaderPtr, bindings.GetAsyncWaiter())
+	urlLoader := url_loader.NewUrlLoaderProxy(urlLoaderPtr, bindings.GetAsyncWaiter())
 
 	req, err := blessingRequestURL(token, pub)
 	if err != nil {
 		return nil, err
 	}
 
-	resp, err := urlLoaderProxy.Start(*req)
+	resp, err := urlLoader.Start(*req)
 	if err != nil || resp.Error != nil {
-		return nil, fmt.Errorf("Blessings request to Vanadium Identity Provider failed: %v(%v)", err, resp.Error)
+		return nil, fmt.Errorf("blessings request to Vanadium Identity Provider failed: %v(%v)", err, resp.Error)
 	}
 
 	res, b := (*resp.Body).ReadData(system.MOJO_READ_DATA_FLAG_ALL_OR_NONE)
 	if res != system.MOJO_RESULT_OK {
-		return nil, fmt.Errorf("Failed to read response (blessings) from Vanadium Identity Provider. Result: %v", res)
+		return nil, fmt.Errorf("failed to read response (blessings) from Vanadium Identity Provider. Result: %v", res)
 	}
 
 	var wb wireBlessings
 	if err := json.Unmarshal(b, &wb); err != nil {
-		return nil, fmt.Errorf("Failed to unmarshal response (blessings) from Vanadium Identity Provider: %v", err)
+		return nil, fmt.Errorf("failed to unmarshal response (blessings) from Vanadium Identity Provider: %v", err)
 	}
-	// TODO(ataly, gauthamt): We should verify all signatures on the certificate chains in the
-	// wire blessings to ensure that it was not tampered with.
+
+	// TODO(ataly, gauthamt): We should verify all signatures on the certificate
+	// chains in the wire blessings to ensure that it was not tampered with.
 	return &wb, nil
-}
-
-func (psd *principalServiceDelegate) addPrincipal(app vpkg.AppInstanceName, p *principal) {
-	psd.mu.Lock()
-	defer psd.mu.Unlock()
-	psd.table[app] = p
-}
-
-func (psd *principalServiceDelegate) getBlessing(app vpkg.AppInstanceName) *vpkg.Blessing {
-	psd.mu.Lock()
-	defer psd.mu.Unlock()
-	if p, ok := psd.table[app]; ok {
-		return newBlessing(p.blessing)
-	}
-	return nil
-}
-
-func (psd *principalServiceDelegate) deletePrincipal(app vpkg.AppInstanceName) {
-	psd.mu.Lock()
-	defer psd.mu.Unlock()
-	delete(psd.table, app)
 }
 
 func (psd *principalServiceDelegate) Quit() {

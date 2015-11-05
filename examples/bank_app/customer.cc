@@ -15,17 +15,9 @@ namespace examples {
 
 class LoginHandler {
  public:
-  void Run(const vanadium::BlessingPtr& b) const {
-    std::string user;
-    if (b && b->chain.size() > 0) {
-      user = b->chain[0]->extension;
-      for (size_t i = 1; i < b->chain.size(); i++) {
-        user += vanadium::ChainSeparator;
-        user += b->chain[i]->extension;
-      }
-    }
-    if (!user.empty()) {
-      MOJO_LOG(INFO) << "Welcome: " << user;
+  void Run(const vanadium::UserPtr& user) const {
+    if (user) {
+      MOJO_LOG(INFO) << "User logged-in as " << user->email;
     }
   }
 };
@@ -33,13 +25,15 @@ class LoginHandler {
 class BankCustomer : public mojo::ApplicationDelegate {
  public:
   void Initialize(mojo::ApplicationImpl* app) override {
-    // Get user login credentials
     app->ConnectToService("mojo:principal_service", &login_service_);
+
+    // Login to the principal service to get a user identity.
     login_service_->Login(LoginHandler());
-    // Check and see whether we got a valid user blessing.
+    // Check and see whether we got a valid user id.
     if (!login_service_.WaitForIncomingResponse()) {
-      MOJO_LOG(INFO) << "Login() to the principal service failed\n";
+      MOJO_LOG(INFO) << "Login() to the principal service failed";
     }
+
     BankPtr bank;
     app->ConnectToService("mojo:bank", &bank);
     bank->Deposit(500/*usd*/);
