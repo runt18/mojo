@@ -9,7 +9,6 @@
 #include <vector>
 
 #include "base/bind.h"
-#include "base/command_line.h"
 #include "base/logging.h"
 #include "mojo/edk/embedder/master_process_delegate.h"
 #include "mojo/edk/embedder/platform_channel_pair.h"
@@ -21,12 +20,14 @@
 #include "mojo/edk/system/message_pipe.h"
 #include "mojo/edk/system/message_pipe_dispatcher.h"
 #include "mojo/edk/system/process_identifier.h"
+#include "mojo/edk/system/test/test_command_line.h"
 #include "mojo/edk/system/test/test_io_thread.h"
 #include "mojo/edk/system/test/timeouts.h"
 #include "mojo/edk/system/waitable_event.h"
 #include "mojo/edk/system/waiter.h"
 #include "mojo/edk/test/multiprocess_test_helper.h"
 #include "mojo/edk/test/test_utils.h"
+#include "mojo/edk/util/command_line.h"
 #include "mojo/public/cpp/system/macros.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
@@ -679,12 +680,12 @@ MOJO_MULTIPROCESS_TEST_CHILD_TEST(MultiprocessMasterSlaveInternal) {
                          test_io_thread.task_runner(),
                          client_platform_handle.Pass());
 
-  const base::CommandLine& command_line =
-      *base::CommandLine::ForCurrentProcess();
-  ASSERT_TRUE(command_line.HasSwitch(kConnectionIdFlag));
+  std::string connection_id_string;
+  ASSERT_TRUE(test::GetTestCommandLine()->GetOptionValue(
+      kConnectionIdFlag, &connection_id_string));
   bool ok = false;
-  ConnectionIdentifier connection_id = ConnectionIdentifier::FromString(
-      command_line.GetSwitchValueASCII(kConnectionIdFlag), &ok);
+  ConnectionIdentifier connection_id =
+      ConnectionIdentifier::FromString(connection_id_string, &ok);
   ASSERT_TRUE(ok);
 
   embedder::ScopedPlatformHandle second_platform_handle =

@@ -9,16 +9,17 @@
 #include <memory>
 
 #include "base/bind.h"
-#include "base/command_line.h"
 #include "base/logging.h"
 #include "base/message_loop/message_loop.h"
 #include "mojo/edk/embedder/platform_channel_pair.h"
 #include "mojo/edk/embedder/test_embedder.h"
+#include "mojo/edk/system/test/test_command_line.h"
 #include "mojo/edk/system/test/test_io_thread.h"
 #include "mojo/edk/system/test/timeouts.h"
 #include "mojo/edk/system/waitable_event.h"
 #include "mojo/edk/test/multiprocess_test_helper.h"
 #include "mojo/edk/test/scoped_ipc_support.h"
+#include "mojo/edk/util/command_line.h"
 #include "mojo/edk/util/mutex.h"
 #include "mojo/edk/util/thread_annotations.h"
 #include "mojo/public/c/system/core.h"
@@ -482,11 +483,9 @@ MOJO_MULTIPROCESS_TEST_CHILD_TEST(MultiprocessMasterSlave) {
     mojo::test::ScopedSlaveIPCSupport ipc_support(
         test_io_thread.task_runner(), client_platform_handle.Pass());
 
-    const base::CommandLine& command_line =
-        *base::CommandLine::ForCurrentProcess();
-    ASSERT_TRUE(command_line.HasSwitch(kConnectionIdFlag));
-    std::string connection_id =
-        command_line.GetSwitchValueASCII(kConnectionIdFlag);
+    std::string connection_id;
+    ASSERT_TRUE(mojo::system::test::GetTestCommandLine()->GetOptionValue(
+        kConnectionIdFlag, &connection_id));
     ASSERT_FALSE(connection_id.empty());
     mojo::system::ManualResetWaitableEvent event;
     ChannelInfo* channel_info = nullptr;

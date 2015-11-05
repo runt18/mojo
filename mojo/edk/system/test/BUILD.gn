@@ -20,6 +20,8 @@ mojo_edk_source_set("test") {
     "sleep.h",
     "stopwatch.cc",
     "stopwatch.h",
+    "test_command_line.cc",
+    "test_command_line.h",
     "test_io_thread.cc",
     "test_io_thread.h",
     "timeouts.cc",
@@ -68,6 +70,7 @@ mojo_edk_source_set("run_all_unittests") {
   ]
 
   deps = [
+    ":test",
     "//base",
     "//base/test:test_support",
     "//testing/gtest",
@@ -83,6 +86,7 @@ mojo_edk_source_set("run_all_perftests") {
   ]
 
   deps = [
+    ":test",
     "//base/test:test_support",
   ]
 }

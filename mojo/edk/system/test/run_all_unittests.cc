@@ -7,9 +7,12 @@
 #include "base/bind.h"
 #include "base/test/launcher/unit_test_launcher.h"
 #include "base/test/test_suite.h"
+#include "mojo/edk/system/test/test_command_line.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 int main(int argc, char** argv) {
+  mojo::system::test::InitializeTestCommandLine(argc, argv);
+
 // Silence death test thread warnings on Linux. We can afford to run our death
 // tests a little more slowly (< 10 ms per death test on a Z620).
 // On android, we need to run in the default mode, as the threadsafe mode
