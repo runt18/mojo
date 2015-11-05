@@ -637,7 +637,9 @@ void DartController::InitVmIfNeeded(Dart_EntropySource entropy,
     return;
   }
 
-  const int kNumFlags = vm_flags_count + 1;
+  // Number of flags the controller sets.
+  const int kNumControllerFlags = 2;
+  const int kNumFlags = vm_flags_count + kNumControllerFlags;
   const char* flags[kNumFlags];
 
   // TODO(zra): Fix Dart VM Shutdown race.
@@ -649,8 +651,11 @@ void DartController::InitVmIfNeeded(Dart_EntropySource entropy,
   // that isn't there anymore.
   flags[0] = "--worker-timeout-millis=0";
 
+  // Disable access dart:mirrors library.
+  flags[1] = "--enable_mirrors=false";
+
   for (int i = 0; i < vm_flags_count; ++i) {
-    flags[i + 1] = vm_flags[i];
+    flags[i + kNumControllerFlags] = vm_flags[i];
   }
 
   bool result = Dart_SetVMFlags(kNumFlags, flags);
