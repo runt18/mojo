@@ -9,6 +9,7 @@ import (
 	"io"
 	"os"
 	"reflect"
+	"sort"
 	"sync"
 	"unicode/utf8"
 )
@@ -850,6 +851,26 @@ func (p *pp) printValue(value reflect.Value, verb rune, depth int) (wasString bo
 
 var byteType = reflect.TypeOf(byte(0))
 
+// Note(rudominer) Local change. We sort map keys when they are of numeric or string type.
+type valueComparison func(a, b reflect.Value) bool
+
+type valueSlice struct {
+	less   valueComparison
+	values []reflect.Value
+}
+
+func (v valueSlice) Len() int {
+	return len(v.values)
+}
+
+func (v valueSlice) Less(i, j int) bool {
+	return v.less(v.values[i], v.values[j])
+}
+
+func (v valueSlice) Swap(i, j int) {
+	v.values[i], v.values[j] = v.values[j], v.values[i]
+}
+
 // printReflectValue is the fallback for both printArg and printValue.
 // It uses reflect to print the value.
 func (p *pp) printReflectValue(value reflect.Value, verb rune, depth int) (wasString bool) {
@@ -891,6 +912,21 @@ BigSwitch:
 			p.buf.Write(mapBytes)
 		}
 		keys := f.MapKeys()
+		// Note(rudominer) Local change. We sort map keys when they are of numeric or string type.
+		var compare valueComparison = nil
+		switch f.Type().Key().Kind() {
+		case reflect.Int, reflect.Int8, reflect.Int16, reflect.Int32, reflect.Int64:
+			compare = func(a, b reflect.Value) bool { return a.Int() < b.Int() }
+		case reflect.Uint, reflect.Uint8, reflect.Uint16, reflect.Uint32, reflect.Uint64:
+			compare = func(a, b reflect.Value) bool { return a.Uint() < b.Uint() }
+		case reflect.Float32, reflect.Float64:
+			compare = func(a, b reflect.Value) bool { return a.Float() < b.Float() }
+		case reflect.String:
+			compare = func(a, b reflect.Value) bool { return a.String() < b.String() }
+		}
+		if compare != nil {
+			sort.Sort(valueSlice{compare, keys})
+		}
 		for i, key := range keys {
 			if i > 0 {
 				if p.fmt.sharpV {

@@ -11,6 +11,9 @@ described below.
 
 Local Changes:
 - The fmt package has been modified with regards to how it uses reflection
-to deep print Go structures. Firstly instead of only following pointers
-for one level we now follow pointers for 50 levels. Secondly instead of
-printing the address of a string pointer we print the string.
+to deep print Go structures:
+  * Instead of only following pointers for one level we now follow pointers for
+    50 levels.
+  * Instead of printing the address of a string pointer we print the string.
+  * Instead of printing maps in an unspecified order we sort the keys of
+    the map if they are of numeric or string type.
