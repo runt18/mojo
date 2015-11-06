@@ -16,12 +16,12 @@
 #include "mojo/edk/system/test/test_command_line.h"
 #include "mojo/edk/system/test/test_io_thread.h"
 #include "mojo/edk/system/test/timeouts.h"
-#include "mojo/edk/system/waitable_event.h"
 #include "mojo/edk/test/multiprocess_test_helper.h"
 #include "mojo/edk/test/scoped_ipc_support.h"
 #include "mojo/edk/util/command_line.h"
 #include "mojo/edk/util/mutex.h"
 #include "mojo/edk/util/thread_annotations.h"
+#include "mojo/edk/util/waitable_event.h"
 #include "mojo/public/c/system/core.h"
 #include "mojo/public/cpp/system/handle.h"
 #include "mojo/public/cpp/system/macros.h"
@@ -29,6 +29,7 @@
 #include "testing/gtest/include/gtest/gtest.h"
 
 using mojo::system::test::TestIOThread;
+using mojo::util::ManualResetWaitableEvent;
 using mojo::util::Mutex;
 using mojo::util::MutexLocker;
 
@@ -118,7 +119,7 @@ class ScopedTestChannel {
   // Set after channel creation has been completed (i.e., the callback to
   // |CreateChannel()| has been called). Also used in the destructor to wait for
   // |DestroyChannel()| completion.
-  mojo::system::ManualResetWaitableEvent event_;
+  ManualResetWaitableEvent event_;
 
   // Valid after channel creation completion until destruction.
   ChannelInfo* channel_info_;
@@ -215,7 +216,7 @@ class TestAsyncWaiter {
   }
 
  private:
-  mojo::system::ManualResetWaitableEvent event_;
+  ManualResetWaitableEvent event_;
 
   mutable Mutex wait_result_mutex_;
   MojoResult wait_result_ MOJO_GUARDED_BY(wait_result_mutex_);
@@ -409,12 +410,11 @@ TEST_F(EmbedderTest, MAYBE_MultiprocessMasterSlave) {
 
   mojo::test::MultiprocessTestHelper multiprocess_test_helper;
   std::string connection_id;
-  mojo::system::ManualResetWaitableEvent event;
+  ManualResetWaitableEvent event;
   ChannelInfo* channel_info = nullptr;
   ScopedMessagePipeHandle mp = ConnectToSlave(
       nullptr, multiprocess_test_helper.server_platform_handle.Pass(),
-      base::Bind(&mojo::system::ManualResetWaitableEvent::Signal,
-                 base::Unretained(&event)),
+      base::Bind(&ManualResetWaitableEvent::Signal, base::Unretained(&event)),
       nullptr, &connection_id, &channel_info);
   ASSERT_TRUE(mp.is_valid());
   EXPECT_TRUE(channel_info);
@@ -487,12 +487,11 @@ MOJO_MULTIPROCESS_TEST_CHILD_TEST(MultiprocessMasterSlave) {
     ASSERT_TRUE(mojo::system::test::GetTestCommandLine()->GetOptionValue(
         kConnectionIdFlag, &connection_id));
     ASSERT_FALSE(connection_id.empty());
-    mojo::system::ManualResetWaitableEvent event;
+    ManualResetWaitableEvent event;
     ChannelInfo* channel_info = nullptr;
     ScopedMessagePipeHandle mp = ConnectToMaster(
         connection_id,
-        base::Bind(&mojo::system::ManualResetWaitableEvent::Signal,
-                   base::Unretained(&event)),
+        base::Bind(&ManualResetWaitableEvent::Signal, base::Unretained(&event)),
         nullptr, &channel_info);
     ASSERT_TRUE(mp.is_valid());
     EXPECT_TRUE(channel_info);

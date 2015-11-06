@@ -7,8 +7,8 @@
 // analogous to Windows's Event. (Unlike these two, we have separate types for
 // the manual- and auto-reset versions.)
 
-#ifndef MOJO_EDK_SYSTEM_WAITABLE_EVENT_H_
-#define MOJO_EDK_SYSTEM_WAITABLE_EVENT_H_
+#ifndef MOJO_EDK_UTIL_WAITABLE_EVENT_H_
+#define MOJO_EDK_UTIL_WAITABLE_EVENT_H_
 
 #include "mojo/edk/util/cond_var.h"
 #include "mojo/edk/util/mutex.h"
@@ -16,7 +16,7 @@
 #include "mojo/public/cpp/system/macros.h"
 
 namespace mojo {
-namespace system {
+namespace util {
 
 // AutoResetWaitableEvent ------------------------------------------------------
 
@@ -121,7 +121,7 @@ class ManualResetWaitableEvent {
   MOJO_DISALLOW_COPY_AND_ASSIGN(ManualResetWaitableEvent);
 };
 
-}  // namespace system
+}  // namespace util
 }  // namespace mojo
 
-#endif  // MOJO_EDK_SYSTEM_WAITABLE_EVENT_H_
+#endif  // MOJO_EDK_UTIL_WAITABLE_EVENT_H_
