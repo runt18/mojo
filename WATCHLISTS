@@ -22,9 +22,6 @@
     'shell': {
       'filepath': 'shell',
     },
-    'sky': {
-      'filepath': 'sky',
-    },
   },
 
   'WATCHLISTS': {
@@ -38,9 +35,5 @@
     'mojo_public': ['yzshen+mojopublicwatch@chromium.org'],
     'services': ['qsr+mojo@chromium.org'],
     'shell': ['qsr+mojo@chromium.org'],
-    'sky': ['abarth@chromium.org',
-            'gregsimon@chromium.org',
-            'jackson@chromium.org',
-            'qsr+mojo@chromium.org'],
   },
 }
