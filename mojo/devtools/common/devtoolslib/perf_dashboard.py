@@ -115,6 +115,36 @@ def _get_current_commit():
   return subprocess.check_output(["git", "rev-parse", "HEAD"]).strip()
 
 
+class _UploadException(Exception):
+  pass
+
+
+def _upload(server_url, json_data):
+  """Make an HTTP POST with the given data to the performance dashboard.
+
+  Args:
+    server_url: URL of the performance dashboard instance.
+    json_data: JSON string that contains the data to be sent.
+
+  Raises:
+    _UploadException: An error occurred during uploading.
+  """
+  # When data is provided to urllib2.Request, a POST is sent instead of GET.
+  # The data must be in the application/x-www-form-urlencoded format.
+  data = urllib.urlencode({"data": json_data})
+  req = urllib2.Request("%s/add_point" % server_url, data)
+  try:
+    urllib2.urlopen(req)
+  except urllib2.HTTPError as e:
+    raise _UploadException('HTTPError: %d. Response: %s\n'
+                           'JSON: %s\n' % (e.code, e.read(), json_data))
+  except urllib2.URLError as e:
+    raise _UploadException('URLError: %s for JSON %s\n' %
+                           (str(e.reason), json_data))
+  except httplib.HTTPException as e:
+    raise _UploadException('HTTPException for JSON %s\n' % json_data)
+
+
 def upload_chart_data(master_name, bot_name, test_name, builder_name,
                       build_number, chart_data, server_url=None, dry_run=False):
   """Uploads the provided chart data to an instance of performance dashboard.
@@ -124,33 +154,6 @@ def upload_chart_data(master_name, bot_name, test_name, builder_name,
   Returns:
     A boolean value indicating whether the operation succeeded or not.
   """
-  class _UploadException(Exception):
-    pass
-
-  def _upload(server_url, json_data):
-    """Make an HTTP POST with the given data to the performance dashboard.
-
-    Args:
-      server_url: URL of the performance dashboard instance.
-      json_data: JSON string that contains the data to be sent.
-
-    Raises:
-      _UploadException: An error occurred during uploading.
-    """
-    # When data is provided to urllib2.Request, a POST is sent instead of GET.
-    # The data must be in the application/x-www-form-urlencoded format.
-    data = urllib.urlencode({"data": json_data})
-    req = urllib2.Request("%s/add_point" % server_url, data)
-    try:
-      urllib2.urlopen(req)
-    except urllib2.HTTPError as e:
-      raise _UploadException('HTTPError: %d. Response: %s\n'
-                             'JSON: %s\n' % (e.code, e.read(), json_data))
-    except urllib2.URLError as e:
-      raise _UploadException('URLError: %s for JSON %s\n' %
-                             (str(e.reason), json_data))
-    except httplib.HTTPException as e:
-      raise _UploadException('HTTPException for JSON %s\n' % json_data)
 
   if (not master_name or not bot_name or not test_name or not builder_name or
       not build_number):
