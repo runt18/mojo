@@ -14,8 +14,8 @@
 #include "mojo/edk/embedder/slave_process_delegate.h"
 #include "mojo/edk/system/connection_manager.h"
 #include "mojo/edk/system/raw_channel.h"
+#include "mojo/edk/system/waitable_event.h"
 #include "mojo/edk/util/mutex.h"
-#include "mojo/edk/util/waitable_event.h"
 #include "mojo/public/cpp/system/macros.h"
 
 namespace base {
@@ -147,7 +147,7 @@ class SlaveConnectionManager final : public ConnectionManager,
   // TODO(vtl): This is all a hack. It'd really suffice to have a version of
   // |RawChannel| with fully synchronous reading and writing.
   util::Mutex mutex_;
-  util::AutoResetWaitableEvent event_;
+  AutoResetWaitableEvent event_;
 
   MOJO_DISALLOW_COPY_AND_ASSIGN(SlaveConnectionManager);
 };

@@ -16,12 +16,10 @@
 #include "mojo/public/cpp/system/macros.h"
 
 namespace mojo {
-
-namespace util {
-class ManualResetWaitableEvent;
-}
-
 namespace system {
+
+class ManualResetWaitableEvent;
+
 namespace test {
 
 class TestChannelEndpointClient final : public ChannelEndpointClient {
@@ -43,7 +41,7 @@ class TestChannelEndpointClient final : public ChannelEndpointClient {
 
   // Sets an event to signal when we receive a message. (|read_event| must live
   // until this object is destroyed or the read event is reset to null.)
-  void SetReadEvent(util::ManualResetWaitableEvent* read_event);
+  void SetReadEvent(ManualResetWaitableEvent* read_event);
 
   // |ChannelEndpointClient| implementation:
   bool OnReadMessage(unsigned port, MessageInTransit* message) override;
@@ -63,7 +61,7 @@ class TestChannelEndpointClient final : public ChannelEndpointClient {
   MessageInTransitQueue messages_ MOJO_GUARDED_BY(mutex_);
 
   // Event to trigger if we read a message (may be null).
-  util::ManualResetWaitableEvent* read_event_ MOJO_GUARDED_BY(mutex_);
+  ManualResetWaitableEvent* read_event_ MOJO_GUARDED_BY(mutex_);
 
   MOJO_DISALLOW_COPY_AND_ASSIGN(TestChannelEndpointClient);
 };

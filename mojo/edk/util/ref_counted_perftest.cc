@@ -10,10 +10,6 @@
 #include "mojo/edk/util/ref_counted.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
-using mojo::system::test::DeadlineFromMilliseconds;
-using mojo::system::test::LogPerfResult;
-using mojo::system::test::Stopwatch;
-
 namespace mojo {
 namespace util {
 namespace {
@@ -33,7 +29,7 @@ class MyClass : public RefCountedThreadSafe<MyClass> {
 
 TEST(RefCountedPerfTest, OneThreadCreateAdoptDestroy) {
   uint64_t iterations = 0;
-  Stopwatch stopwatch;
+  system::test::Stopwatch stopwatch;
   stopwatch.Start();
   do {
     for (size_t i = 0; i < 1000; i++, iterations++) {
@@ -41,27 +37,28 @@ TEST(RefCountedPerfTest, OneThreadCreateAdoptDestroy) {
       x = nullptr;
     }
     iterations++;
-  } while (stopwatch.Elapsed() < DeadlineFromMilliseconds(1000));
+  } while (stopwatch.Elapsed() < system::test::DeadlineFromMilliseconds(1000));
   double elapsed = stopwatch.Elapsed() / 1000000.0;
 
-  LogPerfResult("OneThreadCreateAdoptDestroy", iterations / elapsed,
-                "iterations/s");
+  system::test::LogPerfResult("OneThreadCreateAdoptDestroy",
+                              iterations / elapsed, "iterations/s");
 }
 
 TEST(RefCountedPerfTest, OneThreadAssignRefPtr) {
   RefPtr<MyClass> x = MyClass::Create();
   uint64_t iterations = 0;
-  Stopwatch stopwatch;
+  system::test::Stopwatch stopwatch;
   stopwatch.Start();
   do {
     for (size_t i = 0; i < 1000; i++, iterations++) {
       RefPtr<MyClass> y = x;
     }
     iterations++;
-  } while (stopwatch.Elapsed() < DeadlineFromMilliseconds(1000));
+  } while (stopwatch.Elapsed() < system::test::DeadlineFromMilliseconds(1000));
   double elapsed = stopwatch.Elapsed() / 1000000.0;
 
-  LogPerfResult("OneThreadAssignRefPtr", iterations / elapsed, "iterations/s");
+  system::test::LogPerfResult("OneThreadAssignRefPtr", iterations / elapsed,
+                              "iterations/s");
 }
 
 // TODO(vtl): Add threaded perf tests.

@@ -28,11 +28,9 @@ class MasterProcessDelegate;
 using SlaveInfo = void*;
 }
 
-namespace util {
-class AutoResetWaitableEvent;
-}
-
 namespace system {
+
+class AutoResetWaitableEvent;
 
 // The |ConnectionManager| implementation for the master process.
 //
@@ -118,7 +116,7 @@ class MasterConnectionManager final : public ConnectionManager {
   void AddSlaveOnPrivateThread(embedder::SlaveInfo slave_info,
                                embedder::ScopedPlatformHandle platform_handle,
                                ProcessIdentifier slave_process_identifier,
-                               util::AutoResetWaitableEvent* event);
+                               AutoResetWaitableEvent* event);
   // Called by |Helper::OnError()|.
   void OnError(ProcessIdentifier process_identifier);
   // Posts a call to |master_process_delegate_->OnSlaveDisconnect()|.

@@ -11,15 +11,13 @@
 #include "mojo/edk/system/test/sleep.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
-using mojo::system::test::SleepMilliseconds;
-
 namespace mojo {
 namespace util {
 namespace {
 
 // Sleeps for a "very small" amount of time.
 void EpsilonRandomSleep() {
-  SleepMilliseconds(static_cast<unsigned>(rand()) % 20u);
+  system::test::SleepMilliseconds(static_cast<unsigned>(rand()) % 20u);
 }
 
 // Basic test to make sure that Lock()/Unlock()/TryLock() don't crash ----------
