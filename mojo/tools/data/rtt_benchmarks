@@ -66,20 +66,21 @@ benchmarks = [
       {'name': '90th percentile ping', 'spec': 'percentile_duration/isolate_rtt_benchmark/ping/0.90'},
     ]
   },
-  {
-    'name': 'many client cpp-cpp ipc round trip time',
-    'app': 'https://core.mojoapps.io/echo_benchmark.mojo',
-    'duration': 10,
-    'measurements': [
-      {'name': 'avg ping', 'spec': 'avg_duration/echo_benchmark/ping'},
-      {'name': '10th percentile ping', 'spec': 'percentile_duration/echo_benchmark/ping/0.10'},
-      {'name': '50th percentile ping', 'spec': 'percentile_duration/echo_benchmark/ping/0.50'},
-      {'name': '90th percentile ping', 'spec': 'percentile_duration/echo_benchmark/ping/0.90'},
-    ],
-    'shell-args': [
-      '--args-for=https://core.mojoapps.io/echo_benchmark.mojo --early-tracing --num-clients=100 --num-active-clients=100',
-    ]
-  },
+#  https://github.com/domokit/mojo/issues/516
+#  {
+#    'name': 'many client cpp-cpp ipc round trip time',
+#    'app': 'https://core.mojoapps.io/echo_benchmark.mojo',
+#    'duration': 10,
+#    'measurements': [
+#      {'name': 'avg ping', 'spec': 'avg_duration/echo_benchmark/ping'},
+#      {'name': '10th percentile ping', 'spec': 'percentile_duration/echo_benchmark/ping/0.10'},
+#      {'name': '50th percentile ping', 'spec': 'percentile_duration/echo_benchmark/ping/0.50'},
+#      {'name': '90th percentile ping', 'spec': 'percentile_duration/echo_benchmark/ping/0.90'},
+#    ],
+#    'shell-args': [
+#      '--args-for=https://core.mojoapps.io/echo_benchmark.mojo --early-tracing --num-clients=100 --num-active-clients=100',
+#    ]
+#  },
   {
     'name': 'many client dart-dart ipc round trip time',
     'app': 'https://core.mojoapps.io/dart_rtt_benchmark.mojo',
