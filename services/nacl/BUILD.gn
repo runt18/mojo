@@ -4,6 +4,7 @@
 
 import("//mojo/public/mojo_application.gni")
 import("//mojo/public/tools/bindings/mojom.gni")
+import("//mojo/tools/embed/rules.gni")
 
 # Trusted code
 if (!is_nacl) {
@@ -74,6 +75,7 @@ if (!is_nacl) {
       ]
 
       deps = [
+        ":pnacl_llc_file",
         ":pnacl_translator_bindings",
         "//base",
         "//mojo/nacl/nonsfi:irt_mojo_nonsfi",
@@ -88,29 +90,12 @@ if (!is_nacl) {
       ]
 
       deps = [
+        ":ld_file",
         ":pnacl_translator_bindings",
         "//base",
         "//mojo/nacl/nonsfi:irt_mojo_nonsfi",
         "//mojo/public/cpp/application:standalone",
         "//native_client/src/nonsfi/loader:elf_loader",
-      ]
-    }
-
-    # Copy all files necessary for pnacl translation into the output directory.
-    copy("pnacl_translation_files") {
-      file_location_prefix = "//native_client/toolchain/linux_x86/pnacl_translator/translator/x86-32-nonsfi"
-      sources = [
-        "${file_location_prefix}/bin/ld.nexe",
-        "${file_location_prefix}/bin/pnacl-llc.nexe",
-        "${file_location_prefix}/lib/crtbegin.o",
-        "${file_location_prefix}/lib/crtbegin_for_eh.o",
-        "${file_location_prefix}/lib/crtend.o",
-        "${file_location_prefix}/lib/libcrt_platform.a",
-        "${file_location_prefix}/lib/libgcc.a",
-        "${file_location_prefix}/lib/libpnacl_irt_shim_dummy.a",
-      ]
-      outputs = [
-        "${root_build_dir}/pnacl_translation_files/{{source_file_part}}",
       ]
     }
 
@@ -122,7 +107,6 @@ if (!is_nacl) {
       ":content_handler_nonsfi_pexe_32_bit",
       ":pnacl_compile_32_bit",
       ":pnacl_link_32_bit",
-      ":pnacl_translation_files",
     ]
     if (root_out_dir != root_build_dir) {
       copy("content_handler_nonsfi_copy") {
@@ -159,6 +143,71 @@ group("content_handler_nonsfi") {
   } else {
     deps += [ ":content_handler_nonsfi_copy" ]
   }
+}
+
+# Create embedded files usable by the PNaCl translation services.
+pnacl_file_location_prefix = "//native_client/toolchain/linux_x86/pnacl_translator/translator/x86-32-nonsfi"
+embed_file("ld_file") {
+  source = "${pnacl_file_location_prefix}/bin/ld.nexe"
+  namespace = "nacl"
+  variable = "kLdNexe"
+}
+embed_file("pnacl_llc_file") {
+  source = "${pnacl_file_location_prefix}/bin/pnacl-llc.nexe"
+  namespace = "nacl"
+  variable = "kPnaclLlcNexe"
+}
+
+# Create embedded files usable by the PNaCl translation IRT.
+embed_file("crtbegin_file") {
+  source = "${pnacl_file_location_prefix}/lib/crtbegin.o"
+  namespace = "nacl"
+  variable = "kCrtbegin"
+}
+embed_file("crtbegin_for_eh_file") {
+  source = "${pnacl_file_location_prefix}/lib/crtbegin_for_eh.o"
+  namespace = "nacl"
+  variable = "kCrtbeginForEh"
+}
+embed_file("crtend_file") {
+  source = "${pnacl_file_location_prefix}/lib/crtend.o"
+  namespace = "nacl"
+  variable = "kCrtend"
+}
+embed_file("libcrt_platform_file") {
+  source = "${pnacl_file_location_prefix}/lib/libcrt_platform.a"
+  namespace = "nacl"
+  variable = "kLibcrtPlatform"
+}
+embed_file("libgcc_file") {
+  source = "${pnacl_file_location_prefix}/lib/libgcc.a"
+  namespace = "nacl"
+  variable = "kLibgcc"
+}
+embed_file("libpnacl_irt_shim_dummy_file") {
+  source = "${pnacl_file_location_prefix}/lib/libpnacl_irt_shim_dummy.a"
+  namespace = "nacl"
+  variable = "kLibpnaclIrtShimDummy"
+}
+
+# Collection of mojom bindings and files necessary for pnacl translation by the
+# IRT.
+group("pnacl_translator_irt") {
+  public_deps = [
+    ":pnacl_translator_irt_files",
+    ":pnacl_translator_bindings",
+  ]
+}
+
+group("pnacl_translator_irt_files") {
+  public_deps = [
+    ":crtbegin_file",
+    ":crtbegin_for_eh_file",
+    ":crtend_file",
+    ":libcrt_platform_file",
+    ":libgcc_file",
+    ":libpnacl_irt_shim_dummy_file",
+  ]
 }
 
 mojom("pnacl_translator_bindings") {

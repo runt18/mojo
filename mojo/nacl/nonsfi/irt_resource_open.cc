@@ -2,28 +2,47 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-#include <fcntl.h>
+#include <errno.h>
+#include <string.h>
 
-#include "base/files/file_util.h"
-#include "base/path_service.h"
+#include "base/logging.h"
 #include "mojo/nacl/nonsfi/irt_mojo_nonsfi.h"
+#include "mojo/nacl/nonsfi/temporary_file_util.h"
 #include "native_client/src/untrusted/irt/irt_dev.h"
+#include "services/nacl/kCrtbegin.h"
+#include "services/nacl/kCrtbeginForEh.h"
+#include "services/nacl/kCrtend.h"
+#include "services/nacl/kLibcrtPlatform.h"
+#include "services/nacl/kLibgcc.h"
+#include "services/nacl/kLibpnaclIrtShimDummy.h"
 
 namespace {
 
+const struct {
+  const char* filename;
+  const mojo::embed::Data* data;
+} g_files[] = {
+  {"crtbegin.o", &nacl::kCrtbegin},
+  {"crtbegin_for_eh.o", &nacl::kCrtbeginForEh},
+  {"crtend.o", &nacl::kCrtend},
+  {"libcrt_platform.a", &nacl::kLibcrtPlatform},
+  {"libgcc.a", &nacl::kLibgcc},
+  {"libpnacl_irt_shim.a", &nacl::kLibpnaclIrtShimDummy},
+};
+
 int IrtOpenResource(const char* filename, int* newfd) {
-  base::FilePath path;
-  if (!PathService::Get(base::DIR_MODULE, &path))
-    return ENOENT;
-  path = path.Append("pnacl_translation_files");
-  if (strcmp(filename, "libpnacl_irt_shim.a"))
-    path = path.Append(filename);
-  else
-    path = path.Append("libpnacl_irt_shim_dummy.a");
-  int rv = open(path.value().c_str(), O_RDONLY);
-  if (rv < 0)
+  const mojo::embed::Data* data = nullptr;
+  for (size_t i = 0; i < arraysize(g_files); i++) {
+    if (!strcmp(filename, g_files[i].filename)) {
+      data = g_files[i].data;
+      break;
+    }
+  }
+  CHECK(data) << "Could not find file: " << filename;
+  int fd = nacl::DataToTempFileDescriptor(*data);
+  if (fd < 0)
     return errno;
-  *newfd = rv;
+  *newfd = fd;
   return 0;
 }
 

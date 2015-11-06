@@ -46,6 +46,8 @@ static_library("irt_mojo_nonsfi") {
     "irt_pnacl_translator_link.cc",
     "irt_resource_open.cc",
     "nexe_launcher_nonsfi.cc",
+    "temporary_file_util.cc",
+    "temporary_file_util.h",
   ]
 
   deps = [
@@ -59,7 +61,7 @@ static_library("irt_mojo_nonsfi") {
     "//mojo/public/platform/native:mgl_thunks",
     "//mojo/public/platform/native:mgl_onscreen_thunks",
     "//native_client/src/nonsfi/irt:irt_interfaces",
-    "//services/nacl:pnacl_translator_bindings",
+    "//services/nacl:pnacl_translator_irt",
   ]
 }
 
