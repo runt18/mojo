@@ -104,8 +104,6 @@ component("system") {
     "transport_data.h",
     "unique_identifier.cc",
     "unique_identifier.h",
-    "waitable_event.cc",
-    "waitable_event.h",
     "waiter.cc",
     "waiter.h",
   ]
@@ -175,7 +173,6 @@ test("mojo_system_unittests") {
     "test_channel_endpoint_client.cc",
     "test_channel_endpoint_client.h",
     "unique_identifier_unittest.cc",
-    "waitable_event_unittest.cc",
     "waiter_test_utils.cc",
     "waiter_test_utils.h",
     "waiter_unittest.cc",

@@ -29,10 +29,10 @@ class TestIOThread {
   void Start();
   void Stop();
 
-  // Post |task| to the IO thread.
+  // Posts |task| to the I/O thread.
   void PostTask(const base::Closure& task);
-  // Posts |task| to the IO-thread with an WaitableEvent associated blocks on
-  // it until the posted |task| is executed, then returns.
+  // Posts |task| to the I/O thread, blocking the calling thread until the
+  // posted task is executed (note the deadlock risk!).
   void PostTaskAndWait(const base::Closure& task);
 
   base::MessageLoopForIO* message_loop() {
