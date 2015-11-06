@@ -3,7 +3,7 @@
 
 benchmarks = [
   {
-    'name': 'C++ <=> C++ IPC Round Trip Time',
+    'name': 'cpp-cpp ipc round trip time',
     'app': 'https://core.mojoapps.io/echo_benchmark.mojo',
     'duration': 10,
     'measurements': [
@@ -17,7 +17,7 @@ benchmarks = [
     ]
   },
   {
-    'name': 'C++ <=> Dart IPC Round Trip Time',
+    'name': 'cpp-dart ipc round trip time',
     'app': 'https://core.mojoapps.io/echo_benchmark.mojo',
     'duration': 10,
     'measurements': [
@@ -31,7 +31,7 @@ benchmarks = [
     ]
   },
   {
-    'name': 'Dart <=> Dart IPC Round Trip Time',
+    'name': 'dart-dart ipc round trip time',
     'app': 'https://core.mojoapps.io/dart_rtt_benchmark.mojo',
     'duration': 10,
     'measurements': [
@@ -42,7 +42,7 @@ benchmarks = [
     ]
   },
   {
-    'name': 'Dart <=> C++ IPC Round Trip Time',
+    'name': 'dart-cpp ipc round trip time',
     'app': 'https://core.mojoapps.io/dart_rtt_benchmark.mojo',
     'duration': 10,
     'measurements': [
@@ -56,7 +56,7 @@ benchmarks = [
     ]
   },
   {
-    'name': 'Dart Isolate Message Round Trip Time',
+    'name': 'dart isolate message round trip time',
     'app': 'https://core.mojoapps.io/dart_isolate_rtt_benchmark.mojo',
     'duration': 10,
     'measurements': [
@@ -67,7 +67,7 @@ benchmarks = [
     ]
   },
   {
-    'name': 'Many client C++ <=> C++ IPC Round Trip Time',
+    'name': 'many client cpp-cpp ipc round trip time',
     'app': 'https://core.mojoapps.io/echo_benchmark.mojo',
     'duration': 10,
     'measurements': [
@@ -81,7 +81,7 @@ benchmarks = [
     ]
   },
   {
-    'name': 'Many client Dart <=> Dart IPC Round Trip Time',
+    'name': 'many client dart-dart ipc round trip time',
     'app': 'https://core.mojoapps.io/dart_rtt_benchmark.mojo',
     'duration': 10,
     'measurements': [
@@ -95,7 +95,7 @@ benchmarks = [
     ]
   },
   {
-    'name': 'Many client Dart <=> C++ IPC Round Trip Time',
+    'name': 'many client dart-cpp ipc round trip time',
     'app': 'https://core.mojoapps.io/dart_rtt_benchmark.mojo',
     'duration': 10,
     'measurements': [
