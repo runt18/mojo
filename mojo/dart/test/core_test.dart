@@ -2,6 +2,8 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
+import 'dart:async';
+import 'dart:convert';
 import 'dart:io';
 import 'dart:typed_data';
 
@@ -291,6 +293,31 @@ basicSharedBufferTest() {
   duplicate = null;
 }
 
+fillerDrainerTest() async {
+  MojoDataPipe pipe = new MojoDataPipe();
+  Expect.isNotNull(pipe);
+  Expect.isTrue(pipe.status.isOk);
+  Expect.isTrue(pipe.consumer.handle.isValid);
+  Expect.isTrue(pipe.producer.handle.isValid);
+
+  MojoDataPipeProducer producer = pipe.producer;
+  MojoDataPipeConsumer consumer = pipe.consumer;
+  Expect.isTrue(producer.handle.isValid);
+  Expect.isTrue(consumer.handle.isValid);
+
+  String sentMessage = "Hello world!" * 1000;
+  ByteData producerData = new ByteData.view(UTF8.encode(sentMessage).buffer);
+  DataPipeFiller.fillHandle(producer, producerData);
+
+  ByteData consumerData = await DataPipeDrainer.drainHandle(consumer);
+  Uint8List receivedBytes = new Uint8List.view(consumerData.buffer);
+  String receivedMessage = new String.fromCharCodes(receivedBytes);
+
+  Expect.equals(sentMessage, receivedMessage);
+  Expect.isTrue(producer.status.isOk);
+  Expect.isTrue(consumer.status.isOk);
+}
+
 utilsTest() {
   int ticksa = getTimeTicksNow();
   Expect.isTrue(1000 < ticksa);
@@ -308,11 +335,12 @@ processTest() {
   Expect.isTrue(pid > 0);
 }
 
-main() {
+main() async {
   invalidHandleTest();
   basicMessagePipeTest();
   basicDataPipeTest();
   basicSharedBufferTest();
+  await fillerDrainerTest();
   utilsTest();
   processTest();
 }
