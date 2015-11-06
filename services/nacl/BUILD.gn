@@ -146,7 +146,14 @@ group("content_handler_nonsfi") {
 }
 
 # Create embedded files usable by the PNaCl translation services.
-pnacl_file_location_prefix = "//native_client/toolchain/linux_x86/pnacl_translator/translator/x86-32-nonsfi"
+if (current_cpu == "x86" || current_cpu == "x64") {
+  pnacl_file_location_prefix = "//native_client/toolchain/linux_x86/pnacl_translator/translator/x86-32-nonsfi"
+} else if (current_cpu == "arm") {
+  pnacl_file_location_prefix = "//native_client/toolchain/linux_x86/pnacl_translator/translator/arm-nonsfi"
+} else {
+  assert(false, "Architecture not recognized by Non-SFI NaCl")
+}
+
 embed_file("ld_file") {
   source = "${pnacl_file_location_prefix}/bin/ld.nexe"
   namespace = "nacl"

@@ -74,6 +74,7 @@ group("mojo_nacl_nonsfi") {
 group("mojo_pnacl_tests") {
   testonly = true
   public_deps = [
+    "//mojo/nacl:mojo_nacl_tests_untrusted(//build/toolchain/nacl:newlib_pnacl)",
     "//mojo/nacl:monacl_test(//build/toolchain/nacl:newlib_pnacl)",
   ]
 }
