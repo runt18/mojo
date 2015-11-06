@@ -135,8 +135,9 @@ group("tests") {
   ]
 }
 
-test("mojo_system_unittests") {
+mojo_edk_unittests("mojo_system_unittests") {
   sources = [
+    # TODO(vtl): This should be in its own mojo_edk_unittests target.
     "../test/multiprocess_test_helper_unittest.cc",
     "awakable_list_unittest.cc",
     "channel_endpoint_id_unittest.cc",
@@ -180,19 +181,23 @@ test("mojo_system_unittests") {
 
   deps = [
     ":system",
-    "../embedder:unittests",
-    "../test:test_support",
-    "../util",
-    "../util:unittests",
-    "test",
-    "test:run_all_unittests",
-    "test:unittests",
     "//base",
     "//testing/gtest",
   ]
+
+  mojo_edk_deps = [
+    # TODO(vtl): Add separate mojo_edk_unittests targets for these.
+    "mojo/edk/embedder:unittests",
+    "mojo/edk/system/test:unittests",
+    "mojo/edk/util:unittests",
+
+    "mojo/edk/system/test",
+    "mojo/edk/test:test_support",
+    "mojo/edk/util",
+  ]
 }
 
-test("mojo_system_perftests") {
+mojo_edk_perftests("mojo_system_perftests") {
   sources = [
     "message_pipe_perftest.cc",
     "message_pipe_test_utils.cc",
@@ -201,12 +206,16 @@ test("mojo_system_perftests") {
 
   deps = [
     ":system",
-    "../test:test_support",
-    "../util:perftests",
-    "test",
-    "test:perf",
-    "test:run_all_perftests",
     "//base",
     "//testing/gtest",
+  ]
+
+  mojo_edk_deps = [
+    # TODO(vtl): Add separate test targets for this.
+    "mojo/edk/util:perftests",
+
+    "mojo/edk/system/test",
+    "mojo/edk/system/test:perf",
+    "mojo/edk/test:test_support",
   ]
 }
