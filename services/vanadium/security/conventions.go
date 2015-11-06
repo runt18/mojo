@@ -5,6 +5,7 @@
 package main
 
 import (
+	"encoding/json"
 	"fmt"
 	"strings"
 )
@@ -26,18 +27,24 @@ func name(chain []certificate) string {
 	return name
 }
 
-// emailFromBlessing returns the email address from a user
-// blessing chain in 'b', or nil if no such blessing chain exists.
-// This function relies on the Vanadium identity provider employing
-// the following convention for blessings returned in exchange for
-// OAuth2 tokens: All blessings must be of the form
-// dev.v.io/u/<OAuth2 ClientID>/<user email>.
+// emailFromBlessing returns the email address from the provided JSON-encoded
+// wire blessings obtained from the Vanadium identity provider. This function
+// relies on the Vanadium identity provider employing the following convention
+// for blessings returned in exchange for OAuth2 tokens: All blessings must be
+// of the form: dev.v.io/u/<OAuth2 ClientID>/<user email>.
 // See Also: https://godoc.org/v.io/v23/conventions
 // TODO(ataly): Import "v23/conventions" here rather than duplicating
 // the code.
-func emailFromBlessings(b *wireBlessings) (string, error) {
+func emailFromBlessing(b []uint8) (string, error) {
+	var wb wireBlessings
+	if err := json.Unmarshal(b, &wb); err != nil {
+		return "", fmt.Errorf("failed to unmarshal response (blessings) from Vanadium Identity Provider: %v", err)
+	}
+	// TODO(ataly, gauthamt): Should we verify all signatures on the
+	// certificate chains in the wire blessings to ensure that it was
+	// not tampered with.
 	var rejected []string
-	for _, chain := range b.CertificateChains {
+	for _, chain := range wb.CertificateChains {
 		n := name(chain)
 		// n is valid OAuth2 token based blessing name iff
 		// n is of the form "dev.v.io/u/<clientID>/<email>"

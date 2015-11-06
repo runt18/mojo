@@ -12,39 +12,25 @@ struct AppInstanceName {
   string? qualifier;
 };
 
-// Represents a user identity. |email| is the email address of the user, which
-// may be obtained through a third-party authentication flow (e.g., oauth2).
+// Represents a user identity obtained for an application instance.
+//
+// |email| is the email address of the user, which may be obtained through a
+// third-party authentication flow (e.g., oauth2).
+//
+// |blessing| is a JSON-encoded Vanadium blessing binding a human-readable
+// name (that includes |email|) to the public key of the application instance.
+// More specifically, it represents a JSON-encoded WireBlessings object defined
+// here: https://github.com/vanadium/go.v23/blob/master/security/types.vdl#L136
+// A detailed decription of blessings can be found here:
+// https://github.com/vanadium/docs/blob/master/concepts/security.md
 struct User {
   string email;
-  Blessing blessing;
+  array<uint8> blessing;
   // TODO(ataly, ukode): Include the name of the identity provider?
   // TODO(ataly, ukode): Include the first and last name of the user?
   // TODO(ataly, ukode): Include any unique ids assigned to the user by the
   // identity provider?
 };
-
-// Certificate represents a human-readable name and public-key (DER encoded)
-// pair.  The private-key for a certificate is only available for signing
-// operations within the principal service application.
-struct Certificate {
-  string extension; array<uint8>? publickey;
-};
-
-// Blessing is a credential binding a user identity to a public key. The
-// corresponding private key is only available for signing within the
-// PrincipalService application. A detailed decription of the blessings concept
-// can be found at:
-// https://github.com/vanadium/docs/blob/master/concepts/security.md
-// TODO(ataly, gauthamt): This Blessing type does not match the Vanadium
-// WireBlessing type. For the blessing to be usable by SyncBase we will have to
-// make it match the WireBlessing type.
-struct Blessing {
-  array<Certificate> chain;
-};
-
-// ChainSeparator is the separator used to join name extensions in a
-// certificate chain.
-const string ChainSeparator = "/";
 
 // A service that binds user identities to an application instance running in
 // Mojo. An application instance may have multiple user identities with one of

@@ -4,8 +4,6 @@
 
 package main
 
-import vpkg "mojo/services/vanadium/security/interfaces/principal"
-
 // wireBlessings encapsulates wire format of a set of a Vanadium blessings
 // and the corresponding cryptographic proof that binds them to a principal
 // (identified by a public key).
@@ -52,21 +50,4 @@ type signature struct {
 type caveat struct {
 	Id       [16]byte // The identifier of the caveat validation function.
 	ParamVom []byte   // VOM-encoded bytes of the parameters to be provided to the validation function.
-}
-
-func newBlessing(wb *wireBlessings) vpkg.Blessing {
-	if wb == nil || len(wb.CertificateChains) == 0 {
-		return vpkg.Blessing{}
-	}
-	// TODO(ataly, gauthamt): Below we only consider the first certificate chain
-	// in the wireBlessings object. We should handle the case when the wireBlessings
-	// object has more than one certificate chain. This issue would become moot
-	// if the vpkg.Blessing type matched the wireBlessing type.
-	// TODO(ataly, gauthamt): We should validate all caveats present in the
-	// certificates.
-	var chain []vpkg.Certificate
-	for _, c := range wb.CertificateChains[0] {
-		chain = append(chain, vpkg.Certificate{Extension: c.Extension})
-	}
-	return vpkg.Blessing{chain}
 }

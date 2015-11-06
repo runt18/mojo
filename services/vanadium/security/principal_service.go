@@ -6,7 +6,6 @@ package main
 
 import (
 	"encoding/base64"
-	"encoding/json"
 	"errors"
 	"fmt"
 	"log"
@@ -44,35 +43,19 @@ func (pImpl *principalServiceImpl) Login() (*vpkg.User, error) {
 		return nil, err
 	}
 
-	wb, err := pImpl.psd.getBlessings(token, p.publicKey())
+	b, err := pImpl.psd.getBlessing(token, p.publicKey())
 	if err != nil {
 		return nil, err
 	}
 
-	email, err := emailFromBlessings(wb)
+	email, err := emailFromBlessing(b)
 	if err != nil {
 		return nil, err
 	}
 
-	user := vpkg.User{Email: email, Blessing: newBlessing(wb)}
+	user := vpkg.User{Email: email, Blessing: b}
 	p.addUser(user)
 	return &user, nil
-}
-
-func (pImpl *principalServiceImpl) GetLoggedInUsers() ([]vpkg.User, error) {
-	if p := pImpl.psd.principal(pImpl.app); p != nil {
-		users := p.users()
-		return users, nil
-	}
-	return nil, fmt.Errorf("no principal available for app %v", pImpl.app)
-}
-
-func (pImpl *principalServiceImpl) SetUser(user vpkg.User) (*string, error) {
-	if p := pImpl.psd.principal(pImpl.app); p != nil {
-		return p.setCurrentUser(user), nil
-	}
-	str := fmt.Sprintf("no principal available for app %v; please invoke Login()", pImpl.app)
-	return &str, errors.New(str)
 }
 
 func (pImpl *principalServiceImpl) Logout() (err error) {
@@ -91,6 +74,22 @@ func (pImpl *principalServiceImpl) GetUser(app *vpkg.AppInstanceName) (*vpkg.Use
 		return nil, fmt.Errorf("no principal available for app %v", pImpl.app)
 	}
 	return p.curr, nil
+}
+
+func (pImpl *principalServiceImpl) SetUser(user vpkg.User) (*string, error) {
+	if p := pImpl.psd.principal(pImpl.app); p != nil {
+		return p.setCurrentUser(user), nil
+	}
+	str := fmt.Sprintf("no principal available for app %v; please invoke Login()", pImpl.app)
+	return &str, errors.New(str)
+}
+
+func (pImpl *principalServiceImpl) GetLoggedInUsers() ([]vpkg.User, error) {
+	if p := pImpl.psd.principal(pImpl.app); p != nil {
+		users := p.users()
+		return users, nil
+	}
+	return nil, fmt.Errorf("no principal available for app %v", pImpl.app)
 }
 
 func (pImpl *principalServiceImpl) Create(req vpkg.PrincipalService_Request) {
@@ -171,7 +170,7 @@ func (psd *principalServiceDelegate) getOAuth2Token() (string, error) {
 	return *token, nil
 }
 
-func (psd *principalServiceDelegate) getBlessings(token string, pub publicKey) (*wireBlessings, error) {
+func (psd *principalServiceDelegate) getBlessing(token string, pub publicKey) ([]uint8, error) {
 	networkReq, networkPtr := network.CreateMessagePipeForNetworkService()
 	psd.Ctx.ConnectToApplication("mojo:network_service").ConnectToService(&networkReq)
 	networkProxy := network.NewNetworkServiceProxy(networkPtr, bindings.GetAsyncWaiter())
@@ -196,15 +195,7 @@ func (psd *principalServiceDelegate) getBlessings(token string, pub publicKey) (
 	if res != system.MOJO_RESULT_OK {
 		return nil, fmt.Errorf("failed to read response (blessings) from Vanadium Identity Provider. Result: %v", res)
 	}
-
-	var wb wireBlessings
-	if err := json.Unmarshal(b, &wb); err != nil {
-		return nil, fmt.Errorf("failed to unmarshal response (blessings) from Vanadium Identity Provider: %v", err)
-	}
-
-	// TODO(ataly, gauthamt): We should verify all signatures on the certificate
-	// chains in the wire blessings to ensure that it was not tampered with.
-	return &wb, nil
+	return b, nil
 }
 
 func (psd *principalServiceDelegate) Quit() {
