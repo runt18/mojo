@@ -9,5 +9,5 @@ interface PexeLinkerInit {
 };
 
 interface PexeLinker {
-  PexeLink(string object_file_name) => (string nexe_file_name);
+  PexeLink(array<string> object_file_names) => (string nexe_file_name);
 };

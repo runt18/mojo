@@ -9,5 +9,5 @@ interface PexeCompilerInit {
 };
 
 interface PexeCompiler {
-  PexeCompile(string pexe_file_name) => (string object_file_name);
+  PexeCompile(string pexe_file_name) => (array<string> object_file_names);
 };

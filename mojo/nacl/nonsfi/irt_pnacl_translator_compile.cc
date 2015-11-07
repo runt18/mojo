@@ -7,6 +7,7 @@
 #include "base/files/file_util.h"
 #include "base/logging.h"
 #include "mojo/nacl/nonsfi/irt_mojo_nonsfi.h"
+#include "mojo/public/cpp/bindings/array.h"
 #include "mojo/public/cpp/bindings/string.h"
 #include "mojo/public/cpp/bindings/strong_binding.h"
 #include "mojo/public/cpp/utility/run_loop.h"
@@ -22,28 +23,39 @@ class PexeCompilerImpl : public mojo::nacl::PexeCompiler {
   PexeCompilerImpl(mojo::ScopedMessagePipeHandle handle,
                    const struct nacl_irt_pnacl_compile_funcs* funcs)
       : funcs_(funcs), strong_binding_(this, handle.Pass()) {}
-  void PexeCompile(const mojo::String& pexe_file_name,
-                   const mojo::Callback<void(mojo::String)>& callback)
+  void PexeCompile(const mojo::String& pexe_file_name, const
+                   mojo::Callback<void(mojo::Array<mojo::String>)>& callback)
       override {
-    base::FilePath obj_file_name;
-    if (!CreateTemporaryFile(&obj_file_name))
-      LOG(FATAL) << "Could not make temporary object file";
-    // TODO(smklein): Use multiple object files to increase parallelism.
-    int obj_file_fd = open(obj_file_name.value().c_str(), O_RDWR, O_TRUNC);
+    // TODO(smklein): This number is arbitrary, but matches the translator
+    // in Chrome. Use a better heuristic for number of threads/object files.
+    const static uint32_t num_threads = 4;
+    size_t obj_file_count = num_threads;
+    auto obj_file_names = mojo::Array<mojo::String>::New(obj_file_count);
+    int obj_file_fds[obj_file_count];
 
-    if (obj_file_fd < 0)
-      LOG(FATAL) << "Could not create temp file for compiled pexe";
+    for (size_t i = 0; i < obj_file_count; i++) {
+      base::FilePath obj_file_name;
+      CHECK(CreateTemporaryFile(&obj_file_name))
+          << "Could not make temporary object file";
+      obj_file_fds[i] = open(obj_file_name.value().c_str(), O_RDWR, O_TRUNC);
+      CHECK_GE(obj_file_fds[i], 0)
+          << "Could not create temporary file for compiled pexe";
+      obj_file_names[i] = mojo::String(obj_file_name.value());
+    }
 
-    // TODO(smklein): Is there a less arbitrary number to choose?
-    uint32_t num_threads = 8;
-    size_t obj_file_fd_count = 1;
     // Non-SFI mode requries PIC.
     char relocation_model[] = "-relocation-model=pic";
     // Since we are compiling pexes, the bitcode format is 'pnacl'.
     char bitcode_format[] = "-bitcode-format=pnacl";
-    char* args[] = { relocation_model, bitcode_format, nullptr };
-    size_t argc = 2;
-    funcs_->init_callback(num_threads, &obj_file_fd, obj_file_fd_count,
+    // Number of modules should be equal to the number of object files for
+    // stability. Use a char buffer more than large enough to hold any expected
+    // argument size.
+    char split_module[100];
+    CHECK_GE(snprintf(split_module, sizeof(split_module), "-split-module=%d",
+                      obj_file_count), 0) << "Error formatting split_module";
+    char* args[] = { relocation_model, bitcode_format, split_module, nullptr };
+    size_t argc = 3;
+    funcs_->init_callback(num_threads, obj_file_fds, obj_file_count,
                           args, argc);
 
     // Read the pexe using fread, and write the pexe into the callback function.
@@ -77,7 +89,7 @@ class PexeCompilerImpl : public mojo::nacl::PexeCompiler {
     funcs_->end_callback();
 
     // Return the name of the object file.
-    callback.Run(mojo::String(obj_file_name.value()));
+    callback.Run(std::move(obj_file_names));
     mojo::RunLoop::current()->Quit();
   }
  private:

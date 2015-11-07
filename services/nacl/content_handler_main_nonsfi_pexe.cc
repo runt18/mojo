@@ -12,6 +12,7 @@
 #include "mojo/nacl/nonsfi/nexe_launcher_nonsfi.h"
 #include "mojo/public/c/system/main.h"
 #include "mojo/public/cpp/application/application_impl.h"
+#include "mojo/public/cpp/bindings/array.h"
 #include "mojo/services/files/c/lib/template_util.h"
 #include "services/nacl/pnacl_compile.mojom.h"
 #include "services/nacl/pnacl_link.mojom.h"
@@ -28,8 +29,8 @@ class CompilerUI {
   }
 
   // Synchronous method to compile pexe into object file.
-  mojo::String CompilePexe(mojo::String pexe_file_path) {
-    mojo::String output;
+  mojo::Array<mojo::String> CompilePexe(mojo::String pexe_file_path) {
+    mojo::Array<mojo::String> output;
     compiler_->PexeCompile(pexe_file_path, mojio::Capture(&output));
     if (!compiler_.WaitForIncomingResponse())
       LOG(FATAL) << "Waiting for pexe compiler failed";
@@ -48,9 +49,9 @@ class LinkerUI {
   }
 
   // Synchronous method to link object file into nexe.
-  mojo::String LinkPexe(mojo::String object_file_path) {
+  mojo::String LinkPexe(mojo::Array<mojo::String> object_file_paths) {
     mojo::String output;
-    linker_->PexeLink(object_file_path, mojio::Capture(&output));
+    linker_->PexeLink(std::move(object_file_paths), mojio::Capture(&output));
     if (!linker_.WaitForIncomingResponse())
       LOG(FATAL) << "Waiting for pexe linker failed";
     return output;
@@ -108,7 +109,8 @@ class PexeContentHandler : public mojo::ApplicationDelegate,
 
     // Communicate with the compiler using a mojom interface.
     CompilerUI compiler_ui(parent_compile_pipe.Pass());
-    mojo::String object_file = compiler_ui.CompilePexe(pexe_file_path.value());
+    mojo::Array<mojo::String> object_files =
+        compiler_ui.CompilePexe(pexe_file_path.value());
 
     // Link the object file into a nexe
     mojo::ScopedMessagePipeHandle parent_link_pipe;
@@ -120,7 +122,7 @@ class PexeContentHandler : public mojo::ApplicationDelegate,
 
     // Communicate with the linker using a mojom interface.
     LinkerUI linker_ui(parent_link_pipe.Pass());
-    mojo::String nexe_file = linker_ui.LinkPexe(object_file);
+    mojo::String nexe_file = linker_ui.LinkPexe(std::move(object_files));
 
     // Open the nexe file and launch it (with our mojo handle)
     int nexe_fd = open(nexe_file.get().c_str(), O_RDONLY);
