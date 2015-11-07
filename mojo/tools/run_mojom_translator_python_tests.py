@@ -32,8 +32,9 @@ class PythonMojomTestRunner(MojoPythonTestRunner):
 
 
 def main():
-  test_dir = os.path.join('mojo', 'public', 'tools', 'bindings', 'pylib')
-  test_module = 'mojom.generate.mojom_translator_unittest'
+  test_dir = os.path.join(
+      'mojo', 'public', 'tools', 'bindings', 'pylib', 'mojom', 'generate')
+  test_module = 'mojom_translator_unittest'
   runner = PythonMojomTestRunner(test_dir, test_module=test_module)
   sys.exit(runner.run())
 
