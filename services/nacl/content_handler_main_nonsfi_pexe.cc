@@ -32,8 +32,8 @@ class CompilerUI {
   mojo::Array<mojo::String> CompilePexe(mojo::String pexe_file_path) {
     mojo::Array<mojo::String> output;
     compiler_->PexeCompile(pexe_file_path, mojio::Capture(&output));
-    if (!compiler_.WaitForIncomingResponse())
-      LOG(FATAL) << "Waiting for pexe compiler failed";
+    CHECK(compiler_.WaitForIncomingResponse())
+        << "Waiting for pexe compiler failed";
     return output;
   }
 
@@ -52,8 +52,8 @@ class LinkerUI {
   mojo::String LinkPexe(mojo::Array<mojo::String> object_file_paths) {
     mojo::String output;
     linker_->PexeLink(std::move(object_file_paths), mojio::Capture(&output));
-    if (!linker_.WaitForIncomingResponse())
-      LOG(FATAL) << "Waiting for pexe linker failed";
+    CHECK(linker_.WaitForIncomingResponse())
+        << "Waiting for pexe linker failed";
     return output;
   }
 
@@ -91,20 +91,18 @@ class PexeContentHandler : public mojo::ApplicationDelegate,
     // Create temporary file for pexe
     base::FilePath pexe_file_path;
     FILE* pexe_fp = CreateAndOpenTemporaryFile(&pexe_file_path);
-    if (!pexe_fp)
-      LOG(FATAL) << "Could not create temporary file for pexe";
+    CHECK(pexe_fp) << "Could not create temporary file for pexe";
     // Acquire the pexe.
-    if (!mojo::common::BlockingCopyToFile(response->body.Pass(), pexe_fp))
-      LOG(FATAL) << "Could not copy pexe to file";
-    if (fclose(pexe_fp))
-      LOG(FATAL) << "Could not close pexe file";
+    CHECK(mojo::common::BlockingCopyToFile(response->body.Pass(), pexe_fp))
+        << "Could not copy pexe to file";
+    CHECK_EQ(fclose(pexe_fp), 0) << "Could not close pexe file";
 
     // Compile the pexe into an object file
     mojo::ScopedMessagePipeHandle parent_compile_pipe;
     mojo::ScopedMessagePipeHandle child_compile_pipe;
-    if (CreateMessagePipe(nullptr, &parent_compile_pipe, &child_compile_pipe) !=
-        MOJO_RESULT_OK)
-      LOG(FATAL) << "Could not create message pipe to compiler";
+    CHECK_EQ(CreateMessagePipe(nullptr, &parent_compile_pipe,
+                               &child_compile_pipe), MOJO_RESULT_OK)
+        << "Could not create message pipe to compiler";
     compiler_init_->PexeCompilerStart(child_compile_pipe.Pass());
 
     // Communicate with the compiler using a mojom interface.
@@ -115,9 +113,8 @@ class PexeContentHandler : public mojo::ApplicationDelegate,
     // Link the object file into a nexe
     mojo::ScopedMessagePipeHandle parent_link_pipe;
     mojo::ScopedMessagePipeHandle child_link_pipe;
-    if (CreateMessagePipe(nullptr, &parent_link_pipe, &child_link_pipe) !=
-        MOJO_RESULT_OK)
-      LOG(FATAL) << "Could not create message pipe to linker";
+    CHECK_EQ(CreateMessagePipe(nullptr, &parent_link_pipe, &child_link_pipe),
+             MOJO_RESULT_OK) << "Could not create message pipe to linker";
     linker_init_->PexeLinkerStart(child_link_pipe.Pass());
 
     // Communicate with the linker using a mojom interface.
@@ -126,10 +123,9 @@ class PexeContentHandler : public mojo::ApplicationDelegate,
 
     // Open the nexe file and launch it (with our mojo handle)
     int nexe_fd = open(nexe_file.get().c_str(), O_RDONLY);
-    if (unlink(nexe_file.get().c_str()))
-      LOG(FATAL) << "Could not unlink temporary nexe file";
-    if (nexe_fd < 0)
-      LOG(FATAL) << "Could not open nexe object file";
+    CHECK(!unlink(nexe_file.get().c_str()))
+        << "Could not unlink temporary nexe file";
+    CHECK_GE(nexe_fd, 0) << "Could not open nexe object file";
 
     // Pass the handle connecting us with mojo_shell to the nexe.
     MojoHandle handle = application_request.PassMessagePipe().release().value();

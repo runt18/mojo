@@ -63,19 +63,16 @@ class PexeCompilerImpl : public mojo::nacl::PexeCompiler {
     scoped_ptr<char[]> buf(new char[kBufferSize]);
     FILE* pexe_file_stream = fopen(pexe_file_name.get().c_str(), "r");
     // Once the pexe has been opened, it is no longer needed, so we unlink it.
-    if (unlink(pexe_file_name.get().c_str()))
-      LOG(FATAL) << "Could not unlink temporary pexe file";
-    if (pexe_file_stream == nullptr)
-      LOG(FATAL) << "Could not open pexe for reading";
+    CHECK(!unlink(pexe_file_name.get().c_str()))
+        << "Could not unlink temporary pexe file";
+    CHECK(pexe_file_stream) << "Could not open pexe for reading";
     // TODO(smklein): Remove these LOG statements once translation speed
     // is improved.
     LOG(INFO) << "Starting compilation of pexe into nexe";
     for (;;) {
       size_t num_bytes_from_pexe = fread(buf.get(), 1, kBufferSize,
                                          pexe_file_stream);
-      if (ferror(pexe_file_stream)) {
-        LOG(FATAL) << "Error reading from pexe file stream";
-      }
+      CHECK(!ferror(pexe_file_stream)) << "Error reading from pexe file stream";
       if (num_bytes_from_pexe == 0) {
         break;
       }
@@ -84,8 +81,7 @@ class PexeCompilerImpl : public mojo::nacl::PexeCompiler {
     }
     buf.reset();
 
-    if (fclose(pexe_file_stream))
-      LOG(FATAL) << "Failed to close pexe file stream from compiler nexe";
+    CHECK(!fclose(pexe_file_stream)) << "Failed to close pexe file stream";
     funcs_->end_callback();
 
     // Return the name of the object file.

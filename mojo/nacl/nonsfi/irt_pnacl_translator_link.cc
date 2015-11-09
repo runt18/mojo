@@ -28,11 +28,10 @@ class PexeLinkerImpl : public mojo::nacl::PexeLinker {
     // Create a temporary .nexe file which will be the result of calling our
     // linker.
     base::FilePath nexe_file_name;
-    if (!CreateTemporaryFile(&nexe_file_name))
-      LOG(FATAL) << "Could not create temporary nexe file";
+    CHECK(CreateTemporaryFile(&nexe_file_name))
+        << "Could not create temporary nexe file";
     int nexe_file_fd = open(nexe_file_name.value().c_str(), O_RDWR);
-    if (nexe_file_fd < 0)
-      LOG(FATAL) << "Could not create temp file for linked nexe";
+    CHECK_GE(nexe_file_fd, 0) << "Could not create temp file for linked nexe";
 
     // Open our temporary object file. Additionally, unlink it, since it is a
     // temporary file that is no longer needed after it is opened.
@@ -45,8 +44,8 @@ class PexeLinkerImpl : public mojo::nacl::PexeLinker {
       CHECK_GE(obj_file_fds[i], 0) << "Could not open object file";
     }
 
-    if (func_(nexe_file_fd, obj_file_fds, obj_file_fd_count))
-      LOG(FATAL) << "Error calling func on object file";
+    CHECK(!func_(nexe_file_fd, obj_file_fds, obj_file_fd_count))
+        << "Error calling func on object file";
 
     // Return the name of the nexe file.
     callback.Run(mojo::String(nexe_file_name.value()));

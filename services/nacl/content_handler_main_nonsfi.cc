@@ -41,21 +41,13 @@ class NaClContentHandler : public mojo::ApplicationDelegate,
     // Acquire the nexe.
     base::ScopedFILE nexe_fp =
         mojo::common::BlockingCopyToTempFile(response->body.Pass());
-    if (!nexe_fp) {
-      LOG(FATAL) << "Could not redirect nexe to temp file";
-    }
+    CHECK(nexe_fp)  << "Could not redirect nexe to temp file";
     FILE* nexe_file_stream = nexe_fp.release();
     int fd = fileno(nexe_file_stream);
-    if (fd == -1) {
-      LOG(FATAL) << "Could not open the stream pointer's file descriptor";
-    }
+    CHECK_NE(fd, -1) << "Could not open the stream pointer's file descriptor";
     fd = dup(fd);
-    if (fd == -1) {
-      LOG(FATAL) << "Could not dup the file descriptor";
-    }
-    if (fclose(nexe_file_stream)) {
-      LOG(FATAL) << "Failed to close temp file";
-    }
+    CHECK_NE(fd, -1) << "Could not dup the file descriptor";
+    CHECK_EQ(fclose(nexe_file_stream), 0) << "Failed to close temp file";
 
     MojoHandle handle =
         application_request.PassMessagePipe().release().value();

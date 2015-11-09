@@ -37,9 +37,7 @@ base::ScopedFILE TempFileForURL(mojo::URLLoaderPtr& url_loader,
     response = r.Pass();
   });
   url_loader.WaitForIncomingResponse();
-  if (response.is_null()) {
-    LOG(FATAL) << "something went horribly wrong (missed a callback?)";
-  }
+  CHECK(!response.is_null()) << "Empty response (missed a callback?)";
 
   if (response->error) {
     LOG(ERROR) << "could not load " << url.spec() << " ("
@@ -54,24 +52,18 @@ base::ScopedFILE TempFileForURL(mojo::URLLoaderPtr& url_loader,
 NaClDesc* FileStreamToNaClDesc(FILE* file_stream) {
   // Get file handle
   int fd = fileno(file_stream);
-  if (fd == -1) {
-    LOG(FATAL) << "Could not open the stream pointer's file descriptor";
-  }
+  CHECK_NE(fd, -1) <<  "Could not open the stream pointer's file descriptor";
 
   // These file descriptors must be dup'd, since NaClDesc takes ownership
   // of the file descriptor. The descriptor is still needed to close
   // the file stream.
   fd = dup(fd);
-  if (fd == -1) {
-    LOG(FATAL) << "Could not dup the file descriptor";
-  }
+  CHECK_NE(fd, -1) << "Could not dup the file descriptor";
 
   NaClDesc* desc = NaClDescCreateWithFilePathMetadata(fd, "");
 
   // Clean up.
-  if (fclose(file_stream)) {
-    LOG(FATAL) << "Failed to close temp file";
-  }
+  CHECK_EQ(fclose(file_stream), 0) << "Failed to close temp file";
 
   return desc;
 }
@@ -102,14 +94,10 @@ class NaClContentHandler : public mojo::ApplicationDelegate,
 #else
 #error "Unknown / unsupported CPU architecture."
 #endif
-    if (!irt_url.is_valid()) {
-      LOG(FATAL) << "Cannot resolve IRT URL";
-    }
+    CHECK(irt_url.is_valid()) << "Cannot resolve IRT URL";
 
     irt_fp_ = TempFileForURL(url_loader, irt_url);
-    if (!irt_fp_) {
-      LOG(FATAL) << "Could not acquire the IRT";
-    }
+    CHECK(irt_fp_) << "Could not acquire the IRT";
   }
 
   // Overridden from ApplicationDelegate:
@@ -129,9 +117,7 @@ class NaClContentHandler : public mojo::ApplicationDelegate,
     // Acquire the nexe.
     base::ScopedFILE nexe_fp =
         mojo::common::BlockingCopyToTempFile(response->body.Pass());
-    if (!nexe_fp) {
-      LOG(FATAL) << "could not redirect nexe to temp file";
-    }
+    CHECK(nexe_fp) << "could not redirect nexe to temp file";
 
     // Acquire the IRT.
     mojo::URLLoaderPtr url_loader = url_loader_.Pass();
