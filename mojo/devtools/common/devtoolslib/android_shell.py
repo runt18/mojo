@@ -4,7 +4,6 @@
 
 import atexit
 import hashlib
-import json
 import logging
 import os
 import os.path
@@ -66,6 +65,7 @@ def _find_available_port(netstat_output, max_attempts=10000):
 def _find_available_host_port():
   netstat_output = subprocess.check_output(['netstat'])
   return _find_available_port(netstat_output)
+
 
 def parse_adb_devices_output(adb_devices_output):
   """Parses the output of the `adb devices` command, returning a dictionary
