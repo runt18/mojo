@@ -30,10 +30,7 @@ mojo_edk_source_set("util") {
   mojo_sdk_public_deps = [ "mojo/public/cpp/system" ]
 }
 
-mojo_edk_source_set("unittests") {
-  testonly = true
-  mojo_edk_visibility = [ "mojo/edk/system:mojo_edk_system_unittests" ]
-
+mojo_edk_unittests("mojo_edk_util_unittests") {
   sources = [
     "command_line_unittest.cc",
     "cond_var_unittest.cc",

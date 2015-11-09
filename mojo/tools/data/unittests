@@ -5,9 +5,18 @@
 # TODO(vtl): Add a way of specifying data dependencies instead of cacheable.
 
 tests = [
-  # System tests:
+  # EDK tests:
+  {
+    "test": "mojo_edk_embedder_unittests",
+  },
   {
     "test": "mojo_edk_system_unittests",
+  },
+  {
+    "test": "mojo_edk_system_test_unittests",
+  },
+  {
+    "test": "mojo_edk_util_unittests",
   },
 
   # Public tests:
