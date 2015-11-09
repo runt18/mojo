@@ -4,7 +4,9 @@
 
 import("//build/config/ui.gni")
 
-group("examples") {
+# Collection of examples which are currently capable of being built as pexes.
+# TODO(smklein): Make all examples build as pexes.
+group("portable_examples") {
   testonly = true
 
   deps = [
@@ -13,23 +15,33 @@ group("examples") {
     "//examples/dart",
     "//examples/echo",
     "//examples/echo_terminal",
-    "//examples/embedded_app",
     "//examples/forwarding_content_handler",
-    "//examples/ganesh_app",
     "//examples/http_handler",
     "//examples/indirect_service",
-    "//examples/keyboard_client",
     "//examples/moterm_example_app",
     "//examples/native_run_app",
-    "//examples/nfc_sender",
     "//examples/notification_generator",
-    "//examples/png_viewer",
     "//examples/recursive_content_handler",
     "//examples/serialization",
     "//examples/spinning_cube",
     "//examples/tiny",
     "//examples/trace_me",
     "//examples/wget",
+  ]
+}
+
+group("examples") {
+  testonly = true
+
+  # TODO(smklein) - These deps are not compatible with NaCl because they depend
+  # on skia. Make Skia build with NaCl.
+  deps = [
+    ":portable_examples",
+    "//examples/embedded_app",
+    "//examples/ganesh_app",
+    "//examples/keyboard_client",
+    "//examples/nfc_sender",
+    "//examples/png_viewer",
   ]
 
   # TODO(cstout) - javascript/v8 build support for fnl/musl
@@ -65,6 +77,6 @@ group("examples") {
   }
 
   if ((is_linux || is_android) && !is_asan) {
-    deps += [ "//examples/spinning_cube(//build/toolchain/nacl:newlib_pnacl)" ]
+    deps += [ ":portable_examples(//build/toolchain/nacl:newlib_pnacl)" ]
   }
 }
