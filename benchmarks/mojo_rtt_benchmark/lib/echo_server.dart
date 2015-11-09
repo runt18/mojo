@@ -64,7 +64,7 @@ class EchoApplication extends Application {
     for (var service in _echoServices) {
       await service.close();
     }
-    assert(MojoHandle.reportLeakedHandles());
+    MojoHandle.reportLeakedHandles();
   }
 }
 

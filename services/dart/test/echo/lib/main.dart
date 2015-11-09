@@ -50,6 +50,6 @@ main(List args) {
   String url = args[1];
   new EchoApplication.fromHandle(appHandle)
     ..onError = (() {
-      assert(MojoHandle.reportLeakedHandles());
+      MojoHandle.reportLeakedHandles();
     });
 }

@@ -441,6 +441,8 @@ Dart_Isolate DartController::IsolateCreateCallback(const char* script_uri,
 void DartController::IsolateShutdownCallback(void* callback_data) {
   {
     tonic::DartApiScope api_scope;
+
+    // Shut down dart:io.
     ShutdownDartMojoIo();
   }
 
@@ -456,7 +458,7 @@ void DartController::UnhandledExceptionCallback(Dart_Handle error) {
       Dart_GetType(mojo_core_lib,
                    Dart_NewStringFromCString("MojoHandleNatives"), 0, nullptr);
   DART_CHECK_VALID(handle_natives_type);
-  Dart_Handle method_name = Dart_NewStringFromCString("_closeUnclosedHandles");
+  Dart_Handle method_name = Dart_NewStringFromCString("_closeOpenHandles");
   CHECK(!Dart_IsError(method_name));
   Dart_Handle result =
       Dart_Invoke(handle_natives_type, method_name, 0, nullptr);

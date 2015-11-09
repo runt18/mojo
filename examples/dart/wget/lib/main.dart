@@ -38,7 +38,7 @@ class WGet extends Application {
 
     _closeProxies();
     await close();
-    assert(MojoHandle.reportLeakedHandles());
+    MojoHandle.reportLeakedHandles();
   }
 
   Future<ByteData> _getUrl(String url) async {

@@ -58,7 +58,7 @@ class PingPongApplication extends Application {
 
   Future closeApplication() async {
     await close();
-    assert(MojoHandle.reportLeakedHandles());
+    MojoHandle.reportLeakedHandles();
   }
 }
 

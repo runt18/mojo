@@ -121,6 +121,6 @@ main(List args) {
   String url = args[1];
   new PingPongApplication.fromHandle(appHandle)
     ..onError = (() {
-      assert(MojoHandle.reportLeakedHandles());
+      MojoHandle.reportLeakedHandles();
     });
 }

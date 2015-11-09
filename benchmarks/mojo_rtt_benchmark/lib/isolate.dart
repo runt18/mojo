@@ -99,7 +99,7 @@ class IsolateMessageApp extends Application {
   void _errorHandler() {
     _doEcho = false;
     _receivePort.close();
-    assert(MojoHandle.reportLeakedHandles());
+    MojoHandle.reportLeakedHandles();
   }
 }
 

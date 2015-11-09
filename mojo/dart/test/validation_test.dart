@@ -124,5 +124,5 @@ main(List args) async {
     }
   }
   // TODO(zra): Add integration tests when they no longer rely on Client=
-  assert(MojoHandle.reportLeakedHandles());
+  MojoHandle.reportLeakedHandles();
 }

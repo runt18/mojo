@@ -103,7 +103,7 @@ class EchoTracingApp extends Application {
   _errorHandler() {
     _doEcho = false;
     return Future.wait(_echoProxies.map((p) => p.close())).then((_) {
-      assert(MojoHandle.reportLeakedHandles());
+      MojoHandle.reportLeakedHandles();
     });
   }
 }

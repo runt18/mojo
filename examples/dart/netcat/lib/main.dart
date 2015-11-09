@@ -227,6 +227,6 @@ main(List args) {
   String url = args[1];
   new NetcatApplication.fromHandle(appHandle)
     ..onError = (() {
-      assert(MojoHandle.reportLeakedHandles());
+      MojoHandle.reportLeakedHandles();
     });
 }

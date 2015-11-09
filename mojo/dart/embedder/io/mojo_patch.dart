@@ -70,6 +70,9 @@ HostResolverProxy _getHostResolver() {
   }
   _hostResolver = new HostResolverProxy.unbound();
   networkService.ptr.createHostResolver(_hostResolver);
+  // Remove the host resolver's handle from the open set because it is not
+  // under application control and does not affect isolate shutdown.
+  _hostResolver.impl.endpoint.handle.pass();
   return _hostResolver;
 }
 
