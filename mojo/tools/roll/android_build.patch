@@ -5,7 +5,7 @@
  
  ANDROID_SDK_VERSION = ANDROID_SDK_VERSION_CODES.LOLLIPOP_MR1
 -ANDROID_SDK_BUILD_TOOLS_VERSION = '22.0.0'
-+ANDROID_SDK_BUILD_TOOLS_VERSION = '22.0.1'
++ANDROID_SDK_BUILD_TOOLS_VERSION = '23.0.1'
  ANDROID_SDK_ROOT = os.path.join(DIR_SOURCE_ROOT,
                                  'third_party/android_tools/sdk')
  ANDROID_SDK_TOOLS = os.path.join(ANDROID_SDK_ROOT,
@@ -16,7 +16,7 @@
              # Android API-level of the SDK used for compilation.
              'android_sdk_version%': '22',
 -            'android_sdk_build_tools_version%': '22.0.0',
-+            'android_sdk_build_tools_version%': '22.0.1',
++            'android_sdk_build_tools_version%': '23.0.1',
              'host_os%': "<!(uname -s | sed -e 's/Linux/linux/;s/Darwin/mac/')",
            },
            # Copy conditionally-set variables out one scope.
@@ -27,7 +27,7 @@
      default_android_sdk_root = "//third_party/android_tools/sdk"
      default_android_sdk_version = "22"
 -    default_android_sdk_build_tools_version = "22.0.0"
-+    default_android_sdk_build_tools_version = "22.0.1"
++    default_android_sdk_build_tools_version = "23.0.1"
    }
  
    if (!defined(google_play_services_library)) {
