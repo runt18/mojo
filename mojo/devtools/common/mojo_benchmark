@@ -197,6 +197,7 @@ def main():
       print '[ %s ] %s ' % (benchmark_name, variant_name)
 
       some_measurements_failed = False
+      some_measurements_succeeded = False
       if benchmark_succeeded:
         measurement_results = _parse_measurement_results(output)
         # Iterate over the list of specs, not the dictionary, to detect missing
@@ -212,6 +213,7 @@ def main():
                   perf_dashboard.normalize_label(chart_name),
                   perf_dashboard.normalize_label(measurement['name']),
                   'ms', result)
+            some_measurements_succeeded = True
           else:
             print '?  %s' % measurement['name']
             some_measurements_failed = True
@@ -227,7 +229,7 @@ def main():
         print '-' * 72
         exit_code = 1
 
-      if script_args.upload:
+      if script_args.upload and some_measurements_succeeded:
         if not perf_dashboard.upload_chart_data(
             script_args.master_name, script_args.bot_name,
             script_args.test_name, script_args.builder_name,
