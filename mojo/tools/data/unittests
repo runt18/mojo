@@ -7,7 +7,7 @@
 tests = [
   # System tests:
   {
-    "test": "mojo_system_unittests",
+    "test": "mojo_edk_system_unittests",
   },
 
   # Public tests:

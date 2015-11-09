@@ -32,7 +32,7 @@ mojo_edk_source_set("util") {
 
 mojo_edk_source_set("unittests") {
   testonly = true
-  mojo_edk_visibility = [ "mojo/edk/system:mojo_system_unittests" ]
+  mojo_edk_visibility = [ "mojo/edk/system:mojo_edk_system_unittests" ]
 
   sources = [
     "command_line_unittest.cc",
@@ -55,7 +55,7 @@ mojo_edk_source_set("unittests") {
 
 mojo_edk_source_set("perftests") {
   testonly = true
-  mojo_edk_visibility = [ "mojo/edk/system:mojo_system_perftests" ]
+  mojo_edk_visibility = [ "mojo/edk/system:mojo_edk_system_perftests" ]
 
   sources = [
     "ref_counted_perftest.cc",

@@ -130,12 +130,12 @@ component("system") {
 group("tests") {
   testonly = true
   deps = [
-    ":mojo_system_perftests",
-    ":mojo_system_unittests",
+    ":mojo_edk_system_perftests",
+    ":mojo_edk_system_unittests",
   ]
 }
 
-mojo_edk_unittests("mojo_system_unittests") {
+mojo_edk_unittests("mojo_edk_system_unittests") {
   sources = [
     # TODO(vtl): This should be in its own mojo_edk_unittests target.
     "../test/multiprocess_test_helper_unittest.cc",
@@ -197,7 +197,7 @@ mojo_edk_unittests("mojo_system_unittests") {
   ]
 }
 
-mojo_edk_perftests("mojo_system_perftests") {
+mojo_edk_perftests("mojo_edk_system_perftests") {
   sources = [
     "message_pipe_perftest.cc",
     "message_pipe_test_utils.cc",
