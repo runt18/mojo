@@ -27,22 +27,45 @@ mojo_run --embed APP_URL [--android]
 By default, `mojo_run` uses mojo:kiosk_wm as the window manager. You can pass a
 different window manager url using the `--window-manager` flag to override this.
 
-## Running on multiple Android devices
+## Running multiple instances simultaneously
 
-Two or more instances of `mojo_run` can simultaneously run on separate Android
-devices. For that, run in individual shells:
+`mojo_run` sets up development servers on fixed ports to facilitate caching
+between runs and allow the script to work remotely using `adb_remote_setup`.
+This would normally prevent two or more instances of `mojo_run` from running
+simulatenously as the development servers cannot be spawned twice on the same
+ports.
+
+In order to run the same set of binaries simultaneously one can use the
+`--reuse-servers` switch for second and further instances. This will make the
+second and further instances assume that development servers are already
+spawned.
+
+On **Android** one needs to indicate the id of the device to be targeted in each
+run. For example, we could run the following in one shell:
 
 ```sh
-mojo_run APP_URL --android --target-device DEVICE_ID --free-host-ports
+mojo_run APP_URL --android --target-device DEVICE_ID
 ```
+
+and the following in another:
 
 ```sh
-mojo_run APP_URL --android --target-device ANOTHER_DEVICE_ID --free-host-ports
+mojo_run APP_URL --android --target-device ANOTHER_DEVICE_ID --reuse-servers
 ```
 
-`--free-host-ports` makes `mojo_run` spawn the development servers on
-system-allocated ports on the server (so that multiple instances can run in
-parallel) while still forwarding them to fixed ports on the device (so that
-caching still works). This breaks the remote workflow over `adb_remote_setup`.
+Device id can be obtained from `adb devices`.
 
-DEVICE_ID can be obtained from `adb devices`.
+On **Linux** one needs to use a different $HOME directory for each run, to avoid
+collision of the cache storage. For example, we could run the following in one
+shell:
+
+```sh
+mojo_run APP_URL
+```
+
+and the following in another:
+
+```sh
+mkdir ~/another_home
+HOME=~/another_home mojo_run APP_URL --reuse-servers
+```

@@ -6,7 +6,7 @@
 class Shell(object):
   """Represents an abstract Mojo shell."""
 
-  def serve_local_directories(self, mappings, port=0, free_host_port=False):
+  def serve_local_directories(self, mappings, port=0, reuse_servers=False):
     """Serves the content of the local (host) directories, making it available
     to the shell under the url returned by the function.
 
@@ -22,9 +22,9 @@ class Shell(object):
       port: port at which the server will be available to the shell. On Android
           this can be different from the port on which the server runs on the
           host.
-      free_host_port: spawn the server a system allocated port. This is ignored
-          on Linux, where |port| indicates the port on which the server will be
-          spawned.
+      reuse_servers: don't actually spawn the server. Instead assume that the
+          server is already running on |port|, and only set up forwarding if
+          needed.
 
     Returns:
       The url that the shell can use to access the server.

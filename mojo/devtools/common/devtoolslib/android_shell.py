@@ -16,7 +16,7 @@ import threading
 import time
 import uuid
 
-from devtoolslib.http_server import start_http_server
+from devtoolslib import http_server
 from devtoolslib.shell import Shell
 from devtoolslib.utils import overrides
 
@@ -421,10 +421,13 @@ class AndroidShell(Shell):
     logcat_watch_thread.start()
 
   @overrides(Shell)
-  def serve_local_directories(self, mappings, port=0, free_host_port=False):
+  def serve_local_directories(self, mappings, port=0, reuse_servers=False):
     assert mappings
-    host_port = 0 if free_host_port else port
-    server_address = start_http_server(mappings, host_port=host_port)
+    if reuse_servers:
+      assert port, 'Cannot reuse the server when |port| is 0.'
+      server_address = ('127.0.0.1', port)
+    else:
+      server_address = http_server.start_http_server(mappings, port)
 
     return 'http://127.0.0.1:%d/' % self._forward_device_port_to_host(
         port, server_address[1])

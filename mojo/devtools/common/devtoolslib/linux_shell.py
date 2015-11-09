@@ -25,8 +25,14 @@ class LinuxShell(Shell):
     self.command_prefix = command_prefix if command_prefix else []
 
   @overrides(Shell)
-  def serve_local_directories(self, mappings, port=0, free_host_port=False):
-    return 'http://%s:%d/' % http_server.start_http_server(mappings, port)
+  def serve_local_directories(self, mappings, port=0, reuse_servers=False):
+    if reuse_servers:
+      assert port, 'Cannot reuse the server when |port| is 0.'
+      server_address = ('127.0.0.1', port)
+    else:
+      server_address = http_server.start_http_server(mappings, port)
+
+    return 'http://%s:%d/' % server_address
 
   @overrides(Shell)
   def forward_host_port_to_shell(self, host_port):
