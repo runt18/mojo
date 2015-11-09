@@ -294,9 +294,11 @@ int main(int argc, char** argv) {
       command_line.GetSwitchValueASCII(switches::kChildConnectionId);
   CHECK(!child_connection_id.empty());
 
+  std::string platform_channel_info =
+      command_line.GetSwitchValueASCII(switches::kPlatformChannelHandleInfo);
   mojo::embedder::ScopedPlatformHandle platform_handle =
       mojo::embedder::PlatformChannelPair::PassClientHandleFromParentProcess(
-          command_line);
+          platform_channel_info);
   CHECK(platform_handle.is_valid());
 
   shell::AppContext app_context;

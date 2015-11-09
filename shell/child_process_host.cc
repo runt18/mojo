@@ -136,8 +136,11 @@ base::Process ChildProcessHost::DoLaunch(scoped_ptr<LaunchData> launch_data) {
                                        launch_data->child_connection_id);
 
   mojo::embedder::HandlePassingInformation handle_passing_info;
+  std::string platform_channel_info;
   launch_data->platform_channel_pair.PrepareToPassClientHandleToChildProcess(
-      &child_command_line, &handle_passing_info);
+      &platform_channel_info, &handle_passing_info);
+  child_command_line.AppendSwitchASCII(switches::kPlatformChannelHandleInfo,
+                                       platform_channel_info);
 
   base::LaunchOptions options;
   options.fds_to_remap = &handle_passing_info;
