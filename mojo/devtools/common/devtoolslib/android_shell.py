@@ -421,16 +421,6 @@ class AndroidShell(Shell):
     logcat_watch_thread.start()
 
   @overrides(Shell)
-  def serve_local_directory(self, local_dir_path, port=0, free_host_port=False):
-    assert local_dir_path
-    mappings = [('', [local_dir_path])]
-    host_port = 0 if free_host_port else port
-    server_address = start_http_server(mappings, host_port=host_port)
-
-    return 'http://127.0.0.1:%d/' % self._forward_device_port_to_host(
-        port, server_address[1])
-
-  @overrides(Shell)
   def serve_local_directories(self, mappings, port=0, free_host_port=False):
     assert mappings
     host_port = 0 if free_host_port else port

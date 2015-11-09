@@ -36,7 +36,8 @@ def _host_local_url_destination(shell, dest_file, port, free_host_port):
   if not os.path.exists(directory):
     raise ValueError('local path passed as --map-url destination '
                      'does not exist')
-  server_url = shell.serve_local_directory(directory, port, free_host_port)
+  mappings = [('', [directory])]
+  server_url = shell.serve_local_directories(mappings, port, free_host_port)
   return server_url + os.path.relpath(dest_file, directory)
 
 
@@ -46,7 +47,8 @@ def _host_local_origin_destination(shell, dest_dir, port, free_host_port):
   Returns:
     Url of the hosted directory.
   """
-  return shell.serve_local_directory(dest_dir, port, free_host_port)
+  mappings = [('', [dest_dir])]
+  return shell.serve_local_directories(mappings, port, free_host_port)
 
 
 def _rewrite(mapping, host_destination_functon, shell, port, free_host_port):
@@ -118,8 +120,8 @@ def configure_local_origin(shell, local_dir, port, free_host_port):
   Returns:
     The list of arguments to be appended to the shell argument list.
   """
-
-  origin_url = shell.serve_local_directory(local_dir, port, free_host_port)
+  mappings = [('', [local_dir])]
+  origin_url = shell.serve_local_directories(mappings, port, free_host_port)
   return ["--origin=" + origin_url]
 
 

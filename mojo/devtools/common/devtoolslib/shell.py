@@ -6,27 +6,6 @@
 class Shell(object):
   """Represents an abstract Mojo shell."""
 
-  def serve_local_directory(self, local_dir_path, port=0, free_host_port=False):
-    """Serves the content of the local (host) directory, making it available to
-    the shell under the url returned by the function.
-
-    The server will run on a separate thread until the program terminates. The
-    call returns immediately.
-
-    Args:
-      local_dir_path: path to the directory to be served
-      port: port at which the server will be available to the shell. On Android
-          this can be different from the port on which the server runs on the
-          host.
-      free_host_port: spawn the server a system allocated port. This is ignored
-          on Linux, where |port| indicates the port on which the server will be
-          spawned.
-
-    Returns:
-      The url that the shell can use to access the content of |local_dir_path|.
-    """
-    raise NotImplementedError()
-
   def serve_local_directories(self, mappings, port=0, free_host_port=False):
     """Serves the content of the local (host) directories, making it available
     to the shell under the url returned by the function.
