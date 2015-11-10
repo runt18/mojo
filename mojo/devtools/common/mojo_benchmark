@@ -59,12 +59,90 @@ def _generate_benchmark_variants(benchmark_spec):
   return variants
 
 
+def _print_benchmark_error(outcome):
+  if not outcome.succeeded:
+    print 'benchmark failed: ' + outcome.error_str
+  if outcome.some_measurements_failed:
+    print 'some measurements failed'
+  print 'output: '
+  print '-' * 72
+  print outcome.output
+  print '-' * 72
+
+
+def _print_results(benchmark_name, variant_name, results, measurements,
+                   aggregate):
+  print '[ %s ] %s ' % (benchmark_name, variant_name)
+  for measurement in measurements:
+    print '  ' + measurement['name'] + ': ',
+    if measurement['spec'] in results:
+      if aggregate:
+        print str(results[measurement['spec']])
+      else:
+        if len(results[measurement['spec']]) == 0:
+          print '?'
+        else:
+          print '%f' % results[measurement['spec']][0]
+    else:
+      print '?'
+
+
+def _upload_results(benchmark_name, variant_name, results, measurements,
+                    script_args):
+  anything_recorded = False
+  chart_data_recorder = perf_dashboard.ChartDataRecorder(script_args.test_name)
+  chart_name = benchmark_name + '__' + variant_name
+
+  for measurement in measurements:
+    if measurement['spec'] in results:
+      if not results[measurement['spec']]:
+        continue
+
+      if script_args.aggregate:
+        chart_data_recorder.record_vector(
+            perf_dashboard.normalize_label(chart_name),
+            perf_dashboard.normalize_label(measurement['name']),
+            'ms', results[measurement['spec']])
+      else:
+        chart_data_recorder.record_scalar(
+            perf_dashboard.normalize_label(chart_name),
+            perf_dashboard.normalize_label(measurement['name']),
+            'ms', results[measurement['spec']][0])
+      anything_recorded = True
+
+  if not anything_recorded:
+    # Don't upload empty packets, see
+    # https://github.com/catapult-project/catapult/issues/1733 .
+    return True
+
+  return perf_dashboard.upload_chart_data(
+      script_args.master_name, script_args.bot_name,
+      script_args.test_name, script_args.builder_name,
+      script_args.build_number, chart_data_recorder.get_chart_data(),
+      script_args.server_url, script_args.dry_run)
+
+
+def _argparse_aggregate_type(value):
+  try:
+    cast_value = int(value)
+  except ValueError:
+    raise argparse.ArgumentTypeError('value is not a positive integer')
+
+  if cast_value < 1:
+    raise argparse.ArgumentTypeError('value is not a positive integer')
+  return cast_value
+
+
 def main():
   parser = argparse.ArgumentParser(
       formatter_class=argparse.RawDescriptionHelpFormatter,
       description=_DESCRIPTION)
   parser.add_argument('benchmark_list_file', type=file,
                       help='a file listing benchmarks to run')
+  parser.add_argument('--aggregate', type=_argparse_aggregate_type,
+                      help='aggregate results over multiple runs. The value '
+                      'has to be a positive integer indicating the number of '
+                      'runs.')
   parser.add_argument('--save-all-traces', action='store_true',
                       help='save the traces produced by benchmarks to disk')
   perf_dashboard.add_argparse_server_arguments(parser)
@@ -85,72 +163,55 @@ def main():
   exec script_args.benchmark_list_file in benchmark_list_params
 
   exit_code = 0
+  run_count = script_args.aggregate if script_args.aggregate else 1
   for benchmark_spec in benchmark_list_params['benchmarks']:
     benchmark_name = benchmark_spec['name']
+    variants = _generate_benchmark_variants(benchmark_spec)
+    variant_results = {variant_spec['variant_name']: {}
+                       for variant_spec in variants}
 
-    for variant_spec in _generate_benchmark_variants(benchmark_spec):
+    for _ in xrange(run_count):
+      for variant_spec in variants:
+        variant_name = variant_spec['variant_name']
+        app = variant_spec['app']
+        duration = variant_spec['duration']
+        shell_args = variant_spec.get('shell-args', []) + common_shell_args
+        measurements = variant_spec['measurements']
+
+        output_file = None
+        if script_args.save_all_traces:
+          output_file = 'benchmark-%s-%s-%s.trace' % (
+              benchmark_name.replace(' ', '_'),
+              variant_name.replace(' ', '_'),
+              time.strftime('%Y%m%d%H%M%S'))
+
+        outcome = benchmark.run(
+            shell, shell_args, app, duration, measurements, script_args.verbose,
+            script_args.android, output_file)
+
+        if not outcome.succeeded or outcome.some_measurements_failed:
+          _print_benchmark_error(outcome)
+          exit_code = 1
+
+        if outcome.succeeded:
+          for measurement_spec in outcome.results:
+            if measurement_spec not in variant_results[variant_name]:
+              variant_results[variant_name][measurement_spec] = []
+            variant_results[variant_name][measurement_spec].append(
+                outcome.results[measurement_spec])
+
+    for variant_spec in variants:
       variant_name = variant_spec['variant_name']
-      app = variant_spec['app']
-      duration = variant_spec['duration']
-      shell_args = variant_spec.get('shell-args', []) + common_shell_args
-      measurements = variant_spec['measurements']
+      _print_results(benchmark_name, variant_name,
+                     variant_results[variant_name],
+                     variant_spec['measurements'], script_args.aggregate)
 
-      output_file = None
-      if script_args.save_all_traces:
-        output_file = 'benchmark-%s-%s-%s.trace' % (
-            benchmark_name.replace(' ', '_'),
-            variant_name.replace(' ', '_'),
-            time.strftime('%Y%m%d%H%M%S'))
-
-      chart_data_recorder = None
       if script_args.upload:
-        chart_data_recorder = perf_dashboard.ChartDataRecorder(
-            script_args.test_name)
-
-      results = benchmark.run(
-          shell, shell_args, app, duration, measurements, script_args.verbose,
-          script_args.android, output_file)
-
-      print '[ %s ] %s ' % (benchmark_name, variant_name)
-
-      some_measurements_failed = False
-      some_measurements_succeeded = False
-      if results.succeeded:
-        # Iterate over the list of specs, not the dictionary, to detect missing
-        # results and preserve the required order.
-        for measurement in measurements:
-          if measurement['spec'] in results.measurements:
-            result = results.measurements[measurement['spec']]
-            print '%10.4f  %s' % (result, measurement['name'])
-
-            if chart_data_recorder:
-              chart_name = benchmark_name + '__' + variant_name
-              chart_data_recorder.record_scalar(
-                  perf_dashboard.normalize_label(chart_name),
-                  perf_dashboard.normalize_label(measurement['name']),
-                  'ms', result)
-            some_measurements_succeeded = True
-          else:
-            print '?  %s' % measurement['name']
-            some_measurements_failed = True
-
-      if not results.succeeded or some_measurements_failed:
-        if not results.succeeded:
-          print 'benchmark failed: ' + results.error_str
-        if some_measurements_failed:
-          print 'some measurements failed'
-        print 'output: '
-        print '-' * 72
-        print results.output
-        print '-' * 72
-        exit_code = 1
-
-      if script_args.upload and some_measurements_succeeded:
-        if not perf_dashboard.upload_chart_data(
-            script_args.master_name, script_args.bot_name,
-            script_args.test_name, script_args.builder_name,
-            script_args.build_number, chart_data_recorder.get_chart_data(),
-            script_args.server_url, script_args.dry_run):
+        upload_succeeded = _upload_results(benchmark_name, variant_name,
+                                           variant_results[variant_name],
+                                           variant_spec['measurements'],
+                                           script_args)
+        if not upload_succeeded:
           exit_code = 1
 
   return exit_code

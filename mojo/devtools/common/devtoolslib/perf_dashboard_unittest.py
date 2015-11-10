@@ -73,3 +73,26 @@ class ChartDataRecorderTest(unittest.TestCase):
         'type': 'scalar',
         'units': 'ms',
         'value': 2}, charts['chart2']['val2'])
+
+  def test_vectors(self):
+    """Test recording a list of scalar values."""
+    recorder = ChartDataRecorder('benchmark')
+    recorder.record_vector('chart1', 'val1', 'ms', [1, 2])
+    recorder.record_vector('chart2', 'val2', 'ms', [])
+
+    result = recorder.get_chart_data()
+    self.assertEquals('1.0', result['format_version'])
+    self.assertEquals('benchmark', result['benchmark_name'])
+
+    charts = result['charts']
+    self.assertEquals(2, len(charts))
+    self.assertEquals(1, len(charts['chart1']))
+    self.assertEquals({
+        'type': 'list_of_scalar_values',
+        'units': 'ms',
+        'values': [1, 2]}, charts['chart1']['val1'])
+    self.assertEquals(1, len(charts['chart2']))
+    self.assertEquals({
+        'type': 'list_of_scalar_values',
+        'units': 'ms',
+        'values': []}, charts['chart2']['val2'])

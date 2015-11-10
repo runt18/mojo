@@ -43,14 +43,18 @@ def _parse_measurement_results(output):
   return measurement_results
 
 
-class Results(object):
+class Outcome(object):
   """Holds results of a benchmark run."""
 
   def __init__(self, succeeded, error_str, output):
     self.succeeded = succeeded
     self.error_str = error_str
     self.output = output
-    self.measurements = None
+    # Maps measurement specs to measurement results given as floats. Only
+    # measurements that succeeded (ie. we retrieved their results) are
+    # represented.
+    self.results = {}
+    self.some_measurements_failed = False
 
 
 def run(shell, shell_args, app, duration_seconds, measurements, verbose,
@@ -59,7 +63,7 @@ def run(shell, shell_args, app, duration_seconds, measurements, verbose,
   appropriate arguments and returns the produced output.
 
   Returns:
-    A tuple of (succeeded, error_msg, output).
+    An instance of Outcome holding the results of the run.
   """
   timeout = duration_seconds + _EXTRA_TIMEOUT
   benchmark_args = []
@@ -89,15 +93,21 @@ def run(shell, shell_args, app, duration_seconds, measurements, verbose,
       shell_args, timeout=timeout)
 
   if did_time_out:
-    return Results(False, 'timed out', output)
+    return Outcome(False, 'timed out', output)
   if return_code:
-    return Results(False, 'return code: ' + str(return_code), output)
+    return Outcome(False, 'return code: ' + str(return_code), output)
 
   # Pull the trace file even if some measurements are missing, as it can be
   # useful in debugging.
   if device_output_file:
     shell.pull_file(device_output_file, output_file, remove_original=True)
 
-  results = Results(True, None, output)
-  results.measurements = _parse_measurement_results(output)
-  return results
+  outcome = Outcome(True, None, output)
+  parsed_results = _parse_measurement_results(output)
+  for measurement in measurements:
+    spec = measurement['spec']
+    if spec in parsed_results:
+      outcome.results[spec] = parsed_results[spec]
+    else:
+      outcome.some_measurements_failed = True
+  return outcome

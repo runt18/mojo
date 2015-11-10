@@ -40,6 +40,15 @@ class ChartDataRecorder(object):
         'units': units,
         'value': value}
 
+  def record_vector(self, chart_name, value_name, units, values):
+    """Records a single measurement value of a list of scalars type."""
+    if chart_name not in self.charts:
+      self.charts[chart_name] = {}
+    self.charts[chart_name][value_name] = {
+        'type': 'list_of_scalar_values',
+        'units': units,
+        'values': values}
+
   def get_chart_data(self):
     """Returns the JSON string representing the recorded chart data, wrapping
     it with the required meta data."""
