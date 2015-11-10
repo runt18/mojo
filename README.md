@@ -107,6 +107,11 @@ Run the tests:
 mojo/tools/mojob.py test
 ```
 
+Run the benchmarks:
+```
+mojo/devtools/common/mojo_benchmark mojo/tools/data/benchmarks
+```
+
 Create a release build:
 ```
 mojo/tools/mojob.py gn --release
@@ -289,5 +294,26 @@ To land a change after receiving LGTM:
 $ git cl land
 ```
 
-Don't break the build! Waterfall is here:
-http://build.chromium.org/p/client.mojo/waterfall
+## Monitoring
+
+Our [waterfall](http://build.chromium.org/p/client.mojo/waterfall) continuously
+builds and tests the code. Don't break the build!
+
+### Benchmarks
+
+One of the bots, [Mojo Linux
+Perf](http://build.chromium.org/p/client.mojo/builders/Mojo%20Linux%20Perf) runs
+a [suite of benchmarks](mojo/tools/data/benchmarks) and uploads the results to
+the [performance dashboard](https://chromeperf.appspot.com/). You can browse the
+results [here](https://chromeperf.appspot.com/report), putting `mojo_benchmarks`
+as the "test suite".
+
+Automated alerts about performance regressions are sent to
+[mojo-perf-alerts@chromium.org](https://groups.google.com/a/chromium.org/forum/#!forum/mojo-perf-alerts).
+
+For examples of interesting sets of graphs see:
+
+ - [app
+   startup](https://chromeperf.appspot.com/report?sid=4848464df5ca8467770d80b309740ef56fbff00e773c2c53816fd8bff1fda1e0)
+ - [ipc
+   performance](https://chromeperf.appspot.com/report?sid=9abc20b46f6f8d908b0f07847f1d42eab54c7025a098336e6dc2d3e2030d66f8)
