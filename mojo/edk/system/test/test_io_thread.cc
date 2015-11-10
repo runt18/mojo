@@ -55,13 +55,13 @@ void TestIOThread::Stop() {
 }
 
 void TestIOThread::PostTask(const base::Closure& task) {
-  task_runner()->PostTask(tracked_objects::Location(), task);
+  embedder::PlatformPostTask(task_runner().get(), task);
 }
 
 void TestIOThread::PostTaskAndWait(const base::Closure& task) {
   AutoResetWaitableEvent event;
-  task_runner()->PostTask(tracked_objects::Location(),
-                          base::Bind(&PostTaskAndWaitHelper, &event, task));
+  embedder::PlatformPostTask(task_runner().get(),
+                             base::Bind(&PostTaskAndWaitHelper, &event, task));
   event.Wait();
 }
 

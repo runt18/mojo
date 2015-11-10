@@ -6,9 +6,8 @@
 #define MOJO_EDK_SYSTEM_TEST_TEST_IO_THREAD_H_
 
 #include "base/callback_forward.h"
-#include "base/memory/ref_counted.h"
-#include "base/task_runner.h"
 #include "base/threading/thread.h"
+#include "mojo/edk/embedder/platform_task_runner.h"
 #include "mojo/public/cpp/system/macros.h"
 
 namespace mojo {
@@ -39,7 +38,8 @@ class TestIOThread {
     return static_cast<base::MessageLoopForIO*>(io_thread_.message_loop());
   }
 
-  scoped_refptr<base::SingleThreadTaskRunner> task_runner() {
+  // TODO(vtl): Possibly, this should return a |PlatformTaskRunner*| instead.
+  embedder::PlatformTaskRunnerRefPtr task_runner() {
     return message_loop()->task_runner();
   }
 

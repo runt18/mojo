@@ -6,10 +6,9 @@
 #define MOJO_EDK_TEST_SCOPED_IPC_SUPPORT_H_
 
 #include "base/callback.h"
-#include "base/memory/ref_counted.h"
 #include "base/synchronization/waitable_event.h"
-#include "base/task_runner.h"
 #include "mojo/edk/embedder/master_process_delegate.h"
+#include "mojo/edk/embedder/platform_task_runner.h"
 #include "mojo/edk/embedder/process_delegate.h"
 #include "mojo/edk/embedder/process_type.h"
 #include "mojo/edk/embedder/scoped_platform_handle.h"
@@ -29,13 +28,13 @@ class ScopedIPCSupportHelper {
 
   void Init(embedder::ProcessType process_type,
             embedder::ProcessDelegate* process_delegate,
-            scoped_refptr<base::TaskRunner> io_thread_task_runner,
+            embedder::PlatformTaskRunnerRefPtr,
             embedder::ScopedPlatformHandle platform_handle);
 
   void OnShutdownCompleteImpl();
 
  private:
-  scoped_refptr<base::TaskRunner> io_thread_task_runner_;
+  embedder::PlatformTaskRunnerRefPtr io_thread_task_runner_;
 
   // Set after shut down.
   util::ManualResetWaitableEvent event_;
@@ -52,7 +51,7 @@ class ScopedIPCSupportHelper {
 class ScopedIPCSupport : public embedder::ProcessDelegate {
  public:
   explicit ScopedIPCSupport(
-      scoped_refptr<base::TaskRunner> io_thread_task_runner);
+      embedder::PlatformTaskRunnerRefPtr io_thread_task_runner);
   ~ScopedIPCSupport() override;
 
  private:
@@ -70,9 +69,9 @@ class ScopedIPCSupport : public embedder::ProcessDelegate {
 class ScopedMasterIPCSupport : public embedder::MasterProcessDelegate {
  public:
   explicit ScopedMasterIPCSupport(
-      scoped_refptr<base::TaskRunner> io_thread_task_runner);
+      embedder::PlatformTaskRunnerRefPtr io_thread_task_runner);
   ScopedMasterIPCSupport(
-      scoped_refptr<base::TaskRunner> io_thread_task_runner,
+      embedder::PlatformTaskRunnerRefPtr io_thread_task_runner,
       base::Callback<void(embedder::SlaveInfo slave_info)> on_slave_disconnect);
   ~ScopedMasterIPCSupport() override;
 
@@ -92,11 +91,13 @@ class ScopedMasterIPCSupport : public embedder::MasterProcessDelegate {
 // call a callback (on the I/O thread) on receiving |OnMasterDisconnect()|.
 class ScopedSlaveIPCSupport : public embedder::SlaveProcessDelegate {
  public:
-  ScopedSlaveIPCSupport(scoped_refptr<base::TaskRunner> io_thread_task_runner,
-                        embedder::ScopedPlatformHandle platform_handle);
-  ScopedSlaveIPCSupport(scoped_refptr<base::TaskRunner> io_thread_task_runner,
-                        embedder::ScopedPlatformHandle platform_handle,
-                        base::Closure on_master_disconnect);
+  ScopedSlaveIPCSupport(
+      embedder::PlatformTaskRunnerRefPtr io_thread_task_runner,
+      embedder::ScopedPlatformHandle platform_handle);
+  ScopedSlaveIPCSupport(
+      embedder::PlatformTaskRunnerRefPtr io_thread_task_runner,
+      embedder::ScopedPlatformHandle platform_handle,
+      base::Closure on_master_disconnect);
   ~ScopedSlaveIPCSupport() override;
 
  private:

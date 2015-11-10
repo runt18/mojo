@@ -7,7 +7,6 @@
 
 #include <memory>
 
-#include "base/memory/ref_counted.h"
 #include "base/threading/thread.h"
 #include "mojo/edk/embedder/platform_task_runner.h"
 #include "mojo/edk/embedder/scoped_platform_handle.h"
@@ -97,7 +96,7 @@ class SlaveConnectionManager final : public ConnectionManager,
   // in |Shutdown()| after |private_thread_| is dead. Thus it's safe to "use" on
   // |private_thread_|. (Note that |slave_process_delegate_| may only be called
   // from the delegate thread.)
-  scoped_refptr<base::TaskRunner> delegate_thread_task_runner_;
+  embedder::PlatformTaskRunnerRefPtr delegate_thread_task_runner_;
   embedder::SlaveProcessDelegate* slave_process_delegate_;
 
   // This is a private I/O thread on which this class does the bulk of its work.
