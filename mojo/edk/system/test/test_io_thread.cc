@@ -5,8 +5,6 @@
 #include "mojo/edk/system/test/test_io_thread.h"
 
 #include "base/bind.h"
-#include "base/callback.h"
-#include "base/location.h"
 #include "mojo/edk/util/waitable_event.h"
 
 using mojo::util::AutoResetWaitableEvent;
