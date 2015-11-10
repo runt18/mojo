@@ -8,6 +8,7 @@
 
 #include <thread>
 
+#include "build/build_config.h"
 #include "mojo/edk/system/test/sleep.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
@@ -88,7 +89,14 @@ TEST(MutexTest, Basic) {
   EXPECT_GE(thread_acquired, 20);
 }
 
-TEST(MutexTest, AssertHeld) {
+#if defined(OS_ANDROID)
+// TODO(vtl): On Android, death tests don't seem to work properly with
+// |assert()| (which presumably calls |abort()|).
+#define MAYBE_AssertHeld DISABLED_AssertHeld
+#else
+#define MAYBE_AssertHeld AssertHeld
+#endif
+TEST(MutexTest, MAYBE_AssertHeld) {
   Mutex mutex;
 
 #if defined(NDEBUG) && !defined(DCHECK_ALWAYS_ON)
