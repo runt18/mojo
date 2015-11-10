@@ -117,3 +117,6 @@ v8.log
 
 # downloaded prediction dictionary files.
 /services/prediction/res/*.dict
+
+# Download the Mojom parser binary.
+/mojom/mojom_parser/bin/linux64/mojom_parser

@@ -388,4 +388,17 @@ hooks = [
                 '-d', 'src/services/prediction/res',
     ],
   },
+  # Pull the mojom parser binary using checked-in hashes.
+  {
+    'name': 'mojom_parser',
+    'pattern': '',
+    'action': [ 'src/tools/download_from_google_storage.py',
+                '--no_resume',
+                '--quiet',
+                '--platform=linux*',
+                '--no_auth',
+                '--bucket', 'mojo/mojom_parser',
+                '-s', 'src/mojom/mojom_parser/bin/linux64/mojom_parser.sha1',
+    ],
+  },
 ]
