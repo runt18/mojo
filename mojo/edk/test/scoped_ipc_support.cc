@@ -12,9 +12,7 @@ namespace test {
 
 namespace internal {
 
-ScopedIPCSupportHelper::ScopedIPCSupportHelper()
-    : event_(true, false) {  // Manual reset.
-}
+ScopedIPCSupportHelper::ScopedIPCSupportHelper() {}
 
 ScopedIPCSupportHelper::~ScopedIPCSupportHelper() {
   if (base::MessageLoop::current() &&

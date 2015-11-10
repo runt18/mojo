@@ -14,6 +14,7 @@
 #include "mojo/edk/embedder/process_type.h"
 #include "mojo/edk/embedder/scoped_platform_handle.h"
 #include "mojo/edk/embedder/slave_process_delegate.h"
+#include "mojo/edk/util/waitable_event.h"
 #include "mojo/public/cpp/system/macros.h"
 
 namespace mojo {
@@ -37,7 +38,7 @@ class ScopedIPCSupportHelper {
   scoped_refptr<base::TaskRunner> io_thread_task_runner_;
 
   // Set after shut down.
-  base::WaitableEvent event_;
+  util::ManualResetWaitableEvent event_;
 
   MOJO_DISALLOW_COPY_AND_ASSIGN(ScopedIPCSupportHelper);
 };
