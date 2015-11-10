@@ -6,7 +6,6 @@
 #define MOJO_EDK_TEST_SCOPED_IPC_SUPPORT_H_
 
 #include "base/callback.h"
-#include "base/synchronization/waitable_event.h"
 #include "mojo/edk/embedder/master_process_delegate.h"
 #include "mojo/edk/embedder/platform_task_runner.h"
 #include "mojo/edk/embedder/process_delegate.h"
