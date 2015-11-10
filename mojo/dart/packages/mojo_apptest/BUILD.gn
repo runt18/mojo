@@ -2,7 +2,7 @@
 # Use of this source code is governed by a BSD-style license that can be
 # found in the LICENSE file.
 
-import("../rules.gni")
+import("//mojo/public/dart/rules.gni")
 
 dart_pkg("mojo_apptest") {
   libs = [ "lib/apptest.dart" ]
@@ -10,7 +10,7 @@ dart_pkg("mojo_apptest") {
     "pubspec.yaml",
   ]
   deps = [
-    "../mojo",
-    "../third_party",
+    "//mojo/public/dart/mojo",
+    "//mojo/public/dart/third_party",
   ]
 }

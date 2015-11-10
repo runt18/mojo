@@ -86,6 +86,9 @@ v8.log
 /mojo/dart/apptest/.packages
 /mojo/dart/apptest/packages
 /mojo/dart/apptest/pubspec.lock
+/mojo/dart/packages/mojo_apptest/.packages
+/mojo/dart/packages/mojo_apptest/packages
+/mojo/dart/packages/mojo_apptest/pubspec.lock
 /mojo/dart/http_load_test/.packages
 /mojo/dart/http_load_test/bin/packages
 /mojo/dart/http_load_test/packages
