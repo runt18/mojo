@@ -474,14 +474,16 @@ func computeTypeKey(fullyQualifiedName string) (typeKey string) {
 	if typeKey, ok := fqnToTypeKey[fullyQualifiedName]; ok == true {
 		return typeKey
 	}
-	typeKey = fmt.Sprintf("%d", nextKey)
-	nextKey++
+	// TODO(rudominer) Until we understand better what the requirements are for a type key
+	// let's just use the fully-qualified name itself, with a prefix prepended, as the type key.
+	// The reason or the prefix is pragmatic: When debugging we can tell whether a string
+	// is a type key or a fully-qualified-name.
+	typeKey = fmt.Sprintf("TYPE_KEY:%s", fullyQualifiedName)
 	fqnToTypeKey[fullyQualifiedName] = typeKey
 	return
 }
 
 var fqnToTypeKey map[string]string
-var nextKey int
 
 func init() {
 	fqnToTypeKey = make(map[string]string)

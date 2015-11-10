@@ -39,10 +39,15 @@ template("go_library") {
 # Only works on linux. |go_build_tool| must be set to the absolute path
 # of the go build tool.
 #
-# Variables (all required)
+# Variables
 #   sources: list of .go files to compile
+#   inputs: list of files that are input dependencies. Use this to
+#           specify your imported .go files. These files will not be
+#           specified in the command line to go test but they will cause
+#           a re-compile if they are touched. (optional)
 #   static_library_sources: list of C sources needed for the static library
-#   deps: dependencies for the static library
+#                           (optional)
+#   deps: dependencies (optional)
 
 template("go_test_binary") {
   # Only available on linux for now.
@@ -54,9 +59,13 @@ template("go_test_binary") {
 
   static_library(static_library_name) {
     testonly = true
-    sources = invoker.static_library_sources
-    deps = invoker.deps
     complete_static_lib = true
+    if (defined(invoker.static_library_sources)) {
+      sources = invoker.static_library_sources
+    }
+    if (defined(invoker.deps)) {
+      deps = invoker.deps
+    }
   }
 
   action(target_name) {
@@ -64,8 +73,14 @@ template("go_test_binary") {
     deps = [
       ":$static_library_name",
     ]
+    if (defined(invoker.deps)) {
+      deps += invoker.deps
+    }
     script = "//mojo/go/go.py"
     inputs = invoker.sources
+    if (defined(invoker.inputs)) {
+      inputs += invoker.inputs
+    }
     outputs = [
       "${target_out_dir}/${target_name}",
     ]
@@ -108,7 +123,7 @@ template("go_test_binary") {
 #   static_library_sources: list of C sources needed for the static library
 #                           (optional)
 #   deps: dependencies (optional)
-#   deps: output_binary_name (optional) name to use for the generated binary.
+#   output_binary_name: name to use for the generated binary.
 #         If not provided the name ${target_name}_go will be used.
 #         Do not specify this to be equal to target_name or Ninja will
 #         give a warning about multiple targets generating the same output.

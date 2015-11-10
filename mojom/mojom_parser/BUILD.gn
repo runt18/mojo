@@ -9,6 +9,8 @@ go_binary("mojom_parser") {
     "parser_main.go",
   ]
   inputs = [
+    "generated/mojom_files/mojom_files.mojom.go",
+    "generated/mojom_types/mojom_types.mojom.go",
     "lexer/lexer.go",
     "lexer/token_stream.go",
     "lexer/tokens.go",
@@ -29,4 +31,30 @@ go_binary("mojom_parser") {
   # Ninja gets confused if the output_binary_name is the same
   # as the target name.
   output_binary_name = "moparse"
+}
+
+go_test_binary("serialization_test") {
+  sources = [
+    "serialization/serialization.go",
+    "serialization/serialization_test.go",
+  ]
+  inputs = [
+    "generated/mojom_files/mojom_files.mojom.go",
+    "generated/mojom_types/mojom_types.mojom.go",
+    "lexer/lexer.go",
+    "lexer/token_stream.go",
+    "lexer/tokens.go",
+    "mojom/computed_data.go",
+    "mojom/mojom_descriptor.go",
+    "mojom/scopes.go",
+    "mojom/types.go",
+    "mojom/user_defined_types.go",
+    "parser/parse_driver.go",
+    "parser/parser.go",
+    "parser/parsing.go",
+    "//third_party/golang/src/fmt/print.go",
+  ]
+  deps = [
+    "//mojo/public/platform/native:system",
+  ]
 }

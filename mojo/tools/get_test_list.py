@@ -124,6 +124,11 @@ def GetTestList(config, verbose_count=0):
     AddEntry("Go system tests",
              [os.path.join(build_dir, "obj", "mojo", "go", "system_test")])
 
+    # Go mojom parser tests:
+    AddEntry("Go mojom parser serialization tests",
+             [os.path.join(build_dir, "obj", "mojom", "mojom_parser",
+              "serialization_test")])
+
     # Pure Go unit tests:
     assert paths.go_tool_path is not None
     go_tool = paths.go_tool_path
