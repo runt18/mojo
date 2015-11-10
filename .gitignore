@@ -69,18 +69,10 @@ v8.log
 /v8/
 
 # dart packages directories and related.
-/examples/dart/hello_world/hello/.packages
-/examples/dart/hello_world/hello/packages
-/examples/dart/device_info/.packages
-/examples/dart/device_info/packages
-/examples/dart/hello_world/world/.packages
-/examples/dart/hello_world/world/packages
-/examples/dart/netcat/.packages
-/examples/dart/netcat/packages
-/examples/dart/traced_application/.packages
-/examples/dart/traced_application/packages
-/examples/dart/wget/.packages
-/examples/dart/wget/packages
+/benchmarks/mojo_rtt_benchmark/.packages
+/benchmarks/mojo_rtt_benchmark/packages
+/examples/dart/**/.packages
+/examples/dart/**/packages
 /mojo/common/dart/.packages
 /mojo/common/dart/packages
 /mojo/dart/apptest/.packages

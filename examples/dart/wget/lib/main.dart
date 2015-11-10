@@ -10,7 +10,6 @@ import 'dart:async';
 import 'dart:typed_data';
 
 import 'package:mojo/application.dart';
-import 'package:mojo/bindings.dart';
 import 'package:mojo/core.dart';
 import 'package:mojo/mojo/url_request.mojom.dart';
 import 'package:mojo_services/mojo/network_service.mojom.dart';

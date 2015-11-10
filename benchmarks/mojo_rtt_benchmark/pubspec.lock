@@ -5,6 +5,12 @@ packages:
     description: args
     source: hosted
     version: "0.13.2"
+  common:
+    description:
+      path: "../../mojo/common/dart"
+      relative: true
+    source: path
+    version: "0.0.0"
   crypto:
     description: crypto
     source: hosted
@@ -17,13 +23,11 @@ packages:
     description: mojo
     source: hosted
     version: "0.4.2"
-  mojo_services:
-    description: mojo_services
-    source: hosted
-    version: "0.4.4"
   mojom:
-    description: mojom
-    source: hosted
+    description:
+      path: "../../out/Debug/gen/dart-pkg/mojom"
+      relative: true
+    source: path
     version: "0.2.7"
   path:
     description: path

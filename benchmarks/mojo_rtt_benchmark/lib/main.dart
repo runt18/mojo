@@ -14,7 +14,6 @@ import 'dart:async';
 import 'package:args/args.dart' as args;
 import 'package:common/tracing_helper.dart';
 import 'package:mojo/application.dart';
-import 'package:mojo/bindings.dart';
 import 'package:mojo/core.dart';
 import 'package:mojom/mojo/examples/echo.mojom.dart';
 

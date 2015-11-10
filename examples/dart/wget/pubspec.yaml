@@ -1,2 +1,4 @@
 name: mojo_dart_wget
-
+dependencies:
+  mojo: ^0.4.0
+  mojo_services: ^0.4.0

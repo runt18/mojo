@@ -12,7 +12,6 @@ import 'dart:isolate';
 
 import 'package:common/tracing_helper.dart';
 import 'package:mojo/application.dart';
-import 'package:mojo/bindings.dart';
 import 'package:mojo/core.dart';
 
 void echoIsolate(SendPort sendPort) {
