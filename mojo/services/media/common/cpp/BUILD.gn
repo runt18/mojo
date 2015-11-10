@@ -10,6 +10,8 @@ mojo_sdk_source_set("cpp") {
   sources = [
     "circular_buffer_media_pipe_adapter.cc",
     "circular_buffer_media_pipe_adapter.h",
+    "linear_transform.cc",
+    "linear_transform.h",
   ]
 
   deps = [
