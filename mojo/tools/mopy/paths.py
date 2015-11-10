@@ -38,6 +38,8 @@ class Paths(object):
 
     if self.build_dir is not None:
       self.mojo_shell_path = os.path.join(self.build_dir, "mojo_shell")
+      self.mojo_shell_child_path = os.path.join(self.build_dir,
+          "mojo_shell_child")
       self.dart_snapshotter_path = os.path.join(
           self.build_dir, "dart_snapshotter")
       self.sky_shell_path = os.path.join(self.build_dir, "sky_shell")
@@ -46,12 +48,14 @@ class Paths(object):
       # |os.path| isn't correct....
       if Config.GetHostOS() == Config.OS_WINDOWS:
         self.mojo_shell_path += ".exe"
+        self.mojo_shell_child_path += ".exe"
         self.sky_shell_path += ".exe"
         self.dart_snapshotter_path += ".exe"
       if config and config.target_os == Config.OS_ANDROID:
         self.target_mojo_shell_path = os.path.join(self.build_dir,
                                                    "apks",
                                                    "MojoShell.apk")
+        self.target_mojo_shell_binaries = [self.target_mojo_shell_path]
         # dart_snapshotter only runs on the host platform. There is no build to
         # run on Android.
         self.target_dart_snapshotter_path = None
@@ -60,6 +64,8 @@ class Paths(object):
                                                   "SkyDemo.apk")
       else:
         self.target_mojo_shell_path = self.mojo_shell_path
+        self.target_mojo_shell_binaries = [self.mojo_shell_path,
+                                           self.mojo_shell_child_path]
         self.target_dart_snapshotter_path = self.dart_snapshotter_path
         self.target_sky_shell_path = self.sky_shell_path
     else:

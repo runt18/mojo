@@ -119,20 +119,20 @@ def upload_shell(config, dry_run, verbose):
   dest = "gs://mojo/shell/" + version + "/" + zipfile_name + ".zip"
   with tempfile.NamedTemporaryFile() as zip_file:
     with zipfile.ZipFile(zip_file, 'w') as z:
-      shell_path = paths.target_mojo_shell_path
-      with open(shell_path) as shell_binary:
-        shell_filename = os.path.basename(shell_path)
-        zipinfo = zipfile.ZipInfo(shell_filename)
-        zipinfo.external_attr = 0777 << 16L
-        compress_type = zipfile.ZIP_DEFLATED
-        if config.target_os == Config.OS_ANDROID:
-          # The APK is already compressed.
-          compress_type = zipfile.ZIP_STORED
-        zipinfo.compress_type = compress_type
-        zipinfo.date_time = time.gmtime(os.path.getmtime(shell_path))
-        if verbose:
-          print "zipping %s" % shell_path
-        z.writestr(zipinfo, shell_binary.read())
+      for filename in paths.target_mojo_shell_binaries:
+        with open(filename) as binary:
+          basename = os.path.basename(filename)
+          zipinfo = zipfile.ZipInfo(basename)
+          zipinfo.external_attr = 0777 << 16L
+          compress_type = zipfile.ZIP_DEFLATED
+          if config.target_os == Config.OS_ANDROID:
+            # The APK is already compressed.
+            compress_type = zipfile.ZIP_STORED
+          zipinfo.compress_type = compress_type
+          zipinfo.date_time = time.gmtime(os.path.getmtime(filename))
+          if verbose:
+            print "zipping %s" % filename
+          z.writestr(zipinfo, binary.read())
     upload(config, zip_file.name, dest, dry_run, gzip=False)
 
   # Update the LATEST file to contain the version of the new binary.
