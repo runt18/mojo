@@ -26,8 +26,6 @@ mojo_edk_source_set("embedder") {
     "test_embedder.h",
   ]
 
-  mojo_edk_configs = [ "mojo/edk/system:system_config" ]
-
   public_deps = [
     ":delegates",
     ":platform",
@@ -73,8 +71,6 @@ mojo_edk_source_set("platform") {
     "simple_platform_support.h",
   ]
 
-  mojo_edk_configs = [ "mojo/edk/system:system_config" ]
-
   mojo_sdk_public_deps = [ "mojo/public/cpp/system" ]
 
   deps = [
@@ -102,8 +98,6 @@ mojo_edk_source_set("delegates") {
     "slave_info.h",
     "slave_process_delegate.h",
   ]
-
-  mojo_edk_configs = [ "mojo/edk/system:system_config" ]
 
   mojo_sdk_public_deps = [ "mojo/public/cpp/system" ]
 }
