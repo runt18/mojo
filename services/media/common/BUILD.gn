@@ -9,10 +9,12 @@ source_set("common") {
   sources = [
     "media_pipe_base.cc",
     "media_pipe_base.h",
+    "rate_control_base.cc",
   ]
 
   deps = [
     "//base",
+    "//mojo/services/media/common/cpp",
     "//mojo/services/media/common/interfaces",
   ]
 }

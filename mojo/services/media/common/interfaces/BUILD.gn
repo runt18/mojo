@@ -9,5 +9,6 @@ mojom("interfaces") {
   sources = [
     "media_common.mojom",
     "media_pipe.mojom",
+    "rate_control.mojom",
   ]
 }

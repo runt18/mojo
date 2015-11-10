@@ -12,7 +12,17 @@ mojo_sdk_source_set("cpp") {
     "circular_buffer_media_pipe_adapter.h",
     "linear_transform.cc",
     "linear_transform.h",
+    "local_time.h",
   ]
+
+  if (is_posix) {
+    sources += [
+      "platform/posix/local_time.cc",
+      "platform/posix/local_time.h",
+    ]
+  } else {
+    sources += [ "platform/generic/local_time.h" ]
+  }
 
   deps = [
     "$mojo_sdk_root/mojo/public/cpp/environment",
