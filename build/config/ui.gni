@@ -14,7 +14,7 @@
 declare_args() {
   # Indicates if Ash is enabled. Ash is the Aura Shell which provides a
   # desktop-like environment for Aura. Requires use_aura = true
-  use_ash = is_win || is_linux
+  use_ash = is_linux
 
   # Indicates if Ozone is enabled. Ozone is a low-level library layer for Linux
   # that does not require X11.
@@ -25,10 +25,10 @@ declare_args() {
 
   # Indicates if Aura is enabled. Aura is a low-level windowing library, sort
   # of a replacement for GDI or GTK.
-  use_aura = is_win || is_linux
+  use_aura = is_linux
 
   # True means the UI is built using the "views" framework.
-  toolkit_views = is_mac || is_win || is_chromeos || use_aura
+  toolkit_views = is_mac || is_chromeos || use_aura
 
   # Whether the entire browser uses toolkit-views on Mac instead of Cocoa.
   mac_views_browser = false
@@ -62,6 +62,6 @@ use_ozone_evdev = use_ozone
 
 use_clipboard_aurax11 = is_linux && use_aura && use_x11
 
-enable_hidpi = is_mac || is_chromeos || is_win || is_linux
+enable_hidpi = is_mac || is_chromeos || is_linux
 
 enable_topchrome_md = false

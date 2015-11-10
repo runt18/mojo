@@ -211,12 +211,6 @@ if (is_linux) {
     public_configs = [ ":nspr_config" ]
 
     configs -= [ "//build/config/compiler:chromium_code" ]
-    if (is_win) {
-      configs -= [
-        "//build/config/win:unicode",  # Requires 8-bit mode.
-        "//build/config/win:lean_and_mean",  # Won"t compile with lean and mean.
-      ]
-    }
     configs += [
       "//build/config/compiler:no_chromium_code",
       "//build/config/compiler:no_size_t_to_int_warning",
@@ -230,39 +224,28 @@ if (is_linux) {
 
     include_dirs = [ "nspr/pr/include/private" ]
 
-    if (is_win) {
-      cflags = [ "/wd4554" ]  # Check precidence.
-      defines += [
-        "XP_PC",
-        "WIN32",
-        "WIN95",
-        "_PR_GLOBAL_THREADS_ONLY",
-        "_CRT_SECURE_NO_WARNINGS",
-      ]
-    } else {
-      sources -= [
-        "nspr/pr/src/md/windows/ntgc.c",
-        "nspr/pr/src/md/windows/ntinrval.c",
-        "nspr/pr/src/md/windows/ntmisc.c",
-        "nspr/pr/src/md/windows/ntsec.c",
-        "nspr/pr/src/md/windows/ntsem.c",
-        "nspr/pr/src/md/windows/w32ipcsem.c",
-        "nspr/pr/src/md/windows/w32poll.c",
-        "nspr/pr/src/md/windows/w32rng.c",
-        "nspr/pr/src/md/windows/w32shm.c",
-        "nspr/pr/src/md/windows/w95cv.c",
-        "nspr/pr/src/md/windows/w95dllmain.c",
-        "nspr/pr/src/md/windows/w95io.c",
-        "nspr/pr/src/md/windows/w95sock.c",
-        "nspr/pr/src/md/windows/w95thred.c",
-        "nspr/pr/src/md/windows/win32_errors.c",
-        "nspr/pr/src/threads/combined/prucpu.c",
-        "nspr/pr/src/threads/combined/prucv.c",
-        "nspr/pr/src/threads/combined/prulock.c",
-        "nspr/pr/src/threads/combined/prustack.c",
-        "nspr/pr/src/threads/combined/pruthr.c",
-      ]
-    }
+    sources -= [
+      "nspr/pr/src/md/windows/ntgc.c",
+      "nspr/pr/src/md/windows/ntinrval.c",
+      "nspr/pr/src/md/windows/ntmisc.c",
+      "nspr/pr/src/md/windows/ntsec.c",
+      "nspr/pr/src/md/windows/ntsem.c",
+      "nspr/pr/src/md/windows/w32ipcsem.c",
+      "nspr/pr/src/md/windows/w32poll.c",
+      "nspr/pr/src/md/windows/w32rng.c",
+      "nspr/pr/src/md/windows/w32shm.c",
+      "nspr/pr/src/md/windows/w95cv.c",
+      "nspr/pr/src/md/windows/w95dllmain.c",
+      "nspr/pr/src/md/windows/w95io.c",
+      "nspr/pr/src/md/windows/w95sock.c",
+      "nspr/pr/src/md/windows/w95thred.c",
+      "nspr/pr/src/md/windows/win32_errors.c",
+      "nspr/pr/src/threads/combined/prucpu.c",
+      "nspr/pr/src/threads/combined/prucv.c",
+      "nspr/pr/src/threads/combined/prulock.c",
+      "nspr/pr/src/threads/combined/prustack.c",
+      "nspr/pr/src/threads/combined/pruthr.c",
+    ]
 
     if (!is_posix) {
       sources -= [
@@ -358,10 +341,6 @@ if (is_linux) {
     if (component_mode == "shared_library") {
       if (is_mac) {
         ldflags = [ "-all_load" ]
-      } else if (is_win) {
-        # Pass the def file to the linker.
-        ldflags =
-            [ "/DEF:" + rebase_path("nss/exports_win.def", root_build_dir) ]
       }
     }
   }
@@ -430,10 +409,6 @@ if (is_linux) {
     ]
 
     configs -= [ "//build/config/compiler:chromium_code" ]
-
-    if (is_win) {
-      configs -= [ "//build/config/win:unicode" ]  # Requires 8-bit mode.
-    }
     configs += [ "//build/config/compiler:no_chromium_code" ]
 
     include_dirs = [ "nss/lib/ckfw" ]
@@ -450,9 +425,6 @@ if (is_linux) {
       "NSS_USE_STATIC_LIBS",
       "USE_UTIL_DIRECTLY",
     ]
-    if (is_win) {
-      defines += [ "_WINDOWS" ]
-    }
     include_dirs = [
       "nspr/pr/include",
       "nspr/lib/ds",
@@ -472,50 +444,6 @@ if (is_linux) {
       "nss/lib/softoken",
       "nss/lib/util",
     ]
-  }
-
-  if (is_win && current_cpu == "x86") {
-    source_set("nss_static_avx") {
-      sources = [
-        "nss/lib/freebl/intel-gcm-wrap.c",
-        "nss/lib/freebl/intel-gcm-x86-masm.asm",
-        "nss/lib/freebl/intel-gcm.h",
-      ]
-      defines = [
-        "_WINDOWS",
-        "_X86_",
-        "INTEL_GCM",
-        "MP_API_COMPATIBLE",
-        "MP_ASSEMBLY_DIV_2DX1D",
-        "MP_ASSEMBLY_MULTIPLY",
-        "MP_ASSEMBLY_SQUARE",
-        "MP_NO_MP_WORD",
-        "MP_USE_UINT_DIGIT",
-        "NSS_DISABLE_DBM",
-        "NSS_STATIC",
-        "NSS_USE_STATIC_LIBS",
-        "NSS_X86",
-        "NSS_X86_OR_X64",
-        "RIJNDAEL_INCLUDE_TABLES",
-        "SHLIB_PREFIX=\"\"",
-        "SHLIB_SUFFIX=\"dll\"",
-        "SHLIB_VERSION=\"3\"",
-        "SOFTOKEN_LIB_NAME=\"softokn3.dll\"",
-        "SOFTOKEN_SHLIB_VERSION=\"3\"",
-        "USE_HW_AES",
-        "USE_UTIL_DIRECTLY",
-        "WIN32",
-        "WIN95",
-        "XP_PC",
-      ]
-      include_dirs = [
-        "nspr/pr/include",
-        "nspr/lib/ds",
-        "nspr/lib/libc/include",
-        "nss/lib/freebl/ecl",
-        "nss/lib/util",
-      ]
-    }
   }
 
   source_set("nss_static") {
@@ -879,9 +807,6 @@ if (is_linux) {
     ]
 
     configs -= [ "//build/config/compiler:chromium_code" ]
-    if (is_win) {
-      configs -= [ "//build/config/win:unicode" ]  # Requires 8-bit mode.
-    }
     configs += [
       "//build/config/compiler:no_chromium_code",
       "//build/config/compiler:no_size_t_to_int_warning",
@@ -902,10 +827,6 @@ if (is_linux) {
       "nss/lib/freebl/mpi",
       "nss/lib/ssl",
     ]
-
-    if (is_win) {
-      cflags += [ "/wd4101" ]  # Unreferenced local variable.
-    }
 
     if (include_nss_libpkix) {
       sources += [
@@ -1094,7 +1015,7 @@ if (is_linux) {
       defines += [ "NSS_DISABLE_ROOT_CERTS" ]
     }
 
-    if (current_cpu == "x64" && !is_win) {
+    if (current_cpu == "x64") {
       sources -= [
         "nss/lib/freebl/chacha20/chacha20.c",
         "nss/lib/freebl/poly1305/poly1305.c",
@@ -1129,53 +1050,10 @@ if (is_linux) {
       sources -= [ "nss/lib/freebl/mpi/mpi_arm_mac.c" ]
     }
 
-    if (is_win) {
-      defines += [
-        "SHLIB_SUFFIX=\"dll\"",
-        "SHLIB_PREFIX=\"\"",
-        "SOFTOKEN_LIB_NAME=\"softokn3.dll\"",
-        "XP_PC",
-        "WIN32",
-        "WIN95",
-      ]
-
-      if (current_cpu == "x86") {
-        defines += [
-          "NSS_X86_OR_X64",
-          "NSS_X86",
-          "_X86_",
-          "MP_ASSEMBLY_MULTIPLY",
-          "MP_ASSEMBLY_SQUARE",
-          "MP_ASSEMBLY_DIV_2DX1D",
-          "MP_USE_UINT_DIGIT",
-          "MP_NO_MP_WORD",
-          "USE_HW_AES",
-          "INTEL_GCM",
-        ]
-        sources -= [ "nss/lib/freebl/mpi/mpi_amd64.c" ]
-      } else if (current_cpu == "x64") {
-        sources -= [
-          "nss/lib/freebl/intel-aes-x86-masm.asm",
-          "nss/lib/freebl/mpi/mpi_amd64.c",
-          "nss/lib/freebl/mpi/mpi_x86_asm.c",
-        ]
-        defines += [
-          "NSS_USE_64",
-          "NSS_X86_OR_X64",
-          "NSS_X64",
-          "_AMD64_",
-          "MP_CHAR_STORE_SLOW",
-          "MP_IS_LITTLE_ENDIAN",
-          "WIN64",
-        ]
-      }
-    } else {
-      # Not Windows.
-      sources -= [
-        # mpi_x86_asm.c contains MSVC inline assembly code.
-        "nss/lib/freebl/mpi/mpi_x86_asm.c",
-      ]
-    }
+    sources -= [
+      # mpi_x86_asm.c contains MSVC inline assembly code.
+      "nss/lib/freebl/mpi/mpi_x86_asm.c",
+    ]
 
     if (is_clang) {
       cflags += [
@@ -1203,9 +1081,5 @@ if (is_linux) {
       ":nspr",
       "//third_party/sqlite",
     ]
-
-    if (is_win && current_cpu == "x86") {
-      deps += [ ":nss_static_avx" ]
-    }
   }
-}  # Windows/Mac/iOS.
+}  # Mac/iOS.
