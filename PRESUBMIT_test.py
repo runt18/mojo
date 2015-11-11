@@ -190,13 +190,6 @@ class IncludeOrderTest(unittest.TestCase):
         mock_input_api, mock_file, range(1, len(contents) + 1))
     self.assertEqual(0, len(warnings))
 
-    contents = ['#include <atlbase.h>',
-                '#include <aaa.h>']
-    mock_file = MockFile('', contents)
-    warnings = PRESUBMIT._CheckIncludeOrderInFile(
-        mock_input_api, mock_file, range(1, len(contents) + 1))
-    self.assertEqual(0, len(warnings))
-
     contents = ['#include "build/build_config.h"',
                 '#include "aaa.h"']
     mock_file = MockFile('', contents)

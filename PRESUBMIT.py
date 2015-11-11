@@ -463,9 +463,9 @@ def _CheckIncludeOrderInFile(input_api, f, changed_linenums):
   # Exclude the following includes from the check:
   # 1) #include <.../...>, e.g., <sys/...> includes often need to appear in a
   # specific order.
-  # 2) <atlbase.h>, "build/build_config.h"
+  # 2) "build/build_config.h"
   excluded_include_pattern = input_api.re.compile(
-      r'\s*#include (\<.*/.*|\<atlbase\.h\>|"build/build_config.h")')
+      r'\s*#include (\<.*/.*|"build/build_config.h")')
   custom_include_pattern = input_api.re.compile(r'\s*#include "(?P<FILE>.*)"')
   # Match the final or penultimate token if it is xxxtest so we can ignore it
   # when considering the special first include.
