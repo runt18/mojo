@@ -4,6 +4,7 @@
 
 group("media") {
   deps = [
+    "//services/media/audio",
     "//services/media/common",
   ]
 }
