@@ -36,19 +36,19 @@ void expectStringFromEndpoint(
 }
 
 void pipeTestIsolate(core.MojoMessagePipeEndpoint endpoint) {
-  var eventStream = new core.MojoEventStream(endpoint.handle);
-  eventStream.listen((List<int> event) {
+  var eventSubscription = new core.MojoEventSubscription(endpoint.handle);
+  eventSubscription.subscribe((List<int> event) {
     var mojoSignals = new core.MojoHandleSignals(event[1]);
     if (mojoSignals.isReadWrite) {
       throw 'We should only be reading or writing, not both.';
     } else if (mojoSignals.isReadable) {
       expectStringFromEndpoint("Ping", endpoint);
-      eventStream.enableWriteEvents();
+      eventSubscription.enableWriteEvents();
     } else if (mojoSignals.isWritable) {
       endpoint.write(byteDataOfString("Pong"));
-      eventStream.enableReadEvents();
+      eventSubscription.enableReadEvents();
     } else if (mojoSignals.isPeerClosed) {
-      eventStream.close();
+      eventSubscription.close();
     } else {
       throw 'Unexpected event.';
     }
@@ -58,24 +58,24 @@ void pipeTestIsolate(core.MojoMessagePipeEndpoint endpoint) {
 main() {
   var pipe = new core.MojoMessagePipe();
   var endpoint = pipe.endpoints[0];
-  var eventStream = new core.MojoEventStream(endpoint.handle);
+  var eventSubscription = new core.MojoEventSubscription(endpoint.handle);
   Isolate.spawn(pipeTestIsolate, pipe.endpoints[1]).then((_) {
-    eventStream.listen((List<int> event) {
+    eventSubscription.subscribe((List<int> event) {
       var mojoSignals = new core.MojoHandleSignals(event[1]);
       if (mojoSignals.isReadWrite) {
         throw 'We should only be reading or writing, not both.';
       } else if (mojoSignals.isReadable) {
         expectStringFromEndpoint("Pong", endpoint);
-        eventStream.close();
+        eventSubscription.close();
       } else if (mojoSignals.isWritable) {
         endpoint.write(byteDataOfString("Ping"));
-        eventStream.enableReadEvents();
+        eventSubscription.enableReadEvents();
       } else if (mojoSignals.isPeerClosed) {
         throw 'This end should close first.';
       } else {
         throw 'Unexpected event.';
       }
     });
-    eventStream.enableWriteEvents();
+    eventSubscription.enableWriteEvents();
   });
 }

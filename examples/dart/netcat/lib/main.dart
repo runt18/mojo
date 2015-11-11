@@ -49,7 +49,7 @@ class Connector {
   TcpConnectedSocketProxy _socket;
   MojoDataPipeProducer _socketSender;
   MojoDataPipeConsumer _socketReceiver;
-  MojoEventStream _socketReceiverEventStream;
+  MojoEventSubscription _socketReceiverEventSubscription;
   final ByteData _readBuffer;
   final ByteData _writeBuffer;
 
@@ -81,8 +81,9 @@ class Connector {
       _startReadingFromTerminal();
 
       // Set up reading from the socket.
-      _socketReceiverEventStream = new MojoEventStream(_socketReceiver.handle);
-      _socketReceiverEventStream.listen(_onSocketReceiverEvent);
+      _socketReceiverEventSubscription =
+          new MojoEventSubscription(_socketReceiver.handle);
+      _socketReceiverEventSubscription.subscribe(_onSocketReceiverEvent);
     } catch (e) {
       _shutDown();
     }
@@ -93,7 +94,9 @@ class Connector {
     _terminal.ptr
         .read(_writeBuffer.lengthInBytes, 0, files.Whence.FROM_CURRENT)
         .then(_onReadFromTerminal)
-        .catchError((e) { _shutDown(); });
+        .catchError((e) {
+      _shutDown();
+    });
   }
 
   void _onReadFromTerminal(files.FileReadResponseParams p) {
@@ -127,10 +130,13 @@ class Connector {
       var numBytesRead = _socketReceiver.read(_readBuffer);
       if (_socketReceiver.status.isOk) {
         assert(numBytesRead > 0);
-        _terminal.ptr.write(_readBuffer.buffer.asUint8List(0, numBytesRead), 0,
-                            files.Whence.FROM_CURRENT)
-            .catchError((e) { _shutDown(); });
-        _socketReceiverEventStream.enableReadEvents();
+        _terminal.ptr
+            .write(_readBuffer.buffer.asUint8List(0, numBytesRead), 0,
+                files.Whence.FROM_CURRENT)
+            .catchError((e) {
+          _shutDown();
+        });
+        _socketReceiverEventSubscription.enableReadEvents();
       } else {
         shouldShutDown = true;
       }
@@ -145,18 +151,16 @@ class Connector {
   }
 
   void _shutDown() {
-    if (_socketReceiverEventStream != null) {
-      ignoreFuture(_socketReceiverEventStream.close());
-      _socketReceiverEventStream = null;
+    if (_socketReceiverEventSubscription != null) {
+      ignoreFuture(_socketReceiverEventSubscription.close());
+      _socketReceiverEventSubscription = null;
     }
     if (_socketSender != null) {
-      if (_socketSender.handle.isValid)
-        _socketSender.handle.close();
+      if (_socketSender.handle.isValid) _socketSender.handle.close();
       _socketSender = null;
     }
     if (_socketReceiver != null) {
-      if (_socketReceiver.handle.isValid)
-        _socketReceiver.handle.close();
+      if (_socketReceiver.handle.isValid) _socketReceiver.handle.close();
       _socketReceiver = null;
     }
     if (_terminal != null) {
@@ -183,22 +187,28 @@ class TerminalClientImpl implements TerminalClient {
     try {
       remote_address = _getNetAddressFromUrl(url);
     } catch (e) {
-      fputs(terminal.ptr, 'HALP: Add a query: ?host=<host>&port=<port>\n'
-          '(<host> must be "localhost" or n1.n2.n3.n4)\n\n'
-          'Got query parameters:\n' + url.queryParameters.toString());
+      fputs(
+          terminal.ptr,
+          'HALP: Add a query: ?host=<host>&port=<port>\n'
+              '(<host> must be "localhost" or n1.n2.n3.n4)\n\n'
+              'Got query parameters:\n' +
+              url.queryParameters.toString());
       ignoreFuture(terminal.close());
       return;
     }
 
     // TODO(vtl): Currently, we only do IPv4, so this should work.
-    fputs(terminal.ptr,
-          'Connecting to: ' + remote_address.ipv4.addr.join('.') + ':' +
-              remote_address.ipv4.port.toString() + '...');
+    fputs(
+        terminal.ptr,
+        'Connecting to: ' +
+            remote_address.ipv4.addr.join('.') +
+            ':' +
+            remote_address.ipv4.port.toString() +
+            '...');
 
     var connector = new Connector(_application, terminal);
     // TODO(vtl): Do we have to do something on error?
-    connector.connect(remote_address)
-        .catchError((e) {});
+    connector.connect(remote_address).catchError((e) {});
   }
 
   // Note: May throw all sorts of things.
@@ -226,7 +236,7 @@ main(List args) {
   MojoHandle appHandle = new MojoHandle(args[0]);
   String url = args[1];
   new NetcatApplication.fromHandle(appHandle)
-    ..onError = (() {
+    ..onError = ((Object e) {
       MojoHandle.reportLeakedHandles();
     });
 }

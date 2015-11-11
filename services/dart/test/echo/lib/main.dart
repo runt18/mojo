@@ -49,7 +49,7 @@ main(List args) {
   MojoHandle appHandle = new MojoHandle(args[0]);
   String url = args[1];
   new EchoApplication.fromHandle(appHandle)
-    ..onError = (() {
+    ..onError = ((_) {
       MojoHandle.reportLeakedHandles();
     });
 }

@@ -117,10 +117,6 @@ TEST(DartTest, codec_test) {
   RunTest("codec_test.dart");
 }
 
-TEST(DartTest, handle_watcher_test) {
-  RunTest("handle_watcher_test.dart");
-}
-
 TEST(DartTest, bindings_generation_test) {
   RunTest("bindings_generation_test.dart");
 }

@@ -95,7 +95,7 @@ class IsolateMessageApp extends Application {
     }
   }
 
-  void _errorHandler() {
+  void _errorHandler(Object e) {
     _doEcho = false;
     _receivePort.close();
     MojoHandle.reportLeakedHandles();

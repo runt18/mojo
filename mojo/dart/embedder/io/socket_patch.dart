@@ -34,8 +34,8 @@ class _MojoRawSocket extends Stream<RawSocketEvent> implements RawSocket {
   bool _inClosed = false;
   bool _readEventsEnabled = true;
   bool _writeEventsEnabled = true;
-  MojoEventStream _pipeOutEvents;
-  MojoEventStream _pipeInEvents;
+  MojoEventSubscription _pipeOutEvents;
+  MojoEventSubscription _pipeInEvents;
   InternetAddress _localAddress;
   int _localPort;
   InternetAddress _remoteAddress;
@@ -267,22 +267,6 @@ class _MojoRawSocket extends Stream<RawSocketEvent> implements RawSocket {
     }
   }
 
-  _onInputError(e, st) {
-    _controller.addError(e);
-    _onInputDone();
-  }
-
-  _onInputDone() {
-    if (_inClosed) {
-      return;
-    }
-    if (_trace) {
-      _tracePrint('<- READ_CLOSED (done)');
-    }
-    _controller.add(RawSocketEvent.READ_CLOSED);
-    _inClosed = true;
-  }
-
   _onOutputData(List<int> event) {
     if (_outClosed) {
       return;
@@ -309,40 +293,20 @@ class _MojoRawSocket extends Stream<RawSocketEvent> implements RawSocket {
     }
   }
 
-  _onOutputError(e, st) {
-    _controller.addError(e);
-    _onOutputDone();
-  }
-
-  _onOutputDone() {
-    if (_outClosed) {
-      return;
-    }
-    if (_trace) {
-      _tracePrint('<- CLOSED (done)');
-    }
-    _controller.add(RawSocketEvent.CLOSED);
-    _outClosed = true;
-  }
-
   _setupIn() {
     assert(_pipeInEvents == null);
-    _pipeInEvents = new MojoEventStream(_pipeIn.consumer.handle,
+    _pipeInEvents = new MojoEventSubscription(_pipeIn.consumer.handle,
                                         MojoHandleSignals.READABLE +
                                         MojoHandleSignals.PEER_CLOSED);
-    _pipeInEvents.listen(_onInputData,
-                         onError: _onInputError,
-                         onDone: _onInputDone);
+    _pipeInEvents.subscribe(_onInputData);
   }
 
   _setupOut() {
     assert(_pipeOutEvents == null);
-    _pipeOutEvents = new MojoEventStream(_pipeOut.producer.handle,
+    _pipeOutEvents = new MojoEventSubscription(_pipeOut.producer.handle,
                                          MojoHandleSignals.WRITABLE +
                                          MojoHandleSignals.PEER_CLOSED);
-    _pipeOutEvents.listen(_onOutputData,
-                          onError: _onOutputError,
-                          onDone: _onOutputDone);
+    _pipeOutEvents.subscribe(_onOutputData);
   }
 
   _shutdownIn([bool force = false]) {
@@ -498,27 +462,27 @@ class _MojoRawSocket extends Stream<RawSocketEvent> implements RawSocket {
   }
 
 
-  static _enableReadEvents(MojoEventStream stream) {
-    if (stream == null) {
+  static _enableReadEvents(MojoEventSubscription subscription) {
+    if (subscription == null) {
       return;
     }
-    stream.enableSignals(MojoHandleSignals.PEER_CLOSED +
-                         MojoHandleSignals.READABLE);
+    subscription.enableSignals(MojoHandleSignals.PEER_CLOSED +
+                               MojoHandleSignals.READABLE);
   }
 
-  static _enableWriteEvents(MojoEventStream stream) {
-    if (stream == null) {
+  static _enableWriteEvents(MojoEventSubscription subscription) {
+    if (subscription == null) {
       return;
     }
-    stream.enableSignals(MojoHandleSignals.PEER_CLOSED +
-                         MojoHandleSignals.WRITABLE);
+    subscription.enableSignals(MojoHandleSignals.PEER_CLOSED +
+                               MojoHandleSignals.WRITABLE);
   }
 
-  static _disableEvents(MojoEventStream stream) {
-    if (stream == null) {
+  static _disableEvents(MojoEventSubscription subscription) {
+    if (subscription == null) {
       return;
     }
-    stream.enableSignals(MojoHandleSignals.PEER_CLOSED);
+    subscription.enableSignals(MojoHandleSignals.PEER_CLOSED);
   }
 
   _pause() {

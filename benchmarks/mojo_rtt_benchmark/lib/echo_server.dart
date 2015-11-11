@@ -23,7 +23,7 @@ class EchoImpl implements Echo {
 
   Future close() => _stub.close();
 
-  _errorHandler() => _application.removeService(this);
+  _errorHandler(Object e) => _application.removeService(this);
 }
 
 class EchoApplication extends Application {
@@ -59,7 +59,7 @@ class EchoApplication extends Application {
     return echoService;
   }
 
-  _errorHandler() async {
+  _errorHandler(Object e) async {
     _closing = true;
     for (var service in _echoServices) {
       await service.close();

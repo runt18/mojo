@@ -14,17 +14,17 @@ main() {
   var endpoint = pipe.endpoints[0];
   assert(endpoint.handle.isValid);
 
-  var eventStream = new core.MojoEventStream(endpoint.handle);
+  var eventSubscription = new core.MojoEventSubscription(endpoint.handle);
   var completer = new Completer();
   int numEvents = 0;
 
-  eventStream.listen((_) {
+  eventSubscription.subscribe((_) {
     numEvents++;
-    eventStream.close();
-  }, onDone: () {
-    completer.complete(numEvents);
+    eventSubscription.close().then((_) {
+      completer.complete(numEvents);
+    });
   });
-  eventStream.enableWriteEvents();
+  eventSubscription.enableWriteEvents();
 
   completer.future.then((int numEvents) {
     assert(numEvents == 1);

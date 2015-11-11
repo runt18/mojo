@@ -54,7 +54,7 @@ class EchoTracingApp extends Application {
     for (int i = 0; i < _numClients; i++) {
       var newProxy = new EchoProxy.unbound();
       newProxy.errorFuture.then((e) {
-        _errorHandler();
+        _errorHandler(e);
       });
       connectToService(echoUrl, newProxy);
       _echoProxies.add(newProxy);
@@ -99,7 +99,7 @@ class EchoTracingApp extends Application {
     return _echoProxies[idx].ptr.echoString(s);
   }
 
-  _errorHandler() {
+  _errorHandler(Object e) {
     _doEcho = false;
     return Future.wait(_echoProxies.map((p) => p.close())).then((_) {
       MojoHandle.reportLeakedHandles();

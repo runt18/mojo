@@ -120,7 +120,7 @@ main(List args) {
   MojoHandle appHandle = new MojoHandle(args[0]);
   String url = args[1];
   new PingPongApplication.fromHandle(appHandle)
-    ..onError = (() {
+    ..onError = ((_) {
       MojoHandle.reportLeakedHandles();
     });
 }

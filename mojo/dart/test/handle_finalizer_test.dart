@@ -16,10 +16,10 @@ MojoHandle leakMojoHandle() {
   var endpoint = pipe.endpoints[0];
   Expect.isTrue(endpoint.handle.isValid);
 
-  var eventStream = new MojoEventStream(endpoint.handle);
-  // After making a MojoEventStream, the underlying mojo handle will have
-  // the native MojoClose called on it when the MojoEventStream is GC'd or the
-  // VM shuts down.
+  var eventSubscription = new MojoEventSubscription(endpoint.handle);
+  // After making a MojoEventSubscription, the underlying mojo handle will have
+  // the native MojoClose called on it when the MojoEventSubscription is GC'd or
+  // the VM shuts down.
 
   return endpoint.handle;
 }

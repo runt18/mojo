@@ -14,8 +14,10 @@ import 'package:mojom/sample/sample_interfaces.mojom.dart' as sample;
 import 'package:mojom/mojo/test/test_structs.mojom.dart' as structs;
 import 'package:mojom/mojo/test/test_unions.mojom.dart' as unions;
 import 'package:mojom/mojo/test/rect.mojom.dart' as rect;
-import 'package:mojom/mojo/test/serialization_test_structs.mojom.dart' as serialization;
-import 'package:mojom/regression_tests/regression_tests.mojom.dart' as regression;
+import 'package:mojom/mojo/test/serialization_test_structs.mojom.dart'
+    as serialization;
+import 'package:mojom/regression_tests/regression_tests.mojom.dart'
+    as regression;
 
 class ProviderImpl implements sample.Provider {
   sample.ProviderStub _stub;
@@ -126,8 +128,8 @@ testSerializeToJSON() {
 testSerializeHandleToJSON() {
   var s = new serialization.Struct2();
 
-  Expect.throws(() => JSON.encode(s),
-    (e) => e.cause is bindings.MojoCodecError);
+  Expect.throws(
+      () => JSON.encode(s), (e) => e.cause is bindings.MojoCodecError);
 }
 
 testSerializeStructs() {
@@ -138,8 +140,7 @@ testSerializeStructs() {
 }
 
 testSerializePodUnions() {
-  var s = new unions.WrapperStruct()
-    ..podUnion = new unions.PodUnion();
+  var s = new unions.WrapperStruct()..podUnion = new unions.PodUnion();
   s.podUnion.fUint32 = 32;
 
   Expect.equals(unions.PodUnionTag.fUint32, s.podUnion.tag);
@@ -152,10 +153,8 @@ testSerializePodUnions() {
 }
 
 testSerializeStructInUnion() {
-  var s = new unions.WrapperStruct()
-    ..objectUnion = new unions.ObjectUnion();
-  s.objectUnion.fDummy = new unions.DummyStruct()
-    ..fInt8 = 8;
+  var s = new unions.WrapperStruct()..objectUnion = new unions.ObjectUnion();
+  s.objectUnion.fDummy = new unions.DummyStruct()..fInt8 = 8;
 
   var message = messageOfStruct(s);
   var s2 = unions.WrapperStruct.deserialize(message.payload);
@@ -164,8 +163,7 @@ testSerializeStructInUnion() {
 }
 
 testSerializeArrayInUnion() {
-  var s = new unions.WrapperStruct()
-    ..objectUnion = new unions.ObjectUnion();
+  var s = new unions.WrapperStruct()..objectUnion = new unions.ObjectUnion();
   s.objectUnion.fArrayInt8 = [1, 2, 3];
 
   var message = messageOfStruct(s);
@@ -175,12 +173,8 @@ testSerializeArrayInUnion() {
 }
 
 testSerializeMapInUnion() {
-  var s = new unions.WrapperStruct()
-    ..objectUnion = new unions.ObjectUnion();
-  s.objectUnion.fMapInt8 = {
-    "one": 1,
-    "two": 2,
-  };
+  var s = new unions.WrapperStruct()..objectUnion = new unions.ObjectUnion();
+  s.objectUnion.fMapInt8 = {"one": 1, "two": 2,};
 
   var message = messageOfStruct(s);
   var s2 = unions.WrapperStruct.deserialize(message.payload);
@@ -192,10 +186,8 @@ testSerializeMapInUnion() {
 testSerializeUnionInArray() {
   var s = new unions.SmallStruct()
     ..podUnionArray = [
-      new unions.PodUnion()
-        ..fUint16 = 16,
-      new unions.PodUnion()
-        ..fUint32 = 32,
+      new unions.PodUnion()..fUint16 = 16,
+      new unions.PodUnion()..fUint32 = 32,
     ];
 
   var message = messageOfStruct(s);
@@ -209,10 +201,8 @@ testSerializeUnionInArray() {
 testSerializeUnionInMap() {
   var s = new unions.SmallStruct()
     ..podUnionMap = {
-      'one': new unions.PodUnion()
-        ..fUint16 = 16,
-      'two': new unions.PodUnion()
-        ..fUint32 = 32,
+      'one': new unions.PodUnion()..fUint16 = 16,
+      'two': new unions.PodUnion()..fUint32 = 32,
     };
 
   var message = messageOfStruct(s);
@@ -224,10 +214,8 @@ testSerializeUnionInMap() {
 }
 
 testSerializeUnionInUnion() {
-  var s = new unions.WrapperStruct()
-    ..objectUnion = new unions.ObjectUnion();
-    s.objectUnion.fPodUnion = new unions.PodUnion()
-        ..fUint32 = 32;
+  var s = new unions.WrapperStruct()..objectUnion = new unions.ObjectUnion();
+  s.objectUnion.fPodUnion = new unions.PodUnion()..fUint32 = 32;
 
   var message = messageOfStruct(s);
   var s2 = unions.WrapperStruct.deserialize(message.payload);
@@ -303,7 +291,7 @@ Future<bool> runOnClosedTest() {
   var testCompleter = new Completer();
   var pipe = new core.MojoMessagePipe();
   var proxy = new sample.ProviderProxy.fromEndpoint(pipe.endpoints[0]);
-  proxy.impl.onError = () => testCompleter.complete(true);
+  proxy.impl.onError = (_) => testCompleter.complete(true);
   Isolate.spawn(closingProviderIsolate, pipe.endpoints[1]);
   return testCompleter.future.then((b) {
     Expect.isTrue(b);
