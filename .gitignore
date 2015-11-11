@@ -1,6 +1,5 @@
 # commonly generated files
 *.pyc
-*.mojom.dart
 *~
 .*.sw?
 .DS_Store
