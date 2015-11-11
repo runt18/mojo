@@ -95,7 +95,7 @@ void Init(std::unique_ptr<PlatformSupport> platform_support) {
 
 MojoResult AsyncWait(MojoHandle handle,
                      MojoHandleSignals signals,
-                     const base::Callback<void(MojoResult)>& callback) {
+                     const std::function<void(MojoResult)>& callback) {
   return internal::g_core->AsyncWait(handle, signals, callback);
 }
 

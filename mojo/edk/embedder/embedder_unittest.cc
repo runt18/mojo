@@ -243,8 +243,7 @@ TEST_F(EmbedderTest, AsyncWait) {
   TestAsyncWaiter waiter;
   EXPECT_EQ(MOJO_RESULT_OK,
             AsyncWait(client_mp.get().value(), MOJO_HANDLE_SIGNAL_READABLE,
-                      base::Bind(&TestAsyncWaiter::Awake,
-                                 base::Unretained(&waiter))));
+                      [&waiter](MojoResult result) { waiter.Awake(result); }));
 
   test_io_thread().PostTask(base::Bind(&WriteHello, server_mp.get()));
   EXPECT_TRUE(waiter.TryWait());
@@ -254,8 +253,9 @@ TEST_F(EmbedderTest, AsyncWait) {
   TestAsyncWaiter waiter_that_doesnt_wait;
   EXPECT_EQ(MOJO_RESULT_ALREADY_EXISTS,
             AsyncWait(client_mp.get().value(), MOJO_HANDLE_SIGNAL_READABLE,
-                      base::Bind(&TestAsyncWaiter::Awake,
-                                 base::Unretained(&waiter_that_doesnt_wait))));
+                      [&waiter_that_doesnt_wait](MojoResult result) {
+                        waiter_that_doesnt_wait.Awake(result);
+                      }));
 
   char buffer[1000];
   uint32_t num_bytes = static_cast<uint32_t>(sizeof(buffer));
@@ -266,8 +266,9 @@ TEST_F(EmbedderTest, AsyncWait) {
   TestAsyncWaiter unsatisfiable_waiter;
   EXPECT_EQ(MOJO_RESULT_OK,
             AsyncWait(client_mp.get().value(), MOJO_HANDLE_SIGNAL_READABLE,
-                      base::Bind(&TestAsyncWaiter::Awake,
-                                 base::Unretained(&unsatisfiable_waiter))));
+                      [&unsatisfiable_waiter](MojoResult result) {
+                        unsatisfiable_waiter.Awake(result);
+                      }));
 
   test_io_thread().PostTask(
       base::Bind(&CloseScopedHandle, base::Passed(server_mp.Pass())));
