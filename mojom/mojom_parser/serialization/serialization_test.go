@@ -88,6 +88,122 @@ func TestSingleFileSerialization(t *testing.T) {
 	test := singleFileTest{}
 
 	////////////////////////////////////////////////////////////
+	// Test Case: array of int32
+	////////////////////////////////////////////////////////////
+	{
+
+		contents := `
+	struct Foo{
+	  array<int32> bar1;
+	  array<int32, 7> bar2;
+	  array<int32>? bar3;
+	  array<int32, 8>? bar4;
+	};`
+
+		test.addTestCase("", contents)
+
+		// DeclaredMojomObjects
+		test.expectedFile().DeclaredMojomObjects.Structs = &[]string{"TYPE_KEY:Foo"}
+
+		// ResolvedTypes
+
+		// struct Foo
+		test.expectedGraph().ResolvedTypes["TYPE_KEY:Foo"] = &mojom_types.UserDefinedTypeStructType{mojom_types.MojomStruct{
+			DeclData: test.newDeclData("Foo", "Foo"),
+			Fields: []mojom_types.StructField{
+				// field bar1 is not nullable and not fixed length
+				{
+					DeclData: test.newDeclData("bar1", ""),
+					Type: &mojom_types.TypeArrayType{mojom_types.ArrayType{
+						false, -1, &mojom_types.TypeSimpleType{mojom_types.SimpleType_InT32}}},
+				},
+				// field bar2 is not nullable and fixed length of 7
+				{
+					DeclData: test.newDeclData("bar2", ""),
+					Type: &mojom_types.TypeArrayType{mojom_types.ArrayType{
+						false, 7, &mojom_types.TypeSimpleType{mojom_types.SimpleType_InT32}}},
+				},
+				// field bar3 is nullable and not fixed length
+				{
+					DeclData: test.newDeclData("bar3", ""),
+					Type: &mojom_types.TypeArrayType{mojom_types.ArrayType{
+						true, -1, &mojom_types.TypeSimpleType{mojom_types.SimpleType_InT32}}},
+				},
+				// field bar4 is nullable and fixed length of 8
+				{
+					DeclData: test.newDeclData("bar4", ""),
+					Type: &mojom_types.TypeArrayType{mojom_types.ArrayType{
+						true, 8, &mojom_types.TypeSimpleType{mojom_types.SimpleType_InT32}}},
+				},
+			},
+		}}
+
+		test.endTestCase()
+	}
+
+	////////////////////////////////////////////////////////////
+	// Test Case: map string to int32
+	////////////////////////////////////////////////////////////
+	{
+
+		contents := `
+	struct Foo{
+	  map<string,  int32>  bar1;
+	  map<string?, int32>  bar2;
+	  map<string,  int32>? bar3;
+	  map<string?, int32>? bar4;
+	};`
+
+		test.addTestCase("", contents)
+
+		// DeclaredMojomObjects
+		test.expectedFile().DeclaredMojomObjects.Structs = &[]string{"TYPE_KEY:Foo"}
+
+		// ResolvedTypes
+
+		// struct Foo
+		test.expectedGraph().ResolvedTypes["TYPE_KEY:Foo"] = &mojom_types.UserDefinedTypeStructType{mojom_types.MojomStruct{
+			DeclData: test.newDeclData("Foo", "Foo"),
+			Fields: []mojom_types.StructField{
+				// field bar1 is non-nullable with a non-nullable key.
+				{
+					DeclData: test.newDeclData("bar1", ""),
+					Type: &mojom_types.TypeMapType{mojom_types.MapType{
+						false,
+						&mojom_types.TypeStringType{mojom_types.StringType{false}},
+						&mojom_types.TypeSimpleType{mojom_types.SimpleType_InT32}}},
+				},
+				// field bar2 is non-nullable with a nullable key.
+				{
+					DeclData: test.newDeclData("bar2", ""),
+					Type: &mojom_types.TypeMapType{mojom_types.MapType{
+						false,
+						&mojom_types.TypeStringType{mojom_types.StringType{true}},
+						&mojom_types.TypeSimpleType{mojom_types.SimpleType_InT32}}},
+				},
+				// field bar3 is nullable with a non-nullable key.
+				{
+					DeclData: test.newDeclData("bar3", ""),
+					Type: &mojom_types.TypeMapType{mojom_types.MapType{
+						true,
+						&mojom_types.TypeStringType{mojom_types.StringType{false}},
+						&mojom_types.TypeSimpleType{mojom_types.SimpleType_InT32}}},
+				},
+				// field bar4 is nullable with a nullable key.
+				{
+					DeclData: test.newDeclData("bar4", ""),
+					Type: &mojom_types.TypeMapType{mojom_types.MapType{
+						true,
+						&mojom_types.TypeStringType{mojom_types.StringType{true}},
+						&mojom_types.TypeSimpleType{mojom_types.SimpleType_InT32}}},
+				},
+			},
+		}}
+
+		test.endTestCase()
+	}
+
+	////////////////////////////////////////////////////////////
 	// Test Case
 	////////////////////////////////////////////////////////////
 	{

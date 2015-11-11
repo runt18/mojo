@@ -308,8 +308,12 @@ func translateTypeRef(typeRef mojom.TypeRef) mojom_types.Type {
 	case mojom.HandleTypeRef:
 		return translateHandleType(t)
 	case mojom.ArrayTypeRef:
+		return translateArrayType(&t)
+	case *mojom.ArrayTypeRef:
 		return translateArrayType(t)
 	case mojom.MapTypeRef:
+		return translateMapType(&t)
+	case *mojom.MapTypeRef:
 		return translateMapType(t)
 	case *mojom.UserTypeRef:
 		return translateUserTypeRef(t)
@@ -368,14 +372,14 @@ func translateHandleType(handleType mojom.HandleTypeRef) *mojom_types.TypeHandle
 	return &mojom_types.TypeHandleType{mojom_types.HandleType{handleType.Nullable(), kind}}
 }
 
-func translateArrayType(arrayType mojom.ArrayTypeRef) *mojom_types.TypeArrayType {
+func translateArrayType(arrayType *mojom.ArrayTypeRef) *mojom_types.TypeArrayType {
 	return &mojom_types.TypeArrayType{mojom_types.ArrayType{
 		Nullable:    arrayType.Nullable(),
 		FixedLength: int32(arrayType.FixedLength()),
 		ElementType: translateTypeRef(arrayType.ElementType())}}
 }
 
-func translateMapType(mapType mojom.MapTypeRef) *mojom_types.TypeMapType {
+func translateMapType(mapType *mojom.MapTypeRef) *mojom_types.TypeMapType {
 	return &mojom_types.TypeMapType{mojom_types.MapType{
 		Nullable:  mapType.Nullable(),
 		KeyType:   translateTypeRef(mapType.KeyType()),
