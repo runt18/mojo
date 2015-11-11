@@ -15,7 +15,7 @@ namespace system {
 namespace test {
 
 // Class to help create/run threads with I/O |MessageLoop|s in tests.
-class TestIOThread {
+class TestIOThread final {
  public:
   enum class StartMode { AUTO, MANUAL };
   explicit TestIOThread(StartMode start_mode);

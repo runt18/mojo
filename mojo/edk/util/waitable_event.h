@@ -25,7 +25,7 @@ namespace util {
 // to Windows's auto-reset Event, which is also imitated by Chromium's
 // auto-reset |base::WaitableEvent|. However, there are some limitations -- see
 // |Signal()|.) This class is thread-safe.
-class AutoResetWaitableEvent {
+class AutoResetWaitableEvent final {
  public:
   AutoResetWaitableEvent() {}
   ~AutoResetWaitableEvent() {}
@@ -77,7 +77,7 @@ class AutoResetWaitableEvent {
 // until explicitly reset. (This is similar to Windows's manual-reset Event,
 // which is also imitated by Chromium's manual-reset |base::WaitableEvent|.)
 // This class is thread-safe.
-class ManualResetWaitableEvent {
+class ManualResetWaitableEvent final {
  public:
   ManualResetWaitableEvent() {}
   ~ManualResetWaitableEvent() {}

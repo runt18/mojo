@@ -20,7 +20,7 @@ namespace test {
 
 namespace internal {
 
-class ScopedIPCSupportHelper {
+class ScopedIPCSupportHelper final {
  public:
   ScopedIPCSupportHelper();
   ~ScopedIPCSupportHelper();
@@ -47,7 +47,7 @@ class ScopedIPCSupportHelper {
 // |ProcessType::NONE|) on construction and |ShutdownIPCSupport()| on
 // destruction (or |ShutdownIPCSupportOnIOThread()| if destroyed on the I/O
 // thread).
-class ScopedIPCSupport : public embedder::ProcessDelegate {
+class ScopedIPCSupport final : public embedder::ProcessDelegate {
  public:
   explicit ScopedIPCSupport(
       embedder::PlatformTaskRunnerRefPtr io_thread_task_runner);
@@ -65,7 +65,7 @@ class ScopedIPCSupport : public embedder::ProcessDelegate {
 
 // Like |ScopedIPCSupport|, but with |ProcessType::MASTER|. It will (optionally)
 // call a callback (on the I/O thread) on receiving |OnSlaveDisconnect()|.
-class ScopedMasterIPCSupport : public embedder::MasterProcessDelegate {
+class ScopedMasterIPCSupport final : public embedder::MasterProcessDelegate {
  public:
   explicit ScopedMasterIPCSupport(
       embedder::PlatformTaskRunnerRefPtr io_thread_task_runner);
@@ -88,7 +88,7 @@ class ScopedMasterIPCSupport : public embedder::MasterProcessDelegate {
 
 // Like |ScopedIPCSupport|, but with |ProcessType::SLAVE|. It will (optionally)
 // call a callback (on the I/O thread) on receiving |OnMasterDisconnect()|.
-class ScopedSlaveIPCSupport : public embedder::SlaveProcessDelegate {
+class ScopedSlaveIPCSupport final : public embedder::SlaveProcessDelegate {
  public:
   ScopedSlaveIPCSupport(
       embedder::PlatformTaskRunnerRefPtr io_thread_task_runner,
