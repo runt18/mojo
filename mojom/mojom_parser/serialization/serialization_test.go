@@ -56,7 +56,7 @@ func (test *singleFileTest) addTestCase(moduleNameSpace, contents string) {
 		new(mojom_files.MojomFile), new(mojom_files.MojomFileGraph)})
 
 	test.expectedFile().FileName = fileName
-	test.expectedFile().ModuleNamespace = newString(moduleNameSpace)
+	test.expectedFile().ModuleNamespace = &moduleNameSpace
 
 	test.expectedGraph().ResolvedTypes = make(map[string]mojom_types.UserDefinedType)
 	test.expectedGraph().ResolvedValues = make(map[string]mojom_types.UserDefinedValue)
@@ -73,8 +73,8 @@ func (test *singleFileTest) endTestCase() {
 // newDeclData constructs a new DeclarationData with the given data.
 func (test *singleFileTest) newDeclData(shortName, fullIdentifier string) *mojom_types.DeclarationData {
 	return &mojom_types.DeclarationData{
-		ShortName:        newString(shortName),
-		FullIdentifier:   newString(fullIdentifier),
+		ShortName:        &shortName,
+		FullIdentifier:   &fullIdentifier,
 		DeclaredOrdinal:  -1,
 		DeclarationOrder: -1,
 		SourceFileInfo: &mojom_types.SourceFileInfo{
@@ -153,7 +153,7 @@ func TestSingleFileSerialization(t *testing.T) {
 			IntValue:    3,
 			InitializerValue: &mojom_types.ValueUserValueReference{mojom_types.UserValueReference{
 				Identifier:            "NUM_MAGI",
-				ValueKey:              newString("TYPE_KEY:mojom.test.NUM_MAGI"),
+				ValueKey:              stringPointer("TYPE_KEY:mojom.test.NUM_MAGI"),
 				ResolvedConcreteValue: &mojom_types.ValueLiteralValue{&mojom_types.LiteralValueInt64Value{3}},
 			}},
 		}}
@@ -163,8 +163,8 @@ func TestSingleFileSerialization(t *testing.T) {
 		// struct Foo
 		test.expectedGraph().ResolvedTypes["TYPE_KEY:mojom.test.Foo"] = &mojom_types.UserDefinedTypeStructType{mojom_types.MojomStruct{
 			DeclData: &mojom_types.DeclarationData{
-				ShortName:        newString("Foo"),
-				FullIdentifier:   newString("mojom.test.Foo"),
+				ShortName:        stringPointer("Foo"),
+				FullIdentifier:   stringPointer("mojom.test.Foo"),
 				DeclaredOrdinal:  -1,
 				DeclarationOrder: -1,
 				SourceFileInfo: &mojom_types.SourceFileInfo{

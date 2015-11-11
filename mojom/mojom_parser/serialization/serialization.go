@@ -66,7 +66,7 @@ func translateMojomFile(f *mojom.MojomFile) (file mojom_files.MojomFile) {
 	file.FileName = f.CanonicalFileName
 
 	// module_namespace field
-	file.ModuleNamespace = newString(f.ModuleNamespace)
+	file.ModuleNamespace = &f.ModuleNamespace
 
 	// attributes field
 	if f.Attributes != nil {
@@ -383,8 +383,8 @@ func translateMapType(mapType mojom.MapTypeRef) *mojom_types.TypeMapType {
 }
 
 func translateUserTypeRef(userType *mojom.UserTypeRef) *mojom_types.TypeTypeReference {
-	typeKey := newString(userType.ResolvedType().TypeKey())
-	identifier := newString(userType.Identifier())
+	typeKey := stringPointer(userType.ResolvedType().TypeKey())
+	identifier := stringPointer(userType.Identifier())
 	return &mojom_types.TypeTypeReference{mojom_types.TypeReference{
 		Nullable:           userType.Nullable(),
 		IsInterfaceRequest: userType.IsInterfaceRequest(),
@@ -458,7 +458,7 @@ func translateBuiltInConstantValue(t mojom.BuiltInConstantValue) *mojom_types.Va
 }
 
 func translateUserValueRef(r *mojom.UserValueRef) *mojom_types.ValueUserValueReference {
-	valueKey := newString(r.ResolvedDeclaredValue().ValueKey())
+	valueKey := stringPointer(r.ResolvedDeclaredValue().ValueKey())
 	return &mojom_types.ValueUserValueReference{mojom_types.UserValueReference{
 		Identifier:            r.Identifier(),
 		ValueKey:              valueKey,
@@ -500,10 +500,10 @@ func translateDeclarationData(d *mojom.DeclarationData) *mojom_types.Declaration
 	// TODO(rudominer) Eliminate the min_version field from struct DeclarationData
 
 	// short_name field
-	declData.ShortName = newString(d.SimpleName())
+	declData.ShortName = stringPointer(d.SimpleName())
 
 	// full_identifier field
-	declData.FullIdentifier = newString(d.FullyQualifiedName())
+	declData.FullIdentifier = stringPointer(d.FullyQualifiedName())
 
 	// declared_ordinal field
 	if d.DeclaredOrdinal() < 0 {
@@ -552,12 +552,12 @@ func translateMojomAttribute(a *mojom.MojomAttribute) (attribute mojom_types.Att
 	return mojom_types.Attribute{a.Key, fmt.Sprintf("%v", a.Value.Value())}
 }
 
-// newString is a convenience function for creating a pointer to a string whose value
-// is the specified string. It is necessary to create pointers to strings because
-// that is how the Mojom type string? (i.e. nullable string) is represented in
+// stringPointer is a convenience function for creating a pointer to a string whose value
+// is the specified string. It may be used in situations where the compiler will
+// not allow you to take the address of a string value directly, such as the
+// return value of a function. It is necessary to create pointers to strings because
+// that is how the Mojom type |string?| (i.e. nullable string) is represented in
 // in the Mojom Go bindings.
-func newString(s string) *string {
-	t := new(string)
-	*t = s
-	return t
+func stringPointer(s string) *string {
+	return &s
 }
