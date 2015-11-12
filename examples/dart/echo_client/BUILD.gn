@@ -19,6 +19,7 @@ dart_pkg("dart_echo_client") {
     "pubspec.yaml",
   ]
   deps = [
+    "//mojo/dart/packages/mojo",
     "//mojo/public/dart",
   ]
 }

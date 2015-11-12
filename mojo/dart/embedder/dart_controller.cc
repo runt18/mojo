@@ -639,22 +639,27 @@ void DartController::InitVmIfNeeded(Dart_EntropySource entropy,
     return;
   }
 
+  const char* kControllerFlags[] = {
+    // TODO(zra): Fix Dart VM Shutdown race.
+    // There is a bug in Dart VM shutdown which causes its thread pool threads
+    // to potentially fail to exit when the rest of the VM is going down. This
+    // results in a segfault if they begin running again after the Dart
+    // embedder has been unloaded. Setting this flag to 0 ensures that these
+    // threads sleep forever instead of waking up and trying to run code
+    // that isn't there anymore.
+    "--worker-timeout-millis=0",
+    // Disable access dart:mirrors library.
+    "--enable_mirrors=false",
+  };
+
   // Number of flags the controller sets.
-  const int kNumControllerFlags = 2;
+  const int kNumControllerFlags = arraysize(kControllerFlags);
   const int kNumFlags = vm_flags_count + kNumControllerFlags;
   const char* flags[kNumFlags];
 
-  // TODO(zra): Fix Dart VM Shutdown race.
-  // There is a bug in Dart VM shutdown which causes its thread pool threads
-  // to potentially fail to exit when the rest of the VM is going down. This
-  // results in a segfault if they begin running again after the Dart
-  // embedder has been unloaded. Setting this flag to 0 ensures that these
-  // threads sleep forever instead of waking up and trying to run code
-  // that isn't there anymore.
-  flags[0] = "--worker-timeout-millis=0";
-
-  // Disable access dart:mirrors library.
-  flags[1] = "--enable_mirrors=false";
+  for (int i = 0; i < kNumControllerFlags; i++) {
+    flags[i] = kControllerFlags[i];
+  }
 
   for (int i = 0; i < vm_flags_count; ++i) {
     flags[i + kNumControllerFlags] = vm_flags[i];
