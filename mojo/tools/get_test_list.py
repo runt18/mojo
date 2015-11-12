@@ -240,11 +240,13 @@ def GetTestList(config, verbose_count=0):
 
   if target_os == Config.OS_LINUX and ShouldRunTest(Config.TEST_TYPE_PERF):
     spec_files = ["benchmarks", "rtt_benchmarks"]
+    aggregate_run_count = 3
 
     for spec_file in spec_files:
       command = ["python",
                  os.path.join("mojo", "devtools", "common", "mojo_benchmark"),
                  os.path.join("mojo", "tools", "data", spec_file),
+                 "--aggregate", aggregate_run_count,
                  "--upload",
                  "--server-url", _PERFORMANCE_DASHBOARD_URL,
                  "--bot-name", bot_name,
