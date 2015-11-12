@@ -11,9 +11,9 @@ import yaml
 
 PUBSPECS = [
     'dart/mojo_services/pubspec.yaml',
+    'dart/packages/mojo/pubspec.yaml',
     'dart/packages/mojo_apptest/pubspec.yaml',
-    'public/dart/mojo/pubspec.yaml',
-    'public/dart/mojom/pubspec.yaml',
+    'dart/packages/mojom/pubspec.yaml',
 ]
 
 def increment_version(version):
