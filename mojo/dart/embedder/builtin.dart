@@ -39,9 +39,64 @@ _setupHooks() {
   VMLibraryHooks.eventHandlerSendData = MojoHandleWatcher.timer;
 }
 
-Uri _workingDirectory;
-Uri _entryPointScript;
-Uri _packageRoot;
+String _rawCwd;
+Uri _cachedWorkingDirectory;
+Uri get _workingDirectory {
+  if (_cachedWorkingDirectory != null) {
+    return _cachedWorkingDirectory;
+  }
+  _rawCwd = _enforceTrailingSlash(_rawCwd);
+  _cachedWorkingDirectory = new Uri(scheme: 'file', path: _rawCwd);
+  if (_logBuiltin) {
+    _print('# Working Directory: $_cachedWorkingDirectory');
+  }
+  return _cachedWorkingDirectory;
+}
+
+String _rawScriptName;
+Uri _cachedEntryPointScript;
+Uri get _entryPointScript {
+  if (_cachedEntryPointScript != null) {
+    return _cachedEntryPointScript;
+  }
+  if (_workingDirectory == null) {
+    throw 'No current working directory set.';
+  }
+  var scriptUri = Uri.parse(_rawScriptName);
+  if (scriptUri.scheme != '') {
+    // Script has a scheme, assume that it is fully formed.
+    _cachedEntryPointScript = scriptUri;
+  } else {
+    // Script does not have a scheme, assume that it is a path,
+    // resolve it against the working directory.
+    _cachedEntryPointScript = _workingDirectory.resolve(_rawScriptName);
+  }
+  if (_logBuiltin) {
+    _print('# Script entry point: $_rawScriptName -> $_cachedEntryPointScript');
+  }
+  return _cachedEntryPointScript;
+}
+
+String _rawPackageRoot;
+Uri _cachedPackageRoot;
+Uri get _packageRoot {
+  if (_cachedPackageRoot != null) {
+    return _cachedPackageRoot;
+  }
+  String packageRoot = _enforceTrailingSlash(_rawPackageRoot);
+  if (packageRoot.startsWith('file:') ||
+      packageRoot.startsWith('http:') ||
+      packageRoot.startsWith('https:')) {
+    _cachedPackageRoot = _workingDirectory.resolve(packageRoot);
+  } else {
+    _cachedPackageRoot =
+        _workingDirectory.resolveUri(new Uri.file(packageRoot));
+  }
+  if (_logBuiltin) {
+    _print('# Package root: $_rawPackageRoot -> $_cachedPackageRoot');
+  }
+  return _cachedPackageRoot;
+}
 
 _enforceTrailingSlash(String uri) {
   // Ensure we have a trailing slash character.
@@ -52,42 +107,13 @@ _enforceTrailingSlash(String uri) {
 }
 
 _setWorkingDirectory(String cwd) {
-  cwd = _enforceTrailingSlash(cwd);
-  _workingDirectory = new Uri(scheme: 'file', path: cwd);
-  if (_logBuiltin) {
-    _print('# Working Directory: $_workingDirectory');
-  }
+  _rawCwd = cwd;
 }
 
 _setPackageRoot(String packageRoot) {
-  packageRoot = _enforceTrailingSlash(packageRoot);
-  if (packageRoot.startsWith('file:') ||
-      packageRoot.startsWith('http:') ||
-      packageRoot.startsWith('https:')) {
-    _packageRoot = _workingDirectory.resolve(packageRoot);
-  } else {
-    _packageRoot = _workingDirectory.resolveUri(new Uri.file(packageRoot));
-  }
-  if (_logBuiltin) {
-    _print('# Package root: $packageRoot -> $_packageRoot');
-  }
+  _rawPackageRoot = packageRoot;
 }
 
 _resolveScriptUri(String scriptName) {
-  if (_workingDirectory == null) {
-    throw 'No current working directory set.';
-  }
-
-  var scriptUri = Uri.parse(scriptName);
-  if (scriptUri.scheme != '') {
-    // Script has a scheme, assume that it is fully formed.
-    _entryPointScript = scriptUri;
-  } else {
-    // Script does not have a scheme, assume that it is a path,
-    // resolve it against the working directory.
-    _entryPointScript = _workingDirectory.resolve(scriptName);
-  }
-  if (_logBuiltin) {
-    _print('# Script entry point: $scriptName -> $_entryPointScript');
-  }
+  _rawScriptName = scriptName;
 }
