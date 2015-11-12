@@ -25,12 +25,6 @@ Still reading?
     <ignore path="AndroidManifest.xml"/>
   </issue>
   <issue id="Assert" severity="ignore"/>
-  <issue id="CommitPrefEdits">
-    <ignore path="third_party/cacheinvalidation/src/java/com/google/ipc/invalidation/ticl/android2/channel/AndroidChannelPreferences.java"/>
-  </issue>
-  <issue id="DefaultLocale">
-    <ignore path="third_party/cacheinvalidation/src/java/com/google/ipc/invalidation/external/client/contrib/AndroidListenerState.java"/>
-  </issue>
   <issue id="DrawAllocation">
     <ignore path="content/public/android/java/src/org/chromium/content/browser/ContentViewRenderView.java"/>
     <ignore path="content/public/android/java/src/org/chromium/content/browser/PopupZoomer.java"/>
