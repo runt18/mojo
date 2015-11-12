@@ -37,4 +37,11 @@ mojo_native_application("audio_server") {
   ]
 
   libs = []
+
+  if (is_linux && !is_fnl && !is_android) {
+    sources += [ "platform/linux/alsa_output.cc" ]
+    libs += [ "asound" ]
+  } else {
+    sources += [ "platform/stubs/alsa_output_stub.cc" ]
+  }
 }

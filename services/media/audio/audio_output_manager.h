@@ -57,6 +57,8 @@ class AudioOutputManager {
   void ShutdownOutput(AudioOutputPtr output);
 
  private:
+  void CreateAlsaOutputs();
+
   // TODO(johngro): A SequencedWorkerPool currently seems to be as close to what
   // we want which we can currently get using the chrome/mojo framework.  Things
   // which are missing and will eventually need to be addressed include...

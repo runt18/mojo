@@ -17,6 +17,9 @@ namespace audio {
 static constexpr size_t  THREAD_POOL_SZ = 2;
 static const std::string THREAD_PREFIX("AudioMixer");
 
+// TODO(johngro): This needs to be replaced with a proper HAL
+extern AudioOutputPtr CreateDefaultAlsaOutput(AudioOutputManager* manager);
+
 AudioOutputManager::AudioOutputManager(AudioServerImpl* server)
   : server_(server) {
 }
@@ -43,6 +46,10 @@ MediaResult AudioOutputManager::Init() {
   // platform.  Right now, we just create some hardcoded default outputs and
   // leave it at that.
   outputs_.emplace(audio::ThrottleOutput::New(this));
+  {
+    AudioOutputPtr alsa = CreateDefaultAlsaOutput(this);
+    if (alsa) { outputs_.emplace(alsa); }
+  }
 
   // Step #3: Being monitoring for plug/unplug events for pluggable audio
   // output devices.
