@@ -207,7 +207,7 @@ def _get_handler_class_for_path(mappings):
   return RequestHandler
 
 
-def start_http_server(mappings, host_port=0):
+def start_http_server(mappings, host_port):
   """Starts an http server serving files from |local_dir_path| on |host_port|.
 
   Args:

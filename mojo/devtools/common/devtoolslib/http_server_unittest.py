@@ -67,7 +67,7 @@ class HttpServerTest(unittest.TestCase):
         ('other/', [self.other_dir]),
     ]
     server_address = ('http://%s:%u/' %
-                      http_server.start_http_server(mappings))
+                      http_server.start_http_server(mappings, 0))
 
     hello_relpath = os.path.relpath(self.hello_file.name, self.hello_dir)
     hello_response = urllib2.urlopen(server_address + 'hello/' +
@@ -87,7 +87,7 @@ class HttpServerTest(unittest.TestCase):
         ('hello/', [self.hello_dir]),
     ]
     server_address = ('http://%s:%u/' %
-                      http_server.start_http_server(mappings))
+                      http_server.start_http_server(mappings, 0))
 
     error_code = None
     try:
@@ -102,7 +102,7 @@ class HttpServerTest(unittest.TestCase):
         ('singularity/', [self.hello_dir, self.other_dir]),
     ]
     server_address = ('http://%s:%u/' %
-                      http_server.start_http_server(mappings))
+                      http_server.start_http_server(mappings, 0))
 
     hello_relpath = os.path.relpath(self.hello_file.name, self.hello_dir)
     hello_response = urllib2.urlopen(server_address + 'singularity/' +
@@ -129,7 +129,7 @@ class HttpServerTest(unittest.TestCase):
         ('hello/', [self.hello_dir]),
     ]
     server_address = ('http://%s:%u/' %
-                      http_server.start_http_server(mappings))
+                      http_server.start_http_server(mappings, 0))
 
     hello_relpath = os.path.relpath(self.hello_file.name, self.hello_dir)
     hello_response = urllib2.urlopen(server_address + 'hello/' +
@@ -150,7 +150,7 @@ class HttpServerTest(unittest.TestCase):
         ('', [self.apps_dir]),
     ]
     server_address = ('http://%s:%u/' %
-                      http_server.start_http_server(mappings))
+                      http_server.start_http_server(mappings, 0))
 
     app_relpath = os.path.relpath(self.dart_app_path, self.apps_dir)
     hello_response = urllib2.urlopen(server_address + app_relpath)

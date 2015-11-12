@@ -25,7 +25,7 @@ class LinuxShell(Shell):
     self.command_prefix = command_prefix if command_prefix else []
 
   @overrides(Shell)
-  def serve_local_directories(self, mappings, port=0, reuse_servers=False):
+  def serve_local_directories(self, mappings, port, reuse_servers=False):
     if reuse_servers:
       assert port, 'Cannot reuse the server when |port| is 0.'
       server_address = ('127.0.0.1', port)

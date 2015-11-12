@@ -6,7 +6,7 @@
 class Shell(object):
   """Represents an abstract Mojo shell."""
 
-  def serve_local_directories(self, mappings, port=0, reuse_servers=False):
+  def serve_local_directories(self, mappings, port, reuse_servers=False):
     """Serves the content of the local (host) directories, making it available
     to the shell under the url returned by the function.
 

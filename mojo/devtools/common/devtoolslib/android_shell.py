@@ -421,7 +421,7 @@ class AndroidShell(Shell):
     logcat_watch_thread.start()
 
   @overrides(Shell)
-  def serve_local_directories(self, mappings, port=0, reuse_servers=False):
+  def serve_local_directories(self, mappings, port, reuse_servers=False):
     assert mappings
     if reuse_servers:
       assert port, 'Cannot reuse the server when |port| is 0.'
