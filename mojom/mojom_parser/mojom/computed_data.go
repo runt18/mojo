@@ -8,6 +8,7 @@ package mojom
 // successfully. It computes |ComputedIntValue| field of all EnumValues.
 func (d *MojomDescriptor) ComputeEnumValueIntegers() error {
 	// TODO(rudominer) Implement ComputeEnumValueIntegers().
+	// Make sure to check for illfounded definition chains.
 	return nil
 }
 

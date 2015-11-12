@@ -283,6 +283,9 @@ func translateUserDefinedConstant(t *mojom.UserDefinedConstant) *mojom_types.Use
 	declaredConstant.Value.Type = translateTypeRef(t.DeclaredType())
 	declaredConstant.Value.DeclData = *translateDeclarationData(&t.DeclarationData)
 	declaredConstant.Value.Value = translateValueRef(t.ValueRef())
+	// TODO(rudominer) implement UserDefinedValue.resolved_concrete_value.
+	// declaredConstant.ResolvedConcreteValue =
+	//     translateConcreteValue(t.ValueRef().ResolvedConcreteValue()))
 	return &declaredConstant
 }
 
@@ -293,9 +296,7 @@ func translateEnumValue(v *mojom.EnumValue) mojom_types.EnumValue {
 	if v.ValueRef() != nil {
 		enumValue.InitializerValue = translateValueRef(v.ValueRef())
 	}
-	// TODO(rudominer) enumValue.IntValue should be set to v.ComputedIntValue
-	// once MojomDescriptor.ComputeEnumValueIntegers() is implemented.
-	enumValue.IntValue = v.Int32Value()
+	enumValue.IntValue = v.ComputedIntValue
 	return enumValue
 }
 
@@ -464,29 +465,9 @@ func translateBuiltInConstantValue(t mojom.BuiltInConstantValue) *mojom_types.Va
 func translateUserValueRef(r *mojom.UserValueRef) *mojom_types.ValueUserValueReference {
 	valueKey := stringPointer(r.ResolvedDeclaredValue().ValueKey())
 	return &mojom_types.ValueUserValueReference{mojom_types.UserValueReference{
-		Identifier:            r.Identifier(),
-		ValueKey:              valueKey,
-		ResolvedConcreteValue: translateConcreteValue(r.ResolvedConcreteValue())}}
-}
-
-func translateConcreteValue(v mojom.ConcreteValue) mojom_types.Value {
-	switch t := v.(type) {
-	case mojom.BuiltInConstantValue:
-		return translateBuiltInConstantValue(t)
-	case mojom.LiteralValue:
-		return translateLiteralValue(t)
-	case *mojom.EnumValue:
-		// Note that in the pure Go representation we support the abstraction
-		// that an EnumValue is a type of ConcreteValue. This makes sense because
-		// an Enum is abstractly a finite set of values that need not have
-		// a corresponding integer value. However in mojom_types.mojom we currently
-		// do not support this abstraction: the only concrete values are the literal
-		// values and the BuiltInConstantValues. Consequently here we return the
-		// Int32Value() of the EnumValue.
-		return &mojom_types.ValueLiteralValue{&mojom_types.LiteralValueInt32Value{t.Int32Value()}}
-	default:
-		panic(fmt.Sprintf("Unexpected type %T", v))
-	}
+		Identifier: r.Identifier(),
+		ValueKey:   valueKey}}
+	// We do not populate ResolvedConcreteValue becuase it is deprecated.
 }
 
 func translateDeclarationData(d *mojom.DeclarationData) *mojom_types.DeclarationData {

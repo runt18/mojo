@@ -204,6 +204,61 @@ func TestSingleFileSerialization(t *testing.T) {
 	}
 
 	////////////////////////////////////////////////////////////
+	// Test Case: enum value initializer
+	////////////////////////////////////////////////////////////
+	{
+
+		contents := `
+	enum Foo{
+	  X1 = 42,
+	  X2 = X1
+	};`
+
+		test.addTestCase("", contents)
+
+		// DeclaredMojomObjects
+		test.expectedFile().DeclaredMojomObjects.TopLevelEnums = &[]string{"TYPE_KEY:Foo"}
+
+		// Resolved Values
+
+		// Foo.X1
+		test.expectedGraph().ResolvedValues["TYPE_KEY:Foo.X1"] = &mojom_types.UserDefinedValueEnumValue{mojom_types.EnumValue{
+			DeclData:         test.newDeclData("X1", "Foo.X1"),
+			EnumTypeKey:      "TYPE_KEY:Foo",
+			InitializerValue: &mojom_types.ValueLiteralValue{&mojom_types.LiteralValueInt64Value{42}},
+			IntValue:         -1,
+		}}
+
+		// Foo.X2
+		test.expectedGraph().ResolvedValues["TYPE_KEY:Foo.X2"] = &mojom_types.UserDefinedValueEnumValue{mojom_types.EnumValue{
+			DeclData:    test.newDeclData("X2", "Foo.X2"),
+			EnumTypeKey: "TYPE_KEY:Foo",
+			InitializerValue: &mojom_types.ValueUserValueReference{mojom_types.UserValueReference{
+				Identifier: "X1",
+				ValueKey:   stringPointer("TYPE_KEY:Foo.X1"),
+			}},
+			IntValue: -1,
+		}}
+
+		// ResolvedTypes
+
+		// enum Foo
+		test.expectedGraph().ResolvedTypes["TYPE_KEY:Foo"] = &mojom_types.UserDefinedTypeEnumType{mojom_types.MojomEnum{
+			DeclData: test.newDeclData("Foo", "Foo"),
+			Values: []mojom_types.EnumValue{
+				// Note(rudominer) It is a bug that we need to copy the enum values here.
+				// See https://github.com/domokit/mojo/issues/513.
+				// value TOP
+				test.expectedGraph().ResolvedValues["TYPE_KEY:Foo.X1"].(*mojom_types.UserDefinedValueEnumValue).Value,
+				// value COWBOY
+				test.expectedGraph().ResolvedValues["TYPE_KEY:Foo.X2"].(*mojom_types.UserDefinedValueEnumValue).Value,
+			},
+		}}
+
+		test.endTestCase()
+	}
+
+	////////////////////////////////////////////////////////////
 	// Test Case
 	////////////////////////////////////////////////////////////
 	{
@@ -266,11 +321,10 @@ func TestSingleFileSerialization(t *testing.T) {
 		test.expectedGraph().ResolvedValues["TYPE_KEY:mojom.test.Foo.Hats.COWBOY"] = &mojom_types.UserDefinedValueEnumValue{mojom_types.EnumValue{
 			DeclData:    test.newDeclData("COWBOY", "mojom.test.Foo.Hats.COWBOY"),
 			EnumTypeKey: "TYPE_KEY:mojom.test.Foo.Hats",
-			IntValue:    3,
+			IntValue:    -1,
 			InitializerValue: &mojom_types.ValueUserValueReference{mojom_types.UserValueReference{
-				Identifier:            "NUM_MAGI",
-				ValueKey:              stringPointer("TYPE_KEY:mojom.test.NUM_MAGI"),
-				ResolvedConcreteValue: &mojom_types.ValueLiteralValue{&mojom_types.LiteralValueInt64Value{3}},
+				Identifier: "NUM_MAGI",
+				ValueKey:   stringPointer("TYPE_KEY:mojom.test.NUM_MAGI"),
 			}},
 		}}
 

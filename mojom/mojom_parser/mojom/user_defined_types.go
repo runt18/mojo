@@ -575,27 +575,6 @@ func (ev *EnumValue) EnumType() *MojomEnum {
 	return ev.enumType
 }
 
-func (ev *EnumValue) Int32Value() int32 {
-	// TODO(rudominer) EnumValue.Int32Value() should not be needed as is.
-	// Currently this method computes the integer value of the specified value.
-	// What we really want is the integer value whether or not a value was
-	// specified. This should be computed by MojomDescriptor.ComputeEnumValue().
-	if ev.valueRef == nil {
-		return -1
-	}
-	if ev.valueRef.ResolvedConcreteValue() == nil {
-		panic("The EnumValue has not yet been resolved.")
-	}
-	if x, ok := ev.valueRef.ResolvedConcreteValue().Value().(int32); ok {
-		return x
-	}
-	if x, ok := ev.valueRef.ResolvedConcreteValue().Value().(int64); ok {
-		// TODO(rudominer) Which class of integer values are allowed for enum value initializers?
-		return int32(x)
-	}
-	panic(fmt.Sprintf("Unexpected type %T", ev.valueRef.ResolvedConcreteValue().Value()))
-}
-
 // EnumValue implements ConcreteValue
 func (ev *EnumValue) ValueType() ConcreteType {
 	return ev.enumType
