@@ -7,6 +7,7 @@ import("//build/config/ui.gni")
 group("dart") {
   deps = [
     "//examples/dart/device_info",
+    "//examples/dart/echo_client:dart_echo_client",
     "//examples/dart/hello_world/hello",
     "//examples/dart/hello_world/world",
     "//examples/dart/netcat",
