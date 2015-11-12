@@ -158,20 +158,6 @@ if (use_ozone) {
   ]
 }
 
-if (enable_image_loader_extension) {
-  grit_defines += [
-    "-D",
-    "image_loader_extension",
-  ]
-}
-
-if (enable_remoting) {
-  grit_defines += [
-    "-D",
-    "remoting",
-  ]
-}
-
 if (is_android) {
   grit_defines += [
     "-t",
@@ -199,24 +185,6 @@ if (is_ios) {
   ]
 }
 
-if (enable_extensions) {
-  grit_defines += [
-    "-D",
-    "enable_extensions",
-  ]
-}
-if (enable_media_router) {
-  grit_defines += [
-    "-D",
-    "enable_media_router",
-  ]
-}
-if (enable_plugins) {
-  grit_defines += [
-    "-D",
-    "enable_plugins",
-  ]
-}
 if (enable_basic_printing || enable_print_preview) {
   grit_defines += [
     "-D",
@@ -228,75 +196,6 @@ if (enable_basic_printing || enable_print_preview) {
       "enable_print_preview",
     ]
   }
-}
-if (enable_themes) {
-  grit_defines += [
-    "-D",
-    "enable_themes",
-  ]
-}
-if (enable_app_list) {
-  grit_defines += [
-    "-D",
-    "enable_app_list",
-  ]
-}
-if (enable_settings_app) {
-  grit_defines += [
-    "-D",
-    "enable_settings_app",
-  ]
-}
-if (enable_google_now) {
-  grit_defines += [
-    "-D",
-    "enable_google_now",
-  ]
-}
-
-# Note: use_concatenated_impulse_responses is omitted. It is never used and
-# should probably be removed from GYP build.
-if (enable_webrtc) {
-  grit_defines += [
-    "-D",
-    "enable_webrtc",
-  ]
-}
-if (enable_hangout_services_extension) {
-  grit_defines += [
-    "-D",
-    "enable_hangout_services_extension",
-  ]
-}
-if (enable_task_manager) {
-  grit_defines += [
-    "-D",
-    "enable_task_manager",
-  ]
-}
-if (enable_notifications) {
-  grit_defines += [
-    "-D",
-    "enable_notifications",
-  ]
-}
-if (enable_wifi_bootstrapping) {
-  grit_defines += [
-    "-D",
-    "enable_wifi_bootstrapping",
-  ]
-}
-if (enable_service_discovery) {
-  grit_defines += [
-    "-D",
-    "enable_service_discovery",
-  ]
-}
-if (mac_views_browser) {
-  grit_defines += [
-    "-D",
-    "mac_views_browser",
-  ]
 }
 
 grit_resource_id_file = "//tools/gritsettings/resource_ids"

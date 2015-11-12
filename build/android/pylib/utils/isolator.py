@@ -32,8 +32,6 @@ def DefaultConfigVariables():
     'branding': 'Chromium',
     'chromeos': '0',
     'component': 'static_library',
-    'enable_pepper_cdms': '0',
-    'enable_plugins': '0',
     'fastbuild': '0',
     'icu_use_data_file_flag': '1',
     'kasko': '0',

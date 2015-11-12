@@ -47,23 +47,6 @@ config("feature_flags") {
   if (cld_version > 0) {
     defines += [ "CLD_VERSION=$cld_version" ]
   }
-  if (enable_mdns) {
-    defines += [ "ENABLE_MDNS=1" ]
-  }
-  if (enable_notifications) {
-    defines += [ "ENABLE_NOTIFICATIONS" ]
-  }
-  if (enable_pepper_cdms) {
-    # TODO(brettw) should probably be "=1"
-    defines += [ "ENABLE_PEPPER_CDMS" ]
-  }
-  if (enable_browser_cdms) {
-    # TODO(brettw) should probably be "=1"
-    defines += [ "ENABLE_BROWSER_CDMS" ]
-  }
-  if (enable_plugins) {
-    defines += [ "ENABLE_PLUGINS=1" ]
-  }
   if (enable_basic_printing || enable_print_preview) {
     # Convenience define for ENABLE_BASIC_PRINTING || ENABLE_PRINT_PREVIEW.
     defines += [ "ENABLE_PRINTING=1" ]
@@ -76,9 +59,6 @@ config("feature_flags") {
       # Can be defined without ENABLE_BASIC_PRINTING.
       defines += [ "ENABLE_PRINT_PREVIEW=1" ]
     }
-  }
-  if (enable_spellcheck) {
-    defines += [ "ENABLE_SPELLCHECK=1" ]
   }
   if (dont_embed_build_metadata) {
     defines += [ "DONT_EMBED_BUILD_METADATA" ]
@@ -111,9 +91,6 @@ config("feature_flags") {
   }
   if (use_clipboard_aurax11) {
     defines += [ "USE_CLIPBOARD_AURAX11=1" ]
-  }
-  if (use_default_render_theme) {
-    defines += [ "USE_DEFAULT_RENDER_THEME=1" ]
   }
   if (use_openssl) {
     defines += [ "USE_OPENSSL=1" ]
@@ -158,105 +135,17 @@ config("feature_flags") {
   if (is_msan) {
     defines += [ "MEMORY_SANITIZER" ]
   }
-  if (enable_webrtc) {
-    defines += [ "ENABLE_WEBRTC=1" ]
-  }
-  if (disable_ftp_support) {
-    defines += [ "DISABLE_FTP_SUPPORT=1" ]
-  }
   if (!enable_nacl) {
     defines += [ "DISABLE_NACL" ]
-  }
-  if (enable_extensions) {
-    defines += [ "ENABLE_EXTENSIONS=1" ]
-  }
-  if (enable_configuration_policy) {
-    defines += [ "ENABLE_CONFIGURATION_POLICY" ]
-  }
-  if (enable_task_manager) {
-    defines += [ "ENABLE_TASK_MANAGER=1" ]
-  }
-  if (enable_themes) {
-    defines += [ "ENABLE_THEMES=1" ]
-  }
-  if (enable_captive_portal_detection) {
-    defines += [ "ENABLE_CAPTIVE_PORTAL_DETECTION=1" ]
-  }
-  if (enable_session_service) {
-    defines += [ "ENABLE_SESSION_SERVICE=1" ]
-  }
-  if (enable_rlz) {
-    defines += [ "ENABLE_RLZ" ]
-  }
-  if (enable_plugin_installation) {
-    defines += [ "ENABLE_PLUGIN_INSTALLATION=1" ]
-  }
-  if (enable_app_list) {
-    defines += [ "ENABLE_APP_LIST=1" ]
-  }
-  if (enable_settings_app) {
-    defines += [ "ENABLE_SETTINGS_APP=1" ]
-  }
-  if (enable_supervised_users) {
-    defines += [ "ENABLE_SUPERVISED_USERS=1" ]
-  }
-  if (enable_service_discovery) {
-    defines += [ "ENABLE_SERVICE_DISCOVERY=1" ]
-  }
-  if (enable_autofill_dialog) {
-    defines += [ "ENABLE_AUTOFILL_DIALOG=1" ]
-  }
-  if (enable_wifi_bootstrapping) {
-    defines += [ "ENABLE_WIFI_BOOTSTRAPPING=1" ]
-  }
-  if (enable_image_loader_extension) {
-    defines += [ "IMAGE_LOADER_EXTENSION=1" ]
-  }
-  if (enable_remoting) {
-    defines += [ "ENABLE_REMOTING=1" ]
-  }
-  if (enable_google_now) {
-    defines += [ "ENABLE_GOOGLE_NOW=1" ]
-  }
-  if (enable_one_click_signin) {
-    defines += [ "ENABLE_ONE_CLICK_SIGNIN" ]
   }
   if (enable_hidpi) {
     defines += [ "ENABLE_HIDPI=1" ]
   }
-  if (enable_topchrome_md) {
-    defines += [ "ENABLE_TOPCHRME_MD=1" ]
-  }
   if (proprietary_codecs) {
     defines += [ "USE_PROPRIETARY_CODECS" ]
   }
-  if (enable_hangout_services_extension) {
-    defines += [ "ENABLE_HANGOUT_SERVICES_EXTENSION=1" ]
-  }
   if (v8_use_external_startup_data) {
     defines += [ "V8_USE_EXTERNAL_STARTUP_DATA" ]
-  }
-  if (enable_background) {
-    defines += [ "ENABLE_BACKGROUND=1" ]
-  }
-  if (enable_pre_sync_backup) {
-    defines += [ "ENABLE_PRE_SYNC_BACKUP" ]
-  }
-  if (enable_video_hole) {
-    defines += [ "VIDEO_HOLE=1" ]
-  }
-  if (safe_browsing_mode == 1) {
-    defines += [ "FULL_SAFE_BROWSING" ]
-    defines += [ "SAFE_BROWSING_CSD" ]
-    defines += [ "SAFE_BROWSING_DB_LOCAL" ]
-    defines += [ "SAFE_BROWSING_SERVICE" ]
-  } else if (safe_browsing_mode == 2) {
-    defines += [ "MOBILE_SAFE_BROWSING" ]
-    defines += [ "SAFE_BROWSING_SERVICE" ]
-  } else if (safe_browsing_mode == 3) {
-    defines += [ "MOBILE_SAFE_BROWSING" ]
-    defines += [ "SAFE_BROWSING_DB_REMOTE" ]
-    defines += [ "SAFE_BROWSING_SERVICE" ]
   }
   if (is_official_build) {
     defines += [ "OFFICIAL_BUILD" ]
@@ -265,9 +154,6 @@ config("feature_flags") {
     defines += [ "GOOGLE_CHROME_BUILD" ]
   } else {
     defines += [ "CHROMIUM_BUILD" ]
-  }
-  if (enable_media_router) {
-    defines += [ "ENABLE_MEDIA_ROUTER=1" ]
   }
 }
 
