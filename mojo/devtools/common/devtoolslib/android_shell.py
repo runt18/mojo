@@ -96,13 +96,14 @@ class AndroidShell(Shell):
   """
 
   def __init__(self, adb_path="adb", target_device=None, logcat_tags=None,
-               verbose_pipe=None):
+               verbose=False):
     self.adb_path = adb_path
     self.target_device = target_device
     self.stop_shell_registered = False
     self.adb_running_as_root = None
     self.additional_logcat_tags = logcat_tags
-    self.verbose_pipe = verbose_pipe if verbose_pipe else open(os.devnull, 'w')
+    self.verbose_stdout = sys.stdout if verbose else open(os.devnull, 'w')
+    self.verbose_stderr = sys.stderr if verbose else self.verbose_stdout
 
   def _adb_command(self, args):
     """Forms an adb command from the given arguments, prepending the adb path
@@ -208,7 +209,7 @@ class AndroidShell(Shell):
       # Wait for adbd to restart.
       subprocess.check_call(
           self._adb_command(['wait-for-device']),
-          stdout=self.verbose_pipe)
+          stdout=self.verbose_stdout, stderr=self.verbose_stderr)
       self.adb_running_as_root = True
     else:
       self.adb_running_as_root = False
@@ -297,7 +298,7 @@ class AndroidShell(Shell):
       subprocess.check_call(
           self._adb_command(['install', '-r', shell_apk_path, '-i',
                             _MOJO_SHELL_PACKAGE_NAME]),
-          stdout=self.verbose_pipe)
+          stdout=self.verbose_stdout, stderr=self.verbose_stderr)
 
       # Update the stamp on the device.
       with tempfile.NamedTemporaryFile() as fp:
@@ -305,7 +306,8 @@ class AndroidShell(Shell):
         fp.flush()
         subprocess.check_call(self._adb_command(['push', fp.name,
                                                 device_sha1_path]),
-                              stdout=self.verbose_pipe)
+                              stdout=self.verbose_stdout,
+                              stderr=self.verbose_stderr)
     else:
       # To ensure predictable state after running install_apk(), we need to stop
       # the shell here, as this is what "adb install" implicitly does.
@@ -359,13 +361,15 @@ class AndroidShell(Shell):
             temp.write('\n')
           temp.close()
           subprocess.check_call(self._adb_command(
-              ['push', temp.name, device_filename]))
+              ['push', temp.name, device_filename]),
+              stdout=self.verbose_stdout, stderr=self.verbose_stderr)
         finally:
           os.remove(temp.name)
 
       cmd += ['--es', 'argsFile', device_filename]
 
-    subprocess.check_call(cmd, stdout=self.verbose_pipe)
+    subprocess.check_call(cmd, stdout=self.verbose_stdout,
+                          stderr=self.verbose_stderr)
 
   def stop_shell(self):
     """Stops the mojo shell."""

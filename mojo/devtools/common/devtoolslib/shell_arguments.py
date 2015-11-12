@@ -9,7 +9,6 @@ shell_config.ShellConfig.
 """
 
 import os.path
-import sys
 import urlparse
 
 from devtoolslib.android_shell import AndroidShell
@@ -195,11 +194,9 @@ def get_shell(shell_config, shell_args):
     ShellConfigurationException if shell abstraction could not be configured.
   """
   if shell_config.android:
-    verbose_pipe = sys.stdout if shell_config.verbose else None
-
     shell = AndroidShell(shell_config.adb_path, shell_config.target_device,
                          logcat_tags=shell_config.logcat_tags,
-                         verbose_pipe=verbose_pipe)
+                         verbose=shell_config.verbose)
 
     device_status, error = shell.check_device(
         require_root=shell_config.require_root)
