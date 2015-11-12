@@ -100,7 +100,6 @@ component("gfx") {
     "//base:base_static",
     "//base:i18n",
     "//skia",
-    "//third_party/harfbuzz-ng",
     "//third_party/libjpeg_turbo:libjpeg",
     "//third_party/libpng",
     "//third_party/zlib",

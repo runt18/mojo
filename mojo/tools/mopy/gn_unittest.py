@@ -60,7 +60,6 @@ class GTestListTestsTest(unittest.TestCase):
       if args.get("target_os", None) is None and sys.platform[:5] == "linux":
         args["use_aura"] = False
         args["use_glib"] = False
-        args["use_system_harfbuzz"] = False
       config = gn.ConfigForGNArgs(args)
       new_args = gn.GNArgsForConfig(config)
       self.assertDictEqual(args, new_args)

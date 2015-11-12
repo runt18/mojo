@@ -76,7 +76,6 @@ def GNArgsForConfig(config):
     gn_args["use_aura"] = False
     gn_args["use_glib"] = False
     gn_args["use_ozone"] = True
-    gn_args["use_system_harfbuzz"] = False
     gn_args["target_sysroot"] = config.values.get("target_sysroot", "")
     gn_args["toolchain_prefix"] = config.values.get("toolchain_prefix", "")
   elif config.target_os == Config.OS_IOS:
@@ -89,7 +88,6 @@ def GNArgsForConfig(config):
   elif config.target_os == Config.OS_LINUX:
     gn_args["use_aura"] = False
     gn_args["use_glib"] = False
-    gn_args["use_system_harfbuzz"] = False
 
   gn_args["target_cpu"] = config.target_cpu
 
