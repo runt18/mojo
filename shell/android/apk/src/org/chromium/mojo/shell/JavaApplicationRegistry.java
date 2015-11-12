@@ -82,6 +82,8 @@ public class JavaApplicationRegistry {
         registry.registerApplicationDelegate("mojo:authentication",
                 new AuthenticationApplicationDelegate(ApplicationStatus.getApplicationContext(),
                                                      CoreImpl.getInstance()));
+        registry.registerApplicationDelegate(
+                "mojo:input", new ServiceProviderFactoryApplicationDelegate(new InputFactory()));
         registry.registerApplicationDelegate("mojo:keyboard",
                 new ServiceProviderFactoryApplicationDelegate(new KeyboardFactory()));
         registry.registerApplicationDelegate(

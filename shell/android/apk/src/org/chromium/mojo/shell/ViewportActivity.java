@@ -9,14 +9,29 @@ import android.app.UiModeManager;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.view.WindowManager;
 
 import org.chromium.mojo.PlatformViewportAndroid;
+import org.chromium.mojo.input.InputServiceImpl;
 
 /**
  * Activity for displaying on the screen from the NativeViewportService.
  */
 public class ViewportActivity extends Activity {
+    /**
+     * @see Activity#onKeyDown(int, KeyEvent)
+     */
+    @Override
+    public boolean onKeyUp(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK && event.getRepeatCount() == 0) {
+            if (InputServiceImpl.onBackButton()) {
+                return true;
+            }
+        }
+        return super.onKeyUp(keyCode, event);
+    }
+
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
