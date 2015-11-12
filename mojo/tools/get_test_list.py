@@ -187,7 +187,7 @@ def GetTestList(config, verbose_count=0):
          "--checked",
          "-p", os.path.join(build_dir, "gen", "dart-pkg", "packages"),
          os.path.join(
-           "mojo", "public", "dart", "mojom", "test", "generate_test.dart")])
+           "mojo", "dart", "packages", "mojom", "test", "generate_test.dart")])
 
   if target_os == Config.OS_LINUX and ShouldRunTest(Config.TEST_TYPE_DEFAULT):
     AddEntry("Dart snapshotter test",

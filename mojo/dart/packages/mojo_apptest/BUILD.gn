@@ -10,7 +10,7 @@ dart_pkg("mojo_apptest") {
     "pubspec.yaml",
   ]
   deps = [
-    "//mojo/public/dart/mojo",
+    "//mojo/dart/packages/mojo",
     "//mojo/public/dart/third_party",
   ]
 }

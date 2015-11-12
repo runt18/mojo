@@ -27,8 +27,8 @@ main() async {
   if (Platform.environment['MOJO_SDK'] != null) {
     mojoSdk = Platform.environment['MOJO_SDK'];
   } else {
-    mojoSdk = path.normalize(
-        path.join(path.dirname(Platform.script.path), '..', '..', '..'));
+    mojoSdk = path.normalize(path.join(
+        path.dirname(Platform.script.path), '..', '..', '..', '..', 'public'));
   }
   if (!await new Directory(mojoSdk).exists()) {
     fail("Could not find the Mojo SDK");

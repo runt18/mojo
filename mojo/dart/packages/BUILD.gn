@@ -2,8 +2,10 @@
 # Use of this source code is governed by a BSD-style license that can be
 # found in the LICENSE file.
 
-group("dart") {
+group("packages") {
   deps = [
-    "third_party",
+    "//mojo/dart/packages/mojo",
+    "//mojo/dart/packages/mojo_apptest",
+    "//mojo/dart/packages/mojom",
   ]
 }

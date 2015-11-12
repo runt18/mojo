@@ -14,7 +14,8 @@ dart_pkg("http_load_test") {
     "pubspec.yaml",
   ]
   deps = [
-    "//mojo/public/dart",
+    "//mojo/dart/packages/",
     "//mojo/dart/mojo_services",
+    "//mojo/public/dart",
   ]
 }

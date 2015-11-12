@@ -13,6 +13,7 @@ dart_pkg("echo") {
     "pubspec.yaml",
   ]
   deps = [
+    "//mojo/dart/packages/mojo",
     "//mojo/public/dart",
     "//services/dart/test/dart/service_test_interfaces",
   ]
