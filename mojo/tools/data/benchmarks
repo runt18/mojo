@@ -4,7 +4,7 @@
 benchmarks = [
   {
     'name': 'dart init',
-    'app': 'https://core.mojoapps.io/dart_traced_application.mojo',
+    'app': 'https://core.mojoapps.io/dart_startup.mojo',
     'duration': 10,
     'measurements': [
       {

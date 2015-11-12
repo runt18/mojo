@@ -24,7 +24,7 @@ class DartHandlerRunning extends Application {
         new TracingHelper.fromApplication(this, "example_traced_application");
     _tracing.traceInstant("connecting", "dart_handler_running");
     ApplicationConnection connection =
-        connectToApplication("mojo:dart_traced_application");
+        connectToApplication("mojo:dart_startup");
   }
 }
 
