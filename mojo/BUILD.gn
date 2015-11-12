@@ -63,6 +63,7 @@ group("tests") {
   deps = [
     ":public_tests",
     "//mojo/common:mojo_common_unittests",
+    "//mojo/converters:mojo_converters_unittests",
     "//mojo/dart/embedder/test:dart_unittests",
     "//mojo/edk:tests",
     "//mojo/gles2:mgl_unittests",
