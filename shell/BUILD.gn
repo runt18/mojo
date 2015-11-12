@@ -452,9 +452,11 @@ if (is_android) {
   if (!is_official_build) {
     manifest_package = "org.chromium.mojo.shell"
     apk_name = "Mojo Shell (dev)"
+    debuggable = "true"
   } else {
     manifest_package = "io.mojoapps.launcher"
     apk_name = "Mojo Shell"
+    debuggable = "false"
   }
 
   if (is_official_build) {
@@ -491,6 +493,7 @@ if (is_android) {
   jinja_variables = [
     "manifest_package=$manifest_package",
     "apk_name=$apk_name",
+    "debuggable=$debuggable",
     "version_code=$version_code",
     "version_name=$version_name",
   ]
