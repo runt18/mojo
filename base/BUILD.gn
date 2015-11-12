@@ -330,8 +330,6 @@ component("base") {
     "message_loop/message_pump_android.h",
     "message_loop/message_pump_default.cc",
     "message_loop/message_pump_default.h",
-    "message_loop/message_pump_glib.cc",
-    "message_loop/message_pump_glib.h",
     "message_loop/message_pump_io_ios.cc",
     "message_loop/message_pump_io_ios.h",
     "message_loop/message_pump_libevent.cc",
@@ -789,9 +787,6 @@ component("base") {
   if (is_linux) {
     # TODO(brettw) this will need to be parameterized at some point.
     linux_configs = []
-    if (use_glib) {
-      linux_configs += [ "//build/config/linux:glib" ]
-    }
 
     configs += linux_configs
     all_dependent_configs = linux_configs
@@ -817,13 +812,6 @@ component("base") {
         "linux_util.h",
       ]
     }
-  }
-
-  if (!use_glib) {
-    sources -= [
-      "message_loop/message_pump_glib.cc",
-      "message_loop/message_pump_glib.h",
-    ]
   }
 
   configs += [ "//build/config/compiler:wexit_time_destructors" ]
@@ -1178,7 +1166,6 @@ test("base_unittests") {
     "message_loop/message_loop_proxy_impl_unittest.cc",
     "message_loop/message_loop_proxy_unittest.cc",
     "message_loop/message_loop_unittest.cc",
-    "message_loop/message_pump_glib_unittest.cc",
     "message_loop/message_pump_io_ios_unittest.cc",
     "metrics/bucket_ranges_unittest.cc",
     "metrics/field_trial_unittest.cc",
@@ -1370,14 +1357,6 @@ test("base_unittests") {
     sources -= [ "file_version_info_unittest.cc" ]
     sources += [ "nix/xdg_util_unittest.cc" ]
     deps += [ "//base/test:malloc_wrapper" ]
-
-    if (use_glib) {
-      configs += [ "//build/config/linux:glib" ]
-    }
-  }
-
-  if (!is_linux || use_ozone) {
-    sources -= [ "message_loop/message_pump_glib_unittest.cc" ]
   }
 
   if (is_posix || is_ios) {

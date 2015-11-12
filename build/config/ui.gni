@@ -32,22 +32,15 @@ declare_args() {
 
   # Whether the entire browser uses toolkit-views on Mac instead of Cocoa.
   mac_views_browser = false
-
-  # Whether we should use glib, a low level C utility library.
-  use_glib = is_linux && !use_ozone
 }
 
 # Additional dependent variables -----------------------------------------------
 #
 # These variables depend on other variables and can't be set externally.
 
-if (is_linux && use_glib) {
-  use_cairo = true
-  use_pango = true
-} else {
-  use_cairo = false
-  use_pango = false
-}
+# TODO(vtl): Probably should get rid of these variables.
+use_cairo = false
+use_pango = false
 
 # Use GPU accelerated cross process image transport by default on linux builds
 # with the Aura window manager.

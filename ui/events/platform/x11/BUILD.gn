@@ -8,7 +8,6 @@ component("x11") {
   sources = [
     "x11_event_source.cc",
     "x11_event_source.h",
-    "x11_event_source_glib.cc",
     "x11_event_source_libevent.cc",
     "x11_hotplug_event_handler.cc",
     "x11_hotplug_event_handler.h",
@@ -29,12 +28,4 @@ component("x11") {
   deps = [
     "//base",
   ]
-
-  if (use_glib) {
-    sources -= [ "x11_event_source_libevent.cc" ]
-
-    configs += [ "//build/config/linux:glib" ]
-  } else {
-    sources -= [ "x11_event_source_glib.cc" ]
-  }
 }
