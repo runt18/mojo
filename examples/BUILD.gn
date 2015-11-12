@@ -11,6 +11,7 @@ group("portable_examples") {
 
   deps = [
     "//examples/apptest",
+    "//examples/audio_play_test",
     "//examples/content_handler_demo",
     "//examples/dart",
     "//examples/echo",
