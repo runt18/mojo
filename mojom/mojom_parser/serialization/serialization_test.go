@@ -72,14 +72,21 @@ func (test *singleFileTest) endTestCase() {
 
 // newDeclData constructs a new DeclarationData with the given data.
 func (test *singleFileTest) newDeclData(shortName, fullIdentifier string) *mojom_types.DeclarationData {
+	return test.newContainedDeclData(shortName, fullIdentifier, nil)
+}
+
+// newContainedDeclData constructs a new DeclarationData with the given data.
+func (test *singleFileTest) newContainedDeclData(shortName, fullIdentifier string, containerTypeKey *string) *mojom_types.DeclarationData {
 	return &mojom_types.DeclarationData{
 		ShortName:        &shortName,
 		FullIdentifier:   &fullIdentifier,
 		DeclaredOrdinal:  -1,
 		DeclarationOrder: -1,
+		ContainerTypeKey: containerTypeKey,
 		SourceFileInfo: &mojom_types.SourceFileInfo{
 			FileName: test.fileName(),
 		}}
+
 }
 
 // TestSingleFileSerialization uses a series of test cases in which the text of a .mojom
@@ -365,7 +372,7 @@ func TestSingleFileSerialization(t *testing.T) {
 
 		// enum Hats
 		test.expectedGraph().ResolvedTypes["TYPE_KEY:mojom.test.Foo.Hats"] = &mojom_types.UserDefinedTypeEnumType{mojom_types.MojomEnum{
-			DeclData: test.newDeclData("Hats", "mojom.test.Foo.Hats"),
+			DeclData: test.newContainedDeclData("Hats", "mojom.test.Foo.Hats", stringPointer("TYPE_KEY:mojom.test.Foo")),
 			Values: []mojom_types.EnumValue{
 				// Note(rudominer) It is a bug that we need to copy the enum values here.
 				// See https://github.com/domokit/mojo/issues/513.

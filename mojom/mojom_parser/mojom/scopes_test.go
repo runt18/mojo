@@ -22,8 +22,7 @@ func TestLookupType(t *testing.T) {
 	fileScope := NewTestFileScope("foo.bar")
 
 	// Create a new interface scope
-	interfaceScope := NewLexicalScope(ScopeInterface, fileScope, "MyInterface",
-		fileScope.descriptor.mojomFiles[0])
+	interfaceScope := NewInterfaceScope(fileScope)
 
 	// Obtain the auto-generated abstract module scopes.
 	fooBarScope := fileScope.descriptor.abstractScopesByName["foo.bar"]
@@ -107,8 +106,7 @@ func TestLookupValue(t *testing.T) {
 	fileScope := NewTestFileScope("foo.bar")
 
 	// Create a new interface scope
-	interfaceScope := NewLexicalScope(ScopeInterface, fileScope, "MyInterface",
-		fileScope.descriptor.mojomFiles[0])
+	interfaceScope := NewInterfaceScope(fileScope)
 
 	// Obtain the auto-generated abstract module scopes.
 	fooBarScope := fileScope.descriptor.abstractScopesByName["foo.bar"]
