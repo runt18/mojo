@@ -51,358 +51,426 @@ var ID_mojom_types_LiteralValue__ string = "mojom_types_LiteralValue__"
 var ID_mojom_types_UserDefinedValue__ string = "mojom_types_UserDefinedValue__"
 
 var mojom_typesDesc__ = make(map[string]UserDefinedType)
-
 func init() {
-	mojom_typesDesc__["mojom_types_SimpleType__"] = &UserDefinedTypeEnumType{
-		Value: mojom_types_SimpleType__(),
-	}
-	mojom_typesDesc__["mojom_types_BuiltinConstantValue__"] = &UserDefinedTypeEnumType{
-		Value: mojom_types_BuiltinConstantValue__(),
-	}
-	mojom_typesDesc__["mojom_types_Kind__"] = &UserDefinedTypeEnumType{
-		Value: mojom_types_Kind__(),
-	}
-	mojom_typesDesc__["mojom_types_StringType__"] = &UserDefinedTypeStructType{
-		Value: mojom_types_StringType__(),
-	}
+    mojom_typesDesc__["mojom_types_SimpleType__"] = &UserDefinedTypeEnumType{
+    Value: mojom_types_SimpleType__(),
+  }
+    mojom_typesDesc__["mojom_types_BuiltinConstantValue__"] = &UserDefinedTypeEnumType{
+    Value: mojom_types_BuiltinConstantValue__(),
+  }
+    mojom_typesDesc__["mojom_types_Kind__"] = &UserDefinedTypeEnumType{
+    Value: mojom_types_Kind__(),
+  }
+    mojom_typesDesc__["mojom_types_StringType__"] = &UserDefinedTypeStructType{
+    Value: mojom_types_StringType__(),
+  }
 
-	mojom_typesDesc__["mojom_types_HandleType__"] = &UserDefinedTypeStructType{
-		Value: mojom_types_HandleType__(),
-	}
+    mojom_typesDesc__["mojom_types_HandleType__"] = &UserDefinedTypeStructType{
+    Value: mojom_types_HandleType__(),
+  }
 
-	mojom_typesDesc__["mojom_types_ArrayType__"] = &UserDefinedTypeStructType{
-		Value: mojom_types_ArrayType__(),
-	}
 
-	mojom_typesDesc__["mojom_types_Type__"] = &UserDefinedTypeUnionType{
-		Value: mojom_types_Type__(),
-	}
+    mojom_typesDesc__["mojom_types_ArrayType__"] = &UserDefinedTypeStructType{
+    Value: mojom_types_ArrayType__(),
+  }
 
-	mojom_typesDesc__["mojom_types_MapType__"] = &UserDefinedTypeStructType{
-		Value: mojom_types_MapType__(),
-	}
 
-	mojom_typesDesc__["mojom_types_TypeReference__"] = &UserDefinedTypeStructType{
-		Value: mojom_types_TypeReference__(),
-	}
+  mojom_typesDesc__["mojom_types_Type__"] = &UserDefinedTypeUnionType{
+    Value: mojom_types_Type__(),
+  }
 
-	mojom_typesDesc__["mojom_types_StructField__"] = &UserDefinedTypeStructType{
-		Value: mojom_types_StructField__(),
-	}
-	mojom_typesDesc__["mojom_types_DeclarationData__"] = &UserDefinedTypeStructType{
-		Value: mojom_types_DeclarationData__(),
-	}
 
-	mojom_typesDesc__["mojom_types_SourceFileInfo__"] = &UserDefinedTypeStructType{
-		Value: mojom_types_SourceFileInfo__(),
-	}
 
-	mojom_typesDesc__["mojom_types_ContainedDeclarations__"] = &UserDefinedTypeStructType{
-		Value: mojom_types_ContainedDeclarations__(),
-	}
+  mojom_typesDesc__["mojom_types_MapType__"] = &UserDefinedTypeStructType{
+    Value: mojom_types_MapType__(),
+  }
 
-	mojom_typesDesc__["mojom_types_DefaultFieldValue__"] = &UserDefinedTypeUnionType{
-		Value: mojom_types_DefaultFieldValue__(),
-	}
-	mojom_typesDesc__["mojom_types_Value__"] = &UserDefinedTypeUnionType{
-		Value: mojom_types_Value__(),
-	}
-	mojom_typesDesc__["mojom_types_LiteralValue__"] = &UserDefinedTypeUnionType{
-		Value: mojom_types_LiteralValue__(),
-	}
 
-	mojom_typesDesc__["mojom_types_UserValueReference__"] = &UserDefinedTypeStructType{
-		Value: mojom_types_UserValueReference__(),
-	}
 
-	mojom_typesDesc__["mojom_types_DefaultKeyword__"] = &UserDefinedTypeStructType{
-		Value: mojom_types_DefaultKeyword__(),
-	}
 
-	mojom_typesDesc__["mojom_types_StructVersion__"] = &UserDefinedTypeStructType{
-		Value: mojom_types_StructVersion__(),
-	}
 
-	mojom_typesDesc__["mojom_types_MojomStruct__"] = &UserDefinedTypeStructType{
-		Value: mojom_types_MojomStruct__(),
-	}
+  mojom_typesDesc__["mojom_types_TypeReference__"] = &UserDefinedTypeStructType{
+    Value: mojom_types_TypeReference__(),
+  }
 
-	mojom_typesDesc__["mojom_types_UnionField__"] = &UserDefinedTypeStructType{
-		Value: mojom_types_UnionField__(),
-	}
 
-	mojom_typesDesc__["mojom_types_MojomUnion__"] = &UserDefinedTypeStructType{
-		Value: mojom_types_MojomUnion__(),
-	}
 
-	mojom_typesDesc__["mojom_types_EnumValue__"] = &UserDefinedTypeStructType{
-		Value: mojom_types_EnumValue__(),
-	}
 
-	mojom_typesDesc__["mojom_types_MojomEnum__"] = &UserDefinedTypeStructType{
-		Value: mojom_types_MojomEnum__(),
-	}
 
-	mojom_typesDesc__["mojom_types_MojomMethod__"] = &UserDefinedTypeStructType{
-		Value: mojom_types_MojomMethod__(),
-	}
 
-	mojom_typesDesc__["mojom_types_MojomInterface__"] = &UserDefinedTypeStructType{
-		Value: mojom_types_MojomInterface__(),
-	}
+        mojom_typesDesc__["mojom_types_StructField__"] = &UserDefinedTypeStructType{
+    Value: mojom_types_StructField__(),
+  }
+  mojom_typesDesc__["mojom_types_DeclarationData__"] = &UserDefinedTypeStructType{
+    Value: mojom_types_DeclarationData__(),
+  }
 
-	mojom_typesDesc__["mojom_types_DeclaredConstant__"] = &UserDefinedTypeStructType{
-		Value: mojom_types_DeclaredConstant__(),
-	}
 
-	mojom_typesDesc__["mojom_types_Attribute__"] = &UserDefinedTypeStructType{
-		Value: mojom_types_Attribute__(),
-	}
 
-	mojom_typesDesc__["mojom_types_UserDefinedType__"] = &UserDefinedTypeUnionType{
-		Value: mojom_types_UserDefinedType__(),
-	}
 
-	mojom_typesDesc__["mojom_types_UserDefinedValue__"] = &UserDefinedTypeUnionType{
-		Value: mojom_types_UserDefinedValue__(),
-	}
+
+
+  mojom_typesDesc__["mojom_types_SourceFileInfo__"] = &UserDefinedTypeStructType{
+    Value: mojom_types_SourceFileInfo__(),
+  }
+
+
+
+
+  mojom_typesDesc__["mojom_types_ContainedDeclarations__"] = &UserDefinedTypeStructType{
+    Value: mojom_types_ContainedDeclarations__(),
+  }
+
+
+
+
+
+
+  mojom_typesDesc__["mojom_types_DefaultFieldValue__"] = &UserDefinedTypeUnionType{
+    Value: mojom_types_DefaultFieldValue__(),
+  }
+  mojom_typesDesc__["mojom_types_Value__"] = &UserDefinedTypeUnionType{
+    Value: mojom_types_Value__(),
+  }
+  mojom_typesDesc__["mojom_types_LiteralValue__"] = &UserDefinedTypeUnionType{
+    Value: mojom_types_LiteralValue__(),
+  }
+
+
+
+
+
+
+
+
+
+
+
+
+
+  mojom_typesDesc__["mojom_types_UserValueReference__"] = &UserDefinedTypeStructType{
+    Value: mojom_types_UserValueReference__(),
+  }
+
+
+
+
+
+
+  mojom_typesDesc__["mojom_types_DefaultKeyword__"] = &UserDefinedTypeStructType{
+    Value: mojom_types_DefaultKeyword__(),
+  }
+
+
+
+      mojom_typesDesc__["mojom_types_StructVersion__"] = &UserDefinedTypeStructType{
+    Value: mojom_types_StructVersion__(),
+  }
+
+
+
+    mojom_typesDesc__["mojom_types_MojomStruct__"] = &UserDefinedTypeStructType{
+    Value: mojom_types_MojomStruct__(),
+  }
+
+
+
+    mojom_typesDesc__["mojom_types_UnionField__"] = &UserDefinedTypeStructType{
+    Value: mojom_types_UnionField__(),
+  }
+
+
+
+    mojom_typesDesc__["mojom_types_MojomUnion__"] = &UserDefinedTypeStructType{
+    Value: mojom_types_MojomUnion__(),
+  }
+
+
+    mojom_typesDesc__["mojom_types_EnumValue__"] = &UserDefinedTypeStructType{
+    Value: mojom_types_EnumValue__(),
+  }
+
+
+
+
+    mojom_typesDesc__["mojom_types_MojomEnum__"] = &UserDefinedTypeStructType{
+    Value: mojom_types_MojomEnum__(),
+  }
+
+
+    mojom_typesDesc__["mojom_types_MojomMethod__"] = &UserDefinedTypeStructType{
+    Value: mojom_types_MojomMethod__(),
+  }
+
+
+
+
+    mojom_typesDesc__["mojom_types_MojomInterface__"] = &UserDefinedTypeStructType{
+    Value: mojom_types_MojomInterface__(),
+  }
+
+
+
+      mojom_typesDesc__["mojom_types_DeclaredConstant__"] = &UserDefinedTypeStructType{
+    Value: mojom_types_DeclaredConstant__(),
+  }
+
+
+
+          mojom_typesDesc__["mojom_types_Attribute__"] = &UserDefinedTypeStructType{
+    Value: mojom_types_Attribute__(),
+  }
+
+
+      mojom_typesDesc__["mojom_types_UserDefinedType__"] = &UserDefinedTypeUnionType{
+    Value: mojom_types_UserDefinedType__(),
+  }
+
+
+
+
+          mojom_typesDesc__["mojom_types_UserDefinedValue__"] = &UserDefinedTypeUnionType{
+    Value: mojom_types_UserDefinedValue__(),
+  }
+
+
 
 }
 func GetAllMojomTypeDefinitions() map[string]UserDefinedType {
-	return mojom_typesDesc__
+  return mojom_typesDesc__
 }
 
 type SimpleType int32
 
 const (
-	SimpleType_Bool   = 0
-	SimpleType_Double = SimpleType_Bool + 1
-	SimpleType_Float  = SimpleType_Double + 1
-	SimpleType_InT8   = SimpleType_Float + 1
-	SimpleType_InT16  = SimpleType_InT8 + 1
-	SimpleType_InT32  = SimpleType_InT16 + 1
-	SimpleType_InT64  = SimpleType_InT32 + 1
-	SimpleType_UinT8  = SimpleType_InT64 + 1
-	SimpleType_UinT16 = SimpleType_UinT8 + 1
-	SimpleType_UinT32 = SimpleType_UinT16 + 1
-	SimpleType_UinT64 = SimpleType_UinT32 + 1
+	SimpleType_Bool = 0
+	SimpleType_Double = SimpleType_Bool + 1;
+	SimpleType_Float = SimpleType_Double + 1;
+	SimpleType_InT8 = SimpleType_Float + 1;
+	SimpleType_InT16 = SimpleType_InT8 + 1;
+	SimpleType_InT32 = SimpleType_InT16 + 1;
+	SimpleType_InT64 = SimpleType_InT32 + 1;
+	SimpleType_UinT8 = SimpleType_InT64 + 1;
+	SimpleType_UinT16 = SimpleType_UinT8 + 1;
+	SimpleType_UinT32 = SimpleType_UinT16 + 1;
+	SimpleType_UinT64 = SimpleType_UinT32 + 1;
 )
 
 // String names and labels used by the MojomEnum types.
 var (
-	enumName_SimpleType             = "SimpleType"
-	enumFieldName_SimpleType_Bool   = "Bool"
-	enumFieldName_SimpleType_Double = "Double"
-	enumFieldName_SimpleType_Float  = "Float"
-	enumFieldName_SimpleType_InT8   = "InT8"
-	enumFieldName_SimpleType_InT16  = "InT16"
-	enumFieldName_SimpleType_InT32  = "InT32"
-	enumFieldName_SimpleType_InT64  = "InT64"
-	enumFieldName_SimpleType_UinT8  = "UinT8"
-	enumFieldName_SimpleType_UinT16 = "UinT16"
-	enumFieldName_SimpleType_UinT32 = "UinT32"
-	enumFieldName_SimpleType_UinT64 = "UinT64"
+  enumName_SimpleType = "SimpleType"
+  enumFieldName_SimpleType_Bool = "Bool"
+  enumFieldName_SimpleType_Double = "Double"
+  enumFieldName_SimpleType_Float = "Float"
+  enumFieldName_SimpleType_InT8 = "InT8"
+  enumFieldName_SimpleType_InT16 = "InT16"
+  enumFieldName_SimpleType_InT32 = "InT32"
+  enumFieldName_SimpleType_InT64 = "InT64"
+  enumFieldName_SimpleType_UinT8 = "UinT8"
+  enumFieldName_SimpleType_UinT16 = "UinT16"
+  enumFieldName_SimpleType_UinT32 = "UinT32"
+  enumFieldName_SimpleType_UinT64 = "UinT64"
 )
 
 func mojom_types_SimpleType__() MojomEnum {
-	return MojomEnum{
-		DeclData: &DeclarationData{
-			ShortName: &enumName_SimpleType,
-		},
-		Values: []EnumValue{EnumValue{
-			DeclData: &DeclarationData{
-				ShortName: &enumFieldName_SimpleType_Bool,
-			},
-			EnumTypeKey: ID_mojom_types_SimpleType__,
-			IntValue:    int32(0),
-		}, EnumValue{
-			DeclData: &DeclarationData{
-				ShortName: &enumFieldName_SimpleType_Double,
-			},
-			EnumTypeKey: ID_mojom_types_SimpleType__,
-			IntValue:    int32(1),
-		}, EnumValue{
-			DeclData: &DeclarationData{
-				ShortName: &enumFieldName_SimpleType_Float,
-			},
-			EnumTypeKey: ID_mojom_types_SimpleType__,
-			IntValue:    int32(2),
-		}, EnumValue{
-			DeclData: &DeclarationData{
-				ShortName: &enumFieldName_SimpleType_InT8,
-			},
-			EnumTypeKey: ID_mojom_types_SimpleType__,
-			IntValue:    int32(3),
-		}, EnumValue{
-			DeclData: &DeclarationData{
-				ShortName: &enumFieldName_SimpleType_InT16,
-			},
-			EnumTypeKey: ID_mojom_types_SimpleType__,
-			IntValue:    int32(4),
-		}, EnumValue{
-			DeclData: &DeclarationData{
-				ShortName: &enumFieldName_SimpleType_InT32,
-			},
-			EnumTypeKey: ID_mojom_types_SimpleType__,
-			IntValue:    int32(5),
-		}, EnumValue{
-			DeclData: &DeclarationData{
-				ShortName: &enumFieldName_SimpleType_InT64,
-			},
-			EnumTypeKey: ID_mojom_types_SimpleType__,
-			IntValue:    int32(6),
-		}, EnumValue{
-			DeclData: &DeclarationData{
-				ShortName: &enumFieldName_SimpleType_UinT8,
-			},
-			EnumTypeKey: ID_mojom_types_SimpleType__,
-			IntValue:    int32(7),
-		}, EnumValue{
-			DeclData: &DeclarationData{
-				ShortName: &enumFieldName_SimpleType_UinT16,
-			},
-			EnumTypeKey: ID_mojom_types_SimpleType__,
-			IntValue:    int32(8),
-		}, EnumValue{
-			DeclData: &DeclarationData{
-				ShortName: &enumFieldName_SimpleType_UinT32,
-			},
-			EnumTypeKey: ID_mojom_types_SimpleType__,
-			IntValue:    int32(9),
-		}, EnumValue{
-			DeclData: &DeclarationData{
-				ShortName: &enumFieldName_SimpleType_UinT64,
-			},
-			EnumTypeKey: ID_mojom_types_SimpleType__,
-			IntValue:    int32(10),
-		}},
-	}
+  return MojomEnum{
+    DeclData: &DeclarationData{
+      ShortName: &enumName_SimpleType,
+    },
+    Values: []EnumValue{EnumValue{
+        DeclData: &DeclarationData{
+          ShortName: &enumFieldName_SimpleType_Bool,
+        },
+        EnumTypeKey: ID_mojom_types_SimpleType__,
+        IntValue: int32(0),
+      },EnumValue{
+        DeclData: &DeclarationData{
+          ShortName: &enumFieldName_SimpleType_Double,
+        },
+        EnumTypeKey: ID_mojom_types_SimpleType__,
+        IntValue: int32(1),
+      },EnumValue{
+        DeclData: &DeclarationData{
+          ShortName: &enumFieldName_SimpleType_Float,
+        },
+        EnumTypeKey: ID_mojom_types_SimpleType__,
+        IntValue: int32(2),
+      },EnumValue{
+        DeclData: &DeclarationData{
+          ShortName: &enumFieldName_SimpleType_InT8,
+        },
+        EnumTypeKey: ID_mojom_types_SimpleType__,
+        IntValue: int32(3),
+      },EnumValue{
+        DeclData: &DeclarationData{
+          ShortName: &enumFieldName_SimpleType_InT16,
+        },
+        EnumTypeKey: ID_mojom_types_SimpleType__,
+        IntValue: int32(4),
+      },EnumValue{
+        DeclData: &DeclarationData{
+          ShortName: &enumFieldName_SimpleType_InT32,
+        },
+        EnumTypeKey: ID_mojom_types_SimpleType__,
+        IntValue: int32(5),
+      },EnumValue{
+        DeclData: &DeclarationData{
+          ShortName: &enumFieldName_SimpleType_InT64,
+        },
+        EnumTypeKey: ID_mojom_types_SimpleType__,
+        IntValue: int32(6),
+      },EnumValue{
+        DeclData: &DeclarationData{
+          ShortName: &enumFieldName_SimpleType_UinT8,
+        },
+        EnumTypeKey: ID_mojom_types_SimpleType__,
+        IntValue: int32(7),
+      },EnumValue{
+        DeclData: &DeclarationData{
+          ShortName: &enumFieldName_SimpleType_UinT16,
+        },
+        EnumTypeKey: ID_mojom_types_SimpleType__,
+        IntValue: int32(8),
+      },EnumValue{
+        DeclData: &DeclarationData{
+          ShortName: &enumFieldName_SimpleType_UinT32,
+        },
+        EnumTypeKey: ID_mojom_types_SimpleType__,
+        IntValue: int32(9),
+      },EnumValue{
+        DeclData: &DeclarationData{
+          ShortName: &enumFieldName_SimpleType_UinT64,
+        },
+        EnumTypeKey: ID_mojom_types_SimpleType__,
+        IntValue: int32(10),
+      },},
+  }
 }
 
 type BuiltinConstantValue int32
 
 const (
-	BuiltinConstantValue_DoubleInfinity         = 0
-	BuiltinConstantValue_DoubleNegativeInfinity = BuiltinConstantValue_DoubleInfinity + 1
-	BuiltinConstantValue_DoubleNan              = BuiltinConstantValue_DoubleNegativeInfinity + 1
-	BuiltinConstantValue_FloatInfinity          = BuiltinConstantValue_DoubleNan + 1
-	BuiltinConstantValue_FloatNegativeInfinity  = BuiltinConstantValue_FloatInfinity + 1
-	BuiltinConstantValue_FloatNan               = BuiltinConstantValue_FloatNegativeInfinity + 1
+	BuiltinConstantValue_DoubleInfinity = 0
+	BuiltinConstantValue_DoubleNegativeInfinity = BuiltinConstantValue_DoubleInfinity + 1;
+	BuiltinConstantValue_DoubleNan = BuiltinConstantValue_DoubleNegativeInfinity + 1;
+	BuiltinConstantValue_FloatInfinity = BuiltinConstantValue_DoubleNan + 1;
+	BuiltinConstantValue_FloatNegativeInfinity = BuiltinConstantValue_FloatInfinity + 1;
+	BuiltinConstantValue_FloatNan = BuiltinConstantValue_FloatNegativeInfinity + 1;
 )
 
 // String names and labels used by the MojomEnum types.
 var (
-	enumName_BuiltinConstantValue                             = "BuiltinConstantValue"
-	enumFieldName_BuiltinConstantValue_DoubleInfinity         = "DoubleInfinity"
-	enumFieldName_BuiltinConstantValue_DoubleNegativeInfinity = "DoubleNegativeInfinity"
-	enumFieldName_BuiltinConstantValue_DoubleNan              = "DoubleNan"
-	enumFieldName_BuiltinConstantValue_FloatInfinity          = "FloatInfinity"
-	enumFieldName_BuiltinConstantValue_FloatNegativeInfinity  = "FloatNegativeInfinity"
-	enumFieldName_BuiltinConstantValue_FloatNan               = "FloatNan"
+  enumName_BuiltinConstantValue = "BuiltinConstantValue"
+  enumFieldName_BuiltinConstantValue_DoubleInfinity = "DoubleInfinity"
+  enumFieldName_BuiltinConstantValue_DoubleNegativeInfinity = "DoubleNegativeInfinity"
+  enumFieldName_BuiltinConstantValue_DoubleNan = "DoubleNan"
+  enumFieldName_BuiltinConstantValue_FloatInfinity = "FloatInfinity"
+  enumFieldName_BuiltinConstantValue_FloatNegativeInfinity = "FloatNegativeInfinity"
+  enumFieldName_BuiltinConstantValue_FloatNan = "FloatNan"
 )
 
 func mojom_types_BuiltinConstantValue__() MojomEnum {
-	return MojomEnum{
-		DeclData: &DeclarationData{
-			ShortName: &enumName_BuiltinConstantValue,
-		},
-		Values: []EnumValue{EnumValue{
-			DeclData: &DeclarationData{
-				ShortName: &enumFieldName_BuiltinConstantValue_DoubleInfinity,
-			},
-			EnumTypeKey: ID_mojom_types_BuiltinConstantValue__,
-			IntValue:    int32(0),
-		}, EnumValue{
-			DeclData: &DeclarationData{
-				ShortName: &enumFieldName_BuiltinConstantValue_DoubleNegativeInfinity,
-			},
-			EnumTypeKey: ID_mojom_types_BuiltinConstantValue__,
-			IntValue:    int32(1),
-		}, EnumValue{
-			DeclData: &DeclarationData{
-				ShortName: &enumFieldName_BuiltinConstantValue_DoubleNan,
-			},
-			EnumTypeKey: ID_mojom_types_BuiltinConstantValue__,
-			IntValue:    int32(2),
-		}, EnumValue{
-			DeclData: &DeclarationData{
-				ShortName: &enumFieldName_BuiltinConstantValue_FloatInfinity,
-			},
-			EnumTypeKey: ID_mojom_types_BuiltinConstantValue__,
-			IntValue:    int32(3),
-		}, EnumValue{
-			DeclData: &DeclarationData{
-				ShortName: &enumFieldName_BuiltinConstantValue_FloatNegativeInfinity,
-			},
-			EnumTypeKey: ID_mojom_types_BuiltinConstantValue__,
-			IntValue:    int32(4),
-		}, EnumValue{
-			DeclData: &DeclarationData{
-				ShortName: &enumFieldName_BuiltinConstantValue_FloatNan,
-			},
-			EnumTypeKey: ID_mojom_types_BuiltinConstantValue__,
-			IntValue:    int32(5),
-		}},
-	}
+  return MojomEnum{
+    DeclData: &DeclarationData{
+      ShortName: &enumName_BuiltinConstantValue,
+    },
+    Values: []EnumValue{EnumValue{
+        DeclData: &DeclarationData{
+          ShortName: &enumFieldName_BuiltinConstantValue_DoubleInfinity,
+        },
+        EnumTypeKey: ID_mojom_types_BuiltinConstantValue__,
+        IntValue: int32(0),
+      },EnumValue{
+        DeclData: &DeclarationData{
+          ShortName: &enumFieldName_BuiltinConstantValue_DoubleNegativeInfinity,
+        },
+        EnumTypeKey: ID_mojom_types_BuiltinConstantValue__,
+        IntValue: int32(1),
+      },EnumValue{
+        DeclData: &DeclarationData{
+          ShortName: &enumFieldName_BuiltinConstantValue_DoubleNan,
+        },
+        EnumTypeKey: ID_mojom_types_BuiltinConstantValue__,
+        IntValue: int32(2),
+      },EnumValue{
+        DeclData: &DeclarationData{
+          ShortName: &enumFieldName_BuiltinConstantValue_FloatInfinity,
+        },
+        EnumTypeKey: ID_mojom_types_BuiltinConstantValue__,
+        IntValue: int32(3),
+      },EnumValue{
+        DeclData: &DeclarationData{
+          ShortName: &enumFieldName_BuiltinConstantValue_FloatNegativeInfinity,
+        },
+        EnumTypeKey: ID_mojom_types_BuiltinConstantValue__,
+        IntValue: int32(4),
+      },EnumValue{
+        DeclData: &DeclarationData{
+          ShortName: &enumFieldName_BuiltinConstantValue_FloatNan,
+        },
+        EnumTypeKey: ID_mojom_types_BuiltinConstantValue__,
+        IntValue: int32(5),
+      },},
+  }
 }
 
 type HandleType_Kind int32
 
 const (
-	HandleType_Kind_Unspecified      = 0
-	HandleType_Kind_MessagePipe      = HandleType_Kind_Unspecified + 1
-	HandleType_Kind_DataPipeConsumer = HandleType_Kind_MessagePipe + 1
-	HandleType_Kind_DataPipeProducer = HandleType_Kind_DataPipeConsumer + 1
-	HandleType_Kind_SharedBuffer     = HandleType_Kind_DataPipeProducer + 1
+	HandleType_Kind_Unspecified = 0
+	HandleType_Kind_MessagePipe = HandleType_Kind_Unspecified + 1;
+	HandleType_Kind_DataPipeConsumer = HandleType_Kind_MessagePipe + 1;
+	HandleType_Kind_DataPipeProducer = HandleType_Kind_DataPipeConsumer + 1;
+	HandleType_Kind_SharedBuffer = HandleType_Kind_DataPipeProducer + 1;
 )
 
 // String names and labels used by the MojomEnum types.
 var (
-	enumName_HandleType_Kind                       = "HandleType_Kind"
-	enumFieldName_HandleType_Kind_Unspecified      = "Unspecified"
-	enumFieldName_HandleType_Kind_MessagePipe      = "MessagePipe"
-	enumFieldName_HandleType_Kind_DataPipeConsumer = "DataPipeConsumer"
-	enumFieldName_HandleType_Kind_DataPipeProducer = "DataPipeProducer"
-	enumFieldName_HandleType_Kind_SharedBuffer     = "SharedBuffer"
+  enumName_HandleType_Kind = "HandleType_Kind"
+  enumFieldName_HandleType_Kind_Unspecified = "Unspecified"
+  enumFieldName_HandleType_Kind_MessagePipe = "MessagePipe"
+  enumFieldName_HandleType_Kind_DataPipeConsumer = "DataPipeConsumer"
+  enumFieldName_HandleType_Kind_DataPipeProducer = "DataPipeProducer"
+  enumFieldName_HandleType_Kind_SharedBuffer = "SharedBuffer"
 )
 
 func mojom_types_Kind__() MojomEnum {
-	return MojomEnum{
-		DeclData: &DeclarationData{
-			ShortName: &enumName_HandleType_Kind,
-		},
-		Values: []EnumValue{EnumValue{
-			DeclData: &DeclarationData{
-				ShortName: &enumFieldName_HandleType_Kind_Unspecified,
-			},
-			EnumTypeKey: ID_mojom_types_Kind__,
-			IntValue:    int32(0),
-		}, EnumValue{
-			DeclData: &DeclarationData{
-				ShortName: &enumFieldName_HandleType_Kind_MessagePipe,
-			},
-			EnumTypeKey: ID_mojom_types_Kind__,
-			IntValue:    int32(1),
-		}, EnumValue{
-			DeclData: &DeclarationData{
-				ShortName: &enumFieldName_HandleType_Kind_DataPipeConsumer,
-			},
-			EnumTypeKey: ID_mojom_types_Kind__,
-			IntValue:    int32(2),
-		}, EnumValue{
-			DeclData: &DeclarationData{
-				ShortName: &enumFieldName_HandleType_Kind_DataPipeProducer,
-			},
-			EnumTypeKey: ID_mojom_types_Kind__,
-			IntValue:    int32(3),
-		}, EnumValue{
-			DeclData: &DeclarationData{
-				ShortName: &enumFieldName_HandleType_Kind_SharedBuffer,
-			},
-			EnumTypeKey: ID_mojom_types_Kind__,
-			IntValue:    int32(4),
-		}},
-	}
+  return MojomEnum{
+    DeclData: &DeclarationData{
+      ShortName: &enumName_HandleType_Kind,
+    },
+    Values: []EnumValue{EnumValue{
+        DeclData: &DeclarationData{
+          ShortName: &enumFieldName_HandleType_Kind_Unspecified,
+        },
+        EnumTypeKey: ID_mojom_types_Kind__,
+        IntValue: int32(0),
+      },EnumValue{
+        DeclData: &DeclarationData{
+          ShortName: &enumFieldName_HandleType_Kind_MessagePipe,
+        },
+        EnumTypeKey: ID_mojom_types_Kind__,
+        IntValue: int32(1),
+      },EnumValue{
+        DeclData: &DeclarationData{
+          ShortName: &enumFieldName_HandleType_Kind_DataPipeConsumer,
+        },
+        EnumTypeKey: ID_mojom_types_Kind__,
+        IntValue: int32(2),
+      },EnumValue{
+        DeclData: &DeclarationData{
+          ShortName: &enumFieldName_HandleType_Kind_DataPipeProducer,
+        },
+        EnumTypeKey: ID_mojom_types_Kind__,
+        IntValue: int32(3),
+      },EnumValue{
+        DeclData: &DeclarationData{
+          ShortName: &enumFieldName_HandleType_Kind_SharedBuffer,
+        },
+        EnumTypeKey: ID_mojom_types_Kind__,
+        IntValue: int32(4),
+      },},
+  }
 }
 
 type StringType struct {
@@ -458,26 +526,26 @@ func (s *StringType) Decode(decoder *bindings.Decoder) error {
 
 // String names and labels used by the MojomStruct types.
 var (
-	structName_StringType               = "StringType"
-	structFieldName_StringType_Nullable = "Nullable"
+  structName_StringType = "StringType"
+  structFieldName_StringType_Nullable = "Nullable"
 )
 
 func mojom_types_StringType__() MojomStruct {
-	return MojomStruct{
-		DeclData: &DeclarationData{
-			ShortName: &structName_StringType,
-		}, Fields: []StructField{StructField{
-			DeclData: &DeclarationData{
-				ShortName: &structFieldName_StringType_Nullable,
-			},
-			Type: &TypeSimpleType{SimpleType_Bool},
-		}},
-	}
+  return MojomStruct{
+    DeclData: &DeclarationData{
+      ShortName: &structName_StringType,
+    },Fields: []StructField{StructField{
+        DeclData: &DeclarationData{
+          ShortName: &structFieldName_StringType_Nullable,
+        },
+        Type: &TypeSimpleType{SimpleType_Bool},
+      },},
+  }
 }
 
 type HandleType struct {
 	Nullable bool
-	Kind     HandleType_Kind
+	Kind HandleType_Kind
 }
 
 func (s *HandleType) Encode(encoder *bindings.Encoder) error {
@@ -539,34 +607,34 @@ func (s *HandleType) Decode(decoder *bindings.Decoder) error {
 
 // String names and labels used by the MojomStruct types.
 var (
-	structName_HandleType               = "HandleType"
-	structFieldName_HandleType_Nullable = "Nullable"
-	structFieldName_HandleType_Kind     = "Kind"
+  structName_HandleType = "HandleType"
+  structFieldName_HandleType_Nullable = "Nullable"
+  structFieldName_HandleType_Kind = "Kind"
 )
 
 func mojom_types_HandleType__() MojomStruct {
-	return MojomStruct{
-		DeclData: &DeclarationData{
-			ShortName: &structName_HandleType,
-		}, Fields: []StructField{StructField{
-			DeclData: &DeclarationData{
-				ShortName: &structFieldName_HandleType_Nullable,
-			},
-			Type: &TypeSimpleType{SimpleType_Bool},
-		}, StructField{
-			DeclData: &DeclarationData{
-				ShortName: &structFieldName_HandleType_Kind,
-			},
-			Type: &TypeTypeReference{
-				Value: TypeReference{Identifier: &ID_mojom_types_Kind__,
-					TypeKey: &ID_mojom_types_Kind__},
-			},
-		}},
-	}
+  return MojomStruct{
+    DeclData: &DeclarationData{
+      ShortName: &structName_HandleType,
+    },Fields: []StructField{StructField{
+        DeclData: &DeclarationData{
+          ShortName: &structFieldName_HandleType_Nullable,
+        },
+        Type: &TypeSimpleType{SimpleType_Bool},
+      },StructField{
+        DeclData: &DeclarationData{
+          ShortName: &structFieldName_HandleType_Kind,
+        },
+        Type: &TypeTypeReference{
+  Value: TypeReference {Identifier: &ID_mojom_types_Kind__,
+  TypeKey: &ID_mojom_types_Kind__,},
+},
+      },},
+  }
 }
 
 type ArrayType struct {
-	Nullable    bool
+	Nullable bool
 	FixedLength int32
 	ElementType Type
 }
@@ -646,41 +714,41 @@ func (s *ArrayType) Decode(decoder *bindings.Decoder) error {
 
 // String names and labels used by the MojomStruct types.
 var (
-	structName_ArrayType                  = "ArrayType"
-	structFieldName_ArrayType_Nullable    = "Nullable"
-	structFieldName_ArrayType_FixedLength = "FixedLength"
-	structFieldName_ArrayType_ElementType = "ElementType"
+  structName_ArrayType = "ArrayType"
+  structFieldName_ArrayType_Nullable = "Nullable"
+  structFieldName_ArrayType_FixedLength = "FixedLength"
+  structFieldName_ArrayType_ElementType = "ElementType"
 )
 
 func mojom_types_ArrayType__() MojomStruct {
-	return MojomStruct{
-		DeclData: &DeclarationData{
-			ShortName: &structName_ArrayType,
-		}, Fields: []StructField{StructField{
-			DeclData: &DeclarationData{
-				ShortName: &structFieldName_ArrayType_Nullable,
-			},
-			Type: &TypeSimpleType{SimpleType_Bool},
-		}, StructField{
-			DeclData: &DeclarationData{
-				ShortName: &structFieldName_ArrayType_FixedLength,
-			},
-			Type: &TypeSimpleType{SimpleType_InT32},
-		}, StructField{
-			DeclData: &DeclarationData{
-				ShortName: &structFieldName_ArrayType_ElementType,
-			},
-			Type: &TypeTypeReference{
-				Value: TypeReference{Identifier: &ID_mojom_types_Type__,
-					TypeKey: &ID_mojom_types_Type__},
-			},
-		}},
-	}
+  return MojomStruct{
+    DeclData: &DeclarationData{
+      ShortName: &structName_ArrayType,
+    },Fields: []StructField{StructField{
+        DeclData: &DeclarationData{
+          ShortName: &structFieldName_ArrayType_Nullable,
+        },
+        Type: &TypeSimpleType{SimpleType_Bool},
+      },StructField{
+        DeclData: &DeclarationData{
+          ShortName: &structFieldName_ArrayType_FixedLength,
+        },
+        Type: &TypeSimpleType{SimpleType_InT32},
+      },StructField{
+        DeclData: &DeclarationData{
+          ShortName: &structFieldName_ArrayType_ElementType,
+        },
+        Type: &TypeTypeReference{
+  Value: TypeReference {Identifier: &ID_mojom_types_Type__,
+  TypeKey: &ID_mojom_types_Type__,},
+},
+      },},
+  }
 }
 
 type MapType struct {
-	Nullable  bool
-	KeyType   Type
+	Nullable bool
+	KeyType Type
 	ValueType Type
 }
 
@@ -765,46 +833,46 @@ func (s *MapType) Decode(decoder *bindings.Decoder) error {
 
 // String names and labels used by the MojomStruct types.
 var (
-	structName_MapType                = "MapType"
-	structFieldName_MapType_Nullable  = "Nullable"
-	structFieldName_MapType_KeyType   = "KeyType"
-	structFieldName_MapType_ValueType = "ValueType"
+  structName_MapType = "MapType"
+  structFieldName_MapType_Nullable = "Nullable"
+  structFieldName_MapType_KeyType = "KeyType"
+  structFieldName_MapType_ValueType = "ValueType"
 )
 
 func mojom_types_MapType__() MojomStruct {
-	return MojomStruct{
-		DeclData: &DeclarationData{
-			ShortName: &structName_MapType,
-		}, Fields: []StructField{StructField{
-			DeclData: &DeclarationData{
-				ShortName: &structFieldName_MapType_Nullable,
-			},
-			Type: &TypeSimpleType{SimpleType_Bool},
-		}, StructField{
-			DeclData: &DeclarationData{
-				ShortName: &structFieldName_MapType_KeyType,
-			},
-			Type: &TypeTypeReference{
-				Value: TypeReference{Identifier: &ID_mojom_types_Type__,
-					TypeKey: &ID_mojom_types_Type__},
-			},
-		}, StructField{
-			DeclData: &DeclarationData{
-				ShortName: &structFieldName_MapType_ValueType,
-			},
-			Type: &TypeTypeReference{
-				Value: TypeReference{Identifier: &ID_mojom_types_Type__,
-					TypeKey: &ID_mojom_types_Type__},
-			},
-		}},
-	}
+  return MojomStruct{
+    DeclData: &DeclarationData{
+      ShortName: &structName_MapType,
+    },Fields: []StructField{StructField{
+        DeclData: &DeclarationData{
+          ShortName: &structFieldName_MapType_Nullable,
+        },
+        Type: &TypeSimpleType{SimpleType_Bool},
+      },StructField{
+        DeclData: &DeclarationData{
+          ShortName: &structFieldName_MapType_KeyType,
+        },
+        Type: &TypeTypeReference{
+  Value: TypeReference {Identifier: &ID_mojom_types_Type__,
+  TypeKey: &ID_mojom_types_Type__,},
+},
+      },StructField{
+        DeclData: &DeclarationData{
+          ShortName: &structFieldName_MapType_ValueType,
+        },
+        Type: &TypeTypeReference{
+  Value: TypeReference {Identifier: &ID_mojom_types_Type__,
+  TypeKey: &ID_mojom_types_Type__,},
+},
+      },},
+  }
 }
 
 type TypeReference struct {
-	Nullable           bool
+	Nullable bool
 	IsInterfaceRequest bool
-	Identifier         *string
-	TypeKey            *string
+	Identifier *string
+	TypeKey *string
 }
 
 func (s *TypeReference) Encode(encoder *bindings.Encoder) error {
@@ -918,46 +986,46 @@ func (s *TypeReference) Decode(decoder *bindings.Decoder) error {
 
 // String names and labels used by the MojomStruct types.
 var (
-	structName_TypeReference                         = "TypeReference"
-	structFieldName_TypeReference_Nullable           = "Nullable"
-	structFieldName_TypeReference_IsInterfaceRequest = "IsInterfaceRequest"
-	structFieldName_TypeReference_Identifier         = "Identifier"
-	structFieldName_TypeReference_TypeKey            = "TypeKey"
+  structName_TypeReference = "TypeReference"
+  structFieldName_TypeReference_Nullable = "Nullable"
+  structFieldName_TypeReference_IsInterfaceRequest = "IsInterfaceRequest"
+  structFieldName_TypeReference_Identifier = "Identifier"
+  structFieldName_TypeReference_TypeKey = "TypeKey"
 )
 
 func mojom_types_TypeReference__() MojomStruct {
-	return MojomStruct{
-		DeclData: &DeclarationData{
-			ShortName: &structName_TypeReference,
-		}, Fields: []StructField{StructField{
-			DeclData: &DeclarationData{
-				ShortName: &structFieldName_TypeReference_Nullable,
-			},
-			Type: &TypeSimpleType{SimpleType_Bool},
-		}, StructField{
-			DeclData: &DeclarationData{
-				ShortName: &structFieldName_TypeReference_IsInterfaceRequest,
-			},
-			Type: &TypeSimpleType{SimpleType_Bool},
-		}, StructField{
-			DeclData: &DeclarationData{
-				ShortName: &structFieldName_TypeReference_Identifier,
-			},
-			Type: &TypeStringType{StringType{true}},
-		}, StructField{
-			DeclData: &DeclarationData{
-				ShortName: &structFieldName_TypeReference_TypeKey,
-			},
-			Type: &TypeStringType{StringType{true}},
-		}},
-	}
+  return MojomStruct{
+    DeclData: &DeclarationData{
+      ShortName: &structName_TypeReference,
+    },Fields: []StructField{StructField{
+        DeclData: &DeclarationData{
+          ShortName: &structFieldName_TypeReference_Nullable,
+        },
+        Type: &TypeSimpleType{SimpleType_Bool},
+      },StructField{
+        DeclData: &DeclarationData{
+          ShortName: &structFieldName_TypeReference_IsInterfaceRequest,
+        },
+        Type: &TypeSimpleType{SimpleType_Bool},
+      },StructField{
+        DeclData: &DeclarationData{
+          ShortName: &structFieldName_TypeReference_Identifier,
+        },
+        Type: &TypeStringType{StringType{true}},
+      },StructField{
+        DeclData: &DeclarationData{
+          ShortName: &structFieldName_TypeReference_TypeKey,
+        },
+        Type: &TypeStringType{StringType{true}},
+      },},
+  }
 }
 
 type StructField struct {
-	DeclData     *DeclarationData
-	Type         Type
+	DeclData *DeclarationData
+	Type Type
 	DefaultValue DefaultFieldValue
-	Offset       int32
+	Offset int32
 }
 
 func (s *StructField) Encode(encoder *bindings.Encoder) error {
@@ -1063,48 +1131,48 @@ func (s *StructField) Decode(decoder *bindings.Decoder) error {
 
 // String names and labels used by the MojomStruct types.
 var (
-	structName_StructField                   = "StructField"
-	structFieldName_StructField_DeclData     = "DeclData"
-	structFieldName_StructField_Type         = "Type"
-	structFieldName_StructField_DefaultValue = "DefaultValue"
-	structFieldName_StructField_Offset       = "Offset"
+  structName_StructField = "StructField"
+  structFieldName_StructField_DeclData = "DeclData"
+  structFieldName_StructField_Type = "Type"
+  structFieldName_StructField_DefaultValue = "DefaultValue"
+  structFieldName_StructField_Offset = "Offset"
 )
 
 func mojom_types_StructField__() MojomStruct {
-	return MojomStruct{
-		DeclData: &DeclarationData{
-			ShortName: &structName_StructField,
-		}, Fields: []StructField{StructField{
-			DeclData: &DeclarationData{
-				ShortName: &structFieldName_StructField_DeclData,
-			},
-			Type: &TypeTypeReference{
-				Value: TypeReference{Nullable: true, Identifier: &ID_mojom_types_DeclarationData__,
-					TypeKey: &ID_mojom_types_DeclarationData__},
-			},
-		}, StructField{
-			DeclData: &DeclarationData{
-				ShortName: &structFieldName_StructField_Type,
-			},
-			Type: &TypeTypeReference{
-				Value: TypeReference{Identifier: &ID_mojom_types_Type__,
-					TypeKey: &ID_mojom_types_Type__},
-			},
-		}, StructField{
-			DeclData: &DeclarationData{
-				ShortName: &structFieldName_StructField_DefaultValue,
-			},
-			Type: &TypeTypeReference{
-				Value: TypeReference{Nullable: true, Identifier: &ID_mojom_types_DefaultFieldValue__,
-					TypeKey: &ID_mojom_types_DefaultFieldValue__},
-			},
-		}, StructField{
-			DeclData: &DeclarationData{
-				ShortName: &structFieldName_StructField_Offset,
-			},
-			Type: &TypeSimpleType{SimpleType_InT32},
-		}},
-	}
+  return MojomStruct{
+    DeclData: &DeclarationData{
+      ShortName: &structName_StructField,
+    },Fields: []StructField{StructField{
+        DeclData: &DeclarationData{
+          ShortName: &structFieldName_StructField_DeclData,
+        },
+        Type: &TypeTypeReference{
+  Value: TypeReference {Nullable: true,Identifier: &ID_mojom_types_DeclarationData__,
+  TypeKey: &ID_mojom_types_DeclarationData__,},
+},
+      },StructField{
+        DeclData: &DeclarationData{
+          ShortName: &structFieldName_StructField_Type,
+        },
+        Type: &TypeTypeReference{
+  Value: TypeReference {Identifier: &ID_mojom_types_Type__,
+  TypeKey: &ID_mojom_types_Type__,},
+},
+      },StructField{
+        DeclData: &DeclarationData{
+          ShortName: &structFieldName_StructField_DefaultValue,
+        },
+        Type: &TypeTypeReference{
+  Value: TypeReference {Nullable: true,Identifier: &ID_mojom_types_DefaultFieldValue__,
+  TypeKey: &ID_mojom_types_DefaultFieldValue__,},
+},
+      },StructField{
+        DeclData: &DeclarationData{
+          ShortName: &structFieldName_StructField_Offset,
+        },
+        Type: &TypeSimpleType{SimpleType_InT32},
+      },},
+  }
 }
 
 type DefaultKeyword struct {
@@ -1149,21 +1217,21 @@ func (s *DefaultKeyword) Decode(decoder *bindings.Decoder) error {
 
 // String names and labels used by the MojomStruct types.
 var (
-	structName_DefaultKeyword = "DefaultKeyword"
+  structName_DefaultKeyword = "DefaultKeyword"
 )
 
 func mojom_types_DefaultKeyword__() MojomStruct {
-	return MojomStruct{
-		DeclData: &DeclarationData{
-			ShortName: &structName_DefaultKeyword,
-		}, Fields: []StructField{},
-	}
+  return MojomStruct{
+    DeclData: &DeclarationData{
+      ShortName: &structName_DefaultKeyword,
+    },Fields: []StructField{},
+  }
 }
 
 type StructVersion struct {
 	VersionNumber uint32
-	NumFields     uint32
-	NumBytes      uint32
+	NumFields uint32
+	NumBytes uint32
 }
 
 func (s *StructVersion) Encode(encoder *bindings.Encoder) error {
@@ -1235,38 +1303,38 @@ func (s *StructVersion) Decode(decoder *bindings.Decoder) error {
 
 // String names and labels used by the MojomStruct types.
 var (
-	structName_StructVersion                    = "StructVersion"
-	structFieldName_StructVersion_VersionNumber = "VersionNumber"
-	structFieldName_StructVersion_NumFields     = "NumFields"
-	structFieldName_StructVersion_NumBytes      = "NumBytes"
+  structName_StructVersion = "StructVersion"
+  structFieldName_StructVersion_VersionNumber = "VersionNumber"
+  structFieldName_StructVersion_NumFields = "NumFields"
+  structFieldName_StructVersion_NumBytes = "NumBytes"
 )
 
 func mojom_types_StructVersion__() MojomStruct {
-	return MojomStruct{
-		DeclData: &DeclarationData{
-			ShortName: &structName_StructVersion,
-		}, Fields: []StructField{StructField{
-			DeclData: &DeclarationData{
-				ShortName: &structFieldName_StructVersion_VersionNumber,
-			},
-			Type: &TypeSimpleType{SimpleType_UinT32},
-		}, StructField{
-			DeclData: &DeclarationData{
-				ShortName: &structFieldName_StructVersion_NumFields,
-			},
-			Type: &TypeSimpleType{SimpleType_UinT32},
-		}, StructField{
-			DeclData: &DeclarationData{
-				ShortName: &structFieldName_StructVersion_NumBytes,
-			},
-			Type: &TypeSimpleType{SimpleType_UinT32},
-		}},
-	}
+  return MojomStruct{
+    DeclData: &DeclarationData{
+      ShortName: &structName_StructVersion,
+    },Fields: []StructField{StructField{
+        DeclData: &DeclarationData{
+          ShortName: &structFieldName_StructVersion_VersionNumber,
+        },
+        Type: &TypeSimpleType{SimpleType_UinT32},
+      },StructField{
+        DeclData: &DeclarationData{
+          ShortName: &structFieldName_StructVersion_NumFields,
+        },
+        Type: &TypeSimpleType{SimpleType_UinT32},
+      },StructField{
+        DeclData: &DeclarationData{
+          ShortName: &structFieldName_StructVersion_NumBytes,
+        },
+        Type: &TypeSimpleType{SimpleType_UinT32},
+      },},
+  }
 }
 
 type MojomStruct struct {
-	DeclData    *DeclarationData
-	Fields      []StructField
+	DeclData *DeclarationData
+	Fields []StructField
 	VersionInfo *[]StructVersion
 }
 
@@ -1304,7 +1372,7 @@ func (s *MojomStruct) Encode(encoder *bindings.Encoder) error {
 			return err
 		}
 		encoder.StartArray(uint32(len((*s.VersionInfo))), 64)
-		for _, elem0 := range *s.VersionInfo {
+		for _, elem0 := range (*s.VersionInfo) {
 			if err := encoder.WritePointer(); err != nil {
 				return err
 			}
@@ -1430,54 +1498,54 @@ func (s *MojomStruct) Decode(decoder *bindings.Decoder) error {
 
 // String names and labels used by the MojomStruct types.
 var (
-	structName_MojomStruct                  = "MojomStruct"
-	structFieldName_MojomStruct_DeclData    = "DeclData"
-	structFieldName_MojomStruct_Fields      = "Fields"
-	structFieldName_MojomStruct_VersionInfo = "VersionInfo"
+  structName_MojomStruct = "MojomStruct"
+  structFieldName_MojomStruct_DeclData = "DeclData"
+  structFieldName_MojomStruct_Fields = "Fields"
+  structFieldName_MojomStruct_VersionInfo = "VersionInfo"
 )
 
 func mojom_types_MojomStruct__() MojomStruct {
-	return MojomStruct{
-		DeclData: &DeclarationData{
-			ShortName: &structName_MojomStruct,
-		}, Fields: []StructField{StructField{
-			DeclData: &DeclarationData{
-				ShortName: &structFieldName_MojomStruct_DeclData,
-			},
-			Type: &TypeTypeReference{
-				Value: TypeReference{Nullable: true, Identifier: &ID_mojom_types_DeclarationData__,
-					TypeKey: &ID_mojom_types_DeclarationData__},
-			},
-		}, StructField{
-			DeclData: &DeclarationData{
-				ShortName: &structFieldName_MojomStruct_Fields,
-			},
-			Type: &TypeArrayType{
-				Value: ArrayType{ElementType: &TypeTypeReference{
-					Value: TypeReference{Identifier: &ID_mojom_types_StructField__,
-						TypeKey: &ID_mojom_types_StructField__},
-				},
-				},
-			},
-		}, StructField{
-			DeclData: &DeclarationData{
-				ShortName: &structFieldName_MojomStruct_VersionInfo,
-			},
-			Type: &TypeArrayType{
-				Value: ArrayType{Nullable: true, ElementType: &TypeTypeReference{
-					Value: TypeReference{Identifier: &ID_mojom_types_StructVersion__,
-						TypeKey: &ID_mojom_types_StructVersion__},
-				},
-				},
-			},
-		}},
-	}
+  return MojomStruct{
+    DeclData: &DeclarationData{
+      ShortName: &structName_MojomStruct,
+    },Fields: []StructField{StructField{
+        DeclData: &DeclarationData{
+          ShortName: &structFieldName_MojomStruct_DeclData,
+        },
+        Type: &TypeTypeReference{
+  Value: TypeReference {Nullable: true,Identifier: &ID_mojom_types_DeclarationData__,
+  TypeKey: &ID_mojom_types_DeclarationData__,},
+},
+      },StructField{
+        DeclData: &DeclarationData{
+          ShortName: &structFieldName_MojomStruct_Fields,
+        },
+        Type: &TypeArrayType{
+    Value: ArrayType{ElementType: &TypeTypeReference{
+  Value: TypeReference {Identifier: &ID_mojom_types_StructField__,
+  TypeKey: &ID_mojom_types_StructField__,},
+},
+    },
+  },
+      },StructField{
+        DeclData: &DeclarationData{
+          ShortName: &structFieldName_MojomStruct_VersionInfo,
+        },
+        Type: &TypeArrayType{
+    Value: ArrayType{Nullable: true,ElementType: &TypeTypeReference{
+  Value: TypeReference {Identifier: &ID_mojom_types_StructVersion__,
+  TypeKey: &ID_mojom_types_StructVersion__,},
+},
+    },
+  },
+      },},
+  }
 }
 
 type UnionField struct {
 	DeclData *DeclarationData
-	Type     Type
-	Tag      uint32
+	Type Type
+	Tag uint32
 }
 
 func (s *UnionField) Encode(encoder *bindings.Encoder) error {
@@ -1569,44 +1637,44 @@ func (s *UnionField) Decode(decoder *bindings.Decoder) error {
 
 // String names and labels used by the MojomStruct types.
 var (
-	structName_UnionField               = "UnionField"
-	structFieldName_UnionField_DeclData = "DeclData"
-	structFieldName_UnionField_Type     = "Type"
-	structFieldName_UnionField_Tag      = "Tag"
+  structName_UnionField = "UnionField"
+  structFieldName_UnionField_DeclData = "DeclData"
+  structFieldName_UnionField_Type = "Type"
+  structFieldName_UnionField_Tag = "Tag"
 )
 
 func mojom_types_UnionField__() MojomStruct {
-	return MojomStruct{
-		DeclData: &DeclarationData{
-			ShortName: &structName_UnionField,
-		}, Fields: []StructField{StructField{
-			DeclData: &DeclarationData{
-				ShortName: &structFieldName_UnionField_DeclData,
-			},
-			Type: &TypeTypeReference{
-				Value: TypeReference{Nullable: true, Identifier: &ID_mojom_types_DeclarationData__,
-					TypeKey: &ID_mojom_types_DeclarationData__},
-			},
-		}, StructField{
-			DeclData: &DeclarationData{
-				ShortName: &structFieldName_UnionField_Type,
-			},
-			Type: &TypeTypeReference{
-				Value: TypeReference{Identifier: &ID_mojom_types_Type__,
-					TypeKey: &ID_mojom_types_Type__},
-			},
-		}, StructField{
-			DeclData: &DeclarationData{
-				ShortName: &structFieldName_UnionField_Tag,
-			},
-			Type: &TypeSimpleType{SimpleType_UinT32},
-		}},
-	}
+  return MojomStruct{
+    DeclData: &DeclarationData{
+      ShortName: &structName_UnionField,
+    },Fields: []StructField{StructField{
+        DeclData: &DeclarationData{
+          ShortName: &structFieldName_UnionField_DeclData,
+        },
+        Type: &TypeTypeReference{
+  Value: TypeReference {Nullable: true,Identifier: &ID_mojom_types_DeclarationData__,
+  TypeKey: &ID_mojom_types_DeclarationData__,},
+},
+      },StructField{
+        DeclData: &DeclarationData{
+          ShortName: &structFieldName_UnionField_Type,
+        },
+        Type: &TypeTypeReference{
+  Value: TypeReference {Identifier: &ID_mojom_types_Type__,
+  TypeKey: &ID_mojom_types_Type__,},
+},
+      },StructField{
+        DeclData: &DeclarationData{
+          ShortName: &structFieldName_UnionField_Tag,
+        },
+        Type: &TypeSimpleType{SimpleType_UinT32},
+      },},
+  }
 }
 
 type MojomUnion struct {
 	DeclData *DeclarationData
-	Fields   []UnionField
+	Fields []UnionField
 }
 
 func (s *MojomUnion) Encode(encoder *bindings.Encoder) error {
@@ -1718,43 +1786,43 @@ func (s *MojomUnion) Decode(decoder *bindings.Decoder) error {
 
 // String names and labels used by the MojomStruct types.
 var (
-	structName_MojomUnion               = "MojomUnion"
-	structFieldName_MojomUnion_DeclData = "DeclData"
-	structFieldName_MojomUnion_Fields   = "Fields"
+  structName_MojomUnion = "MojomUnion"
+  structFieldName_MojomUnion_DeclData = "DeclData"
+  structFieldName_MojomUnion_Fields = "Fields"
 )
 
 func mojom_types_MojomUnion__() MojomStruct {
-	return MojomStruct{
-		DeclData: &DeclarationData{
-			ShortName: &structName_MojomUnion,
-		}, Fields: []StructField{StructField{
-			DeclData: &DeclarationData{
-				ShortName: &structFieldName_MojomUnion_DeclData,
-			},
-			Type: &TypeTypeReference{
-				Value: TypeReference{Nullable: true, Identifier: &ID_mojom_types_DeclarationData__,
-					TypeKey: &ID_mojom_types_DeclarationData__},
-			},
-		}, StructField{
-			DeclData: &DeclarationData{
-				ShortName: &structFieldName_MojomUnion_Fields,
-			},
-			Type: &TypeArrayType{
-				Value: ArrayType{ElementType: &TypeTypeReference{
-					Value: TypeReference{Identifier: &ID_mojom_types_UnionField__,
-						TypeKey: &ID_mojom_types_UnionField__},
-				},
-				},
-			},
-		}},
-	}
+  return MojomStruct{
+    DeclData: &DeclarationData{
+      ShortName: &structName_MojomUnion,
+    },Fields: []StructField{StructField{
+        DeclData: &DeclarationData{
+          ShortName: &structFieldName_MojomUnion_DeclData,
+        },
+        Type: &TypeTypeReference{
+  Value: TypeReference {Nullable: true,Identifier: &ID_mojom_types_DeclarationData__,
+  TypeKey: &ID_mojom_types_DeclarationData__,},
+},
+      },StructField{
+        DeclData: &DeclarationData{
+          ShortName: &structFieldName_MojomUnion_Fields,
+        },
+        Type: &TypeArrayType{
+    Value: ArrayType{ElementType: &TypeTypeReference{
+  Value: TypeReference {Identifier: &ID_mojom_types_UnionField__,
+  TypeKey: &ID_mojom_types_UnionField__,},
+},
+    },
+  },
+      },},
+  }
 }
 
 type EnumValue struct {
-	DeclData         *DeclarationData
-	EnumTypeKey      string
+	DeclData *DeclarationData
+	EnumTypeKey string
 	InitializerValue Value
-	IntValue         int32
+	IntValue int32
 }
 
 func (s *EnumValue) Encode(encoder *bindings.Encoder) error {
@@ -1865,50 +1933,50 @@ func (s *EnumValue) Decode(decoder *bindings.Decoder) error {
 
 // String names and labels used by the MojomStruct types.
 var (
-	structName_EnumValue                       = "EnumValue"
-	structFieldName_EnumValue_DeclData         = "DeclData"
-	structFieldName_EnumValue_EnumTypeKey      = "EnumTypeKey"
-	structFieldName_EnumValue_InitializerValue = "InitializerValue"
-	structFieldName_EnumValue_IntValue         = "IntValue"
+  structName_EnumValue = "EnumValue"
+  structFieldName_EnumValue_DeclData = "DeclData"
+  structFieldName_EnumValue_EnumTypeKey = "EnumTypeKey"
+  structFieldName_EnumValue_InitializerValue = "InitializerValue"
+  structFieldName_EnumValue_IntValue = "IntValue"
 )
 
 func mojom_types_EnumValue__() MojomStruct {
-	return MojomStruct{
-		DeclData: &DeclarationData{
-			ShortName: &structName_EnumValue,
-		}, Fields: []StructField{StructField{
-			DeclData: &DeclarationData{
-				ShortName: &structFieldName_EnumValue_DeclData,
-			},
-			Type: &TypeTypeReference{
-				Value: TypeReference{Nullable: true, Identifier: &ID_mojom_types_DeclarationData__,
-					TypeKey: &ID_mojom_types_DeclarationData__},
-			},
-		}, StructField{
-			DeclData: &DeclarationData{
-				ShortName: &structFieldName_EnumValue_EnumTypeKey,
-			},
-			Type: &TypeStringType{StringType{false}},
-		}, StructField{
-			DeclData: &DeclarationData{
-				ShortName: &structFieldName_EnumValue_InitializerValue,
-			},
-			Type: &TypeTypeReference{
-				Value: TypeReference{Nullable: true, Identifier: &ID_mojom_types_Value__,
-					TypeKey: &ID_mojom_types_Value__},
-			},
-		}, StructField{
-			DeclData: &DeclarationData{
-				ShortName: &structFieldName_EnumValue_IntValue,
-			},
-			Type: &TypeSimpleType{SimpleType_InT32},
-		}},
-	}
+  return MojomStruct{
+    DeclData: &DeclarationData{
+      ShortName: &structName_EnumValue,
+    },Fields: []StructField{StructField{
+        DeclData: &DeclarationData{
+          ShortName: &structFieldName_EnumValue_DeclData,
+        },
+        Type: &TypeTypeReference{
+  Value: TypeReference {Nullable: true,Identifier: &ID_mojom_types_DeclarationData__,
+  TypeKey: &ID_mojom_types_DeclarationData__,},
+},
+      },StructField{
+        DeclData: &DeclarationData{
+          ShortName: &structFieldName_EnumValue_EnumTypeKey,
+        },
+        Type: &TypeStringType{StringType{false}},
+      },StructField{
+        DeclData: &DeclarationData{
+          ShortName: &structFieldName_EnumValue_InitializerValue,
+        },
+        Type: &TypeTypeReference{
+  Value: TypeReference {Nullable: true,Identifier: &ID_mojom_types_Value__,
+  TypeKey: &ID_mojom_types_Value__,},
+},
+      },StructField{
+        DeclData: &DeclarationData{
+          ShortName: &structFieldName_EnumValue_IntValue,
+        },
+        Type: &TypeSimpleType{SimpleType_InT32},
+      },},
+  }
 }
 
 type MojomEnum struct {
 	DeclData *DeclarationData
-	Values   []EnumValue
+	Values []EnumValue
 }
 
 func (s *MojomEnum) Encode(encoder *bindings.Encoder) error {
@@ -2020,43 +2088,43 @@ func (s *MojomEnum) Decode(decoder *bindings.Decoder) error {
 
 // String names and labels used by the MojomStruct types.
 var (
-	structName_MojomEnum               = "MojomEnum"
-	structFieldName_MojomEnum_DeclData = "DeclData"
-	structFieldName_MojomEnum_Values   = "Values"
+  structName_MojomEnum = "MojomEnum"
+  structFieldName_MojomEnum_DeclData = "DeclData"
+  structFieldName_MojomEnum_Values = "Values"
 )
 
 func mojom_types_MojomEnum__() MojomStruct {
-	return MojomStruct{
-		DeclData: &DeclarationData{
-			ShortName: &structName_MojomEnum,
-		}, Fields: []StructField{StructField{
-			DeclData: &DeclarationData{
-				ShortName: &structFieldName_MojomEnum_DeclData,
-			},
-			Type: &TypeTypeReference{
-				Value: TypeReference{Nullable: true, Identifier: &ID_mojom_types_DeclarationData__,
-					TypeKey: &ID_mojom_types_DeclarationData__},
-			},
-		}, StructField{
-			DeclData: &DeclarationData{
-				ShortName: &structFieldName_MojomEnum_Values,
-			},
-			Type: &TypeArrayType{
-				Value: ArrayType{ElementType: &TypeTypeReference{
-					Value: TypeReference{Identifier: &ID_mojom_types_EnumValue__,
-						TypeKey: &ID_mojom_types_EnumValue__},
-				},
-				},
-			},
-		}},
-	}
+  return MojomStruct{
+    DeclData: &DeclarationData{
+      ShortName: &structName_MojomEnum,
+    },Fields: []StructField{StructField{
+        DeclData: &DeclarationData{
+          ShortName: &structFieldName_MojomEnum_DeclData,
+        },
+        Type: &TypeTypeReference{
+  Value: TypeReference {Nullable: true,Identifier: &ID_mojom_types_DeclarationData__,
+  TypeKey: &ID_mojom_types_DeclarationData__,},
+},
+      },StructField{
+        DeclData: &DeclarationData{
+          ShortName: &structFieldName_MojomEnum_Values,
+        },
+        Type: &TypeArrayType{
+    Value: ArrayType{ElementType: &TypeTypeReference{
+  Value: TypeReference {Identifier: &ID_mojom_types_EnumValue__,
+  TypeKey: &ID_mojom_types_EnumValue__,},
+},
+    },
+  },
+      },},
+  }
 }
 
 type MojomMethod struct {
-	DeclData       *DeclarationData
-	Parameters     MojomStruct
+	DeclData *DeclarationData
+	Parameters MojomStruct
 	ResponseParams *MojomStruct
-	Ordinal        uint32
+	Ordinal uint32
 }
 
 func (s *MojomMethod) Encode(encoder *bindings.Encoder) error {
@@ -2175,54 +2243,54 @@ func (s *MojomMethod) Decode(decoder *bindings.Decoder) error {
 
 // String names and labels used by the MojomStruct types.
 var (
-	structName_MojomMethod                     = "MojomMethod"
-	structFieldName_MojomMethod_DeclData       = "DeclData"
-	structFieldName_MojomMethod_Parameters     = "Parameters"
-	structFieldName_MojomMethod_ResponseParams = "ResponseParams"
-	structFieldName_MojomMethod_Ordinal        = "Ordinal"
+  structName_MojomMethod = "MojomMethod"
+  structFieldName_MojomMethod_DeclData = "DeclData"
+  structFieldName_MojomMethod_Parameters = "Parameters"
+  structFieldName_MojomMethod_ResponseParams = "ResponseParams"
+  structFieldName_MojomMethod_Ordinal = "Ordinal"
 )
 
 func mojom_types_MojomMethod__() MojomStruct {
-	return MojomStruct{
-		DeclData: &DeclarationData{
-			ShortName: &structName_MojomMethod,
-		}, Fields: []StructField{StructField{
-			DeclData: &DeclarationData{
-				ShortName: &structFieldName_MojomMethod_DeclData,
-			},
-			Type: &TypeTypeReference{
-				Value: TypeReference{Nullable: true, Identifier: &ID_mojom_types_DeclarationData__,
-					TypeKey: &ID_mojom_types_DeclarationData__},
-			},
-		}, StructField{
-			DeclData: &DeclarationData{
-				ShortName: &structFieldName_MojomMethod_Parameters,
-			},
-			Type: &TypeTypeReference{
-				Value: TypeReference{Identifier: &ID_mojom_types_MojomStruct__,
-					TypeKey: &ID_mojom_types_MojomStruct__},
-			},
-		}, StructField{
-			DeclData: &DeclarationData{
-				ShortName: &structFieldName_MojomMethod_ResponseParams,
-			},
-			Type: &TypeTypeReference{
-				Value: TypeReference{Nullable: true, Identifier: &ID_mojom_types_MojomStruct__,
-					TypeKey: &ID_mojom_types_MojomStruct__},
-			},
-		}, StructField{
-			DeclData: &DeclarationData{
-				ShortName: &structFieldName_MojomMethod_Ordinal,
-			},
-			Type: &TypeSimpleType{SimpleType_UinT32},
-		}},
-	}
+  return MojomStruct{
+    DeclData: &DeclarationData{
+      ShortName: &structName_MojomMethod,
+    },Fields: []StructField{StructField{
+        DeclData: &DeclarationData{
+          ShortName: &structFieldName_MojomMethod_DeclData,
+        },
+        Type: &TypeTypeReference{
+  Value: TypeReference {Nullable: true,Identifier: &ID_mojom_types_DeclarationData__,
+  TypeKey: &ID_mojom_types_DeclarationData__,},
+},
+      },StructField{
+        DeclData: &DeclarationData{
+          ShortName: &structFieldName_MojomMethod_Parameters,
+        },
+        Type: &TypeTypeReference{
+  Value: TypeReference {Identifier: &ID_mojom_types_MojomStruct__,
+  TypeKey: &ID_mojom_types_MojomStruct__,},
+},
+      },StructField{
+        DeclData: &DeclarationData{
+          ShortName: &structFieldName_MojomMethod_ResponseParams,
+        },
+        Type: &TypeTypeReference{
+  Value: TypeReference {Nullable: true,Identifier: &ID_mojom_types_MojomStruct__,
+  TypeKey: &ID_mojom_types_MojomStruct__,},
+},
+      },StructField{
+        DeclData: &DeclarationData{
+          ShortName: &structFieldName_MojomMethod_Ordinal,
+        },
+        Type: &TypeSimpleType{SimpleType_UinT32},
+      },},
+  }
 }
 
 type MojomInterface struct {
-	DeclData      *DeclarationData
+	DeclData *DeclarationData
 	InterfaceName string
-	Methods       map[uint32]MojomMethod
+	Methods map[uint32]MojomMethod
 }
 
 func (s *MojomInterface) Encode(encoder *bindings.Encoder) error {
@@ -2436,48 +2504,48 @@ func (s *MojomInterface) Decode(decoder *bindings.Decoder) error {
 
 // String names and labels used by the MojomStruct types.
 var (
-	structName_MojomInterface                    = "MojomInterface"
-	structFieldName_MojomInterface_DeclData      = "DeclData"
-	structFieldName_MojomInterface_InterfaceName = "InterfaceName"
-	structFieldName_MojomInterface_Methods       = "Methods"
+  structName_MojomInterface = "MojomInterface"
+  structFieldName_MojomInterface_DeclData = "DeclData"
+  structFieldName_MojomInterface_InterfaceName = "InterfaceName"
+  structFieldName_MojomInterface_Methods = "Methods"
 )
 
 func mojom_types_MojomInterface__() MojomStruct {
-	return MojomStruct{
-		DeclData: &DeclarationData{
-			ShortName: &structName_MojomInterface,
-		}, Fields: []StructField{StructField{
-			DeclData: &DeclarationData{
-				ShortName: &structFieldName_MojomInterface_DeclData,
-			},
-			Type: &TypeTypeReference{
-				Value: TypeReference{Nullable: true, Identifier: &ID_mojom_types_DeclarationData__,
-					TypeKey: &ID_mojom_types_DeclarationData__},
-			},
-		}, StructField{
-			DeclData: &DeclarationData{
-				ShortName: &structFieldName_MojomInterface_InterfaceName,
-			},
-			Type: &TypeStringType{StringType{false}},
-		}, StructField{
-			DeclData: &DeclarationData{
-				ShortName: &structFieldName_MojomInterface_Methods,
-			},
-			Type: &TypeMapType{
-				Value: MapType{KeyType: &TypeSimpleType{SimpleType_UinT32},
-					ValueType: &TypeTypeReference{
-						Value: TypeReference{Identifier: &ID_mojom_types_MojomMethod__,
-							TypeKey: &ID_mojom_types_MojomMethod__},
-					},
-				},
-			},
-		}},
-	}
+  return MojomStruct{
+    DeclData: &DeclarationData{
+      ShortName: &structName_MojomInterface,
+    },Fields: []StructField{StructField{
+        DeclData: &DeclarationData{
+          ShortName: &structFieldName_MojomInterface_DeclData,
+        },
+        Type: &TypeTypeReference{
+  Value: TypeReference {Nullable: true,Identifier: &ID_mojom_types_DeclarationData__,
+  TypeKey: &ID_mojom_types_DeclarationData__,},
+},
+      },StructField{
+        DeclData: &DeclarationData{
+          ShortName: &structFieldName_MojomInterface_InterfaceName,
+        },
+        Type: &TypeStringType{StringType{false}},
+      },StructField{
+        DeclData: &DeclarationData{
+          ShortName: &structFieldName_MojomInterface_Methods,
+        },
+        Type: &TypeMapType{
+    Value: MapType{KeyType: &TypeSimpleType{SimpleType_UinT32},
+      ValueType: &TypeTypeReference{
+  Value: TypeReference {Identifier: &ID_mojom_types_MojomMethod__,
+  TypeKey: &ID_mojom_types_MojomMethod__,},
+},
+    },
+  },
+      },},
+  }
 }
 
 type UserValueReference struct {
-	Identifier            string
-	ValueKey              *string
+	Identifier string
+	ValueKey *string
 	ResolvedConcreteValue Value
 }
 
@@ -2581,42 +2649,42 @@ func (s *UserValueReference) Decode(decoder *bindings.Decoder) error {
 
 // String names and labels used by the MojomStruct types.
 var (
-	structName_UserValueReference                            = "UserValueReference"
-	structFieldName_UserValueReference_Identifier            = "Identifier"
-	structFieldName_UserValueReference_ValueKey              = "ValueKey"
-	structFieldName_UserValueReference_ResolvedConcreteValue = "ResolvedConcreteValue"
+  structName_UserValueReference = "UserValueReference"
+  structFieldName_UserValueReference_Identifier = "Identifier"
+  structFieldName_UserValueReference_ValueKey = "ValueKey"
+  structFieldName_UserValueReference_ResolvedConcreteValue = "ResolvedConcreteValue"
 )
 
 func mojom_types_UserValueReference__() MojomStruct {
-	return MojomStruct{
-		DeclData: &DeclarationData{
-			ShortName: &structName_UserValueReference,
-		}, Fields: []StructField{StructField{
-			DeclData: &DeclarationData{
-				ShortName: &structFieldName_UserValueReference_Identifier,
-			},
-			Type: &TypeStringType{StringType{false}},
-		}, StructField{
-			DeclData: &DeclarationData{
-				ShortName: &structFieldName_UserValueReference_ValueKey,
-			},
-			Type: &TypeStringType{StringType{true}},
-		}, StructField{
-			DeclData: &DeclarationData{
-				ShortName: &structFieldName_UserValueReference_ResolvedConcreteValue,
-			},
-			Type: &TypeTypeReference{
-				Value: TypeReference{Nullable: true, Identifier: &ID_mojom_types_Value__,
-					TypeKey: &ID_mojom_types_Value__},
-			},
-		}},
-	}
+  return MojomStruct{
+    DeclData: &DeclarationData{
+      ShortName: &structName_UserValueReference,
+    },Fields: []StructField{StructField{
+        DeclData: &DeclarationData{
+          ShortName: &structFieldName_UserValueReference_Identifier,
+        },
+        Type: &TypeStringType{StringType{false}},
+      },StructField{
+        DeclData: &DeclarationData{
+          ShortName: &structFieldName_UserValueReference_ValueKey,
+        },
+        Type: &TypeStringType{StringType{true}},
+      },StructField{
+        DeclData: &DeclarationData{
+          ShortName: &structFieldName_UserValueReference_ResolvedConcreteValue,
+        },
+        Type: &TypeTypeReference{
+  Value: TypeReference {Nullable: true,Identifier: &ID_mojom_types_Value__,
+  TypeKey: &ID_mojom_types_Value__,},
+},
+      },},
+  }
 }
 
 type DeclaredConstant struct {
 	DeclData DeclarationData
-	Type     Type
-	Value    Value
+	Type Type
+	Value Value
 }
 
 func (s *DeclaredConstant) Encode(encoder *bindings.Encoder) error {
@@ -2709,57 +2777,58 @@ func (s *DeclaredConstant) Decode(decoder *bindings.Decoder) error {
 
 // String names and labels used by the MojomStruct types.
 var (
-	structName_DeclaredConstant               = "DeclaredConstant"
-	structFieldName_DeclaredConstant_DeclData = "DeclData"
-	structFieldName_DeclaredConstant_Type     = "Type"
-	structFieldName_DeclaredConstant_Value    = "Value"
+  structName_DeclaredConstant = "DeclaredConstant"
+  structFieldName_DeclaredConstant_DeclData = "DeclData"
+  structFieldName_DeclaredConstant_Type = "Type"
+  structFieldName_DeclaredConstant_Value = "Value"
 )
 
 func mojom_types_DeclaredConstant__() MojomStruct {
-	return MojomStruct{
-		DeclData: &DeclarationData{
-			ShortName: &structName_DeclaredConstant,
-		}, Fields: []StructField{StructField{
-			DeclData: &DeclarationData{
-				ShortName: &structFieldName_DeclaredConstant_DeclData,
-			},
-			Type: &TypeTypeReference{
-				Value: TypeReference{Identifier: &ID_mojom_types_DeclarationData__,
-					TypeKey: &ID_mojom_types_DeclarationData__},
-			},
-		}, StructField{
-			DeclData: &DeclarationData{
-				ShortName: &structFieldName_DeclaredConstant_Type,
-			},
-			Type: &TypeTypeReference{
-				Value: TypeReference{Identifier: &ID_mojom_types_Type__,
-					TypeKey: &ID_mojom_types_Type__},
-			},
-		}, StructField{
-			DeclData: &DeclarationData{
-				ShortName: &structFieldName_DeclaredConstant_Value,
-			},
-			Type: &TypeTypeReference{
-				Value: TypeReference{Identifier: &ID_mojom_types_Value__,
-					TypeKey: &ID_mojom_types_Value__},
-			},
-		}},
-	}
+  return MojomStruct{
+    DeclData: &DeclarationData{
+      ShortName: &structName_DeclaredConstant,
+    },Fields: []StructField{StructField{
+        DeclData: &DeclarationData{
+          ShortName: &structFieldName_DeclaredConstant_DeclData,
+        },
+        Type: &TypeTypeReference{
+  Value: TypeReference {Identifier: &ID_mojom_types_DeclarationData__,
+  TypeKey: &ID_mojom_types_DeclarationData__,},
+},
+      },StructField{
+        DeclData: &DeclarationData{
+          ShortName: &structFieldName_DeclaredConstant_Type,
+        },
+        Type: &TypeTypeReference{
+  Value: TypeReference {Identifier: &ID_mojom_types_Type__,
+  TypeKey: &ID_mojom_types_Type__,},
+},
+      },StructField{
+        DeclData: &DeclarationData{
+          ShortName: &structFieldName_DeclaredConstant_Value,
+        },
+        Type: &TypeTypeReference{
+  Value: TypeReference {Identifier: &ID_mojom_types_Value__,
+  TypeKey: &ID_mojom_types_Value__,},
+},
+      },},
+  }
 }
 
 type DeclarationData struct {
-	Attributes            *[]Attribute
-	MinVersion            int32
-	ShortName             *string
-	FullIdentifier        *string
-	DeclaredOrdinal       int32
-	DeclarationOrder      int32
-	SourceFileInfo        *SourceFileInfo
+	Attributes *[]Attribute
+	MinVersion int32
+	ShortName *string
+	FullIdentifier *string
+	DeclaredOrdinal int32
+	DeclarationOrder int32
+	SourceFileInfo *SourceFileInfo
 	ContainedDeclarations *ContainedDeclarations
+	ContainerTypeKey *string
 }
 
 func (s *DeclarationData) Encode(encoder *bindings.Encoder) error {
-	encoder.StartStruct(56, 0)
+	encoder.StartStruct(64, 0)
 	if s.Attributes == nil {
 		encoder.WriteNullPointer()
 	} else {
@@ -2767,7 +2836,7 @@ func (s *DeclarationData) Encode(encoder *bindings.Encoder) error {
 			return err
 		}
 		encoder.StartArray(uint32(len((*s.Attributes))), 64)
-		for _, elem0 := range *s.Attributes {
+		for _, elem0 := range (*s.Attributes) {
 			if err := encoder.WritePointer(); err != nil {
 				return err
 			}
@@ -2828,6 +2897,16 @@ func (s *DeclarationData) Encode(encoder *bindings.Encoder) error {
 			return err
 		}
 	}
+	if s.ContainerTypeKey == nil {
+		encoder.WriteNullPointer()
+	} else {
+		if err := encoder.WritePointer(); err != nil {
+			return err
+		}
+		if err := encoder.WriteString((*s.ContainerTypeKey)); err != nil {
+			return err
+		}
+	}
 	if err := encoder.Finish(); err != nil {
 		return err
 	}
@@ -2835,7 +2914,7 @@ func (s *DeclarationData) Encode(encoder *bindings.Encoder) error {
 }
 
 var declarationData_Versions []bindings.DataHeader = []bindings.DataHeader{
-	bindings.DataHeader{64, 0},
+	bindings.DataHeader{72, 0},
 }
 
 func (s *DeclarationData) Decode(decoder *bindings.Decoder) error {
@@ -2970,6 +3049,22 @@ func (s *DeclarationData) Decode(decoder *bindings.Decoder) error {
 			}
 		}
 	}
+	if header.ElementsOrVersion >= 0 {
+		pointer0, err := decoder.ReadPointer()
+		if err != nil {
+			return err
+		}
+		if pointer0 == 0 {
+			s.ContainerTypeKey = nil
+		} else {
+			s.ContainerTypeKey = new(string)
+			value0, err := decoder.ReadString()
+			if err != nil {
+				return err
+			}
+			(*s.ContainerTypeKey) = value0
+		}
+	}
 	if err := decoder.Finish(); err != nil {
 		return err
 	}
@@ -2978,80 +3073,86 @@ func (s *DeclarationData) Decode(decoder *bindings.Decoder) error {
 
 // String names and labels used by the MojomStruct types.
 var (
-	structName_DeclarationData                            = "DeclarationData"
-	structFieldName_DeclarationData_Attributes            = "Attributes"
-	structFieldName_DeclarationData_MinVersion            = "MinVersion"
-	structFieldName_DeclarationData_ShortName             = "ShortName"
-	structFieldName_DeclarationData_FullIdentifier        = "FullIdentifier"
-	structFieldName_DeclarationData_DeclaredOrdinal       = "DeclaredOrdinal"
-	structFieldName_DeclarationData_DeclarationOrder      = "DeclarationOrder"
-	structFieldName_DeclarationData_SourceFileInfo        = "SourceFileInfo"
-	structFieldName_DeclarationData_ContainedDeclarations = "ContainedDeclarations"
+  structName_DeclarationData = "DeclarationData"
+  structFieldName_DeclarationData_Attributes = "Attributes"
+  structFieldName_DeclarationData_MinVersion = "MinVersion"
+  structFieldName_DeclarationData_ShortName = "ShortName"
+  structFieldName_DeclarationData_FullIdentifier = "FullIdentifier"
+  structFieldName_DeclarationData_DeclaredOrdinal = "DeclaredOrdinal"
+  structFieldName_DeclarationData_DeclarationOrder = "DeclarationOrder"
+  structFieldName_DeclarationData_SourceFileInfo = "SourceFileInfo"
+  structFieldName_DeclarationData_ContainedDeclarations = "ContainedDeclarations"
+  structFieldName_DeclarationData_ContainerTypeKey = "ContainerTypeKey"
 )
 
 func mojom_types_DeclarationData__() MojomStruct {
-	return MojomStruct{
-		DeclData: &DeclarationData{
-			ShortName: &structName_DeclarationData,
-		}, Fields: []StructField{StructField{
-			DeclData: &DeclarationData{
-				ShortName: &structFieldName_DeclarationData_Attributes,
-			},
-			Type: &TypeArrayType{
-				Value: ArrayType{Nullable: true, ElementType: &TypeTypeReference{
-					Value: TypeReference{Identifier: &ID_mojom_types_Attribute__,
-						TypeKey: &ID_mojom_types_Attribute__},
-				},
-				},
-			},
-		}, StructField{
-			DeclData: &DeclarationData{
-				ShortName: &structFieldName_DeclarationData_MinVersion,
-			},
-			Type: &TypeSimpleType{SimpleType_InT32},
-		}, StructField{
-			DeclData: &DeclarationData{
-				ShortName: &structFieldName_DeclarationData_ShortName,
-			},
-			Type: &TypeStringType{StringType{true}},
-		}, StructField{
-			DeclData: &DeclarationData{
-				ShortName: &structFieldName_DeclarationData_FullIdentifier,
-			},
-			Type: &TypeStringType{StringType{true}},
-		}, StructField{
-			DeclData: &DeclarationData{
-				ShortName: &structFieldName_DeclarationData_DeclaredOrdinal,
-			},
-			Type: &TypeSimpleType{SimpleType_InT32},
-		}, StructField{
-			DeclData: &DeclarationData{
-				ShortName: &structFieldName_DeclarationData_DeclarationOrder,
-			},
-			Type: &TypeSimpleType{SimpleType_InT32},
-		}, StructField{
-			DeclData: &DeclarationData{
-				ShortName: &structFieldName_DeclarationData_SourceFileInfo,
-			},
-			Type: &TypeTypeReference{
-				Value: TypeReference{Nullable: true, Identifier: &ID_mojom_types_SourceFileInfo__,
-					TypeKey: &ID_mojom_types_SourceFileInfo__},
-			},
-		}, StructField{
-			DeclData: &DeclarationData{
-				ShortName: &structFieldName_DeclarationData_ContainedDeclarations,
-			},
-			Type: &TypeTypeReference{
-				Value: TypeReference{Nullable: true, Identifier: &ID_mojom_types_ContainedDeclarations__,
-					TypeKey: &ID_mojom_types_ContainedDeclarations__},
-			},
-		}},
-	}
+  return MojomStruct{
+    DeclData: &DeclarationData{
+      ShortName: &structName_DeclarationData,
+    },Fields: []StructField{StructField{
+        DeclData: &DeclarationData{
+          ShortName: &structFieldName_DeclarationData_Attributes,
+        },
+        Type: &TypeArrayType{
+    Value: ArrayType{Nullable: true,ElementType: &TypeTypeReference{
+  Value: TypeReference {Identifier: &ID_mojom_types_Attribute__,
+  TypeKey: &ID_mojom_types_Attribute__,},
+},
+    },
+  },
+      },StructField{
+        DeclData: &DeclarationData{
+          ShortName: &structFieldName_DeclarationData_MinVersion,
+        },
+        Type: &TypeSimpleType{SimpleType_InT32},
+      },StructField{
+        DeclData: &DeclarationData{
+          ShortName: &structFieldName_DeclarationData_ShortName,
+        },
+        Type: &TypeStringType{StringType{true}},
+      },StructField{
+        DeclData: &DeclarationData{
+          ShortName: &structFieldName_DeclarationData_FullIdentifier,
+        },
+        Type: &TypeStringType{StringType{true}},
+      },StructField{
+        DeclData: &DeclarationData{
+          ShortName: &structFieldName_DeclarationData_DeclaredOrdinal,
+        },
+        Type: &TypeSimpleType{SimpleType_InT32},
+      },StructField{
+        DeclData: &DeclarationData{
+          ShortName: &structFieldName_DeclarationData_DeclarationOrder,
+        },
+        Type: &TypeSimpleType{SimpleType_InT32},
+      },StructField{
+        DeclData: &DeclarationData{
+          ShortName: &structFieldName_DeclarationData_SourceFileInfo,
+        },
+        Type: &TypeTypeReference{
+  Value: TypeReference {Nullable: true,Identifier: &ID_mojom_types_SourceFileInfo__,
+  TypeKey: &ID_mojom_types_SourceFileInfo__,},
+},
+      },StructField{
+        DeclData: &DeclarationData{
+          ShortName: &structFieldName_DeclarationData_ContainedDeclarations,
+        },
+        Type: &TypeTypeReference{
+  Value: TypeReference {Nullable: true,Identifier: &ID_mojom_types_ContainedDeclarations__,
+  TypeKey: &ID_mojom_types_ContainedDeclarations__,},
+},
+      },StructField{
+        DeclData: &DeclarationData{
+          ShortName: &structFieldName_DeclarationData_ContainerTypeKey,
+        },
+        Type: &TypeStringType{StringType{true}},
+      },},
+  }
 }
 
 type SourceFileInfo struct {
-	FileName     string
-	LineNumber   uint32
+	FileName string
+	LineNumber uint32
 	ColumnNumber uint32
 }
 
@@ -3135,37 +3236,37 @@ func (s *SourceFileInfo) Decode(decoder *bindings.Decoder) error {
 
 // String names and labels used by the MojomStruct types.
 var (
-	structName_SourceFileInfo                   = "SourceFileInfo"
-	structFieldName_SourceFileInfo_FileName     = "FileName"
-	structFieldName_SourceFileInfo_LineNumber   = "LineNumber"
-	structFieldName_SourceFileInfo_ColumnNumber = "ColumnNumber"
+  structName_SourceFileInfo = "SourceFileInfo"
+  structFieldName_SourceFileInfo_FileName = "FileName"
+  structFieldName_SourceFileInfo_LineNumber = "LineNumber"
+  structFieldName_SourceFileInfo_ColumnNumber = "ColumnNumber"
 )
 
 func mojom_types_SourceFileInfo__() MojomStruct {
-	return MojomStruct{
-		DeclData: &DeclarationData{
-			ShortName: &structName_SourceFileInfo,
-		}, Fields: []StructField{StructField{
-			DeclData: &DeclarationData{
-				ShortName: &structFieldName_SourceFileInfo_FileName,
-			},
-			Type: &TypeStringType{StringType{false}},
-		}, StructField{
-			DeclData: &DeclarationData{
-				ShortName: &structFieldName_SourceFileInfo_LineNumber,
-			},
-			Type: &TypeSimpleType{SimpleType_UinT32},
-		}, StructField{
-			DeclData: &DeclarationData{
-				ShortName: &structFieldName_SourceFileInfo_ColumnNumber,
-			},
-			Type: &TypeSimpleType{SimpleType_UinT32},
-		}},
-	}
+  return MojomStruct{
+    DeclData: &DeclarationData{
+      ShortName: &structName_SourceFileInfo,
+    },Fields: []StructField{StructField{
+        DeclData: &DeclarationData{
+          ShortName: &structFieldName_SourceFileInfo_FileName,
+        },
+        Type: &TypeStringType{StringType{false}},
+      },StructField{
+        DeclData: &DeclarationData{
+          ShortName: &structFieldName_SourceFileInfo_LineNumber,
+        },
+        Type: &TypeSimpleType{SimpleType_UinT32},
+      },StructField{
+        DeclData: &DeclarationData{
+          ShortName: &structFieldName_SourceFileInfo_ColumnNumber,
+        },
+        Type: &TypeSimpleType{SimpleType_UinT32},
+      },},
+  }
 }
 
 type ContainedDeclarations struct {
-	Enums     *[]string
+	Enums *[]string
 	Constants *[]string
 }
 
@@ -3178,7 +3279,7 @@ func (s *ContainedDeclarations) Encode(encoder *bindings.Encoder) error {
 			return err
 		}
 		encoder.StartArray(uint32(len((*s.Enums))), 64)
-		for _, elem0 := range *s.Enums {
+		for _, elem0 := range (*s.Enums) {
 			if err := encoder.WritePointer(); err != nil {
 				return err
 			}
@@ -3197,7 +3298,7 @@ func (s *ContainedDeclarations) Encode(encoder *bindings.Encoder) error {
 			return err
 		}
 		encoder.StartArray(uint32(len((*s.Constants))), 64)
-		for _, elem0 := range *s.Constants {
+		for _, elem0 := range (*s.Constants) {
 			if err := encoder.WritePointer(); err != nil {
 				return err
 			}
@@ -3314,35 +3415,37 @@ func (s *ContainedDeclarations) Decode(decoder *bindings.Decoder) error {
 
 // String names and labels used by the MojomStruct types.
 var (
-	structName_ContainedDeclarations                = "ContainedDeclarations"
-	structFieldName_ContainedDeclarations_Enums     = "Enums"
-	structFieldName_ContainedDeclarations_Constants = "Constants"
+  structName_ContainedDeclarations = "ContainedDeclarations"
+  structFieldName_ContainedDeclarations_Enums = "Enums"
+  structFieldName_ContainedDeclarations_Constants = "Constants"
 )
 
 func mojom_types_ContainedDeclarations__() MojomStruct {
-	return MojomStruct{
-		DeclData: &DeclarationData{
-			ShortName: &structName_ContainedDeclarations,
-		}, Fields: []StructField{StructField{
-			DeclData: &DeclarationData{
-				ShortName: &structFieldName_ContainedDeclarations_Enums,
-			},
-			Type: &TypeArrayType{
-				Value: ArrayType{Nullable: true, ElementType: &TypeStringType{StringType{false}}},
-			},
-		}, StructField{
-			DeclData: &DeclarationData{
-				ShortName: &structFieldName_ContainedDeclarations_Constants,
-			},
-			Type: &TypeArrayType{
-				Value: ArrayType{Nullable: true, ElementType: &TypeStringType{StringType{false}}},
-			},
-		}},
-	}
+  return MojomStruct{
+    DeclData: &DeclarationData{
+      ShortName: &structName_ContainedDeclarations,
+    },Fields: []StructField{StructField{
+        DeclData: &DeclarationData{
+          ShortName: &structFieldName_ContainedDeclarations_Enums,
+        },
+        Type: &TypeArrayType{
+    Value: ArrayType{Nullable: true,ElementType: &TypeStringType{StringType{false}},
+    },
+  },
+      },StructField{
+        DeclData: &DeclarationData{
+          ShortName: &structFieldName_ContainedDeclarations_Constants,
+        },
+        Type: &TypeArrayType{
+    Value: ArrayType{Nullable: true,ElementType: &TypeStringType{StringType{false}},
+    },
+  },
+      },},
+  }
 }
 
 type Attribute struct {
-	Key   string
+	Key string
 	Value string
 }
 
@@ -3427,27 +3530,27 @@ func (s *Attribute) Decode(decoder *bindings.Decoder) error {
 
 // String names and labels used by the MojomStruct types.
 var (
-	structName_Attribute            = "Attribute"
-	structFieldName_Attribute_Key   = "Key"
-	structFieldName_Attribute_Value = "Value"
+  structName_Attribute = "Attribute"
+  structFieldName_Attribute_Key = "Key"
+  structFieldName_Attribute_Value = "Value"
 )
 
 func mojom_types_Attribute__() MojomStruct {
-	return MojomStruct{
-		DeclData: &DeclarationData{
-			ShortName: &structName_Attribute,
-		}, Fields: []StructField{StructField{
-			DeclData: &DeclarationData{
-				ShortName: &structFieldName_Attribute_Key,
-			},
-			Type: &TypeStringType{StringType{false}},
-		}, StructField{
-			DeclData: &DeclarationData{
-				ShortName: &structFieldName_Attribute_Value,
-			},
-			Type: &TypeStringType{StringType{false}},
-		}},
-	}
+  return MojomStruct{
+    DeclData: &DeclarationData{
+      ShortName: &structName_Attribute,
+    },Fields: []StructField{StructField{
+        DeclData: &DeclarationData{
+          ShortName: &structFieldName_Attribute_Key,
+        },
+        Type: &TypeStringType{StringType{false}},
+      },StructField{
+        DeclData: &DeclarationData{
+          ShortName: &structFieldName_Attribute_Value,
+        },
+        Type: &TypeStringType{StringType{false}},
+      },},
+  }
 }
 
 type Type interface {
@@ -3458,11 +3561,11 @@ type Type interface {
 }
 
 type __TypeReflect struct {
-	SimpleType    SimpleType
-	StringType    StringType
-	ArrayType     ArrayType
-	MapType       MapType
-	HandleType    HandleType
+	SimpleType SimpleType
+	StringType StringType
+	ArrayType ArrayType
+	MapType MapType
+	HandleType HandleType
 	TypeReference TypeReference
 }
 
@@ -3526,20 +3629,18 @@ func DecodeType(decoder *bindings.Decoder) (Type, error) {
 	return &TypeUnknown{tag: tag}, nil
 }
 
-type TypeUnknown struct{ tag uint32 }
-
-func (u *TypeUnknown) Tag() uint32             { return u.tag }
-func (u *TypeUnknown) Interface() interface{}  { return nil }
+type TypeUnknown struct { tag uint32 }
+func (u *TypeUnknown) Tag() uint32 { return u.tag }
+func (u *TypeUnknown) Interface() interface{} { return nil }
 func (u *TypeUnknown) __Reflect(__TypeReflect) {}
 
 func (u *TypeUnknown) Encode(encoder *bindings.Encoder) error {
-	return fmt.Errorf("Trying to serialize an unknown Type. There is no sane way to do that!")
+	return fmt.Errorf("Trying to serialize an unknown Type. There is no sane way to do that!");
 }
 
-type TypeSimpleType struct{ Value SimpleType }
-
-func (u *TypeSimpleType) Tag() uint32             { return 0 }
-func (u *TypeSimpleType) Interface() interface{}  { return u.Value }
+type TypeSimpleType struct { Value SimpleType }
+func (u *TypeSimpleType) Tag() uint32 { return 0 }
+func (u *TypeSimpleType) Interface() interface{} { return u.Value }
 func (u *TypeSimpleType) __Reflect(__TypeReflect) {}
 
 func (u *TypeSimpleType) Encode(encoder *bindings.Encoder) error {
@@ -3547,7 +3648,7 @@ func (u *TypeSimpleType) Encode(encoder *bindings.Encoder) error {
 	if err := encoder.WriteInt32(int32(u.Value)); err != nil {
 		return err
 	}
-
+	
 	encoder.FinishWritingUnionValue()
 	return nil
 }
@@ -3558,14 +3659,13 @@ func (u *TypeSimpleType) decodeInternal(decoder *bindings.Decoder) error {
 		return err
 	}
 	u.Value = SimpleType(value0)
-
+	
 	return nil
 }
 
-type TypeStringType struct{ Value StringType }
-
-func (u *TypeStringType) Tag() uint32             { return 1 }
-func (u *TypeStringType) Interface() interface{}  { return u.Value }
+type TypeStringType struct { Value StringType }
+func (u *TypeStringType) Tag() uint32 { return 1 }
+func (u *TypeStringType) Interface() interface{} { return u.Value }
 func (u *TypeStringType) __Reflect(__TypeReflect) {}
 
 func (u *TypeStringType) Encode(encoder *bindings.Encoder) error {
@@ -3576,7 +3676,7 @@ func (u *TypeStringType) Encode(encoder *bindings.Encoder) error {
 	if err := u.Value.Encode(encoder); err != nil {
 		return err
 	}
-
+	
 	encoder.FinishWritingUnionValue()
 	return nil
 }
@@ -3593,14 +3693,13 @@ func (u *TypeStringType) decodeInternal(decoder *bindings.Decoder) error {
 			return err
 		}
 	}
-
+	
 	return nil
 }
 
-type TypeArrayType struct{ Value ArrayType }
-
-func (u *TypeArrayType) Tag() uint32             { return 2 }
-func (u *TypeArrayType) Interface() interface{}  { return u.Value }
+type TypeArrayType struct { Value ArrayType }
+func (u *TypeArrayType) Tag() uint32 { return 2 }
+func (u *TypeArrayType) Interface() interface{} { return u.Value }
 func (u *TypeArrayType) __Reflect(__TypeReflect) {}
 
 func (u *TypeArrayType) Encode(encoder *bindings.Encoder) error {
@@ -3611,7 +3710,7 @@ func (u *TypeArrayType) Encode(encoder *bindings.Encoder) error {
 	if err := u.Value.Encode(encoder); err != nil {
 		return err
 	}
-
+	
 	encoder.FinishWritingUnionValue()
 	return nil
 }
@@ -3628,14 +3727,13 @@ func (u *TypeArrayType) decodeInternal(decoder *bindings.Decoder) error {
 			return err
 		}
 	}
-
+	
 	return nil
 }
 
-type TypeMapType struct{ Value MapType }
-
-func (u *TypeMapType) Tag() uint32             { return 3 }
-func (u *TypeMapType) Interface() interface{}  { return u.Value }
+type TypeMapType struct { Value MapType }
+func (u *TypeMapType) Tag() uint32 { return 3 }
+func (u *TypeMapType) Interface() interface{} { return u.Value }
 func (u *TypeMapType) __Reflect(__TypeReflect) {}
 
 func (u *TypeMapType) Encode(encoder *bindings.Encoder) error {
@@ -3646,7 +3744,7 @@ func (u *TypeMapType) Encode(encoder *bindings.Encoder) error {
 	if err := u.Value.Encode(encoder); err != nil {
 		return err
 	}
-
+	
 	encoder.FinishWritingUnionValue()
 	return nil
 }
@@ -3663,14 +3761,13 @@ func (u *TypeMapType) decodeInternal(decoder *bindings.Decoder) error {
 			return err
 		}
 	}
-
+	
 	return nil
 }
 
-type TypeHandleType struct{ Value HandleType }
-
-func (u *TypeHandleType) Tag() uint32             { return 4 }
-func (u *TypeHandleType) Interface() interface{}  { return u.Value }
+type TypeHandleType struct { Value HandleType }
+func (u *TypeHandleType) Tag() uint32 { return 4 }
+func (u *TypeHandleType) Interface() interface{} { return u.Value }
 func (u *TypeHandleType) __Reflect(__TypeReflect) {}
 
 func (u *TypeHandleType) Encode(encoder *bindings.Encoder) error {
@@ -3681,7 +3778,7 @@ func (u *TypeHandleType) Encode(encoder *bindings.Encoder) error {
 	if err := u.Value.Encode(encoder); err != nil {
 		return err
 	}
-
+	
 	encoder.FinishWritingUnionValue()
 	return nil
 }
@@ -3698,14 +3795,13 @@ func (u *TypeHandleType) decodeInternal(decoder *bindings.Decoder) error {
 			return err
 		}
 	}
-
+	
 	return nil
 }
 
-type TypeTypeReference struct{ Value TypeReference }
-
-func (u *TypeTypeReference) Tag() uint32             { return 5 }
-func (u *TypeTypeReference) Interface() interface{}  { return u.Value }
+type TypeTypeReference struct { Value TypeReference }
+func (u *TypeTypeReference) Tag() uint32 { return 5 }
+func (u *TypeTypeReference) Interface() interface{} { return u.Value }
 func (u *TypeTypeReference) __Reflect(__TypeReflect) {}
 
 func (u *TypeTypeReference) Encode(encoder *bindings.Encoder) error {
@@ -3716,7 +3812,7 @@ func (u *TypeTypeReference) Encode(encoder *bindings.Encoder) error {
 	if err := u.Value.Encode(encoder); err != nil {
 		return err
 	}
-
+	
 	encoder.FinishWritingUnionValue()
 	return nil
 }
@@ -3733,81 +3829,82 @@ func (u *TypeTypeReference) decodeInternal(decoder *bindings.Decoder) error {
 			return err
 		}
 	}
-
+	
 	return nil
 }
 
+
 // String names and labels used by the MojomUnion types.
 var (
-	unionName_Type                    = "Type"
-	unionFieldName_Type_SimpleType    = "SimpleType"
-	unionFieldName_Type_StringType    = "StringType"
-	unionFieldName_Type_ArrayType     = "ArrayType"
-	unionFieldName_Type_MapType       = "MapType"
-	unionFieldName_Type_HandleType    = "HandleType"
-	unionFieldName_Type_TypeReference = "TypeReference"
+  unionName_Type = "Type"
+  unionFieldName_Type_SimpleType = "SimpleType"
+  unionFieldName_Type_StringType = "StringType"
+  unionFieldName_Type_ArrayType = "ArrayType"
+  unionFieldName_Type_MapType = "MapType"
+  unionFieldName_Type_HandleType = "HandleType"
+  unionFieldName_Type_TypeReference = "TypeReference"
 )
 
 func mojom_types_Type__() MojomUnion {
-	return MojomUnion{
-		DeclData: &DeclarationData{
-			ShortName: &unionName_Type,
-		}, Fields: []UnionField{UnionField{
-			DeclData: &DeclarationData{
-				ShortName: &unionFieldName_Type_SimpleType,
-			},
-			Type: &TypeTypeReference{
-				Value: TypeReference{Identifier: &ID_mojom_types_SimpleType__,
-					TypeKey: &ID_mojom_types_SimpleType__},
-			},
-			Tag: 0,
-		}, UnionField{
-			DeclData: &DeclarationData{
-				ShortName: &unionFieldName_Type_StringType,
-			},
-			Type: &TypeTypeReference{
-				Value: TypeReference{Identifier: &ID_mojom_types_StringType__,
-					TypeKey: &ID_mojom_types_StringType__},
-			},
-			Tag: 1,
-		}, UnionField{
-			DeclData: &DeclarationData{
-				ShortName: &unionFieldName_Type_ArrayType,
-			},
-			Type: &TypeTypeReference{
-				Value: TypeReference{Identifier: &ID_mojom_types_ArrayType__,
-					TypeKey: &ID_mojom_types_ArrayType__},
-			},
-			Tag: 2,
-		}, UnionField{
-			DeclData: &DeclarationData{
-				ShortName: &unionFieldName_Type_MapType,
-			},
-			Type: &TypeTypeReference{
-				Value: TypeReference{Identifier: &ID_mojom_types_MapType__,
-					TypeKey: &ID_mojom_types_MapType__},
-			},
-			Tag: 3,
-		}, UnionField{
-			DeclData: &DeclarationData{
-				ShortName: &unionFieldName_Type_HandleType,
-			},
-			Type: &TypeTypeReference{
-				Value: TypeReference{Identifier: &ID_mojom_types_HandleType__,
-					TypeKey: &ID_mojom_types_HandleType__},
-			},
-			Tag: 4,
-		}, UnionField{
-			DeclData: &DeclarationData{
-				ShortName: &unionFieldName_Type_TypeReference,
-			},
-			Type: &TypeTypeReference{
-				Value: TypeReference{Identifier: &ID_mojom_types_TypeReference__,
-					TypeKey: &ID_mojom_types_TypeReference__},
-			},
-			Tag: 5,
-		}},
-	}
+  return MojomUnion{
+    DeclData: &DeclarationData{
+      ShortName: &unionName_Type,
+    },Fields: []UnionField{UnionField{
+        DeclData: &DeclarationData{
+          ShortName: &unionFieldName_Type_SimpleType,
+        },
+        Type: &TypeTypeReference{
+  Value: TypeReference {Identifier: &ID_mojom_types_SimpleType__,
+  TypeKey: &ID_mojom_types_SimpleType__,},
+},
+        Tag: 0,
+      },UnionField{
+        DeclData: &DeclarationData{
+          ShortName: &unionFieldName_Type_StringType,
+        },
+        Type: &TypeTypeReference{
+  Value: TypeReference {Identifier: &ID_mojom_types_StringType__,
+  TypeKey: &ID_mojom_types_StringType__,},
+},
+        Tag: 1,
+      },UnionField{
+        DeclData: &DeclarationData{
+          ShortName: &unionFieldName_Type_ArrayType,
+        },
+        Type: &TypeTypeReference{
+  Value: TypeReference {Identifier: &ID_mojom_types_ArrayType__,
+  TypeKey: &ID_mojom_types_ArrayType__,},
+},
+        Tag: 2,
+      },UnionField{
+        DeclData: &DeclarationData{
+          ShortName: &unionFieldName_Type_MapType,
+        },
+        Type: &TypeTypeReference{
+  Value: TypeReference {Identifier: &ID_mojom_types_MapType__,
+  TypeKey: &ID_mojom_types_MapType__,},
+},
+        Tag: 3,
+      },UnionField{
+        DeclData: &DeclarationData{
+          ShortName: &unionFieldName_Type_HandleType,
+        },
+        Type: &TypeTypeReference{
+  Value: TypeReference {Identifier: &ID_mojom_types_HandleType__,
+  TypeKey: &ID_mojom_types_HandleType__,},
+},
+        Tag: 4,
+      },UnionField{
+        DeclData: &DeclarationData{
+          ShortName: &unionFieldName_Type_TypeReference,
+        },
+        Type: &TypeTypeReference{
+  Value: TypeReference {Identifier: &ID_mojom_types_TypeReference__,
+  TypeKey: &ID_mojom_types_TypeReference__,},
+},
+        Tag: 5,
+      },},
+  }
 }
 
 type UserDefinedType interface {
@@ -3818,9 +3915,9 @@ type UserDefinedType interface {
 }
 
 type __UserDefinedTypeReflect struct {
-	EnumType      MojomEnum
-	StructType    MojomStruct
-	UnionType     MojomUnion
+	EnumType MojomEnum
+	StructType MojomStruct
+	UnionType MojomUnion
 	InterfaceType MojomInterface
 }
 
@@ -3870,20 +3967,18 @@ func DecodeUserDefinedType(decoder *bindings.Decoder) (UserDefinedType, error) {
 	return &UserDefinedTypeUnknown{tag: tag}, nil
 }
 
-type UserDefinedTypeUnknown struct{ tag uint32 }
-
-func (u *UserDefinedTypeUnknown) Tag() uint32                        { return u.tag }
-func (u *UserDefinedTypeUnknown) Interface() interface{}             { return nil }
+type UserDefinedTypeUnknown struct { tag uint32 }
+func (u *UserDefinedTypeUnknown) Tag() uint32 { return u.tag }
+func (u *UserDefinedTypeUnknown) Interface() interface{} { return nil }
 func (u *UserDefinedTypeUnknown) __Reflect(__UserDefinedTypeReflect) {}
 
 func (u *UserDefinedTypeUnknown) Encode(encoder *bindings.Encoder) error {
-	return fmt.Errorf("Trying to serialize an unknown UserDefinedType. There is no sane way to do that!")
+	return fmt.Errorf("Trying to serialize an unknown UserDefinedType. There is no sane way to do that!");
 }
 
-type UserDefinedTypeEnumType struct{ Value MojomEnum }
-
-func (u *UserDefinedTypeEnumType) Tag() uint32                        { return 0 }
-func (u *UserDefinedTypeEnumType) Interface() interface{}             { return u.Value }
+type UserDefinedTypeEnumType struct { Value MojomEnum }
+func (u *UserDefinedTypeEnumType) Tag() uint32 { return 0 }
+func (u *UserDefinedTypeEnumType) Interface() interface{} { return u.Value }
 func (u *UserDefinedTypeEnumType) __Reflect(__UserDefinedTypeReflect) {}
 
 func (u *UserDefinedTypeEnumType) Encode(encoder *bindings.Encoder) error {
@@ -3894,7 +3989,7 @@ func (u *UserDefinedTypeEnumType) Encode(encoder *bindings.Encoder) error {
 	if err := u.Value.Encode(encoder); err != nil {
 		return err
 	}
-
+	
 	encoder.FinishWritingUnionValue()
 	return nil
 }
@@ -3911,14 +4006,13 @@ func (u *UserDefinedTypeEnumType) decodeInternal(decoder *bindings.Decoder) erro
 			return err
 		}
 	}
-
+	
 	return nil
 }
 
-type UserDefinedTypeStructType struct{ Value MojomStruct }
-
-func (u *UserDefinedTypeStructType) Tag() uint32                        { return 1 }
-func (u *UserDefinedTypeStructType) Interface() interface{}             { return u.Value }
+type UserDefinedTypeStructType struct { Value MojomStruct }
+func (u *UserDefinedTypeStructType) Tag() uint32 { return 1 }
+func (u *UserDefinedTypeStructType) Interface() interface{} { return u.Value }
 func (u *UserDefinedTypeStructType) __Reflect(__UserDefinedTypeReflect) {}
 
 func (u *UserDefinedTypeStructType) Encode(encoder *bindings.Encoder) error {
@@ -3929,7 +4023,7 @@ func (u *UserDefinedTypeStructType) Encode(encoder *bindings.Encoder) error {
 	if err := u.Value.Encode(encoder); err != nil {
 		return err
 	}
-
+	
 	encoder.FinishWritingUnionValue()
 	return nil
 }
@@ -3946,14 +4040,13 @@ func (u *UserDefinedTypeStructType) decodeInternal(decoder *bindings.Decoder) er
 			return err
 		}
 	}
-
+	
 	return nil
 }
 
-type UserDefinedTypeUnionType struct{ Value MojomUnion }
-
-func (u *UserDefinedTypeUnionType) Tag() uint32                        { return 2 }
-func (u *UserDefinedTypeUnionType) Interface() interface{}             { return u.Value }
+type UserDefinedTypeUnionType struct { Value MojomUnion }
+func (u *UserDefinedTypeUnionType) Tag() uint32 { return 2 }
+func (u *UserDefinedTypeUnionType) Interface() interface{} { return u.Value }
 func (u *UserDefinedTypeUnionType) __Reflect(__UserDefinedTypeReflect) {}
 
 func (u *UserDefinedTypeUnionType) Encode(encoder *bindings.Encoder) error {
@@ -3964,7 +4057,7 @@ func (u *UserDefinedTypeUnionType) Encode(encoder *bindings.Encoder) error {
 	if err := u.Value.Encode(encoder); err != nil {
 		return err
 	}
-
+	
 	encoder.FinishWritingUnionValue()
 	return nil
 }
@@ -3981,14 +4074,13 @@ func (u *UserDefinedTypeUnionType) decodeInternal(decoder *bindings.Decoder) err
 			return err
 		}
 	}
-
+	
 	return nil
 }
 
-type UserDefinedTypeInterfaceType struct{ Value MojomInterface }
-
-func (u *UserDefinedTypeInterfaceType) Tag() uint32                        { return 3 }
-func (u *UserDefinedTypeInterfaceType) Interface() interface{}             { return u.Value }
+type UserDefinedTypeInterfaceType struct { Value MojomInterface }
+func (u *UserDefinedTypeInterfaceType) Tag() uint32 { return 3 }
+func (u *UserDefinedTypeInterfaceType) Interface() interface{} { return u.Value }
 func (u *UserDefinedTypeInterfaceType) __Reflect(__UserDefinedTypeReflect) {}
 
 func (u *UserDefinedTypeInterfaceType) Encode(encoder *bindings.Encoder) error {
@@ -3999,7 +4091,7 @@ func (u *UserDefinedTypeInterfaceType) Encode(encoder *bindings.Encoder) error {
 	if err := u.Value.Encode(encoder); err != nil {
 		return err
 	}
-
+	
 	encoder.FinishWritingUnionValue()
 	return nil
 }
@@ -4016,61 +4108,62 @@ func (u *UserDefinedTypeInterfaceType) decodeInternal(decoder *bindings.Decoder)
 			return err
 		}
 	}
-
+	
 	return nil
 }
 
+
 // String names and labels used by the MojomUnion types.
 var (
-	unionName_UserDefinedType                    = "UserDefinedType"
-	unionFieldName_UserDefinedType_EnumType      = "EnumType"
-	unionFieldName_UserDefinedType_StructType    = "StructType"
-	unionFieldName_UserDefinedType_UnionType     = "UnionType"
-	unionFieldName_UserDefinedType_InterfaceType = "InterfaceType"
+  unionName_UserDefinedType = "UserDefinedType"
+  unionFieldName_UserDefinedType_EnumType = "EnumType"
+  unionFieldName_UserDefinedType_StructType = "StructType"
+  unionFieldName_UserDefinedType_UnionType = "UnionType"
+  unionFieldName_UserDefinedType_InterfaceType = "InterfaceType"
 )
 
 func mojom_types_UserDefinedType__() MojomUnion {
-	return MojomUnion{
-		DeclData: &DeclarationData{
-			ShortName: &unionName_UserDefinedType,
-		}, Fields: []UnionField{UnionField{
-			DeclData: &DeclarationData{
-				ShortName: &unionFieldName_UserDefinedType_EnumType,
-			},
-			Type: &TypeTypeReference{
-				Value: TypeReference{Identifier: &ID_mojom_types_MojomEnum__,
-					TypeKey: &ID_mojom_types_MojomEnum__},
-			},
-			Tag: 0,
-		}, UnionField{
-			DeclData: &DeclarationData{
-				ShortName: &unionFieldName_UserDefinedType_StructType,
-			},
-			Type: &TypeTypeReference{
-				Value: TypeReference{Identifier: &ID_mojom_types_MojomStruct__,
-					TypeKey: &ID_mojom_types_MojomStruct__},
-			},
-			Tag: 1,
-		}, UnionField{
-			DeclData: &DeclarationData{
-				ShortName: &unionFieldName_UserDefinedType_UnionType,
-			},
-			Type: &TypeTypeReference{
-				Value: TypeReference{Identifier: &ID_mojom_types_MojomUnion__,
-					TypeKey: &ID_mojom_types_MojomUnion__},
-			},
-			Tag: 2,
-		}, UnionField{
-			DeclData: &DeclarationData{
-				ShortName: &unionFieldName_UserDefinedType_InterfaceType,
-			},
-			Type: &TypeTypeReference{
-				Value: TypeReference{Identifier: &ID_mojom_types_MojomInterface__,
-					TypeKey: &ID_mojom_types_MojomInterface__},
-			},
-			Tag: 3,
-		}},
-	}
+  return MojomUnion{
+    DeclData: &DeclarationData{
+      ShortName: &unionName_UserDefinedType,
+    },Fields: []UnionField{UnionField{
+        DeclData: &DeclarationData{
+          ShortName: &unionFieldName_UserDefinedType_EnumType,
+        },
+        Type: &TypeTypeReference{
+  Value: TypeReference {Identifier: &ID_mojom_types_MojomEnum__,
+  TypeKey: &ID_mojom_types_MojomEnum__,},
+},
+        Tag: 0,
+      },UnionField{
+        DeclData: &DeclarationData{
+          ShortName: &unionFieldName_UserDefinedType_StructType,
+        },
+        Type: &TypeTypeReference{
+  Value: TypeReference {Identifier: &ID_mojom_types_MojomStruct__,
+  TypeKey: &ID_mojom_types_MojomStruct__,},
+},
+        Tag: 1,
+      },UnionField{
+        DeclData: &DeclarationData{
+          ShortName: &unionFieldName_UserDefinedType_UnionType,
+        },
+        Type: &TypeTypeReference{
+  Value: TypeReference {Identifier: &ID_mojom_types_MojomUnion__,
+  TypeKey: &ID_mojom_types_MojomUnion__,},
+},
+        Tag: 2,
+      },UnionField{
+        DeclData: &DeclarationData{
+          ShortName: &unionFieldName_UserDefinedType_InterfaceType,
+        },
+        Type: &TypeTypeReference{
+  Value: TypeReference {Identifier: &ID_mojom_types_MojomInterface__,
+  TypeKey: &ID_mojom_types_MojomInterface__,},
+},
+        Tag: 3,
+      },},
+  }
 }
 
 type DefaultFieldValue interface {
@@ -4081,7 +4174,7 @@ type DefaultFieldValue interface {
 }
 
 type __DefaultFieldValueReflect struct {
-	Value          Value
+	Value Value
 	DefaultKeyword DefaultKeyword
 }
 
@@ -4117,20 +4210,18 @@ func DecodeDefaultFieldValue(decoder *bindings.Decoder) (DefaultFieldValue, erro
 	return &DefaultFieldValueUnknown{tag: tag}, nil
 }
 
-type DefaultFieldValueUnknown struct{ tag uint32 }
-
-func (u *DefaultFieldValueUnknown) Tag() uint32                          { return u.tag }
-func (u *DefaultFieldValueUnknown) Interface() interface{}               { return nil }
+type DefaultFieldValueUnknown struct { tag uint32 }
+func (u *DefaultFieldValueUnknown) Tag() uint32 { return u.tag }
+func (u *DefaultFieldValueUnknown) Interface() interface{} { return nil }
 func (u *DefaultFieldValueUnknown) __Reflect(__DefaultFieldValueReflect) {}
 
 func (u *DefaultFieldValueUnknown) Encode(encoder *bindings.Encoder) error {
-	return fmt.Errorf("Trying to serialize an unknown DefaultFieldValue. There is no sane way to do that!")
+	return fmt.Errorf("Trying to serialize an unknown DefaultFieldValue. There is no sane way to do that!");
 }
 
-type DefaultFieldValueValue struct{ Value Value }
-
-func (u *DefaultFieldValueValue) Tag() uint32                          { return 0 }
-func (u *DefaultFieldValueValue) Interface() interface{}               { return u.Value }
+type DefaultFieldValueValue struct { Value Value }
+func (u *DefaultFieldValueValue) Tag() uint32 { return 0 }
+func (u *DefaultFieldValueValue) Interface() interface{} { return u.Value }
 func (u *DefaultFieldValueValue) __Reflect(__DefaultFieldValueReflect) {}
 
 func (u *DefaultFieldValueValue) Encode(encoder *bindings.Encoder) error {
@@ -4138,7 +4229,7 @@ func (u *DefaultFieldValueValue) Encode(encoder *bindings.Encoder) error {
 	if err := encoder.WritePointer(); err != nil {
 		return err
 	}
-
+	
 	encoder.StartNestedUnion()
 	if u.Value == nil {
 		return &bindings.ValidationError{bindings.UnexpectedNullUnion, "unexpected null union"}
@@ -4146,7 +4237,7 @@ func (u *DefaultFieldValueValue) Encode(encoder *bindings.Encoder) error {
 	if err := u.Value.Encode(encoder); err != nil {
 		return err
 	}
-
+	
 	encoder.Finish()
 	encoder.FinishWritingUnionValue()
 	return nil
@@ -4159,11 +4250,11 @@ func (u *DefaultFieldValueValue) decodeInternal(decoder *bindings.Decoder) error
 		}
 		return &bindings.ValidationError{bindings.UnexpectedNullPointer, "unexpected null union pointer"}
 	}
-
+	
 	if err := decoder.StartNestedUnion(); err != nil {
 		return err
 	}
-
+	
 	var err error
 	u.Value, err = DecodeValue(decoder)
 	if err != nil {
@@ -4172,15 +4263,15 @@ func (u *DefaultFieldValueValue) decodeInternal(decoder *bindings.Decoder) error
 	if u.Value == nil {
 		return &bindings.ValidationError{bindings.UnexpectedNullUnion, "unexpected null union"}
 	}
-
+	
+	
 	decoder.Finish()
 	return nil
 }
 
-type DefaultFieldValueDefaultKeyword struct{ Value DefaultKeyword }
-
-func (u *DefaultFieldValueDefaultKeyword) Tag() uint32                          { return 1 }
-func (u *DefaultFieldValueDefaultKeyword) Interface() interface{}               { return u.Value }
+type DefaultFieldValueDefaultKeyword struct { Value DefaultKeyword }
+func (u *DefaultFieldValueDefaultKeyword) Tag() uint32 { return 1 }
+func (u *DefaultFieldValueDefaultKeyword) Interface() interface{} { return u.Value }
 func (u *DefaultFieldValueDefaultKeyword) __Reflect(__DefaultFieldValueReflect) {}
 
 func (u *DefaultFieldValueDefaultKeyword) Encode(encoder *bindings.Encoder) error {
@@ -4191,7 +4282,7 @@ func (u *DefaultFieldValueDefaultKeyword) Encode(encoder *bindings.Encoder) erro
 	if err := u.Value.Encode(encoder); err != nil {
 		return err
 	}
-
+	
 	encoder.FinishWritingUnionValue()
 	return nil
 }
@@ -4208,41 +4299,42 @@ func (u *DefaultFieldValueDefaultKeyword) decodeInternal(decoder *bindings.Decod
 			return err
 		}
 	}
-
+	
 	return nil
 }
 
+
 // String names and labels used by the MojomUnion types.
 var (
-	unionName_DefaultFieldValue                     = "DefaultFieldValue"
-	unionFieldName_DefaultFieldValue_Value          = "Value"
-	unionFieldName_DefaultFieldValue_DefaultKeyword = "DefaultKeyword"
+  unionName_DefaultFieldValue = "DefaultFieldValue"
+  unionFieldName_DefaultFieldValue_Value = "Value"
+  unionFieldName_DefaultFieldValue_DefaultKeyword = "DefaultKeyword"
 )
 
 func mojom_types_DefaultFieldValue__() MojomUnion {
-	return MojomUnion{
-		DeclData: &DeclarationData{
-			ShortName: &unionName_DefaultFieldValue,
-		}, Fields: []UnionField{UnionField{
-			DeclData: &DeclarationData{
-				ShortName: &unionFieldName_DefaultFieldValue_Value,
-			},
-			Type: &TypeTypeReference{
-				Value: TypeReference{Identifier: &ID_mojom_types_Value__,
-					TypeKey: &ID_mojom_types_Value__},
-			},
-			Tag: 0,
-		}, UnionField{
-			DeclData: &DeclarationData{
-				ShortName: &unionFieldName_DefaultFieldValue_DefaultKeyword,
-			},
-			Type: &TypeTypeReference{
-				Value: TypeReference{Identifier: &ID_mojom_types_DefaultKeyword__,
-					TypeKey: &ID_mojom_types_DefaultKeyword__},
-			},
-			Tag: 1,
-		}},
-	}
+  return MojomUnion{
+    DeclData: &DeclarationData{
+      ShortName: &unionName_DefaultFieldValue,
+    },Fields: []UnionField{UnionField{
+        DeclData: &DeclarationData{
+          ShortName: &unionFieldName_DefaultFieldValue_Value,
+        },
+        Type: &TypeTypeReference{
+  Value: TypeReference {Identifier: &ID_mojom_types_Value__,
+  TypeKey: &ID_mojom_types_Value__,},
+},
+        Tag: 0,
+      },UnionField{
+        DeclData: &DeclarationData{
+          ShortName: &unionFieldName_DefaultFieldValue_DefaultKeyword,
+        },
+        Type: &TypeTypeReference{
+  Value: TypeReference {Identifier: &ID_mojom_types_DefaultKeyword__,
+  TypeKey: &ID_mojom_types_DefaultKeyword__,},
+},
+        Tag: 1,
+      },},
+  }
 }
 
 type Value interface {
@@ -4253,9 +4345,9 @@ type Value interface {
 }
 
 type __ValueReflect struct {
-	LiteralValue       LiteralValue
+	LiteralValue LiteralValue
 	UserValueReference UserValueReference
-	BuiltinValue       BuiltinConstantValue
+	BuiltinValue BuiltinConstantValue
 }
 
 func DecodeValue(decoder *bindings.Decoder) (Value, error) {
@@ -4297,20 +4389,18 @@ func DecodeValue(decoder *bindings.Decoder) (Value, error) {
 	return &ValueUnknown{tag: tag}, nil
 }
 
-type ValueUnknown struct{ tag uint32 }
-
-func (u *ValueUnknown) Tag() uint32              { return u.tag }
-func (u *ValueUnknown) Interface() interface{}   { return nil }
+type ValueUnknown struct { tag uint32 }
+func (u *ValueUnknown) Tag() uint32 { return u.tag }
+func (u *ValueUnknown) Interface() interface{} { return nil }
 func (u *ValueUnknown) __Reflect(__ValueReflect) {}
 
 func (u *ValueUnknown) Encode(encoder *bindings.Encoder) error {
-	return fmt.Errorf("Trying to serialize an unknown Value. There is no sane way to do that!")
+	return fmt.Errorf("Trying to serialize an unknown Value. There is no sane way to do that!");
 }
 
-type ValueLiteralValue struct{ Value LiteralValue }
-
-func (u *ValueLiteralValue) Tag() uint32              { return 0 }
-func (u *ValueLiteralValue) Interface() interface{}   { return u.Value }
+type ValueLiteralValue struct { Value LiteralValue }
+func (u *ValueLiteralValue) Tag() uint32 { return 0 }
+func (u *ValueLiteralValue) Interface() interface{} { return u.Value }
 func (u *ValueLiteralValue) __Reflect(__ValueReflect) {}
 
 func (u *ValueLiteralValue) Encode(encoder *bindings.Encoder) error {
@@ -4318,7 +4408,7 @@ func (u *ValueLiteralValue) Encode(encoder *bindings.Encoder) error {
 	if err := encoder.WritePointer(); err != nil {
 		return err
 	}
-
+	
 	encoder.StartNestedUnion()
 	if u.Value == nil {
 		return &bindings.ValidationError{bindings.UnexpectedNullUnion, "unexpected null union"}
@@ -4326,7 +4416,7 @@ func (u *ValueLiteralValue) Encode(encoder *bindings.Encoder) error {
 	if err := u.Value.Encode(encoder); err != nil {
 		return err
 	}
-
+	
 	encoder.Finish()
 	encoder.FinishWritingUnionValue()
 	return nil
@@ -4339,11 +4429,11 @@ func (u *ValueLiteralValue) decodeInternal(decoder *bindings.Decoder) error {
 		}
 		return &bindings.ValidationError{bindings.UnexpectedNullPointer, "unexpected null union pointer"}
 	}
-
+	
 	if err := decoder.StartNestedUnion(); err != nil {
 		return err
 	}
-
+	
 	var err error
 	u.Value, err = DecodeLiteralValue(decoder)
 	if err != nil {
@@ -4352,15 +4442,15 @@ func (u *ValueLiteralValue) decodeInternal(decoder *bindings.Decoder) error {
 	if u.Value == nil {
 		return &bindings.ValidationError{bindings.UnexpectedNullUnion, "unexpected null union"}
 	}
-
+	
+	
 	decoder.Finish()
 	return nil
 }
 
-type ValueUserValueReference struct{ Value UserValueReference }
-
-func (u *ValueUserValueReference) Tag() uint32              { return 1 }
-func (u *ValueUserValueReference) Interface() interface{}   { return u.Value }
+type ValueUserValueReference struct { Value UserValueReference }
+func (u *ValueUserValueReference) Tag() uint32 { return 1 }
+func (u *ValueUserValueReference) Interface() interface{} { return u.Value }
 func (u *ValueUserValueReference) __Reflect(__ValueReflect) {}
 
 func (u *ValueUserValueReference) Encode(encoder *bindings.Encoder) error {
@@ -4371,7 +4461,7 @@ func (u *ValueUserValueReference) Encode(encoder *bindings.Encoder) error {
 	if err := u.Value.Encode(encoder); err != nil {
 		return err
 	}
-
+	
 	encoder.FinishWritingUnionValue()
 	return nil
 }
@@ -4388,14 +4478,13 @@ func (u *ValueUserValueReference) decodeInternal(decoder *bindings.Decoder) erro
 			return err
 		}
 	}
-
+	
 	return nil
 }
 
-type ValueBuiltinValue struct{ Value BuiltinConstantValue }
-
-func (u *ValueBuiltinValue) Tag() uint32              { return 2 }
-func (u *ValueBuiltinValue) Interface() interface{}   { return u.Value }
+type ValueBuiltinValue struct { Value BuiltinConstantValue }
+func (u *ValueBuiltinValue) Tag() uint32 { return 2 }
+func (u *ValueBuiltinValue) Interface() interface{} { return u.Value }
 func (u *ValueBuiltinValue) __Reflect(__ValueReflect) {}
 
 func (u *ValueBuiltinValue) Encode(encoder *bindings.Encoder) error {
@@ -4403,7 +4492,7 @@ func (u *ValueBuiltinValue) Encode(encoder *bindings.Encoder) error {
 	if err := encoder.WriteInt32(int32(u.Value)); err != nil {
 		return err
 	}
-
+	
 	encoder.FinishWritingUnionValue()
 	return nil
 }
@@ -4414,51 +4503,52 @@ func (u *ValueBuiltinValue) decodeInternal(decoder *bindings.Decoder) error {
 		return err
 	}
 	u.Value = BuiltinConstantValue(value0)
-
+	
 	return nil
 }
 
+
 // String names and labels used by the MojomUnion types.
 var (
-	unionName_Value                         = "Value"
-	unionFieldName_Value_LiteralValue       = "LiteralValue"
-	unionFieldName_Value_UserValueReference = "UserValueReference"
-	unionFieldName_Value_BuiltinValue       = "BuiltinValue"
+  unionName_Value = "Value"
+  unionFieldName_Value_LiteralValue = "LiteralValue"
+  unionFieldName_Value_UserValueReference = "UserValueReference"
+  unionFieldName_Value_BuiltinValue = "BuiltinValue"
 )
 
 func mojom_types_Value__() MojomUnion {
-	return MojomUnion{
-		DeclData: &DeclarationData{
-			ShortName: &unionName_Value,
-		}, Fields: []UnionField{UnionField{
-			DeclData: &DeclarationData{
-				ShortName: &unionFieldName_Value_LiteralValue,
-			},
-			Type: &TypeTypeReference{
-				Value: TypeReference{Identifier: &ID_mojom_types_LiteralValue__,
-					TypeKey: &ID_mojom_types_LiteralValue__},
-			},
-			Tag: 0,
-		}, UnionField{
-			DeclData: &DeclarationData{
-				ShortName: &unionFieldName_Value_UserValueReference,
-			},
-			Type: &TypeTypeReference{
-				Value: TypeReference{Identifier: &ID_mojom_types_UserValueReference__,
-					TypeKey: &ID_mojom_types_UserValueReference__},
-			},
-			Tag: 1,
-		}, UnionField{
-			DeclData: &DeclarationData{
-				ShortName: &unionFieldName_Value_BuiltinValue,
-			},
-			Type: &TypeTypeReference{
-				Value: TypeReference{Identifier: &ID_mojom_types_BuiltinConstantValue__,
-					TypeKey: &ID_mojom_types_BuiltinConstantValue__},
-			},
-			Tag: 2,
-		}},
-	}
+  return MojomUnion{
+    DeclData: &DeclarationData{
+      ShortName: &unionName_Value,
+    },Fields: []UnionField{UnionField{
+        DeclData: &DeclarationData{
+          ShortName: &unionFieldName_Value_LiteralValue,
+        },
+        Type: &TypeTypeReference{
+  Value: TypeReference {Identifier: &ID_mojom_types_LiteralValue__,
+  TypeKey: &ID_mojom_types_LiteralValue__,},
+},
+        Tag: 0,
+      },UnionField{
+        DeclData: &DeclarationData{
+          ShortName: &unionFieldName_Value_UserValueReference,
+        },
+        Type: &TypeTypeReference{
+  Value: TypeReference {Identifier: &ID_mojom_types_UserValueReference__,
+  TypeKey: &ID_mojom_types_UserValueReference__,},
+},
+        Tag: 1,
+      },UnionField{
+        DeclData: &DeclarationData{
+          ShortName: &unionFieldName_Value_BuiltinValue,
+        },
+        Type: &TypeTypeReference{
+  Value: TypeReference {Identifier: &ID_mojom_types_BuiltinConstantValue__,
+  TypeKey: &ID_mojom_types_BuiltinConstantValue__,},
+},
+        Tag: 2,
+      },},
+  }
 }
 
 type LiteralValue interface {
@@ -4469,15 +4559,15 @@ type LiteralValue interface {
 }
 
 type __LiteralValueReflect struct {
-	BoolValue   bool
+	BoolValue bool
 	DoubleValue float64
-	FloatValue  float32
-	Int8Value   int8
-	Int16Value  int16
-	Int32Value  int32
-	Int64Value  int64
+	FloatValue float32
+	Int8Value int8
+	Int16Value int16
+	Int32Value int32
+	Int64Value int64
 	StringValue string
-	Uint8Value  uint8
+	Uint8Value uint8
 	Uint16Value uint16
 	Uint32Value uint32
 	Uint64Value uint64
@@ -4585,20 +4675,18 @@ func DecodeLiteralValue(decoder *bindings.Decoder) (LiteralValue, error) {
 	return &LiteralValueUnknown{tag: tag}, nil
 }
 
-type LiteralValueUnknown struct{ tag uint32 }
-
-func (u *LiteralValueUnknown) Tag() uint32                     { return u.tag }
-func (u *LiteralValueUnknown) Interface() interface{}          { return nil }
+type LiteralValueUnknown struct { tag uint32 }
+func (u *LiteralValueUnknown) Tag() uint32 { return u.tag }
+func (u *LiteralValueUnknown) Interface() interface{} { return nil }
 func (u *LiteralValueUnknown) __Reflect(__LiteralValueReflect) {}
 
 func (u *LiteralValueUnknown) Encode(encoder *bindings.Encoder) error {
-	return fmt.Errorf("Trying to serialize an unknown LiteralValue. There is no sane way to do that!")
+	return fmt.Errorf("Trying to serialize an unknown LiteralValue. There is no sane way to do that!");
 }
 
-type LiteralValueBoolValue struct{ Value bool }
-
-func (u *LiteralValueBoolValue) Tag() uint32                     { return 0 }
-func (u *LiteralValueBoolValue) Interface() interface{}          { return u.Value }
+type LiteralValueBoolValue struct { Value bool }
+func (u *LiteralValueBoolValue) Tag() uint32 { return 0 }
+func (u *LiteralValueBoolValue) Interface() interface{} { return u.Value }
 func (u *LiteralValueBoolValue) __Reflect(__LiteralValueReflect) {}
 
 func (u *LiteralValueBoolValue) Encode(encoder *bindings.Encoder) error {
@@ -4606,7 +4694,7 @@ func (u *LiteralValueBoolValue) Encode(encoder *bindings.Encoder) error {
 	if err := encoder.WriteBool(u.Value); err != nil {
 		return err
 	}
-
+	
 	encoder.FinishWritingUnionValue()
 	return nil
 }
@@ -4617,14 +4705,13 @@ func (u *LiteralValueBoolValue) decodeInternal(decoder *bindings.Decoder) error 
 		return err
 	}
 	u.Value = value0
-
+	
 	return nil
 }
 
-type LiteralValueDoubleValue struct{ Value float64 }
-
-func (u *LiteralValueDoubleValue) Tag() uint32                     { return 1 }
-func (u *LiteralValueDoubleValue) Interface() interface{}          { return u.Value }
+type LiteralValueDoubleValue struct { Value float64 }
+func (u *LiteralValueDoubleValue) Tag() uint32 { return 1 }
+func (u *LiteralValueDoubleValue) Interface() interface{} { return u.Value }
 func (u *LiteralValueDoubleValue) __Reflect(__LiteralValueReflect) {}
 
 func (u *LiteralValueDoubleValue) Encode(encoder *bindings.Encoder) error {
@@ -4632,7 +4719,7 @@ func (u *LiteralValueDoubleValue) Encode(encoder *bindings.Encoder) error {
 	if err := encoder.WriteFloat64(u.Value); err != nil {
 		return err
 	}
-
+	
 	encoder.FinishWritingUnionValue()
 	return nil
 }
@@ -4643,14 +4730,13 @@ func (u *LiteralValueDoubleValue) decodeInternal(decoder *bindings.Decoder) erro
 		return err
 	}
 	u.Value = value0
-
+	
 	return nil
 }
 
-type LiteralValueFloatValue struct{ Value float32 }
-
-func (u *LiteralValueFloatValue) Tag() uint32                     { return 2 }
-func (u *LiteralValueFloatValue) Interface() interface{}          { return u.Value }
+type LiteralValueFloatValue struct { Value float32 }
+func (u *LiteralValueFloatValue) Tag() uint32 { return 2 }
+func (u *LiteralValueFloatValue) Interface() interface{} { return u.Value }
 func (u *LiteralValueFloatValue) __Reflect(__LiteralValueReflect) {}
 
 func (u *LiteralValueFloatValue) Encode(encoder *bindings.Encoder) error {
@@ -4658,7 +4744,7 @@ func (u *LiteralValueFloatValue) Encode(encoder *bindings.Encoder) error {
 	if err := encoder.WriteFloat32(u.Value); err != nil {
 		return err
 	}
-
+	
 	encoder.FinishWritingUnionValue()
 	return nil
 }
@@ -4669,14 +4755,13 @@ func (u *LiteralValueFloatValue) decodeInternal(decoder *bindings.Decoder) error
 		return err
 	}
 	u.Value = value0
-
+	
 	return nil
 }
 
-type LiteralValueInt8Value struct{ Value int8 }
-
-func (u *LiteralValueInt8Value) Tag() uint32                     { return 3 }
-func (u *LiteralValueInt8Value) Interface() interface{}          { return u.Value }
+type LiteralValueInt8Value struct { Value int8 }
+func (u *LiteralValueInt8Value) Tag() uint32 { return 3 }
+func (u *LiteralValueInt8Value) Interface() interface{} { return u.Value }
 func (u *LiteralValueInt8Value) __Reflect(__LiteralValueReflect) {}
 
 func (u *LiteralValueInt8Value) Encode(encoder *bindings.Encoder) error {
@@ -4684,7 +4769,7 @@ func (u *LiteralValueInt8Value) Encode(encoder *bindings.Encoder) error {
 	if err := encoder.WriteInt8(u.Value); err != nil {
 		return err
 	}
-
+	
 	encoder.FinishWritingUnionValue()
 	return nil
 }
@@ -4695,14 +4780,13 @@ func (u *LiteralValueInt8Value) decodeInternal(decoder *bindings.Decoder) error 
 		return err
 	}
 	u.Value = value0
-
+	
 	return nil
 }
 
-type LiteralValueInt16Value struct{ Value int16 }
-
-func (u *LiteralValueInt16Value) Tag() uint32                     { return 4 }
-func (u *LiteralValueInt16Value) Interface() interface{}          { return u.Value }
+type LiteralValueInt16Value struct { Value int16 }
+func (u *LiteralValueInt16Value) Tag() uint32 { return 4 }
+func (u *LiteralValueInt16Value) Interface() interface{} { return u.Value }
 func (u *LiteralValueInt16Value) __Reflect(__LiteralValueReflect) {}
 
 func (u *LiteralValueInt16Value) Encode(encoder *bindings.Encoder) error {
@@ -4710,7 +4794,7 @@ func (u *LiteralValueInt16Value) Encode(encoder *bindings.Encoder) error {
 	if err := encoder.WriteInt16(u.Value); err != nil {
 		return err
 	}
-
+	
 	encoder.FinishWritingUnionValue()
 	return nil
 }
@@ -4721,14 +4805,13 @@ func (u *LiteralValueInt16Value) decodeInternal(decoder *bindings.Decoder) error
 		return err
 	}
 	u.Value = value0
-
+	
 	return nil
 }
 
-type LiteralValueInt32Value struct{ Value int32 }
-
-func (u *LiteralValueInt32Value) Tag() uint32                     { return 5 }
-func (u *LiteralValueInt32Value) Interface() interface{}          { return u.Value }
+type LiteralValueInt32Value struct { Value int32 }
+func (u *LiteralValueInt32Value) Tag() uint32 { return 5 }
+func (u *LiteralValueInt32Value) Interface() interface{} { return u.Value }
 func (u *LiteralValueInt32Value) __Reflect(__LiteralValueReflect) {}
 
 func (u *LiteralValueInt32Value) Encode(encoder *bindings.Encoder) error {
@@ -4736,7 +4819,7 @@ func (u *LiteralValueInt32Value) Encode(encoder *bindings.Encoder) error {
 	if err := encoder.WriteInt32(u.Value); err != nil {
 		return err
 	}
-
+	
 	encoder.FinishWritingUnionValue()
 	return nil
 }
@@ -4747,14 +4830,13 @@ func (u *LiteralValueInt32Value) decodeInternal(decoder *bindings.Decoder) error
 		return err
 	}
 	u.Value = value0
-
+	
 	return nil
 }
 
-type LiteralValueInt64Value struct{ Value int64 }
-
-func (u *LiteralValueInt64Value) Tag() uint32                     { return 6 }
-func (u *LiteralValueInt64Value) Interface() interface{}          { return u.Value }
+type LiteralValueInt64Value struct { Value int64 }
+func (u *LiteralValueInt64Value) Tag() uint32 { return 6 }
+func (u *LiteralValueInt64Value) Interface() interface{} { return u.Value }
 func (u *LiteralValueInt64Value) __Reflect(__LiteralValueReflect) {}
 
 func (u *LiteralValueInt64Value) Encode(encoder *bindings.Encoder) error {
@@ -4762,7 +4844,7 @@ func (u *LiteralValueInt64Value) Encode(encoder *bindings.Encoder) error {
 	if err := encoder.WriteInt64(u.Value); err != nil {
 		return err
 	}
-
+	
 	encoder.FinishWritingUnionValue()
 	return nil
 }
@@ -4773,14 +4855,13 @@ func (u *LiteralValueInt64Value) decodeInternal(decoder *bindings.Decoder) error
 		return err
 	}
 	u.Value = value0
-
+	
 	return nil
 }
 
-type LiteralValueStringValue struct{ Value string }
-
-func (u *LiteralValueStringValue) Tag() uint32                     { return 7 }
-func (u *LiteralValueStringValue) Interface() interface{}          { return u.Value }
+type LiteralValueStringValue struct { Value string }
+func (u *LiteralValueStringValue) Tag() uint32 { return 7 }
+func (u *LiteralValueStringValue) Interface() interface{} { return u.Value }
 func (u *LiteralValueStringValue) __Reflect(__LiteralValueReflect) {}
 
 func (u *LiteralValueStringValue) Encode(encoder *bindings.Encoder) error {
@@ -4791,7 +4872,7 @@ func (u *LiteralValueStringValue) Encode(encoder *bindings.Encoder) error {
 	if err := encoder.WriteString(u.Value); err != nil {
 		return err
 	}
-
+	
 	encoder.FinishWritingUnionValue()
 	return nil
 }
@@ -4810,14 +4891,13 @@ func (u *LiteralValueStringValue) decodeInternal(decoder *bindings.Decoder) erro
 		}
 		u.Value = value0
 	}
-
+	
 	return nil
 }
 
-type LiteralValueUint8Value struct{ Value uint8 }
-
-func (u *LiteralValueUint8Value) Tag() uint32                     { return 8 }
-func (u *LiteralValueUint8Value) Interface() interface{}          { return u.Value }
+type LiteralValueUint8Value struct { Value uint8 }
+func (u *LiteralValueUint8Value) Tag() uint32 { return 8 }
+func (u *LiteralValueUint8Value) Interface() interface{} { return u.Value }
 func (u *LiteralValueUint8Value) __Reflect(__LiteralValueReflect) {}
 
 func (u *LiteralValueUint8Value) Encode(encoder *bindings.Encoder) error {
@@ -4825,7 +4905,7 @@ func (u *LiteralValueUint8Value) Encode(encoder *bindings.Encoder) error {
 	if err := encoder.WriteUint8(u.Value); err != nil {
 		return err
 	}
-
+	
 	encoder.FinishWritingUnionValue()
 	return nil
 }
@@ -4836,14 +4916,13 @@ func (u *LiteralValueUint8Value) decodeInternal(decoder *bindings.Decoder) error
 		return err
 	}
 	u.Value = value0
-
+	
 	return nil
 }
 
-type LiteralValueUint16Value struct{ Value uint16 }
-
-func (u *LiteralValueUint16Value) Tag() uint32                     { return 9 }
-func (u *LiteralValueUint16Value) Interface() interface{}          { return u.Value }
+type LiteralValueUint16Value struct { Value uint16 }
+func (u *LiteralValueUint16Value) Tag() uint32 { return 9 }
+func (u *LiteralValueUint16Value) Interface() interface{} { return u.Value }
 func (u *LiteralValueUint16Value) __Reflect(__LiteralValueReflect) {}
 
 func (u *LiteralValueUint16Value) Encode(encoder *bindings.Encoder) error {
@@ -4851,7 +4930,7 @@ func (u *LiteralValueUint16Value) Encode(encoder *bindings.Encoder) error {
 	if err := encoder.WriteUint16(u.Value); err != nil {
 		return err
 	}
-
+	
 	encoder.FinishWritingUnionValue()
 	return nil
 }
@@ -4862,14 +4941,13 @@ func (u *LiteralValueUint16Value) decodeInternal(decoder *bindings.Decoder) erro
 		return err
 	}
 	u.Value = value0
-
+	
 	return nil
 }
 
-type LiteralValueUint32Value struct{ Value uint32 }
-
-func (u *LiteralValueUint32Value) Tag() uint32                     { return 10 }
-func (u *LiteralValueUint32Value) Interface() interface{}          { return u.Value }
+type LiteralValueUint32Value struct { Value uint32 }
+func (u *LiteralValueUint32Value) Tag() uint32 { return 10 }
+func (u *LiteralValueUint32Value) Interface() interface{} { return u.Value }
 func (u *LiteralValueUint32Value) __Reflect(__LiteralValueReflect) {}
 
 func (u *LiteralValueUint32Value) Encode(encoder *bindings.Encoder) error {
@@ -4877,7 +4955,7 @@ func (u *LiteralValueUint32Value) Encode(encoder *bindings.Encoder) error {
 	if err := encoder.WriteUint32(u.Value); err != nil {
 		return err
 	}
-
+	
 	encoder.FinishWritingUnionValue()
 	return nil
 }
@@ -4888,14 +4966,13 @@ func (u *LiteralValueUint32Value) decodeInternal(decoder *bindings.Decoder) erro
 		return err
 	}
 	u.Value = value0
-
+	
 	return nil
 }
 
-type LiteralValueUint64Value struct{ Value uint64 }
-
-func (u *LiteralValueUint64Value) Tag() uint32                     { return 11 }
-func (u *LiteralValueUint64Value) Interface() interface{}          { return u.Value }
+type LiteralValueUint64Value struct { Value uint64 }
+func (u *LiteralValueUint64Value) Tag() uint32 { return 11 }
+func (u *LiteralValueUint64Value) Interface() interface{} { return u.Value }
 func (u *LiteralValueUint64Value) __Reflect(__LiteralValueReflect) {}
 
 func (u *LiteralValueUint64Value) Encode(encoder *bindings.Encoder) error {
@@ -4903,7 +4980,7 @@ func (u *LiteralValueUint64Value) Encode(encoder *bindings.Encoder) error {
 	if err := encoder.WriteUint64(u.Value); err != nil {
 		return err
 	}
-
+	
 	encoder.FinishWritingUnionValue()
 	return nil
 }
@@ -4914,105 +4991,106 @@ func (u *LiteralValueUint64Value) decodeInternal(decoder *bindings.Decoder) erro
 		return err
 	}
 	u.Value = value0
-
+	
 	return nil
 }
 
+
 // String names and labels used by the MojomUnion types.
 var (
-	unionName_LiteralValue                  = "LiteralValue"
-	unionFieldName_LiteralValue_BoolValue   = "BoolValue"
-	unionFieldName_LiteralValue_DoubleValue = "DoubleValue"
-	unionFieldName_LiteralValue_FloatValue  = "FloatValue"
-	unionFieldName_LiteralValue_Int8Value   = "Int8Value"
-	unionFieldName_LiteralValue_Int16Value  = "Int16Value"
-	unionFieldName_LiteralValue_Int32Value  = "Int32Value"
-	unionFieldName_LiteralValue_Int64Value  = "Int64Value"
-	unionFieldName_LiteralValue_StringValue = "StringValue"
-	unionFieldName_LiteralValue_Uint8Value  = "Uint8Value"
-	unionFieldName_LiteralValue_Uint16Value = "Uint16Value"
-	unionFieldName_LiteralValue_Uint32Value = "Uint32Value"
-	unionFieldName_LiteralValue_Uint64Value = "Uint64Value"
+  unionName_LiteralValue = "LiteralValue"
+  unionFieldName_LiteralValue_BoolValue = "BoolValue"
+  unionFieldName_LiteralValue_DoubleValue = "DoubleValue"
+  unionFieldName_LiteralValue_FloatValue = "FloatValue"
+  unionFieldName_LiteralValue_Int8Value = "Int8Value"
+  unionFieldName_LiteralValue_Int16Value = "Int16Value"
+  unionFieldName_LiteralValue_Int32Value = "Int32Value"
+  unionFieldName_LiteralValue_Int64Value = "Int64Value"
+  unionFieldName_LiteralValue_StringValue = "StringValue"
+  unionFieldName_LiteralValue_Uint8Value = "Uint8Value"
+  unionFieldName_LiteralValue_Uint16Value = "Uint16Value"
+  unionFieldName_LiteralValue_Uint32Value = "Uint32Value"
+  unionFieldName_LiteralValue_Uint64Value = "Uint64Value"
 )
 
 func mojom_types_LiteralValue__() MojomUnion {
-	return MojomUnion{
-		DeclData: &DeclarationData{
-			ShortName: &unionName_LiteralValue,
-		}, Fields: []UnionField{UnionField{
-			DeclData: &DeclarationData{
-				ShortName: &unionFieldName_LiteralValue_BoolValue,
-			},
-			Type: &TypeSimpleType{SimpleType_Bool},
-			Tag:  0,
-		}, UnionField{
-			DeclData: &DeclarationData{
-				ShortName: &unionFieldName_LiteralValue_DoubleValue,
-			},
-			Type: &TypeSimpleType{SimpleType_Double},
-			Tag:  1,
-		}, UnionField{
-			DeclData: &DeclarationData{
-				ShortName: &unionFieldName_LiteralValue_FloatValue,
-			},
-			Type: &TypeSimpleType{SimpleType_Float},
-			Tag:  2,
-		}, UnionField{
-			DeclData: &DeclarationData{
-				ShortName: &unionFieldName_LiteralValue_Int8Value,
-			},
-			Type: &TypeSimpleType{SimpleType_InT8},
-			Tag:  3,
-		}, UnionField{
-			DeclData: &DeclarationData{
-				ShortName: &unionFieldName_LiteralValue_Int16Value,
-			},
-			Type: &TypeSimpleType{SimpleType_InT16},
-			Tag:  4,
-		}, UnionField{
-			DeclData: &DeclarationData{
-				ShortName: &unionFieldName_LiteralValue_Int32Value,
-			},
-			Type: &TypeSimpleType{SimpleType_InT32},
-			Tag:  5,
-		}, UnionField{
-			DeclData: &DeclarationData{
-				ShortName: &unionFieldName_LiteralValue_Int64Value,
-			},
-			Type: &TypeSimpleType{SimpleType_InT64},
-			Tag:  6,
-		}, UnionField{
-			DeclData: &DeclarationData{
-				ShortName: &unionFieldName_LiteralValue_StringValue,
-			},
-			Type: &TypeStringType{StringType{false}},
-			Tag:  7,
-		}, UnionField{
-			DeclData: &DeclarationData{
-				ShortName: &unionFieldName_LiteralValue_Uint8Value,
-			},
-			Type: &TypeSimpleType{SimpleType_UinT8},
-			Tag:  8,
-		}, UnionField{
-			DeclData: &DeclarationData{
-				ShortName: &unionFieldName_LiteralValue_Uint16Value,
-			},
-			Type: &TypeSimpleType{SimpleType_UinT16},
-			Tag:  9,
-		}, UnionField{
-			DeclData: &DeclarationData{
-				ShortName: &unionFieldName_LiteralValue_Uint32Value,
-			},
-			Type: &TypeSimpleType{SimpleType_UinT32},
-			Tag:  10,
-		}, UnionField{
-			DeclData: &DeclarationData{
-				ShortName: &unionFieldName_LiteralValue_Uint64Value,
-			},
-			Type: &TypeSimpleType{SimpleType_UinT64},
-			Tag:  11,
-		}},
-	}
+  return MojomUnion{
+    DeclData: &DeclarationData{
+      ShortName: &unionName_LiteralValue,
+    },Fields: []UnionField{UnionField{
+        DeclData: &DeclarationData{
+          ShortName: &unionFieldName_LiteralValue_BoolValue,
+        },
+        Type: &TypeSimpleType{SimpleType_Bool},
+        Tag: 0,
+      },UnionField{
+        DeclData: &DeclarationData{
+          ShortName: &unionFieldName_LiteralValue_DoubleValue,
+        },
+        Type: &TypeSimpleType{SimpleType_Double},
+        Tag: 1,
+      },UnionField{
+        DeclData: &DeclarationData{
+          ShortName: &unionFieldName_LiteralValue_FloatValue,
+        },
+        Type: &TypeSimpleType{SimpleType_Float},
+        Tag: 2,
+      },UnionField{
+        DeclData: &DeclarationData{
+          ShortName: &unionFieldName_LiteralValue_Int8Value,
+        },
+        Type: &TypeSimpleType{SimpleType_InT8},
+        Tag: 3,
+      },UnionField{
+        DeclData: &DeclarationData{
+          ShortName: &unionFieldName_LiteralValue_Int16Value,
+        },
+        Type: &TypeSimpleType{SimpleType_InT16},
+        Tag: 4,
+      },UnionField{
+        DeclData: &DeclarationData{
+          ShortName: &unionFieldName_LiteralValue_Int32Value,
+        },
+        Type: &TypeSimpleType{SimpleType_InT32},
+        Tag: 5,
+      },UnionField{
+        DeclData: &DeclarationData{
+          ShortName: &unionFieldName_LiteralValue_Int64Value,
+        },
+        Type: &TypeSimpleType{SimpleType_InT64},
+        Tag: 6,
+      },UnionField{
+        DeclData: &DeclarationData{
+          ShortName: &unionFieldName_LiteralValue_StringValue,
+        },
+        Type: &TypeStringType{StringType{false}},
+        Tag: 7,
+      },UnionField{
+        DeclData: &DeclarationData{
+          ShortName: &unionFieldName_LiteralValue_Uint8Value,
+        },
+        Type: &TypeSimpleType{SimpleType_UinT8},
+        Tag: 8,
+      },UnionField{
+        DeclData: &DeclarationData{
+          ShortName: &unionFieldName_LiteralValue_Uint16Value,
+        },
+        Type: &TypeSimpleType{SimpleType_UinT16},
+        Tag: 9,
+      },UnionField{
+        DeclData: &DeclarationData{
+          ShortName: &unionFieldName_LiteralValue_Uint32Value,
+        },
+        Type: &TypeSimpleType{SimpleType_UinT32},
+        Tag: 10,
+      },UnionField{
+        DeclData: &DeclarationData{
+          ShortName: &unionFieldName_LiteralValue_Uint64Value,
+        },
+        Type: &TypeSimpleType{SimpleType_UinT64},
+        Tag: 11,
+      },},
+  }
 }
 
 type UserDefinedValue interface {
@@ -5023,7 +5101,7 @@ type UserDefinedValue interface {
 }
 
 type __UserDefinedValueReflect struct {
-	EnumValue        EnumValue
+	EnumValue EnumValue
 	DeclaredConstant DeclaredConstant
 }
 
@@ -5059,20 +5137,18 @@ func DecodeUserDefinedValue(decoder *bindings.Decoder) (UserDefinedValue, error)
 	return &UserDefinedValueUnknown{tag: tag}, nil
 }
 
-type UserDefinedValueUnknown struct{ tag uint32 }
-
-func (u *UserDefinedValueUnknown) Tag() uint32                         { return u.tag }
-func (u *UserDefinedValueUnknown) Interface() interface{}              { return nil }
+type UserDefinedValueUnknown struct { tag uint32 }
+func (u *UserDefinedValueUnknown) Tag() uint32 { return u.tag }
+func (u *UserDefinedValueUnknown) Interface() interface{} { return nil }
 func (u *UserDefinedValueUnknown) __Reflect(__UserDefinedValueReflect) {}
 
 func (u *UserDefinedValueUnknown) Encode(encoder *bindings.Encoder) error {
-	return fmt.Errorf("Trying to serialize an unknown UserDefinedValue. There is no sane way to do that!")
+	return fmt.Errorf("Trying to serialize an unknown UserDefinedValue. There is no sane way to do that!");
 }
 
-type UserDefinedValueEnumValue struct{ Value EnumValue }
-
-func (u *UserDefinedValueEnumValue) Tag() uint32                         { return 0 }
-func (u *UserDefinedValueEnumValue) Interface() interface{}              { return u.Value }
+type UserDefinedValueEnumValue struct { Value EnumValue }
+func (u *UserDefinedValueEnumValue) Tag() uint32 { return 0 }
+func (u *UserDefinedValueEnumValue) Interface() interface{} { return u.Value }
 func (u *UserDefinedValueEnumValue) __Reflect(__UserDefinedValueReflect) {}
 
 func (u *UserDefinedValueEnumValue) Encode(encoder *bindings.Encoder) error {
@@ -5083,7 +5159,7 @@ func (u *UserDefinedValueEnumValue) Encode(encoder *bindings.Encoder) error {
 	if err := u.Value.Encode(encoder); err != nil {
 		return err
 	}
-
+	
 	encoder.FinishWritingUnionValue()
 	return nil
 }
@@ -5100,14 +5176,13 @@ func (u *UserDefinedValueEnumValue) decodeInternal(decoder *bindings.Decoder) er
 			return err
 		}
 	}
-
+	
 	return nil
 }
 
-type UserDefinedValueDeclaredConstant struct{ Value DeclaredConstant }
-
-func (u *UserDefinedValueDeclaredConstant) Tag() uint32                         { return 1 }
-func (u *UserDefinedValueDeclaredConstant) Interface() interface{}              { return u.Value }
+type UserDefinedValueDeclaredConstant struct { Value DeclaredConstant }
+func (u *UserDefinedValueDeclaredConstant) Tag() uint32 { return 1 }
+func (u *UserDefinedValueDeclaredConstant) Interface() interface{} { return u.Value }
 func (u *UserDefinedValueDeclaredConstant) __Reflect(__UserDefinedValueReflect) {}
 
 func (u *UserDefinedValueDeclaredConstant) Encode(encoder *bindings.Encoder) error {
@@ -5118,7 +5193,7 @@ func (u *UserDefinedValueDeclaredConstant) Encode(encoder *bindings.Encoder) err
 	if err := u.Value.Encode(encoder); err != nil {
 		return err
 	}
-
+	
 	encoder.FinishWritingUnionValue()
 	return nil
 }
@@ -5135,39 +5210,41 @@ func (u *UserDefinedValueDeclaredConstant) decodeInternal(decoder *bindings.Deco
 			return err
 		}
 	}
-
+	
 	return nil
 }
 
+
 // String names and labels used by the MojomUnion types.
 var (
-	unionName_UserDefinedValue                       = "UserDefinedValue"
-	unionFieldName_UserDefinedValue_EnumValue        = "EnumValue"
-	unionFieldName_UserDefinedValue_DeclaredConstant = "DeclaredConstant"
+  unionName_UserDefinedValue = "UserDefinedValue"
+  unionFieldName_UserDefinedValue_EnumValue = "EnumValue"
+  unionFieldName_UserDefinedValue_DeclaredConstant = "DeclaredConstant"
 )
 
 func mojom_types_UserDefinedValue__() MojomUnion {
-	return MojomUnion{
-		DeclData: &DeclarationData{
-			ShortName: &unionName_UserDefinedValue,
-		}, Fields: []UnionField{UnionField{
-			DeclData: &DeclarationData{
-				ShortName: &unionFieldName_UserDefinedValue_EnumValue,
-			},
-			Type: &TypeTypeReference{
-				Value: TypeReference{Identifier: &ID_mojom_types_EnumValue__,
-					TypeKey: &ID_mojom_types_EnumValue__},
-			},
-			Tag: 0,
-		}, UnionField{
-			DeclData: &DeclarationData{
-				ShortName: &unionFieldName_UserDefinedValue_DeclaredConstant,
-			},
-			Type: &TypeTypeReference{
-				Value: TypeReference{Identifier: &ID_mojom_types_DeclaredConstant__,
-					TypeKey: &ID_mojom_types_DeclaredConstant__},
-			},
-			Tag: 1,
-		}},
-	}
+  return MojomUnion{
+    DeclData: &DeclarationData{
+      ShortName: &unionName_UserDefinedValue,
+    },Fields: []UnionField{UnionField{
+        DeclData: &DeclarationData{
+          ShortName: &unionFieldName_UserDefinedValue_EnumValue,
+        },
+        Type: &TypeTypeReference{
+  Value: TypeReference {Identifier: &ID_mojom_types_EnumValue__,
+  TypeKey: &ID_mojom_types_EnumValue__,},
+},
+        Tag: 0,
+      },UnionField{
+        DeclData: &DeclarationData{
+          ShortName: &unionFieldName_UserDefinedValue_DeclaredConstant,
+        },
+        Type: &TypeTypeReference{
+  Value: TypeReference {Identifier: &ID_mojom_types_DeclaredConstant__,
+  TypeKey: &ID_mojom_types_DeclaredConstant__,},
+},
+        Tag: 1,
+      },},
+  }
 }
+
