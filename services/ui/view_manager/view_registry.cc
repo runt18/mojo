@@ -14,7 +14,7 @@
 
 namespace view_manager {
 
-static bool AreViewLayoutParamsValid(mojo::ui::ViewLayoutParams* params) {
+static bool AreViewLayoutParamsValid(const mojo::ui::ViewLayoutParams* params) {
   return params && params->constraints && params->constraints->min_width >= 0 &&
          params->constraints->max_width >= params->constraints->min_width &&
          params->constraints->min_height >= 0 &&
@@ -22,31 +22,33 @@ static bool AreViewLayoutParamsValid(mojo::ui::ViewLayoutParams* params) {
          params->device_pixel_ratio > 0;
 }
 
-static std::ostream& operator<<(std::ostream& os, mojo::Size* size) {
+static std::ostream& operator<<(std::ostream& os, const mojo::Size* size) {
   return size
              ? os << "{width=" << size->width << ", height=" << size->height
                   << "}"
              : os << "{null}";
 }
 
-static std::ostream& operator<<(std::ostream& os, mojo::SurfaceId* surface_id) {
+static std::ostream& operator<<(std::ostream& os,
+                                const mojo::SurfaceId* surface_id) {
   return surface_id
              ? os << "{id_namespace=" << surface_id->id_namespace
                   << ", local=" << surface_id->local << "}"
              : os << "{null}";
 }
 
-static std::ostream& operator<<(std::ostream& os, mojo::ui::ViewToken* token) {
+static std::ostream& operator<<(std::ostream& os,
+                                const mojo::ui::ViewToken* token) {
   return token ? os << "{token=" << token->value << "}" : os << "{null}";
 }
 
-static std::ostream& operator<<(std::ostream& os, ViewState* view_state) {
+static std::ostream& operator<<(std::ostream& os, const ViewState* view_state) {
   return view_state ? os << "{token=" << view_state->view_token_value() << "}"
                     : os << "{null}";
 }
 
 static std::ostream& operator<<(std::ostream& os,
-                                mojo::ui::BoxConstraints* constraints) {
+                                const mojo::ui::BoxConstraints* constraints) {
   return constraints
              ? os << "{min_width=" << constraints->min_width
                   << ", max_width=" << constraints->max_width
@@ -56,7 +58,7 @@ static std::ostream& operator<<(std::ostream& os,
 };
 
 static std::ostream& operator<<(std::ostream& os,
-                                mojo::ui::ViewLayoutParams* params) {
+                                const mojo::ui::ViewLayoutParams* params) {
   return params
              ? os << "{constraints=" << params->constraints.get()
                   << ", device_pixel_ratio=" << params->device_pixel_ratio
@@ -65,7 +67,7 @@ static std::ostream& operator<<(std::ostream& os,
 }
 
 static std::ostream& operator<<(std::ostream& os,
-                                mojo::ui::ViewLayoutInfo* info) {
+                                const mojo::ui::ViewLayoutInfo* info) {
   return info
              ? os << "{size=" << info->size.get()
                   << ", surface_id=" << info->surface_id.get() << "}"
@@ -244,7 +246,7 @@ void ViewRegistry::LayoutChild(
   if (!AreViewLayoutParamsValid(child_layout_params.get())) {
     LOG(ERROR) << "View provided invalid child layout parameters: "
                << "parent=" << parent_state << ", child_key=" << child_key
-               << ", child_layout_params=" << child_layout_params;
+               << ", child_layout_params=" << child_layout_params.get();
     UnregisterView(parent_state);
     callback.Run(nullptr);
     return;
@@ -255,7 +257,7 @@ void ViewRegistry::LayoutChild(
   if (child_it == parent_state->children().end()) {
     LOG(ERROR) << "View attempted to layout a child with an invalid key: "
                << "parent=" << parent_state << ", child_key=" << child_key
-               << ", child_layout_params=" << child_layout_params;
+               << ", child_layout_params=" << child_layout_params.get();
     UnregisterView(parent_state);
     callback.Run(nullptr);
     return;
@@ -314,7 +316,7 @@ void ViewRegistry::LayoutRoot(ViewTreeState* tree_state,
   if (!AreViewLayoutParamsValid(root_layout_params.get())) {
     LOG(ERROR) << "View tree provided invalid root layout parameters: "
                << "tree=" << tree_state
-               << ", root_layout_params=" << root_layout_params;
+               << ", root_layout_params=" << root_layout_params.get();
     UnregisterViewTree(tree_state);
     callback.Run(nullptr);
     return;
@@ -325,7 +327,8 @@ void ViewRegistry::LayoutRoot(ViewTreeState* tree_state,
   if (!tree_state->explicit_root()) {
     LOG(ERROR) << "View tree attempted to layout the rout without having "
                   "set one first: tree="
-               << tree_state << ", root_layout_params=" << root_layout_params;
+               << tree_state
+               << ", root_layout_params=" << root_layout_params.get();
     UnregisterViewTree(tree_state);
     callback.Run(nullptr);
     return;
