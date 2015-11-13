@@ -10,9 +10,9 @@ import subprocess
 import yaml
 
 PUBSPECS = [
-    'dart/mojo_services/pubspec.yaml',
     'dart/packages/mojo/pubspec.yaml',
     'dart/packages/mojo_apptest/pubspec.yaml',
+    'dart/packages/mojo_services/pubspec.yaml',
     'dart/packages/mojom/pubspec.yaml',
 ]
 

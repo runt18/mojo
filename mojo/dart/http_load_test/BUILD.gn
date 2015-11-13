@@ -15,7 +15,6 @@ dart_pkg("http_load_test") {
   ]
   deps = [
     "//mojo/dart/packages/",
-    "//mojo/dart/mojo_services",
     "//mojo/public/dart",
   ]
 }

@@ -6,6 +6,8 @@ group("packages") {
   deps = [
     "//mojo/dart/packages/mojo",
     "//mojo/dart/packages/mojo_apptest",
+    "//mojo/dart/packages/mojo_sdk",
+    "//mojo/dart/packages/mojo_services",
     "//mojo/dart/packages/mojom",
   ]
 }
