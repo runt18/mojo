@@ -90,7 +90,7 @@ def upload_symbols(config, build_dir, breakpad_upload_urls, dry_run):
                                "mojo", "tools", "linux64", "dump_syms")
   symupload_exe = os.path.join(Paths().src_root,
                                "mojo", "tools", "linux64", "symupload")
-  dest_dir = "gs://mojo/symbols/"
+  dest_dir = config.values['upload_location'] + "symbols/"
   symbols_dir = os.path.join(build_dir, "symbols")
   with open(os.devnull, "w") as devnull:
     for name in os.listdir(symbols_dir):
@@ -116,7 +116,8 @@ def upload_shell(config, dry_run, verbose):
   # Upload the binary.
   # TODO(blundell): Change this to be in the same structure as the LATEST files,
   # e.g., gs://mojo/shell/linux-x64/<version>/shell.zip.
-  dest = "gs://mojo/shell/" + version + "/" + zipfile_name + ".zip"
+  dest = config.values['upload_location'] + "shell/" + version + "/" + \
+         zipfile_name + ".zip"
   with tempfile.NamedTemporaryFile() as zip_file:
     with zipfile.ZipFile(zip_file, 'w') as z:
       for filename in paths.target_mojo_shell_binaries:
@@ -136,7 +137,8 @@ def upload_shell(config, dry_run, verbose):
     upload(config, zip_file.name, dest, dry_run, gzip=False)
 
   # Update the LATEST file to contain the version of the new binary.
-  latest_file = "gs://mojo/shell/%s/LATEST" % target(config)
+  latest_file = config.values['upload_location'] + \
+                ("shell/%s/LATEST" % target(config))
   write_file_to_gs(version, latest_file, config, dry_run)
 
 
@@ -149,7 +151,8 @@ def upload_dart_snapshotter(config, dry_run, verbose):
   zipfile_name = target(config)
   version = Version().version
 
-  dest = "gs://mojo/dart_snapshotter/" + version + "/" + zipfile_name + ".zip"
+  dest = config.values['upload_location'] + "dart_snapshotter/" + version + \
+         "/" + zipfile_name + ".zip"
   with tempfile.NamedTemporaryFile() as zip_file:
     with zipfile.ZipFile(zip_file, 'w') as z:
       dart_snapshotter_path = paths.target_dart_snapshotter_path
@@ -166,15 +169,16 @@ def upload_dart_snapshotter(config, dry_run, verbose):
     upload(config, zip_file.name, dest, dry_run, gzip=False)
 
   # Update the LATEST file to contain the version of the new binary.
-  latest_file = "gs://mojo/dart_snapshotter/%s/LATEST" % target(config)
+  latest_file = config.values['upload_location'] + \
+                ("dart_snapshotter/%s/LATEST" % target(config))
   write_file_to_gs(version, latest_file, config, dry_run)
 
 
 def upload_app(app_binary_path, config, dry_run):
   app_binary_name = os.path.basename(app_binary_path)
   version = Version().version
-  gsutil_app_location = ("gs://mojo/services/%s/%s/%s" %
-                         (target(config), version, app_binary_name))
+  gsutil_app_location = (config.values['upload_location'] + \
+      ("services/%s/%s/%s" % (target(config), version, app_binary_name)))
 
   # Upload the new binary.
   upload(config, app_binary_path, gsutil_app_location, dry_run)
@@ -183,8 +187,8 @@ def upload_app(app_binary_path, config, dry_run):
 def upload_system_thunks_lib(config, dry_run):
   paths = Paths(config)
   version = Version().version
-  dest = ("gs://mojo/system_thunks/%s/%s/libsystem_thunks.a" %
-      (target(config), version))
+  dest = config.values['upload_location'] + \
+         ("system_thunks/%s/%s/libsystem_thunks.a" % (target(config), version))
   source_path = paths.build_dir + "/obj/mojo/libsystem_thunks.a"
   upload(config, source_path, dest, dry_run)
 
@@ -213,6 +217,9 @@ def main():
   parser.add_argument("--symbols-upload-url",
                       action="append", default=[],
                       help="URL of the server to upload breakpad symbols to")
+  parser.add_argument("-u", "--upload-location",
+                      default="gs://mojo/",
+                      help="root URL of the server to upload binaries to")
   args = parser.parse_args()
 
   is_official_build = args.official
@@ -224,7 +231,8 @@ def main():
     return 1
 
   config = Config(target_os=target_os, is_debug=False,
-                  is_official_build=is_official_build)
+                  is_official_build=is_official_build,
+                  upload_location=args.upload_location)
 
   upload_shell(config, args.dry_run, args.verbose)
 
