@@ -29,5 +29,13 @@ void FilesTestBase::GetTemporaryRoot(DirectoryPtr* directory) {
   ASSERT_EQ(Error::OK, error);
 }
 
+void FilesTestBase::GetAppPersistentCacheRoot(DirectoryPtr* directory) {
+  Error error = Error::INTERNAL;
+  files()->OpenFileSystem("app_persistent_cache", GetProxy(directory),
+                          Capture(&error));
+  ASSERT_TRUE(files().WaitForIncomingResponse());
+  ASSERT_EQ(Error::OK, error);
+}
+
 }  // namespace files
 }  // namespace mojo

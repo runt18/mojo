@@ -57,7 +57,7 @@ TEST_F(FileImplTest, CreateWriteCloseRenameOpenRead) {
   EXPECT_EQ(Error::OK, error);
 
   {
-    // Open my_file again.
+    // Open your_file.
     FilePtr file;
     error = Error::INTERNAL;
     directory->OpenFile("your_file", GetProxy(&file), kOpenFlagRead,

@@ -163,6 +163,7 @@ TEST_F(DirectoryImplTest, BasicRenameDelete) {
   EXPECT_EQ(Error::OK, error);
 
   // Rename my_file to my_new_file.
+  error = Error::INTERNAL;
   directory->Rename("my_file", "my_new_file", Capture(&error));
   ASSERT_TRUE(directory.WaitForIncomingResponse());
   EXPECT_EQ(Error::OK, error);
@@ -180,7 +181,8 @@ TEST_F(DirectoryImplTest, BasicRenameDelete) {
   EXPECT_EQ(Error::OK, error);
 
   // Delete my_new_file (no flags).
-  directory->Delete("my_new_file", 0, Capture(&error));
+  error = Error::INTERNAL;
+  directory->Delete("my_new_file", 0u, Capture(&error));
   ASSERT_TRUE(directory.WaitForIncomingResponse());
   EXPECT_EQ(Error::OK, error);
 
@@ -194,6 +196,34 @@ TEST_F(DirectoryImplTest, BasicRenameDelete) {
 // TODO(vtl): Test that an open file can be moved (by someone else) without
 // operations on it being affected.
 // TODO(vtl): Test delete flags.
+
+// TODO(vtl): Strictly speaking, this is a test of |FilesImpl|, but we need
+// |Directory| to do anything, so it lives here.
+TEST_F(DirectoryImplTest, AppPersistentCache) {
+  {
+    DirectoryPtr directory;
+    GetAppPersistentCacheRoot(&directory);
+
+    // Create my_file.
+    Error error = Error::INTERNAL;
+    directory->OpenFile("my_file", nullptr, kOpenFlagCreate | kOpenFlagWrite,
+                        Capture(&error));
+    ASSERT_TRUE(directory.WaitForIncomingResponse());
+    EXPECT_EQ(Error::OK, error);
+  }
+
+  {
+    DirectoryPtr directory;
+    GetAppPersistentCacheRoot(&directory);
+
+    // We should be in the same directory and my_file should still exist, so we
+    // should be able to delete it.
+    Error error = Error::INTERNAL;
+    directory->Delete("my_file", kDeleteFlagFileOnly, Capture(&error));
+    ASSERT_TRUE(directory.WaitForIncomingResponse());
+    EXPECT_EQ(Error::OK, error);
+  }
+}
 
 }  // namespace
 }  // namespace files
