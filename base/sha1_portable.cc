@@ -4,9 +4,11 @@
 
 #include "base/sha1.h"
 
+#include <stdio.h>
 #include <string.h>
 
 #include "base/basictypes.h"
+#include "base/files/scoped_file.h"
 
 namespace base {
 
@@ -211,6 +213,29 @@ void SHA1HashBytes(const unsigned char* data, size_t len,
   sha.Final();
 
   memcpy(hash, sha.Digest(), SecureHashAlgorithm::kDigestSizeBytes);
+}
+
+bool SHA1HashFile(const std::string& file_path, unsigned char* hash) {
+  SecureHashAlgorithm sha;
+  base::ScopedFILE file(fopen(file_path.c_str(), "rb"));
+  if (!file) {
+    LOG(ERROR) << "Could not open file " << file_path;
+    return false;
+  }
+  const size_t kBufferSize = 1 << 16;
+  scoped_ptr<char[]> buf(new char[kBufferSize]);
+  size_t len;
+  while ((len = fread(buf.get(), 1, kBufferSize, file.get())) > 0)
+    sha.Update(buf.get(), len);
+  if (ferror(file.get())) {
+    LOG(ERROR) << "Error reading file " << file_path;
+    return false;
+  }
+
+  sha.Final();
+
+  memcpy(hash, sha.Digest(), SecureHashAlgorithm::kDigestSizeBytes);
+  return true;
 }
 
 }  // namespace base

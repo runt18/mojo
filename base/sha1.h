@@ -24,6 +24,11 @@ BASE_EXPORT std::string SHA1HashString(const std::string& str);
 BASE_EXPORT void SHA1HashBytes(const unsigned char* data, size_t len,
                                unsigned char* hash);
 
+// Computes the SHA-1 hash of |file_path| and puts the hash in |hash|.
+// |hash| must be kSha1Length bytes long. Returns false on error.
+BASE_EXPORT bool SHA1HashFile(const std::string& file_path,
+                              unsigned char* hash);
+
 }  // namespace base
 
 #endif  // BASE_SHA1_H_
