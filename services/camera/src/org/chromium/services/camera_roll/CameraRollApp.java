@@ -51,6 +51,7 @@ class CameraRollServiceImpl implements CameraRollService {
     private ArrayList<File> mPhotos;
 
     class CopyToPipeJob implements Runnable {
+        @SuppressWarnings("hiding")
         private static final String TAG = "CopyToPipeJob";
 
         private final File mPhotoFile;
@@ -109,7 +110,7 @@ class CameraRollServiceImpl implements CameraRollService {
     /**
      * Returns the number of photos available in the camera roll.
      *
-     * @see org.chromium.mojom.mojo.CameraRollService#getCount(CountResponse)
+     * @see org.chromium.mojom.mojo.CameraRollService#getCount(GetCountResponse)
      */
     @Override
     public void getCount(CameraRollService.GetCountResponse callback) {
@@ -117,10 +118,9 @@ class CameraRollServiceImpl implements CameraRollService {
     }
 
     /**
-     * Returns the photo from the current snapshot of the camera roll at the
-     * requested index.
+     * Returns the photo from the current snapshot of the camera roll at the requested index.
      *
-     * @see org.chromium.mojom.mojo.CameraRollService#getPhoto(int, GetNextPhotoResponse)
+     * @see org.chromium.mojom.mojo.CameraRollService#getPhoto(int, GetPhotoResponse)
      */
     @Override
     public void getPhoto(int index, CameraRollService.GetPhotoResponse callback) {
@@ -159,6 +159,7 @@ class CameraRollServiceImpl implements CameraRollService {
         File dcimDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM);
         findAllImageFiles(dcimDir, mPhotos);
         Collections.sort(mPhotos, Collections.reverseOrder(new Comparator<File>() {
+            @Override
             public int compare(File f1, File f2) {
                 return Long.compare(f1.lastModified(), f2.lastModified());
             }
@@ -191,13 +192,15 @@ class CameraRollServiceImpl implements CameraRollService {
      * @see org.chromium.mojo.bindings.Interface#close()
      */
     @Override
-    public void close() {}
+    public void close() {
+    }
 
     /**
      * @see org.chromium.mojo.bindings.Interface#onConnectionError(MojoException)
      */
     @Override
-    public void onConnectionError(MojoException e) {}
+    public void onConnectionError(MojoException e) {
+    }
 }
 
 /**
@@ -217,7 +220,9 @@ public class CameraRollApp implements ApplicationDelegate {
      */
 
     @Override
-    public void initialize(Shell shell, String[] args, String url) {}
+    public void initialize(Shell shell, String[] args, String url) {
+    }
+
     /**
      * @see ApplicationDelegate#configureIncomingConnection(ApplicationConnection)
      */
@@ -247,7 +252,8 @@ public class CameraRollApp implements ApplicationDelegate {
     }
 
     public static void mojoMain(
-            Context context, Core core, MessagePipeHandle applicationRequestHandle) {
+            @SuppressWarnings("unused") Context context, Core core,
+            MessagePipeHandle applicationRequestHandle) {
         ApplicationRunner.run(new CameraRollApp(core), core, applicationRequestHandle);
     }
 }

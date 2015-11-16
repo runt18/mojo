@@ -23,10 +23,10 @@ mojo_android_java_application("camera") {
 
 mojo_android_java_application("camera_roll") {
   sources = [
-    "src/org/chromium/services/camera/CameraRollApp.java",
+    "src/org/chromium/services/camera_roll/CameraRollApp.java",
   ]
 
-  mojo_main = "org.chromium.services.camera.CameraRollApp"
+  mojo_main = "org.chromium.services.camera_roll.CameraRollApp"
 
   deps = [
     "//mojo/public/interfaces/application:application_java",

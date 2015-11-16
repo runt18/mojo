@@ -29,6 +29,7 @@ group("services") {
     deps += [
       "//services/android:java_handler",
       "//services/camera",
+      "//services/camera:camera_roll",
       "//services/contacts",
       "//services/location",
       "//services/notifications",
