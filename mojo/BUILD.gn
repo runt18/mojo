@@ -2,17 +2,13 @@
 # Use of this source code is governed by a BSD-style license that can be
 # found in the LICENSE file.
 
+import("//build/config/nacl/config.gni")
 import("//build/module_args/mojo.gni")
 import("//mojo/public/mojo.gni")
 import("//testing/test.gni")
 
 declare_args() {
   mojo_use_go = false
-
-  # TODO(ncbray): support ASAN once NaCl's GN build is unforked.
-  # TODO(cstout): support fnl/musl build in nacl
-  mojo_use_nacl = is_linux && !is_asan && !is_fnl
-  mojo_use_nacl_nonsfi = (is_linux || is_android) && !is_asan && !is_fnl
 }
 
 group("mojo") {
@@ -44,17 +40,19 @@ group("mojo") {
   }
 
   if (mojo_use_nacl) {
-    deps += [
-      "//mojo/nacl/sfi:mojo_nacl",
-      "//mojo/nacl/sfi:mojo_nacl_tests",
-    ]
-  }
+    if (mojo_use_nacl_sfi) {
+      deps += [
+        "//mojo/nacl/sfi:mojo_nacl",
+        "//mojo/nacl/sfi:mojo_nacl_tests",
+      ]
+    }
 
-  if (mojo_use_nacl_nonsfi) {
-    deps += [
-      "//mojo/nacl/nonsfi:mojo_nacl_nonsfi",
-      "//mojo/nacl/nonsfi:mojo_nacl_tests_nonsfi",
-    ]
+    if (mojo_use_nacl_nonsfi) {
+      deps += [
+        "//mojo/nacl/nonsfi:mojo_nacl_nonsfi",
+        "//mojo/nacl/nonsfi:mojo_nacl_tests_nonsfi",
+      ]
+    }
   }
 }
 
