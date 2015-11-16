@@ -21,7 +21,8 @@ ShellImpl::ShellImpl(mojo::ApplicationPtr application,
       identity_(identity),
       on_application_end_(on_application_end),
       application_(application.Pass()),
-      binding_(this) {
+      binding_(this),
+      application_connector_impl_(this) {
   binding_.set_connection_error_handler(
       [this]() { manager_->OnShellImplError(this); });
 }
@@ -45,7 +46,6 @@ void ShellImpl::ConnectToClient(
                                  requested_url.spec());
 }
 
-// Shell implementation:
 void ShellImpl::ConnectToApplication(
     const mojo::String& app_url,
     mojo::InterfaceRequest<ServiceProvider> services,
@@ -57,6 +57,13 @@ void ShellImpl::ConnectToApplication(
   }
   manager_->ConnectToApplication(app_gurl, identity_.url, services.Pass(),
                                  exposed_services.Pass(), base::Closure());
+}
+
+void ShellImpl::CreateApplicationConnector(
+    mojo::InterfaceRequest<mojo::ApplicationConnector>
+        application_connector_request) {
+  application_connectors_.AddBinding(&application_connector_impl_,
+                                     application_connector_request.Pass());
 }
 
 }  // namespace shell

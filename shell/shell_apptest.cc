@@ -13,7 +13,9 @@
 #include "mojo/data_pipe_utils/data_pipe_utils.h"
 #include "mojo/public/cpp/application/application_impl.h"
 #include "mojo/public/cpp/application/application_test_base.h"
+#include "mojo/public/cpp/application/connect.h"
 #include "mojo/public/cpp/system/macros.h"
+#include "mojo/public/interfaces/application/application_connector.mojom.h"
 #include "mojo/services/http_server/cpp/http_server_util.h"
 #include "mojo/services/http_server/interfaces/http_server.mojom.h"
 #include "mojo/services/http_server/interfaces/http_server_factory.mojom.h"
@@ -188,6 +190,23 @@ TEST_F(ShellAppTest, MojoURLQueryHandling) {
                          const String& message) {
     EXPECT_TRUE(EndsWith(app_url, "/pingable_app.mojo", true));
     EXPECT_EQ(app_url.To<std::string>() + "?foo", connection_url);
+    EXPECT_EQ("hello", message);
+    base::MessageLoop::current()->Quit();
+  };
+  pingable->Ping("hello", callback);
+  base::RunLoop().Run();
+}
+
+TEST_F(ShellAppTest, ApplicationConnector) {
+  mojo::ApplicationConnectorPtr app_connector;
+  app_connector.Bind(application_impl()->CreateApplicationConnector());
+
+  PingablePtr pingable;
+  ConnectToService(app_connector.get(), "mojo:pingable_app", &pingable);
+  auto callback = [this](const String& app_url, const String& connection_url,
+                         const String& message) {
+    EXPECT_TRUE(EndsWith(app_url, "/pingable_app.mojo", true));
+    EXPECT_EQ(app_url, connection_url);
     EXPECT_EQ("hello", message);
     base::MessageLoop::current()->Quit();
   };
