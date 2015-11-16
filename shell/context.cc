@@ -157,7 +157,7 @@ void InitContentHandlers(ApplicationManager* manager,
   if (parts.size() % 2 != 0) {
     LOG(ERROR) << "Invalid value for switch " << switches::kContentHandlers
                << ": must be a comma-separated list of mimetype/url pairs."
-               << handlers_spec;
+               << " Value was: " << handlers_spec;
     return;
   }
 
