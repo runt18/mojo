@@ -24,13 +24,13 @@ import (
 //
 // We attempt to find the file named by a given path, both top-level and
 // imported, using the following algorithm:
-// (1) If the specified path is an absolute path use that path
-// (2) Otherwise if the file was imported from another file first attempt
+// (1) If the specified path is an absolute path we use that path
+// (2) Otherwise if the file was imported from another file we first attempt
 // to find a file with the specified path relative to the directory of the
 // importing file
-// (3) Otherwise if the file was imported attempt to find a file with the
+// (3) Otherwise if the file was imported we attempt to find a file with the
 // specified path relative to one of the specified import directories.
-// (4) Otherwise attempt to find a file with the specified path relative to
+// (4) Otherwise we attempt to find a file with the specified path relative to
 // the current working directory.
 //
 // After all files have been parsed the populated |MojomDescriptor| will be
@@ -224,6 +224,9 @@ func (p OSFileProvider) provideContents(fileRef *FileReference) (contents string
 	return
 }
 
+// findFile populates the |absolutePath| and |directoryPath| fields of
+// *fileRef. It attempts to find a file on the file system named by the |specifiedPath|
+// field using the search algorithm described at the top of this file.
 func (p *OSFileProvider) findFile(fileRef *FileReference) (err error) {
 	// If this FileReference has already been processed there is nothing to do.
 	if len(fileRef.absolutePath) > 0 {
@@ -243,7 +246,7 @@ func (p *OSFileProvider) findFile(fileRef *FileReference) (err error) {
 		// importing file.
 		attemptedName := filepath.Join(fileRef.importedFrom.directoryPath, fileRef.specifiedPath)
 		if isFile(attemptedName) {
-			fileRef.absolutePath = attemptedName
+			fileRef.absolutePath, err = filepath.Abs(attemptedName)
 			fileRef.directoryPath = filepath.Dir(fileRef.absolutePath)
 			return
 		}
@@ -253,7 +256,7 @@ func (p *OSFileProvider) findFile(fileRef *FileReference) (err error) {
 			for _, dir := range p.importDirs {
 				attemptedName := filepath.Join(dir, fileRef.specifiedPath)
 				if isFile(attemptedName) {
-					fileRef.absolutePath = attemptedName
+					fileRef.absolutePath, err = filepath.Abs(attemptedName)
 					fileRef.directoryPath = filepath.Dir(fileRef.absolutePath)
 					return
 				}
