@@ -56,6 +56,8 @@ class NativeViewportImpl : public mojo::NativeViewport,
       mojo::InterfaceRequest<mojo::ContextProvider> request) override;
   void SetEventDispatcher(
       mojo::NativeViewportEventDispatcherPtr dispatcher) override;
+  void SetKeyEventDispatcher(
+      mojo::NativeViewportEventDispatcherPtr dispatcher) override;
 
   // PlatformViewport::Delegate implementation.
   void OnMetricsChanged(mojo::ViewportMetricsPtr metrics) override;
@@ -79,6 +81,7 @@ class NativeViewportImpl : public mojo::NativeViewport,
   CreateCallback create_callback_;
   RequestMetricsCallback metrics_callback_;
   mojo::NativeViewportEventDispatcherPtr event_dispatcher_;
+  static mojo::NativeViewportEventDispatcherPtr key_event_dispatcher_;
   mojo::StrongBinding<mojo::NativeViewport> binding_;
 
   // Set of pointer_ids we've sent a move to and are waiting on an ack.

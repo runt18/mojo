@@ -20,6 +20,8 @@
 
 namespace native_viewport {
 
+mojo::NativeViewportEventDispatcherPtr NativeViewportImpl::key_event_dispatcher_;
+
 NativeViewportImpl::NativeViewportImpl(
     mojo::ApplicationImpl* application,
     bool is_headless,
@@ -94,6 +96,11 @@ void NativeViewportImpl::SetEventDispatcher(
   event_dispatcher_ = dispatcher.Pass();
 }
 
+void NativeViewportImpl::SetKeyEventDispatcher(
+    mojo::NativeViewportEventDispatcherPtr dispatcher) {
+  key_event_dispatcher_ = dispatcher.Pass();
+}
+
 void NativeViewportImpl::OnMetricsChanged(mojo::ViewportMetricsPtr metrics) {
   if (metrics_->Equals(*metrics))
     return;
@@ -147,6 +154,13 @@ bool NativeViewportImpl::OnEvent(mojo::EventPtr event) {
 
     case mojo::EventType::POINTER_UP:
       pointers_waiting_on_ack_.erase(event->pointer_data->pointer_id);
+      break;
+
+    case mojo::EventType::KEY_PRESSED:
+    case mojo::EventType::KEY_RELEASED:
+      if (key_event_dispatcher_.get())
+        key_event_dispatcher_->OnEvent(event.Pass(), callback);
+      return false;
       break;
 
     default:
