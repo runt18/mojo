@@ -36,8 +36,8 @@ test() {
 
   // The handle will be closed by the MojoHandle finalizer during GC, so the
   // attempt to close it again will fail.
-  MojoResult result = handle.close();
-  Expect.isTrue(result.isInvalidArgument);
+  int result = handle.close();
+  Expect.isTrue(result == MojoResult.kInvalidArgument);
 }
 
 main() {

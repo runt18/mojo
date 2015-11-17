@@ -38,16 +38,16 @@ void expectStringFromEndpoint(
 void pipeTestIsolate(core.MojoMessagePipeEndpoint endpoint) {
   var eventSubscription = new core.MojoEventSubscription(endpoint.handle);
   eventSubscription.subscribe((List<int> event) {
-    var mojoSignals = new core.MojoHandleSignals(event[1]);
-    if (mojoSignals.isReadWrite) {
+    int mojoSignals = event[1];
+    if (core.MojoHandleSignals.isReadWrite(mojoSignals)) {
       throw 'We should only be reading or writing, not both.';
-    } else if (mojoSignals.isReadable) {
+    } else if (core.MojoHandleSignals.isReadable(mojoSignals)) {
       expectStringFromEndpoint("Ping", endpoint);
       eventSubscription.enableWriteEvents();
-    } else if (mojoSignals.isWritable) {
+    } else if (core.MojoHandleSignals.isWritable(mojoSignals)) {
       endpoint.write(byteDataOfString("Pong"));
       eventSubscription.enableReadEvents();
-    } else if (mojoSignals.isPeerClosed) {
+    } else if (core.MojoHandleSignals.isPeerClosed(mojoSignals)) {
       eventSubscription.close();
     } else {
       throw 'Unexpected event.';
@@ -61,16 +61,16 @@ main() {
   var eventSubscription = new core.MojoEventSubscription(endpoint.handle);
   Isolate.spawn(pipeTestIsolate, pipe.endpoints[1]).then((_) {
     eventSubscription.subscribe((List<int> event) {
-      var mojoSignals = new core.MojoHandleSignals(event[1]);
-      if (mojoSignals.isReadWrite) {
+      int mojoSignals = event[1];
+      if (core.MojoHandleSignals.isReadWrite(mojoSignals)) {
         throw 'We should only be reading or writing, not both.';
-      } else if (mojoSignals.isReadable) {
+      } else if (core.MojoHandleSignals.isReadable(mojoSignals)) {
         expectStringFromEndpoint("Pong", endpoint);
         eventSubscription.close();
-      } else if (mojoSignals.isWritable) {
+      } else if (core.MojoHandleSignals.isWritable(mojoSignals)) {
         endpoint.write(byteDataOfString("Ping"));
         eventSubscription.enableReadEvents();
-      } else if (mojoSignals.isPeerClosed) {
+      } else if (core.MojoHandleSignals.isPeerClosed(mojoSignals)) {
         throw 'This end should close first.';
       } else {
         throw 'Unexpected event.';

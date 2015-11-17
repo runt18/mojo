@@ -245,18 +245,18 @@ class _MojoRawSocket extends Stream<RawSocketEvent> implements RawSocket {
     if (_inClosed) {
       return;
     }
-    var signalsWatched = new MojoHandleSignals(event[0]);
-    var signalsReceived = new MojoHandleSignals(event[1]);
+    int signalsWatched = event[0];
+    int signalsReceived = event[1];
     if (_trace) {
       _tracePrint('<- IN: ${signalsReceived}');
     }
-    if (signalsReceived.isReadable) {
+    if (MojoHandleSignals.isReadable(signalsReceived)) {
       if (_trace) {
         _tracePrint('<- READ');
       }
       _controller.add(RawSocketEvent.READ);
     }
-    if (signalsReceived.isPeerClosed) {
+    if (MojoHandleSignals.isPeerClosed(signalsReceived)) {
       if (_trace) {
         _tracePrint('<- READ_CLOSED');
       }
@@ -271,12 +271,12 @@ class _MojoRawSocket extends Stream<RawSocketEvent> implements RawSocket {
     if (_outClosed) {
       return;
     }
-    var signalsWatched = new MojoHandleSignals(event[0]);
-    var signalsReceived = new MojoHandleSignals(event[1]);
+    int signalsWatched = event[0];
+    int signalsReceived = event[1];
     if (_trace) {
       _tracePrint('<- OUT: ${signalsReceived}');
     }
-    if (signalsReceived.isPeerClosed) {
+    if (MojoHandleSignals.isPeerClosed(signalsReceived)) {
       if (_trace) {
         _tracePrint('<- CLOSED');
       }
@@ -285,7 +285,7 @@ class _MojoRawSocket extends Stream<RawSocketEvent> implements RawSocket {
       _outClosed = true;
       return;
     }
-    if (signalsReceived.isWritable) {
+    if (MojoHandleSignals.isWritable(signalsReceived)) {
       if (_trace) {
         _tracePrint('<- WRITE');
       }
@@ -295,17 +295,15 @@ class _MojoRawSocket extends Stream<RawSocketEvent> implements RawSocket {
 
   _setupIn() {
     assert(_pipeInEvents == null);
-    _pipeInEvents = new MojoEventSubscription(_pipeIn.consumer.handle,
-                                        MojoHandleSignals.READABLE +
-                                        MojoHandleSignals.PEER_CLOSED);
+    _pipeInEvents = new MojoEventSubscription(
+        _pipeIn.consumer.handle, MojoHandleSignals.kPeerClosedReadable);
     _pipeInEvents.subscribe(_onInputData);
   }
 
   _setupOut() {
     assert(_pipeOutEvents == null);
-    _pipeOutEvents = new MojoEventSubscription(_pipeOut.producer.handle,
-                                         MojoHandleSignals.WRITABLE +
-                                         MojoHandleSignals.PEER_CLOSED);
+    _pipeOutEvents = new MojoEventSubscription(
+        _pipeOut.producer.handle, MojoHandleSignals.kPeerClosedWritable);
     _pipeOutEvents.subscribe(_onOutputData);
   }
 
@@ -466,23 +464,21 @@ class _MojoRawSocket extends Stream<RawSocketEvent> implements RawSocket {
     if (subscription == null) {
       return;
     }
-    subscription.enableSignals(MojoHandleSignals.PEER_CLOSED +
-                               MojoHandleSignals.READABLE);
+    subscription.enableSignals(MojoHandleSignals.kPeerClosedReadable);
   }
 
   static _enableWriteEvents(MojoEventSubscription subscription) {
     if (subscription == null) {
       return;
     }
-    subscription.enableSignals(MojoHandleSignals.PEER_CLOSED +
-                               MojoHandleSignals.WRITABLE);
+    subscription.enableSignals(MojoHandleSignals.kPeerClosedWritable);
   }
 
   static _disableEvents(MojoEventSubscription subscription) {
     if (subscription == null) {
       return;
     }
-    subscription.enableSignals(MojoHandleSignals.PEER_CLOSED);
+    subscription.enableSignals(MojoHandleSignals.kPeerClosed);
   }
 
   _pause() {
