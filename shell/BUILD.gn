@@ -351,6 +351,7 @@ if (is_android) {
       "android/apk/src/org/chromium/mojo/shell/SharingApplicationDelegate.java",
       "android/apk/src/org/chromium/mojo/shell/ShellService.java",
       "android/apk/src/org/chromium/mojo/shell/ViewportActivity.java",
+      "android/apk/src/org/chromium/mojo/shell/VsyncFactory.java",
     ]
 
     deps = [
@@ -364,6 +365,7 @@ if (is_android) {
       "//mojo/services/input/interfaces:interfaces_java",
       "//mojo/services/keyboard/interfaces:interfaces_java",
       "//mojo/services/nfc/interfaces:interfaces_java",
+      "//mojo/services/vsync/interfaces:interfaces_java",
       "//services/authentication",
       "//services/input",
       "//services/intent_receiver:bindings_java",
@@ -373,6 +375,7 @@ if (is_android) {
       "//services/native_viewport:native_viewport_java",
       "//services/nfc_message_sink:bindings_java",
       "//services/sharing_sink:bindings_java",
+      "//services/vsync",
       "//third_party/android_tools:android_support_v13_java",
     ]
   }
