@@ -146,8 +146,8 @@ class ApplicationManager {
   using SchemeToLoaderMap =
       std::map<std::string, scoped_ptr<ApplicationLoader>>;
   using IdentityToShellImplMap = std::map<Identity, scoped_ptr<ShellImpl>>;
-  using URLToContentHandlerMap =
-      std::map<GURL, scoped_ptr<ContentHandlerConnection>>;
+  using IdentityToContentHandlerMap =
+      std::map<Identity, scoped_ptr<ContentHandlerConnection>>;
   using URLToArgsMap = std::map<GURL, std::vector<std::string>>;
   using MimeTypeToURLMap = std::map<std::string, GURL>;
   using URLToNativeOptionsMap = std::map<GURL, NativeApplicationOptions>;
@@ -174,6 +174,12 @@ class ApplicationManager {
       const base::Closure& on_application_end,
       const std::vector<std::string>& parameters,
       ApplicationLoader* loader);
+
+  // Creates an Identity for the service identified by |resolved_url|.
+  // If |new_process_per_connection| is true for the URL's options, then the
+  // identity is unique. Otherwise, repeated invocations with the same
+  // |resolved_url| will result in an equivalent Identity.
+  Identity MakeApplicationIdentity(const GURL& resolved_url);
 
   mojo::InterfaceRequest<mojo::Application> RegisterShell(
       // The URL after resolution and redirects, including the querystring.
@@ -234,7 +240,7 @@ class ApplicationManager {
   scoped_ptr<NativeRunnerFactory> native_runner_factory_;
 
   IdentityToShellImplMap identity_to_shell_impl_;
-  URLToContentHandlerMap url_to_content_handler_;
+  IdentityToContentHandlerMap identity_to_content_handler_;
   URLToArgsMap url_to_args_;
   // Note: The keys are URLs after mapping and resolving.
   URLToNativeOptionsMap url_to_native_options_;

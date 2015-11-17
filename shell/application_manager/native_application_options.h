@@ -12,6 +12,7 @@ namespace shell {
 // TODO(vtl): Maybe these some of these should be tristate (unknown/true/false)
 // instead of of booleans.
 struct NativeApplicationOptions {
+  bool new_process_per_connection = false;
   bool force_in_process = false;
   bool require_32_bit = false;
   bool allow_new_privs = false;

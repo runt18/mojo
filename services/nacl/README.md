@@ -65,9 +65,6 @@ PexeContentHandler is able to launch the requested nexe.
 TODO
 ====
 
-* Turn the NexeContentHandler, PexeContentHandler, PexeCompiler, and
-PexeLinker services into "anti-singletons". When each service is requested, a
-unique process must be created.
 * Use subzero (a NaCl project to improve translation speed) for pexe
 translation.
 * Enable caching of translated pexes.

@@ -194,6 +194,17 @@ void InitNativeOptions(ApplicationManager* manager,
   // configuring options for native apps.
   manager->GetNativeApplicationOptionsForURL(GURL("mojo:native_support"))
       ->allow_new_privs = true;
+  // All NaCl operations require a unique process
+  manager->GetNativeApplicationOptionsForURL(GURL("mojo:pnacl_compile"))
+      ->new_process_per_connection = true;
+  manager->GetNativeApplicationOptionsForURL(GURL("mojo:pnacl_link"))
+      ->new_process_per_connection = true;
+  manager->GetNativeApplicationOptionsForURL(
+             GURL("mojo:content_handler_nonsfi_pexe"))
+      ->new_process_per_connection = true;
+  manager->GetNativeApplicationOptionsForURL(
+             GURL("mojo:content_handler_nonsfi_nexe"))
+      ->new_process_per_connection = true;
 }
 
 class TracingServiceProvider : public ServiceProvider {
