@@ -65,9 +65,6 @@ def main():
 
   try:
     config = shell_config.get_shell_config(script_args)
-    if script_args.android:
-      # We need root to have the stdout of the shell available on the host.
-      config.require_root = True
     shell, common_shell_args = shell_arguments.get_shell(config, shell_args)
     # Tests must be reproducible, start with empty caches.
     common_shell_args.append(

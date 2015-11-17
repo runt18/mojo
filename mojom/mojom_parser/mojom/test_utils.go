@@ -12,6 +12,11 @@ func NewTestFileScope(scopeName string) *Scope {
 	return NewMojomDescriptor().AddMojomFile("test.mojom").InitializeFileScope(scopeName)
 }
 
+func NewInterfaceScope(fileScope *Scope) *Scope {
+	return NewLexicalScope(ScopeInterface, fileScope, "MyInterface",
+		fileScope.descriptor.mojomFiles[0], &MojomInterface{})
+}
+
 func NewResolvedUserRef(name string, resolvedType UserDefinedType, usedAsMapKey, usedForConstant bool, lv *LiteralValue) *UserTypeRef {
 	userRef := NewUserTypeRef(name, false, false, nil, lexer.Token{})
 	userRef.resolvedType = resolvedType

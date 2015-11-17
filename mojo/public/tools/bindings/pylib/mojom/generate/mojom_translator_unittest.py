@@ -194,28 +194,39 @@ class TestUserDefinedTypeFromMojom(unittest.TestCase):
 
     self.assertEquals(module.DOUBLE, struct.fields[1].kind)
     self.assertEquals(None, struct.fields[1].ordinal)
-    self.assertEquals(15, struct.fields[1].default)
+    self.assertEquals('15.0', struct.fields[1].default)
 
   def test_constant(self):
+    file_name = 'a.mojom'
     graph = mojom_files_mojom.MojomFileGraph()
 
     mojom_const = mojom_types_mojom.DeclaredConstant()
     mojom_const.decl_data = mojom_types_mojom.DeclarationData(
-        short_name='foo')
+        short_name='foo', container_type_key='struct_key')
     mojom_const.type = mojom_types_mojom.Type(
         simple_type=mojom_types_mojom.SimpleType.INT64)
     mojom_const.value = mojom_types_mojom.Value()
     mojom_const.value.literal_value = mojom_types_mojom.LiteralValue(
         int64_value=20)
 
-    struct = module.Struct()
-    const = mojom_translator.FileTranslator(graph, None).ConstFromMojom(
-        mojom_const, struct)
+    mojom_struct = mojom_types_mojom.MojomStruct(
+        fields=[],
+        decl_data=mojom_types_mojom.DeclarationData(
+          short_name='AStruct',
+          source_file_info =mojom_types_mojom.SourceFileInfo(
+            file_name=file_name)))
+    graph.resolved_types = {'struct_key': mojom_types_mojom.UserDefinedType(
+      struct_type=mojom_struct)}
+
+    const = module.Constant()
+    translator = mojom_translator.FileTranslator(graph, file_name)
+    translator.ConstantFromMojom(const, mojom_const)
 
     self.assertEquals(mojom_const.decl_data.short_name, const.name)
     self.assertEquals(module.INT64, const.kind)
-    self.assertEquals(20, const.value)
-    self.assertEquals(struct, const.parent_kind)
+    self.assertEquals('20', const.value)
+    self.assertEquals(translator.UserDefinedFromTypeKey('struct_key'),
+        const.parent_kind)
 
   def test_enum(self):
     file_name = 'a.mojom'
@@ -256,6 +267,33 @@ class TestUserDefinedTypeFromMojom(unittest.TestCase):
         enum.fields[0].numeric_value)
     self.assertEquals(value2.int_value,
         enum.fields[1].numeric_value)
+
+  def test_child_enum(self):
+    file_name = 'a.mojom'
+    mojom_enum = mojom_types_mojom.MojomEnum()
+    mojom_enum.decl_data = mojom_types_mojom.DeclarationData(
+        short_name='AnEnum',
+        source_file_info=mojom_types_mojom.SourceFileInfo(file_name=file_name),
+        container_type_key='struct_key')
+    mojom_enum.values = []
+
+    graph = mojom_files_mojom.MojomFileGraph()
+    mojom_struct = mojom_types_mojom.MojomStruct(
+        fields=[],
+        decl_data=mojom_types_mojom.DeclarationData(
+          short_name='AStruct',
+          source_file_info =mojom_types_mojom.SourceFileInfo(
+            file_name=file_name)))
+    graph.resolved_types = {'struct_key': mojom_types_mojom.UserDefinedType(
+      struct_type=mojom_struct)}
+
+    enum = module.Enum()
+    translator = mojom_translator.FileTranslator(graph, file_name)
+    translator.EnumFromMojom(
+        enum, mojom_types_mojom.UserDefinedType(enum_type=mojom_enum))
+
+    self.assertEquals(mojom_enum.decl_data.short_name, enum.name)
+    self.assertEquals(len(mojom_enum.values), len(enum.fields))
 
   def test_unions(self):
     file_name = 'a.mojom'
@@ -460,12 +498,15 @@ class TestUserDefinedTypeFromMojom(unittest.TestCase):
         decl_data=mojom_types_mojom.DeclarationData(
           short_name='AnEnum',
           source_file_info=mojom_types_mojom.SourceFileInfo(
-            file_name=file_name)))
+            file_name=file_name),
+          container_type_key='parent_key'))
     graph.resolved_types = {
         'enum_key': mojom_types_mojom.UserDefinedType(enum_type=mojom_enum)}
 
     mojom_const = mojom_types_mojom.DeclaredConstant(
-        decl_data=mojom_types_mojom.DeclarationData(short_name='AConst'),
+        decl_data=mojom_types_mojom.DeclarationData(
+          short_name='AConst',
+          container_type_key='parent_key'),
         type=mojom_types_mojom.Type(
           simple_type=mojom_types_mojom.SimpleType.INT64),
         value=mojom_types_mojom.Value(
@@ -480,11 +521,12 @@ class TestUserDefinedTypeFromMojom(unittest.TestCase):
 
     translator = mojom_translator.FileTranslator(graph, file_name)
     struct = module.Struct(name='parent')
+    translator._type_cache['parent_key'] = struct
     translator.PopulateContainedDeclarationsFromMojom(
         struct, contained_declarations)
 
     self.assertEquals(
-        'parent.' + mojom_enum.decl_data.short_name, struct.enums[0].name)
+        mojom_enum.decl_data.short_name, struct.enums[0].name)
     self.assertEquals(struct, struct.enums[0].parent_kind)
     self.assertEquals(
         mojom_const.decl_data.short_name, struct.constants[0].name)
@@ -492,20 +534,16 @@ class TestUserDefinedTypeFromMojom(unittest.TestCase):
 
 
 @unittest.skipUnless(bindings_imported, 'Could not import python bindings.')
-class TestEvalValue(unittest.TestCase):
+class TestValueFromMojom(unittest.TestCase):
 
   def test_literal_value(self):
     mojom = mojom_types_mojom.Value()
     mojom.literal_value = mojom_types_mojom.LiteralValue(int64_value=20)
 
     graph = mojom_files_mojom.MojomFileGraph()
-    const = mojom_translator.FileTranslator(graph, None).EvalValue(mojom)
+    const = mojom_translator.FileTranslator(graph, None).ValueFromMojom(mojom)
 
-    self.assertEquals(20, const)
-
-  def test_resolved_user_defined_values(self):
-    # TODO(azani): Write this.
-    pass
+    self.assertEquals('20', const)
 
   def test_builtin_const(self):
     mojom = mojom_types_mojom.Value()
@@ -528,9 +566,79 @@ class TestEvalValue(unittest.TestCase):
 
     for mojom_builtin, string in gold:
       mojom.builtin_value = mojom_builtin
-      const = mojom_translator.FileTranslator(graph, None).EvalValue(mojom)
+      const = mojom_translator.FileTranslator(graph, None).ValueFromMojom(mojom)
       self.assertIsInstance(const, module.BuiltinValue)
       self.assertEquals(string, const.value)
+
+  def test_enum_value(self):
+    file_name = 'a.mojom'
+    mojom_enum = mojom_types_mojom.MojomEnum()
+    mojom_enum.decl_data = mojom_types_mojom.DeclarationData(
+        short_name='AnEnum',
+        source_file_info=mojom_types_mojom.SourceFileInfo(file_name=file_name))
+    value1 = mojom_types_mojom.EnumValue(
+        decl_data=mojom_types_mojom.DeclarationData(
+          short_name='val1',
+          source_file_info=mojom_types_mojom.SourceFileInfo(
+            file_name=file_name)),
+        enum_type_key='enum_key',
+        initializer_value=mojom_types_mojom.Value(
+            literal_value=mojom_types_mojom.LiteralValue(uint64_value=20)),
+        int_value=20)
+    value2 = mojom_types_mojom.EnumValue(
+        decl_data=mojom_types_mojom.DeclarationData(short_name='val2'),
+        enum_type_key='enum_key',
+        int_value=70)
+    mojom_enum.values = [value1, value2]
+
+    graph = mojom_files_mojom.MojomFileGraph()
+    graph.resolved_types = {
+        'enum_key': mojom_types_mojom.UserDefinedType(enum_type=mojom_enum)}
+    graph.resolved_values = {
+        'enum_value1': mojom_types_mojom.UserDefinedValue(enum_value=value1),
+        'enum_value2': mojom_types_mojom.UserDefinedValue(enum_value=value2),
+        }
+
+    mojom = mojom_types_mojom.Value(
+        user_value_reference=mojom_types_mojom.UserValueReference(
+          identifier='SOMEID',
+          value_key='enum_value1'))
+
+    translator = mojom_translator.FileTranslator(graph, file_name)
+    enum_value = translator.ValueFromMojom(mojom)
+    enum = translator.UserDefinedFromTypeKey('enum_key')
+
+    self.assertIs(enum, enum_value.enum)
+    self.assertIs(value1.decl_data.short_name, enum_value.name)
+
+  def test_constant_value(self):
+    file_name = 'a.mojom'
+    mojom_const = mojom_types_mojom.DeclaredConstant(
+        decl_data=mojom_types_mojom.DeclarationData(
+          short_name='AConst',
+          source_file_info=mojom_types_mojom.SourceFileInfo(
+            file_name=file_name)),
+        type=mojom_types_mojom.Type(
+          simple_type=mojom_types_mojom.SimpleType.INT64),
+        value=mojom_types_mojom.Value(
+          literal_value=mojom_types_mojom.LiteralValue(
+            int64_value=30)))
+    user_defined_value = mojom_types_mojom.UserDefinedValue()
+    user_defined_value.declared_constant = mojom_const
+
+    graph = mojom_files_mojom.MojomFileGraph()
+    graph.resolved_values = {'value_key': user_defined_value}
+
+    mojom = mojom_types_mojom.Value(
+        user_value_reference=mojom_types_mojom.UserValueReference(
+          identifier='SOMEID',
+          value_key='value_key'))
+
+    translator = mojom_translator.FileTranslator(graph, file_name)
+    const_value = translator.ValueFromMojom(mojom)
+    self.assertIs(
+        translator.ConstantFromValueKey('value_key'), const_value.constant)
+    self.assertIs(mojom_const.decl_data.short_name, const_value.name)
 
 
 @unittest.skipUnless(bindings_imported, 'Could not import python bindings.')

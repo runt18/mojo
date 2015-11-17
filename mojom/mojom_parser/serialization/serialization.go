@@ -501,6 +501,20 @@ func translateDeclarationData(d *mojom.DeclarationData) *mojom_types.Declaration
 	// TODO(rudominer) DeclarationOrder is currently not populated.
 	declData.DeclarationOrder = -1
 
+	// container_type_key
+	containingType := d.ContainingType()
+	if containingType != nil {
+		switch containingType.(type) {
+		case *mojom.MojomEnum:
+			// We do not write the |container_type_key| field for an EnumValue
+			// because the EnumValue already has the type_key of the Enum
+			// in a different field.
+			break
+		default:
+			declData.ContainerTypeKey = stringPointer(containingType.TypeKey())
+		}
+	}
+
 	// source_file_info
 	declData.SourceFileInfo = new(mojom_types.SourceFileInfo)
 	declData.SourceFileInfo.FileName = d.OwningFile().CanonicalFileName

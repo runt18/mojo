@@ -4,6 +4,8 @@
 
 package org.chromium.mojo.shell;
 
+import android.os.HandlerThread;
+
 import org.chromium.base.ApplicationStatus;
 import org.chromium.base.CalledByNative;
 import org.chromium.base.JNINamespace;
@@ -30,6 +32,8 @@ import java.util.Map;
 @JNINamespace("shell")
 public class JavaApplicationRegistry {
     private final Map<String, ApplicationDelegate> mApplicationDelegateMap = new HashMap<>();
+    // Thread with a Looper required to get callbacks from the android framework..
+    private final HandlerThread mHandlerThread = new HandlerThread("FrameworkThread");
 
     private static final class ApplicationRunnable implements Runnable {
         private final ApplicationDelegate mApplicationDelegate;
@@ -51,7 +55,9 @@ public class JavaApplicationRegistry {
         }
     }
 
-    private JavaApplicationRegistry() {}
+    private JavaApplicationRegistry() {
+        mHandlerThread.start();
+    }
 
     private void registerApplicationDelegate(String url, ApplicationDelegate applicationDelegate) {
         mApplicationDelegateMap.put(url, applicationDelegate);
@@ -97,6 +103,9 @@ public class JavaApplicationRegistry {
         registry.registerApplicationDelegate("mojo:sharing", new SharingApplicationDelegate());
         registry.registerApplicationDelegate(
                 "mojo:native_viewport_support", new NativeViewportSupportApplicationDelegate());
+        registry.registerApplicationDelegate(
+                "mojo:vsync", new ServiceProviderFactoryApplicationDelegate(
+                                      new VsyncFactory(registry.mHandlerThread.getLooper())));
         return registry;
     }
 

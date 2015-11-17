@@ -14,17 +14,17 @@ invalidHandleTest() {
   MojoHandle invalidHandle = new MojoHandle(MojoHandle.INVALID);
 
   // Close.
-  MojoResult result = invalidHandle.close();
-  Expect.isTrue(result.isInvalidArgument);
+  int result = invalidHandle.close();
+  Expect.isTrue(result == MojoResult.kInvalidArgument);
 
   // Wait.
   MojoWaitResult mwr =
       invalidHandle.wait(MojoHandleSignals.kReadWrite, 1000000);
-  Expect.isTrue(mwr.result.isInvalidArgument);
+  Expect.isTrue(mwr.result == MojoResult.kInvalidArgument);
 
   MojoWaitManyResult mwmr = MojoHandle.waitMany([invalidHandle.h],
       [MojoHandleSignals.kReadWrite], MojoHandle.DEADLINE_INDEFINITE);
-  Expect.isTrue(mwmr.result.isInvalidArgument);
+  Expect.isTrue(mwmr.result == MojoResult.kInvalidArgument);
 
   // Message pipe.
   MojoMessagePipe pipe = new MojoMessagePipe();
@@ -33,10 +33,10 @@ invalidHandleTest() {
   pipe.endpoints[0].handle.close();
   pipe.endpoints[1].handle.close();
   result = pipe.endpoints[0].write(bd);
-  Expect.isTrue(result.isInvalidArgument);
+  Expect.isTrue(result == MojoResult.kInvalidArgument);
 
   MojoMessagePipeReadResult readResult = pipe.endpoints[0].read(bd);
-  Expect.isTrue(pipe.endpoints[0].status.isInvalidArgument);
+  Expect.isTrue(pipe.endpoints[0].status == MojoResult.kInvalidArgument);
 
   // Data pipe.
   MojoDataPipe dataPipe = new MojoDataPipe();
@@ -45,22 +45,22 @@ invalidHandleTest() {
   dataPipe.consumer.handle.close();
 
   int bytesWritten = dataPipe.producer.write(bd);
-  Expect.isTrue(dataPipe.producer.status.isInvalidArgument);
+  Expect.isTrue(dataPipe.producer.status == MojoResult.kInvalidArgument);
 
   ByteData writeData = dataPipe.producer.beginWrite(10);
   Expect.isNull(writeData);
-  Expect.isTrue(dataPipe.producer.status.isInvalidArgument);
+  Expect.isTrue(dataPipe.producer.status == MojoResult.kInvalidArgument);
   dataPipe.producer.endWrite(10);
-  Expect.isTrue(dataPipe.producer.status.isInvalidArgument);
+  Expect.isTrue(dataPipe.producer.status == MojoResult.kInvalidArgument);
 
   int read = dataPipe.consumer.read(bd);
-  Expect.isTrue(dataPipe.consumer.status.isInvalidArgument);
+  Expect.isTrue(dataPipe.consumer.status == MojoResult.kInvalidArgument);
 
   ByteData readData = dataPipe.consumer.beginRead(10);
   Expect.isNull(readData);
-  Expect.isTrue(dataPipe.consumer.status.isInvalidArgument);
+  Expect.isTrue(dataPipe.consumer.status == MojoResult.kInvalidArgument);
   dataPipe.consumer.endRead(10);
-  Expect.isTrue(dataPipe.consumer.status.isInvalidArgument);
+  Expect.isTrue(dataPipe.consumer.status == MojoResult.kInvalidArgument);
 
   // Shared buffer.
   MojoSharedBuffer sharedBuffer = new MojoSharedBuffer.create(10);
@@ -73,13 +73,13 @@ invalidHandleTest() {
   Expect.isNotNull(sharedBuffer);
   sharedBuffer.close();
   result = sharedBuffer.map(0, 10);
-  Expect.isTrue(result.isInvalidArgument);
+  Expect.isTrue(result == MojoResult.kInvalidArgument);
 }
 
 basicMessagePipeTest() {
   MojoMessagePipe pipe = new MojoMessagePipe();
   Expect.isNotNull(pipe);
-  Expect.isTrue(pipe.status.isOk);
+  Expect.isTrue(pipe.status == MojoResult.kOk);
   Expect.isNotNull(pipe.endpoints);
 
   MojoMessagePipeEndpoint end0 = pipe.endpoints[0];
@@ -89,33 +89,33 @@ basicMessagePipeTest() {
 
   // Not readable, yet.
   MojoWaitResult mwr = end0.handle.wait(MojoHandleSignals.kReadable, 0);
-  Expect.isTrue(mwr.result.isDeadlineExceeded);
+  Expect.isTrue(mwr.result == MojoResult.kDeadlineExceeded);
 
   // Should be writable.
   mwr = end0.handle.wait(MojoHandleSignals.kWritable, 0);
-  Expect.isTrue(mwr.result.isOk);
+  Expect.isTrue(mwr.result == MojoResult.kOk);
 
   // Try to read.
   ByteData data = new ByteData(10);
   end0.read(data);
-  Expect.isTrue(end0.status.isShouldWait);
+  Expect.isTrue(end0.status == MojoResult.kShouldWait);
 
   // Write end1.
   String hello = "hello";
   ByteData helloData =
       new ByteData.view((new Uint8List.fromList(hello.codeUnits)).buffer);
-  MojoResult result = end1.write(helloData);
-  Expect.isTrue(result.isOk);
+  int result = end1.write(helloData);
+  Expect.isTrue(result == MojoResult.kOk);
 
   // end0 should now be readable.
   MojoWaitManyResult mwmr = MojoHandle.waitMany([end0.handle.h],
       [MojoHandleSignals.kReadable], MojoHandle.DEADLINE_INDEFINITE);
-  Expect.isTrue(mwmr.result.isOk);
+  Expect.isTrue(mwmr.result == MojoResult.kOk);
 
   // Read from end0.
   MojoMessagePipeReadResult readResult = end0.read(data);
   Expect.isNotNull(readResult);
-  Expect.isTrue(readResult.status.isOk);
+  Expect.isTrue(readResult.status == MojoResult.kOk);
   Expect.equals(readResult.bytesRead, helloData.lengthInBytes);
   Expect.equals(readResult.handlesRead, 0);
 
@@ -125,24 +125,24 @@ basicMessagePipeTest() {
 
   // end0 should no longer be readable.
   mwr = end0.handle.wait(MojoHandleSignals.kReadable, 10);
-  Expect.isTrue(mwr.result.isDeadlineExceeded);
+  Expect.isTrue(mwr.result == MojoResult.kDeadlineExceeded);
 
   // Close end0's handle.
   result = end0.handle.close();
-  Expect.isTrue(result.isOk);
+  Expect.isTrue(result == MojoResult.kOk);
 
   // end1 should no longer be readable or writable.
   mwr = end1.handle.wait(MojoHandleSignals.kReadWrite, 1000);
-  Expect.isTrue(mwr.result.isFailedPrecondition);
+  Expect.isTrue(mwr.result == MojoResult.kFailedPrecondition);
 
   result = end1.handle.close();
-  Expect.isTrue(result.isOk);
+  Expect.isTrue(result == MojoResult.kOk);
 }
 
 basicDataPipeTest() {
   MojoDataPipe pipe = new MojoDataPipe();
   Expect.isNotNull(pipe);
-  Expect.isTrue(pipe.status.isOk);
+  Expect.isTrue(pipe.status == MojoResult.kOk);
   Expect.isTrue(pipe.consumer.handle.isValid);
   Expect.isTrue(pipe.producer.handle.isValid);
 
@@ -153,21 +153,21 @@ basicDataPipeTest() {
 
   // Consumer should not be readable.
   MojoWaitResult mwr = consumer.handle.wait(MojoHandleSignals.kReadable, 0);
-  Expect.isTrue(mwr.result.isDeadlineExceeded);
+  Expect.isTrue(mwr.result == MojoResult.kDeadlineExceeded);
 
   // Producer should be writable.
   mwr = producer.handle.wait(MojoHandleSignals.kWritable, 0);
-  Expect.isTrue(mwr.result.isOk);
+  Expect.isTrue(mwr.result == MojoResult.kOk);
 
   // Try to read from consumer.
   ByteData buffer = new ByteData(20);
   consumer.read(buffer, buffer.lengthInBytes, MojoDataPipeConsumer.FLAG_NONE);
-  Expect.isTrue(consumer.status.isShouldWait);
+  Expect.isTrue(consumer.status == MojoResult.kShouldWait);
 
   // Try to begin a two-phase read from consumer.
   ByteData b = consumer.beginRead(20, MojoDataPipeConsumer.FLAG_NONE);
   Expect.isNull(b);
-  Expect.isTrue(consumer.status.isShouldWait);
+  Expect.isTrue(consumer.status == MojoResult.kShouldWait);
 
   // Write to producer.
   String hello = "hello ";
@@ -175,48 +175,48 @@ basicDataPipeTest() {
       new ByteData.view((new Uint8List.fromList(hello.codeUnits)).buffer);
   int written = producer.write(
       helloData, helloData.lengthInBytes, MojoDataPipeProducer.FLAG_NONE);
-  Expect.isTrue(producer.status.isOk);
+  Expect.isTrue(producer.status == MojoResult.kOk);
   Expect.equals(written, helloData.lengthInBytes);
 
   // Now that we have written, the consumer should be readable.
   MojoWaitManyResult mwmr = MojoHandle.waitMany([consumer.handle.h],
       [MojoHandleSignals.kReadable], MojoHandle.DEADLINE_INDEFINITE);
-  Expect.isTrue(mwr.result.isOk);
+  Expect.isTrue(mwr.result == MojoResult.kOk);
 
   // Do a two-phase write to the producer.
   ByteData twoPhaseWrite =
       producer.beginWrite(20, MojoDataPipeProducer.FLAG_NONE);
-  Expect.isTrue(producer.status.isOk);
+  Expect.isTrue(producer.status == MojoResult.kOk);
   Expect.isNotNull(twoPhaseWrite);
   Expect.isTrue(twoPhaseWrite.lengthInBytes >= 20);
 
   String world = "world";
   twoPhaseWrite.buffer.asUint8List().setAll(0, world.codeUnits);
   producer.endWrite(Uint8List.BYTES_PER_ELEMENT * world.codeUnits.length);
-  Expect.isTrue(producer.status.isOk);
+  Expect.isTrue(producer.status == MojoResult.kOk);
 
   // Read one character from consumer.
   int read = consumer.read(buffer, 1, MojoDataPipeConsumer.FLAG_NONE);
-  Expect.isTrue(consumer.status.isOk);
+  Expect.isTrue(consumer.status == MojoResult.kOk);
   Expect.equals(read, 1);
 
   // Close the producer.
-  MojoResult result = producer.handle.close();
-  Expect.isTrue(result.isOk);
+  int result = producer.handle.close();
+  Expect.isTrue(result == MojoResult.kOk);
 
   // Consumer should still be readable.
   mwr = consumer.handle.wait(MojoHandleSignals.kReadable, 0);
-  Expect.isTrue(mwr.result.isOk);
+  Expect.isTrue(mwr.result == MojoResult.kOk);
 
   // Get the number of remaining bytes.
   int remaining = consumer.read(null, 0, MojoDataPipeConsumer.FLAG_QUERY);
-  Expect.isTrue(consumer.status.isOk);
+  Expect.isTrue(consumer.status == MojoResult.kOk);
   Expect.equals(remaining, "hello world".length - 1);
 
   // Do a two-phase read.
   ByteData twoPhaseRead =
       consumer.beginRead(remaining, MojoDataPipeConsumer.FLAG_NONE);
-  Expect.isTrue(consumer.status.isOk);
+  Expect.isTrue(consumer.status == MojoResult.kOk);
   Expect.isNotNull(twoPhaseRead);
   Expect.isTrue(twoPhaseRead.lengthInBytes <= remaining);
 
@@ -225,13 +225,13 @@ basicDataPipeTest() {
   uint8_list = uint8_list.sublist(0, 1 + twoPhaseRead.lengthInBytes);
 
   consumer.endRead(twoPhaseRead.lengthInBytes);
-  Expect.isTrue(consumer.status.isOk);
+  Expect.isTrue(consumer.status == MojoResult.kOk);
 
   String helloWorld = new String.fromCharCodes(uint8_list.toList());
   Expect.equals("hello world", helloWorld);
 
   result = consumer.handle.close();
-  Expect.isTrue(result.isOk);
+  Expect.isTrue(result == MojoResult.kOk);
 }
 
 basicSharedBufferTest() {
@@ -239,14 +239,14 @@ basicSharedBufferTest() {
       new MojoSharedBuffer.create(100, MojoSharedBuffer.CREATE_FLAG_NONE);
   Expect.isNotNull(mojoBuffer);
   Expect.isNotNull(mojoBuffer.status);
-  Expect.isTrue(mojoBuffer.status.isOk);
+  Expect.isTrue(mojoBuffer.status == MojoResult.kOk);
   Expect.isNotNull(mojoBuffer.handle);
   Expect.isTrue(mojoBuffer.handle is MojoHandle);
   Expect.isTrue(mojoBuffer.handle.isValid);
 
   mojoBuffer.map(0, 100, MojoSharedBuffer.MAP_FLAG_NONE);
   Expect.isNotNull(mojoBuffer.status);
-  Expect.isTrue(mojoBuffer.status.isOk);
+  Expect.isTrue(mojoBuffer.status == MojoResult.kOk);
   Expect.isNotNull(mojoBuffer.mapping);
   Expect.isTrue(mojoBuffer.mapping is ByteData);
 
@@ -256,12 +256,12 @@ basicSharedBufferTest() {
       mojoBuffer, MojoSharedBuffer.DUPLICATE_FLAG_NONE);
   Expect.isNotNull(duplicate);
   Expect.isNotNull(duplicate.status);
-  Expect.isTrue(duplicate.status.isOk);
+  Expect.isTrue(duplicate.status == MojoResult.kOk);
   Expect.isTrue(duplicate.handle is MojoHandle);
   Expect.isTrue(duplicate.handle.isValid);
 
   duplicate.map(0, 100, MojoSharedBuffer.MAP_FLAG_NONE);
-  Expect.isTrue(duplicate.status.isOk);
+  Expect.isTrue(duplicate.status == MojoResult.kOk);
   Expect.isNotNull(duplicate.mapping);
   Expect.isTrue(duplicate.mapping is ByteData);
 
@@ -272,12 +272,12 @@ basicSharedBufferTest() {
 
   duplicate.unmap();
   Expect.isNotNull(duplicate.status);
-  Expect.isTrue(duplicate.status.isOk);
+  Expect.isTrue(duplicate.status == MojoResult.kOk);
   Expect.isNull(duplicate.mapping);
 
   duplicate.map(50, 50, MojoSharedBuffer.MAP_FLAG_NONE);
   Expect.isNotNull(duplicate.status);
-  Expect.isTrue(duplicate.status.isOk);
+  Expect.isTrue(duplicate.status == MojoResult.kOk);
   Expect.isNotNull(duplicate.mapping);
   Expect.isTrue(duplicate.mapping is ByteData);
 
@@ -286,7 +286,7 @@ basicSharedBufferTest() {
 
   duplicate.unmap();
   Expect.isNotNull(duplicate.status);
-  Expect.isTrue(duplicate.status.isOk);
+  Expect.isTrue(duplicate.status == MojoResult.kOk);
   Expect.isNull(duplicate.mapping);
 
   duplicate.close();
@@ -296,7 +296,7 @@ basicSharedBufferTest() {
 fillerDrainerTest() async {
   MojoDataPipe pipe = new MojoDataPipe();
   Expect.isNotNull(pipe);
-  Expect.isTrue(pipe.status.isOk);
+  Expect.isTrue(pipe.status == MojoResult.kOk);
   Expect.isTrue(pipe.consumer.handle.isValid);
   Expect.isTrue(pipe.producer.handle.isValid);
 
@@ -314,8 +314,8 @@ fillerDrainerTest() async {
   String receivedMessage = new String.fromCharCodes(receivedBytes);
 
   Expect.equals(sentMessage, receivedMessage);
-  Expect.isTrue(producer.status.isOk);
-  Expect.isTrue(consumer.status.isOk);
+  Expect.isTrue(producer.status == MojoResult.kOk);
+  Expect.isTrue(consumer.status == MojoResult.kOk);
 }
 
 utilsTest() {
@@ -323,13 +323,15 @@ utilsTest() {
   Expect.isTrue(1000 < ticksa);
 
   // Wait for the clock to advance.
-  MojoWaitResult mwr = (new MojoMessagePipe()).endpoints[0].handle.wait(
-      MojoHandleSignals.kReadable, 1);
-  Expect.isTrue(mwr.result.isDeadlineExceeded);
+  MojoWaitResult mwr = (new MojoMessagePipe()).endpoints[0]
+      .handle
+      .wait(MojoHandleSignals.kReadable, 1);
+  Expect.isTrue(mwr.result == MojoResult.kDeadlineExceeded);
 
   int ticksb = getTimeTicksNow();
   Expect.isTrue(ticksa < ticksb);
 }
+
 // TODO(rudominer) This probably belongs in a different file.
 processTest() {
   Expect.isTrue(pid > 0);

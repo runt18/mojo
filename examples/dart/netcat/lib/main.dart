@@ -124,11 +124,11 @@ class Connector {
   }
 
   void _onSocketReceiverEvent(List<int> event) {
-    var mojoSignals = new MojoHandleSignals(event[1]);
+    int mojoSignals = event[1];
     var shouldShutDown = false;
-    if (mojoSignals.isReadable) {
+    if (MojoHandleSignals.isReadable(mojoSignals)) {
       var numBytesRead = _socketReceiver.read(_readBuffer);
-      if (_socketReceiver.status.isOk) {
+      if (_socketReceiver.status == MojoResult.kOk) {
         assert(numBytesRead > 0);
         _terminal.ptr
             .write(_readBuffer.buffer.asUint8List(0, numBytesRead), 0,
@@ -140,10 +140,11 @@ class Connector {
       } else {
         shouldShutDown = true;
       }
-    } else if (mojoSignals.isPeerClosed) {
+    } else if (MojoHandleSignals.isPeerClosed(mojoSignals)) {
       shouldShutDown = true;
     } else {
-      throw 'Unexpected handle event: $mojoSignals';
+      String signals = MojoHandleSignals.string(mojoSignals);
+      throw 'Unexpected handle event: $signals';
     }
     if (shouldShutDown) {
       _shutDown();

@@ -65,9 +65,10 @@ class FilesTestBase : public test::ApplicationTestBase {
   void SetUp() override;
 
  protected:
-  // Note: This has an out parameter rather than returning the |DirectoryPtr|,
-  // since |ASSERT_...()| doesn't work with return values.
+  // Note: This have out parameters rather than returning |DirectoryPtr|, since
+  // |ASSERT_...()| doesn't work with return values.
   void GetTemporaryRoot(DirectoryPtr* directory);
+  void GetAppPersistentCacheRoot(DirectoryPtr* directory);
 
   FilesPtr& files() { return files_; }
 

@@ -7,6 +7,12 @@ declare_args() {
   # is assumed to be the default one; use this to determine whether Glibc
   # is being used instead.
   is_nacl_glibc = false
+
+  # TODO(ncbray): support ASAN once NaCl's GN build is unforked.
+  # TODO(cstout): support fnl/musl build in nacl
+  mojo_use_nacl_sfi = is_linux && !is_asan && !is_fnl
+  mojo_use_nacl_nonsfi = (is_linux || is_android) && !is_asan && !is_fnl
+  mojo_use_nacl = mojo_use_nacl_sfi || mojo_use_nacl_nonsfi
 }
 
 nacl_toolchain_dir = "//native_client/toolchain/${host_os}_x86"

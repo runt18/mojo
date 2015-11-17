@@ -72,13 +72,13 @@ TEST_F(SurfaceLibQuadTest, ColorQuad) {
   QuadPtr mojo_quad = Quad::From<cc::DrawQuad>(*color_quad);
   ASSERT_FALSE(mojo_quad.is_null());
   EXPECT_EQ(Material::SOLID_COLOR, mojo_quad->material);
-  EXPECT_EQ(Rect::From(rect), mojo_quad->rect);
-  EXPECT_EQ(Rect::From(opaque_rect), mojo_quad->opaque_rect);
-  EXPECT_EQ(Rect::From(visible_rect), mojo_quad->visible_rect);
+  EXPECT_TRUE(Rect::From(rect)->Equals(*mojo_quad->rect));
+  EXPECT_TRUE(Rect::From(opaque_rect)->Equals(*mojo_quad->opaque_rect));
+  EXPECT_TRUE(Rect::From(visible_rect)->Equals(*mojo_quad->visible_rect));
   EXPECT_EQ(needs_blending, mojo_quad->needs_blending);
   ASSERT_TRUE(mojo_quad->solid_color_quad_state);
   SolidColorQuadStatePtr& mojo_color_state = mojo_quad->solid_color_quad_state;
-  EXPECT_EQ(Color::From(arbitrary_color), mojo_color_state->color);
+  EXPECT_TRUE(Color::From(arbitrary_color)->Equals(*mojo_color_state->color));
   EXPECT_EQ(force_anti_aliasing_off, mojo_color_state->force_anti_aliasing_off);
 }
 
@@ -94,8 +94,8 @@ TEST_F(SurfaceLibQuadTest, SurfaceQuad) {
   EXPECT_EQ(Material::SURFACE_CONTENT, mojo_quad->material);
   ASSERT_TRUE(mojo_quad->surface_quad_state);
   SurfaceQuadStatePtr& mojo_surface_state = mojo_quad->surface_quad_state;
-  EXPECT_EQ(SurfaceId::From(arbitrary_id),
-            mojo_surface_state->surface);
+  EXPECT_TRUE(
+      SurfaceId::From(arbitrary_id)->Equals(*mojo_surface_state->surface));
 }
 
 TEST_F(SurfaceLibQuadTest, TextureQuad) {
@@ -130,10 +130,12 @@ TEST_F(SurfaceLibQuadTest, TextureQuad) {
   TextureQuadStatePtr& mojo_texture_state = mojo_quad->texture_quad_state;
   EXPECT_EQ(resource_id, mojo_texture_state->resource_id);
   EXPECT_EQ(premultiplied_alpha, mojo_texture_state->premultiplied_alpha);
-  EXPECT_EQ(PointF::From(uv_top_left), mojo_texture_state->uv_top_left);
-  EXPECT_EQ(PointF::From(uv_bottom_right), mojo_texture_state->uv_bottom_right);
-  EXPECT_EQ(Color::From(background_color),
-            mojo_texture_state->background_color);
+  EXPECT_TRUE(
+      PointF::From(uv_top_left)->Equals(*mojo_texture_state->uv_top_left));
+  EXPECT_TRUE(PointF::From(uv_bottom_right)
+                  ->Equals(*mojo_texture_state->uv_bottom_right));
+  EXPECT_TRUE(Color::From(background_color)
+                  ->Equals(*mojo_texture_state->background_color));
   for (size_t i = 0; i < 4; ++i) {
     EXPECT_EQ(vertex_opacity[i], mojo_texture_state->vertex_opacity[i]) << i;
   }
@@ -194,11 +196,12 @@ TEST(SurfaceLibTest, SharedQuadState) {
 
   SharedQuadStatePtr mojo_sqs = SharedQuadState::From(*sqs);
   ASSERT_FALSE(mojo_sqs.is_null());
-  EXPECT_EQ(Transform::From(content_to_target_transform),
-            mojo_sqs->content_to_target_transform);
-  EXPECT_EQ(Size::From(content_bounds), mojo_sqs->content_bounds);
-  EXPECT_EQ(Rect::From(visible_content_rect), mojo_sqs->visible_content_rect);
-  EXPECT_EQ(Rect::From(clip_rect), mojo_sqs->clip_rect);
+  EXPECT_TRUE(Transform::From(content_to_target_transform)
+                  ->Equals(*mojo_sqs->content_to_target_transform));
+  EXPECT_TRUE(Size::From(content_bounds)->Equals(*mojo_sqs->content_bounds));
+  EXPECT_TRUE(Rect::From(visible_content_rect)
+                  ->Equals(*mojo_sqs->visible_content_rect));
+  EXPECT_TRUE(Rect::From(clip_rect)->Equals(*mojo_sqs->clip_rect));
   EXPECT_EQ(is_clipped, mojo_sqs->is_clipped);
   EXPECT_EQ(opacity, mojo_sqs->opacity);
   EXPECT_EQ(sorting_context_id, mojo_sqs->sorting_context_id);
@@ -287,10 +290,10 @@ TEST(SurfaceLibTest, RenderPass) {
   PassPtr mojo_pass = Pass::From(*pass);
   ASSERT_FALSE(mojo_pass.is_null());
   EXPECT_EQ(6, mojo_pass->id);
-  EXPECT_EQ(Rect::From(output_rect), mojo_pass->output_rect);
-  EXPECT_EQ(Rect::From(damage_rect), mojo_pass->damage_rect);
-  EXPECT_EQ(Transform::From(transform_to_root_target),
-            mojo_pass->transform_to_root_target);
+  EXPECT_TRUE(Rect::From(output_rect)->Equals(*mojo_pass->output_rect));
+  EXPECT_TRUE(Rect::From(damage_rect)->Equals(*mojo_pass->damage_rect));
+  EXPECT_TRUE(Transform::From(transform_to_root_target)
+                  ->Equals(*mojo_pass->transform_to_root_target));
   EXPECT_EQ(has_transparent_background, mojo_pass->has_transparent_background);
   ASSERT_EQ(1u, mojo_pass->shared_quad_states.size());
   ASSERT_EQ(3u, mojo_pass->quads.size());
@@ -416,7 +419,7 @@ TEST(SurfaceLibTest, TransferableResource) {
   EXPECT_EQ(static_cast<ResourceFormat>(format),
             mojo_resource->format);
   EXPECT_EQ(filter, mojo_resource->filter);
-  EXPECT_EQ(Size::From(size), mojo_resource->size);
+  EXPECT_TRUE(Size::From(size)->Equals(*mojo_resource->size));
   EXPECT_EQ(is_repeated, mojo_resource->is_repeated);
   EXPECT_EQ(is_software, mojo_resource->is_software);
 

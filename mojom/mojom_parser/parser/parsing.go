@@ -1117,8 +1117,45 @@ func (p *Parser) parseNumberLiteral() mojom.LiteralValue {
 	nextToken := p.peekNextToken("I was parsing a numberliteral.")
 	switch nextToken.Kind {
 	case lexer.IntConstDec, lexer.IntConstHex:
-		value, _ := p.parsePositiveIntegerLiteral(initialMinus, true, 64)
-		return mojom.MakeInt64LiteralValue(value)
+		absoluteValue, numBits, signed, ok := p.parsePositiveIntegerLiteral(initialMinus, true, !initialMinus, 64)
+		if !ok {
+			return mojom.LiteralValue{}
+		}
+		var value int64
+		if signed {
+			value = int64(absoluteValue)
+			if initialMinus {
+				value = -1 * value
+			}
+		}
+		switch numBits {
+		case 8:
+			if signed {
+				return mojom.MakeInt8LiteralValue(int8(value))
+			} else {
+				return mojom.MakeUint8LiteralValue(uint8(absoluteValue))
+			}
+		case 16:
+			if signed {
+				return mojom.MakeInt16LiteralValue(int16(value))
+			} else {
+				return mojom.MakeUint16LiteralValue(uint16(absoluteValue))
+			}
+		case 32:
+			if signed {
+				return mojom.MakeInt32LiteralValue(int32(value))
+			} else {
+				return mojom.MakeUint32LiteralValue(uint32(absoluteValue))
+			}
+		case 64:
+			if signed {
+				return mojom.MakeInt64LiteralValue(value)
+			} else {
+				return mojom.MakeUint64LiteralValue(absoluteValue)
+			}
+		default:
+			panic(fmt.Sprintf("Unexpected value for numBits: %d", numBits))
+		}
 	case lexer.FloatConst:
 		value, _ := p.parsePositiveFloatLiteral(initialMinus)
 		return mojom.MakeDoubleLiteralValue(value)
@@ -1265,10 +1302,10 @@ func (p *Parser) tryParseArrayType() mojom.TypeRef {
 	}
 
 	isFixedSize := p.tryMatch(lexer.Comma)
-	fixedSize := -1
+	fixedSize := int32(-1)
 	if isFixedSize {
-		if size, ok := p.parsePositiveIntegerLiteral(false, false, 0); ok {
-			fixedSize = int(size)
+		if size, _, _, ok := p.parsePositiveIntegerLiteral(false, false, false, 32); ok {
+			fixedSize = int32(size)
 		} else {
 			return nil
 		}
@@ -1368,18 +1405,53 @@ func (p *Parser) parseUserValueRef(assigneeType mojom.TypeRef) *mojom.UserValueR
 }
 
 // POS_INT_LITERAL -> int_const_dec | int_const_hex
-func (p *Parser) parsePositiveIntegerLiteral(initialMinus, acceptHex bool,
-	maxBits int) (int64, bool) {
+//
+// parsePositiveIntegerLiteral() parses the next token as an integer using the smallest
+// size integer possible given the input constraints.
+//
+// |initialMinus| should the string to be parsed be prepended with an initial minus sign?
+// If this is true then |allowUnsigned| must also be false.
+//
+// |acceptHex| should the string to be parsed be allowed to be expressed in "0x" notation?
+//
+// |allowUnsigned| If the string cannot be parsed into a signed integer with a certain number of
+// bits then before trying a larger number of bits we will try an unsigned integer if this is true.
+// If |allowUnsigned| is not true then the returned |signed| will never be false if |ok| is true.
+//
+// |maxNumBits| This value should be 8, 16, 32 or 64 and represents the maximum size of an integer
+// variable into which the parsed value may fit. If |ok| is true then |numBits| <= |maxNumBits|.
+//
+// |absoluteValue| The absolute value of the parsed integer, stored in a uint64. If |ok|
+// is true then the value, times -1 if |initialMinus| is true, is guaranteed to be
+// convertible without loss to the signed or unsigned integer type given by |signed| and
+// |numBits|. For example if |numBits| = 16 and |signed| is true and |initialMinus| is true
+// then -1 * |absoluteValue| may be cast to an int16. If |numBits| = 64 and |signed| is false then
+// |absoluteValue| may be cast to a uint64.
+//
+// |numBits| is the smalles number of bits, 8, 16, 32, or 64, that the parsed value
+// may fit into. If |ok| is true then |numBits| <= |maxNumBits|.
+//
+// |signed| modifies |numBits| to indicate what type of integer variable the result may be cast to.
+//
+// |ok| If this is false then there was a parsing error stored in p.err.
+func (p *Parser) parsePositiveIntegerLiteral(initialMinus, acceptHex, allowUnsigned bool, maxNumBits int) (absoluteValue uint64, numBits int, signed, ok bool) {
 	p.pushChildNode("positive integer literal")
 	defer p.popNode()
 
+	if maxNumBits != 8 && maxNumBits != 16 && maxNumBits != 32 && maxNumBits != 64 {
+		panic(fmt.Sprintf("maxNumBits must be 8, 16, 32 or 64: %d", maxNumBits))
+	}
+
+	if initialMinus && allowUnsigned {
+		panic("If initialMinus is true then allowUnsigned must be false.")
+	}
+
 	nextToken := p.peekNextToken("I was parsing an integer literal.")
 	p.consumeNextToken()
-	base := 10
 	intText := p.lastConsumed.Text
-	if initialMinus {
-		intText = "-" + intText
-	}
+
+	// Set the base to 10 or 16.
+	base := 10
 	switch nextToken.Kind {
 	case lexer.IntConstDec:
 		break
@@ -1389,37 +1461,65 @@ func (p *Parser) parsePositiveIntegerLiteral(initialMinus, acceptHex bool,
 				"integer literal is allowed here. Hexadecimal is not valid.",
 				nextToken.LongLocationString(), nextToken)
 			p.err = &ParseError{ParserErrorCodeUnexpectedToken, message}
-			return 0, false
+			return
 		}
 		if len(intText) < 3 {
 			message := fmt.Sprintf("Invalid hex integer literal"+
 				" '%s' at %s.", intText, nextToken.LongLocationString())
 			p.err = &ParseError{ParserErrorCodeIntegerParseError, message}
-			return 0, false
+			return
 		}
 		intText = intText[2:]
 		base = 16
 
 	default:
 		p.unexpectedTokenError(nextToken, "a positive integer literal")
-		return 0, false
+		return
 	}
 
-	intVal, err := strconv.ParseInt(intText, base, maxBits)
-	if err == nil {
-		return intVal, true
+	// Add the initial minus sign if present.
+	if initialMinus {
+		intText = "-" + intText
 	}
+
+	var parseError error
+	for _, numBits := range []int{8, 16, 32, 64} {
+		if numBits > maxNumBits {
+			break
+		}
+		// First try to parse as signed.
+		signed = true
+		intVal, err := strconv.ParseInt(intText, base, numBits)
+		if err == nil {
+			if intVal < 0 {
+				intVal = -intVal
+			}
+			return uint64(intVal), numBits, signed, true
+		}
+
+		parseError = err
+		// Then try unsigned.
+		if allowUnsigned {
+			signed = false
+			intVal, err := strconv.ParseUint(intText, base, numBits)
+			if err == nil {
+				return intVal, numBits, signed, true
+			}
+			parseError = err
+		}
+	}
+
 	message := "parseIntegerLiteral error."
-	switch err.(*strconv.NumError).Err {
+	switch parseError.(*strconv.NumError).Err {
 	case strconv.ErrRange:
 		message = fmt.Sprintf("Integer literal value out of range: "+
 			"%s at %s.", intText, nextToken.LongLocationString())
 	case strconv.ErrSyntax:
 		panic(fmt.Sprintf("Lexer allowed unparsable integer literal: %s. "+
-			"Kind = %s. error=%s.", nextToken.Text, nextToken.Kind, err))
+			"Kind = %s. error=%s.", nextToken.Text, nextToken.Kind, parseError))
 	}
 	p.err = &ParseError{ParserErrorCodeIntegerOutOfRange, message}
-	return 0, false
+	return 0, 0, false, false
 }
 
 // POS_FLOAT_LITERAL  -> float_const

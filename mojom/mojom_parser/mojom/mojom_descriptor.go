@@ -105,7 +105,7 @@ func (f *MojomFile) String() string {
 // methods below may invoked. |moduleNamespace| may be the empty string.
 func (f *MojomFile) InitializeFileScope(moduleNamespace string) *Scope {
 	f.ModuleNamespace = moduleNamespace
-	f.FileScope = NewLexicalScope(ScopeFileModule, nil, moduleNamespace, f)
+	f.FileScope = NewLexicalScope(ScopeFileModule, nil, moduleNamespace, f, nil)
 	return f.FileScope
 }
 

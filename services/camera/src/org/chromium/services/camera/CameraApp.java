@@ -23,6 +23,7 @@ class CameraApp implements ApplicationDelegate {
         mCameraServiceImpl = new CameraServiceImpl(context, core);
     }
 
+    @Override
     public void initialize(Shell shell, String[] args, String url) {
     }
 

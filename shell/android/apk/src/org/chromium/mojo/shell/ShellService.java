@@ -19,12 +19,11 @@ import android.util.Log;
 import org.chromium.base.ApplicationStatus;
 import org.chromium.base.CalledByNative;
 import org.chromium.base.JNINamespace;
+import org.chromium.mojo.bindings.ConnectionErrorHandler;
 import org.chromium.mojo.bindings.InterfaceRequest;
-import org.chromium.mojo.system.MessagePipeHandle;
 import org.chromium.mojo.system.MojoException;
 import org.chromium.mojo.system.Pair;
 import org.chromium.mojo.system.impl.CoreImpl;
-import org.chromium.mojom.mojo.ServiceProvider;
 import org.chromium.mojom.mojo.Shell;
 
 import java.io.BufferedReader;
@@ -69,46 +68,7 @@ public class ShellService extends Service {
     // A static reference to the service.
     private static ShellService sShellService;
 
-    private static class ShellImpl implements Shell {
-        private static final ShellImpl INSTANCE = new ShellImpl();
-
-        /**
-         * @see Shell#close()
-         */
-        @Override
-        public void close() {}
-
-        /**
-         * @see Shell#onConnectionError(org.chromium.mojo.system.MojoException)
-         */
-        @Override
-        public void onConnectionError(MojoException e) {}
-
-        /**
-         * @see Shell#connectToApplication(String, InterfaceRequest, ServiceProvider)
-         */
-        @Override
-        public void connectToApplication(String applicationUrl,
-                InterfaceRequest<ServiceProvider> services, ServiceProvider exposedServices) {
-            int exposedServicesHandle = CoreImpl.INVALID_HANDLE;
-            if (exposedServices != null) {
-                if (exposedServices instanceof ServiceProvider.Proxy) {
-                    ServiceProvider.Proxy proxy = (ServiceProvider.Proxy) exposedServices;
-                    exposedServicesHandle =
-                            proxy.getProxyHandler().passHandle().releaseNativeHandle();
-                } else {
-                    Pair<MessagePipeHandle, MessagePipeHandle> pipes =
-                            CoreImpl.getInstance().createMessagePipe(null);
-                    ServiceProvider.MANAGER.bind(exposedServices, pipes.first);
-                    exposedServicesHandle = pipes.second.releaseNativeHandle();
-                }
-            }
-            nativeConnectToApplication(applicationUrl,
-                    services == null ? CoreImpl.INVALID_HANDLE
-                                     : services.passHandle().releaseNativeHandle(),
-                    exposedServicesHandle);
-        }
-    }
+    private final ThreadLocal<Shell> mShell = new ThreadLocal<Shell>();
 
     /**
      * Binder for the Shell service. This object is passed to the calling activities.
@@ -284,9 +244,24 @@ public class ShellService extends Service {
 
     /**
      * Returns an instance of the shell interface that allows to interact with mojo applications.
+     * Can be called on any thread, the returned proxy is thread-local.
      */
     Shell getShell() {
-        return ShellImpl.INSTANCE;
+        Shell shell = mShell.get();
+        if (shell != null) {
+            return shell;
+        }
+        Pair<Shell.Proxy, InterfaceRequest<Shell>> request =
+                Shell.MANAGER.getInterfaceRequest(CoreImpl.getInstance());
+        mShell.set(request.first);
+        request.first.getProxyHandler().setErrorHandler(new ConnectionErrorHandler() {
+            @Override
+            public void onConnectionError(MojoException e) {
+                mShell.remove();
+            }
+        });
+        nativeBindShell(request.second.passHandle().releaseNativeHandle());
+        return mShell.get();
     }
 
     private static File getLocalAppsDir(Context context) {
@@ -329,6 +304,5 @@ public class ShellService extends Service {
 
     private static native void nativeStartApplicationURL(String url);
 
-    private static native void nativeConnectToApplication(
-            String applicationURL, int servicesHandle, int exposedServicesHandle);
+    private static native void nativeBindShell(int shellHandle);
 }

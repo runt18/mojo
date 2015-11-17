@@ -5,6 +5,8 @@
 #ifndef SERVICES_FILES_FILES_IMPL_H_
 #define SERVICES_FILES_FILES_IMPL_H_
 
+#include <string>
+
 #include "base/macros.h"
 #include "mojo/public/cpp/bindings/interface_request.h"
 #include "mojo/public/cpp/bindings/strong_binding.h"
@@ -30,6 +32,8 @@ class FilesImpl : public Files {
                       const OpenFileSystemCallback& callback) override;
 
  private:
+  const std::string client_url_;
+
   StrongBinding<Files> binding_;
 
   DISALLOW_COPY_AND_ASSIGN(FilesImpl);

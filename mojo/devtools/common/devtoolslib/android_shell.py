@@ -30,12 +30,6 @@ _LOGCAT_JAVA_TAGS = [
     'MojoShellApplication',
 ]
 
-# Tags used by native logging reflected in the logcat.
-_LOGCAT_NATIVE_TAGS = [
-    'chromium',
-    'sky',
-]
-
 _MOJO_SHELL_PACKAGE_NAME = 'org.chromium.mojo.shell'
 
 # Used to parse the output of `adb devices`.
@@ -100,7 +94,6 @@ class AndroidShell(Shell):
     self.adb_path = adb_path
     self.target_device = target_device
     self.stop_shell_registered = False
-    self.adb_running_as_root = None
     self.additional_logcat_tags = logcat_tags
     self.verbose_stdout = sys.stdout if verbose else open(os.devnull, 'w')
     self.verbose_stderr = sys.stderr if verbose else self.verbose_stdout
@@ -123,12 +116,13 @@ class AndroidShell(Shell):
     cannot find |fifo_path|, a exception will be raised.
     """
     fifo_command = self._adb_command(
-        ['shell', 'test -e "%s"; echo $?' % fifo_path])
+        ['shell', 'run-as', _MOJO_SHELL_PACKAGE_NAME, 'ls', fifo_path])
 
     def _run():
       def _wait_for_fifo():
         for _ in xrange(max_attempts):
-          if subprocess.check_output(fifo_command)[0] == '0':
+          output = subprocess.check_output(fifo_command).strip()
+          if output == fifo_path:
             return
           time.sleep(1)
         if on_fifo_closed:
@@ -136,7 +130,8 @@ class AndroidShell(Shell):
         raise Exception("Unable to find fifo.")
       _wait_for_fifo()
       stdout_cat = subprocess.Popen(
-          self._adb_command(['shell', 'cat', fifo_path]), stdout=pipe)
+          self._adb_command(['shell', 'run-as', _MOJO_SHELL_PACKAGE_NAME,
+                             'cat', fifo_path]), stdout=pipe)
       atexit.register(_exit_if_needed, stdout_cat)
       stdout_cat.wait()
       if on_fifo_closed:
@@ -158,11 +153,6 @@ class AndroidShell(Shell):
       The device port.
     """
     assert host_port
-    # Root is not required for `adb forward` (hence we don't check the return
-    # value), but if we can run adb as root, we have to do it now, because
-    # restarting adbd as root clears any port mappings. See
-    # https://github.com/domokit/devtools/issues/20.
-    self._run_adb_as_root()
 
     if device_port == 0:
       # TODO(ppi): Should we have a retry loop to handle the unlikely races?
@@ -185,7 +175,6 @@ class AndroidShell(Shell):
       The host port.
     """
     assert device_port
-    self._run_adb_as_root()
 
     if host_port == 0:
       # TODO(ppi): Should we have a retry loop to handle the unlikely races?
@@ -199,22 +188,6 @@ class AndroidShell(Shell):
       subprocess.Popen(unmap_command)
     atexit.register(_unmap_port)
     return host_port
-
-  def _run_adb_as_root(self):
-    if self.adb_running_as_root is not None:
-      return self.adb_running_as_root
-
-    if ('cannot run as root' not in subprocess.check_output(
-        self._adb_command(['root']))):
-      # Wait for adbd to restart.
-      subprocess.check_call(
-          self._adb_command(['wait-for-device']),
-          stdout=self.verbose_stdout, stderr=self.verbose_stderr)
-      self.adb_running_as_root = True
-    else:
-      self.adb_running_as_root = False
-
-    return self.adb_running_as_root
 
   def _is_shell_package_installed(self):
     # Adb should print one line if the package is installed and return empty
@@ -237,7 +210,7 @@ class AndroidShell(Shell):
       subprocess.check_call(self._adb_command([
           'shell', 'rm', device_path]))
 
-  def check_device(self, require_root=False):
+  def check_device(self):
     """Verifies if the device configuration allows adb to run.
 
     If a target device was indicated in the constructor, it checks that the
@@ -270,9 +243,6 @@ class AndroidShell(Shell):
 
     if not devices.itervalues().next() == 'device':
       return False, 'Connected device is not available.'
-
-    if require_root and not self._run_adb_as_root():
-      return False, 'Cannot run on an unrooted device.'
 
     return True, None
 
@@ -337,18 +307,13 @@ class AndroidShell(Shell):
 
     parameters = []
     if stdout or on_application_stop:
-      # We need to run as root to access the fifo file we use for stdout
-      # redirection.
-      if self._run_adb_as_root():
-        # Remove any leftover fifo file after the previous run.
-        subprocess.check_call(self._adb_command(
-            ['shell', 'rm', '-f', STDOUT_PIPE]))
+      # Remove any leftover fifo file after the previous run.
+      subprocess.check_call(self._adb_command(
+          ['shell', 'run-as', _MOJO_SHELL_PACKAGE_NAME,
+           'rm', '-f', STDOUT_PIPE]))
 
-        parameters.append('--fifo-path=%s' % STDOUT_PIPE)
-        self._read_fifo(STDOUT_PIPE, stdout, on_application_stop)
-      else:
-        _logger.warning("Running without root access, full stdout of the "
-                        "shell won't be available.")
+      parameters.append('--fifo-path=%s' % STDOUT_PIPE)
+      self._read_fifo(STDOUT_PIPE, stdout, on_application_stop)
     parameters.extend(arguments)
 
     if parameters:
@@ -382,15 +347,13 @@ class AndroidShell(Shell):
     """Cleans the logs on the device."""
     subprocess.check_call(self._adb_command(['logcat', '-c']))
 
-  def show_logs(self, include_native_logs=True):
+  def show_logs(self):
     """Displays the log for the mojo shell.
 
     Returns:
       The process responsible for reading the logs.
     """
     tags = _LOGCAT_JAVA_TAGS
-    if include_native_logs:
-      tags.extend(_LOGCAT_NATIVE_TAGS)
     if self.additional_logcat_tags is not None:
       tags.extend(self.additional_logcat_tags.split(","))
     logcat = subprocess.Popen(
@@ -445,9 +408,7 @@ class AndroidShell(Shell):
     self.clean_logs()
     self.forward_observatory_ports()
 
-    # If we are running as root, don't carry over the native logs from logcat -
-    # we will have these in the stdout.
-    p = self.show_logs(include_native_logs=(not self._run_adb_as_root()))
+    p = self.show_logs();
     self.start_shell(arguments, sys.stdout, p.terminate)
     p.wait()
     return None

@@ -14,6 +14,7 @@ import (
 
 	"examples/echo/echo"
 	mojoApp "mojo/public/interfaces/application/application"
+	ac "mojo/public/interfaces/application/application_connector"
 	sp "mojo/public/interfaces/application/service_provider"
 	"mojo/public/interfaces/application/shell"
 )
@@ -118,6 +119,11 @@ func (s *shellImpl) ConnectToApplication(URL string, services *sp.ServiceProvide
 	}
 	s.remoteApp.AcceptConnection(s.localURL, services, exposedServices, pairedURL(s.localURL))
 	return nil
+}
+
+func (s *shellImpl) CreateApplicationConnector(applicationConnectorRequest ac.ApplicationConnector_Request) error {
+	// TODO(vtl): https://github.com/domokit/mojo/issues/533
+	panic("not implemented")
 }
 
 func TestApplication(t *testing.T) {

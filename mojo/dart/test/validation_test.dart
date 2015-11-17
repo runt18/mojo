@@ -96,8 +96,8 @@ Future runTest(
   });
 
   var length = (test.data == null) ? 0 : test.data.lengthInBytes;
-  var r = pipe.endpoints[1].write(test.data, length, handles);
-  assert(r.isOk);
+  int r = pipe.endpoints[1].write(test.data, length, handles);
+  assert(r == MojoResult.kOk);
 
   return completer.future.then((_) {
     assert(expected == "PASS");

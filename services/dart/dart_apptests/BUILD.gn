@@ -19,9 +19,7 @@ dart_pkg("dart_apptests") {
     "pubspec.yaml",
   ]
   deps = [
-    "//mojo/dart/mojo_services",
-    "//mojo/dart/packages/mojo",
-    "//mojo/dart/packages/mojo_apptest",
+    "//mojo/dart/packages/",
     "//mojo/public/dart",
     "//mojo/public/interfaces/bindings/tests:versioning_test_client_interfaces",
     "//mojo/public/interfaces/bindings/tests:versioning_test_service_interfaces",

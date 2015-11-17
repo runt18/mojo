@@ -44,6 +44,7 @@ source_set("application_manager") {
     "//base/third_party/dynamic_annotations",
     "//crypto:crypto",
     "//url",
+    "//mojo/common",
     "//mojo/edk/system",
     "//mojo/environment:chromium",
     "//mojo/services/content_handler/interfaces",

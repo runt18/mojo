@@ -8,6 +8,7 @@
 #include "base/command_line.h"
 #include "base/logging.h"
 #include "base/macros.h"
+#include "base/strings/string_number_conversions.h"
 #include "base/strings/string_util.h"
 #include "base/trace_event/trace_event.h"
 #include "mojo/public/cpp/bindings/binding.h"
@@ -48,11 +49,10 @@ std::vector<std::string> Concatenate(const std::vector<std::string>& v1,
 
 class ApplicationManager::ContentHandlerConnection {
  public:
-  ContentHandlerConnection(ApplicationManager* manager,
-                           const GURL& content_handler_url)
-      : manager_(manager), content_handler_url_(content_handler_url) {
+  ContentHandlerConnection(ApplicationManager* manager, Identity identity)
+      : manager_(manager), identity_(identity) {
     ServiceProviderPtr services;
-    manager->ConnectToApplication(content_handler_url, GURL(),
+    manager->ConnectToApplication(identity_.url, GURL(),
                                   mojo::GetProxy(&services), nullptr,
                                   base::Closure());
     mojo::MessagePipe pipe;
@@ -67,11 +67,13 @@ class ApplicationManager::ContentHandlerConnection {
 
   mojo::ContentHandler* content_handler() { return content_handler_.get(); }
 
-  GURL content_handler_url() { return content_handler_url_; }
+  const GURL& content_handler_url() const { return identity_.url; }
+
+  const Identity& identity() const { return identity_; }
 
  private:
   ApplicationManager* manager_;
-  GURL content_handler_url_;
+  const Identity identity_;
   mojo::ContentHandlerPtr content_handler_;
 
   DISALLOW_COPY_AND_ASSIGN(ContentHandlerConnection);
@@ -230,6 +232,9 @@ bool ApplicationManager::ConnectToRunningApplication(
   if (!shell_impl)
     return false;
 
+  DCHECK(!GetNativeApplicationOptionsForURL(application_url)
+              ->new_process_per_connection);
+
   ConnectToClient(shell_impl, resolved_url, requestor_url, services->Pass(),
                   exposed_services->Pass());
   return true;
@@ -253,6 +258,17 @@ bool ApplicationManager::ConnectToApplicationWithLoader(
   return true;
 }
 
+Identity ApplicationManager::MakeApplicationIdentity(const GURL& resolved_url) {
+  static uint64_t unique_id_number = 1;
+  bool new_process_per_connection =
+      GetNativeApplicationOptionsForURL(
+          GetBaseURLAndQuery(resolved_url, nullptr))
+          ->new_process_per_connection;
+  return new_process_per_connection
+             ? Identity(resolved_url, base::Uint64ToString(unique_id_number++))
+             : Identity(resolved_url);
+}
+
 InterfaceRequest<Application> ApplicationManager::RegisterShell(
     const GURL& resolved_url,
     const GURL& requestor_url,
@@ -260,7 +276,7 @@ InterfaceRequest<Application> ApplicationManager::RegisterShell(
     ServiceProviderPtr exposed_services,
     const base::Closure& on_application_end,
     const std::vector<std::string>& parameters) {
-  Identity app_identity(resolved_url);
+  Identity app_identity = MakeApplicationIdentity(resolved_url);
 
   mojo::ApplicationPtr application;
   InterfaceRequest<Application> application_request =
@@ -274,6 +290,9 @@ InterfaceRequest<Application> ApplicationManager::RegisterShell(
   return application_request;
 }
 
+// Note: If a service was created with a unique ID, intending to be unique
+// (such that multiple requests for a service result in unique processes), then
+// 'GetShellImpl' should return nullptr.
 ShellImpl* ApplicationManager::GetShellImpl(const GURL& url) {
   const auto& shell_it = identity_to_shell_impl_.find(Identity(url));
   if (shell_it != identity_to_shell_impl_.end())
@@ -410,12 +429,14 @@ void ApplicationManager::LoadWithContentHandler(
     InterfaceRequest<Application> application_request,
     mojo::URLResponsePtr url_response) {
   ContentHandlerConnection* connection = nullptr;
-  auto it = url_to_content_handler_.find(content_handler_url);
-  if (it != url_to_content_handler_.end()) {
+  Identity content_handler_id = MakeApplicationIdentity(content_handler_url);
+  auto it = identity_to_content_handler_.find(content_handler_id);
+  if (it != identity_to_content_handler_.end()) {
     connection = it->second.get();
   } else {
-    connection = new ContentHandlerConnection(this, content_handler_url);
-    url_to_content_handler_[content_handler_url] = make_scoped_ptr(connection);
+    connection = new ContentHandlerConnection(this, content_handler_id);
+    identity_to_content_handler_[content_handler_id] =
+        make_scoped_ptr(connection);
   }
 
   connection->content_handler()->StartApplication(application_request.Pass(),
@@ -485,10 +506,9 @@ void ApplicationManager::OnShellImplError(ShellImpl* shell_impl) {
 void ApplicationManager::OnContentHandlerError(
     ContentHandlerConnection* content_handler) {
   // Remove the mapping to the content handler.
-  auto it =
-      url_to_content_handler_.find(content_handler->content_handler_url());
-  DCHECK(it != url_to_content_handler_.end());
-  url_to_content_handler_.erase(it);
+  auto it = identity_to_content_handler_.find(content_handler->identity());
+  DCHECK(it != identity_to_content_handler_.end());
+  identity_to_content_handler_.erase(it);
 }
 
 mojo::ScopedMessagePipeHandle ApplicationManager::ConnectToServiceByName(

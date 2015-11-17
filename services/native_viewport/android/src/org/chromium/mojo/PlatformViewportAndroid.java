@@ -5,6 +5,7 @@
 package org.chromium.mojo;
 
 import android.app.Activity;
+import android.os.Build;
 import android.view.MotionEvent;
 import android.view.Surface;
 import android.view.SurfaceHolder;
@@ -111,6 +112,10 @@ public class PlatformViewportAndroid extends SurfaceView {
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            requestUnbufferedDispatch(event);
+        }
+
         final int actionMasked = event.getActionMasked();
         if (actionMasked == MotionEvent.ACTION_POINTER_DOWN
                 || actionMasked == MotionEvent.ACTION_POINTER_UP) {

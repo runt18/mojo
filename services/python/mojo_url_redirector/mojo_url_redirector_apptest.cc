@@ -38,7 +38,7 @@ void CheckRedirectorResponse(uint32 expected_http_status,
   // starting the request that is now complete.
   base::MessageLoop::current()->Quit();
 
-  EXPECT_EQ(nullptr, response->error);
+  EXPECT_FALSE(response->error);
   EXPECT_EQ(expected_http_status, response->status_code);
   std::string response_body;
   mojo::common::BlockingCopyToString(response->body.Pass(), &response_body);

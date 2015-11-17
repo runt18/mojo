@@ -45,7 +45,7 @@ void NativeViewportImpl::Create(
     mojo::SizePtr size,
     mojo::SurfaceConfigurationPtr requested_configuration,
     const CreateCallback& callback) {
-  if (requested_configuration == nullptr)
+  if (!requested_configuration)
     requested_configuration = mojo::SurfaceConfiguration::New();
 
   create_callback_ = callback;

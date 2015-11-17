@@ -28,6 +28,14 @@ tests = [
     "test": "mojo:files_apptests.pexe",
     "shell-args": ["--enable-multiprocess"],
   },
+  {
+    # This test translates and executes multiple apptests at the same time.
+    # To pass, each intermediate nexe made by pexe content handling must be
+    # given a unique process, or this test will crash.
+    "test": "mojo:files_apptests.pexe",
+    "name": "Multiprocess files + http_server apptests (both run at once)",
+    "shell-args": ["--enable-multiprocess", "mojo:http_server_apptests.pexe"],
+  },
   # TODO(smklein): Include "mojo_view_manager_client_apptests.pexe",
   # "window_manager_apptests.pexe", and "shell_apptests.pexe" once flake is
   # reduced on bots for the Non-NaCl multiprocess version of the test.

@@ -66,7 +66,6 @@ type UserDefinedTypeBase struct {
 	DeclarationData
 	thisType UserDefinedType
 	typeKey  string
-	scope    *Scope
 }
 
 // This method is invoked from the constructors for the containing types:
@@ -80,7 +79,7 @@ func (b *UserDefinedTypeBase) TypeKind() TypeKind {
 	return TypeKindUserDefined
 }
 
-// Generates the fully-qualified name and the type key and registers the
+// Generates the fully-qualified name and the type Key and registers the
 // type in the given |scope| and also with the associated MojomDescriptor.
 //
 // This method is invoked when a UserDefinedType is added to its container,
@@ -126,7 +125,8 @@ type DeclarationContainer struct {
 	Constants      []*UserDefinedConstant
 }
 
-// Adds an enum to this type, which must be an interface or struct.
+// Adds an enum to the type associated with this DeclarationContainer,
+// which must be an interface or struct.
 func (c *DeclarationContainer) AddEnum(mojomEnum *MojomEnum) DuplicateNameError {
 	c.Enums = append(c.Enums, mojomEnum)
 	return mojomEnum.RegisterInScope(c.containedScope)
@@ -156,7 +156,7 @@ func NewMojomStruct(declData DeclarationData) *MojomStruct {
 }
 
 func (s *MojomStruct) InitAsScope(parentScope *Scope) *Scope {
-	s.containedScope = NewLexicalScope(ScopeStruct, parentScope, s.simpleName, parentScope.file)
+	s.containedScope = NewLexicalScope(ScopeStruct, parentScope, s.simpleName, parentScope.file, s)
 	return s.containedScope
 }
 
@@ -297,7 +297,7 @@ func NewMojomInterface(declData DeclarationData) *MojomInterface {
 
 func (i *MojomInterface) InitAsScope(parentScope *Scope) *Scope {
 	i.containedScope = NewLexicalScope(ScopeInterface, parentScope,
-		i.simpleName, parentScope.file)
+		i.simpleName, parentScope.file, i)
 	return i.containedScope
 }
 
@@ -524,7 +524,7 @@ func (MojomEnum) Kind() UserDefinedTypeKind {
 
 func (e *MojomEnum) InitAsScope(parentScope *Scope) *Scope {
 	e.scopeForValues = NewLexicalScope(ScopeEnum, parentScope,
-		e.simpleName, parentScope.file)
+		e.simpleName, parentScope.file, e)
 	return e.scopeForValues
 }
 
@@ -634,7 +634,6 @@ type UserDefinedValueBase struct {
 	// declaration. For an enum value it will be an integer literal. For
 	// a constant declartion it may be a literal or it may be a reference.
 	valueRef ValueRef
-	scope    *Scope
 }
 
 // This method is invoked from the constructors for the containing types:
@@ -866,8 +865,14 @@ type DeclarationData struct {
 	attributes         *Attributes
 	simpleName         string
 	fullyQualifiedName string
-	owningFile         *MojomFile
-	nameToken          lexer.Token
+
+	owningFile *MojomFile
+	nameToken  lexer.Token
+
+	// If not nil, this field points to the LexicalScope of the declaration
+	// corresponding to this data. This will be nil for some embedees
+	// of DeclarationData which do not keep track of their scopes.
+	scope *Scope
 
 	// We use int64 here because valid ordinals are uint32 and we want to
 	// be able to represent an unset value as -1.
@@ -914,6 +919,13 @@ func (d *DeclarationData) DeclaredOrdinal() int64 {
 
 func (d *DeclarationData) OwningFile() *MojomFile {
 	return d.owningFile
+}
+
+func (d *DeclarationData) ContainingType() UserDefinedType {
+	if d.scope == nil {
+		return nil
+	}
+	return d.scope.containingType
 }
 
 type Attributes struct {

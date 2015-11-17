@@ -82,8 +82,11 @@ type Scope struct {
 	typesByName        map[string]UserDefinedType
 	valuesByName       map[string]UserDefinedValue
 	// file is nil for abstract module scopes
-	file       *MojomFile
-	descriptor *MojomDescriptor
+	file *MojomFile
+	// If this is an Interface or Struct scope then |containingType|
+	// is the corresponding Interface or Struct.
+	containingType UserDefinedType
+	descriptor     *MojomDescriptor
 }
 
 func buildDottedName(prefix, suffix string) string {
@@ -95,24 +98,29 @@ func buildDottedName(prefix, suffix string) string {
 
 // init is invoked by NewLexicalScope and NewAbstractModuleScope
 func (scope *Scope) init(kind ScopeKind, shortName string,
-	fullyQualifiedName string, parentScope *Scope, descriptor *MojomDescriptor) {
+	fullyQualifiedName string, parentScope *Scope, containingType UserDefinedType, descriptor *MojomDescriptor) {
 	scope.kind = kind
 	scope.shortName = shortName
 	scope.fullyQualifiedName = fullyQualifiedName
 	scope.parentScope = parentScope
 	scope.typesByName = make(map[string]UserDefinedType)
 	scope.valuesByName = make(map[string]UserDefinedValue)
+	scope.containingType = containingType
 	scope.descriptor = descriptor
 }
 
 // NewLexicalScope creates a new LexicalScope. The scopeKind must be
-// one of the lexical kinds, not ABSTRACT_MODULE. The file must not be nil
+// one of the lexical kinds, not ScopeAbstractMoudle. The file must not be nil
 // and it must not have a nil descriptor because the new scope will be
 // embedded into the tree of scopes for that descriptor.
 // The parent scope must be appropriate for the type of scope being created.
 // When creating a ScopeFileModule parentScope should be nil: The
 // parent scope will be set to an abstract module scope automatically.
-func NewLexicalScope(kind ScopeKind, parentScope *Scope, shortName string, file *MojomFile) *Scope {
+//
+// |containingType| must be non-nil just in case an Interface or Struct scope
+// is being created and in that case it should be the Interface or Struct.
+func NewLexicalScope(kind ScopeKind, parentScope *Scope, shortName string,
+	file *MojomFile, containingType UserDefinedType) *Scope {
 	scope := new(Scope)
 	if file == nil {
 		panic("The file must not be nil for a lexical scope.")
@@ -125,17 +133,25 @@ func NewLexicalScope(kind ScopeKind, parentScope *Scope, shortName string, file 
 		if parentScope != nil {
 			panic("A file module lexical scope cannot have a parent lexical scope.")
 		}
+		if containingType != nil {
+			panic("A file scope does not have a containing type.")
+		}
 		fullyQualifiedName = file.ModuleNamespace
 		parentScope = file.Descriptor.getAbstractModuleScope(fullyQualifiedName)
 	case ScopeInterface, ScopeStruct:
 		if parentScope == nil || parentScope.kind != ScopeFileModule {
 			panic("An interface or struct lexical scope must have a parent lexical scope of type FILE_MODULE.")
 		}
+		if containingType == nil {
+			panic("An interface or struct scope must have a containing type.")
+		}
 		fullyQualifiedName = buildDottedName(parentScope.fullyQualifiedName, shortName)
 	case ScopeEnum:
 		if parentScope == nil || parentScope.kind == ScopeAbstractModule {
-			// Note(rudominer) We panic here because this is a programming error. This cannot occur due to bad user input.
 			panic("An enum lexical scope must have a parent lexical scope not an ABSTRACT_MODULE scope.")
+		}
+		if containingType == nil {
+			panic("An enum scope must have a containing type.")
 		}
 		fullyQualifiedName = buildDottedName(parentScope.fullyQualifiedName, shortName)
 	case ScopeAbstractModule:
@@ -144,7 +160,7 @@ func NewLexicalScope(kind ScopeKind, parentScope *Scope, shortName string, file 
 		panic(fmt.Sprintf("Unrecognized ScopeKind %d", kind))
 	}
 
-	scope.init(kind, shortName, fullyQualifiedName, parentScope, file.Descriptor)
+	scope.init(kind, shortName, fullyQualifiedName, parentScope, containingType, file.Descriptor)
 
 	return scope
 }
@@ -168,7 +184,7 @@ func NewAbstractModuleScope(fullyQualifiedName string, descriptor *MojomDescript
 			parentScope = descriptor.getGlobalScobe()
 		}
 	}
-	scope.init(ScopeAbstractModule, shortName, fullyQualifiedName, parentScope, descriptor)
+	scope.init(ScopeAbstractModule, shortName, fullyQualifiedName, parentScope, nil, descriptor)
 	return scope
 }
 
@@ -254,7 +270,7 @@ func (scope *Scope) registerTypeWithNamePrefix(userDefinedType UserDefinedType, 
 	registrationName := namePrefix + userDefinedType.SimpleName()
 	if existingType := scope.typesByName[registrationName]; existingType != nil {
 		return &DuplicateTypeNameError{
-			DuplicateNameErrorBase{nameToken: userDefinedType.NameToken(), owningFile: userDefinedType.Scope().file},
+			DuplicateNameErrorBase{nameToken: userDefinedType.NameToken(), owningFile: scope.file},
 			existingType}
 	}
 	scope.typesByName[registrationName] = userDefinedType
@@ -285,7 +301,7 @@ func (scope *Scope) registerValueWithNamePrefix(value UserDefinedValue, namePref
 	registrationName := namePrefix + value.SimpleName()
 	if existingVal := scope.valuesByName[registrationName]; existingVal != nil {
 		return &DuplicateValueNameError{
-			DuplicateNameErrorBase{nameToken: value.NameToken(), owningFile: value.Scope().file},
+			DuplicateNameErrorBase{nameToken: value.NameToken(), owningFile: scope.file},
 			existingVal}
 	}
 	scope.valuesByName[registrationName] = value

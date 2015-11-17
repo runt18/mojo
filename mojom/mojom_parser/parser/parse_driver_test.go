@@ -6,7 +6,10 @@ package parser
 
 import (
 	"mojom/mojom_parser/mojom"
+	"os"
+	"path/filepath"
 	"reflect"
+	"strings"
 	"testing"
 )
 
@@ -88,4 +91,84 @@ func TestExpectedFilesParsed(t *testing.T) {
 	if !reflect.DeepEqual(expectedFileRefs, fakeFileProvider.requestedFileNames) {
 		t.Errorf("%v != %v", expectedFileRefs, fakeFileProvider.requestedFileNames)
 	}
+}
+
+// TestOSFileProvider tests the function OSFileProvider.findFiles() and OSFileProvider.provideContents()
+func TestOSFileProvider(t *testing.T) {
+	// Top level files (not imported from anything) are found relative to the current directory.
+	fileReferenceA := doOSFileProviderTest(t, "../test_data/a/testfile1", nil, nil, "mojom_parser/test_data/a")
+	fileReferenceB := doOSFileProviderTest(t, "../test_data/b/testfile1", nil, nil, "mojom_parser/test_data/b")
+
+	// A file imported from a file in directory 'a' should be found in directory 'a'
+	doOSFileProviderTest(t, "testfile1", &fileReferenceA, nil, "mojom_parser/test_data/a")
+
+	// A file imported from a file in directory 'b' should be found in directory 'a'
+	doOSFileProviderTest(t, "testfile1", &fileReferenceB, nil, "mojom_parser/test_data/b")
+
+	// A file imported from a file in directory 'a' should be found in directory 'b' if there is no file with the
+	// specified name in directory 'a' and directory 'b' is in the search path.
+	doOSFileProviderTest(t, "testfile2", &fileReferenceA, []string{"../test_data/b"}, "mojom_parser/test_data/b")
+
+	// The file is imported from directory 'a' and directory 'b' is on the search path but there is no file with the
+	// specified name in either directory and there is a file with the specified name in the current directory.
+	// The file should be found in the current directory. Note that the last argument is a random string of digits that
+	// we expect to find in the contents of the file parser_driver_test.go.
+	doOSFileProviderTest(t, "parse_driver_test.go", &fileReferenceA, []string{"../test_data/b"}, "840274941330987490326243")
+}
+
+// doOSFileProviderTest is the workhorse for TestOSFileProvider.
+func doOSFileProviderTest(t *testing.T, specifiedPath string, importedFrom *FileReference,
+	globalImports []string, expectedContents string) FileReference {
+	fileProvider := new(OSFileProvider)
+	fileProvider.importDirs = globalImports
+	fileReference := FileReference{specifiedPath: specifiedPath}
+	fileReference.importedFrom = importedFrom
+
+	// Invoke findFile()
+	if err := fileProvider.findFile(&fileReference); err != nil {
+		t.Fatalf(err.Error())
+	}
+
+	// Check that the absolutePath has been populated to the absolute path of a file.
+	if fileReference.absolutePath == "" {
+		t.Fatalf("absolutePath is not set for %s", fileReference.specifiedPath)
+	}
+	if !filepath.IsAbs(fileReference.absolutePath) {
+		t.Fatalf("absolutePath is not absolute for %s: %s", fileReference.specifiedPath, fileReference.absolutePath)
+	}
+	info, err := os.Stat(fileReference.absolutePath)
+	if err != nil {
+		t.Fatalf("cannot stat absolutePath %s: %s", fileReference.absolutePath, err.Error())
+	}
+	if info.IsDir() {
+		t.Fatalf("absolutePath refers to a directory: %s", fileReference.absolutePath)
+	}
+
+	// Check that the dirPath has been populated to the absolute path of a directory.
+	if fileReference.directoryPath == "" {
+		t.Fatalf("directoryPath is not set for %s", fileReference.specifiedPath)
+	}
+	if !filepath.IsAbs(fileReference.directoryPath) {
+		t.Fatalf("directoryPath is not absolute for %s: %s", fileReference.specifiedPath, fileReference.directoryPath)
+	}
+	info, err = os.Stat(fileReference.directoryPath)
+	if err != nil {
+		t.Fatalf("cannot stat directoryPath %s: %s", fileReference.directoryPath, err.Error())
+	}
+	if !info.IsDir() {
+		t.Fatalf("directoryPath does not refer to a directory: %s", fileReference.directoryPath)
+	}
+	if filepath.Dir(fileReference.absolutePath) != fileReference.directoryPath {
+		t.Fatalf("wrong directoryPath expected parent of %s got %s", fileReference.absolutePath, fileReference.directoryPath)
+	}
+
+	contents, err := fileProvider.provideContents(&fileReference)
+	if err != nil {
+		t.Errorf("Error from provideContents for %v: %s", fileReference, err.Error())
+	}
+	if !strings.Contains(contents, expectedContents) {
+		t.Errorf("Wrong file contents for %v. Expecting %s got %s.", fileReference, expectedContents, contents)
+	}
+
+	return fileReference
 }

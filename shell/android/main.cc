@@ -25,6 +25,7 @@
 #include "base/threading/simple_thread.h"
 #include "gpu/config/gpu_util.h"
 #include "jni/ShellService_jni.h"
+#include "mojo/common/binding_set.h"
 #include "mojo/message_pump/message_pump_mojo.h"
 #include "mojo/services/network/interfaces/network_service.mojom.h"
 #include "mojo/services/window_manager/interfaces/window_manager.mojom.h"
@@ -34,6 +35,7 @@
 #include "shell/android/ui_application_loader_android.h"
 #include "shell/android/url_response_disk_cache_delegate_impl.h"
 #include "shell/application_manager/application_loader.h"
+#include "shell/application_manager/shell_impl.h"
 #include "shell/background_application_loader.h"
 #include "shell/command_line_util.h"
 #include "shell/context.h"
@@ -97,6 +99,12 @@ struct InternalShellData {
   // Delegate for URLResponseDiskCache. Allows to access bundled application on
   // cold start.
   scoped_ptr<URLResponseDiskCacheDelegateImpl> url_response_disk_cache_delegate;
+
+  // Shell implementation to expose to java.
+  scoped_ptr<ShellImpl> shell_impl;
+
+  // Binding set to the shell implementation.
+  mojo::BindingSet<mojo::Shell> shell_bindings;
 };
 
 LazyInstance<InternalShellData> g_internal_data = LAZY_INSTANCE_INITIALIZER;
@@ -184,18 +192,22 @@ void InitializeRedirection() {
     LOG(ERROR) << "Failed to set stdout to be line buffered.";
 }
 
-void ConnectToApplicationImpl(
-    const GURL& url,
-    mojo::ScopedMessagePipeHandle services_handle,
-    mojo::ScopedMessagePipeHandle exposed_services_handle) {
+void BindShellImpl(mojo::ScopedMessagePipeHandle shell_handle) {
   Context* context = g_internal_data.Get().context.get();
-  mojo::InterfaceRequest<mojo::ServiceProvider> services;
-  services.Bind(services_handle.Pass());
-  mojo::ServiceProviderPtr exposed_services;
-  exposed_services.Bind(mojo::InterfacePtrInfo<mojo::ServiceProvider>(
-      exposed_services_handle.Pass(), 0u));
-  context->application_manager()->ConnectToApplication(
-      url, GURL(), services.Pass(), exposed_services.Pass(), base::Closure());
+  if (!g_internal_data.Get().shell_impl.get()) {
+    // The application proxy is null, as the shell is not connectable from other
+    // applications.
+    mojo::ApplicationPtr application;
+    // The identity of the shell is the empty URL.
+    GURL identity;
+    g_internal_data.Get().shell_impl.reset(
+        new ShellImpl(application.Pass(), context->application_manager(),
+                      Identity(identity), base::Closure()));
+  }
+  mojo::InterfaceRequest<mojo::Shell> shell;
+  shell.Bind(shell_handle.Pass());
+  g_internal_data.Get().shell_bindings.AddBinding(
+      g_internal_data.Get().shell_impl.get(), shell.Pass());
 }
 
 void EmbedApplicationByURL(std::string url) {
@@ -326,19 +338,11 @@ static void StartApplicationURL(JNIEnv* env, jclass clazz, jstring jurl) {
       FROM_HERE, base::Bind(&EmbedApplicationByURL, url));
 }
 
-static void ConnectToApplication(JNIEnv* env,
-                                 jclass clazz,
-                                 jstring jurl,
-                                 jint services_handle,
-                                 jint exposed_services_handle) {
-  GURL url = GURL(base::android::ConvertJavaStringToUTF8(env, jurl));
+static void BindShell(JNIEnv* env, jclass clazz, jint shell_handle) {
   g_internal_data.Get().shell_task_runner->PostTask(
       FROM_HERE,
-      base::Bind(&ConnectToApplicationImpl, url,
-                 base::Passed(mojo::ScopedMessagePipeHandle(
-                     mojo::MessagePipeHandle(services_handle))),
-                 base::Passed(mojo::ScopedMessagePipeHandle(
-                     mojo::MessagePipeHandle(exposed_services_handle)))));
+      base::Bind(&BindShellImpl, base::Passed(mojo::ScopedMessagePipeHandle(
+                                     mojo::MessagePipeHandle(shell_handle)))));
 }
 
 bool RegisterShellService(JNIEnv* env) {

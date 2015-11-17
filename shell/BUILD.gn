@@ -80,6 +80,7 @@ if (!mojo_use_prebuilt_mojo_shell) {
                ":jni_headers",
                "//gpu/config",
                "//mojo/android:libsystem_java",
+               "//mojo/common",
                "//mojo/services/window_manager/interfaces:interfaces",
                "//services/native_viewport:lib",
                "//shell/application_manager",
@@ -350,6 +351,7 @@ if (is_android) {
       "android/apk/src/org/chromium/mojo/shell/SharingApplicationDelegate.java",
       "android/apk/src/org/chromium/mojo/shell/ShellService.java",
       "android/apk/src/org/chromium/mojo/shell/ViewportActivity.java",
+      "android/apk/src/org/chromium/mojo/shell/VsyncFactory.java",
     ]
 
     deps = [
@@ -363,6 +365,7 @@ if (is_android) {
       "//mojo/services/input/interfaces:interfaces_java",
       "//mojo/services/keyboard/interfaces:interfaces_java",
       "//mojo/services/nfc/interfaces:interfaces_java",
+      "//mojo/services/vsync/interfaces:interfaces_java",
       "//services/authentication",
       "//services/input",
       "//services/intent_receiver:bindings_java",
@@ -372,6 +375,7 @@ if (is_android) {
       "//services/native_viewport:native_viewport_java",
       "//services/nfc_message_sink:bindings_java",
       "//services/sharing_sink:bindings_java",
+      "//services/vsync",
       "//third_party/android_tools:android_support_v13_java",
     ]
   }
@@ -649,6 +653,7 @@ mojo_native_application("apptests") {
     "//mojo/public/cpp/bindings:callback",
     "//mojo/public/cpp/environment",
     "//mojo/public/cpp/system:system",
+    "//mojo/public/interfaces/application",
     "//mojo/services/http_server/cpp",
     "//mojo/services/http_server/interfaces",
     "//mojo/services/network/interfaces",

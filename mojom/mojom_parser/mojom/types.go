@@ -393,12 +393,12 @@ type ArrayTypeRef struct {
 	nullable bool
 
 	// If fixed_length < 0 then the array does not have a fixed length;
-	fixedLength int
+	fixedLength int32
 
 	elementType TypeRef
 }
 
-func NewArrayTypeRef(elementType TypeRef, fixedSize int, nullable bool) *ArrayTypeRef {
+func NewArrayTypeRef(elementType TypeRef, fixedSize int32, nullable bool) *ArrayTypeRef {
 	return &ArrayTypeRef{nullable, fixedSize, elementType}
 }
 
@@ -406,7 +406,7 @@ func (a ArrayTypeRef) Nullable() bool {
 	return a.nullable
 }
 
-func (a ArrayTypeRef) FixedLength() int {
+func (a ArrayTypeRef) FixedLength() int32 {
 	return a.fixedLength
 }
 
@@ -787,8 +787,32 @@ func MakeBoolLiteralValue(value bool) LiteralValue {
 	return LiteralValue{SimpleTypeBool, value, false}
 }
 
+func MakeInt8LiteralValue(value int8) LiteralValue {
+	return LiteralValue{SimpleTypeInt8, value, false}
+}
+func MakeInt16LiteralValue(value int16) LiteralValue {
+	return LiteralValue{SimpleTypeInt16, value, false}
+}
+func MakeInt32LiteralValue(value int32) LiteralValue {
+	return LiteralValue{SimpleTypeInt32, value, false}
+}
+
 func MakeInt64LiteralValue(value int64) LiteralValue {
 	return LiteralValue{SimpleTypeInt64, value, false}
+}
+
+func MakeUint8LiteralValue(value uint8) LiteralValue {
+	return LiteralValue{SimpleTypeUInt8, value, false}
+}
+func MakeUint16LiteralValue(value uint16) LiteralValue {
+	return LiteralValue{SimpleTypeUInt16, value, false}
+}
+func MakeUint32LiteralValue(value uint32) LiteralValue {
+	return LiteralValue{SimpleTypeUInt32, value, false}
+}
+
+func MakeUint64LiteralValue(value uint64) LiteralValue {
+	return LiteralValue{SimpleTypeUInt64, value, false}
 }
 
 func MakeDoubleLiteralValue(value float64) LiteralValue {
@@ -807,7 +831,7 @@ func (lv LiteralValue) String() string {
 	case TypeKindString:
 		return fmt.Sprintf("\"%v\"", lv.value)
 	default:
-		return fmt.Sprintf("%v", lv.value)
+		return fmt.Sprintf("%v(%v)", lv.valueType, lv.value)
 	}
 }
 
