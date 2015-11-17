@@ -39,6 +39,9 @@ tests = [
 
   # Non-system, non-public tests:
   {
+    "test": "base_unittests",
+  },
+  {
     "test": "crypto_unittests",
   },
   {

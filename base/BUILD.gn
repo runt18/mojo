@@ -1243,6 +1243,8 @@ test("base_unittests") {
     "test/expectations/expectation_unittest.cc",
     "test/expectations/parser_unittest.cc",
     "test/histogram_tester_unittest.cc",
+    "test/icu_test_util.cc",
+    "test/icu_test_util.h",
     "test/test_reg_util_win_unittest.cc",
     "test/trace_event_analyzer_unittest.cc",
     "test/user_action_tester_unittest.cc",

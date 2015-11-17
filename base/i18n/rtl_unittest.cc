@@ -10,6 +10,7 @@
 #include "base/strings/string_util.h"
 #include "base/strings/sys_string_conversions.h"
 #include "base/strings/utf_string_conversions.h"
+#include "base/test/icu_test_util.h"
 #include "testing/gtest/include/gtest/gtest.h"
 #include "testing/platform_test.h"
 #include "third_party/icu/source/i18n/unicode/usearch.h"
@@ -243,21 +244,6 @@ TEST_F(RTLTest, GetStringDirection) {
 
 TEST_F(RTLTest, WrapPathWithLTRFormatting) {
   const wchar_t* cases[] = {
-    // Test common path, such as "c:\foo\bar".
-    L"c:/foo/bar",
-    // Test path with file name, such as "c:\foo\bar\test.jpg".
-    L"c:/foo/bar/test.jpg",
-    // Test path ending with punctuation, such as "c:\(foo)\bar.".
-    L"c:/(foo)/bar.",
-    // Test path ending with separator, such as "c:\foo\bar\".
-    L"c:/foo/bar/",
-    // Test path with RTL character.
-    L"c:/\x05d0",
-    // Test path with 2 level RTL directory names.
-    L"c:/\x05d0/\x0622",
-    // Test path with mixed RTL/LTR directory names and ending with punctuation.
-    L"c:/\x05d0/\x0622/(foo)/b.a.r.",
-    // Test path without driver name, such as "/foo/bar/test/jpg".
     L"/foo/bar/test.jpg",
     // Test path start with current directory, such as "./foo".
     L"./foo",
@@ -265,25 +251,15 @@ TEST_F(RTLTest, WrapPathWithLTRFormatting) {
     L"../foo/bar.jpg",
     // Test absolute path, such as "//foo/bar.jpg".
     L"//foo/bar.jpg",
-    // Test path with mixed RTL/LTR directory names.
-    L"c:/foo/\x05d0/\x0622/\x05d1.jpg",
     // Test empty path.
     L""
   };
 
   for (size_t i = 0; i < arraysize(cases); ++i) {
     FilePath path;
-#if defined(OS_WIN)
-    std::wstring win_path(cases[i]);
-    std::replace(win_path.begin(), win_path.end(), '/', '\\');
-    path = FilePath(win_path);
-    std::wstring wrapped_expected =
-        std::wstring(L"\x202a") + win_path + L"\x202c";
-#else
     path = FilePath(base::SysWideToNativeMB(cases[i]));
     std::wstring wrapped_expected =
         std::wstring(L"\x202a") + cases[i] + L"\x202c";
-#endif
     string16 localized_file_path_string;
     WrapPathWithLTRFormatting(path, &localized_file_path_string);
 
@@ -305,6 +281,7 @@ TEST_F(RTLTest, WrapString) {
 
   const bool was_rtl = IsRTL();
 
+  test::ScopedRestoreICUDefaultLocale restore_locale;
   for (size_t i = 0; i < 2; ++i) {
     // Toggle the application default text direction (to try each direction).
     SetRTL(!IsRTL());
@@ -352,6 +329,7 @@ TEST_F(RTLTest, GetDisplayStringInLTRDirectionality) {
 
   const bool was_rtl = IsRTL();
 
+  test::ScopedRestoreICUDefaultLocale restore_locale;
   for (size_t i = 0; i < 2; ++i) {
     // Toggle the application default text direction (to try each direction).
     SetRTL(!IsRTL());
@@ -416,6 +394,7 @@ TEST_F(RTLTest, UnadjustStringForLocaleDirection) {
 
   const bool was_rtl = IsRTL();
 
+  test::ScopedRestoreICUDefaultLocale restore_locale;
   for (size_t i = 0; i < 2; ++i) {
     // Toggle the application default text direction (to try each direction).
     SetRTL(!IsRTL());
