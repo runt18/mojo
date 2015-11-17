@@ -90,14 +90,14 @@ class ShellHTTPAppTest : public ShellAppTest {
     local_address->ipv4->addr[2] = 0;
     local_address->ipv4->addr[3] = 1;
     local_address->ipv4->port = 0;
-    http_server_factory_->CreateHttpServer(mojo::GetProxy(&http_server_),
+    http_server_factory_->CreateHttpServer(GetProxy(&http_server_),
                                            local_address.Pass());
 
     http_server_->GetPort([this](uint16_t p) { port_ = p; });
     EXPECT_TRUE(http_server_.WaitForIncomingResponse());
 
     http_server::HttpHandlerPtr http_handler;
-    handler_.reset(new GetHandler(mojo::GetProxy(&http_handler).Pass(), port_));
+    handler_.reset(new GetHandler(GetProxy(&http_handler).Pass(), port_));
     http_server_->SetHandler(".*", http_handler.Pass(),
                              [](bool result) { EXPECT_TRUE(result); });
     EXPECT_TRUE(http_server_.WaitForIncomingResponse());
@@ -186,10 +186,24 @@ TEST_F(ShellHTTPAppTest, MAYBE_QueryHandling) {
 TEST_F(ShellAppTest, MojoURLQueryHandling) {
   PingablePtr pingable;
   application_impl()->ConnectToService("mojo:pingable_app?foo", &pingable);
-  auto callback = [this](const String& app_url, const String& connection_url,
-                         const String& message) {
+  auto callback = [](const String& app_url, const String& connection_url,
+                     const String& message) {
     EXPECT_TRUE(EndsWith(app_url, "/pingable_app.mojo", true));
     EXPECT_EQ(app_url.To<std::string>() + "?foo", connection_url);
+    EXPECT_EQ("hello", message);
+    base::MessageLoop::current()->Quit();
+  };
+  pingable->Ping("hello", callback);
+  base::RunLoop().Run();
+}
+
+void TestApplicationConnector(mojo::ApplicationConnector* app_connector) {
+  PingablePtr pingable;
+  ConnectToService(app_connector, "mojo:pingable_app", &pingable);
+  auto callback = [](const String& app_url, const String& connection_url,
+                     const String& message) {
+    EXPECT_TRUE(EndsWith(app_url, "/pingable_app.mojo", true));
+    EXPECT_EQ(app_url, connection_url);
     EXPECT_EQ("hello", message);
     base::MessageLoop::current()->Quit();
   };
@@ -200,18 +214,29 @@ TEST_F(ShellAppTest, MojoURLQueryHandling) {
 TEST_F(ShellAppTest, ApplicationConnector) {
   mojo::ApplicationConnectorPtr app_connector;
   app_connector.Bind(application_impl()->CreateApplicationConnector());
+  TestApplicationConnector(app_connector.get());
+}
 
-  PingablePtr pingable;
-  ConnectToService(app_connector.get(), "mojo:pingable_app", &pingable);
-  auto callback = [this](const String& app_url, const String& connection_url,
-                         const String& message) {
-    EXPECT_TRUE(EndsWith(app_url, "/pingable_app.mojo", true));
-    EXPECT_EQ(app_url, connection_url);
-    EXPECT_EQ("hello", message);
-    base::MessageLoop::current()->Quit();
-  };
-  pingable->Ping("hello", callback);
-  base::RunLoop().Run();
+TEST_F(ShellAppTest, ApplicationConnectorDuplicate) {
+  mojo::ApplicationConnectorPtr app_connector1;
+  app_connector1.Bind(application_impl()->CreateApplicationConnector());
+  {
+    SCOPED_TRACE("app_connector1");
+    TestApplicationConnector(app_connector1.get());
+  }
+
+  mojo::ApplicationConnectorPtr app_connector2;
+  app_connector1->Duplicate(GetProxy(&app_connector2));
+  {
+    SCOPED_TRACE("app_connector2");
+    TestApplicationConnector(app_connector2.get());
+  }
+
+  // The first one should still work.
+  {
+    SCOPED_TRACE("app_connector1 again");
+    TestApplicationConnector(app_connector1.get());
+  }
 }
 
 }  // namespace

@@ -45,21 +45,23 @@ class ShellImpl : public mojo::Shell {
   base::Closure on_application_end() const { return on_application_end_; }
 
  private:
+  // This is a per-|ShellImpl| singleton.
   class ApplicationConnectorImpl : public mojo::ApplicationConnector {
    public:
-    explicit ApplicationConnectorImpl(mojo::Shell* shell) : shell_(shell) {}
-    ~ApplicationConnectorImpl() override {}
+    explicit ApplicationConnectorImpl(mojo::Shell* shell);
+    ~ApplicationConnectorImpl() override;
 
     void ConnectToApplication(
         const mojo::String& app_url,
         mojo::InterfaceRequest<mojo::ServiceProvider> services,
-        mojo::ServiceProviderPtr exposed_services) override {
-      shell_->ConnectToApplication(app_url, services.Pass(),
-                                   exposed_services.Pass());
-    }
+        mojo::ServiceProviderPtr exposed_services) override;
+    void Duplicate(mojo::InterfaceRequest<mojo::ApplicationConnector>
+                       application_connector_request) override;
 
    private:
     mojo::Shell* const shell_;
+    mojo::BindingSet<mojo::ApplicationConnector> bindings_;
+
     DISALLOW_COPY_AND_ASSIGN(ApplicationConnectorImpl);
   };
 
@@ -79,7 +81,6 @@ class ShellImpl : public mojo::Shell {
   mojo::Binding<mojo::Shell> binding_;
 
   ApplicationConnectorImpl application_connector_impl_;
-  mojo::BindingSet<mojo::ApplicationConnector> application_connectors_;
 
   DISALLOW_COPY_AND_ASSIGN(ShellImpl);
 };
