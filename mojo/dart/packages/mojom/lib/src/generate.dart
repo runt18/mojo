@@ -95,7 +95,9 @@ class MojomGenerator {
   // Delete .mojom.dart files under [package] that are [olderThanThis].
   _deleteOldMojomDart(Directory package, DateTime olderThanThis) async {
     Directory libDir = new Directory(path.join(package.path, 'lib'));
-    assert(await libDir.exists());
+    if (!await libDir.exists()) {
+      return;
+    }
     await for (var file in libDir.list(recursive: true, followLinks: false)) {
       if (file is! File) continue;
       if (!isMojomDart(file.path)) continue;
@@ -124,6 +126,24 @@ class MojomGenerator {
     return result;
   }
 
+  // This is a hack until we can express import paths in .mojom files.
+  // This checks the mojom path for '/mojo/services/' and if found assumes
+  // this mojom needs //mojo/services as an import path when generating
+  // bindings.
+  String _sniffForMojoServicesInclude(String mojomPath) {
+    List<String> pathComponents = path.split(mojomPath);
+    while (pathComponents.length > 2) {
+      int last = pathComponents.length;
+      if ((pathComponents[last - 1] == 'services') &&
+          (pathComponents[last - 2] == 'mojo')) {
+        return path.joinAll(pathComponents);
+      }
+      // Remove the last element and try again.
+      pathComponents.removeLast();
+    }
+    return null;
+  }
+
   _generateForMojom(File mojom, Directory importDir, Directory destination,
       String packageName) async {
     if (!isMojom(mojom.path)) return;
@@ -134,19 +154,25 @@ class MojomGenerator {
     final sdkInc = path.normalize(path.join(_mojoSdk.path, '..', '..'));
     final outputDir = await destination.createTemp();
     final output = outputDir.path;
+
+    final servicesPath = _sniffForMojoServicesInclude(mojom.path);
+
     final arguments = [
       '--use_bundled_pylibs',
       '-g',
       'dart',
       '-o',
       output,
-      // TODO(zra): Are other include paths needed?
       '-I',
       sdkInc,
       '-I',
-      importDir.path,
-      mojom.path
+      importDir.path
     ];
+    if (servicesPath != null) {
+      arguments.add('-I');
+      arguments.add(servicesPath);
+    }
+    arguments.add(mojom.path);
 
     log.info('Generating $mojom');
     log.info('$script ${arguments.join(" ")}');
@@ -164,10 +190,10 @@ class MojomGenerator {
         log.info("bindings generation result = 0");
       }
 
-      // Generated .mojom.dart is under $output/dart-pkg/$PACKAGE/lib/$X
+      // Generated .mojom.dart is under $output/dart-gen/$PACKAGE/lib/$X
       // Move $X to |destination|/lib/$X.
       // Throw an exception if $PACKGE != [packageName].
-      final generatedDirName = path.join(output, 'dart-pkg');
+      final generatedDirName = path.join(output, 'dart-gen');
       final generatedDir = new Directory(generatedDirName);
       log.info("generatedDir= $generatedDir");
       assert(await generatedDir.exists());

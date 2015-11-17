@@ -1063,11 +1063,30 @@ def _CheckForUsingSideEffectsOfPass(input_api, output_api):
   return errors
 
 
+def _CheckDartBindings(input_api, output_api):
+  """Check that generated .mojom.dart files are current"""
+  args = [input_api.python_executable,
+          'mojo/dart/tools/presubmit/check_mojom_dart.py',
+          '--affected-files']
+  files = []
+  for f in input_api.AffectedFiles():
+    files.append(f.LocalPath())
+  args.extend(files)
+  try:
+    input_api.subprocess.check_output(args)
+    return []
+  except input_api.subprocess.CalledProcessError, error:
+    return [output_api.PresubmitError(
+        'Dart bindings need to be updated.',
+        long_text=error.output)]
+
+
 def CheckChangeOnUpload(input_api, output_api):
   results = []
   results.extend(_CommonChecks(input_api, output_api))
   results.extend(_CheckValidHostsInDEPS(input_api, output_api))
   results.extend(_CheckJavaStyle(input_api, output_api))
+  results.extend(_CheckDartBindings(input_api, output_api))
   results.extend(
       input_api.canned_checks.CheckGNFormatted(input_api, output_api))
   return results

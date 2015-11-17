@@ -1,0 +1,108 @@
+// Copyright 2014 The Chromium Authors. All rights reserved.
+// Use of this source code is governed by a BSD-style license that can be
+// found in the LICENSE file.
+
+library ioctl_terminal_mojom;
+
+import 'dart:async';
+
+import 'package:mojo/bindings.dart' as bindings;
+import 'package:mojo/core.dart' as core;
+const kIoctlTerminalInvalid = 0;
+const kIoctlTerminalGetSettings = 1;
+const kIoctlTerminalSetSettings = 2;
+const kIoctlTerminalGetWindowSize = 3;
+const kIoctlTerminalSetWindowSize = 4;
+const kIoctlTerminalTermiosBaseFieldCount = 6;
+const kIoctlTerminalTermiosIFlagIndex = 0;
+const kIoctlTerminalTermiosOFlagIndex = 1;
+const kIoctlTerminalTermiosCFlagIndex = 2;
+const kIoctlTerminalTermiosLFlagIndex = 3;
+const kIoctlTerminalTermiosISpeedIndex = 4;
+const kIoctlTerminalTermiosOSpeedIndex = 5;
+const kIoctlTerminalTermiosCtrlCharCount = 17;
+const kIoctlTerminalTermiosCtrlCharVINTRIndex = 17;
+const kIoctlTerminalTermiosCtrlCharVQUITIndex = 18;
+const kIoctlTerminalTermiosCtrlCharVERASEIndex = 19;
+const kIoctlTerminalTermiosCtrlCharVKILLIndex = 20;
+const kIoctlTerminalTermiosCtrlCharVEOFIndex = 21;
+const kIoctlTerminalTermiosCtrlCharVTIMEIndex = 22;
+const kIoctlTerminalTermiosCtrlCharVMINIndex = 23;
+const kIoctlTerminalTermiosCtrlCharVSWTCIndex = 24;
+const kIoctlTerminalTermiosCtrlCharVSTARTIndex = 25;
+const kIoctlTerminalTermiosCtrlCharVSTOPIndex = 26;
+const kIoctlTerminalTermiosCtrlCharVSUSPIndex = 27;
+const kIoctlTerminalTermiosCtrlCharVEOLIndex = 28;
+const kIoctlTerminalTermiosCtrlCharVREPRINTIndex = 29;
+const kIoctlTerminalTermiosCtrlCharVDISCARDIndex = 30;
+const kIoctlTerminalTermiosCtrlCharVWERASEIndex = 31;
+const kIoctlTerminalTermiosCtrlCharVLNEXTIndex = 32;
+const kIoctlTerminalTermiosCtrlCharVEOL2Index = 33;
+const kIoctlTerminalTermiosIFlagIGNBRK = 0x0001;
+const kIoctlTerminalTermiosIFlagBRKINT = 0x0002;
+const kIoctlTerminalTermiosIFlagIGNPAR = 0x0004;
+const kIoctlTerminalTermiosIFlagPARMRK = 0x0008;
+const kIoctlTerminalTermiosIFlagINPCK = 0x0010;
+const kIoctlTerminalTermiosIFlagISTRIP = 0x0020;
+const kIoctlTerminalTermiosIFlagINLCR = 0x0040;
+const kIoctlTerminalTermiosIFlagIGNCR = 0x0080;
+const kIoctlTerminalTermiosIFlagICRNL = 0x0100;
+const kIoctlTerminalTermiosIFlagIUCLC = 0x0200;
+const kIoctlTerminalTermiosIFlagIXON = 0x0400;
+const kIoctlTerminalTermiosIFlagIXANY = 0x0800;
+const kIoctlTerminalTermiosIFlagIXOFF = 0x1000;
+const kIoctlTerminalTermiosIFlagIMAXBEL = 0x2000;
+const kIoctlTerminalTermiosIFlagIUTF8 = 0x4000;
+const kIoctlTerminalTermiosOFlagOPOST = 0x0001;
+const kIoctlTerminalTermiosOFlagOLCUC = 0x0002;
+const kIoctlTerminalTermiosOFlagONLCR = 0x0004;
+const kIoctlTerminalTermiosOFlagOCRNL = 0x0008;
+const kIoctlTerminalTermiosOFlagONOCR = 0x0010;
+const kIoctlTerminalTermiosOFlagONLRET = 0x0020;
+const kIoctlTerminalTermiosOFlagOFILL = 0x0040;
+const kIoctlTerminalTermiosOFlagOFDEL = 0x0080;
+const kIoctlTerminalTermiosOFlagNLDLY = 0x0100;
+const kIoctlTerminalTermiosOFlagNL0 = 0x0000;
+const kIoctlTerminalTermiosOFlagNL1 = 0x0100;
+const kIoctlTerminalTermiosOFlagCRDLY = 0x0600;
+const kIoctlTerminalTermiosOFlagCR0 = 0x0000;
+const kIoctlTerminalTermiosOFlagCR1 = 0x0200;
+const kIoctlTerminalTermiosOFlagCR2 = 0x0400;
+const kIoctlTerminalTermiosOFlagCR3 = 0x0600;
+const kIoctlTerminalTermiosOFlagTABDLY = 0x1800;
+const kIoctlTerminalTermiosOFlagTAB0 = 0x0000;
+const kIoctlTerminalTermiosOFlagTAB1 = 0x0800;
+const kIoctlTerminalTermiosOFlagTAB2 = 0x1000;
+const kIoctlTerminalTermiosOFlagTAB3 = 0x1800;
+const kIoctlTerminalTermiosOFlagBSDLY = 0x2000;
+const kIoctlTerminalTermiosOFlagBS0 = 0x0000;
+const kIoctlTerminalTermiosOFlagBS1 = 0x2000;
+const kIoctlTerminalTermiosOFlagVTDLY = 0x4000;
+const kIoctlTerminalTermiosOFlagVT0 = 0x0000;
+const kIoctlTerminalTermiosOFlagVT1 = 0x4000;
+const kIoctlTerminalTermiosOFlagFFDLY = 0x8000;
+const kIoctlTerminalTermiosOFlagFF0 = 0x0000;
+const kIoctlTerminalTermiosOFlagFF1 = 0x8000;
+const kIoctlTerminalTermiosCFlagCSIZE = 0x0003;
+const kIoctlTerminalTermiosCFlagCS5 = 0x0000;
+const kIoctlTerminalTermiosCFlagCS6 = 0x0001;
+const kIoctlTerminalTermiosCFlagCS7 = 0x0002;
+const kIoctlTerminalTermiosCFlagCS8 = 0x0003;
+const kIoctlTerminalTermiosCFlagCSTOPB = 0x0004;
+const kIoctlTerminalTermiosCFlagCREAD = 0x0008;
+const kIoctlTerminalTermiosCFlagPARENB = 0x0010;
+const kIoctlTerminalTermiosCFlagPARODD = 0x0020;
+const kIoctlTerminalTermiosCFlagHUPCL = 0x0040;
+const kIoctlTerminalTermiosCFlagCLOCAL = 0x0080;
+const kIoctlTerminalTermiosLFlagISIG = 0x0001;
+const kIoctlTerminalTermiosLFlagICANON = 0x0002;
+const kIoctlTerminalTermiosLFlagXCASE = 0x0004;
+const kIoctlTerminalTermiosLFlagECHO = 0x0008;
+const kIoctlTerminalTermiosLFlagECHOE = 0x0010;
+const kIoctlTerminalTermiosLFlagECHOK = 0x0020;
+const kIoctlTerminalTermiosLFlagECHONL = 0x0040;
+const kIoctlTerminalTermiosLFlagNOFLSH = 0x0080;
+const kIoctlTerminalTermiosLFlagTOSTOP = 0x0100;
+
+
+
