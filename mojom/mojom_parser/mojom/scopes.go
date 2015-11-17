@@ -270,7 +270,7 @@ func (scope *Scope) registerTypeWithNamePrefix(userDefinedType UserDefinedType, 
 	registrationName := namePrefix + userDefinedType.SimpleName()
 	if existingType := scope.typesByName[registrationName]; existingType != nil {
 		return &DuplicateTypeNameError{
-			DuplicateNameErrorBase{nameToken: userDefinedType.NameToken(), owningFile: userDefinedType.Scope().file},
+			DuplicateNameErrorBase{nameToken: userDefinedType.NameToken(), owningFile: scope.file},
 			existingType}
 	}
 	scope.typesByName[registrationName] = userDefinedType
@@ -301,7 +301,7 @@ func (scope *Scope) registerValueWithNamePrefix(value UserDefinedValue, namePref
 	registrationName := namePrefix + value.SimpleName()
 	if existingVal := scope.valuesByName[registrationName]; existingVal != nil {
 		return &DuplicateValueNameError{
-			DuplicateNameErrorBase{nameToken: value.NameToken(), owningFile: value.Scope().file},
+			DuplicateNameErrorBase{nameToken: value.NameToken(), owningFile: scope.file},
 			existingVal}
 	}
 	scope.valuesByName[registrationName] = value

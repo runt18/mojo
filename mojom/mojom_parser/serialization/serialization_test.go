@@ -232,7 +232,7 @@ func TestSingleFileSerialization(t *testing.T) {
 		test.expectedGraph().ResolvedValues["TYPE_KEY:Foo.X1"] = &mojom_types.UserDefinedValueEnumValue{mojom_types.EnumValue{
 			DeclData:         test.newDeclData("X1", "Foo.X1"),
 			EnumTypeKey:      "TYPE_KEY:Foo",
-			InitializerValue: &mojom_types.ValueLiteralValue{&mojom_types.LiteralValueInt64Value{42}},
+			InitializerValue: &mojom_types.ValueLiteralValue{&mojom_types.LiteralValueInt8Value{42}},
 			IntValue:         -1,
 		}}
 
@@ -260,6 +260,90 @@ func TestSingleFileSerialization(t *testing.T) {
 				// value COWBOY
 				test.expectedGraph().ResolvedValues["TYPE_KEY:Foo.X2"].(*mojom_types.UserDefinedValueEnumValue).Value,
 			},
+		}}
+
+		test.endTestCase()
+	}
+
+	////////////////////////////////////////////////////////////
+	// Test Case: Integer constants
+	////////////////////////////////////////////////////////////
+	{
+
+		contents := `
+	const uint8 xu8 = 255;
+	const int8 x8 = -127;
+	const uint16 xu16 = 0xFFFF;
+	const int16 x16 = -0x7FFF;
+	const uint32 xu32 = 4294967295;
+	const int32 x32 = -2147483647;
+	const uint64 xu64 = 0xFFFFFFFFFFFFFFFF;
+	const int64 x64 = -0x7FFFFFFFFFFFFFFF;
+	`
+		test.addTestCase("", contents)
+
+		// DeclaredMojomObjects
+
+		test.expectedFile().DeclaredMojomObjects.TopLevelConstants = &[]string{
+			"TYPE_KEY:xu8", "TYPE_KEY:x8", "TYPE_KEY:xu16", "TYPE_KEY:x16",
+			"TYPE_KEY:xu32", "TYPE_KEY:x32", "TYPE_KEY:xu64", "TYPE_KEY:x64"}
+
+		// Resolved Values
+
+		// xu8
+		test.expectedGraph().ResolvedValues["TYPE_KEY:xu8"] = &mojom_types.UserDefinedValueDeclaredConstant{mojom_types.DeclaredConstant{
+			DeclData: *test.newDeclData("xu8", "xu8"),
+			Type:     &mojom_types.TypeSimpleType{mojom_types.SimpleType_UinT8},
+			Value:    &mojom_types.ValueLiteralValue{&mojom_types.LiteralValueUint8Value{255}},
+		}}
+
+		// x8
+		test.expectedGraph().ResolvedValues["TYPE_KEY:x8"] = &mojom_types.UserDefinedValueDeclaredConstant{mojom_types.DeclaredConstant{
+			DeclData: *test.newDeclData("x8", "x8"),
+			Type:     &mojom_types.TypeSimpleType{mojom_types.SimpleType_InT8},
+			Value:    &mojom_types.ValueLiteralValue{&mojom_types.LiteralValueInt8Value{-127}},
+		}}
+
+		// xu16
+		test.expectedGraph().ResolvedValues["TYPE_KEY:xu16"] = &mojom_types.UserDefinedValueDeclaredConstant{mojom_types.DeclaredConstant{
+			DeclData: *test.newDeclData("xu16", "xu16"),
+			Type:     &mojom_types.TypeSimpleType{mojom_types.SimpleType_UinT16},
+			Value:    &mojom_types.ValueLiteralValue{&mojom_types.LiteralValueUint16Value{0xFFFF}},
+		}}
+
+		// x16
+		test.expectedGraph().ResolvedValues["TYPE_KEY:x16"] = &mojom_types.UserDefinedValueDeclaredConstant{mojom_types.DeclaredConstant{
+			DeclData: *test.newDeclData("x16", "x16"),
+			Type:     &mojom_types.TypeSimpleType{mojom_types.SimpleType_InT16},
+			Value:    &mojom_types.ValueLiteralValue{&mojom_types.LiteralValueInt16Value{-0x7FFF}},
+		}}
+
+		// xu32
+		test.expectedGraph().ResolvedValues["TYPE_KEY:xu32"] = &mojom_types.UserDefinedValueDeclaredConstant{mojom_types.DeclaredConstant{
+			DeclData: *test.newDeclData("xu32", "xu32"),
+			Type:     &mojom_types.TypeSimpleType{mojom_types.SimpleType_UinT32},
+			Value:    &mojom_types.ValueLiteralValue{&mojom_types.LiteralValueUint32Value{4294967295}},
+		}}
+
+		// x32
+		test.expectedGraph().ResolvedValues["TYPE_KEY:x32"] = &mojom_types.UserDefinedValueDeclaredConstant{mojom_types.DeclaredConstant{
+			DeclData: *test.newDeclData("x32", "x32"),
+			Type:     &mojom_types.TypeSimpleType{mojom_types.SimpleType_InT32},
+			Value:    &mojom_types.ValueLiteralValue{&mojom_types.LiteralValueInt32Value{-2147483647}},
+		}}
+
+		// xu64
+		test.expectedGraph().ResolvedValues["TYPE_KEY:xu64"] = &mojom_types.UserDefinedValueDeclaredConstant{mojom_types.DeclaredConstant{
+			DeclData: *test.newDeclData("xu64", "xu64"),
+			Type:     &mojom_types.TypeSimpleType{mojom_types.SimpleType_UinT64},
+			Value:    &mojom_types.ValueLiteralValue{&mojom_types.LiteralValueUint64Value{0xFFFFFFFFFFFFFFFF}},
+		}}
+
+		// x64
+		test.expectedGraph().ResolvedValues["TYPE_KEY:x64"] = &mojom_types.UserDefinedValueDeclaredConstant{mojom_types.DeclaredConstant{
+			DeclData: *test.newDeclData("x64", "x64"),
+			Type:     &mojom_types.TypeSimpleType{mojom_types.SimpleType_InT64},
+			Value:    &mojom_types.ValueLiteralValue{&mojom_types.LiteralValueInt64Value{-0x7FFFFFFFFFFFFFFF}},
 		}}
 
 		test.endTestCase()
@@ -314,7 +398,7 @@ func TestSingleFileSerialization(t *testing.T) {
 		test.expectedGraph().ResolvedValues["TYPE_KEY:mojom.test.NUM_MAGI"] = &mojom_types.UserDefinedValueDeclaredConstant{mojom_types.DeclaredConstant{
 			DeclData: *test.newDeclData("NUM_MAGI", "mojom.test.NUM_MAGI"),
 			Type:     &mojom_types.TypeSimpleType{mojom_types.SimpleType_UinT16},
-			Value:    &mojom_types.ValueLiteralValue{&mojom_types.LiteralValueInt64Value{3}},
+			Value:    &mojom_types.ValueLiteralValue{&mojom_types.LiteralValueInt8Value{3}},
 		}}
 
 		// Hats.TOP
@@ -453,6 +537,13 @@ func compareFileGraphs(expected *mojom_files.MojomFileGraph, actual *mojom_files
 		// precisely capture the structure of expected and actual.
 		expectedString := myfmt.Sprintf("%+v", expected)
 		actualString := myfmt.Sprintf("%+v", actual)
+		if expectedString == actualString {
+			// The "#v" format is Go-syntax representation of the value and
+			// uses the type names. We may need this extra detail to discern
+			// the difference between expected and actual.
+			expectedString = myfmt.Sprintf("%#v", expected)
+			actualString = myfmt.Sprintf("%#v", actual)
+		}
 		if expectedString != actualString {
 			diffPos := -1
 			for i := 0; i < len(expectedString) && i < len(actualString); i++ {

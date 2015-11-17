@@ -111,6 +111,41 @@ func TestSuccessfulParsing(t *testing.T) {
 	endTestCase()
 
 	////////////////////////////////////////////////////////////
+	// Test Case (Integer constants)
+	////////////////////////////////////////////////////////////
+	startTestCase("")
+	cases[testCaseNum].mojomContents = `
+	const uint8 xu8 = 255;
+	const int8 x8 = -127;
+	const uint16 xu16 = 0xFFFF;
+	const int16 x16 = -0x7FFF;
+	const uint32 xu32 = 4294967295;
+	const int32 x32 = -2147483647;
+	const uint64 xu64 = 0xFFFFFFFFFFFFFFFF;
+	const int64 x64 = -0x7FFFFFFFFFFFFFFF;
+	const uint64 manyNines = 9999999999999999999;
+	`
+	expectedFile.AddConstant(mojom.NewUserDefinedConstant(mojom.DeclTestData("xu8"),
+		mojom.SimpleTypeUInt8, mojom.MakeUint8LiteralValue(0xFF)))
+	expectedFile.AddConstant(mojom.NewUserDefinedConstant(mojom.DeclTestData("x8"),
+		mojom.SimpleTypeInt8, mojom.MakeInt8LiteralValue(-0x7F)))
+	expectedFile.AddConstant(mojom.NewUserDefinedConstant(mojom.DeclTestData("xu16"),
+		mojom.SimpleTypeUInt16, mojom.MakeUint16LiteralValue(65535)))
+	expectedFile.AddConstant(mojom.NewUserDefinedConstant(mojom.DeclTestData("x16"),
+		mojom.SimpleTypeInt16, mojom.MakeInt16LiteralValue(-32767)))
+	expectedFile.AddConstant(mojom.NewUserDefinedConstant(mojom.DeclTestData("xu32"),
+		mojom.SimpleTypeUInt32, mojom.MakeUint32LiteralValue(0xFFFFFFFF)))
+	expectedFile.AddConstant(mojom.NewUserDefinedConstant(mojom.DeclTestData("x32"),
+		mojom.SimpleTypeInt32, mojom.MakeInt32LiteralValue(-0x7FFFFFFF)))
+	expectedFile.AddConstant(mojom.NewUserDefinedConstant(mojom.DeclTestData("xu64"),
+		mojom.SimpleTypeUInt64, mojom.MakeUint64LiteralValue(18446744073709551615)))
+	expectedFile.AddConstant(mojom.NewUserDefinedConstant(mojom.DeclTestData("x64"),
+		mojom.SimpleTypeInt64, mojom.MakeInt64LiteralValue(-9223372036854775807)))
+	expectedFile.AddConstant(mojom.NewUserDefinedConstant(mojom.DeclTestData("manyNines"),
+		mojom.SimpleTypeUInt64, mojom.MakeUint64LiteralValue(9999999999999999999)))
+	endTestCase()
+
+	////////////////////////////////////////////////////////////
 	// Test Case
 	////////////////////////////////////////////////////////////
 	startTestCase("mojom.test")
@@ -172,9 +207,9 @@ func TestSuccessfulParsing(t *testing.T) {
 		expectedFile.AddImport("and.another.file")
 
 		structFoo := mojom.NewMojomStruct(mojom.DeclTestData("Foo"))
-		structFoo.AddField(mojom.NewStructField(mojom.DeclTestDataWithOrdinal("x", 4), mojom.SimpleTypeInt32, mojom.MakeInt64LiteralValue(42)))
+		structFoo.AddField(mojom.NewStructField(mojom.DeclTestDataWithOrdinal("x", 4), mojom.SimpleTypeInt32, mojom.MakeInt8LiteralValue(42)))
 		attributes := mojom.NewAttributes()
-		attributes.List = append(attributes.List, mojom.MojomAttribute{"age", mojom.MakeInt64LiteralValue(7)})
+		attributes.List = append(attributes.List, mojom.MojomAttribute{"age", mojom.MakeInt8LiteralValue(7)})
 		attributes.List = append(attributes.List, mojom.MojomAttribute{"level", mojom.MakeStringLiteralValue("high")})
 		structFoo.AddField(mojom.NewStructField(mojom.DeclTestDataA("y", attributes), mojom.BuiltInType("string"), mojom.MakeStringLiteralValue("Howdy!")))
 		structFoo.AddField(mojom.NewStructField(mojom.DeclTestData("z"), mojom.BuiltInType("string?"), nil))
@@ -272,7 +307,7 @@ func TestSuccessfulParsing(t *testing.T) {
 		expectedFile.AddImport("and.another.file")
 
 		expectedFile.AddConstant(mojom.NewUserDefinedConstant(mojom.DeclTestData("TOO_SMALL_VALUE"),
-			mojom.SimpleTypeInt8, mojom.MakeInt64LiteralValue(6)))
+			mojom.SimpleTypeInt8, mojom.MakeInt8LiteralValue(6)))
 
 		errorCodeEnum := mojom.NewMojomEnum(mojom.DeclTestData("ErrorCodes"))
 		errorCodeEnum.InitAsScope(expectedFile.FileScope)
@@ -282,7 +317,7 @@ func TestSuccessfulParsing(t *testing.T) {
 		tooSmallValueRef := mojom.NewUserValueRef(assigneeType, "TOO_SMALL_VALUE",
 			expectedFile.FileScope, lexer.Token{})
 
-		errorCodeEnum.AddEnumValue(mojom.DeclTestData("TOO_BIG"), mojom.MakeInt64LiteralValue(5))
+		errorCodeEnum.AddEnumValue(mojom.DeclTestData("TOO_BIG"), mojom.MakeInt8LiteralValue(5))
 		errorCodeEnum.AddEnumValue(mojom.DeclTestData("TOO_SMALL"), tooSmallValueRef)
 		errorCodeEnum.AddEnumValue(mojom.DeclTestData("JUST_RIGHT"), nil)
 		expectedFile.AddEnum(errorCodeEnum)
@@ -484,6 +519,17 @@ func TestErrorParsing(t *testing.T) {
 	// it sees the non-digit "-".
 	expectError("Invalid ordinal string")
 	expectError("Ordinals must be decimal integers between 0 and 4294967294")
+	endTestCase()
+
+	////////////////////////////////////////////////////////////
+	// Test Case (Constant integer too big for uint64)
+	////////////////////////////////////////////////////////////
+	startTestCase("")
+	cases[testCaseNum].mojomContents = `
+	const uint64 manyNines = 99999999999999999999;
+	`
+	expectError("Integer literal value out of range")
+	expectError("99999999999999999999")
 	endTestCase()
 
 	////////////////////////////////////////////////////////////
