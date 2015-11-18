@@ -14,8 +14,7 @@ dart_pkg("dart_startup") {
   ]
   deps = [
     "//mojo/common/dart",
-    "//mojo/dart/packages/mojo_services",
-    "//mojo/dart/packages/mojo",
+    "//mojo/dart/packages",
     "//mojo/public/dart",
   ]
 }

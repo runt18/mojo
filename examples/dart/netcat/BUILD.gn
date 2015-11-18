@@ -13,7 +13,7 @@ dart_pkg("netcat") {
     "pubspec.yaml",
   ]
   deps = [
-    "//mojo/dart/packages/",
+    "//mojo/dart/packages",
     "//mojo/public/dart",
   ]
 }

@@ -7,7 +7,7 @@ import 'dart:convert';
 import 'dart:io';
 import 'dart:typed_data';
 
-import 'package:_testing/expect.dart';
+import 'package:_mojo_for_test_only/expect.dart';
 import 'package:mojo/core.dart';
 
 invalidHandleTest() {

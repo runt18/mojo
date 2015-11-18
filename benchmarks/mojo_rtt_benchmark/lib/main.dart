@@ -15,7 +15,7 @@ import 'package:args/args.dart' as args;
 import 'package:common/tracing_helper.dart';
 import 'package:mojo/application.dart';
 import 'package:mojo/core.dart';
-import 'package:mojom/mojo/examples/echo.mojom.dart';
+import 'package:_mojo_for_test_only/mojo/examples/echo.mojom.dart';
 
 class EchoTracingApp extends Application {
   static const Duration kWarmupDuration = const Duration(seconds: 1);

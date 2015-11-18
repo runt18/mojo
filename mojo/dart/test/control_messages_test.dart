@@ -6,10 +6,10 @@ import 'dart:async';
 import 'dart:isolate';
 import 'dart:typed_data';
 
-import 'package:_testing/expect.dart';
+import 'package:_mojo_for_test_only/expect.dart';
 import 'package:mojo/bindings.dart' as bindings;
 import 'package:mojo/core.dart' as core;
-import 'package:mojom/sample/sample_interfaces.mojom.dart' as sample;
+import 'package:_mojo_for_test_only/sample/sample_interfaces.mojom.dart' as sample;
 
 // Bump this if sample_interfaces.mojom adds higher versions.
 const maxVersion = 3;

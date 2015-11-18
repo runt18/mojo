@@ -2,7 +2,7 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-[DartPackage="service_test_interfaces"]
+[DartPackage="_mojo_for_test_only"]
 module test;
 
 interface EchoService {

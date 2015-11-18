@@ -8,7 +8,7 @@
 //
 // The speech_recognizer service is only available for Android targets.
 
-import 'package:mojom/speech_recognizer/speech_recognizer.mojom.dart';
+import 'package:mojo_services/speech_recognizer/speech_recognizer.mojom.dart';
 import 'package:sky/mojo/embedder.dart';
 
 import 'package:sky/widgets/raised_button.dart';

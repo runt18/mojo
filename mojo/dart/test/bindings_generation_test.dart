@@ -7,16 +7,16 @@ import 'dart:isolate';
 import 'dart:typed_data';
 import 'dart:convert';
 
-import 'package:_testing/expect.dart';
+import 'package:_mojo_for_test_only/expect.dart';
 import 'package:mojo/bindings.dart' as bindings;
 import 'package:mojo/core.dart' as core;
-import 'package:mojom/sample/sample_interfaces.mojom.dart' as sample;
-import 'package:mojom/mojo/test/test_structs.mojom.dart' as structs;
-import 'package:mojom/mojo/test/test_unions.mojom.dart' as unions;
-import 'package:mojom/mojo/test/rect.mojom.dart' as rect;
-import 'package:mojom/mojo/test/serialization_test_structs.mojom.dart'
+import 'package:_mojo_for_test_only/sample/sample_interfaces.mojom.dart' as sample;
+import 'package:_mojo_for_test_only/mojo/test/test_structs.mojom.dart' as structs;
+import 'package:_mojo_for_test_only/mojo/test/test_unions.mojom.dart' as unions;
+import 'package:_mojo_for_test_only/mojo/test/rect.mojom.dart' as rect;
+import 'package:_mojo_for_test_only/mojo/test/serialization_test_structs.mojom.dart'
     as serialization;
-import 'package:mojom/regression_tests/regression_tests.mojom.dart'
+import 'package:_mojo_for_test_only/regression_tests/regression_tests.mojom.dart'
     as regression;
 
 class ProviderImpl implements sample.Provider {

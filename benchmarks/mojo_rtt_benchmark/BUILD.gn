@@ -25,7 +25,7 @@ dart_pkg("mojo_rtt_benchmark") {
   deps = [
     "//examples/echo:bindings",
     "//mojo/common/dart",
-    "//mojo/dart/packages/",
+    "//mojo/dart/packages",
     "//mojo/public/dart",
   ]
 }

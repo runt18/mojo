@@ -4,6 +4,7 @@
 
 group("packages") {
   deps = [
+    "//mojo/dart/packages/_mojo_for_test_only",
     "//mojo/dart/packages/mojo",
     "//mojo/dart/packages/mojo_apptest",
     "//mojo/dart/packages/mojo_sdk",

@@ -14,7 +14,7 @@ dart_pkg("traced_application") {
   ]
   deps = [
     "//mojo/common/dart",
-    "//mojo/dart/packages/",
+    "//mojo/dart/packages",
     "//mojo/public/dart",
   ]
 }

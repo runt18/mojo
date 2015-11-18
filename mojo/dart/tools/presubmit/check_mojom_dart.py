@@ -78,7 +78,8 @@ def _print_regenerate_message(package):
   print("""
 *** Dart Generated Bindings Check Failed for package: %s
 
-To regenerate bindings, from the src directory, run:
+To regenerate all bindings, from the src directory, run:
+
 ./mojo/dart/tools/bindings/generate.py
 """ % (package))
 
@@ -273,7 +274,7 @@ def presubmit_check(packages, affected_files):
   mojom_darts = filter_paths(affected_files, is_mojom_dart)
 
   if (check_for_bindings_machinery_changes(affected_files) and
-      (mojom_darts.length == 0)):
+      (len(mojom_darts) == 0)):
     print('Bindings generation script or templates have changed but '
           'no .mojom.dart files have been regenerated.')
     # All packages need to be regenerated.

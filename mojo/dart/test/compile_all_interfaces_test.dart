@@ -10,25 +10,24 @@ import 'dart:async';
 import 'dart:isolate';
 import 'dart:typed_data';
 
-import 'package:_testing/expect.dart';
+import 'package:_mojo_for_test_only/expect.dart';
 import 'package:mojo/application.dart';
 import 'package:mojo/bindings.dart';
 import 'package:mojo/core.dart';
 import 'package:mojo/mojo/application.mojom.dart';
 import 'package:mojo/mojo/service_provider.mojom.dart';
 import 'package:mojo/mojo/shell.mojom.dart';
-import 'package:mojom/math/math_calculator.mojom.dart';
-import 'package:mojom/no_module.mojom.dart';
-import 'package:mojom/mojo/test/rect.mojom.dart';
-import 'package:mojom/regression_tests/regression_tests.mojom.dart';
-import 'package:mojom/sample/sample_factory.mojom.dart';
-import 'package:mojom/imported/sample_import2.mojom.dart';
-import 'package:mojom/imported/sample_import.mojom.dart';
-import 'package:mojom/sample/sample_interfaces.mojom.dart';
-import 'package:mojom/sample/sample_service.mojom.dart';
-import 'package:mojom/mojo/test/serialization_test_structs.mojom.dart';
-import 'package:mojom/mojo/test/test_structs.mojom.dart';
-import 'package:mojom/mojo/test/validation_test_interfaces.mojom.dart';
+import 'package:_mojo_for_test_only/math/math_calculator.mojom.dart';
+import 'package:_mojo_for_test_only/mojo/test/rect.mojom.dart';
+import 'package:_mojo_for_test_only/regression_tests/regression_tests.mojom.dart';
+import 'package:_mojo_for_test_only/sample/sample_factory.mojom.dart';
+import 'package:_mojo_for_test_only/imported/sample_import2.mojom.dart';
+import 'package:_mojo_for_test_only/imported/sample_import.mojom.dart';
+import 'package:_mojo_for_test_only/sample/sample_interfaces.mojom.dart';
+import 'package:_mojo_for_test_only/sample/sample_service.mojom.dart';
+import 'package:_mojo_for_test_only/mojo/test/serialization_test_structs.mojom.dart';
+import 'package:_mojo_for_test_only/mojo/test/test_structs.mojom.dart';
+import 'package:_mojo_for_test_only/mojo/test/validation_test_interfaces.mojom.dart';
 
 int main() {
   return 0;

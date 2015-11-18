@@ -14,7 +14,7 @@ dart_pkg("dart_handler_running") {
   ]
   deps = [
     "//mojo/common/dart",
-    "//mojo/dart/packages/",
+    "//mojo/dart/packages",
     "//mojo/public/dart",
   ]
 }

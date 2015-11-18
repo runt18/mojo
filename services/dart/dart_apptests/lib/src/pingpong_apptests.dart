@@ -10,7 +10,7 @@ import 'package:mojo_apptest/apptest.dart';
 import 'package:mojo/application.dart';
 import 'package:mojo/bindings.dart';
 import 'package:mojo/core.dart';
-import 'package:service_test_interfaces/test/pingpong_service.mojom.dart';
+import 'package:_mojo_for_test_only/test/pingpong_service.mojom.dart';
 
 class _TestingPingPongClient extends PingPongClient {
   final PingPongClientStub stub;

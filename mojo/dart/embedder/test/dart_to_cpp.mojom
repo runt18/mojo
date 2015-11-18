@@ -2,6 +2,7 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
+[DartPackage="_mojo_for_test_only"]
 module dart_to_cpp;
 
 // This struct encompasses all of the basic types, so that they

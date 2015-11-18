@@ -13,7 +13,7 @@ dart_pkg("pingpong") {
     "pubspec.yaml",
   ]
   deps = [
-    "//mojo/dart/packages/mojo",
+    "//mojo/dart/packages",
     "//mojo/public/dart",
     "//services/dart/test/dart/service_test_interfaces",
   ]
