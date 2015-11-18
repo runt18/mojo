@@ -316,9 +316,10 @@ bool Context::InitWithPaths(
   if (!ConfigureURLMappings(command_line, this))
     return false;
 
-  mojo::embedder::InitIPCSupport(
-      mojo::embedder::ProcessType::MASTER, task_runners_->shell_runner(), this,
-      task_runners_->io_runner(), mojo::embedder::ScopedPlatformHandle());
+  mojo::embedder::InitIPCSupport(mojo::embedder::ProcessType::MASTER,
+                                 task_runners_->shell_runner().Clone(), this,
+                                 task_runners_->io_runner().Clone(),
+                                 mojo::embedder::ScopedPlatformHandle());
 
   scoped_ptr<NativeRunnerFactory> runner_factory;
   if (command_line.HasSwitch(switches::kEnableMultiprocess))
@@ -359,8 +360,7 @@ bool Context::InitWithPaths(
 
 void Context::Shutdown() {
   TRACE_EVENT0("mojo_shell", "Context::Shutdown");
-  DCHECK_EQ(base::MessageLoop::current()->task_runner(),
-            task_runners_->shell_runner());
+  DCHECK(task_runners_->shell_runner()->RunsTasksOnCurrentThread());
   mojo::embedder::ShutdownIPCSupport();
   // We'll quit when we get OnShutdownComplete().
   base::MessageLoop::current()->Run();
@@ -375,8 +375,7 @@ GURL Context::ResolveMojoURL(const GURL& url) {
 }
 
 void Context::OnShutdownComplete() {
-  DCHECK_EQ(base::MessageLoop::current()->task_runner(),
-            task_runners_->shell_runner());
+  DCHECK(task_runners_->shell_runner()->RunsTasksOnCurrentThread());
   base::MessageLoop::current()->Quit();
 }
 
@@ -398,8 +397,7 @@ void Context::OnApplicationEnd(const GURL& url) {
   if (app_urls_.find(url) != app_urls_.end()) {
     app_urls_.erase(url);
     if (app_urls_.empty() && base::MessageLoop::current()->is_running()) {
-      DCHECK_EQ(base::MessageLoop::current()->task_runner(),
-                task_runners_->shell_runner());
+      DCHECK(task_runners_->shell_runner()->RunsTasksOnCurrentThread());
       base::MessageLoop::current()->Quit();
     }
   }

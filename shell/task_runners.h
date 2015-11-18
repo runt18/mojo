@@ -10,6 +10,8 @@
 #include "base/memory/scoped_ptr.h"
 #include "base/single_thread_task_runner.h"
 #include "base/threading/thread.h"
+#include "mojo/edk/embedder/platform_task_runner.h"
+#include "mojo/edk/util/ref_ptr.h"
 
 namespace base {
 class SequencedWorkerPool;
@@ -25,12 +27,14 @@ class TaskRunners {
       const scoped_refptr<base::SingleThreadTaskRunner>& shell_runner);
   ~TaskRunners();
 
-  base::SingleThreadTaskRunner* shell_runner() const {
-    return shell_runner_.get();
+  const mojo::util::RefPtr<mojo::embedder::PlatformTaskRunner>& shell_runner()
+      const {
+    return shell_runner_;
   }
 
-  base::SingleThreadTaskRunner* io_runner() const {
-    return io_thread_->message_loop_proxy().get();
+  const mojo::util::RefPtr<mojo::embedder::PlatformTaskRunner>& io_runner()
+      const {
+    return io_runner_;
   }
 
   base::SequencedWorkerPool* blocking_pool() const {
@@ -38,8 +42,9 @@ class TaskRunners {
   }
 
  private:
-  scoped_refptr<base::SingleThreadTaskRunner> shell_runner_;
+  mojo::util::RefPtr<mojo::embedder::PlatformTaskRunner> shell_runner_;
   scoped_ptr<base::Thread> io_thread_;
+  mojo::util::RefPtr<mojo::embedder::PlatformTaskRunner> io_runner_;
 
   scoped_refptr<base::SequencedWorkerPool> blocking_pool_;
 

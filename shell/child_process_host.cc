@@ -11,19 +11,23 @@
 #include "base/location.h"
 #include "base/logging.h"
 #include "base/macros.h"
-#include "base/message_loop/message_loop.h"
 #include "base/process/kill.h"
 #include "base/process/launch.h"
 #include "base/task_runner.h"
 #include "base/task_runner_util.h"
+#include "base/thread_task_runner_handle.h"
 #include "build/build_config.h"
+#include "mojo/edk/base_edk/platform_task_runner_impl.h"
 #include "mojo/edk/embedder/embedder.h"
 #include "mojo/edk/embedder/platform_channel_pair.h"
+#include "mojo/edk/util/ref_ptr.h"
 #include "mojo/public/cpp/system/message_pipe.h"
 #include "shell/application_manager/native_application_options.h"
 #include "shell/child_switches.h"
 #include "shell/context.h"
 #include "shell/task_runners.h"
+
+using mojo::util::MakeRefCounted;
 
 namespace shell {
 
@@ -59,10 +63,14 @@ void ChildProcessHost::Start(const NativeApplicationOptions& options) {
 #endif
   // TODO(vtl): Add something for |slave_info|.
   // TODO(vtl): The "unretained this" is wrong (see also below).
+  // TODO(vtl): We shouldn't have to make a new
+  // |base_edk::PlatformTaskRunnerImpl| for each instance. Instead, there should
+  // be one per thread.
   mojo::ScopedMessagePipeHandle handle(mojo::embedder::ConnectToSlave(
       nullptr, launch_data->platform_channel_pair.PassServerHandle(),
       base::Bind(&ChildProcessHost::DidConnectToSlave, base::Unretained(this)),
-      base::MessageLoop::current()->message_loop_proxy(),
+      MakeRefCounted<base_edk::PlatformTaskRunnerImpl>(
+          base::ThreadTaskRunnerHandle::Get()),
       &launch_data->child_connection_id, &channel_info_));
   // TODO(vtl): We should destroy the channel on destruction (using
   // |channel_info_|, but only after the callback has been called.

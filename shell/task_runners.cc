@@ -5,6 +5,9 @@
 #include "shell/task_runners.h"
 
 #include "base/threading/sequenced_worker_pool.h"
+#include "mojo/edk/base_edk/platform_task_runner_impl.h"
+
+using mojo::util::MakeRefCounted;
 
 namespace shell {
 
@@ -24,11 +27,13 @@ scoped_ptr<base::Thread> CreateIOThread(const char* name) {
 
 TaskRunners::TaskRunners(
     const scoped_refptr<base::SingleThreadTaskRunner>& shell_runner)
-    : shell_runner_(shell_runner),
+    : shell_runner_(
+          MakeRefCounted<base_edk::PlatformTaskRunnerImpl>(shell_runner)),
       io_thread_(CreateIOThread("io_thread")),
+      io_runner_(MakeRefCounted<base_edk::PlatformTaskRunnerImpl>(
+          io_thread_->task_runner())),
       blocking_pool_(new base::SequencedWorkerPool(kMaxBlockingPoolThreads,
-                                                   "blocking_pool")) {
-}
+                                                   "blocking_pool")) {}
 
 TaskRunners::~TaskRunners() {
   blocking_pool_->Shutdown();

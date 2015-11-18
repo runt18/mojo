@@ -20,11 +20,14 @@
 #include "base/thread_task_runner_handle.h"
 #include "base/threading/thread.h"
 #include "base/threading/thread_checker.h"
+#include "mojo/edk/base_edk/platform_task_runner_impl.h"
 #include "mojo/edk/embedder/embedder.h"
 #include "mojo/edk/embedder/platform_channel_pair.h"
+#include "mojo/edk/embedder/platform_task_runner.h"
 #include "mojo/edk/embedder/scoped_platform_handle.h"
 #include "mojo/edk/embedder/simple_platform_support.h"
 #include "mojo/edk/embedder/slave_process_delegate.h"
+#include "mojo/edk/util/ref_ptr.h"
 #include "mojo/message_pump/message_pump_mojo.h"
 #include "mojo/public/cpp/bindings/binding.h"
 #include "mojo/public/cpp/system/core.h"
@@ -32,6 +35,10 @@
 #include "shell/child_switches.h"
 #include "shell/init.h"
 #include "shell/native_application_support.h"
+
+using mojo::embedder::PlatformTaskRunner;
+using mojo::util::MakeRefCounted;
+using mojo::util::RefPtr;
 
 namespace shell {
 namespace {
@@ -100,8 +107,9 @@ class AppContext : public mojo::embedder::SlaveProcessDelegate {
     // Create and start our I/O thread.
     base::Thread::Options io_thread_options(base::MessageLoop::TYPE_IO, 0);
     CHECK(io_thread_.StartWithOptions(io_thread_options));
-    io_runner_ = io_thread_.message_loop_proxy().get();
-    CHECK(io_runner_.get());
+    io_runner_ = MakeRefCounted<base_edk::PlatformTaskRunnerImpl>(
+        io_thread_.task_runner());
+    CHECK(io_runner_);
 
     // Create and start our controller thread.
     base::Thread::Options controller_thread_options;
@@ -110,27 +118,25 @@ class AppContext : public mojo::embedder::SlaveProcessDelegate {
     controller_thread_options.message_pump_factory =
         base::Bind(&mojo::common::MessagePumpMojo::Create);
     CHECK(controller_thread_.StartWithOptions(controller_thread_options));
-    controller_runner_ = controller_thread_.message_loop_proxy().get();
-    CHECK(controller_runner_.get());
+    controller_runner_ = MakeRefCounted<base_edk::PlatformTaskRunnerImpl>(
+        controller_thread_.task_runner());
+    CHECK(controller_runner_);
 
     mojo::embedder::InitIPCSupport(mojo::embedder::ProcessType::SLAVE,
-                                   controller_runner_, this, io_runner_,
-                                   platform_handle.Pass());
+                                   controller_runner_.Clone(), this,
+                                   io_runner_.Clone(), platform_handle.Pass());
   }
 
   void Shutdown() {
     Blocker blocker;
     shutdown_unblocker_ = blocker.GetUnblocker();
-    controller_runner_->PostTask(
-        FROM_HERE, base::Bind(&AppContext::ShutdownOnControllerThread,
-                              base::Unretained(this)));
+    controller_runner_->PostTask(base::Bind(
+        &AppContext::ShutdownOnControllerThread, base::Unretained(this)));
     blocker.Block();
   }
 
-  base::SingleThreadTaskRunner* io_runner() const { return io_runner_.get(); }
-
-  base::SingleThreadTaskRunner* controller_runner() const {
-    return controller_runner_.get();
+  const RefPtr<PlatformTaskRunner>& controller_runner() const {
+    return controller_runner_;
   }
 
   ChildControllerImpl* controller() const { return controller_.get(); }
@@ -160,10 +166,10 @@ class AppContext : public mojo::embedder::SlaveProcessDelegate {
   }
 
   base::Thread io_thread_;
-  scoped_refptr<base::SingleThreadTaskRunner> io_runner_;
+  RefPtr<PlatformTaskRunner> io_runner_;
 
   base::Thread controller_thread_;
-  scoped_refptr<base::SingleThreadTaskRunner> controller_runner_;
+  RefPtr<PlatformTaskRunner> controller_runner_;
 
   // Accessed only on the controller thread.
   scoped_ptr<ChildControllerImpl> controller_;
@@ -200,7 +206,7 @@ class ChildControllerImpl : public ChildController {
             child_connection_id,
             base::Bind(&ChildControllerImpl::DidConnectToMaster,
                        base::Unretained(impl.get())),
-            base::ThreadTaskRunnerHandle::Get(), &impl->channel_info_));
+            impl->mojo_task_runner_.Clone(), &impl->channel_info_));
     DCHECK(impl->channel_info_);
     impl->Bind(host_message_pipe.Pass());
 
@@ -234,6 +240,8 @@ class ChildControllerImpl : public ChildController {
                       const Blocker::Unblocker& unblocker)
       : app_context_(app_context),
         unblocker_(unblocker),
+        mojo_task_runner_(MakeRefCounted<base_edk::PlatformTaskRunnerImpl>(
+            base::ThreadTaskRunnerHandle::Get())),
         channel_info_(nullptr),
         binding_(this) {
     binding_.set_connection_error_handler([this]() { OnConnectionError(); });
@@ -268,6 +276,7 @@ class ChildControllerImpl : public ChildController {
   base::ThreadChecker thread_checker_;
   AppContext* const app_context_;
   Blocker::Unblocker unblocker_;
+  RefPtr<PlatformTaskRunner> mojo_task_runner_;
   StartAppCallback on_app_complete_;
 
   mojo::embedder::ChannelInfo* channel_info_;
@@ -305,10 +314,9 @@ int main(int argc, char** argv) {
   app_context.Init(platform_handle.Pass());
 
   shell::Blocker blocker;
-  app_context.controller_runner()->PostTask(
-      FROM_HERE, base::Bind(&shell::ChildControllerImpl::Init,
-                            base::Unretained(&app_context), child_connection_id,
-                            blocker.GetUnblocker()));
+  app_context.controller_runner()->PostTask(base::Bind(
+      &shell::ChildControllerImpl::Init, base::Unretained(&app_context),
+      child_connection_id, blocker.GetUnblocker()));
   // This will block, then run whatever the controller wants.
   blocker.Block();
 
