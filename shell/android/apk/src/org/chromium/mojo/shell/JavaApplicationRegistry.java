@@ -33,7 +33,7 @@ import java.util.Map;
 public class JavaApplicationRegistry {
     private final Map<String, ApplicationDelegate> mApplicationDelegateMap = new HashMap<>();
     // Thread with a Looper required to get callbacks from the android framework..
-    private final HandlerThread mHandlerThread = new HandlerThread("FrameworkThread");
+    private final HandlerThread mHandlerThread = new NativeHandlerThread("FrameworkThread");
 
     private static final class ApplicationRunnable implements Runnable {
         private final ApplicationDelegate mApplicationDelegate;

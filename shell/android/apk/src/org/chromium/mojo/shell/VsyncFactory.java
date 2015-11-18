@@ -4,11 +4,11 @@
 
 package org.chromium.mojo.shell;
 
+import android.os.Handler;
 import android.os.Looper;
 
 import org.chromium.mojo.application.ServiceFactoryBinder;
 import org.chromium.mojo.bindings.InterfaceRequest;
-import org.chromium.mojo.system.impl.CoreImpl;
 import org.chromium.mojo.vsync.VSyncProviderImpl;
 import org.chromium.mojom.vsync.VSyncProvider;
 
@@ -16,16 +16,21 @@ import org.chromium.mojom.vsync.VSyncProvider;
  * A ServiceFactoryBinder for the vsync service.
  */
 final class VsyncFactory implements ServiceFactoryBinder<VSyncProvider> {
-    private final Looper mLooper;
+    private final Handler mHandler;
 
     public VsyncFactory(Looper looper) {
-        mLooper = looper;
+        mHandler = new Handler(looper);
     }
 
     @Override
-    public void bind(InterfaceRequest<VSyncProvider> request) {
-        VSyncProviderImpl implementation = new VSyncProviderImpl(CoreImpl.getInstance(), mLooper);
-        implementation.setBinding(VSyncProvider.MANAGER.bind(implementation, request));
+    public void bind(final InterfaceRequest<VSyncProvider> request) {
+        mHandler.post(new Runnable() {
+            @Override
+            public void run() {
+                VSyncProviderImpl implementation = new VSyncProviderImpl();
+                implementation.setBinding(VSyncProvider.MANAGER.bind(implementation, request));
+            }
+        });
     }
 
     @Override

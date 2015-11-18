@@ -13,6 +13,7 @@
 #include "shell/android/android_handler.h"
 #include "shell/android/java_application_loader.h"
 #include "shell/android/main.h"
+#include "shell/android/native_handler_thread.h"
 
 namespace {
 
@@ -21,10 +22,11 @@ base::android::RegistrationMethod kMojoRegisteredMethods[] = {
     {"Core", mojo::android::RegisterCoreImpl},
     {"BaseRunLoop", mojo::android::RegisterBaseRunLoop},
     {"AndroidHandler", shell::RegisterAndroidHandlerJni},
+    {"JavaApplicationLoader", shell::JavaApplicationLoader::RegisterJni},
+    {"NativeHandlerThread", shell::RegisterNativeHandlerThreadJni},
     {"PlatformViewportAndroid",
      native_viewport::PlatformViewportAndroid::Register},
     {"ShellService", shell::RegisterShellService},
-    {"JavaApplicationLoader", shell::JavaApplicationLoader::RegisterJni},
 };
 
 bool RegisterJNI(JNIEnv* env) {

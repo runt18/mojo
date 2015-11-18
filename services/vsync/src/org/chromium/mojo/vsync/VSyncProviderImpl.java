@@ -4,42 +4,21 @@
 
 package org.chromium.mojo.vsync;
 
-import android.os.Handler;
-import android.os.Looper;
 import android.view.Choreographer;
 
-import org.chromium.mojo.system.Core;
 import org.chromium.mojo.system.MojoException;
-import org.chromium.mojo.system.RunLoop;
 import org.chromium.mojom.vsync.VSyncProvider;
 
 /**
  * Android implementation of VSyncProvider.
  */
 public class VSyncProviderImpl implements VSyncProvider, Choreographer.FrameCallback {
-    private final RunLoop mRunLoop;
-    private Choreographer mChoreographer;
+    private final Choreographer mChoreographer;
     private AwaitVSyncResponse mCallback;
     private Binding mBinding = null;
 
-    public VSyncProviderImpl(Core core, Looper looper) {
-        mRunLoop = core.getCurrentRunLoop();
-        // The choreographer must be initialized on a thread with a looper.
-        new Handler(looper).post(new Runnable() {
-            @Override
-            public void run() {
-                final Choreographer choreographer = Choreographer.getInstance();
-                mRunLoop.postDelayedTask(new Runnable() {
-                    @Override
-                    public void run() {
-                        mChoreographer = choreographer;
-                        if (mCallback != null) {
-                            mChoreographer.postFrameCallback(VSyncProviderImpl.this);
-                        }
-                    }
-                }, 0);
-            }
-        });
+    public VSyncProviderImpl() {
+        mChoreographer = Choreographer.getInstance();
     }
 
     public void setBinding(Binding binding) {
@@ -62,20 +41,12 @@ public class VSyncProviderImpl implements VSyncProvider, Choreographer.FrameCall
             return;
         }
         mCallback = callback;
-        if (mChoreographer != null) {
-            // Posting from another thread is allowed on a choreographer.
-            mChoreographer.postFrameCallback(this);
-        }
+        mChoreographer.postFrameCallback(this);
     }
 
     @Override
     public void doFrame(final long frameTimeNanos) {
-        mRunLoop.postDelayedTask(new Runnable() {
-            @Override
-            public void run() {
-                mCallback.call(frameTimeNanos / 1000);
-                mCallback = null;
-            }
-        }, 0);
+        mCallback.call(frameTimeNanos / 1000);
+        mCallback = null;
     }
 }

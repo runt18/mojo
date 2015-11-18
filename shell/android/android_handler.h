@@ -2,8 +2,8 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-#ifndef MOJO_SHELL_ANDROID_CONTENT_HANDLER_H_
-#define MOJO_SHELL_ANDROID_CONTENT_HANDLER_H_
+#ifndef SHELL_ANDROID_ANDROID_HANDLER_H_
+#define SHELL_ANDROID_ANDROID_HANDLER_H_
 
 #include <jni.h>
 
@@ -53,4 +53,4 @@ bool RegisterAndroidHandlerJni(JNIEnv* env);
 
 }  // namespace shell
 
-#endif  // MOJO_SHELL_ANDROID_CONTENT_HANDLER_H_
+#endif  // SHELL_ANDROID_ANDROID_HANDLER_H_
