@@ -19,8 +19,7 @@ class LinuxKeyboardServiceImpl : public ::keyboard::KeyboardService,
  public:
   explicit LinuxKeyboardServiceImpl(
       mojo::InterfaceRequest<::keyboard::KeyboardService> request,
-      mojo::Shell* shell,
-      mojo::ApplicationConnection* connection);
+      mojo::InterfaceRequest<NativeViewportEventDispatcher> dispatcher);
   ~LinuxKeyboardServiceImpl() override;
   void Show(::keyboard::KeyboardClientPtr client,
             ::keyboard::KeyboardType type) override;
@@ -39,6 +38,7 @@ class LinuxKeyboardServiceImpl : public ::keyboard::KeyboardService,
   mojo::Binding<mojo::NativeViewportEventDispatcher> event_dispatcher_binding_;
 
   ::keyboard::KeyboardClientPtr client_;
+  std::string text_;
 
   DISALLOW_COPY_AND_ASSIGN(LinuxKeyboardServiceImpl);
 };

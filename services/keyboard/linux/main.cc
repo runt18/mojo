@@ -16,48 +16,45 @@
 
 namespace keyboard {
 
+class KeyboardServiceFactoryImpl : public ::keyboard::KeyboardServiceFactory {
+public:
+  KeyboardServiceFactoryImpl(mojo::InterfaceRequest<KeyboardServiceFactory> request)
+    : binding_(this, request.Pass()) {}
+
+  // |InterfaceFactory<KeyboardService>| implementation:
+  void CreateKeyboardService(
+      mojo::InterfaceRequest<mojo::NativeViewportEventDispatcher> keyEventDispatcher,
+      mojo::InterfaceRequest<KeyboardService> serviceRequest) override {
+    new LinuxKeyboardServiceImpl(serviceRequest.Pass(), keyEventDispatcher.Pass());
+  }
+
+private:
+  mojo::StrongBinding<::keyboard::KeyboardServiceFactory> binding_;
+
+};
+
 class KeyboardServiceApp : public mojo::ApplicationDelegate,
-                           public mojo::InterfaceFactory<KeyboardService> {
+                           public mojo::InterfaceFactory<KeyboardServiceFactory> {
  public:
   KeyboardServiceApp() {}
   ~KeyboardServiceApp() override {}
 
  private:
-  // |ApplicationDelegate| override:
-  void Initialize(mojo::ApplicationImpl* app) override {
-    shell_ = app->shell();
-
-  /*
-  // WRONG TROUSERS
-    mojo::ServiceProviderPtr viewport_service_provider;
-    shell_->ConnectToApplication("mojo:native_viewport_service",
-                                 mojo::GetProxy(&viewport_service_provider),
-                                 nullptr);
-    mojo::NativeViewportPtr viewport_service_;
-    mojo::ConnectToService(viewport_service_provider.get(), &viewport_service_);
-
-    mojo::NativeViewportEventDispatcherPtr dispatcher;
-    mojo::Binding<mojo::NativeViewportEventDispatcher> event_dispatcher_binding_(this);
-    event_dispatcher_binding_.Bind(GetProxy(&dispatcher));
-    viewport_service_->SetKeyEventDispatcher(dispatcher.Pass());
-  */
-  }
 
   // |ApplicationDelegate| override:
   bool ConfigureIncomingConnection(mojo::ApplicationConnection* connection) override {
-    connection->AddService<KeyboardService>(this);
+    connection->AddService<KeyboardServiceFactory>(this);
     return true;
   }
 
   // |InterfaceFactory<KeyboardService>| implementation:
   void Create(mojo::ApplicationConnection* connection,
-              mojo::InterfaceRequest<KeyboardService> request) override {
-    new LinuxKeyboardServiceImpl(request.Pass(), shell_, connection);
+              mojo::InterfaceRequest<KeyboardServiceFactory> request) override {
+    new KeyboardServiceFactoryImpl(request.Pass());
   }
 
  private:
 
-  mojo::Shell* shell_;
   DISALLOW_COPY_AND_ASSIGN(KeyboardServiceApp);
 };
 

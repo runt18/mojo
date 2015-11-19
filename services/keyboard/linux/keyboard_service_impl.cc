@@ -15,30 +15,9 @@ namespace keyboard {
 
 LinuxKeyboardServiceImpl::LinuxKeyboardServiceImpl(
     mojo::InterfaceRequest<::keyboard::KeyboardService> request,
-    mojo::Shell* shell,
-    mojo::ApplicationConnection* connection)
-    : shell_(shell), connection_(connection),
-      binding_(this, request.Pass()),
-      event_dispatcher_binding_(this),
-      client_(nullptr) {
-  // Connect IME to provided client
-  mojo::NativeViewportPtr viewport_service_;
-  connection_->ConnectToService(&viewport_service_);
-
-  if (!viewport_service_) {
-    mojo::ServiceProviderPtr viewport_service_provider;
-    shell_->ConnectToApplication("mojo:native_viewport_service",
-                                 mojo::GetProxy(&viewport_service_provider),
-                                 nullptr);
-    mojo::ConnectToService(viewport_service_provider.get(), &viewport_service_);
-  }
-
-  if (viewport_service_) {
-    mojo::NativeViewportEventDispatcherPtr dispatcher;
-    event_dispatcher_binding_.Bind(GetProxy(&dispatcher));
-    viewport_service_->SetKeyEventDispatcher(dispatcher.Pass());
-  }
-
+    mojo::InterfaceRequest<NativeViewportEventDispatcher> dispatcher)
+    : binding_(this, request.Pass()),
+      event_dispatcher_binding_(this, dispatcher.Pass()) {
 }
 
 LinuxKeyboardServiceImpl::~LinuxKeyboardServiceImpl() {
@@ -56,8 +35,8 @@ void LinuxKeyboardServiceImpl::Hide() {
   client_ = nullptr;
 }
 
-void LinuxKeyboardServiceImpl::SetText(const mojo::String&) {
-  // Not applicable for physical keyboards
+void LinuxKeyboardServiceImpl::SetText(const mojo::String& text) {
+  text_ = text;
 }
 
 void LinuxKeyboardServiceImpl::SetSelection(int32_t start, int32_t end) {
@@ -79,7 +58,7 @@ void LinuxKeyboardServiceImpl::SetSelection(int32_t start, int32_t end) {
 void LinuxKeyboardServiceImpl::OnEvent(mojo::EventPtr event,
                                        const mojo::Callback<void()>& callback) {
   if (event->action == mojo::EventType::KEY_PRESSED && event->key_data->is_char) {
-    if (client_ != nullptr) {
+    if (client_) {
       switch(event->key_data->windows_key_code) {
         case mojo::KeyboardCode::BACK: // backspace
           client_->DeleteSurroundingText(1, 0);
@@ -91,7 +70,7 @@ void LinuxKeyboardServiceImpl::OnEvent(mojo::EventPtr event,
           client_->SetSelection(0, 0);
           break;
         case mojo::KeyboardCode::END:
-          client_->SetSelection(1, 1);
+          client_->SetSelection(text_.size()-1, text_.size()-1);
           break;
         case mojo::KeyboardCode::TAB: // tab
           // TODO: Advance focus, in reverse if shifted
@@ -102,8 +81,9 @@ void LinuxKeyboardServiceImpl::OnEvent(mojo::EventPtr event,
         default:
           base::string16 character;
           character.push_back(event->key_data->character);
-          mojo::String text(base::UTF16ToUTF8(character));
-          client_->CommitText(text, 1);
+          std::string s = base::UTF16ToUTF8(character);
+          text_ += s;
+          client_->CommitText(mojo::String(s), 1);
           break;
       }
     }

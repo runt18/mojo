@@ -17,16 +17,16 @@
 
 namespace keyboard {
 
-class KeyboardServiceFactory : public mojo::InterfaceFactory<KeyboardService> {
+class NativeKeyboardServiceFactory : public mojo::InterfaceFactory<KeyboardService> {
  public:
-  explicit KeyboardServiceFactory(
+  explicit NativeKeyboardServiceFactory(
       mojo::InterfaceRequest<mojo::ServiceProvider> service_provider_request) {
     if (service_provider_request.is_pending()) {
       service_provider_impl_.Bind(service_provider_request.Pass());
       service_provider_impl_.AddService<KeyboardService>(this);
     }
   }
-  ~KeyboardServiceFactory() override {}
+  ~NativeKeyboardServiceFactory() override {}
 
   void OnViewCreated(mojo::View* view, mojo::Shell* shell) {
     view_observer_delegate_.OnViewCreated(view, shell);
@@ -68,8 +68,8 @@ class KeyboardServiceDelegate : public mojo::ApplicationDelegate,
   void OnEmbed(mojo::View* root,
                mojo::InterfaceRequest<mojo::ServiceProvider> services,
                mojo::ServiceProviderPtr exposed_services) override {
-    KeyboardServiceFactory* keyboard_service_factory =
-        new KeyboardServiceFactory(services.Pass());
+    NativeKeyboardServiceFactory* keyboard_service_factory =
+        new NativeKeyboardServiceFactory(services.Pass());
     keyboard_service_factory->OnViewCreated(root, shell_);
   }
 
