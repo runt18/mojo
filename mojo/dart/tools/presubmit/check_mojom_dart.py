@@ -56,8 +56,8 @@ def _mojom_output_path(mojom):
 
 # Given a parsed mojom, return the package or None.
 def _mojom_package(mojom):
-  attributes = mojom['attributes']
-  return attributes['DartPackage']
+  attributes = mojom.get('attributes', {})
+  return attributes.get('DartPackage')
 
 
 # Load and parse a .mojom file. Returns the parsed mojom.
