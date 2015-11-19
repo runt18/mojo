@@ -603,14 +603,14 @@ class HttpServerStub extends bindings.Stub {
 
 
   HttpServerSetHandlerResponseParams _HttpServerSetHandlerResponseParamsFactory(bool success) {
-    var result = new HttpServerSetHandlerResponseParams();
-    result.success = success;
-    return result;
+    var mojo_factory_result = new HttpServerSetHandlerResponseParams();
+    mojo_factory_result.success = success;
+    return mojo_factory_result;
   }
   HttpServerGetPortResponseParams _HttpServerGetPortResponseParamsFactory(int port) {
-    var result = new HttpServerGetPortResponseParams();
-    result.port = port;
-    return result;
+    var mojo_factory_result = new HttpServerGetPortResponseParams();
+    mojo_factory_result.port = port;
+    return mojo_factory_result;
   }
 
   dynamic handleMessage(bindings.ServiceMessage message) {
@@ -846,9 +846,9 @@ class HttpHandlerStub extends bindings.Stub {
 
 
   HttpHandlerHandleRequestResponseParams _HttpHandlerHandleRequestResponseParamsFactory(http_response_mojom.HttpResponse response) {
-    var result = new HttpHandlerHandleRequestResponseParams();
-    result.response = response;
-    return result;
+    var mojo_factory_result = new HttpHandlerHandleRequestResponseParams();
+    mojo_factory_result.response = response;
+    return mojo_factory_result;
   }
 
   dynamic handleMessage(bindings.ServiceMessage message) {

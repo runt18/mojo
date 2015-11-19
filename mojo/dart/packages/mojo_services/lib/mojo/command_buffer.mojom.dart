@@ -1904,8 +1904,8 @@ class CommandBufferStub extends bindings.Stub {
 
 
   CommandBufferEchoResponseParams _CommandBufferEchoResponseParamsFactory() {
-    var result = new CommandBufferEchoResponseParams();
-    return result;
+    var mojo_factory_result = new CommandBufferEchoResponseParams();
+    return mojo_factory_result;
   }
 
   dynamic handleMessage(bindings.ServiceMessage message) {

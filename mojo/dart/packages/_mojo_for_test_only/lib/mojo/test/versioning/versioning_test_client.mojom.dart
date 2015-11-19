@@ -960,25 +960,25 @@ class HumanResourceDatabaseStub extends bindings.Stub {
 
 
   HumanResourceDatabaseAddEmployeeResponseParams _HumanResourceDatabaseAddEmployeeResponseParamsFactory(bool success) {
-    var result = new HumanResourceDatabaseAddEmployeeResponseParams();
-    result.success = success;
-    return result;
+    var mojo_factory_result = new HumanResourceDatabaseAddEmployeeResponseParams();
+    mojo_factory_result.success = success;
+    return mojo_factory_result;
   }
   HumanResourceDatabaseQueryEmployeeResponseParams _HumanResourceDatabaseQueryEmployeeResponseParamsFactory(Employee employee, List<int> fingerPrint) {
-    var result = new HumanResourceDatabaseQueryEmployeeResponseParams();
-    result.employee = employee;
-    result.fingerPrint = fingerPrint;
-    return result;
+    var mojo_factory_result = new HumanResourceDatabaseQueryEmployeeResponseParams();
+    mojo_factory_result.employee = employee;
+    mojo_factory_result.fingerPrint = fingerPrint;
+    return mojo_factory_result;
   }
   HumanResourceDatabaseAttachFingerPrintResponseParams _HumanResourceDatabaseAttachFingerPrintResponseParamsFactory(bool success) {
-    var result = new HumanResourceDatabaseAttachFingerPrintResponseParams();
-    result.success = success;
-    return result;
+    var mojo_factory_result = new HumanResourceDatabaseAttachFingerPrintResponseParams();
+    mojo_factory_result.success = success;
+    return mojo_factory_result;
   }
   HumanResourceDatabaseListEmployeeIdsResponseParams _HumanResourceDatabaseListEmployeeIdsResponseParamsFactory(List<int> ids) {
-    var result = new HumanResourceDatabaseListEmployeeIdsResponseParams();
-    result.ids = ids;
-    return result;
+    var mojo_factory_result = new HumanResourceDatabaseListEmployeeIdsResponseParams();
+    mojo_factory_result.ids = ids;
+    return mojo_factory_result;
   }
 
   dynamic handleMessage(bindings.ServiceMessage message) {

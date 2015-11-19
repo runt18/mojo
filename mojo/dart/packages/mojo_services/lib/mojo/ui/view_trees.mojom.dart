@@ -772,12 +772,12 @@ class ViewTreeStub extends bindings.Stub {
 
 
   ViewTreeOnLayoutResponseParams _ViewTreeOnLayoutResponseParamsFactory() {
-    var result = new ViewTreeOnLayoutResponseParams();
-    return result;
+    var mojo_factory_result = new ViewTreeOnLayoutResponseParams();
+    return mojo_factory_result;
   }
   ViewTreeOnRootUnavailableResponseParams _ViewTreeOnRootUnavailableResponseParamsFactory() {
-    var result = new ViewTreeOnRootUnavailableResponseParams();
-    return result;
+    var mojo_factory_result = new ViewTreeOnRootUnavailableResponseParams();
+    return mojo_factory_result;
   }
 
   dynamic handleMessage(bindings.ServiceMessage message) {
@@ -1048,9 +1048,9 @@ class ViewTreeHostStub extends bindings.Stub {
 
 
   ViewTreeHostLayoutRootResponseParams _ViewTreeHostLayoutRootResponseParamsFactory(layouts_mojom.ViewLayoutInfo info) {
-    var result = new ViewTreeHostLayoutRootResponseParams();
-    result.info = info;
-    return result;
+    var mojo_factory_result = new ViewTreeHostLayoutRootResponseParams();
+    mojo_factory_result.info = info;
+    return mojo_factory_result;
   }
 
   dynamic handleMessage(bindings.ServiceMessage message) {

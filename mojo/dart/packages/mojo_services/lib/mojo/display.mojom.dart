@@ -381,8 +381,8 @@ class DisplayStub extends bindings.Stub {
 
 
   DisplaySubmitFrameResponseParams _DisplaySubmitFrameResponseParamsFactory() {
-    var result = new DisplaySubmitFrameResponseParams();
-    return result;
+    var mojo_factory_result = new DisplaySubmitFrameResponseParams();
+    return mojo_factory_result;
   }
 
   dynamic handleMessage(bindings.ServiceMessage message) {

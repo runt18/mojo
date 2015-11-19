@@ -3803,69 +3803,69 @@ class ViewManagerServiceStub extends bindings.Stub {
 
 
   ViewManagerServiceCreateViewResponseParams _ViewManagerServiceCreateViewResponseParamsFactory(ErrorCode errorCode) {
-    var result = new ViewManagerServiceCreateViewResponseParams();
-    result.errorCode = errorCode;
-    return result;
+    var mojo_factory_result = new ViewManagerServiceCreateViewResponseParams();
+    mojo_factory_result.errorCode = errorCode;
+    return mojo_factory_result;
   }
   ViewManagerServiceDeleteViewResponseParams _ViewManagerServiceDeleteViewResponseParamsFactory(bool success) {
-    var result = new ViewManagerServiceDeleteViewResponseParams();
-    result.success = success;
-    return result;
+    var mojo_factory_result = new ViewManagerServiceDeleteViewResponseParams();
+    mojo_factory_result.success = success;
+    return mojo_factory_result;
   }
   ViewManagerServiceSetViewBoundsResponseParams _ViewManagerServiceSetViewBoundsResponseParamsFactory(bool success) {
-    var result = new ViewManagerServiceSetViewBoundsResponseParams();
-    result.success = success;
-    return result;
+    var mojo_factory_result = new ViewManagerServiceSetViewBoundsResponseParams();
+    mojo_factory_result.success = success;
+    return mojo_factory_result;
   }
   ViewManagerServiceSetViewVisibilityResponseParams _ViewManagerServiceSetViewVisibilityResponseParamsFactory(bool success) {
-    var result = new ViewManagerServiceSetViewVisibilityResponseParams();
-    result.success = success;
-    return result;
+    var mojo_factory_result = new ViewManagerServiceSetViewVisibilityResponseParams();
+    mojo_factory_result.success = success;
+    return mojo_factory_result;
   }
   ViewManagerServiceSetViewPropertyResponseParams _ViewManagerServiceSetViewPropertyResponseParamsFactory(bool success) {
-    var result = new ViewManagerServiceSetViewPropertyResponseParams();
-    result.success = success;
-    return result;
+    var mojo_factory_result = new ViewManagerServiceSetViewPropertyResponseParams();
+    mojo_factory_result.success = success;
+    return mojo_factory_result;
   }
   ViewManagerServiceAddViewResponseParams _ViewManagerServiceAddViewResponseParamsFactory(bool success) {
-    var result = new ViewManagerServiceAddViewResponseParams();
-    result.success = success;
-    return result;
+    var mojo_factory_result = new ViewManagerServiceAddViewResponseParams();
+    mojo_factory_result.success = success;
+    return mojo_factory_result;
   }
   ViewManagerServiceRemoveViewFromParentResponseParams _ViewManagerServiceRemoveViewFromParentResponseParamsFactory(bool success) {
-    var result = new ViewManagerServiceRemoveViewFromParentResponseParams();
-    result.success = success;
-    return result;
+    var mojo_factory_result = new ViewManagerServiceRemoveViewFromParentResponseParams();
+    mojo_factory_result.success = success;
+    return mojo_factory_result;
   }
   ViewManagerServiceReorderViewResponseParams _ViewManagerServiceReorderViewResponseParamsFactory(bool success) {
-    var result = new ViewManagerServiceReorderViewResponseParams();
-    result.success = success;
-    return result;
+    var mojo_factory_result = new ViewManagerServiceReorderViewResponseParams();
+    mojo_factory_result.success = success;
+    return mojo_factory_result;
   }
   ViewManagerServiceGetViewTreeResponseParams _ViewManagerServiceGetViewTreeResponseParamsFactory(List<ViewData> views) {
-    var result = new ViewManagerServiceGetViewTreeResponseParams();
-    result.views = views;
-    return result;
+    var mojo_factory_result = new ViewManagerServiceGetViewTreeResponseParams();
+    mojo_factory_result.views = views;
+    return mojo_factory_result;
   }
   ViewManagerServiceSetViewSurfaceIdResponseParams _ViewManagerServiceSetViewSurfaceIdResponseParamsFactory(bool success) {
-    var result = new ViewManagerServiceSetViewSurfaceIdResponseParams();
-    result.success = success;
-    return result;
+    var mojo_factory_result = new ViewManagerServiceSetViewSurfaceIdResponseParams();
+    mojo_factory_result.success = success;
+    return mojo_factory_result;
   }
   ViewManagerServiceEmbedUrlResponseParams _ViewManagerServiceEmbedUrlResponseParamsFactory(bool success) {
-    var result = new ViewManagerServiceEmbedUrlResponseParams();
-    result.success = success;
-    return result;
+    var mojo_factory_result = new ViewManagerServiceEmbedUrlResponseParams();
+    mojo_factory_result.success = success;
+    return mojo_factory_result;
   }
   ViewManagerServiceEmbedResponseParams _ViewManagerServiceEmbedResponseParamsFactory(bool success) {
-    var result = new ViewManagerServiceEmbedResponseParams();
-    result.success = success;
-    return result;
+    var mojo_factory_result = new ViewManagerServiceEmbedResponseParams();
+    mojo_factory_result.success = success;
+    return mojo_factory_result;
   }
   ViewManagerServicePerformActionResponseParams _ViewManagerServicePerformActionResponseParamsFactory(bool success) {
-    var result = new ViewManagerServicePerformActionResponseParams();
-    result.success = success;
-    return result;
+    var mojo_factory_result = new ViewManagerServicePerformActionResponseParams();
+    mojo_factory_result.success = success;
+    return mojo_factory_result;
   }
 
   dynamic handleMessage(bindings.ServiceMessage message) {
@@ -4514,13 +4514,13 @@ class ViewManagerClientStub extends bindings.Stub {
 
 
   ViewManagerClientOnViewInputEventResponseParams _ViewManagerClientOnViewInputEventResponseParamsFactory() {
-    var result = new ViewManagerClientOnViewInputEventResponseParams();
-    return result;
+    var mojo_factory_result = new ViewManagerClientOnViewInputEventResponseParams();
+    return mojo_factory_result;
   }
   ViewManagerClientOnPerformActionResponseParams _ViewManagerClientOnPerformActionResponseParamsFactory(bool success) {
-    var result = new ViewManagerClientOnPerformActionResponseParams();
-    result.success = success;
-    return result;
+    var mojo_factory_result = new ViewManagerClientOnPerformActionResponseParams();
+    mojo_factory_result.success = success;
+    return mojo_factory_result;
   }
 
   dynamic handleMessage(bindings.ServiceMessage message) {

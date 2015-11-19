@@ -1503,43 +1503,43 @@ class UdpSocketStub extends bindings.Stub {
 
 
   UdpSocketAllowAddressReuseResponseParams _UdpSocketAllowAddressReuseResponseParamsFactory(network_error_mojom.NetworkError result) {
-    var result = new UdpSocketAllowAddressReuseResponseParams();
-    result.result = result;
-    return result;
+    var mojo_factory_result = new UdpSocketAllowAddressReuseResponseParams();
+    mojo_factory_result.result = result;
+    return mojo_factory_result;
   }
   UdpSocketBindResponseParams _UdpSocketBindResponseParamsFactory(network_error_mojom.NetworkError result, net_address_mojom.NetAddress boundAddr, Object receiver) {
-    var result = new UdpSocketBindResponseParams();
-    result.result = result;
-    result.boundAddr = boundAddr;
-    result.receiver = receiver;
-    return result;
+    var mojo_factory_result = new UdpSocketBindResponseParams();
+    mojo_factory_result.result = result;
+    mojo_factory_result.boundAddr = boundAddr;
+    mojo_factory_result.receiver = receiver;
+    return mojo_factory_result;
   }
   UdpSocketConnectResponseParams _UdpSocketConnectResponseParamsFactory(network_error_mojom.NetworkError result, net_address_mojom.NetAddress localAddr, Object receiver) {
-    var result = new UdpSocketConnectResponseParams();
-    result.result = result;
-    result.localAddr = localAddr;
-    result.receiver = receiver;
-    return result;
+    var mojo_factory_result = new UdpSocketConnectResponseParams();
+    mojo_factory_result.result = result;
+    mojo_factory_result.localAddr = localAddr;
+    mojo_factory_result.receiver = receiver;
+    return mojo_factory_result;
   }
   UdpSocketSetSendBufferSizeResponseParams _UdpSocketSetSendBufferSizeResponseParamsFactory(network_error_mojom.NetworkError result) {
-    var result = new UdpSocketSetSendBufferSizeResponseParams();
-    result.result = result;
-    return result;
+    var mojo_factory_result = new UdpSocketSetSendBufferSizeResponseParams();
+    mojo_factory_result.result = result;
+    return mojo_factory_result;
   }
   UdpSocketSetReceiveBufferSizeResponseParams _UdpSocketSetReceiveBufferSizeResponseParamsFactory(network_error_mojom.NetworkError result) {
-    var result = new UdpSocketSetReceiveBufferSizeResponseParams();
-    result.result = result;
-    return result;
+    var mojo_factory_result = new UdpSocketSetReceiveBufferSizeResponseParams();
+    mojo_factory_result.result = result;
+    return mojo_factory_result;
   }
   UdpSocketNegotiateMaxPendingSendRequestsResponseParams _UdpSocketNegotiateMaxPendingSendRequestsResponseParamsFactory(int actualSize) {
-    var result = new UdpSocketNegotiateMaxPendingSendRequestsResponseParams();
-    result.actualSize = actualSize;
-    return result;
+    var mojo_factory_result = new UdpSocketNegotiateMaxPendingSendRequestsResponseParams();
+    mojo_factory_result.actualSize = actualSize;
+    return mojo_factory_result;
   }
   UdpSocketSendToResponseParams _UdpSocketSendToResponseParamsFactory(network_error_mojom.NetworkError result) {
-    var result = new UdpSocketSendToResponseParams();
-    result.result = result;
-    return result;
+    var mojo_factory_result = new UdpSocketSendToResponseParams();
+    mojo_factory_result.result = result;
+    return mojo_factory_result;
   }
 
   dynamic handleMessage(bindings.ServiceMessage message) {

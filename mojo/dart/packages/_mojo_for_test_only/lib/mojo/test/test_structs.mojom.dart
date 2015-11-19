@@ -4708,9 +4708,9 @@ class SomeInterfaceStub extends bindings.Stub {
 
 
   SomeInterfaceSomeMethodResponseParams _SomeInterfaceSomeMethodResponseParamsFactory(RectPair otherPair) {
-    var result = new SomeInterfaceSomeMethodResponseParams();
-    result.otherPair = otherPair;
-    return result;
+    var mojo_factory_result = new SomeInterfaceSomeMethodResponseParams();
+    mojo_factory_result.otherPair = otherPair;
+    return mojo_factory_result;
   }
 
   dynamic handleMessage(bindings.ServiceMessage message) {

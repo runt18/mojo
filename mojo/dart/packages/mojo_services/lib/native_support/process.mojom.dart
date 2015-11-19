@@ -915,14 +915,14 @@ class ProcessStub extends bindings.Stub {
 
 
   ProcessSpawnResponseParams _ProcessSpawnResponseParamsFactory(types_mojom.Error error) {
-    var result = new ProcessSpawnResponseParams();
-    result.error = error;
-    return result;
+    var mojo_factory_result = new ProcessSpawnResponseParams();
+    mojo_factory_result.error = error;
+    return mojo_factory_result;
   }
   ProcessSpawnWithTerminalResponseParams _ProcessSpawnWithTerminalResponseParamsFactory(types_mojom.Error error) {
-    var result = new ProcessSpawnWithTerminalResponseParams();
-    result.error = error;
-    return result;
+    var mojo_factory_result = new ProcessSpawnWithTerminalResponseParams();
+    mojo_factory_result.error = error;
+    return mojo_factory_result;
   }
 
   dynamic handleMessage(bindings.ServiceMessage message) {
@@ -1188,15 +1188,15 @@ class ProcessControllerStub extends bindings.Stub {
 
 
   ProcessControllerWaitResponseParams _ProcessControllerWaitResponseParamsFactory(types_mojom.Error error, int exitStatus) {
-    var result = new ProcessControllerWaitResponseParams();
-    result.error = error;
-    result.exitStatus = exitStatus;
-    return result;
+    var mojo_factory_result = new ProcessControllerWaitResponseParams();
+    mojo_factory_result.error = error;
+    mojo_factory_result.exitStatus = exitStatus;
+    return mojo_factory_result;
   }
   ProcessControllerKillResponseParams _ProcessControllerKillResponseParamsFactory(types_mojom.Error error) {
-    var result = new ProcessControllerKillResponseParams();
-    result.error = error;
-    return result;
+    var mojo_factory_result = new ProcessControllerKillResponseParams();
+    mojo_factory_result.error = error;
+    return mojo_factory_result;
   }
 
   dynamic handleMessage(bindings.ServiceMessage message) {

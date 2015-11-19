@@ -1115,26 +1115,26 @@ class WindowManagerStub extends bindings.Stub {
 
 
   WindowManagerSetCaptureResponseParams _WindowManagerSetCaptureResponseParamsFactory(bool success) {
-    var result = new WindowManagerSetCaptureResponseParams();
-    result.success = success;
-    return result;
+    var mojo_factory_result = new WindowManagerSetCaptureResponseParams();
+    mojo_factory_result.success = success;
+    return mojo_factory_result;
   }
   WindowManagerFocusWindowResponseParams _WindowManagerFocusWindowResponseParamsFactory(bool success) {
-    var result = new WindowManagerFocusWindowResponseParams();
-    result.success = success;
-    return result;
+    var mojo_factory_result = new WindowManagerFocusWindowResponseParams();
+    mojo_factory_result.success = success;
+    return mojo_factory_result;
   }
   WindowManagerActivateWindowResponseParams _WindowManagerActivateWindowResponseParamsFactory(bool success) {
-    var result = new WindowManagerActivateWindowResponseParams();
-    result.success = success;
-    return result;
+    var mojo_factory_result = new WindowManagerActivateWindowResponseParams();
+    mojo_factory_result.success = success;
+    return mojo_factory_result;
   }
   WindowManagerGetFocusedAndActiveViewsResponseParams _WindowManagerGetFocusedAndActiveViewsResponseParamsFactory(int captureViewId, int focusedViewId, int activeViewId) {
-    var result = new WindowManagerGetFocusedAndActiveViewsResponseParams();
-    result.captureViewId = captureViewId;
-    result.focusedViewId = focusedViewId;
-    result.activeViewId = activeViewId;
-    return result;
+    var mojo_factory_result = new WindowManagerGetFocusedAndActiveViewsResponseParams();
+    mojo_factory_result.captureViewId = captureViewId;
+    mojo_factory_result.focusedViewId = focusedViewId;
+    mojo_factory_result.activeViewId = activeViewId;
+    return mojo_factory_result;
   }
 
   dynamic handleMessage(bindings.ServiceMessage message) {

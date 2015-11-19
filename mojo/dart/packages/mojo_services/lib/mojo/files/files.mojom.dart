@@ -318,9 +318,9 @@ class FilesStub extends bindings.Stub {
 
 
   FilesOpenFileSystemResponseParams _FilesOpenFileSystemResponseParamsFactory(types_mojom.Error error) {
-    var result = new FilesOpenFileSystemResponseParams();
-    result.error = error;
-    return result;
+    var mojo_factory_result = new FilesOpenFileSystemResponseParams();
+    mojo_factory_result.error = error;
+    return mojo_factory_result;
   }
 
   dynamic handleMessage(bindings.ServiceMessage message) {

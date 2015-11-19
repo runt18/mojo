@@ -1234,14 +1234,14 @@ class NativeViewportStub extends bindings.Stub {
 
 
   NativeViewportCreateResponseParams _NativeViewportCreateResponseParamsFactory(ViewportMetrics metrics) {
-    var result = new NativeViewportCreateResponseParams();
-    result.metrics = metrics;
-    return result;
+    var mojo_factory_result = new NativeViewportCreateResponseParams();
+    mojo_factory_result.metrics = metrics;
+    return mojo_factory_result;
   }
   NativeViewportRequestMetricsResponseParams _NativeViewportRequestMetricsResponseParamsFactory(ViewportMetrics metrics) {
-    var result = new NativeViewportRequestMetricsResponseParams();
-    result.metrics = metrics;
-    return result;
+    var mojo_factory_result = new NativeViewportRequestMetricsResponseParams();
+    mojo_factory_result.metrics = metrics;
+    return mojo_factory_result;
   }
 
   dynamic handleMessage(bindings.ServiceMessage message) {
@@ -1507,8 +1507,8 @@ class NativeViewportEventDispatcherStub extends bindings.Stub {
 
 
   NativeViewportEventDispatcherOnEventResponseParams _NativeViewportEventDispatcherOnEventResponseParamsFactory() {
-    var result = new NativeViewportEventDispatcherOnEventResponseParams();
-    return result;
+    var mojo_factory_result = new NativeViewportEventDispatcherOnEventResponseParams();
+    return mojo_factory_result;
   }
 
   dynamic handleMessage(bindings.ServiceMessage message) {

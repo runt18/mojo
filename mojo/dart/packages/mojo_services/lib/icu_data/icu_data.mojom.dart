@@ -303,9 +303,9 @@ class IcuDataStub extends bindings.Stub {
 
 
   IcuDataMapResponseParams _IcuDataMapResponseParamsFactory(core.MojoSharedBuffer icuData) {
-    var result = new IcuDataMapResponseParams();
-    result.icuData = icuData;
-    return result;
+    var mojo_factory_result = new IcuDataMapResponseParams();
+    mojo_factory_result.icuData = icuData;
+    return mojo_factory_result;
   }
 
   dynamic handleMessage(bindings.ServiceMessage message) {

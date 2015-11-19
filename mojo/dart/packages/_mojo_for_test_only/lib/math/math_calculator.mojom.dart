@@ -624,19 +624,19 @@ class CalculatorStub extends bindings.Stub {
 
 
   CalculatorClearResponseParams _CalculatorClearResponseParamsFactory(double value) {
-    var result = new CalculatorClearResponseParams();
-    result.value = value;
-    return result;
+    var mojo_factory_result = new CalculatorClearResponseParams();
+    mojo_factory_result.value = value;
+    return mojo_factory_result;
   }
   CalculatorAddResponseParams _CalculatorAddResponseParamsFactory(double value) {
-    var result = new CalculatorAddResponseParams();
-    result.value = value;
-    return result;
+    var mojo_factory_result = new CalculatorAddResponseParams();
+    mojo_factory_result.value = value;
+    return mojo_factory_result;
   }
   CalculatorMultiplyResponseParams _CalculatorMultiplyResponseParamsFactory(double value) {
-    var result = new CalculatorMultiplyResponseParams();
-    result.value = value;
-    return result;
+    var mojo_factory_result = new CalculatorMultiplyResponseParams();
+    mojo_factory_result.value = value;
+    return mojo_factory_result;
   }
 
   dynamic handleMessage(bindings.ServiceMessage message) {

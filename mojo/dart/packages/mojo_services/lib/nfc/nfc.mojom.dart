@@ -993,9 +993,9 @@ class NfcStub extends bindings.Stub {
 
 
   NfcTransmitOnNextConnectionResponseParams _NfcTransmitOnNextConnectionResponseParamsFactory(bool success) {
-    var result = new NfcTransmitOnNextConnectionResponseParams();
-    result.success = success;
-    return result;
+    var mojo_factory_result = new NfcTransmitOnNextConnectionResponseParams();
+    mojo_factory_result.success = success;
+    return mojo_factory_result;
   }
 
   dynamic handleMessage(bindings.ServiceMessage message) {

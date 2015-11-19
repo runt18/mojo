@@ -827,23 +827,23 @@ class UrlResponseDiskCacheStub extends bindings.Stub {
 
 
   UrlResponseDiskCacheGetResponseParams _UrlResponseDiskCacheGetResponseParamsFactory(url_response_mojom.UrlResponse response, List<int> filePath, List<int> cacheDirPath) {
-    var result = new UrlResponseDiskCacheGetResponseParams();
-    result.response = response;
-    result.filePath = filePath;
-    result.cacheDirPath = cacheDirPath;
-    return result;
+    var mojo_factory_result = new UrlResponseDiskCacheGetResponseParams();
+    mojo_factory_result.response = response;
+    mojo_factory_result.filePath = filePath;
+    mojo_factory_result.cacheDirPath = cacheDirPath;
+    return mojo_factory_result;
   }
   UrlResponseDiskCacheUpdateAndGetResponseParams _UrlResponseDiskCacheUpdateAndGetResponseParamsFactory(List<int> filePath, List<int> cacheDirPath) {
-    var result = new UrlResponseDiskCacheUpdateAndGetResponseParams();
-    result.filePath = filePath;
-    result.cacheDirPath = cacheDirPath;
-    return result;
+    var mojo_factory_result = new UrlResponseDiskCacheUpdateAndGetResponseParams();
+    mojo_factory_result.filePath = filePath;
+    mojo_factory_result.cacheDirPath = cacheDirPath;
+    return mojo_factory_result;
   }
   UrlResponseDiskCacheUpdateAndGetExtractedResponseParams _UrlResponseDiskCacheUpdateAndGetExtractedResponseParamsFactory(List<int> extractedDirPath, List<int> cacheDirPath) {
-    var result = new UrlResponseDiskCacheUpdateAndGetExtractedResponseParams();
-    result.extractedDirPath = extractedDirPath;
-    result.cacheDirPath = cacheDirPath;
-    return result;
+    var mojo_factory_result = new UrlResponseDiskCacheUpdateAndGetExtractedResponseParams();
+    mojo_factory_result.extractedDirPath = extractedDirPath;
+    mojo_factory_result.cacheDirPath = cacheDirPath;
+    return mojo_factory_result;
   }
 
   dynamic handleMessage(bindings.ServiceMessage message) {

@@ -492,9 +492,9 @@ class PredictionServiceStub extends bindings.Stub {
 
 
   PredictionServiceGetPredictionListResponseParams _PredictionServiceGetPredictionListResponseParamsFactory(List<String> predictionList) {
-    var result = new PredictionServiceGetPredictionListResponseParams();
-    result.predictionList = predictionList;
-    return result;
+    var mojo_factory_result = new PredictionServiceGetPredictionListResponseParams();
+    mojo_factory_result.predictionList = predictionList;
+    return mojo_factory_result;
   }
 
   dynamic handleMessage(bindings.ServiceMessage message) {

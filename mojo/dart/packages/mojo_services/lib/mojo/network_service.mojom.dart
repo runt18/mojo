@@ -1191,22 +1191,22 @@ class NetworkServiceStub extends bindings.Stub {
 
 
   NetworkServiceCreateTcpBoundSocketResponseParams _NetworkServiceCreateTcpBoundSocketResponseParamsFactory(network_error_mojom.NetworkError result, net_address_mojom.NetAddress boundTo) {
-    var result = new NetworkServiceCreateTcpBoundSocketResponseParams();
-    result.result = result;
-    result.boundTo = boundTo;
-    return result;
+    var mojo_factory_result = new NetworkServiceCreateTcpBoundSocketResponseParams();
+    mojo_factory_result.result = result;
+    mojo_factory_result.boundTo = boundTo;
+    return mojo_factory_result;
   }
   NetworkServiceCreateTcpConnectedSocketResponseParams _NetworkServiceCreateTcpConnectedSocketResponseParamsFactory(network_error_mojom.NetworkError result, net_address_mojom.NetAddress localAddress) {
-    var result = new NetworkServiceCreateTcpConnectedSocketResponseParams();
-    result.result = result;
-    result.localAddress = localAddress;
-    return result;
+    var mojo_factory_result = new NetworkServiceCreateTcpConnectedSocketResponseParams();
+    mojo_factory_result.result = result;
+    mojo_factory_result.localAddress = localAddress;
+    return mojo_factory_result;
   }
   NetworkServiceCreateHttpServerResponseParams _NetworkServiceCreateHttpServerResponseParamsFactory(network_error_mojom.NetworkError result, net_address_mojom.NetAddress boundTo) {
-    var result = new NetworkServiceCreateHttpServerResponseParams();
-    result.result = result;
-    result.boundTo = boundTo;
-    return result;
+    var mojo_factory_result = new NetworkServiceCreateHttpServerResponseParams();
+    mojo_factory_result.result = result;
+    mojo_factory_result.boundTo = boundTo;
+    return mojo_factory_result;
   }
 
   dynamic handleMessage(bindings.ServiceMessage message) {

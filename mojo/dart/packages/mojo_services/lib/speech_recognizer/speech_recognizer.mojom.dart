@@ -663,9 +663,9 @@ class SpeechRecognizerServiceStub extends bindings.Stub {
 
 
   SpeechRecognizerServiceListenResponseParams _SpeechRecognizerServiceListenResponseParamsFactory(ResultOrError resultOrError) {
-    var result = new SpeechRecognizerServiceListenResponseParams();
-    result.resultOrError = resultOrError;
-    return result;
+    var mojo_factory_result = new SpeechRecognizerServiceListenResponseParams();
+    mojo_factory_result.resultOrError = resultOrError;
+    return mojo_factory_result;
   }
 
   dynamic handleMessage(bindings.ServiceMessage message) {

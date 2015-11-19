@@ -943,19 +943,19 @@ class UrlLoaderInterceptorStub extends bindings.Stub {
 
 
   UrlLoaderInterceptorInterceptRequestResponseParams _UrlLoaderInterceptorInterceptRequestResponseParamsFactory(UrlLoaderInterceptorResponse response) {
-    var result = new UrlLoaderInterceptorInterceptRequestResponseParams();
-    result.response = response;
-    return result;
+    var mojo_factory_result = new UrlLoaderInterceptorInterceptRequestResponseParams();
+    mojo_factory_result.response = response;
+    return mojo_factory_result;
   }
   UrlLoaderInterceptorInterceptFollowRedirectResponseParams _UrlLoaderInterceptorInterceptFollowRedirectResponseParamsFactory(UrlLoaderInterceptorResponse response) {
-    var result = new UrlLoaderInterceptorInterceptFollowRedirectResponseParams();
-    result.response = response;
-    return result;
+    var mojo_factory_result = new UrlLoaderInterceptorInterceptFollowRedirectResponseParams();
+    mojo_factory_result.response = response;
+    return mojo_factory_result;
   }
   UrlLoaderInterceptorInterceptResponseResponseParams _UrlLoaderInterceptorInterceptResponseResponseParamsFactory(UrlLoaderInterceptorResponse response) {
-    var result = new UrlLoaderInterceptorInterceptResponseResponseParams();
-    result.response = response;
-    return result;
+    var mojo_factory_result = new UrlLoaderInterceptorInterceptResponseResponseParams();
+    mojo_factory_result.response = response;
+    return mojo_factory_result;
   }
 
   dynamic handleMessage(bindings.ServiceMessage message) {

@@ -1524,30 +1524,30 @@ class ProviderStub extends bindings.Stub {
 
 
   ProviderEchoStringResponseParams _ProviderEchoStringResponseParamsFactory(String a) {
-    var result = new ProviderEchoStringResponseParams();
-    result.a = a;
-    return result;
+    var mojo_factory_result = new ProviderEchoStringResponseParams();
+    mojo_factory_result.a = a;
+    return mojo_factory_result;
   }
   ProviderEchoStringsResponseParams _ProviderEchoStringsResponseParamsFactory(String a, String b) {
-    var result = new ProviderEchoStringsResponseParams();
-    result.a = a;
-    result.b = b;
-    return result;
+    var mojo_factory_result = new ProviderEchoStringsResponseParams();
+    mojo_factory_result.a = a;
+    mojo_factory_result.b = b;
+    return mojo_factory_result;
   }
   ProviderEchoMessagePipeHandleResponseParams _ProviderEchoMessagePipeHandleResponseParamsFactory(core.MojoMessagePipeEndpoint a) {
-    var result = new ProviderEchoMessagePipeHandleResponseParams();
-    result.a = a;
-    return result;
+    var mojo_factory_result = new ProviderEchoMessagePipeHandleResponseParams();
+    mojo_factory_result.a = a;
+    return mojo_factory_result;
   }
   ProviderEchoEnumResponseParams _ProviderEchoEnumResponseParamsFactory(Enum a) {
-    var result = new ProviderEchoEnumResponseParams();
-    result.a = a;
-    return result;
+    var mojo_factory_result = new ProviderEchoEnumResponseParams();
+    mojo_factory_result.a = a;
+    return mojo_factory_result;
   }
   ProviderEchoIntResponseParams _ProviderEchoIntResponseParamsFactory(int a) {
-    var result = new ProviderEchoIntResponseParams();
-    result.a = a;
-    return result;
+    var mojo_factory_result = new ProviderEchoIntResponseParams();
+    mojo_factory_result.a = a;
+    return mojo_factory_result;
   }
 
   dynamic handleMessage(bindings.ServiceMessage message) {
@@ -1861,10 +1861,10 @@ class IntegerAccessorStub extends bindings.Stub {
 
 
   IntegerAccessorGetIntegerResponseParams _IntegerAccessorGetIntegerResponseParamsFactory(int data, Enum type) {
-    var result = new IntegerAccessorGetIntegerResponseParams();
-    result.data = data;
-    result.type = type;
-    return result;
+    var mojo_factory_result = new IntegerAccessorGetIntegerResponseParams();
+    mojo_factory_result.data = data;
+    mojo_factory_result.type = type;
+    return mojo_factory_result;
   }
 
   dynamic handleMessage(bindings.ServiceMessage message) {
@@ -2106,10 +2106,10 @@ class SampleInterfaceStub extends bindings.Stub {
 
 
   SampleInterfaceSampleMethod1ResponseParams _SampleInterfaceSampleMethod1ResponseParamsFactory(String out1, Enum out2) {
-    var result = new SampleInterfaceSampleMethod1ResponseParams();
-    result.out1 = out1;
-    result.out2 = out2;
-    return result;
+    var mojo_factory_result = new SampleInterfaceSampleMethod1ResponseParams();
+    mojo_factory_result.out1 = out1;
+    mojo_factory_result.out2 = out2;
+    return mojo_factory_result;
   }
 
   dynamic handleMessage(bindings.ServiceMessage message) {

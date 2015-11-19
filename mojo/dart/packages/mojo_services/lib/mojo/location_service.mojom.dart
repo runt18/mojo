@@ -373,9 +373,9 @@ class LocationServiceStub extends bindings.Stub {
 
 
   LocationServiceGetNextLocationResponseParams _LocationServiceGetNextLocationResponseParamsFactory(location_mojom.Location location) {
-    var result = new LocationServiceGetNextLocationResponseParams();
-    result.location = location;
-    return result;
+    var mojo_factory_result = new LocationServiceGetNextLocationResponseParams();
+    mojo_factory_result.location = location;
+    return mojo_factory_result;
   }
 
   dynamic handleMessage(bindings.ServiceMessage message) {

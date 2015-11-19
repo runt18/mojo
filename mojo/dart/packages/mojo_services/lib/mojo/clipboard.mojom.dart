@@ -880,19 +880,19 @@ class ClipboardStub extends bindings.Stub {
 
 
   ClipboardGetSequenceNumberResponseParams _ClipboardGetSequenceNumberResponseParamsFactory(int sequence) {
-    var result = new ClipboardGetSequenceNumberResponseParams();
-    result.sequence = sequence;
-    return result;
+    var mojo_factory_result = new ClipboardGetSequenceNumberResponseParams();
+    mojo_factory_result.sequence = sequence;
+    return mojo_factory_result;
   }
   ClipboardGetAvailableMimeTypesResponseParams _ClipboardGetAvailableMimeTypesResponseParamsFactory(List<String> types) {
-    var result = new ClipboardGetAvailableMimeTypesResponseParams();
-    result.types = types;
-    return result;
+    var mojo_factory_result = new ClipboardGetAvailableMimeTypesResponseParams();
+    mojo_factory_result.types = types;
+    return mojo_factory_result;
   }
   ClipboardReadMimeTypeResponseParams _ClipboardReadMimeTypeResponseParamsFactory(List<int> data) {
-    var result = new ClipboardReadMimeTypeResponseParams();
-    result.data = data;
-    return result;
+    var mojo_factory_result = new ClipboardReadMimeTypeResponseParams();
+    mojo_factory_result.data = data;
+    return mojo_factory_result;
   }
 
   dynamic handleMessage(bindings.ServiceMessage message) {

@@ -858,14 +858,14 @@ class PingPongServiceStub extends bindings.Stub {
 
 
   PingPongServicePingTargetUrlResponseParams _PingPongServicePingTargetUrlResponseParamsFactory(bool ok) {
-    var result = new PingPongServicePingTargetUrlResponseParams();
-    result.ok = ok;
-    return result;
+    var mojo_factory_result = new PingPongServicePingTargetUrlResponseParams();
+    mojo_factory_result.ok = ok;
+    return mojo_factory_result;
   }
   PingPongServicePingTargetServiceResponseParams _PingPongServicePingTargetServiceResponseParamsFactory(bool ok) {
-    var result = new PingPongServicePingTargetServiceResponseParams();
-    result.ok = ok;
-    return result;
+    var mojo_factory_result = new PingPongServicePingTargetServiceResponseParams();
+    mojo_factory_result.ok = ok;
+    return mojo_factory_result;
   }
 
   dynamic handleMessage(bindings.ServiceMessage message) {

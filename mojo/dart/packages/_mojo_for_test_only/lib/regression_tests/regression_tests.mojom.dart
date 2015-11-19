@@ -1426,6 +1426,156 @@ class TestInterfaceSomeMessageParams extends bindings.Struct {
   }
 }
 
+
+class Regression551GetParams extends bindings.Struct {
+  static const List<bindings.StructDataHeader> kVersions = const [
+    const bindings.StructDataHeader(16, 0)
+  ];
+  List<String> keyPrefixes = null;
+
+  Regression551GetParams() : super(kVersions.last.size);
+
+  static Regression551GetParams deserialize(bindings.Message message) {
+    var decoder = new bindings.Decoder(message);
+    var result = decode(decoder);
+    if (decoder.excessHandles != null) {
+      decoder.excessHandles.forEach((h) => h.close());
+    }
+    return result;
+  }
+
+  static Regression551GetParams decode(bindings.Decoder decoder0) {
+    if (decoder0 == null) {
+      return null;
+    }
+    Regression551GetParams result = new Regression551GetParams();
+
+    var mainDataHeader = decoder0.decodeStructDataHeader();
+    if (mainDataHeader.version <= kVersions.last.version) {
+      // Scan in reverse order to optimize for more recent versions.
+      for (int i = kVersions.length - 1; i >= 0; --i) {
+        if (mainDataHeader.version >= kVersions[i].version) {
+          if (mainDataHeader.size == kVersions[i].size) {
+            // Found a match.
+            break;
+          }
+          throw new bindings.MojoCodecError(
+              'Header size doesn\'t correspond to known version size.');
+        }
+      }
+    } else if (mainDataHeader.size < kVersions.last.size) {
+      throw new bindings.MojoCodecError(
+        'Message newer than the last known version cannot be shorter than '
+        'required by the last known version.');
+    }
+    if (mainDataHeader.version >= 0) {
+      
+      var decoder1 = decoder0.decodePointer(8, false);
+      {
+        var si1 = decoder1.decodeDataHeaderForPointerArray(bindings.kUnspecifiedArrayLength);
+        result.keyPrefixes = new List<String>(si1.numElements);
+        for (int i1 = 0; i1 < si1.numElements; ++i1) {
+          
+          result.keyPrefixes[i1] = decoder1.decodeString(bindings.ArrayDataHeader.kHeaderSize + bindings.kPointerSize * i1, false);
+        }
+      }
+    }
+    return result;
+  }
+
+  void encode(bindings.Encoder encoder) {
+    var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
+    
+    if (keyPrefixes == null) {
+      encoder0.encodeNullPointer(8, false);
+    } else {
+      var encoder1 = encoder0.encodePointerArray(keyPrefixes.length, 8, bindings.kUnspecifiedArrayLength);
+      for (int i0 = 0; i0 < keyPrefixes.length; ++i0) {
+        
+        encoder1.encodeString(keyPrefixes[i0], bindings.ArrayDataHeader.kHeaderSize + bindings.kPointerSize * i0, false);
+      }
+    }
+  }
+
+  String toString() {
+    return "Regression551GetParams("
+           "keyPrefixes: $keyPrefixes" ")";
+  }
+
+  Map toJson() {
+    Map map = new Map();
+    map["keyPrefixes"] = keyPrefixes;
+    return map;
+  }
+}
+
+
+class Regression551GetResponseParams extends bindings.Struct {
+  static const List<bindings.StructDataHeader> kVersions = const [
+    const bindings.StructDataHeader(16, 0)
+  ];
+  int result = 0;
+
+  Regression551GetResponseParams() : super(kVersions.last.size);
+
+  static Regression551GetResponseParams deserialize(bindings.Message message) {
+    var decoder = new bindings.Decoder(message);
+    var result = decode(decoder);
+    if (decoder.excessHandles != null) {
+      decoder.excessHandles.forEach((h) => h.close());
+    }
+    return result;
+  }
+
+  static Regression551GetResponseParams decode(bindings.Decoder decoder0) {
+    if (decoder0 == null) {
+      return null;
+    }
+    Regression551GetResponseParams result = new Regression551GetResponseParams();
+
+    var mainDataHeader = decoder0.decodeStructDataHeader();
+    if (mainDataHeader.version <= kVersions.last.version) {
+      // Scan in reverse order to optimize for more recent versions.
+      for (int i = kVersions.length - 1; i >= 0; --i) {
+        if (mainDataHeader.version >= kVersions[i].version) {
+          if (mainDataHeader.size == kVersions[i].size) {
+            // Found a match.
+            break;
+          }
+          throw new bindings.MojoCodecError(
+              'Header size doesn\'t correspond to known version size.');
+        }
+      }
+    } else if (mainDataHeader.size < kVersions.last.size) {
+      throw new bindings.MojoCodecError(
+        'Message newer than the last known version cannot be shorter than '
+        'required by the last known version.');
+    }
+    if (mainDataHeader.version >= 0) {
+      
+      result.result = decoder0.decodeInt32(8);
+    }
+    return result;
+  }
+
+  void encode(bindings.Encoder encoder) {
+    var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
+    
+    encoder0.encodeInt32(result, 8);
+  }
+
+  String toString() {
+    return "Regression551GetResponseParams("
+           "result: $result" ")";
+  }
+
+  Map toJson() {
+    Map map = new Map();
+    map["result"] = result;
+    return map;
+  }
+}
+
 const int kCheckMethodWithEmptyResponse_withoutParameterAndEmptyResponse_name = 0;
 const int kCheckMethodWithEmptyResponse_withParameterAndEmptyResponse_name = 1;
 
@@ -1616,12 +1766,12 @@ class CheckMethodWithEmptyResponseStub extends bindings.Stub {
 
 
   CheckMethodWithEmptyResponseWithoutParameterAndEmptyResponseResponseParams _CheckMethodWithEmptyResponseWithoutParameterAndEmptyResponseResponseParamsFactory() {
-    var result = new CheckMethodWithEmptyResponseWithoutParameterAndEmptyResponseResponseParams();
-    return result;
+    var mojo_factory_result = new CheckMethodWithEmptyResponseWithoutParameterAndEmptyResponseResponseParams();
+    return mojo_factory_result;
   }
   CheckMethodWithEmptyResponseWithParameterAndEmptyResponseResponseParams _CheckMethodWithEmptyResponseWithParameterAndEmptyResponseResponseParamsFactory() {
-    var result = new CheckMethodWithEmptyResponseWithParameterAndEmptyResponseResponseParams();
-    return result;
+    var mojo_factory_result = new CheckMethodWithEmptyResponseWithParameterAndEmptyResponseResponseParams();
+    return mojo_factory_result;
   }
 
   dynamic handleMessage(bindings.ServiceMessage message) {
@@ -1858,10 +2008,10 @@ class CheckNameCollisionStub extends bindings.Stub {
 
 
   CheckNameCollisionWithNameCollisionResponseParams _CheckNameCollisionWithNameCollisionResponseParamsFactory(bool message, bool response) {
-    var result = new CheckNameCollisionWithNameCollisionResponseParams();
-    result.message = message;
-    result.response = response;
-    return result;
+    var mojo_factory_result = new CheckNameCollisionWithNameCollisionResponseParams();
+    mojo_factory_result.message = message;
+    mojo_factory_result.response = response;
+    return mojo_factory_result;
   }
 
   dynamic handleMessage(bindings.ServiceMessage message) {
@@ -2259,6 +2409,222 @@ class TestInterfaceStub extends bindings.Stub {
   String toString() {
     var superString = super.toString();
     return "TestInterfaceStub($superString)";
+  }
+
+  int get version => 0;
+}
+
+const int kRegression551_get_name = 0;
+
+const String Regression551Name =
+      'regression_tests::Regression551';
+
+abstract class Regression551 {
+  dynamic get(List<String> keyPrefixes,[Function responseFactory = null]);
+
+}
+
+
+class Regression551ProxyImpl extends bindings.Proxy {
+  Regression551ProxyImpl.fromEndpoint(
+      core.MojoMessagePipeEndpoint endpoint) : super.fromEndpoint(endpoint);
+
+  Regression551ProxyImpl.fromHandle(core.MojoHandle handle) :
+      super.fromHandle(handle);
+
+  Regression551ProxyImpl.unbound() : super.unbound();
+
+  static Regression551ProxyImpl newFromEndpoint(
+      core.MojoMessagePipeEndpoint endpoint) {
+    assert(endpoint.setDescription("For Regression551ProxyImpl"));
+    return new Regression551ProxyImpl.fromEndpoint(endpoint);
+  }
+
+  String get name => Regression551Name;
+
+  void handleResponse(bindings.ServiceMessage message) {
+    switch (message.header.type) {
+      case kRegression551_get_name:
+        var r = Regression551GetResponseParams.deserialize(
+            message.payload);
+        if (!message.header.hasRequestId) {
+          proxyError("Expected a message with a valid request Id.");
+          return;
+        }
+        Completer c = completerMap[message.header.requestId];
+        if (c == null) {
+          proxyError(
+              "Message had unknown request Id: ${message.header.requestId}");
+          return;
+        }
+        completerMap.remove(message.header.requestId);
+        if (c.isCompleted) {
+          proxyError("Response completer already completed");
+          return;
+        }
+        c.complete(r);
+        break;
+      default:
+        proxyError("Unexpected message type: ${message.header.type}");
+        close(immediate: true);
+        break;
+    }
+  }
+
+  String toString() {
+    var superString = super.toString();
+    return "Regression551ProxyImpl($superString)";
+  }
+}
+
+
+class _Regression551ProxyCalls implements Regression551 {
+  Regression551ProxyImpl _proxyImpl;
+
+  _Regression551ProxyCalls(this._proxyImpl);
+    dynamic get(List<String> keyPrefixes,[Function responseFactory = null]) {
+      var params = new Regression551GetParams();
+      params.keyPrefixes = keyPrefixes;
+      return _proxyImpl.sendMessageWithRequestId(
+          params,
+          kRegression551_get_name,
+          -1,
+          bindings.MessageHeader.kMessageExpectsResponse);
+    }
+}
+
+
+class Regression551Proxy implements bindings.ProxyBase {
+  final bindings.Proxy impl;
+  Regression551 ptr;
+  final String name = Regression551Name;
+
+  Regression551Proxy(Regression551ProxyImpl proxyImpl) :
+      impl = proxyImpl,
+      ptr = new _Regression551ProxyCalls(proxyImpl);
+
+  Regression551Proxy.fromEndpoint(
+      core.MojoMessagePipeEndpoint endpoint) :
+      impl = new Regression551ProxyImpl.fromEndpoint(endpoint) {
+    ptr = new _Regression551ProxyCalls(impl);
+  }
+
+  Regression551Proxy.fromHandle(core.MojoHandle handle) :
+      impl = new Regression551ProxyImpl.fromHandle(handle) {
+    ptr = new _Regression551ProxyCalls(impl);
+  }
+
+  Regression551Proxy.unbound() :
+      impl = new Regression551ProxyImpl.unbound() {
+    ptr = new _Regression551ProxyCalls(impl);
+  }
+
+  factory Regression551Proxy.connectToService(
+      bindings.ServiceConnector s, String url) {
+    Regression551Proxy p = new Regression551Proxy.unbound();
+    s.connectToService(url, p);
+    return p;
+  }
+
+  static Regression551Proxy newFromEndpoint(
+      core.MojoMessagePipeEndpoint endpoint) {
+    assert(endpoint.setDescription("For Regression551Proxy"));
+    return new Regression551Proxy.fromEndpoint(endpoint);
+  }
+
+  Future close({bool immediate: false}) => impl.close(immediate: immediate);
+
+  Future responseOrError(Future f) => impl.responseOrError(f);
+
+  Future get errorFuture => impl.errorFuture;
+
+  int get version => impl.version;
+
+  Future<int> queryVersion() => impl.queryVersion();
+
+  void requireVersion(int requiredVersion) {
+    impl.requireVersion(requiredVersion);
+  }
+
+  String toString() {
+    return "Regression551Proxy($impl)";
+  }
+}
+
+
+class Regression551Stub extends bindings.Stub {
+  Regression551 _impl = null;
+
+  Regression551Stub.fromEndpoint(
+      core.MojoMessagePipeEndpoint endpoint, [this._impl])
+      : super.fromEndpoint(endpoint);
+
+  Regression551Stub.fromHandle(core.MojoHandle handle, [this._impl])
+      : super.fromHandle(handle);
+
+  Regression551Stub.unbound() : super.unbound();
+
+  static Regression551Stub newFromEndpoint(
+      core.MojoMessagePipeEndpoint endpoint) {
+    assert(endpoint.setDescription("For Regression551Stub"));
+    return new Regression551Stub.fromEndpoint(endpoint);
+  }
+
+  static const String name = Regression551Name;
+
+
+  Regression551GetResponseParams _Regression551GetResponseParamsFactory(int result) {
+    var mojo_factory_result = new Regression551GetResponseParams();
+    mojo_factory_result.result = result;
+    return mojo_factory_result;
+  }
+
+  dynamic handleMessage(bindings.ServiceMessage message) {
+    if (bindings.ControlMessageHandler.isControlMessage(message)) {
+      return bindings.ControlMessageHandler.handleMessage(this,
+                                                          0,
+                                                          message);
+    }
+    assert(_impl != null);
+    switch (message.header.type) {
+      case kRegression551_get_name:
+        var params = Regression551GetParams.deserialize(
+            message.payload);
+        var response = _impl.get(params.keyPrefixes,_Regression551GetResponseParamsFactory);
+        if (response is Future) {
+          return response.then((response) {
+            if (response != null) {
+              return buildResponseWithId(
+                  response,
+                  kRegression551_get_name,
+                  message.header.requestId,
+                  bindings.MessageHeader.kMessageIsResponse);
+            }
+          });
+        } else if (response != null) {
+          return buildResponseWithId(
+              response,
+              kRegression551_get_name,
+              message.header.requestId,
+              bindings.MessageHeader.kMessageIsResponse);
+        }
+        break;
+      default:
+        throw new bindings.MojoCodecError("Unexpected message name");
+        break;
+    }
+    return null;
+  }
+
+  Regression551 get impl => _impl;
+  set impl(Regression551 d) {
+    assert(_impl == null);
+    _impl = d;
+  }
+
+  String toString() {
+    var superString = super.toString();
+    return "Regression551Stub($superString)";
   }
 
   int get version => 0;

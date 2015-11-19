@@ -315,9 +315,9 @@ class ViewProviderStub extends bindings.Stub {
 
 
   ViewProviderCreateViewResponseParams _ViewProviderCreateViewResponseParamsFactory(views_mojom.ViewToken viewToken) {
-    var result = new ViewProviderCreateViewResponseParams();
-    result.viewToken = viewToken;
-    return result;
+    var mojo_factory_result = new ViewProviderCreateViewResponseParams();
+    mojo_factory_result.viewToken = viewToken;
+    return mojo_factory_result;
   }
 
   dynamic handleMessage(bindings.ServiceMessage message) {

@@ -592,16 +592,16 @@ class AuthenticationServiceStub extends bindings.Stub {
 
 
   AuthenticationServiceSelectAccountResponseParams _AuthenticationServiceSelectAccountResponseParamsFactory(String username, String error) {
-    var result = new AuthenticationServiceSelectAccountResponseParams();
-    result.username = username;
-    result.error = error;
-    return result;
+    var mojo_factory_result = new AuthenticationServiceSelectAccountResponseParams();
+    mojo_factory_result.username = username;
+    mojo_factory_result.error = error;
+    return mojo_factory_result;
   }
   AuthenticationServiceGetOAuth2TokenResponseParams _AuthenticationServiceGetOAuth2TokenResponseParamsFactory(String token, String error) {
-    var result = new AuthenticationServiceGetOAuth2TokenResponseParams();
-    result.token = token;
-    result.error = error;
-    return result;
+    var mojo_factory_result = new AuthenticationServiceGetOAuth2TokenResponseParams();
+    mojo_factory_result.token = token;
+    mojo_factory_result.error = error;
+    return mojo_factory_result;
   }
 
   dynamic handleMessage(bindings.ServiceMessage message) {

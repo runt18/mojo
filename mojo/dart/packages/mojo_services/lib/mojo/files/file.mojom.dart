@@ -2670,81 +2670,81 @@ class FileStub extends bindings.Stub {
 
 
   FileCloseResponseParams _FileCloseResponseParamsFactory(types_mojom.Error err) {
-    var result = new FileCloseResponseParams();
-    result.err = err;
-    return result;
+    var mojo_factory_result = new FileCloseResponseParams();
+    mojo_factory_result.err = err;
+    return mojo_factory_result;
   }
   FileReadResponseParams _FileReadResponseParamsFactory(types_mojom.Error error, List<int> bytesRead) {
-    var result = new FileReadResponseParams();
-    result.error = error;
-    result.bytesRead = bytesRead;
-    return result;
+    var mojo_factory_result = new FileReadResponseParams();
+    mojo_factory_result.error = error;
+    mojo_factory_result.bytesRead = bytesRead;
+    return mojo_factory_result;
   }
   FileWriteResponseParams _FileWriteResponseParamsFactory(types_mojom.Error error, int numBytesWritten) {
-    var result = new FileWriteResponseParams();
-    result.error = error;
-    result.numBytesWritten = numBytesWritten;
-    return result;
+    var mojo_factory_result = new FileWriteResponseParams();
+    mojo_factory_result.error = error;
+    mojo_factory_result.numBytesWritten = numBytesWritten;
+    return mojo_factory_result;
   }
   FileReadToStreamResponseParams _FileReadToStreamResponseParamsFactory(types_mojom.Error error) {
-    var result = new FileReadToStreamResponseParams();
-    result.error = error;
-    return result;
+    var mojo_factory_result = new FileReadToStreamResponseParams();
+    mojo_factory_result.error = error;
+    return mojo_factory_result;
   }
   FileWriteFromStreamResponseParams _FileWriteFromStreamResponseParamsFactory(types_mojom.Error error) {
-    var result = new FileWriteFromStreamResponseParams();
-    result.error = error;
-    return result;
+    var mojo_factory_result = new FileWriteFromStreamResponseParams();
+    mojo_factory_result.error = error;
+    return mojo_factory_result;
   }
   FileTellResponseParams _FileTellResponseParamsFactory(types_mojom.Error error, int position) {
-    var result = new FileTellResponseParams();
-    result.error = error;
-    result.position = position;
-    return result;
+    var mojo_factory_result = new FileTellResponseParams();
+    mojo_factory_result.error = error;
+    mojo_factory_result.position = position;
+    return mojo_factory_result;
   }
   FileSeekResponseParams _FileSeekResponseParamsFactory(types_mojom.Error error, int position) {
-    var result = new FileSeekResponseParams();
-    result.error = error;
-    result.position = position;
-    return result;
+    var mojo_factory_result = new FileSeekResponseParams();
+    mojo_factory_result.error = error;
+    mojo_factory_result.position = position;
+    return mojo_factory_result;
   }
   FileStatResponseParams _FileStatResponseParamsFactory(types_mojom.Error error, types_mojom.FileInformation fileInformation) {
-    var result = new FileStatResponseParams();
-    result.error = error;
-    result.fileInformation = fileInformation;
-    return result;
+    var mojo_factory_result = new FileStatResponseParams();
+    mojo_factory_result.error = error;
+    mojo_factory_result.fileInformation = fileInformation;
+    return mojo_factory_result;
   }
   FileTruncateResponseParams _FileTruncateResponseParamsFactory(types_mojom.Error error) {
-    var result = new FileTruncateResponseParams();
-    result.error = error;
-    return result;
+    var mojo_factory_result = new FileTruncateResponseParams();
+    mojo_factory_result.error = error;
+    return mojo_factory_result;
   }
   FileTouchResponseParams _FileTouchResponseParamsFactory(types_mojom.Error error) {
-    var result = new FileTouchResponseParams();
-    result.error = error;
-    return result;
+    var mojo_factory_result = new FileTouchResponseParams();
+    mojo_factory_result.error = error;
+    return mojo_factory_result;
   }
   FileDupResponseParams _FileDupResponseParamsFactory(types_mojom.Error error) {
-    var result = new FileDupResponseParams();
-    result.error = error;
-    return result;
+    var mojo_factory_result = new FileDupResponseParams();
+    mojo_factory_result.error = error;
+    return mojo_factory_result;
   }
   FileReopenResponseParams _FileReopenResponseParamsFactory(types_mojom.Error error) {
-    var result = new FileReopenResponseParams();
-    result.error = error;
-    return result;
+    var mojo_factory_result = new FileReopenResponseParams();
+    mojo_factory_result.error = error;
+    return mojo_factory_result;
   }
   FileAsBufferResponseParams _FileAsBufferResponseParamsFactory(types_mojom.Error error, core.MojoSharedBuffer buffer) {
-    var result = new FileAsBufferResponseParams();
-    result.error = error;
-    result.buffer = buffer;
-    return result;
+    var mojo_factory_result = new FileAsBufferResponseParams();
+    mojo_factory_result.error = error;
+    mojo_factory_result.buffer = buffer;
+    return mojo_factory_result;
   }
   FileIoctlResponseParams _FileIoctlResponseParamsFactory(types_mojom.Error error, List<int> outValues) {
-    var result = new FileIoctlResponseParams();
-    result.error = error;
-    result.outValues = outValues;
-    return result;
+    var mojo_factory_result = new FileIoctlResponseParams();
+    mojo_factory_result.error = error;
+    mojo_factory_result.outValues = outValues;
+    return mojo_factory_result;
   }
 
   dynamic handleMessage(bindings.ServiceMessage message) {

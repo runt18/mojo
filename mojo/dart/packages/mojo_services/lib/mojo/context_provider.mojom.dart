@@ -304,9 +304,9 @@ class ContextProviderStub extends bindings.Stub {
 
 
   ContextProviderCreateResponseParams _ContextProviderCreateResponseParamsFactory(Object gles2Client) {
-    var result = new ContextProviderCreateResponseParams();
-    result.gles2Client = gles2Client;
-    return result;
+    var mojo_factory_result = new ContextProviderCreateResponseParams();
+    mojo_factory_result.gles2Client = gles2Client;
+    return mojo_factory_result;
   }
 
   dynamic handleMessage(bindings.ServiceMessage message) {

@@ -479,14 +479,14 @@ class EchoServiceStub extends bindings.Stub {
 
 
   EchoServiceEchoStringResponseParams _EchoServiceEchoStringResponseParamsFactory(String value) {
-    var result = new EchoServiceEchoStringResponseParams();
-    result.value = value;
-    return result;
+    var mojo_factory_result = new EchoServiceEchoStringResponseParams();
+    mojo_factory_result.value = value;
+    return mojo_factory_result;
   }
   EchoServiceDelayedEchoStringResponseParams _EchoServiceDelayedEchoStringResponseParamsFactory(String value) {
-    var result = new EchoServiceDelayedEchoStringResponseParams();
-    result.value = value;
-    return result;
+    var mojo_factory_result = new EchoServiceDelayedEchoStringResponseParams();
+    mojo_factory_result.value = value;
+    return mojo_factory_result;
   }
 
   dynamic handleMessage(bindings.ServiceMessage message) {

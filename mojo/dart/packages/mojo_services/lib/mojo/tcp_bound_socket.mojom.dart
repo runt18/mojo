@@ -501,14 +501,14 @@ class TcpBoundSocketStub extends bindings.Stub {
 
 
   TcpBoundSocketStartListeningResponseParams _TcpBoundSocketStartListeningResponseParamsFactory(network_error_mojom.NetworkError result) {
-    var result = new TcpBoundSocketStartListeningResponseParams();
-    result.result = result;
-    return result;
+    var mojo_factory_result = new TcpBoundSocketStartListeningResponseParams();
+    mojo_factory_result.result = result;
+    return mojo_factory_result;
   }
   TcpBoundSocketConnectResponseParams _TcpBoundSocketConnectResponseParamsFactory(network_error_mojom.NetworkError result) {
-    var result = new TcpBoundSocketConnectResponseParams();
-    result.result = result;
-    return result;
+    var mojo_factory_result = new TcpBoundSocketConnectResponseParams();
+    mojo_factory_result.result = result;
+    return mojo_factory_result;
   }
 
   dynamic handleMessage(bindings.ServiceMessage message) {

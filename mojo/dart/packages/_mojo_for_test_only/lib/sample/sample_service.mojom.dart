@@ -1593,9 +1593,9 @@ class ServiceStub extends bindings.Stub {
 
 
   ServiceFrobinateResponseParams _ServiceFrobinateResponseParamsFactory(int result) {
-    var result = new ServiceFrobinateResponseParams();
-    result.result = result;
-    return result;
+    var mojo_factory_result = new ServiceFrobinateResponseParams();
+    mojo_factory_result.result = result;
+    return mojo_factory_result;
   }
 
   dynamic handleMessage(bindings.ServiceMessage message) {

@@ -757,14 +757,14 @@ class HttpConnectionStub extends bindings.Stub {
 
 
   HttpConnectionSetSendBufferSizeResponseParams _HttpConnectionSetSendBufferSizeResponseParamsFactory(network_error_mojom.NetworkError result) {
-    var result = new HttpConnectionSetSendBufferSizeResponseParams();
-    result.result = result;
-    return result;
+    var mojo_factory_result = new HttpConnectionSetSendBufferSizeResponseParams();
+    mojo_factory_result.result = result;
+    return mojo_factory_result;
   }
   HttpConnectionSetReceiveBufferSizeResponseParams _HttpConnectionSetReceiveBufferSizeResponseParamsFactory(network_error_mojom.NetworkError result) {
-    var result = new HttpConnectionSetReceiveBufferSizeResponseParams();
-    result.result = result;
-    return result;
+    var mojo_factory_result = new HttpConnectionSetReceiveBufferSizeResponseParams();
+    mojo_factory_result.result = result;
+    return mojo_factory_result;
   }
 
   dynamic handleMessage(bindings.ServiceMessage message) {
@@ -1031,16 +1031,16 @@ class HttpConnectionDelegateStub extends bindings.Stub {
 
 
   HttpConnectionDelegateOnReceivedRequestResponseParams _HttpConnectionDelegateOnReceivedRequestResponseParamsFactory(http_message_mojom.HttpResponse response) {
-    var result = new HttpConnectionDelegateOnReceivedRequestResponseParams();
-    result.response = response;
-    return result;
+    var mojo_factory_result = new HttpConnectionDelegateOnReceivedRequestResponseParams();
+    mojo_factory_result.response = response;
+    return mojo_factory_result;
   }
   HttpConnectionDelegateOnReceivedWebSocketRequestResponseParams _HttpConnectionDelegateOnReceivedWebSocketRequestResponseParamsFactory(Object webSocket, core.MojoDataPipeConsumer sendStream, Object client) {
-    var result = new HttpConnectionDelegateOnReceivedWebSocketRequestResponseParams();
-    result.webSocket = webSocket;
-    result.sendStream = sendStream;
-    result.client = client;
-    return result;
+    var mojo_factory_result = new HttpConnectionDelegateOnReceivedWebSocketRequestResponseParams();
+    mojo_factory_result.webSocket = webSocket;
+    mojo_factory_result.sendStream = sendStream;
+    mojo_factory_result.client = client;
+    return mojo_factory_result;
   }
 
   dynamic handleMessage(bindings.ServiceMessage message) {

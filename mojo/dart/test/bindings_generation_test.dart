@@ -298,6 +298,36 @@ Future<bool> runOnClosedTest() {
   });
 }
 
+class Regression551Impl implements regression.Regression551 {
+  regression.Regression551Stub _stub;
+
+  Regression551Impl(core.MojoMessagePipeEndpoint endpoint) {
+    _stub = new regression.Regression551Stub.fromEndpoint(endpoint, this);
+  }
+
+  dynamic get(List<String> keyPrefixes, Function responseFactory) =>
+    responseFactory(0);
+}
+
+void regression551Isolate(core.MojoMessagePipeEndpoint endpoint) {
+  new Regression551Impl(endpoint);
+}
+
+Future<bool> testRegression551() {
+  var pipe = new core.MojoMessagePipe();
+  var client = new regression.Regression551Proxy.fromEndpoint(pipe.endpoints[0]);
+  var c = new Completer();
+  Isolate.spawn(regression551Isolate, pipe.endpoints[1]).then((_) {
+    client.ptr.get(["hello!"]).then((response) {
+      Expect.equals(0, response.result);
+      client.close().then((_) {
+        c.complete(true);
+      });
+    });
+  });
+  return c.future;
+}
+
 main() async {
   testSerializeStructs();
   testUnions();
@@ -305,4 +335,5 @@ main() async {
   await testCallResponse();
   await testAwaitCallResponse();
   await runOnClosedTest();
+  await testRegression551();
 }

@@ -3469,9 +3469,9 @@ class BoundsCheckTestInterfaceStub extends bindings.Stub {
 
 
   BoundsCheckTestInterfaceMethod0ResponseParams _BoundsCheckTestInterfaceMethod0ResponseParamsFactory(int param0) {
-    var result = new BoundsCheckTestInterfaceMethod0ResponseParams();
-    result.param0 = param0;
-    return result;
+    var mojo_factory_result = new BoundsCheckTestInterfaceMethod0ResponseParams();
+    mojo_factory_result.param0 = param0;
+    return mojo_factory_result;
   }
 
   dynamic handleMessage(bindings.ServiceMessage message) {
@@ -3876,9 +3876,9 @@ class ConformanceTestInterfaceStub extends bindings.Stub {
 
 
   ConformanceTestInterfaceMethod12ResponseParams _ConformanceTestInterfaceMethod12ResponseParamsFactory(double param0) {
-    var result = new ConformanceTestInterfaceMethod12ResponseParams();
-    result.param0 = param0;
-    return result;
+    var mojo_factory_result = new ConformanceTestInterfaceMethod12ResponseParams();
+    mojo_factory_result.param0 = param0;
+    return mojo_factory_result;
   }
 
   dynamic handleMessage(bindings.ServiceMessage message) {
@@ -4167,9 +4167,9 @@ class IntegrationTestInterfaceStub extends bindings.Stub {
 
 
   IntegrationTestInterfaceMethod0ResponseParams _IntegrationTestInterfaceMethod0ResponseParamsFactory(List<int> param0) {
-    var result = new IntegrationTestInterfaceMethod0ResponseParams();
-    result.param0 = param0;
-    return result;
+    var mojo_factory_result = new IntegrationTestInterfaceMethod0ResponseParams();
+    mojo_factory_result.param0 = param0;
+    return mojo_factory_result;
   }
 
   dynamic handleMessage(bindings.ServiceMessage message) {

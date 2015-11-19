@@ -880,28 +880,28 @@ class TerminalStub extends bindings.Stub {
 
 
   TerminalConnectResponseParams _TerminalConnectResponseParamsFactory(types_mojom.Error error) {
-    var result = new TerminalConnectResponseParams();
-    result.error = error;
-    return result;
+    var mojo_factory_result = new TerminalConnectResponseParams();
+    mojo_factory_result.error = error;
+    return mojo_factory_result;
   }
   TerminalConnectToClientResponseParams _TerminalConnectToClientResponseParamsFactory(types_mojom.Error error) {
-    var result = new TerminalConnectToClientResponseParams();
-    result.error = error;
-    return result;
+    var mojo_factory_result = new TerminalConnectToClientResponseParams();
+    mojo_factory_result.error = error;
+    return mojo_factory_result;
   }
   TerminalGetSizeResponseParams _TerminalGetSizeResponseParamsFactory(types_mojom.Error error, int rows, int columns) {
-    var result = new TerminalGetSizeResponseParams();
-    result.error = error;
-    result.rows = rows;
-    result.columns = columns;
-    return result;
+    var mojo_factory_result = new TerminalGetSizeResponseParams();
+    mojo_factory_result.error = error;
+    mojo_factory_result.rows = rows;
+    mojo_factory_result.columns = columns;
+    return mojo_factory_result;
   }
   TerminalSetSizeResponseParams _TerminalSetSizeResponseParamsFactory(types_mojom.Error error, int rows, int columns) {
-    var result = new TerminalSetSizeResponseParams();
-    result.error = error;
-    result.rows = rows;
-    result.columns = columns;
-    return result;
+    var mojo_factory_result = new TerminalSetSizeResponseParams();
+    mojo_factory_result.error = error;
+    mojo_factory_result.rows = rows;
+    mojo_factory_result.columns = columns;
+    return mojo_factory_result;
   }
 
   dynamic handleMessage(bindings.ServiceMessage message) {

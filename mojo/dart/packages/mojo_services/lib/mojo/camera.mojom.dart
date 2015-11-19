@@ -726,14 +726,14 @@ class CameraRollServiceStub extends bindings.Stub {
 
 
   CameraRollServiceGetCountResponseParams _CameraRollServiceGetCountResponseParamsFactory(int numPhotos) {
-    var result = new CameraRollServiceGetCountResponseParams();
-    result.numPhotos = numPhotos;
-    return result;
+    var mojo_factory_result = new CameraRollServiceGetCountResponseParams();
+    mojo_factory_result.numPhotos = numPhotos;
+    return mojo_factory_result;
   }
   CameraRollServiceGetPhotoResponseParams _CameraRollServiceGetPhotoResponseParamsFactory(Photo photo) {
-    var result = new CameraRollServiceGetPhotoResponseParams();
-    result.photo = photo;
-    return result;
+    var mojo_factory_result = new CameraRollServiceGetPhotoResponseParams();
+    mojo_factory_result.photo = photo;
+    return mojo_factory_result;
   }
 
   dynamic handleMessage(bindings.ServiceMessage message) {
@@ -973,9 +973,9 @@ class CameraServiceStub extends bindings.Stub {
 
 
   CameraServiceGetLatestFrameResponseParams _CameraServiceGetLatestFrameResponseParamsFactory(core.MojoDataPipeConsumer content) {
-    var result = new CameraServiceGetLatestFrameResponseParams();
-    result.content = content;
-    return result;
+    var mojo_factory_result = new CameraServiceGetLatestFrameResponseParams();
+    mojo_factory_result.content = content;
+    return mojo_factory_result;
   }
 
   dynamic handleMessage(bindings.ServiceMessage message) {

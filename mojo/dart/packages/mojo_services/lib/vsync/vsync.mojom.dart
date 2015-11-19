@@ -294,9 +294,9 @@ class VSyncProviderStub extends bindings.Stub {
 
 
   VSyncProviderAwaitVSyncResponseParams _VSyncProviderAwaitVSyncResponseParamsFactory(int timeStamp) {
-    var result = new VSyncProviderAwaitVSyncResponseParams();
-    result.timeStamp = timeStamp;
-    return result;
+    var mojo_factory_result = new VSyncProviderAwaitVSyncResponseParams();
+    mojo_factory_result.timeStamp = timeStamp;
+    return mojo_factory_result;
   }
 
   dynamic handleMessage(bindings.ServiceMessage message) {

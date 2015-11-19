@@ -349,10 +349,10 @@ class HostResolverStub extends bindings.Stub {
 
 
   HostResolverGetHostAddressesResponseParams _HostResolverGetHostAddressesResponseParamsFactory(network_error_mojom.NetworkError result, List<net_address_mojom.NetAddress> addresses) {
-    var result = new HostResolverGetHostAddressesResponseParams();
-    result.result = result;
-    result.addresses = addresses;
-    return result;
+    var mojo_factory_result = new HostResolverGetHostAddressesResponseParams();
+    mojo_factory_result.result = result;
+    mojo_factory_result.addresses = addresses;
+    return mojo_factory_result;
   }
 
   dynamic handleMessage(bindings.ServiceMessage message) {

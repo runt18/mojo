@@ -938,24 +938,24 @@ class ContactsServiceStub extends bindings.Stub {
 
 
   ContactsServiceGetCountResponseParams _ContactsServiceGetCountResponseParamsFactory(int count) {
-    var result = new ContactsServiceGetCountResponseParams();
-    result.count = count;
-    return result;
+    var mojo_factory_result = new ContactsServiceGetCountResponseParams();
+    mojo_factory_result.count = count;
+    return mojo_factory_result;
   }
   ContactsServiceGetResponseParams _ContactsServiceGetResponseParamsFactory(List<Contact> contacts) {
-    var result = new ContactsServiceGetResponseParams();
-    result.contacts = contacts;
-    return result;
+    var mojo_factory_result = new ContactsServiceGetResponseParams();
+    mojo_factory_result.contacts = contacts;
+    return mojo_factory_result;
   }
   ContactsServiceGetEmailsResponseParams _ContactsServiceGetEmailsResponseParamsFactory(List<String> emails) {
-    var result = new ContactsServiceGetEmailsResponseParams();
-    result.emails = emails;
-    return result;
+    var mojo_factory_result = new ContactsServiceGetEmailsResponseParams();
+    mojo_factory_result.emails = emails;
+    return mojo_factory_result;
   }
   ContactsServiceGetPhotoResponseParams _ContactsServiceGetPhotoResponseParamsFactory(String photoUrl) {
-    var result = new ContactsServiceGetPhotoResponseParams();
-    result.photoUrl = photoUrl;
-    return result;
+    var mojo_factory_result = new ContactsServiceGetPhotoResponseParams();
+    mojo_factory_result.photoUrl = photoUrl;
+    return mojo_factory_result;
   }
 
   dynamic handleMessage(bindings.ServiceMessage message) {

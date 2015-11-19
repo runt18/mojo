@@ -304,9 +304,9 @@ class EchoStub extends bindings.Stub {
 
 
   EchoEchoStringResponseParams _EchoEchoStringResponseParamsFactory(String value) {
-    var result = new EchoEchoStringResponseParams();
-    result.value = value;
-    return result;
+    var mojo_factory_result = new EchoEchoStringResponseParams();
+    mojo_factory_result.value = value;
+    return mojo_factory_result;
   }
 
   dynamic handleMessage(bindings.ServiceMessage message) {

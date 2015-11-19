@@ -479,14 +479,14 @@ class CookieStoreStub extends bindings.Stub {
 
 
   CookieStoreGetResponseParams _CookieStoreGetResponseParamsFactory(String cookies) {
-    var result = new CookieStoreGetResponseParams();
-    result.cookies = cookies;
-    return result;
+    var mojo_factory_result = new CookieStoreGetResponseParams();
+    mojo_factory_result.cookies = cookies;
+    return mojo_factory_result;
   }
   CookieStoreSetResponseParams _CookieStoreSetResponseParamsFactory(bool success) {
-    var result = new CookieStoreSetResponseParams();
-    result.success = success;
-    return result;
+    var mojo_factory_result = new CookieStoreSetResponseParams();
+    mojo_factory_result.success = success;
+    return mojo_factory_result;
   }
 
   dynamic handleMessage(bindings.ServiceMessage message) {

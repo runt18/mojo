@@ -954,13 +954,13 @@ class ViewStub extends bindings.Stub {
 
 
   ViewOnLayoutResponseParams _ViewOnLayoutResponseParamsFactory(layouts_mojom.ViewLayoutInfo info) {
-    var result = new ViewOnLayoutResponseParams();
-    result.info = info;
-    return result;
+    var mojo_factory_result = new ViewOnLayoutResponseParams();
+    mojo_factory_result.info = info;
+    return mojo_factory_result;
   }
   ViewOnChildUnavailableResponseParams _ViewOnChildUnavailableResponseParamsFactory() {
-    var result = new ViewOnChildUnavailableResponseParams();
-    return result;
+    var mojo_factory_result = new ViewOnChildUnavailableResponseParams();
+    return mojo_factory_result;
   }
 
   dynamic handleMessage(bindings.ServiceMessage message) {
@@ -1245,9 +1245,9 @@ class ViewHostStub extends bindings.Stub {
 
 
   ViewHostLayoutChildResponseParams _ViewHostLayoutChildResponseParamsFactory(layouts_mojom.ViewLayoutInfo info) {
-    var result = new ViewHostLayoutChildResponseParams();
-    result.info = info;
-    return result;
+    var mojo_factory_result = new ViewHostLayoutChildResponseParams();
+    mojo_factory_result.info = info;
+    return mojo_factory_result;
   }
 
   dynamic handleMessage(bindings.ServiceMessage message) {

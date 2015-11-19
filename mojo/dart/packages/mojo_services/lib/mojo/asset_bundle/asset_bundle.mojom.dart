@@ -377,9 +377,9 @@ class AssetBundleStub extends bindings.Stub {
 
 
   AssetBundleGetAsStreamResponseParams _AssetBundleGetAsStreamResponseParamsFactory(core.MojoDataPipeConsumer assetData) {
-    var result = new AssetBundleGetAsStreamResponseParams();
-    result.assetData = assetData;
-    return result;
+    var mojo_factory_result = new AssetBundleGetAsStreamResponseParams();
+    mojo_factory_result.assetData = assetData;
+    return mojo_factory_result;
   }
 
   dynamic handleMessage(bindings.ServiceMessage message) {

@@ -1527,13 +1527,13 @@ class SurfaceStub extends bindings.Stub {
 
 
   SurfaceGetIdNamespaceResponseParams _SurfaceGetIdNamespaceResponseParamsFactory(int idNamespace) {
-    var result = new SurfaceGetIdNamespaceResponseParams();
-    result.idNamespace = idNamespace;
-    return result;
+    var mojo_factory_result = new SurfaceGetIdNamespaceResponseParams();
+    mojo_factory_result.idNamespace = idNamespace;
+    return mojo_factory_result;
   }
   SurfaceSubmitFrameResponseParams _SurfaceSubmitFrameResponseParamsFactory() {
-    var result = new SurfaceSubmitFrameResponseParams();
-    return result;
+    var mojo_factory_result = new SurfaceSubmitFrameResponseParams();
+    return mojo_factory_result;
   }
 
   dynamic handleMessage(bindings.ServiceMessage message) {

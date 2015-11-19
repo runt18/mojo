@@ -2480,9 +2480,9 @@ class SmallCacheStub extends bindings.Stub {
 
 
   SmallCacheGetIntValueResponseParams _SmallCacheGetIntValueResponseParamsFactory(int intValue) {
-    var result = new SmallCacheGetIntValueResponseParams();
-    result.intValue = intValue;
-    return result;
+    var mojo_factory_result = new SmallCacheGetIntValueResponseParams();
+    mojo_factory_result.intValue = intValue;
+    return mojo_factory_result;
   }
 
   dynamic handleMessage(bindings.ServiceMessage message) {
@@ -2701,9 +2701,9 @@ class UnionInterfaceStub extends bindings.Stub {
 
 
   UnionInterfaceEchoResponseParams _UnionInterfaceEchoResponseParamsFactory(PodUnion outVal) {
-    var result = new UnionInterfaceEchoResponseParams();
-    result.outVal = outVal;
-    return result;
+    var mojo_factory_result = new UnionInterfaceEchoResponseParams();
+    mojo_factory_result.outVal = outVal;
+    return mojo_factory_result;
   }
 
   dynamic handleMessage(bindings.ServiceMessage message) {

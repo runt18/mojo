@@ -152,69 +152,71 @@ class MojomGenerator {
     final script = path.join(
         _mojoSdk.path, 'tools', 'bindings', 'mojom_bindings_generator.py');
     final sdkInc = path.normalize(path.join(_mojoSdk.path, '..', '..'));
-    final outputDir = await destination.createTemp();
-    final output = outputDir.path;
+    final outputDir = await Directory.systemTemp.createTemp();
+    try {
+      final output = outputDir.path;
 
-    final servicesPath = _sniffForMojoServicesInclude(mojom.path);
+      final servicesPath = _sniffForMojoServicesInclude(mojom.path);
 
-    final arguments = [
-      '--use_bundled_pylibs',
-      '-g',
-      'dart',
-      '-o',
-      output,
-      '-I',
-      sdkInc,
-      '-I',
-      importDir.path
-    ];
-    if (servicesPath != null) {
-      arguments.add('-I');
-      arguments.add(servicesPath);
-    }
-    arguments.add(mojom.path);
-
-    log.info('Generating $mojom');
-    log.info('$script ${arguments.join(" ")}');
-    log.info('dryRun = $_dryRun');
-    if (!_dryRun) {
-      final result = await _runBindingsGeneration(script, arguments);
-      if (result.exitCode != 0) {
-        log.info("bindings generation result = ${result.exitCode}");
-        await outputDir.delete(recursive: true);
-        throw new GenerationError("$script failed:\n"
-            "code: ${result.exitCode}\n"
-            "stderr: ${result.stderr}\n"
-            "stdout: ${result.stdout}");
-      } else {
-        log.info("bindings generation result = 0");
+      final arguments = [
+        '--use_bundled_pylibs',
+        '-g',
+        'dart',
+        '-o',
+        output,
+        '-I',
+        sdkInc,
+        '-I',
+        importDir.path
+      ];
+      if (servicesPath != null) {
+        arguments.add('-I');
+        arguments.add(servicesPath);
       }
+      arguments.add(mojom.path);
 
-      // Generated .mojom.dart is under $output/dart-gen/$PACKAGE/lib/$X
-      // Move $X to |destination|/lib/$X.
-      // Throw an exception if $PACKGE != [packageName].
-      final generatedDirName = path.join(output, 'dart-gen');
-      final generatedDir = new Directory(generatedDirName);
-      log.info("generatedDir= $generatedDir");
-      assert(await generatedDir.exists());
-      await for (var genpack in generatedDir.list()) {
-        if (genpack is! Directory) continue;
-        log.info("genpack = $genpack");
-        var libDir = new Directory(path.join(genpack.path, 'lib'));
-        var name = path.relative(genpack.path, from: generatedDirName);
-        log.info("Found generated lib dir: $libDir");
-
-        if (packageName != name) {
+      log.info('Generating $mojom');
+      log.info('$script ${arguments.join(" ")}');
+      log.info('dryRun = $_dryRun');
+      if (!_dryRun) {
+        final result = await _runBindingsGeneration(script, arguments);
+        if (result.exitCode != 0) {
+          log.info("bindings generation result = ${result.exitCode}");
           await outputDir.delete(recursive: true);
-          throw new GenerationError(
-              "Tried to generate for package $name in package $packageName");
+          throw new GenerationError("$script failed:\n"
+              "code: ${result.exitCode}\n"
+              "stderr: ${result.stderr}\n"
+              "stdout: ${result.stdout}");
+        } else {
+          log.info("bindings generation result = 0");
         }
 
-        var copyDest = new Directory(path.join(destination.path, 'lib'));
-        log.info("Copy $libDir to $copyDest");
-        await _copyBindings(copyDest, libDir);
-      }
+        // Generated .mojom.dart is under $output/dart-gen/$PACKAGE/lib/$X
+        // Move $X to |destination|/lib/$X.
+        // Throw an exception if $PACKGE != [packageName].
+        final generatedDirName = path.join(output, 'dart-gen');
+        final generatedDir = new Directory(generatedDirName);
+        log.info("generatedDir= $generatedDir");
+        assert(await generatedDir.exists());
+        await for (var genpack in generatedDir.list()) {
+          if (genpack is! Directory) continue;
+          log.info("genpack = $genpack");
+          var libDir = new Directory(path.join(genpack.path, 'lib'));
+          var name = path.relative(genpack.path, from: generatedDirName);
+          log.info("Found generated lib dir: $libDir");
 
+          if (packageName != name) {
+            await outputDir.delete(recursive: true);
+            throw new GenerationError(
+                "Tried to generate for package $name in package $packageName");
+          }
+
+          var copyDest = new Directory(path.join(destination.path, 'lib'));
+          log.info("Copy $libDir to $copyDest");
+          await _copyBindings(copyDest, libDir);
+        }
+      }
+    } finally {
       await outputDir.delete(recursive: true);
     }
   }

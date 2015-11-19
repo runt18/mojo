@@ -695,19 +695,19 @@ class UrlLoaderStub extends bindings.Stub {
 
 
   UrlLoaderStartResponseParams _UrlLoaderStartResponseParamsFactory(url_response_mojom.UrlResponse response) {
-    var result = new UrlLoaderStartResponseParams();
-    result.response = response;
-    return result;
+    var mojo_factory_result = new UrlLoaderStartResponseParams();
+    mojo_factory_result.response = response;
+    return mojo_factory_result;
   }
   UrlLoaderFollowRedirectResponseParams _UrlLoaderFollowRedirectResponseParamsFactory(url_response_mojom.UrlResponse response) {
-    var result = new UrlLoaderFollowRedirectResponseParams();
-    result.response = response;
-    return result;
+    var mojo_factory_result = new UrlLoaderFollowRedirectResponseParams();
+    mojo_factory_result.response = response;
+    return mojo_factory_result;
   }
   UrlLoaderQueryStatusResponseParams _UrlLoaderQueryStatusResponseParamsFactory(UrlLoaderStatus status) {
-    var result = new UrlLoaderQueryStatusResponseParams();
-    result.status = status;
-    return result;
+    var mojo_factory_result = new UrlLoaderQueryStatusResponseParams();
+    mojo_factory_result.status = status;
+    return mojo_factory_result;
   }
 
   dynamic handleMessage(bindings.ServiceMessage message) {

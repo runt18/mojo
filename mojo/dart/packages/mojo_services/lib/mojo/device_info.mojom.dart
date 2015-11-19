@@ -382,9 +382,9 @@ class DeviceInfoStub extends bindings.Stub {
 
 
   DeviceInfoGetDeviceTypeResponseParams _DeviceInfoGetDeviceTypeResponseParamsFactory(DeviceInfoDeviceType deviceType) {
-    var result = new DeviceInfoGetDeviceTypeResponseParams();
-    result.deviceType = deviceType;
-    return result;
+    var mojo_factory_result = new DeviceInfoGetDeviceTypeResponseParams();
+    mojo_factory_result.deviceType = deviceType;
+    return mojo_factory_result;
   }
 
   dynamic handleMessage(bindings.ServiceMessage message) {

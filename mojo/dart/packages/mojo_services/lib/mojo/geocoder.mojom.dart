@@ -1151,16 +1151,16 @@ class GeocoderStub extends bindings.Stub {
 
 
   GeocoderAddressToLocationResponseParams _GeocoderAddressToLocationResponseParamsFactory(String status, List<Result> results) {
-    var result = new GeocoderAddressToLocationResponseParams();
-    result.status = status;
-    result.results = results;
-    return result;
+    var mojo_factory_result = new GeocoderAddressToLocationResponseParams();
+    mojo_factory_result.status = status;
+    mojo_factory_result.results = results;
+    return mojo_factory_result;
   }
   GeocoderLocationToAddressResponseParams _GeocoderLocationToAddressResponseParamsFactory(String status, List<Result> results) {
-    var result = new GeocoderLocationToAddressResponseParams();
-    result.status = status;
-    result.results = results;
-    return result;
+    var mojo_factory_result = new GeocoderLocationToAddressResponseParams();
+    mojo_factory_result.status = status;
+    mojo_factory_result.results = results;
+    return mojo_factory_result;
   }
 
   dynamic handleMessage(bindings.ServiceMessage message) {

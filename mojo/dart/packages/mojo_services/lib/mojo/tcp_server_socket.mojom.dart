@@ -335,10 +335,10 @@ class TcpServerSocketStub extends bindings.Stub {
 
 
   TcpServerSocketAcceptResponseParams _TcpServerSocketAcceptResponseParamsFactory(network_error_mojom.NetworkError result, net_address_mojom.NetAddress remoteAddress) {
-    var result = new TcpServerSocketAcceptResponseParams();
-    result.result = result;
-    result.remoteAddress = remoteAddress;
-    return result;
+    var mojo_factory_result = new TcpServerSocketAcceptResponseParams();
+    mojo_factory_result.result = result;
+    mojo_factory_result.remoteAddress = remoteAddress;
+    return mojo_factory_result;
   }
 
   dynamic handleMessage(bindings.ServiceMessage message) {

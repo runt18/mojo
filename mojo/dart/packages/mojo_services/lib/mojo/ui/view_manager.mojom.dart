@@ -479,13 +479,13 @@ class ViewManagerStub extends bindings.Stub {
 
 
   ViewManagerRegisterViewResponseParams _ViewManagerRegisterViewResponseParamsFactory(views_mojom.ViewToken viewToken) {
-    var result = new ViewManagerRegisterViewResponseParams();
-    result.viewToken = viewToken;
-    return result;
+    var mojo_factory_result = new ViewManagerRegisterViewResponseParams();
+    mojo_factory_result.viewToken = viewToken;
+    return mojo_factory_result;
   }
   ViewManagerRegisterViewTreeResponseParams _ViewManagerRegisterViewTreeResponseParamsFactory() {
-    var result = new ViewManagerRegisterViewTreeResponseParams();
-    return result;
+    var mojo_factory_result = new ViewManagerRegisterViewTreeResponseParams();
+    return mojo_factory_result;
   }
 
   dynamic handleMessage(bindings.ServiceMessage message) {

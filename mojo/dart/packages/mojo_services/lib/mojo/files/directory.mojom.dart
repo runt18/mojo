@@ -1408,41 +1408,41 @@ class DirectoryStub extends bindings.Stub {
 
 
   DirectoryReadResponseParams _DirectoryReadResponseParamsFactory(types_mojom.Error error, List<types_mojom.DirectoryEntry> directoryContents) {
-    var result = new DirectoryReadResponseParams();
-    result.error = error;
-    result.directoryContents = directoryContents;
-    return result;
+    var mojo_factory_result = new DirectoryReadResponseParams();
+    mojo_factory_result.error = error;
+    mojo_factory_result.directoryContents = directoryContents;
+    return mojo_factory_result;
   }
   DirectoryStatResponseParams _DirectoryStatResponseParamsFactory(types_mojom.Error error, types_mojom.FileInformation fileInformation) {
-    var result = new DirectoryStatResponseParams();
-    result.error = error;
-    result.fileInformation = fileInformation;
-    return result;
+    var mojo_factory_result = new DirectoryStatResponseParams();
+    mojo_factory_result.error = error;
+    mojo_factory_result.fileInformation = fileInformation;
+    return mojo_factory_result;
   }
   DirectoryTouchResponseParams _DirectoryTouchResponseParamsFactory(types_mojom.Error error) {
-    var result = new DirectoryTouchResponseParams();
-    result.error = error;
-    return result;
+    var mojo_factory_result = new DirectoryTouchResponseParams();
+    mojo_factory_result.error = error;
+    return mojo_factory_result;
   }
   DirectoryOpenFileResponseParams _DirectoryOpenFileResponseParamsFactory(types_mojom.Error error) {
-    var result = new DirectoryOpenFileResponseParams();
-    result.error = error;
-    return result;
+    var mojo_factory_result = new DirectoryOpenFileResponseParams();
+    mojo_factory_result.error = error;
+    return mojo_factory_result;
   }
   DirectoryOpenDirectoryResponseParams _DirectoryOpenDirectoryResponseParamsFactory(types_mojom.Error error) {
-    var result = new DirectoryOpenDirectoryResponseParams();
-    result.error = error;
-    return result;
+    var mojo_factory_result = new DirectoryOpenDirectoryResponseParams();
+    mojo_factory_result.error = error;
+    return mojo_factory_result;
   }
   DirectoryRenameResponseParams _DirectoryRenameResponseParamsFactory(types_mojom.Error error) {
-    var result = new DirectoryRenameResponseParams();
-    result.error = error;
-    return result;
+    var mojo_factory_result = new DirectoryRenameResponseParams();
+    mojo_factory_result.error = error;
+    return mojo_factory_result;
   }
   DirectoryDeleteResponseParams _DirectoryDeleteResponseParamsFactory(types_mojom.Error error) {
-    var result = new DirectoryDeleteResponseParams();
-    result.error = error;
-    return result;
+    var mojo_factory_result = new DirectoryDeleteResponseParams();
+    mojo_factory_result.error = error;
+    return mojo_factory_result;
   }
 
   dynamic handleMessage(bindings.ServiceMessage message) {

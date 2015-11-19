@@ -351,8 +351,8 @@ class InputClientStub extends bindings.Stub {
 
 
   InputClientOnBackButtonResponseParams _InputClientOnBackButtonResponseParamsFactory() {
-    var result = new InputClientOnBackButtonResponseParams();
-    return result;
+    var mojo_factory_result = new InputClientOnBackButtonResponseParams();
+    return mojo_factory_result;
   }
 
   dynamic handleMessage(bindings.ServiceMessage message) {

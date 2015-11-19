@@ -1151,9 +1151,9 @@ class NamedObjectStub extends bindings.Stub {
 
 
   NamedObjectGetNameResponseParams _NamedObjectGetNameResponseParamsFactory(String name) {
-    var result = new NamedObjectGetNameResponseParams();
-    result.name = name;
-    return result;
+    var mojo_factory_result = new NamedObjectGetNameResponseParams();
+    mojo_factory_result.name = name;
+    return mojo_factory_result;
   }
 
   dynamic handleMessage(bindings.ServiceMessage message) {
@@ -1478,25 +1478,25 @@ class FactoryStub extends bindings.Stub {
 
 
   FactoryDoStuffResponseParams _FactoryDoStuffResponseParamsFactory(Response response, String text) {
-    var result = new FactoryDoStuffResponseParams();
-    result.response = response;
-    result.text = text;
-    return result;
+    var mojo_factory_result = new FactoryDoStuffResponseParams();
+    mojo_factory_result.response = response;
+    mojo_factory_result.text = text;
+    return mojo_factory_result;
   }
   FactoryDoStuff2ResponseParams _FactoryDoStuff2ResponseParamsFactory(String text) {
-    var result = new FactoryDoStuff2ResponseParams();
-    result.text = text;
-    return result;
+    var mojo_factory_result = new FactoryDoStuff2ResponseParams();
+    mojo_factory_result.text = text;
+    return mojo_factory_result;
   }
   FactoryRequestImportedInterfaceResponseParams _FactoryRequestImportedInterfaceResponseParamsFactory(Object obj) {
-    var result = new FactoryRequestImportedInterfaceResponseParams();
-    result.obj = obj;
-    return result;
+    var mojo_factory_result = new FactoryRequestImportedInterfaceResponseParams();
+    mojo_factory_result.obj = obj;
+    return mojo_factory_result;
   }
   FactoryTakeImportedInterfaceResponseParams _FactoryTakeImportedInterfaceResponseParamsFactory(Object obj) {
-    var result = new FactoryTakeImportedInterfaceResponseParams();
-    result.obj = obj;
-    return result;
+    var mojo_factory_result = new FactoryTakeImportedInterfaceResponseParams();
+    mojo_factory_result.obj = obj;
+    return mojo_factory_result;
   }
 
   dynamic handleMessage(bindings.ServiceMessage message) {
