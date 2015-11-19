@@ -9,11 +9,11 @@ benchmarks = [
     'measurements': [
       {
         'name': 'initialize',
-        'spec': 'time_until/traced_application/initialized'
+        'spec': 'time_until/Dart/initialized'
       },
       {
         'name': 'accept connection',
-        'spec': 'time_between/traced_application/initialized/traced_application/connected',
+        'spec': 'time_between/Dart/initialized/Dart/connected',
       }
     ]
   },
@@ -24,7 +24,7 @@ benchmarks = [
     'measurements': [
       {
         'name': 'initialize',
-        'spec': 'time_between/dart_handler_running/connecting/traced_application/initialized',
+        'spec': 'time_between/Dart/connecting/Dart/initialized',
       }
     ]
   },

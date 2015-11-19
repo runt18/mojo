@@ -9,20 +9,16 @@
 // running when we issue the call to connectToApplication.
 
 import 'dart:async';
+import 'dart:developer';
 
-import 'package:common/tracing_helper.dart';
 import 'package:mojo/application.dart';
 import 'package:mojo/core.dart';
 
 class DartHandlerRunning extends Application {
-  TracingHelper _tracing;
-
   DartHandlerRunning.fromHandle(MojoHandle handle) : super.fromHandle(handle);
 
   Future initialize(List<String> args, String url) async {
-    _tracing =
-        new TracingHelper.fromApplication(this, "example_traced_application");
-    _tracing.traceInstant("connecting", "dart_handler_running");
+    Timeline.instantSync("connecting");
     ApplicationConnection connection =
         connectToApplication("mojo:dart_startup");
   }
