@@ -386,7 +386,7 @@ void StandardOutputBase::TrackBookkeeping::UpdateTrackTrans(
   bool good;
 
   lt_to_track_frames.a_zero = tmp.a_zero;
-  good = scale.DoReverseTransform(tmp.b_zero, &lt_to_track_frames.b_zero);
+  good = scale.DoForwardTransform(tmp.b_zero, &lt_to_track_frames.b_zero);
   DCHECK(good);
   good = LinearTransform::Ratio::Compose(scale.scale,
                                          tmp.scale,
