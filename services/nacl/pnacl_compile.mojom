@@ -4,6 +4,7 @@
 
 module mojo.nacl;
 
+[ServiceName="mojo::nacl::PexeCompilerInit"]
 interface PexeCompilerInit {
   PexeCompilerStart(handle<message_pipe> message_handle);
 };

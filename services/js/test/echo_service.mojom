@@ -4,6 +4,7 @@
 
 module mojo;
 
+[ServiceName="mojo::EchoService"]
 interface EchoService {
   EchoString(string? value) => (string? value);
 

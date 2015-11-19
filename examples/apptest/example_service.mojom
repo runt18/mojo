@@ -5,6 +5,7 @@
 module mojo;
 
 // A simple service used to exemplify application testing within mojo_shell.
+[ServiceName="mojo::ExampleService"]
 interface ExampleService {
   Ping(uint16 ping_value) => (uint16 pong_value);
 };

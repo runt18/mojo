@@ -4,20 +4,24 @@
 
 module shell;
 
+[ServiceName="shell::TestService"]
 interface TestService {
   Test(string test_string) => ();
 };
 
+[ServiceName="shell::TestA"]
 interface TestA {
   CallB();
   CallCFromB();
 };
 
+[ServiceName="shell::TestB"]
 interface TestB {
   B() => ();
   CallC() => ();
 };
 
+[ServiceName="shell::TestC"]
 interface TestC {
   C() => ();
 };

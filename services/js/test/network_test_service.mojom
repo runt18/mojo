@@ -4,6 +4,7 @@
 
 module js;
 
+[ServiceName="js::NetworkTestService"]
 interface NetworkTestService {
   // Return the size of the file at url.
   GetFileSize(string url) => (bool ok, uint64 size);

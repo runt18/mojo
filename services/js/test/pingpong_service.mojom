@@ -4,6 +4,7 @@
 
 module js;
 
+[ServiceName="js::PingPongService"]
 interface PingPongService {
   SetClient(PingPongClient client);
 

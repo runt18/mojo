@@ -9,6 +9,7 @@ import "files/interfaces/file.mojom";
 import "files/interfaces/types.mojom";
 
 // Interface for dealing with (e.g., starting) "native" processes.
+[ServiceName="native_support::Process"]
 interface Process {
   // Spawns a process, optionally redirecting stdin/stdout/stderr from/to the
   // corresponding |mojo.files.File| (if null, redirects from/to /dev/null).

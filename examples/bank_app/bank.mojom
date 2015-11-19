@@ -4,6 +4,7 @@
 
 module examples;
 
+[ServiceName="examples::Bank"]
 interface Bank {
   Deposit(int32 dollars);
   Withdraw(int32 dollars);

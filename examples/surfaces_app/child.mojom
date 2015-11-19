@@ -6,6 +6,7 @@ import "mojo/services/geometry/interfaces/geometry.mojom";
 import "mojo/services/surfaces/interfaces/quads.mojom";
 import "mojo/services/surfaces/interfaces/surface_id.mojom";
 
+[ServiceName="Child"]
 interface Child {
   ProduceFrame(mojo.Color color, mojo.Size size) =>
       (mojo.SurfaceId id);

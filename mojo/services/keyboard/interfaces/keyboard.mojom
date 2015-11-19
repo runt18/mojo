@@ -42,6 +42,7 @@ enum KeyboardType {
   DATETIME,
 };
 
+[ServiceName="keyboard::KeyboardService"]
 interface KeyboardService {
   Show(KeyboardClient client, KeyboardType type);
   ShowByRequest();

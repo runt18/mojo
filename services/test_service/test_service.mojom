@@ -4,6 +4,7 @@
 
 module mojo.test;
 
+[ServiceName="mojo::test::TestService"]
 interface TestService {
   Ping() => ();
   // Connect to a TestTimeService at |app_url| and ferry the data back
@@ -12,6 +13,7 @@ interface TestService {
   StartTrackingRequests() => ();
 };
 
+[ServiceName="mojo::test::TestTimeService"]
 interface TestTimeService {
   // Provides a constant time value.
   GetPartyTime() => (int64 time_usec);

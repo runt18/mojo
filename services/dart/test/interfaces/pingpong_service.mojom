@@ -5,6 +5,7 @@
 [DartPackage="_mojo_for_test_only"]
 module test;
 
+[ServiceName="test::PingPongService"]
 interface PingPongService {
   // Register the client interface with the service.
   SetClient(PingPongClient client);

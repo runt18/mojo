@@ -21,12 +21,14 @@ struct ServiceReport {
 
 // A simple interface to obtain a "report" from all services that have
 // opted to connect themselves to for request tracking.
+[ServiceName="mojo::test::TestTrackedRequestService"]
 interface TestTrackedRequestService {
   GetReport() => (array<ServiceReport?>? report);
 };
 
 // TestRequestTracker records ServiceStats for an individual service
 // connection for aggregation in a TestTrackedRequestService.
+[ServiceName="mojo::test::TestRequestTracker"]
 interface TestRequestTracker {
   SetNameAndReturnId(string service_name) => (uint64 id);
   // Upload a ServiceStats for tracking.
