@@ -186,6 +186,7 @@ void AlsaOutput::Cleanup() {
 
 bool AlsaOutput::StartMixJob(MixJob* job, const LocalTime& process_start) {
   DCHECK(job);
+  DCHECK(alsa_device_);
 
   // Are we not primed?  If so, fill a mix buffer with silence and send it to
   // the alsa device.  Schedule a callback for a short time in the future so
@@ -352,12 +353,12 @@ void AlsaOutput::HandleAsUnderflow() {
 }
 
 void AlsaOutput::HandleAsError(snd_pcm_sframes_t code) {
-  // TODO(johngro): Throttle this somehow.
-  LOG(WARNING) << "[" << this << "] : Attempting to recover from ALSA error "
-               << code;
-
   if (IsRecoverableAlsaError(code)) {
     snd_pcm_sframes_t new_code;
+
+    // TODO(johngro): Throttle this somehow.
+    LOG(WARNING) << "[" << this << "] : Attempting to recover from ALSA error "
+                 << code;
 
     new_code = snd_pcm_recover(alsa_device_, code, true);
     DCHECK(!new_code || (new_code == code));

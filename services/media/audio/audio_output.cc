@@ -128,7 +128,12 @@ void AudioOutput::ProcessThunk(AudioOutputWeakPtr weak_output) {
   auto output  = weak_output.lock();
   if (output) {
     base::AutoLock lock(output->processing_lock_);
-    output->Process();
+
+    // Make sure that we are not in the process of cleaning up before we start
+    // processing.
+    if (!output->shutting_down_) {
+      output->Process();
+    }
   }
 }
 
