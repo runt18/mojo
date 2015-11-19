@@ -17,9 +17,9 @@ class ProcessSpawnParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(64, 0)
   ];
-  String path = null;
-  List<String> argv = null;
-  List<String> envp = null;
+  List<int> path = null;
+  List<List<int>> argv = null;
+  List<List<int>> envp = null;
   Object stdinFile = null;
   Object stdoutFile = null;
   Object stderrFile = null;
@@ -62,7 +62,7 @@ class ProcessSpawnParams extends bindings.Struct {
     }
     if (mainDataHeader.version >= 0) {
       
-      result.path = decoder0.decodeString(8, false);
+      result.path = decoder0.decodeUint8Array(8, bindings.kNothingNullable, bindings.kUnspecifiedArrayLength);
     }
     if (mainDataHeader.version >= 0) {
       
@@ -71,10 +71,10 @@ class ProcessSpawnParams extends bindings.Struct {
         result.argv = null;
       } else {
         var si1 = decoder1.decodeDataHeaderForPointerArray(bindings.kUnspecifiedArrayLength);
-        result.argv = new List<String>(si1.numElements);
+        result.argv = new List<List<int>>(si1.numElements);
         for (int i1 = 0; i1 < si1.numElements; ++i1) {
           
-          result.argv[i1] = decoder1.decodeString(bindings.ArrayDataHeader.kHeaderSize + bindings.kPointerSize * i1, false);
+          result.argv[i1] = decoder1.decodeUint8Array(bindings.ArrayDataHeader.kHeaderSize + bindings.kPointerSize * i1, bindings.kNothingNullable, bindings.kUnspecifiedArrayLength);
         }
       }
     }
@@ -85,10 +85,10 @@ class ProcessSpawnParams extends bindings.Struct {
         result.envp = null;
       } else {
         var si1 = decoder1.decodeDataHeaderForPointerArray(bindings.kUnspecifiedArrayLength);
-        result.envp = new List<String>(si1.numElements);
+        result.envp = new List<List<int>>(si1.numElements);
         for (int i1 = 0; i1 < si1.numElements; ++i1) {
           
-          result.envp[i1] = decoder1.decodeString(bindings.ArrayDataHeader.kHeaderSize + bindings.kPointerSize * i1, false);
+          result.envp[i1] = decoder1.decodeUint8Array(bindings.ArrayDataHeader.kHeaderSize + bindings.kPointerSize * i1, bindings.kNothingNullable, bindings.kUnspecifiedArrayLength);
         }
       }
     }
@@ -114,7 +114,7 @@ class ProcessSpawnParams extends bindings.Struct {
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
     
-    encoder0.encodeString(path, 8, false);
+    encoder0.encodeUint8Array(path, 8, bindings.kNothingNullable, bindings.kUnspecifiedArrayLength);
     
     if (argv == null) {
       encoder0.encodeNullPointer(16, true);
@@ -122,7 +122,7 @@ class ProcessSpawnParams extends bindings.Struct {
       var encoder1 = encoder0.encodePointerArray(argv.length, 16, bindings.kUnspecifiedArrayLength);
       for (int i0 = 0; i0 < argv.length; ++i0) {
         
-        encoder1.encodeString(argv[i0], bindings.ArrayDataHeader.kHeaderSize + bindings.kPointerSize * i0, false);
+        encoder1.encodeUint8Array(argv[i0], bindings.ArrayDataHeader.kHeaderSize + bindings.kPointerSize * i0, bindings.kNothingNullable, bindings.kUnspecifiedArrayLength);
       }
     }
     
@@ -132,7 +132,7 @@ class ProcessSpawnParams extends bindings.Struct {
       var encoder1 = encoder0.encodePointerArray(envp.length, 24, bindings.kUnspecifiedArrayLength);
       for (int i0 = 0; i0 < envp.length; ++i0) {
         
-        encoder1.encodeString(envp[i0], bindings.ArrayDataHeader.kHeaderSize + bindings.kPointerSize * i0, false);
+        encoder1.encodeUint8Array(envp[i0], bindings.ArrayDataHeader.kHeaderSize + bindings.kPointerSize * i0, bindings.kNothingNullable, bindings.kUnspecifiedArrayLength);
       }
     }
     
@@ -238,9 +238,9 @@ class ProcessSpawnWithTerminalParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(48, 0)
   ];
-  String path = null;
-  List<String> argv = null;
-  List<String> envp = null;
+  List<int> path = null;
+  List<List<int>> argv = null;
+  List<List<int>> envp = null;
   Object terminalFile = null;
   Object processController = null;
 
@@ -281,7 +281,7 @@ class ProcessSpawnWithTerminalParams extends bindings.Struct {
     }
     if (mainDataHeader.version >= 0) {
       
-      result.path = decoder0.decodeString(8, false);
+      result.path = decoder0.decodeUint8Array(8, bindings.kNothingNullable, bindings.kUnspecifiedArrayLength);
     }
     if (mainDataHeader.version >= 0) {
       
@@ -290,10 +290,10 @@ class ProcessSpawnWithTerminalParams extends bindings.Struct {
         result.argv = null;
       } else {
         var si1 = decoder1.decodeDataHeaderForPointerArray(bindings.kUnspecifiedArrayLength);
-        result.argv = new List<String>(si1.numElements);
+        result.argv = new List<List<int>>(si1.numElements);
         for (int i1 = 0; i1 < si1.numElements; ++i1) {
           
-          result.argv[i1] = decoder1.decodeString(bindings.ArrayDataHeader.kHeaderSize + bindings.kPointerSize * i1, false);
+          result.argv[i1] = decoder1.decodeUint8Array(bindings.ArrayDataHeader.kHeaderSize + bindings.kPointerSize * i1, bindings.kNothingNullable, bindings.kUnspecifiedArrayLength);
         }
       }
     }
@@ -304,10 +304,10 @@ class ProcessSpawnWithTerminalParams extends bindings.Struct {
         result.envp = null;
       } else {
         var si1 = decoder1.decodeDataHeaderForPointerArray(bindings.kUnspecifiedArrayLength);
-        result.envp = new List<String>(si1.numElements);
+        result.envp = new List<List<int>>(si1.numElements);
         for (int i1 = 0; i1 < si1.numElements; ++i1) {
           
-          result.envp[i1] = decoder1.decodeString(bindings.ArrayDataHeader.kHeaderSize + bindings.kPointerSize * i1, false);
+          result.envp[i1] = decoder1.decodeUint8Array(bindings.ArrayDataHeader.kHeaderSize + bindings.kPointerSize * i1, bindings.kNothingNullable, bindings.kUnspecifiedArrayLength);
         }
       }
     }
@@ -325,7 +325,7 @@ class ProcessSpawnWithTerminalParams extends bindings.Struct {
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
     
-    encoder0.encodeString(path, 8, false);
+    encoder0.encodeUint8Array(path, 8, bindings.kNothingNullable, bindings.kUnspecifiedArrayLength);
     
     if (argv == null) {
       encoder0.encodeNullPointer(16, true);
@@ -333,7 +333,7 @@ class ProcessSpawnWithTerminalParams extends bindings.Struct {
       var encoder1 = encoder0.encodePointerArray(argv.length, 16, bindings.kUnspecifiedArrayLength);
       for (int i0 = 0; i0 < argv.length; ++i0) {
         
-        encoder1.encodeString(argv[i0], bindings.ArrayDataHeader.kHeaderSize + bindings.kPointerSize * i0, false);
+        encoder1.encodeUint8Array(argv[i0], bindings.ArrayDataHeader.kHeaderSize + bindings.kPointerSize * i0, bindings.kNothingNullable, bindings.kUnspecifiedArrayLength);
       }
     }
     
@@ -343,7 +343,7 @@ class ProcessSpawnWithTerminalParams extends bindings.Struct {
       var encoder1 = encoder0.encodePointerArray(envp.length, 24, bindings.kUnspecifiedArrayLength);
       for (int i0 = 0; i0 < envp.length; ++i0) {
         
-        encoder1.encodeString(envp[i0], bindings.ArrayDataHeader.kHeaderSize + bindings.kPointerSize * i0, false);
+        encoder1.encodeUint8Array(envp[i0], bindings.ArrayDataHeader.kHeaderSize + bindings.kPointerSize * i0, bindings.kNothingNullable, bindings.kUnspecifiedArrayLength);
       }
     }
     
@@ -721,8 +721,8 @@ const String ProcessName =
       'native_support::Process';
 
 abstract class Process {
-  dynamic spawn(String path,List<String> argv,List<String> envp,Object stdinFile,Object stdoutFile,Object stderrFile,Object processController,[Function responseFactory = null]);
-  dynamic spawnWithTerminal(String path,List<String> argv,List<String> envp,Object terminalFile,Object processController,[Function responseFactory = null]);
+  dynamic spawn(List<int> path,List<List<int>> argv,List<List<int>> envp,Object stdinFile,Object stdoutFile,Object stderrFile,Object processController,[Function responseFactory = null]);
+  dynamic spawnWithTerminal(List<int> path,List<List<int>> argv,List<List<int>> envp,Object terminalFile,Object processController,[Function responseFactory = null]);
 
 }
 
@@ -804,7 +804,7 @@ class _ProcessProxyCalls implements Process {
   ProcessProxyImpl _proxyImpl;
 
   _ProcessProxyCalls(this._proxyImpl);
-    dynamic spawn(String path,List<String> argv,List<String> envp,Object stdinFile,Object stdoutFile,Object stderrFile,Object processController,[Function responseFactory = null]) {
+    dynamic spawn(List<int> path,List<List<int>> argv,List<List<int>> envp,Object stdinFile,Object stdoutFile,Object stderrFile,Object processController,[Function responseFactory = null]) {
       var params = new ProcessSpawnParams();
       params.path = path;
       params.argv = argv;
@@ -819,7 +819,7 @@ class _ProcessProxyCalls implements Process {
           -1,
           bindings.MessageHeader.kMessageExpectsResponse);
     }
-    dynamic spawnWithTerminal(String path,List<String> argv,List<String> envp,Object terminalFile,Object processController,[Function responseFactory = null]) {
+    dynamic spawnWithTerminal(List<int> path,List<List<int>> argv,List<List<int>> envp,Object terminalFile,Object processController,[Function responseFactory = null]) {
       var params = new ProcessSpawnWithTerminalParams();
       params.path = path;
       params.argv = argv;

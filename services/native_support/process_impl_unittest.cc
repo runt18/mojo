@@ -5,11 +5,11 @@
 #include <string.h>
 
 #include <memory>
+#include <string>
 #include <vector>
 
 #include "base/message_loop/message_loop.h"
 #include "mojo/public/cpp/bindings/interface_request.h"
-#include "mojo/public/cpp/bindings/type_converter.h"
 #include "mojo/public/cpp/system/macros.h"
 #include "mojo/services/files/cpp/output_stream_file.h"
 #include "mojo/services/files/interfaces/file.mojom.h"
@@ -21,6 +21,12 @@ namespace {
 
 using ProcessImplTest = ProcessTestBase;
 
+mojo::Array<uint8_t> ToByteArray(const std::string& s) {
+  auto rv = mojo::Array<uint8_t>::New(s.size());
+  memcpy(rv.data(), s.data(), s.size());
+  return rv;
+}
+
 // This also (slightly) tests |Wait()|, since we want to have some evidence that
 // we ran the specified binary (/bin/true versus /bin/false).
 TEST_F(ProcessImplTest, Spawn) {
@@ -29,9 +35,9 @@ TEST_F(ProcessImplTest, Spawn) {
   {
     ProcessControllerPtr process_controller;
     error = mojo::files::Error::INTERNAL;
-    process()->Spawn("/bin/true", mojo::Array<mojo::String>(),
-                     mojo::Array<mojo::String>(), nullptr, nullptr, nullptr,
-                     GetProxy(&process_controller), Capture(&error));
+    process()->Spawn(ToByteArray("/bin/true"), nullptr, nullptr, nullptr,
+                     nullptr, nullptr, GetProxy(&process_controller),
+                     Capture(&error));
     ASSERT_TRUE(process().WaitForIncomingResponse());
     EXPECT_EQ(mojo::files::Error::OK, error);
 
@@ -46,9 +52,9 @@ TEST_F(ProcessImplTest, Spawn) {
   {
     ProcessControllerPtr process_controller;
     error = mojo::files::Error::INTERNAL;
-    process()->Spawn("/bin/false", mojo::Array<mojo::String>(),
-                     mojo::Array<mojo::String>(), nullptr, nullptr, nullptr,
-                     GetProxy(&process_controller), Capture(&error));
+    process()->Spawn(ToByteArray("/bin/false"), nullptr, nullptr, nullptr,
+                     nullptr, nullptr, GetProxy(&process_controller),
+                     Capture(&error));
     ASSERT_TRUE(process().WaitForIncomingResponse());
     EXPECT_EQ(mojo::files::Error::OK, error);
 
@@ -104,13 +110,13 @@ TEST_F(ProcessImplTest, SpawnRedirectStdout) {
   mojo::files::FilePtr file;
   CaptureOutputFile file_impl(GetProxy(&file));
 
-  mojo::Array<mojo::String> argv;
-  argv.push_back("/bin/echo");
-  argv.push_back(kOutput);
+  mojo::Array<mojo::Array<uint8_t>> argv;
+  argv.push_back(ToByteArray("/bin/echo"));
+  argv.push_back(ToByteArray(kOutput));
   ProcessControllerPtr process_controller;
   mojo::files::Error error = mojo::files::Error::INTERNAL;
-  process()->Spawn("/bin/echo", argv.Pass(), mojo::Array<mojo::String>(),
-                   nullptr, file.Pass(), nullptr, GetProxy(&process_controller),
+  process()->Spawn(ToByteArray("/bin/echo"), argv.Pass(), nullptr, nullptr,
+                   file.Pass(), nullptr, GetProxy(&process_controller),
                    Capture(&error));
   ASSERT_TRUE(process().WaitForIncomingResponse());
   EXPECT_EQ(mojo::files::Error::OK, error);

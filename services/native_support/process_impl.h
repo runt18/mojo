@@ -31,18 +31,18 @@ class ProcessImpl : public Process {
   ~ProcessImpl() override;
 
   // |Process| implementation:
-  void Spawn(const mojo::String& path,
-             mojo::Array<mojo::String> argv,
-             mojo::Array<mojo::String> envp,
+  void Spawn(mojo::Array<uint8_t> path,
+             mojo::Array<mojo::Array<uint8_t>> argv,
+             mojo::Array<mojo::Array<uint8_t>> envp,
              mojo::files::FilePtr stdin_file,
              mojo::files::FilePtr stdout_file,
              mojo::files::FilePtr stderr_file,
              mojo::InterfaceRequest<ProcessController> process_controller,
              const SpawnCallback& callback) override;
   void SpawnWithTerminal(
-      const mojo::String& path,
-      mojo::Array<mojo::String> argv,
-      mojo::Array<mojo::String> envp,
+      mojo::Array<uint8_t> path,
+      mojo::Array<mojo::Array<uint8_t>> argv,
+      mojo::Array<mojo::Array<uint8_t>> envp,
       mojo::files::FilePtr terminal_file,
       mojo::InterfaceRequest<ProcessController> process_controller,
       const SpawnWithTerminalCallback& callback) override;
@@ -50,9 +50,9 @@ class ProcessImpl : public Process {
  private:
   // Note: We take advantage of the fact that |SpawnCallback| and
   // |SpawnWithTerminalCallback| are the same.
-  void SpawnImpl(const mojo::String& path,
-                 mojo::Array<mojo::String> argv,
-                 mojo::Array<mojo::String> envp,
+  void SpawnImpl(mojo::Array<uint8_t> path,
+                 mojo::Array<mojo::Array<uint8_t>> argv,
+                 mojo::Array<mojo::Array<uint8_t>> envp,
                  std::unique_ptr<ProcessIORedirection> process_io_redirection,
                  const std::vector<int>& fds_to_inherit,
                  mojo::InterfaceRequest<ProcessController> process_controller,

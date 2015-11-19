@@ -57,9 +57,9 @@ ProcessImpl::ProcessImpl(scoped_refptr<base::TaskRunner> worker_runner,
 ProcessImpl::~ProcessImpl() {}
 
 void ProcessImpl::Spawn(
-    const mojo::String& path,
-    mojo::Array<mojo::String> argv,
-    mojo::Array<mojo::String> envp,
+    mojo::Array<uint8_t> path,
+    mojo::Array<mojo::Array<uint8_t>> argv,
+    mojo::Array<mojo::Array<uint8_t>> envp,
     mojo::files::FilePtr stdin_file,
     mojo::files::FilePtr stdout_file,
     mojo::files::FilePtr stderr_file,
@@ -112,14 +112,15 @@ void ProcessImpl::Spawn(
           stdin_parent_fd.Pass(), stdout_parent_fd.Pass(),
           stderr_parent_fd.Pass()));
 
-  SpawnImpl(path, argv.Pass(), envp.Pass(), std::move(process_io_redirection),
-            fds_to_inherit, process_controller.Pass(), callback);
+  SpawnImpl(path.Pass(), argv.Pass(), envp.Pass(),
+            std::move(process_io_redirection), fds_to_inherit,
+            process_controller.Pass(), callback);
 }
 
 void ProcessImpl::SpawnWithTerminal(
-    const mojo::String& path,
-    mojo::Array<mojo::String> argv,
-    mojo::Array<mojo::String> envp,
+    mojo::Array<uint8_t> path,
+    mojo::Array<mojo::Array<uint8_t>> argv,
+    mojo::Array<mojo::Array<uint8_t>> envp,
     mojo::files::FilePtr terminal_file,
     mojo::InterfaceRequest<ProcessController> process_controller,
     const SpawnWithTerminalCallback& callback) {
@@ -152,14 +153,15 @@ void ProcessImpl::SpawnWithTerminal(
       new ProcessIORedirectionForTerminal(terminal_file.Pass(),
                                           master_fd.Pass()));
 
-  SpawnImpl(path, argv.Pass(), envp.Pass(), std::move(process_io_redirection),
-            fds_to_inherit, process_controller.Pass(), callback);
+  SpawnImpl(path.Pass(), argv.Pass(), envp.Pass(),
+            std::move(process_io_redirection), fds_to_inherit,
+            process_controller.Pass(), callback);
 }
 
 void ProcessImpl::SpawnImpl(
-    const mojo::String& path,
-    mojo::Array<mojo::String> argv,
-    mojo::Array<mojo::String> envp,
+    mojo::Array<uint8_t> path,
+    mojo::Array<mojo::Array<uint8_t>> argv,
+    mojo::Array<mojo::Array<uint8_t>> envp,
     std::unique_ptr<ProcessIORedirection> process_io_redirection,
     const std::vector<int>& fds_to_inherit,
     mojo::InterfaceRequest<ProcessController> process_controller,
@@ -167,10 +169,14 @@ void ProcessImpl::SpawnImpl(
   DCHECK(!path.is_null());
   DCHECK(process_controller.is_pending());
 
+  // Add terminating null character to the "strings", so we can just use
+  // |.data()|.
+  path.push_back(0u);
+
   size_t argc = std::max(argv.size(), static_cast<size_t>(1));
   std::vector<const char*> argv_ptrs(argc);
   if (argv.is_null()) {
-    argv_ptrs[0] = path.data();
+    argv_ptrs[0] = reinterpret_cast<const char*>(path.data());
   } else {
     if (!argv.size() ||
         argv.size() > static_cast<size_t>(std::numeric_limits<int>::max())) {
@@ -179,9 +185,13 @@ void ProcessImpl::SpawnImpl(
     }
     // TODO(vtl): Currently, we don't support setting argv[0], due to
     // |base::CommandLine| limitations.
-    argv_ptrs[0] = path.data();
-    for (size_t i = 1; i < argv.size(); i++)
-      argv_ptrs[i] = argv[i].data();
+    argv_ptrs[0] = reinterpret_cast<const char*>(path.data());
+    for (size_t i = 1; i < argv.size(); i++) {
+      DCHECK(!argv[i].is_null());
+      // Add terminating null character.
+      argv[i].push_back(0u);
+      argv_ptrs[i] = reinterpret_cast<const char*>(argv[i].data());
+    }
   }
   base::CommandLine command_line(static_cast<int>(argc), argv_ptrs.data());
 
@@ -190,7 +200,13 @@ void ProcessImpl::SpawnImpl(
   if (!envp.is_null()) {
     inherit_environment = false;
     for (size_t i = 0; i < envp.size(); i++) {
-      std::string s(envp[i].data());
+      DCHECK(!envp[i].is_null());
+      // Add terminating null character.
+      // Note: We prefer to do this, rather than use |envp[i].size()| to make
+      // |s| below, since we want to truncate at the first null character (in
+      // case |envp[i]| has an embedded null).
+      envp[i].push_back(0u);
+      std::string s(reinterpret_cast<const char*>(envp[i].data()));
       size_t equals_pos = s.find_first_of('=');
       environment_map[s.substr(0, equals_pos)] =
           (equals_pos == std::string::npos) ? std::string()

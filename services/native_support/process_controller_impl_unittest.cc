@@ -3,13 +3,13 @@
 // found in the LICENSE file.
 
 #include <signal.h>
+#include <string.h>
 
 #include <string>
 #include <vector>
 
 #include "base/message_loop/message_loop.h"
 #include "mojo/public/cpp/bindings/interface_request.h"
-#include "mojo/public/cpp/bindings/type_converter.h"
 #include "mojo/services/files/cpp/input_stream_file.h"
 #include "mojo/services/files/cpp/output_stream_file.h"
 #include "mojo/services/files/interfaces/types.mojom.h"
@@ -19,6 +19,12 @@ namespace native_support {
 namespace {
 
 using ProcessControllerImplTest = ProcessTestBase;
+
+mojo::Array<uint8_t> ToByteArray(const std::string& s) {
+  auto rv = mojo::Array<uint8_t>::New(s.size());
+  memcpy(rv.data(), s.data(), s.size());
+  return rv;
+}
 
 void QuitMessageLoop() {
   base::MessageLoop::current()->QuitWhenIdle();
@@ -37,11 +43,11 @@ TEST_F(ProcessControllerImplTest, Wait) {
     ProcessControllerPtr process_controller;
     error = mojo::files::Error::INTERNAL;
     const char kPath[] = "/bin/sh";
-    mojo::Array<mojo::String> argv;
-    argv.push_back(kPath);
-    argv.push_back("-c");
-    argv.push_back("exit 42");
-    process()->Spawn(kPath, argv.Pass(), mojo::Array<mojo::String>(), nullptr,
+    mojo::Array<mojo::Array<uint8_t>> argv;
+    argv.push_back(ToByteArray(kPath));
+    argv.push_back(ToByteArray("-c"));
+    argv.push_back(ToByteArray("exit 42"));
+    process()->Spawn(ToByteArray(kPath), argv.Pass(), nullptr, nullptr,
                      nullptr, nullptr, GetProxy(&process_controller),
                      Capture(&error));
     ASSERT_TRUE(process().WaitForIncomingResponse());
@@ -129,13 +135,14 @@ TEST_F(ProcessControllerImplTest, Kill) {
   ProcessControllerPtr process_controller;
   mojo::files::Error error = mojo::files::Error::INTERNAL;
   const char kPath[] = "/bin/bash";
-  mojo::Array<mojo::String> argv;
-  argv.push_back(kPath);
-  argv.push_back("-c");
-  argv.push_back("trap 'exit 42' INT; echo ready; read -t30; exit 1");
-  process()->Spawn(kPath, argv.Pass(), mojo::Array<mojo::String>(),
-                   ifile.Pass(), ofile.Pass(), nullptr,
-                   GetProxy(&process_controller), Capture(&error));
+  mojo::Array<mojo::Array<uint8_t>> argv;
+  argv.push_back(ToByteArray(kPath));
+  argv.push_back(ToByteArray("-c"));
+  argv.push_back(
+      ToByteArray("trap 'exit 42' INT; echo ready; read -t30; exit 1"));
+  process()->Spawn(ToByteArray(kPath), argv.Pass(), nullptr, ifile.Pass(),
+                   ofile.Pass(), nullptr, GetProxy(&process_controller),
+                   Capture(&error));
   ASSERT_TRUE(process().WaitForIncomingResponse());
   EXPECT_EQ(mojo::files::Error::OK, error);
 
@@ -169,13 +176,13 @@ TEST_F(ProcessControllerImplTest, DestroyingControllerKills) {
     ProcessControllerPtr process_controller;
     mojo::files::Error error = mojo::files::Error::INTERNAL;
     const char kPath[] = "/bin/bash";
-    mojo::Array<mojo::String> argv;
-    argv.push_back(kPath);
-    argv.push_back("-c");
-    argv.push_back("echo ready; read -t30");
-    process()->Spawn(kPath, argv.Pass(), mojo::Array<mojo::String>(),
-                     ifile.Pass(), ofile.Pass(), nullptr,
-                     GetProxy(&process_controller), Capture(&error));
+    mojo::Array<mojo::Array<uint8_t>> argv;
+    argv.push_back(ToByteArray(kPath));
+    argv.push_back(ToByteArray("-c"));
+    argv.push_back(ToByteArray("echo ready; read -t30"));
+    process()->Spawn(ToByteArray(kPath), argv.Pass(), nullptr, ifile.Pass(),
+                     ofile.Pass(), nullptr, GetProxy(&process_controller),
+                     Capture(&error));
     ASSERT_TRUE(process().WaitForIncomingResponse());
     EXPECT_EQ(mojo::files::Error::OK, error);
 

@@ -38,6 +38,12 @@
 
 using mojo::terminal::TerminalClient;
 
+mojo::Array<uint8_t> ToByteArray(const std::string& s) {
+  auto rv = mojo::Array<uint8_t>::New(s.size());
+  memcpy(rv.data(), s.data(), s.size());
+  return rv;
+}
+
 class TerminalConnection {
  public:
   explicit TerminalConnection(mojo::files::FilePtr terminal,
@@ -143,15 +149,14 @@ class TerminalConnection {
     }
 
     // Now, we can spawn.
-    mojo::String path(command_line_[0]);
-    mojo::Array<mojo::String> argv;
+    mojo::Array<mojo::Array<uint8_t>> argv;
     for (const auto& arg : command_line_)
-      argv.push_back(arg);
+      argv.push_back(ToByteArray(arg));
 
     // TODO(vtl): If the |InterfacePtr| underlying |native_support_process_|
     // encounters an error, then we're sort of dead in the water.
     native_support_process_->SpawnWithTerminal(
-        path, argv.Pass(), mojo::Array<mojo::String>(), terminal_.Pass(),
+        ToByteArray(command_line_[0]), argv.Pass(), nullptr, terminal_.Pass(),
         GetProxy(&process_controller_), [this](mojo::files::Error error) {
           this->DidSpawnWithTerminal(error);
         });
