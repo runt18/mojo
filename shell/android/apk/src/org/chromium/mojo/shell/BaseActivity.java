@@ -22,9 +22,10 @@ import java.util.List;
 public abstract class BaseActivity extends Activity {
     private static final String[] PERMISSIONS = {
             Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.CAMERA,
-            Manifest.permission.INTERNET, Manifest.permission.NFC,
-            Manifest.permission.READ_CONTACTS, Manifest.permission.READ_EXTERNAL_STORAGE,
-            Manifest.permission.RECORD_AUDIO, Manifest.permission.WRITE_EXTERNAL_STORAGE,
+            Manifest.permission.INSTALL_SHORTCUT, Manifest.permission.INTERNET,
+            Manifest.permission.NFC, Manifest.permission.READ_CONTACTS,
+            Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.RECORD_AUDIO,
+            Manifest.permission.WRITE_EXTERNAL_STORAGE,
     };
 
     /**

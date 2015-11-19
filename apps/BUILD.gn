@@ -12,4 +12,8 @@ group("apps") {
     "//apps/moterm:apptests",
     "//apps/moterm:gl_helper_test_app",
   ]
+
+  if (is_android) {
+    deps += [ "//apps/shortcut" ]
+  }
 }
