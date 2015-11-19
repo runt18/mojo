@@ -106,7 +106,9 @@ class DartController {
   // If strict_compilation is true, the VM runs scripts with assertions and
   // type checking enabled.
   static bool Initialize(DartControllerServiceConnector* service_connector,
-                         bool strict_compilation);
+                         bool strict_compilation,
+                         const char** extra_args,
+                         int extra_args_count);
 
   // Assumes Initialize has been called. Runs the main function using the
   // script, arguments, and package_root given by 'config'.

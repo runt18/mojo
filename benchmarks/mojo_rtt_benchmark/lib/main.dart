@@ -10,9 +10,9 @@
 // $ ./mojo/devtools/common/mojo_benchmark [--release] mojo/tools/data/rtt_benchmarks
 
 import 'dart:async';
+import 'dart:developer';
 
 import 'package:args/args.dart' as args;
-import 'package:common/tracing_helper.dart';
 import 'package:mojo/application.dart';
 import 'package:mojo/core.dart';
 import 'package:_mojo_for_test_only/mojo/examples/echo.mojom.dart';
@@ -20,8 +20,7 @@ import 'package:_mojo_for_test_only/mojo/examples/echo.mojom.dart';
 class EchoTracingApp extends Application {
   static const Duration kWarmupDuration = const Duration(seconds: 1);
   static const Duration kDelay = const Duration(microseconds: 50);
-  TracingHelper _tracing;
-  List<EchoProxy> _echoProxies;
+  List<EchoProxy> _echoProxies = [];
   bool _doEcho;
   bool _warmup;
   int _numClients;
@@ -29,14 +28,9 @@ class EchoTracingApp extends Application {
 
   EchoTracingApp.fromHandle(MojoHandle handle) : super.fromHandle(handle) {
     onError = _errorHandler;
-    _echoProxies = [];
   }
 
   void initialize(List<String> arguments, String url) {
-    // Initialize tracing.
-    _tracing = new TracingHelper.fromApplication(this, "mojo_rtt_benchmark");
-    _tracing.traceInstant("initialized", "traced_application");
-
     var parser = new args.ArgParser(allowTrailingOptions: true);
     parser.addFlag('cpp-server', defaultsTo: false, negatable: false);
     parser.addOption('num-clients', defaultsTo: "1");
@@ -87,10 +81,16 @@ class EchoTracingApp extends Application {
   }
 
   Future _tracedEcho(int idx, String s) {
-    int start = getTimeTicksNow();
+    // This is not the correct way to use the Timeline API. In particular,
+    // the start and end events below could occur on different threads.
+    // This could mess up the interpretation of the trace by about:tracing.
+    // We do this here as a hack to reduce overhead. The correct way to do
+    // this would be to emit an async begin and end pair using TimelineTask.
+    // Using the sync API means that we only record one event after the finish
+    // time has been recorded.
+    Timeline.startSync("ping");
     return _echo(idx, s).then((r) {
-      int end = getTimeTicksNow();
-      _tracing.traceDuration("ping", "mojo_rtt_benchmark", start, end);
+      Timeline.finishSync();
       return r;
     });
   }

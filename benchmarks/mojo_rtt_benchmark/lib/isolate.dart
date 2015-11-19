@@ -8,9 +8,9 @@
 // $ ./mojo/devtools/common/mojo_benchmark [--release] mojo/tools/data/rtt_benchmarks
 
 import 'dart:async';
+import 'dart:developer';
 import 'dart:isolate';
 
-import 'package:common/tracing_helper.dart';
 import 'package:mojo/application.dart';
 import 'package:mojo/core.dart';
 
@@ -25,7 +25,6 @@ void echoIsolate(SendPort sendPort) {
 class IsolateMessageApp extends Application {
   static const Duration _WARMUP_DURATION = const Duration(seconds: 1);
   static const Duration _DELAY = const Duration(microseconds: 50);
-  TracingHelper _tracing;
   RawReceivePort _receivePort;
   SendPort _sendPort;
   Completer _sendPortCompleter;
@@ -39,9 +38,6 @@ class IsolateMessageApp extends Application {
   }
 
   void initialize(List<String> args, String url) {
-    // Initialize tracing.
-    _tracing = new TracingHelper.fromApplication(this, "isolate_rtt_benchmark");
-
     // Start echoing.
     _doEcho = true;
     _completers = [];
@@ -72,10 +68,17 @@ class IsolateMessageApp extends Application {
   }
 
   Future _tracedEcho() {
-    int start = getTimeTicksNow();
-    return _echo("ping").then((_) {
-      int end = getTimeTicksNow();
-      _tracing.traceDuration("ping", "isolate_rtt_benchmark", start, end);
+    // This is not the correct way to use the Timeline API. In particular,
+    // the start and end events below could occur on different threads.
+    // This could mess up the interpretation of the trace by about:tracing.
+    // We do this here as a hack to reduce overhead. The correct way to do
+    // this would be to emit an async begin and end pair using TimelineTask.
+    // Using the sync API means that we only record one event after the finish
+    // time has been recorded.
+    Timeline.startSync("ping");
+    return _echo("ping").then((r) {
+      Timeline.finishSync();
+      return r;
     });
   }
 

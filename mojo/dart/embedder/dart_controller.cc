@@ -745,10 +745,12 @@ static bool generateEntropy(uint8_t* buffer, intptr_t length) {
 
 bool DartController::Initialize(
     DartControllerServiceConnector* service_connector,
-    bool strict_compilation) {
+    bool strict_compilation,
+    const char** extra_args,
+    int extra_args_count) {
   service_connector_ = service_connector;
   strict_compilation_ = strict_compilation;
-  InitVmIfNeeded(generateEntropy, nullptr, 0);
+  InitVmIfNeeded(generateEntropy, extra_args, extra_args_count);
   return true;
 }
 

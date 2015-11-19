@@ -27,6 +27,7 @@
 
 namespace dart {
 
+const char kCompleteTimeline[] = "--complete-timeline";
 const char kEnableStrictMode[] = "--enable-strict-mode";
 const char kTraceStartup[] = "--trace-startup";
 
@@ -114,8 +115,16 @@ class DartContentHandlerApp : public mojo::ApplicationDelegate {
     app->ConnectToService("mojo:url_response_disk_cache",
                           &url_response_disk_cache_);
     service_connector_ = new ContentHandlerAppServiceConnector(app);
-    bool success = mojo::dart::DartController::Initialize(service_connector_,
-                                                          default_strict_);
+
+    const char* timeline_arg = nullptr;
+    int timeline_arg_count = 0;
+    if (app->HasArg(kCompleteTimeline)) {
+      timeline_arg = kCompleteTimeline;
+      timeline_arg_count = 1;
+    }
+    bool success = mojo::dart::DartController::Initialize(
+        service_connector_, default_strict_, &timeline_arg, timeline_arg_count);
+
     if (app->HasArg(kTraceStartup)) {
       DartTimelineController::EnableAll();
     }
