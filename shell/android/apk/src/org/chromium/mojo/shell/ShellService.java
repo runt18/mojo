@@ -137,7 +137,7 @@ public class ShellService extends Service {
             Uri applicationUri = Uri.parse(urlExtra).buildUpon().scheme("https").build();
             startApplicationURL(applicationUri.toString());
         }
-        return Service.START_STICKY;
+        return Service.START_NOT_STICKY;
     }
 
     @Override
@@ -174,15 +174,12 @@ public class ShellService extends Service {
 
             List<String> argsList = new ArrayList<String>();
 
+            argsList.add("--origin=" + DEFAULT_ORIGIN);
             argsList.add("--args-for=mojo:notifications " + R.mipmap.ic_launcher);
 
             // Program name.
             if (args != null) {
                 argsList.addAll(Arrays.asList(args));
-            } else {
-                // Apply default arguments.
-                argsList.add("--origin=" + DEFAULT_ORIGIN);
-                argsList.add("--url-mappings=mojo:window_manager=" + DEFAULT_WM);
             }
 
             nativeStart(applicationContext, applicationContext.getAssets(),
@@ -198,9 +195,6 @@ public class ShellService extends Service {
     }
 
     private static String[] getArgsFromIntent(Intent intent) {
-        if (intent == null) {
-            return null;
-        }
         String argsFile = intent.getStringExtra("argsFile");
         if (argsFile != null) {
             File file = new File(argsFile);

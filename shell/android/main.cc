@@ -210,14 +210,10 @@ void BindShellImpl(mojo::ScopedMessagePipeHandle shell_handle) {
       g_internal_data.Get().shell_impl.get(), shell.Pass());
 }
 
-void EmbedApplicationByURL(std::string url) {
+void StartApplicationByURL(std::string url) {
   DCHECK(g_internal_data.Get().shell_task_runner->RunsTasksOnCurrentThread());
 
-  mojo::WindowManagerPtr window_manager;
-  Context* context = g_internal_data.Get().context.get();
-  context->application_manager()->ConnectToService(GURL("mojo:window_manager"),
-                                                   &window_manager);
-  window_manager->Embed(url, nullptr, nullptr);
+  g_internal_data.Get().context->Run(GURL(url));
 }
 
 void UploadCrashes(const base::FilePath& dumps_path) {
@@ -335,7 +331,7 @@ static void AddApplicationURL(JNIEnv* env, jclass clazz, jstring jurl) {
 static void StartApplicationURL(JNIEnv* env, jclass clazz, jstring jurl) {
   std::string url = base::android::ConvertJavaStringToUTF8(env, jurl);
   g_internal_data.Get().shell_task_runner->PostTask(
-      FROM_HERE, base::Bind(&EmbedApplicationByURL, url));
+      FROM_HERE, base::Bind(&StartApplicationByURL, url));
 }
 
 static void BindShell(JNIEnv* env, jclass clazz, jint shell_handle) {
