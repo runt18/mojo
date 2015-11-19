@@ -292,9 +292,8 @@ class AuthenticatingURLLoaderInterceptorAppTest
     ApplicationTestBase::TearDown();
   }
 
-  URLResponsePtr GetResponse(
-      const std::string& url,
-      Array<HttpHeaderPtr> request_headers = Array<HttpHeaderPtr>()) {
+  URLResponsePtr GetResponse(const std::string& url,
+                             Array<HttpHeaderPtr> request_headers = nullptr) {
     URLRequestPtr request = URLRequest::New();
     request->url = url;
     request->headers = request_headers.Pass();
@@ -346,7 +345,7 @@ class AuthenticatingURLLoaderInterceptorAppTest
 
   void GetAndParseHelloResponse(
       const std::string& url,
-      Array<HttpHeaderPtr> request_headers = Array<HttpHeaderPtr>()) {
+      Array<HttpHeaderPtr> request_headers = nullptr) {
     URLResponsePtr response = GetResponse(url, request_headers.Pass());
     EXPECT_TRUE(response);
     EXPECT_EQ(200u, response->status_code);

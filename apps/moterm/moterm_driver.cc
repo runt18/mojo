@@ -200,18 +200,18 @@ void MotermDriver::Read(uint32_t num_bytes_to_read,
                         mojo::files::Whence whence,
                         const ReadCallback& callback) {
   if (is_closed_) {
-    callback.Run(mojo::files::Error::CLOSED, mojo::Array<uint8_t>());
+    callback.Run(mojo::files::Error::CLOSED, nullptr);
     return;
   }
 
   if (offset != 0 || whence != mojo::files::Whence::FROM_CURRENT) {
     // TODO(vtl): Is this the "right" behavior?
-    callback.Run(mojo::files::Error::INVALID_ARGUMENT, mojo::Array<uint8_t>());
+    callback.Run(mojo::files::Error::INVALID_ARGUMENT, nullptr);
     return;
   }
 
   if (!num_bytes_to_read) {
-    callback.Run(mojo::files::Error::OK, mojo::Array<uint8_t>());
+    callback.Run(mojo::files::Error::OK, nullptr);
     return;
   }
 
@@ -377,18 +377,18 @@ void MotermDriver::Ioctl(uint32_t request,
                          mojo::Array<uint32_t> in_values,
                          const IoctlCallback& callback) {
   if (is_closed_) {
-    callback.Run(mojo::files::Error::CLOSED, mojo::Array<uint32_t>());
+    callback.Run(mojo::files::Error::CLOSED, nullptr);
     return;
   }
 
   if (request != mojo::files::kIoctlTerminal) {
-    callback.Run(mojo::files::Error::UNIMPLEMENTED, mojo::Array<uint32_t>());
+    callback.Run(mojo::files::Error::UNIMPLEMENTED, nullptr);
     return;
   }
 
   // "Is TTY?" Yes.
   if (!in_values || !in_values.size()) {
-    callback.Run(mojo::files::Error::OK, mojo::Array<uint32_t>());
+    callback.Run(mojo::files::Error::OK, nullptr);
     return;
   }
 
@@ -402,10 +402,10 @@ void MotermDriver::Ioctl(uint32_t request,
     case mojo::files::kIoctlTerminalGetWindowSize:
     case mojo::files::kIoctlTerminalSetWindowSize:
       NOTIMPLEMENTED();
-      callback.Run(mojo::files::Error::UNIMPLEMENTED, mojo::Array<uint32_t>());
+      callback.Run(mojo::files::Error::UNIMPLEMENTED, nullptr);
       return;
     default:
-      callback.Run(mojo::files::Error::UNIMPLEMENTED, mojo::Array<uint32_t>());
+      callback.Run(mojo::files::Error::UNIMPLEMENTED, nullptr);
       return;
   }
 }
@@ -413,7 +413,7 @@ void MotermDriver::Ioctl(uint32_t request,
 void MotermDriver::IoctlGetSettings(mojo::Array<uint32_t> in_values,
                                     const IoctlCallback& callback) {
   if (in_values.size() != 1u) {
-    callback.Run(mojo::files::Error::INVALID_ARGUMENT, mojo::Array<uint32_t>());
+    callback.Run(mojo::files::Error::INVALID_ARGUMENT, nullptr);
     return;
   }
 
@@ -443,8 +443,7 @@ void MotermDriver::IoctlGetSettings(mojo::Array<uint32_t> in_values,
 
 void MotermDriver::IoctlSetSettings(mojo::Array<uint32_t> in_values,
                                     const IoctlCallback& callback) {
-  callback.Run(IoctlSetSettingsHelper(in_values.Pass()),
-               mojo::Array<uint32_t>());
+  callback.Run(IoctlSetSettingsHelper(in_values.Pass()), nullptr);
 }
 
 mojo::files::Error MotermDriver::IoctlSetSettingsHelper(

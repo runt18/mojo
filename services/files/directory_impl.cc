@@ -115,13 +115,13 @@ void DirectoryImpl::Read(const ReadCallback& callback) {
   // |closedir()| will close the FD)), so we need to |dup()| ours.
   base::ScopedFD fd(dup(dir_fd_.get()));
   if (!fd.is_valid()) {
-    callback.Run(ErrnoToError(errno), Array<DirectoryEntryPtr>());
+    callback.Run(ErrnoToError(errno), nullptr);
     return;
   }
 
   ScopedDIR dir(fdopendir(fd.release()));
   if (!dir) {
-    callback.Run(ErrnoToError(errno), Array<DirectoryEntryPtr>());
+    callback.Run(ErrnoToError(errno), nullptr);
     return;
   }
 
@@ -137,7 +137,7 @@ void DirectoryImpl::Read(const ReadCallback& callback) {
     struct dirent* entry = nullptr;
     if (int error = readdir_r(dir.get(), &buffer, &entry)) {
       // |error| is effectively an errno (for |readdir_r()|), AFAICT.
-      callback.Run(ErrnoToError(error), Array<DirectoryEntryPtr>());
+      callback.Run(ErrnoToError(error), nullptr);
       return;
     }
 

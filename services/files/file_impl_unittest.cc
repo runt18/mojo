@@ -682,7 +682,7 @@ TEST_F(FileImplTest, Ioctl) {
 
   // Normal files don't support any ioctls.
   Array<uint32_t> out_values;
-  file->Ioctl(0, Array<uint32_t>(), Capture(&error, &out_values));
+  file->Ioctl(0, nullptr, Capture(&error, &out_values));
   ASSERT_TRUE(file.WaitForIncomingResponse());
   EXPECT_EQ(Error::UNAVAILABLE, error);
   EXPECT_TRUE(out_values.is_null());

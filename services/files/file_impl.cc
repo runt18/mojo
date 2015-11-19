@@ -64,23 +64,23 @@ void FileImpl::Read(uint32_t num_bytes_to_read,
                     Whence whence,
                     const ReadCallback& callback) {
   if (!file_fd_.is_valid()) {
-    callback.Run(Error::CLOSED, Array<uint8_t>());
+    callback.Run(Error::CLOSED, nullptr);
     return;
   }
   if (num_bytes_to_read > kMaxReadSize) {
-    callback.Run(Error::OUT_OF_RANGE, Array<uint8_t>());
+    callback.Run(Error::OUT_OF_RANGE, nullptr);
     return;
   }
 
   Error error = IsOffsetValid(offset);
   if (error != Error::OK) {
-    callback.Run(error, Array<uint8_t>());
+    callback.Run(error, nullptr);
     return;
   }
 
   error = IsWhenceValid(whence);
   if (error != Error::OK) {
-    callback.Run(error, Array<uint8_t>());
+    callback.Run(error, nullptr);
     return;
   }
 
@@ -93,7 +93,7 @@ void FileImpl::Read(uint32_t num_bytes_to_read,
     // position. See TODO in file.mojom.
     if (lseek(file_fd_.get(), static_cast<off_t>(offset),
               WhenceToStandardWhence(whence)) < 0) {
-      callback.Run(ErrnoToError(errno), Array<uint8_t>());
+      callback.Run(ErrnoToError(errno), nullptr);
       return;
     }
   }
@@ -102,7 +102,7 @@ void FileImpl::Read(uint32_t num_bytes_to_read,
   ssize_t num_bytes_read = HANDLE_EINTR(
       read(file_fd_.get(), &bytes_read.front(), num_bytes_to_read));
   if (num_bytes_read < 0) {
-    callback.Run(ErrnoToError(errno), Array<uint8_t>());
+    callback.Run(ErrnoToError(errno), nullptr);
     return;
   }
 
@@ -344,13 +344,13 @@ void FileImpl::Ioctl(uint32_t request,
                      Array<uint32_t> in_values,
                      const IoctlCallback& callback) {
   if (!file_fd_.is_valid()) {
-    callback.Run(Error::CLOSED, Array<uint32_t>());
+    callback.Run(Error::CLOSED, nullptr);
     return;
   }
 
   // TODO(vtl): The "correct" error code should be one that can be translated to
   // ENOTTY!
-  callback.Run(Error::UNAVAILABLE, Array<uint32_t>());
+  callback.Run(Error::UNAVAILABLE, nullptr);
 }
 
 }  // namespace files

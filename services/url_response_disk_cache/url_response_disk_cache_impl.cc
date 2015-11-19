@@ -81,7 +81,7 @@ void ClearTrashDir(scoped_refptr<base::TaskRunner> task_runner,
 
 Array<uint8_t> PathToArray(const base::FilePath& path) {
   if (path.empty())
-    return Array<uint8_t>();
+    return nullptr;
   const std::string& string = path.value();
   auto result = Array<uint8_t>::New(string.size());
   memcpy(&result.front(), string.data(), string.size());
@@ -387,7 +387,7 @@ void URLResponseDiskCacheImpl::Get(const String& url,
     return;
   }
   if (IsInvalidated(entry) || !IsCacheEntryValid(entry)) {
-    callback.Run(URLResponsePtr(), Array<uint8_t>(), Array<uint8_t>());
+    callback.Run(URLResponsePtr(), nullptr, nullptr);
     return;
   }
   callback.Run(entry->response.Pass(),
