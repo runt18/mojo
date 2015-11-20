@@ -5,6 +5,7 @@
 [DartPackage="mojo_services"]
 module vsync;
 
+[ServiceName="vsync::VSyncProvider"]
 interface VSyncProvider {
   // Waits for the next vsync and returns its timestamp once it happens. The
   // timestamps can only be compared with other calls of this method.

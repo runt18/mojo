@@ -8,6 +8,7 @@ module nfc_message_sink;
 // Private interface for the shell.  When the shell connects to |Nfc| this
 // interface will be returned which can be used to send NFC data to registered
 // apps.
+[ServiceName="nfc_message_sink::NfcMessageSink"]
 interface NfcMessageSink {
   OnNfcMessage(array<uint8> data);
 };

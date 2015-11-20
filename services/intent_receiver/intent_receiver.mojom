@@ -6,6 +6,7 @@
 module intent_receiver;
 
 // Service to interact with android intents.
+[ServiceName="intent_receiver::IntentReceiverManager"]
 interface IntentReceiverManager {
   // This method takes an |IntentReceiver| and returns a serialized intent.
   // The serialized intent can be deserialized using an android parcel. The
