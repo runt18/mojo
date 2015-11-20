@@ -167,7 +167,7 @@ def _check_new(package, expected, current):
   check_failure = False
   for mojom_dart in expected:
     if not current.get(mojom_dart):
-      print("Package %s missing %s" % (package, mojom_dart))
+      print("FAIL: Package %s missing %s" % (package, mojom_dart))
       check_failure = True
   return check_failure
 
@@ -177,15 +177,13 @@ def _check_delete(package, expected, current):
   check_failure = False
   for mojom_dart in current:
     if not expected.get(mojom_dart):
-      print("Package %s no longer has %s." % (package, mojom_dart))
+      print("FAIL: Package %s no longer has %s." % (package, mojom_dart))
       print("Delete %s", os.path.join(PACKAGES_DIR, mojom_dart))
       check_failure = True
   return check_failure
 
 
 # Checks if a .mojom.dart file is older than the associated .mojom file.
-# TODO(johnmccutchan): Handle the case where someone edited a .mojom.dart file
-# directly instead of through the bindings generation script.
 def _check_stale(package, expected, current):
   check_failure = False
   for mojom_dart in expected:
@@ -195,14 +193,28 @@ def _check_stale(package, expected, current):
       continue
     generated_mtime = current[mojom_dart]
     if generated_mtime < source_mtime:
-      print("Package %s has old %s" % (package, mojom_dart))
+      print("FAIL: Package %s has old %s" % (package, mojom_dart))
       check_failure = True
   return check_failure
 
 
+# Checks that all .mojom.dart files are newer than time.
+def _check_bindings_newer_than(package, current, time):
+  for mojom_dart in current:
+    if time > current[mojom_dart]:
+      # Bindings are older than specified time.
+      print("FAIL: Package %s has generated bindings older than the bindings"
+            " scripts / templates." % package)
+      return True
+  return False
+
+
 # Returns True if any checks fail.
-def _check(package, expected, current):
+def _check(package, expected, current, bindings_gen_mtime):
   check_failure = False
+  if bindings_gen_mtime > 0:
+    if _check_bindings_newer_than(package, current, bindings_gen_mtime):
+      check_failure = True
   if _check_new(package, expected, current):
     check_failure = True
   if _check_stale(package, expected, current):
@@ -212,7 +224,7 @@ def _check(package, expected, current):
   return check_failure
 
 
-def global_check(packages):
+def global_check(packages, bindings_gen_mtime=0):
   check_failure = False
   for package in packages:
     mojoms = _find_mojoms_for_package(package)
@@ -224,7 +236,7 @@ def global_check(packages):
     assert(len(mojom_darts) == len(mojoms))
     expected = _build_expected_map(mojoms, mojom_darts)
     current = _build_current_map(package)
-    if _check(package, expected, current):
+    if _check(package, expected, current, bindings_gen_mtime):
       _print_regenerate_message(package)
       check_failure = True
   return check_failure
@@ -255,33 +267,50 @@ def safe_mtime(path):
   return 0
 
 
+def is_bindings_machinery_path(filename):
+  # NOTE: It's possible other paths inside of
+  # mojo/public/tools/bindings/generators might also affect the Dart bindings.
+  # The code below is somewhat conservative and may miss a change.
+  # Dart templates changed.
+  if filename.startswith(
+        'mojo/public/tools/bindings/generators/dart_templates/'):
+    return True
+  # Dart generation script changed.
+  if (filename ==
+        'mojo/public/tools/bindings/generators/mojom_dart_generator.py'):
+    return True
+  return False
+
+
 # Detects if any part of the Dart bindings generation machinery has changed.
 def check_for_bindings_machinery_changes(affected_files):
   for filename in affected_files:
-    # Dart templates changed.
-    if filename.startswith(
-          'mojo/public/tools/bindings/generators/dart_templates/'):
-      return True
-    # Dart generation script changed.
-    if (filename ==
-          'mojo/public/tools/bindings/generators/mojom_dart_generator.py'):
+    if is_bindings_machinery_path(filename):
       return True
   return False
+
+
+# Returns the latest modification time for any bindings generation
+# machinery files.
+def bindings_machinery_latest_mtime(affected_files):
+  latest_mtime = 0
+  for filename in affected_files:
+    if is_bindings_machinery_path(filename):
+      path = os.path.join(SRC_DIR, filename)
+      mtime = safe_mtime(path)
+      if mtime > latest_mtime:
+        latest_mtime = mtime
+  return latest_mtime
 
 
 def presubmit_check(packages, affected_files):
   mojoms = filter_paths(affected_files, is_mojom)
   mojom_darts = filter_paths(affected_files, is_mojom_dart)
 
-  if (check_for_bindings_machinery_changes(affected_files) and
-      (len(mojom_darts) == 0)):
-    print('Bindings generation script or templates have changed but '
-          'no .mojom.dart files have been regenerated.')
-    # All packages need to be regenerated.
-    for package in packages:
-      _print_regenerate_message(package)
-    return True
-
+  if check_for_bindings_machinery_changes(affected_files):
+    # Bindings machinery changed, perform global check instead.
+    latest_mtime = bindings_machinery_latest_mtime(affected_files)
+    return global_check(packages, latest_mtime)
 
   updated_mojom_dart_files = []
   packages_with_failures = []
