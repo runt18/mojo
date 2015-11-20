@@ -32,7 +32,6 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -160,7 +159,7 @@ public class ShellService extends Service {
     /**
      * Initializes the native system and starts the shell.
      **/
-    private void ensureStarted(Context applicationContext, String[] args) {
+    private void ensureStarted(Context applicationContext, List<String> args) {
         if (mInitialized) return;
         try {
             FileHelper.extractFromAssets(applicationContext, NETWORK_LIBRARY_APP,
@@ -177,9 +176,27 @@ public class ShellService extends Service {
             argsList.add("--origin=" + DEFAULT_ORIGIN);
             argsList.add("--args-for=mojo:notifications " + R.mipmap.ic_launcher);
 
-            // Program name.
+            File defaultArgumentsFile = new File(
+                    String.format("/data/local/tmp/%s.cmd", applicationContext.getPackageName()));
+            if (defaultArgumentsFile.isFile()) {
+                if (defaultArgumentsFile.canWrite()) {
+                    Log.e(TAG, String.format("Command line arguments file (%s) is world writeable. "
+                                               + "The file will be ignored.",
+                                       defaultArgumentsFile.getAbsolutePath()));
+                } else {
+                    List<String> defaultArguments = getArgsFromFile(defaultArgumentsFile);
+                    if (defaultArguments.size() > 0) {
+                        Log.w(TAG, String.format("Adding default arguments from %s:",
+                                           defaultArgumentsFile.getAbsolutePath()));
+                        for (String arg : defaultArguments) {
+                            Log.w(TAG, arg);
+                        }
+                        argsList.addAll(defaultArguments);
+                    }
+                }
+            }
             if (args != null) {
-                argsList.addAll(Arrays.asList(args));
+                argsList.addAll(args);
             }
 
             nativeStart(applicationContext, applicationContext.getAssets(),
@@ -194,7 +211,21 @@ public class ShellService extends Service {
         }
     }
 
-    private static String[] getArgsFromIntent(Intent intent) {
+    private static List<String> getArgsFromFile(File file) {
+        List<String> argsList = new ArrayList<String>();
+        try (BufferedReader bufferedReader = new BufferedReader(new FileReader(file))) {
+            String line;
+            while ((line = bufferedReader.readLine()) != null) {
+                argsList.add(line);
+            }
+            return argsList;
+        } catch (IOException e) {
+            Log.w(TAG, e.getMessage(), e);
+        }
+        return new ArrayList<String>();
+    }
+
+    private static List<String> getArgsFromIntent(Intent intent) {
         String argsFile = intent.getStringExtra("argsFile");
         if (argsFile != null) {
             File file = new File(argsFile);
@@ -202,16 +233,7 @@ public class ShellService extends Service {
                 return null;
             }
             try {
-                List<String> argsList = new ArrayList<String>();
-                try (BufferedReader bufferedReader = new BufferedReader(new FileReader(file))) {
-                    String line;
-                    while ((line = bufferedReader.readLine()) != null) {
-                        argsList.add(line);
-                    }
-                    return argsList.toArray(new String[argsList.size()]);
-                } catch (IOException e) {
-                    Log.w(TAG, e.getMessage(), e);
-                }
+                return getArgsFromFile(file);
             } finally {
                 if (!file.delete()) {
                     Log.w(TAG, "Unable to delete args file.");
@@ -223,7 +245,7 @@ public class ShellService extends Service {
 
     /**
      * Adds the given URL to the set of mojo applications to run on start. This must be called
-     * before {@link ShellService#ensureStarted(Context, String[])}
+     * before {@link ShellService#ensureStarted(Context, List)}
      */
     void addApplicationURL(String url) {
         nativeAddApplicationURL(url);

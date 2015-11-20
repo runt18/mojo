@@ -25,9 +25,8 @@ from devtoolslib.utils import overrides
 _LOGCAT_JAVA_TAGS = [
     'AndroidHandler',
     'MojoFileHelper',
-    'MojoMain',
-    'MojoShellActivity',
     'MojoShellApplication',
+    'ShellService',
 ]
 
 _MOJO_SHELL_PACKAGE_NAME = 'org.chromium.mojo.shell'
