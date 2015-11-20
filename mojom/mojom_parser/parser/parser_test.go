@@ -269,6 +269,28 @@ func TestSuccessfulParsing(t *testing.T) {
 	endTestCase()
 
 	////////////////////////////////////////////////////////////
+	// Test Case (Annotation right after imports)
+	////////////////////////////////////////////////////////////
+	startTestCase("")
+	cases[testCaseNum].mojomContents = `
+    import "gpu/interfaces/command_buffer.mojom";
+
+    [ServiceName="mojo::Gpu"]
+    interface Gpu {
+    };
+
+	`
+	{
+		expectedFile.AddImport("gpu/interfaces/command_buffer.mojom")
+
+		attributes := mojom.NewAttributes()
+		attributes.List = append(attributes.List, mojom.MojomAttribute{"ServiceName", mojom.MakeStringLiteralValue("mojo::Gpu")})
+		interfaceGpu := mojom.NewMojomInterface(mojom.DeclTestDataA("Gpu", attributes))
+		expectedFile.AddInterface(interfaceGpu)
+	}
+	endTestCase()
+
+	////////////////////////////////////////////////////////////
 	// Test Case
 	////////////////////////////////////////////////////////////
 	startTestCase("mojom.test")

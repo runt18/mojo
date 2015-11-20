@@ -409,10 +409,10 @@ func (p *Parser) parseImportStatements() (names []string) {
 		message := "The module declaration must come before the import statements."
 		p.err = &ParseError{ParserErrorCodeUnexpectedToken, message}
 		return
-	case lexer.Interface, lexer.Struct, lexer.Union, lexer.Enum, lexer.Const:
+	case lexer.Interface, lexer.Struct, lexer.Union, lexer.Enum, lexer.Const, lexer.LBracket:
 		return
 	default:
-		p.unexpectedTokenError(nextToken, "import, interface, struct, union, enum or constant")
+		p.unexpectedTokenError(nextToken, "import, attributes, interface, struct, union, enum or constant")
 		return
 	}
 }
