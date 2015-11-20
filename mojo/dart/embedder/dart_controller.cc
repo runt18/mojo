@@ -20,6 +20,7 @@
 #include "mojo/dart/embedder/vmservice.h"
 #include "mojo/message_pump/message_pump_mojo.h"
 #include "mojo/public/c/system/core.h"
+#include "mojo/public/platform/dart/dart_handle_watcher.h"
 #include "tonic/dart_converter.h"
 #include "tonic/dart_debugger.h"
 #include "tonic/dart_dependency_catcher.h"
@@ -344,12 +345,15 @@ Dart_Isolate DartController::CreateIsolateHelper(
     result = PrepareBuiltinLibraries(package_root, script_uri);
     DART_CHECK_VALID(result);
 
+    // Set the handle watcher's control handle in the spawning isolate.
+    result = SetHandleWatcherControlHandle();
+    DART_CHECK_VALID(result);
+
     // The VM is creating the service isolate.
     if (Dart_IsServiceIsolate(isolate)) {
       service_isolate_spawned_ = true;
       const intptr_t port = SupportDartMojoIo() ? 0 : -1;
       InitializeDartMojoIo();
-      StartHandleWatcherIsolate();
       if (!VmService::Setup("127.0.0.1", port)) {
         *error = strdup(VmService::GetErrorMessage());
         return nullptr;
@@ -389,6 +393,26 @@ Dart_Isolate DartController::CreateIsolateHelper(
   DCHECK(Dart_CurrentIsolate() == nullptr);
 
   return isolate;
+}
+
+Dart_Handle DartController::SetHandleWatcherControlHandle() {
+  CHECK(handle_watcher_producer_handle_ != MOJO_HANDLE_INVALID);
+  Dart_Handle mojo_internal_lib =
+      Builtin::GetLibrary(Builtin::kMojoInternalLibrary);
+  DART_CHECK_VALID(mojo_internal_lib);
+  Dart_Handle handle_watcher_type = Dart_GetType(
+      mojo_internal_lib,
+      Dart_NewStringFromCString("MojoHandleWatcher"),
+      0,
+      nullptr);
+  DART_CHECK_VALID(handle_watcher_type);
+  Dart_Handle field_name = Dart_NewStringFromCString("mojoControlHandle");
+  DART_CHECK_VALID(field_name);
+  Dart_Handle control_port_value =
+      Dart_NewInteger(handle_watcher_producer_handle_);
+  Dart_Handle result =
+      Dart_SetField(handle_watcher_type, field_name, control_port_value);
+  return result;
 }
 
 Dart_Isolate DartController::IsolateCreateCallback(const char* script_uri,
@@ -475,6 +499,8 @@ void DartController::UnhandledExceptionCallback(Dart_Handle error) {
 
 
 bool DartController::initialized_ = false;
+MojoHandle DartController::handle_watcher_producer_handle_ =
+    MOJO_HANDLE_INVALID;
 bool DartController::service_isolate_running_ = false;
 bool DartController::service_isolate_spawned_ = false;
 bool DartController::strict_compilation_ = false;
@@ -536,72 +562,6 @@ void DartController::ShutdownDartMojoIo() {
   }
 }
 
-void DartController::StartHandleWatcherIsolate() {
-  Dart_Handle result;
-
-  // Start the Mojo handle watcher isolate.
-  Dart_Handle mojo_core_lib =
-      Builtin::GetLibrary(Builtin::kMojoInternalLibrary);
-  DART_CHECK_VALID(mojo_core_lib);
-  Dart_Handle handle_watcher_type = Dart_GetType(
-      mojo_core_lib,
-      Dart_NewStringFromCString("MojoHandleWatcher"),
-      0,
-      nullptr);
-  DART_CHECK_VALID(handle_watcher_type);
-  result = Dart_Invoke(
-      handle_watcher_type,
-      Dart_NewStringFromCString("_start"),
-      0,
-      nullptr);
-  DART_CHECK_VALID(result);
-}
-
-// TODO(johnmccutchan): Move handle watcher shutdown into the service isolate
-// once the VM can shutdown cleanly.
-void DartController::StopHandleWatcherIsolate() {
-  // Spin up an isolate to initiate the handle watcher shutdown.
-  IsolateCallbacks callbacks;
-  char* error;
-  Dart_Isolate shutdown_isolate = CreateIsolateHelper(
-      nullptr,
-      false,
-      callbacks,
-      kStopHandleWatcherIsolateUri,
-      "",
-      &error,
-      false);
-  CHECK(shutdown_isolate);
-
-  Dart_EnterIsolate(shutdown_isolate);
-  Dart_EnterScope();
-  Dart_Handle result;
-
-  // Stop the Mojo handle watcher isolate.
-  Dart_Handle mojo_core_lib =
-      Builtin::GetLibrary(Builtin::kMojoInternalLibrary);
-  DART_CHECK_VALID(mojo_core_lib);
-  Dart_Handle handle_watcher_type = Dart_GetType(
-      mojo_core_lib,
-      Dart_NewStringFromCString("MojoHandleWatcher"),
-      0,
-      nullptr);
-  DART_CHECK_VALID(handle_watcher_type);
-  result = Dart_Invoke(
-      handle_watcher_type,
-      Dart_NewStringFromCString("_stop"),
-      0,
-      nullptr);
-  DART_CHECK_VALID(result);
-
-  // Run until the handle watcher isolate has exited.
-  result = Dart_RunLoop();
-  tonic::LogIfError(result);
-  DART_CHECK_VALID(result);
-
-  Dart_ExitScope();
-  Dart_ShutdownIsolate();
-}
 
 static Dart_Handle MakeUint8Array(const uint8_t* buffer,
                                   unsigned int buffer_len) {
@@ -638,6 +598,9 @@ void DartController::InitVmIfNeeded(Dart_EntropySource entropy,
   if (initialized_) {
     return;
   }
+
+  // Start a handle watcher.
+  handle_watcher_producer_handle_ = HandleWatcher::Start();
 
   const char* kControllerFlags[] = {
     // TODO(zra): Fix Dart VM Shutdown race.
@@ -782,7 +745,6 @@ void DartController::Shutdown() {
     return;
   }
   BlockForServiceIsolateLocked();
-  StopHandleWatcherIsolate();
   Dart_Cleanup();
   service_isolate_running_ = false;
   initialized_ = false;

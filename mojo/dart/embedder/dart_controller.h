@@ -129,11 +129,8 @@ class DartController {
                                        Dart_Handle url);
 
  private:
-
-  // Start the handle watcher isolate.
-  static void StartHandleWatcherIsolate();
-  // Stop the handle watcher isolate.
-  static void StopHandleWatcherIsolate();
+  // Set the control handle in the isolate.
+  static Dart_Handle SetHandleWatcherControlHandle();
 
   // Dart API callback(s).
   static Dart_Isolate IsolateCreateCallback(const char* script_uri,
@@ -166,6 +163,7 @@ class DartController {
 
   static tonic::DartLibraryProvider* library_provider_;
   static base::Lock lock_;
+  static MojoHandle handle_watcher_producer_handle_;
   static bool initialized_;
   static bool strict_compilation_;
   static bool service_isolate_running_;
