@@ -39,8 +39,7 @@ void WriteMessageToFile(const Message& message, const base::FilePath& path) {
 // Generates a message of type MessageData. The message uses the name 21,
 // with 4 bytes of payload: 0x9, 0x8, 0x7, 0x6.
 void GenerateMessageDataMessage() {
-  internal::MessageBuilder builder(static_cast<uint32_t>(21),
-                                   static_cast<size_t>(4));
+  MessageBuilder builder(static_cast<uint32_t>(21), static_cast<size_t>(4));
   char* data = static_cast<char*>(builder.buffer()->Allocate(4));
   DCHECK(data);
   data[0] = 9;
