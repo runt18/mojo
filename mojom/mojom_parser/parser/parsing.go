@@ -29,7 +29,7 @@ import (
 //
 // Key:
 // Upper case means non-terminals.
-// Lower case means terminals and refers to the TokenKind enum in lexer.go
+// Lower case means terminals and refers to the TokenKind enum in lexer/tokens.go.
 // Vertical bar | means alternatives.
 // Braces {} means zero or more.
 // Brackets [] means zero or one.

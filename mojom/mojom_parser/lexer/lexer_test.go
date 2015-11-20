@@ -69,6 +69,12 @@ func TestAllSingleTokens(t *testing.T) {
 		{"0e5", FloatConst},
 		{"10e+5", FloatConst},
 		{"10e-5", FloatConst},
+		{"3.14E5", FloatConst},
+		{"3.14e5", FloatConst},
+		{"3.14E+55", FloatConst},
+		{"3.14e+55", FloatConst},
+		{"3.14E-55", FloatConst},
+		{"3.14e-55", FloatConst},
 		{"\"hello world\"", StringLiteral},
 		{"\"hello \\\"real\\\" world\"", StringLiteral},
 	}

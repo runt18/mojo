@@ -347,9 +347,12 @@ func lexDec(l *lexer) stateFn {
 		l.Consume()
 	}
 
-	// If a decimal part is found, transition to the decimal state.
-	if isDecimalPartStart(l.Peek()) {
-		return lexDecimalPart
+	// Handle numbers with decimal points and numbers in scientific notation.
+	switch c := l.Peek(); {
+	case c == 'e' || c == 'E':
+		return lexExponentPart
+	case c == '.':
+		return lexFractionPart
 	}
 
 	l.emitToken(IntConstDec)
@@ -367,8 +370,10 @@ func lexNumberStartWithZero(l *lexer) stateFn {
 	switch c := l.Peek(); {
 	case c == 'x' || c == 'X':
 		return lexHexNumber
-	case isDecimalPartStart(c):
-		return lexDecimalPart
+	case c == '.':
+		return lexFractionPart
+	case c == 'e' || c == 'E':
+		return lexExponentPart
 	}
 
 	// Found a naked 0.
@@ -391,15 +396,28 @@ func lexHexNumber(l *lexer) stateFn {
 	return lexRoot
 }
 
-// isDecimalPartStart returns true if the rune represents the beginning of
-// the decimal part of a floating point number.
-func isDecimalPartStart(c rune) bool {
-	return c == '.' || c == 'e' || c == 'E'
+// lexFractionPart lexes the part of a floating point number that comes
+// after the decimal point.
+func lexFractionPart(l *lexer) stateFn {
+	// Consume '.'
+	l.Consume()
+
+	for isDigit(l.Peek()) {
+		l.Consume()
+	}
+
+	if c := l.Peek(); c == 'e' || c == 'E' {
+		return lexExponentPart
+	}
+
+	l.emitToken(FloatConst)
+
+	return lexRoot
 }
 
-// lexDecimalPart lexes the decimal part of a floating point number.
-func lexDecimalPart(l *lexer) stateFn {
-	// Consume '.' or 'e' or 'E'
+// lexExponentPart lexes the part of a floating point number after E or e.
+func lexExponentPart(l *lexer) stateFn {
+	// Consume 'e' or 'E'
 	l.Consume()
 
 	if c := l.Peek(); c == '+' || c == '-' {
