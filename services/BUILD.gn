@@ -42,6 +42,10 @@ group("services") {
     }
   }
 
+  if (is_linux) {
+    deps += [ "//services/keyboard" ]
+  }
+
   if (is_linux && !is_fnl) {
     deps += [ "//services/python" ]
   }

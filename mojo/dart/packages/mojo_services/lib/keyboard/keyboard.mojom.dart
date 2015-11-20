@@ -8,6 +8,7 @@ import 'dart:async';
 
 import 'package:mojo/bindings.dart' as bindings;
 import 'package:mojo/core.dart' as core;
+import 'package:mojo_services/mojo/native_viewport.mojom.dart' as native_viewport_mojom;
 class SubmitAction extends bindings.MojoEnum {
   static const DONE = const SubmitAction._(0);
 
@@ -1218,6 +1219,80 @@ class KeyboardServiceSetSelectionParams extends bindings.Struct {
   }
 }
 
+
+class KeyboardServiceFactoryCreateKeyboardServiceParams extends bindings.Struct {
+  static const List<bindings.StructDataHeader> kVersions = const [
+    const bindings.StructDataHeader(16, 0)
+  ];
+  Object keyEventDispatcher = null;
+  Object serviceRequest = null;
+
+  KeyboardServiceFactoryCreateKeyboardServiceParams() : super(kVersions.last.size);
+
+  static KeyboardServiceFactoryCreateKeyboardServiceParams deserialize(bindings.Message message) {
+    var decoder = new bindings.Decoder(message);
+    var result = decode(decoder);
+    if (decoder.excessHandles != null) {
+      decoder.excessHandles.forEach((h) => h.close());
+    }
+    return result;
+  }
+
+  static KeyboardServiceFactoryCreateKeyboardServiceParams decode(bindings.Decoder decoder0) {
+    if (decoder0 == null) {
+      return null;
+    }
+    KeyboardServiceFactoryCreateKeyboardServiceParams result = new KeyboardServiceFactoryCreateKeyboardServiceParams();
+
+    var mainDataHeader = decoder0.decodeStructDataHeader();
+    if (mainDataHeader.version <= kVersions.last.version) {
+      // Scan in reverse order to optimize for more recent versions.
+      for (int i = kVersions.length - 1; i >= 0; --i) {
+        if (mainDataHeader.version >= kVersions[i].version) {
+          if (mainDataHeader.size == kVersions[i].size) {
+            // Found a match.
+            break;
+          }
+          throw new bindings.MojoCodecError(
+              'Header size doesn\'t correspond to known version size.');
+        }
+      }
+    } else if (mainDataHeader.size < kVersions.last.size) {
+      throw new bindings.MojoCodecError(
+        'Message newer than the last known version cannot be shorter than '
+        'required by the last known version.');
+    }
+    if (mainDataHeader.version >= 0) {
+      
+      result.keyEventDispatcher = decoder0.decodeInterfaceRequest(8, false, native_viewport_mojom.NativeViewportEventDispatcherStub.newFromEndpoint);
+    }
+    if (mainDataHeader.version >= 0) {
+      
+      result.serviceRequest = decoder0.decodeInterfaceRequest(12, false, KeyboardServiceStub.newFromEndpoint);
+    }
+    return result;
+  }
+
+  void encode(bindings.Encoder encoder) {
+    var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
+    
+    encoder0.encodeInterfaceRequest(keyEventDispatcher, 8, false);
+    
+    encoder0.encodeInterfaceRequest(serviceRequest, 12, false);
+  }
+
+  String toString() {
+    return "KeyboardServiceFactoryCreateKeyboardServiceParams("
+           "keyEventDispatcher: $keyEventDispatcher" ", "
+           "serviceRequest: $serviceRequest" ")";
+  }
+
+  Map toJson() {
+    throw new bindings.MojoCodecError(
+        'Object containing handles cannot be encoded to JSON.');
+  }
+}
+
 const int kKeyboardClient_commitCompletion_name = 0;
 const int kKeyboardClient_commitCorrection_name = 1;
 const int kKeyboardClient_commitText_name = 2;
@@ -1755,6 +1830,182 @@ class KeyboardServiceStub extends bindings.Stub {
   String toString() {
     var superString = super.toString();
     return "KeyboardServiceStub($superString)";
+  }
+
+  int get version => 0;
+}
+
+const int kKeyboardServiceFactory_createKeyboardService_name = 0;
+
+const String KeyboardServiceFactoryName =
+      'keyboard::KeyboardServiceFactory';
+
+abstract class KeyboardServiceFactory {
+  void createKeyboardService(Object keyEventDispatcher, Object serviceRequest);
+
+}
+
+
+class KeyboardServiceFactoryProxyImpl extends bindings.Proxy {
+  KeyboardServiceFactoryProxyImpl.fromEndpoint(
+      core.MojoMessagePipeEndpoint endpoint) : super.fromEndpoint(endpoint);
+
+  KeyboardServiceFactoryProxyImpl.fromHandle(core.MojoHandle handle) :
+      super.fromHandle(handle);
+
+  KeyboardServiceFactoryProxyImpl.unbound() : super.unbound();
+
+  static KeyboardServiceFactoryProxyImpl newFromEndpoint(
+      core.MojoMessagePipeEndpoint endpoint) {
+    assert(endpoint.setDescription("For KeyboardServiceFactoryProxyImpl"));
+    return new KeyboardServiceFactoryProxyImpl.fromEndpoint(endpoint);
+  }
+
+  String get name => KeyboardServiceFactoryName;
+
+  void handleResponse(bindings.ServiceMessage message) {
+    switch (message.header.type) {
+      default:
+        proxyError("Unexpected message type: ${message.header.type}");
+        close(immediate: true);
+        break;
+    }
+  }
+
+  String toString() {
+    var superString = super.toString();
+    return "KeyboardServiceFactoryProxyImpl($superString)";
+  }
+}
+
+
+class _KeyboardServiceFactoryProxyCalls implements KeyboardServiceFactory {
+  KeyboardServiceFactoryProxyImpl _proxyImpl;
+
+  _KeyboardServiceFactoryProxyCalls(this._proxyImpl);
+    void createKeyboardService(Object keyEventDispatcher, Object serviceRequest) {
+      if (!_proxyImpl.isBound) {
+        _proxyImpl.proxyError("The Proxy is closed.");
+        return;
+      }
+      var params = new KeyboardServiceFactoryCreateKeyboardServiceParams();
+      params.keyEventDispatcher = keyEventDispatcher;
+      params.serviceRequest = serviceRequest;
+      _proxyImpl.sendMessage(params, kKeyboardServiceFactory_createKeyboardService_name);
+    }
+  
+}
+
+
+class KeyboardServiceFactoryProxy implements bindings.ProxyBase {
+  final bindings.Proxy impl;
+  KeyboardServiceFactory ptr;
+  final String name = KeyboardServiceFactoryName;
+
+  KeyboardServiceFactoryProxy(KeyboardServiceFactoryProxyImpl proxyImpl) :
+      impl = proxyImpl,
+      ptr = new _KeyboardServiceFactoryProxyCalls(proxyImpl);
+
+  KeyboardServiceFactoryProxy.fromEndpoint(
+      core.MojoMessagePipeEndpoint endpoint) :
+      impl = new KeyboardServiceFactoryProxyImpl.fromEndpoint(endpoint) {
+    ptr = new _KeyboardServiceFactoryProxyCalls(impl);
+  }
+
+  KeyboardServiceFactoryProxy.fromHandle(core.MojoHandle handle) :
+      impl = new KeyboardServiceFactoryProxyImpl.fromHandle(handle) {
+    ptr = new _KeyboardServiceFactoryProxyCalls(impl);
+  }
+
+  KeyboardServiceFactoryProxy.unbound() :
+      impl = new KeyboardServiceFactoryProxyImpl.unbound() {
+    ptr = new _KeyboardServiceFactoryProxyCalls(impl);
+  }
+
+  factory KeyboardServiceFactoryProxy.connectToService(
+      bindings.ServiceConnector s, String url) {
+    KeyboardServiceFactoryProxy p = new KeyboardServiceFactoryProxy.unbound();
+    s.connectToService(url, p);
+    return p;
+  }
+
+  static KeyboardServiceFactoryProxy newFromEndpoint(
+      core.MojoMessagePipeEndpoint endpoint) {
+    assert(endpoint.setDescription("For KeyboardServiceFactoryProxy"));
+    return new KeyboardServiceFactoryProxy.fromEndpoint(endpoint);
+  }
+
+  Future close({bool immediate: false}) => impl.close(immediate: immediate);
+
+  Future responseOrError(Future f) => impl.responseOrError(f);
+
+  Future get errorFuture => impl.errorFuture;
+
+  int get version => impl.version;
+
+  Future<int> queryVersion() => impl.queryVersion();
+
+  void requireVersion(int requiredVersion) {
+    impl.requireVersion(requiredVersion);
+  }
+
+  String toString() {
+    return "KeyboardServiceFactoryProxy($impl)";
+  }
+}
+
+
+class KeyboardServiceFactoryStub extends bindings.Stub {
+  KeyboardServiceFactory _impl = null;
+
+  KeyboardServiceFactoryStub.fromEndpoint(
+      core.MojoMessagePipeEndpoint endpoint, [this._impl])
+      : super.fromEndpoint(endpoint);
+
+  KeyboardServiceFactoryStub.fromHandle(core.MojoHandle handle, [this._impl])
+      : super.fromHandle(handle);
+
+  KeyboardServiceFactoryStub.unbound() : super.unbound();
+
+  static KeyboardServiceFactoryStub newFromEndpoint(
+      core.MojoMessagePipeEndpoint endpoint) {
+    assert(endpoint.setDescription("For KeyboardServiceFactoryStub"));
+    return new KeyboardServiceFactoryStub.fromEndpoint(endpoint);
+  }
+
+  static const String name = KeyboardServiceFactoryName;
+
+
+
+  dynamic handleMessage(bindings.ServiceMessage message) {
+    if (bindings.ControlMessageHandler.isControlMessage(message)) {
+      return bindings.ControlMessageHandler.handleMessage(this,
+                                                          0,
+                                                          message);
+    }
+    assert(_impl != null);
+    switch (message.header.type) {
+      case kKeyboardServiceFactory_createKeyboardService_name:
+        var params = KeyboardServiceFactoryCreateKeyboardServiceParams.deserialize(
+            message.payload);
+        _impl.createKeyboardService(params.keyEventDispatcher, params.serviceRequest);
+        break;
+      default:
+        throw new bindings.MojoCodecError("Unexpected message name");
+        break;
+    }
+    return null;
+  }
+
+  KeyboardServiceFactory get impl => _impl;
+  set impl(KeyboardServiceFactory d) {
+    assert(_impl == null);
+    _impl = d;
+  }
+
+  String toString() {
+    var superString = super.toString();
+    return "KeyboardServiceFactoryStub($superString)";
   }
 
   int get version => 0;
