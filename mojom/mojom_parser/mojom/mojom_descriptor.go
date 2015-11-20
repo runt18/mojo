@@ -405,14 +405,11 @@ func (d *MojomDescriptor) resolveValueRef(ref *UserValueRef) (resolved bool) {
 		// resolvedConcreteValue. Since this cannot be nil we know that
 		// ref is now fully resolved.
 		ref.resolvedConcreteValue = value
-	case *BuiltInConstantValue:
-		// The identifier resolved to a built-in. We use the built-in value
-		// itself (not the integer value of the enum value) as the
-		// resolvedConcreteValue. Since this cannot be nil we know that
-		// ref is now fully resolved.
+	case BuiltInConstantValue:
 		ref.resolvedConcreteValue = value
 	default:
-		panic("ref.resolvedDeclaredValue is neither a DelcaredConstant, an EnumValue, nor a BuiltInConstantValue.")
+		panic(fmt.Sprintf("ref.resolvedDeclaredValue is neither a DelcaredConstant, an EnumValue, "+
+			"nor a BuiltInConstantValue: %T", ref.resolvedDeclaredValue))
 	}
 
 	return ref.resolvedConcreteValue != nil

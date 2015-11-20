@@ -186,12 +186,7 @@ func translateDefaultFieldValue(v mojom.ValueRef) mojom_types.DefaultFieldValue 
 		}
 		return &mojom_types.DefaultFieldValueValue{translateLiteralValue(v)}
 	case *mojom.UserValueRef:
-		switch t := v.ResolvedConcreteValue().(type) {
-		case mojom.BuiltInConstantValue:
-			return &mojom_types.DefaultFieldValueValue{translateBuiltInConstantValue(t)}
-		default:
-			return &mojom_types.DefaultFieldValueValue{translateUserValueRef(v)}
-		}
+		return &mojom_types.DefaultFieldValueValue{translateUserValueRef(v)}
 	default:
 		panic(fmt.Sprintf("Unexpected ValueRef type: %T", v))
 
@@ -455,19 +450,24 @@ func translateBuiltInConstantValue(t mojom.BuiltInConstantValue) *mojom_types.Va
 	case mojom.SimpleTypeDouble_NEGATIVE_INFINITY:
 		builtInValue.Value = mojom_types.BuiltinConstantValue_DoubleNegativeInfinity
 	case mojom.SimpleTypeDouble_NAN:
-		builtInValue.Value = mojom_types.BuiltinConstantValue_DoubleNegativeInfinity
+		builtInValue.Value = mojom_types.BuiltinConstantValue_DoubleNan
 	default:
 		panic(fmt.Sprintf("Unrecognized BuiltInConstantValue %v", t))
 	}
 	return &builtInValue
 }
 
-func translateUserValueRef(r *mojom.UserValueRef) *mojom_types.ValueUserValueReference {
-	valueKey := stringPointer(r.ResolvedDeclaredValue().ValueKey())
-	return &mojom_types.ValueUserValueReference{mojom_types.UserValueReference{
-		Identifier: r.Identifier(),
-		ValueKey:   valueKey}}
-	// We do not populate ResolvedConcreteValue becuase it is deprecated.
+func translateUserValueRef(r *mojom.UserValueRef) mojom_types.Value {
+	switch t := r.ResolvedConcreteValue().(type) {
+	case mojom.BuiltInConstantValue:
+		return translateBuiltInConstantValue(t)
+	default:
+		valueKey := stringPointer(r.ResolvedDeclaredValue().ValueKey())
+		return &mojom_types.ValueUserValueReference{mojom_types.UserValueReference{
+			Identifier: r.Identifier(),
+			ValueKey:   valueKey}}
+		// We do not populate ResolvedConcreteValue because it is deprecated.
+	}
 }
 
 func translateDeclarationData(d *mojom.DeclarationData) *mojom_types.DeclarationData {

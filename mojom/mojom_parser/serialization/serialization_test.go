@@ -350,6 +350,73 @@ func TestSingleFileSerialization(t *testing.T) {
 	}
 
 	////////////////////////////////////////////////////////////
+	// Test Case: Builtin Floating-Point Constants
+	////////////////////////////////////////////////////////////
+	{
+
+		contents := `
+	const float f1 = float.INFINITY;
+	const float f2 = float.NEGATIVE_INFINITY;
+	const float f3 = float.NAN;
+	const double d1 = double.INFINITY;
+	const double d2 = double.NEGATIVE_INFINITY;
+	const double d3 = double.NAN;
+	`
+		test.addTestCase("", contents)
+
+		// DeclaredMojomObjects
+
+		test.expectedFile().DeclaredMojomObjects.TopLevelConstants = &[]string{
+			"TYPE_KEY:f1", "TYPE_KEY:f2", "TYPE_KEY:f3", "TYPE_KEY:d1", "TYPE_KEY:d2", "TYPE_KEY:d3"}
+
+		// Resolved Values
+
+		// f1
+		test.expectedGraph().ResolvedValues["TYPE_KEY:f1"] = &mojom_types.UserDefinedValueDeclaredConstant{mojom_types.DeclaredConstant{
+			DeclData: *test.newDeclData("f1", "f1"),
+			Type:     &mojom_types.TypeSimpleType{mojom_types.SimpleType_Float},
+			Value:    &mojom_types.ValueBuiltinValue{mojom_types.BuiltinConstantValue_FloatInfinity},
+		}}
+
+		// f2
+		test.expectedGraph().ResolvedValues["TYPE_KEY:f2"] = &mojom_types.UserDefinedValueDeclaredConstant{mojom_types.DeclaredConstant{
+			DeclData: *test.newDeclData("f2", "f2"),
+			Type:     &mojom_types.TypeSimpleType{mojom_types.SimpleType_Float},
+			Value:    &mojom_types.ValueBuiltinValue{mojom_types.BuiltinConstantValue_FloatNegativeInfinity},
+		}}
+
+		// f3
+		test.expectedGraph().ResolvedValues["TYPE_KEY:f3"] = &mojom_types.UserDefinedValueDeclaredConstant{mojom_types.DeclaredConstant{
+			DeclData: *test.newDeclData("f3", "f3"),
+			Type:     &mojom_types.TypeSimpleType{mojom_types.SimpleType_Float},
+			Value:    &mojom_types.ValueBuiltinValue{mojom_types.BuiltinConstantValue_FloatNan},
+		}}
+
+		// d1
+		test.expectedGraph().ResolvedValues["TYPE_KEY:d1"] = &mojom_types.UserDefinedValueDeclaredConstant{mojom_types.DeclaredConstant{
+			DeclData: *test.newDeclData("d1", "d1"),
+			Type:     &mojom_types.TypeSimpleType{mojom_types.SimpleType_Double},
+			Value:    &mojom_types.ValueBuiltinValue{mojom_types.BuiltinConstantValue_DoubleInfinity},
+		}}
+
+		// d2
+		test.expectedGraph().ResolvedValues["TYPE_KEY:d2"] = &mojom_types.UserDefinedValueDeclaredConstant{mojom_types.DeclaredConstant{
+			DeclData: *test.newDeclData("d2", "d2"),
+			Type:     &mojom_types.TypeSimpleType{mojom_types.SimpleType_Double},
+			Value:    &mojom_types.ValueBuiltinValue{mojom_types.BuiltinConstantValue_DoubleNegativeInfinity},
+		}}
+
+		// d3
+		test.expectedGraph().ResolvedValues["TYPE_KEY:d3"] = &mojom_types.UserDefinedValueDeclaredConstant{mojom_types.DeclaredConstant{
+			DeclData: *test.newDeclData("d3", "d3"),
+			Type:     &mojom_types.TypeSimpleType{mojom_types.SimpleType_Double},
+			Value:    &mojom_types.ValueBuiltinValue{mojom_types.BuiltinConstantValue_DoubleNan},
+		}}
+
+		test.endTestCase()
+	}
+
+	////////////////////////////////////////////////////////////
 	// Test Case
 	////////////////////////////////////////////////////////////
 	{
