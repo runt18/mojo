@@ -6,6 +6,7 @@ package mojom
 
 import (
 	"fmt"
+	"math"
 	"mojom/mojom_parser/lexer"
 )
 
@@ -110,6 +111,22 @@ const (
 )
 
 var allSimpleTypes = []SimpleType{SimpleTypeBool, SimpleTypeDouble, SimpleTypeFloat, SimpleTypeInt8, SimpleTypeInt16, SimpleTypeInt32, SimpleTypeInt64, SimpleTypeUInt8, SimpleTypeUInt16, SimpleTypeUInt32, SimpleTypeUInt64}
+var integerTypes = []SimpleType{SimpleTypeInt8, SimpleTypeInt16, SimpleTypeInt32, SimpleTypeInt64}
+var unsignedIntegerTypes = []SimpleType{SimpleTypeUInt8, SimpleTypeUInt16, SimpleTypeUInt32, SimpleTypeUInt64}
+var integerTypeCompatibilityRank map[SimpleType]int
+var unsignedIntegerTypeCompatibilityRank map[SimpleType]int
+
+// Initialize integerTypeCompatibilityRank and unsignedIntegerTypeCompatibilityRank
+func init() {
+	integerTypeCompatibilityRank = make(map[SimpleType]int)
+	for i, t := range integerTypes {
+		integerTypeCompatibilityRank[t] = i
+	}
+	unsignedIntegerTypeCompatibilityRank = make(map[SimpleType]int)
+	for i, t := range unsignedIntegerTypes {
+		unsignedIntegerTypeCompatibilityRank[t] = i
+	}
+}
 
 // A SimpleType is a LiteralType:
 
@@ -151,25 +168,92 @@ func (SimpleType) MarkUsedAsConstantType() bool {
 
 // From interface TypeRef:
 
+// We allow users to assign integer literals to float or double variables as
+// long as the integer literals are small enough that they can be guaranteed
+// to be represented exactly.
+const minFloatInt = -(1 << 24)
+const maxFloatInt = (1 << 24)
+const minDoubleInt = -(1 << 53)
+const maxDoubleInt = (1 << 53)
+
 func (t SimpleType) MarkTypeCompatible(assignment LiteralAssignment) bool {
 	if assignment.assignedValue.IsDefault() {
 		// We don't support assigning "default" to a SimpleType variable.
 		return false
 	}
-	switch assignment.assignedValue.LiteralValueType() {
-	case StringLiteralType:
+	if assignment.assignedValue.LiteralValueType() == StringLiteralType {
 		// Not valid to assign a string to a SimpleType variable.
 		return false
-	case SimpleTypeBool:
-		return t == SimpleTypeBool
-	case SimpleTypeDouble, SimpleTypeFloat:
-		return t == SimpleTypeDouble || t == SimpleTypeFloat
-	case SimpleTypeInt8, SimpleTypeInt16, SimpleTypeInt32, SimpleTypeInt64, SimpleTypeUInt8, SimpleTypeUInt16, SimpleTypeUInt32, SimpleTypeUInt64:
-		return t == SimpleTypeInt8 || t == SimpleTypeInt16 || t == SimpleTypeInt32 || t == SimpleTypeInt64 ||
-			t == SimpleTypeUInt8 || t == SimpleTypeUInt16 || t == SimpleTypeUInt32 || t == SimpleTypeUInt64
 	}
-	// TODO(rudominer) Refine numeric type compatability checking.
-	return true
+	// Now we know the type of assignment is a literal type.
+	assignedType := assignment.assignedValue.LiteralValueType().(SimpleType)
+	if assignedType == SimpleTypeBool {
+		// A bool literal may only be assigned to a bool variable.
+		return t == SimpleTypeBool
+	}
+	// Now we know the type of assignment is a numeric literal type.
+	switch t {
+	case SimpleTypeBool:
+		return false
+	case SimpleTypeFloat:
+		switch assignedType {
+		// Note(rudominer) We allow assigning a literal of type double to a variable of type float for now because
+		// we have not yet refined the parsing of floating point literals and so all of them currently have
+		// type double.
+		case SimpleTypeFloat, SimpleTypeDouble:
+			return true
+		default:
+			int64Value, ok := int64Value(assignment.assignedValue)
+			return ok && int64Value >= minFloatInt && int64Value <= maxFloatInt
+		}
+	case SimpleTypeDouble:
+		switch assignedType {
+		case SimpleTypeFloat, SimpleTypeDouble:
+			return true
+		default:
+			int64Value, ok := int64Value(assignment.assignedValue)
+			return ok && int64Value >= minDoubleInt && int64Value <= maxDoubleInt
+		}
+	case SimpleTypeInt8, SimpleTypeInt16, SimpleTypeInt32, SimpleTypeInt64:
+		// A signed integer value may be assigned to a signed integer variable
+		// whose type rank is at least as large.
+		if rank, ok := integerTypeCompatibilityRank[assignedType]; ok {
+			if rank <= integerTypeCompatibilityRank[t] {
+				return true
+			}
+			return false
+		}
+		// An usigned integer value may be assigned to a signed integer variable
+		// whose type rank is larger
+		if rank, ok := unsignedIntegerTypeCompatibilityRank[assignedType]; ok {
+			if rank < integerTypeCompatibilityRank[t] {
+				return true
+			}
+			return false
+		}
+		return false
+	case SimpleTypeUInt8, SimpleTypeUInt16, SimpleTypeUInt32, SimpleTypeUInt64:
+		// An usigned integer value may be assigned to an unsigned integer variable
+		// whose type rank is at least as large
+		if rank, ok := unsignedIntegerTypeCompatibilityRank[assignedType]; ok {
+			if rank <= unsignedIntegerTypeCompatibilityRank[t] {
+				return true
+			}
+			return false
+		}
+		// A *non-negative* signed integer value may be assigned to an unsigned
+		// integer variable whose type rank is at least as large.
+		if rank, ok := integerTypeCompatibilityRank[assignedType]; ok {
+			if rank <= unsignedIntegerTypeCompatibilityRank[t] {
+				numericValue, _ := int64Value(assignment.assignedValue)
+				return numericValue >= 0
+			}
+			return false
+		}
+		return false
+	default:
+		panic(fmt.Sprintf("Unexpected SimpleType: %s", t))
+	}
 }
 
 func (t SimpleType) String() string {
@@ -777,6 +861,39 @@ type LiteralValue struct {
 
 	// Does this LiteralValue represent the pseudo value "default"
 	isDefault bool
+}
+
+// int64Value returns the value of |literalValue| as an int64.
+// If the type of |literalValue| is not an integer type then |ok|
+// will be false and |int64Value| will be zero. If the type of
+// |literalValue| is any of the integer types smaller the uint64 then
+// |ok| will be true and |int64Value| will be the integer value cast
+// to an |int64|. If the type of |literalValue| is uint64 then
+// |int64Value| will be the integer value cast to an int64 and
+// |ok| will indicate whether or not the pre-cast value is <= MaxInt64.
+func int64Value(literalValue LiteralValue) (int64Value int64, ok bool) {
+	value := literalValue.Value()
+	switch literalValue.valueType {
+	case SimpleTypeInt8:
+		return int64(value.(int8)), true
+	case SimpleTypeUInt8:
+		return int64(value.(uint8)), true
+	case SimpleTypeInt16:
+		return int64(value.(int16)), true
+	case SimpleTypeUInt16:
+		return int64(value.(uint16)), true
+	case SimpleTypeInt32:
+		return int64(value.(int32)), true
+	case SimpleTypeUInt32:
+		return int64(value.(uint32)), true
+	case SimpleTypeInt64:
+		return value.(int64), true
+	case SimpleTypeUInt64:
+		numericValue := value.(uint64)
+		ok := numericValue <= math.MaxInt64
+		return int64(numericValue), ok
+	}
+	return 0, false
 }
 
 func MakeStringLiteralValue(text string) LiteralValue {
