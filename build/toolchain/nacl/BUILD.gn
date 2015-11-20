@@ -43,6 +43,11 @@ nacl_toolchain("newlib_pnacl") {
   finalized_file = "{{root_out_dir}}/{{target_output_name}}.pexe"
   postlink = "$finalize $nonfinal_file -o $finalized_file"
   link_outputs = [ finalized_file ]
+
+  # TODO(smklein): Don't modify symbol_level from the default value once
+  # PNaCl's LLVM version has been updated to use more efficient debug info.
+  # See: https://github.com/domokit/mojo/issues/554
+  symbol_level = 0
 }
 
 nacl_toolchain("glibc_x86") {
