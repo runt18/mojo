@@ -39,6 +39,8 @@ variable, containing entries of the following form:
    "shell-args": ["--some-flag-for-the-shell", "--another-flag"],
    # Optional timeout in seconds, 60 by default.
    "timeout": 120,
+   # Optional override for dart content handler strict mode (on by default).
+   "dart_strict_mode": False,
  }
 
 |test_list_file| may reference the |target_os| global that will be any of
@@ -51,6 +53,8 @@ _logger = logging.getLogger()
 
 _CACHE_SERVICE_URL = 'mojo:url_response_disk_cache'
 _NETWORK_SERVICE_URL = 'mojo:network_service'
+_DART_STRICT_MODE_ARG = ('--args-for=mojo:dart_content_handler '
+                         '--enable-strict-mode')
 
 
 def main():
@@ -88,6 +92,9 @@ def main():
     test_args = test_dict.get("test-args", [])
     shell_args = test_dict.get("shell-args", []) + common_shell_args
     timeout = test_dict.get("timeout", 60)
+    dart_strict_mode = test_dict.get("dart_strict_mode", True)
+    if dart_strict_mode:
+      shell_args.append(_DART_STRICT_MODE_ARG)
 
     _logger.info("Will start: %s" % test_name)
     print "Running %s...." % test_name,
