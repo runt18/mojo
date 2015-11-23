@@ -25,6 +25,7 @@
 #include "mojo/edk/util/waitable_event.h"
 #include "mojo/public/cpp/system/macros.h"
 
+using mojo::platform::TaskRunner;
 using mojo::util::AutoResetWaitableEvent;
 using mojo::util::MutexLocker;
 using mojo::util::RefPtr;
@@ -342,7 +343,7 @@ MasterConnectionManager::~MasterConnectionManager() {
 }
 
 void MasterConnectionManager::Init(
-    RefPtr<embedder::PlatformTaskRunner>&& delegate_thread_task_runner,
+    RefPtr<TaskRunner>&& delegate_thread_task_runner,
     embedder::MasterProcessDelegate* master_process_delegate) {
   DCHECK(delegate_thread_task_runner);
   DCHECK(master_process_delegate);

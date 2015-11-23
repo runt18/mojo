@@ -15,18 +15,18 @@
 #include "mojo/edk/system/message_pipe_dispatcher.h"
 #include "mojo/edk/system/slave_connection_manager.h"
 
+using mojo::platform::TaskRunner;
 using mojo::util::RefPtr;
 
 namespace mojo {
 namespace system {
 
-IPCSupport::IPCSupport(
-    embedder::PlatformSupport* platform_support,
-    embedder::ProcessType process_type,
-    RefPtr<embedder::PlatformTaskRunner>&& delegate_thread_task_runner,
-    embedder::ProcessDelegate* process_delegate,
-    RefPtr<embedder::PlatformTaskRunner>&& io_thread_task_runner,
-    embedder::ScopedPlatformHandle platform_handle)
+IPCSupport::IPCSupport(embedder::PlatformSupport* platform_support,
+                       embedder::ProcessType process_type,
+                       RefPtr<TaskRunner>&& delegate_thread_task_runner,
+                       embedder::ProcessDelegate* process_delegate,
+                       RefPtr<TaskRunner>&& io_thread_task_runner,
+                       embedder::ScopedPlatformHandle platform_handle)
     : process_type_(process_type),
       delegate_thread_task_runner_(std::move(delegate_thread_task_runner)),
       process_delegate_(process_delegate),
@@ -97,7 +97,7 @@ RefPtr<MessagePipeDispatcher> IPCSupport::ConnectToSlave(
     embedder::SlaveInfo slave_info,
     embedder::ScopedPlatformHandle platform_handle,
     const base::Closure& callback,
-    RefPtr<embedder::PlatformTaskRunner>&& callback_thread_task_runner,
+    RefPtr<TaskRunner>&& callback_thread_task_runner,
     ChannelId* channel_id) {
   DCHECK(channel_id);
 
@@ -116,7 +116,7 @@ RefPtr<MessagePipeDispatcher> IPCSupport::ConnectToSlave(
 RefPtr<MessagePipeDispatcher> IPCSupport::ConnectToMaster(
     const ConnectionIdentifier& connection_id,
     const base::Closure& callback,
-    RefPtr<embedder::PlatformTaskRunner>&& callback_thread_task_runner,
+    RefPtr<TaskRunner>&& callback_thread_task_runner,
     ChannelId* channel_id) {
   DCHECK(channel_id);
 

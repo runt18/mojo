@@ -7,6 +7,7 @@
 #include "base/message_loop/message_loop.h"
 #include "mojo/edk/embedder/embedder.h"
 
+using mojo::platform::TaskRunner;
 using mojo::util::RefPtr;
 
 namespace mojo {
@@ -28,7 +29,7 @@ ScopedIPCSupportHelper::~ScopedIPCSupportHelper() {
 void ScopedIPCSupportHelper::Init(
     embedder::ProcessType process_type,
     embedder::ProcessDelegate* process_delegate,
-    RefPtr<embedder::PlatformTaskRunner>&& io_thread_task_runner,
+    RefPtr<TaskRunner>&& io_thread_task_runner,
     embedder::ScopedPlatformHandle platform_handle) {
   io_thread_task_runner_ = std::move(io_thread_task_runner);
   // Note: Run delegate methods on the I/O thread.
@@ -43,8 +44,7 @@ void ScopedIPCSupportHelper::OnShutdownCompleteImpl() {
 
 }  // namespace internal
 
-ScopedIPCSupport::ScopedIPCSupport(
-    RefPtr<embedder::PlatformTaskRunner>&& io_thread_task_runner) {
+ScopedIPCSupport::ScopedIPCSupport(RefPtr<TaskRunner>&& io_thread_task_runner) {
   helper_.Init(embedder::ProcessType::NONE, this,
                std::move(io_thread_task_runner),
                embedder::ScopedPlatformHandle());
@@ -58,14 +58,14 @@ void ScopedIPCSupport::OnShutdownComplete() {
 }
 
 ScopedMasterIPCSupport::ScopedMasterIPCSupport(
-    RefPtr<embedder::PlatformTaskRunner>&& io_thread_task_runner) {
+    RefPtr<TaskRunner>&& io_thread_task_runner) {
   helper_.Init(embedder::ProcessType::MASTER, this,
                std::move(io_thread_task_runner),
                embedder::ScopedPlatformHandle());
 }
 
 ScopedMasterIPCSupport::ScopedMasterIPCSupport(
-    RefPtr<embedder::PlatformTaskRunner>&& io_thread_task_runner,
+    RefPtr<TaskRunner>&& io_thread_task_runner,
     base::Callback<void(embedder::SlaveInfo slave_info)> on_slave_disconnect)
     : on_slave_disconnect_(on_slave_disconnect) {
   helper_.Init(embedder::ProcessType::MASTER, this,
@@ -86,14 +86,14 @@ void ScopedMasterIPCSupport::OnSlaveDisconnect(embedder::SlaveInfo slave_info) {
 }
 
 ScopedSlaveIPCSupport::ScopedSlaveIPCSupport(
-    RefPtr<embedder::PlatformTaskRunner>&& io_thread_task_runner,
+    RefPtr<TaskRunner>&& io_thread_task_runner,
     embedder::ScopedPlatformHandle platform_handle) {
   helper_.Init(embedder::ProcessType::SLAVE, this,
                std::move(io_thread_task_runner), platform_handle.Pass());
 }
 
 ScopedSlaveIPCSupport::ScopedSlaveIPCSupport(
-    RefPtr<embedder::PlatformTaskRunner>&& io_thread_task_runner,
+    RefPtr<TaskRunner>&& io_thread_task_runner,
     embedder::ScopedPlatformHandle platform_handle,
     base::Closure on_master_disconnect)
     : on_master_disconnect_(on_master_disconnect) {

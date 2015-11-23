@@ -12,6 +12,7 @@
 #include "mojo/edk/system/channel_endpoint.h"
 #include "mojo/edk/system/message_pipe_dispatcher.h"
 
+using mojo::platform::TaskRunner;
 using mojo::util::MakeRefCounted;
 using mojo::util::MutexLocker;
 using mojo::util::RefPtr;
@@ -23,10 +24,9 @@ namespace {
 
 // TODO(vtl): |channel| and |callback_thread_task_runner| should be rvalue
 // references, but that currently doesn't work with base::Bind.
-void ShutdownChannelHelper(
-    RefPtr<Channel> channel,
-    const base::Closure& callback,
-    RefPtr<embedder::PlatformTaskRunner> callback_thread_task_runner) {
+void ShutdownChannelHelper(RefPtr<Channel> channel,
+                           const base::Closure& callback,
+                           RefPtr<TaskRunner> callback_thread_task_runner) {
   channel->Shutdown();
   if (callback_thread_task_runner)
     callback_thread_task_runner->PostTask(callback);
@@ -36,10 +36,9 @@ void ShutdownChannelHelper(
 
 }  // namespace
 
-ChannelManager::ChannelManager(
-    embedder::PlatformSupport* platform_support,
-    RefPtr<embedder::PlatformTaskRunner>&& io_thread_task_runner,
-    ConnectionManager* connection_manager)
+ChannelManager::ChannelManager(embedder::PlatformSupport* platform_support,
+                               RefPtr<TaskRunner>&& io_thread_task_runner,
+                               ConnectionManager* connection_manager)
     : platform_support_(platform_support),
       io_thread_task_runner_(std::move(io_thread_task_runner)),
       connection_manager_(connection_manager) {
@@ -71,9 +70,8 @@ void ChannelManager::ShutdownOnIOThread() {
 
 void ChannelManager::Shutdown(
     const base::Closure& callback,
-    RefPtr<embedder::PlatformTaskRunner>&& callback_thread_task_runner) {
-  RefPtr<embedder::PlatformTaskRunner> cttr =
-      std::move(callback_thread_task_runner);
+    RefPtr<TaskRunner>&& callback_thread_task_runner) {
+  RefPtr<TaskRunner> cttr = std::move(callback_thread_task_runner);
   io_thread_task_runner_->PostTask(base::Bind(&ChannelManager::ShutdownHelper,
                                               base::Unretained(this), callback,
                                               base::Passed(&cttr)));
@@ -101,7 +99,7 @@ RefPtr<MessagePipeDispatcher> ChannelManager::CreateChannel(
     ChannelId channel_id,
     embedder::ScopedPlatformHandle platform_handle,
     const base::Closure& callback,
-    RefPtr<embedder::PlatformTaskRunner>&& callback_thread_task_runner) {
+    RefPtr<TaskRunner>&& callback_thread_task_runner) {
   DCHECK(!callback.is_null());
   // (|callback_thread_task_runner| may be null.)
 
@@ -110,8 +108,7 @@ RefPtr<MessagePipeDispatcher> ChannelManager::CreateChannel(
       &bootstrap_channel_endpoint);
   // TODO(vtl): This is needed, since |base::Passed()| doesn't work with an
   // rvalue reference.
-  RefPtr<embedder::PlatformTaskRunner> cttr =
-      std::move(callback_thread_task_runner);
+  RefPtr<TaskRunner> cttr = std::move(callback_thread_task_runner);
   io_thread_task_runner_->PostTask(base::Bind(
       &ChannelManager::CreateChannelHelper, base::Unretained(this), channel_id,
       base::Passed(&platform_handle), base::Passed(&bootstrap_channel_endpoint),
@@ -145,7 +142,7 @@ void ChannelManager::ShutdownChannelOnIOThread(ChannelId channel_id) {
 void ChannelManager::ShutdownChannel(
     ChannelId channel_id,
     const base::Closure& callback,
-    RefPtr<embedder::PlatformTaskRunner>&& callback_thread_task_runner) {
+    RefPtr<TaskRunner>&& callback_thread_task_runner) {
   RefPtr<Channel> channel;
   {
     MutexLocker locker(&mutex_);
@@ -157,8 +154,7 @@ void ChannelManager::ShutdownChannel(
   channel->WillShutdownSoon();
   // TODO(vtl): This is needed, since |base::Passed()| doesn't work with an
   // rvalue reference.
-  RefPtr<embedder::PlatformTaskRunner> cttr =
-      std::move(callback_thread_task_runner);
+  RefPtr<TaskRunner> cttr = std::move(callback_thread_task_runner);
   io_thread_task_runner_->PostTask(base::Bind(&ShutdownChannelHelper,
                                               base::Passed(&channel), callback,
                                               base::Passed(&cttr)));
@@ -166,7 +162,7 @@ void ChannelManager::ShutdownChannel(
 
 void ChannelManager::ShutdownHelper(
     const base::Closure& callback,
-    util::RefPtr<embedder::PlatformTaskRunner> callback_thread_task_runner) {
+    util::RefPtr<TaskRunner> callback_thread_task_runner) {
   ShutdownOnIOThread();
   if (callback_thread_task_runner)
     callback_thread_task_runner->PostTask(callback);
@@ -201,7 +197,7 @@ void ChannelManager::CreateChannelHelper(
     embedder::ScopedPlatformHandle platform_handle,
     RefPtr<ChannelEndpoint> bootstrap_channel_endpoint,
     const base::Closure& callback,
-    RefPtr<embedder::PlatformTaskRunner> callback_thread_task_runner) {
+    RefPtr<TaskRunner> callback_thread_task_runner) {
   CreateChannelOnIOThreadHelper(channel_id, platform_handle.Pass(),
                                 std::move(bootstrap_channel_endpoint));
   if (callback_thread_task_runner)

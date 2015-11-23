@@ -15,6 +15,7 @@
 #include "mojo/edk/system/message_in_transit.h"
 #include "mojo/edk/util/make_unique.h"
 
+using mojo::platform::TaskRunner;
 using mojo::util::MutexLocker;
 using mojo::util::RefPtr;
 
@@ -46,7 +47,7 @@ SlaveConnectionManager::~SlaveConnectionManager() {
 }
 
 void SlaveConnectionManager::Init(
-    RefPtr<embedder::PlatformTaskRunner>&& delegate_thread_task_runner,
+    RefPtr<TaskRunner>&& delegate_thread_task_runner,
     embedder::SlaveProcessDelegate* slave_process_delegate,
     embedder::ScopedPlatformHandle platform_handle) {
   DCHECK(delegate_thread_task_runner);

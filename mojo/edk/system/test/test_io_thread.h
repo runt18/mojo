@@ -8,7 +8,7 @@
 #include "base/callback_forward.h"
 #include "base/threading/thread.h"
 #include "mojo/edk/base_edk/platform_task_runner_impl.h"
-#include "mojo/edk/embedder/platform_task_runner.h"
+#include "mojo/edk/platform/task_runner.h"
 #include "mojo/edk/util/ref_ptr.h"
 #include "mojo/public/cpp/system/macros.h"
 
@@ -40,14 +40,14 @@ class TestIOThread final {
     return static_cast<base::MessageLoopForIO*>(io_thread_.message_loop());
   }
 
-  const util::RefPtr<embedder::PlatformTaskRunner>& task_runner() {
+  const util::RefPtr<platform::TaskRunner>& task_runner() {
     return io_task_runner_;
   }
 
  private:
   base::Thread io_thread_;
   bool io_thread_started_;
-  util::RefPtr<embedder::PlatformTaskRunner> io_task_runner_;
+  util::RefPtr<platform::TaskRunner> io_task_runner_;
 
   MOJO_DISALLOW_COPY_AND_ASSIGN(TestIOThread);
 };

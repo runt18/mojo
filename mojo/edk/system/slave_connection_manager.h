@@ -8,9 +8,9 @@
 #include <memory>
 
 #include "base/threading/thread.h"
-#include "mojo/edk/embedder/platform_task_runner.h"
 #include "mojo/edk/embedder/scoped_platform_handle.h"
 #include "mojo/edk/embedder/slave_process_delegate.h"
+#include "mojo/edk/platform/task_runner.h"
 #include "mojo/edk/system/connection_manager.h"
 #include "mojo/edk/system/raw_channel.h"
 #include "mojo/edk/util/mutex.h"
@@ -50,10 +50,9 @@ class SlaveConnectionManager final : public ConnectionManager,
   // |delegate_thread_task_runner| should be the task runner for the "delegate
   // thread", on which |slave_process_delegate|'s methods will be called. Both
   // must stay alive at least until after |Shutdown()| has been called.
-  void Init(
-      util::RefPtr<embedder::PlatformTaskRunner>&& delegate_thread_task_runner,
-      embedder::SlaveProcessDelegate* slave_process_delegate,
-      embedder::ScopedPlatformHandle platform_handle);
+  void Init(util::RefPtr<platform::TaskRunner>&& delegate_thread_task_runner,
+            embedder::SlaveProcessDelegate* slave_process_delegate,
+            embedder::ScopedPlatformHandle platform_handle);
 
   // |ConnectionManager| methods:
   void Shutdown() override;
@@ -98,7 +97,7 @@ class SlaveConnectionManager final : public ConnectionManager,
   // in |Shutdown()| after |private_thread_| is dead. Thus it's safe to "use" on
   // |private_thread_|. (Note that |slave_process_delegate_| may only be called
   // from the delegate thread.)
-  util::RefPtr<embedder::PlatformTaskRunner> delegate_thread_task_runner_;
+  util::RefPtr<platform::TaskRunner> delegate_thread_task_runner_;
   embedder::SlaveProcessDelegate* slave_process_delegate_;
 
   // This is a private I/O thread on which this class does the bulk of its work.

@@ -9,8 +9,8 @@
 #include "base/run_loop.h"
 #include "mojo/edk/base_edk/platform_task_runner_impl.h"
 #include "mojo/edk/embedder/platform_channel_pair.h"
-#include "mojo/edk/embedder/platform_task_runner.h"
 #include "mojo/edk/embedder/simple_platform_support.h"
+#include "mojo/edk/platform/task_runner.h"
 #include "mojo/edk/system/channel.h"
 #include "mojo/edk/system/channel_endpoint.h"
 #include "mojo/edk/system/message_pipe_dispatcher.h"
@@ -19,6 +19,7 @@
 #include "mojo/public/cpp/system/macros.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
+using mojo::platform::TaskRunner;
 using mojo::util::MakeRefCounted;
 using mojo::util::RefPtr;
 
@@ -36,15 +37,13 @@ class ChannelManagerTest : public testing::Test {
   ~ChannelManagerTest() override {}
 
  protected:
-  const RefPtr<embedder::PlatformTaskRunner>& task_runner() {
-    return task_runner_;
-  }
+  const RefPtr<TaskRunner>& task_runner() { return task_runner_; }
   ChannelManager& channel_manager() { return channel_manager_; }
 
  private:
   embedder::SimplePlatformSupport platform_support_;
   base::MessageLoop message_loop_;
-  RefPtr<embedder::PlatformTaskRunner> task_runner_;
+  RefPtr<TaskRunner> task_runner_;
   // Note: This should be *after* the above, since they must be initialized
   // before it (and should outlive it).
   ChannelManager channel_manager_;
@@ -111,7 +110,7 @@ class OtherThread : public test::SimpleTestThread {
  public:
   // Note: There should be no other refs to the channel identified by
   // |channel_id| outside the channel manager.
-  OtherThread(RefPtr<embedder::PlatformTaskRunner>&& task_runner,
+  OtherThread(RefPtr<TaskRunner>&& task_runner,
               ChannelManager* channel_manager,
               ChannelId channel_id,
               const base::Closure& quit_closure)
@@ -148,7 +147,7 @@ class OtherThread : public test::SimpleTestThread {
     task_runner_->PostTask(quit_closure_);
   }
 
-  const RefPtr<embedder::PlatformTaskRunner> task_runner_;
+  const RefPtr<TaskRunner> task_runner_;
   ChannelManager* const channel_manager_;
   const ChannelId channel_id_;
   base::Closure quit_closure_;

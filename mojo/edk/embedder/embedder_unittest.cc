@@ -29,6 +29,7 @@
 #include "mojo/public/cpp/system/message_pipe.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
+using mojo::platform::TaskRunner;
 using mojo::system::test::TestIOThread;
 using mojo::util::ManualResetWaitableEvent;
 using mojo::util::Mutex;
@@ -139,7 +140,7 @@ class EmbedderTest : public testing::Test {
 
  protected:
   TestIOThread& test_io_thread() { return test_io_thread_; }
-  const RefPtr<PlatformTaskRunner>& test_io_task_runner() {
+  const RefPtr<TaskRunner>& test_io_task_runner() {
     return test_io_thread_.task_runner();
   }
 

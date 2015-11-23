@@ -26,6 +26,7 @@
 #include "mojo/public/cpp/system/macros.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
+using mojo::platform::TaskRunner;
 using mojo::util::MakeRefCounted;
 using mojo::util::RefPtr;
 
@@ -177,9 +178,7 @@ class ConnectionManagerTest : public testing::Test {
   ~ConnectionManagerTest() override {}
 
   embedder::PlatformSupport* platform_support() { return &platform_support_; }
-  const RefPtr<embedder::PlatformTaskRunner>& task_runner() {
-    return task_runner_;
-  }
+  const RefPtr<TaskRunner>& task_runner() { return task_runner_; }
   MockMasterProcessDelegate& master_process_delegate() {
     return master_process_delegate_;
   }
@@ -204,7 +203,7 @@ class ConnectionManagerTest : public testing::Test {
  private:
   embedder::SimplePlatformSupport platform_support_;
   base::MessageLoop message_loop_;
-  RefPtr<embedder::PlatformTaskRunner> task_runner_;
+  RefPtr<TaskRunner> task_runner_;
   MockMasterProcessDelegate master_process_delegate_;
 
   MOJO_DISALLOW_COPY_AND_ASSIGN(ConnectionManagerTest);

@@ -31,13 +31,15 @@ mojo_edk_source_set("embedder") {
     ":platform",
   ]
 
-  mojo_sdk_deps = [ "mojo/public/platform/native:system_impl_private_api" ]
-
   mojo_sdk_public_deps = [ "mojo/public/cpp/system" ]
+
+  mojo_edk_public_deps = [ "mojo/edk/platform" ]
 
   deps = [
     "//base",
   ]
+
+  mojo_sdk_deps = [ "mojo/public/platform/native:system_impl_private_api" ]
 
   mojo_edk_deps = [ "mojo/edk/util" ]
 }
@@ -61,7 +63,6 @@ mojo_edk_source_set("platform") {
     "platform_handle_vector.h",
     "platform_shared_buffer.h",
     "platform_support.h",
-    "platform_task_runner.h",
     "scoped_platform_handle.h",
     "simple_platform_shared_buffer.cc",
     "simple_platform_shared_buffer.h",

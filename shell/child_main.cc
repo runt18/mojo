@@ -23,10 +23,10 @@
 #include "mojo/edk/base_edk/platform_task_runner_impl.h"
 #include "mojo/edk/embedder/embedder.h"
 #include "mojo/edk/embedder/platform_channel_pair.h"
-#include "mojo/edk/embedder/platform_task_runner.h"
 #include "mojo/edk/embedder/scoped_platform_handle.h"
 #include "mojo/edk/embedder/simple_platform_support.h"
 #include "mojo/edk/embedder/slave_process_delegate.h"
+#include "mojo/edk/platform/task_runner.h"
 #include "mojo/edk/util/ref_ptr.h"
 #include "mojo/message_pump/message_pump_mojo.h"
 #include "mojo/public/cpp/bindings/binding.h"
@@ -36,7 +36,6 @@
 #include "shell/init.h"
 #include "shell/native_application_support.h"
 
-using mojo::embedder::PlatformTaskRunner;
 using mojo::util::MakeRefCounted;
 using mojo::util::RefPtr;
 
@@ -135,7 +134,7 @@ class AppContext : public mojo::embedder::SlaveProcessDelegate {
     blocker.Block();
   }
 
-  const RefPtr<PlatformTaskRunner>& controller_runner() const {
+  const RefPtr<mojo::platform::TaskRunner>& controller_runner() const {
     return controller_runner_;
   }
 
@@ -166,10 +165,10 @@ class AppContext : public mojo::embedder::SlaveProcessDelegate {
   }
 
   base::Thread io_thread_;
-  RefPtr<PlatformTaskRunner> io_runner_;
+  RefPtr<mojo::platform::TaskRunner> io_runner_;
 
   base::Thread controller_thread_;
-  RefPtr<PlatformTaskRunner> controller_runner_;
+  RefPtr<mojo::platform::TaskRunner> controller_runner_;
 
   // Accessed only on the controller thread.
   scoped_ptr<ChildControllerImpl> controller_;
@@ -276,7 +275,7 @@ class ChildControllerImpl : public ChildController {
   base::ThreadChecker thread_checker_;
   AppContext* const app_context_;
   Blocker::Unblocker unblocker_;
-  RefPtr<PlatformTaskRunner> mojo_task_runner_;
+  RefPtr<mojo::platform::TaskRunner> mojo_task_runner_;
   StartAppCallback on_app_complete_;
 
   mojo::embedder::ChannelInfo* channel_info_;

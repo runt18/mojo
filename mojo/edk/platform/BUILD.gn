@@ -4,15 +4,17 @@
 
 import("../mojo_edk.gni")
 
-mojo_edk_source_set("base_edk") {
+mojo_edk_source_set("platform") {
   sources = [
-    "platform_task_runner_impl.cc",
-    "platform_task_runner_impl.h",
+    "task_runner.h",
   ]
 
+  mojo_sdk_public_deps = [ "mojo/public/cpp/system" ]
+
+  # TODO(vtl): Remove this dependency.
   deps = [
     "//base",
   ]
 
-  mojo_edk_public_deps = [ "mojo/edk/platform" ]
+  mojo_edk_public_deps = [ "mojo/edk/util" ]
 }

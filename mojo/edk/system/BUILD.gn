@@ -106,6 +106,7 @@ mojo_edk_source_set("system") {
     "mojo/edk/embedder",
     "mojo/edk/embedder:delegates",
     "mojo/edk/embedder:platform",
+    "mojo/edk/platform",
     "mojo/edk/util",
   ]
 
