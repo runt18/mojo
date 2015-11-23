@@ -23,8 +23,9 @@ import java.util.Map;
 import java.util.UUID;
 
 /**
- * Java implementation for services/android/intent_receiver.mojom. This class creates intents for
- * privileged mojo applications and routes received intents back to the mojo application.
+ * Java implementation for services/intent_receiver/intent_receiver.mojom. This class creates
+ * intents for privileged mojo applications and routes received intents back to the mojo
+ * application.
  */
 public class IntentReceiverRegistry
         implements IntentReceiverManager, ServiceFactoryBinder<IntentReceiverManager> {

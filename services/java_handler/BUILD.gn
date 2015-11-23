@@ -25,7 +25,8 @@ mojo_android_application("java_handler") {
     "//mojo/services/url_response_disk_cache/interfaces",
   ]
 
-  java_sources = [ "java/src/org/chromium/services/android/JavaHandler.java" ]
+  java_sources =
+      [ "java/src/org/chromium/services/java_handler/JavaHandler.java" ]
 
   java_deps = [
     "//base:base_java",

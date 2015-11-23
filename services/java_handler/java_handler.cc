@@ -2,7 +2,7 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-#include "services/android/java_handler.h"
+#include "services/java_handler/java_handler.h"
 
 #include "base/android/base_jni_onload.h"
 #include "base/android/base_jni_registrar.h"
@@ -52,11 +52,9 @@ bool RegisterJNI(JNIEnv* env) {
 namespace services {
 namespace android {
 
-JavaHandler::JavaHandler() : content_handler_factory_(this) {
-}
+JavaHandler::JavaHandler() : content_handler_factory_(this) {}
 
-JavaHandler::~JavaHandler() {
-}
+JavaHandler::~JavaHandler() {}
 
 void JavaHandler::RunApplication(
     mojo::InterfaceRequest<mojo::Application> application_request,
@@ -79,7 +77,6 @@ void JavaHandler::RunApplication(
                               base::MessageLoop::QuitWhenIdleClosure())));
     base::RunLoop().Run();
   }
-
 
   jobject context = base::android::GetApplicationContext();
   ScopedJavaLocalRef<jstring> j_archive_path =
@@ -161,4 +158,3 @@ extern "C" JNI_EXPORT void InitApplicationContext(
   JNIEnv* env = base::android::AttachCurrentThread();
   base::android::InitApplicationContext(env, context);
 }
-

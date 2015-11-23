@@ -2,8 +2,8 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-#ifndef SERVICES_ANDROID_JAVA_HANDLER_H_
-#define SERVICES_ANDROID_JAVA_HANDLER_H_
+#ifndef SERVICES_JAVA_HANDLER_JAVA_HANDLER_H_
+#define SERVICES_JAVA_HANDLER_JAVA_HANDLER_H_
 
 #include <jni.h>
 
@@ -51,4 +51,4 @@ class JavaHandler : public mojo::ApplicationDelegate,
 }  // namespace android
 }  // namespace services
 
-#endif  // SERVICES_ANDROID_JAVA_HANDLER_H_
+#endif  // SERVICES_JAVA_HANDLER_JAVA_HANDLER_H_

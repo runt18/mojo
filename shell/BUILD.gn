@@ -434,7 +434,7 @@ if (is_android) {
 
       deps += [
         "//services/authenticating_url_loader_interceptor",
-        "//services/android:java_handler",
+        "//services/java_handler",
         "//services/dart:dart_content_handler",
         "//services/device_info",
         "//services/icu_data",
