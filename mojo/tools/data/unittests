@@ -7,6 +7,9 @@
 tests = [
   # EDK tests:
   {
+    "test": "mojo_edk_base_edk_unittests",
+  },
+  {
     "test": "mojo_edk_embedder_unittests",
   },
   {

@@ -6,15 +6,29 @@ import("../mojo_edk.gni")
 
 mojo_edk_source_set("platform") {
   sources = [
+    "message_loop.h",
     "task_runner.h",
   ]
 
   mojo_sdk_public_deps = [ "mojo/public/cpp/system" ]
 
+  mojo_edk_public_deps = [ "mojo/edk/util" ]
+
   # TODO(vtl): Remove this dependency.
   deps = [
     "//base",
   ]
+}
+
+mojo_edk_source_set("test_platform") {
+  testonly = true
+  sources = [
+    "test_message_loop.h",
+  ]
 
   mojo_edk_public_deps = [ "mojo/edk/util" ]
+
+  public_deps = [
+    ":platform",
+  ]
 }
