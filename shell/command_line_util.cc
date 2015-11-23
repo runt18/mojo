@@ -21,7 +21,7 @@ GURL GetAppURLAndSetArgs(const std::string& app_url_and_args,
   std::vector<std::string> args;
   GURL app_url = GetAppURLAndArgs(context, app_url_and_args, &args);
 
-  if (args.size() > 1)
+  if (!args.empty())
     context->application_manager()->SetArgsForURL(args, app_url);
   return app_url;
 }
@@ -58,8 +58,7 @@ GURL GetAppURLAndArgs(Context* context,
     LOG(ERROR) << "Error: invalid URL: " << (*args)[0];
     return app_url;
   }
-  if (args->size() == 1)
-    args->clear();
+  args->erase(args->begin());
   return app_url;
 }
 

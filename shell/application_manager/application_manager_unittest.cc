@@ -522,9 +522,9 @@ TEST_F(ApplicationManagerTest, Args) {
   test_client.Test("test");
   loop_.Run();
   std::vector<std::string> app_args = loader->GetArgs();
-  ASSERT_EQ(args.size(), app_args.size());
-  EXPECT_EQ(args[0], app_args[0]);
-  EXPECT_EQ(args[1], app_args[1]);
+  ASSERT_EQ(args.size() + 1, app_args.size());
+  EXPECT_EQ(args[0], app_args[1]);
+  EXPECT_EQ(args[1], app_args[2]);
 }
 
 // Confirm that arguments are sent to an application in the presence of query
@@ -545,8 +545,33 @@ TEST_F(ApplicationManagerTest, ArgsWithQuery) {
   test_client.Test("test");
   loop_.Run();
   std::vector<std::string> app_args = loader->GetArgs();
-  ASSERT_EQ(args.size(), app_args.size());
-  EXPECT_EQ(args[0], app_args[0]);
+  ASSERT_EQ(args.size() + 1, app_args.size());
+  EXPECT_EQ(args[0], app_args[1]);
+}
+
+// Confirm that the URL is not duplicated when arguments are added in multiple
+// phases.
+TEST_F(ApplicationManagerTest, ArgsMultipleCalls) {
+  ApplicationManager am(ApplicationManager::Options(), &test_delegate_);
+  GURL test_url("test:test");
+  std::vector<std::string> args1;
+  args1.push_back("test_arg1");
+  am.SetArgsForURL(args1, test_url);
+  std::vector<std::string> args2;
+  args2.push_back("test_arg2");
+  am.SetArgsForURL(args2, test_url);
+  TestApplicationLoader* loader = new TestApplicationLoader;
+  loader->set_context(&context_);
+  am.SetLoaderForURL(scoped_ptr<ApplicationLoader>(loader), test_url);
+  TestServicePtr test_service;
+  am.ConnectToService(test_url, &test_service);
+  TestClient test_client(test_service.Pass());
+  test_client.Test("test");
+  loop_.Run();
+  std::vector<std::string> app_args = loader->GetArgs();
+  ASSERT_EQ(args1.size() + args2.size() + 1, app_args.size());
+  EXPECT_EQ(args1[0], app_args[1]);
+  EXPECT_EQ(args2[0], app_args[2]);
 }
 
 // Confirm that arguments are aggregated through mappings.
@@ -574,11 +599,11 @@ TEST_F(ApplicationManagerTest, ArgsAndMapping) {
     test_client.Test("test");
     loop_.Run();
     std::vector<std::string> app_args = loader->GetArgs();
-    ASSERT_EQ(args.size() + args2.size(), app_args.size());
-    EXPECT_EQ(args[0], app_args[0]);
-    EXPECT_EQ(args[1], app_args[1]);
-    EXPECT_EQ(args2[0], app_args[2]);
-    EXPECT_EQ(args2[1], app_args[3]);
+    ASSERT_EQ(args.size() + args2.size() + 1, app_args.size());
+    EXPECT_EQ(args[0], app_args[1]);
+    EXPECT_EQ(args[1], app_args[2]);
+    EXPECT_EQ(args2[0], app_args[3]);
+    EXPECT_EQ(args2[1], app_args[4]);
   }
   {
     // Connext to the target url
@@ -588,11 +613,11 @@ TEST_F(ApplicationManagerTest, ArgsAndMapping) {
     test_client.Test("test");
     loop_.Run();
     std::vector<std::string> app_args = loader->GetArgs();
-    ASSERT_EQ(args.size() + args2.size(), app_args.size());
-    EXPECT_EQ(args[0], app_args[0]);
-    EXPECT_EQ(args[1], app_args[1]);
-    EXPECT_EQ(args2[0], app_args[2]);
-    EXPECT_EQ(args2[1], app_args[3]);
+    ASSERT_EQ(args.size() + args2.size() + 1, app_args.size());
+    EXPECT_EQ(args[0], app_args[1]);
+    EXPECT_EQ(args[1], app_args[2]);
+    EXPECT_EQ(args2[0], app_args[3]);
+    EXPECT_EQ(args2[1], app_args[4]);
   }
 }
 

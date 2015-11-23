@@ -67,8 +67,6 @@ TEST(CommandLineUtil, GetAppURLAndArgs) {
       EXPECT_EQ(GURL(expectation.url), result);
       std::vector<std::string> expected_args;
       if (expectation.values) {
-        if (*expectation.values)
-          expected_args.push_back(expectation.url);
         for (const char** value = expectation.values; *value; ++value)
           expected_args.push_back(*value);
       }

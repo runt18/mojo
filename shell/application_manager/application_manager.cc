@@ -45,6 +45,14 @@ std::vector<std::string> Concatenate(const std::vector<std::string>& v1,
   return result;
 }
 
+void AppendArgsForURL(const GURL& url,
+                      const std::vector<std::string>& args,
+                      std::vector<std::string>* target) {
+  if (target->empty())
+    target->push_back(url.spec());
+  target->insert(target->end(), args.begin(), args.end());
+}
+
 }  // namespace
 
 class ApplicationManager::ContentHandlerConnection {
@@ -457,20 +465,15 @@ void ApplicationManager::SetLoaderForScheme(
 void ApplicationManager::SetArgsForURL(const std::vector<std::string>& args,
                                        const GURL& url) {
   GURL base_url = GetBaseURLAndQuery(url, nullptr);
-  url_to_args_[base_url].insert(url_to_args_[base_url].end(), args.begin(),
-                                args.end());
+  AppendArgsForURL(base_url, args, &url_to_args_[base_url]);
   GURL mapped_url = delegate_->ResolveMappings(base_url);
   DCHECK(!mapped_url.has_query());
-  if (mapped_url != url) {
-    url_to_args_[mapped_url].insert(url_to_args_[mapped_url].end(),
-                                    args.begin(), args.end());
-  }
+  if (mapped_url != base_url)
+    AppendArgsForURL(mapped_url, args, &url_to_args_[mapped_url]);
   GURL resolved_url = delegate_->ResolveMojoURL(mapped_url);
   DCHECK(!resolved_url.has_query());
-  if (resolved_url != mapped_url) {
-    url_to_args_[resolved_url].insert(url_to_args_[resolved_url].end(),
-                                      args.begin(), args.end());
-  }
+  if (resolved_url != mapped_url)
+    AppendArgsForURL(resolved_url, args, &url_to_args_[resolved_url]);
 }
 
 NativeApplicationOptions* ApplicationManager::GetNativeApplicationOptionsForURL(
