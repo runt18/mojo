@@ -527,6 +527,28 @@ TEST_F(ApplicationManagerTest, Args) {
   EXPECT_EQ(args[1], app_args[1]);
 }
 
+// Confirm that arguments are sent to an application in the presence of query
+// parameters.
+TEST_F(ApplicationManagerTest, ArgsWithQuery) {
+  ApplicationManager am(ApplicationManager::Options(), &test_delegate_);
+  GURL test_url("test:test");
+  GURL test_url_with_query("test:test?foo=bar");
+  std::vector<std::string> args;
+  args.push_back("test_arg1");
+  am.SetArgsForURL(args, test_url);
+  TestApplicationLoader* loader = new TestApplicationLoader;
+  loader->set_context(&context_);
+  am.SetLoaderForURL(scoped_ptr<ApplicationLoader>(loader), test_url);
+  TestServicePtr test_service;
+  am.ConnectToService(test_url_with_query, &test_service);
+  TestClient test_client(test_service.Pass());
+  test_client.Test("test");
+  loop_.Run();
+  std::vector<std::string> app_args = loader->GetArgs();
+  ASSERT_EQ(args.size(), app_args.size());
+  EXPECT_EQ(args[0], app_args[0]);
+}
+
 // Confirm that arguments are aggregated through mappings.
 TEST_F(ApplicationManagerTest, ArgsAndMapping) {
   ApplicationManager am(ApplicationManager::Options(), &test_delegate_);

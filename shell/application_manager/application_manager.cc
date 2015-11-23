@@ -456,13 +456,17 @@ void ApplicationManager::SetLoaderForScheme(
 
 void ApplicationManager::SetArgsForURL(const std::vector<std::string>& args,
                                        const GURL& url) {
-  url_to_args_[url].insert(url_to_args_[url].end(), args.begin(), args.end());
-  GURL mapped_url = delegate_->ResolveMappings(url);
+  GURL base_url = GetBaseURLAndQuery(url, nullptr);
+  url_to_args_[base_url].insert(url_to_args_[base_url].end(), args.begin(),
+                                args.end());
+  GURL mapped_url = delegate_->ResolveMappings(base_url);
+  DCHECK(!mapped_url.has_query());
   if (mapped_url != url) {
     url_to_args_[mapped_url].insert(url_to_args_[mapped_url].end(),
                                     args.begin(), args.end());
   }
   GURL resolved_url = delegate_->ResolveMojoURL(mapped_url);
+  DCHECK(!resolved_url.has_query());
   if (resolved_url != mapped_url) {
     url_to_args_[resolved_url].insert(url_to_args_[resolved_url].end(),
                                       args.begin(), args.end());
@@ -523,7 +527,8 @@ mojo::ScopedMessagePipeHandle ApplicationManager::ConnectToServiceByName(
 }
 
 std::vector<std::string> ApplicationManager::GetArgsForURL(const GURL& url) {
-  const auto& args_it = url_to_args_.find(url);
+  GURL base_url = GetBaseURLAndQuery(url, nullptr);
+  const auto& args_it = url_to_args_.find(base_url);
   if (args_it != url_to_args_.end())
     return args_it->second;
   return std::vector<std::string>();
