@@ -946,8 +946,10 @@ func NewAttributes() *Attributes {
 }
 
 type MojomAttribute struct {
-	Key   string
-	Value ConcreteValue
+	Key string
+	// TODO(rudominer) Decide if we support attribute values as Names.
+	// See https://github.com/domokit/mojo/issues/561.
+	Value LiteralValue
 }
 
 func (ma MojomAttribute) String() string {

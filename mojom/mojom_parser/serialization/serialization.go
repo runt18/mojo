@@ -547,8 +547,7 @@ func translateContainedDeclarations(container *mojom.DeclarationContainer) *mojo
 }
 
 func translateMojomAttribute(a *mojom.MojomAttribute) (attribute mojom_types.Attribute) {
-	// TODO(rudominer) Improve representation of attribute values.
-	return mojom_types.Attribute{a.Key, fmt.Sprintf("%v", a.Value.Value())}
+	return mojom_types.Attribute{a.Key, translateLiteralValue(a.Value).Value}
 }
 
 // stringPointer is a convenience function for creating a pointer to a string whose value

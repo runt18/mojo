@@ -292,10 +292,12 @@ func (p *Parser) parseAttributes() (attributes *mojom.Attributes) {
 			return
 		}
 
-		var value mojom.ConcreteValue
+		var value mojom.LiteralValue
 		if p.peekNextToken("Expecting to find an attribute value.").Kind == lexer.Name {
 			text := p.readName()
-			// TODO(rudominer) Do not throw away the distinction between a name and a string literal.
+			// TODO(rudominer) Decide if we support attribute values as Names.
+			// Currently we convert a name into a string literal here.
+			//      See https://github.com/domokit/mojo/issues/561
 			value = mojom.MakeStringLiteralValue(text)
 		} else {
 			value = p.parseLiteral()

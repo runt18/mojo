@@ -39,10 +39,10 @@ var ID_mojom_types_MojomMethod__ string = "mojom_types_MojomMethod__"
 var ID_mojom_types_MojomInterface__ string = "mojom_types_MojomInterface__"
 var ID_mojom_types_UserValueReference__ string = "mojom_types_UserValueReference__"
 var ID_mojom_types_DeclaredConstant__ string = "mojom_types_DeclaredConstant__"
+var ID_mojom_types_Attribute__ string = "mojom_types_Attribute__"
 var ID_mojom_types_DeclarationData__ string = "mojom_types_DeclarationData__"
 var ID_mojom_types_SourceFileInfo__ string = "mojom_types_SourceFileInfo__"
 var ID_mojom_types_ContainedDeclarations__ string = "mojom_types_ContainedDeclarations__"
-var ID_mojom_types_Attribute__ string = "mojom_types_Attribute__"
 var ID_mojom_types_Type__ string = "mojom_types_Type__"
 var ID_mojom_types_UserDefinedType__ string = "mojom_types_UserDefinedType__"
 var ID_mojom_types_DefaultFieldValue__ string = "mojom_types_DefaultFieldValue__"
@@ -217,12 +217,12 @@ func init() {
 
 
 
-          mojom_typesDesc__["mojom_types_Attribute__"] = &UserDefinedTypeStructType{
+    mojom_typesDesc__["mojom_types_Attribute__"] = &UserDefinedTypeStructType{
     Value: mojom_types_Attribute__(),
   }
 
 
-      mojom_typesDesc__["mojom_types_UserDefinedType__"] = &UserDefinedTypeUnionType{
+            mojom_typesDesc__["mojom_types_UserDefinedType__"] = &UserDefinedTypeUnionType{
     Value: mojom_types_UserDefinedType__(),
   }
 
@@ -2815,6 +2815,113 @@ func mojom_types_DeclaredConstant__() MojomStruct {
   }
 }
 
+type Attribute struct {
+	Key string
+	Value LiteralValue
+}
+
+func (s *Attribute) Encode(encoder *bindings.Encoder) error {
+	encoder.StartStruct(24, 0)
+	if err := encoder.WritePointer(); err != nil {
+		return err
+	}
+	if err := encoder.WriteString(s.Key); err != nil {
+		return err
+	}
+	if s.Value == nil {
+		return &bindings.ValidationError{bindings.UnexpectedNullUnion, "unexpected null union"}
+	}
+	if err := s.Value.Encode(encoder); err != nil {
+		return err
+	}
+	if err := encoder.Finish(); err != nil {
+		return err
+	}
+	return nil
+}
+
+var attribute_Versions []bindings.DataHeader = []bindings.DataHeader{
+	bindings.DataHeader{32, 0},
+}
+
+func (s *Attribute) Decode(decoder *bindings.Decoder) error {
+	header, err := decoder.StartStruct()
+	if err != nil {
+		return err
+	}
+	index := sort.Search(len(attribute_Versions), func(i int) bool {
+		return attribute_Versions[i].ElementsOrVersion >= header.ElementsOrVersion
+	})
+	if index < len(attribute_Versions) {
+		if attribute_Versions[index].ElementsOrVersion > header.ElementsOrVersion {
+			index--
+		}
+		expectedSize := attribute_Versions[index].Size
+		if expectedSize != header.Size {
+			return &bindings.ValidationError{bindings.UnexpectedStructHeader,
+				fmt.Sprintf("invalid struct header size: should be %d, but was %d", expectedSize, header.Size),
+			}
+		}
+	}
+	if header.ElementsOrVersion >= 0 {
+		pointer0, err := decoder.ReadPointer()
+		if err != nil {
+			return err
+		}
+		if pointer0 == 0 {
+			return &bindings.ValidationError{bindings.UnexpectedNullPointer, "unexpected null pointer"}
+		} else {
+			value0, err := decoder.ReadString()
+			if err != nil {
+				return err
+			}
+			s.Key = value0
+		}
+	}
+	if header.ElementsOrVersion >= 0 {
+		var err error
+		s.Value, err = DecodeLiteralValue(decoder)
+		if err != nil {
+			return err
+		}
+		if s.Value == nil {
+			return &bindings.ValidationError{bindings.UnexpectedNullUnion, "unexpected null union"}
+		}
+	}
+	if err := decoder.Finish(); err != nil {
+		return err
+	}
+	return nil
+}
+
+// String names and labels used by the MojomStruct types.
+var (
+  structName_Attribute = "Attribute"
+  structFieldName_Attribute_Key = "Key"
+  structFieldName_Attribute_Value = "Value"
+)
+
+func mojom_types_Attribute__() MojomStruct {
+  return MojomStruct{
+    DeclData: &DeclarationData{
+      ShortName: &structName_Attribute,
+    },Fields: []StructField{StructField{
+        DeclData: &DeclarationData{
+          ShortName: &structFieldName_Attribute_Key,
+        },
+        Type: &TypeStringType{StringType{false}},
+      },StructField{
+        DeclData: &DeclarationData{
+          ShortName: &structFieldName_Attribute_Value,
+        },
+        Type: &TypeTypeReference{
+  Value: TypeReference {Identifier: &ID_mojom_types_LiteralValue__,
+  TypeKey: &ID_mojom_types_LiteralValue__,},
+},
+      },},
+  }
+}
+
 type DeclarationData struct {
 	Attributes *[]Attribute
 	MinVersion int32
@@ -3440,115 +3547,6 @@ func mojom_types_ContainedDeclarations__() MojomStruct {
     Value: ArrayType{Nullable: true,ElementType: &TypeStringType{StringType{false}},
     },
   },
-      },},
-  }
-}
-
-type Attribute struct {
-	Key string
-	Value string
-}
-
-func (s *Attribute) Encode(encoder *bindings.Encoder) error {
-	encoder.StartStruct(16, 0)
-	if err := encoder.WritePointer(); err != nil {
-		return err
-	}
-	if err := encoder.WriteString(s.Key); err != nil {
-		return err
-	}
-	if err := encoder.WritePointer(); err != nil {
-		return err
-	}
-	if err := encoder.WriteString(s.Value); err != nil {
-		return err
-	}
-	if err := encoder.Finish(); err != nil {
-		return err
-	}
-	return nil
-}
-
-var attribute_Versions []bindings.DataHeader = []bindings.DataHeader{
-	bindings.DataHeader{24, 0},
-}
-
-func (s *Attribute) Decode(decoder *bindings.Decoder) error {
-	header, err := decoder.StartStruct()
-	if err != nil {
-		return err
-	}
-	index := sort.Search(len(attribute_Versions), func(i int) bool {
-		return attribute_Versions[i].ElementsOrVersion >= header.ElementsOrVersion
-	})
-	if index < len(attribute_Versions) {
-		if attribute_Versions[index].ElementsOrVersion > header.ElementsOrVersion {
-			index--
-		}
-		expectedSize := attribute_Versions[index].Size
-		if expectedSize != header.Size {
-			return &bindings.ValidationError{bindings.UnexpectedStructHeader,
-				fmt.Sprintf("invalid struct header size: should be %d, but was %d", expectedSize, header.Size),
-			}
-		}
-	}
-	if header.ElementsOrVersion >= 0 {
-		pointer0, err := decoder.ReadPointer()
-		if err != nil {
-			return err
-		}
-		if pointer0 == 0 {
-			return &bindings.ValidationError{bindings.UnexpectedNullPointer, "unexpected null pointer"}
-		} else {
-			value0, err := decoder.ReadString()
-			if err != nil {
-				return err
-			}
-			s.Key = value0
-		}
-	}
-	if header.ElementsOrVersion >= 0 {
-		pointer0, err := decoder.ReadPointer()
-		if err != nil {
-			return err
-		}
-		if pointer0 == 0 {
-			return &bindings.ValidationError{bindings.UnexpectedNullPointer, "unexpected null pointer"}
-		} else {
-			value0, err := decoder.ReadString()
-			if err != nil {
-				return err
-			}
-			s.Value = value0
-		}
-	}
-	if err := decoder.Finish(); err != nil {
-		return err
-	}
-	return nil
-}
-
-// String names and labels used by the MojomStruct types.
-var (
-  structName_Attribute = "Attribute"
-  structFieldName_Attribute_Key = "Key"
-  structFieldName_Attribute_Value = "Value"
-)
-
-func mojom_types_Attribute__() MojomStruct {
-  return MojomStruct{
-    DeclData: &DeclarationData{
-      ShortName: &structName_Attribute,
-    },Fields: []StructField{StructField{
-        DeclData: &DeclarationData{
-          ShortName: &structFieldName_Attribute_Key,
-        },
-        Type: &TypeStringType{StringType{false}},
-      },StructField{
-        DeclData: &DeclarationData{
-          ShortName: &structFieldName_Attribute_Value,
-        },
-        Type: &TypeStringType{StringType{false}},
       },},
   }
 }

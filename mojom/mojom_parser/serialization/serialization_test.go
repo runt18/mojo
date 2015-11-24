@@ -75,9 +75,22 @@ func (test *singleFileTest) newDeclData(shortName, fullIdentifier string) *mojom
 	return test.newContainedDeclData(shortName, fullIdentifier, nil)
 }
 
+// newDeclDataA constructs a new DeclarationData with the given data, including attributes.
+func (test *singleFileTest) newDeclDataA(shortName, fullIdentifier string,
+	attributes *[]mojom_types.Attribute) *mojom_types.DeclarationData {
+	return test.newContainedDeclDataA(shortName, fullIdentifier, nil, attributes)
+}
+
 // newContainedDeclData constructs a new DeclarationData with the given data.
 func (test *singleFileTest) newContainedDeclData(shortName, fullIdentifier string, containerTypeKey *string) *mojom_types.DeclarationData {
+	return test.newContainedDeclDataA(shortName, fullIdentifier, containerTypeKey, nil)
+}
+
+// newContainedDeclDataA constructs a new DeclarationData with the given data, including attributes.
+func (test *singleFileTest) newContainedDeclDataA(shortName, fullIdentifier string,
+	containerTypeKey *string, attributes *[]mojom_types.Attribute) *mojom_types.DeclarationData {
 	return &mojom_types.DeclarationData{
+		Attributes:       attributes,
 		ShortName:        &shortName,
 		FullIdentifier:   &fullIdentifier,
 		DeclaredOrdinal:  -1,
@@ -434,6 +447,7 @@ func TestSingleFileSerialization(t *testing.T) {
 
 	struct Foo{
 		int32 x;
+		[min_version=2]
 		string y = "hello";
 		string? z;
 
@@ -447,7 +461,9 @@ func TestSingleFileSerialization(t *testing.T) {
 
 		// Attributes
 		test.expectedFile().Attributes = &[]mojom_types.Attribute{
-			{"go_namespace", "go.test"}, {"lucky", "true"}, {"planet", "EARTH"},
+			{"go_namespace", &mojom_types.LiteralValueStringValue{"go.test"}},
+			{"lucky", &mojom_types.LiteralValueBoolValue{true}},
+			{"planet", &mojom_types.LiteralValueStringValue{"EARTH"}},
 		}
 
 		// Imports
@@ -509,7 +525,7 @@ func TestSingleFileSerialization(t *testing.T) {
 				},
 				// field y
 				{
-					DeclData:     test.newDeclData("y", ""),
+					DeclData:     test.newDeclDataA("y", "", &[]mojom_types.Attribute{{"min_version", &mojom_types.LiteralValueInt8Value{2}}}),
 					Type:         &mojom_types.TypeStringType{mojom_types.StringType{false}},
 					DefaultValue: &mojom_types.DefaultFieldValueValue{&mojom_types.ValueLiteralValue{&mojom_types.LiteralValueStringValue{"hello"}}},
 				},
