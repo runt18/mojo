@@ -18,7 +18,7 @@
 #include "mojo/edk/embedder/simple_platform_support.h"
 #include "mojo/edk/embedder/slave_process_delegate.h"
 #include "mojo/edk/platform/message_loop.h"
-#include "mojo/edk/platform/test_message_loop.h"
+#include "mojo/edk/platform/test_message_loops.h"
 #include "mojo/edk/system/master_connection_manager.h"
 #include "mojo/edk/system/slave_connection_manager.h"
 #include "mojo/edk/test/test_utils.h"

@@ -3,11 +3,13 @@
 // found in the LICENSE file.
 
 // This file implements the factory functions declared in
-// //mojo/edk/platform/test_message_loop.h (using |mojo::platform::MessageLoop|s
-// based on //base, i.e., using |base_edk::PlatformMessageLoopImpl|).
+// //mojo/edk/platform/test_message_loops.h (using
+// |mojo::platform::MessageLoop|s based on //base, i.e., using
+// |base_edk::PlatformMessageLoopImpl|).
 
-#include "mojo/edk/platform/test_message_loop.h"
+#include "mojo/edk/platform/test_message_loops.h"
 
+#include "mojo/edk/base_edk/platform_message_loop_for_io_impl.h"
 #include "mojo/edk/base_edk/platform_message_loop_impl.h"
 #include "mojo/edk/util/make_unique.h"
 
@@ -19,6 +21,10 @@ namespace test {
 
 std::unique_ptr<MessageLoop> CreateTestMessageLoop() {
   return MakeUnique<base_edk::PlatformMessageLoopImpl>();
+}
+
+std::unique_ptr<MessageLoopForIO> CreateTestMessageLoopForIO() {
+  return MakeUnique<base_edk::PlatformMessageLoopForIOImpl>();
 }
 
 }  // namespace test

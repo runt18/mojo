@@ -7,6 +7,7 @@ import("../mojo_edk.gni")
 mojo_edk_source_set("platform") {
   sources = [
     "message_loop.h",
+    "message_loop_for_io.h",
     "task_runner.h",
   ]
 
@@ -23,7 +24,7 @@ mojo_edk_source_set("platform") {
 mojo_edk_source_set("test_platform") {
   testonly = true
   sources = [
-    "test_message_loop.h",
+    "test_message_loops.h",
   ]
 
   mojo_edk_public_deps = [ "mojo/edk/util" ]
