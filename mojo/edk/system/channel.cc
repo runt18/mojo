@@ -34,7 +34,9 @@ struct SerializedEndpoint {
 }  // namespace
 
 void Channel::Init(std::unique_ptr<RawChannel> raw_channel) {
+#if !defined(NDEBUG) || defined(DCHECK_ALWAYS_ON)
   DCHECK(thread_checker_.IsCreationThreadCurrent());
+#endif  // !defined(NDEBUG) || defined(DCHECK_ALWAYS_ON)
   DCHECK(raw_channel);
 
   // No need to take |mutex_|, since this must be called before this object
@@ -55,7 +57,9 @@ void Channel::SetChannelManager(ChannelManager* channel_manager) {
 }
 
 void Channel::Shutdown() {
+#if !defined(NDEBUG) || defined(DCHECK_ALWAYS_ON)
   DCHECK(thread_checker_.IsCreationThreadCurrent());
+#endif  // !defined(NDEBUG) || defined(DCHECK_ALWAYS_ON)
 
   IdToEndpointMap to_destroy;
   {
@@ -292,7 +296,9 @@ bool Channel::DetachEndpointInternal(ChannelEndpoint* endpoint,
 void Channel::OnReadMessage(
     const MessageInTransit::View& message_view,
     embedder::ScopedPlatformHandleVectorPtr platform_handles) {
+#if !defined(NDEBUG) || defined(DCHECK_ALWAYS_ON)
   DCHECK(thread_checker_.IsCreationThreadCurrent());
+#endif  // !defined(NDEBUG) || defined(DCHECK_ALWAYS_ON)
 
   switch (message_view.type()) {
     case MessageInTransit::Type::ENDPOINT_CLIENT:
@@ -312,7 +318,9 @@ void Channel::OnReadMessage(
 }
 
 void Channel::OnError(Error error) {
+#if !defined(NDEBUG) || defined(DCHECK_ALWAYS_ON)
   DCHECK(thread_checker_.IsCreationThreadCurrent());
+#endif  // !defined(NDEBUG) || defined(DCHECK_ALWAYS_ON)
 
   switch (error) {
     case ERROR_READ_SHUTDOWN:
@@ -345,7 +353,9 @@ void Channel::OnError(Error error) {
 void Channel::OnReadMessageForEndpoint(
     const MessageInTransit::View& message_view,
     embedder::ScopedPlatformHandleVectorPtr platform_handles) {
+#if !defined(NDEBUG) || defined(DCHECK_ALWAYS_ON)
   DCHECK(thread_checker_.IsCreationThreadCurrent());
+#endif  // !defined(NDEBUG) || defined(DCHECK_ALWAYS_ON)
   DCHECK(message_view.type() == MessageInTransit::Type::ENDPOINT_CLIENT ||
          message_view.type() == MessageInTransit::Type::ENDPOINT);
 
@@ -406,7 +416,9 @@ void Channel::OnReadMessageForEndpoint(
 void Channel::OnReadMessageForChannel(
     const MessageInTransit::View& message_view,
     embedder::ScopedPlatformHandleVectorPtr platform_handles) {
+#if !defined(NDEBUG) || defined(DCHECK_ALWAYS_ON)
   DCHECK(thread_checker_.IsCreationThreadCurrent());
+#endif  // !defined(NDEBUG) || defined(DCHECK_ALWAYS_ON)
   DCHECK_EQ(message_view.type(), MessageInTransit::Type::CHANNEL);
 
   // Currently, no channel messages take platform handles.
@@ -503,7 +515,9 @@ bool Channel::OnAttachAndRunEndpoint(ChannelEndpointId local_id,
 
 bool Channel::OnRemoveEndpoint(ChannelEndpointId local_id,
                                ChannelEndpointId remote_id) {
+#if !defined(NDEBUG) || defined(DCHECK_ALWAYS_ON)
   DCHECK(thread_checker_.IsCreationThreadCurrent());
+#endif  // !defined(NDEBUG) || defined(DCHECK_ALWAYS_ON)
 
   RefPtr<ChannelEndpoint> endpoint;
   {
@@ -541,7 +555,9 @@ bool Channel::OnRemoveEndpoint(ChannelEndpointId local_id,
 }
 
 bool Channel::OnRemoveEndpointAck(ChannelEndpointId local_id) {
+#if !defined(NDEBUG) || defined(DCHECK_ALWAYS_ON)
   DCHECK(thread_checker_.IsCreationThreadCurrent());
+#endif  // !defined(NDEBUG) || defined(DCHECK_ALWAYS_ON)
 
   MutexLocker locker(&mutex_);
 
