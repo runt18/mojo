@@ -31,6 +31,9 @@ namespace shell {
 
 namespace {
 
+// Create identity that depends on the query.
+const bool kDoNotStripQuery = false;
+
 // Used by TestAPI.
 bool has_created_instance = false;
 
@@ -100,6 +103,7 @@ bool ApplicationManager::TestAPI::HasCreatedInstance() {
 }
 
 bool ApplicationManager::TestAPI::HasFactoryForURL(const GURL& url) const {
+  DCHECK(!url.has_query());
   return manager_->identity_to_shell_impl_.find(Identity(url)) !=
          manager_->identity_to_shell_impl_.end();
 }
@@ -266,15 +270,17 @@ bool ApplicationManager::ConnectToApplicationWithLoader(
   return true;
 }
 
-Identity ApplicationManager::MakeApplicationIdentity(const GURL& resolved_url) {
+Identity ApplicationManager::MakeApplicationIdentity(const GURL& resolved_url,
+                                                     bool strip_query) {
   static uint64_t unique_id_number = 1;
+  GURL stripped_url = GetBaseURLAndQuery(resolved_url, nullptr);
+  GURL url = strip_query ? stripped_url : resolved_url;
   bool new_process_per_connection =
-      GetNativeApplicationOptionsForURL(
-          GetBaseURLAndQuery(resolved_url, nullptr))
+      GetNativeApplicationOptionsForURL(stripped_url)
           ->new_process_per_connection;
   return new_process_per_connection
-             ? Identity(resolved_url, base::Uint64ToString(unique_id_number++))
-             : Identity(resolved_url);
+             ? Identity(url, base::Uint64ToString(unique_id_number++))
+             : Identity(url);
 }
 
 InterfaceRequest<Application> ApplicationManager::RegisterShell(
@@ -302,6 +308,7 @@ InterfaceRequest<Application> ApplicationManager::RegisterShell(
 // (such that multiple requests for a service result in unique processes), then
 // 'GetShellImpl' should return nullptr.
 ShellImpl* ApplicationManager::GetShellImpl(const GURL& url) {
+  DCHECK(!url.has_query());
   const auto& shell_it = identity_to_shell_impl_.find(Identity(url));
   if (shell_it != identity_to_shell_impl_.end())
     return shell_it->second.get();
@@ -437,7 +444,10 @@ void ApplicationManager::LoadWithContentHandler(
     InterfaceRequest<Application> application_request,
     mojo::URLResponsePtr url_response) {
   ContentHandlerConnection* connection = nullptr;
-  Identity content_handler_id = MakeApplicationIdentity(content_handler_url);
+  // If two content handler urls differ by query parameter, we want to create a
+  // separate connection for each.
+  Identity content_handler_id =
+      MakeApplicationIdentity(content_handler_url, kDoNotStripQuery);
   auto it = identity_to_content_handler_.find(content_handler_id);
   if (it != identity_to_content_handler_.end()) {
     connection = it->second.get();

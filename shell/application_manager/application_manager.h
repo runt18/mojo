@@ -178,8 +178,10 @@ class ApplicationManager {
   // Creates an Identity for the service identified by |resolved_url|.
   // If |new_process_per_connection| is true for the URL's options, then the
   // identity is unique. Otherwise, repeated invocations with the same
-  // |resolved_url| will result in an equivalent Identity.
-  Identity MakeApplicationIdentity(const GURL& resolved_url);
+  // |resolved_url| will result in an equivalent Identity. If |strip_query| is
+  // true, the query is stripped before creating the Identity.
+  Identity MakeApplicationIdentity(const GURL& resolved_url,
+                                   bool strip_query = true);
 
   mojo::InterfaceRequest<mojo::Application> RegisterShell(
       // The URL after resolution and redirects, including the querystring.

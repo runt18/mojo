@@ -9,12 +9,9 @@
 namespace shell {
 
 Identity::Identity(const GURL& url, const std::string& qualifier)
-    : url(GetBaseURLAndQuery(url, nullptr)), qualifier(qualifier) {
-}
+    : url(url), qualifier(qualifier) {}
 
-Identity::Identity(const GURL& base_url)
-    : url(GetBaseURLAndQuery(base_url, nullptr)), qualifier(url.spec()) {
-}
+Identity::Identity(const GURL& url) : url(url), qualifier(url.spec()) {}
 
 bool Identity::operator<(const Identity& other) const {
   if (url != other.url)
