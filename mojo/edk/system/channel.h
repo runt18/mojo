@@ -239,7 +239,7 @@ class Channel final : public util::RefCountedThreadSafe<Channel>,
 
 #if !defined(NDEBUG) || defined(DCHECK_ALWAYS_ON)
   util::ThreadChecker thread_checker_;
-#endif
+#endif  // !defined(NDEBUG) || defined(DCHECK_ALWAYS_ON)
 
   embedder::PlatformSupport* const platform_support_;
 
