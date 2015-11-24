@@ -39,6 +39,10 @@ void PlatformMessageLoopImpl::QuitWhenIdle() {
   base_message_loop_.QuitWhenIdle();
 }
 
+void PlatformMessageLoopImpl::QuitNow() {
+  base_message_loop_.QuitNow();
+}
+
 const RefPtr<TaskRunner>& PlatformMessageLoopImpl::GetTaskRunner() const {
   return task_runner_;
 }

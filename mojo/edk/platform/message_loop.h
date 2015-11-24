@@ -28,19 +28,23 @@ class MessageLoop {
  public:
   virtual ~MessageLoop() {}
 
-  // Runs the message loop until it is told to quit (via |QuitWhenIdle()|).
+  // Runs the message loop until it is told to quit (via |QuitNow() or
+  // |QuitWhenIdle()|).
   virtual void Run() = 0;
 
   // Runs the message loop until there are no more tasks available to execute
   // immediately (i.e., not including delayed tasks).
   virtual void RunUntilIdle() = 0;
 
-  // Quits the message loop when there are no more tasks available to execute
-  // immediately. (Note that this includes "future" tasks, i.e., those that are
-  // posted as a result of executing other tasks, so this may never quit.
-  // However, it does not include delayed tasks.)
-  // TODO(vtl): Do we also want a |QuitNow()|?
+  // If running, quits the message loop when there are no more tasks available
+  // to execute immediately. (Note that this includes "future" tasks, i.e.,
+  // those that are posted as a result of executing other tasks, so this may
+  // never quit. However, it does not include delayed tasks.)
   virtual void QuitWhenIdle() = 0;
+
+  // If running, quits the message loop now (i.e., do not process any further
+  // tasks until |Run()| or |RunUntilIdle()|) is called again.
+  virtual void QuitNow() = 0;
 
   // Gets the |TaskRunner| for this message loop, which can be used to post
   // tasks to it. For a given |MessageLoop| instance, this will always return a

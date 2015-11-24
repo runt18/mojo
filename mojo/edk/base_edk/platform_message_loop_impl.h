@@ -32,6 +32,7 @@ class PlatformMessageLoopImpl : public mojo::platform::MessageLoop {
   void Run() override;
   void RunUntilIdle() override;
   void QuitWhenIdle() override;
+  void QuitNow() override;
   const mojo::util::RefPtr<mojo::platform::TaskRunner>& GetTaskRunner()
       const override;
   bool IsRunningOnCurrentThread() const override;

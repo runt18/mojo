@@ -69,6 +69,20 @@ TEST(PlatformMessageLoopImpl, Basic) {
   EXPECT_EQ(std::vector<int>({4, 5, 6}), stuff);
 
   stuff.clear();
+  task_runner->PostTask(ToClosure([&stuff, &message_loop, &task_runner]() {
+    EXPECT_TRUE(message_loop.IsRunningOnCurrentThread());
+    stuff.push_back(7);
+    message_loop.QuitNow();
+    task_runner->PostTask(ToClosure([&stuff]() { stuff.push_back(9); }));
+  }));
+  task_runner->PostTask(ToClosure([&stuff]() { stuff.push_back(8); }));
+  message_loop.Run();
+  EXPECT_EQ(std::vector<int>({7}), stuff);
+  stuff.clear();
+  message_loop.RunUntilIdle();
+  EXPECT_EQ(std::vector<int>({8, 9}), stuff);
+
+  stuff.clear();
   message_loop.RunUntilIdle();
   EXPECT_TRUE(stuff.empty());
 
@@ -86,19 +100,19 @@ TEST(PlatformMessageLoopImpl, Basic) {
     std::thread other_thread([&stuff, &message_loop, task_runner]() {
       EXPECT_FALSE(message_loop.IsRunningOnCurrentThread());
       EXPECT_EQ(task_runner, message_loop.GetTaskRunner());
-      stuff.push_back(7);
+      stuff.push_back(10);
       task_runner->PostTask(ToClosure([&stuff, &message_loop]() {
         EXPECT_TRUE(message_loop.IsRunningOnCurrentThread());
-        stuff.push_back(8);
+        stuff.push_back(11);
         message_loop.QuitWhenIdle();
       }));
     });
     other_thread.join();
-    EXPECT_EQ(std::vector<int>({7}), stuff);
+    EXPECT_EQ(std::vector<int>({10}), stuff);
     stuff.clear();
   }));
   message_loop.Run();
-  EXPECT_EQ(std::vector<int>({8}), stuff);
+  EXPECT_EQ(std::vector<int>({11}), stuff);
 }
 
 TEST(PlatformMessageLoopImpl, TypeIO) {

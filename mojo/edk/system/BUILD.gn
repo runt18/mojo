@@ -175,6 +175,7 @@ mojo_edk_unittests("mojo_edk_system_unittests") {
 
   mojo_edk_deps = [
     "mojo/edk/base_edk",
+    "mojo/edk/base_edk:test_base_edk",
     "mojo/edk/system/test",
     "mojo/edk/test:test_support",
     "mojo/edk/util",

@@ -9,16 +9,17 @@
 
 #include <stdint.h>
 
+#include <memory>
 #include <string>
 
-#include "base/message_loop/message_loop.h"
-#include "base/run_loop.h"
 #include "base/threading/thread_checker.h"
 #include "mojo/edk/base_edk/platform_task_runner_impl.h"
 #include "mojo/edk/embedder/master_process_delegate.h"
 #include "mojo/edk/embedder/platform_channel_pair.h"
 #include "mojo/edk/embedder/simple_platform_support.h"
 #include "mojo/edk/embedder/slave_process_delegate.h"
+#include "mojo/edk/platform/message_loop.h"
+#include "mojo/edk/platform/test_message_loop.h"
 #include "mojo/edk/system/master_connection_manager.h"
 #include "mojo/edk/system/slave_connection_manager.h"
 #include "mojo/edk/test/test_utils.h"
@@ -26,7 +27,9 @@
 #include "mojo/public/cpp/system/macros.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
+using mojo::platform::MessageLoop;
 using mojo::platform::TaskRunner;
+using mojo::platform::test::CreateTestMessageLoop;
 using mojo::util::MakeRefCounted;
 using mojo::util::RefPtr;
 
@@ -87,15 +90,14 @@ class TestSlaveInfo {
 class MockMasterProcessDelegate : public embedder::MasterProcessDelegate {
  public:
   MockMasterProcessDelegate()
-      : current_run_loop_(), on_slave_disconnect_calls_(0) {}
+      : current_message_loop_(), on_slave_disconnect_calls_(0) {}
   ~MockMasterProcessDelegate() override {}
 
-  void RunUntilNotified() {
-    CHECK(!current_run_loop_);
-    base::RunLoop run_loop;
-    current_run_loop_ = &run_loop;
-    run_loop.Run();
-    current_run_loop_ = nullptr;
+  void RunUntilNotified(MessageLoop* message_loop) {
+    CHECK(!current_message_loop_);
+    current_message_loop_ = message_loop;
+    message_loop->Run();
+    current_message_loop_ = nullptr;
   }
 
   unsigned on_slave_disconnect_calls() const {
@@ -117,13 +119,13 @@ class MockMasterProcessDelegate : public embedder::MasterProcessDelegate {
              << last_slave_disconnect_name_;
     delete static_cast<TestSlaveInfo*>(slave_info);
 
-    if (current_run_loop_)
-      current_run_loop_->Quit();
+    if (current_message_loop_)
+      current_message_loop_->QuitNow();
   }
 
  private:
   base::ThreadChecker thread_checker_;
-  base::RunLoop* current_run_loop_;
+  MessageLoop* current_message_loop_;
 
   unsigned on_slave_disconnect_calls_;
   std::string last_slave_disconnect_name_;
@@ -134,15 +136,14 @@ class MockMasterProcessDelegate : public embedder::MasterProcessDelegate {
 class MockSlaveProcessDelegate : public embedder::SlaveProcessDelegate {
  public:
   MockSlaveProcessDelegate()
-      : current_run_loop_(), on_master_disconnect_calls_(0) {}
+      : current_message_loop_(), on_master_disconnect_calls_(0) {}
   ~MockSlaveProcessDelegate() override {}
 
-  void RunUntilNotified() {
-    CHECK(!current_run_loop_);
-    base::RunLoop run_loop;
-    current_run_loop_ = &run_loop;
-    run_loop.Run();
-    current_run_loop_ = nullptr;
+  void RunUntilNotified(MessageLoop* message_loop) {
+    CHECK(!current_message_loop_);
+    current_message_loop_ = message_loop;
+    message_loop->Run();
+    current_message_loop_ = nullptr;
   }
 
   unsigned on_master_disconnect_calls() const {
@@ -157,13 +158,13 @@ class MockSlaveProcessDelegate : public embedder::SlaveProcessDelegate {
     on_master_disconnect_calls_++;
     DVLOG(1) << "Disconnected from master process";
 
-    if (current_run_loop_)
-      current_run_loop_->Quit();
+    if (current_message_loop_)
+      current_message_loop_->QuitNow();
   }
 
  private:
   base::ThreadChecker thread_checker_;
-  base::RunLoop* current_run_loop_;
+  MessageLoop* current_message_loop_;
 
   unsigned on_master_disconnect_calls_;
 
@@ -172,13 +173,14 @@ class MockSlaveProcessDelegate : public embedder::SlaveProcessDelegate {
 
 class ConnectionManagerTest : public testing::Test {
  protected:
-  ConnectionManagerTest()
-      : task_runner_(MakeRefCounted<base_edk::PlatformTaskRunnerImpl>(
-            message_loop_.task_runner())) {}
+  ConnectionManagerTest() : message_loop_(CreateTestMessageLoop()) {}
   ~ConnectionManagerTest() override {}
 
   embedder::PlatformSupport* platform_support() { return &platform_support_; }
-  const RefPtr<TaskRunner>& task_runner() { return task_runner_; }
+  MessageLoop* message_loop() { return message_loop_.get(); }
+  const RefPtr<TaskRunner>& task_runner() {
+    return message_loop_->GetTaskRunner();
+  }
   MockMasterProcessDelegate& master_process_delegate() {
     return master_process_delegate_;
   }
@@ -195,15 +197,14 @@ class ConnectionManagerTest : public testing::Test {
     ProcessIdentifier slave_process_identifier =
         master->AddSlave(new TestSlaveInfo(slave_name),
                          platform_channel_pair.PassServerHandle());
-    slave->Init(task_runner_.Clone(), slave_process_delegate,
+    slave->Init(task_runner().Clone(), slave_process_delegate,
                 platform_channel_pair.PassClientHandle());
     return slave_process_identifier;
   }
 
  private:
   embedder::SimplePlatformSupport platform_support_;
-  base::MessageLoop message_loop_;
-  RefPtr<TaskRunner> task_runner_;
+  std::unique_ptr<MessageLoop> message_loop_;
   MockMasterProcessDelegate master_process_delegate_;
 
   MOJO_DISALLOW_COPY_AND_ASSIGN(ConnectionManagerTest);
@@ -252,27 +253,27 @@ TEST_F(ConnectionManagerTest, BasicConnectSlaves) {
 
   // The process manager shouldn't have gotten any notifications yet. (Spin the
   // message loop to make sure none were enqueued.)
-  base::RunLoop().RunUntilIdle();
+  message_loop()->RunUntilIdle();
   EXPECT_EQ(0u, master_process_delegate().on_slave_disconnect_calls());
 
   slave1.Shutdown();
 
   // |OnSlaveDisconnect()| should be called once.
-  master_process_delegate().RunUntilNotified();
+  master_process_delegate().RunUntilNotified(message_loop());
   EXPECT_EQ(1u, master_process_delegate().on_slave_disconnect_calls());
   EXPECT_EQ("slave1", master_process_delegate().last_slave_disconnect_name());
 
   slave2.Shutdown();
 
   // |OnSlaveDisconnect()| should be called again.
-  master_process_delegate().RunUntilNotified();
+  master_process_delegate().RunUntilNotified(message_loop());
   EXPECT_EQ(2u, master_process_delegate().on_slave_disconnect_calls());
   EXPECT_EQ("slave2", master_process_delegate().last_slave_disconnect_name());
 
   master.Shutdown();
 
   // None of the above should result in |OnMasterDisconnect()| being called.
-  base::RunLoop().RunUntilIdle();
+  message_loop()->RunUntilIdle();
   EXPECT_EQ(0u, slave1_process_delegate.on_master_disconnect_calls());
   EXPECT_EQ(0u, slave2_process_delegate.on_master_disconnect_calls());
 }
@@ -289,18 +290,18 @@ TEST_F(ConnectionManagerTest, ShutdownMasterBeforeSlave) {
 
   // The process manager shouldn't have gotten any notifications yet. (Spin the
   // message loop to make sure none were enqueued.)
-  base::RunLoop().RunUntilIdle();
+  message_loop()->RunUntilIdle();
   EXPECT_EQ(0u, master_process_delegate().on_slave_disconnect_calls());
 
   master.Shutdown();
 
   // |OnSlaveDisconnect()| should be called.
-  master_process_delegate().RunUntilNotified();
+  master_process_delegate().RunUntilNotified(message_loop());
   EXPECT_EQ(1u, master_process_delegate().on_slave_disconnect_calls());
   EXPECT_EQ("slave", master_process_delegate().last_slave_disconnect_name());
 
   // |OnMasterDisconnect()| should also be (or have been) called.
-  slave_process_delegate.RunUntilNotified();
+  slave_process_delegate.RunUntilNotified(message_loop());
   EXPECT_EQ(1u, slave_process_delegate.on_master_disconnect_calls());
 
   slave.Shutdown();
@@ -369,7 +370,7 @@ TEST_F(ConnectionManagerTest, ErrorRemovePending) {
   // |OnSlaveDisconnect()| should be called. After it's called, this means that
   // the disconnect has been detected and handled, including the removal of the
   // pending connection.
-  master_process_delegate().RunUntilNotified();
+  master_process_delegate().RunUntilNotified(message_loop());
   EXPECT_EQ(1u, master_process_delegate().on_slave_disconnect_calls());
 
   ProcessIdentifier peer2 = kInvalidProcessIdentifier;
