@@ -10,7 +10,6 @@
 #include <memory>
 #include <unordered_map>
 
-#include "base/threading/thread_checker.h"
 #include "mojo/edk/embedder/scoped_platform_handle.h"
 #include "mojo/edk/system/channel_endpoint.h"
 #include "mojo/edk/system/channel_endpoint_id.h"
@@ -21,6 +20,7 @@
 #include "mojo/edk/util/ref_counted.h"
 #include "mojo/edk/util/ref_ptr.h"
 #include "mojo/edk/util/thread_annotations.h"
+#include "mojo/edk/util/thread_checker.h"
 #include "mojo/public/c/system/types.h"
 #include "mojo/public/cpp/system/macros.h"
 
@@ -237,7 +237,9 @@ class Channel final : public util::RefCountedThreadSafe<Channel>,
                           uint32_t num_bytes,
                           const void* bytes) MOJO_LOCKS_EXCLUDED(mutex_);
 
-  base::ThreadChecker creation_thread_checker_;
+#if !defined(NDEBUG) || defined(DCHECK_ALWAYS_ON)
+  util::ThreadChecker thread_checker_;
+#endif
 
   embedder::PlatformSupport* const platform_support_;
 

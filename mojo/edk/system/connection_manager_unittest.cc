@@ -12,7 +12,6 @@
 #include <memory>
 #include <string>
 
-#include "base/threading/thread_checker.h"
 #include "mojo/edk/base_edk/platform_task_runner_impl.h"
 #include "mojo/edk/embedder/master_process_delegate.h"
 #include "mojo/edk/embedder/platform_channel_pair.h"
@@ -24,6 +23,7 @@
 #include "mojo/edk/system/slave_connection_manager.h"
 #include "mojo/edk/test/test_utils.h"
 #include "mojo/edk/util/ref_ptr.h"
+#include "mojo/edk/util/thread_checker.h"
 #include "mojo/public/cpp/system/macros.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
@@ -32,6 +32,7 @@ using mojo::platform::TaskRunner;
 using mojo::platform::test::CreateTestMessageLoop;
 using mojo::util::MakeRefCounted;
 using mojo::util::RefPtr;
+using mojo::util::ThreadChecker;
 
 namespace mojo {
 namespace system {
@@ -76,12 +77,12 @@ bool IsValidSlaveProcessIdentifier(ProcessIdentifier process_identifier) {
 class TestSlaveInfo {
  public:
   explicit TestSlaveInfo(const std::string& name) : name_(name) {}
-  ~TestSlaveInfo() { CHECK(thread_checker_.CalledOnValidThread()); }
+  ~TestSlaveInfo() { CHECK(thread_checker_.IsCreationThreadCurrent()); }
 
   const std::string& name() const { return name_; }
 
  private:
-  base::ThreadChecker thread_checker_;
+  ThreadChecker thread_checker_;
   std::string name_;
 
   MOJO_DISALLOW_COPY_AND_ASSIGN(TestSlaveInfo);
@@ -111,7 +112,7 @@ class MockMasterProcessDelegate : public embedder::MasterProcessDelegate {
   void OnShutdownComplete() override { NOTREACHED(); }
 
   void OnSlaveDisconnect(embedder::SlaveInfo slave_info) override {
-    CHECK(thread_checker_.CalledOnValidThread());
+    CHECK(thread_checker_.IsCreationThreadCurrent());
     on_slave_disconnect_calls_++;
     last_slave_disconnect_name_ =
         static_cast<TestSlaveInfo*>(slave_info)->name();
@@ -124,7 +125,7 @@ class MockMasterProcessDelegate : public embedder::MasterProcessDelegate {
   }
 
  private:
-  base::ThreadChecker thread_checker_;
+  ThreadChecker thread_checker_;
   MessageLoop* current_message_loop_;
 
   unsigned on_slave_disconnect_calls_;
@@ -154,7 +155,7 @@ class MockSlaveProcessDelegate : public embedder::SlaveProcessDelegate {
   void OnShutdownComplete() override { NOTREACHED(); }
 
   void OnMasterDisconnect() override {
-    CHECK(thread_checker_.CalledOnValidThread());
+    CHECK(thread_checker_.IsCreationThreadCurrent());
     on_master_disconnect_calls_++;
     DVLOG(1) << "Disconnected from master process";
 
@@ -163,7 +164,7 @@ class MockSlaveProcessDelegate : public embedder::SlaveProcessDelegate {
   }
 
  private:
-  base::ThreadChecker thread_checker_;
+  ThreadChecker thread_checker_;
   MessageLoop* current_message_loop_;
 
   unsigned on_master_disconnect_calls_;

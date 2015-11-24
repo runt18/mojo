@@ -21,6 +21,7 @@ mojo_edk_source_set("util") {
     "ref_ptr_internal.h",
     "scoped_file.h",
     "thread_annotations.h",
+    "thread_checker.h",
     "waitable_event.cc",
     "waitable_event.h",
   ]
@@ -35,6 +36,7 @@ mojo_edk_unittests("mojo_edk_util_unittests") {
     "mutex_unittest.cc",
     "ref_counted_unittest.cc",
     "thread_annotations_unittest.cc",
+    "thread_checker_unittest.cc",
     "waitable_event_unittest.cc",
   ]
 

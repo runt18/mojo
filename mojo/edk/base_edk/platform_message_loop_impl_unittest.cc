@@ -24,13 +24,15 @@ using mojo::util::RefPtr;
 namespace base_edk {
 namespace {
 
+// TODO(vtl): This should probably take a |Runnable&&| instead, but that doesn't
+// work with |base::Bind()|.
 template <typename Runnable>
-void RunnableRunner(Runnable runnable) {
+void RunnableRunner(const Runnable& runnable) {
   runnable();
 }
 
 template <typename Runnable>
-base::Closure ToClosure(Runnable runnable) {
+base::Closure ToClosure(Runnable&& runnable) {
   return base::Bind(&RunnableRunner<Runnable>, runnable);
 }
 
