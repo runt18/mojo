@@ -8,6 +8,7 @@
 # //mojo/services/X/public/interfaces to this list.
 
 mojo_services = [
+  "//mojo/services/android/interfaces",
   "//mojo/services/asset_bundle/interfaces",
   "//mojo/services/authenticating_url_loader_interceptor/interfaces",
   "//mojo/services/authentication/interfaces",

@@ -336,6 +336,7 @@ if (is_android) {
 
   android_library("java") {
     java_files = [
+      "android/apk/src/org/chromium/mojo/shell/AndroidFactory.java",
       "android/apk/src/org/chromium/mojo/shell/AndroidHandler.java",
       "android/apk/src/org/chromium/mojo/shell/BaseActivity.java",
       "android/apk/src/org/chromium/mojo/shell/FileHelper.java",
@@ -368,10 +369,12 @@ if (is_android) {
       "//mojo/public/java:application",
       "//mojo/public/java:bindings",
       "//mojo/public/java:system",
+      "//mojo/services/android/interfaces:interfaces_java",
       "//mojo/services/input/interfaces:interfaces_java",
       "//mojo/services/keyboard/interfaces:interfaces_java",
       "//mojo/services/nfc/interfaces:interfaces_java",
       "//mojo/services/vsync/interfaces:interfaces_java",
+      "//services/android",
       "//services/authentication",
       "//services/input",
       "//services/intent_receiver:bindings_java",

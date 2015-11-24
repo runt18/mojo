@@ -19,6 +19,12 @@ import org.chromium.mojo.input.InputServiceImpl;
  * Activity for displaying on the screen from the NativeViewportService.
  */
 public class ViewportActivity extends Activity {
+    private static Activity sCurrentActivity = null;
+
+    public static Activity getCurrent() {
+        return sCurrentActivity;
+    }
+
     /**
      * @see Activity#onKeyDown(int, KeyEvent)
      */
@@ -56,5 +62,23 @@ public class ViewportActivity extends Activity {
     public void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
         new RuntimeException("This activity instance should only ever receive one intent.");
+    }
+
+    /**
+     * @see Activity#onPause()
+     */
+    @Override
+    protected void onPause() {
+        if (sCurrentActivity == this) sCurrentActivity = null;
+        super.onPause();
+    }
+
+    /**
+     * @see Activity#onResume()
+     */
+    @Override
+    protected void onResume() {
+        super.onResume();
+        sCurrentActivity = this;
     }
 }

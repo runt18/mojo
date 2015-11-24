@@ -85,13 +85,15 @@ public class JavaApplicationRegistry {
     private static JavaApplicationRegistry create() {
         JavaApplicationRegistry registry = new JavaApplicationRegistry();
         // Register services.
+        registry.registerApplicationDelegate("mojo:android",
+                new ServiceProviderFactoryApplicationDelegate(new AndroidFactory()));
         registry.registerApplicationDelegate("mojo:authentication",
                 new AuthenticationApplicationDelegate(ApplicationStatus.getApplicationContext(),
                                                      CoreImpl.getInstance()));
-        registry.registerApplicationDelegate(
-                "mojo:input", new ServiceProviderFactoryApplicationDelegate(new InputFactory()));
         registry.registerApplicationDelegate("mojo:keyboard",
                 new ServiceProviderFactoryApplicationDelegate(new KeyboardFactory()));
+        registry.registerApplicationDelegate(
+                "mojo:input", new ServiceProviderFactoryApplicationDelegate(new InputFactory()));
         registry.registerApplicationDelegate(
                 "mojo:intent_receiver", new ServiceProviderFactoryApplicationDelegate(
                                                 IntentReceiverRegistry.getInstance()));
@@ -99,10 +101,10 @@ public class JavaApplicationRegistry {
                 new LocationApplicationDelegate(ApplicationStatus.getApplicationContext(),
                                                      CoreImpl.getInstance()));
 
-        registry.registerApplicationDelegate("mojo:nfc", new NfcApplicationDelegate());
-        registry.registerApplicationDelegate("mojo:sharing", new SharingApplicationDelegate());
         registry.registerApplicationDelegate(
                 "mojo:native_viewport_support", new NativeViewportSupportApplicationDelegate());
+        registry.registerApplicationDelegate("mojo:nfc", new NfcApplicationDelegate());
+        registry.registerApplicationDelegate("mojo:sharing", new SharingApplicationDelegate());
         registry.registerApplicationDelegate(
                 "mojo:vsync", new ServiceProviderFactoryApplicationDelegate(
                                       new VsyncFactory(registry.mHandlerThread.getLooper())));
