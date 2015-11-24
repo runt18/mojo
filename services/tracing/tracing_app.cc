@@ -78,7 +78,7 @@ void TracingApp::StopAndFlush() {
   // support this directly we do our own MojoWaitMany over the handles and read
   // individual messages until all are closed or our absolute deadline has
   // elapsed.
-  static const MojoDeadline kTimeToWaitMicros = 1000 * 1000;
+  static const MojoDeadline kTimeToWaitMicros = 5000 * 1000;
   MojoTimeTicks end = MojoGetTimeTicksNow() + kTimeToWaitMicros;
 
   while (!recorder_impls_.empty()) {
@@ -115,6 +115,8 @@ void TracingApp::StopAndFlush() {
         else if (satisfied & MOJO_HANDLE_SIGNAL_PEER_CLOSED)
           recorder_impls_.erase(recorder_impls_.begin() + index);
       }
+      // Something happened so push back the timeout deadline.
+      end = MojoGetTimeTicksNow() + kTimeToWaitMicros;
     }
   }
   AllDataCollected();

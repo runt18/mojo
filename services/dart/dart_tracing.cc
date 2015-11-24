@@ -67,6 +67,43 @@ static void AppendStreamConsumer(Dart_StreamConsumer_State state,
   data->insert(data->end(), buffer, buffer + buffer_length);
 }
 
+// recorder_->Record():
+// 1. Doesn't like big hunks of data.
+//    See: https://github.com/domokit/mojo/issues/564
+// 2. Expects to receive one or more complete JSON maps per call.
+// Therefore, we do a little parsing of data to split it up and send it
+// over to the trace recorder.
+void DartTraceProvider::SplitAndRecord(char* data, size_t length) {
+  const size_t kInvalidIndex = length;
+  const size_t kMinChunkLength = 1024 * 1024;  // 1MB.
+  size_t start = kInvalidIndex;
+  size_t end = 0;
+  int curly_braces = 0;
+  for (size_t i = 0; i < length; i++) {
+    if (data[i] == '{') {
+      if ((curly_braces == 0) && (start == kInvalidIndex)) {
+        start = i;
+      }
+      curly_braces++;
+    }
+    if (data[i] == '}') {
+      DCHECK(curly_braces > 0);
+      curly_braces--;
+      if (curly_braces == 0) {
+        end = i;
+      }
+    }
+    if ((curly_braces == 0) && (start != kInvalidIndex) &&
+        (((end - start) >= kMinChunkLength) || (i == (length - 1)))) {
+      char* json_start = data + start;
+      char* json_end = data + end + 1;
+      mojo::String json(json_start, json_end - json_start);
+      recorder_->Record(json);
+      start = kInvalidIndex;
+    }
+  }
+}
+
 // tracing::TraceProvider implementation:
 void DartTraceProvider::StopTracing() {
   DCHECK(recorder_);
@@ -74,7 +111,7 @@ void DartTraceProvider::StopTracing() {
   std::vector<uint8_t> data;
   bool got_trace = Dart_GlobalTimelineGetTrace(AppendStreamConsumer, &data);
   if (got_trace) {
-    recorder_->Record(reinterpret_cast<char*>(data.data()));
+    SplitAndRecord(reinterpret_cast<char*>(data.data()), data.size());
   }
   recorder_.reset();
 }
