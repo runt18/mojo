@@ -12,7 +12,6 @@
 
 #include "base/bind.h"
 #include "base/logging.h"
-#include "base/message_loop/message_loop.h"
 #include "mojo/edk/embedder/platform_channel_pair.h"
 #include "mojo/edk/embedder/platform_shared_buffer.h"
 #include "mojo/edk/embedder/scoped_platform_handle.h"
@@ -99,7 +98,7 @@ class RemoteMessagePipeTest : public testing::Test {
 
  private:
   void SetUpOnIOThread() {
-    CHECK_EQ(base::MessageLoop::current(), io_thread()->message_loop());
+    CHECK(io_thread()->IsCurrentAndRunning());
 
     embedder::PlatformChannelPair channel_pair;
     platform_handles_[0] = channel_pair.PassServerHandle();
@@ -107,7 +106,7 @@ class RemoteMessagePipeTest : public testing::Test {
   }
 
   void TearDownOnIOThread() {
-    CHECK_EQ(base::MessageLoop::current(), io_thread()->message_loop());
+    CHECK(io_thread()->IsCurrentAndRunning());
 
     if (channels_[0]) {
       channels_[0]->Shutdown();
@@ -120,7 +119,7 @@ class RemoteMessagePipeTest : public testing::Test {
   }
 
   void CreateAndInitChannel(unsigned channel_index) {
-    CHECK_EQ(base::MessageLoop::current(), io_thread()->message_loop());
+    CHECK(io_thread()->IsCurrentAndRunning());
     CHECK(channel_index == 0 || channel_index == 1);
     CHECK(!channels_[channel_index]);
 
@@ -133,7 +132,7 @@ class RemoteMessagePipeTest : public testing::Test {
   // currently work correctly with base::Bind.
   void BootstrapChannelEndpointsOnIOThread(RefPtr<ChannelEndpoint> ep0,
                                            RefPtr<ChannelEndpoint> ep1) {
-    CHECK_EQ(base::MessageLoop::current(), io_thread()->message_loop());
+    CHECK(io_thread()->IsCurrentAndRunning());
 
     if (!channels_[0])
       CreateAndInitChannel(0);
@@ -148,7 +147,7 @@ class RemoteMessagePipeTest : public testing::Test {
   // work correctly with base::Bind.
   void BootstrapChannelEndpointOnIOThread(unsigned channel_index,
                                           RefPtr<ChannelEndpoint> ep) {
-    CHECK_EQ(base::MessageLoop::current(), io_thread()->message_loop());
+    CHECK(io_thread()->IsCurrentAndRunning());
     CHECK(channel_index == 0 || channel_index == 1);
 
     CreateAndInitChannel(channel_index);
@@ -156,7 +155,7 @@ class RemoteMessagePipeTest : public testing::Test {
   }
 
   void RestoreInitialStateOnIOThread() {
-    CHECK_EQ(base::MessageLoop::current(), io_thread()->message_loop());
+    CHECK(io_thread()->IsCurrentAndRunning());
 
     TearDownOnIOThread();
     SetUpOnIOThread();

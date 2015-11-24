@@ -11,7 +11,6 @@
 
 #include "base/bind.h"
 #include "base/logging.h"
-#include "base/message_loop/message_loop.h"
 #include "mojo/edk/embedder/platform_channel_pair.h"
 #include "mojo/edk/embedder/simple_platform_support.h"
 #include "mojo/edk/system/channel.h"
@@ -91,7 +90,7 @@ class RemoteDataPipeImplTest : public testing::Test {
   // currently work correctly with base::Bind.
   void SetUpOnIOThread(RefPtr<ChannelEndpoint> ep0,
                        RefPtr<ChannelEndpoint> ep1) {
-    CHECK_EQ(base::MessageLoop::current(), io_thread_.message_loop());
+    CHECK(io_thread_.IsCurrentAndRunning());
 
     embedder::PlatformChannelPair channel_pair;
     channels_[0] = MakeRefCounted<Channel>(&platform_support_);
@@ -103,7 +102,7 @@ class RemoteDataPipeImplTest : public testing::Test {
   }
 
   void TearDownOnIOThread() {
-    CHECK_EQ(base::MessageLoop::current(), io_thread_.message_loop());
+    CHECK(io_thread_.IsCurrentAndRunning());
 
     if (channels_[0]) {
       channels_[0]->Shutdown();

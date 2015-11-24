@@ -30,6 +30,10 @@ class TestIOThread final {
   void Start();
   void Stop();
 
+  // Returns true if called on the I/O thread with the message loop running.
+  // (This may be called on any thread.)
+  bool IsCurrentAndRunning() const;
+
   // Posts |task| to the I/O thread.
   void PostTask(const base::Closure& task);
   // Posts |task| to the I/O thread, blocking the calling thread until the
@@ -40,7 +44,7 @@ class TestIOThread final {
     return static_cast<base::MessageLoopForIO*>(io_thread_.message_loop());
   }
 
-  const util::RefPtr<platform::TaskRunner>& task_runner() {
+  const util::RefPtr<platform::TaskRunner>& task_runner() const {
     return io_task_runner_;
   }
 

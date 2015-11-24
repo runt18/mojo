@@ -55,6 +55,11 @@ void TestIOThread::Stop() {
   io_thread_started_ = false;
 }
 
+bool TestIOThread::IsCurrentAndRunning() const {
+  return base::MessageLoop::current() == io_thread_.message_loop() &&
+         io_thread_.message_loop()->is_running();
+}
+
 void TestIOThread::PostTask(const base::Closure& task) {
   io_task_runner_->PostTask(task);
 }

@@ -73,7 +73,7 @@ void ChannelThread::Stop() {
 void ChannelThread::InitChannelOnIOThread(
     embedder::ScopedPlatformHandle platform_handle,
     RefPtr<ChannelEndpoint> channel_endpoint) {
-  CHECK_EQ(base::MessageLoop::current(), test_io_thread_.message_loop());
+  CHECK(test_io_thread_.IsCurrentAndRunning());
   CHECK(platform_handle.is_valid());
 
   // Create and initialize |Channel|.
