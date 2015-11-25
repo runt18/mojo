@@ -171,8 +171,8 @@ public class ActivityImpl implements Activity {
      */
     @Override
     public void startActivity(Intent intent) {
-        final android.content.Intent androidIntent =
-                new android.content.Intent(intent.action, Uri.parse(intent.url));
+        final Uri uri = Uri.parse(intent.url);
+        final android.content.Intent androidIntent = new android.content.Intent(intent.action, uri);
 
         if (intent.component != null) {
             ComponentName component = intent.component;
@@ -192,7 +192,8 @@ public class ActivityImpl implements Activity {
         }
 
         if (intent.type != null) {
-            androidIntent.setType(intent.type);
+            // Intent.setType() clears data URI; that's why we call setDataAndType() here.
+            androidIntent.setDataAndType(uri, intent.type);
         }
 
         try {
