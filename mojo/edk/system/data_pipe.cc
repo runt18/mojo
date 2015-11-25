@@ -25,6 +25,7 @@
 #include "mojo/edk/system/remote_producer_data_pipe_impl.h"
 #include "mojo/edk/util/make_unique.h"
 
+using mojo::embedder::ScopedPlatformHandle;
 using mojo::util::MutexLocker;
 using mojo::util::RefPtr;
 
@@ -416,7 +417,7 @@ bool DataPipe::ProducerEndSerialize(
     Channel* channel,
     void* destination,
     size_t* actual_size,
-    embedder::PlatformHandleVector* platform_handles) {
+    std::vector<ScopedPlatformHandle>* platform_handles) {
   MutexLocker locker(&mutex_);
   DCHECK(has_local_producer_no_lock());
   // Warning: After |ProducerEndSerialize()|, quite probably |impl_| has
@@ -625,7 +626,7 @@ bool DataPipe::ConsumerEndSerialize(
     Channel* channel,
     void* destination,
     size_t* actual_size,
-    embedder::PlatformHandleVector* platform_handles) {
+    std::vector<ScopedPlatformHandle>* platform_handles) {
   MutexLocker locker(&mutex_);
   DCHECK(has_local_consumer_no_lock());
   // Warning: After |ConsumerEndSerialize()|, quite probably |impl_| has

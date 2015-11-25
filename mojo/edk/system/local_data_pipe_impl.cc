@@ -25,6 +25,7 @@
 #include "mojo/edk/system/remote_producer_data_pipe_impl.h"
 #include "mojo/edk/util/make_unique.h"
 
+using mojo::embedder::ScopedPlatformHandle;
 using mojo::util::RefPtr;
 
 namespace mojo {
@@ -164,7 +165,7 @@ bool LocalDataPipeImpl::ProducerEndSerialize(
     Channel* channel,
     void* destination,
     size_t* actual_size,
-    embedder::PlatformHandleVector* platform_handles) {
+    std::vector<ScopedPlatformHandle>* /*platform_handles*/) {
   SerializedDataPipeProducerDispatcher* s =
       static_cast<SerializedDataPipeProducerDispatcher*>(destination);
   s->validated_options = validated_options();
@@ -336,7 +337,7 @@ bool LocalDataPipeImpl::ConsumerEndSerialize(
     Channel* channel,
     void* destination,
     size_t* actual_size,
-    embedder::PlatformHandleVector* platform_handles) {
+    std::vector<ScopedPlatformHandle>* /*platform_handles*/) {
   SerializedDataPipeConsumerDispatcher* s =
       static_cast<SerializedDataPipeConsumerDispatcher*>(destination);
   s->validated_options = validated_options();

@@ -191,16 +191,19 @@ class Channel final : public util::RefCountedThreadSafe<Channel>,
   // |RawChannel::Delegate| implementation (only called on the creation thread):
   void OnReadMessage(
       const MessageInTransit::View& message_view,
-      embedder::ScopedPlatformHandleVectorPtr platform_handles) override;
+      std::unique_ptr<std::vector<embedder::ScopedPlatformHandle>>
+          platform_handles) override;
   void OnError(Error error) override;
 
   // Helpers for |OnReadMessage| (only called on the creation thread):
   void OnReadMessageForEndpoint(
       const MessageInTransit::View& message_view,
-      embedder::ScopedPlatformHandleVectorPtr platform_handles);
+      std::unique_ptr<std::vector<embedder::ScopedPlatformHandle>>
+          platform_handles);
   void OnReadMessageForChannel(
       const MessageInTransit::View& message_view,
-      embedder::ScopedPlatformHandleVectorPtr platform_handles);
+      std::unique_ptr<std::vector<embedder::ScopedPlatformHandle>>
+          platform_handles);
 
   // Handles "attach and run endpoint" messages.
   bool OnAttachAndRunEndpoint(ChannelEndpointId local_id,

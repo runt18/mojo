@@ -7,6 +7,7 @@
 #include <memory>
 #include <unordered_map>
 #include <utility>
+#include <vector>
 
 #include "base/bind.h"
 #include "base/bind_helpers.h"
@@ -17,6 +18,7 @@
 #include "mojo/edk/embedder/platform_channel_pair.h"
 #include "mojo/edk/embedder/platform_handle.h"
 #include "mojo/edk/embedder/platform_handle_vector.h"
+#include "mojo/edk/embedder/scoped_platform_handle.h"
 #include "mojo/edk/system/connection_manager_messages.h"
 #include "mojo/edk/system/message_in_transit.h"
 #include "mojo/edk/system/raw_channel.h"
@@ -25,8 +27,10 @@
 #include "mojo/edk/util/waitable_event.h"
 #include "mojo/public/cpp/system/macros.h"
 
+using mojo::embedder::ScopedPlatformHandle;
 using mojo::platform::TaskRunner;
 using mojo::util::AutoResetWaitableEvent;
+using mojo::util::MakeUnique;
 using mojo::util::MutexLocker;
 using mojo::util::RefPtr;
 
@@ -84,9 +88,9 @@ class MasterConnectionManager::Helper final : public RawChannel::Delegate {
 
  private:
   // |RawChannel::Delegate| methods:
-  void OnReadMessage(
-      const MessageInTransit::View& message_view,
-      embedder::ScopedPlatformHandleVectorPtr platform_handles) override;
+  void OnReadMessage(const MessageInTransit::View& message_view,
+                     std::unique_ptr<std::vector<ScopedPlatformHandle>>
+                         platform_handles) override;
   void OnError(Error error) override;
 
   // Handles an error that's fatal to this object. Note that this probably
@@ -129,7 +133,7 @@ embedder::SlaveInfo MasterConnectionManager::Helper::Shutdown() {
 
 void MasterConnectionManager::Helper::OnReadMessage(
     const MessageInTransit::View& message_view,
-    embedder::ScopedPlatformHandleVectorPtr platform_handles) {
+    std::unique_ptr<std::vector<ScopedPlatformHandle>> platform_handles) {
   if (message_view.type() != MessageInTransit::Type::CONNECTION_MANAGER) {
     LOG(ERROR) << "Invalid message type " << message_view.type();
     FatalError();  // WARNING: This destroys us.
@@ -199,9 +203,8 @@ void MasterConnectionManager::Helper::OnReadMessage(
     DCHECK_EQ(message_view.subtype(),
               MessageInTransit::Subtype::CONNECTION_MANAGER_CONNECT);
     DCHECK(platform_handle.is_valid());
-    embedder::ScopedPlatformHandleVectorPtr platform_handles(
-        new embedder::PlatformHandleVector());
-    platform_handles->push_back(platform_handle.release());
+    auto platform_handles = MakeUnique<std::vector<ScopedPlatformHandle>>();
+    platform_handles->push_back(std::move(platform_handle));
     response->SetTransportData(util::MakeUnique<TransportData>(
         std::move(platform_handles),
         raw_channel_->GetSerializedPlatformHandleSize()));
@@ -317,6 +320,7 @@ class MasterConnectionManager::ProcessConnections {
   }
 
  private:
+  // TODO(vtl): Make |second| |ScopedPlatformHandle|s.
   std::unordered_map<ProcessIdentifier, embedder::PlatformHandle>
       process_connections_;  // "Owns" any valid platform handles.
 

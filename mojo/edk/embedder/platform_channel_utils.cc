@@ -139,10 +139,11 @@ bool PlatformChannelSendHandles(PlatformHandle h,
   return true;
 }
 
-ssize_t PlatformChannelRecvmsg(PlatformHandle h,
-                               void* buf,
-                               size_t num_bytes,
-                               std::deque<PlatformHandle>* platform_handles) {
+ssize_t PlatformChannelRecvmsg(
+    PlatformHandle h,
+    void* buf,
+    size_t num_bytes,
+    std::deque<ScopedPlatformHandle>* platform_handles) {
   DCHECK(buf);
   DCHECK_GT(num_bytes, 0u);
   DCHECK(platform_handles);
@@ -173,7 +174,8 @@ ssize_t PlatformChannelRecvmsg(PlatformHandle h,
       size_t num_fds = payload_length / sizeof(int);
       const int* fds = reinterpret_cast<int*>(CMSG_DATA(cmsg));
       for (size_t i = 0; i < num_fds; i++) {
-        platform_handles->push_back(PlatformHandle(fds[i]));
+        platform_handles->push_back(
+            ScopedPlatformHandle(PlatformHandle(fds[i])));
         DCHECK(platform_handles->back().is_valid());
       }
     }

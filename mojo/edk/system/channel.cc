@@ -14,6 +14,7 @@
 #include "mojo/edk/system/endpoint_relayer.h"
 #include "mojo/edk/system/transport_data.h"
 
+using mojo::embedder::ScopedPlatformHandle;
 using mojo::util::MakeRefCounted;
 using mojo::util::MutexLocker;
 using mojo::util::RefPtr;
@@ -295,7 +296,7 @@ bool Channel::DetachEndpointInternal(ChannelEndpoint* endpoint,
 
 void Channel::OnReadMessage(
     const MessageInTransit::View& message_view,
-    embedder::ScopedPlatformHandleVectorPtr platform_handles) {
+    std::unique_ptr<std::vector<ScopedPlatformHandle>> platform_handles) {
 #if !defined(NDEBUG) || defined(DCHECK_ALWAYS_ON)
   DCHECK(thread_checker_.IsCreationThreadCurrent());
 #endif  // !defined(NDEBUG) || defined(DCHECK_ALWAYS_ON)
@@ -352,7 +353,7 @@ void Channel::OnError(Error error) {
 
 void Channel::OnReadMessageForEndpoint(
     const MessageInTransit::View& message_view,
-    embedder::ScopedPlatformHandleVectorPtr platform_handles) {
+    std::unique_ptr<std::vector<ScopedPlatformHandle>> platform_handles) {
 #if !defined(NDEBUG) || defined(DCHECK_ALWAYS_ON)
   DCHECK(thread_checker_.IsCreationThreadCurrent());
 #endif  // !defined(NDEBUG) || defined(DCHECK_ALWAYS_ON)
@@ -415,7 +416,7 @@ void Channel::OnReadMessageForEndpoint(
 
 void Channel::OnReadMessageForChannel(
     const MessageInTransit::View& message_view,
-    embedder::ScopedPlatformHandleVectorPtr platform_handles) {
+    std::unique_ptr<std::vector<ScopedPlatformHandle>> platform_handles) {
 #if !defined(NDEBUG) || defined(DCHECK_ALWAYS_ON)
   DCHECK(thread_checker_.IsCreationThreadCurrent());
 #endif  // !defined(NDEBUG) || defined(DCHECK_ALWAYS_ON)

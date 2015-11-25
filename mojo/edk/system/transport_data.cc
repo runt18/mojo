@@ -13,6 +13,8 @@
 #include "mojo/edk/system/configuration.h"
 #include "mojo/edk/system/message_in_transit.h"
 
+using mojo::embedder::ScopedPlatformHandle;
+
 namespace mojo {
 namespace system {
 
@@ -124,7 +126,7 @@ TransportData::TransportData(std::unique_ptr<DispatcherVector> dispatchers,
 
   if (estimated_num_platform_handles > 0) {
     DCHECK(!platform_handles_);
-    platform_handles_.reset(new embedder::PlatformHandleVector());
+    platform_handles_.reset(new std::vector<ScopedPlatformHandle>());
   }
 
   Header* header = reinterpret_cast<Header*>(buffer_.get());
@@ -194,7 +196,7 @@ TransportData::TransportData(std::unique_ptr<DispatcherVector> dispatchers,
 }
 
 TransportData::TransportData(
-    embedder::ScopedPlatformHandleVectorPtr platform_handles,
+    std::unique_ptr<std::vector<ScopedPlatformHandle>> platform_handles,
     size_t serialized_platform_handle_size)
     : buffer_size_(), platform_handles_(std::move(platform_handles)) {
   buffer_size_ = MessageInTransit::RoundUpMessageAlignment(
@@ -311,7 +313,7 @@ void TransportData::GetPlatformHandleTable(const void* transport_data_buffer,
 std::unique_ptr<DispatcherVector> TransportData::DeserializeDispatchers(
     const void* buffer,
     size_t buffer_size,
-    embedder::ScopedPlatformHandleVectorPtr platform_handles,
+    std::unique_ptr<std::vector<ScopedPlatformHandle>> platform_handles,
     Channel* channel) {
   DCHECK(buffer);
   DCHECK_GT(buffer_size, 0u);

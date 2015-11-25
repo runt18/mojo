@@ -118,7 +118,7 @@ TEST_F(PlatformChannelPairTest, SendReceiveData) {
     WaitReadable(client_handle.get());
 
     char buf[10000] = {};
-    std::deque<PlatformHandle> received_handles;
+    std::deque<ScopedPlatformHandle> received_handles;
     ssize_t result = PlatformChannelRecvmsg(client_handle.get(), buf,
                                             sizeof(buf), &received_handles);
     EXPECT_EQ(static_cast<ssize_t>(send_string.size()), result);
@@ -168,7 +168,7 @@ TEST_F(PlatformChannelPairTest, SendReceiveFDs) {
     WaitReadable(client_handle.get());
 
     char buf[10000] = {};
-    std::deque<PlatformHandle> received_handles;
+    std::deque<ScopedPlatformHandle> received_handles;
     // We assume that the |recvmsg()| actually reads all the data.
     EXPECT_EQ(static_cast<ssize_t>(sizeof(kHello)),
               PlatformChannelRecvmsg(client_handle.get(), buf, sizeof(buf),
@@ -178,7 +178,7 @@ TEST_F(PlatformChannelPairTest, SendReceiveFDs) {
 
     for (size_t j = 0; !received_handles.empty(); j++) {
       util::ScopedFILE fp(test::FILEFromPlatformHandle(
-          ScopedPlatformHandle(received_handles.front()), "rb"));
+          std::move(received_handles.front()), "rb"));
       received_handles.pop_front();
       ASSERT_TRUE(fp);
       rewind(fp.get());
@@ -223,8 +223,8 @@ TEST_F(PlatformChannelPairTest, AppendReceivedFDs) {
   WaitReadable(client_handle.get());
 
   // Start with an invalid handle in the deque.
-  std::deque<PlatformHandle> received_handles;
-  received_handles.push_back(PlatformHandle());
+  std::deque<ScopedPlatformHandle> received_handles;
+  received_handles.push_back(ScopedPlatformHandle());
 
   char buf[100] = {};
   // We assume that the |recvmsg()| actually reads all the data.
@@ -237,9 +237,8 @@ TEST_F(PlatformChannelPairTest, AppendReceivedFDs) {
   EXPECT_TRUE(received_handles[1].is_valid());
 
   {
-    util::ScopedFILE fp(test::FILEFromPlatformHandle(
-        ScopedPlatformHandle(received_handles[1]), "rb"));
-    received_handles[1] = PlatformHandle();
+    util::ScopedFILE fp(
+        test::FILEFromPlatformHandle(std::move(received_handles[1]), "rb"));
     ASSERT_TRUE(fp);
     rewind(fp.get());
     char read_buf[100];

@@ -11,6 +11,7 @@
 #include <deque>
 
 #include "mojo/edk/embedder/platform_handle.h"
+#include "mojo/edk/embedder/scoped_platform_handle.h"
 
 struct iovec;  // Declared in <sys/uio.h>.
 
@@ -61,12 +62,13 @@ bool PlatformChannelSendHandles(PlatformHandle h,
                                 size_t num_handles);
 
 // Wrapper around |recvmsg()|, which will extract any attached file descriptors
-// (in the control message) to |PlatformHandle|s (and append them to
+// (in the control message) to |ScopedPlatformHandle|s (and append them to
 // |platform_handles|). (This also handles |EINTR|.)
-ssize_t PlatformChannelRecvmsg(PlatformHandle h,
-                               void* buf,
-                               size_t num_bytes,
-                               std::deque<PlatformHandle>* platform_handles);
+ssize_t PlatformChannelRecvmsg(
+    PlatformHandle h,
+    void* buf,
+    size_t num_bytes,
+    std::deque<ScopedPlatformHandle>* platform_handles);
 
 }  // namespace embedder
 }  // namespace mojo

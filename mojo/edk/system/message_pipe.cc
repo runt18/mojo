@@ -19,6 +19,7 @@
 #include "mojo/edk/system/proxy_message_pipe_endpoint.h"
 #include "mojo/edk/util/make_unique.h"
 
+using mojo::embedder::ScopedPlatformHandle;
 using mojo::util::MakeRefCounted;
 using mojo::util::MutexLocker;
 using mojo::util::RefPtr;
@@ -228,7 +229,7 @@ bool MessagePipe::EndSerialize(
     Channel* channel,
     void* destination,
     size_t* actual_size,
-    embedder::PlatformHandleVector* /*platform_handles*/) {
+    std::vector<ScopedPlatformHandle>* /*platform_handles*/) {
   DCHECK(port == 0 || port == 1);
 
   MutexLocker locker(&mutex_);

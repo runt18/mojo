@@ -34,7 +34,7 @@ class PlatformHandleDispatcher final : public SimpleDispatcher {
       Channel* channel,
       const void* source,
       size_t size,
-      embedder::PlatformHandleVector* platform_handles);
+      std::vector<embedder::ScopedPlatformHandle>* platform_handles);
 
  private:
   explicit PlatformHandleDispatcher(
@@ -53,7 +53,7 @@ class PlatformHandleDispatcher final : public SimpleDispatcher {
       Channel* channel,
       void* destination,
       size_t* actual_size,
-      embedder::PlatformHandleVector* platform_handles) override
+      std::vector<embedder::ScopedPlatformHandle>* platform_handles) override
       MOJO_NOT_THREAD_SAFE;
 
   embedder::ScopedPlatformHandle platform_handle_ MOJO_GUARDED_BY(mutex());

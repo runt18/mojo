@@ -80,7 +80,8 @@ class SlaveConnectionManager final : public ConnectionManager,
   // |RawChannel::Delegate| methods (only called on |private_thread_|):
   void OnReadMessage(
       const MessageInTransit::View& message_view,
-      embedder::ScopedPlatformHandleVectorPtr platform_handles) override;
+      std::unique_ptr<std::vector<embedder::ScopedPlatformHandle>>
+          platform_handles) override;
   void OnError(Error error) override;
 
   // Asserts that the current thread is *not* |private_thread_| (no-op if

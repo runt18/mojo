@@ -31,7 +31,9 @@
 #include "mojo/public/cpp/system/macros.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
+using mojo::embedder::ScopedPlatformHandle;
 using mojo::util::AutoResetWaitableEvent;
+using mojo::util::MakeUnique;
 using mojo::util::Mutex;
 using mojo::util::MutexLocker;
 
@@ -95,7 +97,7 @@ class RawChannelTest : public testing::Test {
  protected:
   test::TestIOThread* io_thread() { return &io_thread_; }
 
-  embedder::ScopedPlatformHandle handles[2];
+  ScopedPlatformHandle handles[2];
 
  private:
   test::TestIOThread io_thread_;
@@ -111,9 +113,9 @@ class WriteOnlyRawChannelDelegate : public RawChannel::Delegate {
   ~WriteOnlyRawChannelDelegate() override {}
 
   // |RawChannel::Delegate| implementation:
-  void OnReadMessage(
-      const MessageInTransit::View& /*message_view*/,
-      embedder::ScopedPlatformHandleVectorPtr /*platform_handles*/) override {
+  void OnReadMessage(const MessageInTransit::View& /*message_view*/,
+                     std::unique_ptr<std::vector<ScopedPlatformHandle>>
+                     /*platform_handles*/) override {
     CHECK(false);  // Should not get called.
   }
   void OnError(Error error) override {
@@ -224,9 +226,9 @@ class ReadCheckerRawChannelDelegate : public RawChannel::Delegate {
   ~ReadCheckerRawChannelDelegate() override {}
 
   // |RawChannel::Delegate| implementation (called on the I/O thread):
-  void OnReadMessage(
-      const MessageInTransit::View& message_view,
-      embedder::ScopedPlatformHandleVectorPtr platform_handles) override {
+  void OnReadMessage(const MessageInTransit::View& message_view,
+                     std::unique_ptr<std::vector<ScopedPlatformHandle>>
+                         platform_handles) override {
     EXPECT_FALSE(platform_handles);
 
     size_t position;
@@ -339,9 +341,9 @@ class ReadCountdownRawChannelDelegate : public RawChannel::Delegate {
   ~ReadCountdownRawChannelDelegate() override {}
 
   // |RawChannel::Delegate| implementation (called on the I/O thread):
-  void OnReadMessage(
-      const MessageInTransit::View& message_view,
-      embedder::ScopedPlatformHandleVectorPtr platform_handles) override {
+  void OnReadMessage(const MessageInTransit::View& message_view,
+                     std::unique_ptr<std::vector<ScopedPlatformHandle>>
+                         platform_handles) override {
     EXPECT_FALSE(platform_handles);
 
     EXPECT_LT(count_, expected_count_);
@@ -553,9 +555,9 @@ class ShutdownOnReadMessageRawChannelDelegate : public RawChannel::Delegate {
   ~ShutdownOnReadMessageRawChannelDelegate() override {}
 
   // |RawChannel::Delegate| implementation (called on the I/O thread):
-  void OnReadMessage(
-      const MessageInTransit::View& message_view,
-      embedder::ScopedPlatformHandleVectorPtr platform_handles) override {
+  void OnReadMessage(const MessageInTransit::View& message_view,
+                     std::unique_ptr<std::vector<ScopedPlatformHandle>>
+                         platform_handles) override {
     EXPECT_FALSE(platform_handles);
     EXPECT_FALSE(did_shutdown_);
     EXPECT_TRUE(
@@ -629,7 +631,8 @@ class ShutdownOnErrorRawChannelDelegate : public RawChannel::Delegate {
   // |RawChannel::Delegate| implementation (called on the I/O thread):
   void OnReadMessage(
       const MessageInTransit::View& /*message_view*/,
-      embedder::ScopedPlatformHandleVectorPtr /*platform_handles*/) override {
+      std::unique_ptr<std::vector<ScopedPlatformHandle>> /*platform_handles*/)
+      override {
     CHECK(false);  // Should not get called.
   }
   void OnError(Error error) override {
@@ -728,9 +731,9 @@ class ReadPlatformHandlesCheckerRawChannelDelegate
   ~ReadPlatformHandlesCheckerRawChannelDelegate() override {}
 
   // |RawChannel::Delegate| implementation (called on the I/O thread):
-  void OnReadMessage(
-      const MessageInTransit::View& message_view,
-      embedder::ScopedPlatformHandleVectorPtr platform_handles) override {
+  void OnReadMessage(const MessageInTransit::View& message_view,
+                     std::unique_ptr<std::vector<ScopedPlatformHandle>>
+                         platform_handles) override {
     const char kHello[] = "hello";
 
     EXPECT_EQ(sizeof(kHello), message_view.num_bytes());
@@ -738,9 +741,9 @@ class ReadPlatformHandlesCheckerRawChannelDelegate
 
     ASSERT_TRUE(platform_handles);
     ASSERT_EQ(2u, platform_handles->size());
-    embedder::ScopedPlatformHandle h1(platform_handles->at(0));
+    ScopedPlatformHandle h1(std::move(platform_handles->at(0)));
     EXPECT_TRUE(h1.is_valid());
-    embedder::ScopedPlatformHandle h2(platform_handles->at(1));
+    ScopedPlatformHandle h2(std::move(platform_handles->at(1)));
     EXPECT_TRUE(h2.is_valid());
     platform_handles->clear();
 
@@ -798,12 +801,11 @@ TEST_F(RawChannelTest, ReadWritePlatformHandles) {
 
   {
     const char kHello[] = "hello";
-    embedder::ScopedPlatformHandleVectorPtr platform_handles(
-        new embedder::PlatformHandleVector());
+    auto platform_handles = MakeUnique<std::vector<ScopedPlatformHandle>>();
     platform_handles->push_back(
-        mojo::test::PlatformHandleFromFILE(std::move(fp1)).release());
+        mojo::test::PlatformHandleFromFILE(std::move(fp1)));
     platform_handles->push_back(
-        mojo::test::PlatformHandleFromFILE(std::move(fp2)).release());
+        mojo::test::PlatformHandleFromFILE(std::move(fp2)));
 
     std::unique_ptr<MessageInTransit> message(
         new MessageInTransit(MessageInTransit::Type::ENDPOINT_CLIENT,

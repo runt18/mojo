@@ -20,6 +20,7 @@
 #include "mojo/edk/system/remote_consumer_data_pipe_impl.h"
 #include "mojo/edk/system/remote_data_pipe_ack.h"
 
+using mojo::embedder::ScopedPlatformHandle;
 using mojo::util::RefPtr;
 
 namespace mojo {
@@ -162,7 +163,7 @@ bool RemoteProducerDataPipeImpl::ProducerEndSerialize(
     Channel* /*channel*/,
     void* /*destination*/,
     size_t* /*actual_size*/,
-    embedder::PlatformHandleVector* /*platform_handles*/) {
+    std::vector<ScopedPlatformHandle>* /*platform_handles*/) {
   NOTREACHED();
   return false;
 }
@@ -305,7 +306,7 @@ bool RemoteProducerDataPipeImpl::ConsumerEndSerialize(
     Channel* channel,
     void* destination,
     size_t* actual_size,
-    embedder::PlatformHandleVector* platform_handles) {
+    std::vector<ScopedPlatformHandle>* /*platform_handles*/) {
   SerializedDataPipeConsumerDispatcher* s =
       static_cast<SerializedDataPipeConsumerDispatcher*>(destination);
   s->validated_options = validated_options();
