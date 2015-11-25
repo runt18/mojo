@@ -80,7 +80,7 @@ class MasterConnectionManager::Helper final : public RawChannel::Delegate {
   Helper(MasterConnectionManager* owner,
          ProcessIdentifier process_identifier,
          embedder::SlaveInfo slave_info,
-         embedder::ScopedPlatformHandle platform_handle);
+         ScopedPlatformHandle platform_handle);
   ~Helper() override;
 
   void Init();
@@ -106,16 +106,14 @@ class MasterConnectionManager::Helper final : public RawChannel::Delegate {
   MOJO_DISALLOW_COPY_AND_ASSIGN(Helper);
 };
 
-MasterConnectionManager::Helper::Helper(
-    MasterConnectionManager* owner,
-    ProcessIdentifier process_identifier,
-    embedder::SlaveInfo slave_info,
-    embedder::ScopedPlatformHandle platform_handle)
+MasterConnectionManager::Helper::Helper(MasterConnectionManager* owner,
+                                        ProcessIdentifier process_identifier,
+                                        embedder::SlaveInfo slave_info,
+                                        ScopedPlatformHandle platform_handle)
     : owner_(owner),
       process_identifier_(process_identifier),
       slave_info_(slave_info),
-      raw_channel_(RawChannel::Create(platform_handle.Pass())) {
-}
+      raw_channel_(RawChannel::Create(platform_handle.Pass())) {}
 
 MasterConnectionManager::Helper::~Helper() {
   DCHECK(!raw_channel_);
@@ -160,7 +158,7 @@ void MasterConnectionManager::Helper::OnReadMessage(
   // Note: It's important to fully zero-initialize |data|, including padding,
   // since it'll be sent to another process.
   ConnectionManagerAckSuccessConnectData data = {};
-  embedder::ScopedPlatformHandle platform_handle;
+  ScopedPlatformHandle platform_handle;
   uint32_t num_bytes = 0;
   const void* bytes = nullptr;
   switch (message_view.subtype()) {
@@ -205,7 +203,7 @@ void MasterConnectionManager::Helper::OnReadMessage(
     DCHECK(platform_handle.is_valid());
     auto platform_handles = MakeUnique<std::vector<ScopedPlatformHandle>>();
     platform_handles->push_back(std::move(platform_handle));
-    response->SetTransportData(util::MakeUnique<TransportData>(
+    response->SetTransportData(MakeUnique<TransportData>(
         std::move(platform_handles),
         raw_channel_->GetSerializedPlatformHandleSize()));
   } else {
@@ -285,7 +283,7 @@ class MasterConnectionManager::ProcessConnections {
   // case, this has the side effect of changing the state to |RUNNING|.
   ConnectionStatus GetConnectionStatus(
       ProcessIdentifier to_process_identifier,
-      embedder::ScopedPlatformHandle* pending_platform_handle) {
+      ScopedPlatformHandle* pending_platform_handle) {
     DCHECK(!pending_platform_handle || !pending_platform_handle->is_valid());
 
     auto it = process_connections_.find(to_process_identifier);
@@ -303,7 +301,7 @@ class MasterConnectionManager::ProcessConnections {
 
   void AddConnection(ProcessIdentifier to_process_identifier,
                      ConnectionStatus status,
-                     embedder::ScopedPlatformHandle pending_platform_handle) {
+                     ScopedPlatformHandle pending_platform_handle) {
     DCHECK(process_connections_.find(to_process_identifier) ==
            process_connections_.end());
 
@@ -363,7 +361,7 @@ void MasterConnectionManager::Init(
 
 ProcessIdentifier MasterConnectionManager::AddSlave(
     embedder::SlaveInfo slave_info,
-    embedder::ScopedPlatformHandle platform_handle) {
+    ScopedPlatformHandle platform_handle) {
   // We don't really care if |slave_info| is non-null or not.
   DCHECK(platform_handle.is_valid());
   AssertNotOnPrivateThread();
@@ -394,7 +392,7 @@ ProcessIdentifier MasterConnectionManager::AddSlave(
 
 ProcessIdentifier MasterConnectionManager::AddSlaveAndBootstrap(
     embedder::SlaveInfo slave_info,
-    embedder::ScopedPlatformHandle platform_handle,
+    ScopedPlatformHandle platform_handle,
     const ConnectionIdentifier& connection_id) {
   ProcessIdentifier slave_process_identifier =
       AddSlave(slave_info, platform_handle.Pass());
@@ -441,7 +439,7 @@ ConnectionManager::Result MasterConnectionManager::Connect(
     const ConnectionIdentifier& connection_id,
     ProcessIdentifier* peer_process_identifier,
     bool* is_first,
-    embedder::ScopedPlatformHandle* platform_handle) {
+    ScopedPlatformHandle* platform_handle) {
   return ConnectImpl(kMasterProcessIdentifier, connection_id,
                      peer_process_identifier, is_first, platform_handle);
 }
@@ -522,7 +520,7 @@ ConnectionManager::Result MasterConnectionManager::ConnectImpl(
     const ConnectionIdentifier& connection_id,
     ProcessIdentifier* peer_process_identifier,
     bool* is_first,
-    embedder::ScopedPlatformHandle* platform_handle) {
+    ScopedPlatformHandle* platform_handle) {
   DCHECK_NE(process_identifier, kInvalidProcessIdentifier);
   DCHECK(peer_process_identifier);
   DCHECK(is_first);
@@ -605,7 +603,7 @@ ConnectionManager::Result MasterConnectionManager::ConnectImpl(
 ConnectionManager::Result MasterConnectionManager::ConnectImplHelperNoLock(
     ProcessIdentifier process_identifier,
     ProcessIdentifier peer_process_identifier,
-    embedder::ScopedPlatformHandle* platform_handle) {
+    ScopedPlatformHandle* platform_handle) {
   if (process_identifier == peer_process_identifier) {
     platform_handle->reset();
     DVLOG(1) << "Connect: same process";
@@ -625,7 +623,7 @@ ConnectionManager::Result MasterConnectionManager::ConnectImplHelperNoLock(
       process_connections->AddConnection(
           peer_process_identifier,
           ProcessConnections::ConnectionStatus::RUNNING,
-          embedder::ScopedPlatformHandle());
+          ScopedPlatformHandle());
       embedder::PlatformChannelPair platform_channel_pair;
       *platform_handle = platform_channel_pair.PassServerHandle();
 
@@ -678,7 +676,7 @@ void MasterConnectionManager::ShutdownOnPrivateThread() {
 
 void MasterConnectionManager::AddSlaveOnPrivateThread(
     embedder::SlaveInfo slave_info,
-    embedder::ScopedPlatformHandle platform_handle,
+    ScopedPlatformHandle platform_handle,
     ProcessIdentifier slave_process_identifier,
     AutoResetWaitableEvent* event) {
   DCHECK(platform_handle.is_valid());

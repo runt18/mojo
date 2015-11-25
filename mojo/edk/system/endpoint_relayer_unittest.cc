@@ -17,6 +17,7 @@
 #include "mojo/public/cpp/system/macros.h"
 
 using mojo::util::MakeRefCounted;
+using mojo::util::MakeUnique;
 using mojo::util::ManualResetWaitableEvent;
 using mojo::util::RefPtr;
 
@@ -191,7 +192,7 @@ class TestFilter : public EndpointRelayer::Filter {
 
 TEST_F(EndpointRelayerTest, Filter) {
   MessageInTransitQueue filtered_messages;
-  relayer()->SetFilter(util::MakeUnique<TestFilter>(&filtered_messages));
+  relayer()->SetFilter(MakeUnique<TestFilter>(&filtered_messages));
 
   EXPECT_TRUE(endpoint1a()->EnqueueMessage(test::MakeTestMessage(1)));
   EXPECT_TRUE(endpoint1a()->EnqueueMessage(test::MakeTestMessage(2)));

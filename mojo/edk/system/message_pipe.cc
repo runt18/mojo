@@ -21,6 +21,7 @@
 
 using mojo::embedder::ScopedPlatformHandle;
 using mojo::util::MakeRefCounted;
+using mojo::util::MakeUnique;
 using mojo::util::MutexLocker;
 using mojo::util::RefPtr;
 
@@ -161,7 +162,7 @@ MojoResult MessagePipe::WriteMessage(
   MutexLocker locker(&mutex_);
   return EnqueueMessageNoLock(
       GetPeerPort(port),
-      util::MakeUnique<MessageInTransit>(
+      MakeUnique<MessageInTransit>(
           MessageInTransit::Type::ENDPOINT_CLIENT,
           MessageInTransit::Subtype::ENDPOINT_CLIENT_DATA, num_bytes, bytes),
       transports);

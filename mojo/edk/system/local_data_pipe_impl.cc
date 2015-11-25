@@ -26,6 +26,7 @@
 #include "mojo/edk/util/make_unique.h"
 
 using mojo::embedder::ScopedPlatformHandle;
+using mojo::util::MakeUnique;
 using mojo::util::RefPtr;
 
 namespace mojo {
@@ -191,7 +192,7 @@ bool LocalDataPipeImpl::ProducerEndSerialize(
   // Note: Keep |*this| alive until the end of this method, to make things
   // slightly easier on ourselves.
   std::unique_ptr<DataPipeImpl> self(
-      ReplaceImpl(util::MakeUnique<RemoteProducerDataPipeImpl>(
+      ReplaceImpl(MakeUnique<RemoteProducerDataPipeImpl>(
           std::move(channel_endpoint), std::move(buffer_), start_index_,
           current_num_bytes_)));
 
@@ -370,7 +371,7 @@ bool LocalDataPipeImpl::ConsumerEndSerialize(
   // Note: Keep |*this| alive until the end of this method, to make things
   // slightly easier on ourselves.
   std::unique_ptr<DataPipeImpl> self(
-      ReplaceImpl(util::MakeUnique<RemoteConsumerDataPipeImpl>(
+      ReplaceImpl(MakeUnique<RemoteConsumerDataPipeImpl>(
           std::move(channel_endpoint), old_num_bytes, std::move(buffer_),
           start_index_)));
   DestroyBuffer();

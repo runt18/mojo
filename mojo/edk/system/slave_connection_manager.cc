@@ -17,6 +17,7 @@
 
 using mojo::embedder::ScopedPlatformHandle;
 using mojo::platform::TaskRunner;
+using mojo::util::MakeUnique;
 using mojo::util::MutexLocker;
 using mojo::util::RefPtr;
 
@@ -166,7 +167,7 @@ void SlaveConnectionManager::AllowConnectOnPrivateThread(
 
   DVLOG(1) << "Sending AllowConnect: connection ID "
            << connection_id.ToString();
-  if (!raw_channel_->WriteMessage(util::MakeUnique<MessageInTransit>(
+  if (!raw_channel_->WriteMessage(MakeUnique<MessageInTransit>(
           MessageInTransit::Type::CONNECTION_MANAGER,
           MessageInTransit::Subtype::CONNECTION_MANAGER_ALLOW_CONNECT,
           sizeof(connection_id), &connection_id))) {
@@ -191,7 +192,7 @@ void SlaveConnectionManager::CancelConnectOnPrivateThread(
 
   DVLOG(1) << "Sending CancelConnect: connection ID "
            << connection_id.ToString();
-  if (!raw_channel_->WriteMessage(util::MakeUnique<MessageInTransit>(
+  if (!raw_channel_->WriteMessage(MakeUnique<MessageInTransit>(
           MessageInTransit::Type::CONNECTION_MANAGER,
           MessageInTransit::Subtype::CONNECTION_MANAGER_CANCEL_CONNECT,
           sizeof(connection_id), &connection_id))) {
@@ -218,7 +219,7 @@ void SlaveConnectionManager::ConnectOnPrivateThread(
   DCHECK_EQ(awaiting_ack_type_, NOT_AWAITING_ACK);
 
   DVLOG(1) << "Sending Connect: connection ID " << connection_id.ToString();
-  if (!raw_channel_->WriteMessage(util::MakeUnique<MessageInTransit>(
+  if (!raw_channel_->WriteMessage(MakeUnique<MessageInTransit>(
           MessageInTransit::Type::CONNECTION_MANAGER,
           MessageInTransit::Subtype::CONNECTION_MANAGER_CONNECT,
           sizeof(connection_id), &connection_id))) {

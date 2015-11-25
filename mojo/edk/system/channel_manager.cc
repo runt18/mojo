@@ -12,6 +12,7 @@
 #include "mojo/edk/system/channel_endpoint.h"
 #include "mojo/edk/system/message_pipe_dispatcher.h"
 
+using mojo::embedder::ScopedPlatformHandle;
 using mojo::platform::TaskRunner;
 using mojo::util::MakeRefCounted;
 using mojo::util::MutexLocker;
@@ -79,7 +80,7 @@ void ChannelManager::Shutdown(
 
 RefPtr<MessagePipeDispatcher> ChannelManager::CreateChannelOnIOThread(
     ChannelId channel_id,
-    embedder::ScopedPlatformHandle platform_handle) {
+    ScopedPlatformHandle platform_handle) {
   RefPtr<ChannelEndpoint> bootstrap_channel_endpoint;
   auto dispatcher = MessagePipeDispatcher::CreateRemoteMessagePipe(
       &bootstrap_channel_endpoint);
@@ -90,14 +91,14 @@ RefPtr<MessagePipeDispatcher> ChannelManager::CreateChannelOnIOThread(
 
 RefPtr<Channel> ChannelManager::CreateChannelWithoutBootstrapOnIOThread(
     ChannelId channel_id,
-    embedder::ScopedPlatformHandle platform_handle) {
+    ScopedPlatformHandle platform_handle) {
   return CreateChannelOnIOThreadHelper(channel_id, platform_handle.Pass(),
                                        nullptr);
 }
 
 RefPtr<MessagePipeDispatcher> ChannelManager::CreateChannel(
     ChannelId channel_id,
-    embedder::ScopedPlatformHandle platform_handle,
+    ScopedPlatformHandle platform_handle,
     const base::Closure& callback,
     RefPtr<TaskRunner>&& callback_thread_task_runner) {
   DCHECK(!callback.is_null());
@@ -172,7 +173,7 @@ void ChannelManager::ShutdownHelper(
 
 RefPtr<Channel> ChannelManager::CreateChannelOnIOThreadHelper(
     ChannelId channel_id,
-    embedder::ScopedPlatformHandle platform_handle,
+    ScopedPlatformHandle platform_handle,
     RefPtr<ChannelEndpoint>&& bootstrap_channel_endpoint) {
   DCHECK_NE(channel_id, kInvalidChannelId);
   DCHECK(platform_handle.is_valid());
@@ -194,7 +195,7 @@ RefPtr<Channel> ChannelManager::CreateChannelOnIOThreadHelper(
 
 void ChannelManager::CreateChannelHelper(
     ChannelId channel_id,
-    embedder::ScopedPlatformHandle platform_handle,
+    ScopedPlatformHandle platform_handle,
     RefPtr<ChannelEndpoint> bootstrap_channel_endpoint,
     const base::Closure& callback,
     RefPtr<TaskRunner> callback_thread_task_runner) {

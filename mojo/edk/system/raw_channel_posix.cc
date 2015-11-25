@@ -39,7 +39,7 @@ namespace {
 class RawChannelPosix final : public RawChannel,
                               public base::MessageLoopForIO::Watcher {
  public:
-  explicit RawChannelPosix(embedder::ScopedPlatformHandle handle);
+  explicit RawChannelPosix(ScopedPlatformHandle handle);
   ~RawChannelPosix() override;
 
   // |RawChannel| public methods:
@@ -76,7 +76,7 @@ class RawChannelPosix final : public RawChannel,
   // Watches for |fd_| to become writable. Must be called on the I/O thread.
   void WaitToWrite();
 
-  embedder::ScopedPlatformHandle fd_;
+  ScopedPlatformHandle fd_;
 
   // The following members are only used on the I/O thread:
   std::unique_ptr<base::MessageLoopForIO::FileDescriptorWatcher> read_watcher_;
@@ -84,7 +84,7 @@ class RawChannelPosix final : public RawChannel,
 
   bool pending_read_;
 
-  std::deque<embedder::ScopedPlatformHandle> read_platform_handles_;
+  std::deque<ScopedPlatformHandle> read_platform_handles_;
 
   bool pending_write_ MOJO_GUARDED_BY(write_mutex());
 
@@ -96,7 +96,7 @@ class RawChannelPosix final : public RawChannel,
   MOJO_DISALLOW_COPY_AND_ASSIGN(RawChannelPosix);
 };
 
-RawChannelPosix::RawChannelPosix(embedder::ScopedPlatformHandle handle)
+RawChannelPosix::RawChannelPosix(ScopedPlatformHandle handle)
     : fd_(handle.Pass()),
       pending_read_(false),
       pending_write_(false),
@@ -148,7 +148,7 @@ void RawChannelPosix::EnqueueMessageNoLock(
                 std::move_iterator<IteratorType>(
                     platform_handles->begin() + i +
                     embedder::kPlatformChannelMaxNumHandles)));
-        fd_message->SetTransportData(util::MakeUnique<TransportData>(
+        fd_message->SetTransportData(MakeUnique<TransportData>(
             std::move(fds), GetSerializedPlatformHandleSize()));
         RawChannel::EnqueueMessageNoLock(std::move(fd_message));
       }
@@ -475,9 +475,8 @@ void RawChannelPosix::WaitToWrite() {
 
 // Static factory method declared in raw_channel.h.
 // static
-std::unique_ptr<RawChannel> RawChannel::Create(
-    embedder::ScopedPlatformHandle handle) {
-  return util::MakeUnique<RawChannelPosix>(handle.Pass());
+std::unique_ptr<RawChannel> RawChannel::Create(ScopedPlatformHandle handle) {
+  return MakeUnique<RawChannelPosix>(handle.Pass());
 }
 
 }  // namespace system

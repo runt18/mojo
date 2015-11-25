@@ -29,6 +29,7 @@
 #include "mojo/edk/util/scoped_file.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
+using mojo::embedder::ScopedPlatformHandle;
 using mojo::util::RefPtr;
 
 namespace mojo {
@@ -45,7 +46,7 @@ class MultiprocessMessagePipeTest
 MOJO_MULTIPROCESS_TEST_CHILD_MAIN(EchoEcho) {
   embedder::SimplePlatformSupport platform_support;
   test::ChannelThread channel_thread(&platform_support);
-  embedder::ScopedPlatformHandle client_platform_handle =
+  ScopedPlatformHandle client_platform_handle =
       mojo::test::MultiprocessTestHelper::client_platform_handle.Pass();
   CHECK(client_platform_handle.is_valid());
   RefPtr<ChannelEndpoint> ep;
@@ -208,7 +209,7 @@ TEST_F(MultiprocessMessagePipeTest, DISABLED_QueueMessages) {
 MOJO_MULTIPROCESS_TEST_CHILD_MAIN(CheckSharedBuffer) {
   embedder::SimplePlatformSupport platform_support;
   test::ChannelThread channel_thread(&platform_support);
-  embedder::ScopedPlatformHandle client_platform_handle =
+  ScopedPlatformHandle client_platform_handle =
       mojo::test::MultiprocessTestHelper::client_platform_handle.Pass();
   CHECK(client_platform_handle.is_valid());
   RefPtr<ChannelEndpoint> ep;
@@ -389,7 +390,7 @@ TEST_F(MultiprocessMessagePipeTest, MAYBE_SharedBufferPassing) {
 MOJO_MULTIPROCESS_TEST_CHILD_MAIN(CheckPlatformHandleFile) {
   embedder::SimplePlatformSupport platform_support;
   test::ChannelThread channel_thread(&platform_support);
-  embedder::ScopedPlatformHandle client_platform_handle =
+  ScopedPlatformHandle client_platform_handle =
       mojo::test::MultiprocessTestHelper::client_platform_handle.Pass();
   CHECK(client_platform_handle.is_valid());
   RefPtr<ChannelEndpoint> ep;
@@ -427,7 +428,7 @@ MOJO_MULTIPROCESS_TEST_CHILD_MAIN(CheckPlatformHandleFile) {
 
     RefPtr<PlatformHandleDispatcher> dispatcher(
         static_cast<PlatformHandleDispatcher*>(dispatchers[i].get()));
-    embedder::ScopedPlatformHandle h = dispatcher->PassPlatformHandle();
+    ScopedPlatformHandle h = dispatcher->PassPlatformHandle();
     CHECK(h.is_valid());
     dispatcher->Close();
 
@@ -467,9 +468,8 @@ TEST_P(MultiprocessMessagePipeTestWithPipeCount, PlatformHandlePassing) {
     fflush(fp.get());
     rewind(fp.get());
 
-    auto dispatcher =
-        PlatformHandleDispatcher::Create(embedder::ScopedPlatformHandle(
-            mojo::test::PlatformHandleFromFILE(std::move(fp))));
+    auto dispatcher = PlatformHandleDispatcher::Create(ScopedPlatformHandle(
+        mojo::test::PlatformHandleFromFILE(std::move(fp))));
     dispatchers.push_back(dispatcher);
     DispatcherTransport transport(
         test::DispatcherTryStartTransport(dispatcher.get()));

@@ -14,6 +14,7 @@
 #include "mojo/edk/system/test/timeouts.h"
 #include "mojo/edk/system/waiter.h"
 
+using mojo::embedder::ScopedPlatformHandle;
 using mojo::util::MakeRefCounted;
 using mojo::util::RefPtr;
 
@@ -47,7 +48,7 @@ ChannelThread::~ChannelThread() {
   Stop();
 }
 
-void ChannelThread::Start(embedder::ScopedPlatformHandle platform_handle,
+void ChannelThread::Start(ScopedPlatformHandle platform_handle,
                           RefPtr<ChannelEndpoint>&& channel_endpoint) {
   test_io_thread_.Start();
   test_io_thread_.PostTaskAndWait(
@@ -71,7 +72,7 @@ void ChannelThread::Stop() {
 }
 
 void ChannelThread::InitChannelOnIOThread(
-    embedder::ScopedPlatformHandle platform_handle,
+    ScopedPlatformHandle platform_handle,
     RefPtr<ChannelEndpoint> channel_endpoint) {
   CHECK(test_io_thread_.IsCurrentAndRunning());
   CHECK(platform_handle.is_valid());

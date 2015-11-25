@@ -27,6 +27,7 @@
 #include "mojo/public/cpp/system/macros.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
+using mojo::embedder::ScopedPlatformHandle;
 using mojo::platform::MessageLoop;
 using mojo::platform::TaskRunner;
 using mojo::platform::test::CreateTestMessageLoop;
@@ -236,14 +237,14 @@ TEST_F(ConnectionManagerTest, BasicConnectSlaves) {
 
   ProcessIdentifier peer1 = kInvalidProcessIdentifier;
   bool is_first = false;
-  embedder::ScopedPlatformHandle h1;
+  ScopedPlatformHandle h1;
   EXPECT_EQ(ConnectionManager::Result::SUCCESS_CONNECT_NEW_CONNECTION,
             slave1.Connect(connection_id, &peer1, &is_first, &h1));
   EXPECT_EQ(slave2_id, peer1);
   EXPECT_TRUE(is_first);
   EXPECT_TRUE(h1.is_valid());
   ProcessIdentifier peer2 = kInvalidProcessIdentifier;
-  embedder::ScopedPlatformHandle h2;
+  ScopedPlatformHandle h2;
   EXPECT_EQ(ConnectionManager::Result::SUCCESS_CONNECT_NEW_CONNECTION,
             slave2.Connect(connection_id, &peer2, &is_first, &h2));
   EXPECT_EQ(slave1_id, peer2);
@@ -332,7 +333,7 @@ TEST_F(ConnectionManagerTest, SlaveCancelConnect) {
   EXPECT_TRUE(slave1.CancelConnect(connection_id));
   ProcessIdentifier peer2 = kInvalidProcessIdentifier;
   bool is_first = false;
-  embedder::ScopedPlatformHandle h2;
+  ScopedPlatformHandle h2;
   EXPECT_EQ(ConnectionManager::Result::FAILURE,
             slave2.Connect(connection_id, &peer2, &is_first, &h2));
   EXPECT_EQ(kInvalidProcessIdentifier, peer2);
@@ -376,7 +377,7 @@ TEST_F(ConnectionManagerTest, ErrorRemovePending) {
 
   ProcessIdentifier peer2 = kInvalidProcessIdentifier;
   bool is_first = false;
-  embedder::ScopedPlatformHandle h2;
+  ScopedPlatformHandle h2;
   EXPECT_EQ(ConnectionManager::Result::FAILURE,
             slave2.Connect(connection_id, &peer2, &is_first, &h2));
   EXPECT_EQ(kInvalidProcessIdentifier, peer2);
@@ -403,14 +404,14 @@ TEST_F(ConnectionManagerTest, ConnectSlaveToSelf) {
 
   ProcessIdentifier peer1 = kInvalidProcessIdentifier;
   bool is_first = false;
-  embedder::ScopedPlatformHandle h1;
+  ScopedPlatformHandle h1;
   EXPECT_EQ(ConnectionManager::Result::SUCCESS_CONNECT_SAME_PROCESS,
             slave.Connect(connection_id, &peer1, &is_first, &h1));
   EXPECT_EQ(slave_id, peer1);
   EXPECT_TRUE(is_first);
   EXPECT_FALSE(h1.is_valid());
   ProcessIdentifier peer2 = kInvalidProcessIdentifier;
-  embedder::ScopedPlatformHandle h2;
+  ScopedPlatformHandle h2;
   EXPECT_EQ(ConnectionManager::Result::SUCCESS_CONNECT_SAME_PROCESS,
             slave.Connect(connection_id, &peer2, &is_first, &h2));
   EXPECT_EQ(slave_id, peer2);
@@ -444,13 +445,13 @@ TEST_F(ConnectionManagerTest, ConnectSlavesTwice) {
 
   ProcessIdentifier peer1 = kInvalidProcessIdentifier;
   bool is_first = false;
-  embedder::ScopedPlatformHandle h1;
+  ScopedPlatformHandle h1;
   EXPECT_EQ(ConnectionManager::Result::SUCCESS_CONNECT_NEW_CONNECTION,
             slave1.Connect(connection_id, &peer1, &is_first, &h1));
   EXPECT_EQ(slave2_id, peer1);
   EXPECT_TRUE(is_first);
   ProcessIdentifier peer2 = kInvalidProcessIdentifier;
-  embedder::ScopedPlatformHandle h2;
+  ScopedPlatformHandle h2;
   EXPECT_EQ(ConnectionManager::Result::SUCCESS_CONNECT_NEW_CONNECTION,
             slave2.Connect(connection_id, &peer2, &is_first, &h2));
   EXPECT_EQ(slave1_id, peer2);
@@ -514,13 +515,13 @@ TEST_F(ConnectionManagerTest, OverlappingSlaveConnects) {
 
   ProcessIdentifier peer1 = kInvalidProcessIdentifier;
   bool is_first = false;
-  embedder::ScopedPlatformHandle h1;
+  ScopedPlatformHandle h1;
   EXPECT_EQ(ConnectionManager::Result::SUCCESS_CONNECT_NEW_CONNECTION,
             slave1.Connect(connection_id1, &peer1, &is_first, &h1));
   EXPECT_EQ(slave2_id, peer1);
   EXPECT_TRUE(is_first);
   ProcessIdentifier peer2 = kInvalidProcessIdentifier;
-  embedder::ScopedPlatformHandle h2;
+  ScopedPlatformHandle h2;
   EXPECT_EQ(ConnectionManager::Result::SUCCESS_CONNECT_NEW_CONNECTION,
             slave2.Connect(connection_id2, &peer2, &is_first, &h2));
   EXPECT_EQ(slave1_id, peer2);
@@ -564,14 +565,14 @@ TEST_F(ConnectionManagerTest, ConnectMasterToSlave) {
 
   ProcessIdentifier master_peer = kInvalidProcessIdentifier;
   bool is_first = false;
-  embedder::ScopedPlatformHandle master_h;
+  ScopedPlatformHandle master_h;
   EXPECT_EQ(ConnectionManager::Result::SUCCESS_CONNECT_NEW_CONNECTION,
             master.Connect(connection_id, &master_peer, &is_first, &master_h));
   EXPECT_EQ(slave_id, master_peer);
   EXPECT_TRUE(is_first);
   EXPECT_TRUE(master_h.is_valid());
   ProcessIdentifier slave_peer = kInvalidProcessIdentifier;
-  embedder::ScopedPlatformHandle slave_h;
+  ScopedPlatformHandle slave_h;
   EXPECT_EQ(ConnectionManager::Result::SUCCESS_CONNECT_NEW_CONNECTION,
             slave.Connect(connection_id, &slave_peer, &is_first, &slave_h));
   EXPECT_EQ(kMasterProcessIdentifier, slave_peer);
@@ -594,14 +595,14 @@ TEST_F(ConnectionManagerTest, ConnectMasterToSelf) {
 
   ProcessIdentifier peer1 = kInvalidProcessIdentifier;
   bool is_first = false;
-  embedder::ScopedPlatformHandle h1;
+  ScopedPlatformHandle h1;
   EXPECT_EQ(ConnectionManager::Result::SUCCESS_CONNECT_SAME_PROCESS,
             master.Connect(connection_id, &peer1, &is_first, &h1));
   EXPECT_EQ(kMasterProcessIdentifier, peer1);
   EXPECT_TRUE(is_first);
   EXPECT_FALSE(h1.is_valid());
   ProcessIdentifier peer2 = kInvalidProcessIdentifier;
-  embedder::ScopedPlatformHandle h2;
+  ScopedPlatformHandle h2;
   EXPECT_EQ(ConnectionManager::Result::SUCCESS_CONNECT_SAME_PROCESS,
             master.Connect(connection_id, &peer2, &is_first, &h2));
   EXPECT_EQ(kMasterProcessIdentifier, peer2);
@@ -630,7 +631,7 @@ TEST_F(ConnectionManagerTest, MasterCancelConnect) {
   EXPECT_TRUE(master.CancelConnect(connection_id));
   ProcessIdentifier peer = kInvalidProcessIdentifier;
   bool is_first = false;
-  embedder::ScopedPlatformHandle h;
+  ScopedPlatformHandle h;
   EXPECT_EQ(ConnectionManager::Result::FAILURE,
             slave.Connect(connection_id, &peer, &is_first, &h));
   EXPECT_EQ(kInvalidProcessIdentifier, peer);
@@ -666,7 +667,7 @@ TEST_F(ConnectionManagerTest, AddSlaveAndBootstrap) {
       connection_id);
   EXPECT_TRUE(IsValidSlaveProcessIdentifier(slave_id));
 
-  embedder::ScopedPlatformHandle h1;
+  ScopedPlatformHandle h1;
   ProcessIdentifier master_peer = kInvalidProcessIdentifier;
   bool is_first = false;
   EXPECT_EQ(ConnectionManager::Result::SUCCESS_CONNECT_NEW_CONNECTION,
@@ -682,7 +683,7 @@ TEST_F(ConnectionManagerTest, AddSlaveAndBootstrap) {
              platform_channel_pair.PassClientHandle());
 
   ProcessIdentifier slave_peer = kInvalidProcessIdentifier;
-  embedder::ScopedPlatformHandle h2;
+  ScopedPlatformHandle h2;
   EXPECT_EQ(ConnectionManager::Result::SUCCESS_CONNECT_NEW_CONNECTION,
             slave.Connect(connection_id, &slave_peer, &is_first, &h2));
   EXPECT_EQ(kMasterProcessIdentifier, slave_peer);

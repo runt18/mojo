@@ -36,6 +36,7 @@
 #include "mojo/public/cpp/system/macros.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
+using mojo::embedder::ScopedPlatformHandle;
 using mojo::util::MakeRefCounted;
 using mojo::util::RefPtr;
 
@@ -163,7 +164,7 @@ class RemoteMessagePipeTest : public testing::Test {
 
   embedder::SimplePlatformSupport platform_support_;
   test::TestIOThread io_thread_;
-  embedder::ScopedPlatformHandle platform_handles_[2];
+  ScopedPlatformHandle platform_handles_[2];
   RefPtr<Channel> channels_[2];
 
   MOJO_DISALLOW_COPY_AND_ASSIGN(RemoteMessagePipeTest);
@@ -1093,7 +1094,7 @@ TEST_F(RemoteMessagePipeTest, PlatformHandlePassing) {
   dispatcher = RefPtr<PlatformHandleDispatcher>(
       static_cast<PlatformHandleDispatcher*>(read_dispatchers[0].get()));
 
-  embedder::ScopedPlatformHandle h = dispatcher->PassPlatformHandle();
+  ScopedPlatformHandle h = dispatcher->PassPlatformHandle();
   EXPECT_TRUE(h.is_valid());
 
   fp = mojo::test::FILEFromPlatformHandle(h.Pass(), "rb");

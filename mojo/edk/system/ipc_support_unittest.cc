@@ -31,6 +31,7 @@
 #include "mojo/public/cpp/system/macros.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
+using mojo::embedder::ScopedPlatformHandle;
 using mojo::util::AutoResetWaitableEvent;
 using mojo::util::ManualResetWaitableEvent;
 using mojo::util::RefPtr;
@@ -200,7 +201,7 @@ class TestSlaveConnection {
                    slave_id_));
   }
 
-  embedder::ScopedPlatformHandle PassSlavePlatformHandle() {
+  ScopedPlatformHandle PassSlavePlatformHandle() {
     return slave_platform_handle_.Pass();
   }
 
@@ -214,7 +215,7 @@ class TestSlaveConnection {
   RefPtr<MessagePipeDispatcher> message_pipe_;
   ProcessIdentifier slave_id_;
   ManualResetWaitableEvent event_;
-  embedder::ScopedPlatformHandle slave_platform_handle_;
+  ScopedPlatformHandle slave_platform_handle_;
 
   MOJO_DISALLOW_COPY_AND_ASSIGN(TestSlaveConnection);
 };
@@ -226,7 +227,7 @@ class TestSlave {
   // Note: Before destruction, |ShutdownIPCSupport()| must be called.
   TestSlave(embedder::PlatformSupport* platform_support,
             test::TestIOThread* test_io_thread,
-            embedder::ScopedPlatformHandle platform_handle)
+            ScopedPlatformHandle platform_handle)
       : test_io_thread_(test_io_thread),
         slave_ipc_support_(platform_support,
                            embedder::ProcessType::SLAVE,
@@ -373,7 +374,7 @@ class IPCSupportTest : public testing::Test {
                             test_io_thread_.task_runner().Clone(),
                             &master_process_delegate_,
                             test_io_thread_.task_runner().Clone(),
-                            embedder::ScopedPlatformHandle()) {}
+                            ScopedPlatformHandle()) {}
   ~IPCSupportTest() override {}
 
   std::unique_ptr<TestSlaveSetup> SetupSlave() {
@@ -581,7 +582,7 @@ TEST_F(IPCSupportTest, MasterSlaveInternal) {
 
   embedder::PlatformChannelPair channel_pair;
   ProcessIdentifier slave_id = kInvalidProcessIdentifier;
-  embedder::ScopedPlatformHandle master_second_platform_handle =
+  ScopedPlatformHandle master_second_platform_handle =
       master_ipc_support().ConnectToSlaveInternal(
           connection_id, nullptr, channel_pair.PassServerHandle(), &slave_id);
   ASSERT_TRUE(master_second_platform_handle.is_valid());
@@ -595,7 +596,7 @@ TEST_F(IPCSupportTest, MasterSlaveInternal) {
       test_io_thread().task_runner().Clone(), &slave_process_delegate,
       test_io_thread().task_runner().Clone(), channel_pair.PassClientHandle());
 
-  embedder::ScopedPlatformHandle slave_second_platform_handle =
+  ScopedPlatformHandle slave_second_platform_handle =
       slave_ipc_support.ConnectToMasterInternal(connection_id);
   ASSERT_TRUE(slave_second_platform_handle.is_valid());
 
@@ -637,7 +638,7 @@ TEST_F(IPCSupportTest, MAYBE_MultiprocessMasterSlaveInternal) {
       master_ipc_support().GenerateConnectionIdentifier();
   mojo::test::MultiprocessTestHelper multiprocess_test_helper;
   ProcessIdentifier slave_id = kInvalidProcessIdentifier;
-  embedder::ScopedPlatformHandle second_platform_handle =
+  ScopedPlatformHandle second_platform_handle =
       master_ipc_support().ConnectToSlaveInternal(
           connection_id, nullptr,
           multiprocess_test_helper.server_platform_handle.Pass(), &slave_id);
@@ -669,7 +670,7 @@ TEST_F(IPCSupportTest, MAYBE_MultiprocessMasterSlaveInternal) {
 }
 
 MOJO_MULTIPROCESS_TEST_CHILD_TEST(MultiprocessMasterSlaveInternal) {
-  embedder::ScopedPlatformHandle client_platform_handle =
+  ScopedPlatformHandle client_platform_handle =
       mojo::test::MultiprocessTestHelper::client_platform_handle.Pass();
   ASSERT_TRUE(client_platform_handle.is_valid());
 
@@ -690,7 +691,7 @@ MOJO_MULTIPROCESS_TEST_CHILD_TEST(MultiprocessMasterSlaveInternal) {
       ConnectionIdentifier::FromString(connection_id_string, &ok);
   ASSERT_TRUE(ok);
 
-  embedder::ScopedPlatformHandle second_platform_handle =
+  ScopedPlatformHandle second_platform_handle =
       ipc_support.ConnectToMasterInternal(connection_id);
   ASSERT_TRUE(second_platform_handle.is_valid());
 

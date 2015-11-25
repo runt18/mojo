@@ -12,6 +12,8 @@
 #include "mojo/edk/test/test_utils.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
+using mojo::embedder::ScopedPlatformHandle;
+
 namespace mojo {
 namespace test {
 namespace {
@@ -78,7 +80,7 @@ TEST_F(MultiprocessTestHelperTest, MAYBE_PassedChannel) {
   helper.StartChild("PassedChannel");
 
   // Take ownership of the handle.
-  embedder::ScopedPlatformHandle handle = helper.server_platform_handle.Pass();
+  ScopedPlatformHandle handle = helper.server_platform_handle.Pass();
 
   // The handle should be non-blocking.
   EXPECT_TRUE(IsNonBlocking(handle.get()));
@@ -100,7 +102,7 @@ MOJO_MULTIPROCESS_TEST_CHILD_MAIN(PassedChannel) {
   CHECK(MultiprocessTestHelper::client_platform_handle.is_valid());
 
   // Take ownership of the handle.
-  embedder::ScopedPlatformHandle handle =
+  ScopedPlatformHandle handle =
       MultiprocessTestHelper::client_platform_handle.Pass();
 
   // The handle should be non-blocking.

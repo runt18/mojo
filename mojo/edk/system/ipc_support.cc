@@ -15,6 +15,7 @@
 #include "mojo/edk/system/message_pipe_dispatcher.h"
 #include "mojo/edk/system/slave_connection_manager.h"
 
+using mojo::embedder::ScopedPlatformHandle;
 using mojo::platform::TaskRunner;
 using mojo::util::RefPtr;
 
@@ -26,7 +27,7 @@ IPCSupport::IPCSupport(embedder::PlatformSupport* platform_support,
                        RefPtr<TaskRunner>&& delegate_thread_task_runner,
                        embedder::ProcessDelegate* process_delegate,
                        RefPtr<TaskRunner>&& io_thread_task_runner,
-                       embedder::ScopedPlatformHandle platform_handle)
+                       ScopedPlatformHandle platform_handle)
     : process_type_(process_type),
       delegate_thread_task_runner_(std::move(delegate_thread_task_runner)),
       process_delegate_(process_delegate),
@@ -95,7 +96,7 @@ ConnectionIdentifier IPCSupport::GenerateConnectionIdentifier() {
 RefPtr<MessagePipeDispatcher> IPCSupport::ConnectToSlave(
     const ConnectionIdentifier& connection_id,
     embedder::SlaveInfo slave_info,
-    embedder::ScopedPlatformHandle platform_handle,
+    ScopedPlatformHandle platform_handle,
     const base::Closure& callback,
     RefPtr<TaskRunner>&& callback_thread_task_runner,
     ChannelId* channel_id) {
@@ -105,9 +106,8 @@ RefPtr<MessagePipeDispatcher> IPCSupport::ConnectToSlave(
   static_assert(std::is_same<ChannelId, ProcessIdentifier>::value,
                 "ChannelId and ProcessIdentifier types don't match");
 
-  embedder::ScopedPlatformHandle platform_connection_handle =
-      ConnectToSlaveInternal(connection_id, slave_info, platform_handle.Pass(),
-                             channel_id);
+  ScopedPlatformHandle platform_connection_handle = ConnectToSlaveInternal(
+      connection_id, slave_info, platform_handle.Pass(), channel_id);
   return channel_manager()->CreateChannel(
       *channel_id, platform_connection_handle.Pass(), callback,
       std::move(callback_thread_task_runner));
@@ -122,7 +122,7 @@ RefPtr<MessagePipeDispatcher> IPCSupport::ConnectToMaster(
 
   static_assert(std::is_same<ChannelId, ProcessIdentifier>::value,
                 "ChannelId and ProcessIdentifier types don't match");
-  embedder::ScopedPlatformHandle platform_connection_handle =
+  ScopedPlatformHandle platform_connection_handle =
       ConnectToMasterInternal(connection_id);
   *channel_id = kMasterProcessIdentifier;
   return channel_manager()->CreateChannel(
@@ -130,10 +130,10 @@ RefPtr<MessagePipeDispatcher> IPCSupport::ConnectToMaster(
       std::move(callback_thread_task_runner));
 }
 
-embedder::ScopedPlatformHandle IPCSupport::ConnectToSlaveInternal(
+ScopedPlatformHandle IPCSupport::ConnectToSlaveInternal(
     const ConnectionIdentifier& connection_id,
     embedder::SlaveInfo slave_info,
-    embedder::ScopedPlatformHandle platform_handle,
+    ScopedPlatformHandle platform_handle,
     ProcessIdentifier* slave_process_identifier) {
   DCHECK(slave_process_identifier);
   DCHECK_EQ(process_type_, embedder::ProcessType::MASTER);
@@ -145,7 +145,7 @@ embedder::ScopedPlatformHandle IPCSupport::ConnectToSlaveInternal(
 
   system::ProcessIdentifier peer_id = system::kInvalidProcessIdentifier;
   bool is_first;
-  embedder::ScopedPlatformHandle platform_connection_handle;
+  ScopedPlatformHandle platform_connection_handle;
   CHECK_EQ(connection_manager()->Connect(connection_id, &peer_id, &is_first,
                                          &platform_connection_handle),
            ConnectionManager::Result::SUCCESS_CONNECT_NEW_CONNECTION);
@@ -154,13 +154,13 @@ embedder::ScopedPlatformHandle IPCSupport::ConnectToSlaveInternal(
   return platform_connection_handle;
 }
 
-embedder::ScopedPlatformHandle IPCSupport::ConnectToMasterInternal(
+ScopedPlatformHandle IPCSupport::ConnectToMasterInternal(
     const ConnectionIdentifier& connection_id) {
   DCHECK_EQ(process_type_, embedder::ProcessType::SLAVE);
 
   system::ProcessIdentifier peer_id = system::kInvalidProcessIdentifier;
   bool is_first;
-  embedder::ScopedPlatformHandle platform_connection_handle;
+  ScopedPlatformHandle platform_connection_handle;
   CHECK_EQ(connection_manager()->Connect(connection_id, &peer_id, &is_first,
                                          &platform_connection_handle),
            ConnectionManager::Result::SUCCESS_CONNECT_NEW_CONNECTION);

@@ -22,6 +22,7 @@
 #include "mojo/public/cpp/system/macros.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
+using mojo::embedder::ScopedPlatformHandle;
 using mojo::util::RefPtr;
 
 namespace mojo {
@@ -94,7 +95,7 @@ class MultiprocessMessagePipePerfTest
 MOJO_MULTIPROCESS_TEST_CHILD_MAIN(PingPongClient) {
   embedder::SimplePlatformSupport platform_support;
   test::ChannelThread channel_thread(&platform_support);
-  embedder::ScopedPlatformHandle client_platform_handle =
+  ScopedPlatformHandle client_platform_handle =
       mojo::test::MultiprocessTestHelper::client_platform_handle.Pass();
   CHECK(client_platform_handle.is_valid());
   RefPtr<ChannelEndpoint> ep;

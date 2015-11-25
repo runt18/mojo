@@ -45,7 +45,7 @@ std::unique_ptr<MessageInTransit> MakeTestMessage(uint32_t num_bytes) {
   std::vector<unsigned char> bytes(num_bytes, 0);
   for (size_t i = 0; i < num_bytes; i++)
     bytes[i] = static_cast<unsigned char>(i + num_bytes);
-  return util::MakeUnique<MessageInTransit>(
+  return MakeUnique<MessageInTransit>(
       MessageInTransit::Type::ENDPOINT_CLIENT,
       MessageInTransit::Subtype::ENDPOINT_CLIENT_DATA, num_bytes,
       bytes.empty() ? nullptr : &bytes[0]);
@@ -389,7 +389,7 @@ TEST_F(RawChannelTest, WriteMessageAndOnReadMessage) {
   {
     std::vector<std::unique_ptr<RawChannelWriterThread>> writer_threads;
     for (size_t i = 0; i < kNumWriterThreads; i++) {
-      writer_threads.push_back(util::MakeUnique<RawChannelWriterThread>(
+      writer_threads.push_back(MakeUnique<RawChannelWriterThread>(
           writer_rc.get(), kNumWriteMessagesPerThread));
     }
     for (size_t i = 0; i < writer_threads.size(); i++)
@@ -811,9 +811,9 @@ TEST_F(RawChannelTest, ReadWritePlatformHandles) {
         new MessageInTransit(MessageInTransit::Type::ENDPOINT_CLIENT,
                              MessageInTransit::Subtype::ENDPOINT_CLIENT_DATA,
                              sizeof(kHello), kHello));
-    message->SetTransportData(util::MakeUnique<TransportData>(
-        std::move(platform_handles),
-        rc_write->GetSerializedPlatformHandleSize()));
+    message->SetTransportData(
+        MakeUnique<TransportData>(std::move(platform_handles),
+                                  rc_write->GetSerializedPlatformHandleSize()));
     EXPECT_TRUE(rc_write->WriteMessage(std::move(message)));
   }
 
