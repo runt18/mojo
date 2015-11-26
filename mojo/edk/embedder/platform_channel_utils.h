@@ -49,18 +49,6 @@ ssize_t PlatformChannelSendmsgWithHandles(PlatformHandle h,
                                           PlatformHandle* platform_handles,
                                           size_t num_platform_handles);
 
-// TODO(vtl): Remove this once I've switched things over to
-// |PlatformChannelSendmsgWithHandles()|.
-// Sends |PlatformHandle|s (i.e., file descriptors) over the Unix domain socket
-// (e.g., created using PlatformChannelPair|). (These will be sent in a single
-// message having one null byte of data and one control message header with all
-// the file descriptors.) All of the handles must be valid, and there must be at
-// most |kPlatformChannelMaxNumHandles| (and at least one handle). Returns true
-// on success, in which case it closes all the handles.
-bool PlatformChannelSendHandles(PlatformHandle h,
-                                PlatformHandle* handles,
-                                size_t num_handles);
-
 // Wrapper around |recvmsg()|, which will extract any attached file descriptors
 // (in the control message) to |ScopedPlatformHandle|s (and append them to
 // |platform_handles|). (This also handles |EINTR|.)
