@@ -4,6 +4,7 @@
 
 package org.chromium.mojo.notifications;
 
+import android.app.ActivityManager;
 import android.app.NotificationManager;
 import android.content.Context;
 import android.util.SparseArray;
@@ -17,6 +18,8 @@ import org.chromium.mojom.notifications.Notification;
 import org.chromium.mojom.notifications.NotificationClient;
 import org.chromium.mojom.notifications.NotificationData;
 import org.chromium.mojom.notifications.NotificationService;
+
+import java.util.List;
 
 /**
  * Android implementation of Notifications.
@@ -35,6 +38,7 @@ class NotificationServiceImpl implements NotificationService,
     private final String mNotificationManagerTag;
 
     private final NotificationBuilder mNotificationBuilder;
+    private final ActivityManager.AppTask mAppTask;
     private int mNextNotificationId;
 
     NotificationServiceImpl(
@@ -48,6 +52,14 @@ class NotificationServiceImpl implements NotificationService,
                 core, shell, "mojo:intent_receiver", IntentReceiverManager.MANAGER);
         mNotificationBuilder = new NotificationBuilder(
                 context, intentReceiverManager, notificationIconResourceId, this, this);
+        ActivityManager activityManager =
+                (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
+        List<ActivityManager.AppTask> tasks = activityManager.getAppTasks();
+        // Associate the service instance with the current top task of the shell
+        // application. All notifications created by this instance will be associated with
+        // this task too, and the task will be foregrounded when any of the notifications
+        // is selected.
+        mAppTask = tasks.isEmpty() ? null : tasks.get(0);
         mNextNotificationId = 1;
     }
 
@@ -63,7 +75,7 @@ class NotificationServiceImpl implements NotificationService,
             org.chromium.mojo.bindings.InterfaceRequest<Notification> request) {
         final int newNotificationId = getNewNotificationId();
         mNotificationClientMap.put(newNotificationId, notificationClient);
-        NotificationImpl notification = new NotificationImpl(this, newNotificationId);
+        NotificationImpl notification = new NotificationImpl(this, newNotificationId, mAppTask);
         mNotificationMap.put(newNotificationId, notification);
         Notification.MANAGER.bind(notification, request);
         postOrUpdateNotification(newNotificationId, notificationData);
@@ -74,12 +86,14 @@ class NotificationServiceImpl implements NotificationService,
     public void onNotificationSelected(int notificationId) {
         NotificationClient client = mNotificationClientMap.get(notificationId);
         if (client != null) {
+            NotificationImpl notification = mNotificationMap.get(notificationId);
+            if (notification != null) {
+                notification.moveToFront();
+            }
             client.onSelected();
         }
         // Since autoCancel is set to true (@see NotificationBuilder#build(int, NotificationData)),
-        // the notification no
-        // longer exists at this point. Clean
-        // it up.
+        // the notification no longer exists at this point. Clean it up.
         cleanUpNotification(notificationId);
     }
 

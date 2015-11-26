@@ -4,6 +4,8 @@
 
 package org.chromium.mojo.notifications;
 
+import android.app.ActivityManager;
+
 import org.chromium.mojo.system.MojoException;
 import org.chromium.mojom.notifications.Notification;
 import org.chromium.mojom.notifications.NotificationData;
@@ -15,11 +17,14 @@ import org.chromium.mojom.notifications.NotificationData;
 public class NotificationImpl implements Notification {
     private final NotificationServiceImpl mNotificationService;
     private final int mNotificationId;
+    private final ActivityManager.AppTask mAppTask;
     private boolean mIsValid;
 
-    public NotificationImpl(NotificationServiceImpl notificationService, int notificationId) {
+    public NotificationImpl(NotificationServiceImpl notificationService, int notificationId,
+            ActivityManager.AppTask appTask) {
         mNotificationService = notificationService;
         mNotificationId = notificationId;
+        mAppTask = appTask;
         mIsValid = true;
     }
 
@@ -45,5 +50,11 @@ public class NotificationImpl implements Notification {
 
     void invalidate() {
         mIsValid = false;
+    }
+
+    void moveToFront() {
+        if (mAppTask != null) {
+            mAppTask.moveToFront();
+        }
     }
 }
