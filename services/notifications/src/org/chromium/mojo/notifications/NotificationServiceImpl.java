@@ -75,7 +75,7 @@ class NotificationServiceImpl implements NotificationService,
             org.chromium.mojo.bindings.InterfaceRequest<Notification> request) {
         final int newNotificationId = getNewNotificationId();
         mNotificationClientMap.put(newNotificationId, notificationClient);
-        NotificationImpl notification = new NotificationImpl(this, newNotificationId, mAppTask);
+        NotificationImpl notification = new NotificationImpl(this, newNotificationId);
         mNotificationMap.put(newNotificationId, notification);
         Notification.MANAGER.bind(notification, request);
         postOrUpdateNotification(newNotificationId, notificationData);
@@ -86,10 +86,7 @@ class NotificationServiceImpl implements NotificationService,
     public void onNotificationSelected(int notificationId) {
         NotificationClient client = mNotificationClientMap.get(notificationId);
         if (client != null) {
-            NotificationImpl notification = mNotificationMap.get(notificationId);
-            if (notification != null) {
-                notification.moveToFront();
-            }
+            mAppTask.moveToFront();
             client.onSelected();
         }
         // Since autoCancel is set to true (@see NotificationBuilder#build(int, NotificationData)),
