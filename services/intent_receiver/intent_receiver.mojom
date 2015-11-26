@@ -11,7 +11,7 @@ interface IntentReceiverManager {
   // This method takes an |IntentReceiver| and returns a serialized intent.
   // The serialized intent can be deserialized using an android parcel. The
   // caller can then transform this intent into a PendingIntent using
-  // |PendingIntent#getService| and send it to another android application.
+  // |PendingIntent#getActivity| and send it to another android application.
   // Whenever the pending intent is executed, the receiver will be called with
   // the content of the received intent.
   // To be noted, this will fail if the received intent is active (contains

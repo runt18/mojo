@@ -79,7 +79,8 @@ class NotificationBuilder {
         @Override
         public void call(byte[] serializedIntent) {
             PendingIntent pendingIntent =
-                    PendingIntent.getService(mContext, 0, bytesToIntent(serializedIntent), 0);
+                    PendingIntent.getActivity(mContext, 0, bytesToIntent(serializedIntent), 0);
+
             switch (mAction) {
                 case SELECT:
                     mNotificationBuilder.setContentIntent(pendingIntent);

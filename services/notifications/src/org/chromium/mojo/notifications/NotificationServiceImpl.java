@@ -45,7 +45,7 @@ class NotificationServiceImpl implements NotificationService,
         mNotificationClientMap = new SparseArray<NotificationClient>();
         mNotificationManagerTag = toString();
         IntentReceiverManager intentReceiverManager = ShellHelper.connectToService(
-                core, shell, "mojo:android_handler", IntentReceiverManager.MANAGER);
+                core, shell, "mojo:intent_receiver", IntentReceiverManager.MANAGER);
         mNotificationBuilder = new NotificationBuilder(
                 context, intentReceiverManager, notificationIconResourceId, this, this);
         mNextNotificationId = 1;
