@@ -33,6 +33,10 @@ intptr_t GbmSurfaceless::GetNativeWindow() {
   return 0;
 }
 
+gfx::Size GbmSurfaceless::GetSize() {
+  return window_delegate_->bounds().size();
+}
+
 bool GbmSurfaceless::ResizeNativeWindow(const gfx::Size& viewport_size) {
   return true;
 }

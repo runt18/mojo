@@ -27,6 +27,7 @@ class GbmSurfaceless : public SurfaceOzoneEGL {
   ~GbmSurfaceless() override;
 
   // SurfaceOzoneEGL:
+  gfx::Size GetSize() override;
   intptr_t GetNativeWindow() override;
   bool ResizeNativeWindow(const gfx::Size& viewport_size) override;
   bool OnSwapBuffers() override;

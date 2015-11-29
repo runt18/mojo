@@ -30,6 +30,9 @@ class OZONE_BASE_EXPORT SurfaceOzoneEGL {
  public:
   virtual ~SurfaceOzoneEGL() {}
 
+  // Returns the size of the surface.
+  virtual gfx::Size GetSize() = 0;
+
   // Returns the EGL native window for rendering onto this surface.
   // This can be used to to create a GLSurface.
   virtual intptr_t /* EGLNativeWindowType */ GetNativeWindow() = 0;

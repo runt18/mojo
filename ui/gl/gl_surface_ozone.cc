@@ -252,7 +252,7 @@ GLSurfaceOzoneSurfaceless::GLSurfaceOzoneSurfaceless(
     scoped_ptr<ui::SurfaceOzoneEGL> ozone_surface,
     AcceleratedWidget widget,
     const gfx::SurfaceConfiguration& requested_configuration)
-    : SurfacelessEGL(gfx::Size(1, 1),  // passing zero size causes a failure
+    : SurfacelessEGL(ozone_surface->GetSize(),
                      requested_configuration),
       ozone_surface_(ozone_surface.Pass()),
       widget_(widget),
