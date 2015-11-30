@@ -13,10 +13,13 @@ import 'package:mojo/core.dart' as core;
 
 class NotificationData extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
-    const bindings.StructDataHeader(24, 0)
+    const bindings.StructDataHeader(32, 0)
   ];
   String title = null;
   String text = null;
+  bool playSound = false;
+  bool vibrate = false;
+  bool setLights = false;
 
   NotificationData() : super(kVersions.last.size);
 
@@ -61,6 +64,18 @@ class NotificationData extends bindings.Struct {
       
       result.text = decoder0.decodeString(16, true);
     }
+    if (mainDataHeader.version >= 0) {
+      
+      result.playSound = decoder0.decodeBool(24, 0);
+    }
+    if (mainDataHeader.version >= 0) {
+      
+      result.vibrate = decoder0.decodeBool(24, 1);
+    }
+    if (mainDataHeader.version >= 0) {
+      
+      result.setLights = decoder0.decodeBool(24, 2);
+    }
     return result;
   }
 
@@ -70,18 +85,30 @@ class NotificationData extends bindings.Struct {
     encoder0.encodeString(title, 8, true);
     
     encoder0.encodeString(text, 16, true);
+    
+    encoder0.encodeBool(playSound, 24, 0);
+    
+    encoder0.encodeBool(vibrate, 24, 1);
+    
+    encoder0.encodeBool(setLights, 24, 2);
   }
 
   String toString() {
     return "NotificationData("
            "title: $title" ", "
-           "text: $text" ")";
+           "text: $text" ", "
+           "playSound: $playSound" ", "
+           "vibrate: $vibrate" ", "
+           "setLights: $setLights" ")";
   }
 
   Map toJson() {
     Map map = new Map();
     map["title"] = title;
     map["text"] = text;
+    map["playSound"] = playSound;
+    map["vibrate"] = vibrate;
+    map["setLights"] = setLights;
     return map;
   }
 }

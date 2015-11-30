@@ -8,6 +8,8 @@ import android.app.Notification;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.media.RingtoneManager;
+import android.net.Uri;
 import android.os.Parcel;
 
 import org.chromium.mojo.intent.IntentReceiver;
@@ -53,6 +55,18 @@ class NotificationBuilder {
         notificationBuilder.setContentText(notificationData.text);
         notificationBuilder.setSmallIcon(mNotificationIconResourceId);
         notificationBuilder.setAutoCancel(true);
+        if (notificationData.playSound) {
+            Uri alarmSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+            notificationBuilder.setSound(alarmSound);
+        }
+        if (notificationData.vibrate) {
+            long[] vibratePattern = {500, 500, 500, 500, 500, 500, 500, 500, 500};
+            notificationBuilder.setVibrate(vibratePattern);
+        }
+        if (notificationData.setLights) {
+            notificationBuilder.setLights(Notification.COLOR_DEFAULT, 500, 500);
+        }
+
         populatePendingIntent(Action.SELECT, notificationId, notificationBuilder);
     }
 
