@@ -15,12 +15,12 @@
 
 #include <deque>
 #include <utility>
+#include <vector>
 
 #include "base/logging.h"
 #include "build/build_config.h"
 #include "mojo/edk/embedder/platform_channel_utils.h"
 #include "mojo/edk/embedder/platform_handle.h"
-#include "mojo/edk/embedder/platform_handle_vector.h"
 #include "mojo/edk/embedder/scoped_platform_handle.h"
 #include "mojo/edk/system/test/scoped_test_dir.h"
 #include "mojo/edk/test/test_utils.h"
@@ -147,23 +147,23 @@ TEST_F(PlatformChannelPairTest, SendReceiveFDs) {
     // Make |i| files, with the j-th file consisting of j copies of the digit
     // |c|.
     const char c = '0' + (i % 10);
-    ScopedPlatformHandleVectorPtr platform_handles(new PlatformHandleVector);
+    std::vector<ScopedPlatformHandle> platform_handles;
     for (size_t j = 1; j <= i; j++) {
       util::ScopedFILE fp(test_dir.CreateFile());
       ASSERT_TRUE(fp);
       ASSERT_EQ(j, fwrite(std::string(j, c).data(), 1, j, fp.get()));
-      platform_handles->push_back(
-          test::PlatformHandleFromFILE(std::move(fp)).release());
-      ASSERT_TRUE(platform_handles->back().is_valid());
+      platform_handles.push_back(test::PlatformHandleFromFILE(std::move(fp)));
+      ASSERT_TRUE(platform_handles.back().is_valid());
     }
 
     // Send the FDs (+ "hello").
     struct iovec iov = {const_cast<char*>(kHello), sizeof(kHello)};
     // We assume that the |sendmsg()| actually sends all the data.
     EXPECT_EQ(static_cast<ssize_t>(sizeof(kHello)),
-              PlatformChannelSendmsgWithHandles(server_handle.get(), &iov, 1,
-                                                &platform_handles->at(0),
-                                                platform_handles->size()));
+              PlatformChannelSendmsgWithHandles(
+                  server_handle.get(), &iov, 1,
+                  reinterpret_cast<PlatformHandle*>(platform_handles.data()),
+                  platform_handles.size()));
 
     WaitReadable(client_handle.get());
 
@@ -206,18 +206,18 @@ TEST_F(PlatformChannelPairTest, AppendReceivedFDs) {
     ASSERT_TRUE(fp);
     ASSERT_EQ(file_contents.size(),
               fwrite(file_contents.data(), 1, file_contents.size(), fp.get()));
-    ScopedPlatformHandleVectorPtr platform_handles(new PlatformHandleVector);
-    platform_handles->push_back(
-        test::PlatformHandleFromFILE(std::move(fp)).release());
-    ASSERT_TRUE(platform_handles->back().is_valid());
+    std::vector<ScopedPlatformHandle> platform_handles;
+    platform_handles.push_back(test::PlatformHandleFromFILE(std::move(fp)));
+    ASSERT_TRUE(platform_handles.back().is_valid());
 
     // Send the FD (+ "hello").
     struct iovec iov = {const_cast<char*>(kHello), sizeof(kHello)};
     // We assume that the |sendmsg()| actually sends all the data.
     EXPECT_EQ(static_cast<ssize_t>(sizeof(kHello)),
-              PlatformChannelSendmsgWithHandles(server_handle.get(), &iov, 1,
-                                                &platform_handles->at(0),
-                                                platform_handles->size()));
+              PlatformChannelSendmsgWithHandles(
+                  server_handle.get(), &iov, 1,
+                  reinterpret_cast<PlatformHandle*>(platform_handles.data()),
+                  platform_handles.size()));
   }
 
   WaitReadable(client_handle.get());

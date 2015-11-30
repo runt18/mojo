@@ -10,7 +10,6 @@
 #include "base/bind.h"
 #include "base/logging.h"
 #include "base/strings/stringprintf.h"
-#include "mojo/edk/embedder/platform_handle_vector.h"
 #include "mojo/edk/system/endpoint_relayer.h"
 #include "mojo/edk/system/transport_data.h"
 

@@ -17,7 +17,6 @@
 #include "mojo/edk/embedder/master_process_delegate.h"
 #include "mojo/edk/embedder/platform_channel_pair.h"
 #include "mojo/edk/embedder/platform_handle.h"
-#include "mojo/edk/embedder/platform_handle_vector.h"
 #include "mojo/edk/embedder/scoped_platform_handle.h"
 #include "mojo/edk/system/connection_manager_messages.h"
 #include "mojo/edk/system/message_in_transit.h"
