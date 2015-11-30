@@ -16,8 +16,8 @@
 #include "base/message_loop/message_loop.h"
 #include "mojo/edk/embedder/master_process_delegate.h"
 #include "mojo/edk/embedder/platform_channel_pair.h"
-#include "mojo/edk/embedder/platform_handle.h"
-#include "mojo/edk/embedder/scoped_platform_handle.h"
+#include "mojo/edk/platform/platform_handle.h"
+#include "mojo/edk/platform/scoped_platform_handle.h"
 #include "mojo/edk/system/connection_manager_messages.h"
 #include "mojo/edk/system/message_in_transit.h"
 #include "mojo/edk/system/raw_channel.h"
@@ -26,7 +26,8 @@
 #include "mojo/edk/util/waitable_event.h"
 #include "mojo/public/cpp/system/macros.h"
 
-using mojo::embedder::ScopedPlatformHandle;
+using mojo::platform::PlatformHandle;
+using mojo::platform::ScopedPlatformHandle;
 using mojo::platform::TaskRunner;
 using mojo::util::AutoResetWaitableEvent;
 using mojo::util::MakeUnique;
@@ -293,7 +294,7 @@ class MasterConnectionManager::ProcessConnections {
     // Pending:
     if (pending_platform_handle) {
       pending_platform_handle->reset(it->second);
-      it->second = embedder::PlatformHandle();
+      it->second = PlatformHandle();
     }
     return ConnectionStatus::PENDING;
   }
@@ -306,7 +307,7 @@ class MasterConnectionManager::ProcessConnections {
 
     if (status == ConnectionStatus::RUNNING) {
       DCHECK(!pending_platform_handle.is_valid());
-      process_connections_[to_process_identifier] = embedder::PlatformHandle();
+      process_connections_[to_process_identifier] = PlatformHandle();
     } else if (status == ConnectionStatus::PENDING) {
       DCHECK(pending_platform_handle.is_valid());
       process_connections_[to_process_identifier] =
@@ -318,7 +319,7 @@ class MasterConnectionManager::ProcessConnections {
 
  private:
   // TODO(vtl): Make |second| |ScopedPlatformHandle|s.
-  std::unordered_map<ProcessIdentifier, embedder::PlatformHandle>
+  std::unordered_map<ProcessIdentifier, PlatformHandle>
       process_connections_;  // "Owns" any valid platform handles.
 
   MOJO_DISALLOW_COPY_AND_ASSIGN(ProcessConnections);

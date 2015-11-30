@@ -63,7 +63,7 @@ class RemoteProducerDataPipeImpl final : public DataPipeImpl {
       Channel* channel,
       void* destination,
       size_t* actual_size,
-      std::vector<embedder::ScopedPlatformHandle>* platform_handles) override;
+      std::vector<platform::ScopedPlatformHandle>* platform_handles) override;
   void ConsumerClose() override;
   MojoResult ConsumerReadData(UserPointer<void> elements,
                               UserPointer<uint32_t> num_bytes,
@@ -86,7 +86,7 @@ class RemoteProducerDataPipeImpl final : public DataPipeImpl {
       Channel* channel,
       void* destination,
       size_t* actual_size,
-      std::vector<embedder::ScopedPlatformHandle>* platform_handles) override;
+      std::vector<platform::ScopedPlatformHandle>* platform_handles) override;
   bool OnReadMessage(unsigned port, MessageInTransit* message) override;
   void OnDetachFromChannel(unsigned port) override;
 

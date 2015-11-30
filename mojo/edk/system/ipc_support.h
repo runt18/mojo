@@ -10,8 +10,8 @@
 #include "base/callback_forward.h"
 #include "base/gtest_prod_util.h"
 #include "mojo/edk/embedder/process_type.h"
-#include "mojo/edk/embedder/scoped_platform_handle.h"
 #include "mojo/edk/embedder/slave_info.h"
+#include "mojo/edk/platform/scoped_platform_handle.h"
 #include "mojo/edk/platform/task_runner.h"
 #include "mojo/edk/system/channel_id.h"
 #include "mojo/edk/system/connection_identifier.h"
@@ -67,7 +67,7 @@ class IPCSupport {
              util::RefPtr<platform::TaskRunner>&& delegate_thread_task_runner,
              embedder::ProcessDelegate* process_delegate,
              util::RefPtr<platform::TaskRunner>&& io_thread_task_runner,
-             embedder::ScopedPlatformHandle platform_handle);
+             platform::ScopedPlatformHandle platform_handle);
   // Note: This object must be shut down before destruction (see
   // |ShutdownOnIOThread()|).
   ~IPCSupport();
@@ -102,7 +102,7 @@ class IPCSupport {
   util::RefPtr<MessagePipeDispatcher> ConnectToSlave(
       const ConnectionIdentifier& connection_id,
       embedder::SlaveInfo slave_info,
-      embedder::ScopedPlatformHandle platform_handle,
+      platform::ScopedPlatformHandle platform_handle,
       const base::Closure& callback,
       util::RefPtr<platform::TaskRunner>&& callback_thread_task_runner,
       ChannelId* channel_id);
@@ -147,17 +147,17 @@ class IPCSupport {
   // and slave) and creates a second OS "pipe" between the master and slave
   // (returning the master's handle). |*slave_process_identifier| will be set to
   // the process identifier assigned to the slave.
-  embedder::ScopedPlatformHandle ConnectToSlaveInternal(
+  platform::ScopedPlatformHandle ConnectToSlaveInternal(
       const ConnectionIdentifier& connection_id,
       embedder::SlaveInfo slave_info,
-      embedder::ScopedPlatformHandle platform_handle,
+      platform::ScopedPlatformHandle platform_handle,
       ProcessIdentifier* slave_process_identifier);
 
   // Helper for |ConnectToMaster()|. Connects (using the connection manager) to
   // the master (using the handle to the OS "pipe" that was given to
   // |SlaveConnectionManager::Init()|) and creates a second OS "pipe" between
   // the master and slave (returning the slave's handle).
-  embedder::ScopedPlatformHandle ConnectToMasterInternal(
+  platform::ScopedPlatformHandle ConnectToMasterInternal(
       const ConnectionIdentifier& connection_id);
 
   ConnectionManager* connection_manager() const {

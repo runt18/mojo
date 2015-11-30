@@ -23,9 +23,9 @@
 #include "mojo/edk/base_edk/platform_task_runner_impl.h"
 #include "mojo/edk/embedder/embedder.h"
 #include "mojo/edk/embedder/platform_channel_pair.h"
-#include "mojo/edk/embedder/scoped_platform_handle.h"
 #include "mojo/edk/embedder/simple_platform_support.h"
 #include "mojo/edk/embedder/slave_process_delegate.h"
+#include "mojo/edk/platform/scoped_platform_handle.h"
 #include "mojo/edk/platform/task_runner.h"
 #include "mojo/edk/util/ref_ptr.h"
 #include "mojo/message_pump/message_pump_mojo.h"
@@ -36,6 +36,7 @@
 #include "shell/init.h"
 #include "shell/native_application_support.h"
 
+using mojo::platform::ScopedPlatformHandle;
 using mojo::util::MakeRefCounted;
 using mojo::util::RefPtr;
 
@@ -97,7 +98,7 @@ class AppContext : public mojo::embedder::SlaveProcessDelegate {
       : io_thread_("io_thread"), controller_thread_("controller_thread") {}
   ~AppContext() override {}
 
-  void Init(mojo::embedder::ScopedPlatformHandle platform_handle) {
+  void Init(ScopedPlatformHandle platform_handle) {
     // Initialize Mojo before starting any threads.
     // TODO(vtl): Use make_unique when C++14 is available.
     mojo::embedder::Init(std::unique_ptr<mojo::embedder::PlatformSupport>(
@@ -304,7 +305,7 @@ int main(int argc, char** argv) {
 
   std::string platform_channel_info =
       command_line.GetSwitchValueASCII(switches::kPlatformChannelHandleInfo);
-  mojo::embedder::ScopedPlatformHandle platform_handle =
+  ScopedPlatformHandle platform_handle =
       mojo::embedder::PlatformChannelPair::PassClientHandleFromParentProcess(
           platform_channel_info);
   CHECK(platform_handle.is_valid());

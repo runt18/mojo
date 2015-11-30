@@ -10,8 +10,8 @@
 
 #include <deque>
 
-#include "mojo/edk/embedder/platform_handle.h"
-#include "mojo/edk/embedder/scoped_platform_handle.h"
+#include "mojo/edk/platform/platform_handle.h"
+#include "mojo/edk/platform/scoped_platform_handle.h"
 
 struct iovec;  // Declared in <sys/uio.h>.
 
@@ -28,10 +28,10 @@ const size_t kPlatformChannelMaxNumHandles = 128;
 // equivalent). These are like |write()| and |writev()|, but handle |EINTR| and
 // never raise |SIGPIPE|. (Note: On Mac, the suppression of |SIGPIPE| is set up
 // by |PlatformChannelPair|.)
-ssize_t PlatformChannelWrite(PlatformHandle h,
+ssize_t PlatformChannelWrite(platform::PlatformHandle h,
                              const void* bytes,
                              size_t num_bytes);
-ssize_t PlatformChannelWritev(PlatformHandle h,
+ssize_t PlatformChannelWritev(platform::PlatformHandle h,
                               struct iovec* iov,
                               size_t num_iov);
 
@@ -43,20 +43,21 @@ ssize_t PlatformChannelWritev(PlatformHandle h,
 // bytes of data sent on success (note that this may not be all the data
 // specified by |iov|). (The handles are not closed, regardless of success or
 // failure.)
-ssize_t PlatformChannelSendmsgWithHandles(PlatformHandle h,
-                                          struct iovec* iov,
-                                          size_t num_iov,
-                                          PlatformHandle* platform_handles,
-                                          size_t num_platform_handles);
+ssize_t PlatformChannelSendmsgWithHandles(
+    platform::PlatformHandle h,
+    struct iovec* iov,
+    size_t num_iov,
+    platform::PlatformHandle* platform_handles,
+    size_t num_platform_handles);
 
 // Wrapper around |recvmsg()|, which will extract any attached file descriptors
 // (in the control message) to |ScopedPlatformHandle|s (and append them to
 // |platform_handles|). (This also handles |EINTR|.)
 ssize_t PlatformChannelRecvmsg(
-    PlatformHandle h,
+    platform::PlatformHandle h,
     void* buf,
     size_t num_bytes,
-    std::deque<ScopedPlatformHandle>* platform_handles);
+    std::deque<platform::ScopedPlatformHandle>* platform_handles);
 
 }  // namespace embedder
 }  // namespace mojo

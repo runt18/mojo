@@ -13,7 +13,7 @@
 #include "mojo/edk/system/endpoint_relayer.h"
 #include "mojo/edk/system/transport_data.h"
 
-using mojo::embedder::ScopedPlatformHandle;
+using mojo::platform::ScopedPlatformHandle;
 using mojo::util::MakeRefCounted;
 using mojo::util::MutexLocker;
 using mojo::util::RefPtr;

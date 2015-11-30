@@ -13,7 +13,7 @@
 #include "mojo/edk/util/scoped_file.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
-using mojo::embedder::ScopedPlatformHandle;
+using mojo::platform::ScopedPlatformHandle;
 using mojo::util::RefPtr;
 
 namespace mojo {

@@ -20,13 +20,16 @@
 #include "base/logging.h"
 #include "build/build_config.h"
 #include "mojo/edk/embedder/platform_channel_utils.h"
-#include "mojo/edk/embedder/platform_handle.h"
-#include "mojo/edk/embedder/scoped_platform_handle.h"
+#include "mojo/edk/platform/platform_handle.h"
+#include "mojo/edk/platform/scoped_platform_handle.h"
 #include "mojo/edk/system/test/scoped_test_dir.h"
 #include "mojo/edk/test/test_utils.h"
 #include "mojo/edk/util/scoped_file.h"
 #include "mojo/public/cpp/system/macros.h"
 #include "testing/gtest/include/gtest/gtest.h"
+
+using mojo::platform::PlatformHandle;
+using mojo::platform::ScopedPlatformHandle;
 
 namespace mojo {
 namespace embedder {

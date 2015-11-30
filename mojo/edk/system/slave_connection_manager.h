@@ -8,8 +8,8 @@
 #include <memory>
 
 #include "base/threading/thread.h"
-#include "mojo/edk/embedder/scoped_platform_handle.h"
 #include "mojo/edk/embedder/slave_process_delegate.h"
+#include "mojo/edk/platform/scoped_platform_handle.h"
 #include "mojo/edk/platform/task_runner.h"
 #include "mojo/edk/system/connection_manager.h"
 #include "mojo/edk/system/raw_channel.h"
@@ -52,7 +52,7 @@ class SlaveConnectionManager final : public ConnectionManager,
   // must stay alive at least until after |Shutdown()| has been called.
   void Init(util::RefPtr<platform::TaskRunner>&& delegate_thread_task_runner,
             embedder::SlaveProcessDelegate* slave_process_delegate,
-            embedder::ScopedPlatformHandle platform_handle);
+            platform::ScopedPlatformHandle platform_handle);
 
   // |ConnectionManager| methods:
   void Shutdown() override;
@@ -61,11 +61,11 @@ class SlaveConnectionManager final : public ConnectionManager,
   Result Connect(const ConnectionIdentifier& connection_id,
                  ProcessIdentifier* peer_process_identifier,
                  bool* is_first,
-                 embedder::ScopedPlatformHandle* platform_handle) override;
+                 platform::ScopedPlatformHandle* platform_handle) override;
 
  private:
   // These should only be called on |private_thread_|:
-  void InitOnPrivateThread(embedder::ScopedPlatformHandle platform_handle);
+  void InitOnPrivateThread(platform::ScopedPlatformHandle platform_handle);
   void ShutdownOnPrivateThread();
   void AllowConnectOnPrivateThread(const ConnectionIdentifier& connection_id,
                                    Result* result);
@@ -75,12 +75,12 @@ class SlaveConnectionManager final : public ConnectionManager,
                               Result* result,
                               ProcessIdentifier* peer_process_identifier,
                               bool* is_first,
-                              embedder::ScopedPlatformHandle* platform_handle);
+                              platform::ScopedPlatformHandle* platform_handle);
 
   // |RawChannel::Delegate| methods (only called on |private_thread_|):
   void OnReadMessage(
       const MessageInTransit::View& message_view,
-      std::unique_ptr<std::vector<embedder::ScopedPlatformHandle>>
+      std::unique_ptr<std::vector<platform::ScopedPlatformHandle>>
           platform_handles) override;
   void OnError(Error error) override;
 
@@ -119,7 +119,7 @@ class SlaveConnectionManager final : public ConnectionManager,
   // Used only when waiting for the ack to "connect":
   ProcessIdentifier* ack_peer_process_identifier_;
   bool* ack_is_first_;
-  embedder::ScopedPlatformHandle* ack_platform_handle_;
+  platform::ScopedPlatformHandle* ack_platform_handle_;
 
   // The (synchronous) |ConnectionManager| methods are implemented in the
   // following way (T is any thread other than |private_thread_|):

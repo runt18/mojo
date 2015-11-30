@@ -13,7 +13,7 @@
 #include "mojo/edk/system/configuration.h"
 #include "mojo/edk/system/message_in_transit.h"
 
-using mojo::embedder::ScopedPlatformHandle;
+using mojo::platform::ScopedPlatformHandle;
 
 namespace mojo {
 namespace system {

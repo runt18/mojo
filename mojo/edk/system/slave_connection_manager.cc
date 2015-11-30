@@ -15,7 +15,7 @@
 #include "mojo/edk/system/message_in_transit.h"
 #include "mojo/edk/util/make_unique.h"
 
-using mojo::embedder::ScopedPlatformHandle;
+using mojo::platform::ScopedPlatformHandle;
 using mojo::platform::TaskRunner;
 using mojo::util::MakeUnique;
 using mojo::util::MutexLocker;

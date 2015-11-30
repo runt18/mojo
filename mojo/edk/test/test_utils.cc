@@ -11,12 +11,13 @@
 #include "base/logging.h"
 #include "base/posix/eintr_wrapper.h"
 
-using mojo::embedder::ScopedPlatformHandle;
+using mojo::platform::PlatformHandle;
+using mojo::platform::ScopedPlatformHandle;
 
 namespace mojo {
 namespace test {
 
-bool BlockingWrite(const embedder::PlatformHandle& handle,
+bool BlockingWrite(const PlatformHandle& handle,
                    const void* buffer,
                    size_t bytes_to_write,
                    size_t* bytes_written) {
@@ -37,7 +38,7 @@ bool BlockingWrite(const embedder::PlatformHandle& handle,
   return true;
 }
 
-bool BlockingRead(const embedder::PlatformHandle& handle,
+bool BlockingRead(const PlatformHandle& handle,
                   void* buffer,
                   size_t buffer_size,
                   size_t* bytes_read) {
@@ -58,7 +59,7 @@ bool BlockingRead(const embedder::PlatformHandle& handle,
   return true;
 }
 
-bool NonBlockingRead(const embedder::PlatformHandle& handle,
+bool NonBlockingRead(const PlatformHandle& handle,
                      void* buffer,
                      size_t buffer_size,
                      size_t* bytes_read) {
@@ -80,7 +81,7 @@ ScopedPlatformHandle PlatformHandleFromFILE(util::ScopedFILE fp) {
   CHECK(fp);
   int rv = dup(fileno(fp.get()));
   PCHECK(rv != -1) << "dup";
-  return ScopedPlatformHandle(embedder::PlatformHandle(rv));
+  return ScopedPlatformHandle(PlatformHandle(rv));
 }
 
 util::ScopedFILE FILEFromPlatformHandle(ScopedPlatformHandle h,

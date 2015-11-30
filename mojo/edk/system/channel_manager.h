@@ -10,7 +10,7 @@
 #include <unordered_map>
 
 #include "base/callback_forward.h"
-#include "mojo/edk/embedder/scoped_platform_handle.h"
+#include "mojo/edk/platform/scoped_platform_handle.h"
 #include "mojo/edk/platform/task_runner.h"
 #include "mojo/edk/system/channel_id.h"
 #include "mojo/edk/util/mutex.h"
@@ -74,7 +74,7 @@ class ChannelManager {
   // |ChannelManager|.
   util::RefPtr<MessagePipeDispatcher> CreateChannelOnIOThread(
       ChannelId channel_id,
-      embedder::ScopedPlatformHandle platform_handle);
+      platform::ScopedPlatformHandle platform_handle);
 
   // Like |CreateChannelOnIOThread()|, but doesn't create a bootstrap message
   // pipe. Returns the newly-created |Channel|.
@@ -82,7 +82,7 @@ class ChannelManager {
   // general).
   util::RefPtr<Channel> CreateChannelWithoutBootstrapOnIOThread(
       ChannelId channel_id,
-      embedder::ScopedPlatformHandle platform_handle);
+      platform::ScopedPlatformHandle platform_handle);
 
   // Like |CreateChannelOnIOThread()|, but may be called from any thread. On
   // completion, will call |callback| (using |callback_thread_task_runner| if it
@@ -90,7 +90,7 @@ class ChannelManager {
   // the I/O thread, even if called from that thread.
   util::RefPtr<MessagePipeDispatcher> CreateChannel(
       ChannelId channel_id,
-      embedder::ScopedPlatformHandle platform_handle,
+      platform::ScopedPlatformHandle platform_handle,
       const base::Closure& callback,
       util::RefPtr<platform::TaskRunner>&& callback_thread_task_runner);
 
@@ -134,7 +134,7 @@ class ChannelManager {
   // Returns the newly-created |Channel|.
   util::RefPtr<Channel> CreateChannelOnIOThreadHelper(
       ChannelId channel_id,
-      embedder::ScopedPlatformHandle platform_handle,
+      platform::ScopedPlatformHandle platform_handle,
       util::RefPtr<ChannelEndpoint>&& bootstrap_channel_endpoint);
 
   // Used by |CreateChannel()|. Called on the I/O thread.
@@ -143,7 +143,7 @@ class ChannelManager {
   // base::Bind.
   void CreateChannelHelper(
       ChannelId channel_id,
-      embedder::ScopedPlatformHandle platform_handle,
+      platform::ScopedPlatformHandle platform_handle,
       util::RefPtr<ChannelEndpoint> bootstrap_channel_endpoint,
       const base::Closure& callback,
       util::RefPtr<platform::TaskRunner> callback_thread_task_runner);

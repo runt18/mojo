@@ -9,7 +9,7 @@
 #include "base/test/test_timeouts.h"
 #include "mojo/edk/embedder/platform_channel_pair.h"
 
-using mojo::embedder::ScopedPlatformHandle;
+using mojo::platform::ScopedPlatformHandle;
 
 namespace mojo {
 namespace test {

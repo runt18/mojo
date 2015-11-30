@@ -14,8 +14,8 @@
 #include "base/bind.h"
 #include "base/logging.h"
 #include "mojo/edk/embedder/platform_channel_pair.h"
-#include "mojo/edk/embedder/platform_handle.h"
-#include "mojo/edk/embedder/scoped_platform_handle.h"
+#include "mojo/edk/platform/platform_handle.h"
+#include "mojo/edk/platform/scoped_platform_handle.h"
 #include "mojo/edk/system/message_in_transit.h"
 #include "mojo/edk/system/test/random.h"
 #include "mojo/edk/system/test/scoped_test_dir.h"
@@ -31,7 +31,8 @@
 #include "mojo/public/cpp/system/macros.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
-using mojo::embedder::ScopedPlatformHandle;
+using mojo::platform::PlatformHandle;
+using mojo::platform::ScopedPlatformHandle;
 using mojo::util::AutoResetWaitableEvent;
 using mojo::util::MakeUnique;
 using mojo::util::Mutex;
@@ -64,7 +65,7 @@ void InitOnIOThread(RawChannel* raw_channel, RawChannel::Delegate* delegate) {
   raw_channel->Init(delegate);
 }
 
-bool WriteTestMessageToHandle(const embedder::PlatformHandle& handle,
+bool WriteTestMessageToHandle(const PlatformHandle& handle,
                               uint32_t num_bytes) {
   std::unique_ptr<MessageInTransit> message(MakeTestMessage(num_bytes));
 
@@ -132,7 +133,7 @@ static const size_t kMessageReaderMaxPollIterations = 3000;
 
 class TestMessageReaderAndChecker {
  public:
-  explicit TestMessageReaderAndChecker(embedder::PlatformHandle handle)
+  explicit TestMessageReaderAndChecker(PlatformHandle handle)
       : handle_(handle) {}
   ~TestMessageReaderAndChecker() { CHECK(bytes_.empty()); }
 
@@ -186,7 +187,7 @@ class TestMessageReaderAndChecker {
   }
 
  private:
-  const embedder::PlatformHandle handle_;
+  const PlatformHandle handle_;
 
   // The start of the received data should always be on a message boundary.
   std::vector<unsigned char> bytes_;

@@ -10,7 +10,7 @@
 #include <unordered_map>
 
 #include "base/threading/thread.h"
-#include "mojo/edk/embedder/scoped_platform_handle.h"
+#include "mojo/edk/platform/scoped_platform_handle.h"
 #include "mojo/edk/platform/task_runner.h"
 #include "mojo/edk/system/connection_manager.h"
 #include "mojo/edk/util/mutex.h"
@@ -66,7 +66,7 @@ class MasterConnectionManager final : public ConnectionManager {
   // assuming proper shutdown. Returns the process identifier for the
   // newly-added slave.
   ProcessIdentifier AddSlave(embedder::SlaveInfo slave_info,
-                             embedder::ScopedPlatformHandle platform_handle);
+                             platform::ScopedPlatformHandle platform_handle);
 
   // Like |AddSlave()|, but allows a connection to be bootstrapped: both the
   // master and slave may call |Connect()| with |connection_id| immediately (as
@@ -76,7 +76,7 @@ class MasterConnectionManager final : public ConnectionManager {
   // tests.)
   ProcessIdentifier AddSlaveAndBootstrap(
       embedder::SlaveInfo slave_info,
-      embedder::ScopedPlatformHandle platform_handle,
+      platform::ScopedPlatformHandle platform_handle,
       const ConnectionIdentifier& connection_id);
 
   // |ConnectionManager| methods:
@@ -86,7 +86,7 @@ class MasterConnectionManager final : public ConnectionManager {
   Result Connect(const ConnectionIdentifier& connection_id,
                  ProcessIdentifier* peer_process_identifier,
                  bool* is_first,
-                 embedder::ScopedPlatformHandle* platform_handle) override;
+                 platform::ScopedPlatformHandle* platform_handle) override;
 
  private:
   class Helper;
@@ -101,7 +101,7 @@ class MasterConnectionManager final : public ConnectionManager {
                      const ConnectionIdentifier& connection_id,
                      ProcessIdentifier* peer_process_identifier,
                      bool* is_first,
-                     embedder::ScopedPlatformHandle* platform_handle);
+                     platform::ScopedPlatformHandle* platform_handle);
 
   // Helper for |ConnectImpl()|. This is called when the two process identifiers
   // are known (and known to be valid), and all that remains is to determine the
@@ -110,14 +110,14 @@ class MasterConnectionManager final : public ConnectionManager {
   Result ConnectImplHelperNoLock(
       ProcessIdentifier process_identifier,
       ProcessIdentifier peer_process_identifier,
-      embedder::ScopedPlatformHandle* platform_handle)
+      platform::ScopedPlatformHandle* platform_handle)
       MOJO_EXCLUSIVE_LOCKS_REQUIRED(mutex_);
 
   // These should only be called on |private_thread_|:
   void ShutdownOnPrivateThread() MOJO_NOT_THREAD_SAFE;
   // Signals |*event| on completion.
   void AddSlaveOnPrivateThread(embedder::SlaveInfo slave_info,
-                               embedder::ScopedPlatformHandle platform_handle,
+                               platform::ScopedPlatformHandle platform_handle,
                                ProcessIdentifier slave_process_identifier,
                                util::AutoResetWaitableEvent* event);
   // Called by |Helper::OnError()|.

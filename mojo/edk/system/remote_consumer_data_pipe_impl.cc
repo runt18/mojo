@@ -18,7 +18,7 @@
 #include "mojo/edk/system/message_in_transit.h"
 #include "mojo/edk/system/remote_data_pipe_ack.h"
 
-using mojo::embedder::ScopedPlatformHandle;
+using mojo::platform::ScopedPlatformHandle;
 using mojo::util::RefPtr;
 
 namespace mojo {

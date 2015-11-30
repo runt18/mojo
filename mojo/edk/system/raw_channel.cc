@@ -16,7 +16,8 @@
 #include "mojo/edk/system/message_in_transit.h"
 #include "mojo/edk/system/transport_data.h"
 
-using mojo::embedder::ScopedPlatformHandle;
+using mojo::platform::PlatformHandle;
+using mojo::platform::ScopedPlatformHandle;
 using mojo::util::MutexLocker;
 
 namespace mojo {
@@ -75,7 +76,7 @@ bool RawChannel::WriteBuffer::HavePlatformHandlesToSend() const {
 
 void RawChannel::WriteBuffer::GetPlatformHandlesToSend(
     size_t* num_platform_handles,
-    embedder::PlatformHandle** platform_handles,
+    PlatformHandle** platform_handles,
     void** serialization_data) {
   DCHECK(HavePlatformHandlesToSend());
 
@@ -85,7 +86,7 @@ void RawChannel::WriteBuffer::GetPlatformHandlesToSend(
       transport_data->platform_handles();
   *num_platform_handles =
       all_platform_handles->size() - platform_handles_offset_;
-  *platform_handles = reinterpret_cast<embedder::PlatformHandle*>(
+  *platform_handles = reinterpret_cast<PlatformHandle*>(
       &(*all_platform_handles)[platform_handles_offset_]);
 
   if (serialized_platform_handle_size_ > 0) {

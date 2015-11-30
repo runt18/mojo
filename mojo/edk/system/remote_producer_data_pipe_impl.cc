@@ -20,7 +20,7 @@
 #include "mojo/edk/system/remote_consumer_data_pipe_impl.h"
 #include "mojo/edk/system/remote_data_pipe_ack.h"
 
-using mojo::embedder::ScopedPlatformHandle;
+using mojo::platform::ScopedPlatformHandle;
 using mojo::util::RefPtr;
 
 namespace mojo {

@@ -31,7 +31,7 @@
 #include "mojo/public/cpp/system/macros.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
-using mojo::embedder::ScopedPlatformHandle;
+using mojo::platform::ScopedPlatformHandle;
 using mojo::util::AutoResetWaitableEvent;
 using mojo::util::ManualResetWaitableEvent;
 using mojo::util::RefPtr;

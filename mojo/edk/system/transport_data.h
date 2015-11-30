@@ -11,7 +11,7 @@
 #include <vector>
 
 #include "base/memory/aligned_memory.h"
-#include "mojo/edk/embedder/scoped_platform_handle.h"
+#include "mojo/edk/platform/scoped_platform_handle.h"
 #include "mojo/edk/system/dispatcher.h"
 #include "mojo/public/cpp/system/macros.h"
 
@@ -94,7 +94,7 @@ class TransportData {
   // |Dispatcher|s. (|Header| will be present, and zero except for
   // |num_platform_handles|, and |platform_handle_table_offset| if necessary.)
   explicit TransportData(
-      std::unique_ptr<std::vector<embedder::ScopedPlatformHandle>>
+      std::unique_ptr<std::vector<platform::ScopedPlatformHandle>>
           platform_handles,
       size_t serialized_platform_handle_size);
 
@@ -110,10 +110,10 @@ class TransportData {
 
   // Gets attached platform-specific handles; this may return null if there are
   // none. Note that the caller may mutate the set of platform-specific handles.
-  const std::vector<embedder::ScopedPlatformHandle>* platform_handles() const {
+  const std::vector<platform::ScopedPlatformHandle>* platform_handles() const {
     return platform_handles_.get();
   }
-  std::vector<embedder::ScopedPlatformHandle>* platform_handles() {
+  std::vector<platform::ScopedPlatformHandle>* platform_handles() {
     return platform_handles_.get();
   }
 
@@ -142,7 +142,7 @@ class TransportData {
   static std::unique_ptr<DispatcherVector> DeserializeDispatchers(
       const void* buffer,
       size_t buffer_size,
-      std::unique_ptr<std::vector<embedder::ScopedPlatformHandle>>
+      std::unique_ptr<std::vector<platform::ScopedPlatformHandle>>
           platform_handles,
       Channel* channel);
 
@@ -180,7 +180,7 @@ class TransportData {
   // transport). The vector (if any) owns the handles that it contains (and is
   // responsible for closing them).
   // TODO(vtl): With C++11, change it to a vector of |ScopedPlatformHandle|s.
-  std::unique_ptr<std::vector<embedder::ScopedPlatformHandle>>
+  std::unique_ptr<std::vector<platform::ScopedPlatformHandle>>
       platform_handles_;
 
   MOJO_DISALLOW_COPY_AND_ASSIGN(TransportData);

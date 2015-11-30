@@ -15,7 +15,7 @@
 #include "base/logging.h"
 #include "build/build_config.h"  // TODO(vtl): Remove this.
 #include "mojo/edk/embedder/platform_shared_buffer.h"
-#include "mojo/edk/embedder/scoped_platform_handle.h"
+#include "mojo/edk/platform/scoped_platform_handle.h"
 #include "mojo/edk/system/channel.h"
 #include "mojo/edk/system/dispatcher.h"
 #include "mojo/edk/system/message_pipe.h"
@@ -29,7 +29,7 @@
 #include "mojo/edk/util/scoped_file.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
-using mojo::embedder::ScopedPlatformHandle;
+using mojo::platform::ScopedPlatformHandle;
 using mojo::util::RefPtr;
 
 namespace mojo {

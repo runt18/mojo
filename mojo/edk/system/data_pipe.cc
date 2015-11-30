@@ -25,7 +25,7 @@
 #include "mojo/edk/system/remote_producer_data_pipe_impl.h"
 #include "mojo/edk/util/make_unique.h"
 
-using mojo::embedder::ScopedPlatformHandle;
+using mojo::platform::ScopedPlatformHandle;
 using mojo::util::MakeUnique;
 using mojo::util::MutexLocker;
 using mojo::util::RefPtr;

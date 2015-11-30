@@ -12,6 +12,9 @@
 #include "base/posix/eintr_wrapper.h"
 #include "build/build_config.h"
 
+using mojo::platform::PlatformHandle;
+using mojo::platform::ScopedPlatformHandle;
+
 namespace mojo {
 namespace embedder {
 

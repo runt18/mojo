@@ -15,7 +15,7 @@
 #include "mojo/edk/system/options_validation.h"
 #include "mojo/public/c/system/macros.h"
 
-using mojo::embedder::ScopedPlatformHandle;
+using mojo::platform::ScopedPlatformHandle;
 using mojo::util::RefPtr;
 
 namespace mojo {

@@ -7,7 +7,7 @@
 #include "base/message_loop/message_loop.h"
 #include "mojo/edk/embedder/embedder.h"
 
-using mojo::embedder::ScopedPlatformHandle;
+using mojo::platform::ScopedPlatformHandle;
 using mojo::platform::TaskRunner;
 using mojo::util::RefPtr;
 

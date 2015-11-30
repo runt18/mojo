@@ -9,8 +9,8 @@
 #include "mojo/edk/embedder/master_process_delegate.h"
 #include "mojo/edk/embedder/process_delegate.h"
 #include "mojo/edk/embedder/process_type.h"
-#include "mojo/edk/embedder/scoped_platform_handle.h"
 #include "mojo/edk/embedder/slave_process_delegate.h"
+#include "mojo/edk/platform/scoped_platform_handle.h"
 #include "mojo/edk/platform/task_runner.h"
 #include "mojo/edk/util/ref_ptr.h"
 #include "mojo/edk/util/waitable_event.h"
@@ -29,7 +29,7 @@ class ScopedIPCSupportHelper final {
   void Init(embedder::ProcessType process_type,
             embedder::ProcessDelegate* process_delegate,
             util::RefPtr<platform::TaskRunner>&& io_thread_task_runner,
-            embedder::ScopedPlatformHandle platform_handle);
+            platform::ScopedPlatformHandle platform_handle);
 
   void OnShutdownCompleteImpl();
 
@@ -93,10 +93,10 @@ class ScopedSlaveIPCSupport final : public embedder::SlaveProcessDelegate {
  public:
   ScopedSlaveIPCSupport(
       util::RefPtr<platform::TaskRunner>&& io_thread_task_runner,
-      embedder::ScopedPlatformHandle platform_handle);
+      platform::ScopedPlatformHandle platform_handle);
   ScopedSlaveIPCSupport(
       util::RefPtr<platform::TaskRunner>&& io_thread_task_runner,
-      embedder::ScopedPlatformHandle platform_handle,
+      platform::ScopedPlatformHandle platform_handle,
       base::Closure on_master_disconnect);
   ~ScopedSlaveIPCSupport() override;
 

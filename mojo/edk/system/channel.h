@@ -10,7 +10,7 @@
 #include <memory>
 #include <unordered_map>
 
-#include "mojo/edk/embedder/scoped_platform_handle.h"
+#include "mojo/edk/platform/scoped_platform_handle.h"
 #include "mojo/edk/system/channel_endpoint.h"
 #include "mojo/edk/system/channel_endpoint_id.h"
 #include "mojo/edk/system/incoming_endpoint.h"
@@ -191,18 +191,18 @@ class Channel final : public util::RefCountedThreadSafe<Channel>,
   // |RawChannel::Delegate| implementation (only called on the creation thread):
   void OnReadMessage(
       const MessageInTransit::View& message_view,
-      std::unique_ptr<std::vector<embedder::ScopedPlatformHandle>>
+      std::unique_ptr<std::vector<platform::ScopedPlatformHandle>>
           platform_handles) override;
   void OnError(Error error) override;
 
   // Helpers for |OnReadMessage| (only called on the creation thread):
   void OnReadMessageForEndpoint(
       const MessageInTransit::View& message_view,
-      std::unique_ptr<std::vector<embedder::ScopedPlatformHandle>>
+      std::unique_ptr<std::vector<platform::ScopedPlatformHandle>>
           platform_handles);
   void OnReadMessageForChannel(
       const MessageInTransit::View& message_view,
-      std::unique_ptr<std::vector<embedder::ScopedPlatformHandle>>
+      std::unique_ptr<std::vector<platform::ScopedPlatformHandle>>
           platform_handles);
 
   // Handles "attach and run endpoint" messages.

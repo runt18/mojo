@@ -10,7 +10,7 @@
 #include <memory>
 #include <vector>
 
-#include "mojo/edk/embedder/scoped_platform_handle.h"
+#include "mojo/edk/platform/scoped_platform_handle.h"
 #include "mojo/edk/system/channel_endpoint_client.h"
 #include "mojo/edk/system/handle_signals_state.h"
 #include "mojo/edk/system/memory.h"
@@ -124,7 +124,7 @@ class DataPipe final : public ChannelEndpointClient {
       Channel* channel,
       void* destination,
       size_t* actual_size,
-      std::vector<embedder::ScopedPlatformHandle>* platform_handles);
+      std::vector<platform::ScopedPlatformHandle>* platform_handles);
   bool ProducerIsBusy() const;
 
   // These are called by the consumer dispatcher to implement its methods of
@@ -157,7 +157,7 @@ class DataPipe final : public ChannelEndpointClient {
       Channel* channel,
       void* destination,
       size_t* actual_size,
-      std::vector<embedder::ScopedPlatformHandle>* platform_handles);
+      std::vector<platform::ScopedPlatformHandle>* platform_handles);
   bool ConsumerIsBusy() const;
 
   // The following are only to be used by |DataPipeImpl| (and its subclasses):

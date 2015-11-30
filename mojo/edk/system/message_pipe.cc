@@ -19,7 +19,7 @@
 #include "mojo/edk/system/proxy_message_pipe_endpoint.h"
 #include "mojo/edk/util/make_unique.h"
 
-using mojo::embedder::ScopedPlatformHandle;
+using mojo::platform::ScopedPlatformHandle;
 using mojo::util::MakeRefCounted;
 using mojo::util::MakeUnique;
 using mojo::util::MutexLocker;

@@ -13,7 +13,10 @@
 #include "base/posix/global_descriptors.h"
 #include "base/strings/string_number_conversions.h"
 #include "build/build_config.h"
-#include "mojo/edk/embedder/platform_handle.h"
+#include "mojo/edk/platform/platform_handle.h"
+
+using mojo::platform::PlatformHandle;
+using mojo::platform::ScopedPlatformHandle;
 
 namespace mojo {
 namespace embedder {

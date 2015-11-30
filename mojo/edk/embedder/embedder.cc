@@ -25,6 +25,7 @@
 #include "mojo/edk/system/raw_channel.h"
 #include "mojo/edk/util/ref_ptr.h"
 
+using mojo::platform::ScopedPlatformHandle;
 using mojo::platform::TaskRunner;
 using mojo::util::RefPtr;
 

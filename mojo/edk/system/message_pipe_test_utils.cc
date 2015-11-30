@@ -14,7 +14,7 @@
 #include "mojo/edk/system/test/timeouts.h"
 #include "mojo/edk/system/waiter.h"
 
-using mojo::embedder::ScopedPlatformHandle;
+using mojo::platform::ScopedPlatformHandle;
 using mojo::util::MakeRefCounted;
 using mojo::util::RefPtr;
 

@@ -29,6 +29,7 @@
 #include "mojo/public/cpp/system/message_pipe.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
+using mojo::platform::ScopedPlatformHandle;
 using mojo::platform::TaskRunner;
 using mojo::system::test::TestIOThread;
 using mojo::util::ManualResetWaitableEvent;

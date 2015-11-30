@@ -21,13 +21,14 @@
 #include "base/memory/weak_ptr.h"
 #include "base/message_loop/message_loop.h"
 #include "mojo/edk/embedder/platform_channel_utils.h"
-#include "mojo/edk/embedder/platform_handle.h"
-#include "mojo/edk/embedder/scoped_platform_handle.h"
+#include "mojo/edk/platform/platform_handle.h"
+#include "mojo/edk/platform/scoped_platform_handle.h"
 #include "mojo/edk/system/transport_data.h"
 #include "mojo/edk/util/make_unique.h"
 #include "mojo/public/cpp/system/macros.h"
 
-using mojo::embedder::ScopedPlatformHandle;
+using mojo::platform::PlatformHandle;
+using mojo::platform::ScopedPlatformHandle;
 using mojo::util::MakeUnique;
 using mojo::util::MutexLocker;
 
@@ -228,7 +229,7 @@ RawChannel::IOResult RawChannelPosix::WriteNoLock(
   size_t num_platform_handles = 0;
   ssize_t write_result;
   if (write_buffer_no_lock()->HavePlatformHandlesToSend()) {
-    embedder::PlatformHandle* platform_handles;
+    PlatformHandle* platform_handles;
     void* serialization_data;  // Actually unused.
     write_buffer_no_lock()->GetPlatformHandlesToSend(
         &num_platform_handles, &platform_handles, &serialization_data);

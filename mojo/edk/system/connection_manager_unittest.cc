@@ -18,6 +18,7 @@
 #include "mojo/edk/embedder/simple_platform_support.h"
 #include "mojo/edk/embedder/slave_process_delegate.h"
 #include "mojo/edk/platform/message_loop.h"
+#include "mojo/edk/platform/platform_handle.h"
 #include "mojo/edk/platform/test_message_loops.h"
 #include "mojo/edk/system/master_connection_manager.h"
 #include "mojo/edk/system/slave_connection_manager.h"
@@ -27,8 +28,9 @@
 #include "mojo/public/cpp/system/macros.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
-using mojo::embedder::ScopedPlatformHandle;
 using mojo::platform::MessageLoop;
+using mojo::platform::PlatformHandle;
+using mojo::platform::ScopedPlatformHandle;
 using mojo::platform::TaskRunner;
 using mojo::platform::test::CreateTestMessageLoop;
 using mojo::util::MakeRefCounted;
@@ -39,8 +41,8 @@ namespace mojo {
 namespace system {
 namespace {
 
-bool ArePlatformHandlesConnected(const embedder::PlatformHandle& h1,
-                                 const embedder::PlatformHandle& h2) {
+bool ArePlatformHandlesConnected(const PlatformHandle& h1,
+                                 const PlatformHandle& h2) {
   const uint32_t w1 = 0xdeadbeef;
   size_t num_bytes = 0;
   if (!mojo::test::BlockingWrite(h1, &w1, sizeof(w1), &num_bytes) ||

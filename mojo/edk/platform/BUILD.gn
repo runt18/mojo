@@ -8,6 +8,9 @@ mojo_edk_source_set("platform") {
   sources = [
     "message_loop.h",
     "message_loop_for_io.h",
+    "platform_handle.cc",
+    "platform_handle.h",
+    "scoped_platform_handle.h",
     "task_runner.h",
   ]
 

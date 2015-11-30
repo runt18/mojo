@@ -9,7 +9,7 @@
 
 #include "base/logging.h"
 
-using mojo::embedder::ScopedPlatformHandle;
+using mojo::platform::ScopedPlatformHandle;
 using mojo::util::MutexLocker;
 using mojo::util::RefPtr;
 

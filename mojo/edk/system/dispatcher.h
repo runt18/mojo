@@ -12,7 +12,7 @@
 #include <ostream>
 #include <vector>
 
-#include "mojo/edk/embedder/scoped_platform_handle.h"
+#include "mojo/edk/platform/scoped_platform_handle.h"
 #include "mojo/edk/system/handle_signals_state.h"
 #include "mojo/edk/system/memory.h"
 #include "mojo/edk/util/mutex.h"
@@ -200,7 +200,7 @@ class Dispatcher : public util::RefCountedThreadSafe<Dispatcher> {
         Channel* channel,
         void* destination,
         size_t* actual_size,
-        std::vector<embedder::ScopedPlatformHandle>* platform_handles);
+        std::vector<platform::ScopedPlatformHandle>* platform_handles);
 
     // Deserialization API.
     // Note: This "clears" (i.e., reset to the invalid handle) any platform
@@ -210,7 +210,7 @@ class Dispatcher : public util::RefCountedThreadSafe<Dispatcher> {
         int32_t type,
         const void* source,
         size_t size,
-        std::vector<embedder::ScopedPlatformHandle>* platform_handles);
+        std::vector<platform::ScopedPlatformHandle>* platform_handles);
   };
 
  protected:
@@ -304,7 +304,7 @@ class Dispatcher : public util::RefCountedThreadSafe<Dispatcher> {
       Channel* channel,
       void* destination,
       size_t* actual_size,
-      std::vector<embedder::ScopedPlatformHandle>* platform_handles)
+      std::vector<platform::ScopedPlatformHandle>* platform_handles)
       MOJO_NOT_THREAD_SAFE;
 
   // This should be overridden to return true if/when there's an ongoing
@@ -372,7 +372,7 @@ class Dispatcher : public util::RefCountedThreadSafe<Dispatcher> {
   bool EndSerializeAndClose(Channel* channel,
                             void* destination,
                             size_t* actual_size,
-                            std::vector<embedder::ScopedPlatformHandle>*
+                            std::vector<platform::ScopedPlatformHandle>*
                                 platform_handles) MOJO_NOT_THREAD_SAFE;
 
   // This protects the following members as well as any state added by

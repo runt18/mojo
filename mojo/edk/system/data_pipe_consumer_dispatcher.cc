@@ -10,7 +10,7 @@
 #include "mojo/edk/system/data_pipe.h"
 #include "mojo/edk/system/memory.h"
 
-using mojo::embedder::ScopedPlatformHandle;
+using mojo::platform::ScopedPlatformHandle;
 using mojo::util::MutexLocker;
 using mojo::util::RefPtr;
 
