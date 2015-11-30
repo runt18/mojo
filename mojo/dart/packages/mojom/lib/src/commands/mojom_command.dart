@@ -17,6 +17,7 @@ abstract class MojomCommand extends Command {
   bool _verbose;
   bool _dryRun;
   bool _errorOnDuplicate;
+  bool _force;
   Directory _mojomRoot;
   Directory _mojoSdk;
   List<String> _skips;
@@ -24,6 +25,7 @@ abstract class MojomCommand extends Command {
   bool get verbose => _verbose;
   bool get dryRun => _dryRun;
   bool get errorOnDuplicate => _errorOnDuplicate;
+  bool get force => _force;
   Directory get mojomRoot => _mojomRoot;
   Directory get mojoSdk => _mojoSdk;
   List<String> get skips => _skips;
@@ -47,6 +49,7 @@ abstract class MojomCommand extends Command {
     }
     _dryRun = globalResults['dry-run'];
     _errorOnDuplicate = !globalResults['ignore-duplicates'];
+    _force = globalResults['force'];
 
     final mojoSdkPath = globalResults['mojo-sdk'];
     if (mojoSdkPath == null) {

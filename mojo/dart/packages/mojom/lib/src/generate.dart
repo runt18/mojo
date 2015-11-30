@@ -20,15 +20,18 @@ class MojomGenerator {
   static dev.Counter _genMs;
   final bool _errorOnDuplicate;
   final bool _dryRun;
+  final bool _force;
   final Directory _mojoSdk;
 
   Map<String, String> _duplicateDetection;
   int _generationMs;
 
   MojomGenerator(this._mojoSdk,
-      {bool errorOnDuplicate: true, bool profile: false, bool dryRun: false})
+      {bool errorOnDuplicate: true, bool profile: false, bool dryRun: false,
+       bool force: false})
       : _errorOnDuplicate = errorOnDuplicate,
         _dryRun = dryRun,
+        _force = force,
         _generationMs = 0,
         _duplicateDetection = new Map<String, String>() {
     if (_genMs == null) {
@@ -62,7 +65,7 @@ class MojomGenerator {
 
     // If we don't have enough .mojom.dart files, or if a .mojom file is
     // newer than the oldest .mojom.dart file, then regenerate.
-    if ((mojomDartCount < mojomCount) ||
+    if (_force || (mojomDartCount < mojomCount) ||
         _shouldRegenerate(newestMojomTime, oldestMojomDartTime)) {
       for (File mojom in info.mojomFiles) {
         await _generateForMojom(
@@ -274,10 +277,10 @@ class TreeGenerator {
 
   TreeGenerator(
       Directory mojoSdk, this._mojomRootDir, this._dartRootDir, this._skip,
-      {bool dryRun: false})
+      {bool dryRun: false, bool force: false})
       : _mojoSdk = mojoSdk,
         _dryRun = dryRun,
-        _generator = new MojomGenerator(mojoSdk, dryRun: dryRun),
+        _generator = new MojomGenerator(mojoSdk, dryRun: dryRun, force: force),
         _processedPackages = new Set<String>(),
         errors = 0;
 

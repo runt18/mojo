@@ -31,6 +31,24 @@ def run(cwd, args):
 
 
 def main():
+  parser = argparse.ArgumentParser(
+      description='Generate source-tree Dart bindings')
+  parser.add_argument('-f', '--force',
+      default = False,
+      help='Always generate all bindings.',
+      action='store_true')
+  parser.add_argument('-v', '--verbose',
+      default = False,
+      help='Verbose output.',
+      action='store_true')
+  args = parser.parse_args()
+
+  extra_args = []
+  if args.force:
+    extra_args += ['-f']
+  if args.verbose:
+    extra_args += ['-v']
+
   run(MOJOM_PACKAGE_DIR, [PUB, 'get'])
   run(SRC_DIR, [DART,
                 MOJOM_BIN,
@@ -40,7 +58,7 @@ def main():
                 '-r',
                 SRC_DIR,
                 '--output',
-                PACKAGES_DIR])
+                PACKAGES_DIR] + extra_args)
   return 0
 
 if __name__ == '__main__':

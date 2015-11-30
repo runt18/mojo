@@ -22,6 +22,12 @@ class MojomCommandRunner extends CommandRunner {
         negatable: false,
         help: 'Print the operations that would have been run, but'
             'do not run anything.');
+    super.argParser.addFlag('force',
+        abbr: 'f',
+        defaultsTo: false,
+        negatable: false,
+        help: 'Causes bindings to be regenerated without regard for '
+            'file modification times.');
     super.argParser.addFlag('ignore-duplicates',
         abbr: 'i',
         defaultsTo: false,
