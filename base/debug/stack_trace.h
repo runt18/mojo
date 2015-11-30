@@ -69,7 +69,7 @@ class BASE_EXPORT StackTrace {
   // Prints the stack trace to stderr.
   void Print() const;
 
-#if !defined(__UCLIBC__)
+#if !defined(__UCLIBC__) && !defined(FNL_MUSL)
   // Resolves backtrace to symbols and write to stream.
   void OutputToStream(std::ostream* os) const;
 #endif

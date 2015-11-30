@@ -35,7 +35,7 @@ typedef testing::Test StackTraceTest;
 #else
 #define MAYBE_OutputToStream OutputToStream
 #endif
-#if !defined(__UCLIBC__)
+#if !defined(__UCLIBC__) && !defined(FNL_MUSL)
 TEST_F(StackTraceTest, MAYBE_OutputToStream) {
   StackTrace trace;
 
