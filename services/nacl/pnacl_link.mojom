@@ -4,7 +4,7 @@
 
 module mojo.nacl;
 
-[ServiceName="mojo::nacle::PexeLinkerInit"]
+[ServiceName="mojo::nacl::PexeLinkerInit"]
 interface PexeLinkerInit {
   PexeLinkerStart(handle<message_pipe> message_handle);
 };
