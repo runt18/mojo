@@ -101,14 +101,18 @@ class UnionBindingsTest(unittest.TestCase):
     with self.assertRaises(serialization.SerializationException):
       u.Serialize()
 
-  def testBoolInUnionSerialization(self):
-    u = test_unions_mojom.PodUnion(f_bool=True)
+  def doBoolInUnionSerializationTest(self, bool_value):
+    u = test_unions_mojom.PodUnion(f_bool=bool_value)
     data, handles = u.Serialize()
 
     context = serialization.RootDeserializationContext(data, handles)
     decoded = test_unions_mojom.PodUnion.Deserialize(context)
 
     self.assertEquals(u, decoded)
+
+  def testBoolInUnionSerialization(self):
+   self.doBoolInUnionSerializationTest(True)
+   self.doBoolInUnionSerializationTest(False)
 
   def testArrayInUnionSerialization(self):
     u = test_unions_mojom.ObjectUnion(
