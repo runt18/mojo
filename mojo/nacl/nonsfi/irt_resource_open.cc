@@ -9,12 +9,12 @@
 #include "mojo/nacl/nonsfi/irt_mojo_nonsfi.h"
 #include "mojo/nacl/nonsfi/temporary_file_util.h"
 #include "native_client/src/untrusted/irt/irt_dev.h"
-#include "services/nacl/kCrtbegin.h"
-#include "services/nacl/kCrtbeginForEh.h"
-#include "services/nacl/kCrtend.h"
-#include "services/nacl/kLibcrtPlatform.h"
-#include "services/nacl/kLibgcc.h"
-#include "services/nacl/kLibpnaclIrtShimDummy.h"
+#include "services/nacl/nonsfi/kCrtbegin.h"
+#include "services/nacl/nonsfi/kCrtbeginForEh.h"
+#include "services/nacl/nonsfi/kCrtend.h"
+#include "services/nacl/nonsfi/kLibcrtPlatform.h"
+#include "services/nacl/nonsfi/kLibgcc.h"
+#include "services/nacl/nonsfi/kLibpnaclIrtShimDummy.h"
 
 namespace {
 

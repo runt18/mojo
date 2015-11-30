@@ -88,7 +88,7 @@ def GetTestList(config, verbose_count=0):
     if (target_os == Config.OS_LINUX and
         config.sanitizer != Config.SANITIZER_ASAN):
       AddEntry("SFI NaCl tests",
-               [os.path.join(build_dir, "monacl_shell"),
+               [os.path.join(build_dir, "monacl_shell_sfi"),
                 os.path.join(build_dir, "irt_" + config.target_cpu,
                              "irt_mojo.nexe"),
                 os.path.join(build_dir, "clang_newlib_" + config.target_cpu,

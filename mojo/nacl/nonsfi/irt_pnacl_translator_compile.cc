@@ -12,7 +12,7 @@
 #include "mojo/public/cpp/bindings/strong_binding.h"
 #include "mojo/public/cpp/utility/run_loop.h"
 #include "native_client/src/untrusted/irt/irt_dev.h"
-#include "services/nacl/pnacl_compile.mojom.h"
+#include "services/nacl/nonsfi/pnacl_compile.mojom.h"
 
 namespace {
 

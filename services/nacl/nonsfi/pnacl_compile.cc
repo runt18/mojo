@@ -11,47 +11,48 @@
 #include "mojo/public/cpp/application/application_runner.h"
 #include "mojo/public/cpp/application/interface_factory.h"
 #include "mojo/public/cpp/bindings/strong_binding.h"
-#include "services/nacl/kLdNexe.h"
-#include "services/nacl/pnacl_link.mojom.h"
+#include "services/nacl/nonsfi/kPnaclLlcNexe.h"
+#include "services/nacl/nonsfi/pnacl_compile.mojom.h"
 
 namespace mojo {
 namespace nacl {
 
-class PexeLinkerImpl : public PexeLinkerInit {
+class PexeCompilerImpl : public PexeCompilerInit {
  public:
-  void PexeLinkerStart(ScopedMessagePipeHandle handle) override {
-    int nexe_fd = ::nacl::DataToTempFileDescriptor(::nacl::kLdNexe);
-    CHECK(nexe_fd >= 0) << "Could not open linker nexe";
+  void PexeCompilerStart(ScopedMessagePipeHandle handle) override {
+    int nexe_fd = ::nacl::DataToTempFileDescriptor(::nacl::kPnaclLlcNexe);
+    CHECK(nexe_fd >= 0) << "Could not open compiler nexe";
     ::nacl::MojoLaunchNexeNonsfi(nexe_fd,
                                  handle.release().value(),
                                  true /* enable_translate_irt */);
   }
 };
 
-class StrongBindingPexeLinkerImpl : public PexeLinkerImpl {
+class StrongBindingPexeCompilerImpl : public PexeCompilerImpl {
  public:
-  explicit StrongBindingPexeLinkerImpl(InterfaceRequest<PexeLinkerInit> request)
+  explicit StrongBindingPexeCompilerImpl(InterfaceRequest<PexeCompilerInit>
+                                         request)
       : strong_binding_(this, request.Pass()) {}
 
  private:
-  StrongBinding<PexeLinkerInit> strong_binding_;
+  StrongBinding<PexeCompilerInit> strong_binding_;
 };
 
-class MultiPexeLinker : public ApplicationDelegate,
-                        public InterfaceFactory<PexeLinkerInit> {
+class MultiPexeCompiler : public ApplicationDelegate,
+                          public InterfaceFactory<PexeCompilerInit> {
  public:
-  MultiPexeLinker() {}
+  MultiPexeCompiler() {}
 
   // From ApplicationDelegate
   bool ConfigureIncomingConnection(ApplicationConnection* connection) override {
-    connection->AddService<PexeLinkerInit>(this);
+    connection->AddService<PexeCompilerInit>(this);
     return true;
   }
 
   // From InterfaceFactory
   void Create(ApplicationConnection* connection,
-              InterfaceRequest<PexeLinkerInit> request) override {
-    new StrongBindingPexeLinkerImpl(request.Pass());
+              InterfaceRequest<PexeCompilerInit> request) override {
+    new StrongBindingPexeCompilerImpl(request.Pass());
   }
 };
 
@@ -59,6 +60,6 @@ class MultiPexeLinker : public ApplicationDelegate,
 }  // namespace mojo
 
 MojoResult MojoMain(MojoHandle application_request) {
-  mojo::ApplicationRunner runner(new mojo::nacl::MultiPexeLinker());
+  mojo::ApplicationRunner runner(new mojo::nacl::MultiPexeCompiler());
   return runner.Run(application_request);
 }

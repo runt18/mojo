@@ -14,8 +14,8 @@
 #include "mojo/public/cpp/application/application_impl.h"
 #include "mojo/public/cpp/bindings/array.h"
 #include "mojo/services/files/c/lib/template_util.h"
-#include "services/nacl/pnacl_compile.mojom.h"
-#include "services/nacl/pnacl_link.mojom.h"
+#include "services/nacl/nonsfi/pnacl_compile.mojom.h"
+#include "services/nacl/nonsfi/pnacl_link.mojom.h"
 
 namespace nacl {
 namespace content_handler {

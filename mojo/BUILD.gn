@@ -43,13 +43,13 @@ group("mojo") {
     if (mojo_use_nacl_sfi) {
       deps += [
         "//mojo/nacl/sfi:mojo_nacl",
-        "//mojo/nacl/sfi:mojo_nacl_tests",
+        "//mojo/nacl/sfi:mojo_nacl_tests_sfi",
       ]
     }
 
     if (mojo_use_nacl_nonsfi) {
       deps += [
-        "//mojo/nacl/nonsfi:mojo_nacl_nonsfi",
+        "//mojo/nacl/nonsfi:mojo_nacl",
         "//mojo/nacl/nonsfi:mojo_nacl_tests_nonsfi",
       ]
     }

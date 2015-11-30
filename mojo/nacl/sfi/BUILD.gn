@@ -6,7 +6,7 @@
 if (!is_nacl) {
   # A simple shell for running untrusted binaries that talk to the Mojo
   # embedder. (No services.)
-  executable("monacl_shell") {
+  executable("monacl_shell_sfi") {
     testonly = true
     sources = [
       "monacl_shell.cc",
@@ -27,14 +27,14 @@ if (!is_nacl) {
 
 group("mojo_nacl") {
   deps = [
-    "//services/nacl:content_handler_sfi",
+    "//services/nacl/sfi:content_handler_sfi_nexe",
   ]
 }
 
-group("mojo_nacl_tests") {
+group("mojo_nacl_tests_sfi") {
   testonly = true
   deps = [
     "//mojo/nacl:mojo_nacl_tests_untrusted(//build/toolchain/nacl:clang_newlib_${current_cpu})",
-    ":monacl_shell",
+    ":monacl_shell_sfi",
   ]
 }

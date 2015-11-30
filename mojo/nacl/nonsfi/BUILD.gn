@@ -15,7 +15,7 @@ if (!is_nacl) {
         "monacl_shell_nonsfi.cc",
       ]
       deps = [
-        ":irt_mojo_nonsfi",
+        ":irt_mojo",
         "//mojo/edk/system",
         "//mojo/public/cpp/environment:standalone",
         "//native_client/src/nonsfi/loader:elf_loader",
@@ -24,7 +24,7 @@ if (!is_nacl) {
   }
 }
 
-group("monacl_shell_nonsfi_x86") {
+group("monacl_shell_x86") {
   testonly = true
   deps = []
   if ((target_cpu == "x64" || target_cpu == "x86") && is_linux) {
@@ -38,7 +38,7 @@ group("monacl_shell_nonsfi_x86") {
   }
 }
 
-static_library("irt_mojo_nonsfi") {
+static_library("irt_mojo") {
   sources = [
     "irt_mojo_nonsfi.cc",
     "irt_mojo_nonsfi.h",
@@ -61,13 +61,13 @@ static_library("irt_mojo_nonsfi") {
     "//mojo/public/platform/native:mgl_thunks",
     "//mojo/public/platform/native:mgl_onscreen_thunks",
     "//native_client/src/nonsfi/irt:irt_interfaces",
-    "//services/nacl:pnacl_translator_irt",
+    "//services/nacl/nonsfi:pnacl_translator_irt",
   ]
 }
 
-group("mojo_nacl_nonsfi") {
+group("mojo_nacl") {
   deps = [
-    "//services/nacl:content_handler_nonsfi",
+    "//services/nacl/nonsfi:content_handler",
   ]
 }
 
@@ -142,7 +142,7 @@ action("prepend_shebang_to_nexe") {
   ]
 }
 
-group("monacl_test_nonsfi_nexes") {
+group("monacl_test_nexes") {
   testonly = true
   deps = [
     ":translate_mojo_pnacl_tests_to_native",
@@ -153,7 +153,7 @@ group("monacl_test_nonsfi_nexes") {
 group("mojo_nacl_tests_nonsfi") {
   testonly = true
   deps = [
-    ":monacl_shell_nonsfi_x86",
-    ":monacl_test_nonsfi_nexes",
+    ":monacl_shell_x86",
+    ":monacl_test_nexes",
   ]
 }
