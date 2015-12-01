@@ -9,14 +9,15 @@
 
 #include "base/bind.h"
 #include "base/logging.h"
-#include "base/strings/stringprintf.h"
 #include "mojo/edk/system/endpoint_relayer.h"
 #include "mojo/edk/system/transport_data.h"
+#include "mojo/edk/util/string_printf.h"
 
 using mojo::platform::ScopedPlatformHandle;
 using mojo::util::MakeRefCounted;
 using mojo::util::MutexLocker;
 using mojo::util::RefPtr;
+using mojo::util::StringPrintf;
 
 namespace mojo {
 namespace system {
@@ -162,10 +163,10 @@ void Channel::DetachEndpoint(ChannelEndpoint* endpoint,
   if (!SendControlMessage(MessageInTransit::Subtype::CHANNEL_REMOVE_ENDPOINT,
                           local_id, remote_id, 0, nullptr)) {
     HandleLocalError(
-        base::StringPrintf("Failed to send message to remove remote endpoint "
-                           "(local ID %u, remote ID %u)",
-                           static_cast<unsigned>(local_id.value()),
-                           static_cast<unsigned>(remote_id.value()))
+        StringPrintf("Failed to send message to remove remote endpoint (local "
+                     "ID %u, remote ID %u)",
+                     static_cast<unsigned>(local_id.value()),
+                     static_cast<unsigned>(remote_id.value()))
             .c_str());
   }
 }
@@ -309,10 +310,9 @@ void Channel::OnReadMessage(
       OnReadMessageForChannel(message_view, std::move(platform_handles));
       break;
     default:
-      HandleRemoteError(
-          base::StringPrintf("Received message of invalid type %u",
-                             static_cast<unsigned>(message_view.type()))
-              .c_str());
+      HandleRemoteError(StringPrintf("Received message of invalid type %u",
+                                     static_cast<unsigned>(message_view.type()))
+                            .c_str());
       break;
   }
 }
@@ -390,9 +390,10 @@ void Channel::OnReadMessageForEndpoint(
   }
   if (!endpoint) {
     HandleRemoteError(
-        base::StringPrintf(
+        StringPrintf(
             "Received a message for nonexistent local destination ID %u",
-            static_cast<unsigned>(local_id.value())).c_str());
+            static_cast<unsigned>(local_id.value()))
+            .c_str());
     // This is strongly indicative of some problem. However, it's not a fatal
     // error, since it may indicate a buggy (or hostile) remote process. Don't
     // die even for Debug builds, since handling this properly needs to be
@@ -544,11 +545,12 @@ bool Channel::OnRemoveEndpoint(ChannelEndpointId local_id,
   if (!SendControlMessage(
           MessageInTransit::Subtype::CHANNEL_REMOVE_ENDPOINT_ACK, local_id,
           remote_id, 0, nullptr)) {
-    HandleLocalError(base::StringPrintf(
-                         "Failed to send message to ack remove remote endpoint "
-                         "(local ID %u, remote ID %u)",
-                         static_cast<unsigned>(local_id.value()),
-                         static_cast<unsigned>(remote_id.value())).c_str());
+    HandleLocalError(
+        StringPrintf("Failed to send message to ack remove remote endpoint "
+                     "(local ID %u, remote ID %u)",
+                     static_cast<unsigned>(local_id.value()),
+                     static_cast<unsigned>(remote_id.value()))
+            .c_str());
   }
 
   return true;
@@ -619,11 +621,12 @@ ChannelEndpointId Channel::AttachAndRunEndpoint(
   if (!SendControlMessage(
           MessageInTransit::Subtype::CHANNEL_ATTACH_AND_RUN_ENDPOINT, local_id,
           remote_id, 0, nullptr)) {
-    HandleLocalError(base::StringPrintf(
-                         "Failed to send message to run remote endpoint (local "
-                         "ID %u, remote ID %u)",
-                         static_cast<unsigned>(local_id.value()),
-                         static_cast<unsigned>(remote_id.value())).c_str());
+    HandleLocalError(
+        StringPrintf("Failed to send message to run remote endpoint (local "
+                     "ID %u, remote ID %u)",
+                     static_cast<unsigned>(local_id.value()),
+                     static_cast<unsigned>(remote_id.value()))
+            .c_str());
     // TODO(vtl): Should we continue on to |AttachAndRun()|?
   }
 

@@ -9,7 +9,6 @@
 
 #include "base/bind.h"
 #include "base/logging.h"
-#include "base/strings/stringprintf.h"
 #include "mojo/edk/platform/scoped_platform_handle.h"
 #include "mojo/edk/system/local_message_pipe_endpoint.h"
 #include "mojo/edk/system/message_pipe.h"
@@ -19,11 +18,13 @@
 #include "mojo/edk/system/test/stopwatch.h"
 #include "mojo/edk/test/test_utils.h"
 #include "mojo/edk/util/ref_ptr.h"
+#include "mojo/edk/util/string_printf.h"
 #include "mojo/public/cpp/system/macros.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 using mojo::platform::ScopedPlatformHandle;
 using mojo::util::RefPtr;
+using mojo::util::StringPrintf;
 
 namespace mojo {
 namespace system {
@@ -68,9 +69,8 @@ class MultiprocessMessagePipePerfTest
     // Have one ping-pong to ensure channel being established.
     WriteWaitThenRead(mp);
 
-    std::string test_name =
-        base::StringPrintf("IPC_Perf_%dx_%u", message_count_,
-                           static_cast<unsigned>(message_size_));
+    std::string test_name = StringPrintf("IPC_Perf_%dx_%u", message_count_,
+                                         static_cast<unsigned>(message_size_));
     test::Stopwatch stopwatch;
 
     stopwatch.Start();
