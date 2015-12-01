@@ -215,6 +215,8 @@ void ApplicationManager::ConnectToApplicationWithParameters(
                "/authenticating_url_loader_interceptor.mojo", true)) {
     network_service = network_service_.get();
   } else if (!initialized_authentication_interceptor_) {
+#ifndef NO_AUTHENTICATION
+    // TODO(toshik): FNL hasn't supported authentication, yet
     authentication::AuthenticationServicePtr authentication_service;
     ConnectToService(GURL("mojo:authentication"), &authentication_service);
     mojo::AuthenticatingURLLoaderInterceptorMetaFactoryPtr
@@ -226,6 +228,7 @@ void ApplicationManager::ConnectToApplicationWithParameters(
         GetProxy(&interceptor_factory), authentication_service.Pass());
     authenticating_network_service_->RegisterURLLoaderInterceptor(
         interceptor_factory.Pass());
+#endif
     initialized_authentication_interceptor_ = true;
   }
 

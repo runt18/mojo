@@ -29,6 +29,11 @@ source_set("application_manager") {
     "shell_impl.h",
   ]
 
+  # TODO(toshik): FNL hasn't supported authentication, yet
+  if (is_fnl) {
+    defines = [ "NO_AUTHENTICATION" ]
+  }
+
   public_deps = [
     "//base",
     "//mojo/converters/url",
