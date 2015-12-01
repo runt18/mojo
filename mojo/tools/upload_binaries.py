@@ -60,21 +60,26 @@ def find_apps_to_upload(build_dir):
   return apps
 
 
-def check_call(command_line, dry_run, **kwargs):
+def check_call(config, command_line, dry_run, **kwargs):
   if dry_run:
     print command_line
   else:
+    if config.values['verbose']:
+      print command_line
     subprocess.check_call(command_line, **kwargs)
 
 
 def upload(config, source, dest, dry_run, gzip=False):
-  paths = Paths(config)
-  sys.path.insert(0, os.path.join(paths.src_root, "tools"))
-  # pylint: disable=F0401
-  import find_depot_tools
-
-  depot_tools_path = find_depot_tools.add_depot_tools_to_path()
-  gsutil_exe = os.path.join(depot_tools_path, "third_party", "gsutil", "gsutil")
+  if config.values['use_default_path_for_gsutil']:
+    gsutil_exe = "gsutil"
+  else:
+    paths = Paths(config)
+    sys.path.insert(0, os.path.join(paths.src_root, "tools"))
+    # pylint: disable=F0401
+    import find_depot_tools
+    depot_tools_path = find_depot_tools.add_depot_tools_to_path()
+    gsutil_exe = os.path.join(
+                            depot_tools_path, "third_party", "gsutil", "gsutil")
 
   command_line = [gsutil_exe, "cp"]
   if gzip and "." in source:
@@ -82,7 +87,7 @@ def upload(config, source, dest, dry_run, gzip=False):
     command_line.extend(["-z", extension])
   command_line.extend([source, dest])
 
-  check_call(command_line, dry_run)
+  check_call(config, command_line, dry_run)
 
 
 def upload_symbols(config, build_dir, breakpad_upload_urls, dry_run):
@@ -102,11 +107,11 @@ def upload_symbols(config, build_dir, breakpad_upload_urls, dry_run):
           upload(config, path, dest, dry_run)
       if breakpad_upload_urls:
         with tempfile.NamedTemporaryFile() as temp:
-          check_call([dump_syms_exe, path], dry_run,
+          check_call(config, [dump_syms_exe, path], dry_run,
                      stdout=temp, stderr=devnull)
           temp.flush()
           for upload_url in breakpad_upload_urls:
-            check_call([symupload_exe, temp.name, upload_url], dry_run)
+            check_call(config, [symupload_exe, temp.name, upload_url], dry_run)
 
 def upload_shell(config, dry_run, verbose):
   paths = Paths(config)
@@ -214,6 +219,10 @@ def main():
   parser.add_argument("--official",
                       action="store_true",
                       help="Upload the official build of the Android shell")
+  parser.add_argument("-p", "--use-default-path-for-gsutil",
+                      action="store_true",
+                      help=("Use default $PATH location for finding gsutil."
+        "  Helpful when gcloud sdk has been installed and $PATH has been set."))
   parser.add_argument("--symbols-upload-url",
                       action="append", default=[],
                       help="URL of the server to upload breakpad symbols to")
@@ -221,7 +230,6 @@ def main():
                       default="gs://mojo/",
                       help="root URL of the server to upload binaries to")
   args = parser.parse_args()
-
   is_official_build = args.official
   target_os = Config.OS_LINUX
   if args.android:
@@ -232,7 +240,9 @@ def main():
 
   config = Config(target_os=target_os, is_debug=False,
                   is_official_build=is_official_build,
-                  upload_location=args.upload_location)
+                  upload_location=args.upload_location,
+                  use_default_path_for_gsutil=args.use_default_path_for_gsutil,
+                  verbose=args.verbose)
 
   upload_shell(config, args.dry_run, args.verbose)
 
