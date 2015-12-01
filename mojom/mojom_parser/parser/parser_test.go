@@ -201,6 +201,7 @@ func TestSuccessfulParsing(t *testing.T) {
 		int32 x@4 = 42;
 		[age=7, level="high"] string  y = "Howdy!";
 		string? z;
+		bool w@6 = false;
 	};`
 	{
 		expectedFile.AddImport("another.file")
@@ -213,6 +214,7 @@ func TestSuccessfulParsing(t *testing.T) {
 		attributes.List = append(attributes.List, mojom.MojomAttribute{"level", mojom.MakeStringLiteralValue("high")})
 		structFoo.AddField(mojom.NewStructField(mojom.DeclTestDataA("y", attributes), mojom.BuiltInType("string"), mojom.MakeStringLiteralValue("Howdy!")))
 		structFoo.AddField(mojom.NewStructField(mojom.DeclTestData("z"), mojom.BuiltInType("string?"), nil))
+		structFoo.AddField(mojom.NewStructField(mojom.DeclTestDataWithOrdinal("w", 6), mojom.BuiltInType("bool"), mojom.MakeBoolLiteralValue(false)))
 		expectedFile.AddStruct(structFoo)
 	}
 	endTestCase()

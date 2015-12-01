@@ -10,6 +10,7 @@ import (
 	"mojom/mojom_parser/generated/mojom_files"
 	"mojom/mojom_parser/generated/mojom_types"
 	"mojom/mojom_parser/mojom"
+	myfmt "third_party/golang/src/fmt"
 )
 
 //////////////////////////////////////////////////
@@ -20,11 +21,16 @@ import (
 // column numbers.
 var EmitLineAndColumnNumbers bool = true
 
-// Serializes the MojomDescriptor into a binary form that is passed to the
+// Serialize serializes the MojomDescriptor into a binary form that is passed to the
 // backend of the compiler in order to invoke the code generators.
 // To do this we use Mojo serialization.
-func Serialize(d *mojom.MojomDescriptor) (bytes []byte, err error) {
+// If |debug| is true we also return a human-readable representation
+// of the serialized mojom_types.FileGraph.
+func Serialize(d *mojom.MojomDescriptor, debug bool) (bytes []byte, debugString string, err error) {
 	fileGraph := translateDescriptor(d)
+	if debug {
+		debugString = myfmt.Sprintf("%#v", fileGraph)
+	}
 	encoder := bindings.NewEncoder()
 	fileGraph.Encode(encoder)
 	bytes, _, err = encoder.Data()
@@ -290,6 +296,9 @@ func translateEnumValue(v *mojom.EnumValue) mojom_types.EnumValue {
 	enumValue.EnumTypeKey = v.EnumType().TypeKey()
 	if v.ValueRef() != nil {
 		enumValue.InitializerValue = translateValueRef(v.ValueRef())
+	}
+	if !v.IntValueComputed {
+		panic(fmt.Sprintf("IntValueComputed is false for %v.", v))
 	}
 	enumValue.IntValue = v.ComputedIntValue
 	return enumValue

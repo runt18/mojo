@@ -5,35 +5,10 @@
 package mojom
 
 import (
+	"math"
 	"mojom/mojom_parser/lexer"
 	"testing"
 )
-
-func TestAllowedAsEnumValueInitializer(t *testing.T) {
-	cases := []struct {
-		literalType LiteralType
-		allowed     bool
-	}{
-		{SimpleTypeBool, false},
-		{SimpleTypeDouble, false},
-		{SimpleTypeFloat, false},
-		{SimpleTypeInt8, true},
-		{SimpleTypeInt16, true},
-		{SimpleTypeInt32, true},
-		{SimpleTypeInt64, true},
-		{SimpleTypeUInt8, true},
-		{SimpleTypeUInt16, true},
-		{SimpleTypeUInt32, true},
-		{SimpleTypeUInt64, true},
-		{StringLiteralType, false},
-	}
-	for _, c := range cases {
-		got := c.literalType.AllowedAsEnumValueInitializer()
-		if got != c.allowed {
-			t.Errorf("%v.AllowedAsEnumValueInitializer() == %v, want %v", c.literalType, got, c.allowed)
-		}
-	}
-}
 
 func TestConcreteTypeKind(t *testing.T) {
 	cases := []struct {
@@ -238,8 +213,13 @@ func TestMarkUsedAsEnumValueInitializer(t *testing.T) {
 	}{
 		{MakeStringLiteralValue(""), false},
 		{MakeBoolLiteralValue(false), false},
-		{MakeInt64LiteralValue(0), true},
-		{MakeDoubleLiteralValue(0), false},
+		{MakeUint8LiteralValue(0), true},
+		{MakeInt8LiteralValue(-1), true},
+		{MakeInt64LiteralValue(math.MaxInt32), true},
+		{MakeInt64LiteralValue(math.MaxInt32 + 1), false},
+		{MakeInt64LiteralValue(math.MinInt32), true},
+		{MakeInt64LiteralValue(math.MinInt32 - 1), false},
+		{MakeDoubleLiteralValue(3.14), false},
 		{MakeDefaultLiteral(), false},
 		{userValueRef, true},
 	}

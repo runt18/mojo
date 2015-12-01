@@ -532,7 +532,6 @@ func (e *MojomEnum) InitAsScope(parentScope *Scope) *Scope {
 func (e *MojomEnum) AddEnumValue(declData DeclarationData, valueRef ValueRef) DuplicateNameError {
 	enumValue := new(EnumValue)
 	enumValue.Init(declData, UserDefinedValueKindEnum, enumValue, valueRef)
-	enumValue.ComputedIntValue = -1
 	e.Values = append(e.Values, enumValue)
 	enumValue.enumType = e
 	if e.scopeForValues == nil {
@@ -566,9 +565,11 @@ type EnumValue struct {
 
 	// After all values in the MojomDescriptor have been resolved,
 	// MojomDescriptor.ComputeEnumValueIntegers() should be invoked. This
-	// computes |ComputedIntValue| for all EnumValues. This field is
-	// initialized to -1 to indicate it has not yet been computed.
+	// computes |ComputedIntValue| for all EnumValues. The field
+	// IntValueComputed is set to true to indicate the value has been
+	// computed
 	ComputedIntValue int32
+	IntValueComputed bool
 }
 
 func (ev *EnumValue) EnumType() *MojomEnum {

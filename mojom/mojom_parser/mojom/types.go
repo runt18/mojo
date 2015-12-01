@@ -55,7 +55,6 @@ const (
 // A LiteralType is a |ConcreteType|.
 type LiteralType interface {
 	ConcreteType
-	AllowedAsEnumValueInitializer() bool
 }
 
 // ConcreteType represents the type of a concrete value. These are the types
@@ -132,13 +131,6 @@ func init() {
 
 func (SimpleType) LiteralTypeKind() TypeKind {
 	return TypeKindSimple
-}
-
-func (t SimpleType) AllowedAsEnumValueInitializer() bool {
-	if t == SimpleTypeBool || t == SimpleTypeDouble || t == SimpleTypeFloat {
-		return false
-	}
-	return true
 }
 
 // A SimpleType is a ConcreteType:
@@ -308,10 +300,6 @@ var StringLiteralType LiteralType = StringType{}
 
 func (StringType) LiteralTypeKind() TypeKind {
 	return TypeKindString
-}
-
-func (StringType) AllowedAsEnumValueInitializer() bool {
-	return false
 }
 
 // A StringType is a ConcreteType:
@@ -680,28 +668,28 @@ func (t *UserTypeRef) MarkTypeCompatible(assignment LiteralAssignment) bool {
 }
 
 func (ref *UserTypeRef) validateAfterResolution() error {
+	fileName := "unknown file"
+	if ref.scope != nil && ref.scope.file != nil {
+		fileName = ref.scope.file.CanonicalFileName
+	}
 	if ref.resolvedType.Kind() != UserDefinedTypeKindEnum {
 		// A type ref has resolved to a non-enum type. Make sure it is not
 		// being used as either a map key or a constant declaration. Also
 		// make sure that a literal was not assigned to it.
 		if ref.usedAsMapKey {
-			return fmt.Errorf("The type %s at %s is not allowed as the key "+
-				"type of a map. Only simple types, strings and enum types may "+
-				"be map keys.",
-				ref.identifier, ref.token.LongLocationString())
+			return fmt.Errorf("Type validation error\n"+
+				"%s:%s: The type %s is not allowed as the key type of a map. "+
+				"Only simple types, strings and enum types may be map keys.",
+				fileName, ref.token.ShortLocationString(), ref.identifier)
 		}
 		if ref.usedAsConstantType {
-			return fmt.Errorf("The type %s at %s is not allowed as the type "+
-				"of a declared constant. Only simple types, strings and enum "+
-				"types may be the types of constants.",
-				ref.identifier, ref.token.LongLocationString())
+			return fmt.Errorf("Type validation error\n"+
+				"%s:%s: The type %s is not allowed as the type of a declared constant. "+
+				"Only simple types, strings and enum types may be used.",
+				fileName, ref.token.ShortLocationString(), ref.identifier)
 		}
 	}
 	if ref.variableAssignment != nil && !ref.resolvedType.IsAssignmentCompatibleWith(ref.variableAssignment.assignedValue) {
-		fileName := "unknown file"
-		if ref.scope != nil && ref.scope.file != nil {
-			fileName = ref.scope.file.CanonicalFileName
-		}
 		return fmt.Errorf("Type validation error\n"+
 			"%s:%s: Illegal assignment: %s %s of type %s may not be assigned the value %v of type %s.",
 			fileName, ref.token.ShortLocationString(),
@@ -803,10 +791,27 @@ func (v *UserValueRef) MarkUsedAsEnumValueInitializer() bool {
 }
 
 func (v *UserValueRef) validateAfterResolution() error {
-	// TODO(rudominer) Implement UserValueRef.validateAfterResolution()
-	// This method should check the following:
-	// - If |usedAsEnumValueInitializer| is true then |resolvedDeclaredValue|
-	// must be an EnumValue
+	if v.resolvedConcreteValue == nil {
+		// Panic because this method should only be invoked after successful resolution.
+		panic(fmt.Sprintf("Unresolved concrete value for %v.", v))
+	}
+	if v.usedAsEnumValueInitializer {
+		switch concreteValue := v.resolvedConcreteValue.(type) {
+		case LiteralValue:
+			if _, ok := int32Value(concreteValue); !ok {
+				return fmt.Errorf("Value validation error\n"+
+					"%s:%s: '%s' cannot be used as an enum value initializer because "+
+					"its value, %v, is not a signed 32-bit integer.",
+					v.scope.file.CanonicalFileName, v.token.ShortLocationString(), v.identifier, concreteValue.Value())
+			}
+		case BuiltInConstantValue:
+			return fmt.Errorf("Value validation error\n"+
+				"%s:%s: '%s' cannot be used as an enum value initializer.",
+				v.scope.file.CanonicalFileName, v.token.ShortLocationString(), v.identifier)
+		}
+	}
+	// TODO(rudominer) Finish implementing UserValueRef.validateAfterResolution()
+	// This method should also check the following:
 	// - The |resolvedConcreteValue| must have a type that is assignment
 	// compatible with |assigneeType|.
 	return nil
@@ -840,7 +845,7 @@ func NewUserValueRef(assigneeType TypeRef, identifier string, scope *Scope,
 // Concrete Values
 /////////////////////////////////////////////////////////////
 
-// A ConcreteValue is a LiteralValue or an EnumValue or a BuiltinValue.
+// A ConcreteValue is a LiteralValue or an EnumValue or a BuiltinConstantValue.
 type ConcreteValue interface {
 	ValueType() ConcreteType
 	Value() interface{}
@@ -894,6 +899,19 @@ func int64Value(literalValue LiteralValue) (int64Value int64, ok bool) {
 		return int64(numericValue), ok
 	}
 	return 0, false
+}
+
+// int32Value returns the value of |literalValue| as an int32.
+// If the type of |literalValue| is not an integer type then |ok|
+// will be false and |int32Value| will be zero. If the type of
+// |literalValue| is any of the integer types then |int32Value| will
+// be the integer value cast to an int32 and |ok| will indicate whether
+// or not the pre-cast value is between math.MinInt32 and math.MaxInt32.
+func int32Value(literalValue LiteralValue) (int32Value int32, ok bool) {
+	int64Value, ok := int64Value(literalValue)
+	ok = ok && int64Value <= math.MaxInt32 && int64Value >= math.MinInt32
+	int32Value = int32(int64Value)
+	return
 }
 
 func MakeStringLiteralValue(text string) LiteralValue {
@@ -953,7 +971,10 @@ func (lv LiteralValue) String() string {
 }
 
 func (lv LiteralValue) MarkUsedAsEnumValueInitializer() bool {
-	return lv.valueType.AllowedAsEnumValueInitializer()
+	// A literal value is legal as an enum value initializer just in case
+	// it is a signed 32-bit integer value.
+	_, ok := int32Value(lv)
+	return ok
 }
 
 func (lv LiteralValue) LiteralValueType() LiteralType {

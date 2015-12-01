@@ -985,8 +985,8 @@ func (p *Parser) parseEnumValueInitializer(mojoEnum *mojom.MojomEnum) mojom.Valu
 		return nil
 	}
 	if !valueRef.MarkUsedAsEnumValueInitializer() {
-		message := fmt.Sprintf("Illegal value: %s at %s. An enum value may "+
-			"only be initialized by an integer or another enum value.", valueToken,
+		message := fmt.Sprintf("Illegal value: %s at %s. An enum value initializer "+
+			"must be a signed 32-bit integer value.", valueToken,
 			valueToken.LongLocationString())
 		p.err = &ParseError{ParserErrorCodeUnexpectedToken, message}
 		return nil
@@ -1090,7 +1090,7 @@ func (p *Parser) parseLiteral() mojom.LiteralValue {
 		return mojom.MakeBoolLiteralValue(true)
 	case lexer.False:
 		p.consumeNextToken()
-		return mojom.MakeBoolLiteralValue(true)
+		return mojom.MakeBoolLiteralValue(false)
 	case lexer.Plus, lexer.Minus, lexer.FloatConst, lexer.IntConstDec, lexer.IntConstHex:
 		return p.parseNumberLiteral()
 

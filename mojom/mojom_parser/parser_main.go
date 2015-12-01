@@ -94,14 +94,14 @@ func main() {
 	}
 
 	// Serialize the result.
-	bytes, err := serialization.Serialize(descriptor)
+	bytes, debug_string, err := serialization.Serialize(descriptor, *debug)
 	if err != nil {
 		ErrorExit(fmt.Sprintf("Serialization error: %s", err))
 	}
 
 	// In debug mode print out the debug information.
 	if *debug {
-		PrintDebugOutput(bytes, descriptor)
+		PrintDebugOutput(debug_string, descriptor)
 	}
 
 	// Emit the output to a file or standard out.
@@ -127,18 +127,11 @@ func ErrorExit(message string) {
 	os.Exit(1)
 }
 
-func PrintDebugOutput(bytes []byte, descriptor *mojom.MojomDescriptor) {
-	fmt.Println("\n\n=============================================")
-	fmt.Println("\n Debug Serialized Output:")
-	if bytes == nil {
-		fmt.Println("bytes == nil")
-	} else {
-		fmt.Printf("len(bytes)=%d\n", len(bytes))
-		for _, b := range bytes {
-			fmt.Printf("%X ", b)
-		}
-	}
+func PrintDebugOutput(debugString string, descriptor *mojom.MojomDescriptor) {
 	fmt.Println("\n\n=============================================")
 	fmt.Println("\n Pre-Serialized Go Object:")
 	fmt.Printf("\n%s\n", descriptor.String())
+	fmt.Println("\n\n=============================================")
+	fmt.Println("\n Debug Serialized Output:")
+	fmt.Println(debugString)
 }
