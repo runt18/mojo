@@ -99,12 +99,14 @@ func (d *ParseDriver) ParseFiles(fileNames []string) (descriptor *mojom.MojomDes
 			return
 		}
 
+		var importedFrom *mojom.MojomFile = nil
 		if currentFile.importedFrom != nil {
+			importedFrom = currentFile.importedFrom.mojomFile
 			// Tell the importing file about the absolute path of the imported file.
 			// Note that we must do this even if the imported file has already been processed
 			// because a given file may be imported by multiple files and each of those need
 			// to be told about the absolute path of the imported file.
-			currentFile.importedFrom.mojomFile.SetCanonicalImportName(currentFile.specifiedPath, currentFile.absolutePath)
+			importedFrom.SetCanonicalImportName(currentFile.specifiedPath, currentFile.absolutePath)
 		}
 
 		if !descriptor.ContainsFile(currentFile.absolutePath) {
@@ -113,7 +115,7 @@ func (d *ParseDriver) ParseFiles(fileNames []string) (descriptor *mojom.MojomDes
 				err = fileReadError
 				return
 			}
-			parser := MakeParser(currentFile.absolutePath, contents, descriptor)
+			parser := MakeParser(currentFile.absolutePath, contents, descriptor, importedFrom)
 			parser.SetDebugMode(d.debugMode)
 			// Invoke parser.Parse() (but skip doing so in tests sometimes.)
 			d.parseInvoker.invokeParse(&parser)

@@ -579,7 +579,7 @@ func TestSingleFileSerialization(t *testing.T) {
 	for _, c := range test.cases {
 		// Parse and resolve the mojom input.
 		descriptor := mojom.NewMojomDescriptor()
-		parser := parser.MakeParser(c.fileName, c.mojomContents, descriptor)
+		parser := parser.MakeParser(c.fileName, c.mojomContents, descriptor, nil)
 		parser.Parse()
 		if !parser.OK() {
 			t.Errorf("Parsing error for %s: %s", c.fileName, parser.GetError().Error())

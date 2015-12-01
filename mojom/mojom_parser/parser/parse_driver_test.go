@@ -84,13 +84,64 @@ func TestExpectedFilesParsed(t *testing.T) {
 	driver := newDriver([]string{}, false, &fakeFileProvider, &fakeFileExtractor, NoOpParseInvoker(0))
 
 	// Invoke ParseFiles
-	driver.ParseFiles([]string{"file1", "file2", "file3"})
+	descriptor, err := driver.ParseFiles([]string{"file1", "file2", "file3"})
+	if err != nil {
+		t.Errorf(err.Error())
+	}
 
 	// Check that the correct files had their contents requested in the expected order.
 	expectedFileRefs := []string{"file1", "file2", "file3", "file4", "file5", "file6"}
 	if !reflect.DeepEqual(expectedFileRefs, fakeFileProvider.requestedFileNames) {
 		t.Errorf("%v != %v", expectedFileRefs, fakeFileProvider.requestedFileNames)
 	}
+
+	// Retrieve the MojomFile for file1.
+	file1, ok := descriptor.MojomFilesByName["file1"]
+	if !ok {
+		t.Errorf("file1 not found.")
+	}
+
+	// Check that it has 3 imports: file3, file4, file5
+	if file1.Imports == nil {
+		t.Errorf("file1 has no imports.")
+	}
+	if len(file1.Imports) != 3 {
+		t.Errorf("len(file1.Imports)=%d", len(file1.Imports))
+	}
+	if file1.Imports[0].CanonicalFileName != "file3" {
+		t.Errorf("file1.Imports[0].CanonicalFileName=%q", file1.Imports[0].CanonicalFileName)
+	}
+	if file1.Imports[1].CanonicalFileName != "file4" {
+		t.Errorf("file1.Imports[1].CanonicalFileName=%q", file1.Imports[1].CanonicalFileName)
+	}
+	if file1.Imports[2].CanonicalFileName != "file5" {
+		t.Errorf("file1.Imports[1].CanonicalFileName=%q", file1.Imports[2].CanonicalFileName)
+	}
+
+	// Retrieve the MojomFile for file3
+	file3, ok := descriptor.MojomFilesByName["file3"]
+	if !ok {
+		t.Errorf("file3 not found.")
+	}
+
+	// We expect the |ImportedFrom| field to be nil because, even though file3
+	// was imported from file1, it was also a top-level file.
+	if file3.ImportedFrom != nil {
+		t.Errorf("file3.ImportedFrom == %v", file3.ImportedFrom)
+	}
+
+	// Retrieve the MojomFile for file4
+	file4, ok := descriptor.MojomFilesByName["file4"]
+	if !ok {
+		t.Errorf("file4 not found.")
+	}
+
+	// We expect the |ImportedFrom| field to refer to file1 because file4 was imported
+	// from file1 and was not a top-level file.
+	if file4.ImportedFrom != file1 {
+		t.Errorf("file4.ImportedFrom = %v", file4.ImportedFrom)
+	}
+
 }
 
 // TestOSFileProvider tests the function OSFileProvider.findFiles() and OSFileProvider.provideContents()

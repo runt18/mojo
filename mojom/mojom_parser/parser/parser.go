@@ -67,7 +67,7 @@ type Parser struct {
 
 // Make a new Parser in preparation for calling Parse().
 func MakeParser(fileName, fileContents string,
-	descriptorToPopulate *mojom.MojomDescriptor) Parser {
+	descriptorToPopulate *mojom.MojomDescriptor, importedFrom *mojom.MojomFile) Parser {
 	if descriptorToPopulate == nil {
 		panic("descriptorToPopulate must not be nil")
 	}
@@ -75,7 +75,7 @@ func MakeParser(fileName, fileContents string,
 	parser := Parser{inputStream: inputStream,
 		mojomDescriptor: descriptorToPopulate}
 	parser.mojomDescriptor = descriptorToPopulate
-	parser.mojomFile = parser.mojomDescriptor.AddMojomFile(fileName)
+	parser.mojomFile = parser.mojomDescriptor.AddMojomFile(fileName, importedFrom)
 	return parser
 }
 

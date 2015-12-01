@@ -28,7 +28,7 @@ func TestSuccessfulParsing(t *testing.T) {
 	startTestCase := func(moduleNameSpace string) {
 		descriptor := mojom.NewMojomDescriptor()
 		fileName := fmt.Sprintf("file%d", testCaseNum)
-		expectedFile = descriptor.AddMojomFile(fileName)
+		expectedFile = descriptor.AddMojomFile(fileName, nil)
 		expectedFile.InitializeFileScope(moduleNameSpace)
 		cases = append(cases, testCase{fileName, "", expectedFile})
 	}
@@ -377,7 +377,7 @@ func TestSuccessfulParsing(t *testing.T) {
 	////////////////////////////////////////////////////////////
 	for _, c := range cases {
 		descriptor := mojom.NewMojomDescriptor()
-		parser := MakeParser(c.fileName, c.mojomContents, descriptor)
+		parser := MakeParser(c.fileName, c.mojomContents, descriptor, nil)
 		parser.Parse()
 		if !parser.OK() {
 			t.Errorf("Parsing error for %s: %s", c.fileName, parser.GetError().Error())
@@ -561,7 +561,7 @@ func TestErrorParsing(t *testing.T) {
 	////////////////////////////////////////////////////////////
 	for i, c := range cases {
 		descriptor := mojom.NewMojomDescriptor()
-		parser := MakeParser(c.fileName, c.mojomContents, descriptor)
+		parser := MakeParser(c.fileName, c.mojomContents, descriptor, nil)
 		parser.Parse()
 		if parser.OK() {
 			t.Errorf("Parsing was supposed to fail but did not for test case %d", i)

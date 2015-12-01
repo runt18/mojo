@@ -40,6 +40,13 @@ type MojomFile struct {
 	// importsBySpecifiedName facilitates the lookup of an ImportedFile given its |SpecifiedName|
 	importsBySpecifiedName map[string]*ImportedFile
 
+	// If this file was imported from one or more files in the MojomFileGraph
+	// and this file was not a top-level file then this field will contain a
+	// pointer to one of the importing files. Thus this field is a partial
+	// inverse to |Imports|. The value of this field is dependent on the order
+	// in which the files in the import graph were traversed.
+	ImportedFrom *MojomFile
+
 	// The lexical scope corresponding to this file.
 	FileScope *Scope
 
@@ -72,10 +79,16 @@ func (f *ImportedFile) String() string {
 	return fmt.Sprintf("%q, ", f.SpecifiedName)
 }
 
-func NewMojomFile(fileName string, descriptor *MojomDescriptor) *MojomFile {
+func newMojomFile(fileName string, descriptor *MojomDescriptor, importedFrom *MojomFile) *MojomFile {
 	mojomFile := new(MojomFile)
 	mojomFile.CanonicalFileName = fileName
 	mojomFile.Descriptor = descriptor
+	mojomFile.ImportedFrom = importedFrom
+	if importedFrom != nil {
+		if importedFrom.Descriptor != descriptor {
+			panic("A MojomFile may only be imported from another MojomFile with the same MojomDescriptor.")
+		}
+	}
 	mojomFile.ModuleNamespace = ""
 	mojomFile.Imports = make([]*ImportedFile, 0)
 	mojomFile.importsBySpecifiedName = make(map[string]*ImportedFile)
@@ -117,8 +130,8 @@ func (f *MojomFile) AddImport(specifiedFileName string) {
 }
 
 // SetCanonicalImportName sets the |CanonicalFileName| field of the |ImportedFile|
-// with the given |SpecifiedName|. This method will usually be invoked later than
-// the other methods in this file becuase it is only when the imported file itself
+// with the given |specifiedName|. This method will usually be invoked later than
+// the other methods in this file because it is only when the imported file itself
 // is processed that we discover its canonical name.
 func (f *MojomFile) SetCanonicalImportName(specifiedName, canoncialName string) {
 	importedFile, ok := f.importsBySpecifiedName[specifiedName]
@@ -239,8 +252,8 @@ func (d *MojomDescriptor) getGlobalScobe() *Scope {
 	return d.abstractScopesByName[""]
 }
 
-func (d *MojomDescriptor) AddMojomFile(fileName string) *MojomFile {
-	mojomFile := NewMojomFile(fileName, d)
+func (d *MojomDescriptor) AddMojomFile(fileName string, importedFrom *MojomFile) *MojomFile {
+	mojomFile := newMojomFile(fileName, d, importedFrom)
 	mojomFile.Descriptor = d
 	d.mojomFiles = append(d.mojomFiles, mojomFile)
 	if _, ok := d.MojomFilesByName[mojomFile.CanonicalFileName]; ok {
