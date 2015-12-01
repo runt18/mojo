@@ -25,6 +25,7 @@
 #include "mojo/edk/system/remote_producer_data_pipe_impl.h"
 #include "mojo/edk/util/make_unique.h"
 
+using mojo::platform::AlignedAlloc;
 using mojo::platform::ScopedPlatformHandle;
 using mojo::util::MakeUnique;
 using mojo::util::RefPtr;
@@ -395,9 +396,9 @@ void LocalDataPipeImpl::EnsureBuffer() {
   DCHECK(producer_open());
   if (buffer_)
     return;
-  buffer_.reset(static_cast<char*>(
-      base::AlignedAlloc(capacity_num_bytes(),
-                         GetConfiguration().data_pipe_buffer_alignment_bytes)));
+  buffer_ =
+      AlignedAlloc<char>(GetConfiguration().data_pipe_buffer_alignment_bytes,
+                         capacity_num_bytes());
 }
 
 void LocalDataPipeImpl::DestroyBuffer() {

@@ -18,6 +18,8 @@
 #include "mojo/edk/system/message_in_transit.h"
 #include "mojo/edk/system/remote_data_pipe_ack.h"
 
+using mojo::platform::AlignedAlloc;
+using mojo::platform::AlignedUniquePtr;
 using mojo::platform::ScopedPlatformHandle;
 using mojo::util::RefPtr;
 
@@ -73,7 +75,7 @@ bool ValidateIncomingMessage(size_t element_num_bytes,
 RemoteConsumerDataPipeImpl::RemoteConsumerDataPipeImpl(
     RefPtr<ChannelEndpoint>&& channel_endpoint,
     size_t consumer_num_bytes,
-    std::unique_ptr<char, base::AlignedFreeDeleter> buffer,
+    AlignedUniquePtr<char> buffer,
     size_t start_index)
     : channel_endpoint_(std::move(channel_endpoint)),
       consumer_num_bytes_(consumer_num_bytes),
@@ -403,9 +405,9 @@ void RemoteConsumerDataPipeImpl::EnsureBuffer() {
   DCHECK(producer_open());
   if (buffer_)
     return;
-  buffer_.reset(static_cast<char*>(
-      base::AlignedAlloc(capacity_num_bytes(),
-                         GetConfiguration().data_pipe_buffer_alignment_bytes)));
+  buffer_ =
+      AlignedAlloc<char>(GetConfiguration().data_pipe_buffer_alignment_bytes,
+                         capacity_num_bytes());
 }
 
 void RemoteConsumerDataPipeImpl::DestroyBuffer() {

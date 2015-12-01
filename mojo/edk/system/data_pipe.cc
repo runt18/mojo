@@ -12,7 +12,7 @@
 #include <utility>
 
 #include "base/logging.h"
-#include "base/memory/aligned_memory.h"
+#include "mojo/edk/platform/aligned_alloc.h"
 #include "mojo/edk/system/awakable_list.h"
 #include "mojo/edk/system/channel.h"
 #include "mojo/edk/system/configuration.h"
@@ -25,6 +25,7 @@
 #include "mojo/edk/system/remote_producer_data_pipe_impl.h"
 #include "mojo/edk/util/make_unique.h"
 
+using mojo::platform::AlignedUniquePtr;
 using mojo::platform::ScopedPlatformHandle;
 using mojo::util::MakeUnique;
 using mojo::util::MutexLocker;
@@ -110,7 +111,7 @@ RefPtr<DataPipe> DataPipe::CreateRemoteProducerFromExisting(
     const MojoCreateDataPipeOptions& validated_options,
     MessageInTransitQueue* message_queue,
     RefPtr<ChannelEndpoint>&& channel_endpoint) {
-  std::unique_ptr<char, base::AlignedFreeDeleter> buffer;
+  AlignedUniquePtr<char> buffer;
   size_t buffer_num_bytes = 0;
   if (!RemoteProducerDataPipeImpl::ProcessMessagesFromIncomingEndpoint(
           validated_options, message_queue, &buffer, &buffer_num_bytes))

@@ -10,7 +10,7 @@
 #include <memory>
 #include <vector>
 
-#include "base/memory/aligned_memory.h"
+#include "mojo/edk/platform/aligned_alloc.h"
 #include "mojo/edk/platform/scoped_platform_handle.h"
 #include "mojo/edk/system/dispatcher.h"
 #include "mojo/public/cpp/system/macros.h"
@@ -174,7 +174,7 @@ class TransportData {
   }
 
   size_t buffer_size_;
-  std::unique_ptr<char, base::AlignedFreeDeleter> buffer_;  // Never null.
+  platform::AlignedUniquePtr<char> buffer_;  // Never null.
 
   // Any platform-specific handles attached to this message (for inter-process
   // transport). The vector (if any) owns the handles that it contains (and is

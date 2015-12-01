@@ -13,6 +13,9 @@ tests = [
     "test": "mojo_edk_embedder_unittests",
   },
   {
+    "test": "mojo_edk_platform_unittests",
+  },
+  {
     "test": "mojo_edk_system_unittests",
   },
   {

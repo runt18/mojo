@@ -13,6 +13,7 @@
 #include "mojo/edk/system/configuration.h"
 #include "mojo/edk/system/message_in_transit.h"
 
+using mojo::platform::AlignedAlloc;
 using mojo::platform::ScopedPlatformHandle;
 
 namespace mojo {
@@ -117,8 +118,8 @@ TransportData::TransportData(std::unique_ptr<DispatcherVector> dispatchers,
     DCHECK_LE(estimated_size, GetMaxBufferSize());
   }
 
-  buffer_.reset(static_cast<char*>(
-      base::AlignedAlloc(estimated_size, MessageInTransit::kMessageAlignment)));
+  buffer_ =
+      AlignedAlloc<char>(MessageInTransit::kMessageAlignment, estimated_size);
   // Entirely clear out the secondary buffer, since then we won't have to worry
   // about clearing padding or unused space (e.g., if a dispatcher fails to
   // serialize).
@@ -202,8 +203,8 @@ TransportData::TransportData(
   buffer_size_ = MessageInTransit::RoundUpMessageAlignment(
       sizeof(Header) +
       platform_handles_->size() * serialized_platform_handle_size);
-  buffer_.reset(static_cast<char*>(
-      base::AlignedAlloc(buffer_size_, MessageInTransit::kMessageAlignment)));
+  buffer_ =
+      AlignedAlloc<char>(MessageInTransit::kMessageAlignment, buffer_size_);
   memset(buffer_.get(), 0, buffer_size_);
 
   Header* header = reinterpret_cast<Header*>(buffer_.get());

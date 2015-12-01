@@ -7,7 +7,7 @@
 
 #include <memory>
 
-#include "base/memory/aligned_memory.h"
+#include "mojo/edk/platform/aligned_alloc.h"
 #include "mojo/edk/system/data_pipe_impl.h"
 #include "mojo/public/cpp/system/macros.h"
 
@@ -82,7 +82,7 @@ class LocalDataPipeImpl final : public DataPipeImpl {
   // no greater than |current_num_bytes_|.
   void MarkDataAsConsumed(size_t num_bytes);
 
-  std::unique_ptr<char, base::AlignedFreeDeleter> buffer_;
+  platform::AlignedUniquePtr<char> buffer_;
   // Circular buffer.
   size_t start_index_;
   size_t current_num_bytes_;

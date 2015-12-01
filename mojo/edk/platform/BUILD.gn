@@ -36,3 +36,18 @@ mojo_edk_source_set("test_platform") {
     ":platform",
   ]
 }
+
+# Note: This doesn't include tests of things that are to be implemented by the
+# embedder.
+mojo_edk_unittests("mojo_edk_platform_unittests") {
+  sources = [
+    "aligned_alloc_unittest.cc",
+  ]
+
+  deps = [
+    ":platform",
+    "//testing/gtest",
+  ]
+
+  mojo_sdk_deps = [ "mojo/public/cpp/system" ]
+}
