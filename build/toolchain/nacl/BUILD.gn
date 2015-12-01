@@ -31,6 +31,7 @@ nacl_toolchain("newlib_pnacl") {
                   root_build_dir)
 
   is_clang = true
+  is_pnacl = true
   cc = toolprefix + "clang"
   cxx = toolprefix + "clang++"
   ar = toolprefix + "ar"

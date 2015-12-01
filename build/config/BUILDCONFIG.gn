@@ -101,6 +101,9 @@ declare_args() {
   is_clang = current_os == "mac" || current_os == "ios" ||
              current_os == "linux" || current_os == "chromeos"
 
+  # By default, assume a non-PNaCl toolchain.
+  is_pnacl = false
+
   # Selects the desired build flavor. Official builds get additional
   # processing to prepare for release. Normally you will want to develop and
   # test with this flag off.

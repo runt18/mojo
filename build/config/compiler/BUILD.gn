@@ -1062,6 +1062,13 @@ config("no_optimize") {
       cflags += [ "-fomit-frame-pointer" ]
     }
     ldflags = common_optimize_on_ldflags
+  } else if (is_pnacl) {
+    # Linking and optimization is the slowest part of building code
+    # using the PNaCl toolchain. Optimizing actually makes these passes faster,
+    # and results in a smaller building/translation time.
+    cflags = common_optimize_on_cflags
+    ldflags = common_optimize_on_ldflags
+    cflags += [ "-O1" ]
   } else {
     cflags = [ "-O0" ]
   }

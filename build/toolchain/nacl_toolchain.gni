@@ -39,6 +39,7 @@ template("nacl_toolchain") {
                              "cxx",
                              "deps",
                              "is_clang",
+                             "is_pnacl",
                              "is_nacl_glibc",
                              "ld",
                              "link_outputs",
