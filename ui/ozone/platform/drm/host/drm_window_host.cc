@@ -128,6 +128,18 @@ bool DrmWindowHost::CanDispatchEvent(const PlatformEvent& ne) {
     return grabber == widget_;
 
   if (event->IsTouchEvent()) {
+#ifdef FORCE_DISPATCH_TOUCH_EVENTS
+    // TODO(lanechr): This bypasses checks that ensure that touch events
+    // are dispatched to the right display.  The "right display" is defined as
+    // "the display associated with the touch device."  Displays are associated
+    // with touch devices through DeviceDataManager::UpdateTouchInfoForDisplay,
+    // which (as of today) is never called.
+    //
+    // I'm not sure yet how to best determine touchscreen/display association,
+    // but FNL currently only supports devices with one touch screen.  So for
+    // now, always dispatch touch events on FNL devices.
+    return true;
+#endif
     // Dispatch the event if it is from the touchscreen associated with the
     // DrmWindowHost. We cannot check the event's location because if the
     // touchscreen has a bezel, touches in the bezel have a location outside of

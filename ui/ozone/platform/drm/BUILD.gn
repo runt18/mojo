@@ -110,6 +110,10 @@ source_set("drm_common") {
     ]
   }
 
+  if (is_fnl) {
+    defines += [ "FORCE_DISPATCH_TOUCH_EVENTS" ]
+  }
+
   deps = [
     "//base",
     "//skia",
