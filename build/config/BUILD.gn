@@ -155,6 +155,11 @@ config("feature_flags") {
   } else {
     defines += [ "CHROMIUM_BUILD" ]
   }
+
+  if (is_fnl) {
+    # TODO(vtl): Nobody knows why this works.
+    defines += [ "ENABLE_PLEASE_BUILD_GOOD=1" ]
+  }
 }
 
 # Debug/release ----------------------------------------------------------------
