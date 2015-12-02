@@ -122,13 +122,6 @@ class ChannelManager {
   ConnectionManager* connection_manager() const { return connection_manager_; }
 
  private:
-  // Used by |Shutdown()|. Called on the I/O thread.
-  // TODO(vtl): |callback_thread_task_runner| should be an rvalue reference, but
-  // that doesn't work with |base::Bind()|.
-  void ShutdownHelper(
-      const base::Closure& callback,
-      util::RefPtr<platform::TaskRunner> callback_thread_task_runner);
-
   // Used by |CreateChannelOnIOThread()| and |CreateChannelHelper()|. Called on
   // the I/O thread. |bootstrap_channel_endpoint| is optional and may be null.
   // Returns the newly-created |Channel|.

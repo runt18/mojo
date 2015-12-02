@@ -5,6 +5,8 @@
 #ifndef MOJO_EDK_SYSTEM_TEST_TEST_IO_THREAD_H_
 #define MOJO_EDK_SYSTEM_TEST_TEST_IO_THREAD_H_
 
+#include <functional>
+
 #include "base/callback_forward.h"
 #include "base/threading/thread.h"
 #include "mojo/edk/base_edk/platform_task_runner_impl.h"
@@ -35,9 +37,13 @@ class TestIOThread final {
   bool IsCurrentAndRunning() const;
 
   // Posts |task| to the I/O thread.
+  // TODO(vtl): Remove the |base::Closure| version.
+  void PostTask(std::function<void()>&& task);
   void PostTask(const base::Closure& task);
   // Posts |task| to the I/O thread, blocking the calling thread until the
   // posted task is executed (note the deadlock risk!).
+  // TODO(vtl): Remove the |base::Closure| version.
+  void PostTaskAndWait(std::function<void()>&& task);
   void PostTaskAndWait(const base::Closure& task);
 
   base::MessageLoopForIO* message_loop() {

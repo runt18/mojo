@@ -195,10 +195,10 @@ class TestSlaveConnection {
     // Since |event_| is manual-reset, calling this multiple times is OK.
     WaitForChannelToSlave();
 
-    test_io_thread_->PostTaskAndWait(
-        base::Bind(&ChannelManager::ShutdownChannelOnIOThread,
-                   base::Unretained(master_ipc_support_->channel_manager()),
-                   slave_id_));
+    test_io_thread_->PostTaskAndWait([this]() {
+      master_ipc_support_->channel_manager()->ShutdownChannelOnIOThread(
+          slave_id_);
+    });
   }
 
   ScopedPlatformHandle PassSlavePlatformHandle() {
@@ -259,17 +259,16 @@ class TestSlave {
     // Since |event_| is manual-reset, calling this multiple times is OK.
     WaitForChannelToMaster();
 
-    test_io_thread_->PostTaskAndWait(
-        base::Bind(&ChannelManager::ShutdownChannelOnIOThread,
-                   base::Unretained(slave_ipc_support_.channel_manager()),
-                   kMasterProcessIdentifier));
+    test_io_thread_->PostTaskAndWait([this]() {
+      slave_ipc_support_.channel_manager()->ShutdownChannelOnIOThread(
+          kMasterProcessIdentifier);
+    });
   }
 
   // No other methods may be called after this.
   void ShutdownIPCSupport() {
     test_io_thread_->PostTaskAndWait(
-        base::Bind(&IPCSupport::ShutdownOnIOThread,
-                   base::Unretained(&slave_ipc_support_)));
+        [this]() { slave_ipc_support_.ShutdownOnIOThread(); });
   }
 
  private:
@@ -387,8 +386,7 @@ class IPCSupportTest : public testing::Test {
 
   void ShutdownMasterIPCSupport() {
     test_io_thread_.PostTaskAndWait(
-        base::Bind(&IPCSupport::ShutdownOnIOThread,
-                   base::Unretained(&master_ipc_support_)));
+        [this]() { master_ipc_support_.ShutdownOnIOThread(); });
   }
 
   embedder::SimplePlatformSupport& platform_support() {
@@ -614,8 +612,8 @@ TEST_F(IPCSupportTest, MasterSlaveInternal) {
   EXPECT_EQ(1u, n);
   EXPECT_EQ('x', c);
 
-  test_io_thread().PostTaskAndWait(base::Bind(
-      &IPCSupport::ShutdownOnIOThread, base::Unretained(&slave_ipc_support)));
+  test_io_thread().PostTaskAndWait(
+      [&slave_ipc_support]() { slave_ipc_support.ShutdownOnIOThread(); });
 
   EXPECT_TRUE(master_process_delegate().TryWaitForOnSlaveDisconnect());
 
@@ -708,8 +706,8 @@ MOJO_MULTIPROCESS_TEST_CHILD_TEST(MultiprocessMasterSlaveInternal) {
       mojo::test::BlockingWrite(second_platform_handle.get(), "!", 1, &n));
   EXPECT_EQ(1u, n);
 
-  test_io_thread.PostTaskAndWait(base::Bind(&IPCSupport::ShutdownOnIOThread,
-                                            base::Unretained(&ipc_support)));
+  test_io_thread.PostTaskAndWait(
+      [&ipc_support]() { ipc_support.ShutdownOnIOThread(); });
 }
 
 // TODO(vtl): Also test the case of the master "dying" before the slave. (The

@@ -12,7 +12,6 @@
 #include <memory>
 #include <utility>
 
-#include "base/bind.h"
 #include "base/logging.h"
 #include "mojo/edk/embedder/platform_channel_pair.h"
 #include "mojo/edk/embedder/simple_platform_support.h"
@@ -234,17 +233,15 @@ class RemoteDataPipeImplTestHelper : public DataPipeImplTestHelper {
     message_pipes_[0] = MessagePipe::CreateLocalProxy(&ep[0]);
     message_pipes_[1] = MessagePipe::CreateLocalProxy(&ep[1]);
 
-    io_thread_.PostTaskAndWait(base::Bind(
-        &RemoteDataPipeImplTestHelper::SetUpOnIOThread, base::Unretained(this),
-        base::Passed(&ep[0]), base::Passed(&ep[1])));
+    io_thread_.PostTaskAndWait([this, &ep]() mutable {
+      SetUpOnIOThread(std::move(ep[0]), std::move(ep[1]));
+    });
   }
 
   void TearDown() override {
     EnsureMessagePipeClosed(0);
     EnsureMessagePipeClosed(1);
-    io_thread_.PostTaskAndWait(
-        base::Bind(&RemoteDataPipeImplTestHelper::TearDownOnIOThread,
-                   base::Unretained(this)));
+    io_thread_.PostTaskAndWait([this]() { TearDownOnIOThread(); });
   }
 
   void Create(const MojoCreateDataPipeOptions& validated_options) override {
@@ -318,10 +315,8 @@ class RemoteDataPipeImplTestHelper : public DataPipeImplTestHelper {
     message_pipes_[i] = nullptr;
   }
 
-  // TODO(vtl): The arguments should be rvalue references, but that doesn't
-  // currently work correctly with base::Bind.
-  void SetUpOnIOThread(RefPtr<ChannelEndpoint> ep0,
-                       RefPtr<ChannelEndpoint> ep1) {
+  void SetUpOnIOThread(RefPtr<ChannelEndpoint>&& ep0,
+                       RefPtr<ChannelEndpoint>&& ep1) {
     CHECK(io_thread_.IsCurrentAndRunning());
 
     embedder::PlatformChannelPair channel_pair;

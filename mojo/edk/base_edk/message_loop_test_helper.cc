@@ -7,8 +7,6 @@
 #include <thread>
 #include <vector>
 
-#include "base/bind.h"
-#include "base/callback.h"
 #include "mojo/edk/platform/message_loop.h"
 #include "mojo/edk/platform/task_runner.h"
 #include "mojo/edk/util/ref_ptr.h"
@@ -21,18 +19,6 @@ using mojo::util::RefPtr;
 namespace base_edk {
 namespace test {
 
-// TODO(vtl): This should probably take a |Runnable&&| instead, but that doesn't
-// work with |base::Bind()|.
-template <typename Runnable>
-void RunnableRunner(const Runnable& runnable) {
-  runnable();
-}
-
-template <typename Runnable>
-base::Closure ToClosure(Runnable&& runnable) {
-  return base::Bind(&RunnableRunner<Runnable>, runnable);
-}
-
 void MessageLoopTestHelper(MessageLoop* message_loop) {
   RefPtr<TaskRunner> task_runner = message_loop->GetTaskRunner();
   EXPECT_TRUE(task_runner);
@@ -41,35 +27,35 @@ void MessageLoopTestHelper(MessageLoop* message_loop) {
   EXPECT_EQ(task_runner, message_loop->GetTaskRunner());
 
   std::vector<int> stuff;
-  task_runner->PostTask(ToClosure([&stuff, message_loop, &task_runner]() {
+  task_runner->PostTask([&stuff, message_loop, &task_runner]() {
     EXPECT_TRUE(message_loop->IsRunningOnCurrentThread());
     stuff.push_back(1);
-    task_runner->PostTask(ToClosure([&stuff]() { stuff.push_back(3); }));
+    task_runner->PostTask([&stuff]() { stuff.push_back(3); });
     message_loop->QuitWhenIdle();
-  }));
-  task_runner->PostTask(ToClosure([&stuff]() { stuff.push_back(2); }));
+  });
+  task_runner->PostTask([&stuff]() { stuff.push_back(2); });
   EXPECT_TRUE(stuff.empty());
   message_loop->Run();
   EXPECT_EQ(std::vector<int>({1, 2, 3}), stuff);
 
   stuff.clear();
-  task_runner->PostTask(ToClosure([&stuff, message_loop, &task_runner]() {
+  task_runner->PostTask([&stuff, message_loop, &task_runner]() {
     EXPECT_TRUE(message_loop->IsRunningOnCurrentThread());
     stuff.push_back(4);
-    task_runner->PostTask(ToClosure([&stuff]() { stuff.push_back(6); }));
-  }));
-  task_runner->PostTask(ToClosure([&stuff]() { stuff.push_back(5); }));
+    task_runner->PostTask([&stuff]() { stuff.push_back(6); });
+  });
+  task_runner->PostTask([&stuff]() { stuff.push_back(5); });
   message_loop->RunUntilIdle();
   EXPECT_EQ(std::vector<int>({4, 5, 6}), stuff);
 
   stuff.clear();
-  task_runner->PostTask(ToClosure([&stuff, message_loop, &task_runner]() {
+  task_runner->PostTask([&stuff, message_loop, &task_runner]() {
     EXPECT_TRUE(message_loop->IsRunningOnCurrentThread());
     stuff.push_back(7);
     message_loop->QuitNow();
-    task_runner->PostTask(ToClosure([&stuff]() { stuff.push_back(9); }));
-  }));
-  task_runner->PostTask(ToClosure([&stuff]() { stuff.push_back(8); }));
+    task_runner->PostTask([&stuff]() { stuff.push_back(9); });
+  });
+  task_runner->PostTask([&stuff]() { stuff.push_back(8); });
   message_loop->Run();
   EXPECT_EQ(std::vector<int>({7}), stuff);
   stuff.clear();
@@ -89,22 +75,22 @@ void MessageLoopTestHelper(MessageLoop* message_loop) {
   }
 
   stuff.clear();
-  task_runner->PostTask(ToClosure([&stuff, message_loop, &task_runner]() {
+  task_runner->PostTask([&stuff, message_loop, &task_runner]() {
     EXPECT_TRUE(message_loop->IsRunningOnCurrentThread());
     std::thread other_thread([&stuff, message_loop, task_runner]() {
       EXPECT_FALSE(message_loop->IsRunningOnCurrentThread());
       EXPECT_EQ(task_runner, message_loop->GetTaskRunner());
       stuff.push_back(10);
-      task_runner->PostTask(ToClosure([&stuff, message_loop]() {
+      task_runner->PostTask([&stuff, message_loop]() {
         EXPECT_TRUE(message_loop->IsRunningOnCurrentThread());
         stuff.push_back(11);
         message_loop->QuitWhenIdle();
-      }));
+      });
     });
     other_thread.join();
     EXPECT_EQ(std::vector<int>({10}), stuff);
     stuff.clear();
-  }));
+  });
   message_loop->Run();
   EXPECT_EQ(std::vector<int>({11}), stuff);
 }

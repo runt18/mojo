@@ -40,7 +40,6 @@ class ChannelThread {
   // doesn't currently work correctly with base::Bind.
   void InitChannelOnIOThread(platform::ScopedPlatformHandle platform_handle,
                              util::RefPtr<ChannelEndpoint> channel_endpoint);
-  void ShutdownChannelOnIOThread();
 
   embedder::PlatformSupport* const platform_support_;
   TestIOThread test_io_thread_;

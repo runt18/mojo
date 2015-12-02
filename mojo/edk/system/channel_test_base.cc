@@ -23,7 +23,7 @@ ChannelTestBase::~ChannelTestBase() {
 }
 
 void ChannelTestBase::SetUp() {
-  PostMethodToIOThreadAndWait(&ChannelTestBase::SetUpOnIOThread);
+  io_thread_.PostTaskAndWait([this]() { SetUpOnIOThread(); });
 }
 
 void ChannelTestBase::CreateChannelOnIOThread(unsigned i) {

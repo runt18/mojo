@@ -33,10 +33,10 @@ class EndpointRelayerTest : public test::ChannelTestBase {
   void SetUp() override {
     test::ChannelTestBase::SetUp();
 
-    PostMethodToIOThreadAndWait(
-        &EndpointRelayerTest::CreateAndInitChannelOnIOThread, 0);
-    PostMethodToIOThreadAndWait(
-        &EndpointRelayerTest::CreateAndInitChannelOnIOThread, 1);
+    io_thread()->PostTaskAndWait([this]() {
+      CreateAndInitChannelOnIOThread(0);
+      CreateAndInitChannelOnIOThread(1);
+    });
 
     // The set up:
     // * Across the pair of channels, we'll have a pair of connections (call
@@ -67,10 +67,10 @@ class EndpointRelayerTest : public test::ChannelTestBase {
   }
 
   void TearDown() override {
-    PostMethodToIOThreadAndWait(&EndpointRelayerTest::ShutdownChannelOnIOThread,
-                                0);
-    PostMethodToIOThreadAndWait(&EndpointRelayerTest::ShutdownChannelOnIOThread,
-                                1);
+    io_thread()->PostTaskAndWait([this]() {
+      ShutdownChannelOnIOThread(0);
+      ShutdownChannelOnIOThread(1);
+    });
 
     test::ChannelTestBase::TearDown();
   }

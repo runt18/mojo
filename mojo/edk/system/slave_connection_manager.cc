@@ -327,9 +327,12 @@ void SlaveConnectionManager::OnError(Error error) {
   raw_channel_.reset();
 
   DCHECK(slave_process_delegate_);
-  delegate_thread_task_runner_->PostTask(
-      base::Bind(&embedder::SlaveProcessDelegate::OnMasterDisconnect,
-                 base::Unretained(slave_process_delegate_)));
+  // TODO(vtl): With C++14 lambda captures, we'll be able to avoid this
+  // nonsense.
+  auto slave_process_delegate = slave_process_delegate_;
+  delegate_thread_task_runner_->PostTask([slave_process_delegate]() {
+    slave_process_delegate->OnMasterDisconnect();
+  });
 }
 
 void SlaveConnectionManager::AssertNotOnPrivateThread() const {

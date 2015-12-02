@@ -7,7 +7,6 @@
 #include <string>
 #include <utility>
 
-#include "base/bind.h"
 #include "base/logging.h"
 #include "mojo/edk/platform/scoped_platform_handle.h"
 #include "mojo/edk/system/local_message_pipe_endpoint.h"

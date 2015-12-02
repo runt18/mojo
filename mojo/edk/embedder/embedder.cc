@@ -64,21 +64,6 @@ system::ChannelId MakeChannelId() {
   return static_cast<system::ChannelId>(-new_counter_value);
 }
 
-// Note: Called on the I/O thread.
-void ShutdownIPCSupportHelper() {
-  // Save these before they get nuked by |ShutdownChannelOnIOThread()|.
-  RefPtr<TaskRunner> delegate_thread_task_runner(
-      internal::g_ipc_support->delegate_thread_task_runner());
-  ProcessDelegate* process_delegate =
-      internal::g_ipc_support->process_delegate();
-
-  ShutdownIPCSupportOnIOThread();
-
-  delegate_thread_task_runner->PostTask(
-      base::Bind(&ProcessDelegate::OnShutdownComplete,
-                 base::Unretained(process_delegate)));
-}
-
 }  // namespace
 
 Configuration* GetConfiguration() {
@@ -167,8 +152,18 @@ void ShutdownIPCSupportOnIOThread() {
 void ShutdownIPCSupport() {
   DCHECK(internal::g_ipc_support);
 
-  internal::g_ipc_support->io_thread_task_runner()->PostTask(
-      base::Bind(&ShutdownIPCSupportHelper));
+  internal::g_ipc_support->io_thread_task_runner()->PostTask([]() {
+    // Save these before they get nuked by |ShutdownChannelOnIOThread()|.
+    RefPtr<TaskRunner> delegate_thread_task_runner(
+        internal::g_ipc_support->delegate_thread_task_runner());
+    ProcessDelegate* process_delegate =
+        internal::g_ipc_support->process_delegate();
+
+    ShutdownIPCSupportOnIOThread();
+
+    delegate_thread_task_runner->PostTask(
+        [process_delegate]() { process_delegate->OnShutdownComplete(); });
+  });
 }
 
 ScopedMessagePipeHandle ConnectToSlave(

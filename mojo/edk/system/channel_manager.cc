@@ -21,22 +21,6 @@ using mojo::util::RefPtr;
 namespace mojo {
 namespace system {
 
-namespace {
-
-// TODO(vtl): |channel| and |callback_thread_task_runner| should be rvalue
-// references, but that currently doesn't work with base::Bind.
-void ShutdownChannelHelper(RefPtr<Channel> channel,
-                           const base::Closure& callback,
-                           RefPtr<TaskRunner> callback_thread_task_runner) {
-  channel->Shutdown();
-  if (callback_thread_task_runner)
-    callback_thread_task_runner->PostTask(callback);
-  else
-    callback.Run();
-}
-
-}  // namespace
-
 ChannelManager::ChannelManager(embedder::PlatformSupport* platform_support,
                                RefPtr<TaskRunner>&& io_thread_task_runner,
                                ConnectionManager* connection_manager)
@@ -72,10 +56,16 @@ void ChannelManager::ShutdownOnIOThread() {
 void ChannelManager::Shutdown(
     const base::Closure& callback,
     RefPtr<TaskRunner>&& callback_thread_task_runner) {
-  RefPtr<TaskRunner> cttr = std::move(callback_thread_task_runner);
-  io_thread_task_runner_->PostTask(base::Bind(&ChannelManager::ShutdownHelper,
-                                              base::Unretained(this), callback,
-                                              base::Passed(&cttr)));
+  // TODO(vtl): With C++14 lambda captures, we'll be able to move
+  // |callback_thread_task_runner| instead of copying it.
+  io_thread_task_runner_->PostTask(
+      [this, callback, callback_thread_task_runner]() {
+        ShutdownOnIOThread();
+        if (callback_thread_task_runner)
+          callback_thread_task_runner->PostTask(callback);
+        else
+          callback.Run();
+      });
 }
 
 RefPtr<MessagePipeDispatcher> ChannelManager::CreateChannelOnIOThread(
@@ -110,6 +100,8 @@ RefPtr<MessagePipeDispatcher> ChannelManager::CreateChannel(
   // TODO(vtl): This is needed, since |base::Passed()| doesn't work with an
   // rvalue reference.
   RefPtr<TaskRunner> cttr = std::move(callback_thread_task_runner);
+  // TODO(vtl): This is hard to convert to a lambda, since we really do need to
+  // move |platform_handle|. :-(
   io_thread_task_runner_->PostTask(base::Bind(
       &ChannelManager::CreateChannelHelper, base::Unretained(this), channel_id,
       base::Passed(&platform_handle), base::Passed(&bootstrap_channel_endpoint),
@@ -153,22 +145,16 @@ void ChannelManager::ShutdownChannel(
     channels_.erase(it);
   }
   channel->WillShutdownSoon();
-  // TODO(vtl): This is needed, since |base::Passed()| doesn't work with an
-  // rvalue reference.
-  RefPtr<TaskRunner> cttr = std::move(callback_thread_task_runner);
-  io_thread_task_runner_->PostTask(base::Bind(&ShutdownChannelHelper,
-                                              base::Passed(&channel), callback,
-                                              base::Passed(&cttr)));
-}
-
-void ChannelManager::ShutdownHelper(
-    const base::Closure& callback,
-    util::RefPtr<TaskRunner> callback_thread_task_runner) {
-  ShutdownOnIOThread();
-  if (callback_thread_task_runner)
-    callback_thread_task_runner->PostTask(callback);
-  else
-    callback.Run();
+  // TODO(vtl): With C++14 lambda captures, we'll be able to move stuff instead
+  // of copying.
+  io_thread_task_runner_->PostTask(
+      [channel, callback, callback_thread_task_runner]() {
+        channel->Shutdown();
+        if (callback_thread_task_runner)
+          callback_thread_task_runner->PostTask(callback);
+        else
+          callback.Run();
+      });
 }
 
 RefPtr<Channel> ChannelManager::CreateChannelOnIOThreadHelper(

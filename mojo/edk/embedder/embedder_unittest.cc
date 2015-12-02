@@ -228,17 +228,6 @@ class TestAsyncWaiter {
   MOJO_DISALLOW_COPY_AND_ASSIGN(TestAsyncWaiter);
 };
 
-void WriteHello(MessagePipeHandle pipe) {
-  static const char kHello[] = "hello";
-  CHECK_EQ(MOJO_RESULT_OK,
-           WriteMessageRaw(pipe, kHello, static_cast<uint32_t>(sizeof(kHello)),
-                           nullptr, 0, MOJO_WRITE_MESSAGE_FLAG_NONE));
-}
-
-void CloseScopedHandle(ScopedMessagePipeHandle handle) {
-  // Do nothing and the destructor will close it.
-}
-
 TEST_F(EmbedderTest, AsyncWait) {
   ScopedMessagePipeHandle client_mp;
   ScopedMessagePipeHandle server_mp;
@@ -249,7 +238,18 @@ TEST_F(EmbedderTest, AsyncWait) {
             AsyncWait(client_mp.get().value(), MOJO_HANDLE_SIGNAL_READABLE,
                       [&waiter](MojoResult result) { waiter.Awake(result); }));
 
-  test_io_thread().PostTask(base::Bind(&WriteHello, server_mp.get()));
+  // TODO(vtl): With C++14 lambda captures, we'll be able to avoid this
+  // nonsense.
+  {
+    auto server_mp_value = server_mp.get();
+    test_io_thread().PostTask([server_mp_value]() {
+      static const char kHello[] = "hello";
+      CHECK_EQ(MOJO_RESULT_OK,
+               WriteMessageRaw(server_mp_value, kHello,
+                               static_cast<uint32_t>(sizeof(kHello)), nullptr,
+                               0, MOJO_WRITE_MESSAGE_FLAG_NONE));
+    });
+  }
   EXPECT_TRUE(waiter.TryWait());
   EXPECT_EQ(MOJO_RESULT_OK, waiter.wait_result());
 
@@ -274,8 +274,13 @@ TEST_F(EmbedderTest, AsyncWait) {
                         unsatisfiable_waiter.Awake(result);
                       }));
 
-  test_io_thread().PostTask(
-      base::Bind(&CloseScopedHandle, base::Passed(server_mp.Pass())));
+  // TODO(vtl): With C++14 lambda captures, we'll be able to avoid this
+  // nonsense (and use |Close()| rather than |CloseRaw()|).
+  {
+    auto server_mp_value = server_mp.release();
+    test_io_thread().PostTask(
+        [server_mp_value]() { CloseRaw(server_mp_value); });
+  }
 
   EXPECT_TRUE(unsatisfiable_waiter.TryWait());
   EXPECT_EQ(MOJO_RESULT_FAILED_PRECONDITION,
@@ -451,7 +456,7 @@ TEST_F(EmbedderTest, MAYBE_MultiprocessMasterSlave) {
 
   EXPECT_FALSE(event.WaitWithTimeout(mojo::system::test::ActionTimeout()));
   test_io_thread().PostTaskAndWait(
-      base::Bind(&DestroyChannelOnIOThread, base::Unretained(channel_info)));
+      [channel_info]() { DestroyChannelOnIOThread(channel_info); });
 }
 
 TEST_F(EmbedderTest, ChannelShutdownRace_MessagePipeClose) {
@@ -523,7 +528,7 @@ MOJO_MULTIPROCESS_TEST_CHILD_TEST(MultiprocessMasterSlave) {
 
     EXPECT_FALSE(event.WaitWithTimeout(mojo::system::test::ActionTimeout()));
     test_io_thread.PostTaskAndWait(
-        base::Bind(&DestroyChannelOnIOThread, base::Unretained(channel_info)));
+        [channel_info]() { DestroyChannelOnIOThread(channel_info); });
   }
 
   EXPECT_TRUE(test::Shutdown());

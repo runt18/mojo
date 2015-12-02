@@ -7,7 +7,6 @@
 #include <algorithm>
 #include <utility>
 
-#include "base/bind.h"
 #include "base/logging.h"
 #include "mojo/edk/system/endpoint_relayer.h"
 #include "mojo/edk/system/transport_data.h"
