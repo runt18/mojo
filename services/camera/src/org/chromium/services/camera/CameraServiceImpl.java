@@ -58,7 +58,7 @@ public class CameraServiceImpl implements CameraService {
                 @Override
                 public void onImageAvailable(ImageReader reader) {
                     DataPipe.ProducerHandle handle = null;
-                    synchronized (this) {
+                    synchronized (CameraServiceImpl.this) {
                         handle = mProducerHandle;
                         mProducerHandle = null;
                     }
