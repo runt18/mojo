@@ -12,6 +12,221 @@ import 'package:_mojo_for_test_only/mojo/test/rect.mojom.dart' as rect_mojom;
 
 
 
+class StructOfStructs extends bindings.Struct {
+  static const List<bindings.StructDataHeader> kVersions = const [
+    const bindings.StructDataHeader(48, 0)
+  ];
+  NamedRegion nr = null;
+  List<NamedRegion> aNr = null;
+  List<RectPair> aRp = null;
+  Map<int, NoDefaultFieldValues> mNdfv = null;
+  Map<int, HandleStruct> mHs = null;
+
+  StructOfStructs() : super(kVersions.last.size);
+
+  static StructOfStructs deserialize(bindings.Message message) {
+    var decoder = new bindings.Decoder(message);
+    var result = decode(decoder);
+    if (decoder.excessHandles != null) {
+      decoder.excessHandles.forEach((h) => h.close());
+    }
+    return result;
+  }
+
+  static StructOfStructs decode(bindings.Decoder decoder0) {
+    if (decoder0 == null) {
+      return null;
+    }
+    StructOfStructs result = new StructOfStructs();
+
+    var mainDataHeader = decoder0.decodeStructDataHeader();
+    if (mainDataHeader.version <= kVersions.last.version) {
+      // Scan in reverse order to optimize for more recent versions.
+      for (int i = kVersions.length - 1; i >= 0; --i) {
+        if (mainDataHeader.version >= kVersions[i].version) {
+          if (mainDataHeader.size == kVersions[i].size) {
+            // Found a match.
+            break;
+          }
+          throw new bindings.MojoCodecError(
+              'Header size doesn\'t correspond to known version size.');
+        }
+      }
+    } else if (mainDataHeader.size < kVersions.last.size) {
+      throw new bindings.MojoCodecError(
+        'Message newer than the last known version cannot be shorter than '
+        'required by the last known version.');
+    }
+    if (mainDataHeader.version >= 0) {
+      
+      var decoder1 = decoder0.decodePointer(8, false);
+      result.nr = NamedRegion.decode(decoder1);
+    }
+    if (mainDataHeader.version >= 0) {
+      
+      var decoder1 = decoder0.decodePointer(16, false);
+      {
+        var si1 = decoder1.decodeDataHeaderForPointerArray(bindings.kUnspecifiedArrayLength);
+        result.aNr = new List<NamedRegion>(si1.numElements);
+        for (int i1 = 0; i1 < si1.numElements; ++i1) {
+          
+          var decoder2 = decoder1.decodePointer(bindings.ArrayDataHeader.kHeaderSize + bindings.kPointerSize * i1, false);
+          result.aNr[i1] = NamedRegion.decode(decoder2);
+        }
+      }
+    }
+    if (mainDataHeader.version >= 0) {
+      
+      var decoder1 = decoder0.decodePointer(24, false);
+      {
+        var si1 = decoder1.decodeDataHeaderForPointerArray(bindings.kUnspecifiedArrayLength);
+        result.aRp = new List<RectPair>(si1.numElements);
+        for (int i1 = 0; i1 < si1.numElements; ++i1) {
+          
+          var decoder2 = decoder1.decodePointer(bindings.ArrayDataHeader.kHeaderSize + bindings.kPointerSize * i1, false);
+          result.aRp[i1] = RectPair.decode(decoder2);
+        }
+      }
+    }
+    if (mainDataHeader.version >= 0) {
+      
+      var decoder1 = decoder0.decodePointer(32, false);
+      {
+        decoder1.decodeDataHeaderForMap();
+        List<int> keys0;
+        List<NoDefaultFieldValues> values0;
+        {
+          
+          keys0 = decoder1.decodeInt64Array(bindings.ArrayDataHeader.kHeaderSize, bindings.kNothingNullable, bindings.kUnspecifiedArrayLength);
+        }
+        {
+          
+          var decoder2 = decoder1.decodePointer(bindings.ArrayDataHeader.kHeaderSize + bindings.kPointerSize, false);
+          {
+            var si2 = decoder2.decodeDataHeaderForPointerArray(keys0.length);
+            values0 = new List<NoDefaultFieldValues>(si2.numElements);
+            for (int i2 = 0; i2 < si2.numElements; ++i2) {
+              
+              var decoder3 = decoder2.decodePointer(bindings.ArrayDataHeader.kHeaderSize + bindings.kPointerSize * i2, false);
+              values0[i2] = NoDefaultFieldValues.decode(decoder3);
+            }
+          }
+        }
+        result.mNdfv = new Map<int, NoDefaultFieldValues>.fromIterables(
+            keys0, values0);
+      }
+    }
+    if (mainDataHeader.version >= 0) {
+      
+      var decoder1 = decoder0.decodePointer(40, false);
+      {
+        decoder1.decodeDataHeaderForMap();
+        List<int> keys0;
+        List<HandleStruct> values0;
+        {
+          
+          keys0 = decoder1.decodeInt64Array(bindings.ArrayDataHeader.kHeaderSize, bindings.kNothingNullable, bindings.kUnspecifiedArrayLength);
+        }
+        {
+          
+          var decoder2 = decoder1.decodePointer(bindings.ArrayDataHeader.kHeaderSize + bindings.kPointerSize, false);
+          {
+            var si2 = decoder2.decodeDataHeaderForPointerArray(keys0.length);
+            values0 = new List<HandleStruct>(si2.numElements);
+            for (int i2 = 0; i2 < si2.numElements; ++i2) {
+              
+              var decoder3 = decoder2.decodePointer(bindings.ArrayDataHeader.kHeaderSize + bindings.kPointerSize * i2, false);
+              values0[i2] = HandleStruct.decode(decoder3);
+            }
+          }
+        }
+        result.mHs = new Map<int, HandleStruct>.fromIterables(
+            keys0, values0);
+      }
+    }
+    return result;
+  }
+
+  void encode(bindings.Encoder encoder) {
+    var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
+    
+    encoder0.encodeStruct(nr, 8, false);
+    
+    if (aNr == null) {
+      encoder0.encodeNullPointer(16, false);
+    } else {
+      var encoder1 = encoder0.encodePointerArray(aNr.length, 16, bindings.kUnspecifiedArrayLength);
+      for (int i0 = 0; i0 < aNr.length; ++i0) {
+        
+        encoder1.encodeStruct(aNr[i0], bindings.ArrayDataHeader.kHeaderSize + bindings.kPointerSize * i0, false);
+      }
+    }
+    
+    if (aRp == null) {
+      encoder0.encodeNullPointer(24, false);
+    } else {
+      var encoder1 = encoder0.encodePointerArray(aRp.length, 24, bindings.kUnspecifiedArrayLength);
+      for (int i0 = 0; i0 < aRp.length; ++i0) {
+        
+        encoder1.encodeStruct(aRp[i0], bindings.ArrayDataHeader.kHeaderSize + bindings.kPointerSize * i0, false);
+      }
+    }
+    
+    if (mNdfv == null) {
+      encoder0.encodeNullPointer(32, false);
+    } else {
+      var encoder1 = encoder0.encoderForMap(32);
+      int size0 = mNdfv.length;
+      var keys0 = mNdfv.keys.toList();
+      var values0 = mNdfv.values.toList();
+      
+      encoder1.encodeInt64Array(keys0, bindings.ArrayDataHeader.kHeaderSize, bindings.kNothingNullable, bindings.kUnspecifiedArrayLength);
+      
+      {
+        var encoder2 = encoder1.encodePointerArray(values0.length, bindings.ArrayDataHeader.kHeaderSize + bindings.kPointerSize, bindings.kUnspecifiedArrayLength);
+        for (int i1 = 0; i1 < values0.length; ++i1) {
+          
+          encoder2.encodeStruct(values0[i1], bindings.ArrayDataHeader.kHeaderSize + bindings.kPointerSize * i1, false);
+        }
+      }
+    }
+    
+    if (mHs == null) {
+      encoder0.encodeNullPointer(40, false);
+    } else {
+      var encoder1 = encoder0.encoderForMap(40);
+      int size0 = mHs.length;
+      var keys0 = mHs.keys.toList();
+      var values0 = mHs.values.toList();
+      
+      encoder1.encodeInt64Array(keys0, bindings.ArrayDataHeader.kHeaderSize, bindings.kNothingNullable, bindings.kUnspecifiedArrayLength);
+      
+      {
+        var encoder2 = encoder1.encodePointerArray(values0.length, bindings.ArrayDataHeader.kHeaderSize + bindings.kPointerSize, bindings.kUnspecifiedArrayLength);
+        for (int i1 = 0; i1 < values0.length; ++i1) {
+          
+          encoder2.encodeStruct(values0[i1], bindings.ArrayDataHeader.kHeaderSize + bindings.kPointerSize * i1, false);
+        }
+      }
+    }
+  }
+
+  String toString() {
+    return "StructOfStructs("
+           "nr: $nr" ", "
+           "aNr: $aNr" ", "
+           "aRp: $aRp" ", "
+           "mNdfv: $mNdfv" ", "
+           "mHs: $mHs" ")";
+  }
+
+  Map toJson() {
+    throw new bindings.MojoCodecError(
+        'Object containing handles cannot be encoded to JSON.');
+  }
+}
+
+
 class NamedRegion extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(24, 0)
@@ -4548,6 +4763,299 @@ class SomeInterfaceSomeMethodResponseParams extends bindings.Struct {
   }
 }
 
+
+
+enum UnionOfStructsTag {
+  nr,
+  aNr,
+  aRp,
+  mNdfv,
+  mHs,
+  unknown
+}
+
+class UnionOfStructs extends bindings.Union {
+  static final _tag_to_int = const {
+    UnionOfStructsTag.nr: 0,
+    UnionOfStructsTag.aNr: 1,
+    UnionOfStructsTag.aRp: 2,
+    UnionOfStructsTag.mNdfv: 3,
+    UnionOfStructsTag.mHs: 4,
+  };
+
+  static final _int_to_tag = const {
+    0: UnionOfStructsTag.nr,
+    1: UnionOfStructsTag.aNr,
+    2: UnionOfStructsTag.aRp,
+    3: UnionOfStructsTag.mNdfv,
+    4: UnionOfStructsTag.mHs,
+  };
+
+  var _data;
+  UnionOfStructsTag _tag = UnionOfStructsTag.unknown;
+
+  UnionOfStructsTag get tag => _tag;
+  NamedRegion get nr {
+    if (_tag != UnionOfStructsTag.nr) {
+      throw new bindings.UnsetUnionTagError(_tag, UnionOfStructsTag.nr);
+    }
+    return _data;
+  }
+
+  set nr(NamedRegion value) {
+    _tag = UnionOfStructsTag.nr;
+    _data = value;
+  }
+  List<NamedRegion> get aNr {
+    if (_tag != UnionOfStructsTag.aNr) {
+      throw new bindings.UnsetUnionTagError(_tag, UnionOfStructsTag.aNr);
+    }
+    return _data;
+  }
+
+  set aNr(List<NamedRegion> value) {
+    _tag = UnionOfStructsTag.aNr;
+    _data = value;
+  }
+  List<RectPair> get aRp {
+    if (_tag != UnionOfStructsTag.aRp) {
+      throw new bindings.UnsetUnionTagError(_tag, UnionOfStructsTag.aRp);
+    }
+    return _data;
+  }
+
+  set aRp(List<RectPair> value) {
+    _tag = UnionOfStructsTag.aRp;
+    _data = value;
+  }
+  Map<int, NoDefaultFieldValues> get mNdfv {
+    if (_tag != UnionOfStructsTag.mNdfv) {
+      throw new bindings.UnsetUnionTagError(_tag, UnionOfStructsTag.mNdfv);
+    }
+    return _data;
+  }
+
+  set mNdfv(Map<int, NoDefaultFieldValues> value) {
+    _tag = UnionOfStructsTag.mNdfv;
+    _data = value;
+  }
+  Map<int, HandleStruct> get mHs {
+    if (_tag != UnionOfStructsTag.mHs) {
+      throw new bindings.UnsetUnionTagError(_tag, UnionOfStructsTag.mHs);
+    }
+    return _data;
+  }
+
+  set mHs(Map<int, HandleStruct> value) {
+    _tag = UnionOfStructsTag.mHs;
+    _data = value;
+  }
+
+  static UnionOfStructs decode(bindings.Decoder decoder0, int offset) {
+    int size = decoder0.decodeUint32(offset);
+    if (size == 0) {
+      return null;
+    }
+    UnionOfStructs result = new UnionOfStructs();
+
+    // TODO(azani): Handle unknown union member.
+    UnionOfStructsTag tag = _int_to_tag[decoder0.decodeUint32(offset + 4)];
+    switch (tag) {
+      case UnionOfStructsTag.nr:
+        
+        var decoder1 = decoder0.decodePointer(offset + 8, false);
+        result.nr = NamedRegion.decode(decoder1);
+        break;
+      case UnionOfStructsTag.aNr:
+        
+        var decoder1 = decoder0.decodePointer(offset + 8, false);
+        {
+          var si1 = decoder1.decodeDataHeaderForPointerArray(bindings.kUnspecifiedArrayLength);
+          result.aNr = new List<NamedRegion>(si1.numElements);
+          for (int i1 = 0; i1 < si1.numElements; ++i1) {
+            
+            var decoder2 = decoder1.decodePointer(bindings.ArrayDataHeader.kHeaderSize + bindings.kPointerSize * i1, false);
+            result.aNr[i1] = NamedRegion.decode(decoder2);
+          }
+        }
+        break;
+      case UnionOfStructsTag.aRp:
+        
+        var decoder1 = decoder0.decodePointer(offset + 8, false);
+        {
+          var si1 = decoder1.decodeDataHeaderForPointerArray(bindings.kUnspecifiedArrayLength);
+          result.aRp = new List<RectPair>(si1.numElements);
+          for (int i1 = 0; i1 < si1.numElements; ++i1) {
+            
+            var decoder2 = decoder1.decodePointer(bindings.ArrayDataHeader.kHeaderSize + bindings.kPointerSize * i1, false);
+            result.aRp[i1] = RectPair.decode(decoder2);
+          }
+        }
+        break;
+      case UnionOfStructsTag.mNdfv:
+        
+        var decoder1 = decoder0.decodePointer(offset + 8, false);
+        {
+          decoder1.decodeDataHeaderForMap();
+          List<int> keys0;
+          List<NoDefaultFieldValues> values0;
+          {
+            
+            keys0 = decoder1.decodeInt64Array(bindings.ArrayDataHeader.kHeaderSize, bindings.kNothingNullable, bindings.kUnspecifiedArrayLength);
+          }
+          {
+            
+            var decoder2 = decoder1.decodePointer(bindings.ArrayDataHeader.kHeaderSize + bindings.kPointerSize, false);
+            {
+              var si2 = decoder2.decodeDataHeaderForPointerArray(keys0.length);
+              values0 = new List<NoDefaultFieldValues>(si2.numElements);
+              for (int i2 = 0; i2 < si2.numElements; ++i2) {
+                
+                var decoder3 = decoder2.decodePointer(bindings.ArrayDataHeader.kHeaderSize + bindings.kPointerSize * i2, false);
+                values0[i2] = NoDefaultFieldValues.decode(decoder3);
+              }
+            }
+          }
+          result.mNdfv = new Map<int, NoDefaultFieldValues>.fromIterables(
+              keys0, values0);
+        }
+        break;
+      case UnionOfStructsTag.mHs:
+        
+        var decoder1 = decoder0.decodePointer(offset + 8, false);
+        {
+          decoder1.decodeDataHeaderForMap();
+          List<int> keys0;
+          List<HandleStruct> values0;
+          {
+            
+            keys0 = decoder1.decodeInt64Array(bindings.ArrayDataHeader.kHeaderSize, bindings.kNothingNullable, bindings.kUnspecifiedArrayLength);
+          }
+          {
+            
+            var decoder2 = decoder1.decodePointer(bindings.ArrayDataHeader.kHeaderSize + bindings.kPointerSize, false);
+            {
+              var si2 = decoder2.decodeDataHeaderForPointerArray(keys0.length);
+              values0 = new List<HandleStruct>(si2.numElements);
+              for (int i2 = 0; i2 < si2.numElements; ++i2) {
+                
+                var decoder3 = decoder2.decodePointer(bindings.ArrayDataHeader.kHeaderSize + bindings.kPointerSize * i2, false);
+                values0[i2] = HandleStruct.decode(decoder3);
+              }
+            }
+          }
+          result.mHs = new Map<int, HandleStruct>.fromIterables(
+              keys0, values0);
+        }
+        break;
+    }
+
+    return result;
+  }
+
+  void encode(bindings.Encoder encoder0, int offset) {
+    // TODO(azani): Error when trying to encode an unknown member.
+    encoder0.encodeUint32(16, offset);
+    encoder0.encodeUint32(_tag_to_int[_tag], offset + 4);
+    switch (_tag) {
+      case UnionOfStructsTag.nr:
+        
+        encoder0.encodeStruct(nr, offset + 8, false);
+        break;
+      case UnionOfStructsTag.aNr:
+        
+        if (aNr == null) {
+          encoder0.encodeNullPointer(offset + 8, false);
+        } else {
+          var encoder1 = encoder0.encodePointerArray(aNr.length, offset + 8, bindings.kUnspecifiedArrayLength);
+          for (int i0 = 0; i0 < aNr.length; ++i0) {
+            
+            encoder1.encodeStruct(aNr[i0], bindings.ArrayDataHeader.kHeaderSize + bindings.kPointerSize * i0, false);
+          }
+        }
+        break;
+      case UnionOfStructsTag.aRp:
+        
+        if (aRp == null) {
+          encoder0.encodeNullPointer(offset + 8, false);
+        } else {
+          var encoder1 = encoder0.encodePointerArray(aRp.length, offset + 8, bindings.kUnspecifiedArrayLength);
+          for (int i0 = 0; i0 < aRp.length; ++i0) {
+            
+            encoder1.encodeStruct(aRp[i0], bindings.ArrayDataHeader.kHeaderSize + bindings.kPointerSize * i0, false);
+          }
+        }
+        break;
+      case UnionOfStructsTag.mNdfv:
+        
+        if (mNdfv == null) {
+          encoder0.encodeNullPointer(offset + 8, false);
+        } else {
+          var encoder1 = encoder0.encoderForMap(offset + 8);
+          int size0 = mNdfv.length;
+          var keys0 = mNdfv.keys.toList();
+          var values0 = mNdfv.values.toList();
+          
+          encoder1.encodeInt64Array(keys0, bindings.ArrayDataHeader.kHeaderSize, bindings.kNothingNullable, bindings.kUnspecifiedArrayLength);
+          
+          {
+            var encoder2 = encoder1.encodePointerArray(values0.length, bindings.ArrayDataHeader.kHeaderSize + bindings.kPointerSize, bindings.kUnspecifiedArrayLength);
+            for (int i1 = 0; i1 < values0.length; ++i1) {
+              
+              encoder2.encodeStruct(values0[i1], bindings.ArrayDataHeader.kHeaderSize + bindings.kPointerSize * i1, false);
+            }
+          }
+        }
+        break;
+      case UnionOfStructsTag.mHs:
+        
+        if (mHs == null) {
+          encoder0.encodeNullPointer(offset + 8, false);
+        } else {
+          var encoder1 = encoder0.encoderForMap(offset + 8);
+          int size0 = mHs.length;
+          var keys0 = mHs.keys.toList();
+          var values0 = mHs.values.toList();
+          
+          encoder1.encodeInt64Array(keys0, bindings.ArrayDataHeader.kHeaderSize, bindings.kNothingNullable, bindings.kUnspecifiedArrayLength);
+          
+          {
+            var encoder2 = encoder1.encodePointerArray(values0.length, bindings.ArrayDataHeader.kHeaderSize + bindings.kPointerSize, bindings.kUnspecifiedArrayLength);
+            for (int i1 = 0; i1 < values0.length; ++i1) {
+              
+              encoder2.encodeStruct(values0[i1], bindings.ArrayDataHeader.kHeaderSize + bindings.kPointerSize * i1, false);
+            }
+          }
+        }
+        break;
+    }
+  }
+
+  String toString() {
+    String result = "UnionOfStructs(";
+    switch (_tag) {
+      case UnionOfStructsTag.nr:
+        result += "nr";
+        break;
+      case UnionOfStructsTag.aNr:
+        result += "aNr";
+        break;
+      case UnionOfStructsTag.aRp:
+        result += "aRp";
+        break;
+      case UnionOfStructsTag.mNdfv:
+        result += "mNdfv";
+        break;
+      case UnionOfStructsTag.mHs:
+        result += "mHs";
+        break;
+      default:
+        result += "unknown";
+    }
+    result += ": $_data)";
+    return result;
+  }
+}
 const int kSomeInterface_someMethod_name = 0;
 
 const String SomeInterfaceName =

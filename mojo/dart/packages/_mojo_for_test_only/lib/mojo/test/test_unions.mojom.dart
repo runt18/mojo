@@ -61,6 +61,236 @@ class AnEnum extends bindings.MojoEnum {
 
 
 
+class StructOfUnions extends bindings.Struct {
+  static const List<bindings.StructDataHeader> kVersions = const [
+    const bindings.StructDataHeader(56, 0)
+  ];
+  ObjectUnion u = null;
+  List<ObjectUnion> aOu = null;
+  List<HandleUnion> aHu = null;
+  Map<int, ObjectUnion> mOu = null;
+  Map<int, HandleUnion> mHu = null;
+
+  StructOfUnions() : super(kVersions.last.size);
+
+  static StructOfUnions deserialize(bindings.Message message) {
+    var decoder = new bindings.Decoder(message);
+    var result = decode(decoder);
+    if (decoder.excessHandles != null) {
+      decoder.excessHandles.forEach((h) => h.close());
+    }
+    return result;
+  }
+
+  static StructOfUnions decode(bindings.Decoder decoder0) {
+    if (decoder0 == null) {
+      return null;
+    }
+    StructOfUnions result = new StructOfUnions();
+
+    var mainDataHeader = decoder0.decodeStructDataHeader();
+    if (mainDataHeader.version <= kVersions.last.version) {
+      // Scan in reverse order to optimize for more recent versions.
+      for (int i = kVersions.length - 1; i >= 0; --i) {
+        if (mainDataHeader.version >= kVersions[i].version) {
+          if (mainDataHeader.size == kVersions[i].size) {
+            // Found a match.
+            break;
+          }
+          throw new bindings.MojoCodecError(
+              'Header size doesn\'t correspond to known version size.');
+        }
+      }
+    } else if (mainDataHeader.size < kVersions.last.size) {
+      throw new bindings.MojoCodecError(
+        'Message newer than the last known version cannot be shorter than '
+        'required by the last known version.');
+    }
+    if (mainDataHeader.version >= 0) {
+      
+        result.u = ObjectUnion.decode(decoder0, 8);
+        if (result.u == null) {
+          throw new bindings.MojoCodecError(
+            'Trying to decode null union for non-nullable ObjectUnion.');
+        }
+    }
+    if (mainDataHeader.version >= 0) {
+      
+      var decoder1 = decoder0.decodePointer(24, false);
+      {
+        var si1 = decoder1.decodeDataHeaderForUnionArray(bindings.kUnspecifiedArrayLength);
+        result.aOu = new List<ObjectUnion>(si1.numElements);
+        for (int i1 = 0; i1 < si1.numElements; ++i1) {
+          
+            result.aOu[i1] = ObjectUnion.decode(decoder1, bindings.ArrayDataHeader.kHeaderSize + bindings.kUnionSize * i1);
+            if (result.aOu[i1] == null) {
+              throw new bindings.MojoCodecError(
+                'Trying to decode null union for non-nullable ObjectUnion.');
+            }
+        }
+      }
+    }
+    if (mainDataHeader.version >= 0) {
+      
+      var decoder1 = decoder0.decodePointer(32, false);
+      {
+        var si1 = decoder1.decodeDataHeaderForUnionArray(bindings.kUnspecifiedArrayLength);
+        result.aHu = new List<HandleUnion>(si1.numElements);
+        for (int i1 = 0; i1 < si1.numElements; ++i1) {
+          
+            result.aHu[i1] = HandleUnion.decode(decoder1, bindings.ArrayDataHeader.kHeaderSize + bindings.kUnionSize * i1);
+            if (result.aHu[i1] == null) {
+              throw new bindings.MojoCodecError(
+                'Trying to decode null union for non-nullable HandleUnion.');
+            }
+        }
+      }
+    }
+    if (mainDataHeader.version >= 0) {
+      
+      var decoder1 = decoder0.decodePointer(40, false);
+      {
+        decoder1.decodeDataHeaderForMap();
+        List<int> keys0;
+        List<ObjectUnion> values0;
+        {
+          
+          keys0 = decoder1.decodeInt64Array(bindings.ArrayDataHeader.kHeaderSize, bindings.kNothingNullable, bindings.kUnspecifiedArrayLength);
+        }
+        {
+          
+          var decoder2 = decoder1.decodePointer(bindings.ArrayDataHeader.kHeaderSize + bindings.kPointerSize, false);
+          {
+            var si2 = decoder2.decodeDataHeaderForUnionArray(keys0.length);
+            values0 = new List<ObjectUnion>(si2.numElements);
+            for (int i2 = 0; i2 < si2.numElements; ++i2) {
+              
+                values0[i2] = ObjectUnion.decode(decoder2, bindings.ArrayDataHeader.kHeaderSize + bindings.kUnionSize * i2);
+                if (values0[i2] == null) {
+                  throw new bindings.MojoCodecError(
+                    'Trying to decode null union for non-nullable ObjectUnion.');
+                }
+            }
+          }
+        }
+        result.mOu = new Map<int, ObjectUnion>.fromIterables(
+            keys0, values0);
+      }
+    }
+    if (mainDataHeader.version >= 0) {
+      
+      var decoder1 = decoder0.decodePointer(48, false);
+      {
+        decoder1.decodeDataHeaderForMap();
+        List<int> keys0;
+        List<HandleUnion> values0;
+        {
+          
+          keys0 = decoder1.decodeInt64Array(bindings.ArrayDataHeader.kHeaderSize, bindings.kNothingNullable, bindings.kUnspecifiedArrayLength);
+        }
+        {
+          
+          var decoder2 = decoder1.decodePointer(bindings.ArrayDataHeader.kHeaderSize + bindings.kPointerSize, false);
+          {
+            var si2 = decoder2.decodeDataHeaderForUnionArray(keys0.length);
+            values0 = new List<HandleUnion>(si2.numElements);
+            for (int i2 = 0; i2 < si2.numElements; ++i2) {
+              
+                values0[i2] = HandleUnion.decode(decoder2, bindings.ArrayDataHeader.kHeaderSize + bindings.kUnionSize * i2);
+                if (values0[i2] == null) {
+                  throw new bindings.MojoCodecError(
+                    'Trying to decode null union for non-nullable HandleUnion.');
+                }
+            }
+          }
+        }
+        result.mHu = new Map<int, HandleUnion>.fromIterables(
+            keys0, values0);
+      }
+    }
+    return result;
+  }
+
+  void encode(bindings.Encoder encoder) {
+    var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
+    
+    encoder0.encodeUnion(u, 8, false);
+    
+    if (aOu == null) {
+      encoder0.encodeNullPointer(24, false);
+    } else {
+      var encoder1 = encoder0.encodeUnionArray(aOu.length, 24, bindings.kUnspecifiedArrayLength);
+      for (int i0 = 0; i0 < aOu.length; ++i0) {
+        
+        encoder1.encodeUnion(aOu[i0], bindings.ArrayDataHeader.kHeaderSize + bindings.kUnionSize * i0, false);
+      }
+    }
+    
+    if (aHu == null) {
+      encoder0.encodeNullPointer(32, false);
+    } else {
+      var encoder1 = encoder0.encodeUnionArray(aHu.length, 32, bindings.kUnspecifiedArrayLength);
+      for (int i0 = 0; i0 < aHu.length; ++i0) {
+        
+        encoder1.encodeUnion(aHu[i0], bindings.ArrayDataHeader.kHeaderSize + bindings.kUnionSize * i0, false);
+      }
+    }
+    
+    if (mOu == null) {
+      encoder0.encodeNullPointer(40, false);
+    } else {
+      var encoder1 = encoder0.encoderForMap(40);
+      int size0 = mOu.length;
+      var keys0 = mOu.keys.toList();
+      var values0 = mOu.values.toList();
+      
+      encoder1.encodeInt64Array(keys0, bindings.ArrayDataHeader.kHeaderSize, bindings.kNothingNullable, bindings.kUnspecifiedArrayLength);
+      
+      {
+        var encoder2 = encoder1.encodeUnionArray(values0.length, bindings.ArrayDataHeader.kHeaderSize + bindings.kPointerSize, bindings.kUnspecifiedArrayLength);
+        for (int i1 = 0; i1 < values0.length; ++i1) {
+          
+          encoder2.encodeUnion(values0[i1], bindings.ArrayDataHeader.kHeaderSize + bindings.kUnionSize * i1, false);
+        }
+      }
+    }
+    
+    if (mHu == null) {
+      encoder0.encodeNullPointer(48, false);
+    } else {
+      var encoder1 = encoder0.encoderForMap(48);
+      int size0 = mHu.length;
+      var keys0 = mHu.keys.toList();
+      var values0 = mHu.values.toList();
+      
+      encoder1.encodeInt64Array(keys0, bindings.ArrayDataHeader.kHeaderSize, bindings.kNothingNullable, bindings.kUnspecifiedArrayLength);
+      
+      {
+        var encoder2 = encoder1.encodeUnionArray(values0.length, bindings.ArrayDataHeader.kHeaderSize + bindings.kPointerSize, bindings.kUnspecifiedArrayLength);
+        for (int i1 = 0; i1 < values0.length; ++i1) {
+          
+          encoder2.encodeUnion(values0[i1], bindings.ArrayDataHeader.kHeaderSize + bindings.kUnionSize * i1, false);
+        }
+      }
+    }
+  }
+
+  String toString() {
+    return "StructOfUnions("
+           "u: $u" ", "
+           "aOu: $aOu" ", "
+           "aHu: $aHu" ", "
+           "mOu: $mOu" ", "
+           "mHu: $mHu" ")";
+  }
+
+  Map toJson() {
+    throw new bindings.MojoCodecError(
+        'Object containing handles cannot be encoded to JSON.');
+  }
+}
+
+
 class WrapperStruct extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(56, 0)
@@ -1579,6 +1809,309 @@ class PodUnion extends bindings.Union {
         break;
       case PodUnionTag.fEnum:
         result += "fEnum";
+        break;
+      default:
+        result += "unknown";
+    }
+    result += ": $_data)";
+    return result;
+  }
+}
+
+
+enum UnionOfUnionsTag {
+  u,
+  aOu,
+  aHu,
+  mOu,
+  mHu,
+  unknown
+}
+
+class UnionOfUnions extends bindings.Union {
+  static final _tag_to_int = const {
+    UnionOfUnionsTag.u: 0,
+    UnionOfUnionsTag.aOu: 1,
+    UnionOfUnionsTag.aHu: 2,
+    UnionOfUnionsTag.mOu: 3,
+    UnionOfUnionsTag.mHu: 4,
+  };
+
+  static final _int_to_tag = const {
+    0: UnionOfUnionsTag.u,
+    1: UnionOfUnionsTag.aOu,
+    2: UnionOfUnionsTag.aHu,
+    3: UnionOfUnionsTag.mOu,
+    4: UnionOfUnionsTag.mHu,
+  };
+
+  var _data;
+  UnionOfUnionsTag _tag = UnionOfUnionsTag.unknown;
+
+  UnionOfUnionsTag get tag => _tag;
+  ObjectUnion get u {
+    if (_tag != UnionOfUnionsTag.u) {
+      throw new bindings.UnsetUnionTagError(_tag, UnionOfUnionsTag.u);
+    }
+    return _data;
+  }
+
+  set u(ObjectUnion value) {
+    _tag = UnionOfUnionsTag.u;
+    _data = value;
+  }
+  List<ObjectUnion> get aOu {
+    if (_tag != UnionOfUnionsTag.aOu) {
+      throw new bindings.UnsetUnionTagError(_tag, UnionOfUnionsTag.aOu);
+    }
+    return _data;
+  }
+
+  set aOu(List<ObjectUnion> value) {
+    _tag = UnionOfUnionsTag.aOu;
+    _data = value;
+  }
+  List<HandleUnion> get aHu {
+    if (_tag != UnionOfUnionsTag.aHu) {
+      throw new bindings.UnsetUnionTagError(_tag, UnionOfUnionsTag.aHu);
+    }
+    return _data;
+  }
+
+  set aHu(List<HandleUnion> value) {
+    _tag = UnionOfUnionsTag.aHu;
+    _data = value;
+  }
+  Map<int, ObjectUnion> get mOu {
+    if (_tag != UnionOfUnionsTag.mOu) {
+      throw new bindings.UnsetUnionTagError(_tag, UnionOfUnionsTag.mOu);
+    }
+    return _data;
+  }
+
+  set mOu(Map<int, ObjectUnion> value) {
+    _tag = UnionOfUnionsTag.mOu;
+    _data = value;
+  }
+  Map<int, HandleUnion> get mHu {
+    if (_tag != UnionOfUnionsTag.mHu) {
+      throw new bindings.UnsetUnionTagError(_tag, UnionOfUnionsTag.mHu);
+    }
+    return _data;
+  }
+
+  set mHu(Map<int, HandleUnion> value) {
+    _tag = UnionOfUnionsTag.mHu;
+    _data = value;
+  }
+
+  static UnionOfUnions decode(bindings.Decoder decoder0, int offset) {
+    int size = decoder0.decodeUint32(offset);
+    if (size == 0) {
+      return null;
+    }
+    UnionOfUnions result = new UnionOfUnions();
+
+    // TODO(azani): Handle unknown union member.
+    UnionOfUnionsTag tag = _int_to_tag[decoder0.decodeUint32(offset + 4)];
+    switch (tag) {
+      case UnionOfUnionsTag.u:
+        var decoder1 = decoder0.decodePointer(offset + 8, false);
+        result.u = ObjectUnion.decode(decoder1, 0);
+        break;
+      case UnionOfUnionsTag.aOu:
+        
+        var decoder1 = decoder0.decodePointer(offset + 8, false);
+        {
+          var si1 = decoder1.decodeDataHeaderForUnionArray(bindings.kUnspecifiedArrayLength);
+          result.aOu = new List<ObjectUnion>(si1.numElements);
+          for (int i1 = 0; i1 < si1.numElements; ++i1) {
+            
+              result.aOu[i1] = ObjectUnion.decode(decoder1, bindings.ArrayDataHeader.kHeaderSize + bindings.kUnionSize * i1);
+              if (result.aOu[i1] == null) {
+                throw new bindings.MojoCodecError(
+                  'Trying to decode null union for non-nullable ObjectUnion.');
+              }
+          }
+        }
+        break;
+      case UnionOfUnionsTag.aHu:
+        
+        var decoder1 = decoder0.decodePointer(offset + 8, false);
+        {
+          var si1 = decoder1.decodeDataHeaderForUnionArray(bindings.kUnspecifiedArrayLength);
+          result.aHu = new List<HandleUnion>(si1.numElements);
+          for (int i1 = 0; i1 < si1.numElements; ++i1) {
+            
+              result.aHu[i1] = HandleUnion.decode(decoder1, bindings.ArrayDataHeader.kHeaderSize + bindings.kUnionSize * i1);
+              if (result.aHu[i1] == null) {
+                throw new bindings.MojoCodecError(
+                  'Trying to decode null union for non-nullable HandleUnion.');
+              }
+          }
+        }
+        break;
+      case UnionOfUnionsTag.mOu:
+        
+        var decoder1 = decoder0.decodePointer(offset + 8, false);
+        {
+          decoder1.decodeDataHeaderForMap();
+          List<int> keys0;
+          List<ObjectUnion> values0;
+          {
+            
+            keys0 = decoder1.decodeInt64Array(bindings.ArrayDataHeader.kHeaderSize, bindings.kNothingNullable, bindings.kUnspecifiedArrayLength);
+          }
+          {
+            
+            var decoder2 = decoder1.decodePointer(bindings.ArrayDataHeader.kHeaderSize + bindings.kPointerSize, false);
+            {
+              var si2 = decoder2.decodeDataHeaderForUnionArray(keys0.length);
+              values0 = new List<ObjectUnion>(si2.numElements);
+              for (int i2 = 0; i2 < si2.numElements; ++i2) {
+                
+                  values0[i2] = ObjectUnion.decode(decoder2, bindings.ArrayDataHeader.kHeaderSize + bindings.kUnionSize * i2);
+                  if (values0[i2] == null) {
+                    throw new bindings.MojoCodecError(
+                      'Trying to decode null union for non-nullable ObjectUnion.');
+                  }
+              }
+            }
+          }
+          result.mOu = new Map<int, ObjectUnion>.fromIterables(
+              keys0, values0);
+        }
+        break;
+      case UnionOfUnionsTag.mHu:
+        
+        var decoder1 = decoder0.decodePointer(offset + 8, false);
+        {
+          decoder1.decodeDataHeaderForMap();
+          List<int> keys0;
+          List<HandleUnion> values0;
+          {
+            
+            keys0 = decoder1.decodeInt64Array(bindings.ArrayDataHeader.kHeaderSize, bindings.kNothingNullable, bindings.kUnspecifiedArrayLength);
+          }
+          {
+            
+            var decoder2 = decoder1.decodePointer(bindings.ArrayDataHeader.kHeaderSize + bindings.kPointerSize, false);
+            {
+              var si2 = decoder2.decodeDataHeaderForUnionArray(keys0.length);
+              values0 = new List<HandleUnion>(si2.numElements);
+              for (int i2 = 0; i2 < si2.numElements; ++i2) {
+                
+                  values0[i2] = HandleUnion.decode(decoder2, bindings.ArrayDataHeader.kHeaderSize + bindings.kUnionSize * i2);
+                  if (values0[i2] == null) {
+                    throw new bindings.MojoCodecError(
+                      'Trying to decode null union for non-nullable HandleUnion.');
+                  }
+              }
+            }
+          }
+          result.mHu = new Map<int, HandleUnion>.fromIterables(
+              keys0, values0);
+        }
+        break;
+    }
+
+    return result;
+  }
+
+  void encode(bindings.Encoder encoder0, int offset) {
+    // TODO(azani): Error when trying to encode an unknown member.
+    encoder0.encodeUint32(16, offset);
+    encoder0.encodeUint32(_tag_to_int[_tag], offset + 4);
+    switch (_tag) {
+      case UnionOfUnionsTag.u:
+        encoder0.encodeNestedUnion(u, offset + 8, false);
+        break;
+      case UnionOfUnionsTag.aOu:
+        
+        if (aOu == null) {
+          encoder0.encodeNullPointer(offset + 8, false);
+        } else {
+          var encoder1 = encoder0.encodeUnionArray(aOu.length, offset + 8, bindings.kUnspecifiedArrayLength);
+          for (int i0 = 0; i0 < aOu.length; ++i0) {
+            
+            encoder1.encodeUnion(aOu[i0], bindings.ArrayDataHeader.kHeaderSize + bindings.kUnionSize * i0, false);
+          }
+        }
+        break;
+      case UnionOfUnionsTag.aHu:
+        
+        if (aHu == null) {
+          encoder0.encodeNullPointer(offset + 8, false);
+        } else {
+          var encoder1 = encoder0.encodeUnionArray(aHu.length, offset + 8, bindings.kUnspecifiedArrayLength);
+          for (int i0 = 0; i0 < aHu.length; ++i0) {
+            
+            encoder1.encodeUnion(aHu[i0], bindings.ArrayDataHeader.kHeaderSize + bindings.kUnionSize * i0, false);
+          }
+        }
+        break;
+      case UnionOfUnionsTag.mOu:
+        
+        if (mOu == null) {
+          encoder0.encodeNullPointer(offset + 8, false);
+        } else {
+          var encoder1 = encoder0.encoderForMap(offset + 8);
+          int size0 = mOu.length;
+          var keys0 = mOu.keys.toList();
+          var values0 = mOu.values.toList();
+          
+          encoder1.encodeInt64Array(keys0, bindings.ArrayDataHeader.kHeaderSize, bindings.kNothingNullable, bindings.kUnspecifiedArrayLength);
+          
+          {
+            var encoder2 = encoder1.encodeUnionArray(values0.length, bindings.ArrayDataHeader.kHeaderSize + bindings.kPointerSize, bindings.kUnspecifiedArrayLength);
+            for (int i1 = 0; i1 < values0.length; ++i1) {
+              
+              encoder2.encodeUnion(values0[i1], bindings.ArrayDataHeader.kHeaderSize + bindings.kUnionSize * i1, false);
+            }
+          }
+        }
+        break;
+      case UnionOfUnionsTag.mHu:
+        
+        if (mHu == null) {
+          encoder0.encodeNullPointer(offset + 8, false);
+        } else {
+          var encoder1 = encoder0.encoderForMap(offset + 8);
+          int size0 = mHu.length;
+          var keys0 = mHu.keys.toList();
+          var values0 = mHu.values.toList();
+          
+          encoder1.encodeInt64Array(keys0, bindings.ArrayDataHeader.kHeaderSize, bindings.kNothingNullable, bindings.kUnspecifiedArrayLength);
+          
+          {
+            var encoder2 = encoder1.encodeUnionArray(values0.length, bindings.ArrayDataHeader.kHeaderSize + bindings.kPointerSize, bindings.kUnspecifiedArrayLength);
+            for (int i1 = 0; i1 < values0.length; ++i1) {
+              
+              encoder2.encodeUnion(values0[i1], bindings.ArrayDataHeader.kHeaderSize + bindings.kUnionSize * i1, false);
+            }
+          }
+        }
+        break;
+    }
+  }
+
+  String toString() {
+    String result = "UnionOfUnions(";
+    switch (_tag) {
+      case UnionOfUnionsTag.u:
+        result += "u";
+        break;
+      case UnionOfUnionsTag.aOu:
+        result += "aOu";
+        break;
+      case UnionOfUnionsTag.aHu:
+        result += "aHu";
+        break;
+      case UnionOfUnionsTag.mOu:
+        result += "mOu";
+        break;
+      case UnionOfUnionsTag.mHu:
+        result += "mHu";
         break;
       default:
         result += "unknown";
