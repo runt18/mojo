@@ -30,11 +30,14 @@ static void exceptionCallback(bool* exception,
   *closed_handles = count;
 }
 
+// TODO(zra): RunTest should not accept or try to pass along any command line
+// flags to the VM.
 static void RunTest(const std::string& test,
-                    const char** extra_args = nullptr,
-                    int num_extra_args = 0,
-                    bool expect_unhandled_exception = false,
-                    int expected_unclosed_handles = 0) {
+                    const char** extra_args,
+                    int num_extra_args,
+                    bool compile_all,
+                    bool expect_unhandled_exception,
+                    int expected_unclosed_handles) {
   base::FilePath path;
   PathService::Get(base::DIR_SOURCE_ROOT, &path);
   path = path.AppendASCII("mojo")
@@ -56,6 +59,7 @@ static void RunTest(const std::string& test,
   // Run with strict compilation even in Release mode so that ASAN testing gets
   // coverage of Dart asserts, type-checking, etc.
   config.strict_compilation = true;
+  config.compile_all = compile_all;
   config.script_uri = path.AsUTF8Unsafe();
   config.package_root = package_root.AsUTF8Unsafe();
   config.callbacks.exception =
@@ -74,80 +78,83 @@ static void RunTest(const std::string& test,
 // _test.dart files.
 
 TEST(DartTest, hello_mojo) {
-  RunTest("hello_mojo.dart");
+  RunTest("hello_mojo.dart", nullptr, 0, false, false, 0);
 }
 
 TEST(DartTest, core_types_test) {
-  RunTest("core_types_test.dart");
+  RunTest("core_types_test.dart", nullptr, 0, false, false, 0);
 }
 
 TEST(DartTest, async_test) {
-  RunTest("async_test.dart");
+  RunTest("async_test.dart", nullptr, 0, false, false, 0);
 }
 
 TEST(DartTest, isolate_test) {
-  RunTest("isolate_test.dart");
+  RunTest("isolate_test.dart", nullptr, 0, false, false, 0);
 }
 
 TEST(DartTest, import_mojo) {
-  RunTest("import_mojo.dart");
+  RunTest("import_mojo.dart", nullptr, 0, false, false, 0);
 }
 
 TEST(DartTest, simple_handle_watcher_test) {
-  RunTest("simple_handle_watcher_test.dart");
+  RunTest("simple_handle_watcher_test.dart", nullptr, 0, false, false, 0);
 }
 
 TEST(DartTest, ping_pong_test) {
-  RunTest("ping_pong_test.dart");
+  RunTest("ping_pong_test.dart", nullptr, 0, false, false, 0);
 }
 
 TEST(DartTest, timer_test) {
-  RunTest("timer_test.dart");
+  RunTest("timer_test.dart", nullptr, 0, false, false, 0);
 }
 
 TEST(DartTest, async_await_test) {
-  RunTest("async_await_test.dart");
+  RunTest("async_await_test.dart", nullptr, 0, false, false, 0);
 }
 
 TEST(DartTest, core_test) {
-  RunTest("core_test.dart");
+  RunTest("core_test.dart", nullptr, 0, false, false, 0);
 }
 
 TEST(DartTest, codec_test) {
-  RunTest("codec_test.dart");
+  RunTest("codec_test.dart", nullptr, 0, false, false, 0);
 }
 
 TEST(DartTest, bindings_generation_test) {
-  RunTest("bindings_generation_test.dart");
+  RunTest("bindings_generation_test.dart", nullptr, 0, false, false, 0);
 }
 
 TEST(DartTest, compile_all_interfaces_test) {
-  const char* args[] = { "--compile_all" };
-  RunTest("compile_all_interfaces_test.dart", &args[0], 1);
+  RunTest("compile_all_interfaces_test.dart", nullptr, 0, true, false, 0);
 }
 
 TEST(DartTest, uri_base_test) {
-  RunTest("uri_base_test.dart");
+  RunTest("uri_base_test.dart", nullptr, 0, false, false, 0);
 }
 
 TEST(DartTest, exception_test) {
-  RunTest("exception_test.dart");
+  RunTest("exception_test.dart", nullptr, 0, false, false, 0);
 }
 
 TEST(DartTest, control_messages_test) {
-  RunTest("control_messages_test.dart");
+  RunTest("control_messages_test.dart", nullptr, 0, false, false, 0);
 }
 
+// TODO(zra): RunTest should not accept command line flags. This test should
+// be split off from the rest of these tests so that it will always run in its
+// own process under these flags. This test only succeeds at the moment because
+// it is run in its own process after initially failing.
 TEST(DartTest, handle_finalizer_test) {
   const int kNumArgs = 2;
   const char* args[kNumArgs];
   args[0] = "--new-gen-semi-max-size=1";
   args[1] = "--old_gen_growth_rate=1";
-  RunTest("handle_finalizer_test.dart", args, kNumArgs);
+  RunTest("handle_finalizer_test.dart", args, kNumArgs, false, false, 0);
 }
 
 TEST(DartTest, unhandled_exception_test) {
-  RunTest("unhandled_exception_test.dart", nullptr, 0, true, 2);
+  RunTest("unhandled_exception_test.dart", nullptr, 0, false, true, 2);
 }
 
 }  // namespace

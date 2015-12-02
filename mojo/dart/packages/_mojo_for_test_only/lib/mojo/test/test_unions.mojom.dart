@@ -8,7 +8,7 @@ import 'dart:async';
 
 import 'package:mojo/bindings.dart' as bindings;
 import 'package:mojo/core.dart' as core;
-import 'package:mojom/mojo/test/test_included_unions.mojom.dart' as test_included_unions_mojom;
+import 'package:_mojo_for_test_only/mojo/test/test_included_unions.mojom.dart' as test_included_unions_mojom;
 class AnEnum extends bindings.MojoEnum {
   static const FIRST = const AnEnum._(0);
   static const SECOND = const AnEnum._(1);

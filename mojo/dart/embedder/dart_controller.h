@@ -38,16 +38,6 @@ struct DartControllerConfig {
   void SetVmFlags(const char** vm_flags, intptr_t vm_flags_count) {
     this->vm_flags = vm_flags;
     this->vm_flags_count = vm_flags_count;
-
-    // See if compile_all is one of the vm flags.
-    compile_all = false;
-    const char* kCompileAllFlag = "--compile_all";
-    const intptr_t kCompileAllFlagLen = strlen(kCompileAllFlag);
-    for (intptr_t i = 0; i < vm_flags_count; i++) {
-      if (strncmp(vm_flags[i], kCompileAllFlag, kCompileAllFlagLen) == 0) {
-        compile_all = true;
-      }
-    }
   }
 
   void SetScriptFlags(const char** script_flags, intptr_t script_flags_count) {
