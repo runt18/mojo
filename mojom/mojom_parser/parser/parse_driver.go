@@ -126,8 +126,7 @@ func (d *ParseDriver) ParseFiles(fileNames []string) (descriptor *mojom.MojomDes
 			}
 
 			if !parser.OK() {
-				err = fmt.Errorf("\nError while parsing %s: \n%s\n",
-					currentFile, parser.GetError().Error())
+				err = parser.GetError()
 				return
 			}
 			currentFile.mojomFile = d.fileExtractor.extractMojomFile(&parser)

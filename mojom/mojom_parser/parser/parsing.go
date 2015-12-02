@@ -180,7 +180,7 @@ func (p *Parser) parseMojomFile() bool {
 	if p.checkEOF() {
 		if initialAttributes != nil && moduleIdentifier == "" {
 			message := "The .mojom file contains an attributes section but nothing else."
-			p.err = &ParseError{ParserErrorCodeBadAttributeLocation, message}
+			p.parseError(ParserErrorCodeBadAttributeLocation, message)
 			return false
 		}
 		// Accept an empty .mojom file.
@@ -197,7 +197,7 @@ func (p *Parser) parseMojomFile() bool {
 
 	if moduleIdentifier == "" && len(importNames) > 0 && initialAttributes != nil {
 		message := "Attributes are not allowed before an import statement."
-		p.err = &ParseError{ParserErrorCodeBadAttributeLocation, message}
+		p.parseError(ParserErrorCodeBadAttributeLocation, message)
 		return false
 	}
 
@@ -224,7 +224,7 @@ func (p *Parser) parseMojomFile() bool {
 		if p.checkEOF() {
 			if attributes != nil {
 				message := "File ends with extraneouss attributes."
-				p.err = &ParseError{ParserErrorCodeBadAttributeLocation, message}
+				p.parseError(ParserErrorCodeBadAttributeLocation, message)
 			}
 			return false
 		}
@@ -257,7 +257,7 @@ func (p *Parser) parseMojomFile() bool {
 		}
 
 		if p.OK() && duplicateNameError != nil {
-			p.err = &ParseError{ParserErrorCodeDuplicateDeclaration, duplicateNameError.Error()}
+			p.err = duplicateNameError
 			return false
 		}
 	}
@@ -315,16 +315,15 @@ func (p *Parser) parseAttributes() (attributes *mojom.Attributes) {
 		}
 		p.consumeNextToken()
 		if nextToken.Kind != lexer.RBracket && nextToken.Kind != lexer.Comma {
-			var message string
 			switch nextToken.Kind {
 			case lexer.Module, lexer.Interface, lexer.Struct, lexer.Union, lexer.Enum:
-				message = fmt.Sprintf("The attribute section is missing a closing ] before %v at %s.",
-					nextToken, nextToken.LongLocationString())
+				message := fmt.Sprintf("The attribute section is missing a closing ] before %s.", nextToken)
+				p.parseErrorT(ParserErrorCodeUnexpectedToken, message, nextToken)
+				return
 			default:
-				message = p.unexpectedTokenError(nextToken, "comma or ]")
+				p.unexpectedTokenError(nextToken, "comma or ]")
+				return
 			}
-			p.err = &ParseError{ParserErrorCodeUnexpectedToken, message}
-			return
 		}
 	}
 
@@ -409,7 +408,7 @@ func (p *Parser) parseImportStatements() (names []string) {
 	switch nextToken.Kind {
 	case lexer.Module:
 		message := "The module declaration must come before the import statements."
-		p.err = &ParseError{ParserErrorCodeUnexpectedToken, message}
+		p.parseError(ParserErrorCodeUnexpectedToken, message)
 		return
 	case lexer.Interface, lexer.Struct, lexer.Union, lexer.Enum, lexer.Const, lexer.LBracket:
 		return
@@ -494,7 +493,7 @@ func (p *Parser) parseInterfaceBody(mojomInterface *mojom.MojomInterface) bool {
 			rbraceFound = true
 			if attributes != nil {
 				message := "Interface body ends with extraneouss attributes."
-				p.err = &ParseError{ParserErrorCodeBadAttributeLocation, message}
+				p.parseError(ParserErrorCodeBadAttributeLocation, message)
 			}
 			break
 		default:
@@ -502,13 +501,13 @@ func (p *Parser) parseInterfaceBody(mojomInterface *mojom.MojomInterface) bool {
 			return false
 		}
 		if p.OK() && duplicateNameError != nil {
-			p.err = &ParseError{ParserErrorCodeDuplicateDeclaration, duplicateNameError.Error()}
+			p.err = duplicateNameError
 			return false
 		}
 	}
 	if p.OK() {
 		if err := mojomInterface.ComputeMethodOrdinals(); err != nil {
-			p.err = &ParseError{ParserErrorCodeBadOrdinal, err.Error()}
+			p.err = err
 			return false
 		}
 	}
@@ -531,7 +530,7 @@ func (p *Parser) parseMethodDecl(attributes *mojom.Attributes) *mojom.MojomMetho
 
 	ordinalValue, err := p.readOrdinal()
 	if err != nil {
-		p.err = p.newInvalidOrdinalError("method", methodName, nameToken, err)
+		p.invalidOrdinalError("method", methodName, nameToken, err)
 		return nil
 	}
 
@@ -606,7 +605,7 @@ func (p *Parser) parseParamList() (paramStruct *mojom.MojomStruct) {
 
 		ordinalValue, err := p.readOrdinal()
 		if err != nil {
-			p.err = p.newInvalidOrdinalError("parameter", name, nameToken, err)
+			p.invalidOrdinalError("parameter", name, nameToken, err)
 			return
 		}
 
@@ -705,7 +704,7 @@ func (p *Parser) parseStructBody(mojomStruct *mojom.MojomStruct) bool {
 			rbraceFound = true
 			if attributes != nil {
 				message := "Struct body ends with extraneouss attributes."
-				p.err = &ParseError{ParserErrorCodeBadAttributeLocation, message}
+				p.parseError(ParserErrorCodeBadAttributeLocation, message)
 			}
 			break
 		default:
@@ -713,7 +712,7 @@ func (p *Parser) parseStructBody(mojomStruct *mojom.MojomStruct) bool {
 			return false
 		}
 		if p.OK() && duplicateNameError != nil {
-			p.err = &ParseError{ParserErrorCodeDuplicateDeclaration, duplicateNameError.Error()}
+			p.err = duplicateNameError
 			return false
 		}
 	}
@@ -740,7 +739,7 @@ func (p *Parser) parseStructField(attributes *mojom.Attributes) *mojom.StructFie
 
 	ordinalValue, err := p.readOrdinal()
 	if err != nil {
-		p.err = p.newInvalidOrdinalError("field", fieldName, nameToken, err)
+		p.invalidOrdinalError("field", fieldName, nameToken, err)
 		return nil
 	}
 
@@ -769,9 +768,9 @@ func (p *Parser) parseStructField(attributes *mojom.Attributes) *mojom.StructFie
 			valueString = fmt.Sprintf("%v", concreteValue.Value())
 			valueTypeString = fmt.Sprintf(" of type %s", concreteValue.ValueType())
 		}
-		message := fmt.Sprintf("Illegal assignment at %s: Field %s of type %s may not be assigned the value %v%s.",
-			defaultValueToken.LongLocationString(), fieldName, fieldType, valueString, valueTypeString)
-		p.err = &ParseError{ParserErrorCodeNotAssignmentCompatible, message}
+		message := fmt.Sprintf("Illegal assignment: Field %s of type %s may not be assigned the value %v%s.",
+			fieldName, fieldType, valueString, valueTypeString)
+		p.parseErrorT(ParserErrorCodeNotAssignmentCompatible, message, defaultValueToken)
 		return nil
 	}
 
@@ -840,7 +839,7 @@ func (p *Parser) parseUnionBody(union *mojom.MojomUnion) bool {
 
 			tag, err := p.readOrdinal()
 			if err != nil {
-				p.err = p.newInvalidOrdinalError("union field", fieldName, nameToken, err)
+				p.invalidOrdinalError("union field", fieldName, nameToken, err)
 				return false
 			}
 
@@ -852,7 +851,7 @@ func (p *Parser) parseUnionBody(union *mojom.MojomUnion) bool {
 			rbraceFound = true
 			if attributes != nil {
 				message := "Enum body ends with extraneouss attributes."
-				p.err = &ParseError{ParserErrorCodeBadAttributeLocation, message}
+				p.parseError(ParserErrorCodeBadAttributeLocation, message)
 			}
 			break
 		default:
@@ -925,10 +924,9 @@ func (p *Parser) parseEnumBody(mojomEnum *mojom.MojomEnum) bool {
 		switch nextToken.Kind {
 		case lexer.Name:
 			if !firstValue && !trailingCommaFound {
-				message := fmt.Sprintf("Expecting a comma after %s before "+
-					"the next value %s at %s. ", p.lastConsumed, nextToken,
-					nextToken.LongLocationString())
-				p.err = &ParseError{ParserErrorCodeUnexpectedToken, message}
+				message := fmt.Sprintf("Expecting a comma after %s before the next value %s.",
+					p.lastConsumed, nextToken)
+				p.parseErrorT(ParserErrorCodeUnexpectedToken, message, p.lastConsumed)
 				return false
 			}
 			firstValue = false
@@ -946,7 +944,7 @@ func (p *Parser) parseEnumBody(mojomEnum *mojom.MojomEnum) bool {
 			rbraceFound = true
 			if attributes != nil {
 				message := "Enum body ends with extraneouss attributes."
-				p.err = &ParseError{ParserErrorCodeBadAttributeLocation, message}
+				p.parseError(ParserErrorCodeBadAttributeLocation, message)
 			}
 			break
 		case lexer.Comma:
@@ -956,7 +954,7 @@ func (p *Parser) parseEnumBody(mojomEnum *mojom.MojomEnum) bool {
 			return false
 		}
 		if p.OK() && duplicateNameError != nil {
-			p.err = &ParseError{ParserErrorCodeDuplicateDeclaration, duplicateNameError.Error()}
+			p.err = duplicateNameError
 			return false
 		}
 	}
@@ -985,10 +983,9 @@ func (p *Parser) parseEnumValueInitializer(mojoEnum *mojom.MojomEnum) mojom.Valu
 		return nil
 	}
 	if !valueRef.MarkUsedAsEnumValueInitializer() {
-		message := fmt.Sprintf("Illegal value: %s at %s. An enum value initializer "+
-			"must be a signed 32-bit integer value.", valueToken,
-			valueToken.LongLocationString())
-		p.err = &ParseError{ParserErrorCodeUnexpectedToken, message}
+		message := fmt.Sprintf("Illegal value: %s. An enum value initializer must be a signed 32-bit integer value.",
+			valueToken)
+		p.parseErrorT(ParserErrorCodeUnexpectedToken, message, valueToken)
 		return nil
 	}
 
@@ -1023,11 +1020,9 @@ func (p *Parser) parseConstDecl(attributes *mojom.Attributes) (constant *mojom.U
 	}
 
 	if !declaredType.MarkUsedAsConstantType() {
-		message := fmt.Sprintf("The type %s at %s is not allowed as the type "+
-			"of a declared constant. Only simple types, strings and enum "+
-			"types may be the types of constants.",
-			declaredType, declaredTypeToken.LongLocationString())
-		p.err = &ParseError{ParserErrorCodeUnexpectedToken, message}
+		message := fmt.Sprintf("The type %s is not allowed as the type of a declared constant. "+
+			"Only simple types, strings and enum types may be the types of constants.", declaredType)
+		p.parseErrorT(ParserErrorCodeUnexpectedToken, message, declaredTypeToken)
 		return
 	}
 
@@ -1042,9 +1037,9 @@ func (p *Parser) parseConstDecl(attributes *mojom.Attributes) (constant *mojom.U
 			valueString = fmt.Sprintf("%v", concreteValue.Value())
 			valueTypeString = fmt.Sprintf(" of type %s", concreteValue.ValueType())
 		}
-		message := fmt.Sprintf("Illegal assignment at %s: Constant %s of type %s may not be assigned the value %v%s.",
-			valueToken.LongLocationString(), name, declaredType, valueString, valueTypeString)
-		p.err = &ParseError{ParserErrorCodeNotAssignmentCompatible, message}
+		message := fmt.Sprintf("Illegal assignment: Constant %s of type %s may not be assigned the value %v%s.",
+			name, declaredType, valueString, valueTypeString)
+		p.parseErrorT(ParserErrorCodeNotAssignmentCompatible, message, valueToken)
 		return
 	}
 
@@ -1192,9 +1187,8 @@ func (p *Parser) parseIdentifier() (identifier string, firstToken lexer.Token) {
 		}
 		identifier += "."
 	}
-	message := fmt.Sprintf("Invalid identifier: %s at %s. Identifier may not end with a dot.",
-		identifier, firstToken.LongLocationString())
-	p.err = &ParseError{ParserErrorCodeUnexpectedToken, message}
+	message := fmt.Sprintf("Invalid identifier: %s. Identifiers may not end with a dot.", identifier)
+	p.parseErrorT(ParserErrorCodeUnexpectedToken, message, firstToken)
 	return
 }
 
@@ -1257,9 +1251,8 @@ func (p *Parser) tryParseBuiltInType() mojom.TypeRef {
 			if p.match(lexer.RAngle) {
 				typeName = fmt.Sprintf("%s<%s>", typeName, handleType)
 				if builtInType = mojom.BuiltInType(typeName); builtInType == nil {
-					message := fmt.Sprintf("Unrecognized type of handle at %s: %s.",
-						typeNameToken.LongLocationString(), typeName)
-					p.err = &ParseError{ParserErrorCodeUnexpectedToken, message}
+					message := fmt.Sprintf("Unrecognized type of handle: %s.", typeName)
+					p.parseErrorT(ParserErrorCodeUnexpectedToken, message, typeNameToken)
 					return nil
 				}
 			}
@@ -1272,10 +1265,9 @@ func (p *Parser) tryParseBuiltInType() mojom.TypeRef {
 	// Check for nullable marker
 	if p.tryMatch(lexer.Qstn) {
 		if builtInType = mojom.BuiltInType(typeName + "?"); builtInType == nil {
-			message := fmt.Sprintf("The type %s? at %s is invalid because the "+
-				"type %s may not be made nullable.",
-				typeName, typeNameToken.LongLocationString(), typeName)
-			p.err = &ParseError{ParserErrorCodeUnexpectedToken, message}
+			message := fmt.Sprintf("The type %s? is invalid because the type %s may not be made nullable.",
+				typeName, typeName)
+			p.parseErrorT(ParserErrorCodeUnexpectedToken, message, typeNameToken)
 			return nil
 		}
 	}
@@ -1347,11 +1339,9 @@ func (p *Parser) tryParseMapType() mojom.TypeRef {
 	nullable := p.tryMatch(lexer.Qstn)
 
 	if !keyType.MarkUsedAsMapKey() {
-		message := fmt.Sprintf("The type %s at %s is not allowed as the key "+
-			"type of a map. Only simple types, strings and enum types may "+
-			"be map keys.",
-			keyType, keyToken.LongLocationString())
-		p.err = &ParseError{ParserErrorCodeUnexpectedToken, message}
+		message := fmt.Sprintf("The type %s is not allowed as the key type of a map. "+
+			"Only simple types, strings and enum types may be map keys.", keyType)
+		p.parseErrorT(ParserErrorCodeUnexpectedToken, message, keyToken)
 		return nil
 	}
 
@@ -1459,16 +1449,14 @@ func (p *Parser) parsePositiveIntegerLiteral(initialMinus, acceptHex, allowUnsig
 		break
 	case lexer.IntConstHex:
 		if !acceptHex {
-			message := fmt.Sprintf("Illegal value %s at %s. Only a decimal "+
-				"integer literal is allowed here. Hexadecimal is not valid.",
-				nextToken.LongLocationString(), nextToken)
-			p.err = &ParseError{ParserErrorCodeUnexpectedToken, message}
+			message := fmt.Sprintf("Illegal value %s. Only a decimal integer literal is allowed here. "+
+				"Hexadecimal is not valid.", nextToken)
+			p.parseErrorT(ParserErrorCodeUnexpectedToken, message, nextToken)
 			return
 		}
 		if len(intText) < 3 {
-			message := fmt.Sprintf("Invalid hex integer literal"+
-				" '%s' at %s.", intText, nextToken.LongLocationString())
-			p.err = &ParseError{ParserErrorCodeIntegerParseError, message}
+			message := fmt.Sprintf("Invalid hex integer literal %q.", intText)
+			p.parseErrorT(ParserErrorCodeIntegerParseError, message, nextToken)
 			return
 		}
 		intText = intText[2:]
@@ -1511,16 +1499,14 @@ func (p *Parser) parsePositiveIntegerLiteral(initialMinus, acceptHex, allowUnsig
 		}
 	}
 
-	message := "parseIntegerLiteral error."
 	switch parseError.(*strconv.NumError).Err {
 	case strconv.ErrRange:
-		message = fmt.Sprintf("Integer literal value out of range: "+
-			"%s at %s.", intText, nextToken.LongLocationString())
+		message := fmt.Sprintf("Integer literal value out of range: %s.", intText)
+		p.parseErrorT(ParserErrorCodeIntegerOutOfRange, message, nextToken)
 	case strconv.ErrSyntax:
 		panic(fmt.Sprintf("Lexer allowed unparsable integer literal: %s. "+
 			"Kind = %s. error=%s.", nextToken.Text, nextToken.Kind, parseError))
 	}
-	p.err = &ParseError{ParserErrorCodeIntegerOutOfRange, message}
 	return 0, 0, false, false
 }
 
@@ -1539,16 +1525,14 @@ func (p *Parser) parsePositiveFloatLiteral(initialMinus bool) (float64, bool) {
 	if err == nil {
 		return floatVal, true
 	}
-	var message string
 	switch err.(*strconv.NumError).Err {
 	case strconv.ErrRange:
-		message = fmt.Sprintf("Float literal value out of range: "+
-			"%s at %s.", floatText, nextToken.LongLocationString())
+		message := fmt.Sprintf("Float literal value out of range: %s.", floatText)
+		p.parseErrorT(ParserErrorCodeIntegerOutOfRange, message, nextToken)
 	case strconv.ErrSyntax:
 		panic(fmt.Sprintf("Lexer allowed unparsable float literal: %s. "+
 			"Kind = %s. error=%s.", nextToken.Text, nextToken.Kind, err))
 	}
-	p.err = &ParseError{ParserErrorCodeIntegerOutOfRange, message}
 	return 0, false
 }
 
@@ -1564,7 +1548,7 @@ func (p *Parser) match(expectedKind lexer.TokenKind) bool {
 		return false
 	}
 	if nextToken.Kind != expectedKind {
-		expected := fmt.Sprintf("%s", expectedKind)
+		expected := fmt.Sprintf("%q", expectedKind)
 		p.unexpectedTokenError(nextToken, expected)
 		return false
 	}
@@ -1594,9 +1578,8 @@ func (p *Parser) matchSemicolonToken(previousToken lexer.Token) bool {
 	if p.match(lexer.Semi) {
 		return true
 	}
-	message := fmt.Sprintf("Missing semicolon after %s at %s.",
-		previousToken, previousToken.LongLocationString())
-	p.err = &ParseError{ParserErrorCodeUnexpectedToken, message}
+	message := fmt.Sprintf("Missing semicolon after %s.", previousToken)
+	p.parseErrorT(ParserErrorCodeUnexpectedToken, message, previousToken)
 	return false
 }
 
@@ -1688,30 +1671,27 @@ func (p *Parser) popScope() {
 
 /////////// Utility functions
 
-// |expected| should be a string of the grammatic form "a semicolon"
-func (p *Parser) unexpectedTokenError(token lexer.Token, expected string) string {
-	return p.expectedTokenError(token, "Unexpected token at %s: %s.", expected)
+func (p *Parser) invalidOrdinalError(objectType, objectName string, nameToken lexer.Token, err error) {
+	message := fmt.Sprintf("%s %q: %s", objectType, objectName, err.Error())
+	p.parseErrorT(ParserErrorCodeBadOrdinal, message, nameToken)
 }
 
-func (p *Parser) newInvalidOrdinalError(objectType, objectName string, nameToken lexer.Token, err error) *ParseError {
-	message := fmt.Sprintf("%s:%s %s %q: %s",
-		p.mojomFile.CanonicalFileName, nameToken.ShortLocationString(),
-		objectType, objectName, err.Error())
-	return &ParseError{ParserErrorCodeBadOrdinal, message}
-}
-
-// |unexpected| should be a string of the grammatical form "Unexpected token at %s: %s."
-// |expected| should be a string of the grammatic form "a semicolon"
-func (p *Parser) expectedTokenError(token lexer.Token, unexpected string, expected string) string {
-	message := fmt.Sprintf(" Expecting %s.", expected)
+// unexpectedTokenError() sets the parser's current error to a ParseError
+// with error code |ParserErrorCodeUnexpectedToken| and an error message
+// of the form:
+//
+//    Unexpected '}'. Expecting a semicolon.
+//
+// |expected| should be a noun-phrase such as "a semicolon".
+func (p *Parser) unexpectedTokenError(token lexer.Token, expected string) {
+	var message string
 	switch token.Kind {
 	case lexer.ErrorUnknown, lexer.ErrorIllegalChar,
 		lexer.ErrorUnterminatedStringLiteral,
 		lexer.ErrorUnterminatedComment:
-		message = fmt.Sprintf("%s at %s.", token, token.LongLocationString()) + message
+		message = fmt.Sprintf("%s. Expecting %s.", token, expected)
 	default:
-		message = fmt.Sprintf(unexpected, token.LongLocationString(), token) + message
+		message = fmt.Sprintf("Unexpected %s. Expecting %s.", token, expected)
 	}
-	p.err = &ParseError{ParserErrorCodeUnexpectedToken, message}
-	return message
+	p.parseErrorT(ParserErrorCodeUnexpectedToken, message, token)
 }

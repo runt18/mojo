@@ -23,6 +23,9 @@ import (
 // The same MojomDescriptor may be given to successive runs of the Parser
 // so that an entire graph of .mojom files may be parsed.
 type Parser struct {
+	// The contents of the file being parsed.
+	fileContents string
+
 	// The stream of input tokens
 	inputStream lexer.TokenStream
 
@@ -32,7 +35,7 @@ type Parser struct {
 	// TODO(rudominer) Enhancement: Parser should be able to keep going
 	// after some errors. Change this field to be a list of errors instead of
 	// a single error.
-	err *ParseError
+	err error
 
 	// Last token seen, whether or not it was consumed.
 	lastSeen lexer.Token
@@ -104,9 +107,8 @@ func (p *Parser) Parse() {
 	// Check if there are any extraneous tokens left in the stream.
 	if p.OK() && !p.checkEOF() {
 		token := p.peekNextToken("")
-		message := fmt.Sprintf("Extraneous token at %s: %v.",
-			token.LongLocationString(), token)
-		p.err = &ParseError{ParserErrorCodeExtraneousToken, message}
+		message := fmt.Sprintf("Extraneous token: %v.", token)
+		p.parseErrorT(ParserErrorCodeExtraneousToken, message, token)
 	}
 }
 
@@ -127,13 +129,35 @@ func (p *Parser) GetParseTree() *ParseNode {
 ////////////////////////////////////////////////////////////////////////////
 
 type ParseError struct {
-	code    ParseErrorCode
-	message string
+	code         ParseErrorCode
+	file         *mojom.MojomFile
+	token        lexer.Token
+	fileContents string
+	message      string
 }
 
 // Make ParseError implement the error interface.
 func (e ParseError) Error() string {
-	return e.message
+	// TODO(rudominer|azani) Add snippets here.
+	// TODO(rudominer) Add file import path info here.
+	return fmt.Sprintf("%s:%s: %s", e.file.CanonicalFileName,
+		e.token.ShortLocationString(), e.message)
+}
+
+// parseError sets the parser's current error to a ParseError with the given data.
+func (p *Parser) parseError(code ParseErrorCode, message string) {
+	p.parseErrorT(code, message, p.lastSeen)
+}
+
+// parseErrorT sets the parser's current error to a ParseError with the given data.
+func (p *Parser) parseErrorT(code ParseErrorCode, message string, token lexer.Token) {
+	p.err = &ParseError{
+		code:         code,
+		file:         p.mojomFile,
+		token:        token,
+		fileContents: p.fileContents,
+		message:      message,
+	}
 }
 
 // Returns whether or not the Parser is in a non-error state.
@@ -142,7 +166,7 @@ func (p *Parser) OK() bool {
 }
 
 // Returns the current ParseError or nil if OK() is true.
-func (p *Parser) GetError() *ParseError {
+func (p *Parser) GetError() error {
 	return p.err
 }
 
@@ -151,10 +175,7 @@ type ParseErrorCode int
 
 const (
 	// An attributes section appeared in a location it is not allowed.
-	ParserErrorCodeBadAttributeLocation = iota
-
-	// Two types or values with the same fully qualified name were declared.
-	ParserErrorCodeDuplicateDeclaration
+	ParserErrorCodeBadAttributeLocation ParseErrorCode = iota
 
 	// Unexpected end-of-file
 	ParserErrorCodeEOF
@@ -204,7 +225,7 @@ func (p *Parser) peekNextToken(eofMessage string) (nextToken lexer.Token) {
 	nextToken = p.inputStream.PeekNext()
 	if nextToken.EOF() {
 		errorMessage := "Unexpected end-of-file. " + eofMessage
-		p.err = &ParseError{ParserErrorCodeEOF, errorMessage}
+		p.parseError(ParserErrorCodeEOF, errorMessage)
 	}
 	p.lastSeen = nextToken
 	return

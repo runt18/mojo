@@ -448,7 +448,7 @@ func TestErrorParsing(t *testing.T) {
 	[cool=true]
 	[not-cool=false]
 	`
-	expectError("Unexpected token")
+	expectError("Unexpected ")
 	expectError("'['")
 	expectError("Expecting module, import, interface, struct, union, enum or constant.")
 	endTestCase()
@@ -462,7 +462,7 @@ func TestErrorParsing(t *testing.T) {
 	[not-cool=false]
 	module mojom.test;
 	`
-	expectError("Unexpected token")
+	expectError("Unexpected ")
 	expectError("'['")
 	expectError("Expecting module, import, interface, struct, union, enum or constant.")
 	endTestCase()

@@ -233,7 +233,7 @@ type DuplicateTypeNameError struct {
 }
 
 func (e *DuplicateTypeNameError) Error() string {
-	return fmt.Sprintf("%s:%s. Duplicate definition for name '%s'. "+
+	return fmt.Sprintf("%s:%s. Duplicate definition for name %q. "+
 		"The fully-qualified name of this type would be the same as "+
 		"an existing type definition: "+
 		"%s %s in %s.", e.owningFile.CanonicalFileName,
