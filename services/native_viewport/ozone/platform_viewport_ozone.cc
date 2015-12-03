@@ -51,6 +51,9 @@ class PlatformViewportOzone : public PlatformViewport,
         ui::OzonePlatform::GetInstance()->CreatePlatformWindow(this, bounds);
 
     metrics_ = mojo::ViewportMetrics::New();
+#if defined(FNL_MUSL)
+    metrics_->device_pixel_ratio = 2.0;
+#endif
     metrics_->size = mojo::Size::From(platform_window_->GetBounds().size());
   }
 
