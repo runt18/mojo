@@ -37,8 +37,7 @@ void expectStringFromEndpoint(
 
 void pipeTestIsolate(core.MojoMessagePipeEndpoint endpoint) {
   var eventSubscription = new core.MojoEventSubscription(endpoint.handle);
-  eventSubscription.subscribe((List<int> event) {
-    int mojoSignals = event[1];
+  eventSubscription.subscribe((int mojoSignals) {
     if (core.MojoHandleSignals.isReadWrite(mojoSignals)) {
       throw 'We should only be reading or writing, not both.';
     } else if (core.MojoHandleSignals.isReadable(mojoSignals)) {
@@ -60,8 +59,7 @@ main() {
   var endpoint = pipe.endpoints[0];
   var eventSubscription = new core.MojoEventSubscription(endpoint.handle);
   Isolate.spawn(pipeTestIsolate, pipe.endpoints[1]).then((_) {
-    eventSubscription.subscribe((List<int> event) {
-      int mojoSignals = event[1];
+    eventSubscription.subscribe((int mojoSignals) {
       if (core.MojoHandleSignals.isReadWrite(mojoSignals)) {
         throw 'We should only be reading or writing, not both.';
       } else if (core.MojoHandleSignals.isReadable(mojoSignals)) {

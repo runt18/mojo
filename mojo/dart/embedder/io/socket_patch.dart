@@ -241,12 +241,10 @@ class _MojoRawSocket extends Stream<RawSocketEvent> implements RawSocket {
     return false;
   }
 
-  _onInputData(List<int> event) {
+  _onInputData(int signalsReceived) {
     if (_inClosed) {
       return;
     }
-    int signalsWatched = event[0];
-    int signalsReceived = event[1];
     if (_trace) {
       _tracePrint('<- IN: ${signalsReceived}');
     }
@@ -267,12 +265,10 @@ class _MojoRawSocket extends Stream<RawSocketEvent> implements RawSocket {
     }
   }
 
-  _onOutputData(List<int> event) {
+  _onOutputData(int signalsReceived) {
     if (_outClosed) {
       return;
     }
-    int signalsWatched = event[0];
-    int signalsReceived = event[1];
     if (_trace) {
       _tracePrint('<- OUT: ${signalsReceived}');
     }

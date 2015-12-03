@@ -123,8 +123,7 @@ class Connector {
     _startReadingFromTerminal();
   }
 
-  void _onSocketReceiverEvent(List<int> event) {
-    int mojoSignals = event[1];
+  void _onSocketReceiverEvent(int mojoSignals) {
     var shouldShutDown = false;
     if (MojoHandleSignals.isReadable(mojoSignals)) {
       var numBytesRead = _socketReceiver.read(_readBuffer);
