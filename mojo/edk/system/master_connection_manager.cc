@@ -729,10 +729,12 @@ void MasterConnectionManager::CallOnSlaveDisconnect(
     embedder::SlaveInfo slave_info) {
   AssertOnPrivateThread();
   DCHECK(master_process_delegate_);
+  // TODO(vtl): With C++14 lambda captures, this can be made less silly.
+  auto master_process_delegate = master_process_delegate_;
   delegate_thread_task_runner_->PostTask(
-      base::Bind(&embedder::MasterProcessDelegate::OnSlaveDisconnect,
-                 base::Unretained(master_process_delegate_),
-                 base::Unretained(slave_info)));
+      [master_process_delegate, slave_info]() {
+        master_process_delegate->OnSlaveDisconnect(slave_info);
+      });
 }
 
 void MasterConnectionManager::AssertNotOnPrivateThread() const {

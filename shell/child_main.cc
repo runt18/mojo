@@ -130,8 +130,7 @@ class AppContext : public mojo::embedder::SlaveProcessDelegate {
   void Shutdown() {
     Blocker blocker;
     shutdown_unblocker_ = blocker.GetUnblocker();
-    controller_runner_->PostTask(base::Bind(
-        &AppContext::ShutdownOnControllerThread, base::Unretained(this)));
+    controller_runner_->PostTask([this]() { ShutdownOnControllerThread(); });
     blocker.Block();
   }
 
@@ -315,9 +314,13 @@ int main(int argc, char** argv) {
   app_context.Init(platform_handle.Pass());
 
   shell::Blocker blocker;
-  app_context.controller_runner()->PostTask(base::Bind(
-      &shell::ChildControllerImpl::Init, base::Unretained(&app_context),
-      child_connection_id, blocker.GetUnblocker()));
+  // TODO(vtl): With C++14 lambda captures, this can be made nicer.
+  const shell::Blocker::Unblocker unblocker = blocker.GetUnblocker();
+  app_context.controller_runner()->PostTask(
+      [&app_context, &child_connection_id, &unblocker]() {
+        shell::ChildControllerImpl::Init(&app_context, child_connection_id,
+                                         unblocker);
+      });
   // This will block, then run whatever the controller wants.
   blocker.Block();
 
