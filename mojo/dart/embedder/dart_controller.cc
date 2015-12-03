@@ -352,7 +352,8 @@ Dart_Isolate DartController::CreateIsolateHelper(
     // The VM is creating the service isolate.
     if (Dart_IsServiceIsolate(isolate)) {
       service_isolate_spawned_ = true;
-      const intptr_t port = SupportDartMojoIo() ? 0 : -1;
+      const intptr_t port =
+          (SupportDartMojoIo() && observatory_enabled_) ? 0 : -1;
       InitializeDartMojoIo();
       if (!VmService::Setup("127.0.0.1", port)) {
         *error = strdup(VmService::GetErrorMessage());
@@ -504,6 +505,7 @@ MojoHandle DartController::handle_watcher_producer_handle_ =
 bool DartController::service_isolate_running_ = false;
 bool DartController::service_isolate_spawned_ = false;
 bool DartController::strict_compilation_ = false;
+bool DartController::observatory_enabled_ = true;
 DartControllerServiceConnector* DartController::service_connector_ = nullptr;
 base::Lock DartController::lock_;
 
@@ -709,9 +711,11 @@ static bool generateEntropy(uint8_t* buffer, intptr_t length) {
 bool DartController::Initialize(
     DartControllerServiceConnector* service_connector,
     bool strict_compilation,
+    bool observatory_enabled,
     const char** extra_args,
     int extra_args_count) {
   service_connector_ = service_connector;
+  observatory_enabled_ = observatory_enabled;
   strict_compilation_ = strict_compilation;
   InitVmIfNeeded(generateEntropy, extra_args, extra_args_count);
   return true;

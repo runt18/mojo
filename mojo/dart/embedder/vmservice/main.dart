@@ -21,7 +21,17 @@ bool _autoStart;
 
 // HTTP server.
 Server server;
-Map<String, Asset> assets;
+Map<String, Asset> _assets;
+Map<String, Asset> get assets {
+  if (_assets == null) {
+    try {
+      _assets = Asset.request();
+    } catch (e) {
+      print('Could not load Observatory assets: $e');
+    }
+  }
+  return _assets;
+}
 
 _onShutdown() {
   if (server != null) {
@@ -34,11 +44,6 @@ _onShutdown() {
 }
 
 void _bootServer() {
-  try {
-    assets = Asset.request();
-  } catch (e) {
-    print('Could not load Observatory assets: $e');
-  }
   // Lazily create service.
   var service = new VMService();
   service.onShutdown = _onShutdown;
@@ -52,11 +57,11 @@ main() {
     if (server != null) {
       server.startup();
     }
+    // It's just here to push an event on the event loop so that we invoke the
+    // scheduled microtasks.
+    Timer.run(() {});
   }
   scriptLoadPort.handler = _processLoadRequest;
-  // It's just here to push an event on the event loop so that we invoke the
-  // scheduled microtasks.
-  Timer.run(() {});
   return scriptLoadPort;
 }
 

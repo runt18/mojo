@@ -29,6 +29,24 @@ benchmarks = [
     ]
   },
   {
+    'name': 'dart init no observatory',
+    'app': 'https://core.mojoapps.io/dart_startup.mojo',
+    'duration': 10,
+    'measurements': [
+      {
+        'name': 'initialize',
+        'spec': 'time_until/Dart/initialized'
+      },
+      {
+        'name': 'accept connection',
+        'spec': 'time_between/Dart/initialized/Dart/connected',
+      }
+    ],
+    'shell-args': [
+      '--args-for=mojo:dart_content_handler --disable-observatory',
+    ]
+  },
+  {
     'name': 'cpp init',
     'app': 'https://core.mojoapps.io/trace_me.mojo',
     'duration': 10,
