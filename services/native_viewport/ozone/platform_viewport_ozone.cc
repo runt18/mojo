@@ -8,6 +8,7 @@
 #include "mojo/converters/input_events/input_events_type_converters.h"
 #include "mojo/converters/input_events/mojo_extended_key_event_data.h"
 #include "ui/events/event.h"
+#include "ui/events/event_utils.h"
 #include "ui/events/platform/platform_event_dispatcher.h"
 #include "ui/events/platform/platform_event_source.h"
 #include "ui/ozone/public/cursor_factory_ozone.h"
@@ -99,6 +100,37 @@ class PlatformViewportOzone : public PlatformViewport,
         break;
       default:
         break;
+    }
+
+    // We want to emulate the WM_CHAR generation behaviour of Windows.
+    //
+    // On Linux, we've previously inserted characters by having
+    // InputMethodAuraLinux take all key down events and send a character event
+    // to the TextInputClient. This causes a mismatch in code that has to be
+    // shared between Windows and Linux, including blink code. Now that we're
+    // trying to have one way of doing things, we need to standardize on and
+    // emulate Windows character events.
+    //
+    // This is equivalent to what we're doing in the current Linux port, but
+    // done once instead of done multiple times in different places.
+    if (event->type() == ui::ET_KEY_PRESSED) {
+      ui::KeyEvent* key_press_event = static_cast<ui::KeyEvent*>(event);
+      ui::KeyEvent char_event(key_press_event->GetCharacter(),
+                              key_press_event->key_code(),
+                              key_press_event->flags());
+
+      DCHECK_EQ(key_press_event->GetCharacter(), char_event.GetCharacter());
+      DCHECK_EQ(key_press_event->key_code(), char_event.key_code());
+      DCHECK_EQ(key_press_event->flags(), char_event.flags());
+
+      char_event.SetExtendedKeyEventData(
+          make_scoped_ptr(new mojo::MojoExtendedKeyEventData(
+              key_press_event->GetLocatedWindowsKeyboardCode(),
+              key_press_event->GetText(),
+              key_press_event->GetUnmodifiedText())));
+      char_event.set_platform_keycode(key_press_event->platform_keycode());
+
+      delegate_->OnEvent(mojo::Event::From(char_event));
     }
   }
 
