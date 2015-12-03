@@ -11,7 +11,6 @@ group("dart") {
     "//examples/dart/hello_world/hello",
     "//examples/dart/hello_world/world",
     "//examples/dart/netcat",
-    "//examples/dart/traced_application",
     "//examples/dart/wget",
   ]
 }

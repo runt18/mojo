@@ -13,7 +13,6 @@ dart_pkg("dart_startup") {
     "pubspec.yaml",
   ]
   deps = [
-    "//mojo/common/dart",
     "//mojo/dart/packages",
     "//mojo/public/dart",
   ]
