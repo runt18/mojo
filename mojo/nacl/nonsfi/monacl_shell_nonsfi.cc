@@ -3,6 +3,8 @@
 // found in the LICENSE file.
 
 #include <fcntl.h>
+#include <string.h>
+
 #include <iostream>
 
 #include "mojo/edk/embedder/embedder.h"

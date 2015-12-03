@@ -68,7 +68,7 @@ void ChildProcessHost::Start(const NativeApplicationOptions& options) {
   // be one per thread.
   mojo::ScopedMessagePipeHandle handle(mojo::embedder::ConnectToSlave(
       nullptr, launch_data->platform_channel_pair.PassServerHandle(),
-      base::Bind(&ChildProcessHost::DidConnectToSlave, base::Unretained(this)),
+      [this]() { DidConnectToSlave(); },
       MakeRefCounted<base_edk::PlatformTaskRunnerImpl>(
           base::ThreadTaskRunnerHandle::Get()),
       &launch_data->child_connection_id, &channel_info_));

@@ -4,10 +4,10 @@
 
 #include "mojo/edk/system/channel_manager.h"
 
+#include <functional>
 #include <memory>
+#include <utility>
 
-#include "base/callback.h"
-#include "base/run_loop.h"
 #include "mojo/edk/embedder/platform_channel_pair.h"
 #include "mojo/edk/embedder/simple_platform_support.h"
 #include "mojo/edk/platform/message_loop.h"
@@ -43,6 +43,7 @@ class ChannelManagerTest : public testing::Test {
   ~ChannelManagerTest() override {}
 
  protected:
+  MessageLoop* message_loop() { return message_loop_.get(); }
   const RefPtr<TaskRunner>& task_runner() {
     return message_loop_->GetTaskRunner();
   }
@@ -120,11 +121,11 @@ class OtherThread : public test::SimpleTestThread {
   OtherThread(RefPtr<TaskRunner>&& task_runner,
               ChannelManager* channel_manager,
               ChannelId channel_id,
-              const base::Closure& quit_closure)
+              std::function<void()>&& quit_closure)
       : task_runner_(std::move(task_runner)),
         channel_manager_(channel_manager),
         channel_id_(channel_id),
-        quit_closure_(quit_closure) {}
+        quit_closure_(std::move(quit_closure)) {}
   ~OtherThread() override {}
 
  private:
@@ -143,20 +144,19 @@ class OtherThread : public test::SimpleTestThread {
 
     {
       std::unique_ptr<MessageLoop> message_loop(CreateTestMessageLoop());
-      // TODO(vtl): Using |base::RunLoop| here is shady.
-      base::RunLoop run_loop;
-      channel_manager_->ShutdownChannel(channel_id_, run_loop.QuitClosure(),
-                                        message_loop->GetTaskRunner().Clone());
-      run_loop.Run();
+      channel_manager_->ShutdownChannel(channel_id_, [&message_loop]() {
+        message_loop->QuitNow();
+      }, message_loop->GetTaskRunner().Clone());
+      message_loop->Run();
     }
 
-    task_runner_->PostTask(quit_closure_);
+    task_runner_->PostTask(std::move(quit_closure_));
   }
 
   const RefPtr<TaskRunner> task_runner_;
   ChannelManager* const channel_manager_;
   const ChannelId channel_id_;
-  base::Closure quit_closure_;
+  std::function<void()> quit_closure_;
 
   MOJO_DISALLOW_COPY_AND_ASSIGN(OtherThread);
 };
@@ -168,12 +168,10 @@ TEST_F(ChannelManagerTest, CallsFromOtherThread) {
   RefPtr<MessagePipeDispatcher> d = channel_manager().CreateChannelOnIOThread(
       id, channel_pair.PassServerHandle());
 
-  // TODO(vtl): Using |base::RunLoop| here is shady.
-  base::RunLoop run_loop;
   OtherThread thread(task_runner().Clone(), &channel_manager(), id,
-                     run_loop.QuitClosure());
+                     [this]() { message_loop()->QuitNow(); });
   thread.Start();
-  run_loop.Run();
+  message_loop()->Run();
   thread.Join();
 
   EXPECT_EQ(MOJO_RESULT_OK, d->Close());

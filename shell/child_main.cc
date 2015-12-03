@@ -201,12 +201,13 @@ class ChildControllerImpl : public ChildController {
 
     scoped_ptr<ChildControllerImpl> impl(
         new ChildControllerImpl(app_context, unblocker));
+    // TODO(vtl): With C++14 lambda captures, we'll be able to avoid this
+    // silliness.
+    auto raw_impl = impl.get();
     mojo::ScopedMessagePipeHandle host_message_pipe(
-        mojo::embedder::ConnectToMaster(
-            child_connection_id,
-            base::Bind(&ChildControllerImpl::DidConnectToMaster,
-                       base::Unretained(impl.get())),
-            impl->mojo_task_runner_.Clone(), &impl->channel_info_));
+        mojo::embedder::ConnectToMaster(child_connection_id, [raw_impl]() {
+          raw_impl->DidConnectToMaster();
+        }, impl->mojo_task_runner_.Clone(), &impl->channel_info_));
     DCHECK(impl->channel_info_);
     impl->Bind(host_message_pipe.Pass());
 
