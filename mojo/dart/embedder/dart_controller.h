@@ -107,6 +107,7 @@ class DartController {
   // type checking enabled.
   static bool Initialize(DartControllerServiceConnector* service_connector,
                          bool strict_compilation,
+                         bool observatory_enabled,
                          const char** extra_args,
                          int extra_args_count);
 
@@ -166,6 +167,7 @@ class DartController {
   static MojoHandle handle_watcher_producer_handle_;
   static bool initialized_;
   static bool strict_compilation_;
+  static bool observatory_enabled_;
   static bool service_isolate_running_;
   static bool service_isolate_spawned_;
   static DartControllerServiceConnector* service_connector_;

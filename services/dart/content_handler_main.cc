@@ -29,6 +29,7 @@ namespace dart {
 
 const char kCompleteTimeline[] = "--complete-timeline";
 const char kEnableStrictMode[] = "--enable-strict-mode";
+const char kDisableObservatory[] = "--disable-observatory";
 const char kTraceStartup[] = "--trace-startup";
 
 static bool IsDartZip(std::string url) {
@@ -122,8 +123,17 @@ class DartContentHandlerApp : public mojo::ApplicationDelegate {
       timeline_arg = kCompleteTimeline;
       timeline_arg_count = 1;
     }
+
+    bool observatory_enabled = true;
+    if (app->HasArg(kDisableObservatory)) {
+      observatory_enabled = false;
+    }
     bool success = mojo::dart::DartController::Initialize(
-        service_connector_, default_strict_, &timeline_arg, timeline_arg_count);
+        service_connector_,
+        default_strict_,
+        observatory_enabled,
+        &timeline_arg,
+        timeline_arg_count);
 
     if (app->HasArg(kTraceStartup)) {
       DartTimelineController::EnableAll();
