@@ -37,10 +37,11 @@ import sys
 # We assume this script is located in <src>/mojom/mojom_parser/tools
 TOOLS_DIR = os.path.abspath(os.path.dirname(__file__))
 MOJOM_PARSER_DIR = os.path.abspath(os.path.join(TOOLS_DIR, os.pardir))
-LINUX64_BIN_DIR = os.path.abspath(os.path.join(MOJOM_PARSER_DIR,
-                                  'bin', 'linux64'))
 SRC_DIR = os.path.abspath(os.path.join(MOJOM_PARSER_DIR, os.pardir, os.pardir))
 TOOLS_DIR = os.path.abspath(os.path.join(SRC_DIR, "tools"))
+BIN_DIR = os.path.abspath(os.path.join(SRC_DIR,
+  'mojo', 'public', 'tools', 'bindings', 'mojom_parser', 'bin'))
+LINUX64_BIN_DIR = os.path.abspath(os.path.join(BIN_DIR, 'linux64'))
 
 sys.path.insert(0, TOOLS_DIR)
 import find_depot_tools
