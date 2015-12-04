@@ -132,7 +132,6 @@ class DartController {
                                             void* callback_data,
                                             char** error);
   static void IsolateShutdownCallback(void* callback_data);
-  static void UnhandledExceptionCallback(Dart_Handle error);
 
   // Dart API callback helper(s).
   static Dart_Isolate CreateIsolateHelper(void* dart_app,

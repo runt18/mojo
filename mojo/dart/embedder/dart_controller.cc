@@ -219,6 +219,33 @@ static void SetupStartIsolateArguments(
   }
 }
 
+static void CloseHandlesOnError(Dart_Handle error) {
+  if (!Dart_IsError(error)) {
+    return;
+  }
+
+  Dart_Handle mojo_core_lib =
+      Builtin::GetLibrary(Builtin::kMojoInternalLibrary);
+  DART_CHECK_VALID(mojo_core_lib);
+  Dart_Handle handle_natives_type =
+      Dart_GetType(mojo_core_lib,
+                   Dart_NewStringFromCString("MojoHandleNatives"), 0, nullptr);
+  DART_CHECK_VALID(handle_natives_type);
+  Dart_Handle method_name = Dart_NewStringFromCString("_closeOpenHandles");
+  CHECK(!Dart_IsError(method_name));
+  Dart_Handle result =
+      Dart_Invoke(handle_natives_type, method_name, 0, nullptr);
+  DART_CHECK_VALID(result);
+
+  auto isolate_data = MojoDartState::Current();
+  if (!isolate_data->callbacks().exception.is_null()) {
+    int64_t handles_closed = 0;
+    Dart_Handle int_result = Dart_IntegerToInt64(result, &handles_closed);
+    DART_CHECK_VALID(int_result);
+    isolate_data->callbacks().exception.Run(error, handles_closed);
+  }
+}
+
 static void RunIsolate(Dart_Isolate isolate,
                        const DartControllerConfig& config) {
   tonic::DartIsolateScope isolate_scope(isolate);
@@ -260,6 +287,7 @@ static void RunIsolate(Dart_Isolate isolate,
   DART_CHECK_VALID(result);
 
   result = Dart_RunLoop();
+  CloseHandlesOnError(result);
 
   // Here we log the error, but we don't do DART_CHECK_VALID because we don't
   // want to bring the whole process down due to an error in application code,
@@ -475,29 +503,6 @@ void DartController::IsolateShutdownCallback(void* callback_data) {
   delete isolate_data;
 }
 
-void DartController::UnhandledExceptionCallback(Dart_Handle error) {
-  Dart_Handle mojo_core_lib =
-      Builtin::GetLibrary(Builtin::kMojoInternalLibrary);
-  DART_CHECK_VALID(mojo_core_lib);
-  Dart_Handle handle_natives_type =
-      Dart_GetType(mojo_core_lib,
-                   Dart_NewStringFromCString("MojoHandleNatives"), 0, nullptr);
-  DART_CHECK_VALID(handle_natives_type);
-  Dart_Handle method_name = Dart_NewStringFromCString("_closeOpenHandles");
-  CHECK(!Dart_IsError(method_name));
-  Dart_Handle result =
-      Dart_Invoke(handle_natives_type, method_name, 0, nullptr);
-  DART_CHECK_VALID(result);
-
-  auto isolate_data = MojoDartState::Current();
-  if (!isolate_data->callbacks().exception.is_null()) {
-    int64_t handles_closed = 0;
-    Dart_Handle int_result = Dart_IntegerToInt64(result, &handles_closed);
-    DART_CHECK_VALID(int_result);
-    isolate_data->callbacks().exception.Run(error, handles_closed);
-  }
-}
-
 
 bool DartController::initialized_ = false;
 MojoHandle DartController::handle_watcher_producer_handle_ =
@@ -640,8 +645,8 @@ void DartController::InitVmIfNeeded(Dart_EntropySource entropy,
       vm_isolate_snapshot_buffer,
       nullptr, // Precompiled instructions
       IsolateCreateCallback,
-      nullptr,  // Isolate interrupt callback.
-      UnhandledExceptionCallback,
+      nullptr,  // Deprecated isolate interrupt callback. Must pass nullptr.
+      nullptr,  // Deprecated unhandled exception callback. Must pass nullptr.
       IsolateShutdownCallback,
       // File IO callbacks.
       nullptr, nullptr, nullptr, nullptr,
