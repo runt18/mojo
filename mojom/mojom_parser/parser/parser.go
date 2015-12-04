@@ -139,9 +139,8 @@ type ParseError struct {
 // Make ParseError implement the error interface.
 func (e ParseError) Error() string {
 	// TODO(rudominer|azani) Add snippets here.
-	// TODO(rudominer) Add file import path info here.
-	return fmt.Sprintf("%s:%s: %s", e.file.CanonicalFileName,
-		e.token.ShortLocationString(), e.message)
+	return fmt.Sprintf("\n%s:%s: %s\n%s", mojom.RelPathIfShorter(e.file.CanonicalFileName),
+		e.token.ShortLocationString(), e.message, e.file.ImportedFromMessage())
 }
 
 // parseError sets the parser's current error to a ParseError with the given data.

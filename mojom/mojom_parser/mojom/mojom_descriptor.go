@@ -100,6 +100,31 @@ func newMojomFile(fileName string, descriptor *MojomDescriptor, importedFrom *Mo
 	return mojomFile
 }
 
+// ImportedFromessage() returns a string that describes a chain of imports
+// leading from |f| to a top-level file in the import file graph. It is intended
+// to be used in user-facing messages in order to explain why a Mojom file
+// is included in the import graph. The string will be of the form
+// ... imported from foo.bar
+// ... imported from baz.bing
+// ... imported from fab.buzz
+func (f *MojomFile) ImportedFromMessage() string {
+	// TODO(rudominer) Consider making the value of 100 below overridable
+	// by a user flag.
+	return f.boundedImportedFromMessage(100)
+}
+
+// boundedImportedFromMessage() is a recursive helper function for
+// |ImportedFromMessage| that ensures that the recursive chaining
+// of "imported-from" links terminates within |numLevels| of recursion.
+func (f *MojomFile) boundedImportedFromMessage(numLevels int) string {
+	if f.ImportedFrom == nil || numLevels <= 0 {
+		return ""
+	}
+	return fmt.Sprintf("\n... imported from %s.%s",
+		RelPathIfShorter(f.ImportedFrom.CanonicalFileName),
+		f.ImportedFrom.boundedImportedFromMessage(numLevels-1))
+}
+
 func (f *MojomFile) String() string {
 	s := fmt.Sprintf("file name: %s\n", f.CanonicalFileName)
 	s += fmt.Sprintf("module: %s\n", f.ModuleNamespace)
