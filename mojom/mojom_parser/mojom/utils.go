@@ -5,6 +5,8 @@
 package mojom
 
 import (
+	"fmt"
+	"mojom/mojom_parser/lexer"
 	"os"
 	"path/filepath"
 )
@@ -24,4 +26,22 @@ func RelPathIfShorter(filePath string) string {
 		}
 	}
 	return filePath
+}
+
+// UserErrorMessage is responsible for formatting user-facing error messages
+// in a uniform way.
+// file: The MojomFile in which the error occurs
+// token: The token most closely associated with the problem.
+// message: The base error text. It should not include any location information
+// as that will be added by this function.
+func UserErrorMessage(file *MojomFile, token lexer.Token, message string) string {
+	// TODO(rudominer|azani) Add snippets here.
+	filePath := "Unknown file"
+	importedFromMessage := ""
+	if file != nil {
+		filePath = RelPathIfShorter(file.CanonicalFileName)
+		importedFromMessage = file.ImportedFromMessage()
+	}
+	return fmt.Sprintf("\n%s:%s: %s\n%s", filePath, token.ShortLocationString(),
+		message, importedFromMessage)
 }

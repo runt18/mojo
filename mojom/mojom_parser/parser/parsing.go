@@ -768,7 +768,7 @@ func (p *Parser) parseStructField(attributes *mojom.Attributes) *mojom.StructFie
 			valueString = fmt.Sprintf("%v", concreteValue.Value())
 			valueTypeString = fmt.Sprintf(" of type %s", concreteValue.ValueType())
 		}
-		message := fmt.Sprintf("Illegal assignment: Field %s of type %s may not be assigned the value %v%s.",
+		message := fmt.Sprintf("Illegal assignment: Field %q of type %s may not be assigned the value %v%s.",
 			fieldName, fieldType, valueString, valueTypeString)
 		p.parseErrorT(ParserErrorCodeNotAssignmentCompatible, message, defaultValueToken)
 		return nil
@@ -1037,7 +1037,7 @@ func (p *Parser) parseConstDecl(attributes *mojom.Attributes) (constant *mojom.U
 			valueString = fmt.Sprintf("%v", concreteValue.Value())
 			valueTypeString = fmt.Sprintf(" of type %s", concreteValue.ValueType())
 		}
-		message := fmt.Sprintf("Illegal assignment: Constant %s of type %s may not be assigned the value %v%s.",
+		message := fmt.Sprintf("Illegal assignment: Constant %q of type %s may not be assigned the value %v%s.",
 			name, declaredType, valueString, valueTypeString)
 		p.parseErrorT(ParserErrorCodeNotAssignmentCompatible, message, valueToken)
 		return
@@ -1548,7 +1548,7 @@ func (p *Parser) match(expectedKind lexer.TokenKind) bool {
 		return false
 	}
 	if nextToken.Kind != expectedKind {
-		expected := fmt.Sprintf("%q", expectedKind)
+		expected := fmt.Sprintf("%s", expectedKind)
 		p.unexpectedTokenError(nextToken, expected)
 		return false
 	}

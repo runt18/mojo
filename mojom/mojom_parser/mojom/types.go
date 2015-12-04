@@ -668,35 +668,36 @@ func (t *UserTypeRef) MarkTypeCompatible(assignment LiteralAssignment) bool {
 }
 
 func (ref *UserTypeRef) validateAfterResolution() error {
-	fileName := "unknown file"
+	var file *MojomFile = nil
 	if ref.scope != nil && ref.scope.file != nil {
-		fileName = ref.scope.file.CanonicalFileName
+		file = ref.scope.file
 	}
 	if ref.resolvedType.Kind() != UserDefinedTypeKindEnum {
 		// A type ref has resolved to a non-enum type. Make sure it is not
 		// being used as either a map key or a constant declaration. Also
 		// make sure that a literal was not assigned to it.
 		if ref.usedAsMapKey {
-			return fmt.Errorf("Type validation error\n"+
-				"%s:%s: The type %s is not allowed as the key type of a map. "+
-				"Only simple types, strings and enum types may be map keys.",
-				fileName, ref.token.ShortLocationString(), ref.identifier)
+			message := fmt.Sprintf("Error: The type %s is not allowed as the key type of a map. "+
+				"Only simple types, strings and enum types may be map keys.", ref.identifier)
+			message = UserErrorMessage(file, ref.token, message)
+			return fmt.Errorf(message)
 		}
 		if ref.usedAsConstantType {
-			return fmt.Errorf("Type validation error\n"+
-				"%s:%s: The type %s is not allowed as the type of a declared constant. "+
-				"Only simple types, strings and enum types may be used.",
-				fileName, ref.token.ShortLocationString(), ref.identifier)
+			message := fmt.Sprintf("Error: The type %s is not allowed as the type of a declared constant. "+
+				"Only simple types, strings and enum types may be used.", ref.identifier)
+			message = UserErrorMessage(file, ref.token, message)
+			return fmt.Errorf(message)
 		}
 	}
 	if ref.variableAssignment != nil && !ref.resolvedType.IsAssignmentCompatibleWith(ref.variableAssignment.assignedValue) {
-		return fmt.Errorf("Type validation error\n"+
-			"%s:%s: Illegal assignment: %s %s of type %s may not be assigned the value %v of type %s.",
-			fileName, ref.token.ShortLocationString(),
+		message := fmt.Sprintf("Illegal assignment: %s %q of type %s may not be assigned the value %v of type %s.",
 			ref.variableAssignment.kind, ref.variableAssignment.variableName,
 			ref.identifier, ref.variableAssignment.assignedValue,
 			ref.variableAssignment.assignedValue.LiteralValueType())
+		message = UserErrorMessage(file, ref.token, message)
+		return fmt.Errorf(message)
 	}
+
 	return nil
 }
 
@@ -799,15 +800,16 @@ func (v *UserValueRef) validateAfterResolution() error {
 		switch concreteValue := v.resolvedConcreteValue.(type) {
 		case LiteralValue:
 			if _, ok := int32Value(concreteValue); !ok {
-				return fmt.Errorf("Value validation error\n"+
-					"%s:%s: '%s' cannot be used as an enum value initializer because "+
+				message := fmt.Sprintf("Illegal assignment: %q cannot be used as an enum value initializer because "+
 					"its value, %v, is not a signed 32-bit integer.",
-					v.scope.file.CanonicalFileName, v.token.ShortLocationString(), v.identifier, concreteValue.Value())
+					v.identifier, concreteValue.Value())
+				message = UserErrorMessage(v.scope.file, v.token, message)
+				return fmt.Errorf(message)
 			}
 		case BuiltInConstantValue:
-			return fmt.Errorf("Value validation error\n"+
-				"%s:%s: '%s' cannot be used as an enum value initializer.",
-				v.scope.file.CanonicalFileName, v.token.ShortLocationString(), v.identifier)
+			message := fmt.Sprintf("Illegal assignment: %q cannot be used as an enum value initializer.", v.identifier)
+			message = UserErrorMessage(v.scope.file, v.token, message)
+			return fmt.Errorf(message)
 		}
 	}
 	// TODO(rudominer) Finish implementing UserValueRef.validateAfterResolution()

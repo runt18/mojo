@@ -95,11 +95,10 @@ func (d *MojomDescriptor) int32EnumValueFromValue(enum *MojomEnum, valueRef Valu
 			} else {
 				// TODO(rudominer) Allow enum values to be initialized to other enum values as long
 				// as the assignment chain is well-founded.
-				fileName := specifiedValue.scope.file.CanonicalFileName
-				return 0, fmt.Errorf("Value validation error\n"+
-					"%s:%s: The reference %s is being used as an enum value initializer but it has resolved to a "+
-					"different enum value that itself does not yet have an integer value.",
-					fileName, specifiedValue.token.ShortLocationString(), specifiedValue.identifier)
+				message := fmt.Sprintf("Error: The reference %s is being used as an enum value initializer but it has resolved to a "+
+					"different enum value that itself does not yet have an integer value.", specifiedValue.identifier)
+				message = UserErrorMessage(specifiedValue.scope.file, specifiedValue.token, message)
+				return 0, fmt.Errorf(message)
 
 			}
 		default:
