@@ -11,8 +11,6 @@
 #include "mojo/public/cpp/environment/environment.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
-// TODO(zra): Pull vm options from the test scripts.
-
 namespace mojo {
 namespace dart {
 namespace {
@@ -22,19 +20,16 @@ static bool generateEntropy(uint8_t* buffer, intptr_t length) {
   return true;
 }
 
-static void exceptionCallback(bool* exception,
+static void ExceptionCallback(bool* exception,
                               int64_t* closed_handles,
                               Dart_Handle error,
                               int64_t count) {
+  EXPECT_TRUE(Dart_IsError(error));
   *exception = true;
   *closed_handles = count;
 }
 
-// TODO(zra): RunTest should not accept or try to pass along any command line
-// flags to the VM.
 static void RunTest(const std::string& test,
-                    const char** extra_args,
-                    int num_extra_args,
                     bool compile_all,
                     bool expect_unhandled_exception,
                     int expected_unclosed_handles) {
@@ -52,7 +47,7 @@ static void RunTest(const std::string& test,
                              .AppendASCII("dart-pkg")
                              .AppendASCII("packages");
 
-  char* error = NULL;
+  char* error = nullptr;
   bool unhandled_exception = false;
   int64_t closed_handles = 0;
   DartControllerConfig config;
@@ -63,9 +58,8 @@ static void RunTest(const std::string& test,
   config.script_uri = path.AsUTF8Unsafe();
   config.package_root = package_root.AsUTF8Unsafe();
   config.callbacks.exception =
-      base::Bind(&exceptionCallback, &unhandled_exception, &closed_handles);
+      base::Bind(&ExceptionCallback, &unhandled_exception, &closed_handles);
   config.entropy = generateEntropy;
-  config.SetVmFlags(extra_args, num_extra_args);
   config.error = &error;
 
   bool success = DartController::RunSingleDartScript(config);
@@ -77,84 +71,76 @@ static void RunTest(const std::string& test,
 // TODO(zra): instead of listing all these tests, search //mojo/dart/test for
 // _test.dart files.
 
-TEST(DartTest, hello_mojo) {
-  RunTest("hello_mojo.dart", nullptr, 0, false, false, 0);
-}
-
-TEST(DartTest, core_types_test) {
-  RunTest("core_types_test.dart", nullptr, 0, false, false, 0);
+TEST(DartTest, async_await_test) {
+  RunTest("async_await_test.dart", false, false, 0);
 }
 
 TEST(DartTest, async_test) {
-  RunTest("async_test.dart", nullptr, 0, false, false, 0);
-}
-
-TEST(DartTest, isolate_test) {
-  RunTest("isolate_test.dart", nullptr, 0, false, false, 0);
-}
-
-TEST(DartTest, import_mojo) {
-  RunTest("import_mojo.dart", nullptr, 0, false, false, 0);
-}
-
-TEST(DartTest, simple_handle_watcher_test) {
-  RunTest("simple_handle_watcher_test.dart", nullptr, 0, false, false, 0);
-}
-
-TEST(DartTest, ping_pong_test) {
-  RunTest("ping_pong_test.dart", nullptr, 0, false, false, 0);
-}
-
-TEST(DartTest, timer_test) {
-  RunTest("timer_test.dart", nullptr, 0, false, false, 0);
-}
-
-TEST(DartTest, async_await_test) {
-  RunTest("async_await_test.dart", nullptr, 0, false, false, 0);
-}
-
-TEST(DartTest, core_test) {
-  RunTest("core_test.dart", nullptr, 0, false, false, 0);
-}
-
-TEST(DartTest, codec_test) {
-  RunTest("codec_test.dart", nullptr, 0, false, false, 0);
+  RunTest("async_test.dart", false, false, 0);
 }
 
 TEST(DartTest, bindings_generation_test) {
-  RunTest("bindings_generation_test.dart", nullptr, 0, false, false, 0);
+  RunTest("bindings_generation_test.dart", false, false, 0);
+}
+
+TEST(DartTest, codec_test) {
+  RunTest("codec_test.dart", false, false, 0);
 }
 
 TEST(DartTest, compile_all_interfaces_test) {
-  RunTest("compile_all_interfaces_test.dart", nullptr, 0, true, false, 0);
-}
-
-TEST(DartTest, uri_base_test) {
-  RunTest("uri_base_test.dart", nullptr, 0, false, false, 0);
-}
-
-TEST(DartTest, exception_test) {
-  RunTest("exception_test.dart", nullptr, 0, false, false, 0);
+  RunTest("compile_all_interfaces_test.dart", true, false, 0);
 }
 
 TEST(DartTest, control_messages_test) {
-  RunTest("control_messages_test.dart", nullptr, 0, false, false, 0);
+  RunTest("control_messages_test.dart", false, false, 0);
 }
 
-// TODO(zra): RunTest should not accept command line flags. This test should
-// be split off from the rest of these tests so that it will always run in its
-// own process under these flags. This test only succeeds at the moment because
-// it is run in its own process after initially failing.
+TEST(DartTest, core_test) {
+  RunTest("core_test.dart", false, false, 0);
+}
+
+TEST(DartTest, core_types_test) {
+  RunTest("core_types_test.dart", false, false, 0);
+}
+
+TEST(DartTest, exception_test) {
+  RunTest("exception_test.dart", false, false, 0);
+}
+
 TEST(DartTest, handle_finalizer_test) {
-  const int kNumArgs = 2;
-  const char* args[kNumArgs];
-  args[0] = "--new-gen-semi-max-size=1";
-  args[1] = "--old_gen_growth_rate=1";
-  RunTest("handle_finalizer_test.dart", args, kNumArgs, false, false, 0);
+  RunTest("handle_finalizer_test.dart", false, true, 1);
+}
+
+TEST(DartTest, hello_mojo) {
+  RunTest("hello_mojo.dart", false, false, 0);
+}
+
+TEST(DartTest, isolate_test) {
+  RunTest("isolate_test.dart", false, false, 0);
+}
+
+TEST(DartTest, import_mojo) {
+  RunTest("import_mojo.dart", false, false, 0);
+}
+
+TEST(DartTest, ping_pong_test) {
+  RunTest("ping_pong_test.dart", false, false, 0);
+}
+
+TEST(DartTest, simple_handle_watcher_test) {
+  RunTest("simple_handle_watcher_test.dart", false, false, 0);
+}
+
+TEST(DartTest, timer_test) {
+  RunTest("timer_test.dart", false, false, 0);
 }
 
 TEST(DartTest, unhandled_exception_test) {
-  RunTest("unhandled_exception_test.dart", nullptr, 0, false, true, 2);
+  RunTest("unhandled_exception_test.dart", false, true, 2);
+}
+
+TEST(DartTest, uri_base_test) {
+  RunTest("uri_base_test.dart", false, false, 0);
 }
 
 }  // namespace

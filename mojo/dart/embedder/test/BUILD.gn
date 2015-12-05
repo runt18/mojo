@@ -5,6 +5,14 @@
 import("//mojo/public/tools/bindings/mojom.gni")
 import("//testing/test.gni")
 
+group("test") {
+  testonly = true
+  deps = [
+    ":dart_finalizer_unittests",
+    ":dart_unittests",
+  ]
+}
+
 source_set("dart_controller_for_test") {
   testonly = true
   sources = [
@@ -16,24 +24,9 @@ source_set("dart_controller_for_test") {
   ]
 }
 
-test("dart_unittests") {
+mojom("dart_to_cpp_bindings") {
   sources = [
-    "run_dart_tests.cc",
-    "validation_unittest.cc",
-  ]
-  deps = [
-    "//mojo/public/dart",
-    "//mojo/dart/packages",
-    ":dart_controller_for_test",
-    ":dart_to_cpp_unittests",
-    "//base",
-    "//mojo/dart/embedder:dart_controller_no_snapshot",
-    "//mojo/edk/test:run_all_unittests",
-    "//mojo/public/cpp/environment",
-    "//mojo/public/cpp/system",
-    "//mojo/public/cpp/utility",
-    "//mojo/environment:chromium",
-    "//testing/gtest",
+    "dart_to_cpp.mojom",
   ]
 }
 
@@ -54,8 +47,42 @@ source_set("dart_to_cpp_unittests") {
   ]
 }
 
-mojom("dart_to_cpp_bindings") {
+test("dart_unittests") {
   sources = [
-    "dart_to_cpp.mojom",
+    "run_dart_tests.cc",
+    "validation_unittest.cc",
+  ]
+  deps = [
+    ":dart_controller_for_test",
+    ":dart_to_cpp_unittests",
+    "//base",
+    "//mojo/dart/packages",
+    "//mojo/dart/embedder:dart_controller_no_snapshot",
+    "//mojo/edk/test:run_all_unittests",
+    "//mojo/public/cpp/environment",
+    "//mojo/public/cpp/system",
+    "//mojo/public/cpp/utility",
+    "//mojo/public/dart",
+    "//mojo/environment:chromium",
+    "//testing/gtest",
+  ]
+}
+
+test("dart_finalizer_unittests") {
+  sources = [
+    "dart_finalizer_test.cc",
+  ]
+  deps = [
+    ":dart_controller_for_test",
+    "//base",
+    "//mojo/dart/packages",
+    "//mojo/dart/embedder:dart_controller_no_snapshot",
+    "//mojo/edk/test:run_all_unittests",
+    "//mojo/public/cpp/environment",
+    "//mojo/public/cpp/system",
+    "//mojo/public/cpp/utility",
+    "//mojo/public/dart",
+    "//mojo/environment:chromium",
+    "//testing/gtest",
   ]
 }

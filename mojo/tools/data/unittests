@@ -117,6 +117,10 @@ if config.target_os != config.OS_ANDROID:
       "test": "dart_unittests",
       "cacheable": False,
     },
+    {
+      "test": "dart_finalizer_unittests",
+      "cacheable": True,
+    }
   ]
 
 if config.target_os == config.OS_LINUX:
