@@ -38,11 +38,11 @@ type lexer struct {
 	// source is the source code to be lexed.
 	source string
 
-	// offset is the number of bytes that have been consumed.
-	offset int
-
 	// tokens is a channel to which the found tokens are emitted.
 	tokens chan Token
+
+	// sourcePosBytes is the number of bytes that have been consumed.
+	sourcePosBytes int
 
 	// sourcePos is the number of runes that have been consumed.
 	sourcePos int
@@ -54,9 +54,13 @@ type lexer struct {
 	// line.
 	linePos int
 
-	// curTokenOffset is the number of bytes consumed prior to the beginning of
-	// the current token.
-	curTokenOffset int
+	// linePosBytes is how many bytes have been consumed since the beginning of
+	// the line.
+	linePosBytes int
+
+	// curTokenSourcePosBytes is the number of bytes consumed prior to the
+	// beginning of the current token.
+	curTokenSourcePosBytes int
 
 	// curTokenSourcePos is the number of runes consumed prior to the beginning of
 	// the current token.
@@ -68,30 +72,37 @@ type lexer struct {
 	// curTokenLinePos is the number of runes since the beginning of the line
 	// where the current token begins.
 	curTokenLinePos int
+
+	// curTokenLinePosBytes is the number of bytes since the beginning of the line
+	// where the current token begins.
+	curTokenLinePosBytes int
 }
 
 // CurText returns the consumed part of the current token.
 func (l *lexer) CurText() string {
-	return l.source[l.curTokenOffset:l.offset]
+	return l.source[l.curTokenSourcePosBytes:l.sourcePosBytes]
 }
 
 // emitToken emits the current token and begins a new token.
 func (l *lexer) emitToken(tokenType TokenKind) {
 	l.tokens <- Token{
-		Kind:    tokenType,
-		Text:    l.source[l.curTokenOffset:l.offset],
-		CharPos: l.curTokenSourcePos,
-		LineNo:  l.curTokenLineNo,
-		LinePos: l.curTokenLinePos}
+		Kind:           tokenType,
+		Text:           l.source[l.curTokenSourcePosBytes:l.sourcePosBytes],
+		SourcePos:      l.curTokenSourcePos,
+		LineNo:         l.curTokenLineNo,
+		LinePos:        l.curTokenLinePos,
+		LinePosBytes:   l.curTokenLinePosBytes,
+		SourcePosBytes: l.curTokenSourcePosBytes}
 	l.beginToken()
 }
 
 // beginToken begins the new token.
 func (l *lexer) beginToken() {
-	l.curTokenOffset = l.offset
+	l.curTokenSourcePosBytes = l.sourcePosBytes
 	l.curTokenSourcePos = l.sourcePos
 	l.curTokenLineNo = l.lineNo
 	l.curTokenLinePos = l.linePos
+	l.curTokenLinePosBytes = l.linePosBytes
 }
 
 // Consume consumes the next rune in the source.
@@ -100,15 +111,17 @@ func (l *lexer) Consume() {
 		return
 	}
 
-	c, width := utf8.DecodeRuneInString(l.source[l.offset:])
+	c, width := utf8.DecodeRuneInString(l.source[l.sourcePosBytes:])
 
 	if c == '\n' {
 		l.lineNo += 1
 		l.linePos = 0
+		l.linePosBytes = 0
 	} else {
 		l.linePos += 1
+		l.linePosBytes += width
 	}
-	l.offset += width
+	l.sourcePosBytes += width
 	l.sourcePos += 1
 }
 
@@ -121,14 +134,14 @@ func (l *lexer) Peek() rune {
 
 	// If RuneError is returned, it will be handled as any other rune, likely
 	// resulting in an ErrorIllegalChar token being emitted.
-	char, _ := utf8.DecodeRuneInString(l.source[l.offset:])
+	char, _ := utf8.DecodeRuneInString(l.source[l.sourcePosBytes:])
 	return char
 }
 
 // IsEos returns true if the whole source has been consumed false
 // otherwise.
 func (l *lexer) IsEos() bool {
-	return l.offset >= len(l.source)
+	return l.sourcePosBytes >= len(l.source)
 }
 
 // run is the lexer's main loop.

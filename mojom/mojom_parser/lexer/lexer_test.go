@@ -4,7 +4,10 @@
 
 package lexer
 
-import "testing"
+import (
+	"strings"
+	"testing"
+)
 
 func checkEq(t *testing.T, expected, actual interface{}) {
 	if expected != actual {
@@ -103,19 +106,20 @@ func TestTokenPosition(t *testing.T) {
 	tokens := pumpTokens(l.tokens)
 	token := tokens[0]
 
-	checkEq(t, 5, token.CharPos)
+	checkEq(t, 5, token.SourcePos)
 	checkEq(t, 1, token.LineNo)
 	checkEq(t, 2, token.LinePos)
 }
 
-// TestTokenPositionChineseString tests that CharPos is expressed as a number
-// of runes and not a number of bytes.
+// TestTokenPositionChineseString tests that SourcePos is expressed as a number
+// of runes and that SourcePosBytes is expressed as a number of bytes.
 func TestTokenPositionChineseString(t *testing.T) {
 	source := "\"您好\" is"
 	ts := Tokenize(source)
 	checkEq(t, StringLiteral, ts.PeekNext().Kind)
 	ts.ConsumeNext()
-	checkEq(t, 5, ts.PeekNext().CharPos)
+	checkEq(t, 5, ts.PeekNext().SourcePos)
+	checkEq(t, 9, ts.PeekNext().SourcePosBytes)
 }
 
 // TestSkipSkippable tests that all skippable characters are skipped.
@@ -215,4 +219,57 @@ func TestUnterminatedMultiLineCommentAtStar(t *testing.T) {
 	checkEq(t, LParen, ts.PeekNext().Kind)
 	ts.ConsumeNext()
 	checkEq(t, ErrorUnterminatedComment, ts.PeekNext().Kind)
+}
+
+// TestTokenSnippet tests snippet generation based on tokens.
+func TestTokenSnippet(t *testing.T) {
+	source := "\n hello world \n"
+	ts := Tokenize(source)
+	expected := " hello world \n"
+	expected += " ^^^^^"
+	checkEq(t, expected, ts.PeekNext().Snippet(source, false))
+}
+
+// TestTokenSnippetNoNewLines tests that the correct snippet is generated when
+// the source does not have new lines.
+func TestTokenSnippetNoNewLines(t *testing.T) {
+	source := " hello world "
+	ts := Tokenize(source)
+	expected := " hello world \n"
+	expected += " ^^^^^"
+	checkEq(t, expected, ts.PeekNext().Snippet(source, false))
+}
+
+// TestTokenSnippetNotFirst tests snippet generation for a token that is not
+// first on the line.
+func TestTokenSnippetNotFirst(t *testing.T) {
+	source := "hello world"
+	ts := Tokenize(source)
+	expected := "hello world\n"
+	expected += "      ^^^^^"
+	ts.ConsumeNext()
+
+	checkEq(t, expected, ts.PeekNext().Snippet(source, false))
+}
+
+// TestTokenSnippetNotASCII tests snippet generation in the presence of
+// non-ASCII characters.
+func TestTokenSnippetNotASCII(t *testing.T) {
+	source := "\"你好\" \"世界\""
+	ts := Tokenize(source)
+	expected := "\"你好\" \"世界\"\n"
+	expected += "     ^^^^"
+	ts.ConsumeNext()
+
+	checkEq(t, expected, ts.PeekNext().Snippet(source, false))
+}
+
+// TestTokenSnippetLongPrelude tests snippet generation in the presence of a
+// long line with many characters preceeding the token.
+func TestTokenSnippetLongPrelude(t *testing.T) {
+	source := strings.Repeat(" ", 70) + "hello world"
+	ts := Tokenize(source)
+	expected := strings.Repeat(" ", 58) + "hello world\n"
+	expected += strings.Repeat(" ", 58) + "^^^^^"
+	checkEq(t, expected, ts.PeekNext().Snippet(source, false))
 }

@@ -8,7 +8,10 @@
 package lexer
 
 import (
+	"bytes"
 	"fmt"
+	"strings"
+	"unicode/utf8"
 )
 
 type TokenKind int
@@ -173,12 +176,16 @@ func (tokenKind TokenKind) String() string {
 type Token struct {
 	Kind TokenKind
 	Text string
-	// CharPos is the number of runes preceeding the token.
-	CharPos int
+	// SourcePos is the number of runes preceeding the token.
+	SourcePos int
+	// LinePos is the number of runes preceeding the token on its line.
+	LinePos int
+	// SourcePosBytes is the number of bytes preceeding the token.
+	SourcePosBytes int
+	// LinePosBytes is the number of bytes preceeding the token on its line.
+	LinePosBytes int
 	// LineNo is the line on which the token is found. (First line is 0.)
 	LineNo int
-	// LinePost is the number of runes preceeding the token on its line.
-	LinePos int
 }
 
 // ShortLocationString is used to generate user-facing strings in compilation
@@ -215,4 +222,73 @@ func (token Token) String() string {
 	default:
 		return token.Kind.String()
 	}
+}
+
+// Snippet is used to generate a user-facing string in compilation error
+// messages. It displays the token's text as well as the surrounding line for
+// context. It also includes a line with some carets to highlight the token.
+// source is the source code where token was found.
+// If color is true, the carets on the second line will be colored.
+func (token Token) Snippet(source string, color bool) (snippet string) {
+	begin := token.SourcePosBytes - token.LinePosBytes
+
+	// First, we make sure the prelude to the token is not too long. Since we
+	// limit the width of the snippet to 79 runes, we first make sure the prelude
+	// takes up no more than 58 of those runes.
+	runeCount := token.LinePos
+	if runeCount > 58 {
+		runeCount = 58
+	}
+	skipRunes := token.LinePos - runeCount
+	for index, _ := range source[begin:] {
+		skipRunes--
+		if skipRunes == 0 {
+			begin += (index + 1)
+			break
+		}
+	}
+
+	// Now we calculate the end of the snippet line. Either the first new line
+	// rune or a total of no more than 79 characters.
+	end := len(source)
+	for index, rune := range source[token.SourcePosBytes:] {
+		if rune == '\n' || runeCount >= 78 {
+			end = index + begin + token.LinePosBytes
+			break
+		}
+		runeCount++
+	}
+
+	snippetBuffer := bytes.NewBufferString(source[begin:end])
+	snippetBuffer.WriteRune('\n')
+
+	// We calculate how much whitespace to add before the caret marker for the
+	// token. Please note that there is an assumption that all non-tab characters
+	// are of the same width. This is not correct, but close-enough most of the
+	// time.
+	for _, rune := range source[begin:token.SourcePosBytes] {
+		if rune == '\t' {
+			snippetBuffer.WriteRune('\t')
+		} else {
+			snippetBuffer.WriteRune(' ')
+		}
+	}
+
+	// We don't want too big of a caret line as that may be distracting. So we
+	// limit it to 20 runes at most.
+	tokenSize := utf8.RuneCountInString(token.Text)
+	if tokenSize > 20 {
+		tokenSize = 20
+	}
+	if color {
+		// Set the caret characters to green.
+		snippetBuffer.WriteString("\x1b[32;1m")
+	}
+	snippetBuffer.WriteString(strings.Repeat("^", tokenSize))
+	if color {
+		// Reset all printing attributes.
+		snippetBuffer.WriteString("\x1b[0m")
+	}
+	snippet = snippetBuffer.String()
+	return
 }
