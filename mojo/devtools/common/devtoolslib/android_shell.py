@@ -126,7 +126,7 @@ class AndroidShell(Shell):
           time.sleep(1)
         if on_fifo_closed:
           on_fifo_closed()
-        raise Exception("Unable to find fifo.")
+        raise Exception('Unable to find fifo.')
       _wait_for_fifo()
       stdout_cat = subprocess.Popen(
           self._adb_command(['shell', 'run-as', _MOJO_SHELL_PACKAGE_NAME,
@@ -136,7 +136,7 @@ class AndroidShell(Shell):
       if on_fifo_closed:
         on_fifo_closed()
 
-    thread = threading.Thread(target=_run, name="StdoutRedirector")
+    thread = threading.Thread(target=_run, name='StdoutRedirector')
     thread.start()
 
   def _find_available_device_port(self):
@@ -157,11 +157,11 @@ class AndroidShell(Shell):
       # TODO(ppi): Should we have a retry loop to handle the unlikely races?
       device_port = self._find_available_device_port()
     subprocess.check_call(self._adb_command([
-        "reverse", "tcp:%d" % device_port, "tcp:%d" % host_port]))
+        'reverse', 'tcp:%d' % device_port, 'tcp:%d' % host_port]))
 
     def _unmap_port():
       unmap_command = self._adb_command([
-          "reverse", "--remove", "tcp:%d" % device_port])
+          'reverse', '--remove', 'tcp:%d' % device_port])
       subprocess.Popen(unmap_command)
     atexit.register(_unmap_port)
     return device_port
@@ -179,11 +179,11 @@ class AndroidShell(Shell):
       # TODO(ppi): Should we have a retry loop to handle the unlikely races?
       host_port = _find_available_host_port()
     subprocess.check_call(self._adb_command([
-        "forward", 'tcp:%d' % host_port, 'tcp:%d' % device_port]))
+        'forward', 'tcp:%d' % host_port, 'tcp:%d' % device_port]))
 
     def _unmap_port():
       unmap_command = self._adb_command([
-          "forward", "--remove", "tcp:%d" % device_port])
+          'forward', '--remove', 'tcp:%d' % device_port])
       subprocess.Popen(unmap_command)
     atexit.register(_unmap_port)
     return host_port
@@ -308,7 +308,7 @@ class AndroidShell(Shell):
       atexit.register(self.stop_shell)
       self.stop_shell_registered = True
 
-    STDOUT_PIPE = "/data/data/%s/stdout.fifo" % _MOJO_SHELL_PACKAGE_NAME
+    STDOUT_PIPE = '/data/data/%s/stdout.fifo' % _MOJO_SHELL_PACKAGE_NAME
 
     cmd = self._adb_command(['shell', 'am', 'start',
                             '-S',
@@ -390,7 +390,7 @@ class AndroidShell(Shell):
         if match:
           device_port = int(match.group(1))
           host_port = self._forward_host_port_to_device(0, device_port)
-          print ("Dart observatory available at the host at http://127.0.0.1:%d"
+          print ('Dart observatory available at the host at http://127.0.0.1:%d'
                  % host_port)
 
     logcat_watch_thread = threading.Thread(
@@ -419,7 +419,7 @@ class AndroidShell(Shell):
     self.clean_logs()
     self.forward_observatory_ports()
 
-    p = self.show_logs();
+    p = self.show_logs()
     self.start_shell(arguments, sys.stdout, p.terminate)
     p.wait()
     return None
@@ -434,8 +434,8 @@ class AndroidShell(Shell):
 
     def do_run():
       (r, w) = os.pipe()
-      with os.fdopen(r, "r") as rf:
-        with os.fdopen(w, "w") as wf:
+      with os.fdopen(r, 'r') as rf:
+        with os.fdopen(w, 'w') as wf:
           self.start_shell(arguments, wf, wf.close)
           Results.output = rf.read()
 
