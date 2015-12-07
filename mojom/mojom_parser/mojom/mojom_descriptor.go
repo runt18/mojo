@@ -5,6 +5,7 @@
 package mojom
 
 import (
+	"bytes"
 	"fmt"
 )
 
@@ -314,7 +315,7 @@ func (d *MojomDescriptor) Resolve() error {
 	// Resolve the types
 	unresolvedTypeReferences, err := d.resolveTypeReferences()
 	if err != nil {
-		// For one of the type references we discovered after resolution that
+		// For one of the type references, we discovered after resolution that
 		// the resolved type was used in an inappropriate way.
 		return err
 	}
@@ -323,7 +324,7 @@ func (d *MojomDescriptor) Resolve() error {
 	// Resolve the values
 	unresolvedValueReferences, err := d.resolveValueReferences()
 	if err != nil {
-		// For one of the value references we discovered after resolution that
+		// For one of the value references, we discovered after resolution that
 		// the resolved value was used in an inappropriate way.
 		return err
 	}
@@ -350,23 +351,24 @@ func (d *MojomDescriptor) Resolve() error {
 		return nil
 	}
 
-	errorMessage := "There are still some unresolved references.\n"
-	if numUnresolvedTypeReferences > 0 {
-		errorMessage += "\nNo defintion found for the following types:\n"
-		errorMessage += "-------------------------------------------------------\n"
-		for _, ref := range d.unresolvedTypeReferences {
-			errorMessage += fmt.Sprintf("%s\n", ref.LongString())
-		}
+	var messageBuffer bytes.Buffer
+	for _, ref := range d.unresolvedTypeReferences {
+		message := fmt.Sprintf("Undefined type: %q", ref.Identifier())
+		messageBuffer.WriteString(UserErrorMessage(ref.scope.file, ref.token, message))
 	}
-	if numUnresolvedValueReferences > 0 {
-		errorMessage += "\nNo defintion found for the following values:\n"
-		errorMessage += "-----------------------------------------------------------\n"
-		for _, ref := range d.unresolvedValueReferences {
-			errorMessage += fmt.Sprintf("%s\n", ref.LongString())
+	for _, ref := range d.unresolvedValueReferences {
+		var message string
+		if ref.ResolvedDeclaredValue() == nil {
+			message = fmt.Sprintf("Undefined value: %q", ref.Identifier())
+		} else if ref.ResolvedConcreteValue() == nil {
+			message = fmt.Sprintf("Use of unresolved value: %q", ref.Identifier())
+		} else {
+			panic("Internal error.")
 		}
+		messageBuffer.WriteString(UserErrorMessage(ref.scope.file, ref.token, message))
 	}
 
-	return fmt.Errorf(errorMessage)
+	return fmt.Errorf(messageBuffer.String())
 }
 
 func (d *MojomDescriptor) resolveTypeReferences() (unresolvedReferences []*UserTypeRef, postResolutionValidationError error) {

@@ -30,6 +30,104 @@ func (test *singleFileTest) addTestCase(contents string, expectedErrors []string
 	test.testCaseNum += 1
 }
 
+// TestSingleFileResolutionnErrors() tests that appropriate error messages are generated
+// when a .mojom file contains unresolved references.
+func TestSingleFileResolutionnErrors(t *testing.T) {
+	test := singleFileTest{}
+
+	////////////////////////////////////////////////////////////
+	// Test Case: One unresolved value reference
+	////////////////////////////////////////////////////////////
+	{
+		contents := `
+
+    struct Foo{
+      int32 x = Bar;
+    };`
+
+		test.addTestCase(contents, []string{"Undefined value: \"Bar\""})
+	}
+
+	////////////////////////////////////////////////////////////
+	// Test Case:Two unresolved value references
+	////////////////////////////////////////////////////////////
+	{
+		contents := `
+
+    const bool Foo = Baz;
+
+    struct Foo{
+      int32 x = Bar;
+    };`
+
+		test.addTestCase(contents, []string{
+			"Undefined value: \"Baz\"", "Undefined value: \"Bar\""})
+	}
+
+	////////////////////////////////////////////////////////////
+	// Test Case: One unresolved type reference
+	////////////////////////////////////////////////////////////
+	{
+		contents := `
+
+    struct Foo{
+      Bar x;
+    };`
+
+		test.addTestCase(contents, []string{"Undefined type: \"Bar\""})
+	}
+
+	////////////////////////////////////////////////////////////
+	// Test Case: Multiple unresolved types and values.
+	////////////////////////////////////////////////////////////
+	{
+		contents := `
+
+	const int32 X = Boom;
+
+    struct Foo{
+      Bar x;
+      Baz y = Bing;
+      int32 z = X;
+    };
+
+    struct Foo2 {
+    	Foo f = default;
+    };`
+
+		test.addTestCase(contents, []string{
+			"Undefined type: \"Bar\"", "Undefined type: \"Baz\"",
+			"Undefined value: \"Boom\"", "Undefined value: \"Bing\"",
+			"Use of unresolved value: \"X\""})
+	}
+
+	////////////////////////////////////////////////////////////
+	// Execute all of the test cases.
+	////////////////////////////////////////////////////////////
+	for i, c := range test.cases {
+		// Parse and resolve the mojom input.
+		descriptor := mojom.NewMojomDescriptor()
+		parser := MakeParser(c.fileName, c.mojomContents, descriptor, c.importedFrom)
+		parser.Parse()
+		if !parser.OK() {
+			t.Errorf("Parsing error for %s: %s", c.fileName, parser.GetError().Error())
+			continue
+		}
+		err := descriptor.Resolve()
+		if err == nil {
+			t.Errorf("Resolution unexpectedly succeeded for test case %d.", i)
+			continue
+		}
+		got := err.Error()
+		for _, expected := range c.expectedErrors {
+			if !strings.Contains(got, expected) {
+				t.Errorf("%s:\n*****expected to contain:\n%s\n****actual\n%s", c.fileName, expected, got)
+			}
+		}
+
+	}
+}
+
 // TestSingleFileValidationErrors() tests that appropriate error messages are generated
 // when a .mojom file contains validation errors. In particular we are testing errors
 // that are not detected during parsing but are only detected after all names have
