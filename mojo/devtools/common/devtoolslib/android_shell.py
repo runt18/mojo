@@ -126,7 +126,7 @@ class AndroidShell(Shell):
           time.sleep(1)
         if on_fifo_closed:
           on_fifo_closed()
-        raise Exception('Unable to find fifo.')
+        raise Exception('Timed out waiting for shell the create the fifo file.')
       _wait_for_fifo()
       stdout_cat = subprocess.Popen(
           self._adb_command(['shell', 'run-as', _MOJO_SHELL_PACKAGE_NAME,
