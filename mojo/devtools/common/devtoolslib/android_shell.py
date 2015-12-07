@@ -194,6 +194,12 @@ class AndroidShell(Shell):
     return len(subprocess.check_output(self._adb_command([
         'shell', 'pm', 'list', 'packages', _MOJO_SHELL_PACKAGE_NAME]))) > 0
 
+  def _get_api_level(self):
+    """Returns the API level of Android running on the device."""
+    output = subprocess.check_output(self._adb_command([
+        'shell', 'getprop', 'ro.build.version.sdk']))
+    return int(output)
+
   @staticmethod
   def get_tmp_dir_path():
     """Returns a path to a cache directory owned by the shell where temporary
@@ -264,9 +270,15 @@ class AndroidShell(Shell):
                   not self._is_shell_package_installed())
 
     if do_install:
-      subprocess.check_call(
-          self._adb_command(['install', '-r', shell_apk_path, '-i',
-                            _MOJO_SHELL_PACKAGE_NAME]),
+      install_command = ['install']
+      install_command += ['-r']  # Allow to overwrite an existing installation.
+      install_command += ['-i', _MOJO_SHELL_PACKAGE_NAME]
+      if self._get_api_level() >= 23:  # Check if running Lollipop or later.
+        # Grant all permissions listed in manifest. This flag is available only
+        # in Lollipop or later.
+        install_command += ['-g']
+      install_command += [shell_apk_path]
+      subprocess.check_call(self._adb_command(install_command),
           stdout=self.verbose_stdout, stderr=self.verbose_stderr)
 
       # Update the stamp on the device.
