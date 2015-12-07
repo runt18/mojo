@@ -960,9 +960,7 @@ class GeocoderLocationToAddressResponseParams extends bindings.Struct {
 
 const int kGeocoder_addressToLocation_name = 0;
 const int kGeocoder_locationToAddress_name = 1;
-
-const String GeocoderName =
-      'mojo::Geocoder';
+const String GeocoderName = null;
 
 abstract class Geocoder {
   dynamic addressToLocation(String address,Options options,[Function responseFactory = null]);

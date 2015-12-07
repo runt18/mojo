@@ -289,9 +289,7 @@ class CookieStoreSetResponseParams extends bindings.Struct {
 
 const int kCookieStore_get_name = 0;
 const int kCookieStore_set_name = 1;
-
-const String CookieStoreName =
-      'mojo::CookieStore';
+const String CookieStoreName = null;
 
 abstract class CookieStore {
   dynamic get(String url,[Function responseFactory = null]);

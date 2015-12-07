@@ -751,9 +751,7 @@ const int kWebSocket_connect_name = 0;
 const int kWebSocket_send_name = 1;
 const int kWebSocket_flowControl_name = 2;
 const int kWebSocket_close_name = 3;
-
-const String WebSocketName =
-      'mojo::WebSocket';
+const String WebSocketName = null;
   class WebSocketMessageType extends bindings.MojoEnum {
   static const CONTINUATION = const WebSocketMessageType._(0);
   static const TEXT = const WebSocketMessageType._(1);
@@ -1042,9 +1040,7 @@ const int kWebSocketClient_didReceiveData_name = 1;
 const int kWebSocketClient_didReceiveFlowControl_name = 2;
 const int kWebSocketClient_didFail_name = 3;
 const int kWebSocketClient_didClose_name = 4;
-
-const String WebSocketClientName =
-      'mojo::WebSocketClient';
+const String WebSocketClientName = null;
 
 abstract class WebSocketClient {
   void didConnect(String selectedSubprotocol, String extensions, core.MojoDataPipeConsumer receiveStream);

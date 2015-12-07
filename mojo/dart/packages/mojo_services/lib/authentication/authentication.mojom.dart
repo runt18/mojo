@@ -391,9 +391,7 @@ class AuthenticationServiceClearOAuth2TokenParams extends bindings.Struct {
 const int kAuthenticationService_selectAccount_name = 0;
 const int kAuthenticationService_getOAuth2Token_name = 1;
 const int kAuthenticationService_clearOAuth2Token_name = 2;
-
-const String AuthenticationServiceName =
-      'authentication::AuthenticationService';
+const String AuthenticationServiceName = "authentication::AuthenticationService";
 
 abstract class AuthenticationService {
   dynamic selectAccount(bool returnLastSelected,[Function responseFactory = null]);

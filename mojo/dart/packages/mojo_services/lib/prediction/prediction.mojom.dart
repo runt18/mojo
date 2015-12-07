@@ -333,9 +333,7 @@ class PredictionServiceGetPredictionListResponseParams extends bindings.Struct {
 }
 
 const int kPredictionService_getPredictionList_name = 0;
-
-const String PredictionServiceName =
-      'prediction::PredictionService';
+const String PredictionServiceName = "prediction::PredictionService";
 
 abstract class PredictionService {
   dynamic getPredictionList(PredictionInfo predictionInfo,[Function responseFactory = null]);

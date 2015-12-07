@@ -478,9 +478,7 @@ class SensorServiceAddListenerParams extends bindings.Struct {
 
 const int kSensorListener_onAccuracyChanged_name = 0;
 const int kSensorListener_onSensorChanged_name = 1;
-
-const String SensorListenerName =
-      'sensors::SensorListener';
+const String SensorListenerName = null;
 
 abstract class SensorListener {
   void onAccuracyChanged(int accuracy);
@@ -669,9 +667,7 @@ class SensorListenerStub extends bindings.Stub {
 }
 
 const int kSensorService_addListener_name = 0;
-
-const String SensorServiceName =
-      'sensors::SensorService';
+const String SensorServiceName = "sensors::SensorService";
 
 abstract class SensorService {
   void addListener(SensorType type, Object listener);

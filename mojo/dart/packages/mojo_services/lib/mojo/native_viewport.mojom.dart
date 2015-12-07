@@ -982,9 +982,7 @@ const int kNativeViewport_setSize_name = 4;
 const int kNativeViewport_setEventDispatcher_name = 5;
 const int kNativeViewport_getContextProvider_name = 6;
 const int kNativeViewport_requestMetrics_name = 7;
-
-const String NativeViewportName =
-      'mojo::NativeViewport';
+const String NativeViewportName = "mojo::NativeViewport";
 
 abstract class NativeViewport {
   dynamic create(geometry_mojom.Size size,SurfaceConfiguration requestedConfiguration,[Function responseFactory = null]);
@@ -1348,9 +1346,7 @@ class NativeViewportStub extends bindings.Stub {
 }
 
 const int kNativeViewportEventDispatcher_onEvent_name = 0;
-
-const String NativeViewportEventDispatcherName =
-      'mojo::NativeViewportEventDispatcher';
+const String NativeViewportEventDispatcherName = "mojo::NativeViewportEventDispatcher";
 
 abstract class NativeViewportEventDispatcher {
   dynamic onEvent(input_events_mojom.Event event,[Function responseFactory = null]);

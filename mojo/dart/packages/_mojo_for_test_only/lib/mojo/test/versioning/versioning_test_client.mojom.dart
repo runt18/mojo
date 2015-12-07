@@ -710,9 +710,7 @@ const int kHumanResourceDatabase_addEmployee_name = 0;
 const int kHumanResourceDatabase_queryEmployee_name = 1;
 const int kHumanResourceDatabase_attachFingerPrint_name = 2;
 const int kHumanResourceDatabase_listEmployeeIds_name = 3;
-
-const String HumanResourceDatabaseName =
-      'mojo::test::versioning::HumanResourceDatabase';
+const String HumanResourceDatabaseName = "mojo::test::versioning::HumanResourceDatabase";
 
 abstract class HumanResourceDatabase {
   dynamic addEmployee(Employee employee,[Function responseFactory = null]);

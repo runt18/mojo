@@ -1547,9 +1547,7 @@ const int kActivity_finishCurrentActivity_name = 2;
 const int kActivity_setTaskDescription_name = 3;
 const int kActivity_setSystemUiVisibility_name = 4;
 const int kActivity_setRequestedOrientation_name = 5;
-
-const String ActivityName =
-      'activity::Activity';
+const String ActivityName = "activity::Activity";
 
 abstract class Activity {
   void getUserFeedback(Object userFeedback);
@@ -1803,9 +1801,7 @@ class ActivityStub extends bindings.Stub {
 const int kPathService_getAppDataDir_name = 0;
 const int kPathService_getFilesDir_name = 1;
 const int kPathService_getCacheDir_name = 2;
-
-const String PathServiceName =
-      'activity::PathService';
+const String PathServiceName = "activity::PathService";
 
 abstract class PathService {
   dynamic getAppDataDir([Function responseFactory = null]);
@@ -2131,9 +2127,7 @@ class PathServiceStub extends bindings.Stub {
 
 const int kUserFeedback_performHapticFeedback_name = 0;
 const int kUserFeedback_performAuralFeedback_name = 1;
-
-const String UserFeedbackName =
-      'activity::UserFeedback';
+const String UserFeedbackName = null;
 
 abstract class UserFeedback {
   void performHapticFeedback(HapticFeedbackType type);

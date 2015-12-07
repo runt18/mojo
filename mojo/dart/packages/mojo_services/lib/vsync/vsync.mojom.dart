@@ -136,9 +136,7 @@ class VSyncProviderAwaitVSyncResponseParams extends bindings.Struct {
 }
 
 const int kVSyncProvider_awaitVSync_name = 0;
-
-const String VSyncProviderName =
-      'vsync::VSyncProvider';
+const String VSyncProviderName = "vsync::VSyncProvider";
 
 abstract class VSyncProvider {
   dynamic awaitVSync([Function responseFactory = null]);

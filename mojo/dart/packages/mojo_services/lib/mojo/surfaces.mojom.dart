@@ -1126,9 +1126,7 @@ class SurfaceDestroySurfaceParams extends bindings.Struct {
 }
 
 const int kResourceReturner_returnResources_name = 0;
-
-const String ResourceReturnerName =
-      'mojo::ResourceReturner';
+const String ResourceReturnerName = null;
 
 abstract class ResourceReturner {
   void returnResources(List<ReturnedResource> resources);
@@ -1305,9 +1303,7 @@ const int kSurface_setResourceReturner_name = 1;
 const int kSurface_createSurface_name = 2;
 const int kSurface_submitFrame_name = 3;
 const int kSurface_destroySurface_name = 4;
-
-const String SurfaceName =
-      'mojo::Surface';
+const String SurfaceName = "mojo::Surface";
 
 abstract class Surface {
   dynamic getIdNamespace([Function responseFactory = null]);

@@ -145,9 +145,7 @@ class ContextProviderCreateResponseParams extends bindings.Struct {
 }
 
 const int kContextProvider_create_name = 0;
-
-const String ContextProviderName =
-      'mojo::ContextProvider';
+const String ContextProviderName = null;
 
 abstract class ContextProvider {
   dynamic create(Object viewportParameterListener,[Function responseFactory = null]);

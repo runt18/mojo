@@ -102,9 +102,7 @@ class ServiceRegistryAddServicesParams extends bindings.Struct {
 }
 
 const int kServiceRegistry_addServices_name = 0;
-
-const String ServiceRegistryName =
-      'mojo::ServiceRegistry';
+const String ServiceRegistryName = "mojo::ServiceRegistry";
 
 abstract class ServiceRegistry {
   void addServices(List<String> interfaceNames, Object serviceProvider);

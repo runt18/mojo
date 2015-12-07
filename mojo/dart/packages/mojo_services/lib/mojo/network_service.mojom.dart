@@ -901,9 +901,7 @@ const int kNetworkService_createUdpSocket_name = 5;
 const int kNetworkService_createHttpServer_name = 6;
 const int kNetworkService_registerUrlLoaderInterceptor_name = 7;
 const int kNetworkService_createHostResolver_name = 8;
-
-const String NetworkServiceName =
-      'mojo::NetworkService';
+const String NetworkServiceName = "mojo::NetworkService";
 
 abstract class NetworkService {
   void createUrlLoader(Object loader);

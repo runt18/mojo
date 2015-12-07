@@ -174,9 +174,7 @@ class TcpServerSocketAcceptResponseParams extends bindings.Struct {
 }
 
 const int kTcpServerSocket_accept_name = 0;
-
-const String TcpServerSocketName =
-      'mojo::TCPServerSocket';
+const String TcpServerSocketName = null;
 
 abstract class TcpServerSocket {
   dynamic accept(core.MojoDataPipeConsumer sendStream,core.MojoDataPipeProducer receiveStream,Object clientSocket,[Function responseFactory = null]);

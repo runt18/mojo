@@ -1578,9 +1578,7 @@ class Regression551GetResponseParams extends bindings.Struct {
 
 const int kCheckMethodWithEmptyResponse_withoutParameterAndEmptyResponse_name = 0;
 const int kCheckMethodWithEmptyResponse_withParameterAndEmptyResponse_name = 1;
-
-const String CheckMethodWithEmptyResponseName =
-      'regression_tests::CheckMethodWithEmptyResponse';
+const String CheckMethodWithEmptyResponseName = null;
 
 abstract class CheckMethodWithEmptyResponse {
   dynamic withoutParameterAndEmptyResponse([Function responseFactory = null]);
@@ -1848,9 +1846,7 @@ class CheckMethodWithEmptyResponseStub extends bindings.Stub {
 }
 
 const int kCheckNameCollision_withNameCollision_name = 0;
-
-const String CheckNameCollisionName =
-      'regression_tests::CheckNameCollision';
+const String CheckNameCollisionName = null;
 
 abstract class CheckNameCollision {
   dynamic withNameCollision(bool message,bool response,[Function responseFactory = null]);
@@ -2066,9 +2062,7 @@ class CheckNameCollisionStub extends bindings.Stub {
 }
 
 const int kCheckEnumCaps_setEnumWithInternalAllCaps_name = 0;
-
-const String CheckEnumCapsName =
-      'regression_tests::CheckEnumCaps';
+const String CheckEnumCapsName = null;
 
 abstract class CheckEnumCaps {
   void setEnumWithInternalAllCaps(EnumWithInternalAllCaps e);
@@ -2241,9 +2235,7 @@ class CheckEnumCapsStub extends bindings.Stub {
 }
 
 const int kTestInterface_someMessage_name = 0;
-
-const String TestInterfaceName =
-      'regression_tests::TestInterface';
+const String TestInterfaceName = null;
 
 abstract class TestInterface {
   void someMessage();
@@ -2415,9 +2407,7 @@ class TestInterfaceStub extends bindings.Stub {
 }
 
 const int kRegression551_get_name = 0;
-
-const String Regression551Name =
-      'regression_tests::Regression551';
+const String Regression551Name = null;
 
 abstract class Regression551 {
   dynamic get(List<String> keyPrefixes,[Function responseFactory = null]);

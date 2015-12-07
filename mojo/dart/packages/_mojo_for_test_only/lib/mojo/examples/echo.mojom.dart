@@ -145,9 +145,7 @@ class EchoEchoStringResponseParams extends bindings.Struct {
 }
 
 const int kEcho_echoString_name = 0;
-
-const String EchoName =
-      'mojo::examples::Echo';
+const String EchoName = "mojo::examples::Echo";
 
 abstract class Echo {
   dynamic echoString(String value,[Function responseFactory = null]);

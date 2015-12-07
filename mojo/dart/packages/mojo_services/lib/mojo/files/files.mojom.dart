@@ -158,9 +158,7 @@ class FilesOpenFileSystemResponseParams extends bindings.Struct {
 }
 
 const int kFiles_openFileSystem_name = 0;
-
-const String FilesName =
-      'mojo::files::Files';
+const String FilesName = "mojo::files::Files";
 
 abstract class Files {
   dynamic openFileSystem(String fileSystem,Object directory,[Function responseFactory = null]);

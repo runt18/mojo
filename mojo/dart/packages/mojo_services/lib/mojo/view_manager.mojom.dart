@@ -3271,9 +3271,7 @@ const int kViewManagerService_setViewSurfaceId_name = 9;
 const int kViewManagerService_embedUrl_name = 10;
 const int kViewManagerService_embed_name = 11;
 const int kViewManagerService_performAction_name = 12;
-
-const String ViewManagerServiceName =
-      'mojo::ViewManagerService';
+const String ViewManagerServiceName = "mojo::ViewManagerService";
 
 abstract class ViewManagerService {
   dynamic createView(int viewId,[Function responseFactory = null]);
@@ -4195,9 +4193,7 @@ const int kViewManagerClient_onViewDrawnStateChanged_name = 8;
 const int kViewManagerClient_onViewSharedPropertyChanged_name = 9;
 const int kViewManagerClient_onViewInputEvent_name = 10;
 const int kViewManagerClient_onPerformAction_name = 11;
-
-const String ViewManagerClientName =
-      'mojo::ViewManagerClient';
+const String ViewManagerClientName = "mojo::ViewManagerClient";
 
 abstract class ViewManagerClient {
   void onEmbed(int connectionId, String embedderUrl, ViewData root, Object viewManagerService, Object services, Object exposedServices, core.MojoMessagePipeEndpoint windowManagerPipe);

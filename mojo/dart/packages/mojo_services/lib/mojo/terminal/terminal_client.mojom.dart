@@ -78,9 +78,7 @@ class TerminalClientConnectToTerminalParams extends bindings.Struct {
 }
 
 const int kTerminalClient_connectToTerminal_name = 0;
-
-const String TerminalClientName =
-      'mojo::terminal::TerminalClient';
+const String TerminalClientName = "mojo::terminal::TerminalClient";
 
 abstract class TerminalClient {
   void connectToTerminal(Object terminal);

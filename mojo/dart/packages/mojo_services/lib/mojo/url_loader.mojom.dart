@@ -478,9 +478,7 @@ class UrlLoaderQueryStatusResponseParams extends bindings.Struct {
 const int kUrlLoader_start_name = 0;
 const int kUrlLoader_followRedirect_name = 1;
 const int kUrlLoader_queryStatus_name = 2;
-
-const String UrlLoaderName =
-      'mojo::URLLoader';
+const String UrlLoaderName = null;
 
 abstract class UrlLoader {
   dynamic start(url_request_mojom.UrlRequest request,[Function responseFactory = null]);

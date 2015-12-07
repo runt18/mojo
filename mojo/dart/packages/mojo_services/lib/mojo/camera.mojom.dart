@@ -528,9 +528,7 @@ class CameraServiceGetLatestFrameResponseParams extends bindings.Struct {
 const int kCameraRollService_update_name = 0;
 const int kCameraRollService_getCount_name = 1;
 const int kCameraRollService_getPhoto_name = 2;
-
-const String CameraRollServiceName =
-      'mojo::CameraRollService';
+const String CameraRollServiceName = "mojo::CameraRollService";
 
 abstract class CameraRollService {
   void update();
@@ -815,9 +813,7 @@ class CameraRollServiceStub extends bindings.Stub {
 }
 
 const int kCameraService_getLatestFrame_name = 0;
-
-const String CameraServiceName =
-      'mojo::CameraService';
+const String CameraServiceName = "mojo::CameraService";
 
 abstract class CameraService {
   dynamic getLatestFrame([Function responseFactory = null]);

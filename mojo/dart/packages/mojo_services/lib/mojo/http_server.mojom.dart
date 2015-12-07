@@ -86,9 +86,7 @@ class HttpServerDelegateOnConnectedParams extends bindings.Struct {
 }
 
 const int kHttpServerDelegate_onConnected_name = 0;
-
-const String HttpServerDelegateName =
-      'mojo::HttpServerDelegate';
+const String HttpServerDelegateName = null;
 
 abstract class HttpServerDelegate {
   void onConnected(Object connection, Object delegate);

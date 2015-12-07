@@ -624,9 +624,7 @@ const int kPingPongService_pingTargetUrl_name = 2;
 const int kPingPongService_pingTargetService_name = 3;
 const int kPingPongService_getPingPongService_name = 4;
 const int kPingPongService_quit_name = 5;
-
-const String PingPongServiceName =
-      'test::PingPongService';
+const String PingPongServiceName = "test::PingPongService";
 
 abstract class PingPongService {
   void setClient(Object client);
@@ -962,9 +960,7 @@ class PingPongServiceStub extends bindings.Stub {
 }
 
 const int kPingPongClient_pong_name = 0;
-
-const String PingPongClientName =
-      'test::PingPongClient';
+const String PingPongClientName = null;
 
 abstract class PingPongClient {
   void pong(int pongValue);

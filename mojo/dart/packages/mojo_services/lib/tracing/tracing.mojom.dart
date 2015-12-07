@@ -343,9 +343,7 @@ class TraceCollectorStopAndFlushParams extends bindings.Struct {
 
 const int kTraceProvider_startTracing_name = 0;
 const int kTraceProvider_stopTracing_name = 1;
-
-const String TraceProviderName =
-      'tracing::TraceProvider';
+const String TraceProviderName = "tracing::TraceProvider";
 
 abstract class TraceProvider {
   void startTracing(String categories, Object recorder);
@@ -534,9 +532,7 @@ class TraceProviderStub extends bindings.Stub {
 }
 
 const int kTraceRecorder_record_name = 0;
-
-const String TraceRecorderName =
-      'tracing::TraceRecorder';
+const String TraceRecorderName = null;
 
 abstract class TraceRecorder {
   void record(String json);
@@ -710,9 +706,7 @@ class TraceRecorderStub extends bindings.Stub {
 
 const int kTraceCollector_start_name = 0;
 const int kTraceCollector_stopAndFlush_name = 1;
-
-const String TraceCollectorName =
-      'tracing::TraceCollector';
+const String TraceCollectorName = "tracing::TraceCollector";
 
 abstract class TraceCollector {
   void start(core.MojoDataPipeProducer stream, String categories);

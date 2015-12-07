@@ -320,9 +320,7 @@ class ImportedInterfaceDoSomethingParams extends bindings.Struct {
 }
 
 const int kImportedInterface_doSomething_name = 0;
-
-const String ImportedInterfaceName =
-      'imported::ImportedInterface';
+const String ImportedInterfaceName = null;
 
 abstract class ImportedInterface {
   void doSomething();

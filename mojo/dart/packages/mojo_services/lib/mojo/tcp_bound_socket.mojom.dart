@@ -309,9 +309,7 @@ class TcpBoundSocketConnectResponseParams extends bindings.Struct {
 
 const int kTcpBoundSocket_startListening_name = 0;
 const int kTcpBoundSocket_connect_name = 1;
-
-const String TcpBoundSocketName =
-      'mojo::TCPBoundSocket';
+const String TcpBoundSocketName = null;
 
 abstract class TcpBoundSocket {
   dynamic startListening(Object server,[Function responseFactory = null]);

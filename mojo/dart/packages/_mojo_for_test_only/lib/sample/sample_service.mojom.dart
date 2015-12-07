@@ -1371,9 +1371,7 @@ class PortPostMessageParams extends bindings.Struct {
 
 const int kService_frobinate_name = 0;
 const int kService_getPort_name = 1;
-
-const String ServiceName =
-      'sample::Service';
+const String ServiceName = null;
   class ServiceBazOptions extends bindings.MojoEnum {
   static const REGULAR = const ServiceBazOptions._(0);
   static const EXTRA = const ServiceBazOptions._(1);
@@ -1655,9 +1653,7 @@ class ServiceStub extends bindings.Stub {
 }
 
 const int kPort_postMessage_name = 0;
-
-const String PortName =
-      'sample::Port';
+const String PortName = null;
 
 abstract class Port {
   void postMessage(String messageText, Object port);

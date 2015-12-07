@@ -982,9 +982,7 @@ class FactoryTakeImportedInterfaceResponseParams extends bindings.Struct {
 
 const int kNamedObject_setName_name = 0;
 const int kNamedObject_getName_name = 1;
-
-const String NamedObjectName =
-      'sample::NamedObject';
+const String NamedObjectName = "sample::NamedObject";
 
 abstract class NamedObject {
   void setName(String name);
@@ -1217,9 +1215,7 @@ const int kFactory_doStuff2_name = 1;
 const int kFactory_createNamedObject_name = 2;
 const int kFactory_requestImportedInterface_name = 3;
 const int kFactory_takeImportedInterface_name = 4;
-
-const String FactoryName =
-      'sample::Factory';
+const String FactoryName = null;
 
 abstract class Factory {
   dynamic doStuff(Request request,core.MojoMessagePipeEndpoint pipe,[Function responseFactory = null]);

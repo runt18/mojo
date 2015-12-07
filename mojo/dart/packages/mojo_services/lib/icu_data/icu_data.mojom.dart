@@ -144,9 +144,7 @@ class IcuDataMapResponseParams extends bindings.Struct {
 }
 
 const int kIcuData_map_name = 0;
-
-const String IcuDataName =
-      'icu_data::ICUData';
+const String IcuDataName = "icu_data::ICUData";
 
 abstract class IcuData {
   dynamic map(String sha1hash,[Function responseFactory = null]);

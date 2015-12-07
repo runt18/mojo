@@ -764,9 +764,7 @@ class ViewHostLayoutChildResponseParams extends bindings.Struct {
 
 const int kView_onLayout_name = 0;
 const int kView_onChildUnavailable_name = 1;
-
-const String ViewName =
-      'mojo::ui::View';
+const String ViewName = null;
 
 abstract class View {
   dynamic onLayout(layouts_mojom.ViewLayoutParams layoutParams,List<int> childrenNeedingLayout,[Function responseFactory = null]);
@@ -1041,9 +1039,7 @@ const int kViewHost_requestLayout_name = 1;
 const int kViewHost_addChild_name = 2;
 const int kViewHost_removeChild_name = 3;
 const int kViewHost_layoutChild_name = 4;
-
-const String ViewHostName =
-      'mojo::ui::ViewHost';
+const String ViewHostName = null;
 
 abstract class ViewHost {
   void getServiceProvider(Object serviceProvider);

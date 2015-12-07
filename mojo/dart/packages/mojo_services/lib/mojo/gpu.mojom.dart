@@ -78,9 +78,7 @@ class GpuCreateOffscreenGleS2ContextParams extends bindings.Struct {
 }
 
 const int kGpu_createOffscreenGleS2Context_name = 0;
-
-const String GpuName =
-      'mojo::Gpu';
+const String GpuName = "mojo::Gpu";
 
 abstract class Gpu {
   void createOffscreenGleS2Context(Object gles2Client);

@@ -1064,9 +1064,7 @@ const int kDirectory_openFile_name = 3;
 const int kDirectory_openDirectory_name = 4;
 const int kDirectory_rename_name = 5;
 const int kDirectory_delete_name = 6;
-
-const String DirectoryName =
-      'mojo::files::Directory';
+const String DirectoryName = null;
 
 abstract class Directory {
   dynamic read([Function responseFactory = null]);

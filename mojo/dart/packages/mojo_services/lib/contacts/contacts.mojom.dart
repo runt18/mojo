@@ -686,9 +686,7 @@ const int kContactsService_getCount_name = 0;
 const int kContactsService_get_name = 1;
 const int kContactsService_getEmails_name = 2;
 const int kContactsService_getPhoto_name = 3;
-
-const String ContactsServiceName =
-      'contacts::ContactsService';
+const String ContactsServiceName = "contacts::ContactsService";
 
 abstract class ContactsService {
   dynamic getCount(String filter,[Function responseFactory = null]);

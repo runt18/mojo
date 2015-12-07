@@ -87,9 +87,7 @@ class AuthenticatingUrlLoaderInterceptorMetaFactoryCreateUrlLoaderInterceptorFac
 }
 
 const int kAuthenticatingUrlLoaderInterceptorMetaFactory_createUrlLoaderInterceptorFactory_name = 0;
-
-const String AuthenticatingUrlLoaderInterceptorMetaFactoryName =
-      'mojo::AuthenticatingURLLoaderInterceptorMetaFactory';
+const String AuthenticatingUrlLoaderInterceptorMetaFactoryName = "mojo::AuthenticatingURLLoaderInterceptorMetaFactory";
 
 abstract class AuthenticatingUrlLoaderInterceptorMetaFactory {
   void createUrlLoaderInterceptorFactory(Object factoryRequest, Object authenticationService);

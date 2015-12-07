@@ -289,9 +289,7 @@ class EchoServiceDelayedEchoStringResponseParams extends bindings.Struct {
 
 const int kEchoService_echoString_name = 0;
 const int kEchoService_delayedEchoString_name = 1;
-
-const String EchoServiceName =
-      'test::EchoService';
+const String EchoServiceName = "test::EchoService";
 
 abstract class EchoService {
   dynamic echoString(String value,[Function responseFactory = null]);

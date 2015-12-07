@@ -5057,9 +5057,7 @@ class UnionOfStructs extends bindings.Union {
   }
 }
 const int kSomeInterface_someMethod_name = 0;
-
-const String SomeInterfaceName =
-      'mojo::test::SomeInterface';
+const String SomeInterfaceName = null;
 
 abstract class SomeInterface {
   dynamic someMethod(RectPair pair,[Function responseFactory = null]);

@@ -155,9 +155,7 @@ class ViewProviderCreateViewResponseParams extends bindings.Struct {
 }
 
 const int kViewProvider_createView_name = 0;
-
-const String ViewProviderName =
-      'mojo::ui::ViewProvider';
+const String ViewProviderName = "mojo::ui::ViewProvider";
 
 abstract class ViewProvider {
   dynamic createView(Object services,Object exposedServices,[Function responseFactory = null]);

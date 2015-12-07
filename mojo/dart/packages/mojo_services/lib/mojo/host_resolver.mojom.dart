@@ -189,9 +189,7 @@ class HostResolverGetHostAddressesResponseParams extends bindings.Struct {
 }
 
 const int kHostResolver_getHostAddresses_name = 0;
-
-const String HostResolverName =
-      'mojo::HostResolver';
+const String HostResolverName = null;
 
 abstract class HostResolver {
   dynamic getHostAddresses(String host,net_address_mojom.NetAddressFamily family,[Function responseFactory = null]);

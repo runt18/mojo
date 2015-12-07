@@ -628,9 +628,7 @@ const int kTerminal_connect_name = 0;
 const int kTerminal_connectToClient_name = 1;
 const int kTerminal_getSize_name = 2;
 const int kTerminal_setSize_name = 3;
-
-const String TerminalName =
-      'mojo::terminal::Terminal';
+const String TerminalName = "mojo::terminal::Terminal";
 
 abstract class Terminal {
   dynamic connect(Object terminalFile,bool force,[Function responseFactory = null]);

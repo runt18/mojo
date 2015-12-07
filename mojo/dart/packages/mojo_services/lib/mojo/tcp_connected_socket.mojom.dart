@@ -10,9 +10,7 @@ import 'package:mojo/bindings.dart' as bindings;
 import 'package:mojo/core.dart' as core;
 
 
-
-const String TcpConnectedSocketName =
-      'mojo::TCPConnectedSocket';
+const String TcpConnectedSocketName = null;
 
 abstract class TcpConnectedSocket {
 

@@ -2844,9 +2844,7 @@ class NewUnion extends bindings.Union {
 }
 const int kSmallCache_setIntValue_name = 0;
 const int kSmallCache_getIntValue_name = 1;
-
-const String SmallCacheName =
-      'mojo::test::SmallCache';
+const String SmallCacheName = null;
 
 abstract class SmallCache {
   void setIntValue(int intValue);
@@ -3075,9 +3073,7 @@ class SmallCacheStub extends bindings.Stub {
 }
 
 const int kUnionInterface_echo_name = 0;
-
-const String UnionInterfaceName =
-      'mojo::test::UnionInterface';
+const String UnionInterfaceName = null;
 
 abstract class UnionInterface {
   dynamic echo(PodUnion inVal,[Function responseFactory = null]);

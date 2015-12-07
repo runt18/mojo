@@ -853,9 +853,7 @@ const int kWindowManager_setCapture_name = 1;
 const int kWindowManager_focusWindow_name = 2;
 const int kWindowManager_activateWindow_name = 3;
 const int kWindowManager_getFocusedAndActiveViews_name = 4;
-
-const String WindowManagerName =
-      'mojo::WindowManager';
+const String WindowManagerName = "mojo::WindowManager";
 
 abstract class WindowManager {
   void embed(String url, Object services, Object exposedServices);
@@ -1262,9 +1260,7 @@ class WindowManagerStub extends bindings.Stub {
 const int kWindowManagerObserver_onCaptureChanged_name = 0;
 const int kWindowManagerObserver_onFocusChanged_name = 1;
 const int kWindowManagerObserver_onActiveWindowChanged_name = 2;
-
-const String WindowManagerObserverName =
-      'mojo::WindowManagerObserver';
+const String WindowManagerObserverName = null;
 
 abstract class WindowManagerObserver {
   void onCaptureChanged(int captureViewId);

@@ -193,9 +193,7 @@ class InputServiceSetClientParams extends bindings.Struct {
 }
 
 const int kInputClient_onBackButton_name = 0;
-
-const String InputClientName =
-      'input::InputClient';
+const String InputClientName = null;
 
 abstract class InputClient {
   dynamic onBackButton([Function responseFactory = null]);
@@ -407,9 +405,7 @@ class InputClientStub extends bindings.Stub {
 }
 
 const int kInputService_setClient_name = 0;
-
-const String InputServiceName =
-      'input::InputService';
+const String InputServiceName = "input::InputService";
 
 abstract class InputService {
   void setClient(Object client);

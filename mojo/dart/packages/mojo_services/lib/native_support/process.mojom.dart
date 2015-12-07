@@ -716,9 +716,7 @@ class ProcessControllerKillResponseParams extends bindings.Struct {
 
 const int kProcess_spawn_name = 0;
 const int kProcess_spawnWithTerminal_name = 1;
-
-const String ProcessName =
-      'native_support::Process';
+const String ProcessName = "native_support::Process";
 
 abstract class Process {
   dynamic spawn(List<int> path,List<List<int>> argv,List<List<int>> envp,Object stdinFile,Object stdoutFile,Object stderrFile,Object processController,[Function responseFactory = null]);
@@ -1000,9 +998,7 @@ class ProcessStub extends bindings.Stub {
 
 const int kProcessController_wait_name = 0;
 const int kProcessController_kill_name = 1;
-
-const String ProcessControllerName =
-      'native_support::ProcessController';
+const String ProcessControllerName = null;
 
 abstract class ProcessController {
   dynamic wait([Function responseFactory = null]);

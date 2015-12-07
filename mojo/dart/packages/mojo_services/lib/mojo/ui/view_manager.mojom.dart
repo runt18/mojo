@@ -288,9 +288,7 @@ class ViewManagerRegisterViewTreeResponseParams extends bindings.Struct {
 
 const int kViewManager_registerView_name = 0;
 const int kViewManager_registerViewTree_name = 1;
-
-const String ViewManagerName =
-      'mojo::ui::ViewManager';
+const String ViewManagerName = "mojo::ui::ViewManager";
 
 abstract class ViewManager {
   dynamic registerView(Object view,Object viewHost,[Function responseFactory = null]);

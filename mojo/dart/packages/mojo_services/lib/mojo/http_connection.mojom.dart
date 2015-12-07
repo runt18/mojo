@@ -568,9 +568,7 @@ class HttpConnectionDelegateOnReceivedWebSocketRequestResponseParams extends bin
 
 const int kHttpConnection_setSendBufferSize_name = 0;
 const int kHttpConnection_setReceiveBufferSize_name = 1;
-
-const String HttpConnectionName =
-      'mojo::HttpConnection';
+const String HttpConnectionName = null;
 
 abstract class HttpConnection {
   dynamic setSendBufferSize(int size,[Function responseFactory = null]);
@@ -842,9 +840,7 @@ class HttpConnectionStub extends bindings.Stub {
 
 const int kHttpConnectionDelegate_onReceivedRequest_name = 0;
 const int kHttpConnectionDelegate_onReceivedWebSocketRequest_name = 1;
-
-const String HttpConnectionDelegateName =
-      'mojo::HttpConnectionDelegate';
+const String HttpConnectionDelegateName = null;
 
 abstract class HttpConnectionDelegate {
   dynamic onReceivedRequest(http_message_mojom.HttpRequest request,[Function responseFactory = null]);

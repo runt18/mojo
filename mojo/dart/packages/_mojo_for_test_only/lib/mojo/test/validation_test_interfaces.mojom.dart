@@ -3139,9 +3139,7 @@ class UnionB extends bindings.Union {
     return result;
   }
 }
-
-const String InterfaceAName =
-      'mojo::test::InterfaceA';
+const String InterfaceAName = null;
 
 abstract class InterfaceA {
 
@@ -3299,9 +3297,7 @@ class InterfaceAStub extends bindings.Stub {
 
 const int kBoundsCheckTestInterface_method0_name = 0;
 const int kBoundsCheckTestInterface_method1_name = 1;
-
-const String BoundsCheckTestInterfaceName =
-      'mojo::test::BoundsCheckTestInterface';
+const String BoundsCheckTestInterfaceName = null;
 
 abstract class BoundsCheckTestInterface {
   dynamic method0(int param0,[Function responseFactory = null]);
@@ -3546,9 +3542,7 @@ const int kConformanceTestInterface_method12_name = 12;
 const int kConformanceTestInterface_method13_name = 13;
 const int kConformanceTestInterface_method14_name = 14;
 const int kConformanceTestInterface_method15_name = 15;
-
-const String ConformanceTestInterfaceName =
-      'mojo::test::ConformanceTestInterface';
+const String ConformanceTestInterfaceName = null;
 
 abstract class ConformanceTestInterface {
   void method0(double param0);
@@ -4008,9 +4002,7 @@ class ConformanceTestInterfaceStub extends bindings.Stub {
 }
 
 const int kIntegrationTestInterface_method0_name = 0;
-
-const String IntegrationTestInterfaceName =
-      'mojo::test::IntegrationTestInterface';
+const String IntegrationTestInterfaceName = null;
 
 abstract class IntegrationTestInterface {
   dynamic method0(BasicStruct param0,[Function responseFactory = null]);

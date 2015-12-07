@@ -495,9 +495,7 @@ class ResultOrError extends bindings.Union {
 }
 const int kSpeechRecognizerService_listen_name = 0;
 const int kSpeechRecognizerService_stopListening_name = 1;
-
-const String SpeechRecognizerServiceName =
-      'speech_recognizer::SpeechRecognizerService';
+const String SpeechRecognizerServiceName = "speech_recognizer::SpeechRecognizerService";
 
 abstract class SpeechRecognizerService {
   dynamic listen([Function responseFactory = null]);

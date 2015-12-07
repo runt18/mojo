@@ -1244,9 +1244,7 @@ const int kProvider_echoStrings_name = 1;
 const int kProvider_echoMessagePipeHandle_name = 2;
 const int kProvider_echoEnum_name = 3;
 const int kProvider_echoInt_name = 4;
-
-const String ProviderName =
-      'sample::Provider';
+const String ProviderName = null;
 
 abstract class Provider {
   dynamic echoString(String a,[Function responseFactory = null]);
@@ -1691,9 +1689,7 @@ class ProviderStub extends bindings.Stub {
 
 const int kIntegerAccessor_getInteger_name = 0;
 const int kIntegerAccessor_setInteger_name = 1;
-
-const String IntegerAccessorName =
-      'sample::IntegerAccessor';
+const String IntegerAccessorName = null;
 
 abstract class IntegerAccessor {
   dynamic getInteger([Function responseFactory = null]);
@@ -1926,9 +1922,7 @@ class IntegerAccessorStub extends bindings.Stub {
 const int kSampleInterface_sampleMethod1_name = 1;
 const int kSampleInterface_sampleMethod0_name = 0;
 const int kSampleInterface_sampleMethod2_name = 2;
-
-const String SampleInterfaceName =
-      'sample::SampleInterface';
+const String SampleInterfaceName = null;
 
 abstract class SampleInterface {
   dynamic sampleMethod1(int in1,String in2,[Function responseFactory = null]);

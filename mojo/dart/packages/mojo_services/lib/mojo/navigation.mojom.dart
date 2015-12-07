@@ -283,9 +283,7 @@ class NavigatorHostDidNavigateLocallyParams extends bindings.Struct {
 const int kNavigatorHost_requestNavigate_name = 0;
 const int kNavigatorHost_requestNavigateHistory_name = 1;
 const int kNavigatorHost_didNavigateLocally_name = 2;
-
-const String NavigatorHostName =
-      'mojo::NavigatorHost';
+const String NavigatorHostName = "mojo::NavigatorHost";
 
 abstract class NavigatorHost {
   void requestNavigate(Target target, url_request_mojom.UrlRequest request);

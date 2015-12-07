@@ -462,9 +462,7 @@ class NfcUnregisterParams extends bindings.Struct {
 }
 
 const int kNfcTransmission_cancel_name = 0;
-
-const String NfcTransmissionName =
-      'nfc::NfcTransmission';
+const String NfcTransmissionName = null;
 
 abstract class NfcTransmission {
   void cancel();
@@ -636,9 +634,7 @@ class NfcTransmissionStub extends bindings.Stub {
 }
 
 const int kNfcReceiver_onReceivedNfcData_name = 0;
-
-const String NfcReceiverName =
-      'nfc::NfcReceiver';
+const String NfcReceiverName = "nfc::NfcReceiver";
 
 abstract class NfcReceiver {
   void onReceivedNfcData(NfcData nfcData);
@@ -813,9 +809,7 @@ class NfcReceiverStub extends bindings.Stub {
 const int kNfc_transmitOnNextConnection_name = 0;
 const int kNfc_register_name = 1;
 const int kNfc_unregister_name = 2;
-
-const String NfcName =
-      'nfc::Nfc';
+const String NfcName = "nfc::Nfc";
 
 abstract class Nfc {
   dynamic transmitOnNextConnection(NfcData nfcData,Object transmission,[Function responseFactory = null]);

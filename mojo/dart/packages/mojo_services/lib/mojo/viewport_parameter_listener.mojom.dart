@@ -87,9 +87,7 @@ class ViewportParameterListenerOnVSyncParametersUpdatedParams extends bindings.S
 }
 
 const int kViewportParameterListener_onVSyncParametersUpdated_name = 0;
-
-const String ViewportParameterListenerName =
-      'mojo::ViewportParameterListener';
+const String ViewportParameterListenerName = null;
 
 abstract class ViewportParameterListener {
   void onVSyncParametersUpdated(int timebase, int interval);

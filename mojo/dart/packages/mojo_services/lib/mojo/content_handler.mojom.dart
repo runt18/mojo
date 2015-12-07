@@ -88,9 +88,7 @@ class ContentHandlerStartApplicationParams extends bindings.Struct {
 }
 
 const int kContentHandler_startApplication_name = 0;
-
-const String ContentHandlerName =
-      'mojo::ContentHandler';
+const String ContentHandlerName = "mojo::ContentHandler";
 
 abstract class ContentHandler {
   void startApplication(Object application, url_response_mojom.UrlResponse response);

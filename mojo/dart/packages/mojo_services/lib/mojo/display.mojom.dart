@@ -222,9 +222,7 @@ class DisplayFactoryCreateParams extends bindings.Struct {
 }
 
 const int kDisplay_submitFrame_name = 0;
-
-const String DisplayName =
-      'mojo::Display';
+const String DisplayName = null;
 
 abstract class Display {
   dynamic submitFrame(surfaces_mojom.Frame frame,[Function responseFactory = null]);
@@ -437,9 +435,7 @@ class DisplayStub extends bindings.Stub {
 }
 
 const int kDisplayFactory_create_name = 0;
-
-const String DisplayFactoryName =
-      'mojo::DisplayFactory';
+const String DisplayFactoryName = "mojo::DisplayFactory";
 
 abstract class DisplayFactory {
   void create(Object contextProvider, Object returner, Object displayRequest);

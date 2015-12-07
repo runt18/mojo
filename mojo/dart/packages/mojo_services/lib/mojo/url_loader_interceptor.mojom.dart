@@ -548,9 +548,7 @@ class UrlLoaderInterceptorInterceptResponseResponseParams extends bindings.Struc
 }
 
 const int kUrlLoaderInterceptorFactory_create_name = 0;
-
-const String UrlLoaderInterceptorFactoryName =
-      'mojo::URLLoaderInterceptorFactory';
+const String UrlLoaderInterceptorFactoryName = null;
 
 abstract class UrlLoaderInterceptorFactory {
   void create(Object interceptor);
@@ -725,9 +723,7 @@ class UrlLoaderInterceptorFactoryStub extends bindings.Stub {
 const int kUrlLoaderInterceptor_interceptRequest_name = 0;
 const int kUrlLoaderInterceptor_interceptFollowRedirect_name = 1;
 const int kUrlLoaderInterceptor_interceptResponse_name = 2;
-
-const String UrlLoaderInterceptorName =
-      'mojo::URLLoaderInterceptor';
+const String UrlLoaderInterceptorName = null;
 
 abstract class UrlLoaderInterceptor {
   dynamic interceptRequest(url_request_mojom.UrlRequest request,[Function responseFactory = null]);

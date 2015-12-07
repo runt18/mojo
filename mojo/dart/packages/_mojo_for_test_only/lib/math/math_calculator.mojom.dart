@@ -406,9 +406,7 @@ class CalculatorMultiplyResponseParams extends bindings.Struct {
 const int kCalculator_clear_name = 0;
 const int kCalculator_add_name = 1;
 const int kCalculator_multiply_name = 2;
-
-const String CalculatorName =
-      'math::Calculator';
+const String CalculatorName = null;
 
 abstract class Calculator {
   dynamic clear([Function responseFactory = null]);

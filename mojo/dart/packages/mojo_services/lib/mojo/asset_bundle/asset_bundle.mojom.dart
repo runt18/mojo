@@ -218,9 +218,7 @@ class AssetUnpackerUnpackZipStreamParams extends bindings.Struct {
 }
 
 const int kAssetBundle_getAsStream_name = 0;
-
-const String AssetBundleName =
-      'mojo::asset_bundle::AssetBundle';
+const String AssetBundleName = "mojo::asset_bundle::AssetBundle";
 
 abstract class AssetBundle {
   dynamic getAsStream(String assetName,[Function responseFactory = null]);
@@ -434,9 +432,7 @@ class AssetBundleStub extends bindings.Stub {
 }
 
 const int kAssetUnpacker_unpackZipStream_name = 0;
-
-const String AssetUnpackerName =
-      'mojo::asset_bundle::AssetUnpacker';
+const String AssetUnpackerName = "mojo::asset_bundle::AssetUnpacker";
 
 abstract class AssetUnpacker {
   void unpackZipStream(core.MojoDataPipeConsumer zippedAssets, Object assetBundle);

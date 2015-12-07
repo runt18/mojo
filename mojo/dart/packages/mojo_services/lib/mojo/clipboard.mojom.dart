@@ -589,9 +589,7 @@ const int kClipboard_getSequenceNumber_name = 0;
 const int kClipboard_getAvailableMimeTypes_name = 1;
 const int kClipboard_readMimeType_name = 2;
 const int kClipboard_writeClipboardData_name = 3;
-
-const String ClipboardName =
-      'mojo::Clipboard';
+const String ClipboardName = "mojo::Clipboard";
   class ClipboardType extends bindings.MojoEnum {
   static const COPY_PASTE = const ClipboardType._(0);
   static const SELECTION = const ClipboardType._(1);

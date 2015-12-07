@@ -140,9 +140,7 @@ class DeviceInfoGetDeviceTypeResponseParams extends bindings.Struct {
 }
 
 const int kDeviceInfo_getDeviceType_name = 0;
-
-const String DeviceInfoName =
-      'mojo::DeviceInfo';
+const String DeviceInfoName = "mojo::DeviceInfo";
   class DeviceInfoDeviceType extends bindings.MojoEnum {
   static const UNKNOWN = const DeviceInfoDeviceType._(0);
   static const HEADLESS = const DeviceInfoDeviceType._(1);

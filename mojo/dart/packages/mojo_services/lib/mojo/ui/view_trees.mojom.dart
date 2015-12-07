@@ -584,9 +584,7 @@ class ViewTreeHostLayoutRootResponseParams extends bindings.Struct {
 
 const int kViewTree_onLayout_name = 0;
 const int kViewTree_onRootUnavailable_name = 1;
-
-const String ViewTreeName =
-      'mojo::ui::ViewTree';
+const String ViewTreeName = null;
 
 abstract class ViewTree {
   dynamic onLayout([Function responseFactory = null]);
@@ -857,9 +855,7 @@ const int kViewTreeHost_requestLayout_name = 0;
 const int kViewTreeHost_setRoot_name = 1;
 const int kViewTreeHost_resetRoot_name = 2;
 const int kViewTreeHost_layoutRoot_name = 3;
-
-const String ViewTreeHostName =
-      'mojo::ui::ViewTreeHost';
+const String ViewTreeHostName = null;
 
 abstract class ViewTreeHost {
   void requestLayout();

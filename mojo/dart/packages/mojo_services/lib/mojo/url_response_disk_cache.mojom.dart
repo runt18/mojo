@@ -586,9 +586,7 @@ const int kUrlResponseDiskCache_validate_name = 1;
 const int kUrlResponseDiskCache_update_name = 2;
 const int kUrlResponseDiskCache_updateAndGet_name = 3;
 const int kUrlResponseDiskCache_updateAndGetExtracted_name = 4;
-
-const String UrlResponseDiskCacheName =
-      'mojo::URLResponseDiskCache';
+const String UrlResponseDiskCacheName = "mojo::URLResponseDiskCache";
 
 abstract class UrlResponseDiskCache {
   dynamic get(String url,[Function responseFactory = null]);

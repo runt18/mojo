@@ -366,9 +366,7 @@ class WindowManagerInternalClientCloneAndAnimateParams extends bindings.Struct {
 
 const int kWindowManagerInternal_createWindowManagerForViewManagerClient_name = 0;
 const int kWindowManagerInternal_setViewManagerClient_name = 1;
-
-const String WindowManagerInternalName =
-      'mojo::WindowManagerInternal';
+const String WindowManagerInternalName = "mojo::WindowManagerInternal";
 
 abstract class WindowManagerInternal {
   void createWindowManagerForViewManagerClient(int connectionId, core.MojoMessagePipeEndpoint windowManagerPipe);
@@ -560,9 +558,7 @@ class WindowManagerInternalStub extends bindings.Stub {
 const int kWindowManagerInternalClient_dispatchInputEventToView_name = 0;
 const int kWindowManagerInternalClient_setViewportSize_name = 1;
 const int kWindowManagerInternalClient_cloneAndAnimate_name = 2;
-
-const String WindowManagerInternalClientName =
-      'mojo::WindowManagerInternalClient';
+const String WindowManagerInternalClientName = "mojo::WindowManagerInternalClient";
 
 abstract class WindowManagerInternalClient {
   void dispatchInputEventToView(int viewId, input_events_mojom.Event event);

@@ -414,9 +414,7 @@ class HttpHandlerHandleRequestResponseParams extends bindings.Struct {
 
 const int kHttpServer_setHandler_name = 0;
 const int kHttpServer_getPort_name = 1;
-
-const String HttpServerName =
-      'http_server::HttpServer';
+const String HttpServerName = null;
 
 abstract class HttpServer {
   dynamic setHandler(String pattern,Object handler,[Function responseFactory = null]);
@@ -687,9 +685,7 @@ class HttpServerStub extends bindings.Stub {
 }
 
 const int kHttpHandler_handleRequest_name = 0;
-
-const String HttpHandlerName =
-      'http_server::HttpHandler';
+const String HttpHandlerName = null;
 
 abstract class HttpHandler {
   dynamic handleRequest(http_request_mojom.HttpRequest request,[Function responseFactory = null]);

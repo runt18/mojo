@@ -1103,9 +1103,7 @@ class CommandBufferEchoResponseParams extends bindings.Struct {
 
 const int kCommandBufferSyncClient_didInitialize_name = 0;
 const int kCommandBufferSyncClient_didMakeProgress_name = 1;
-
-const String CommandBufferSyncClientName =
-      'mojo::CommandBufferSyncClient';
+const String CommandBufferSyncClientName = null;
 
 abstract class CommandBufferSyncClient {
   void didInitialize(bool success, gpu_capabilities_mojom.GpuCapabilities capabilities);
@@ -1295,9 +1293,7 @@ class CommandBufferSyncClientStub extends bindings.Stub {
 }
 
 const int kCommandBufferSyncPointClient_didInsertSyncPoint_name = 0;
-
-const String CommandBufferSyncPointClientName =
-      'mojo::CommandBufferSyncPointClient';
+const String CommandBufferSyncPointClientName = null;
 
 abstract class CommandBufferSyncPointClient {
   void didInsertSyncPoint(int syncPoint);
@@ -1470,9 +1466,7 @@ class CommandBufferSyncPointClientStub extends bindings.Stub {
 }
 
 const int kCommandBufferLostContextObserver_didLoseContext_name = 0;
-
-const String CommandBufferLostContextObserverName =
-      'mojo::CommandBufferLostContextObserver';
+const String CommandBufferLostContextObserverName = null;
 
 abstract class CommandBufferLostContextObserver {
   void didLoseContext(int contextLostReason);
@@ -1653,9 +1647,7 @@ const int kCommandBuffer_destroyTransferBuffer_name = 5;
 const int kCommandBuffer_insertSyncPoint_name = 6;
 const int kCommandBuffer_retireSyncPoint_name = 7;
 const int kCommandBuffer_echo_name = 8;
-
-const String CommandBufferName =
-      'mojo::CommandBuffer';
+const String CommandBufferName = null;
 
 abstract class CommandBuffer {
   void initialize(Object syncClient, Object syncPointClient, Object lostObserver, core.MojoSharedBuffer sharedState);

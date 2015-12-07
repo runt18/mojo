@@ -88,9 +88,7 @@ class HttpServerFactoryCreateHttpServerParams extends bindings.Struct {
 }
 
 const int kHttpServerFactory_createHttpServer_name = 0;
-
-const String HttpServerFactoryName =
-      'http_server::HttpServerFactory';
+const String HttpServerFactoryName = "http_server::HttpServerFactory";
 
 abstract class HttpServerFactory {
   void createHttpServer(Object serverRequest, net_address_mojom.NetAddress localAddress);

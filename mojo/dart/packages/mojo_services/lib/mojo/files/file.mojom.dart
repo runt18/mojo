@@ -2112,9 +2112,7 @@ const int kFile_dup_name = 10;
 const int kFile_reopen_name = 11;
 const int kFile_asBuffer_name = 12;
 const int kFile_ioctl_name = 13;
-
-const String FileName =
-      'mojo::files::File';
+const String FileName = null;
 
 abstract class File {
   dynamic close([Function responseFactory = null]);

@@ -78,9 +78,7 @@ class SharingServiceShareTextParams extends bindings.Struct {
 }
 
 const int kSharingService_shareText_name = 0;
-
-const String SharingServiceName =
-      'mojo::SharingService';
+const String SharingServiceName = "mojo::SharingService";
 
 abstract class SharingService {
   void shareText(String text);

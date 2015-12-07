@@ -440,9 +440,7 @@ class NotificationServicePostParams extends bindings.Struct {
 
 const int kNotificationClient_onSelected_name = 0;
 const int kNotificationClient_onDismissed_name = 1;
-
-const String NotificationClientName =
-      'notifications::NotificationClient';
+const String NotificationClientName = null;
 
 abstract class NotificationClient {
   void onSelected();
@@ -630,9 +628,7 @@ class NotificationClientStub extends bindings.Stub {
 
 const int kNotification_update_name = 0;
 const int kNotification_cancel_name = 1;
-
-const String NotificationName =
-      'notifications::Notification';
+const String NotificationName = null;
 
 abstract class Notification {
   void update(NotificationData notificationData);
@@ -820,9 +816,7 @@ class NotificationStub extends bindings.Stub {
 }
 
 const int kNotificationService_post_name = 0;
-
-const String NotificationServiceName =
-      'notifications::NotificationService';
+const String NotificationServiceName = "notifications::NotificationService";
 
 abstract class NotificationService {
   void post(NotificationData notificationData, Object client, Object notification);

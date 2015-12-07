@@ -151,9 +151,7 @@ class LocationServiceGetNextLocationResponseParams extends bindings.Struct {
 }
 
 const int kLocationService_getNextLocation_name = 0;
-
-const String LocationServiceName =
-      'mojo::LocationService';
+const String LocationServiceName = "mojo::LocationService";
   class LocationServiceUpdatePriority extends bindings.MojoEnum {
   static const PRIORITY_BALANCED_POWER_ACCURACY = const LocationServiceUpdatePriority._(0);
   static const PRIORITY_HIGH_ACCURACY = const LocationServiceUpdatePriority._(1);

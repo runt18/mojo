@@ -1301,9 +1301,7 @@ const int kKeyboardClient_setComposingRegion_name = 4;
 const int kKeyboardClient_setComposingText_name = 5;
 const int kKeyboardClient_setSelection_name = 6;
 const int kKeyboardClient_submit_name = 7;
-
-const String KeyboardClientName =
-      'keyboard::KeyboardClient';
+const String KeyboardClientName = null;
 
 abstract class KeyboardClient {
   void commitCompletion(CompletionData completion);
@@ -1597,9 +1595,7 @@ const int kKeyboardService_showByRequest_name = 1;
 const int kKeyboardService_hide_name = 2;
 const int kKeyboardService_setText_name = 3;
 const int kKeyboardService_setSelection_name = 4;
-
-const String KeyboardServiceName =
-      'keyboard::KeyboardService';
+const String KeyboardServiceName = "keyboard::KeyboardService";
 
 abstract class KeyboardService {
   void show(Object client, KeyboardType type);
@@ -1836,9 +1832,7 @@ class KeyboardServiceStub extends bindings.Stub {
 }
 
 const int kKeyboardServiceFactory_createKeyboardService_name = 0;
-
-const String KeyboardServiceFactoryName =
-      'keyboard::KeyboardServiceFactory';
+const String KeyboardServiceFactoryName = "keyboard::KeyboardServiceFactory";
 
 abstract class KeyboardServiceFactory {
   void createKeyboardService(Object keyEventDispatcher, Object serviceRequest);

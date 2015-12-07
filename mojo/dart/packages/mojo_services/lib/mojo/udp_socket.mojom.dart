@@ -1153,9 +1153,7 @@ const int kUdpSocket_setReceiveBufferSize_name = 4;
 const int kUdpSocket_negotiateMaxPendingSendRequests_name = 5;
 const int kUdpSocket_receiveMore_name = 6;
 const int kUdpSocket_sendTo_name = 7;
-
-const String UdpSocketName =
-      'mojo::UDPSocket';
+const String UdpSocketName = null;
 
 abstract class UdpSocket {
   dynamic allowAddressReuse([Function responseFactory = null]);
@@ -1731,9 +1729,7 @@ class UdpSocketStub extends bindings.Stub {
 }
 
 const int kUdpSocketReceiver_onReceived_name = 0;
-
-const String UdpSocketReceiverName =
-      'mojo::UDPSocketReceiver';
+const String UdpSocketReceiverName = null;
 
 abstract class UdpSocketReceiver {
   void onReceived(network_error_mojom.NetworkError result, net_address_mojom.NetAddress srcAddr, List<int> data);

@@ -750,9 +750,7 @@ const int kCppSide_startTest_name = 88888888;
 const int kCppSide_testFinished_name = 99999999;
 const int kCppSide_pingResponse_name = 100000000;
 const int kCppSide_echoResponse_name = 100000001;
-
-const String CppSideName =
-      'dart_to_cpp::CppSide';
+const String CppSideName = null;
 
 abstract class CppSide {
   void startTest();
@@ -972,9 +970,7 @@ class CppSideStub extends bindings.Stub {
 const int kDartSide_setClient_name = 0;
 const int kDartSide_ping_name = 1;
 const int kDartSide_echo_name = 2;
-
-const String DartSideName =
-      'dart_to_cpp::DartSide';
+const String DartSideName = null;
 
 abstract class DartSide {
   void setClient(Object cppSide);
