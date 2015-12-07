@@ -27,7 +27,7 @@ func NewResolvedUserRef(name string, resolvedType UserDefinedType, usedAsMapKey,
 		userRef.MarkUsedAsConstantType()
 	}
 	if lv != nil {
-		userRef.variableAssignment = &LiteralAssignment{*lv, "myVarialbe", LiteralAssignmentKindConstantDeclaration}
+		userRef.literalAssignment = &LiteralAssignment{*lv, "myVarialbe", LiteralAssignmentKindConstantDeclaration}
 	}
 	return userRef
 }

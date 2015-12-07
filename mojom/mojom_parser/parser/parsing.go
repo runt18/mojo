@@ -751,7 +751,11 @@ func (p *Parser) parseStructField(attributes *mojom.Attributes) *mojom.StructFie
 			p.consumeNextToken()
 			defaultValue = mojom.MakeDefaultLiteral()
 		} else {
-			defaultValue = p.parseValue(fieldType)
+			assigneeSpec := mojom.AssigneeSpec{
+				fieldName,
+				fieldType,
+			}
+			defaultValue = p.parseValue(assigneeSpec)
 		}
 	}
 	if !p.matchSemicolon() {
@@ -978,7 +982,7 @@ func (p *Parser) parseEnumValueInitializer(mojoEnum *mojom.MojomEnum) mojom.Valu
 	enumType := mojom.NewResolvedUserTypeRef(mojoEnum.FullyQualifiedName(), mojoEnum)
 
 	valueToken := p.peekNextToken("Parsing an enum value initializer type.")
-	valueRef := p.parseValue(enumType)
+	valueRef := p.parseValue(mojom.AssigneeSpec{"enum value", enumType})
 	if valueRef == nil {
 		return nil
 	}
@@ -1014,7 +1018,11 @@ func (p *Parser) parseConstDecl(attributes *mojom.Attributes) (constant *mojom.U
 	nameToken := p.lastConsumed
 	p.match(lexer.Equals)
 	valueToken := p.peekNextToken("Parsing a value.")
-	value := p.parseValue(declaredType)
+	assigneeSpec := mojom.AssigneeSpec{
+		name,
+		declaredType,
+	}
+	value := p.parseValue(assigneeSpec)
 	if !p.OK() {
 		return
 	}
@@ -1047,7 +1055,7 @@ func (p *Parser) parseConstDecl(attributes *mojom.Attributes) (constant *mojom.U
 }
 
 // VALUE_REF -> USER_VALUE_REF | LITERAL_VALUE
-func (p *Parser) parseValue(assigneeType mojom.TypeRef) mojom.ValueRef {
+func (p *Parser) parseValue(assigneeSpec mojom.AssigneeSpec) mojom.ValueRef {
 	if !p.OK() {
 		return nil
 	}
@@ -1057,7 +1065,7 @@ func (p *Parser) parseValue(assigneeType mojom.TypeRef) mojom.ValueRef {
 	nextToken := p.peekNextToken("I was parsing a value.")
 	p.attachToken()
 	if nextToken.Kind == lexer.Name {
-		return p.parseUserValueRef(assigneeType)
+		return p.parseUserValueRef(assigneeSpec)
 	}
 	literalValue := p.parseLiteral()
 	p.attachToken()
@@ -1379,7 +1387,7 @@ func (p *Parser) parseTypeReference() mojom.TypeRef {
 }
 
 // USER_VALUE_REF -> IDENTIFIER {{that resolves to an enum value or constant}}
-func (p *Parser) parseUserValueRef(assigneeType mojom.TypeRef) *mojom.UserValueRef {
+func (p *Parser) parseUserValueRef(assigneeSpec mojom.AssigneeSpec) *mojom.UserValueRef {
 	if !p.OK() {
 		return nil
 	}
@@ -1390,7 +1398,7 @@ func (p *Parser) parseUserValueRef(assigneeType mojom.TypeRef) *mojom.UserValueR
 	if !p.OK() {
 		return nil
 	}
-	valueReference := mojom.NewUserValueRef(assigneeType, identifier,
+	valueReference := mojom.NewUserValueRef(assigneeSpec, identifier,
 		p.currentScope, identifierToken)
 	p.mojomDescriptor.RegisterUnresolvedValueReference(valueReference)
 	return valueReference

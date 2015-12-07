@@ -418,7 +418,7 @@ func (d *MojomDescriptor) resolveTypeRef(ref *UserTypeRef) (success bool) {
 func (d *MojomDescriptor) resolveValueRef(ref *UserValueRef) (resolved bool) {
 	// Step 1: Find resolvedDeclaredValue
 	if ref.resolvedDeclaredValue == nil {
-		userDefinedValue := ref.scope.LookupValue(ref.identifier, ref.assigneeType)
+		userDefinedValue := ref.scope.LookupValue(ref.identifier, ref.assigneeSpec.Type)
 		if userDefinedValue == nil {
 			lookupValue, ok := LookupBuiltInConstantValue(ref.identifier)
 			if !ok {
@@ -509,9 +509,10 @@ func computeTypeKey(fullyQualifiedName string) (typeKey string) {
 	if typeKey, ok := fqnToTypeKey[fullyQualifiedName]; ok == true {
 		return typeKey
 	}
-	// TODO(rudominer) Until we understand better what the requirements are for a type key
+	// TODO(rudominer) What are the requirements for a type key?
+	// Until we understand better what the requirements are for a type key
 	// let's just use the fully-qualified name itself, with a prefix prepended, as the type key.
-	// The reason or the prefix is pragmatic: When debugging we can tell whether a string
+	// The reason for the prefix is pragmatic: When debugging we can tell whether a string
 	// is a type key or a fully-qualified-name.
 	typeKey = fmt.Sprintf("TYPE_KEY:%s", fullyQualifiedName)
 	fqnToTypeKey[fullyQualifiedName] = typeKey

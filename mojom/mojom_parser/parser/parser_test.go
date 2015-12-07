@@ -338,7 +338,7 @@ func TestSuccessfulParsing(t *testing.T) {
 
 		// The reference to TOO_SMALL_VALUE from within the ErrorCodes enum.
 		assigneeType := mojom.NewResolvedUserTypeRef("ErrorCodes", errorCodeEnum)
-		tooSmallValueRef := mojom.NewUserValueRef(assigneeType, "TOO_SMALL_VALUE",
+		tooSmallValueRef := mojom.NewUserValueRef(mojom.AssigneeSpec{"assignee", assigneeType}, "TOO_SMALL_VALUE",
 			expectedFile.FileScope, lexer.Token{})
 
 		errorCodeEnum.AddEnumValue(mojom.DeclTestData("TOO_BIG"), mojom.MakeInt8LiteralValue(5))

@@ -110,12 +110,18 @@ func TestStructFieldValidateDefaultValue(t *testing.T) {
 		{SimpleTypeInt64, MakeStringLiteralValue("42"), false},
 		{SimpleTypeInt64, MakeDefaultLiteral(), false},
 		// It is initally OK to assign an unknown user value ref to an integer field.
-		{SimpleTypeInt64, NewUserValueRef(SimpleTypeInt64, "some.type", nil, lexer.Token{}), true},
+		{SimpleTypeInt64, NewUserValueRef(AssigneeSpec{
+			"assignee",
+			SimpleTypeInt64,
+		}, "some.type", nil, lexer.Token{}), true},
 		{StringType{}, MakeInt64LiteralValue(42), false},
 		{StringType{}, MakeStringLiteralValue("42"), true},
 		{StringType{}, MakeDefaultLiteral(), false},
 		// It is initally OK to assign an unknown user value ref to an string field.
-		{StringType{}, NewUserValueRef(StringType{}, "some.type", nil, lexer.Token{}), true},
+		{StringType{}, NewUserValueRef(AssigneeSpec{
+			"assignee",
+			StringType{},
+		}, "some.type", nil, lexer.Token{}), true},
 	}
 	for i, c := range cases {
 		structField := NewStructField(
@@ -170,7 +176,7 @@ func TestUserDefinedValueSimpleName(t *testing.T) {
 	}{
 		{NewTestConstant("const", 42), "const"},
 		{NewTestEnumValue("foo"), "foo"},
-		{SimpleTypeFloat_INFINITY, "float.INFINITY"},
+		{FloatInfinity, "float.INFINITY"},
 	}
 	for _, c := range cases {
 		got := c.userDefinedValue.SimpleName()
@@ -187,7 +193,7 @@ func TestUserDefinedValueKind(t *testing.T) {
 	}{
 		{NewTestConstant("const", 42), UserDefinedValueKindDeclaredConst},
 		{NewTestEnumValue("foo"), UserDefinedValueKindEnum},
-		{SimpleTypeFloat_INFINITY, UserDefinedValueKindBuiltInConst},
+		{FloatInfinity, UserDefinedValueKindBuiltInConst},
 	}
 	for _, c := range cases {
 		got := c.userDefinedValue.Kind()
@@ -210,7 +216,7 @@ func TestUserDefinedValueRegisterInScope(t *testing.T) {
 	}{
 		{NewTestConstant("const", 42), fmt.Sprintf("%s.%s", scopeName, "const")},
 		{enumValue, "test.scope.MyEnum.TheValue"},
-		{SimpleTypeFloat_INFINITY, "float.INFINITY"},
+		{FloatInfinity, "float.INFINITY"},
 	}
 	for i, c := range cases {
 		value := c.userDefinedValue
@@ -242,12 +248,18 @@ func TestUserDefinedConstantValidateValue(t *testing.T) {
 		{SimpleTypeInt64, MakeStringLiteralValue("42"), false},
 		{SimpleTypeInt64, MakeDefaultLiteral(), false},
 		// It is initally OK to assign an unknown user value ref to an integer field.
-		{SimpleTypeInt64, NewUserValueRef(SimpleTypeInt64, "some.type", nil, lexer.Token{}), true},
+		{SimpleTypeInt64, NewUserValueRef(AssigneeSpec{
+			"assignee",
+			SimpleTypeInt64,
+		}, "some.type", nil, lexer.Token{}), true},
 		{StringType{}, MakeInt64LiteralValue(42), false},
 		{StringType{}, MakeStringLiteralValue("42"), true},
 		{StringType{}, MakeDefaultLiteral(), false},
 		// It is initally OK to assign an unknown user value ref to a string field.
-		{StringType{}, NewUserValueRef(StringType{}, "some.type", nil, lexer.Token{}), true},
+		{StringType{}, NewUserValueRef(AssigneeSpec{
+			"assignee",
+			StringType{},
+		}, "some.type", nil, lexer.Token{}), true},
 	}
 	for i, c := range cases {
 		constant := NewUserDefinedConstant(DeclTestData(fmt.Sprintf("constant%d", i)), c.declaredType, c.value)

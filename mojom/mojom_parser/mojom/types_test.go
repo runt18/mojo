@@ -181,8 +181,8 @@ func TestMarkTypeCompatible(t *testing.T) {
 			}
 		}
 	}
-	if !userTypeRef.variableAssignment.assignedValue.IsDefault() {
-		t.Error("userTypeRef.variableAssignment.assignedValue.IsDefault() is false.")
+	if !userTypeRef.literalAssignment.assignedValue.IsDefault() {
+		t.Error("userTypeRef.literalAssignment.assignedValue.IsDefault() is false.")
 	}
 }
 
@@ -206,7 +206,11 @@ func TestBuiltInType(t *testing.T) {
 
 func TestMarkUsedAsEnumValueInitializer(t *testing.T) {
 	userTypeRef := NewUserTypeRef("foo", false, false, nil, lexer.Token{})
-	userValueRef := NewUserValueRef(userTypeRef, "foo", nil, lexer.Token{})
+	assigneeSpec := AssigneeSpec{
+		"assignee",
+		userTypeRef,
+	}
+	userValueRef := NewUserValueRef(assigneeSpec, "foo", nil, lexer.Token{})
 	cases := []struct {
 		valueRef ValueRef
 		allowed  bool
@@ -236,7 +240,11 @@ func TestMarkUsedAsEnumValueInitializer(t *testing.T) {
 
 func TestResolvedConcreteValue(t *testing.T) {
 	userTypeRef := NewUserTypeRef("foo", false, false, nil, lexer.Token{})
-	userValueRef := NewUserValueRef(userTypeRef, "foo", nil, lexer.Token{})
+	assigneeSpec := AssigneeSpec{
+		"assignee",
+		userTypeRef,
+	}
+	userValueRef := NewUserValueRef(assigneeSpec, "foo", nil, lexer.Token{})
 	cases := []struct {
 		valueRef      ValueRef
 		concreteValue ConcreteValue
@@ -269,7 +277,7 @@ func TestValueType(t *testing.T) {
 		{MakeDoubleLiteralValue(3.14), SimpleTypeDouble},
 		{MakeDefaultLiteral(), StringLiteralType},
 		{mojomEnum.Values[0], mojomEnum},
-		{SimpleTypeFloat_INFINITY, BuiltInConstant},
+		{FloatInfinity, BuiltInConstant},
 	}
 	for _, c := range cases {
 		got := c.concreteValue.ValueType()
@@ -291,7 +299,7 @@ func TestValue(t *testing.T) {
 		{MakeDoubleLiteralValue(3.14), 3.14},
 		{MakeDefaultLiteral(), "default"},
 		{enumValue, *enumValue},
-		{SimpleTypeFloat_INFINITY, SimpleTypeFloat_INFINITY},
+		{FloatInfinity, FloatInfinity},
 	}
 	for _, c := range cases {
 		got := c.concreteValue.Value()

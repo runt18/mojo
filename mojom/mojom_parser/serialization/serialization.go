@@ -448,17 +448,17 @@ func translateLiteralValue(v mojom.LiteralValue) *mojom_types.ValueLiteralValue 
 func translateBuiltInConstantValue(t mojom.BuiltInConstantValue) *mojom_types.ValueBuiltinValue {
 	builtInValue := mojom_types.ValueBuiltinValue{}
 	switch t {
-	case mojom.SimpleTypeFloat_INFINITY:
+	case mojom.FloatInfinity:
 		builtInValue.Value = mojom_types.BuiltinConstantValue_FloatInfinity
-	case mojom.SimpleTypeFloat_NEGATIVE_INFINITY:
+	case mojom.FloatNegativeInfinity:
 		builtInValue.Value = mojom_types.BuiltinConstantValue_FloatNegativeInfinity
-	case mojom.SimpleTypeFloat_NAN:
+	case mojom.FloatNAN:
 		builtInValue.Value = mojom_types.BuiltinConstantValue_FloatNan
-	case mojom.SimpleTypeDouble_INFINITY:
+	case mojom.DoubleInfinity:
 		builtInValue.Value = mojom_types.BuiltinConstantValue_DoubleInfinity
-	case mojom.SimpleTypeDouble_NEGATIVE_INFINITY:
+	case mojom.DoubleNegativeInfinity:
 		builtInValue.Value = mojom_types.BuiltinConstantValue_DoubleNegativeInfinity
-	case mojom.SimpleTypeDouble_NAN:
+	case mojom.DoubleNAN:
 		builtInValue.Value = mojom_types.BuiltinConstantValue_DoubleNan
 	default:
 		panic(fmt.Sprintf("Unrecognized BuiltInConstantValue %v", t))

@@ -75,19 +75,46 @@ type TypeRef interface {
 
 	// MarkUsedAsMapKey records the fact that the type being referenced is
 	// being used as the type of a map key. Returns false if we already have
-	// enough information to know that this is not allowed.
+	// enough information to know that this is not allowed. This method is
+	// used during parsing.
 	MarkUsedAsMapKey() (ok bool)
 
 	// MarkUsedAsConstantType records the fact that the type being referenced is
 	// being used as the type of declared constant. Returns false if we already
-	// have enough information to know that this is not allowed.
+	// have enough information to know that this is not allowed. This method
+	// is used during parsing.
 	MarkUsedAsConstantType() (ok bool)
 
 	// MarkTypeCompatible records the fact that the type being referenced is
 	// being used as the type of a variable being assigned a literal value
 	// described by |LiteralAssignment|. Returns false if we already have enough
-	// information to know that this is not allowed.
+	// information to know that this is not allowed. This method is used
+	// during parsing.
 	MarkTypeCompatible(assignment LiteralAssignment) (ok bool)
+
+	// IsAssignmentCompatible() determines whether the given ConcreteValue may
+	// be assigned to a variable of this type. This method is similar to
+	// MarkTypeCompatible() but it is used after resolution during the
+	// validation phase whereas MarkTypeCompatible() is used during parsing.
+	// More specifically there are the following differences:
+	// -- This method accepts EnumValues and BuiltInConstantValues in addition
+	// to LiteralValues.
+	// -- For UserValueRefs this method should only be invoked after resolution
+	// because it consults the resolved type to determine compatibility instead
+	// of marking the reference for later checking.
+	// -- This method must never be invoked on HandleTypeRefs, ArrayTypeRefs,
+	// or MapTypeRefs because those types are never validated after resolution.
+	IsAssignmentCompatible(assignedValue ConcreteValue) bool
+
+	// ResolvedTypeName() is used during the post-resolution validation phase
+	// to assist in the generation of error messages. For SimpleTypes and
+	// Strings this method return the name of the type. For
+	// UserTypeRefs this method returns the fully-qualified name of the
+	// resolved UserDefinedType if the UserTypeRef has been resolved, or the
+	// string "unresolved" otherwise. For HandleTypeRefs, ArrayTypeRefs and
+	// MapTypeRefs the returned value is unspecified because these types
+	// do not need to be validated after resolution.
+	ResolvedTypeName() string
 }
 
 /////////////////////////////////////////////////////////////
@@ -168,17 +195,30 @@ const maxFloatInt = (1 << 24)
 const minDoubleInt = -(1 << 53)
 const maxDoubleInt = (1 << 53)
 
-func (t SimpleType) MarkTypeCompatible(assignment LiteralAssignment) bool {
-	if assignment.assignedValue.IsDefault() {
+func (t SimpleType) IsAssignmentCompatible(assignedValue ConcreteValue) bool {
+	switch assignedValue := assignedValue.(type) {
+	case LiteralValue:
+		return t.isAssignmentCompatibleWithLiteral(assignedValue)
+	case BuiltInConstantValue:
+		return t.isAssignmentCompatibleWithBuiltIn(assignedValue)
+	case *EnumValue:
+		return false
+	default:
+		panic(fmt.Sprintf("Unexpected type %T.", t))
+	}
+}
+
+func (t SimpleType) isAssignmentCompatibleWithLiteral(assignedValue LiteralValue) bool {
+	if assignedValue.IsDefault() {
 		// We don't support assigning "default" to a SimpleType variable.
 		return false
 	}
-	if assignment.assignedValue.LiteralValueType() == StringLiteralType {
+	if assignedValue.LiteralValueType() == StringLiteralType {
 		// Not valid to assign a string to a SimpleType variable.
 		return false
 	}
 	// Now we know the type of assignment is a literal type.
-	assignedType := assignment.assignedValue.LiteralValueType().(SimpleType)
+	assignedType := assignedValue.LiteralValueType().(SimpleType)
 	if assignedType == SimpleTypeBool {
 		// A bool literal may only be assigned to a bool variable.
 		return t == SimpleTypeBool
@@ -189,13 +229,13 @@ func (t SimpleType) MarkTypeCompatible(assignment LiteralAssignment) bool {
 		return false
 	case SimpleTypeFloat:
 		switch assignedType {
-		// Note(rudominer) We allow assigning a literal of type double to a variable of type float for now because
+		// TODO(rudominer) We allow assigning a literal of type double to a variable of type float for now because
 		// we have not yet refined the parsing of floating point literals and so all of them currently have
 		// type double.
 		case SimpleTypeFloat, SimpleTypeDouble:
 			return true
 		default:
-			int64Value, ok := int64Value(assignment.assignedValue)
+			int64Value, ok := int64Value(assignedValue)
 			return ok && int64Value >= minFloatInt && int64Value <= maxFloatInt
 		}
 	case SimpleTypeDouble:
@@ -203,7 +243,7 @@ func (t SimpleType) MarkTypeCompatible(assignment LiteralAssignment) bool {
 		case SimpleTypeFloat, SimpleTypeDouble:
 			return true
 		default:
-			int64Value, ok := int64Value(assignment.assignedValue)
+			int64Value, ok := int64Value(assignedValue)
 			return ok && int64Value >= minDoubleInt && int64Value <= maxDoubleInt
 		}
 	case SimpleTypeInt8, SimpleTypeInt16, SimpleTypeInt32, SimpleTypeInt64:
@@ -237,7 +277,7 @@ func (t SimpleType) MarkTypeCompatible(assignment LiteralAssignment) bool {
 		// integer variable whose type rank is at least as large.
 		if rank, ok := integerTypeCompatibilityRank[assignedType]; ok {
 			if rank <= unsignedIntegerTypeCompatibilityRank[t] {
-				numericValue, _ := int64Value(assignment.assignedValue)
+				numericValue, _ := int64Value(assignedValue)
 				return numericValue >= 0
 			}
 			return false
@@ -246,6 +286,28 @@ func (t SimpleType) MarkTypeCompatible(assignment LiteralAssignment) bool {
 	default:
 		panic(fmt.Sprintf("Unexpected SimpleType: %s", t))
 	}
+}
+
+func (t SimpleType) isAssignmentCompatibleWithBuiltIn(value BuiltInConstantValue) bool {
+	switch t {
+	case SimpleTypeBool:
+		return false
+	case SimpleTypeFloat:
+		switch value {
+		case FloatInfinity, FloatNegativeInfinity, FloatNAN:
+			return true
+		default:
+			return false
+		}
+	case SimpleTypeDouble:
+		return true
+	default:
+		return false
+	}
+}
+
+func (t SimpleType) MarkTypeCompatible(assignment LiteralAssignment) bool {
+	return t.isAssignmentCompatibleWithLiteral(assignment.assignedValue)
 }
 
 func (t SimpleType) String() string {
@@ -275,7 +337,10 @@ func (t SimpleType) String() string {
 	default:
 		panic(fmt.Sprintf("unexpected type: &d", t))
 	}
+}
 
+func (t SimpleType) ResolvedTypeName() string {
+	return t.String()
 }
 
 /////////////////////////////////////////////////////////////
@@ -322,9 +387,21 @@ func (StringType) MarkUsedAsConstantType() bool {
 	return true
 }
 
-func (StringType) MarkTypeCompatible(assignment LiteralAssignment) (ok bool) {
-	v := assignment.assignedValue
-	return v.LiteralValueType() == StringLiteralType && !v.IsDefault()
+func (StringType) IsAssignmentCompatible(assignedValue ConcreteValue) bool {
+	switch assignedValue := assignedValue.(type) {
+	case LiteralValue:
+		return assignedValue.LiteralValueType() == StringLiteralType && !assignedValue.IsDefault()
+	case BuiltInConstantValue:
+		return false
+	case *EnumValue:
+		return false
+	default:
+		panic(fmt.Sprintf("Unexpected type %T.", assignedValue))
+	}
+}
+
+func (s StringType) MarkTypeCompatible(assignment LiteralAssignment) (ok bool) {
+	return s.IsAssignmentCompatible(assignment.assignedValue)
 }
 
 func (s StringType) String() string {
@@ -333,6 +410,10 @@ func (s StringType) String() string {
 		nullableSpecifier = "?"
 	}
 	return fmt.Sprintf("string%s", nullableSpecifier)
+}
+
+func (s StringType) ResolvedTypeName() string {
+	return "string"
 }
 
 /////////////////////////////////////////////////////////////
@@ -380,6 +461,13 @@ func (HandleTypeRef) MarkUsedAsConstantType() bool {
 
 // From interface TypeRef:
 
+func (HandleTypeRef) IsAssignmentCompatible(assignedValue ConcreteValue) bool {
+	// Assignments to HandleTypeRef variables are never validated after the parsing phase
+	// because they are validated during the parsing phase. Therefore there is never
+	// a need to call this method.
+	panic("This method should never be invoked.")
+}
+
 func (HandleTypeRef) MarkTypeCompatible(assignment LiteralAssignment) bool {
 	return false
 }
@@ -405,6 +493,10 @@ func (h HandleTypeRef) String() string {
 		nullable = "?"
 	}
 	return fmt.Sprintf("%s%s%s", "handle", suffix, nullable)
+}
+
+func (h HandleTypeRef) ResolvedTypeName() string {
+	return h.String()
 }
 
 /////////////////////////////////////////////////////////////
@@ -500,6 +592,13 @@ func (ArrayTypeRef) MarkUsedAsConstantType() bool {
 	return false
 }
 
+func (ArrayTypeRef) IsAssignmentCompatible(assignedValue ConcreteValue) bool {
+	// Assignments to ArrayTypeRef variables are never validated after the parsing phase
+	// because they are validated during the parsing phase. Therefore there is never
+	// a need to call this method.
+	panic("This method should never be invoked.")
+}
+
 func (ArrayTypeRef) MarkTypeCompatible(assignment LiteralAssignment) bool {
 	return assignment.assignedValue.IsDefault()
 }
@@ -514,6 +613,10 @@ func (a ArrayTypeRef) String() string {
 		nullableSpecifier = "?"
 	}
 	return fmt.Sprintf("array<%s%s>%s", a.elementType, fixedLengthSpecifier, nullableSpecifier)
+}
+
+func (a ArrayTypeRef) ResolvedTypeName() string {
+	return a.String()
 }
 
 /////////////////////////////////////////////////////////////
@@ -559,6 +662,13 @@ func (MapTypeRef) MarkUsedAsConstantType() bool {
 	return false
 }
 
+func (MapTypeRef) IsAssignmentCompatible(assignedValue ConcreteValue) bool {
+	// Assignments to MapTypeRef variables are never validated after the parsing phase
+	// because they are validated during the parsing phase. Therefore there is never
+	// a need to call this method.
+	panic("This method should never be invoked.")
+}
+
 func (MapTypeRef) MarkTypeCompatible(assignment LiteralAssignment) bool {
 	return assignment.assignedValue.IsDefault()
 }
@@ -569,6 +679,10 @@ func (m MapTypeRef) String() string {
 		nullableSpecifier = "?"
 	}
 	return fmt.Sprintf("map<%s, %s>%s", m.keyType, m.valueType, nullableSpecifier)
+}
+
+func (m MapTypeRef) ResolvedTypeName() string {
+	return m.String()
 }
 
 /////////////////////////////////////////////////////////////
@@ -599,7 +713,7 @@ type UserTypeRef struct {
 	// referenced is allowed to be used in these ways.
 	usedAsMapKey       bool
 	usedAsConstantType bool
-	variableAssignment *LiteralAssignment
+	literalAssignment  *LiteralAssignment
 
 	// After this reference is resolved this value will be non-nil.
 	resolvedType UserDefinedType
@@ -653,6 +767,22 @@ func (t *UserTypeRef) MarkUsedAsConstantType() bool {
 	return true
 }
 
+func (ref *UserTypeRef) IsAssignmentCompatible(assignedValue ConcreteValue) bool {
+	if ref.resolvedType == nil {
+		panic("This method should only be invoked after successful resolution.")
+	}
+	switch assignedValue := assignedValue.(type) {
+	case LiteralValue:
+		return ref.resolvedType.IsAssignmentCompatibleWith(assignedValue)
+	case BuiltInConstantValue:
+		return false
+	case *EnumValue:
+		return ref.resolvedType == assignedValue.EnumType()
+	default:
+		panic(fmt.Sprintf("Unexpected type %T.", assignedValue))
+	}
+}
+
 func (t *UserTypeRef) MarkTypeCompatible(assignment LiteralAssignment) bool {
 	switch assignment.assignedValue.LiteralValueType() {
 	case SimpleTypeDouble, SimpleTypeFloat, SimpleTypeBool:
@@ -663,7 +793,7 @@ func (t *UserTypeRef) MarkTypeCompatible(assignment LiteralAssignment) bool {
 		}
 	}
 
-	t.variableAssignment = &assignment
+	t.literalAssignment = &assignment
 	return true
 }
 
@@ -689,11 +819,11 @@ func (ref *UserTypeRef) validateAfterResolution() error {
 			return fmt.Errorf(message)
 		}
 	}
-	if ref.variableAssignment != nil && !ref.resolvedType.IsAssignmentCompatibleWith(ref.variableAssignment.assignedValue) {
+	if ref.literalAssignment != nil && !ref.resolvedType.IsAssignmentCompatibleWith(ref.literalAssignment.assignedValue) {
 		message := fmt.Sprintf("Illegal assignment: %s %q of type %s may not be assigned the value %v of type %s.",
-			ref.variableAssignment.kind, ref.variableAssignment.variableName,
-			ref.identifier, ref.variableAssignment.assignedValue,
-			ref.variableAssignment.assignedValue.LiteralValueType())
+			ref.literalAssignment.kind, ref.literalAssignment.variableName,
+			ref.identifier, ref.literalAssignment.assignedValue,
+			ref.literalAssignment.assignedValue.LiteralValueType())
 		message = UserErrorMessage(file, ref.token, message)
 		return fmt.Errorf(message)
 	}
@@ -715,6 +845,13 @@ func (t *UserTypeRef) String() string {
 		resolvedKey = t.resolvedType.TypeKey()
 	}
 	return fmt.Sprintf("(%s)%s%s%s", resolvedKey, t.identifier, interfaceRequest, nullable)
+}
+
+func (t *UserTypeRef) ResolvedTypeName() string {
+	if t.resolvedType == nil {
+		panic(fmt.Sprintf("%v is not resolved", t))
+	}
+	return t.resolvedType.FullyQualifiedName()
 }
 
 func (t *UserTypeRef) LongString() string {
@@ -751,17 +888,17 @@ type UserValueRef struct {
 
 	usedAsEnumValueInitializer bool
 
-	// A value specification always occurs in the context of some
+	// A value reference always occurs in the context of some
 	// assignment. This may be the assignment of a default value
 	// to a field, the assignment of a value to a declared constant,
-	// or the assignment of a value to an enum value. In all cases we
-	// know at the site of the assignment what the declared type of
+	// or the assignment of an integer to an enum value. In all cases we
+	// know at the site of the assignment what the name and  declared type of
 	// the assignee is and we record that here. After the UserValueRef
 	// has been resolved we will check that the type of |resolvedValue|
-	// is compatible with |assigneeType|.
-	assigneeType TypeRef
+	// is compatible with the assignee.
+	assigneeSpec AssigneeSpec
 
-	// The user-defined constant or enum value or BuiltInValue that the
+	// The user-defined constant or enum value or BuiltInConstantValue that the
 	// reference resolves to.
 	resolvedDeclaredValue UserDefinedValue
 
@@ -772,6 +909,15 @@ type UserValueRef struct {
 	// since those are not considered ConcreteValues,
 	// |resolvedConcreteValue| is that constant's resolved value.
 	resolvedConcreteValue ConcreteValue
+}
+
+// AssigneeSpec is used to store the name and type of the left-hand-side of
+// a variable assignment. It is used when the right-hand-side is a reference
+// to a value. After the reference has been resolved we validate the resolved
+// value against the AssigneeSpec.
+type AssigneeSpec struct {
+	Name string
+	Type TypeRef
 }
 
 func (v UserValueRef) Identifier() string {
@@ -810,12 +956,54 @@ func (v *UserValueRef) validateAfterResolution() error {
 			message := fmt.Sprintf("Illegal assignment: %q cannot be used as an enum value initializer.", v.identifier)
 			message = UserErrorMessage(v.scope.file, v.token, message)
 			return fmt.Errorf(message)
+		case *EnumValue:
+			// An EnumValue is being used as an EnumValue initializer. We do not check this further in this phase.
+			// In ComputeEnumValueIntegers() in computed_data.go we will further validate.
+		default:
+			panic(fmt.Sprintf("Unexpected type %T", concreteValue))
 		}
+
 	}
-	// TODO(rudominer) Finish implementing UserValueRef.validateAfterResolution()
-	// This method should also check the following:
-	// - The |resolvedConcreteValue| must have a type that is assignment
-	// compatible with |assigneeType|.
+
+	if !v.assigneeSpec.Type.IsAssignmentCompatible(v.resolvedConcreteValue) {
+		var message string
+		switch assigneeType := v.assigneeSpec.Type.(type) {
+		case SimpleType, StringType, *UserTypeRef:
+			switch concreteValue := v.resolvedConcreteValue.(type) {
+			case LiteralValue:
+				// A user-defined constant whose value is a literal value is being assigned to a variable.
+				message = fmt.Sprintf("Illegal assignment: %s with the value %v of type %s may not be assigned to %s of type %s.",
+					v.identifier, concreteValue, concreteValue.LiteralValueType(), v.assigneeSpec.Name, assigneeType.ResolvedTypeName())
+			case BuiltInConstantValue:
+				switch v.resolvedDeclaredValue.(type) {
+				case BuiltInConstantValue:
+					// A built-in float constant is being assigned directly to a variable.
+					message = fmt.Sprintf("Illegal assignment: %s may not be assigned to %s of type %s.",
+						v.identifier, v.assigneeSpec.Name, assigneeType.ResolvedTypeName())
+				default:
+					// A user-defined constant whose value is a built-in float constant is being assigned to a variable.
+					message = fmt.Sprintf("Illegal assignment: %s with the value %v may not be assigned to %s of type %s.",
+						v.identifier, concreteValue, v.assigneeSpec.Name, assigneeType.ResolvedTypeName())
+				}
+			case *EnumValue:
+				switch v.resolvedDeclaredValue.(type) {
+				case *EnumValue:
+					// An enum value is being assigned directly to a variable.
+					message = fmt.Sprintf("Illegal assignment: The enum value %s may not be assigned to %s of type %s.",
+						v.identifier, v.assigneeSpec.Name, assigneeType.ResolvedTypeName())
+				default:
+					// A user-defined constant whose value is an enum value is being assigned to a variable.
+					message = fmt.Sprintf("Illegal assignment: %s with the value %v may not be assigned to %s of type %s.",
+						v.identifier, concreteValue.fullyQualifiedName, v.assigneeSpec.Name, assigneeType.ResolvedTypeName())
+				}
+			default:
+				panic(fmt.Sprintf("Unexpected type %T", concreteValue))
+			}
+		default:
+			panic(fmt.Sprintf("Unexpected type %T", assigneeType))
+		}
+		return fmt.Errorf(UserErrorMessage(v.scope.file, v.token, message))
+	}
 	return nil
 }
 
@@ -832,10 +1020,10 @@ func (v *UserValueRef) LongString() string {
 		v.scope.file.CanonicalFileName, v.token.ShortLocationString(), v.scope)
 }
 
-func NewUserValueRef(assigneeType TypeRef, identifier string, scope *Scope,
+func NewUserValueRef(assigneeSpec AssigneeSpec, identifier string, scope *Scope,
 	token lexer.Token) *UserValueRef {
 	valueReference := new(UserValueRef)
-	valueReference.assigneeType = assigneeType
+	valueReference.assigneeSpec = assigneeSpec
 	valueReference.scope = scope
 	valueReference.token = token
 	valueReference.identifier = identifier
@@ -847,7 +1035,7 @@ func NewUserValueRef(assigneeType TypeRef, identifier string, scope *Scope,
 // Concrete Values
 /////////////////////////////////////////////////////////////
 
-// A ConcreteValue is a LiteralValue or an EnumValue or a BuiltinConstantValue.
+// A ConcreteValue is a LiteralValue or an EnumValue or a BuiltInConstantValue.
 type ConcreteValue interface {
 	ValueType() ConcreteType
 	Value() interface{}
@@ -966,9 +1154,9 @@ func (lv LiteralValue) String() string {
 	}
 	switch lv.valueType.ConcreteTypeKind() {
 	case TypeKindString:
-		return fmt.Sprintf("\"%v\"", lv.value)
+		return fmt.Sprintf("%q", lv.value)
 	default:
-		return fmt.Sprintf("%v(%v)", lv.valueType, lv.value)
+		return fmt.Sprintf("%v", lv.value)
 	}
 }
 

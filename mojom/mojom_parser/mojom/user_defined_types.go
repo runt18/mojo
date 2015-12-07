@@ -773,12 +773,12 @@ func (b BuiltInConstantType) ConcreteTypeKind() TypeKind {
 type BuiltInConstantValue int
 
 const (
-	SimpleTypeFloat_INFINITY BuiltInConstantValue = iota
-	SimpleTypeFloat_NEGATIVE_INFINITY
-	SimpleTypeFloat_NAN
-	SimpleTypeDouble_INFINITY
-	SimpleTypeDouble_NEGATIVE_INFINITY
-	SimpleTypeDouble_NAN
+	FloatInfinity BuiltInConstantValue = iota
+	FloatNegativeInfinity
+	FloatNAN
+	DoubleInfinity
+	DoubleNegativeInfinity
+	DoubleNAN
 )
 
 func LookupBuiltInConstantValue(identifier string) (val BuiltInConstantValue, ok bool) {
@@ -786,8 +786,8 @@ func LookupBuiltInConstantValue(identifier string) (val BuiltInConstantValue, ok
 	return
 }
 
-var allBuiltInConstantValues = []BuiltInConstantValue{SimpleTypeFloat_INFINITY, SimpleTypeFloat_NEGATIVE_INFINITY,
-	SimpleTypeFloat_NAN, SimpleTypeDouble_INFINITY, SimpleTypeDouble_NEGATIVE_INFINITY, SimpleTypeDouble_NAN}
+var allBuiltInConstantValues = []BuiltInConstantValue{FloatInfinity, FloatNegativeInfinity,
+	FloatNAN, DoubleInfinity, DoubleNegativeInfinity, DoubleNAN}
 
 var builtInConstantValues map[string]BuiltInConstantValue
 
@@ -800,17 +800,17 @@ func init() {
 
 func (b BuiltInConstantValue) String() string {
 	switch b {
-	case SimpleTypeFloat_INFINITY:
+	case FloatInfinity:
 		return "float.INFINITY"
-	case SimpleTypeFloat_NEGATIVE_INFINITY:
+	case FloatNegativeInfinity:
 		return "float.NEGATIVE_INFINITY"
-	case SimpleTypeFloat_NAN:
+	case FloatNAN:
 		return "float.NAN"
-	case SimpleTypeDouble_INFINITY:
+	case DoubleInfinity:
 		return "double.INFINITY"
-	case SimpleTypeDouble_NEGATIVE_INFINITY:
+	case DoubleNegativeInfinity:
 		return "double.NEGATIVE_INFINITY"
-	case SimpleTypeDouble_NAN:
+	case DoubleNAN:
 		return "double.NAN"
 	default:
 		panic(fmt.Sprintf("Unknown BuiltInConstantValue %d", b))
