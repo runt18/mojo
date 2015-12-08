@@ -820,7 +820,7 @@ func (ref *UserTypeRef) validateAfterResolution() error {
 		}
 	}
 	if ref.literalAssignment != nil && !ref.resolvedType.IsAssignmentCompatibleWith(ref.literalAssignment.assignedValue) {
-		message := fmt.Sprintf("Illegal assignment: %s %q of type %s may not be assigned the value %v of type %s.",
+		message := fmt.Sprintf("Illegal assignment: %s %s of type %s may not be assigned the value %v of type %s.",
 			ref.literalAssignment.kind, ref.literalAssignment.variableName,
 			ref.identifier, ref.literalAssignment.assignedValue,
 			ref.literalAssignment.assignedValue.LiteralValueType())
@@ -946,14 +946,14 @@ func (v *UserValueRef) validateAfterResolution() error {
 		switch concreteValue := v.resolvedConcreteValue.(type) {
 		case LiteralValue:
 			if _, ok := int32Value(concreteValue); !ok {
-				message := fmt.Sprintf("Illegal assignment: %q cannot be used as an enum value initializer because "+
+				message := fmt.Sprintf("Illegal assignment: %s cannot be used as an enum value initializer because "+
 					"its value, %v, is not a signed 32-bit integer.",
-					v.identifier, concreteValue.Value())
+					v.identifier, concreteValue)
 				message = UserErrorMessage(v.scope.file, v.token, message)
 				return fmt.Errorf(message)
 			}
 		case BuiltInConstantValue:
-			message := fmt.Sprintf("Illegal assignment: %q cannot be used as an enum value initializer.", v.identifier)
+			message := fmt.Sprintf("Illegal assignment: %s cannot be used as an enum value initializer.", v.identifier)
 			message = UserErrorMessage(v.scope.file, v.token, message)
 			return fmt.Errorf(message)
 		case *EnumValue:
@@ -1203,9 +1203,9 @@ const (
 func (k LiteralAssignmentKind) String() string {
 	switch k {
 	case LiteralAssignmentKindDefaultStructField:
-		return "field"
+		return "Field"
 	case LiteralAssignmentKindConstantDeclaration:
-		return "const"
+		return "Const"
 	default:
 		panic(fmt.Sprintf("Unknown LiteralAssignmentKind %d", k))
 	}

@@ -128,14 +128,15 @@ func TestSingleFileResolutionnErrors(t *testing.T) {
 	}
 }
 
-// TestSingleFileValidationErrors() tests that appropriate error messages are generated
+// TestSingleFileValueValidationErrors() test the function
+// UserValueRef.validateAfterResolution(). It tests that appropriate error messages are generated
 // when a .mojom file contains validation errors. In particular we are testing errors
 // that are not detected during parsing but are only detected after all names have
 // been resolved. Thus we are not testing here, for example, an attempt to assign
 // an int32 literal value to a string variable, because that type of error can be
 // detected during parsing. But we are testing the case of a constant whose value is
 // an int32 literal being assigned to a string variable.
-func TestSingleFileValidationErrors(t *testing.T) {
+func TestSingleFileValueValidationErrors(t *testing.T) {
 	test := singleFileTest{}
 
 	////////////////////////////////////////////////////////////
@@ -509,6 +510,134 @@ func TestSingleFileValidationErrors(t *testing.T) {
 		test.addTestCase(contents, []string{
 			"Illegal assignment",
 			"Baz with the value MyEnum.TWO may not be assigned to x of type int32"})
+	}
+
+	////////////////////////////////////////////////////////////
+	// Group 4: Invalid EnumValue initializers.
+	////////////////////////////////////////////////////////////
+
+	////////////////////////////////////////////////////////////
+	// Test Case: Use string as enum value initializer.
+	////////////////////////////////////////////////////////////
+	{
+		contents := `
+	const int32 Foo = 8;
+	const string Bar = "fly";
+
+	enum MyEnum {
+	   ONE = Foo,
+	   TWO = Bar,
+	   THREE
+	 };`
+
+		test.addTestCase(contents, []string{
+			"Illegal assignment",
+			"Bar cannot be used as an enum value initializer because its value, \"fly\", is not a signed 32-bit integer",
+			""})
+	}
+
+	////////////////////////////////////////////////////////////
+	// Test Case: Use double.NAN as an enum value initializer.
+	////////////////////////////////////////////////////////////
+	{
+		contents := `
+	const int32 Foo = 8;
+	const int64 Bar = 9;
+
+	enum MyEnum {
+	   ONE = Foo,
+	   TWO = Bar,
+	   THREE = double.NAN
+	 };`
+
+		test.addTestCase(contents, []string{
+			"Illegal assignment",
+			"double.NAN cannot be used as an enum value initializer",
+			""})
+	}
+
+	////////////////////////////////////////////////////////////
+	// Execute all of the test cases.
+	////////////////////////////////////////////////////////////
+	for i, c := range test.cases {
+		// Parse and resolve the mojom input.
+		descriptor := mojom.NewMojomDescriptor()
+		parser := MakeParser(c.fileName, c.mojomContents, descriptor, c.importedFrom)
+		parser.Parse()
+		if !parser.OK() {
+			t.Errorf("Parsing error for %s: %s", c.fileName, parser.GetError().Error())
+			continue
+		}
+		err := descriptor.Resolve()
+		if err == nil {
+			t.Errorf("Resolution unexpectedly succeeded for test case %d.", i)
+			continue
+		}
+		got := err.Error()
+		for _, expected := range c.expectedErrors {
+			if !strings.Contains(got, expected) {
+				t.Errorf("%s:\n*****expected to contain:\n%s\n****actual\n%s", c.fileName, expected, got)
+			}
+		}
+
+	}
+}
+
+// TestSingleFileTypeValidationErrors() test the method UserTypeRef.validateAfterResolution().
+// It is similar to TestSingleFileValueValidationErrors()
+// except that it tests the validation of types phase which occurs before the validation
+// of values phase. This phase detects errors that may not be detected during parsing
+// but that may be detected without resolving value references.
+func TestSingleFileTypeValidationErrors(t *testing.T) {
+	test := singleFileTest{}
+
+	////////////////////////////////////////////////////////////
+	// Test Case: Use struct as constant type
+	////////////////////////////////////////////////////////////
+	{
+		contents := `
+	struct Foo{
+	};
+
+    const Foo MyFoo = 3;
+	`
+		test.addTestCase(contents, []string{
+			"The type Foo is not allowed as the type of a declared constant.",
+			"Only simple types, strings and enum types may be used"})
+	}
+
+	////////////////////////////////////////////////////////////
+	// Test Case: Assign struct as map key
+	////////////////////////////////////////////////////////////
+	{
+		contents := `
+	struct Foo{
+	};
+
+    struct Bar{
+    	map<Foo, int32> x;
+    };
+	`
+		test.addTestCase(contents, []string{
+			"The type Foo is not allowed as the key type of a map.",
+			"Only simple types, strings and enum types may be map keys"})
+	}
+
+	////////////////////////////////////////////////////////////
+	// Test Case: Assign an integer to a struct variable.
+	////////////////////////////////////////////////////////////
+	{
+		contents := `
+	struct Foo{
+	};
+
+    struct Bar{
+    	Foo x = 42;
+    };
+	`
+		test.addTestCase(contents, []string{
+			"Illegal assignment",
+			"Field x of type Foo may not be assigned the value 42 of type int8"})
 	}
 
 	////////////////////////////////////////////////////////////
