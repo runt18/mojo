@@ -23,9 +23,6 @@ import (
 // The same MojomDescriptor may be given to successive runs of the Parser
 // so that an entire graph of .mojom files may be parsed.
 type Parser struct {
-	// The contents of the file being parsed.
-	fileContents string
-
 	// The stream of input tokens
 	inputStream lexer.TokenStream
 
@@ -78,7 +75,7 @@ func MakeParser(fileName, fileContents string,
 	parser := Parser{inputStream: inputStream,
 		mojomDescriptor: descriptorToPopulate}
 	parser.mojomDescriptor = descriptorToPopulate
-	parser.mojomFile = parser.mojomDescriptor.AddMojomFile(fileName, importedFrom)
+	parser.mojomFile = parser.mojomDescriptor.AddMojomFile(fileName, importedFrom, fileContents)
 	return parser
 }
 
@@ -129,11 +126,10 @@ func (p *Parser) GetParseTree() *ParseNode {
 ////////////////////////////////////////////////////////////////////////////
 
 type ParseError struct {
-	code         ParseErrorCode
-	file         *mojom.MojomFile
-	token        lexer.Token
-	fileContents string
-	message      string
+	code    ParseErrorCode
+	file    *mojom.MojomFile
+	token   lexer.Token
+	message string
 }
 
 // Make ParseError implement the error interface.
@@ -149,11 +145,10 @@ func (p *Parser) parseError(code ParseErrorCode, message string) {
 // parseErrorT sets the parser's current error to a ParseError with the given data.
 func (p *Parser) parseErrorT(code ParseErrorCode, message string, token lexer.Token) {
 	p.err = &ParseError{
-		code:         code,
-		file:         p.mojomFile,
-		token:        token,
-		fileContents: p.fileContents,
-		message:      message,
+		code:    code,
+		file:    p.mojomFile,
+		token:   token,
+		message: message,
 	}
 }
 

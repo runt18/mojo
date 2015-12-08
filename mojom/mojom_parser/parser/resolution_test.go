@@ -45,7 +45,10 @@ func TestSingleFileResolutionnErrors(t *testing.T) {
       int32 x = Bar;
     };`
 
-		test.addTestCase(contents, []string{"Undefined value: \"Bar\""})
+		test.addTestCase(contents, []string{
+			"Undefined value: \"Bar\"",
+			"int32 x = Bar;",
+			"^^^"})
 	}
 
 	////////////////////////////////////////////////////////////
@@ -98,7 +101,8 @@ func TestSingleFileResolutionnErrors(t *testing.T) {
 		test.addTestCase(contents, []string{
 			"Undefined type: \"Bar\"", "Undefined type: \"Baz\"",
 			"Undefined value: \"Boom\"", "Undefined value: \"Bing\"",
-			"Use of unresolved value: \"X\""})
+			"Use of unresolved value: \"X\"",
+			"^^^^"}) // There will be four carets in the snippet because of "Boom"
 	}
 
 	////////////////////////////////////////////////////////////

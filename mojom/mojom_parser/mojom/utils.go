@@ -35,13 +35,18 @@ func RelPathIfShorter(filePath string) string {
 // message: The base error text. It should not include any location information
 // as that will be added by this function.
 func UserErrorMessage(file *MojomFile, token lexer.Token, message string) string {
-	// TODO(rudominer|azani) Add snippets here.
 	filePath := "Unknown file"
 	importedFromMessage := ""
+	snippet := ""
 	if file != nil {
+		if len(file.fileContents) > 0 {
+			// TODO(rudominer) Allow users to disable the use of color in snippets.
+			useColor := true
+			snippet = fmt.Sprintf("\n%s", token.Snippet(file.fileContents, useColor))
+		}
 		filePath = RelPathIfShorter(file.CanonicalFileName)
 		importedFromMessage = file.ImportedFromMessage()
 	}
-	return fmt.Sprintf("\n%s:%s: %s\n%s", filePath, token.ShortLocationString(),
-		message, importedFromMessage)
+	return fmt.Sprintf("\n%s:%s: %s%s\n%s", filePath, token.ShortLocationString(),
+		message, snippet, importedFromMessage)
 }

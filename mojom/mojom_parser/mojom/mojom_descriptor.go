@@ -60,6 +60,9 @@ type MojomFile struct {
 	Unions     []*MojomUnion
 	Enums      []*MojomEnum
 	Constants  []*UserDefinedConstant
+
+	// The contents of the .mojom file.
+	fileContents string
 }
 
 // An ImportedFile represents an element of the "import" list of a .mojom file.
@@ -80,7 +83,8 @@ func (f *ImportedFile) String() string {
 	return fmt.Sprintf("%q, ", f.SpecifiedName)
 }
 
-func newMojomFile(fileName string, descriptor *MojomDescriptor, importedFrom *MojomFile) *MojomFile {
+func newMojomFile(fileName string, descriptor *MojomDescriptor,
+	importedFrom *MojomFile, fileContents string) *MojomFile {
 	mojomFile := new(MojomFile)
 	mojomFile.CanonicalFileName = fileName
 	mojomFile.Descriptor = descriptor
@@ -98,6 +102,7 @@ func newMojomFile(fileName string, descriptor *MojomDescriptor, importedFrom *Mo
 	mojomFile.Unions = make([]*MojomUnion, 0)
 	mojomFile.Enums = make([]*MojomEnum, 0)
 	mojomFile.Constants = make([]*UserDefinedConstant, 0)
+	mojomFile.fileContents = fileContents
 	return mojomFile
 }
 
@@ -278,8 +283,8 @@ func (d *MojomDescriptor) getGlobalScobe() *Scope {
 	return d.abstractScopesByName[""]
 }
 
-func (d *MojomDescriptor) AddMojomFile(fileName string, importedFrom *MojomFile) *MojomFile {
-	mojomFile := newMojomFile(fileName, d, importedFrom)
+func (d *MojomDescriptor) AddMojomFile(fileName string, importedFrom *MojomFile, fileContents string) *MojomFile {
+	mojomFile := newMojomFile(fileName, d, importedFrom, fileContents)
 	mojomFile.Descriptor = d
 	d.mojomFiles = append(d.mojomFiles, mojomFile)
 	if _, ok := d.MojomFilesByName[mojomFile.CanonicalFileName]; ok {
