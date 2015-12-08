@@ -27,6 +27,9 @@ tests = [
     "shell-args": ["--enable-multiprocess"],
   },
   {
+    "test": "mojo:file_utils_apptests",
+  },
+  {
     "test": "mojo:files_apptests",
   },
   {
