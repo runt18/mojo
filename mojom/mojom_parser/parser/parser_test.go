@@ -557,6 +557,225 @@ func TestErrorParsing(t *testing.T) {
 	endTestCase()
 
 	////////////////////////////////////////////////////////////
+	// Test Case (Use array as constant type)
+	////////////////////////////////////////////////////////////
+	startTestCase("")
+	cases[testCaseNum].mojomContents = `
+	const array<uint64> Foo = 0;
+	`
+	expectError("The type array<uint64> is not allowed as the type of a declared constant.")
+	expectError("Only simple types, strings and enum types may be the types of constants.")
+	endTestCase()
+
+	////////////////////////////////////////////////////////////
+	// Test Case (Identifier ends with a dot)
+	////////////////////////////////////////////////////////////
+	startTestCase("")
+	cases[testCaseNum].mojomContents = `
+	const array<my.Foo.Type.> Foo = 0;
+	`
+	expectError("Invalid identifier")
+	expectError("\"my.Foo.Type.\"")
+	expectError("Identifiers may not end with a dot")
+	endTestCase()
+
+	////////////////////////////////////////////////////////////
+	// Test Case (Unrecognized type of handle)
+	////////////////////////////////////////////////////////////
+	startTestCase("")
+	cases[testCaseNum].mojomContents = `
+	struct Foo {
+		handle<drawer> x;
+	};
+	`
+	expectError("Unrecognized type of handle: handle<drawer>")
+	endTestCase()
+
+	////////////////////////////////////////////////////////////
+	// Test Case (Nullable bool)
+	////////////////////////////////////////////////////////////
+	startTestCase("")
+	cases[testCaseNum].mojomContents = `
+	struct Foo {
+		bool? x;
+	};
+	`
+	expectError("The type bool? is invalid because the type bool may not be made nullable")
+	endTestCase()
+
+	////////////////////////////////////////////////////////////
+	// Execute all of the test cases.
+	////////////////////////////////////////////////////////////
+	for i, c := range cases {
+		descriptor := mojom.NewMojomDescriptor()
+		parser := MakeParser(c.fileName, c.mojomContents, descriptor, nil)
+		parser.Parse()
+		if parser.OK() {
+			t.Errorf("Parsing was supposed to fail but did not for test case %d", i)
+		} else {
+			got := parser.GetError().Error()
+			for _, expected := range c.expectedErrors {
+				if !strings.Contains(got, expected) {
+					t.Errorf("%s:\n*****expected to contain:\n%s\n****actual\n%s", c.fileName, expected, got)
+				}
+			}
+		}
+	}
+}
+
+// TestInvalidAssignmentDuringParsing contains a series of test cases in which we
+// run the parser on invalid mojom input string and compare the resulting
+// error message to an expected one. The particular type of error we are testing
+// here is invalid assignments of values to variables that may be detected during
+// parsing.
+func TestInvalidAssignmentDuringParsing(t *testing.T) {
+	type testCase struct {
+		fileName       string
+		mojomContents  string
+		expectedErrors []string
+	}
+	cases := make([]testCase, 0)
+	testCaseNum := 0
+
+	startTestCase := func(moduleNameSpace string) {
+		fileName := fmt.Sprintf("file%d", testCaseNum)
+		cases = append(cases, testCase{fileName: fileName})
+	}
+
+	expectError := func(expectedError string) {
+		cases[testCaseNum].expectedErrors = append(cases[testCaseNum].expectedErrors, expectedError)
+	}
+
+	endTestCase := func() {
+		testCaseNum += 1
+	}
+
+	////////////////////////////////////////////////////////////
+	// Group 1: Assign to struct field default value.
+	////////////////////////////////////////////////////////////
+
+	////////////////////////////////////////////////////////////
+	// Test Case (Assign string to int32)
+	////////////////////////////////////////////////////////////
+	startTestCase("")
+	cases[testCaseNum].mojomContents = `
+	struct Foo {
+		int32 x = "hello";
+	};
+
+	`
+	expectError("Illegal assignment")
+	expectError("Field x of type int32 may not be assigned the value \"hello\" of type string.")
+	endTestCase()
+
+	////////////////////////////////////////////////////////////
+	// Test Case (Assign int32 to string)
+	////////////////////////////////////////////////////////////
+	startTestCase("")
+	cases[testCaseNum].mojomContents = `
+	struct Foo {
+		string x = 42;
+	};
+
+	`
+	expectError("Illegal assignment")
+	expectError("Field x of type string may not be assigned the value 42 of type int8.")
+	endTestCase()
+
+	////////////////////////////////////////////////////////////
+	// Test Case (Assign negative number to unit8)
+	////////////////////////////////////////////////////////////
+	startTestCase("")
+	cases[testCaseNum].mojomContents = `
+	struct Foo {
+		uint8 x = -1;
+	};
+
+	`
+	expectError("Illegal assignment")
+	expectError("Field x of type uint8 may not be assigned the value -1 of type int8.")
+	endTestCase()
+
+	////////////////////////////////////////////////////////////
+	// Test Case (Assign large integer to unit8)
+	////////////////////////////////////////////////////////////
+	startTestCase("")
+	cases[testCaseNum].mojomContents = `
+	struct Foo {
+		uint8 x = 9999999999;
+	};
+
+	`
+	expectError("Illegal assignment")
+	expectError("Field x of type uint8 may not be assigned the value 9999999999 of type int64.")
+	endTestCase()
+
+	////////////////////////////////////////////////////////////
+	// Test Case (Assign string to user-defined-type)
+	////////////////////////////////////////////////////////////
+	startTestCase("")
+	cases[testCaseNum].mojomContents = `
+	struct Foo {
+		Foo x = "hello";
+	};
+
+	`
+	expectError("Illegal assignment")
+	expectError("Field x of type Foo may not be assigned the value \"hello\" of type string.")
+	endTestCase()
+
+	////////////////////////////////////////////////////////////
+	// Test Case (Assign string to user-defined-type)
+	////////////////////////////////////////////////////////////
+	startTestCase("")
+	cases[testCaseNum].mojomContents = `
+	struct Foo {
+		Foo x = "hello";
+	};
+
+	`
+	expectError("Illegal assignment")
+	expectError("Field x of type Foo may not be assigned the value \"hello\" of type string.")
+	endTestCase()
+
+	////////////////////////////////////////////////////////////
+	// Group 2: Assign to constant.
+	////////////////////////////////////////////////////////////
+
+	////////////////////////////////////////////////////////////
+	// Test Case (Assign boolean to int32)
+	////////////////////////////////////////////////////////////
+	startTestCase("")
+	cases[testCaseNum].mojomContents = `
+	const int32 Foo = true;
+	`
+	expectError("Illegal assignment")
+	expectError("Constant Foo of type int32 may not be assigned the value true of type bool.")
+	endTestCase()
+
+	////////////////////////////////////////////////////////////
+	// Test Case (Assign string to bool)
+	////////////////////////////////////////////////////////////
+	startTestCase("")
+	cases[testCaseNum].mojomContents = `
+	const bool Foo = "true";
+	`
+	expectError("Illegal assignment")
+	expectError("Constant Foo of type bool may not be assigned the value \"true\" of type string.")
+	endTestCase()
+
+	////////////////////////////////////////////////////////////
+	// Test Case (Assign boolean to user-defined type)
+	////////////////////////////////////////////////////////////
+	startTestCase("")
+	cases[testCaseNum].mojomContents = `
+	const FooType Foo = true;
+	`
+	expectError("Illegal assignment")
+	expectError("Constant Foo of type FooType may not be assigned the value true of type bool.")
+	endTestCase()
+
+	////////////////////////////////////////////////////////////
 	// Execute all of the test cases.
 	////////////////////////////////////////////////////////////
 	for i, c := range cases {

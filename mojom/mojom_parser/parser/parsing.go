@@ -769,11 +769,11 @@ func (p *Parser) parseStructField(attributes *mojom.Attributes) *mojom.StructFie
 		valueTypeString := ""
 		concreteValue := defaultValue.ResolvedConcreteValue()
 		if concreteValue != nil {
-			valueString = fmt.Sprintf("%v", concreteValue.Value())
+			valueString = fmt.Sprintf("%v", concreteValue)
 			valueTypeString = fmt.Sprintf(" of type %s", concreteValue.ValueType())
 		}
-		message := fmt.Sprintf("Illegal assignment: Field %q of type %s may not be assigned the value %v%s.",
-			fieldName, fieldType, valueString, valueTypeString)
+		message := fmt.Sprintf("Illegal assignment: Field %s of type %s may not be assigned the value %s%s.",
+			fieldName, fieldType.TypeName(), valueString, valueTypeString)
 		p.parseErrorT(ParserErrorCodeNotAssignmentCompatible, message, defaultValueToken)
 		return nil
 	}
@@ -1042,11 +1042,11 @@ func (p *Parser) parseConstDecl(attributes *mojom.Attributes) (constant *mojom.U
 		valueTypeString := ""
 		concreteValue := value.ResolvedConcreteValue()
 		if concreteValue != nil {
-			valueString = fmt.Sprintf("%v", concreteValue.Value())
+			valueString = fmt.Sprintf("%v", concreteValue)
 			valueTypeString = fmt.Sprintf(" of type %s", concreteValue.ValueType())
 		}
-		message := fmt.Sprintf("Illegal assignment: Constant %q of type %s may not be assigned the value %v%s.",
-			name, declaredType, valueString, valueTypeString)
+		message := fmt.Sprintf("Illegal assignment: Constant %s of type %s may not be assigned the value %s%s.",
+			name, declaredType.TypeName(), valueString, valueTypeString)
 		p.parseErrorT(ParserErrorCodeNotAssignmentCompatible, message, valueToken)
 		return
 	}
@@ -1195,7 +1195,7 @@ func (p *Parser) parseIdentifier() (identifier string, firstToken lexer.Token) {
 		}
 		identifier += "."
 	}
-	message := fmt.Sprintf("Invalid identifier: %s. Identifiers may not end with a dot.", identifier)
+	message := fmt.Sprintf("Invalid identifier: %q. Identifiers may not end with a dot.", identifier)
 	p.parseErrorT(ParserErrorCodeUnexpectedToken, message, firstToken)
 	return
 }

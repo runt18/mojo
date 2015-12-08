@@ -106,15 +106,11 @@ type TypeRef interface {
 	// or MapTypeRefs because those types are never validated after resolution.
 	IsAssignmentCompatible(assignedValue ConcreteValue) bool
 
-	// ResolvedTypeName() is used during the post-resolution validation phase
-	// to assist in the generation of error messages. For SimpleTypes and
-	// Strings this method return the name of the type. For
-	// UserTypeRefs this method returns the fully-qualified name of the
-	// resolved UserDefinedType if the UserTypeRef has been resolved, or the
-	// string "unresolved" otherwise. For HandleTypeRefs, ArrayTypeRefs and
-	// MapTypeRefs the returned value is unspecified because these types
-	// do not need to be validated after resolution.
-	ResolvedTypeName() string
+	// TypeName() returns a string appropriate for using-facing messages
+	// that names a type. For UserDefinedTypes it will return the fully-qualified
+	// name of the resolved type, if the identifier has already been resolved.
+	// Otherwise it will return the identifier.
+	TypeName() string
 }
 
 /////////////////////////////////////////////////////////////
@@ -339,7 +335,7 @@ func (t SimpleType) String() string {
 	}
 }
 
-func (t SimpleType) ResolvedTypeName() string {
+func (t SimpleType) TypeName() string {
 	return t.String()
 }
 
@@ -412,7 +408,7 @@ func (s StringType) String() string {
 	return fmt.Sprintf("string%s", nullableSpecifier)
 }
 
-func (s StringType) ResolvedTypeName() string {
+func (s StringType) TypeName() string {
 	return "string"
 }
 
@@ -495,7 +491,7 @@ func (h HandleTypeRef) String() string {
 	return fmt.Sprintf("%s%s%s", "handle", suffix, nullable)
 }
 
-func (h HandleTypeRef) ResolvedTypeName() string {
+func (h HandleTypeRef) TypeName() string {
 	return h.String()
 }
 
@@ -615,7 +611,7 @@ func (a ArrayTypeRef) String() string {
 	return fmt.Sprintf("array<%s%s>%s", a.elementType, fixedLengthSpecifier, nullableSpecifier)
 }
 
-func (a ArrayTypeRef) ResolvedTypeName() string {
+func (a ArrayTypeRef) TypeName() string {
 	return a.String()
 }
 
@@ -681,7 +677,7 @@ func (m MapTypeRef) String() string {
 	return fmt.Sprintf("map<%s, %s>%s", m.keyType, m.valueType, nullableSpecifier)
 }
 
-func (m MapTypeRef) ResolvedTypeName() string {
+func (m MapTypeRef) TypeName() string {
 	return m.String()
 }
 
@@ -847,9 +843,9 @@ func (t *UserTypeRef) String() string {
 	return fmt.Sprintf("(%s)%s%s%s", resolvedKey, t.identifier, interfaceRequest, nullable)
 }
 
-func (t *UserTypeRef) ResolvedTypeName() string {
+func (t *UserTypeRef) TypeName() string {
 	if t.resolvedType == nil {
-		panic(fmt.Sprintf("%v is not resolved", t))
+		return t.identifier
 	}
 	return t.resolvedType.FullyQualifiedName()
 }
@@ -973,28 +969,28 @@ func (v *UserValueRef) validateAfterResolution() error {
 			case LiteralValue:
 				// A user-defined constant whose value is a literal value is being assigned to a variable.
 				message = fmt.Sprintf("Illegal assignment: %s with the value %v of type %s may not be assigned to %s of type %s.",
-					v.identifier, concreteValue, concreteValue.LiteralValueType(), v.assigneeSpec.Name, assigneeType.ResolvedTypeName())
+					v.identifier, concreteValue, concreteValue.LiteralValueType(), v.assigneeSpec.Name, assigneeType.TypeName())
 			case BuiltInConstantValue:
 				switch v.resolvedDeclaredValue.(type) {
 				case BuiltInConstantValue:
 					// A built-in float constant is being assigned directly to a variable.
 					message = fmt.Sprintf("Illegal assignment: %s may not be assigned to %s of type %s.",
-						v.identifier, v.assigneeSpec.Name, assigneeType.ResolvedTypeName())
+						v.identifier, v.assigneeSpec.Name, assigneeType.TypeName())
 				default:
 					// A user-defined constant whose value is a built-in float constant is being assigned to a variable.
 					message = fmt.Sprintf("Illegal assignment: %s with the value %v may not be assigned to %s of type %s.",
-						v.identifier, concreteValue, v.assigneeSpec.Name, assigneeType.ResolvedTypeName())
+						v.identifier, concreteValue, v.assigneeSpec.Name, assigneeType.TypeName())
 				}
 			case *EnumValue:
 				switch v.resolvedDeclaredValue.(type) {
 				case *EnumValue:
 					// An enum value is being assigned directly to a variable.
 					message = fmt.Sprintf("Illegal assignment: The enum value %s may not be assigned to %s of type %s.",
-						v.identifier, v.assigneeSpec.Name, assigneeType.ResolvedTypeName())
+						v.identifier, v.assigneeSpec.Name, assigneeType.TypeName())
 				default:
 					// A user-defined constant whose value is an enum value is being assigned to a variable.
 					message = fmt.Sprintf("Illegal assignment: %s with the value %v may not be assigned to %s of type %s.",
-						v.identifier, concreteValue.fullyQualifiedName, v.assigneeSpec.Name, assigneeType.ResolvedTypeName())
+						v.identifier, concreteValue.fullyQualifiedName, v.assigneeSpec.Name, assigneeType.TypeName())
 				}
 			default:
 				panic(fmt.Sprintf("Unexpected type %T", concreteValue))
