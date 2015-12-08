@@ -14,7 +14,7 @@ NDK_TOOLCHAIN = 'arm-linux-androideabi-4.9'
 
 def InvokeGo(go_tool, go_options, work_dir=None, src_root=None,
              out_root=None, cgo_cflags=None, cgo_ldflags=None,
-             target_android=False):
+             target_os='linux'):
   """ Invokes the go tool after setting up the environment.
   go_tool     The path to the 'go' binary. Must be either an absolute path
               or a path relative to the current working directory.
@@ -39,9 +39,11 @@ def InvokeGo(go_tool, go_options, work_dir=None, src_root=None,
 
   cgo_ldflags Optional value to set for the CGO_LDFLAGS environment variable.
 
-  target_android
-               Set to true to target Android.
+  target_os
+              Optional value allows you to choose between 'linux' (default),
+              'android' and 'mac'.
   """
+  assert(target_os in ('linux', 'android', 'mac'))
   go_tool = os.path.abspath(go_tool)
   env = os.environ.copy()
   env['GOROOT'] = os.path.dirname(os.path.dirname(go_tool))
@@ -70,7 +72,7 @@ def InvokeGo(go_tool, go_options, work_dir=None, src_root=None,
   if cgo_ldflags is not None:
     env['CGO_LDFLAGS'] = cgo_ldflags
 
-  if target_android:
+  if target_os == 'android':
     env['CGO_ENABLED'] = '1'
     env['GOOS'] = 'android'
     env['GOARCH'] = 'arm'
@@ -96,6 +98,10 @@ def InvokeGo(go_tool, go_options, work_dir=None, src_root=None,
       env['CGO_CFLAGS'] += ' --sysroot %s' % sysroot
       env['CGO_LDFLAGS'] += ' --sysroot %s' % sysroot
       env['CC'] = '%s --sysroot %s' % (ndk_cc, sysroot)
+  elif target_os == 'mac':
+    env['CGO_ENABLED'] = '1'
+    env['GOOS'] = 'darwin'
+    env['GOARCH'] = 'amd64'
 
   save_cwd = os.getcwd()
   if work_dir is not None:

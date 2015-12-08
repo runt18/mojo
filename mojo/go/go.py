@@ -20,7 +20,7 @@ import sys
 
 def main():
   parser = argparse.ArgumentParser()
-  parser.add_argument('--android', action='store_true')
+  parser.add_argument('--target_os', default='linux')
   parser.add_argument('go_tool')
   parser.add_argument('build_directory')
   parser.add_argument('output_file')
@@ -49,7 +49,7 @@ def main():
                          out_root=args.out_root,
                          cgo_cflags=args.cgo_cflags,
                          cgo_ldflags=args.cgo_ldflags,
-                         target_android=args.android)
+                         target_os=args.target_os)
   if call_result != 0:
     return call_result
   file_list = [os.path.join(build_dir, f) for f in os.listdir(build_dir)]

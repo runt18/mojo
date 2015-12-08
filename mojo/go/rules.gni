@@ -202,7 +202,7 @@ template("go_binary") {
 }
 
 template("go_mojo_application") {
-  assert(is_android || is_linux)
+  assert(is_android || is_linux || is_mac)
   assert(defined(invoker.sources))
   assert(go_build_tool != "")
 
@@ -235,7 +235,9 @@ template("go_mojo_application") {
     build_dir = "${target_out_dir}/${target_name}_build"
     args = []
     if (is_android) {
-      args += [ "--android" ]
+      args += [ "--target_os=android" ]
+    } else if (is_mac) {
+      args += [ "--target_os=mac" ]
     }
     args += [
       "--",
