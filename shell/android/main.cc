@@ -341,6 +341,11 @@ static void BindShell(JNIEnv* env, jclass clazz, jint shell_handle) {
                                      mojo::MessagePipeHandle(shell_handle)))));
 }
 
+static void QuitShell(JNIEnv* env, jclass jcaller) {
+  g_internal_data.Get().shell_task_runner->PostTask(
+      FROM_HERE, base::MessageLoop::QuitWhenIdleClosure());
+}
+
 bool RegisterShellService(JNIEnv* env) {
   return RegisterNativesImpl(env);
 }

@@ -154,6 +154,13 @@ public class ShellService extends Service {
         }
         String viewportId = rootIntent.getStringExtra("ViewportId");
         NativeViewportSupportApplicationDelegate.viewportClosed(viewportId);
+
+        if (ApplicationStatus.getRunningActivities().size() == 0) {
+            // There are only background apps in the shell, so we close ourselves so we can cleanly
+            // restart. We may want to investigate how to keep backround apps and restart UI
+            // activities cleanly.
+            nativeQuitShell();
+        }
     }
 
     /**
@@ -321,4 +328,6 @@ public class ShellService extends Service {
     private static native void nativeStartApplicationURL(String url);
 
     private static native void nativeBindShell(int shellHandle);
+
+    private static native void nativeQuitShell();
 }
