@@ -11,7 +11,6 @@
 #include "mojo/edk/embedder/platform_channel_pair.h"
 #include "mojo/edk/embedder/simple_platform_support.h"
 #include "mojo/edk/platform/message_loop.h"
-#include "mojo/edk/platform/message_loop_for_io.h"
 #include "mojo/edk/platform/task_runner.h"
 #include "mojo/edk/platform/test_message_loops.h"
 #include "mojo/edk/system/channel.h"
@@ -23,7 +22,7 @@
 #include "testing/gtest/include/gtest/gtest.h"
 
 using mojo::platform::MessageLoop;
-using mojo::platform::MessageLoopForIO;
+using mojo::platform::PlatformHandleWatcher;
 using mojo::platform::TaskRunner;
 using mojo::platform::test::CreateTestMessageLoop;
 using mojo::platform::test::CreateTestMessageLoopForIO;
@@ -36,7 +35,8 @@ namespace {
 class ChannelManagerTest : public testing::Test {
  public:
   ChannelManagerTest()
-      : message_loop_(CreateTestMessageLoopForIO()),
+      : platform_handle_watcher_(nullptr),
+        message_loop_(CreateTestMessageLoopForIO(&platform_handle_watcher_)),
         channel_manager_(&platform_support_,
                          message_loop_->GetTaskRunner().Clone(),
                          nullptr) {}
@@ -51,7 +51,11 @@ class ChannelManagerTest : public testing::Test {
 
  private:
   embedder::SimplePlatformSupport platform_support_;
-  std::unique_ptr<MessageLoopForIO> message_loop_;
+  // TODO(vtl): The |PlatformHandleWatcher| and |MessageLoop| should be injected
+  // into the |ChannelManager|.
+  // Valid while |message_loop_| is valid.
+  PlatformHandleWatcher* platform_handle_watcher_;
+  std::unique_ptr<MessageLoop> message_loop_;
   // Note: This should be *after* the above, since they must be initialized
   // before it (and should outlive it).
   ChannelManager channel_manager_;
