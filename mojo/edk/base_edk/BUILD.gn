@@ -6,6 +6,8 @@ import("../mojo_edk.gni")
 
 mojo_edk_source_set("base_edk") {
   sources = [
+    "platform_handle_watcher_impl.cc",
+    "platform_handle_watcher_impl.h",
     "platform_message_loop_for_io_impl.cc",
     "platform_message_loop_for_io_impl.h",
     "platform_message_loop_impl.cc",
@@ -42,6 +44,8 @@ mojo_edk_unittests("mojo_edk_base_edk_unittests") {
   sources = [
     "message_loop_test_helper.cc",
     "message_loop_test_helper.h",
+    "platform_handle_watcher_test_helper.cc",
+    "platform_handle_watcher_test_helper.h",
     "platform_message_loop_for_io_impl_unittest.cc",
     "platform_message_loop_impl_unittest.cc",
     "test_message_loops_unittest.cc",

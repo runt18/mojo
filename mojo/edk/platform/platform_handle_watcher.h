@@ -40,7 +40,7 @@ class PlatformHandleWatcher {
     MOJO_DISALLOW_COPY_AND_ASSIGN(WatchToken);
   };
 
-  ~PlatformHandleWatcher() {}
+  virtual ~PlatformHandleWatcher() {}
 
   // Watches |platform_handle| to be readable and/or writable (without blocking)
   // as indicated by the presence of |read_callback| and/or |write_callback| (at

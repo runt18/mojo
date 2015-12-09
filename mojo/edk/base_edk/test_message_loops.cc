@@ -28,7 +28,7 @@ std::unique_ptr<MessageLoop> CreateTestMessageLoop() {
 std::unique_ptr<MessageLoop> CreateTestMessageLoopForIO(
     PlatformHandleWatcher** platform_handle_watcher) {
   auto rv = MakeUnique<base_edk::PlatformMessageLoopForIOImpl>();
-  *platform_handle_watcher = rv.get();
+  *platform_handle_watcher = &rv->platform_handle_watcher();
   return std::move(rv);
 }
 
