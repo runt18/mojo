@@ -462,9 +462,9 @@ class WindowManagerInternalProxy implements bindings.ProxyBase {
   }
 
   factory WindowManagerInternalProxy.connectToService(
-      bindings.ServiceConnector s, String url) {
+      bindings.ServiceConnector s, String url, [String serviceName]) {
     WindowManagerInternalProxy p = new WindowManagerInternalProxy.unbound();
-    s.connectToService(url, p);
+    s.connectToService(url, p, serviceName);
     return p;
   }
 
@@ -665,9 +665,9 @@ class WindowManagerInternalClientProxy implements bindings.ProxyBase {
   }
 
   factory WindowManagerInternalClientProxy.connectToService(
-      bindings.ServiceConnector s, String url) {
+      bindings.ServiceConnector s, String url, [String serviceName]) {
     WindowManagerInternalClientProxy p = new WindowManagerInternalClientProxy.unbound();
-    s.connectToService(url, p);
+    s.connectToService(url, p, serviceName);
     return p;
   }
 

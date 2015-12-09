@@ -1059,9 +1059,9 @@ class WindowManagerProxy implements bindings.ProxyBase {
   }
 
   factory WindowManagerProxy.connectToService(
-      bindings.ServiceConnector s, String url) {
+      bindings.ServiceConnector s, String url, [String serviceName]) {
     WindowManagerProxy p = new WindowManagerProxy.unbound();
-    s.connectToService(url, p);
+    s.connectToService(url, p, serviceName);
     return p;
   }
 
@@ -1366,9 +1366,9 @@ class WindowManagerObserverProxy implements bindings.ProxyBase {
   }
 
   factory WindowManagerObserverProxy.connectToService(
-      bindings.ServiceConnector s, String url) {
+      bindings.ServiceConnector s, String url, [String serviceName]) {
     WindowManagerObserverProxy p = new WindowManagerObserverProxy.unbound();
-    s.connectToService(url, p);
+    s.connectToService(url, p, serviceName);
     return p;
   }
 

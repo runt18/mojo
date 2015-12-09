@@ -162,9 +162,9 @@ class GpuProxy implements bindings.ProxyBase {
   }
 
   factory GpuProxy.connectToService(
-      bindings.ServiceConnector s, String url) {
+      bindings.ServiceConnector s, String url, [String serviceName]) {
     GpuProxy p = new GpuProxy.unbound();
-    s.connectToService(url, p);
+    s.connectToService(url, p, serviceName);
     return p;
   }
 

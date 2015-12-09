@@ -1199,9 +1199,9 @@ class CommandBufferSyncClientProxy implements bindings.ProxyBase {
   }
 
   factory CommandBufferSyncClientProxy.connectToService(
-      bindings.ServiceConnector s, String url) {
+      bindings.ServiceConnector s, String url, [String serviceName]) {
     CommandBufferSyncClientProxy p = new CommandBufferSyncClientProxy.unbound();
-    s.connectToService(url, p);
+    s.connectToService(url, p, serviceName);
     return p;
   }
 
@@ -1377,9 +1377,9 @@ class CommandBufferSyncPointClientProxy implements bindings.ProxyBase {
   }
 
   factory CommandBufferSyncPointClientProxy.connectToService(
-      bindings.ServiceConnector s, String url) {
+      bindings.ServiceConnector s, String url, [String serviceName]) {
     CommandBufferSyncPointClientProxy p = new CommandBufferSyncPointClientProxy.unbound();
-    s.connectToService(url, p);
+    s.connectToService(url, p, serviceName);
     return p;
   }
 
@@ -1550,9 +1550,9 @@ class CommandBufferLostContextObserverProxy implements bindings.ProxyBase {
   }
 
   factory CommandBufferLostContextObserverProxy.connectToService(
-      bindings.ServiceConnector s, String url) {
+      bindings.ServiceConnector s, String url, [String serviceName]) {
     CommandBufferLostContextObserverProxy p = new CommandBufferLostContextObserverProxy.unbound();
-    s.connectToService(url, p);
+    s.connectToService(url, p, serviceName);
     return p;
   }
 
@@ -1842,9 +1842,9 @@ class CommandBufferProxy implements bindings.ProxyBase {
   }
 
   factory CommandBufferProxy.connectToService(
-      bindings.ServiceConnector s, String url) {
+      bindings.ServiceConnector s, String url, [String serviceName]) {
     CommandBufferProxy p = new CommandBufferProxy.unbound();
-    s.connectToService(url, p);
+    s.connectToService(url, p, serviceName);
     return p;
   }
 

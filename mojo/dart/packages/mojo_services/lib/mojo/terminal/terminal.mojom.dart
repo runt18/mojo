@@ -824,9 +824,9 @@ class TerminalProxy implements bindings.ProxyBase {
   }
 
   factory TerminalProxy.connectToService(
-      bindings.ServiceConnector s, String url) {
+      bindings.ServiceConnector s, String url, [String serviceName]) {
     TerminalProxy p = new TerminalProxy.unbound();
-    s.connectToService(url, p);
+    s.connectToService(url, p, serviceName);
     return p;
   }
 

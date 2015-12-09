@@ -445,9 +445,9 @@ class TcpBoundSocketProxy implements bindings.ProxyBase {
   }
 
   factory TcpBoundSocketProxy.connectToService(
-      bindings.ServiceConnector s, String url) {
+      bindings.ServiceConnector s, String url, [String serviceName]) {
     TcpBoundSocketProxy p = new TcpBoundSocketProxy.unbound();
-    s.connectToService(url, p);
+    s.connectToService(url, p, serviceName);
     return p;
   }
 

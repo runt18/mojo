@@ -423,9 +423,9 @@ class CookieStoreProxy implements bindings.ProxyBase {
   }
 
   factory CookieStoreProxy.connectToService(
-      bindings.ServiceConnector s, String url) {
+      bindings.ServiceConnector s, String url, [String serviceName]) {
     CookieStoreProxy p = new CookieStoreProxy.unbound();
-    s.connectToService(url, p);
+    s.connectToService(url, p, serviceName);
     return p;
   }
 

@@ -632,9 +632,9 @@ class UrlLoaderInterceptorFactoryProxy implements bindings.ProxyBase {
   }
 
   factory UrlLoaderInterceptorFactoryProxy.connectToService(
-      bindings.ServiceConnector s, String url) {
+      bindings.ServiceConnector s, String url, [String serviceName]) {
     UrlLoaderInterceptorFactoryProxy p = new UrlLoaderInterceptorFactoryProxy.unbound();
-    s.connectToService(url, p);
+    s.connectToService(url, p, serviceName);
     return p;
   }
 
@@ -885,9 +885,9 @@ class UrlLoaderInterceptorProxy implements bindings.ProxyBase {
   }
 
   factory UrlLoaderInterceptorProxy.connectToService(
-      bindings.ServiceConnector s, String url) {
+      bindings.ServiceConnector s, String url, [String serviceName]) {
     UrlLoaderInterceptorProxy p = new UrlLoaderInterceptorProxy.unbound();
-    s.connectToService(url, p);
+    s.connectToService(url, p, serviceName);
     return p;
   }
 

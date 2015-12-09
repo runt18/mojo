@@ -1467,9 +1467,9 @@ class KeyboardClientProxy implements bindings.ProxyBase {
   }
 
   factory KeyboardClientProxy.connectToService(
-      bindings.ServiceConnector s, String url) {
+      bindings.ServiceConnector s, String url, [String serviceName]) {
     KeyboardClientProxy p = new KeyboardClientProxy.unbound();
-    s.connectToService(url, p);
+    s.connectToService(url, p, serviceName);
     return p;
   }
 
@@ -1723,9 +1723,9 @@ class KeyboardServiceProxy implements bindings.ProxyBase {
   }
 
   factory KeyboardServiceProxy.connectToService(
-      bindings.ServiceConnector s, String url) {
+      bindings.ServiceConnector s, String url, [String serviceName]) {
     KeyboardServiceProxy p = new KeyboardServiceProxy.unbound();
-    s.connectToService(url, p);
+    s.connectToService(url, p, serviceName);
     return p;
   }
 
@@ -1917,9 +1917,9 @@ class KeyboardServiceFactoryProxy implements bindings.ProxyBase {
   }
 
   factory KeyboardServiceFactoryProxy.connectToService(
-      bindings.ServiceConnector s, String url) {
+      bindings.ServiceConnector s, String url, [String serviceName]) {
     KeyboardServiceFactoryProxy p = new KeyboardServiceFactoryProxy.unbound();
-    s.connectToService(url, p);
+    s.connectToService(url, p, serviceName);
     return p;
   }
 

@@ -403,9 +403,9 @@ class ImportedInterfaceProxy implements bindings.ProxyBase {
   }
 
   factory ImportedInterfaceProxy.connectToService(
-      bindings.ServiceConnector s, String url) {
+      bindings.ServiceConnector s, String url, [String serviceName]) {
     ImportedInterfaceProxy p = new ImportedInterfaceProxy.unbound();
-    s.connectToService(url, p);
+    s.connectToService(url, p, serviceName);
     return p;
   }
 

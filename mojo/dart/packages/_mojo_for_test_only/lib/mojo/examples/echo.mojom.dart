@@ -248,9 +248,9 @@ class EchoProxy implements bindings.ProxyBase {
   }
 
   factory EchoProxy.connectToService(
-      bindings.ServiceConnector s, String url) {
+      bindings.ServiceConnector s, String url, [String serviceName]) {
     EchoProxy p = new EchoProxy.unbound();
-    s.connectToService(url, p);
+    s.connectToService(url, p, serviceName);
     return p;
   }
 

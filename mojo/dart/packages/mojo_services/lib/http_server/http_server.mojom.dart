@@ -547,9 +547,9 @@ class HttpServerProxy implements bindings.ProxyBase {
   }
 
   factory HttpServerProxy.connectToService(
-      bindings.ServiceConnector s, String url) {
+      bindings.ServiceConnector s, String url, [String serviceName]) {
     HttpServerProxy p = new HttpServerProxy.unbound();
-    s.connectToService(url, p);
+    s.connectToService(url, p, serviceName);
     return p;
   }
 
@@ -788,9 +788,9 @@ class HttpHandlerProxy implements bindings.ProxyBase {
   }
 
   factory HttpHandlerProxy.connectToService(
-      bindings.ServiceConnector s, String url) {
+      bindings.ServiceConnector s, String url, [String serviceName]) {
     HttpHandlerProxy p = new HttpHandlerProxy.unbound();
-    s.connectToService(url, p);
+    s.connectToService(url, p, serviceName);
     return p;
   }
 

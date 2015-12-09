@@ -172,9 +172,9 @@ class ViewportParameterListenerProxy implements bindings.ProxyBase {
   }
 
   factory ViewportParameterListenerProxy.connectToService(
-      bindings.ServiceConnector s, String url) {
+      bindings.ServiceConnector s, String url, [String serviceName]) {
     ViewportParameterListenerProxy p = new ViewportParameterListenerProxy.unbound();
-    s.connectToService(url, p);
+    s.connectToService(url, p, serviceName);
     return p;
   }
 

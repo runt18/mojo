@@ -716,9 +716,9 @@ class ViewTreeProxy implements bindings.ProxyBase {
   }
 
   factory ViewTreeProxy.connectToService(
-      bindings.ServiceConnector s, String url) {
+      bindings.ServiceConnector s, String url, [String serviceName]) {
     ViewTreeProxy p = new ViewTreeProxy.unbound();
-    s.connectToService(url, p);
+    s.connectToService(url, p, serviceName);
     return p;
   }
 
@@ -990,9 +990,9 @@ class ViewTreeHostProxy implements bindings.ProxyBase {
   }
 
   factory ViewTreeHostProxy.connectToService(
-      bindings.ServiceConnector s, String url) {
+      bindings.ServiceConnector s, String url, [String serviceName]) {
     ViewTreeHostProxy p = new ViewTreeHostProxy.unbound();
-    s.connectToService(url, p);
+    s.connectToService(url, p, serviceName);
     return p;
   }
 

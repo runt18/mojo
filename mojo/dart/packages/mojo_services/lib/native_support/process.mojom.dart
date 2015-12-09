@@ -859,9 +859,9 @@ class ProcessProxy implements bindings.ProxyBase {
   }
 
   factory ProcessProxy.connectToService(
-      bindings.ServiceConnector s, String url) {
+      bindings.ServiceConnector s, String url, [String serviceName]) {
     ProcessProxy p = new ProcessProxy.unbound();
-    s.connectToService(url, p);
+    s.connectToService(url, p, serviceName);
     return p;
   }
 
@@ -1130,9 +1130,9 @@ class ProcessControllerProxy implements bindings.ProxyBase {
   }
 
   factory ProcessControllerProxy.connectToService(
-      bindings.ServiceConnector s, String url) {
+      bindings.ServiceConnector s, String url, [String serviceName]) {
     ProcessControllerProxy p = new ProcessControllerProxy.unbound();
-    s.connectToService(url, p);
+    s.connectToService(url, p, serviceName);
     return p;
   }
 

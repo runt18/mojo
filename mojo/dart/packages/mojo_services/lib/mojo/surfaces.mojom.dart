@@ -1210,9 +1210,9 @@ class ResourceReturnerProxy implements bindings.ProxyBase {
   }
 
   factory ResourceReturnerProxy.connectToService(
-      bindings.ServiceConnector s, String url) {
+      bindings.ServiceConnector s, String url, [String serviceName]) {
     ResourceReturnerProxy p = new ResourceReturnerProxy.unbound();
-    s.connectToService(url, p);
+    s.connectToService(url, p, serviceName);
     return p;
   }
 
@@ -1469,9 +1469,9 @@ class SurfaceProxy implements bindings.ProxyBase {
   }
 
   factory SurfaceProxy.connectToService(
-      bindings.ServiceConnector s, String url) {
+      bindings.ServiceConnector s, String url, [String serviceName]) {
     SurfaceProxy p = new SurfaceProxy.unbound();
-    s.connectToService(url, p);
+    s.connectToService(url, p, serviceName);
     return p;
   }
 

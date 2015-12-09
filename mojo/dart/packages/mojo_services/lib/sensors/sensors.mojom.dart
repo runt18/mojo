@@ -573,9 +573,9 @@ class SensorListenerProxy implements bindings.ProxyBase {
   }
 
   factory SensorListenerProxy.connectToService(
-      bindings.ServiceConnector s, String url) {
+      bindings.ServiceConnector s, String url, [String serviceName]) {
     SensorListenerProxy p = new SensorListenerProxy.unbound();
-    s.connectToService(url, p);
+    s.connectToService(url, p, serviceName);
     return p;
   }
 
@@ -752,9 +752,9 @@ class SensorServiceProxy implements bindings.ProxyBase {
   }
 
   factory SensorServiceProxy.connectToService(
-      bindings.ServiceConnector s, String url) {
+      bindings.ServiceConnector s, String url, [String serviceName]) {
     SensorServiceProxy p = new SensorServiceProxy.unbound();
-    s.connectToService(url, p);
+    s.connectToService(url, p, serviceName);
     return p;
   }
 

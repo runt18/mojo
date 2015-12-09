@@ -1710,9 +1710,9 @@ class CheckMethodWithEmptyResponseProxy implements bindings.ProxyBase {
   }
 
   factory CheckMethodWithEmptyResponseProxy.connectToService(
-      bindings.ServiceConnector s, String url) {
+      bindings.ServiceConnector s, String url, [String serviceName]) {
     CheckMethodWithEmptyResponseProxy p = new CheckMethodWithEmptyResponseProxy.unbound();
-    s.connectToService(url, p);
+    s.connectToService(url, p, serviceName);
     return p;
   }
 
@@ -1950,9 +1950,9 @@ class CheckNameCollisionProxy implements bindings.ProxyBase {
   }
 
   factory CheckNameCollisionProxy.connectToService(
-      bindings.ServiceConnector s, String url) {
+      bindings.ServiceConnector s, String url, [String serviceName]) {
     CheckNameCollisionProxy p = new CheckNameCollisionProxy.unbound();
-    s.connectToService(url, p);
+    s.connectToService(url, p, serviceName);
     return p;
   }
 
@@ -2146,9 +2146,9 @@ class CheckEnumCapsProxy implements bindings.ProxyBase {
   }
 
   factory CheckEnumCapsProxy.connectToService(
-      bindings.ServiceConnector s, String url) {
+      bindings.ServiceConnector s, String url, [String serviceName]) {
     CheckEnumCapsProxy p = new CheckEnumCapsProxy.unbound();
-    s.connectToService(url, p);
+    s.connectToService(url, p, serviceName);
     return p;
   }
 
@@ -2318,9 +2318,9 @@ class TestInterfaceProxy implements bindings.ProxyBase {
   }
 
   factory TestInterfaceProxy.connectToService(
-      bindings.ServiceConnector s, String url) {
+      bindings.ServiceConnector s, String url, [String serviceName]) {
     TestInterfaceProxy p = new TestInterfaceProxy.unbound();
-    s.connectToService(url, p);
+    s.connectToService(url, p, serviceName);
     return p;
   }
 
@@ -2510,9 +2510,9 @@ class Regression551Proxy implements bindings.ProxyBase {
   }
 
   factory Regression551Proxy.connectToService(
-      bindings.ServiceConnector s, String url) {
+      bindings.ServiceConnector s, String url, [String serviceName]) {
     Regression551Proxy p = new Regression551Proxy.unbound();
-    s.connectToService(url, p);
+    s.connectToService(url, p, serviceName);
     return p;
   }
 

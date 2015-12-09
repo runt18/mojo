@@ -279,9 +279,9 @@ class TcpServerSocketProxy implements bindings.ProxyBase {
   }
 
   factory TcpServerSocketProxy.connectToService(
-      bindings.ServiceConnector s, String url) {
+      bindings.ServiceConnector s, String url, [String serviceName]) {
     TcpServerSocketProxy p = new TcpServerSocketProxy.unbound();
-    s.connectToService(url, p);
+    s.connectToService(url, p, serviceName);
     return p;
   }
 

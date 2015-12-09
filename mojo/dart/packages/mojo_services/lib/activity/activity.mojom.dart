@@ -1685,9 +1685,9 @@ class ActivityProxy implements bindings.ProxyBase {
   }
 
   factory ActivityProxy.connectToService(
-      bindings.ServiceConnector s, String url) {
+      bindings.ServiceConnector s, String url, [String serviceName]) {
     ActivityProxy p = new ActivityProxy.unbound();
-    s.connectToService(url, p);
+    s.connectToService(url, p, serviceName);
     return p;
   }
 
@@ -1961,9 +1961,9 @@ class PathServiceProxy implements bindings.ProxyBase {
   }
 
   factory PathServiceProxy.connectToService(
-      bindings.ServiceConnector s, String url) {
+      bindings.ServiceConnector s, String url, [String serviceName]) {
     PathServiceProxy p = new PathServiceProxy.unbound();
-    s.connectToService(url, p);
+    s.connectToService(url, p, serviceName);
     return p;
   }
 
@@ -2222,9 +2222,9 @@ class UserFeedbackProxy implements bindings.ProxyBase {
   }
 
   factory UserFeedbackProxy.connectToService(
-      bindings.ServiceConnector s, String url) {
+      bindings.ServiceConnector s, String url, [String serviceName]) {
     UserFeedbackProxy p = new UserFeedbackProxy.unbound();
-    s.connectToService(url, p);
+    s.connectToService(url, p, serviceName);
     return p;
   }
 

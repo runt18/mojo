@@ -173,9 +173,9 @@ class HttpServerFactoryProxy implements bindings.ProxyBase {
   }
 
   factory HttpServerFactoryProxy.connectToService(
-      bindings.ServiceConnector s, String url) {
+      bindings.ServiceConnector s, String url, [String serviceName]) {
     HttpServerFactoryProxy p = new HttpServerFactoryProxy.unbound();
-    s.connectToService(url, p);
+    s.connectToService(url, p, serviceName);
     return p;
   }
 

@@ -1095,9 +1095,9 @@ class NamedObjectProxy implements bindings.ProxyBase {
   }
 
   factory NamedObjectProxy.connectToService(
-      bindings.ServiceConnector s, String url) {
+      bindings.ServiceConnector s, String url, [String serviceName]) {
     NamedObjectProxy p = new NamedObjectProxy.unbound();
-    s.connectToService(url, p);
+    s.connectToService(url, p, serviceName);
     return p;
   }
 
@@ -1420,9 +1420,9 @@ class FactoryProxy implements bindings.ProxyBase {
   }
 
   factory FactoryProxy.connectToService(
-      bindings.ServiceConnector s, String url) {
+      bindings.ServiceConnector s, String url, [String serviceName]) {
     FactoryProxy p = new FactoryProxy.unbound();
-    s.connectToService(url, p);
+    s.connectToService(url, p, serviceName);
     return p;
   }
 

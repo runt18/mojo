@@ -173,9 +173,9 @@ class ContentHandlerProxy implements bindings.ProxyBase {
   }
 
   factory ContentHandlerProxy.connectToService(
-      bindings.ServiceConnector s, String url) {
+      bindings.ServiceConnector s, String url, [String serviceName]) {
     ContentHandlerProxy p = new ContentHandlerProxy.unbound();
-    s.connectToService(url, p);
+    s.connectToService(url, p, serviceName);
     return p;
   }
 

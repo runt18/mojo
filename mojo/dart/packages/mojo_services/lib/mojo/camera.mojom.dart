@@ -670,9 +670,9 @@ class CameraRollServiceProxy implements bindings.ProxyBase {
   }
 
   factory CameraRollServiceProxy.connectToService(
-      bindings.ServiceConnector s, String url) {
+      bindings.ServiceConnector s, String url, [String serviceName]) {
     CameraRollServiceProxy p = new CameraRollServiceProxy.unbound();
-    s.connectToService(url, p);
+    s.connectToService(url, p, serviceName);
     return p;
   }
 
@@ -915,9 +915,9 @@ class CameraServiceProxy implements bindings.ProxyBase {
   }
 
   factory CameraServiceProxy.connectToService(
-      bindings.ServiceConnector s, String url) {
+      bindings.ServiceConnector s, String url, [String serviceName]) {
     CameraServiceProxy p = new CameraServiceProxy.unbound();
-    s.connectToService(url, p);
+    s.connectToService(url, p, serviceName);
     return p;
   }
 

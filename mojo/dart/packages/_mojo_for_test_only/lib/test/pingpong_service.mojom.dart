@@ -802,9 +802,9 @@ class PingPongServiceProxy implements bindings.ProxyBase {
   }
 
   factory PingPongServiceProxy.connectToService(
-      bindings.ServiceConnector s, String url) {
+      bindings.ServiceConnector s, String url, [String serviceName]) {
     PingPongServiceProxy p = new PingPongServiceProxy.unbound();
-    s.connectToService(url, p);
+    s.connectToService(url, p, serviceName);
     return p;
   }
 
@@ -1044,9 +1044,9 @@ class PingPongClientProxy implements bindings.ProxyBase {
   }
 
   factory PingPongClientProxy.connectToService(
-      bindings.ServiceConnector s, String url) {
+      bindings.ServiceConnector s, String url, [String serviceName]) {
     PingPongClientProxy p = new PingPongClientProxy.unbound();
-    s.connectToService(url, p);
+    s.connectToService(url, p, serviceName);
     return p;
   }
 

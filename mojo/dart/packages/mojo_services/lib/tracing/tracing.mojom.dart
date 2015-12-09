@@ -438,9 +438,9 @@ class TraceProviderProxy implements bindings.ProxyBase {
   }
 
   factory TraceProviderProxy.connectToService(
-      bindings.ServiceConnector s, String url) {
+      bindings.ServiceConnector s, String url, [String serviceName]) {
     TraceProviderProxy p = new TraceProviderProxy.unbound();
-    s.connectToService(url, p);
+    s.connectToService(url, p, serviceName);
     return p;
   }
 
@@ -616,9 +616,9 @@ class TraceRecorderProxy implements bindings.ProxyBase {
   }
 
   factory TraceRecorderProxy.connectToService(
-      bindings.ServiceConnector s, String url) {
+      bindings.ServiceConnector s, String url, [String serviceName]) {
     TraceRecorderProxy p = new TraceRecorderProxy.unbound();
-    s.connectToService(url, p);
+    s.connectToService(url, p, serviceName);
     return p;
   }
 
@@ -801,9 +801,9 @@ class TraceCollectorProxy implements bindings.ProxyBase {
   }
 
   factory TraceCollectorProxy.connectToService(
-      bindings.ServiceConnector s, String url) {
+      bindings.ServiceConnector s, String url, [String serviceName]) {
     TraceCollectorProxy p = new TraceCollectorProxy.unbound();
-    s.connectToService(url, p);
+    s.connectToService(url, p, serviceName);
     return p;
   }
 

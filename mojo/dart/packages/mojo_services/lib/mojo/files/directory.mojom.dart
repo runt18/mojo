@@ -1352,9 +1352,9 @@ class DirectoryProxy implements bindings.ProxyBase {
   }
 
   factory DirectoryProxy.connectToService(
-      bindings.ServiceConnector s, String url) {
+      bindings.ServiceConnector s, String url, [String serviceName]) {
     DirectoryProxy p = new DirectoryProxy.unbound();
-    s.connectToService(url, p);
+    s.connectToService(url, p, serviceName);
     return p;
   }
 

@@ -639,9 +639,9 @@ class UrlLoaderProxy implements bindings.ProxyBase {
   }
 
   factory UrlLoaderProxy.connectToService(
-      bindings.ServiceConnector s, String url) {
+      bindings.ServiceConnector s, String url, [String serviceName]) {
     UrlLoaderProxy p = new UrlLoaderProxy.unbound();
-    s.connectToService(url, p);
+    s.connectToService(url, p, serviceName);
     return p;
   }
 

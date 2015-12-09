@@ -568,9 +568,9 @@ class CalculatorProxy implements bindings.ProxyBase {
   }
 
   factory CalculatorProxy.connectToService(
-      bindings.ServiceConnector s, String url) {
+      bindings.ServiceConnector s, String url, [String serviceName]) {
     CalculatorProxy p = new CalculatorProxy.unbound();
-    s.connectToService(url, p);
+    s.connectToService(url, p, serviceName);
     return p;
   }
 

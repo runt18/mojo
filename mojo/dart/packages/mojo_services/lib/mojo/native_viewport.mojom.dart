@@ -1178,9 +1178,9 @@ class NativeViewportProxy implements bindings.ProxyBase {
   }
 
   factory NativeViewportProxy.connectToService(
-      bindings.ServiceConnector s, String url) {
+      bindings.ServiceConnector s, String url, [String serviceName]) {
     NativeViewportProxy p = new NativeViewportProxy.unbound();
-    s.connectToService(url, p);
+    s.connectToService(url, p, serviceName);
     return p;
   }
 
@@ -1449,9 +1449,9 @@ class NativeViewportEventDispatcherProxy implements bindings.ProxyBase {
   }
 
   factory NativeViewportEventDispatcherProxy.connectToService(
-      bindings.ServiceConnector s, String url) {
+      bindings.ServiceConnector s, String url, [String serviceName]) {
     NativeViewportEventDispatcherProxy p = new NativeViewportEventDispatcherProxy.unbound();
-    s.connectToService(url, p);
+    s.connectToService(url, p, serviceName);
     return p;
   }
 

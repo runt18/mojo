@@ -545,9 +545,9 @@ class NfcTransmissionProxy implements bindings.ProxyBase {
   }
 
   factory NfcTransmissionProxy.connectToService(
-      bindings.ServiceConnector s, String url) {
+      bindings.ServiceConnector s, String url, [String serviceName]) {
     NfcTransmissionProxy p = new NfcTransmissionProxy.unbound();
-    s.connectToService(url, p);
+    s.connectToService(url, p, serviceName);
     return p;
   }
 
@@ -718,9 +718,9 @@ class NfcReceiverProxy implements bindings.ProxyBase {
   }
 
   factory NfcReceiverProxy.connectToService(
-      bindings.ServiceConnector s, String url) {
+      bindings.ServiceConnector s, String url, [String serviceName]) {
     NfcReceiverProxy p = new NfcReceiverProxy.unbound();
-    s.connectToService(url, p);
+    s.connectToService(url, p, serviceName);
     return p;
   }
 
@@ -933,9 +933,9 @@ class NfcProxy implements bindings.ProxyBase {
   }
 
   factory NfcProxy.connectToService(
-      bindings.ServiceConnector s, String url) {
+      bindings.ServiceConnector s, String url, [String serviceName]) {
     NfcProxy p = new NfcProxy.unbound();
-    s.connectToService(url, p);
+    s.connectToService(url, p, serviceName);
     return p;
   }
 

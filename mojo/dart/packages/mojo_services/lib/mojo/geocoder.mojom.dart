@@ -1095,9 +1095,9 @@ class GeocoderProxy implements bindings.ProxyBase {
   }
 
   factory GeocoderProxy.connectToService(
-      bindings.ServiceConnector s, String url) {
+      bindings.ServiceConnector s, String url, [String serviceName]) {
     GeocoderProxy p = new GeocoderProxy.unbound();
-    s.connectToService(url, p);
+    s.connectToService(url, p, serviceName);
     return p;
   }
 

@@ -248,9 +248,9 @@ class ContextProviderProxy implements bindings.ProxyBase {
   }
 
   factory ContextProviderProxy.connectToService(
-      bindings.ServiceConnector s, String url) {
+      bindings.ServiceConnector s, String url, [String serviceName]) {
     ContextProviderProxy p = new ContextProviderProxy.unbound();
-    s.connectToService(url, p);
+    s.connectToService(url, p, serviceName);
     return p;
   }
 

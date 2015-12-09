@@ -882,9 +882,9 @@ class ContactsServiceProxy implements bindings.ProxyBase {
   }
 
   factory ContactsServiceProxy.connectToService(
-      bindings.ServiceConnector s, String url) {
+      bindings.ServiceConnector s, String url, [String serviceName]) {
     ContactsServiceProxy p = new ContactsServiceProxy.unbound();
-    s.connectToService(url, p);
+    s.connectToService(url, p, serviceName);
     return p;
   }
 

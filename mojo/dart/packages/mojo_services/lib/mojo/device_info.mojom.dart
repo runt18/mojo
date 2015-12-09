@@ -326,9 +326,9 @@ class DeviceInfoProxy implements bindings.ProxyBase {
   }
 
   factory DeviceInfoProxy.connectToService(
-      bindings.ServiceConnector s, String url) {
+      bindings.ServiceConnector s, String url, [String serviceName]) {
     DeviceInfoProxy p = new DeviceInfoProxy.unbound();
-    s.connectToService(url, p);
+    s.connectToService(url, p, serviceName);
     return p;
   }
 

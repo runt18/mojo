@@ -423,9 +423,9 @@ class EchoServiceProxy implements bindings.ProxyBase {
   }
 
   factory EchoServiceProxy.connectToService(
-      bindings.ServiceConnector s, String url) {
+      bindings.ServiceConnector s, String url, [String serviceName]) {
     EchoServiceProxy p = new EchoServiceProxy.unbound();
-    s.connectToService(url, p);
+    s.connectToService(url, p, serviceName);
     return p;
   }
 

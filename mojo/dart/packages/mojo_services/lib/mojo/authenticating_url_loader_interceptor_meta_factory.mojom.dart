@@ -172,9 +172,9 @@ class AuthenticatingUrlLoaderInterceptorMetaFactoryProxy implements bindings.Pro
   }
 
   factory AuthenticatingUrlLoaderInterceptorMetaFactoryProxy.connectToService(
-      bindings.ServiceConnector s, String url) {
+      bindings.ServiceConnector s, String url, [String serviceName]) {
     AuthenticatingUrlLoaderInterceptorMetaFactoryProxy p = new AuthenticatingUrlLoaderInterceptorMetaFactoryProxy.unbound();
-    s.connectToService(url, p);
+    s.connectToService(url, p, serviceName);
     return p;
   }
 

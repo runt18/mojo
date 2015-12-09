@@ -321,9 +321,9 @@ class AssetBundleProxy implements bindings.ProxyBase {
   }
 
   factory AssetBundleProxy.connectToService(
-      bindings.ServiceConnector s, String url) {
+      bindings.ServiceConnector s, String url, [String serviceName]) {
     AssetBundleProxy p = new AssetBundleProxy.unbound();
-    s.connectToService(url, p);
+    s.connectToService(url, p, serviceName);
     return p;
   }
 
@@ -517,9 +517,9 @@ class AssetUnpackerProxy implements bindings.ProxyBase {
   }
 
   factory AssetUnpackerProxy.connectToService(
-      bindings.ServiceConnector s, String url) {
+      bindings.ServiceConnector s, String url, [String serviceName]) {
     AssetUnpackerProxy p = new AssetUnpackerProxy.unbound();
-    s.connectToService(url, p);
+    s.connectToService(url, p, serviceName);
     return p;
   }
 

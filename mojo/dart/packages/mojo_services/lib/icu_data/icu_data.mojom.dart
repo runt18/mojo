@@ -247,9 +247,9 @@ class IcuDataProxy implements bindings.ProxyBase {
   }
 
   factory IcuDataProxy.connectToService(
-      bindings.ServiceConnector s, String url) {
+      bindings.ServiceConnector s, String url, [String serviceName]) {
     IcuDataProxy p = new IcuDataProxy.unbound();
-    s.connectToService(url, p);
+    s.connectToService(url, p, serviceName);
     return p;
   }
 

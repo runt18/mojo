@@ -259,9 +259,9 @@ class ViewProviderProxy implements bindings.ProxyBase {
   }
 
   factory ViewProviderProxy.connectToService(
-      bindings.ServiceConnector s, String url) {
+      bindings.ServiceConnector s, String url, [String serviceName]) {
     ViewProviderProxy p = new ViewProviderProxy.unbound();
-    s.connectToService(url, p);
+    s.connectToService(url, p, serviceName);
     return p;
   }
 

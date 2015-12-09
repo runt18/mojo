@@ -771,9 +771,9 @@ class UrlResponseDiskCacheProxy implements bindings.ProxyBase {
   }
 
   factory UrlResponseDiskCacheProxy.connectToService(
-      bindings.ServiceConnector s, String url) {
+      bindings.ServiceConnector s, String url, [String serviceName]) {
     UrlResponseDiskCacheProxy p = new UrlResponseDiskCacheProxy.unbound();
-    s.connectToService(url, p);
+    s.connectToService(url, p, serviceName);
     return p;
   }
 

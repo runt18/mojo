@@ -2985,9 +2985,9 @@ class SmallCacheProxy implements bindings.ProxyBase {
   }
 
   factory SmallCacheProxy.connectToService(
-      bindings.ServiceConnector s, String url) {
+      bindings.ServiceConnector s, String url, [String serviceName]) {
     SmallCacheProxy p = new SmallCacheProxy.unbound();
-    s.connectToService(url, p);
+    s.connectToService(url, p, serviceName);
     return p;
   }
 
@@ -3204,9 +3204,9 @@ class UnionInterfaceProxy implements bindings.ProxyBase {
   }
 
   factory UnionInterfaceProxy.connectToService(
-      bindings.ServiceConnector s, String url) {
+      bindings.ServiceConnector s, String url, [String serviceName]) {
     UnionInterfaceProxy p = new UnionInterfaceProxy.unbound();
-    s.connectToService(url, p);
+    s.connectToService(url, p, serviceName);
     return p;
   }
 

@@ -898,9 +898,9 @@ class ViewProxy implements bindings.ProxyBase {
   }
 
   factory ViewProxy.connectToService(
-      bindings.ServiceConnector s, String url) {
+      bindings.ServiceConnector s, String url, [String serviceName]) {
     ViewProxy p = new ViewProxy.unbound();
-    s.connectToService(url, p);
+    s.connectToService(url, p, serviceName);
     return p;
   }
 
@@ -1187,9 +1187,9 @@ class ViewHostProxy implements bindings.ProxyBase {
   }
 
   factory ViewHostProxy.connectToService(
-      bindings.ServiceConnector s, String url) {
+      bindings.ServiceConnector s, String url, [String serviceName]) {
     ViewHostProxy p = new ViewHostProxy.unbound();
-    s.connectToService(url, p);
+    s.connectToService(url, p, serviceName);
     return p;
   }
 

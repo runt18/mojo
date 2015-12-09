@@ -864,9 +864,9 @@ class CppSideProxy implements bindings.ProxyBase {
   }
 
   factory CppSideProxy.connectToService(
-      bindings.ServiceConnector s, String url) {
+      bindings.ServiceConnector s, String url, [String serviceName]) {
     CppSideProxy p = new CppSideProxy.unbound();
-    s.connectToService(url, p);
+    s.connectToService(url, p, serviceName);
     return p;
   }
 
@@ -1076,9 +1076,9 @@ class DartSideProxy implements bindings.ProxyBase {
   }
 
   factory DartSideProxy.connectToService(
-      bindings.ServiceConnector s, String url) {
+      bindings.ServiceConnector s, String url, [String serviceName]) {
     DartSideProxy p = new DartSideProxy.unbound();
-    s.connectToService(url, p);
+    s.connectToService(url, p, serviceName);
     return p;
   }
 

@@ -5164,9 +5164,9 @@ class SomeInterfaceProxy implements bindings.ProxyBase {
   }
 
   factory SomeInterfaceProxy.connectToService(
-      bindings.ServiceConnector s, String url) {
+      bindings.ServiceConnector s, String url, [String serviceName]) {
     SomeInterfaceProxy p = new SomeInterfaceProxy.unbound();
-    s.connectToService(url, p);
+    s.connectToService(url, p, serviceName);
     return p;
   }
 

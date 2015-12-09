@@ -1537,9 +1537,9 @@ class ServiceProxy implements bindings.ProxyBase {
   }
 
   factory ServiceProxy.connectToService(
-      bindings.ServiceConnector s, String url) {
+      bindings.ServiceConnector s, String url, [String serviceName]) {
     ServiceProxy p = new ServiceProxy.unbound();
-    s.connectToService(url, p);
+    s.connectToService(url, p, serviceName);
     return p;
   }
 
@@ -1738,9 +1738,9 @@ class PortProxy implements bindings.ProxyBase {
   }
 
   factory PortProxy.connectToService(
-      bindings.ServiceConnector s, String url) {
+      bindings.ServiceConnector s, String url, [String serviceName]) {
     PortProxy p = new PortProxy.unbound();
-    s.connectToService(url, p);
+    s.connectToService(url, p, serviceName);
     return p;
   }
 

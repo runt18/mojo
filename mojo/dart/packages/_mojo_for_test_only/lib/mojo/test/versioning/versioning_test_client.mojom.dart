@@ -904,9 +904,9 @@ class HumanResourceDatabaseProxy implements bindings.ProxyBase {
   }
 
   factory HumanResourceDatabaseProxy.connectToService(
-      bindings.ServiceConnector s, String url) {
+      bindings.ServiceConnector s, String url, [String serviceName]) {
     HumanResourceDatabaseProxy p = new HumanResourceDatabaseProxy.unbound();
-    s.connectToService(url, p);
+    s.connectToService(url, p, serviceName);
     return p;
   }
 

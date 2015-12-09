@@ -3220,9 +3220,9 @@ class InterfaceAProxy implements bindings.ProxyBase {
   }
 
   factory InterfaceAProxy.connectToService(
-      bindings.ServiceConnector s, String url) {
+      bindings.ServiceConnector s, String url, [String serviceName]) {
     InterfaceAProxy p = new InterfaceAProxy.unbound();
-    s.connectToService(url, p);
+    s.connectToService(url, p, serviceName);
     return p;
   }
 
@@ -3419,9 +3419,9 @@ class BoundsCheckTestInterfaceProxy implements bindings.ProxyBase {
   }
 
   factory BoundsCheckTestInterfaceProxy.connectToService(
-      bindings.ServiceConnector s, String url) {
+      bindings.ServiceConnector s, String url, [String serviceName]) {
     BoundsCheckTestInterfaceProxy p = new BoundsCheckTestInterfaceProxy.unbound();
-    s.connectToService(url, p);
+    s.connectToService(url, p, serviceName);
     return p;
   }
 
@@ -3824,9 +3824,9 @@ class ConformanceTestInterfaceProxy implements bindings.ProxyBase {
   }
 
   factory ConformanceTestInterfaceProxy.connectToService(
-      bindings.ServiceConnector s, String url) {
+      bindings.ServiceConnector s, String url, [String serviceName]) {
     ConformanceTestInterfaceProxy p = new ConformanceTestInterfaceProxy.unbound();
-    s.connectToService(url, p);
+    s.connectToService(url, p, serviceName);
     return p;
   }
 
@@ -4113,9 +4113,9 @@ class IntegrationTestInterfaceProxy implements bindings.ProxyBase {
   }
 
   factory IntegrationTestInterfaceProxy.connectToService(
-      bindings.ServiceConnector s, String url) {
+      bindings.ServiceConnector s, String url, [String serviceName]) {
     IntegrationTestInterfaceProxy p = new IntegrationTestInterfaceProxy.unbound();
-    s.connectToService(url, p);
+    s.connectToService(url, p, serviceName);
     return p;
   }
 

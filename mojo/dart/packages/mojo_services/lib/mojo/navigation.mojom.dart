@@ -390,9 +390,9 @@ class NavigatorHostProxy implements bindings.ProxyBase {
   }
 
   factory NavigatorHostProxy.connectToService(
-      bindings.ServiceConnector s, String url) {
+      bindings.ServiceConnector s, String url, [String serviceName]) {
     NavigatorHostProxy p = new NavigatorHostProxy.unbound();
-    s.connectToService(url, p);
+    s.connectToService(url, p, serviceName);
     return p;
   }
 

@@ -293,9 +293,9 @@ class HostResolverProxy implements bindings.ProxyBase {
   }
 
   factory HostResolverProxy.connectToService(
-      bindings.ServiceConnector s, String url) {
+      bindings.ServiceConnector s, String url, [String serviceName]) {
     HostResolverProxy p = new HostResolverProxy.unbound();
-    s.connectToService(url, p);
+    s.connectToService(url, p, serviceName);
     return p;
   }
 

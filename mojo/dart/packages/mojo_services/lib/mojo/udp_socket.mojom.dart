@@ -1447,9 +1447,9 @@ class UdpSocketProxy implements bindings.ProxyBase {
   }
 
   factory UdpSocketProxy.connectToService(
-      bindings.ServiceConnector s, String url) {
+      bindings.ServiceConnector s, String url, [String serviceName]) {
     UdpSocketProxy p = new UdpSocketProxy.unbound();
-    s.connectToService(url, p);
+    s.connectToService(url, p, serviceName);
     return p;
   }
 
@@ -1815,9 +1815,9 @@ class UdpSocketReceiverProxy implements bindings.ProxyBase {
   }
 
   factory UdpSocketReceiverProxy.connectToService(
-      bindings.ServiceConnector s, String url) {
+      bindings.ServiceConnector s, String url, [String serviceName]) {
     UdpSocketReceiverProxy p = new UdpSocketReceiverProxy.unbound();
-    s.connectToService(url, p);
+    s.connectToService(url, p, serviceName);
     return p;
   }
 

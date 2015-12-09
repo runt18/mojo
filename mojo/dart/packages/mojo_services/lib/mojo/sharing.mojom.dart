@@ -162,9 +162,9 @@ class SharingServiceProxy implements bindings.ProxyBase {
   }
 
   factory SharingServiceProxy.connectToService(
-      bindings.ServiceConnector s, String url) {
+      bindings.ServiceConnector s, String url, [String serviceName]) {
     SharingServiceProxy p = new SharingServiceProxy.unbound();
-    s.connectToService(url, p);
+    s.connectToService(url, p, serviceName);
     return p;
   }
 

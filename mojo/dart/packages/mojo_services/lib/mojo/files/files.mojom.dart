@@ -262,9 +262,9 @@ class FilesProxy implements bindings.ProxyBase {
   }
 
   factory FilesProxy.connectToService(
-      bindings.ServiceConnector s, String url) {
+      bindings.ServiceConnector s, String url, [String serviceName]) {
     FilesProxy p = new FilesProxy.unbound();
-    s.connectToService(url, p);
+    s.connectToService(url, p, serviceName);
     return p;
   }
 

@@ -1135,9 +1135,9 @@ class NetworkServiceProxy implements bindings.ProxyBase {
   }
 
   factory NetworkServiceProxy.connectToService(
-      bindings.ServiceConnector s, String url) {
+      bindings.ServiceConnector s, String url, [String serviceName]) {
     NetworkServiceProxy p = new NetworkServiceProxy.unbound();
-    s.connectToService(url, p);
+    s.connectToService(url, p, serviceName);
     return p;
   }
 

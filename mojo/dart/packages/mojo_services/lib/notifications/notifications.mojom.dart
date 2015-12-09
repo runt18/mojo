@@ -533,9 +533,9 @@ class NotificationClientProxy implements bindings.ProxyBase {
   }
 
   factory NotificationClientProxy.connectToService(
-      bindings.ServiceConnector s, String url) {
+      bindings.ServiceConnector s, String url, [String serviceName]) {
     NotificationClientProxy p = new NotificationClientProxy.unbound();
-    s.connectToService(url, p);
+    s.connectToService(url, p, serviceName);
     return p;
   }
 
@@ -722,9 +722,9 @@ class NotificationProxy implements bindings.ProxyBase {
   }
 
   factory NotificationProxy.connectToService(
-      bindings.ServiceConnector s, String url) {
+      bindings.ServiceConnector s, String url, [String serviceName]) {
     NotificationProxy p = new NotificationProxy.unbound();
-    s.connectToService(url, p);
+    s.connectToService(url, p, serviceName);
     return p;
   }
 
@@ -902,9 +902,9 @@ class NotificationServiceProxy implements bindings.ProxyBase {
   }
 
   factory NotificationServiceProxy.connectToService(
-      bindings.ServiceConnector s, String url) {
+      bindings.ServiceConnector s, String url, [String serviceName]) {
     NotificationServiceProxy p = new NotificationServiceProxy.unbound();
-    s.connectToService(url, p);
+    s.connectToService(url, p, serviceName);
     return p;
   }
 

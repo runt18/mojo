@@ -325,9 +325,9 @@ class DisplayProxy implements bindings.ProxyBase {
   }
 
   factory DisplayProxy.connectToService(
-      bindings.ServiceConnector s, String url) {
+      bindings.ServiceConnector s, String url, [String serviceName]) {
     DisplayProxy p = new DisplayProxy.unbound();
-    s.connectToService(url, p);
+    s.connectToService(url, p, serviceName);
     return p;
   }
 
@@ -521,9 +521,9 @@ class DisplayFactoryProxy implements bindings.ProxyBase {
   }
 
   factory DisplayFactoryProxy.connectToService(
-      bindings.ServiceConnector s, String url) {
+      bindings.ServiceConnector s, String url, [String serviceName]) {
     DisplayFactoryProxy p = new DisplayFactoryProxy.unbound();
-    s.connectToService(url, p);
+    s.connectToService(url, p, serviceName);
     return p;
   }
 

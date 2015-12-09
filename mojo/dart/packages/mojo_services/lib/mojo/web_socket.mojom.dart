@@ -932,9 +932,9 @@ class WebSocketProxy implements bindings.ProxyBase {
   }
 
   factory WebSocketProxy.connectToService(
-      bindings.ServiceConnector s, String url) {
+      bindings.ServiceConnector s, String url, [String serviceName]) {
     WebSocketProxy p = new WebSocketProxy.unbound();
-    s.connectToService(url, p);
+    s.connectToService(url, p, serviceName);
     return p;
   }
 
@@ -1174,9 +1174,9 @@ class WebSocketClientProxy implements bindings.ProxyBase {
   }
 
   factory WebSocketClientProxy.connectToService(
-      bindings.ServiceConnector s, String url) {
+      bindings.ServiceConnector s, String url, [String serviceName]) {
     WebSocketClientProxy p = new WebSocketClientProxy.unbound();
-    s.connectToService(url, p);
+    s.connectToService(url, p, serviceName);
     return p;
   }
 

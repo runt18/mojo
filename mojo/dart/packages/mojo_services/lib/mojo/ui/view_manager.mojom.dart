@@ -423,9 +423,9 @@ class ViewManagerProxy implements bindings.ProxyBase {
   }
 
   factory ViewManagerProxy.connectToService(
-      bindings.ServiceConnector s, String url) {
+      bindings.ServiceConnector s, String url, [String serviceName]) {
     ViewManagerProxy p = new ViewManagerProxy.unbound();
-    s.connectToService(url, p);
+    s.connectToService(url, p, serviceName);
     return p;
   }
 

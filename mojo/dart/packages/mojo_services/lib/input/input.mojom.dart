@@ -295,9 +295,9 @@ class InputClientProxy implements bindings.ProxyBase {
   }
 
   factory InputClientProxy.connectToService(
-      bindings.ServiceConnector s, String url) {
+      bindings.ServiceConnector s, String url, [String serviceName]) {
     InputClientProxy p = new InputClientProxy.unbound();
-    s.connectToService(url, p);
+    s.connectToService(url, p, serviceName);
     return p;
   }
 
@@ -489,9 +489,9 @@ class InputServiceProxy implements bindings.ProxyBase {
   }
 
   factory InputServiceProxy.connectToService(
-      bindings.ServiceConnector s, String url) {
+      bindings.ServiceConnector s, String url, [String serviceName]) {
     InputServiceProxy p = new InputServiceProxy.unbound();
-    s.connectToService(url, p);
+    s.connectToService(url, p, serviceName);
     return p;
   }
 

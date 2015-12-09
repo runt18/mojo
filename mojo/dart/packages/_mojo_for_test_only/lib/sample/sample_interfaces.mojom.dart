@@ -1468,9 +1468,9 @@ class ProviderProxy implements bindings.ProxyBase {
   }
 
   factory ProviderProxy.connectToService(
-      bindings.ServiceConnector s, String url) {
+      bindings.ServiceConnector s, String url, [String serviceName]) {
     ProviderProxy p = new ProviderProxy.unbound();
-    s.connectToService(url, p);
+    s.connectToService(url, p, serviceName);
     return p;
   }
 
@@ -1803,9 +1803,9 @@ class IntegerAccessorProxy implements bindings.ProxyBase {
   }
 
   factory IntegerAccessorProxy.connectToService(
-      bindings.ServiceConnector s, String url) {
+      bindings.ServiceConnector s, String url, [String serviceName]) {
     IntegerAccessorProxy p = new IntegerAccessorProxy.unbound();
-    s.connectToService(url, p);
+    s.connectToService(url, p, serviceName);
     return p;
   }
 
@@ -2046,9 +2046,9 @@ class SampleInterfaceProxy implements bindings.ProxyBase {
   }
 
   factory SampleInterfaceProxy.connectToService(
-      bindings.ServiceConnector s, String url) {
+      bindings.ServiceConnector s, String url, [String serviceName]) {
     SampleInterfaceProxy p = new SampleInterfaceProxy.unbound();
-    s.connectToService(url, p);
+    s.connectToService(url, p, serviceName);
     return p;
   }
 
