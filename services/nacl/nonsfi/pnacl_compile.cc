@@ -3,8 +3,8 @@
 // found in the LICENSE file.
 
 #include "base/logging.h"
+#include "mojo/nacl/nonsfi/file_util.h"
 #include "mojo/nacl/nonsfi/nexe_launcher_nonsfi.h"
-#include "mojo/nacl/nonsfi/temporary_file_util.h"
 #include "mojo/public/c/system/main.h"
 #include "mojo/public/cpp/application/application_connection.h"
 #include "mojo/public/cpp/application/application_delegate.h"

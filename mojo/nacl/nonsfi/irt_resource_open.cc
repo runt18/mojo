@@ -6,8 +6,8 @@
 #include <string.h>
 
 #include "base/logging.h"
+#include "mojo/nacl/nonsfi/file_util.h"
 #include "mojo/nacl/nonsfi/irt_mojo_nonsfi.h"
-#include "mojo/nacl/nonsfi/temporary_file_util.h"
 #include "native_client/src/untrusted/irt/irt_dev.h"
 #include "services/nacl/nonsfi/kCrtbegin.h"
 #include "services/nacl/nonsfi/kCrtbeginForEh.h"

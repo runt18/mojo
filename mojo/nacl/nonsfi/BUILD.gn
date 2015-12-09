@@ -40,14 +40,14 @@ group("monacl_shell_x86") {
 
 static_library("irt_mojo") {
   sources = [
+    "file_util.cc",
+    "file_util.h",
     "irt_mojo_nonsfi.cc",
     "irt_mojo_nonsfi.h",
     "irt_pnacl_translator_compile.cc",
     "irt_pnacl_translator_link.cc",
     "irt_resource_open.cc",
     "nexe_launcher_nonsfi.cc",
-    "temporary_file_util.cc",
-    "temporary_file_util.h",
   ]
 
   deps = [
@@ -60,6 +60,7 @@ static_library("irt_mojo") {
     "//mojo/public/platform/nacl:mojo_irt_header",
     "//mojo/public/platform/native:mgl_thunks",
     "//mojo/public/platform/native:mgl_onscreen_thunks",
+    "//mojo/services/files/interfaces",
     "//native_client/src/nonsfi/irt:irt_interfaces",
     "//services/nacl/nonsfi:pnacl_translator_irt",
   ]
