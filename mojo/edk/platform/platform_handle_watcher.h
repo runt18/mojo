@@ -18,6 +18,9 @@ namespace platform {
 // without blocking. Typically, these are tied to a (particular) |MessageLoop|:
 // handles will only be watched while the loop is running and the lifetime of
 // the object is typically tied to the |MessageLoop|'s lifetime.
+//
+// Implementations are typically not thread-safe, and should be used on only the
+// watching thread (i.e., the one that the |MessageLoop| belongs to).
 class PlatformHandleWatcher {
  public:
   // Abstract "token" class returned by the |Watch()| (below). This object
