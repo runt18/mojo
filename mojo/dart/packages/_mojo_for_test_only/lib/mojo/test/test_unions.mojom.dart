@@ -1703,6 +1703,8 @@ class PodUnion extends bindings.Union {
               'Trying to decode null union for non-nullable AnEnum.');
           }
         break;
+      default:
+        throw new bindings.MojoCodecError("Bad union tag: $tag");
     }
 
     return result;
@@ -1765,6 +1767,8 @@ class PodUnion extends bindings.Union {
         
         encoder0.encodeEnum(fEnum, offset + 8);
         break;
+      default:
+        throw new bindings.MojoCodecError("Bad union tag: $_tag");
     }
   }
 
@@ -2013,6 +2017,8 @@ class UnionOfUnions extends bindings.Union {
               keys0, values0);
         }
         break;
+      default:
+        throw new bindings.MojoCodecError("Bad union tag: $tag");
     }
 
     return result;
@@ -2092,6 +2098,8 @@ class UnionOfUnions extends bindings.Union {
           }
         }
         break;
+      default:
+        throw new bindings.MojoCodecError("Bad union tag: $_tag");
     }
   }
 
@@ -2299,6 +2307,8 @@ class ObjectUnion extends bindings.Union {
         var decoder1 = decoder0.decodePointer(offset + 8, false);
         result.fPodUnion = PodUnion.decode(decoder1, 0);
         break;
+      default:
+        throw new bindings.MojoCodecError("Bad union tag: $tag");
     }
 
     return result;
@@ -2353,6 +2363,8 @@ class ObjectUnion extends bindings.Union {
       case ObjectUnionTag.fPodUnion:
         encoder0.encodeNestedUnion(fPodUnion, offset + 8, false);
         break;
+      default:
+        throw new bindings.MojoCodecError("Bad union tag: $_tag");
     }
   }
 
@@ -2523,6 +2535,8 @@ class HandleUnion extends bindings.Union {
         
         result.fSmallCache = decoder0.decodeServiceInterface(offset + 8, false, SmallCacheProxy.newFromEndpoint);
         break;
+      default:
+        throw new bindings.MojoCodecError("Bad union tag: $tag");
     }
 
     return result;
@@ -2557,6 +2571,8 @@ class HandleUnion extends bindings.Union {
         
         encoder0.encodeInterface(fSmallCache, offset + 8, false);
         break;
+      default:
+        throw new bindings.MojoCodecError("Bad union tag: $_tag");
     }
   }
 
@@ -2635,6 +2651,8 @@ class ObjectOnlyUnion extends bindings.Union {
         var decoder1 = decoder0.decodePointer(offset + 8, false);
         result.dummy1 = DummyStruct.decode(decoder1);
         break;
+      default:
+        throw new bindings.MojoCodecError("Bad union tag: $tag");
     }
 
     return result;
@@ -2649,6 +2667,8 @@ class ObjectOnlyUnion extends bindings.Union {
         
         encoder0.encodeStruct(dummy1, offset + 8, false);
         break;
+      default:
+        throw new bindings.MojoCodecError("Bad union tag: $_tag");
     }
   }
 
@@ -2711,6 +2731,8 @@ class OldUnion extends bindings.Union {
         
         result.fInt8 = decoder0.decodeInt8(offset + 8);
         break;
+      default:
+        throw new bindings.MojoCodecError("Bad union tag: $tag");
     }
 
     return result;
@@ -2725,6 +2747,8 @@ class OldUnion extends bindings.Union {
         
         encoder0.encodeInt8(fInt8, offset + 8);
         break;
+      default:
+        throw new bindings.MojoCodecError("Bad union tag: $_tag");
     }
   }
 
@@ -2805,6 +2829,8 @@ class NewUnion extends bindings.Union {
         
         result.fInt16 = decoder0.decodeInt16(offset + 8);
         break;
+      default:
+        throw new bindings.MojoCodecError("Bad union tag: $tag");
     }
 
     return result;
@@ -2823,6 +2849,8 @@ class NewUnion extends bindings.Union {
         
         encoder0.encodeInt16(fInt16, offset + 8);
         break;
+      default:
+        throw new bindings.MojoCodecError("Bad union tag: $_tag");
     }
   }
 

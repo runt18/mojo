@@ -448,6 +448,8 @@ class ResultOrError extends bindings.Union {
           }
         }
         break;
+      default:
+        throw new bindings.MojoCodecError("Bad union tag: $tag");
     }
 
     return result;
@@ -474,6 +476,8 @@ class ResultOrError extends bindings.Union {
           }
         }
         break;
+      default:
+        throw new bindings.MojoCodecError("Bad union tag: $_tag");
     }
   }
 

@@ -56,6 +56,8 @@ class IncludedUnion extends bindings.Union {
         
         result.a = decoder0.decodeInt8(offset + 8);
         break;
+      default:
+        throw new bindings.MojoCodecError("Bad union tag: $tag");
     }
 
     return result;
@@ -70,6 +72,8 @@ class IncludedUnion extends bindings.Union {
         
         encoder0.encodeInt8(a, offset + 8);
         break;
+      default:
+        throw new bindings.MojoCodecError("Bad union tag: $_tag");
     }
   }
 

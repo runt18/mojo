@@ -2863,6 +2863,8 @@ class UnionA extends bindings.Union {
         var decoder1 = decoder0.decodePointer(offset + 8, false);
         result.j = UnionB.decode(decoder1, 0);
         break;
+      default:
+        throw new bindings.MojoCodecError("Bad union tag: $tag");
     }
 
     return result;
@@ -2945,6 +2947,8 @@ class UnionA extends bindings.Union {
       case UnionATag.j:
         encoder0.encodeNestedUnion(j, offset + 8, false);
         break;
+      default:
+        throw new bindings.MojoCodecError("Bad union tag: $_tag");
     }
   }
 
@@ -3088,6 +3092,8 @@ class UnionB extends bindings.Union {
         
         result.d = decoder0.decodeUint32(offset + 8);
         break;
+      default:
+        throw new bindings.MojoCodecError("Bad union tag: $tag");
     }
 
     return result;
@@ -3114,6 +3120,8 @@ class UnionB extends bindings.Union {
         
         encoder0.encodeUint32(d, offset + 8);
         break;
+      default:
+        throw new bindings.MojoCodecError("Bad union tag: $_tag");
     }
   }
 

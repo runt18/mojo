@@ -4948,6 +4948,8 @@ class UnionOfStructs extends bindings.Union {
               keys0, values0);
         }
         break;
+      default:
+        throw new bindings.MojoCodecError("Bad union tag: $tag");
     }
 
     return result;
@@ -5028,6 +5030,8 @@ class UnionOfStructs extends bindings.Union {
           }
         }
         break;
+      default:
+        throw new bindings.MojoCodecError("Bad union tag: $_tag");
     }
   }
 
