@@ -38,8 +38,10 @@ class NotificationServiceImpl implements NotificationService,
     private final String mNotificationManagerTag;
 
     private final NotificationBuilder mNotificationBuilder;
-    private final ActivityManager.AppTask mAppTask;
+    private final ActivityManager mActivityManager;
+
     private int mNextNotificationId;
+    private ActivityManager.AppTask mAppTask;
 
     NotificationServiceImpl(
             Context context, Core core, Shell shell, int notificationIconResourceId) {
@@ -52,9 +54,8 @@ class NotificationServiceImpl implements NotificationService,
                 core, shell, "mojo:intent_receiver", IntentReceiverManager.MANAGER);
         mNotificationBuilder = new NotificationBuilder(
                 context, intentReceiverManager, notificationIconResourceId, this, this);
-        ActivityManager activityManager =
-                (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
-        List<ActivityManager.AppTask> tasks = activityManager.getAppTasks();
+        mActivityManager = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
+        List<ActivityManager.AppTask> tasks = mActivityManager.getAppTasks();
         // Associate the service instance with the current top task of the shell
         // application. All notifications created by this instance will be associated with
         // this task too, and the task will be foregrounded when any of the notifications
@@ -86,7 +87,15 @@ class NotificationServiceImpl implements NotificationService,
     public void onNotificationSelected(int notificationId) {
         NotificationClient client = mNotificationClientMap.get(notificationId);
         if (client != null) {
-            mAppTask.moveToFront();
+            // If the selected task is not active anymore, choose the most recent one and associate
+            // this service with it.
+            if (mAppTask == null || mAppTask.getTaskInfo().id == -1) {
+                List<ActivityManager.AppTask> tasks = mActivityManager.getAppTasks();
+                mAppTask = tasks.isEmpty() ? null : tasks.get(0);
+            }
+            if (mAppTask != null) {
+                mAppTask.moveToFront();
+            }
             client.onSelected();
         }
         // Since autoCancel is set to true (@see NotificationBuilder#build(int, NotificationData)),
