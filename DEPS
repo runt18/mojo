@@ -397,7 +397,7 @@ hooks = [
                 '--quiet',
                 '--platform=linux*',
                 '--no_auth',
-                '--bucket', 'mojo/mojom_parser',
+                '--bucket', 'mojo/mojom_parser/linux64',
                 '-s', 'src/mojo/public/tools/bindings/mojom_parser/bin/linux64/mojom_parser.sha1',
     ],
   },

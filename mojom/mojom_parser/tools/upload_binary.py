@@ -58,7 +58,7 @@ def Upload(path_to_binary):
   upload_script = os.path.abspath(os.path.join(DEPOT_TOOLS_PATH,
       "upload_to_google_storage.py"))
   upload_cmd = ['python', upload_script, path_to_binary,
-                '-b', 'mojo/mojom_parser']
+                '-b', 'mojo/mojom_parser/linux64']
 
   print "Uploading mojom_parser to GCS..."
   subprocess.check_call(upload_cmd)
