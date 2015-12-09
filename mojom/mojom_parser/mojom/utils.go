@@ -33,15 +33,34 @@ func RelPathIfShorter(filePath string) string {
 // file: The MojomFile in which the error occurs
 // token: The token most closely associated with the problem.
 // message: The base error text. It should not include any location information
-// as that will be added by this function.
+// as that will be added by this function. It should also not include a prefix
+// such as "Error:" because that will be added by this function.
 func UserErrorMessage(file *MojomFile, token lexer.Token, message string) string {
+	return UserErrorMessageP(file, token, "Error:", message)
+}
+
+// UserErrorMessageP is responsible for formatting user-facing error messages
+// This function is similar to UserErrorMessage except that it also allows the
+// caller to specify the message prefix.
+// prefix: An error message prefix such as "Error:". It should not end with a space.
+func UserErrorMessageP(file *MojomFile, token lexer.Token, prefix, message string) string {
+	// TODO(rudominer) Allow users to disable the use of color in snippets.
+	useColor := true
+
+	// Optionally color the prefix red.
+	if useColor && len(prefix) > 0 {
+		prefix = fmt.Sprintf("\x1b[31;1m%s\x1b[0m", prefix)
+	}
+	if len(prefix) > 0 {
+		prefix = fmt.Sprintf("%s ", prefix)
+	}
+	message = fmt.Sprintf("%s%s", prefix, message)
+
 	filePath := "Unknown file"
 	importedFromMessage := ""
 	snippet := ""
 	if file != nil {
 		if len(file.fileContents) > 0 {
-			// TODO(rudominer) Allow users to disable the use of color in snippets.
-			useColor := true
 			snippet = fmt.Sprintf("\n%s", token.Snippet(file.fileContents, useColor))
 		}
 		filePath = RelPathIfShorter(file.CanonicalFileName)

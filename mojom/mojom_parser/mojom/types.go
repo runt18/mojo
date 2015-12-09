@@ -803,13 +803,13 @@ func (ref *UserTypeRef) validateAfterResolution() error {
 		// being used as either a map key or a constant declaration. Also
 		// make sure that a literal was not assigned to it.
 		if ref.usedAsMapKey {
-			message := fmt.Sprintf("Error: The type %s is not allowed as the key type of a map. "+
+			message := fmt.Sprintf("The type %s is not allowed as the key type of a map. "+
 				"Only simple types, strings and enum types may be map keys.", ref.identifier)
 			message = UserErrorMessage(file, ref.token, message)
 			return fmt.Errorf(message)
 		}
 		if ref.usedAsConstantType {
-			message := fmt.Sprintf("Error: The type %s is not allowed as the type of a declared constant. "+
+			message := fmt.Sprintf("The type %s is not allowed as the type of a declared constant. "+
 				"Only simple types, strings and enum types may be used.", ref.identifier)
 			message = UserErrorMessage(file, ref.token, message)
 			return fmt.Errorf(message)

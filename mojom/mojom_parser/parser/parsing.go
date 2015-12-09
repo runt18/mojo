@@ -317,7 +317,7 @@ func (p *Parser) parseAttributes() (attributes *mojom.Attributes) {
 		if nextToken.Kind != lexer.RBracket && nextToken.Kind != lexer.Comma {
 			switch nextToken.Kind {
 			case lexer.Module, lexer.Interface, lexer.Struct, lexer.Union, lexer.Enum:
-				message := fmt.Sprintf("Error: The attribute section is missing a closing ] before %s.", nextToken)
+				message := fmt.Sprintf("The attribute section is missing a closing ] before %s.", nextToken)
 				p.parseErrorT(ParserErrorCodeUnexpectedToken, message, nextToken)
 				return
 			default:
@@ -928,7 +928,7 @@ func (p *Parser) parseEnumBody(mojomEnum *mojom.MojomEnum) bool {
 		switch nextToken.Kind {
 		case lexer.Name:
 			if !firstValue && !trailingCommaFound {
-				message := fmt.Sprintf("Error: Expecting a comma after %s before the next value %s.",
+				message := fmt.Sprintf("Expecting a comma after %s before the next value %s.",
 					p.lastConsumed, nextToken)
 				p.parseErrorT(ParserErrorCodeUnexpectedToken, message, p.lastConsumed)
 				return false
@@ -1028,7 +1028,7 @@ func (p *Parser) parseConstDecl(attributes *mojom.Attributes) (constant *mojom.U
 	}
 
 	if !declaredType.MarkUsedAsConstantType() {
-		message := fmt.Sprintf("Error: The type %s is not allowed as the type of a declared constant. "+
+		message := fmt.Sprintf("The type %s is not allowed as the type of a declared constant. "+
 			"Only simple types, strings and enum types may be the types of constants.", declaredType)
 		p.parseErrorT(ParserErrorCodeUnexpectedToken, message, declaredTypeToken)
 		return
@@ -1259,7 +1259,7 @@ func (p *Parser) tryParseBuiltInType() mojom.TypeRef {
 			if p.match(lexer.RAngle) {
 				typeName = fmt.Sprintf("%s<%s>", typeName, handleType)
 				if builtInType = mojom.BuiltInType(typeName); builtInType == nil {
-					message := fmt.Sprintf("Error: Unrecognized type of handle: %s.", typeName)
+					message := fmt.Sprintf("Unrecognized type of handle: %s.", typeName)
 					p.parseErrorT(ParserErrorCodeUnexpectedToken, message, typeNameToken)
 					return nil
 				}
@@ -1273,7 +1273,7 @@ func (p *Parser) tryParseBuiltInType() mojom.TypeRef {
 	// Check for nullable marker
 	if p.tryMatch(lexer.Qstn) {
 		if builtInType = mojom.BuiltInType(typeName + "?"); builtInType == nil {
-			message := fmt.Sprintf("Error: The type %s? is invalid because the type %s may not be made nullable.",
+			message := fmt.Sprintf("The type %s? is invalid because the type %s may not be made nullable.",
 				typeName, typeName)
 			p.parseErrorT(ParserErrorCodeUnexpectedToken, message, typeNameToken)
 			return nil
@@ -1347,7 +1347,7 @@ func (p *Parser) tryParseMapType() mojom.TypeRef {
 	nullable := p.tryMatch(lexer.Qstn)
 
 	if !keyType.MarkUsedAsMapKey() {
-		message := fmt.Sprintf("Error: The type %s is not allowed as the key type of a map. "+
+		message := fmt.Sprintf("The type %s is not allowed as the key type of a map. "+
 			"Only simple types, strings and enum types may be map keys.", keyType)
 		p.parseErrorT(ParserErrorCodeUnexpectedToken, message, keyToken)
 		return nil
@@ -1586,7 +1586,7 @@ func (p *Parser) matchSemicolonToken(previousToken lexer.Token) bool {
 	if p.match(lexer.Semi) {
 		return true
 	}
-	message := fmt.Sprintf("Error: Missing semicolon after %s.", previousToken)
+	message := fmt.Sprintf("Missing semicolon after %s.", previousToken)
 	p.parseErrorT(ParserErrorCodeUnexpectedToken, message, previousToken)
 	return false
 }
@@ -1642,7 +1642,7 @@ func (p *Parser) readOrdinal() (ordinalValue int64, err error) {
 		intTextToParse := p.lastConsumed.Text[1:]
 		ordinalValue, err = strconv.ParseInt(intTextToParse, 10, 64)
 		if err != nil || ordinalValue < 0 || ordinalValue >= math.MaxUint32 {
-			err = fmt.Errorf("Error: Invalid ordinal string following '@': %q. Ordinals must be decimal integers between 0 and %d.",
+			err = fmt.Errorf("Invalid ordinal string following '@': %q. Ordinals must be decimal integers between 0 and %d.",
 				intTextToParse, math.MaxUint32-1)
 			return
 		}
@@ -1695,9 +1695,9 @@ func (p *Parser) unexpectedTokenError(token lexer.Token, expected string) {
 	var message string
 	switch token.Kind {
 	case lexer.ErrorUnterminatedStringLiteral, lexer.ErrorUnterminatedComment:
-		message = fmt.Sprintf("Error: %s", token)
+		message = fmt.Sprintf("%s", token)
 	default:
-		message = fmt.Sprintf("Error: Unexpected %s. Expecting %s.", token, expected)
+		message = fmt.Sprintf("Unexpected %s. Expecting %s.", token, expected)
 	}
 	p.parseErrorT(ParserErrorCodeUnexpectedToken, message, token)
 }
