@@ -18,10 +18,8 @@ type TokenKind int
 
 // TokenKinds
 const (
-	// An error of an unknown nature has occured.
-	ErrorUnknown TokenKind = iota
 	// A character was found which is not part of a valid token.
-	ErrorIllegalChar
+	ErrorIllegalChar TokenKind = iota
 	// A quoted string was opened but not closed.
 	ErrorUnterminatedStringLiteral
 	// A multiline comment was opened but not closed.
@@ -79,8 +77,6 @@ const (
 func (tokenKind TokenKind) String() string {
 	switch tokenKind {
 	// Errors
-	case ErrorUnknown:
-		return "unknown token"
 	case ErrorIllegalChar:
 		return "illegal token"
 	case ErrorUnterminatedStringLiteral:
@@ -210,14 +206,16 @@ func (t Token) EOF() bool {
 // messages. For many token kinds the TokenKind.String() method will produce
 // good results for representing the token. But for other TokenKinds we will
 // want to include some information besides a representation of the kind.
-// For example for an ErrorUnknown kind we wnat to show the text.
+// For example for an ErrorIllegalChar kind we wnat to show the text.
 // This will be used for example in an error message that looks
 // like the following:
 // Unexpected token at line 5, column 6: '###'. Expecting '{'.
 func (token Token) String() string {
 	switch token.Kind {
-	case ErrorUnknown, Name, StringLiteral, IntConstDec, IntConstHex, FloatConst, Ordinal:
-		return fmt.Sprintf("'%s'", token.Text)
+	case StringLiteral:
+		return token.Text
+	case Name, IntConstDec, IntConstHex, FloatConst, Ordinal, ErrorIllegalChar:
+		return fmt.Sprintf("%q", token.Text)
 
 	default:
 		return token.Kind.String()
@@ -277,7 +275,13 @@ func (token Token) Snippet(source string, color bool) (snippet string) {
 	// We don't want too big of a caret line as that may be distracting. So we
 	// limit it to 20 runes at most.
 	tokenSize := utf8.RuneCountInString(token.Text)
-	if tokenSize > 20 {
+	if token.Kind == ErrorUnterminatedComment {
+		// In the case of an unterminated comment, the token text will contain
+		// the entire rest of the source after the opening comment. We really
+		// only want to highlight the "/*" characters marking the beginning of
+		// the comment.
+		tokenSize = 2
+	} else if tokenSize > 20 {
 		tokenSize = 20
 	}
 	if color {

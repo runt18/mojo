@@ -794,3 +794,185 @@ func TestInvalidAssignmentDuringParsing(t *testing.T) {
 		}
 	}
 }
+
+// TestLexerErrors contains a series of test cases in which we
+// run the parser on invalid mojom input string and compare the resulting
+// error message to an expected one. The particular type of error we are testing
+// here are cases in which the lexer detects an error and returns one of
+// its error tokens.
+func TestLexerErrors(t *testing.T) {
+	type testCase struct {
+		fileName       string
+		mojomContents  string
+		expectedErrors []string
+	}
+	cases := make([]testCase, 0)
+	testCaseNum := 0
+
+	startTestCase := func(moduleNameSpace string) {
+		fileName := fmt.Sprintf("file%d", testCaseNum)
+		cases = append(cases, testCase{fileName: fileName})
+	}
+
+	expectError := func(expectedError string) {
+		cases[testCaseNum].expectedErrors = append(cases[testCaseNum].expectedErrors, expectedError)
+	}
+
+	endTestCase := func() {
+		testCaseNum += 1
+	}
+
+	////////////////////////////////////////////////////////////
+	// Group 1: Unterminated comment
+	////////////////////////////////////////////////////////////
+
+	////////////////////////////////////////////////////////////
+	// Test Case: Unterminated comment at start of file.
+	////////////////////////////////////////////////////////////
+	startTestCase("")
+	cases[testCaseNum].mojomContents = `
+	/*
+	* The woods are lovely
+	* dark and deep
+	* but I have promises to keep.
+	struct Foo {
+		int32 x = "hello";
+	};
+	`
+	expectError("Error")
+	expectError("unterminated comment")
+	endTestCase()
+
+	////////////////////////////////////////////////////////////
+	// Test Case: Unterminated comment at end of file.
+	////////////////////////////////////////////////////////////
+	startTestCase("")
+	cases[testCaseNum].mojomContents = `
+	struct Foo {
+		int32 x ;
+	};
+
+	/*
+	* The woods are lovely
+	* dark and deep
+	* but I have promises to keep.
+	`
+	expectError("Error")
+	expectError("unterminated comment")
+	endTestCase()
+
+	////////////////////////////////////////////////////////////
+	// Test Case: Unterminated comment in the middle.
+	////////////////////////////////////////////////////////////
+	startTestCase("")
+	cases[testCaseNum].mojomContents = `
+	struct Foo {
+		int32 x ;
+		/*
+	     * The woods are lovely
+	     * dark and deep
+	     * but I have promises to keep.
+	};`
+	expectError("Error")
+	expectError("unterminated comment")
+	endTestCase()
+
+	////////////////////////////////////////////////////////////
+	// Group 1: Unterminated string literal
+	////////////////////////////////////////////////////////////
+
+	/// ////////////////////////////////////////////////////////////
+	// Test Case: Unterminated string literal in import.
+	////////////////////////////////////////////////////////////
+	startTestCase("")
+	cases[testCaseNum].mojomContents = `
+    import "foo.bar
+	struct Foo {
+		int32 x = 42;
+	};
+	`
+	expectError("Error")
+	expectError("unterminated string literal")
+	endTestCase()
+
+	/// ////////////////////////////////////////////////////////////
+	// Test Case: Unterminated string literal in assignment.
+	////////////////////////////////////////////////////////////
+	startTestCase("")
+	cases[testCaseNum].mojomContents = `
+    import "foo.bar";
+	struct Foo {
+		string x = "hello;
+	};
+	`
+	expectError("Error")
+	expectError("unterminated string literal")
+	endTestCase()
+
+	////////////////////////////////////////////////////////////
+	// Group 3: ErrorIllegalChar
+	////////////////////////////////////////////////////////////
+
+	/// ////////////////////////////////////////////////////////////
+	// Test Case: ErrorIllegalChar at the beginning of  a file.
+	////////////////////////////////////////////////////////////
+	startTestCase("")
+	cases[testCaseNum].mojomContents = `
+	/? What the ?/
+    import "foo.bar"
+	struct Foo {
+		int32 x = 42;
+	};
+	`
+	expectError("Error:")
+	expectError("Unexpected \"/\"")
+	endTestCase()
+
+	/// ////////////////////////////////////////////////////////////
+	// Test Case: ErrorIllegalChar in the middle.
+	////////////////////////////////////////////////////////////
+	startTestCase("")
+	cases[testCaseNum].mojomContents = `
+    import "foo.bar";
+	struct Foo {
+		int32 x = %42;
+	};
+	`
+	expectError("Error:")
+	expectError("Unexpected \"%\"")
+	endTestCase()
+
+	/// ////////////////////////////////////////////////////////////
+	// Test Case: ErrorIllegalChar at the end
+	////////////////////////////////////////////////////////////
+	startTestCase("")
+	cases[testCaseNum].mojomContents = `
+    import "foo.bar";
+	struct Foo {
+		int32 x = 42;
+	};
+	*
+	`
+	expectError("Error:")
+	expectError("Unexpected \"*\"")
+	endTestCase()
+
+	////////////////////////////////////////////////////////////
+	// Execute all of the test cases.
+	////////////////////////////////////////////////////////////
+	for i, c := range cases {
+		descriptor := mojom.NewMojomDescriptor()
+		parser := MakeParser(c.fileName, c.mojomContents, descriptor, nil)
+		parser.Parse()
+		if parser.OK() {
+			t.Errorf("Parsing was supposed to fail but did not for test case %d", i)
+		} else {
+			got := parser.GetError().Error()
+			for _, expected := range c.expectedErrors {
+				if !strings.Contains(got, expected) {
+					t.Errorf("%s:\n*****expected to contain:\n%s\n****actual\n%s", c.fileName, expected, got)
+				}
+			}
+		}
+	}
+}
