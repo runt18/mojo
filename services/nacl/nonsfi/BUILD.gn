@@ -42,7 +42,6 @@ if (!is_nacl) {
         "//mojo/data_pipe_utils",
         "//mojo/message_pump",
         "//mojo/nacl/nonsfi:irt_mojo",
-        "//mojo/services/files/c:mojio",
         "//native_client/src/nonsfi/loader:elf_loader",
       ]
     }

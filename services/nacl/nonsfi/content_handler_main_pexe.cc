@@ -13,7 +13,6 @@
 #include "mojo/public/c/system/main.h"
 #include "mojo/public/cpp/application/application_impl.h"
 #include "mojo/public/cpp/bindings/array.h"
-#include "mojo/services/files/c/lib/template_util.h"
 #include "services/nacl/nonsfi/pnacl_compile.mojom.h"
 #include "services/nacl/nonsfi/pnacl_link.mojom.h"
 
@@ -31,7 +30,9 @@ class CompilerUI {
   // Synchronous method to compile pexe into object file.
   mojo::Array<mojo::String> CompilePexe(mojo::String pexe_file_path) {
     mojo::Array<mojo::String> output;
-    compiler_->PexeCompile(pexe_file_path, mojio::Capture(&output));
+    compiler_->PexeCompile(
+        pexe_file_path,
+        [&output](mojo::Array<mojo::String> o) { output = o.Pass(); });
     CHECK(compiler_.WaitForIncomingResponse())
         << "Waiting for pexe compiler failed";
     return output;
@@ -51,7 +52,8 @@ class LinkerUI {
   // Synchronous method to link object file into nexe.
   mojo::String LinkPexe(mojo::Array<mojo::String> object_file_paths) {
     mojo::String output;
-    linker_->PexeLink(std::move(object_file_paths), mojio::Capture(&output));
+    linker_->PexeLink(std::move(object_file_paths),
+                      [&output](mojo::String o) { output = o; });
     CHECK(linker_.WaitForIncomingResponse())
         << "Waiting for pexe linker failed";
     return output;
