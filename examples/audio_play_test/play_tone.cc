@@ -117,7 +117,7 @@ void PlayToneApp::Initialize(ApplicationImpl* app) {
 
   LpcmMediaTypeDetailsPtr pcm_cfg = LpcmMediaTypeDetails::New();
   pcm_cfg->sample_format     = LpcmSampleFormat::SIGNED_16;
-  pcm_cfg->samples_per_frame = 1;
+  pcm_cfg->channels          = 1;
   pcm_cfg->frames_per_second = SAMP_FREQ;
 
   cfg->media_type = MediaType::New();

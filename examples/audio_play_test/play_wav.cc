@@ -267,7 +267,7 @@ void PlayWAVApp::ProcessHTTPResponse(URLResponsePtr resp) {
   pcm_cfg->sample_format = (wav_info_.bits_per_sample == 8)
                          ? LpcmSampleFormat::UNSIGNED_8
                          : LpcmSampleFormat::SIGNED_16;
-  pcm_cfg->samples_per_frame = wav_info_.channel_count;
+  pcm_cfg->channels = wav_info_.channel_count;
   pcm_cfg->frames_per_second = wav_info_.frame_rate;
 
   cfg->media_type = MediaType::New();

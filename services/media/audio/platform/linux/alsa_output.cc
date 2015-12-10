@@ -49,7 +49,7 @@ AudioOutputPtr CreateDefaultAlsaOutput(AudioOutputManager* manager) {
 
   LpcmMediaTypeDetailsPtr config(LpcmMediaTypeDetails::New());
   config->frames_per_second = 48000;
-  config->samples_per_frame = 2;
+  config->channels = 2;
   config->sample_format = LpcmSampleFormat::SIGNED_16;
 
   if (alsa_out->Configure(config.Pass()) != MediaResult::OK) {
@@ -101,7 +101,7 @@ MediaResult AlsaOutput::Configure(LpcmMediaTypeDetailsPtr config) {
     return MediaResult::UNSUPPORTED_CONFIG;
   }
 
-  if (SUPPORTED_CHANNEL_COUNTS.find(config->samples_per_frame) ==
+  if (SUPPORTED_CHANNEL_COUNTS.find(config->channels) ==
       SUPPORTED_CHANNEL_COUNTS.end()) {
     return MediaResult::UNSUPPORTED_CONFIG;
   }
@@ -116,7 +116,7 @@ MediaResult AlsaOutput::Configure(LpcmMediaTypeDetailsPtr config) {
   DCHECK(is_precise);
 
   // Figure out how many bytes there are per frame.
-  output_bytes_per_frame_ = bytes_per_sample * config->samples_per_frame;
+  output_bytes_per_frame_ = bytes_per_sample * config->channels;
 
   // Success
   output_format_ = config.Pass();
@@ -142,15 +142,15 @@ MediaResult AlsaOutput::Init() {
   res = snd_pcm_set_params(alsa_device_,
                            alsa_format_,
                            SND_PCM_ACCESS_RW_INTERLEAVED,
-                           output_format_->samples_per_frame,
+                           output_format_->channels,
                            output_format_->frames_per_second,
                            0,   // do not allow ALSA resample
                            local_time::to_usec<unsigned int>(TARGET_LATENCY));
   if (res) {
     LOG(ERROR) << "Failed to configure ALSA device \"" << kAlsaDevice << "\" "
                << "(res = " << res << ")";
-    LOG(ERROR) << "Requested samples per frame: "
-               << output_format_->samples_per_frame;
+    LOG(ERROR) << "Requested channels         : "
+               << output_format_->channels;
     LOG(ERROR) << "Requested frames per second: "
                << output_format_->frames_per_second;
     LOG(ERROR) << "Requested ALSA format      : " << alsa_format_;

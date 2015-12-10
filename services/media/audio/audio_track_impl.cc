@@ -22,22 +22,22 @@ constexpr size_t AudioTrackImpl::PTS_FRACTIONAL_BITS;
 // initialization using mojom generated structs, we should switch to it.
 static const struct {
   LpcmSampleFormat sample_format;
-  uint8_t min_samples_per_frame;
-  uint8_t max_samples_per_frame;
+  uint8_t min_channels;
+  uint8_t max_channels;
   uint32_t min_frames_per_second;
   uint32_t max_frames_per_second;
 } kSupportedLpcmTypeSets[] = {
   {
     .sample_format = LpcmSampleFormat::UNSIGNED_8,
-    .min_samples_per_frame = 1,
-    .max_samples_per_frame = 2,
+    .min_channels = 1,
+    .max_channels = 2,
     .min_frames_per_second = 1000,
     .max_frames_per_second = 48000,
   },
   {
     .sample_format = LpcmSampleFormat::SIGNED_16,
-    .min_samples_per_frame = 1,
-    .max_samples_per_frame = 2,
+    .min_channels = 1,
+    .max_channels = 2,
     .min_frames_per_second = 1000,
     .max_frames_per_second = 48000,
   },
@@ -91,8 +91,8 @@ void AudioTrackImpl::Describe(const DescribeCallback& cbk) {
     LpcmMediaTypeSetDetailsPtr lpcm_detail = LpcmMediaTypeSetDetails::New();
 
     lpcm_detail->sample_format         = s.sample_format;
-    lpcm_detail->min_samples_per_frame = s.min_samples_per_frame;
-    lpcm_detail->max_samples_per_frame = s.max_samples_per_frame;
+    lpcm_detail->min_channels = s.min_channels;
+    lpcm_detail->max_channels = s.max_channels;
     lpcm_detail->min_frames_per_second = s.min_frames_per_second;
     lpcm_detail->max_frames_per_second = s.max_frames_per_second;
     mts->details->set_lpcm(lpcm_detail.Pass());
@@ -125,8 +125,8 @@ void AudioTrackImpl::Configure(AudioTrackConfigurationPtr configuration,
     const auto& cfg_set = kSupportedLpcmTypeSets[i];
 
     if ((cfg->sample_format == cfg_set.sample_format) &&
-        (cfg->samples_per_frame >= cfg_set.min_samples_per_frame) &&
-        (cfg->samples_per_frame <= cfg_set.max_samples_per_frame) &&
+        (cfg->channels >= cfg_set.min_channels) &&
+        (cfg->channels <= cfg_set.max_channels) &&
         (cfg->frames_per_second >= cfg_set.min_frames_per_second) &&
         (cfg->frames_per_second <= cfg_set.max_frames_per_second)) {
       break;
@@ -180,7 +180,7 @@ void AudioTrackImpl::Configure(AudioTrackConfigurationPtr configuration,
       bytes_per_frame_ = 2;
       break;
   }
-  bytes_per_frame_ *= cfg->samples_per_frame;
+  bytes_per_frame_ *= cfg->channels;
 
   // Overflow trying to convert from frames to bytes?
   uint64_t requested_frames = configuration->max_frames;

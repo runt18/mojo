@@ -124,7 +124,7 @@ template <typename DType,
           typename SType>
 static inline MixerPtr SelectPSM(const LpcmMediaTypeDetailsPtr& src_format,
                                  const LpcmMediaTypeDetailsPtr& dst_format) {
-  switch (src_format->samples_per_frame) {
+  switch (src_format->channels) {
   case 1:
     return SelectPSM<DType, DChCount, SType, 1>(src_format, dst_format);
   case 2:
@@ -151,7 +151,7 @@ static inline MixerPtr SelectPSM(const LpcmMediaTypeDetailsPtr& src_format,
 template <typename DType>
 static inline MixerPtr SelectPSM(const LpcmMediaTypeDetailsPtr& src_format,
                                  const LpcmMediaTypeDetailsPtr& dst_format) {
-  switch (dst_format->samples_per_frame) {
+  switch (dst_format->channels) {
   case 1:
     return SelectPSM<DType, 1>(src_format, dst_format);
   case 2:
