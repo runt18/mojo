@@ -4,6 +4,8 @@
 
 #include <stdio.h>
 
+#include <memory>
+
 #include "mojo/public/c/system/main.h"
 #include "mojo/public/cpp/application/application_delegate.h"
 #include "mojo/public/cpp/application/application_impl.h"
@@ -116,6 +118,8 @@ class ContentHandlerApp : public ApplicationDelegate,
 }  // namespace mojo
 
 MojoResult MojoMain(MojoHandle application_request) {
-  mojo::ApplicationRunner runner(new mojo::examples::ContentHandlerApp);
+  mojo::ApplicationRunner runner(
+      std::unique_ptr<mojo::examples::ContentHandlerApp>(
+          new mojo::examples::ContentHandlerApp()));
   return runner.Run(application_request);
 }

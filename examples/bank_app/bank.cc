@@ -2,6 +2,8 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
+#include <memory>
+
 #include "examples/bank_app/bank.mojom.h"
 #include "mojo/common/binding_set.h"
 #include "mojo/public/c/system/main.h"
@@ -92,6 +94,7 @@ class BankApp : public mojo::ApplicationDelegate,
 }  // namespace examples
 
 MojoResult MojoMain(MojoHandle application_request) {
-  mojo::ApplicationRunner runner(new examples::BankApp());
+  mojo::ApplicationRunner runner(
+      std::unique_ptr<examples::BankApp>(new examples::BankApp()));
   return runner.Run(application_request);
 }

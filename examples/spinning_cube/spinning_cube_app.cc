@@ -2,8 +2,9 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-#include <stdio.h>
-#include <string>
+#include <assert.h>
+
+#include <memory>
 
 #include "base/bind.h"
 #include "base/memory/scoped_ptr.h"
@@ -91,6 +92,7 @@ class SpinningCubeApp : public mojo::ApplicationDelegate,
 }  // namespace examples
 
 MojoResult MojoMain(MojoHandle application_request) {
-  mojo::ApplicationRunner runner(new examples::SpinningCubeApp);
+  mojo::ApplicationRunner runner(std::unique_ptr<examples::SpinningCubeApp>(
+      new examples::SpinningCubeApp()));
   return runner.Run(application_request);
 }

@@ -243,6 +243,8 @@ void PlayToneApp::Cleanup() {
 }  // namespace mojo
 
 MojoResult MojoMain(MojoHandle app_request) {
-  mojo::ApplicationRunner runner(new mojo::media::audio::examples::PlayToneApp);
+  mojo::ApplicationRunner runner(
+      std::unique_ptr<mojo::media::audio::examples::PlayToneApp>(
+          new mojo::media::audio::examples::PlayToneApp()));
   return runner.Run(app_request);
 }

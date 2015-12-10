@@ -6,6 +6,8 @@
 
 #include <assert.h>
 
+#include <memory>
+
 #include "mojo/public/c/system/main.h"
 #include "mojo/public/cpp/application/application_connection.h"
 #include "mojo/public/cpp/application/application_runner.h"
@@ -17,11 +19,9 @@ namespace mojo {
 namespace test {
 
 TestServiceApplication::TestServiceApplication()
-    : ref_count_(0), app_impl_(nullptr) {
-}
+    : ref_count_(0), app_impl_(nullptr) {}
 
-TestServiceApplication::~TestServiceApplication() {
-}
+TestServiceApplication::~TestServiceApplication() {}
 
 void TestServiceApplication::Initialize(ApplicationImpl* app) {
   app_impl_ = app;
@@ -61,6 +61,8 @@ void TestServiceApplication::ReleaseRef() {
 }  // namespace mojo
 
 MojoResult MojoMain(MojoHandle application_request) {
-  mojo::ApplicationRunner runner(new mojo::test::TestServiceApplication);
+  mojo::ApplicationRunner runner(
+      std::unique_ptr<mojo::test::TestServiceApplication>(
+          new mojo::test::TestServiceApplication()));
   return runner.Run(application_request);
 }

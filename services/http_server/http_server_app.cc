@@ -2,7 +2,8 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-#include "base/memory/scoped_ptr.h"
+#include <memory>
+
 #include "mojo/public/c/system/main.h"
 #include "mojo/public/cpp/application/application_delegate.h"
 #include "mojo/public/cpp/application/application_impl.h"
@@ -41,12 +42,13 @@ class HttpServerApp : public mojo::ApplicationDelegate,
   }
 
   mojo::ApplicationImpl* app_;
-  scoped_ptr<HttpServerFactoryImpl> http_server_factory_;
+  std::unique_ptr<HttpServerFactoryImpl> http_server_factory_;
 };
 
 }  // namespace http_server
 
 MojoResult MojoMain(MojoHandle application_request) {
-  mojo::ApplicationRunner runner(new http_server::HttpServerApp);
+  mojo::ApplicationRunner runner(std::unique_ptr<http_server::HttpServerApp>(
+      new http_server::HttpServerApp()));
   return runner.Run(application_request);
 }

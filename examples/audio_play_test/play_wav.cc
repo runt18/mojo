@@ -563,6 +563,8 @@ void PlayWAVApp::BeginShutdown() {
 }  // namespace mojo
 
 MojoResult MojoMain(MojoHandle app_request) {
-  mojo::ApplicationRunner runner(new mojo::media::audio::examples::PlayWAVApp);
+  mojo::ApplicationRunner runner(
+      std::unique_ptr<mojo::media::audio::examples::PlayWAVApp>(
+          new mojo::media::audio::examples::PlayWAVApp()));
   return runner.Run(app_request);
 }

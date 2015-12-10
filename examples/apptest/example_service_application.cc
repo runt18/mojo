@@ -4,6 +4,8 @@
 
 #include "examples/apptest/example_service_application.h"
 
+#include <memory>
+
 #include "mojo/public/c/system/main.h"
 #include "mojo/public/cpp/application/application_connection.h"
 #include "mojo/public/cpp/application/application_runner.h"
@@ -30,6 +32,8 @@ void ExampleServiceApplication::Create(
 }  // namespace mojo
 
 MojoResult MojoMain(MojoHandle application_request) {
-  mojo::ApplicationRunner runner(new mojo::ExampleServiceApplication());
+  mojo::ApplicationRunner runner(
+      std::unique_ptr<mojo::ExampleServiceApplication>(
+          new mojo::ExampleServiceApplication()));
   return runner.Run(application_request);
 }

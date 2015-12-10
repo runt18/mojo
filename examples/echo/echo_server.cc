@@ -2,6 +2,8 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
+#include <memory>
+
 #include "examples/echo/echo.mojom.h"
 #include "mojo/common/binding_set.h"
 #include "mojo/public/c/system/main.h"
@@ -133,7 +135,8 @@ class OneAtATimeServer : public mojo::ApplicationDelegate,
 
 MojoResult MojoMain(MojoHandle application_request) {
   // Uncomment one of the three servers at a time to see it work:
-  mojo::ApplicationRunner runner(new mojo::examples::MultiServer());
+  mojo::ApplicationRunner runner(std::unique_ptr<mojo::examples::MultiServer>(
+      new mojo::examples::MultiServer()));
   // mojo::ApplicationRunner runner(new mojo::examples::SingletonServer());
   // mojo::ApplicationRunner runner(new mojo::examples::OneAtATimeServer());
 

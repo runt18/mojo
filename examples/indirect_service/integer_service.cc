@@ -2,6 +2,8 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
+#include <memory>
+
 #include "examples/indirect_service/indirect_service_demo.mojom.h"
 #include "mojo/public/c/system/main.h"
 #include "mojo/public/cpp/application/application_connection.h"
@@ -48,7 +50,9 @@ class IntegerServiceAppDelegate : public ApplicationDelegate,
 }  // namespace mojo
 
 MojoResult MojoMain(MojoHandle application_request) {
-  mojo::ApplicationRunner runner(new mojo::examples::IntegerServiceAppDelegate);
+  mojo::ApplicationRunner runner(
+      std::unique_ptr<mojo::examples::IntegerServiceAppDelegate>(
+          new mojo::examples::IntegerServiceAppDelegate));
   return runner.Run(application_request);
 }
 

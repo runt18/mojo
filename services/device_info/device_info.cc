@@ -3,6 +3,7 @@
 // found in the LICENSE file.
 
 #include <cstdlib>
+#include <memory>
 
 #include "mojo/common/binding_set.h"
 #include "mojo/public/c/system/main.h"
@@ -51,6 +52,8 @@ class DeviceInfo : public mojo::ApplicationDelegate,
 }  // namespace mojo
 
 MojoResult MojoMain(MojoHandle application_request) {
-  mojo::ApplicationRunner runner(new mojo::services::device_info::DeviceInfo());
+  mojo::ApplicationRunner runner(
+      std::unique_ptr<mojo::services::device_info::DeviceInfo>(
+          new mojo::services::device_info::DeviceInfo()));
   return runner.Run(application_request);
 }

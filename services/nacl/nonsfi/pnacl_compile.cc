@@ -2,6 +2,8 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
+#include <memory>
+
 #include "base/logging.h"
 #include "mojo/nacl/nonsfi/file_util.h"
 #include "mojo/nacl/nonsfi/nexe_launcher_nonsfi.h"
@@ -60,6 +62,7 @@ class MultiPexeCompiler : public ApplicationDelegate,
 }  // namespace mojo
 
 MojoResult MojoMain(MojoHandle application_request) {
-  mojo::ApplicationRunner runner(new mojo::nacl::MultiPexeCompiler());
+  mojo::ApplicationRunner runner(std::unique_ptr<mojo::nacl::MultiPexeCompiler>(
+      new mojo::nacl::MultiPexeCompiler()));
   return runner.Run(application_request);
 }

@@ -4,7 +4,7 @@
 
 #include "services/test_service/test_request_tracker_application.h"
 
-#include <assert.h>
+#include <memory>
 
 #include "mojo/public/c/system/main.h"
 #include "mojo/public/cpp/application/application_connection.h"
@@ -58,6 +58,7 @@ void TestRequestTrackerApplication::Create(
 
 MojoResult MojoMain(MojoHandle application_request) {
   mojo::ApplicationRunner runner(
-      new mojo::test::TestRequestTrackerApplication);
+      std::unique_ptr<mojo::test::TestRequestTrackerApplication>(
+          new mojo::test::TestRequestTrackerApplication()));
   return runner.Run(application_request);
 }

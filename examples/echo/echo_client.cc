@@ -2,7 +2,7 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-#include <stdio.h>
+#include <memory>
 
 #include "base/logging.h"
 #include "examples/echo/echo.mojom.h"
@@ -39,6 +39,8 @@ class EchoClientDelegate : public ApplicationDelegate {
 }  // namespace mojo
 
 MojoResult MojoMain(MojoHandle application_request) {
-  mojo::ApplicationRunner runner(new mojo::examples::EchoClientDelegate);
+  mojo::ApplicationRunner runner(
+      std::unique_ptr<mojo::examples::EchoClientDelegate>(
+          new mojo::examples::EchoClientDelegate()));
   return runner.Run(application_request);
 }

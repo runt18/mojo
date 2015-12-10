@@ -2,6 +2,8 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
+#include <memory>
+
 #include "mojo/public/c/system/main.h"
 #include "mojo/public/cpp/application/application_delegate.h"
 #include "mojo/public/cpp/application/application_impl.h"
@@ -65,6 +67,7 @@ class PingableApp : public mojo::ApplicationDelegate,
 };
 
 MojoResult MojoMain(MojoHandle application_request) {
-  mojo::ApplicationRunner runner(new PingableApp);
+  mojo::ApplicationRunner runner(
+      std::unique_ptr<PingableApp>(new PingableApp()));
   return runner.Run(application_request);
 }
