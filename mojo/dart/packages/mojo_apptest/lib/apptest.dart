@@ -36,10 +36,8 @@ class _ConnectionToShellApplication extends Application {
         testFunction(this, url);
       }
     });
-    // Append a final test to terminate shell connection.
-    // TODO(johnmccutchan): Remove this once package 'test' supports a global
-    // tearDown callback.
-    test('TERMINATE SHELL CONNECTION', () async {
+
+    tearDownAll(() async {
       await close();
       MojoHandle.reportLeakedHandles();
     });
