@@ -4,24 +4,16 @@
 
 #include "mojo/gpu/gl_context.h"
 
+#include "mojo/gpu/mojo_gles2_impl_autogen.h"
 #include "mojo/public/cpp/application/connect.h"
 #include "mojo/public/interfaces/application/shell.mojom.h"
 #include "mojo/services/gpu/interfaces/gpu.mojom.h"
-#include "mojo/gpu/mojo_gles2_impl_autogen.h"
 
 namespace mojo {
 
-GLContext::Observer::~Observer() {
-}
+GLContext::Observer::~Observer() {}
 
-GLContext::GLContext(Shell* shell) : weak_factory_(this) {
-  ServiceProviderPtr native_viewport;
-  shell->ConnectToApplication("mojo:native_viewport_service",
-                              GetProxy(&native_viewport), nullptr);
-  GpuPtr gpu_service;
-  ConnectToService(native_viewport.get(), &gpu_service);
-  CommandBufferPtr command_buffer;
-  gpu_service->CreateOffscreenGLES2Context(GetProxy(&command_buffer));
+GLContext::GLContext(CommandBufferPtr command_buffer) : weak_factory_(this) {
   context_ = MGLCreateContext(
       MGL_API_VERSION_GLES2,
       command_buffer.PassInterface().PassHandle().release().value(),
@@ -35,7 +27,19 @@ GLContext::~GLContext() {
 }
 
 base::WeakPtr<GLContext> GLContext::Create(Shell* shell) {
-  return (new GLContext(shell))->weak_factory_.GetWeakPtr();
+  ServiceProviderPtr native_viewport;
+  shell->ConnectToApplication("mojo:native_viewport_service",
+                              GetProxy(&native_viewport), nullptr);
+  GpuPtr gpu_service;
+  ConnectToService(native_viewport.get(), &gpu_service);
+  CommandBufferPtr command_buffer;
+  gpu_service->CreateOffscreenGLES2Context(GetProxy(&command_buffer));
+  return CreateFromCommandBuffer(command_buffer.Pass());
+}
+
+base::WeakPtr<GLContext> GLContext::CreateFromCommandBuffer(
+    CommandBufferPtr command_buffer) {
+  return (new GLContext(command_buffer.Pass()))->weak_factory_.GetWeakPtr();
 }
 
 void GLContext::MakeCurrent() {

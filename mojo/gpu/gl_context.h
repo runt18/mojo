@@ -10,6 +10,7 @@
 #include "base/basictypes.h"
 #include "base/memory/weak_ptr.h"
 #include "base/observer_list.h"
+#include "mojo/public/cpp/bindings/interface_ptr.h"
 
 namespace gpu {
 namespace gles2 {
@@ -18,6 +19,8 @@ class GLES2Interface;
 }
 
 namespace mojo {
+class CommandBuffer;
+using CommandBufferPtr = InterfacePtr<CommandBuffer>;
 class MojoGLES2Impl;
 class Shell;
 
@@ -32,6 +35,8 @@ class GLContext {
   };
 
   static base::WeakPtr<GLContext> Create(Shell* shell);
+  static base::WeakPtr<GLContext> CreateFromCommandBuffer(
+      CommandBufferPtr command_buffer);
 
   void MakeCurrent();
   void Destroy();
@@ -42,7 +47,7 @@ class GLContext {
   void RemoveObserver(Observer* observer);
 
  private:
-  explicit GLContext(Shell* shell);
+  explicit GLContext(CommandBufferPtr command_buffer);
   ~GLContext();
 
   static void ContextLostThunk(void* self);
