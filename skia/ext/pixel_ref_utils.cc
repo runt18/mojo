@@ -10,9 +10,10 @@
 #include "third_party/skia/include/core/SkCanvas.h"
 #include "third_party/skia/include/core/SkData.h"
 #include "third_party/skia/include/core/SkDraw.h"
+#include "third_party/skia/include/core/SkPath.h"
 #include "third_party/skia/include/core/SkPixelRef.h"
-#include "third_party/skia/include/core/SkRRect.h"
 #include "third_party/skia/include/core/SkRect.h"
+#include "third_party/skia/include/core/SkRRect.h"
 #include "third_party/skia/include/core/SkShader.h"
 #include "third_party/skia/include/utils/SkNoSaveLayerCanvas.h"
 #include "third_party/skia/src/core/SkRasterClip.h"
@@ -146,7 +147,7 @@ class GatherPixelRefDevice : public SkBitmapDevice {
                       const SkRect* src_or_null,
                       const SkRect& dst,
                       const SkPaint& paint,
-                      SkCanvas::DrawBitmapRectFlags flags) override {
+                      SkCanvas::SrcRectConstraint flags) override {
     SkRect bitmap_rect = SkRect::MakeWH(bitmap.width(), bitmap.height());
     SkMatrix matrix;
     matrix.setRectToRect(bitmap_rect, dst, SkMatrix::kFill_ScaleToFit);
@@ -337,7 +338,7 @@ class GatherPixelRefDevice : public SkBitmapDevice {
       // Check whether the shader is a gradient in order to prevent generation
       // of bitmaps from gradient shaders, which implement asABitmap.
       if (SkShader::kNone_GradientType == shader->asAGradient(NULL))
-        return shader->asABitmap(bm, NULL, NULL);
+        return shader->isABitmap(bm, NULL, NULL);
     }
     return false;
   }

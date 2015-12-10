@@ -6,6 +6,7 @@
 #include "base/trace_event/trace_event.h"
 #include "skia/ext/analysis_canvas.h"
 #include "third_party/skia/include/core/SkDraw.h"
+#include "third_party/skia/include/core/SkPath.h"
 #include "third_party/skia/include/core/SkRRect.h"
 #include "third_party/skia/include/core/SkShader.h"
 #include "third_party/skia/src/core/SkRasterClip.h"
@@ -191,7 +192,7 @@ void AnalysisCanvas::onDrawBitmapRect(const SkBitmap&,
                                       const SkRect* src,
                                       const SkRect& dst,
                                       const SkPaint* paint,
-                                      DrawBitmapRectFlags flags) {
+                                      SrcRectConstraint flags) {
   // Call drawRect to determine transparency,
   // but reset solid color to false.
   SkPaint tmpPaint;

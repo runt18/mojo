@@ -24,6 +24,7 @@
 #include "third_party/skia/include/core/SkColor.h"
 #include "third_party/skia/include/core/SkImageFilter.h"
 #include "third_party/skia/include/core/SkMatrix.h"
+#include "third_party/skia/include/core/SkPath.h"
 #include "third_party/skia/include/core/SkPoint.h"
 #include "third_party/skia/include/core/SkShader.h"
 #include "third_party/skia/include/effects/SkLayerRasterizer.h"
@@ -438,10 +439,8 @@ void SoftwareRenderer::DrawTextureQuad(const DrawingFrame* frame,
     paint.setShader(shader.get());
     current_canvas_->drawRect(quad_rect, paint);
   } else {
-    current_canvas_->drawBitmapRectToRect(*bitmap,
-                                          &sk_uv_rect,
-                                          quad_rect,
-                                          &current_paint_);
+    current_canvas_->drawBitmapRect(*bitmap, sk_uv_rect, quad_rect,
+                                    &current_paint_);
   }
 
   if (needs_layer)
@@ -469,11 +468,9 @@ void SoftwareRenderer::DrawTileQuad(const DrawingFrame* frame,
   SkRect uv_rect = gfx::RectFToSkRect(visible_tex_coord_rect);
   current_paint_.setFilterQuality(
       quad->nearest_neighbor ? kNone_SkFilterQuality : kLow_SkFilterQuality);
-  current_canvas_->drawBitmapRectToRect(
-      *lock.sk_bitmap(),
-      &uv_rect,
-      gfx::RectFToSkRect(visible_quad_vertex_rect),
-      &current_paint_);
+  current_canvas_->drawBitmapRect(*lock.sk_bitmap(), uv_rect,
+                                  gfx::RectFToSkRect(visible_quad_vertex_rect),
+                                  &current_paint_);
 }
 
 void SoftwareRenderer::DrawRenderPassQuad(const DrawingFrame* frame,

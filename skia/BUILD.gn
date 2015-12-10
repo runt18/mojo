@@ -5,7 +5,7 @@
 import("//build/config/features.gni")
 import("//build/config/ui.gni")
 import("//testing/test.gni")
-if (current_cpu == "arm") {
+if (current_cpu == "arm" || current_cpu == "arm64") {
   import("//build/config/arm.gni")
 }
 if (current_cpu == "mipsel" || current_cpu == "mips64el") {
@@ -109,7 +109,7 @@ config("skia_config") {
 
   defines = gypi_skia_defines.skia_for_chromium_defines
 
-  defines += []
+  defines += [ "SK_SUPPORT_LEGACY_SHADERBITMAPTYPE" ]
 
   if (component_mode == "shared_library") {
     defines += [
@@ -146,6 +146,7 @@ config("skia_library_config") {
   # exported to dependents. It's not clear if this is on purpose, but this
   # matches the GYP build.
   include_dirs = [
+    "//third_party/skia/include/private",
     "//third_party/skia/src/core",
     "//third_party/skia/src/image",
     "//third_party/skia/src/opts",
@@ -242,14 +243,12 @@ config("skia_library_config") {
     ]
   }
 
-  if (is_ios || is_mac) {
+  if (is_ios) {
     cflags = [
       # Skia uses routines deprecated in iOS 7 and above
       "-Wno-deprecated-declarations",
     ]
-  }
 
-  if (is_ios) {
     libs = [ "ImageIO.framework" ]
   }
 }
@@ -263,8 +262,6 @@ component("skia") {
     "ext/SkMemory_new_handler.cpp",
     "ext/analysis_canvas.cc",
     "ext/analysis_canvas.h",
-    "ext/benchmarking_canvas.cc",
-    "ext/benchmarking_canvas.h",
     "ext/bitmap_platform_device.h",
     "ext/convolver.cc",
     "ext/convolver.h",
@@ -359,16 +356,28 @@ component("skia") {
     "//third_party/skia/src/utils/SkSHA1.cpp",
     "//third_party/skia/src/utils/SkSHA1.h",
     "//third_party/skia/src/utils/SkTFitsIn.h",
-    "//third_party/skia/src/utils/SkTLogic.h",
-
-    # We don't currently need to change thread affinity, so leave out this complexity for now.
-    "//third_party/skia/src/utils/SkThreadUtils_pthread_linux.cpp",
-    "//third_party/skia/src/utils/SkThreadUtils_pthread_mach.cpp",
 
     #testing
     "//third_party/skia/src/fonts/SkGScalerContext.cpp",
     "//third_party/skia/src/fonts/SkGScalerContext.h",
   ]
+
+  if (is_ios || is_mac || is_android) {
+    sources -=
+        [ "//third_party/skia/src/gpu/gl/GrGLCreateNativeInterface_none.cpp" ]
+
+    set_sources_assignment_filter([])
+
+    if (is_ios) {
+      sources += [ "//third_party/skia/src/gpu/gl/iOS/GrGLCreateNativeInterface_iOS.cpp" ]
+    } else if (is_mac) {
+      sources += [ "//third_party/skia/src/gpu/gl/mac/GrGLCreateNativeInterface_mac.cpp" ]
+    } else if (is_android) {
+      sources += [ "//third_party/skia/src/gpu/gl/android/GrGLCreateNativeInterface_android.cpp" ]
+    }
+
+    set_sources_assignment_filter(sources_assignment_filter)
+  }
 
   if (is_win) {
     sources -= [
@@ -567,6 +576,9 @@ source_set("skia_opts") {
     } else {
       sources = gypi_skia_opts.none_sources
     }
+  } else if (current_cpu == "arm64") {
+    # TODO(1841): NEON sources are not currently used on arm64.
+    sources = gypi_skia_opts.none_sources
   } else if (current_cpu == "mipsel") {
     cflags += [ "-fomit-frame-pointer" ]
 
