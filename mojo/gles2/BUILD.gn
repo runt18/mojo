@@ -85,6 +85,7 @@ source_set("mgl") {
 test("mgl_unittests") {
   deps = [
     ":mgl",
+    "//mojo/edk/base_edk",
     "//mojo/edk/system",
     "//mojo/edk/test:run_all_unittests",
     "//mojo/public/c/gpu:MGL",

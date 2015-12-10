@@ -8,6 +8,7 @@ import("//mojo/public/mojo.gni")
 test("mojo_task_tracker_perftests") {
   deps = [
     "//base/test:test_support",
+    "//mojo/edk/base_edk",
     "//mojo/edk/system",
     "//mojo/edk/test:run_all_perftests",
     "//mojo/environment:chromium",

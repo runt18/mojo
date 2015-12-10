@@ -38,6 +38,7 @@ python_package("packaged_utils") {
 python_binary_module("mojo_embedder") {
   cython_sources = [ "system/mojo_embedder.pyx" ]
   deps = [
+    "//mojo/edk/base_edk",
     "//mojo/edk/system",
   ]
   datadeps = [

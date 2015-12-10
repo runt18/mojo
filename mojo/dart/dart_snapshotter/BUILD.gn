@@ -16,6 +16,7 @@ executable("dart_snapshotter") {
     "//dart/runtime:libdart",
     "//mojo/common",
     "//mojo/dart/embedder:dart_snapshot_cc",
+    "//mojo/edk/base_edk",
     "//mojo/edk/system",
     "//mojo/environment:chromium",
     "//mojo/public/cpp/system",

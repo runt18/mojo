@@ -12,8 +12,9 @@ if (!is_nacl) {
       "monacl_shell.cc",
     ]
     deps = [
-      "//base:base",
-      "//mojo/edk/system:system",
+      "//base",
+      "//mojo/edk/base_edk",
+      "//mojo/edk/system",
       "//mojo/gles2:mgl",
       "//mojo/nacl/sfi/nacl_bindings:monacl_sel",
       "//mojo/public/cpp/environment:standalone",

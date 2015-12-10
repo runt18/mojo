@@ -16,6 +16,7 @@ if (!is_nacl) {
       ]
       deps = [
         ":irt_mojo",
+        "//mojo/edk/base_edk",
         "//mojo/edk/system",
         "//mojo/public/cpp/environment:standalone",
         "//native_client/src/nonsfi/loader:elf_loader",
