@@ -14,8 +14,6 @@
 #include "mojo/edk/embedder/platform_channel_pair.h"
 #include "mojo/edk/platform/io_thread.h"
 #include "mojo/edk/platform/platform_handle.h"
-#include "mojo/edk/platform/scoped_platform_handle.h"
-#include "mojo/edk/platform/task_runner.h"
 #include "mojo/edk/platform/thread.h"
 #include "mojo/edk/system/connection_manager_messages.h"
 #include "mojo/edk/system/message_in_transit.h"
@@ -744,9 +742,7 @@ void MasterConnectionManager::CallOnSlaveDisconnect(
 }
 
 void MasterConnectionManager::AssertNotOnPrivateThread() const {
-  // This should only be called after |Init()| and before |Shutdown()|. (If not,
-  // the subsequent |DCHECK_NE()| is invalid, since the current thread may not
-  // have a message loop.)
+  // This should only be called after |Init()| and before |Shutdown()|.
   DCHECK(!private_thread_task_runner_->RunsTasksOnCurrentThread());
 }
 

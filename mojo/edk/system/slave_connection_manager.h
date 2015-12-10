@@ -7,7 +7,6 @@
 
 #include <memory>
 
-#include "base/threading/thread.h"
 #include "mojo/edk/embedder/slave_process_delegate.h"
 #include "mojo/edk/platform/scoped_platform_handle.h"
 #include "mojo/edk/platform/task_runner.h"
@@ -26,6 +25,10 @@ namespace mojo {
 
 namespace embedder {
 class SlaveProcessDelegate;
+}
+
+namespace platform {
+class Thread;
 }
 
 namespace system {
@@ -104,7 +107,8 @@ class SlaveConnectionManager final : public ConnectionManager,
   // This is a private I/O thread on which this class does the bulk of its work.
   // It is started in |Init()| and terminated in |Shutdown()|.
   // TODO(vtl): This isn't really necessary.
-  base::Thread private_thread_;
+  std::unique_ptr<platform::Thread> private_thread_;
+  util::RefPtr<platform::TaskRunner> private_thread_task_runner_;
 
   // Only accessed on |private_thread_|:
   std::unique_ptr<RawChannel> raw_channel_;

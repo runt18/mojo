@@ -26,7 +26,6 @@ using SlaveInfo = void*;
 }
 
 namespace platform {
-class TaskRunner;
 class Thread;
 }
 
