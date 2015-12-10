@@ -6,6 +6,11 @@
 
 #include <string.h>
 
+#include <limits>
+#include <string>
+#include <type_traits>
+#include <vector>
+
 #include "base/logging.h"
 #include "base/memory/scoped_ptr.h"
 #include "base/time/time.h"
@@ -21,10 +26,8 @@ namespace {
 // character.
 const char kVersionKey[] = "\1version";
 
-// TODO(darin): These Serialize / Deserialize methods should not live here.
-// They use private details of the bindings system. Instead, we should provide
-// these as helper functions under mojo/public/cpp/bindings/.
-
+// TODO(vardhan): Rework these to use the public Serialize/Deserialize
+// functions.
 template <typename T>
 void Serialize(T input, std::string* output) {
   typedef typename mojo::internal::WrapperTraits<T>::DataType DataType;
@@ -46,9 +49,11 @@ template <typename T>
 bool Deserialize(void* data, size_t size, T* output) {
   typedef typename mojo::internal::WrapperTraits<T>::DataType DataType;
   mojo::internal::BoundsChecker bounds_checker(data, size, 0);
-  if (!std::remove_pointer<DataType>::type::Validate(data, &bounds_checker)) {
+  if (std::remove_pointer<DataType>::type::Validate(data, &bounds_checker,
+                                                    nullptr) !=
+      mojo::internal::ValidationError::NONE)
     return false;
-  }
+
   DataType data_type = reinterpret_cast<DataType>(data);
   std::vector<Handle> handles;
   data_type->DecodePointersAndHandles(&handles);
