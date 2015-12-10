@@ -41,7 +41,6 @@ group("examples") {
     ":portable_examples",
     "//examples/embedded_app",
     "//examples/ganesh_app",
-    "//examples/nfc_sender",
     "//examples/png_viewer",
   ]
 
