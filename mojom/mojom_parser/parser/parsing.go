@@ -939,7 +939,7 @@ func (p *Parser) parseEnumBody(mojomEnum *mojom.MojomEnum) bool {
 			nameToken := p.lastConsumed
 			var valueRef mojom.ValueRef
 			if p.tryMatch(lexer.Equals) {
-				valueRef = p.parseEnumValueInitializer(mojomEnum)
+				valueRef = p.parseEnumValueInitializer(mojomEnum, name)
 			}
 			declData := p.DeclData(name, nameToken, attributes)
 			duplicateNameError = mojomEnum.AddEnumValue(declData, valueRef)
@@ -967,7 +967,7 @@ func (p *Parser) parseEnumBody(mojomEnum *mojom.MojomEnum) bool {
 
 // ENUM_VAL_INITIALIZER -> INTEGER_LITERAL | ENUM_VALUE_REF
 // ENUM_VALUE_REF       -> IDENTIFIER {{that resolves to a declared enum value}}
-func (p *Parser) parseEnumValueInitializer(mojoEnum *mojom.MojomEnum) mojom.ValueRef {
+func (p *Parser) parseEnumValueInitializer(mojoEnum *mojom.MojomEnum, valueName string) mojom.ValueRef {
 	if !p.OK() {
 		return nil
 	}
@@ -982,7 +982,7 @@ func (p *Parser) parseEnumValueInitializer(mojoEnum *mojom.MojomEnum) mojom.Valu
 	enumType := mojom.NewResolvedUserTypeRef(mojoEnum.FullyQualifiedName(), mojoEnum)
 
 	valueToken := p.peekNextToken("Parsing an enum value initializer type.")
-	valueRef := p.parseValue(mojom.AssigneeSpec{"enum value", enumType})
+	valueRef := p.parseValue(mojom.AssigneeSpec{valueName, enumType})
 	if valueRef == nil {
 		return nil
 	}

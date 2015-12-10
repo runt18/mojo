@@ -245,7 +245,7 @@ func TestSingleFileValueValidationErrors(t *testing.T) {
 	`
 		test.addTestCase(contents, []string{
 			"Illegal assignment",
-			"The enum value MyEnum.TWO may not be assigned to Bar of type int32"})
+			"The enum value MyEnum.TWO of type MyEnum may not be assigned to Bar of type int32"})
 	}
 
 	////////////////////////////////////////////////////////////
@@ -333,7 +333,7 @@ func TestSingleFileValueValidationErrors(t *testing.T) {
 	`
 		test.addTestCase(contents, []string{
 			"Illegal assignment",
-			"The enum value MyEnum.TWO may not be assigned to Bar of type string"})
+			"The enum value MyEnum.TWO of type MyEnum may not be assigned to Bar of type string"})
 	}
 
 	////////////////////////////////////////////////////////////
@@ -452,7 +452,53 @@ func TestSingleFileValueValidationErrors(t *testing.T) {
 	`
 		test.addTestCase(contents, []string{
 			"Illegal assignment",
-			"The enum value MyOtherEnum.TWO may not be assigned to Bar of type MyEnum"})
+			"The enum value MyOtherEnum.TWO of type MyOtherEnum may not be assigned to Bar of type MyEnum"})
+	}
+
+	////////////////////////////////////////////////////////////
+	// Test Case: Use an enum value from a different enum as an enum value initializer.
+	////////////////////////////////////////////////////////////
+	{
+		contents := `
+	 enum MyEnum {
+	   ONE,
+	   TWO,
+	   THREE
+	 };
+
+	  enum MyOtherEnum {
+	   ONE,
+	   TWO = MyEnum.TWO,
+	   THREE
+	 };
+	`
+		test.addTestCase(contents, []string{
+			"Illegal assignment",
+			"The enum value MyEnum.TWO of type MyEnum may not be used as an initializer for TWO of type MyOtherEnum."})
+	}
+
+	////////////////////////////////////////////////////////////
+	// Test Case: Use an enum value from a different enum as an enum value initializer.
+	////////////////////////////////////////////////////////////
+	{
+		contents := `
+	 enum MyEnum {
+	   ONE,
+	   TWO,
+	   THREE
+	 };
+
+	 const MyEnum Bar = MyEnum.TWO;
+
+	  enum MyOtherEnum {
+	   ONE,
+	   TWO = Bar,
+	   THREE
+	 };
+	`
+		test.addTestCase(contents, []string{
+			"Illegal assignment",
+			"Bar with the value MyEnum.TWO may not be used as an initializer for TWO of type MyOtherEnum."})
 	}
 
 	////////////////////////////////////////////////////////////

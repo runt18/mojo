@@ -953,7 +953,8 @@ func (v *UserValueRef) validateAfterResolution() error {
 			message = UserErrorMessage(v.scope.file, v.token, message)
 			return fmt.Errorf(message)
 		case *EnumValue:
-			// An EnumValue is being used as an EnumValue initializer. We do not check this further in this phase.
+			// An EnumValue is being used as an EnumValue initializer.
+			// Below we will check that the two EnumTypes match.
 			// In ComputeEnumValueIntegers() in computed_data.go we will further validate.
 		default:
 			panic(fmt.Sprintf("Unexpected type %T", concreteValue))
@@ -985,12 +986,20 @@ func (v *UserValueRef) validateAfterResolution() error {
 				switch v.resolvedDeclaredValue.(type) {
 				case *EnumValue:
 					// An enum value is being assigned directly to a variable.
-					message = fmt.Sprintf("Illegal assignment: The enum value %s may not be assigned to %s of type %s.",
-						v.identifier, v.assigneeSpec.Name, assigneeType.TypeName())
+					message = "Illegal assignment: The enum value %s of type %s may not be assigned to %s of type %s."
+					if v.usedAsEnumValueInitializer {
+						// An enum value is being used directly as an initializer.
+						message = "Illegal assignment: The enum value %s of type %s may not be used as an initializer for %s of type %s."
+					}
+					message = fmt.Sprintf(message, v.identifier, concreteValue.enumType.fullyQualifiedName, v.assigneeSpec.Name, assigneeType.TypeName())
 				default:
 					// A user-defined constant whose value is an enum value is being assigned to a variable.
-					message = fmt.Sprintf("Illegal assignment: %s with the value %v may not be assigned to %s of type %s.",
-						v.identifier, concreteValue.fullyQualifiedName, v.assigneeSpec.Name, assigneeType.TypeName())
+					message = "Illegal assignment: %s with the value %v may not be assigned to %s of type %s."
+					if v.usedAsEnumValueInitializer {
+						// A user-defined constant whose value is an enum valu is being used as an initializer.
+						message = "Illegal assignment: %s with the value %v may not be used as an initializer for %s of type %s."
+					}
+					message = fmt.Sprintf(message, v.identifier, concreteValue.fullyQualifiedName, v.assigneeSpec.Name, assigneeType.TypeName())
 				}
 			default:
 				panic(fmt.Sprintf("Unexpected type %T", concreteValue))
