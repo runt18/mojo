@@ -31,16 +31,6 @@ namespace sandbox {
 
 namespace {
 
-struct CapFreeDeleter {
-  inline void operator()(cap_t cap) const {
-    int ret = cap_free(cap);
-    CHECK_EQ(0, ret);
-  }
-};
-
-// Wrapper to manage libcap2's cap_t type.
-typedef scoped_ptr<typeof(*((cap_t)0)), CapFreeDeleter> ScopedCap;
-
 bool WorkingDirectoryIsRoot() {
   char current_dir[PATH_MAX];
   char* cwd = getcwd(current_dir, sizeof(current_dir));
@@ -224,19 +214,22 @@ SANDBOX_TEST(Credentials, SetCapabilitiesMatchesLibCap2) {
   caps.push_back(Credentials::Capability::SYS_CHROOT);
   CHECK(Credentials::SetCapabilities(proc_fd.get(), caps));
 
-  ScopedCap actual_cap(cap_get_proc());
+  cap_t actual_cap(cap_get_proc());
   PCHECK(actual_cap != nullptr);
 
-  ScopedCap expected_cap(cap_init());
+  cap_t expected_cap(cap_init());
   PCHECK(expected_cap != nullptr);
 
   const cap_value_t allowed_cap = CAP_SYS_CHROOT;
   for (const cap_flag_t flag : {CAP_EFFECTIVE, CAP_PERMITTED}) {
-    PCHECK(cap_set_flag(expected_cap.get(), flag, 1, &allowed_cap, CAP_SET) ==
+    PCHECK(cap_set_flag(expected_cap, flag, 1, &allowed_cap, CAP_SET) ==
            0);
   }
 
-  CHECK_EQ(0, cap_compare(expected_cap.get(), actual_cap.get()));
+  CHECK_EQ(0, cap_compare(expected_cap, actual_cap));
+
+  CHECK_EQ(0, cap_free(expected_cap));
+  CHECK_EQ(0, cap_free(actual_cap));
 }
 
 volatile sig_atomic_t signal_handler_called;

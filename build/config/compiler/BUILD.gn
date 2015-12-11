@@ -449,7 +449,7 @@ config("compiler") {
 
   # C++11 compiler flags setup.
   # ---------------------------
-  if (is_linux || is_android || is_nacl) {
+  if (is_nacl) {
     # gnu++11 instead of c++11 is needed because some code uses typeof() (a
     # GNU extension).
     # TODO(thakis): Eventually switch this to c++11 instead,
