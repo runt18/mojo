@@ -418,7 +418,7 @@ component("skia") {
     set_sources_assignment_filter(sources_assignment_filter)
   }
 
-  if (is_android && (!enable_basic_printing && !enable_print_preview)) {
+  if (is_android) {
     sources -= [ "ext/skia_utils_base.cc" ]
   }
 

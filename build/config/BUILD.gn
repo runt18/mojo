@@ -47,19 +47,6 @@ config("feature_flags") {
   if (cld_version > 0) {
     defines += [ "CLD_VERSION=$cld_version" ]
   }
-  if (enable_basic_printing || enable_print_preview) {
-    # Convenience define for ENABLE_BASIC_PRINTING || ENABLE_PRINT_PREVIEW.
-    defines += [ "ENABLE_PRINTING=1" ]
-    if (enable_basic_printing) {
-      # Enable basic printing support and UI.
-      defines += [ "ENABLE_BASIC_PRINTING=1" ]
-    }
-    if (enable_print_preview) {
-      # Enable printing with print preview.
-      # Can be defined without ENABLE_BASIC_PRINTING.
-      defines += [ "ENABLE_PRINT_PREVIEW=1" ]
-    }
-  }
   if (dont_embed_build_metadata) {
     defines += [ "DONT_EMBED_BUILD_METADATA" ]
   }
