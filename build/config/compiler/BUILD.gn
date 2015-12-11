@@ -1067,8 +1067,7 @@ config("no_optimize") {
     # using the PNaCl toolchain. Optimizing actually makes these passes faster,
     # and results in a smaller building/translation time.
     cflags = common_optimize_on_cflags
-    ldflags = common_optimize_on_ldflags
-    cflags += [ "-O1" ]
+    cflags += [ "-Os" ]
   } else {
     cflags = [ "-O0" ]
   }
