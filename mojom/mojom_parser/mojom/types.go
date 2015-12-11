@@ -813,6 +813,21 @@ func (ref *UserTypeRef) validateAfterResolution() error {
 	if ref.scope != nil && ref.scope.file != nil {
 		file = ref.scope.file
 	}
+
+	if ref.IsInterfaceRequest() && ref.resolvedType.Kind() != UserDefinedTypeKindInterface {
+		message := fmt.Sprintf("Invalid interface request specification: %s. %s is not an interface type.",
+			ref.TypeName(), ref.ResolvedType().FullyQualifiedName())
+		message = UserErrorMessage(file, ref.token, message)
+		return fmt.Errorf(message)
+	}
+
+	if ref.Nullable() && ref.resolvedType.Kind() == UserDefinedTypeKindEnum {
+		message := fmt.Sprintf("The type %s is invalid because %s is an enum type and these may not be made nullable.",
+			ref.TypeName(), ref.ResolvedType().FullyQualifiedName())
+		message = UserErrorMessage(file, ref.token, message)
+		return fmt.Errorf(message)
+	}
+
 	if ref.resolvedType.Kind() != UserDefinedTypeKindEnum {
 		// A type ref has resolved to a non-enum type. Make sure it is not
 		// being used as either a map key or a constant declaration. Also

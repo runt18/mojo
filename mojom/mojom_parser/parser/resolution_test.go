@@ -827,6 +827,66 @@ func TestSingleFileTypeValidationErrors(t *testing.T) {
 	}
 
 	////////////////////////////////////////////////////////////
+	// Group 3: Invalid use of interface request.
+	////////////////////////////////////////////////////////////
+
+	////////////////////////////////////////////////////////////
+	// Test Case: Make an interface request out of a struct
+	////////////////////////////////////////////////////////////
+	{
+		contents := `
+	struct Foo{
+	};
+
+    struct Bar{
+    	Foo& x;
+	};
+	`
+		test.addTestCase(contents, []string{
+			"Invalid interface request specification",
+			"Foo&. Foo is not an interface type"})
+	}
+
+	////////////////////////////////////////////////////////////
+	// Test Case: Make a nullable interface request out of a struct
+	////////////////////////////////////////////////////////////
+	{
+		contents := `
+	struct Foo{
+	};
+
+    struct Bar{
+    	Foo&? x;
+	};
+	`
+		test.addTestCase(contents, []string{
+			"Invalid interface request specification",
+			"Foo&?. Foo is not an interface type"})
+	}
+
+	////////////////////////////////////////////////////////////
+	// Group 4: Invalid use of nullable
+	////////////////////////////////////////////////////////////
+
+	////////////////////////////////////////////////////////////
+	// Test Case: Make nullable enum.
+	////////////////////////////////////////////////////////////
+	{
+		contents := `
+	enum Hats {
+		COWBOY,
+		TOP
+	};
+
+    struct Bar{
+    	Hats? my_hat;
+	};
+	`
+		test.addTestCase(contents, []string{
+			"The type Hats? is invalid because Hats is an enum type and these may not be made nullable."})
+	}
+
+	////////////////////////////////////////////////////////////
 	// Execute all of the test cases.
 	////////////////////////////////////////////////////////////
 	for i, c := range test.cases {
