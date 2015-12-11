@@ -61,7 +61,7 @@ func TestIsAssignmentCompatibleWith(t *testing.T) {
 		{NewTestStruct("struct"), []bool{false, false, false, false, true}},
 		{NewTestInterface("interface"), []bool{false, false, false, false, false}},
 		{NewTestUnion("union"), []bool{false, false, false, false, true}},
-		{NewTestEnum("enum"), []bool{false, false, true, false, true}},
+		{NewTestEnum("enum"), []bool{false, false, false, false, false}},
 	}
 	for _, c := range cases {
 		for i, v := range literalValues {

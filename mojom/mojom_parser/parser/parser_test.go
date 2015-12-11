@@ -711,34 +711,6 @@ func TestInvalidAssignmentDuringParsing(t *testing.T) {
 	endTestCase()
 
 	////////////////////////////////////////////////////////////
-	// Test Case (Assign string to user-defined-type)
-	////////////////////////////////////////////////////////////
-	startTestCase("")
-	cases[testCaseNum].mojomContents = `
-	struct Foo {
-		Foo x = "hello";
-	};
-
-	`
-	expectError("Illegal assignment")
-	expectError("Field x of type Foo may not be assigned the value \"hello\" of type string.")
-	endTestCase()
-
-	////////////////////////////////////////////////////////////
-	// Test Case (Assign string to user-defined-type)
-	////////////////////////////////////////////////////////////
-	startTestCase("")
-	cases[testCaseNum].mojomContents = `
-	struct Foo {
-		Foo x = "hello";
-	};
-
-	`
-	expectError("Illegal assignment")
-	expectError("Field x of type Foo may not be assigned the value \"hello\" of type string.")
-	endTestCase()
-
-	////////////////////////////////////////////////////////////
 	// Group 2: Assign to constant.
 	////////////////////////////////////////////////////////////
 
@@ -762,17 +734,6 @@ func TestInvalidAssignmentDuringParsing(t *testing.T) {
 	`
 	expectError("Illegal assignment")
 	expectError("Constant Foo of type bool may not be assigned the value \"true\" of type string.")
-	endTestCase()
-
-	////////////////////////////////////////////////////////////
-	// Test Case (Assign boolean to user-defined type)
-	////////////////////////////////////////////////////////////
-	startTestCase("")
-	cases[testCaseNum].mojomContents = `
-	const FooType Foo = true;
-	`
-	expectError("Illegal assignment")
-	expectError("Constant Foo of type FooType may not be assigned the value true of type bool.")
 	endTestCase()
 
 	////////////////////////////////////////////////////////////

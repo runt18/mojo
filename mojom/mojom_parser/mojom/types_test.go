@@ -171,7 +171,8 @@ func TestMarkTypeCompatible(t *testing.T) {
 		{NewArrayTypeRef(SimpleTypeInt32, 0, false), []bool{false, false, false, false, false, false, false, false, false, false, false, true}},
 		{NewMapTypeRef(SimpleTypeInt32, SimpleTypeInt64, false), []bool{false, false, false, false, false, false, false, false, false, false, false, true}},
 		{BuiltInType("handle"), []bool{false, false, false, false, false, false, false, false, false, false, false, false}},
-		{userTypeRef, []bool{false, false, true, true, true, true, true, true, true, true, false, true}},
+		// Assignments to UserTypeRefs are not validated at all during parsing.
+		{userTypeRef, []bool{true, true, true, true, true, true, true, true, true, true, true, true}},
 	}
 	for _, c := range cases {
 		for i, v := range literalValues {
@@ -337,10 +338,10 @@ func TestValidateAfterResolution(t *testing.T) {
 		// An enum type may be the type of a map key
 		{NewResolvedEnumRef(true, false, nil), true},
 		{NewResolvedEnumRef(false, false, &stringLiteral), false},
-		// Enums ma be assigned an integer literal
-		{NewResolvedEnumRef(false, false, &intLiteral), true},
+		// Enums may not be assigned an integer literal
+		{NewResolvedEnumRef(false, false, &intLiteral), false},
 		{NewResolvedEnumRef(false, false, &floatLiteral), false},
-		{NewResolvedEnumRef(false, false, &defaultLiteral), true},
+		{NewResolvedEnumRef(false, false, &defaultLiteral), false},
 	}
 	for i, c := range cases {
 		success := nil == c.typeRef.validateAfterResolution()

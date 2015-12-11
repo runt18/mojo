@@ -504,17 +504,6 @@ func (MojomEnum) ConcreteTypeKind() TypeKind {
 }
 
 func (e MojomEnum) IsAssignmentCompatibleWith(value LiteralValue) bool {
-	if value.IsDefault() {
-		return true
-	}
-	t := value.LiteralValueType()
-	if t == SimpleTypeInt8 || t == SimpleTypeInt16 || t == SimpleTypeInt32 || t == SimpleTypeInt64 {
-		// TODO(rudominer) Finish MojomEnum.IsAssignmentCompatibleWith()
-		// We should check that the value is in the range of the enum fields.
-		// Do we want to deprecate the ability to assign an integer to an
-		// enum varialbe?
-		return true
-	}
 	return false
 }
 

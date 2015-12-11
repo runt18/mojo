@@ -642,6 +642,10 @@ func TestSingleFileTypeValidationErrors(t *testing.T) {
 	test := singleFileTest{}
 
 	////////////////////////////////////////////////////////////
+	// Group 1: Left-hand-side is a struct
+	////////////////////////////////////////////////////////////
+
+	////////////////////////////////////////////////////////////
 	// Test Case: Use struct as constant type
 	////////////////////////////////////////////////////////////
 	{
@@ -657,7 +661,7 @@ func TestSingleFileTypeValidationErrors(t *testing.T) {
 	}
 
 	////////////////////////////////////////////////////////////
-	// Test Case: Assign struct as map key
+	// Test Case: Use struct as map key
 	////////////////////////////////////////////////////////////
 	{
 		contents := `
@@ -688,6 +692,46 @@ func TestSingleFileTypeValidationErrors(t *testing.T) {
 		test.addTestCase(contents, []string{
 			"Illegal assignment",
 			"Field x of type Foo may not be assigned the value 42 of type int8"})
+	}
+
+	////////////////////////////////////////////////////////////
+	// Group 2: Left-hand-side is an enum
+	////////////////////////////////////////////////////////////
+
+	////////////////////////////////////////////////////////////
+	// Test Case: Assign an integer to an enum variable in a struct field.
+	////////////////////////////////////////////////////////////
+	{
+		contents := `
+	enum Hats {
+		COWBOY,
+		TOP
+	};
+
+    struct Bar{
+    	Hats my_hat = 1;
+    };
+	`
+		test.addTestCase(contents, []string{
+			"Illegal assignment",
+			"Field my_hat of type Hats may not be assigned the value 1 of type int8."})
+	}
+
+	////////////////////////////////////////////////////////////
+	// Test Case: Assign an integer to an enum variable in a constant.
+	////////////////////////////////////////////////////////////
+	{
+		contents := `
+	enum Hats {
+		COWBOY,
+		TOP
+	};
+
+    const Hats MY_HAT = 1;
+	`
+		test.addTestCase(contents, []string{
+			"Illegal assignment",
+			"Const MY_HAT of type Hats may not be assigned the value 1 of type int8."})
 	}
 
 	////////////////////////////////////////////////////////////

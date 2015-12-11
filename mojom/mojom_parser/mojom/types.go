@@ -780,15 +780,8 @@ func (ref *UserTypeRef) IsAssignmentCompatible(assignedValue ConcreteValue) bool
 }
 
 func (t *UserTypeRef) MarkTypeCompatible(assignment LiteralAssignment) bool {
-	switch assignment.assignedValue.LiteralValueType() {
-	case SimpleTypeDouble, SimpleTypeFloat, SimpleTypeBool:
-		return false
-	case StringLiteralType:
-		if !assignment.assignedValue.IsDefault() {
-			return false
-		}
-	}
-
+	// Just mark the assignment attempt and return true. We will validate it
+	// during the validation phase.
 	t.literalAssignment = &assignment
 	return true
 }
@@ -954,12 +947,26 @@ func (v *UserValueRef) validateAfterResolution() error {
 			return fmt.Errorf(message)
 		case *EnumValue:
 			// An EnumValue is being used as an EnumValue initializer.
-			// Below we will check that the two EnumTypes match.
+			// We will only check that the two EnumTypes match.
 			// In ComputeEnumValueIntegers() in computed_data.go we will further validate.
+			if !v.assigneeSpec.Type.IsAssignmentCompatible(v.resolvedConcreteValue) {
+				var message string
+				switch v.resolvedDeclaredValue.(type) {
+				case *EnumValue:
+					// An enum value is being used directly as an initializer.
+					message = fmt.Sprintf("Illegal assignment: The enum value %s of type %s may not be used as an initializer for %s of type %s.",
+						v.identifier, concreteValue.enumType.fullyQualifiedName, v.assigneeSpec.Name, v.assigneeSpec.Type.TypeName())
+				default:
+					// A user-defined constant whose value is an enum value is being used as an initializer.
+					message = fmt.Sprintf("Illegal assignment: %s with the value %v may not be used as an initializer for %s of type %s.",
+						v.identifier, concreteValue.fullyQualifiedName, v.assigneeSpec.Name, v.assigneeSpec.Type.TypeName())
+				}
+				return fmt.Errorf(UserErrorMessage(v.scope.file, v.token, message))
+			}
 		default:
 			panic(fmt.Sprintf("Unexpected type %T", concreteValue))
 		}
-
+		return nil
 	}
 
 	if !v.assigneeSpec.Type.IsAssignmentCompatible(v.resolvedConcreteValue) {
@@ -986,17 +993,13 @@ func (v *UserValueRef) validateAfterResolution() error {
 				switch v.resolvedDeclaredValue.(type) {
 				case *EnumValue:
 					// An enum value is being assigned directly to a variable.
-					message = "Illegal assignment: The enum value %s of type %s may not be assigned to %s of type %s."
-					if v.usedAsEnumValueInitializer {
-						// An enum value is being used directly as an initializer.
-						message = "Illegal assignment: The enum value %s of type %s may not be used as an initializer for %s of type %s."
-					}
-					message = fmt.Sprintf(message, v.identifier, concreteValue.enumType.fullyQualifiedName, v.assigneeSpec.Name, assigneeType.TypeName())
+					message = fmt.Sprintf("Illegal assignment: The enum value %s of type %s may not be assigned to %s of type %s.",
+						v.identifier, concreteValue.enumType.fullyQualifiedName, v.assigneeSpec.Name, assigneeType.TypeName())
 				default:
 					// A user-defined constant whose value is an enum value is being assigned to a variable.
 					message = "Illegal assignment: %s with the value %v may not be assigned to %s of type %s."
 					if v.usedAsEnumValueInitializer {
-						// A user-defined constant whose value is an enum valu is being used as an initializer.
+						// A user-defined constant whose value is an enum value is being used as an initializer.
 						message = "Illegal assignment: %s with the value %v may not be used as an initializer for %s of type %s."
 					}
 					message = fmt.Sprintf(message, v.identifier, concreteValue.fullyQualifiedName, v.assigneeSpec.Name, assigneeType.TypeName())
