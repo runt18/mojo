@@ -191,12 +191,6 @@ config("skia_library_config") {
       "SK_GAMMA_EXPONENT=1.4",
       "SK_GAMMA_CONTRAST=0.0",
     ]
-  } else if (is_win) {
-    defines += [
-      "SK_GAMMA_SRGB",
-      "SK_GAMMA_CONTRAST=0.5",
-      "SK_HIGH_QUALITY_IS_LANCZOS",
-    ]
   } else if (is_mac) {
     defines += [
       "SK_GAMMA_SRGB",
@@ -216,33 +210,6 @@ config("skia_library_config") {
     defines += [ "SK_DEFAULT_FONT_CACHE_LIMIT=20971520" ]  # 20 * 1024 * 1024
   }
 
-  if (is_win) {
-    include_dirs += [
-      "//third_party/skia/include/utils/win",
-      "//third_party/skia/src/utils/win",
-    ]
-
-    defines += [
-      # On windows, GDI handles are a scarse system-wide resource so we have to
-      # keep the glyph cache, which holds up to 4 GDI handles per entry, to a
-      # fairly small size. http://crbug.com/314387
-      "SK_DEFAULT_FONT_CACHE_COUNT_LIMIT=256",
-    ]
-
-    cflags = [
-      "/wd4244",  # conversion from 'type1( __int64)' to 'type2 (unsigned int)'
-      "/wd4267",  # conversion from 'size_t' (64 bit) to 'type'(32 bit).
-      "/wd4341",  # signed value is out of range for enum constant.
-      "/wd4345",  # Object is default-initialized if initialization is omitted.
-      "/wd4390",  # ';'empty statement found in looping;is it what was intended?
-      "/wd4554",  # 'operator' : check operator precedence for possible error
-      "/wd4748",  # compiler will disable optimizations if a function has inline
-                  # assembly code contains flow control(jmp or jcc) statements.
-
-      "/wd4800",  # forcing value to bool 'true/false'(assigning int to bool).
-    ]
-  }
-
   if (is_ios) {
     cflags = [
       # Skia uses routines deprecated in iOS 7 and above
@@ -260,31 +227,18 @@ component("skia") {
     "ext/SkDiscardableMemory_chrome.cc",
     "ext/SkDiscardableMemory_chrome.h",
     "ext/SkMemory_new_handler.cpp",
-    "ext/analysis_canvas.cc",
-    "ext/analysis_canvas.h",
     "ext/bitmap_platform_device.h",
-    "ext/convolver.cc",
-    "ext/convolver.h",
     "ext/event_tracer_impl.cc",
     "ext/event_tracer_impl.h",
-    "ext/fontmgr_default_win.cc",
-    "ext/fontmgr_default_win.h",
     "ext/google_logging.cc",
-    "ext/image_operations.cc",
-    "ext/image_operations.h",
     "ext/opacity_draw_filter.cc",
     "ext/opacity_draw_filter.h",
-    "ext/pixel_ref_utils.cc",
-    "ext/pixel_ref_utils.h",
     "ext/platform_canvas.cc",
     "ext/platform_canvas.h",
     "ext/platform_device.cc",
     "ext/platform_device.h",
     "ext/platform_device_linux.cc",
     "ext/platform_device_mac.cc",
-    "ext/platform_device_win.cc",
-    "ext/recursive_gaussian_convolution.cc",
-    "ext/recursive_gaussian_convolution.h",
     "ext/refptr.h",
     "ext/skia_utils_base.cc",
     "ext/skia_utils_base.h",
@@ -292,8 +246,6 @@ component("skia") {
     "ext/skia_utils_ios.mm",
     "ext/skia_utils_mac.h",
     "ext/skia_utils_mac.mm",
-    "ext/skia_utils_win.cc",
-    "ext/skia_utils_win.h",
   ]
 
   # The skia gypi values are relative to the skia_dir, so we need to rebase.
@@ -384,34 +336,6 @@ component("skia") {
     set_sources_assignment_filter(sources_assignment_filter)
   }
 
-  if (is_win) {
-    sources -= [
-      # Keeping _win.cpp
-      "//third_party/skia/src/utils/SkThreadUtils_pthread.cpp",
-      "//third_party/skia/src/utils/SkThreadUtils_pthread_other.cpp",
-    ]
-  } else {
-    sources -= [
-      # Keeping _pthread.cpp and _pthread_other.cpp.
-      "//third_party/skia/src/utils/SkThreadUtils_win.cpp",
-    ]
-  }
-
-  # need separate win section to handle chromes auto gn filter
-  # (build/config/BUILDCONFIG.gn)
-  if (is_win) {
-    sources -= [
-      #windows
-      "//third_party/skia/include/utils/win/SkAutoCoInitialize.h",
-      "//third_party/skia/include/utils/win/SkHRESULT.h",
-      "//third_party/skia/include/utils/win/SkIStream.h",
-      "//third_party/skia/include/utils/win/SkTScopedComPtr.h",
-      "//third_party/skia/src/utils/win/SkAutoCoInitialize.cpp",
-      "//third_party/skia/src/utils/win/SkIStream.cpp",
-      "//third_party/skia/src/utils/win/SkWGL_win.cpp",
-    ]
-  }
-
   if (is_ios) {
     set_sources_assignment_filter([])
 
@@ -428,25 +352,18 @@ component("skia") {
   }
 
   # Fixup skia library sources.
-  if (is_win) {
-    sources -= [
-      "//third_party/skia/src/ports/SkOSFile_posix.cpp",
-      "//third_party/skia/src/ports/SkTLS_pthread.cpp",
-      "//third_party/skia/src/ports/SkTime_Unix.cpp",
-    ]
-  } else {
-    sources -= [
-      "//third_party/skia/src/ports/SkFontHost_win.cpp",
-      "//third_party/skia/src/ports/SkFontMgr_win_dw.cpp",
-      "//third_party/skia/src/ports/SkOSFile_win.cpp",
-      "//third_party/skia/src/ports/SkRemotableFontMgr_win_dw.cpp",
-      "//third_party/skia/src/ports/SkScalerContext_win_dw.cpp",
-      "//third_party/skia/src/ports/SkScalerContext_win_dw.h",
-      "//third_party/skia/src/ports/SkTLS_win.cpp",
-      "//third_party/skia/src/ports/SkTypeface_win_dw.cpp",
-      "//third_party/skia/src/ports/SkTypeface_win_dw.h",
-    ]
-  }
+  sources -= [
+    "//third_party/skia/src/ports/SkFontHost_win.cpp",
+    "//third_party/skia/src/ports/SkFontMgr_win_dw.cpp",
+    "//third_party/skia/src/ports/SkOSFile_win.cpp",
+    "//third_party/skia/src/ports/SkRemotableFontMgr_win_dw.cpp",
+    "//third_party/skia/src/ports/SkScalerContext_win_dw.cpp",
+    "//third_party/skia/src/ports/SkScalerContext_win_dw.h",
+    "//third_party/skia/src/ports/SkTLS_win.cpp",
+    "//third_party/skia/src/ports/SkTypeface_win_dw.cpp",
+    "//third_party/skia/src/ports/SkTypeface_win_dw.h",
+    "//third_party/skia/src/utils/SkThreadUtils_win.cpp",
+  ]
   if (!is_android) {
     sources -= [
       "//third_party/skia/src/ports/SkFontMgr_android.cpp",
@@ -475,12 +392,7 @@ component("skia") {
   }
 
   # Select the right BitmapPlatformDevice.
-  if (is_win) {
-    sources += [
-      "ext/bitmap_platform_device_win.cc",
-      "ext/bitmap_platform_device_win.h",
-    ]
-  } else if (is_mac || is_ios) {
+  if (is_mac || is_ios) {
     sources += [
       "ext/bitmap_platform_device_mac.cc",
       "ext/bitmap_platform_device_mac.h",
@@ -542,13 +454,7 @@ source_set("skia_opts") {
 
   if (current_cpu == "x86" || current_cpu == "x64") {
     sources = gypi_skia_opts.sse2_sources + gypi_skia_opts.ssse3_sources +
-              gypi_skia_opts.sse41_sources +
-              [
-                # Chrome-specific.
-                "ext/convolver_SSE2.cc",
-                "ext/convolver_SSE2.h",
-              ]
-
+              gypi_skia_opts.sse41_sources
     if (is_linux || is_mac) {
       cflags += [ "-msse4.1" ]
     }
@@ -577,18 +483,7 @@ source_set("skia_opts") {
   } else if (current_cpu == "mipsel") {
     cflags += [ "-fomit-frame-pointer" ]
 
-    if (mips_dsp_rev >= 1) {
-      sources = gypi_skia_opts.mips_dsp_sources
-      if (mips_dsp_rev >= 2) {
-        sources += [
-          # Chrome-specific.
-          "ext/convolver_mips_dspr2.cc",
-          "ext/convolver_mips_dspr2.h",
-        ]
-      }
-    } else {
-      sources = gypi_skia_opts.none_sources
-    }
+    sources = gypi_skia_opts.none_sources
   } else {
     assert(false, "Need to port cpu specific stuff from skia_library_opts.gyp")
   }
@@ -614,19 +509,14 @@ source_set("skia_opts") {
 
 test("skia_unittests") {
   sources = [
-    "ext/analysis_canvas_unittest.cc",
     "ext/bitmap_platform_device_mac_unittest.cc",
-    "ext/convolver_unittest.cc",
-    "ext/image_operations_unittest.cc",
-    "ext/pixel_ref_utils_unittest.cc",
     "ext/platform_canvas_unittest.cc",
-    "ext/recursive_gaussian_convolution_unittest.cc",
     "ext/refptr_unittest.cc",
     "ext/skia_utils_ios_unittest.mm",
     "ext/skia_utils_mac_unittest.mm",
   ]
 
-  if (!is_win && !is_mac) {
+  if (!is_mac) {
     sources -= [ "ext/platform_canvas_unittest.cc" ]
   }
 
@@ -642,18 +532,6 @@ test("skia_unittests") {
 }
 
 if (is_linux) {
-  # TODO(GYP): Figure out which of these work and are needed on other platforms.
-  executable("image_operations_bench") {
-    sources = [
-      "ext/image_operations_bench.cc",
-    ]
-
-    deps = [
-      ":skia",
-      "//base",
-    ]
-  }
-
   executable("filter_fuzz_stub") {
     sources = [
       "tools/filter_fuzz_stub/filter_fuzz_stub.cc",

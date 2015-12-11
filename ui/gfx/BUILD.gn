@@ -26,8 +26,6 @@ component("gfx") {
     "android/device_display_info.h",
     "android/gfx_jni_registrar.cc",
     "android/gfx_jni_registrar.h",
-    "android/java_bitmap.cc",
-    "android/java_bitmap.h",
     "android/shared_device_display_info.cc",
     "android/shared_device_display_info.h",
     "android/view_configuration.cc",

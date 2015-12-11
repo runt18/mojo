@@ -2,15 +2,6 @@ import("//build/config/android/rules.gni")
 
 assert(is_android)
 
-java_cpp_enum("java_enums_srcjar") {
-  sources = [
-    "../gfx/android/java_bitmap.h",
-  ]
-  outputs = [
-    "org/chromium/ui/gfx/BitmapFormat.java",
-  ]
-}
-
 java_strings_grd("ui_strings_grd") {
   grd_file = "java/strings/android_ui_strings.grd"
   outputs = [
