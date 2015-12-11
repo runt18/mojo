@@ -123,13 +123,6 @@ if (is_desktop_linux) {
   ]
 }
 
-if (toolkit_views) {
-  grit_defines += [
-    "-D",
-    "toolkit_views",
-  ]
-}
-
 if (use_aura) {
   grit_defines += [
     "-D",
