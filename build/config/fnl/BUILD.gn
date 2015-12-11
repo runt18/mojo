@@ -36,13 +36,3 @@ config("fontconfig") {
 pkg_config("freetype2") {
   packages = [ "freetype2" ]
 }
-
-if (use_evdev_gestures) {
-  pkg_config("libevdev-cros") {
-    packages = [ "libevdev-cros" ]
-  }
-
-  pkg_config("libgestures") {
-    packages = [ "libgestures" ]
-  }
-}

@@ -163,11 +163,7 @@ typedef void* NativeViewAccessible;
 #else  // Android, Linux, Chrome OS, etc.
 // Linux doesn't have a native font type.
 typedef void* NativeEditView;
-#if defined(USE_CAIRO)
-typedef cairo_t* NativeDrawingContext;
-#else
 typedef void* NativeDrawingContext;
-#endif  // defined(USE_CAIRO)
 #if defined(USE_X11) && !defined(OS_CHROMEOS)
 typedef AtkObject* NativeViewAccessible;
 #else

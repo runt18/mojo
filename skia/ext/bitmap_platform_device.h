@@ -12,8 +12,6 @@
 #include "skia/ext/bitmap_platform_device_win.h"
 #elif defined(__APPLE__)
 #include "skia/ext/bitmap_platform_device_mac.h"
-#elif defined(USE_CAIRO)
-#include "skia/ext/bitmap_platform_device_cairo.h"
 #else
 #include "skia/ext/bitmap_platform_device_skia.h"
 #endif

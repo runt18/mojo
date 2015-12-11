@@ -21,10 +21,7 @@ class SkMetaData;
 class SkPath;
 class SkRegion;
 
-#if defined(USE_CAIRO)
-typedef struct _cairo cairo_t;
-typedef struct _cairo_rectangle cairo_rectangle_t;
-#elif defined(OS_MACOSX)
+#if defined(OS_MACOSX)
 typedef struct CGContext* CGContextRef;
 typedef struct CGRect CGRect;
 #endif
@@ -36,9 +33,6 @@ class PlatformDevice;
 #if defined(OS_WIN)
 typedef HDC PlatformSurface;
 typedef RECT PlatformRect;
-#elif defined(USE_CAIRO)
-typedef cairo_t* PlatformSurface;
-typedef cairo_rectangle_t PlatformRect;
 #elif defined(OS_MACOSX)
 typedef CGContextRef PlatformSurface;
 typedef CGRect PlatformRect;
