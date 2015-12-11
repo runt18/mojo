@@ -260,12 +260,12 @@ func TestSingleFileValueValidationErrors(t *testing.T) {
 	const int32 Bar = 42;
 
 	struct Foo{
-	  string x = Bar;
+	  string? x = Bar;
 	};`
 
 		test.addTestCase(contents, []string{
 			"Illegal assignment",
-			"Bar with the value 42 of type int8 may not be assigned to x of type string"})
+			"Bar with the value 42 of type int8 may not be assigned to x of type string?"})
 	}
 
 	////////////////////////////////////////////////////////////
@@ -518,7 +518,83 @@ func TestSingleFileValueValidationErrors(t *testing.T) {
 	}
 
 	////////////////////////////////////////////////////////////
-	// Group 4: Multiple indirection
+	// Group 4: The left-hand-side is an interface varialbe.
+	////////////////////////////////////////////////////////////
+
+	////////////////////////////////////////////////////////////
+	// Test Case: Assign an enum value to an interface
+	////////////////////////////////////////////////////////////
+	{
+		contents := `
+	interface Foo{
+	  enum MyEnum {
+	    ONE
+	  };
+	};
+
+	struct Bar{
+	  Foo&? x = Foo.MyEnum.ONE;
+	};`
+
+		test.addTestCase(contents, []string{
+			"Illegal assignment",
+			"The enum value Foo.MyEnum.ONE of type Foo.MyEnum may not be assigned to x of type Foo&?."})
+	}
+
+	////////////////////////////////////////////////////////////
+	// Test Case: Assign constant of value double.INFINITY to an enum variable.
+	////////////////////////////////////////////////////////////
+	{
+		contents := `
+	interface Foo{
+	  const double BIG = double.INFINITY;
+	};
+
+	struct Bar{
+	  Foo? x = Foo.BIG;
+	};`
+
+		test.addTestCase(contents, []string{
+			"Illegal assignment",
+			"Foo.BIG with the value double.INFINITY may not be assigned to x of type Foo?."})
+	}
+
+	////////////////////////////////////////////////////////////
+	// Test Case: Assign double.INFINITY directly to an interface variable.
+	////////////////////////////////////////////////////////////
+	{
+		contents := `
+	interface Foo{
+	};
+
+	struct Bar{
+	  Foo& x = double.INFINITY;
+	};
+	`
+		test.addTestCase(contents, []string{
+			"Illegal assignment",
+			"double.INFINITY may not be assigned to x of type Foo&."})
+	}
+
+	////////////////////////////////////////////////////////////
+	// Test Case: Assign the default keyword to a variable of interface type.
+	////////////////////////////////////////////////////////////
+	{
+		contents := `
+	 interface Foo{
+	};
+
+	struct Bar{
+	  Foo& x = default;
+	};`
+
+		test.addTestCase(contents, []string{
+			"Illegal assignment",
+			"The 'default' keyword may not be used with the field x of type Foo&."})
+	}
+
+	////////////////////////////////////////////////////////////
+	// Group 5: Multiple indirection
 	////////////////////////////////////////////////////////////
 
 	////////////////////////////////////////////////////////////

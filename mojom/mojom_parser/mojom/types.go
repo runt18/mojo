@@ -409,7 +409,7 @@ func (s StringType) String() string {
 }
 
 func (s StringType) TypeName() string {
-	return "string"
+	return s.String()
 }
 
 /////////////////////////////////////////////////////////////
@@ -599,20 +599,30 @@ func (ArrayTypeRef) MarkTypeCompatible(assignment LiteralAssignment) bool {
 	return false
 }
 
-func (a ArrayTypeRef) String() string {
+func (a ArrayTypeRef) ToString(debug bool) string {
 	fixedLengthSpecifier := ""
 	if a.fixedLength > 0 {
-		fixedLengthSpecifier = fmt.Sprint(" ,%d", a.fixedLength)
+		fixedLengthSpecifier = fmt.Sprintf(" ,%d", a.fixedLength)
 	}
 	nullableSpecifier := ""
 	if a.nullable {
 		nullableSpecifier = "?"
 	}
-	return fmt.Sprintf("array<%s%s>%s", a.elementType, fixedLengthSpecifier, nullableSpecifier)
+	var elementTypeString string
+	if debug {
+		elementTypeString = a.elementType.String()
+	} else {
+		elementTypeString = a.elementType.TypeName()
+	}
+	return fmt.Sprintf("array<%s%s>%s", elementTypeString, fixedLengthSpecifier, nullableSpecifier)
+}
+
+func (a ArrayTypeRef) String() string {
+	return a.ToString(true)
 }
 
 func (a ArrayTypeRef) TypeName() string {
-	return a.String()
+	return a.ToString(false)
 }
 
 /////////////////////////////////////////////////////////////
@@ -669,16 +679,28 @@ func (MapTypeRef) MarkTypeCompatible(assignment LiteralAssignment) bool {
 	return false
 }
 
-func (m MapTypeRef) String() string {
+func (m MapTypeRef) ToString(debug bool) string {
 	nullableSpecifier := ""
 	if m.nullable {
 		nullableSpecifier = "?"
 	}
-	return fmt.Sprintf("map<%s, %s>%s", m.keyType, m.valueType, nullableSpecifier)
+	var keyTypeString, valueTypeString string
+	if debug {
+		keyTypeString = m.keyType.String()
+		valueTypeString = m.valueType.String()
+	} else {
+		keyTypeString = m.keyType.TypeName()
+		valueTypeString = m.valueType.TypeName()
+	}
+	return fmt.Sprintf("map<%s, %s>%s", keyTypeString, valueTypeString, nullableSpecifier)
+}
+
+func (m MapTypeRef) String() string {
+	return m.ToString(true)
 }
 
 func (m MapTypeRef) TypeName() string {
-	return m.String()
+	return m.ToString(false)
 }
 
 /////////////////////////////////////////////////////////////
@@ -797,13 +819,13 @@ func (ref *UserTypeRef) validateAfterResolution() error {
 		// make sure that a literal was not assigned to it.
 		if ref.usedAsMapKey {
 			message := fmt.Sprintf("The type %s is not allowed as the key type of a map. "+
-				"Only simple types, strings and enum types may be map keys.", ref.identifier)
+				"Only simple types, strings and enum types may be map keys.", ref.TypeName())
 			message = UserErrorMessage(file, ref.token, message)
 			return fmt.Errorf(message)
 		}
 		if ref.usedAsConstantType {
 			message := fmt.Sprintf("The type %s is not allowed as the type of a declared constant. "+
-				"Only simple types, strings and enum types may be used.", ref.identifier)
+				"Only simple types, strings and enum types may be used.", ref.TypeName())
 			message = UserErrorMessage(file, ref.token, message)
 			return fmt.Errorf(message)
 		}
@@ -812,11 +834,11 @@ func (ref *UserTypeRef) validateAfterResolution() error {
 		var message string
 		if ref.literalAssignment.assignedValue.IsDefault() {
 			message = fmt.Sprintf("Illegal assignment: The 'default' keyword may not be used with the field %s of type %s.",
-				ref.literalAssignment.variableName, ref.ResolvedType().FullyQualifiedName())
+				ref.literalAssignment.variableName, ref.TypeName())
 		} else {
 			message = fmt.Sprintf("Illegal assignment: %s %s of type %s may not be assigned the value %v of type %s.",
 				ref.literalAssignment.kind, ref.literalAssignment.variableName,
-				ref.identifier, ref.literalAssignment.assignedValue,
+				ref.TypeName(), ref.literalAssignment.assignedValue,
 				ref.literalAssignment.assignedValue.LiteralValueType())
 		}
 		message = UserErrorMessage(file, ref.token, message)
@@ -826,7 +848,7 @@ func (ref *UserTypeRef) validateAfterResolution() error {
 	return nil
 }
 
-func (t *UserTypeRef) String() string {
+func (t *UserTypeRef) ToString(debug bool) string {
 	interfaceRequest := ""
 	if t.interfaceRequest {
 		interfaceRequest = "&"
@@ -835,18 +857,27 @@ func (t *UserTypeRef) String() string {
 	if t.nullable {
 		nullable = "?"
 	}
-	resolvedKey := ""
-	if t.resolvedType != nil {
-		resolvedKey = t.resolvedType.TypeKey()
+	debugString := ""
+	if debug {
+		resolvedKey := ""
+		if t.resolvedType != nil {
+			resolvedKey = t.resolvedType.TypeKey()
+		}
+		debugString = fmt.Sprintf("(%s)", resolvedKey)
 	}
-	return fmt.Sprintf("(%s)%s%s%s", resolvedKey, t.identifier, interfaceRequest, nullable)
+	baseName := t.identifier
+	if !debug && t.resolvedType != nil {
+		baseName = t.resolvedType.FullyQualifiedName()
+	}
+	return fmt.Sprintf("%s%s%s%s", debugString, baseName, interfaceRequest, nullable)
+}
+
+func (t *UserTypeRef) String() string {
+	return t.ToString(true)
 }
 
 func (t *UserTypeRef) TypeName() string {
-	if t.resolvedType == nil {
-		return t.identifier
-	}
-	return t.resolvedType.FullyQualifiedName()
+	return t.ToString(false)
 }
 
 func (t *UserTypeRef) LongString() string {

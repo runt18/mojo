@@ -674,12 +674,12 @@ func TestInvalidAssignmentDuringParsing(t *testing.T) {
 	startTestCase("")
 	cases[testCaseNum].mojomContents = `
 	struct Foo {
-		string x = 42;
+		string? x = 42;
 	};
 
 	`
 	expectError("Illegal assignment")
-	expectError("Field x of type string may not be assigned the value 42 of type int8.")
+	expectError("Field x of type string? may not be assigned the value 42 of type int8.")
 	endTestCase()
 
 	////////////////////////////////////////////////////////////
@@ -722,6 +722,38 @@ func TestInvalidAssignmentDuringParsing(t *testing.T) {
 	`
 	expectError("Illegal assignment")
 	expectError("The 'default' keyword may not be used with the field x of type string")
+	endTestCase()
+
+	////////////////////////////////////////////////////////////
+	// Test Case (Assign integer to array field)
+	////////////////////////////////////////////////////////////
+	startTestCase("")
+	cases[testCaseNum].mojomContents = `
+	struct Foo {
+	};
+
+	struct Bar {
+		array<Foo?, 8>? x = 7;
+	};
+	`
+	expectError("Illegal assignment")
+	expectError("Field x of type array<Foo? ,8>? may not be assigned the value 7 of type int8.")
+	endTestCase()
+
+	////////////////////////////////////////////////////////////
+	// Test Case (Assign default keyword to map field)
+	////////////////////////////////////////////////////////////
+	startTestCase("")
+	cases[testCaseNum].mojomContents = `
+	struct Foo {
+	};
+
+	struct Bar {
+		map<bool, Foo?>? x = default;
+	};
+	`
+	expectError("Illegal assignment")
+	expectError("The 'default' keyword may not be used with the field x of type map<bool, Foo?>?.")
 	endTestCase()
 
 	////////////////////////////////////////////////////////////
