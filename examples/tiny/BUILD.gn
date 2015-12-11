@@ -8,4 +8,8 @@ mojo_native_application("tiny") {
   sources = [
     "tiny.c",
   ]
+
+  deps = [
+    "//mojo/public/c/system",
+  ]
 }

@@ -18,7 +18,7 @@ mojo_android_application("java_handler") {
     "//mojo/application:content_handler",
     "//mojo/common:tracing_impl",
     "//mojo/environment:chromium",
-    "//mojo/public/c/system:for_shared_library",
+    "//mojo/public/c/system",
     "//mojo/public/cpp/bindings",
     "//mojo/public/cpp/system",
     "//mojo/services/content_handler/interfaces",

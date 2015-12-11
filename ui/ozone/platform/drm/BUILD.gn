@@ -177,7 +177,7 @@ if (ozone_platform_dri || ozone_platform_drm || ozone_platform_gbm) {
 
     deps = [
       "//base",
-      "//mojo/public/c/system:for_shared_library",
+      "//mojo/public/c/system",
       "//skia",
       "//testing/gtest",
       "//ui/ozone",
