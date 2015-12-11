@@ -711,6 +711,20 @@ func TestInvalidAssignmentDuringParsing(t *testing.T) {
 	endTestCase()
 
 	////////////////////////////////////////////////////////////
+	// Test Case (Assign default keyword to string)
+	////////////////////////////////////////////////////////////
+	startTestCase("")
+	cases[testCaseNum].mojomContents = `
+	struct Foo {
+		string x = default;
+	};
+
+	`
+	expectError("Illegal assignment")
+	expectError("The 'default' keyword may not be used with the field x of type string")
+	endTestCase()
+
+	////////////////////////////////////////////////////////////
 	// Group 2: Assign to constant.
 	////////////////////////////////////////////////////////////
 

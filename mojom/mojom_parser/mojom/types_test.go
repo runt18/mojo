@@ -168,8 +168,8 @@ func TestMarkTypeCompatible(t *testing.T) {
 		{SimpleTypeUInt32, []bool{false, false, true, false, true, true, false, false, false, false, false, false}},
 		{SimpleTypeUInt64, []bool{false, false, true, false, true, true, false, true, true, false, false, false}},
 		{StringType{}, []bool{true, false, false, false, false, false, false, false, false, false, false, false}},
-		{NewArrayTypeRef(SimpleTypeInt32, 0, false), []bool{false, false, false, false, false, false, false, false, false, false, false, true}},
-		{NewMapTypeRef(SimpleTypeInt32, SimpleTypeInt64, false), []bool{false, false, false, false, false, false, false, false, false, false, false, true}},
+		{NewArrayTypeRef(SimpleTypeInt32, 0, false), []bool{false, false, false, false, false, false, false, false, false, false, false, false}},
+		{NewMapTypeRef(SimpleTypeInt32, SimpleTypeInt64, false), []bool{false, false, false, false, false, false, false, false, false, false, false, false}},
 		{BuiltInType("handle"), []bool{false, false, false, false, false, false, false, false, false, false, false, false}},
 		// Assignments to UserTypeRefs are not validated at all during parsing.
 		{userTypeRef, []bool{true, true, true, true, true, true, true, true, true, true, true, true}},

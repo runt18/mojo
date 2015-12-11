@@ -745,11 +745,13 @@ func (p *Parser) parseStructField(attributes *mojom.Attributes) *mojom.StructFie
 
 	var defaultValue mojom.ValueRef
 	var defaultValueToken lexer.Token
+	defaultKeywordUsed := false
 	if p.tryMatch(lexer.Equals) {
 		defaultValueToken = p.peekNextToken("Expecting a default value.")
 		if defaultValueToken.Kind == lexer.Default {
 			p.consumeNextToken()
 			defaultValue = mojom.MakeDefaultLiteral()
+			defaultKeywordUsed = true
 		} else {
 			assigneeSpec := mojom.AssigneeSpec{
 				fieldName,
@@ -765,15 +767,21 @@ func (p *Parser) parseStructField(attributes *mojom.Attributes) *mojom.StructFie
 	declData := p.DeclDataWithOrdinal(fieldName, nameToken, attributes, ordinalValue)
 	field := mojom.NewStructField(declData, fieldType, defaultValue)
 	if !field.ValidateDefaultValue() {
-		valueString := fmt.Sprintf("%v", defaultValue)
-		valueTypeString := ""
-		concreteValue := defaultValue.ResolvedConcreteValue()
-		if concreteValue != nil {
-			valueString = fmt.Sprintf("%v", concreteValue)
-			valueTypeString = fmt.Sprintf(" of type %s", concreteValue.ValueType())
+		var message string
+		if defaultKeywordUsed {
+			message = fmt.Sprintf("Illegal assignment: The 'default' keyword may not be used with the field %s of type %s.",
+				fieldName, fieldType.TypeName())
+		} else {
+			valueString := fmt.Sprintf("%v", defaultValue)
+			valueTypeString := ""
+			concreteValue := defaultValue.ResolvedConcreteValue()
+			if concreteValue != nil {
+				valueString = fmt.Sprintf("%v", concreteValue)
+				valueTypeString = fmt.Sprintf(" of type %s", concreteValue.ValueType())
+			}
+			message = fmt.Sprintf("Illegal assignment: Field %s of type %s may not be assigned the value %s%s.",
+				fieldName, fieldType.TypeName(), valueString, valueTypeString)
 		}
-		message := fmt.Sprintf("Illegal assignment: Field %s of type %s may not be assigned the value %s%s.",
-			fieldName, fieldType.TypeName(), valueString, valueTypeString)
 		p.parseErrorT(ParserErrorCodeNotAssignmentCompatible, message, defaultValueToken)
 		return nil
 	}

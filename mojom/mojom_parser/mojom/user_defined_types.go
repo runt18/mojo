@@ -471,7 +471,7 @@ func (MojomUnion) Kind() UserDefinedTypeKind {
 }
 
 func (MojomUnion) IsAssignmentCompatibleWith(value LiteralValue) bool {
-	return value.IsDefault()
+	return false
 }
 
 type UnionField struct {

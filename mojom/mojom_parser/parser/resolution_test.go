@@ -478,7 +478,7 @@ func TestSingleFileValueValidationErrors(t *testing.T) {
 	}
 
 	////////////////////////////////////////////////////////////
-	// Test Case: Use an enum value from a different enum as an enum value initializer.
+	// Test Case: Use a constant with a value of an enum value from a different enum as an enum value initializer.
 	////////////////////////////////////////////////////////////
 	{
 		contents := `
@@ -499,6 +499,22 @@ func TestSingleFileValueValidationErrors(t *testing.T) {
 		test.addTestCase(contents, []string{
 			"Illegal assignment",
 			"Bar with the value MyEnum.TWO may not be used as an initializer for TWO of type MyOtherEnum."})
+	}
+
+	////////////////////////////////////////////////////////////
+	// Test Case: Assign the default keyword to a variable of enum type.
+	////////////////////////////////////////////////////////////
+	{
+		contents := `
+	 enum MyEnum {
+	 };
+
+	struct Foo{
+	  MyEnum x = default;
+	};`
+		test.addTestCase(contents, []string{
+			"Illegal assignment",
+			"The 'default' keyword may not be used with the field x of type MyEnum."})
 	}
 
 	////////////////////////////////////////////////////////////

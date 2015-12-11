@@ -596,7 +596,7 @@ func (ArrayTypeRef) IsAssignmentCompatible(assignedValue ConcreteValue) bool {
 }
 
 func (ArrayTypeRef) MarkTypeCompatible(assignment LiteralAssignment) bool {
-	return assignment.assignedValue.IsDefault()
+	return false
 }
 
 func (a ArrayTypeRef) String() string {
@@ -666,7 +666,7 @@ func (MapTypeRef) IsAssignmentCompatible(assignedValue ConcreteValue) bool {
 }
 
 func (MapTypeRef) MarkTypeCompatible(assignment LiteralAssignment) bool {
-	return assignment.assignedValue.IsDefault()
+	return false
 }
 
 func (m MapTypeRef) String() string {
@@ -809,10 +809,16 @@ func (ref *UserTypeRef) validateAfterResolution() error {
 		}
 	}
 	if ref.literalAssignment != nil && !ref.resolvedType.IsAssignmentCompatibleWith(ref.literalAssignment.assignedValue) {
-		message := fmt.Sprintf("Illegal assignment: %s %s of type %s may not be assigned the value %v of type %s.",
-			ref.literalAssignment.kind, ref.literalAssignment.variableName,
-			ref.identifier, ref.literalAssignment.assignedValue,
-			ref.literalAssignment.assignedValue.LiteralValueType())
+		var message string
+		if ref.literalAssignment.assignedValue.IsDefault() {
+			message = fmt.Sprintf("Illegal assignment: The 'default' keyword may not be used with the field %s of type %s.",
+				ref.literalAssignment.variableName, ref.ResolvedType().FullyQualifiedName())
+		} else {
+			message = fmt.Sprintf("Illegal assignment: %s %s of type %s may not be assigned the value %v of type %s.",
+				ref.literalAssignment.kind, ref.literalAssignment.variableName,
+				ref.identifier, ref.literalAssignment.assignedValue,
+				ref.literalAssignment.assignedValue.LiteralValueType())
+		}
 		message = UserErrorMessage(file, ref.token, message)
 		return fmt.Errorf(message)
 	}
