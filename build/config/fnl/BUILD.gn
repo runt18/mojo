@@ -29,10 +29,6 @@ config("sdk") {
   }
 }
 
-config("fontconfig") {
-  libs = [ "fontconfig" ]
-}
-
 pkg_config("freetype2") {
   packages = [ "freetype2" ]
 }

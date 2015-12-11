@@ -40,10 +40,6 @@ component("base") {
     "//url",
   ]
 
-  if (is_linux) {
-    configs += [ "//build/config/linux:fontconfig" ]
-  }
-
   libs = []
 
   if (use_x11) {

@@ -85,16 +85,12 @@ config("feature_flags") {
     defines += [ "ADDRESS_SANITIZER" ]
   }
   if (is_lsan) {
-    defines += [
-      "LEAK_SANITIZER",
-      "WTF_USE_LEAK_SANITIZER=1",
-    ]
+    defines += [ "LEAK_SANITIZER" ]
   }
   if (is_tsan) {
     defines += [
       "THREAD_SANITIZER",
       "DYNAMIC_ANNOTATIONS_EXTERNAL_IMPL=1",
-      "WTF_USE_DYNAMIC_ANNOTATIONS_NOIMPL=1",
     ]
   }
   if (is_msan) {
@@ -122,7 +118,6 @@ config("debug") {
   defines = [
     "_DEBUG",
     "DYNAMIC_ANNOTATIONS_ENABLED=1",
-    "WTF_USE_DYNAMIC_ANNOTATIONS=1",
   ]
 
   if (is_nacl) {
@@ -145,10 +140,7 @@ config("release") {
   # TODO(GYP) The GYP build has "release_valgrind_build == 0" for this
   # condition. When Valgrind is set up, we need to do the same here.
   if (is_tsan) {
-    defines += [
-      "DYNAMIC_ANNOTATIONS_ENABLED=1",
-      "WTF_USE_DYNAMIC_ANNOTATIONS=1",
-    ]
+    defines += [ "DYNAMIC_ANNOTATIONS_ENABLED=1" ]
   } else {
     defines += [ "NVALGRIND" ]
     if (!is_nacl) {

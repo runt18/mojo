@@ -133,11 +133,6 @@ component("gfx") {
     ]
   }
 
-  # Linux.
-  if (is_linux) {
-    configs += [ "//build/config/linux:fontconfig" ]
-  }
-
   if (use_x11) {
     deps += [ "//ui/gfx/x" ]
   }
@@ -148,8 +143,6 @@ component("gfx") {
 source_set("test_support") {
   testonly = true
   sources = [
-    "test/fontconfig_util_linux.cc",
-    "test/fontconfig_util_linux.h",
     "test/gfx_util.cc",
     "test/gfx_util.h",
   ]
@@ -165,10 +158,6 @@ source_set("test_support") {
     "//testing/gtest",
     "//ui/gfx/geometry",
   ]
-
-  if (is_linux) {
-    configs += [ "//build/config/linux:fontconfig" ]
-  }
 }
 
 test("gfx_unittests") {

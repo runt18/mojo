@@ -317,8 +317,9 @@ component("skia") {
   sources += gypi_skia_gpu.skgpu_sources
   sources += gypi_skia_gpu.skgpu_null_gl_sources
 
-  # Remove unused util files include in utils.gypi
+  # Remove various unused files.
   sources -= [
+    # utils:
     "//third_party/skia/include/utils/SkBoundaryPatch.h",
     "//third_party/skia/include/utils/SkCamera.h",
     "//third_party/skia/include/utils/SkCanvasStateUtils.h",
@@ -351,15 +352,19 @@ component("skia") {
     "//third_party/skia/src/utils/SkMD5.h",
     "//third_party/skia/src/utils/SkMeshUtils.cpp",
     "//third_party/skia/src/utils/SkNinePatch.cpp",
-    "//third_party/skia/src/utils/SkOSFile.cpp",
     "//third_party/skia/src/utils/SkParsePath.cpp",
     "//third_party/skia/src/utils/SkSHA1.cpp",
     "//third_party/skia/src/utils/SkSHA1.h",
     "//third_party/skia/src/utils/SkTFitsIn.h",
 
-    #testing
+    # fonts:
+    "//third_party/skia/src/fonts/SkFontMgr_fontconfig.cpp",
     "//third_party/skia/src/fonts/SkGScalerContext.cpp",
     "//third_party/skia/src/fonts/SkGScalerContext.h",
+
+    # ports:
+    "//third_party/skia/src/ports/SkFontConfigInterface_direct.cpp",
+    "//third_party/skia/src/ports/SkFontHost_fontconfig.cpp",
   ]
 
   if (is_ios || is_mac || is_android) {
@@ -453,11 +458,12 @@ component("skia") {
     sources -= [ "//third_party/skia/src/ports/SkFontHost_mac.cpp" ]
   }
 
-  if (!is_linux) {
-    sources -= [
-      "//third_party/skia/src/fonts/SkFontMgr_fontconfig.cpp",
-      "//third_party/skia/src/ports/SkFontConfigInterface_direct.cpp",
-      "//third_party/skia/src/ports/SkFontHost_fontconfig.cpp",
+  # On "Linux" (i.e., not Android), we use our a custom SkFontMgr.
+  # TODO(vtl): We should probably do the same on Android.
+  if (is_linux) {
+    sources += [
+      "//third_party/skia/src/ports/SkFontMgr_custom.cpp",
+      "ports/font_mgr_factory.cc",
     ]
   }
 
@@ -508,10 +514,7 @@ component("skia") {
   ]
 
   if (is_linux) {
-    configs += [
-      "//build/config/linux:fontconfig",
-      "//build/config/linux:freetype2",
-    ]
+    configs += [ "//build/config/linux:freetype2" ]
     deps += [ "//third_party/icu:icuuc" ]
   }
 
