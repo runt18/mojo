@@ -2,7 +2,6 @@
 # Use of this source code is governed by a BSD-style license that can be
 # found in the LICENSE file.
 
-import("//build/config/linux/pkg_config.gni")
 import("//build/config/features.gni")
 import("//build/config/sysroot.gni")
 import("//build/config/ui.gni")
@@ -30,8 +29,9 @@ config("sdk") {
   }
 }
 
-pkg_config("freetype2") {
-  packages = [ "freetype2" ]
+config("freetype2") {
+  include_dirs = [ "$sysroot/usr/include/freetype2" ]
+  libs = [ "freetype" ]
 }
 
 config("x11") {
