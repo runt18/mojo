@@ -759,12 +759,14 @@ void StackTrace::Print() const {
 #endif
 }
 
-#if !defined(__UCLIBC__) && !defined(FNL_MUSL)
 void StackTrace::OutputToStream(std::ostream* os) const {
+#if defined(__UCLIBC__) || defined(FNL_MUSL)
+  (*os) << "(stack trace not supported)\n";
+#else
   StreamBacktraceOutputHandler handler(os);
   ProcessBacktrace(trace_, count_, &handler);
-}
 #endif
+}
 
 namespace internal {
 

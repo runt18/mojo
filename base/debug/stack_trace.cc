@@ -33,9 +33,7 @@ const void *const *StackTrace::Addresses(size_t* count) const {
 
 std::string StackTrace::ToString() const {
   std::stringstream stream;
-#if !defined(__UCLIBC__) && !defined(FNL_MUSL)
   OutputToStream(&stream);
-#endif
   return stream.str();
 }
 

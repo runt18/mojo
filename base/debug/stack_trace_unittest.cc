@@ -27,15 +27,11 @@ typedef MultiProcessTest StackTraceTest;
 typedef testing::Test StackTraceTest;
 #endif
 
-// Note: On Linux, this test currently only fully works on Debug builds.
-// See comments in the #ifdef soup if you intend to change this.
-#if defined(OS_WIN)
-// Always fails on Windows: crbug.com/32070
+#if defined(__UCLIBC__) || defined(FNL_MUSL)
 #define MAYBE_OutputToStream DISABLED_OutputToStream
 #else
 #define MAYBE_OutputToStream OutputToStream
 #endif
-#if !defined(__UCLIBC__) && !defined(FNL_MUSL)
 TEST_F(StackTraceTest, MAYBE_OutputToStream) {
   StackTrace trace;
 
@@ -104,12 +100,6 @@ TEST_F(StackTraceTest, MAYBE_OutputToStream) {
       << "Expected to find main in backtrace:\n"
       << backtrace_message;
 
-#if defined(OS_WIN)
-// MSVC doesn't allow the use of C99's __func__ within C++, so we fake it with
-// MSVC's __FUNCTION__ macro.
-#define __func__ __FUNCTION__
-#endif
-
   // Expect to find this function as well.
   // Note: This will fail if not linked with -rdynamic (aka -export_dynamic)
   EXPECT_TRUE(backtrace_message.find(__func__) != std::string::npos)
@@ -131,7 +121,6 @@ TEST_F(StackTraceTest, DebugOutputToStream) {
 TEST_F(StackTraceTest, DebugPrintBacktrace) {
   StackTrace().Print();
 }
-#endif  // !defined(__UCLIBC__)
 
 #if defined(OS_POSIX) && !defined(OS_ANDROID)
 #if !defined(OS_IOS)

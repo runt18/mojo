@@ -15,11 +15,6 @@
 #include <unistd.h>
 #endif
 
-#if defined(OS_WIN)
-struct _EXCEPTION_POINTERS;
-struct _CONTEXT;
-#endif
-
 namespace base {
 namespace debug {
 
@@ -50,14 +45,6 @@ class BASE_EXPORT StackTrace {
   // trimmed to |kMaxTraces|.
   StackTrace(const void* const* trace, size_t count);
 
-#if defined(OS_WIN)
-  // Creates a stacktrace for an exception.
-  // Note: this function will throw an import not found (StackWalk64) exception
-  // on system without dbghelp 5.1.
-  StackTrace(const _EXCEPTION_POINTERS* exception_pointers);
-  StackTrace(const _CONTEXT* context);
-#endif
-
   // Copying and assignment are allowed with the default functions.
 
   ~StackTrace();
@@ -69,19 +56,13 @@ class BASE_EXPORT StackTrace {
   // Prints the stack trace to stderr.
   void Print() const;
 
-#if !defined(__UCLIBC__) && !defined(FNL_MUSL)
-  // Resolves backtrace to symbols and write to stream.
+  // Resolves backtrace to symbols and write to stream (if supported).
   void OutputToStream(std::ostream* os) const;
-#endif
 
   // Resolves backtrace to symbols and returns as string.
   std::string ToString() const;
 
  private:
-#if defined(OS_WIN)
-  void InitTrace(_CONTEXT* context_record);
-#endif
-
   // From http://msdn.microsoft.com/en-us/library/bb204633.aspx,
   // the sum of FramesToSkip and FramesToCapture must be less than 63,
   // so set it to 62. Even if on POSIX it could be a larger value, it usually
