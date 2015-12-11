@@ -73,7 +73,6 @@ def GNArgsForConfig(config):
     gn_args["target_os"] = "android"
   elif config.target_os == Config.OS_FNL:
     gn_args["target_os"] = "fnl"
-    gn_args["use_aura"] = False
     gn_args["use_ozone"] = True
     gn_args["target_sysroot"] = config.values.get("target_sysroot", "")
     gn_args["toolchain_prefix"] = config.values.get("toolchain_prefix", "")
@@ -85,7 +84,7 @@ def GNArgsForConfig(config):
       gn_args["use_libjpeg_turbo"] = False
     gn_args["use_ios_simulator"] = config.is_simulator
   elif config.target_os == Config.OS_LINUX:
-    gn_args["use_aura"] = False
+    pass
 
   gn_args["target_cpu"] = config.target_cpu
 

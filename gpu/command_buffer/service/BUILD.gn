@@ -154,10 +154,6 @@ source_set("service") {
     ]
   }
 
-  if (ui_compositor_image_transport) {
-    include_dirs += [ "//third_party/khronos" ]
-  }
-
   if (is_win || is_android || (is_linux && use_x11)) {
     sources += [
       "async_pixel_transfer_manager_egl.cc",

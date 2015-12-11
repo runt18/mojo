@@ -201,8 +201,6 @@ component("gesture_detection") {
 
   if (is_android) {
     sources += [ "gesture_detection/gesture_configuration_android.cc" ]
-  } else if (use_aura) {
-    sources += [ "gesture_detection/gesture_configuration_aura.cc" ]
   } else {
     sources += [ "gesture_detection/gesture_configuration_default.cc" ]
   }

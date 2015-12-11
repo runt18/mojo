@@ -57,8 +57,6 @@ class GTestListTestsTest(unittest.TestCase):
     }
 
     for args in _iterate_over_config(configs_to_test):
-      if args.get("target_os", None) is None and sys.platform[:5] == "linux":
-        args["use_aura"] = False
       config = gn.ConfigForGNArgs(args)
       new_args = gn.GNArgsForConfig(config)
       self.assertDictEqual(args, new_args)

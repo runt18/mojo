@@ -10,18 +10,6 @@
 #include "base/message_loop/message_loop.h"
 #include "ui/events/devices/x11/device_data_manager_x11.h"
 
-namespace {
-
-bool IsXI2Available() {
-#if defined(USE_AURA)
-  return ui::DeviceDataManagerX11::GetInstance()->IsXInput2Available();
-#else
-  return false;
-#endif
-}
-
-}
-
 namespace ui {
 
 DeviceListCacheX11::DeviceListCacheX11() {
@@ -39,11 +27,7 @@ void DeviceListCacheX11::UpdateDeviceList(Display* display) {
   new_x_dev_list.devices.reset(
       XListInputDevices(display, &new_x_dev_list.count));
 
-  XIDeviceList& new_xi_dev_list = xi_dev_list_;
-  new_xi_dev_list.devices.reset(
-      IsXI2Available()
-          ? XIQueryDevice(display, XIAllDevices, &new_xi_dev_list.count)
-          : nullptr);
+  xi_dev_list_.devices.reset();
 }
 
 const XDeviceList& DeviceListCacheX11::GetXDeviceList(Display* display) {

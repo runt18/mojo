@@ -123,13 +123,6 @@ if (is_desktop_linux) {
   ]
 }
 
-if (use_aura) {
-  grit_defines += [
-    "-D",
-    "use_aura",
-  ]
-}
-
 if (use_nss_certs) {
   grit_defines += [
     "-D",
