@@ -530,16 +530,3 @@ test("skia_unittests") {
     "//ui/gfx/geometry",
   ]
 }
-
-if (is_linux) {
-  executable("filter_fuzz_stub") {
-    sources = [
-      "tools/filter_fuzz_stub/filter_fuzz_stub.cc",
-    ]
-
-    deps = [
-      ":skia",
-      "//base",
-    ]
-  }
-}
