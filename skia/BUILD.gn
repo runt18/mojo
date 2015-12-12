@@ -78,17 +78,6 @@ gypi_skia_opts =
                 "scope",
                 [ "//third_party/skia/gyp/opts.gypi" ])
 
-# The list of Skia files is kept in skia_gn_files.gypi. Read it.
-gypi_values =
-    exec_script("//build/gypi_to_gn.py",
-                [
-                  rebase_path("skia_gn_files.gypi"),
-                  "--replace=<(skia_include_path)=//third_party/skia/include",
-                  "--replace=<(skia_src_path)=//third_party/skia/src",
-                ],
-                "scope",
-                [ "skia_gn_files.gypi" ])
-
 # External-facing config for dependent code.
 config("skia_config") {
   include_dirs = [
@@ -252,7 +241,44 @@ component("skia") {
   sources += gypi_skia_core.sources
   sources += gypi_skia_effects.sources
   sources += gypi_skia_utils.sources
-  sources += gypi_values.skia_library_sources
+
+  sources += [
+    "//third_party/skia/include/images/SkMovie.h",
+    "//third_party/skia/include/images/SkPageFlipper.h",
+    "//third_party/skia/include/ports/SkTypeface_win.h",
+    "//third_party/skia/src/fonts/SkFontMgr_indirect.cpp",
+    "//third_party/skia/src/fonts/SkRemotableFontMgr.cpp",
+    "//third_party/skia/src/images/SkScaledBitmapSampler.cpp",
+    "//third_party/skia/src/images/SkScaledBitmapSampler.h",
+    "//third_party/skia/src/ports/SkFontHost_FreeType.cpp",
+    "//third_party/skia/src/ports/SkFontHost_FreeType_common.cpp",
+    "//third_party/skia/src/ports/SkFontHost_FreeType_common.h",
+    "//third_party/skia/src/ports/SkFontHost_mac.cpp",
+    "//third_party/skia/src/ports/SkFontHost_win.cpp",
+    "//third_party/skia/src/ports/SkFontMgr_android.cpp",
+    "//third_party/skia/src/ports/SkFontMgr_android_factory.cpp",
+    "//third_party/skia/src/ports/SkFontMgr_android_parser.cpp",
+    "//third_party/skia/src/ports/SkFontMgr_win_dw.cpp",
+    "//third_party/skia/src/ports/SkGlobalInitialization_chromium.cpp",
+    "//third_party/skia/src/ports/SkImageDecoder_empty.cpp",
+    "//third_party/skia/src/ports/SkImageGenerator_none.cpp",
+    "//third_party/skia/src/ports/SkOSFile_posix.cpp",
+    "//third_party/skia/src/ports/SkOSFile_stdio.cpp",
+    "//third_party/skia/src/ports/SkOSFile_win.cpp",
+    "//third_party/skia/src/ports/SkRemotableFontMgr_win_dw.cpp",
+    "//third_party/skia/src/ports/SkScalerContext_win_dw.cpp",
+    "//third_party/skia/src/ports/SkScalerContext_win_dw.h",
+    "//third_party/skia/src/ports/SkTLS_pthread.cpp",
+    "//third_party/skia/src/ports/SkTLS_win.cpp",
+    "//third_party/skia/src/ports/SkTime_Unix.cpp",
+    "//third_party/skia/src/ports/SkTypeface_win_dw.cpp",
+    "//third_party/skia/src/ports/SkTypeface_win_dw.h",
+    "//third_party/skia/src/sfnt/SkOTTable_name.cpp",
+    "//third_party/skia/src/sfnt/SkOTTable_name.h",
+    "//third_party/skia/src/sfnt/SkOTUtils.cpp",
+    "//third_party/skia/src/sfnt/SkOTUtils.h",
+    "//third_party/skia/src/utils/mac/SkStream_mac.cpp",
+  ]
 
   # This and skia_opts are really the same conceptual target so share headers.
   allow_circular_includes_from = [ ":skia_opts" ]
@@ -269,9 +295,8 @@ component("skia") {
   sources += gypi_skia_gpu.skgpu_sources
   sources += gypi_skia_gpu.skgpu_null_gl_sources
 
-  # Remove various unused files.
+  # Remove unused files from utils.
   sources -= [
-    # utils:
     "//third_party/skia/include/utils/SkBoundaryPatch.h",
     "//third_party/skia/include/utils/SkCamera.h",
     "//third_party/skia/include/utils/SkCanvasStateUtils.h",
@@ -308,15 +333,6 @@ component("skia") {
     "//third_party/skia/src/utils/SkSHA1.cpp",
     "//third_party/skia/src/utils/SkSHA1.h",
     "//third_party/skia/src/utils/SkTFitsIn.h",
-
-    # fonts:
-    "//third_party/skia/src/fonts/SkFontMgr_fontconfig.cpp",
-    "//third_party/skia/src/fonts/SkGScalerContext.cpp",
-    "//third_party/skia/src/fonts/SkGScalerContext.h",
-
-    # ports:
-    "//third_party/skia/src/ports/SkFontConfigInterface_direct.cpp",
-    "//third_party/skia/src/ports/SkFontHost_fontconfig.cpp",
   ]
 
   if (is_ios || is_mac || is_android) {
