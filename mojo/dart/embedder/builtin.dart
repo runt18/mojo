@@ -37,6 +37,7 @@ _getUriBaseClosure() => _uriBase;
 
 _setupHooks() {
   VMLibraryHooks.eventHandlerSendData = MojoHandleWatcher.timer;
+  VMLibraryHooks.timerMillisecondClock = MojoCoreNatives.timerMillisecondClock;
 }
 
 String _rawCwd;
