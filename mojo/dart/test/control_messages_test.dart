@@ -6,26 +6,24 @@ import 'dart:async';
 import 'dart:isolate';
 import 'dart:typed_data';
 
-import 'package:_mojo_for_test_only/expect.dart';
 import 'package:mojo/bindings.dart' as bindings;
 import 'package:mojo/core.dart' as core;
+import 'package:_mojo_for_test_only/expect.dart';
 import 'package:_mojo_for_test_only/sample/sample_interfaces.mojom.dart' as sample;
 
 // Bump this if sample_interfaces.mojom adds higher versions.
-const maxVersion = 3;
+const int maxVersion = 3;
 
 // Implementation of IntegerAccessor.
 class IntegerAccessorImpl implements sample.IntegerAccessor {
   // Some initial value.
   int _value = 0;
 
-  Future<sample.IntegerAccessorGetIntegerResponseParams>
-      getInteger([Function responseFactory = null]) {
-    return new Future.value(responseFactory(_value, sample.Enum.VALUE));
-  }
+  dynamic getInteger([Function responseFactory = null]) =>
+      responseFactory(_value, sample.Enum.value);
 
   void setInteger(int data, sample.Enum type) {
-    Expect.equals(sample.Enum.VALUE.value, type.value);
+    Expect.equals(sample.Enum.value, type);
     // Update data.
     _value = data;
   }
@@ -81,7 +79,7 @@ testRequireVersionDisconnect() async {
   proxy.requireVersion(maxVersion);
   Expect.equals(maxVersion, proxy.version);
   // Set integer.
-  proxy.ptr.setInteger(34, sample.Enum.VALUE);
+  proxy.ptr.setInteger(34, sample.Enum.value);
   // Get integer.
   var response = await proxy.ptr.getInteger();
   Expect.equals(34, response.data);

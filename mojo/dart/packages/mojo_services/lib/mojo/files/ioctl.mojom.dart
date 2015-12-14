@@ -8,8 +8,8 @@ import 'dart:async';
 
 import 'package:mojo/bindings.dart' as bindings;
 import 'package:mojo/core.dart' as core;
-const kIoctlInvalid = 0;
-const kIoctlTerminal = 1;
+const int kIoctlInvalid = 0;
+const int kIoctlTerminal = 1;
 
 
 

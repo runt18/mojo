@@ -8,22 +8,23 @@ import 'dart:async';
 
 import 'package:mojo/bindings.dart' as bindings;
 import 'package:mojo/core.dart' as core;
+
 class SystemUiVisibility extends bindings.MojoEnum {
-  static const STANDARD = const SystemUiVisibility._(0);
-  static const FULLSCREEN = const SystemUiVisibility._(1);
-  static const IMMERSIVE = const SystemUiVisibility._(2);
+  static const SystemUiVisibility standard = const SystemUiVisibility._(0);
+  static const SystemUiVisibility fullscreen = const SystemUiVisibility._(1);
+  static const SystemUiVisibility immersive = const SystemUiVisibility._(2);
 
   const SystemUiVisibility._(int v) : super(v);
 
   static const Map<String, SystemUiVisibility> valuesMap = const {
-    "STANDARD": STANDARD,
-    "FULLSCREEN": FULLSCREEN,
-    "IMMERSIVE": IMMERSIVE,
+    "standard": standard,
+    "fullscreen": fullscreen,
+    "immersive": immersive,
   };
   static const List<SystemUiVisibility> values = const [
-    STANDARD,
-    FULLSCREEN,
-    IMMERSIVE,
+    standard,
+    fullscreen,
+    immersive,
   ];
 
   static SystemUiVisibility valueOf(String name) => valuesMap[name];
@@ -31,11 +32,11 @@ class SystemUiVisibility extends bindings.MojoEnum {
   factory SystemUiVisibility(int v) {
     switch (v) {
       case 0:
-        return STANDARD;
+        return standard;
       case 1:
-        return FULLSCREEN;
+        return fullscreen;
       case 2:
-        return IMMERSIVE;
+        return immersive;
       default:
         return null;
     }
@@ -53,36 +54,37 @@ class SystemUiVisibility extends bindings.MojoEnum {
 
   String toString() {
     switch(this) {
-      case STANDARD:
-        return 'SystemUiVisibility.STANDARD';
-      case FULLSCREEN:
-        return 'SystemUiVisibility.FULLSCREEN';
-      case IMMERSIVE:
-        return 'SystemUiVisibility.IMMERSIVE';
+      case standard:
+        return 'SystemUiVisibility.standard';
+      case fullscreen:
+        return 'SystemUiVisibility.fullscreen';
+      case immersive:
+        return 'SystemUiVisibility.immersive';
     }
   }
 
-  int toJson() => value;
+  int toJson() => mojoEnumValue;
 }
+
 class ScreenOrientation extends bindings.MojoEnum {
-  static const UNSPECIFIED = const ScreenOrientation._(0);
-  static const LANDSCAPE = const ScreenOrientation._(1);
-  static const PORTRAIT = const ScreenOrientation._(2);
-  static const NOSENSOR = const ScreenOrientation._(3);
+  static const ScreenOrientation unspecified = const ScreenOrientation._(0);
+  static const ScreenOrientation landscape = const ScreenOrientation._(1);
+  static const ScreenOrientation portrait = const ScreenOrientation._(2);
+  static const ScreenOrientation nosensor = const ScreenOrientation._(3);
 
   const ScreenOrientation._(int v) : super(v);
 
   static const Map<String, ScreenOrientation> valuesMap = const {
-    "UNSPECIFIED": UNSPECIFIED,
-    "LANDSCAPE": LANDSCAPE,
-    "PORTRAIT": PORTRAIT,
-    "NOSENSOR": NOSENSOR,
+    "unspecified": unspecified,
+    "landscape": landscape,
+    "portrait": portrait,
+    "nosensor": nosensor,
   };
   static const List<ScreenOrientation> values = const [
-    UNSPECIFIED,
-    LANDSCAPE,
-    PORTRAIT,
-    NOSENSOR,
+    unspecified,
+    landscape,
+    portrait,
+    nosensor,
   ];
 
   static ScreenOrientation valueOf(String name) => valuesMap[name];
@@ -90,13 +92,13 @@ class ScreenOrientation extends bindings.MojoEnum {
   factory ScreenOrientation(int v) {
     switch (v) {
       case 0:
-        return UNSPECIFIED;
+        return unspecified;
       case 1:
-        return LANDSCAPE;
+        return landscape;
       case 2:
-        return PORTRAIT;
+        return portrait;
       case 3:
-        return NOSENSOR;
+        return nosensor;
       default:
         return null;
     }
@@ -114,38 +116,39 @@ class ScreenOrientation extends bindings.MojoEnum {
 
   String toString() {
     switch(this) {
-      case UNSPECIFIED:
-        return 'ScreenOrientation.UNSPECIFIED';
-      case LANDSCAPE:
-        return 'ScreenOrientation.LANDSCAPE';
-      case PORTRAIT:
-        return 'ScreenOrientation.PORTRAIT';
-      case NOSENSOR:
-        return 'ScreenOrientation.NOSENSOR';
+      case unspecified:
+        return 'ScreenOrientation.unspecified';
+      case landscape:
+        return 'ScreenOrientation.landscape';
+      case portrait:
+        return 'ScreenOrientation.portrait';
+      case nosensor:
+        return 'ScreenOrientation.nosensor';
     }
   }
 
-  int toJson() => value;
+  int toJson() => mojoEnumValue;
 }
+
 class HapticFeedbackType extends bindings.MojoEnum {
-  static const LONG_PRESS = const HapticFeedbackType._(0);
-  static const VIRTUAL_KEY = const HapticFeedbackType._(1);
-  static const KEYBOARD_TAP = const HapticFeedbackType._(2);
-  static const CLOCK_TICK = const HapticFeedbackType._(3);
+  static const HapticFeedbackType longPress = const HapticFeedbackType._(0);
+  static const HapticFeedbackType virtualKey = const HapticFeedbackType._(1);
+  static const HapticFeedbackType keyboardTap = const HapticFeedbackType._(2);
+  static const HapticFeedbackType clockTick = const HapticFeedbackType._(3);
 
   const HapticFeedbackType._(int v) : super(v);
 
   static const Map<String, HapticFeedbackType> valuesMap = const {
-    "LONG_PRESS": LONG_PRESS,
-    "VIRTUAL_KEY": VIRTUAL_KEY,
-    "KEYBOARD_TAP": KEYBOARD_TAP,
-    "CLOCK_TICK": CLOCK_TICK,
+    "longPress": longPress,
+    "virtualKey": virtualKey,
+    "keyboardTap": keyboardTap,
+    "clockTick": clockTick,
   };
   static const List<HapticFeedbackType> values = const [
-    LONG_PRESS,
-    VIRTUAL_KEY,
-    KEYBOARD_TAP,
-    CLOCK_TICK,
+    longPress,
+    virtualKey,
+    keyboardTap,
+    clockTick,
   ];
 
   static HapticFeedbackType valueOf(String name) => valuesMap[name];
@@ -153,13 +156,13 @@ class HapticFeedbackType extends bindings.MojoEnum {
   factory HapticFeedbackType(int v) {
     switch (v) {
       case 0:
-        return LONG_PRESS;
+        return longPress;
       case 1:
-        return VIRTUAL_KEY;
+        return virtualKey;
       case 2:
-        return KEYBOARD_TAP;
+        return keyboardTap;
       case 3:
-        return CLOCK_TICK;
+        return clockTick;
       default:
         return null;
     }
@@ -177,41 +180,42 @@ class HapticFeedbackType extends bindings.MojoEnum {
 
   String toString() {
     switch(this) {
-      case LONG_PRESS:
-        return 'HapticFeedbackType.LONG_PRESS';
-      case VIRTUAL_KEY:
-        return 'HapticFeedbackType.VIRTUAL_KEY';
-      case KEYBOARD_TAP:
-        return 'HapticFeedbackType.KEYBOARD_TAP';
-      case CLOCK_TICK:
-        return 'HapticFeedbackType.CLOCK_TICK';
+      case longPress:
+        return 'HapticFeedbackType.longPress';
+      case virtualKey:
+        return 'HapticFeedbackType.virtualKey';
+      case keyboardTap:
+        return 'HapticFeedbackType.keyboardTap';
+      case clockTick:
+        return 'HapticFeedbackType.clockTick';
     }
   }
 
-  int toJson() => value;
+  int toJson() => mojoEnumValue;
 }
+
 class AuralFeedbackType extends bindings.MojoEnum {
-  static const CLICK = const AuralFeedbackType._(0);
-  static const NAVIGATION_LEFT = const AuralFeedbackType._(1);
-  static const NAVIGATION_UP = const AuralFeedbackType._(2);
-  static const NAVIGATION_RIGHT = const AuralFeedbackType._(3);
-  static const NAVIGATION_DOWN = const AuralFeedbackType._(4);
+  static const AuralFeedbackType click = const AuralFeedbackType._(0);
+  static const AuralFeedbackType navigationLeft = const AuralFeedbackType._(1);
+  static const AuralFeedbackType navigationUp = const AuralFeedbackType._(2);
+  static const AuralFeedbackType navigationRight = const AuralFeedbackType._(3);
+  static const AuralFeedbackType navigationDown = const AuralFeedbackType._(4);
 
   const AuralFeedbackType._(int v) : super(v);
 
   static const Map<String, AuralFeedbackType> valuesMap = const {
-    "CLICK": CLICK,
-    "NAVIGATION_LEFT": NAVIGATION_LEFT,
-    "NAVIGATION_UP": NAVIGATION_UP,
-    "NAVIGATION_RIGHT": NAVIGATION_RIGHT,
-    "NAVIGATION_DOWN": NAVIGATION_DOWN,
+    "click": click,
+    "navigationLeft": navigationLeft,
+    "navigationUp": navigationUp,
+    "navigationRight": navigationRight,
+    "navigationDown": navigationDown,
   };
   static const List<AuralFeedbackType> values = const [
-    CLICK,
-    NAVIGATION_LEFT,
-    NAVIGATION_UP,
-    NAVIGATION_RIGHT,
-    NAVIGATION_DOWN,
+    click,
+    navigationLeft,
+    navigationUp,
+    navigationRight,
+    navigationDown,
   ];
 
   static AuralFeedbackType valueOf(String name) => valuesMap[name];
@@ -219,15 +223,15 @@ class AuralFeedbackType extends bindings.MojoEnum {
   factory AuralFeedbackType(int v) {
     switch (v) {
       case 0:
-        return CLICK;
+        return click;
       case 1:
-        return NAVIGATION_LEFT;
+        return navigationLeft;
       case 2:
-        return NAVIGATION_UP;
+        return navigationUp;
       case 3:
-        return NAVIGATION_RIGHT;
+        return navigationRight;
       case 4:
-        return NAVIGATION_DOWN;
+        return navigationDown;
       default:
         return null;
     }
@@ -245,20 +249,20 @@ class AuralFeedbackType extends bindings.MojoEnum {
 
   String toString() {
     switch(this) {
-      case CLICK:
-        return 'AuralFeedbackType.CLICK';
-      case NAVIGATION_LEFT:
-        return 'AuralFeedbackType.NAVIGATION_LEFT';
-      case NAVIGATION_UP:
-        return 'AuralFeedbackType.NAVIGATION_UP';
-      case NAVIGATION_RIGHT:
-        return 'AuralFeedbackType.NAVIGATION_RIGHT';
-      case NAVIGATION_DOWN:
-        return 'AuralFeedbackType.NAVIGATION_DOWN';
+      case click:
+        return 'AuralFeedbackType.click';
+      case navigationLeft:
+        return 'AuralFeedbackType.navigationLeft';
+      case navigationUp:
+        return 'AuralFeedbackType.navigationUp';
+      case navigationRight:
+        return 'AuralFeedbackType.navigationRight';
+      case navigationDown:
+        return 'AuralFeedbackType.navigationDown';
     }
   }
 
-  int toJson() => value;
+  int toJson() => mojoEnumValue;
 }
 
 

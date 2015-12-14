@@ -9,16 +9,17 @@ import 'dart:async';
 import 'package:mojo/bindings.dart' as bindings;
 import 'package:mojo/core.dart' as core;
 import 'package:mojo_services/mojo/native_viewport.mojom.dart' as native_viewport_mojom;
+
 class SubmitAction extends bindings.MojoEnum {
-  static const DONE = const SubmitAction._(0);
+  static const SubmitAction done = const SubmitAction._(0);
 
   const SubmitAction._(int v) : super(v);
 
   static const Map<String, SubmitAction> valuesMap = const {
-    "DONE": DONE,
+    "done": done,
   };
   static const List<SubmitAction> values = const [
-    DONE,
+    done,
   ];
 
   static SubmitAction valueOf(String name) => valuesMap[name];
@@ -26,7 +27,7 @@ class SubmitAction extends bindings.MojoEnum {
   factory SubmitAction(int v) {
     switch (v) {
       case 0:
-        return DONE;
+        return done;
       default:
         return null;
     }
@@ -44,32 +45,33 @@ class SubmitAction extends bindings.MojoEnum {
 
   String toString() {
     switch(this) {
-      case DONE:
-        return 'SubmitAction.DONE';
+      case done:
+        return 'SubmitAction.done';
     }
   }
 
-  int toJson() => value;
+  int toJson() => mojoEnumValue;
 }
+
 class KeyboardType extends bindings.MojoEnum {
-  static const TEXT = const KeyboardType._(0);
-  static const NUMBER = const KeyboardType._(1);
-  static const PHONE = const KeyboardType._(2);
-  static const DATETIME = const KeyboardType._(3);
+  static const KeyboardType text = const KeyboardType._(0);
+  static const KeyboardType number = const KeyboardType._(1);
+  static const KeyboardType phone = const KeyboardType._(2);
+  static const KeyboardType datetime = const KeyboardType._(3);
 
   const KeyboardType._(int v) : super(v);
 
   static const Map<String, KeyboardType> valuesMap = const {
-    "TEXT": TEXT,
-    "NUMBER": NUMBER,
-    "PHONE": PHONE,
-    "DATETIME": DATETIME,
+    "text": text,
+    "number": number,
+    "phone": phone,
+    "datetime": datetime,
   };
   static const List<KeyboardType> values = const [
-    TEXT,
-    NUMBER,
-    PHONE,
-    DATETIME,
+    text,
+    number,
+    phone,
+    datetime,
   ];
 
   static KeyboardType valueOf(String name) => valuesMap[name];
@@ -77,13 +79,13 @@ class KeyboardType extends bindings.MojoEnum {
   factory KeyboardType(int v) {
     switch (v) {
       case 0:
-        return TEXT;
+        return text;
       case 1:
-        return NUMBER;
+        return number;
       case 2:
-        return PHONE;
+        return phone;
       case 3:
-        return DATETIME;
+        return datetime;
       default:
         return null;
     }
@@ -101,18 +103,18 @@ class KeyboardType extends bindings.MojoEnum {
 
   String toString() {
     switch(this) {
-      case TEXT:
-        return 'KeyboardType.TEXT';
-      case NUMBER:
-        return 'KeyboardType.NUMBER';
-      case PHONE:
-        return 'KeyboardType.PHONE';
-      case DATETIME:
-        return 'KeyboardType.DATETIME';
+      case text:
+        return 'KeyboardType.text';
+      case number:
+        return 'KeyboardType.number';
+      case phone:
+        return 'KeyboardType.phone';
+      case datetime:
+        return 'KeyboardType.datetime';
     }
   }
 
-  int toJson() => value;
+  int toJson() => mojoEnumValue;
 }
 
 

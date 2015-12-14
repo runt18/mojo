@@ -8,19 +8,20 @@ import 'dart:async';
 
 import 'package:mojo/bindings.dart' as bindings;
 import 'package:mojo/core.dart' as core;
+
 class EnumWithReference extends bindings.MojoEnum {
-  static const k_STEREO_AND_KEYBOARD_MIC = const EnumWithReference._(30);
-  static const k_MAX = const EnumWithReference._(30);
+  static const EnumWithReference kStereoAndKeyboardMic = const EnumWithReference._(30);
+  static const EnumWithReference kMax = const EnumWithReference._(30);
 
   const EnumWithReference._(int v) : super(v);
 
   static const Map<String, EnumWithReference> valuesMap = const {
-    "k_STEREO_AND_KEYBOARD_MIC": k_STEREO_AND_KEYBOARD_MIC,
-    "k_MAX": k_MAX,
+    "kStereoAndKeyboardMic": kStereoAndKeyboardMic,
+    "kMax": kMax,
   };
   static const List<EnumWithReference> values = const [
-    k_STEREO_AND_KEYBOARD_MIC,
-    k_MAX,
+    kStereoAndKeyboardMic,
+    kMax,
   ];
 
   static EnumWithReference valueOf(String name) => valuesMap[name];
@@ -28,9 +29,9 @@ class EnumWithReference extends bindings.MojoEnum {
   factory EnumWithReference(int v) {
     switch (v) {
       case 30:
-        return k_STEREO_AND_KEYBOARD_MIC;
+        return kStereoAndKeyboardMic;
       case 30:
-        return k_MAX;
+        return kMax;
       default:
         return null;
     }
@@ -48,28 +49,29 @@ class EnumWithReference extends bindings.MojoEnum {
 
   String toString() {
     switch(this) {
-      case k_STEREO_AND_KEYBOARD_MIC:
-        return 'EnumWithReference.k_STEREO_AND_KEYBOARD_MIC';
-      case k_MAX:
-        return 'EnumWithReference.k_MAX';
+      case kStereoAndKeyboardMic:
+        return 'EnumWithReference.kStereoAndKeyboardMic';
+      case kMax:
+        return 'EnumWithReference.kMax';
     }
   }
 
-  int toJson() => value;
+  int toJson() => mojoEnumValue;
 }
+
 class EnumWithLowercase extends bindings.MojoEnum {
-  static const PlanarF16 = const EnumWithLowercase._(0);
-  static const PlanarF32 = const EnumWithLowercase._(1);
+  static const EnumWithLowercase planarF16 = const EnumWithLowercase._(0);
+  static const EnumWithLowercase planarF32 = const EnumWithLowercase._(1);
 
   const EnumWithLowercase._(int v) : super(v);
 
   static const Map<String, EnumWithLowercase> valuesMap = const {
-    "PlanarF16": PlanarF16,
-    "PlanarF32": PlanarF32,
+    "planarF16": planarF16,
+    "planarF32": planarF32,
   };
   static const List<EnumWithLowercase> values = const [
-    PlanarF16,
-    PlanarF32,
+    planarF16,
+    planarF32,
   ];
 
   static EnumWithLowercase valueOf(String name) => valuesMap[name];
@@ -77,9 +79,9 @@ class EnumWithLowercase extends bindings.MojoEnum {
   factory EnumWithLowercase(int v) {
     switch (v) {
       case 0:
-        return PlanarF16;
+        return planarF16;
       case 1:
-        return PlanarF32;
+        return planarF32;
       default:
         return null;
     }
@@ -97,25 +99,26 @@ class EnumWithLowercase extends bindings.MojoEnum {
 
   String toString() {
     switch(this) {
-      case PlanarF16:
-        return 'EnumWithLowercase.PlanarF16';
-      case PlanarF32:
-        return 'EnumWithLowercase.PlanarF32';
+      case planarF16:
+        return 'EnumWithLowercase.planarF16';
+      case planarF32:
+        return 'EnumWithLowercase.planarF32';
     }
   }
 
-  int toJson() => value;
+  int toJson() => mojoEnumValue;
 }
+
 class EnumWithNumbers extends bindings.MojoEnum {
-  static const k_2_1 = const EnumWithNumbers._(4);
+  static const EnumWithNumbers k21 = const EnumWithNumbers._(4);
 
   const EnumWithNumbers._(int v) : super(v);
 
   static const Map<String, EnumWithNumbers> valuesMap = const {
-    "k_2_1": k_2_1,
+    "k21": k21,
   };
   static const List<EnumWithNumbers> values = const [
-    k_2_1,
+    k21,
   ];
 
   static EnumWithNumbers valueOf(String name) => valuesMap[name];
@@ -123,7 +126,7 @@ class EnumWithNumbers extends bindings.MojoEnum {
   factory EnumWithNumbers(int v) {
     switch (v) {
       case 4:
-        return k_2_1;
+        return k21;
       default:
         return null;
     }
@@ -141,23 +144,24 @@ class EnumWithNumbers extends bindings.MojoEnum {
 
   String toString() {
     switch(this) {
-      case k_2_1:
-        return 'EnumWithNumbers.k_2_1';
+      case k21:
+        return 'EnumWithNumbers.k21';
     }
   }
 
-  int toJson() => value;
+  int toJson() => mojoEnumValue;
 }
+
 class EnumWithK extends bindings.MojoEnum {
-  static const K = const EnumWithK._(0);
+  static const EnumWithK k = const EnumWithK._(0);
 
   const EnumWithK._(int v) : super(v);
 
   static const Map<String, EnumWithK> valuesMap = const {
-    "K": K,
+    "k": k,
   };
   static const List<EnumWithK> values = const [
-    K,
+    k,
   ];
 
   static EnumWithK valueOf(String name) => valuesMap[name];
@@ -165,7 +169,7 @@ class EnumWithK extends bindings.MojoEnum {
   factory EnumWithK(int v) {
     switch (v) {
       case 0:
-        return K;
+        return k;
       default:
         return null;
     }
@@ -183,29 +187,30 @@ class EnumWithK extends bindings.MojoEnum {
 
   String toString() {
     switch(this) {
-      case K:
-        return 'EnumWithK.K';
+      case k:
+        return 'EnumWithK.k';
     }
   }
 
-  int toJson() => value;
+  int toJson() => mojoEnumValue;
 }
+
 class EnumWithInternalAllCaps extends bindings.MojoEnum {
-  static const STANDARD = const EnumWithInternalAllCaps._(0);
-  static const FULLSCREEN = const EnumWithInternalAllCaps._(1);
-  static const IMMERSIVE = const EnumWithInternalAllCaps._(2);
+  static const EnumWithInternalAllCaps standard = const EnumWithInternalAllCaps._(0);
+  static const EnumWithInternalAllCaps fullscreen = const EnumWithInternalAllCaps._(1);
+  static const EnumWithInternalAllCaps immersive = const EnumWithInternalAllCaps._(2);
 
   const EnumWithInternalAllCaps._(int v) : super(v);
 
   static const Map<String, EnumWithInternalAllCaps> valuesMap = const {
-    "STANDARD": STANDARD,
-    "FULLSCREEN": FULLSCREEN,
-    "IMMERSIVE": IMMERSIVE,
+    "standard": standard,
+    "fullscreen": fullscreen,
+    "immersive": immersive,
   };
   static const List<EnumWithInternalAllCaps> values = const [
-    STANDARD,
-    FULLSCREEN,
-    IMMERSIVE,
+    standard,
+    fullscreen,
+    immersive,
   ];
 
   static EnumWithInternalAllCaps valueOf(String name) => valuesMap[name];
@@ -213,11 +218,11 @@ class EnumWithInternalAllCaps extends bindings.MojoEnum {
   factory EnumWithInternalAllCaps(int v) {
     switch (v) {
       case 0:
-        return STANDARD;
+        return standard;
       case 1:
-        return FULLSCREEN;
+        return fullscreen;
       case 2:
-        return IMMERSIVE;
+        return immersive;
       default:
         return null;
     }
@@ -235,30 +240,31 @@ class EnumWithInternalAllCaps extends bindings.MojoEnum {
 
   String toString() {
     switch(this) {
-      case STANDARD:
-        return 'EnumWithInternalAllCaps.STANDARD';
-      case FULLSCREEN:
-        return 'EnumWithInternalAllCaps.FULLSCREEN';
-      case IMMERSIVE:
-        return 'EnumWithInternalAllCaps.IMMERSIVE';
+      case standard:
+        return 'EnumWithInternalAllCaps.standard';
+      case fullscreen:
+        return 'EnumWithInternalAllCaps.fullscreen';
+      case immersive:
+        return 'EnumWithInternalAllCaps.immersive';
     }
   }
 
-  int toJson() => value;
+  int toJson() => mojoEnumValue;
 }
+
 class NormalEnum extends bindings.MojoEnum {
-  static const FIRST = const NormalEnum._(0);
-  static const SECOND = const NormalEnum._(1);
+  static const NormalEnum first = const NormalEnum._(0);
+  static const NormalEnum second = const NormalEnum._(1);
 
   const NormalEnum._(int v) : super(v);
 
   static const Map<String, NormalEnum> valuesMap = const {
-    "FIRST": FIRST,
-    "SECOND": SECOND,
+    "first": first,
+    "second": second,
   };
   static const List<NormalEnum> values = const [
-    FIRST,
-    SECOND,
+    first,
+    second,
   ];
 
   static NormalEnum valueOf(String name) => valuesMap[name];
@@ -266,9 +272,9 @@ class NormalEnum extends bindings.MojoEnum {
   factory NormalEnum(int v) {
     switch (v) {
       case 0:
-        return FIRST;
+        return first;
       case 1:
-        return SECOND;
+        return second;
       default:
         return null;
     }
@@ -286,14 +292,14 @@ class NormalEnum extends bindings.MojoEnum {
 
   String toString() {
     switch(this) {
-      case FIRST:
-        return 'NormalEnum.FIRST';
-      case SECOND:
-        return 'NormalEnum.SECOND';
+      case first:
+        return 'NormalEnum.first';
+      case second:
+        return 'NormalEnum.second';
     }
   }
 
-  int toJson() => value;
+  int toJson() => mojoEnumValue;
 }
 
 

@@ -8,25 +8,26 @@ import 'dart:async';
 
 import 'package:mojo/bindings.dart' as bindings;
 import 'package:mojo/core.dart' as core;
+
 class Shape extends bindings.MojoEnum {
-  static const RECTANGLE = const Shape._(1);
-  static const CIRCLE = const Shape._(2);
-  static const TRIANGLE = const Shape._(3);
-  static const LAST = const Shape._(3);
+  static const Shape rectangle = const Shape._(1);
+  static const Shape circle = const Shape._(2);
+  static const Shape triangle = const Shape._(3);
+  static const Shape last = const Shape._(3);
 
   const Shape._(int v) : super(v);
 
   static const Map<String, Shape> valuesMap = const {
-    "RECTANGLE": RECTANGLE,
-    "CIRCLE": CIRCLE,
-    "TRIANGLE": TRIANGLE,
-    "LAST": LAST,
+    "rectangle": rectangle,
+    "circle": circle,
+    "triangle": triangle,
+    "last": last,
   };
   static const List<Shape> values = const [
-    RECTANGLE,
-    CIRCLE,
-    TRIANGLE,
-    LAST,
+    rectangle,
+    circle,
+    triangle,
+    last,
   ];
 
   static Shape valueOf(String name) => valuesMap[name];
@@ -34,13 +35,13 @@ class Shape extends bindings.MojoEnum {
   factory Shape(int v) {
     switch (v) {
       case 1:
-        return RECTANGLE;
+        return rectangle;
       case 2:
-        return CIRCLE;
+        return circle;
       case 3:
-        return TRIANGLE;
+        return triangle;
       case 3:
-        return LAST;
+        return last;
       default:
         return null;
     }
@@ -58,35 +59,36 @@ class Shape extends bindings.MojoEnum {
 
   String toString() {
     switch(this) {
-      case RECTANGLE:
-        return 'Shape.RECTANGLE';
-      case CIRCLE:
-        return 'Shape.CIRCLE';
-      case TRIANGLE:
-        return 'Shape.TRIANGLE';
-      case LAST:
-        return 'Shape.LAST';
+      case rectangle:
+        return 'Shape.rectangle';
+      case circle:
+        return 'Shape.circle';
+      case triangle:
+        return 'Shape.triangle';
+      case last:
+        return 'Shape.last';
     }
   }
 
-  int toJson() => value;
+  int toJson() => mojoEnumValue;
 }
+
 class AnotherShape extends bindings.MojoEnum {
-  static const RECTANGLE = const AnotherShape._(10);
-  static const CIRCLE = const AnotherShape._(11);
-  static const TRIANGLE = const AnotherShape._(12);
+  static const AnotherShape rectangle = const AnotherShape._(10);
+  static const AnotherShape circle = const AnotherShape._(11);
+  static const AnotherShape triangle = const AnotherShape._(12);
 
   const AnotherShape._(int v) : super(v);
 
   static const Map<String, AnotherShape> valuesMap = const {
-    "RECTANGLE": RECTANGLE,
-    "CIRCLE": CIRCLE,
-    "TRIANGLE": TRIANGLE,
+    "rectangle": rectangle,
+    "circle": circle,
+    "triangle": triangle,
   };
   static const List<AnotherShape> values = const [
-    RECTANGLE,
-    CIRCLE,
-    TRIANGLE,
+    rectangle,
+    circle,
+    triangle,
   ];
 
   static AnotherShape valueOf(String name) => valuesMap[name];
@@ -94,11 +96,11 @@ class AnotherShape extends bindings.MojoEnum {
   factory AnotherShape(int v) {
     switch (v) {
       case 10:
-        return RECTANGLE;
+        return rectangle;
       case 11:
-        return CIRCLE;
+        return circle;
       case 12:
-        return TRIANGLE;
+        return triangle;
       default:
         return null;
     }
@@ -116,33 +118,34 @@ class AnotherShape extends bindings.MojoEnum {
 
   String toString() {
     switch(this) {
-      case RECTANGLE:
-        return 'AnotherShape.RECTANGLE';
-      case CIRCLE:
-        return 'AnotherShape.CIRCLE';
-      case TRIANGLE:
-        return 'AnotherShape.TRIANGLE';
+      case rectangle:
+        return 'AnotherShape.rectangle';
+      case circle:
+        return 'AnotherShape.circle';
+      case triangle:
+        return 'AnotherShape.triangle';
     }
   }
 
-  int toJson() => value;
+  int toJson() => mojoEnumValue;
 }
+
 class YetAnotherShape extends bindings.MojoEnum {
-  static const RECTANGLE = const YetAnotherShape._(20);
-  static const CIRCLE = const YetAnotherShape._(21);
-  static const TRIANGLE = const YetAnotherShape._(22);
+  static const YetAnotherShape rectangle = const YetAnotherShape._(20);
+  static const YetAnotherShape circle = const YetAnotherShape._(21);
+  static const YetAnotherShape triangle = const YetAnotherShape._(22);
 
   const YetAnotherShape._(int v) : super(v);
 
   static const Map<String, YetAnotherShape> valuesMap = const {
-    "RECTANGLE": RECTANGLE,
-    "CIRCLE": CIRCLE,
-    "TRIANGLE": TRIANGLE,
+    "rectangle": rectangle,
+    "circle": circle,
+    "triangle": triangle,
   };
   static const List<YetAnotherShape> values = const [
-    RECTANGLE,
-    CIRCLE,
-    TRIANGLE,
+    rectangle,
+    circle,
+    triangle,
   ];
 
   static YetAnotherShape valueOf(String name) => valuesMap[name];
@@ -150,11 +153,11 @@ class YetAnotherShape extends bindings.MojoEnum {
   factory YetAnotherShape(int v) {
     switch (v) {
       case 20:
-        return RECTANGLE;
+        return rectangle;
       case 21:
-        return CIRCLE;
+        return circle;
       case 22:
-        return TRIANGLE;
+        return triangle;
       default:
         return null;
     }
@@ -172,16 +175,16 @@ class YetAnotherShape extends bindings.MojoEnum {
 
   String toString() {
     switch(this) {
-      case RECTANGLE:
-        return 'YetAnotherShape.RECTANGLE';
-      case CIRCLE:
-        return 'YetAnotherShape.CIRCLE';
-      case TRIANGLE:
-        return 'YetAnotherShape.TRIANGLE';
+      case rectangle:
+        return 'YetAnotherShape.rectangle';
+      case circle:
+        return 'YetAnotherShape.circle';
+      case triangle:
+        return 'YetAnotherShape.triangle';
     }
   }
 
-  int toJson() => value;
+  int toJson() => mojoEnumValue;
 }
 
 

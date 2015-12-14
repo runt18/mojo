@@ -8,40 +8,41 @@ import 'dart:async';
 
 import 'package:mojo/bindings.dart' as bindings;
 import 'package:mojo/core.dart' as core;
+
 class Error extends bindings.MojoEnum {
-  static const NETWORK_TIMEOUT = const Error._(1);
-  static const NETWORK = const Error._(2);
-  static const AUDIO = const Error._(3);
-  static const SERVER = const Error._(4);
-  static const CLIENT = const Error._(5);
-  static const SPEECH_TIMEOUT = const Error._(6);
-  static const NO_MATCH = const Error._(7);
-  static const RECOGNIZER_BUSY = const Error._(8);
-  static const INSUFFICIENT_PERMISSIONS = const Error._(9);
+  static const Error networkTimeout = const Error._(1);
+  static const Error network = const Error._(2);
+  static const Error audio = const Error._(3);
+  static const Error server = const Error._(4);
+  static const Error client = const Error._(5);
+  static const Error speechTimeout = const Error._(6);
+  static const Error noMatch = const Error._(7);
+  static const Error recognizerBusy = const Error._(8);
+  static const Error insufficientPermissions = const Error._(9);
 
   const Error._(int v) : super(v);
 
   static const Map<String, Error> valuesMap = const {
-    "NETWORK_TIMEOUT": NETWORK_TIMEOUT,
-    "NETWORK": NETWORK,
-    "AUDIO": AUDIO,
-    "SERVER": SERVER,
-    "CLIENT": CLIENT,
-    "SPEECH_TIMEOUT": SPEECH_TIMEOUT,
-    "NO_MATCH": NO_MATCH,
-    "RECOGNIZER_BUSY": RECOGNIZER_BUSY,
-    "INSUFFICIENT_PERMISSIONS": INSUFFICIENT_PERMISSIONS,
+    "networkTimeout": networkTimeout,
+    "network": network,
+    "audio": audio,
+    "server": server,
+    "client": client,
+    "speechTimeout": speechTimeout,
+    "noMatch": noMatch,
+    "recognizerBusy": recognizerBusy,
+    "insufficientPermissions": insufficientPermissions,
   };
   static const List<Error> values = const [
-    NETWORK_TIMEOUT,
-    NETWORK,
-    AUDIO,
-    SERVER,
-    CLIENT,
-    SPEECH_TIMEOUT,
-    NO_MATCH,
-    RECOGNIZER_BUSY,
-    INSUFFICIENT_PERMISSIONS,
+    networkTimeout,
+    network,
+    audio,
+    server,
+    client,
+    speechTimeout,
+    noMatch,
+    recognizerBusy,
+    insufficientPermissions,
   ];
 
   static Error valueOf(String name) => valuesMap[name];
@@ -49,23 +50,23 @@ class Error extends bindings.MojoEnum {
   factory Error(int v) {
     switch (v) {
       case 1:
-        return NETWORK_TIMEOUT;
+        return networkTimeout;
       case 2:
-        return NETWORK;
+        return network;
       case 3:
-        return AUDIO;
+        return audio;
       case 4:
-        return SERVER;
+        return server;
       case 5:
-        return CLIENT;
+        return client;
       case 6:
-        return SPEECH_TIMEOUT;
+        return speechTimeout;
       case 7:
-        return NO_MATCH;
+        return noMatch;
       case 8:
-        return RECOGNIZER_BUSY;
+        return recognizerBusy;
       case 9:
-        return INSUFFICIENT_PERMISSIONS;
+        return insufficientPermissions;
       default:
         return null;
     }
@@ -83,28 +84,28 @@ class Error extends bindings.MojoEnum {
 
   String toString() {
     switch(this) {
-      case NETWORK_TIMEOUT:
-        return 'Error.NETWORK_TIMEOUT';
-      case NETWORK:
-        return 'Error.NETWORK';
-      case AUDIO:
-        return 'Error.AUDIO';
-      case SERVER:
-        return 'Error.SERVER';
-      case CLIENT:
-        return 'Error.CLIENT';
-      case SPEECH_TIMEOUT:
-        return 'Error.SPEECH_TIMEOUT';
-      case NO_MATCH:
-        return 'Error.NO_MATCH';
-      case RECOGNIZER_BUSY:
-        return 'Error.RECOGNIZER_BUSY';
-      case INSUFFICIENT_PERMISSIONS:
-        return 'Error.INSUFFICIENT_PERMISSIONS';
+      case networkTimeout:
+        return 'Error.networkTimeout';
+      case network:
+        return 'Error.network';
+      case audio:
+        return 'Error.audio';
+      case server:
+        return 'Error.server';
+      case client:
+        return 'Error.client';
+      case speechTimeout:
+        return 'Error.speechTimeout';
+      case noMatch:
+        return 'Error.noMatch';
+      case recognizerBusy:
+        return 'Error.recognizerBusy';
+      case insufficientPermissions:
+        return 'Error.insufficientPermissions';
     }
   }
 
-  int toJson() => value;
+  int toJson() => mojoEnumValue;
 }
 
 

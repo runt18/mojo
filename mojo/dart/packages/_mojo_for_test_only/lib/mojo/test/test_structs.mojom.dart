@@ -970,7 +970,7 @@ class DefaultFieldValues extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(96, 0)
   ];
-  static const kFoo = "foo";
+  static const String kFoo = "foo";
   bool f0 = true;
   int f1 = 100;
   int f2 = 100;
@@ -1179,28 +1179,29 @@ class DefaultFieldValues extends bindings.Struct {
   }
 }
 
+
 class ScopedConstantsEType extends bindings.MojoEnum {
-  static const E0 = const ScopedConstantsEType._(0);
-  static const E1 = const ScopedConstantsEType._(1);
-  static const E2 = const ScopedConstantsEType._(10);
-  static const E3 = const ScopedConstantsEType._(10);
-  static const E4 = const ScopedConstantsEType._(11);
+  static const ScopedConstantsEType e0 = const ScopedConstantsEType._(0);
+  static const ScopedConstantsEType e1 = const ScopedConstantsEType._(1);
+  static const ScopedConstantsEType e2 = const ScopedConstantsEType._(10);
+  static const ScopedConstantsEType e3 = const ScopedConstantsEType._(10);
+  static const ScopedConstantsEType e4 = const ScopedConstantsEType._(11);
 
   const ScopedConstantsEType._(int v) : super(v);
 
   static const Map<String, ScopedConstantsEType> valuesMap = const {
-    "E0": E0,
-    "E1": E1,
-    "E2": E2,
-    "E3": E3,
-    "E4": E4,
+    "e0": e0,
+    "e1": e1,
+    "e2": e2,
+    "e3": e3,
+    "e4": e4,
   };
   static const List<ScopedConstantsEType> values = const [
-    E0,
-    E1,
-    E2,
-    E3,
-    E4,
+    e0,
+    e1,
+    e2,
+    e3,
+    e4,
   ];
 
   static ScopedConstantsEType valueOf(String name) => valuesMap[name];
@@ -1208,15 +1209,15 @@ class ScopedConstantsEType extends bindings.MojoEnum {
   factory ScopedConstantsEType(int v) {
     switch (v) {
       case 0:
-        return E0;
+        return e0;
       case 1:
-        return E1;
+        return e1;
       case 10:
-        return E2;
+        return e2;
       case 10:
-        return E3;
+        return e3;
       case 11:
-        return E4;
+        return e4;
       default:
         return null;
     }
@@ -1234,28 +1235,28 @@ class ScopedConstantsEType extends bindings.MojoEnum {
 
   String toString() {
     switch(this) {
-      case E0:
-        return 'ScopedConstantsEType.E0';
-      case E1:
-        return 'ScopedConstantsEType.E1';
-      case E2:
-        return 'ScopedConstantsEType.E2';
-      case E3:
-        return 'ScopedConstantsEType.E3';
-      case E4:
-        return 'ScopedConstantsEType.E4';
+      case e0:
+        return 'ScopedConstantsEType.e0';
+      case e1:
+        return 'ScopedConstantsEType.e1';
+      case e2:
+        return 'ScopedConstantsEType.e2';
+      case e3:
+        return 'ScopedConstantsEType.e3';
+      case e4:
+        return 'ScopedConstantsEType.e4';
     }
   }
 
-  int toJson() => value;
+  int toJson() => mojoEnumValue;
 }
 
 class ScopedConstants extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(40, 0)
   ];
-  static const TEN = 10;
-  static const ALSO_TEN = 10;
+  static const int ten = 10;
+  static const int alsoTen = 10;
   ScopedConstantsEType f0 = new ScopedConstantsEType(0);
   ScopedConstantsEType f1 = new ScopedConstantsEType(1);
   ScopedConstantsEType f2 = new ScopedConstantsEType(10);
@@ -3100,26 +3101,26 @@ class FloatNumberValues extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(72, 0)
   ];
-  static const V0 = double.INFINITY;
-  static const V1 = double.NEGATIVE_INFINITY;
-  static const V2 = double.NAN;
-  static const V3 = double.INFINITY;
-  static const V4 = double.NEGATIVE_INFINITY;
-  static const V5 = double.NAN;
-  static const V6 = 0;
-  static const V7 = 1234567890.123;
-  static const V8 = 1.2E+20;
-  static const V9 = -1.2E+20;
+  static const double v0 = double.INFINITY;
+  static const double v1 = double.NEGATIVE_INFINITY;
+  static const double v2 = double.NAN;
+  static const double v3 = double.INFINITY;
+  static const double v4 = double.NEGATIVE_INFINITY;
+  static const double v5 = double.NAN;
+  static const double v6 = 0.0;
+  static const double v7 = 1234567890.123;
+  static const double v8 = 1.2e+20;
+  static const double v9 = -1.2e+20;
   double f0 = double.INFINITY;
   double f1 = double.NEGATIVE_INFINITY;
   double f2 = double.NAN;
   double f3 = double.INFINITY;
   double f4 = double.NEGATIVE_INFINITY;
   double f5 = double.NAN;
-  double f6 = 0;
+  double f6 = 0.0;
   double f7 = 1234567890.123;
-  double f8 = 1.2E+20;
-  double f9 = -1.2E+20;
+  double f8 = 1.2e+20;
+  double f9 = -1.2e+20;
 
   FloatNumberValues() : super(kVersions.last.size);
 
@@ -3258,26 +3259,26 @@ class IntegerNumberValues extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(88, 0)
   ];
-  static const V0 = -128;
-  static const V1 = -1;
-  static const V2 = 0;
-  static const V3 = 42;
-  static const V4 = 127;
-  static const V5 = -32768;
-  static const V6 = -1;
-  static const V7 = 0;
-  static const V8 = 12345;
-  static const V9 = 32767;
-  static const V10 = -2147483648;
-  static const V11 = -1;
-  static const V12 = 0;
-  static const V13 = 1234567890;
-  static const V14 = 2147483647;
-  static const V15 = -9007199254740991;
-  static const V16 = -1;
-  static const V17 = 0;
-  static const V18 = 1234567890123456;
-  static const V19 = 9007199254740991;
+  static const int v0 = -128;
+  static const int v1 = -1;
+  static const int v2 = 0;
+  static const int v3 = 42;
+  static const int v4 = 127;
+  static const int v5 = -32768;
+  static const int v6 = -1;
+  static const int v7 = 0;
+  static const int v8 = 12345;
+  static const int v9 = 32767;
+  static const int v10 = -2147483648;
+  static const int v11 = -1;
+  static const int v12 = 0;
+  static const int v13 = 1234567890;
+  static const int v14 = 2147483647;
+  static const int v15 = -9007199254740991;
+  static const int v16 = -1;
+  static const int v17 = 0;
+  static const int v18 = 1234567890123456;
+  static const int v19 = 9007199254740991;
   int f0 = -128;
   int f1 = -1;
   int f2 = 0;
@@ -3516,18 +3517,18 @@ class UnsignedNumberValues extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(56, 0)
   ];
-  static const V0 = 0;
-  static const V1 = 42;
-  static const V2 = 0xFF;
-  static const V3 = 0;
-  static const V4 = 12345;
-  static const V5 = 0xFFFF;
-  static const V6 = 0;
-  static const V7 = 1234567890;
-  static const V8 = 0xFFFFFFFF;
-  static const V9 = 0;
-  static const V10 = 1234567890123456;
-  static const V11 = 9007199254740991;
+  static const int v0 = 0;
+  static const int v1 = 42;
+  static const int v2 = 0xFF;
+  static const int v3 = 0;
+  static const int v4 = 12345;
+  static const int v5 = 0xFFFF;
+  static const int v6 = 0;
+  static const int v7 = 1234567890;
+  static const int v8 = 0xFFFFFFFF;
+  static const int v9 = 0;
+  static const int v10 = 1234567890123456;
+  static const int v11 = 9007199254740991;
   int f0 = 0;
   int f1 = 42;
   int f2 = 0xFF;
@@ -4624,6 +4625,160 @@ class ContainsInterfaceRequest extends bindings.Struct {
   Map toJson() {
     throw new bindings.MojoCodecError(
         'Object containing handles cannot be encoded to JSON.');
+  }
+}
+
+
+class DartKeywordStructKeywords extends bindings.MojoEnum {
+  static const DartKeywordStructKeywords await_ = const DartKeywordStructKeywords._(0);
+  static const DartKeywordStructKeywords is_ = const DartKeywordStructKeywords._(1);
+  static const DartKeywordStructKeywords rethrow_ = const DartKeywordStructKeywords._(2);
+
+  const DartKeywordStructKeywords._(int v) : super(v);
+
+  static const Map<String, DartKeywordStructKeywords> valuesMap = const {
+    "await_": await_,
+    "is_": is_,
+    "rethrow_": rethrow_,
+  };
+  static const List<DartKeywordStructKeywords> values = const [
+    await_,
+    is_,
+    rethrow_,
+  ];
+
+  static DartKeywordStructKeywords valueOf(String name) => valuesMap[name];
+
+  factory DartKeywordStructKeywords(int v) {
+    switch (v) {
+      case 0:
+        return await_;
+      case 1:
+        return is_;
+      case 2:
+        return rethrow_;
+      default:
+        return null;
+    }
+  }
+
+  static DartKeywordStructKeywords decode(bindings.Decoder decoder0, int offset) {
+    int v = decoder0.decodeUint32(offset);
+    DartKeywordStructKeywords result = new DartKeywordStructKeywords(v);
+    if (result == null) {
+      throw new bindings.MojoCodecError(
+          'Bad value $v for enum DartKeywordStructKeywords.');
+    }
+    return result;
+  }
+
+  String toString() {
+    switch(this) {
+      case await_:
+        return 'DartKeywordStructKeywords.await_';
+      case is_:
+        return 'DartKeywordStructKeywords.is_';
+      case rethrow_:
+        return 'DartKeywordStructKeywords.rethrow_';
+    }
+  }
+
+  int toJson() => mojoEnumValue;
+}
+
+class DartKeywordStruct extends bindings.Struct {
+  static const List<bindings.StructDataHeader> kVersions = const [
+    const bindings.StructDataHeader(24, 0)
+  ];
+  DartKeywordStructKeywords await_ = null;
+  DartKeywordStructKeywords is_ = null;
+  DartKeywordStructKeywords rethrow_ = null;
+
+  DartKeywordStruct() : super(kVersions.last.size);
+
+  static DartKeywordStruct deserialize(bindings.Message message) {
+    var decoder = new bindings.Decoder(message);
+    var result = decode(decoder);
+    if (decoder.excessHandles != null) {
+      decoder.excessHandles.forEach((h) => h.close());
+    }
+    return result;
+  }
+
+  static DartKeywordStruct decode(bindings.Decoder decoder0) {
+    if (decoder0 == null) {
+      return null;
+    }
+    DartKeywordStruct result = new DartKeywordStruct();
+
+    var mainDataHeader = decoder0.decodeStructDataHeader();
+    if (mainDataHeader.version <= kVersions.last.version) {
+      // Scan in reverse order to optimize for more recent versions.
+      for (int i = kVersions.length - 1; i >= 0; --i) {
+        if (mainDataHeader.version >= kVersions[i].version) {
+          if (mainDataHeader.size == kVersions[i].size) {
+            // Found a match.
+            break;
+          }
+          throw new bindings.MojoCodecError(
+              'Header size doesn\'t correspond to known version size.');
+        }
+      }
+    } else if (mainDataHeader.size < kVersions.last.size) {
+      throw new bindings.MojoCodecError(
+        'Message newer than the last known version cannot be shorter than '
+        'required by the last known version.');
+    }
+    if (mainDataHeader.version >= 0) {
+      
+        result.await_ = DartKeywordStructKeywords.decode(decoder0, 8);
+        if (result.await_ == null) {
+          throw new bindings.MojoCodecError(
+            'Trying to decode null union for non-nullable DartKeywordStructKeywords.');
+        }
+    }
+    if (mainDataHeader.version >= 0) {
+      
+        result.is_ = DartKeywordStructKeywords.decode(decoder0, 12);
+        if (result.is_ == null) {
+          throw new bindings.MojoCodecError(
+            'Trying to decode null union for non-nullable DartKeywordStructKeywords.');
+        }
+    }
+    if (mainDataHeader.version >= 0) {
+      
+        result.rethrow_ = DartKeywordStructKeywords.decode(decoder0, 16);
+        if (result.rethrow_ == null) {
+          throw new bindings.MojoCodecError(
+            'Trying to decode null union for non-nullable DartKeywordStructKeywords.');
+        }
+    }
+    return result;
+  }
+
+  void encode(bindings.Encoder encoder) {
+    var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
+    
+    encoder0.encodeEnum(await_, 8);
+    
+    encoder0.encodeEnum(is_, 12);
+    
+    encoder0.encodeEnum(rethrow_, 16);
+  }
+
+  String toString() {
+    return "DartKeywordStruct("
+           "await_: $await_" ", "
+           "is_: $is_" ", "
+           "rethrow_: $rethrow_" ")";
+  }
+
+  Map toJson() {
+    Map map = new Map();
+    map["await_"] = await_;
+    map["is_"] = is_;
+    map["rethrow_"] = rethrow_;
+    return map;
   }
 }
 

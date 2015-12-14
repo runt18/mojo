@@ -9,22 +9,23 @@ import 'dart:async';
 import 'package:mojo/bindings.dart' as bindings;
 import 'package:mojo/core.dart' as core;
 import 'package:mojo/mojo/url_request.mojom.dart' as url_request_mojom;
+
 class Target extends bindings.MojoEnum {
-  static const DEFAULT = const Target._(0);
-  static const SOURCE_NODE = const Target._(1);
-  static const NEW_NODE = const Target._(2);
+  static const Target default_ = const Target._(0);
+  static const Target sourceNode = const Target._(1);
+  static const Target newNode = const Target._(2);
 
   const Target._(int v) : super(v);
 
   static const Map<String, Target> valuesMap = const {
-    "DEFAULT": DEFAULT,
-    "SOURCE_NODE": SOURCE_NODE,
-    "NEW_NODE": NEW_NODE,
+    "default_": default_,
+    "sourceNode": sourceNode,
+    "newNode": newNode,
   };
   static const List<Target> values = const [
-    DEFAULT,
-    SOURCE_NODE,
-    NEW_NODE,
+    default_,
+    sourceNode,
+    newNode,
   ];
 
   static Target valueOf(String name) => valuesMap[name];
@@ -32,11 +33,11 @@ class Target extends bindings.MojoEnum {
   factory Target(int v) {
     switch (v) {
       case 0:
-        return DEFAULT;
+        return default_;
       case 1:
-        return SOURCE_NODE;
+        return sourceNode;
       case 2:
-        return NEW_NODE;
+        return newNode;
       default:
         return null;
     }
@@ -54,16 +55,16 @@ class Target extends bindings.MojoEnum {
 
   String toString() {
     switch(this) {
-      case DEFAULT:
-        return 'Target.DEFAULT';
-      case SOURCE_NODE:
-        return 'Target.SOURCE_NODE';
-      case NEW_NODE:
-        return 'Target.NEW_NODE';
+      case default_:
+        return 'Target.default_';
+      case sourceNode:
+        return 'Target.sourceNode';
+      case newNode:
+        return 'Target.newNode';
     }
   }
 
-  int toJson() => value;
+  int toJson() => mojoEnumValue;
 }
 
 

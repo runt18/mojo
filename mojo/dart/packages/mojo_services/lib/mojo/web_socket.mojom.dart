@@ -752,22 +752,23 @@ const int kWebSocket_send_name = 1;
 const int kWebSocket_flowControl_name = 2;
 const int kWebSocket_close_name = 3;
 const String WebSocketName = null;
-  class WebSocketMessageType extends bindings.MojoEnum {
-  static const CONTINUATION = const WebSocketMessageType._(0);
-  static const TEXT = const WebSocketMessageType._(1);
-  static const BINARY = const WebSocketMessageType._(2);
+  
+class WebSocketMessageType extends bindings.MojoEnum {
+  static const WebSocketMessageType continuation = const WebSocketMessageType._(0);
+  static const WebSocketMessageType text = const WebSocketMessageType._(1);
+  static const WebSocketMessageType binary = const WebSocketMessageType._(2);
 
   const WebSocketMessageType._(int v) : super(v);
 
   static const Map<String, WebSocketMessageType> valuesMap = const {
-    "CONTINUATION": CONTINUATION,
-    "TEXT": TEXT,
-    "BINARY": BINARY,
+    "continuation": continuation,
+    "text": text,
+    "binary": binary,
   };
   static const List<WebSocketMessageType> values = const [
-    CONTINUATION,
-    TEXT,
-    BINARY,
+    continuation,
+    text,
+    binary,
   ];
 
   static WebSocketMessageType valueOf(String name) => valuesMap[name];
@@ -775,11 +776,11 @@ const String WebSocketName = null;
   factory WebSocketMessageType(int v) {
     switch (v) {
       case 0:
-        return CONTINUATION;
+        return continuation;
       case 1:
-        return TEXT;
+        return text;
       case 2:
-        return BINARY;
+        return binary;
       default:
         return null;
     }
@@ -797,16 +798,16 @@ const String WebSocketName = null;
 
   String toString() {
     switch(this) {
-      case CONTINUATION:
-        return 'WebSocketMessageType.CONTINUATION';
-      case TEXT:
-        return 'WebSocketMessageType.TEXT';
-      case BINARY:
-        return 'WebSocketMessageType.BINARY';
+      case continuation:
+        return 'WebSocketMessageType.continuation';
+      case text:
+        return 'WebSocketMessageType.text';
+      case binary:
+        return 'WebSocketMessageType.binary';
     }
   }
 
-  int toJson() => value;
+  int toJson() => mojoEnumValue;
 }
 
 abstract class WebSocket {
@@ -815,7 +816,7 @@ abstract class WebSocket {
   void flowControl(int quota);
   void close(int code, String reason);
 
-  static const ABNORMAL_CLOSE_CODE = 1006;
+  static const int kAbnormalCloseCode = 1006;
 }
 
 

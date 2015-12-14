@@ -8,526 +8,527 @@ import 'dart:async';
 
 import 'package:mojo/bindings.dart' as bindings;
 import 'package:mojo/core.dart' as core;
+
 class KeyboardCode extends bindings.MojoEnum {
-  static const BACK = const KeyboardCode._(8);
-  static const TAB = const KeyboardCode._(9);
-  static const CLEAR = const KeyboardCode._(12);
-  static const RETURN = const KeyboardCode._(13);
-  static const SHIFT = const KeyboardCode._(16);
-  static const CONTROL = const KeyboardCode._(17);
-  static const MENU = const KeyboardCode._(18);
-  static const PAUSE = const KeyboardCode._(19);
-  static const CAPITAL = const KeyboardCode._(20);
-  static const KANA = const KeyboardCode._(21);
-  static const HANGUL = const KeyboardCode._(21);
-  static const JUNJA = const KeyboardCode._(23);
-  static const FINAL = const KeyboardCode._(24);
-  static const HANJA = const KeyboardCode._(25);
-  static const KANJI = const KeyboardCode._(25);
-  static const ESCAPE = const KeyboardCode._(27);
-  static const CONVERT = const KeyboardCode._(28);
-  static const NONCONVERT = const KeyboardCode._(29);
-  static const ACCEPT = const KeyboardCode._(30);
-  static const MODECHANGE = const KeyboardCode._(31);
-  static const SPACE = const KeyboardCode._(32);
-  static const PRIOR = const KeyboardCode._(33);
-  static const NEXT = const KeyboardCode._(34);
-  static const END = const KeyboardCode._(35);
-  static const HOME = const KeyboardCode._(36);
-  static const LEFT = const KeyboardCode._(37);
-  static const UP = const KeyboardCode._(38);
-  static const RIGHT = const KeyboardCode._(39);
-  static const DOWN = const KeyboardCode._(40);
-  static const SELECT = const KeyboardCode._(41);
-  static const PRINT = const KeyboardCode._(42);
-  static const EXECUTE = const KeyboardCode._(43);
-  static const SNAPSHOT = const KeyboardCode._(44);
-  static const INSERT = const KeyboardCode._(45);
-  static const DELETE = const KeyboardCode._(46);
-  static const HELP = const KeyboardCode._(47);
-  static const NUM_0 = const KeyboardCode._(48);
-  static const NUM_1 = const KeyboardCode._(49);
-  static const NUM_2 = const KeyboardCode._(50);
-  static const NUM_3 = const KeyboardCode._(51);
-  static const NUM_4 = const KeyboardCode._(52);
-  static const NUM_5 = const KeyboardCode._(53);
-  static const NUM_6 = const KeyboardCode._(54);
-  static const NUM_7 = const KeyboardCode._(55);
-  static const NUM_8 = const KeyboardCode._(56);
-  static const NUM_9 = const KeyboardCode._(57);
-  static const A = const KeyboardCode._(65);
-  static const B = const KeyboardCode._(66);
-  static const C = const KeyboardCode._(67);
-  static const D = const KeyboardCode._(68);
-  static const E = const KeyboardCode._(69);
-  static const F = const KeyboardCode._(70);
-  static const G = const KeyboardCode._(71);
-  static const H = const KeyboardCode._(72);
-  static const I = const KeyboardCode._(73);
-  static const J = const KeyboardCode._(74);
-  static const K = const KeyboardCode._(75);
-  static const L = const KeyboardCode._(76);
-  static const M = const KeyboardCode._(77);
-  static const N = const KeyboardCode._(78);
-  static const O = const KeyboardCode._(79);
-  static const P = const KeyboardCode._(80);
-  static const Q = const KeyboardCode._(81);
-  static const R = const KeyboardCode._(82);
-  static const S = const KeyboardCode._(83);
-  static const T = const KeyboardCode._(84);
-  static const U = const KeyboardCode._(85);
-  static const V = const KeyboardCode._(86);
-  static const W = const KeyboardCode._(87);
-  static const X = const KeyboardCode._(88);
-  static const Y = const KeyboardCode._(89);
-  static const Z = const KeyboardCode._(90);
-  static const LWIN = const KeyboardCode._(91);
-  static const COMMAND = const KeyboardCode._(91);
-  static const RWIN = const KeyboardCode._(92);
-  static const APPS = const KeyboardCode._(93);
-  static const SLEEP = const KeyboardCode._(95);
-  static const NUMPAD0 = const KeyboardCode._(96);
-  static const NUMPAD1 = const KeyboardCode._(97);
-  static const NUMPAD2 = const KeyboardCode._(98);
-  static const NUMPAD3 = const KeyboardCode._(99);
-  static const NUMPAD4 = const KeyboardCode._(100);
-  static const NUMPAD5 = const KeyboardCode._(101);
-  static const NUMPAD6 = const KeyboardCode._(102);
-  static const NUMPAD7 = const KeyboardCode._(103);
-  static const NUMPAD8 = const KeyboardCode._(104);
-  static const NUMPAD9 = const KeyboardCode._(105);
-  static const MULTIPLY = const KeyboardCode._(106);
-  static const ADD = const KeyboardCode._(107);
-  static const SEPARATOR = const KeyboardCode._(108);
-  static const SUBTRACT = const KeyboardCode._(109);
-  static const DECIMAL = const KeyboardCode._(110);
-  static const DIVIDE = const KeyboardCode._(111);
-  static const F1 = const KeyboardCode._(112);
-  static const F2 = const KeyboardCode._(113);
-  static const F3 = const KeyboardCode._(114);
-  static const F4 = const KeyboardCode._(115);
-  static const F5 = const KeyboardCode._(116);
-  static const F6 = const KeyboardCode._(117);
-  static const F7 = const KeyboardCode._(118);
-  static const F8 = const KeyboardCode._(119);
-  static const F9 = const KeyboardCode._(120);
-  static const F10 = const KeyboardCode._(121);
-  static const F11 = const KeyboardCode._(122);
-  static const F12 = const KeyboardCode._(123);
-  static const F13 = const KeyboardCode._(124);
-  static const F14 = const KeyboardCode._(125);
-  static const F15 = const KeyboardCode._(126);
-  static const F16 = const KeyboardCode._(127);
-  static const F17 = const KeyboardCode._(128);
-  static const F18 = const KeyboardCode._(129);
-  static const F19 = const KeyboardCode._(130);
-  static const F20 = const KeyboardCode._(131);
-  static const F21 = const KeyboardCode._(132);
-  static const F22 = const KeyboardCode._(133);
-  static const F23 = const KeyboardCode._(134);
-  static const F24 = const KeyboardCode._(135);
-  static const NUMLOCK = const KeyboardCode._(144);
-  static const SCROLL = const KeyboardCode._(145);
-  static const LSHIFT = const KeyboardCode._(160);
-  static const RSHIFT = const KeyboardCode._(161);
-  static const LCONTROL = const KeyboardCode._(162);
-  static const RCONTROL = const KeyboardCode._(163);
-  static const LMENU = const KeyboardCode._(164);
-  static const RMENU = const KeyboardCode._(165);
-  static const BROWSER_BACK = const KeyboardCode._(166);
-  static const BROWSER_FORWARD = const KeyboardCode._(167);
-  static const BROWSER_REFRESH = const KeyboardCode._(168);
-  static const BROWSER_STOP = const KeyboardCode._(169);
-  static const BROWSER_SEARCH = const KeyboardCode._(170);
-  static const BROWSER_FAVORITES = const KeyboardCode._(171);
-  static const BROWSER_HOME = const KeyboardCode._(172);
-  static const VOLUME_MUTE = const KeyboardCode._(173);
-  static const VOLUME_DOWN = const KeyboardCode._(174);
-  static const VOLUME_UP = const KeyboardCode._(175);
-  static const MEDIA_NEXT_TRACK = const KeyboardCode._(176);
-  static const MEDIA_PREV_TRACK = const KeyboardCode._(177);
-  static const MEDIA_STOP = const KeyboardCode._(178);
-  static const MEDIA_PLAY_PAUSE = const KeyboardCode._(179);
-  static const MEDIA_LAUNCH_MAIL = const KeyboardCode._(180);
-  static const MEDIA_LAUNCH_MEDIA_SELECT = const KeyboardCode._(181);
-  static const MEDIA_LAUNCH_APP1 = const KeyboardCode._(182);
-  static const MEDIA_LAUNCH_APP2 = const KeyboardCode._(183);
-  static const OEM_1 = const KeyboardCode._(186);
-  static const OEM_PLUS = const KeyboardCode._(187);
-  static const OEM_COMMA = const KeyboardCode._(188);
-  static const OEM_MINUS = const KeyboardCode._(189);
-  static const OEM_PERIOD = const KeyboardCode._(190);
-  static const OEM_2 = const KeyboardCode._(191);
-  static const OEM_3 = const KeyboardCode._(192);
-  static const OEM_4 = const KeyboardCode._(219);
-  static const OEM_5 = const KeyboardCode._(220);
-  static const OEM_6 = const KeyboardCode._(221);
-  static const OEM_7 = const KeyboardCode._(222);
-  static const OEM_8 = const KeyboardCode._(223);
-  static const OEM_102 = const KeyboardCode._(226);
-  static const PROCESSKEY = const KeyboardCode._(229);
-  static const PACKET = const KeyboardCode._(231);
-  static const DBE_SBCSCHAR = const KeyboardCode._(243);
-  static const DBE_DBCSCHAR = const KeyboardCode._(244);
-  static const ATTN = const KeyboardCode._(246);
-  static const CRSEL = const KeyboardCode._(247);
-  static const EXSEL = const KeyboardCode._(248);
-  static const EREOF = const KeyboardCode._(249);
-  static const PLAY = const KeyboardCode._(250);
-  static const ZOOM = const KeyboardCode._(251);
-  static const NONAME = const KeyboardCode._(252);
-  static const PA1 = const KeyboardCode._(253);
-  static const OEM_CLEAR = const KeyboardCode._(254);
-  static const UNKNOWN = const KeyboardCode._(0);
-  static const ALTGR = const KeyboardCode._(225);
+  static const KeyboardCode back = const KeyboardCode._(8);
+  static const KeyboardCode tab = const KeyboardCode._(9);
+  static const KeyboardCode clear = const KeyboardCode._(12);
+  static const KeyboardCode return_ = const KeyboardCode._(13);
+  static const KeyboardCode shift = const KeyboardCode._(16);
+  static const KeyboardCode control = const KeyboardCode._(17);
+  static const KeyboardCode menu = const KeyboardCode._(18);
+  static const KeyboardCode pause = const KeyboardCode._(19);
+  static const KeyboardCode capital = const KeyboardCode._(20);
+  static const KeyboardCode kana = const KeyboardCode._(21);
+  static const KeyboardCode hangul = const KeyboardCode._(21);
+  static const KeyboardCode junja = const KeyboardCode._(23);
+  static const KeyboardCode final_ = const KeyboardCode._(24);
+  static const KeyboardCode hanja = const KeyboardCode._(25);
+  static const KeyboardCode kanji = const KeyboardCode._(25);
+  static const KeyboardCode escape = const KeyboardCode._(27);
+  static const KeyboardCode convert = const KeyboardCode._(28);
+  static const KeyboardCode nonconvert = const KeyboardCode._(29);
+  static const KeyboardCode accept = const KeyboardCode._(30);
+  static const KeyboardCode modechange = const KeyboardCode._(31);
+  static const KeyboardCode space = const KeyboardCode._(32);
+  static const KeyboardCode prior = const KeyboardCode._(33);
+  static const KeyboardCode next = const KeyboardCode._(34);
+  static const KeyboardCode end = const KeyboardCode._(35);
+  static const KeyboardCode home = const KeyboardCode._(36);
+  static const KeyboardCode left = const KeyboardCode._(37);
+  static const KeyboardCode up = const KeyboardCode._(38);
+  static const KeyboardCode right = const KeyboardCode._(39);
+  static const KeyboardCode down = const KeyboardCode._(40);
+  static const KeyboardCode select = const KeyboardCode._(41);
+  static const KeyboardCode print = const KeyboardCode._(42);
+  static const KeyboardCode execute = const KeyboardCode._(43);
+  static const KeyboardCode snapshot = const KeyboardCode._(44);
+  static const KeyboardCode insert = const KeyboardCode._(45);
+  static const KeyboardCode delete = const KeyboardCode._(46);
+  static const KeyboardCode help = const KeyboardCode._(47);
+  static const KeyboardCode num0 = const KeyboardCode._(48);
+  static const KeyboardCode num1 = const KeyboardCode._(49);
+  static const KeyboardCode num2 = const KeyboardCode._(50);
+  static const KeyboardCode num3 = const KeyboardCode._(51);
+  static const KeyboardCode num4 = const KeyboardCode._(52);
+  static const KeyboardCode num5 = const KeyboardCode._(53);
+  static const KeyboardCode num6 = const KeyboardCode._(54);
+  static const KeyboardCode num7 = const KeyboardCode._(55);
+  static const KeyboardCode num8 = const KeyboardCode._(56);
+  static const KeyboardCode num9 = const KeyboardCode._(57);
+  static const KeyboardCode a = const KeyboardCode._(65);
+  static const KeyboardCode b = const KeyboardCode._(66);
+  static const KeyboardCode c = const KeyboardCode._(67);
+  static const KeyboardCode d = const KeyboardCode._(68);
+  static const KeyboardCode e = const KeyboardCode._(69);
+  static const KeyboardCode f = const KeyboardCode._(70);
+  static const KeyboardCode g = const KeyboardCode._(71);
+  static const KeyboardCode h = const KeyboardCode._(72);
+  static const KeyboardCode i = const KeyboardCode._(73);
+  static const KeyboardCode j = const KeyboardCode._(74);
+  static const KeyboardCode k = const KeyboardCode._(75);
+  static const KeyboardCode l = const KeyboardCode._(76);
+  static const KeyboardCode m = const KeyboardCode._(77);
+  static const KeyboardCode n = const KeyboardCode._(78);
+  static const KeyboardCode o = const KeyboardCode._(79);
+  static const KeyboardCode p = const KeyboardCode._(80);
+  static const KeyboardCode q = const KeyboardCode._(81);
+  static const KeyboardCode r = const KeyboardCode._(82);
+  static const KeyboardCode s = const KeyboardCode._(83);
+  static const KeyboardCode t = const KeyboardCode._(84);
+  static const KeyboardCode u = const KeyboardCode._(85);
+  static const KeyboardCode v = const KeyboardCode._(86);
+  static const KeyboardCode w = const KeyboardCode._(87);
+  static const KeyboardCode x = const KeyboardCode._(88);
+  static const KeyboardCode y = const KeyboardCode._(89);
+  static const KeyboardCode z = const KeyboardCode._(90);
+  static const KeyboardCode lwin = const KeyboardCode._(91);
+  static const KeyboardCode command = const KeyboardCode._(91);
+  static const KeyboardCode rwin = const KeyboardCode._(92);
+  static const KeyboardCode apps = const KeyboardCode._(93);
+  static const KeyboardCode sleep = const KeyboardCode._(95);
+  static const KeyboardCode numpaD0 = const KeyboardCode._(96);
+  static const KeyboardCode numpaD1 = const KeyboardCode._(97);
+  static const KeyboardCode numpaD2 = const KeyboardCode._(98);
+  static const KeyboardCode numpaD3 = const KeyboardCode._(99);
+  static const KeyboardCode numpaD4 = const KeyboardCode._(100);
+  static const KeyboardCode numpaD5 = const KeyboardCode._(101);
+  static const KeyboardCode numpaD6 = const KeyboardCode._(102);
+  static const KeyboardCode numpaD7 = const KeyboardCode._(103);
+  static const KeyboardCode numpaD8 = const KeyboardCode._(104);
+  static const KeyboardCode numpaD9 = const KeyboardCode._(105);
+  static const KeyboardCode multiply = const KeyboardCode._(106);
+  static const KeyboardCode add = const KeyboardCode._(107);
+  static const KeyboardCode separator = const KeyboardCode._(108);
+  static const KeyboardCode subtract = const KeyboardCode._(109);
+  static const KeyboardCode decimal = const KeyboardCode._(110);
+  static const KeyboardCode divide = const KeyboardCode._(111);
+  static const KeyboardCode f1 = const KeyboardCode._(112);
+  static const KeyboardCode f2 = const KeyboardCode._(113);
+  static const KeyboardCode f3 = const KeyboardCode._(114);
+  static const KeyboardCode f4 = const KeyboardCode._(115);
+  static const KeyboardCode f5 = const KeyboardCode._(116);
+  static const KeyboardCode f6 = const KeyboardCode._(117);
+  static const KeyboardCode f7 = const KeyboardCode._(118);
+  static const KeyboardCode f8 = const KeyboardCode._(119);
+  static const KeyboardCode f9 = const KeyboardCode._(120);
+  static const KeyboardCode f10 = const KeyboardCode._(121);
+  static const KeyboardCode f11 = const KeyboardCode._(122);
+  static const KeyboardCode f12 = const KeyboardCode._(123);
+  static const KeyboardCode f13 = const KeyboardCode._(124);
+  static const KeyboardCode f14 = const KeyboardCode._(125);
+  static const KeyboardCode f15 = const KeyboardCode._(126);
+  static const KeyboardCode f16 = const KeyboardCode._(127);
+  static const KeyboardCode f17 = const KeyboardCode._(128);
+  static const KeyboardCode f18 = const KeyboardCode._(129);
+  static const KeyboardCode f19 = const KeyboardCode._(130);
+  static const KeyboardCode f20 = const KeyboardCode._(131);
+  static const KeyboardCode f21 = const KeyboardCode._(132);
+  static const KeyboardCode f22 = const KeyboardCode._(133);
+  static const KeyboardCode f23 = const KeyboardCode._(134);
+  static const KeyboardCode f24 = const KeyboardCode._(135);
+  static const KeyboardCode numlock = const KeyboardCode._(144);
+  static const KeyboardCode scroll = const KeyboardCode._(145);
+  static const KeyboardCode lshift = const KeyboardCode._(160);
+  static const KeyboardCode rshift = const KeyboardCode._(161);
+  static const KeyboardCode lcontrol = const KeyboardCode._(162);
+  static const KeyboardCode rcontrol = const KeyboardCode._(163);
+  static const KeyboardCode lmenu = const KeyboardCode._(164);
+  static const KeyboardCode rmenu = const KeyboardCode._(165);
+  static const KeyboardCode browserBack = const KeyboardCode._(166);
+  static const KeyboardCode browserForward = const KeyboardCode._(167);
+  static const KeyboardCode browserRefresh = const KeyboardCode._(168);
+  static const KeyboardCode browserStop = const KeyboardCode._(169);
+  static const KeyboardCode browserSearch = const KeyboardCode._(170);
+  static const KeyboardCode browserFavorites = const KeyboardCode._(171);
+  static const KeyboardCode browserHome = const KeyboardCode._(172);
+  static const KeyboardCode volumeMute = const KeyboardCode._(173);
+  static const KeyboardCode volumeDown = const KeyboardCode._(174);
+  static const KeyboardCode volumeUp = const KeyboardCode._(175);
+  static const KeyboardCode mediaNextTrack = const KeyboardCode._(176);
+  static const KeyboardCode mediaPrevTrack = const KeyboardCode._(177);
+  static const KeyboardCode mediaStop = const KeyboardCode._(178);
+  static const KeyboardCode mediaPlayPause = const KeyboardCode._(179);
+  static const KeyboardCode mediaLaunchMail = const KeyboardCode._(180);
+  static const KeyboardCode mediaLaunchMediaSelect = const KeyboardCode._(181);
+  static const KeyboardCode mediaLaunchApP1 = const KeyboardCode._(182);
+  static const KeyboardCode mediaLaunchApP2 = const KeyboardCode._(183);
+  static const KeyboardCode oem1 = const KeyboardCode._(186);
+  static const KeyboardCode oemPlus = const KeyboardCode._(187);
+  static const KeyboardCode oemComma = const KeyboardCode._(188);
+  static const KeyboardCode oemMinus = const KeyboardCode._(189);
+  static const KeyboardCode oemPeriod = const KeyboardCode._(190);
+  static const KeyboardCode oem2 = const KeyboardCode._(191);
+  static const KeyboardCode oem3 = const KeyboardCode._(192);
+  static const KeyboardCode oem4 = const KeyboardCode._(219);
+  static const KeyboardCode oem5 = const KeyboardCode._(220);
+  static const KeyboardCode oem6 = const KeyboardCode._(221);
+  static const KeyboardCode oem7 = const KeyboardCode._(222);
+  static const KeyboardCode oem8 = const KeyboardCode._(223);
+  static const KeyboardCode oem102 = const KeyboardCode._(226);
+  static const KeyboardCode processkey = const KeyboardCode._(229);
+  static const KeyboardCode packet = const KeyboardCode._(231);
+  static const KeyboardCode dbeSbcschar = const KeyboardCode._(243);
+  static const KeyboardCode dbeDbcschar = const KeyboardCode._(244);
+  static const KeyboardCode attn = const KeyboardCode._(246);
+  static const KeyboardCode crsel = const KeyboardCode._(247);
+  static const KeyboardCode exsel = const KeyboardCode._(248);
+  static const KeyboardCode ereof = const KeyboardCode._(249);
+  static const KeyboardCode play = const KeyboardCode._(250);
+  static const KeyboardCode zoom = const KeyboardCode._(251);
+  static const KeyboardCode noname = const KeyboardCode._(252);
+  static const KeyboardCode pA1 = const KeyboardCode._(253);
+  static const KeyboardCode oemClear = const KeyboardCode._(254);
+  static const KeyboardCode unknown = const KeyboardCode._(0);
+  static const KeyboardCode altgr = const KeyboardCode._(225);
 
   const KeyboardCode._(int v) : super(v);
 
   static const Map<String, KeyboardCode> valuesMap = const {
-    "BACK": BACK,
-    "TAB": TAB,
-    "CLEAR": CLEAR,
-    "RETURN": RETURN,
-    "SHIFT": SHIFT,
-    "CONTROL": CONTROL,
-    "MENU": MENU,
-    "PAUSE": PAUSE,
-    "CAPITAL": CAPITAL,
-    "KANA": KANA,
-    "HANGUL": HANGUL,
-    "JUNJA": JUNJA,
-    "FINAL": FINAL,
-    "HANJA": HANJA,
-    "KANJI": KANJI,
-    "ESCAPE": ESCAPE,
-    "CONVERT": CONVERT,
-    "NONCONVERT": NONCONVERT,
-    "ACCEPT": ACCEPT,
-    "MODECHANGE": MODECHANGE,
-    "SPACE": SPACE,
-    "PRIOR": PRIOR,
-    "NEXT": NEXT,
-    "END": END,
-    "HOME": HOME,
-    "LEFT": LEFT,
-    "UP": UP,
-    "RIGHT": RIGHT,
-    "DOWN": DOWN,
-    "SELECT": SELECT,
-    "PRINT": PRINT,
-    "EXECUTE": EXECUTE,
-    "SNAPSHOT": SNAPSHOT,
-    "INSERT": INSERT,
-    "DELETE": DELETE,
-    "HELP": HELP,
-    "NUM_0": NUM_0,
-    "NUM_1": NUM_1,
-    "NUM_2": NUM_2,
-    "NUM_3": NUM_3,
-    "NUM_4": NUM_4,
-    "NUM_5": NUM_5,
-    "NUM_6": NUM_6,
-    "NUM_7": NUM_7,
-    "NUM_8": NUM_8,
-    "NUM_9": NUM_9,
-    "A": A,
-    "B": B,
-    "C": C,
-    "D": D,
-    "E": E,
-    "F": F,
-    "G": G,
-    "H": H,
-    "I": I,
-    "J": J,
-    "K": K,
-    "L": L,
-    "M": M,
-    "N": N,
-    "O": O,
-    "P": P,
-    "Q": Q,
-    "R": R,
-    "S": S,
-    "T": T,
-    "U": U,
-    "V": V,
-    "W": W,
-    "X": X,
-    "Y": Y,
-    "Z": Z,
-    "LWIN": LWIN,
-    "COMMAND": COMMAND,
-    "RWIN": RWIN,
-    "APPS": APPS,
-    "SLEEP": SLEEP,
-    "NUMPAD0": NUMPAD0,
-    "NUMPAD1": NUMPAD1,
-    "NUMPAD2": NUMPAD2,
-    "NUMPAD3": NUMPAD3,
-    "NUMPAD4": NUMPAD4,
-    "NUMPAD5": NUMPAD5,
-    "NUMPAD6": NUMPAD6,
-    "NUMPAD7": NUMPAD7,
-    "NUMPAD8": NUMPAD8,
-    "NUMPAD9": NUMPAD9,
-    "MULTIPLY": MULTIPLY,
-    "ADD": ADD,
-    "SEPARATOR": SEPARATOR,
-    "SUBTRACT": SUBTRACT,
-    "DECIMAL": DECIMAL,
-    "DIVIDE": DIVIDE,
-    "F1": F1,
-    "F2": F2,
-    "F3": F3,
-    "F4": F4,
-    "F5": F5,
-    "F6": F6,
-    "F7": F7,
-    "F8": F8,
-    "F9": F9,
-    "F10": F10,
-    "F11": F11,
-    "F12": F12,
-    "F13": F13,
-    "F14": F14,
-    "F15": F15,
-    "F16": F16,
-    "F17": F17,
-    "F18": F18,
-    "F19": F19,
-    "F20": F20,
-    "F21": F21,
-    "F22": F22,
-    "F23": F23,
-    "F24": F24,
-    "NUMLOCK": NUMLOCK,
-    "SCROLL": SCROLL,
-    "LSHIFT": LSHIFT,
-    "RSHIFT": RSHIFT,
-    "LCONTROL": LCONTROL,
-    "RCONTROL": RCONTROL,
-    "LMENU": LMENU,
-    "RMENU": RMENU,
-    "BROWSER_BACK": BROWSER_BACK,
-    "BROWSER_FORWARD": BROWSER_FORWARD,
-    "BROWSER_REFRESH": BROWSER_REFRESH,
-    "BROWSER_STOP": BROWSER_STOP,
-    "BROWSER_SEARCH": BROWSER_SEARCH,
-    "BROWSER_FAVORITES": BROWSER_FAVORITES,
-    "BROWSER_HOME": BROWSER_HOME,
-    "VOLUME_MUTE": VOLUME_MUTE,
-    "VOLUME_DOWN": VOLUME_DOWN,
-    "VOLUME_UP": VOLUME_UP,
-    "MEDIA_NEXT_TRACK": MEDIA_NEXT_TRACK,
-    "MEDIA_PREV_TRACK": MEDIA_PREV_TRACK,
-    "MEDIA_STOP": MEDIA_STOP,
-    "MEDIA_PLAY_PAUSE": MEDIA_PLAY_PAUSE,
-    "MEDIA_LAUNCH_MAIL": MEDIA_LAUNCH_MAIL,
-    "MEDIA_LAUNCH_MEDIA_SELECT": MEDIA_LAUNCH_MEDIA_SELECT,
-    "MEDIA_LAUNCH_APP1": MEDIA_LAUNCH_APP1,
-    "MEDIA_LAUNCH_APP2": MEDIA_LAUNCH_APP2,
-    "OEM_1": OEM_1,
-    "OEM_PLUS": OEM_PLUS,
-    "OEM_COMMA": OEM_COMMA,
-    "OEM_MINUS": OEM_MINUS,
-    "OEM_PERIOD": OEM_PERIOD,
-    "OEM_2": OEM_2,
-    "OEM_3": OEM_3,
-    "OEM_4": OEM_4,
-    "OEM_5": OEM_5,
-    "OEM_6": OEM_6,
-    "OEM_7": OEM_7,
-    "OEM_8": OEM_8,
-    "OEM_102": OEM_102,
-    "PROCESSKEY": PROCESSKEY,
-    "PACKET": PACKET,
-    "DBE_SBCSCHAR": DBE_SBCSCHAR,
-    "DBE_DBCSCHAR": DBE_DBCSCHAR,
-    "ATTN": ATTN,
-    "CRSEL": CRSEL,
-    "EXSEL": EXSEL,
-    "EREOF": EREOF,
-    "PLAY": PLAY,
-    "ZOOM": ZOOM,
-    "NONAME": NONAME,
-    "PA1": PA1,
-    "OEM_CLEAR": OEM_CLEAR,
-    "UNKNOWN": UNKNOWN,
-    "ALTGR": ALTGR,
+    "back": back,
+    "tab": tab,
+    "clear": clear,
+    "return_": return_,
+    "shift": shift,
+    "control": control,
+    "menu": menu,
+    "pause": pause,
+    "capital": capital,
+    "kana": kana,
+    "hangul": hangul,
+    "junja": junja,
+    "final_": final_,
+    "hanja": hanja,
+    "kanji": kanji,
+    "escape": escape,
+    "convert": convert,
+    "nonconvert": nonconvert,
+    "accept": accept,
+    "modechange": modechange,
+    "space": space,
+    "prior": prior,
+    "next": next,
+    "end": end,
+    "home": home,
+    "left": left,
+    "up": up,
+    "right": right,
+    "down": down,
+    "select": select,
+    "print": print,
+    "execute": execute,
+    "snapshot": snapshot,
+    "insert": insert,
+    "delete": delete,
+    "help": help,
+    "num0": num0,
+    "num1": num1,
+    "num2": num2,
+    "num3": num3,
+    "num4": num4,
+    "num5": num5,
+    "num6": num6,
+    "num7": num7,
+    "num8": num8,
+    "num9": num9,
+    "a": a,
+    "b": b,
+    "c": c,
+    "d": d,
+    "e": e,
+    "f": f,
+    "g": g,
+    "h": h,
+    "i": i,
+    "j": j,
+    "k": k,
+    "l": l,
+    "m": m,
+    "n": n,
+    "o": o,
+    "p": p,
+    "q": q,
+    "r": r,
+    "s": s,
+    "t": t,
+    "u": u,
+    "v": v,
+    "w": w,
+    "x": x,
+    "y": y,
+    "z": z,
+    "lwin": lwin,
+    "command": command,
+    "rwin": rwin,
+    "apps": apps,
+    "sleep": sleep,
+    "numpaD0": numpaD0,
+    "numpaD1": numpaD1,
+    "numpaD2": numpaD2,
+    "numpaD3": numpaD3,
+    "numpaD4": numpaD4,
+    "numpaD5": numpaD5,
+    "numpaD6": numpaD6,
+    "numpaD7": numpaD7,
+    "numpaD8": numpaD8,
+    "numpaD9": numpaD9,
+    "multiply": multiply,
+    "add": add,
+    "separator": separator,
+    "subtract": subtract,
+    "decimal": decimal,
+    "divide": divide,
+    "f1": f1,
+    "f2": f2,
+    "f3": f3,
+    "f4": f4,
+    "f5": f5,
+    "f6": f6,
+    "f7": f7,
+    "f8": f8,
+    "f9": f9,
+    "f10": f10,
+    "f11": f11,
+    "f12": f12,
+    "f13": f13,
+    "f14": f14,
+    "f15": f15,
+    "f16": f16,
+    "f17": f17,
+    "f18": f18,
+    "f19": f19,
+    "f20": f20,
+    "f21": f21,
+    "f22": f22,
+    "f23": f23,
+    "f24": f24,
+    "numlock": numlock,
+    "scroll": scroll,
+    "lshift": lshift,
+    "rshift": rshift,
+    "lcontrol": lcontrol,
+    "rcontrol": rcontrol,
+    "lmenu": lmenu,
+    "rmenu": rmenu,
+    "browserBack": browserBack,
+    "browserForward": browserForward,
+    "browserRefresh": browserRefresh,
+    "browserStop": browserStop,
+    "browserSearch": browserSearch,
+    "browserFavorites": browserFavorites,
+    "browserHome": browserHome,
+    "volumeMute": volumeMute,
+    "volumeDown": volumeDown,
+    "volumeUp": volumeUp,
+    "mediaNextTrack": mediaNextTrack,
+    "mediaPrevTrack": mediaPrevTrack,
+    "mediaStop": mediaStop,
+    "mediaPlayPause": mediaPlayPause,
+    "mediaLaunchMail": mediaLaunchMail,
+    "mediaLaunchMediaSelect": mediaLaunchMediaSelect,
+    "mediaLaunchApP1": mediaLaunchApP1,
+    "mediaLaunchApP2": mediaLaunchApP2,
+    "oem1": oem1,
+    "oemPlus": oemPlus,
+    "oemComma": oemComma,
+    "oemMinus": oemMinus,
+    "oemPeriod": oemPeriod,
+    "oem2": oem2,
+    "oem3": oem3,
+    "oem4": oem4,
+    "oem5": oem5,
+    "oem6": oem6,
+    "oem7": oem7,
+    "oem8": oem8,
+    "oem102": oem102,
+    "processkey": processkey,
+    "packet": packet,
+    "dbeSbcschar": dbeSbcschar,
+    "dbeDbcschar": dbeDbcschar,
+    "attn": attn,
+    "crsel": crsel,
+    "exsel": exsel,
+    "ereof": ereof,
+    "play": play,
+    "zoom": zoom,
+    "noname": noname,
+    "pA1": pA1,
+    "oemClear": oemClear,
+    "unknown": unknown,
+    "altgr": altgr,
   };
   static const List<KeyboardCode> values = const [
-    BACK,
-    TAB,
-    CLEAR,
-    RETURN,
-    SHIFT,
-    CONTROL,
-    MENU,
-    PAUSE,
-    CAPITAL,
-    KANA,
-    HANGUL,
-    JUNJA,
-    FINAL,
-    HANJA,
-    KANJI,
-    ESCAPE,
-    CONVERT,
-    NONCONVERT,
-    ACCEPT,
-    MODECHANGE,
-    SPACE,
-    PRIOR,
-    NEXT,
-    END,
-    HOME,
-    LEFT,
-    UP,
-    RIGHT,
-    DOWN,
-    SELECT,
-    PRINT,
-    EXECUTE,
-    SNAPSHOT,
-    INSERT,
-    DELETE,
-    HELP,
-    NUM_0,
-    NUM_1,
-    NUM_2,
-    NUM_3,
-    NUM_4,
-    NUM_5,
-    NUM_6,
-    NUM_7,
-    NUM_8,
-    NUM_9,
-    A,
-    B,
-    C,
-    D,
-    E,
-    F,
-    G,
-    H,
-    I,
-    J,
-    K,
-    L,
-    M,
-    N,
-    O,
-    P,
-    Q,
-    R,
-    S,
-    T,
-    U,
-    V,
-    W,
-    X,
-    Y,
-    Z,
-    LWIN,
-    COMMAND,
-    RWIN,
-    APPS,
-    SLEEP,
-    NUMPAD0,
-    NUMPAD1,
-    NUMPAD2,
-    NUMPAD3,
-    NUMPAD4,
-    NUMPAD5,
-    NUMPAD6,
-    NUMPAD7,
-    NUMPAD8,
-    NUMPAD9,
-    MULTIPLY,
-    ADD,
-    SEPARATOR,
-    SUBTRACT,
-    DECIMAL,
-    DIVIDE,
-    F1,
-    F2,
-    F3,
-    F4,
-    F5,
-    F6,
-    F7,
-    F8,
-    F9,
-    F10,
-    F11,
-    F12,
-    F13,
-    F14,
-    F15,
-    F16,
-    F17,
-    F18,
-    F19,
-    F20,
-    F21,
-    F22,
-    F23,
-    F24,
-    NUMLOCK,
-    SCROLL,
-    LSHIFT,
-    RSHIFT,
-    LCONTROL,
-    RCONTROL,
-    LMENU,
-    RMENU,
-    BROWSER_BACK,
-    BROWSER_FORWARD,
-    BROWSER_REFRESH,
-    BROWSER_STOP,
-    BROWSER_SEARCH,
-    BROWSER_FAVORITES,
-    BROWSER_HOME,
-    VOLUME_MUTE,
-    VOLUME_DOWN,
-    VOLUME_UP,
-    MEDIA_NEXT_TRACK,
-    MEDIA_PREV_TRACK,
-    MEDIA_STOP,
-    MEDIA_PLAY_PAUSE,
-    MEDIA_LAUNCH_MAIL,
-    MEDIA_LAUNCH_MEDIA_SELECT,
-    MEDIA_LAUNCH_APP1,
-    MEDIA_LAUNCH_APP2,
-    OEM_1,
-    OEM_PLUS,
-    OEM_COMMA,
-    OEM_MINUS,
-    OEM_PERIOD,
-    OEM_2,
-    OEM_3,
-    OEM_4,
-    OEM_5,
-    OEM_6,
-    OEM_7,
-    OEM_8,
-    OEM_102,
-    PROCESSKEY,
-    PACKET,
-    DBE_SBCSCHAR,
-    DBE_DBCSCHAR,
-    ATTN,
-    CRSEL,
-    EXSEL,
-    EREOF,
-    PLAY,
-    ZOOM,
-    NONAME,
-    PA1,
-    OEM_CLEAR,
-    UNKNOWN,
-    ALTGR,
+    back,
+    tab,
+    clear,
+    return_,
+    shift,
+    control,
+    menu,
+    pause,
+    capital,
+    kana,
+    hangul,
+    junja,
+    final_,
+    hanja,
+    kanji,
+    escape,
+    convert,
+    nonconvert,
+    accept,
+    modechange,
+    space,
+    prior,
+    next,
+    end,
+    home,
+    left,
+    up,
+    right,
+    down,
+    select,
+    print,
+    execute,
+    snapshot,
+    insert,
+    delete,
+    help,
+    num0,
+    num1,
+    num2,
+    num3,
+    num4,
+    num5,
+    num6,
+    num7,
+    num8,
+    num9,
+    a,
+    b,
+    c,
+    d,
+    e,
+    f,
+    g,
+    h,
+    i,
+    j,
+    k,
+    l,
+    m,
+    n,
+    o,
+    p,
+    q,
+    r,
+    s,
+    t,
+    u,
+    v,
+    w,
+    x,
+    y,
+    z,
+    lwin,
+    command,
+    rwin,
+    apps,
+    sleep,
+    numpaD0,
+    numpaD1,
+    numpaD2,
+    numpaD3,
+    numpaD4,
+    numpaD5,
+    numpaD6,
+    numpaD7,
+    numpaD8,
+    numpaD9,
+    multiply,
+    add,
+    separator,
+    subtract,
+    decimal,
+    divide,
+    f1,
+    f2,
+    f3,
+    f4,
+    f5,
+    f6,
+    f7,
+    f8,
+    f9,
+    f10,
+    f11,
+    f12,
+    f13,
+    f14,
+    f15,
+    f16,
+    f17,
+    f18,
+    f19,
+    f20,
+    f21,
+    f22,
+    f23,
+    f24,
+    numlock,
+    scroll,
+    lshift,
+    rshift,
+    lcontrol,
+    rcontrol,
+    lmenu,
+    rmenu,
+    browserBack,
+    browserForward,
+    browserRefresh,
+    browserStop,
+    browserSearch,
+    browserFavorites,
+    browserHome,
+    volumeMute,
+    volumeDown,
+    volumeUp,
+    mediaNextTrack,
+    mediaPrevTrack,
+    mediaStop,
+    mediaPlayPause,
+    mediaLaunchMail,
+    mediaLaunchMediaSelect,
+    mediaLaunchApP1,
+    mediaLaunchApP2,
+    oem1,
+    oemPlus,
+    oemComma,
+    oemMinus,
+    oemPeriod,
+    oem2,
+    oem3,
+    oem4,
+    oem5,
+    oem6,
+    oem7,
+    oem8,
+    oem102,
+    processkey,
+    packet,
+    dbeSbcschar,
+    dbeDbcschar,
+    attn,
+    crsel,
+    exsel,
+    ereof,
+    play,
+    zoom,
+    noname,
+    pA1,
+    oemClear,
+    unknown,
+    altgr,
   ];
 
   static KeyboardCode valueOf(String name) => valuesMap[name];
@@ -535,347 +536,347 @@ class KeyboardCode extends bindings.MojoEnum {
   factory KeyboardCode(int v) {
     switch (v) {
       case 8:
-        return BACK;
+        return back;
       case 9:
-        return TAB;
+        return tab;
       case 12:
-        return CLEAR;
+        return clear;
       case 13:
-        return RETURN;
+        return return_;
       case 16:
-        return SHIFT;
+        return shift;
       case 17:
-        return CONTROL;
+        return control;
       case 18:
-        return MENU;
+        return menu;
       case 19:
-        return PAUSE;
+        return pause;
       case 20:
-        return CAPITAL;
+        return capital;
       case 21:
-        return KANA;
+        return kana;
       case 21:
-        return HANGUL;
+        return hangul;
       case 23:
-        return JUNJA;
+        return junja;
       case 24:
-        return FINAL;
+        return final_;
       case 25:
-        return HANJA;
+        return hanja;
       case 25:
-        return KANJI;
+        return kanji;
       case 27:
-        return ESCAPE;
+        return escape;
       case 28:
-        return CONVERT;
+        return convert;
       case 29:
-        return NONCONVERT;
+        return nonconvert;
       case 30:
-        return ACCEPT;
+        return accept;
       case 31:
-        return MODECHANGE;
+        return modechange;
       case 32:
-        return SPACE;
+        return space;
       case 33:
-        return PRIOR;
+        return prior;
       case 34:
-        return NEXT;
+        return next;
       case 35:
-        return END;
+        return end;
       case 36:
-        return HOME;
+        return home;
       case 37:
-        return LEFT;
+        return left;
       case 38:
-        return UP;
+        return up;
       case 39:
-        return RIGHT;
+        return right;
       case 40:
-        return DOWN;
+        return down;
       case 41:
-        return SELECT;
+        return select;
       case 42:
-        return PRINT;
+        return print;
       case 43:
-        return EXECUTE;
+        return execute;
       case 44:
-        return SNAPSHOT;
+        return snapshot;
       case 45:
-        return INSERT;
+        return insert;
       case 46:
-        return DELETE;
+        return delete;
       case 47:
-        return HELP;
+        return help;
       case 48:
-        return NUM_0;
+        return num0;
       case 49:
-        return NUM_1;
+        return num1;
       case 50:
-        return NUM_2;
+        return num2;
       case 51:
-        return NUM_3;
+        return num3;
       case 52:
-        return NUM_4;
+        return num4;
       case 53:
-        return NUM_5;
+        return num5;
       case 54:
-        return NUM_6;
+        return num6;
       case 55:
-        return NUM_7;
+        return num7;
       case 56:
-        return NUM_8;
+        return num8;
       case 57:
-        return NUM_9;
+        return num9;
       case 65:
-        return A;
+        return a;
       case 66:
-        return B;
+        return b;
       case 67:
-        return C;
+        return c;
       case 68:
-        return D;
+        return d;
       case 69:
-        return E;
+        return e;
       case 70:
-        return F;
+        return f;
       case 71:
-        return G;
+        return g;
       case 72:
-        return H;
+        return h;
       case 73:
-        return I;
+        return i;
       case 74:
-        return J;
+        return j;
       case 75:
-        return K;
+        return k;
       case 76:
-        return L;
+        return l;
       case 77:
-        return M;
+        return m;
       case 78:
-        return N;
+        return n;
       case 79:
-        return O;
+        return o;
       case 80:
-        return P;
+        return p;
       case 81:
-        return Q;
+        return q;
       case 82:
-        return R;
+        return r;
       case 83:
-        return S;
+        return s;
       case 84:
-        return T;
+        return t;
       case 85:
-        return U;
+        return u;
       case 86:
-        return V;
+        return v;
       case 87:
-        return W;
+        return w;
       case 88:
-        return X;
+        return x;
       case 89:
-        return Y;
+        return y;
       case 90:
-        return Z;
+        return z;
       case 91:
-        return LWIN;
+        return lwin;
       case 91:
-        return COMMAND;
+        return command;
       case 92:
-        return RWIN;
+        return rwin;
       case 93:
-        return APPS;
+        return apps;
       case 95:
-        return SLEEP;
+        return sleep;
       case 96:
-        return NUMPAD0;
+        return numpaD0;
       case 97:
-        return NUMPAD1;
+        return numpaD1;
       case 98:
-        return NUMPAD2;
+        return numpaD2;
       case 99:
-        return NUMPAD3;
+        return numpaD3;
       case 100:
-        return NUMPAD4;
+        return numpaD4;
       case 101:
-        return NUMPAD5;
+        return numpaD5;
       case 102:
-        return NUMPAD6;
+        return numpaD6;
       case 103:
-        return NUMPAD7;
+        return numpaD7;
       case 104:
-        return NUMPAD8;
+        return numpaD8;
       case 105:
-        return NUMPAD9;
+        return numpaD9;
       case 106:
-        return MULTIPLY;
+        return multiply;
       case 107:
-        return ADD;
+        return add;
       case 108:
-        return SEPARATOR;
+        return separator;
       case 109:
-        return SUBTRACT;
+        return subtract;
       case 110:
-        return DECIMAL;
+        return decimal;
       case 111:
-        return DIVIDE;
+        return divide;
       case 112:
-        return F1;
+        return f1;
       case 113:
-        return F2;
+        return f2;
       case 114:
-        return F3;
+        return f3;
       case 115:
-        return F4;
+        return f4;
       case 116:
-        return F5;
+        return f5;
       case 117:
-        return F6;
+        return f6;
       case 118:
-        return F7;
+        return f7;
       case 119:
-        return F8;
+        return f8;
       case 120:
-        return F9;
+        return f9;
       case 121:
-        return F10;
+        return f10;
       case 122:
-        return F11;
+        return f11;
       case 123:
-        return F12;
+        return f12;
       case 124:
-        return F13;
+        return f13;
       case 125:
-        return F14;
+        return f14;
       case 126:
-        return F15;
+        return f15;
       case 127:
-        return F16;
+        return f16;
       case 128:
-        return F17;
+        return f17;
       case 129:
-        return F18;
+        return f18;
       case 130:
-        return F19;
+        return f19;
       case 131:
-        return F20;
+        return f20;
       case 132:
-        return F21;
+        return f21;
       case 133:
-        return F22;
+        return f22;
       case 134:
-        return F23;
+        return f23;
       case 135:
-        return F24;
+        return f24;
       case 144:
-        return NUMLOCK;
+        return numlock;
       case 145:
-        return SCROLL;
+        return scroll;
       case 160:
-        return LSHIFT;
+        return lshift;
       case 161:
-        return RSHIFT;
+        return rshift;
       case 162:
-        return LCONTROL;
+        return lcontrol;
       case 163:
-        return RCONTROL;
+        return rcontrol;
       case 164:
-        return LMENU;
+        return lmenu;
       case 165:
-        return RMENU;
+        return rmenu;
       case 166:
-        return BROWSER_BACK;
+        return browserBack;
       case 167:
-        return BROWSER_FORWARD;
+        return browserForward;
       case 168:
-        return BROWSER_REFRESH;
+        return browserRefresh;
       case 169:
-        return BROWSER_STOP;
+        return browserStop;
       case 170:
-        return BROWSER_SEARCH;
+        return browserSearch;
       case 171:
-        return BROWSER_FAVORITES;
+        return browserFavorites;
       case 172:
-        return BROWSER_HOME;
+        return browserHome;
       case 173:
-        return VOLUME_MUTE;
+        return volumeMute;
       case 174:
-        return VOLUME_DOWN;
+        return volumeDown;
       case 175:
-        return VOLUME_UP;
+        return volumeUp;
       case 176:
-        return MEDIA_NEXT_TRACK;
+        return mediaNextTrack;
       case 177:
-        return MEDIA_PREV_TRACK;
+        return mediaPrevTrack;
       case 178:
-        return MEDIA_STOP;
+        return mediaStop;
       case 179:
-        return MEDIA_PLAY_PAUSE;
+        return mediaPlayPause;
       case 180:
-        return MEDIA_LAUNCH_MAIL;
+        return mediaLaunchMail;
       case 181:
-        return MEDIA_LAUNCH_MEDIA_SELECT;
+        return mediaLaunchMediaSelect;
       case 182:
-        return MEDIA_LAUNCH_APP1;
+        return mediaLaunchApP1;
       case 183:
-        return MEDIA_LAUNCH_APP2;
+        return mediaLaunchApP2;
       case 186:
-        return OEM_1;
+        return oem1;
       case 187:
-        return OEM_PLUS;
+        return oemPlus;
       case 188:
-        return OEM_COMMA;
+        return oemComma;
       case 189:
-        return OEM_MINUS;
+        return oemMinus;
       case 190:
-        return OEM_PERIOD;
+        return oemPeriod;
       case 191:
-        return OEM_2;
+        return oem2;
       case 192:
-        return OEM_3;
+        return oem3;
       case 219:
-        return OEM_4;
+        return oem4;
       case 220:
-        return OEM_5;
+        return oem5;
       case 221:
-        return OEM_6;
+        return oem6;
       case 222:
-        return OEM_7;
+        return oem7;
       case 223:
-        return OEM_8;
+        return oem8;
       case 226:
-        return OEM_102;
+        return oem102;
       case 229:
-        return PROCESSKEY;
+        return processkey;
       case 231:
-        return PACKET;
+        return packet;
       case 243:
-        return DBE_SBCSCHAR;
+        return dbeSbcschar;
       case 244:
-        return DBE_DBCSCHAR;
+        return dbeDbcschar;
       case 246:
-        return ATTN;
+        return attn;
       case 247:
-        return CRSEL;
+        return crsel;
       case 248:
-        return EXSEL;
+        return exsel;
       case 249:
-        return EREOF;
+        return ereof;
       case 250:
-        return PLAY;
+        return play;
       case 251:
-        return ZOOM;
+        return zoom;
       case 252:
-        return NONAME;
+        return noname;
       case 253:
-        return PA1;
+        return pA1;
       case 254:
-        return OEM_CLEAR;
+        return oemClear;
       case 0:
-        return UNKNOWN;
+        return unknown;
       case 225:
-        return ALTGR;
+        return altgr;
       default:
         return null;
     }
@@ -893,352 +894,352 @@ class KeyboardCode extends bindings.MojoEnum {
 
   String toString() {
     switch(this) {
-      case BACK:
-        return 'KeyboardCode.BACK';
-      case TAB:
-        return 'KeyboardCode.TAB';
-      case CLEAR:
-        return 'KeyboardCode.CLEAR';
-      case RETURN:
-        return 'KeyboardCode.RETURN';
-      case SHIFT:
-        return 'KeyboardCode.SHIFT';
-      case CONTROL:
-        return 'KeyboardCode.CONTROL';
-      case MENU:
-        return 'KeyboardCode.MENU';
-      case PAUSE:
-        return 'KeyboardCode.PAUSE';
-      case CAPITAL:
-        return 'KeyboardCode.CAPITAL';
-      case KANA:
-        return 'KeyboardCode.KANA';
-      case HANGUL:
-        return 'KeyboardCode.HANGUL';
-      case JUNJA:
-        return 'KeyboardCode.JUNJA';
-      case FINAL:
-        return 'KeyboardCode.FINAL';
-      case HANJA:
-        return 'KeyboardCode.HANJA';
-      case KANJI:
-        return 'KeyboardCode.KANJI';
-      case ESCAPE:
-        return 'KeyboardCode.ESCAPE';
-      case CONVERT:
-        return 'KeyboardCode.CONVERT';
-      case NONCONVERT:
-        return 'KeyboardCode.NONCONVERT';
-      case ACCEPT:
-        return 'KeyboardCode.ACCEPT';
-      case MODECHANGE:
-        return 'KeyboardCode.MODECHANGE';
-      case SPACE:
-        return 'KeyboardCode.SPACE';
-      case PRIOR:
-        return 'KeyboardCode.PRIOR';
-      case NEXT:
-        return 'KeyboardCode.NEXT';
-      case END:
-        return 'KeyboardCode.END';
-      case HOME:
-        return 'KeyboardCode.HOME';
-      case LEFT:
-        return 'KeyboardCode.LEFT';
-      case UP:
-        return 'KeyboardCode.UP';
-      case RIGHT:
-        return 'KeyboardCode.RIGHT';
-      case DOWN:
-        return 'KeyboardCode.DOWN';
-      case SELECT:
-        return 'KeyboardCode.SELECT';
-      case PRINT:
-        return 'KeyboardCode.PRINT';
-      case EXECUTE:
-        return 'KeyboardCode.EXECUTE';
-      case SNAPSHOT:
-        return 'KeyboardCode.SNAPSHOT';
-      case INSERT:
-        return 'KeyboardCode.INSERT';
-      case DELETE:
-        return 'KeyboardCode.DELETE';
-      case HELP:
-        return 'KeyboardCode.HELP';
-      case NUM_0:
-        return 'KeyboardCode.NUM_0';
-      case NUM_1:
-        return 'KeyboardCode.NUM_1';
-      case NUM_2:
-        return 'KeyboardCode.NUM_2';
-      case NUM_3:
-        return 'KeyboardCode.NUM_3';
-      case NUM_4:
-        return 'KeyboardCode.NUM_4';
-      case NUM_5:
-        return 'KeyboardCode.NUM_5';
-      case NUM_6:
-        return 'KeyboardCode.NUM_6';
-      case NUM_7:
-        return 'KeyboardCode.NUM_7';
-      case NUM_8:
-        return 'KeyboardCode.NUM_8';
-      case NUM_9:
-        return 'KeyboardCode.NUM_9';
-      case A:
-        return 'KeyboardCode.A';
-      case B:
-        return 'KeyboardCode.B';
-      case C:
-        return 'KeyboardCode.C';
-      case D:
-        return 'KeyboardCode.D';
-      case E:
-        return 'KeyboardCode.E';
-      case F:
-        return 'KeyboardCode.F';
-      case G:
-        return 'KeyboardCode.G';
-      case H:
-        return 'KeyboardCode.H';
-      case I:
-        return 'KeyboardCode.I';
-      case J:
-        return 'KeyboardCode.J';
-      case K:
-        return 'KeyboardCode.K';
-      case L:
-        return 'KeyboardCode.L';
-      case M:
-        return 'KeyboardCode.M';
-      case N:
-        return 'KeyboardCode.N';
-      case O:
-        return 'KeyboardCode.O';
-      case P:
-        return 'KeyboardCode.P';
-      case Q:
-        return 'KeyboardCode.Q';
-      case R:
-        return 'KeyboardCode.R';
-      case S:
-        return 'KeyboardCode.S';
-      case T:
-        return 'KeyboardCode.T';
-      case U:
-        return 'KeyboardCode.U';
-      case V:
-        return 'KeyboardCode.V';
-      case W:
-        return 'KeyboardCode.W';
-      case X:
-        return 'KeyboardCode.X';
-      case Y:
-        return 'KeyboardCode.Y';
-      case Z:
-        return 'KeyboardCode.Z';
-      case LWIN:
-        return 'KeyboardCode.LWIN';
-      case COMMAND:
-        return 'KeyboardCode.COMMAND';
-      case RWIN:
-        return 'KeyboardCode.RWIN';
-      case APPS:
-        return 'KeyboardCode.APPS';
-      case SLEEP:
-        return 'KeyboardCode.SLEEP';
-      case NUMPAD0:
-        return 'KeyboardCode.NUMPAD0';
-      case NUMPAD1:
-        return 'KeyboardCode.NUMPAD1';
-      case NUMPAD2:
-        return 'KeyboardCode.NUMPAD2';
-      case NUMPAD3:
-        return 'KeyboardCode.NUMPAD3';
-      case NUMPAD4:
-        return 'KeyboardCode.NUMPAD4';
-      case NUMPAD5:
-        return 'KeyboardCode.NUMPAD5';
-      case NUMPAD6:
-        return 'KeyboardCode.NUMPAD6';
-      case NUMPAD7:
-        return 'KeyboardCode.NUMPAD7';
-      case NUMPAD8:
-        return 'KeyboardCode.NUMPAD8';
-      case NUMPAD9:
-        return 'KeyboardCode.NUMPAD9';
-      case MULTIPLY:
-        return 'KeyboardCode.MULTIPLY';
-      case ADD:
-        return 'KeyboardCode.ADD';
-      case SEPARATOR:
-        return 'KeyboardCode.SEPARATOR';
-      case SUBTRACT:
-        return 'KeyboardCode.SUBTRACT';
-      case DECIMAL:
-        return 'KeyboardCode.DECIMAL';
-      case DIVIDE:
-        return 'KeyboardCode.DIVIDE';
-      case F1:
-        return 'KeyboardCode.F1';
-      case F2:
-        return 'KeyboardCode.F2';
-      case F3:
-        return 'KeyboardCode.F3';
-      case F4:
-        return 'KeyboardCode.F4';
-      case F5:
-        return 'KeyboardCode.F5';
-      case F6:
-        return 'KeyboardCode.F6';
-      case F7:
-        return 'KeyboardCode.F7';
-      case F8:
-        return 'KeyboardCode.F8';
-      case F9:
-        return 'KeyboardCode.F9';
-      case F10:
-        return 'KeyboardCode.F10';
-      case F11:
-        return 'KeyboardCode.F11';
-      case F12:
-        return 'KeyboardCode.F12';
-      case F13:
-        return 'KeyboardCode.F13';
-      case F14:
-        return 'KeyboardCode.F14';
-      case F15:
-        return 'KeyboardCode.F15';
-      case F16:
-        return 'KeyboardCode.F16';
-      case F17:
-        return 'KeyboardCode.F17';
-      case F18:
-        return 'KeyboardCode.F18';
-      case F19:
-        return 'KeyboardCode.F19';
-      case F20:
-        return 'KeyboardCode.F20';
-      case F21:
-        return 'KeyboardCode.F21';
-      case F22:
-        return 'KeyboardCode.F22';
-      case F23:
-        return 'KeyboardCode.F23';
-      case F24:
-        return 'KeyboardCode.F24';
-      case NUMLOCK:
-        return 'KeyboardCode.NUMLOCK';
-      case SCROLL:
-        return 'KeyboardCode.SCROLL';
-      case LSHIFT:
-        return 'KeyboardCode.LSHIFT';
-      case RSHIFT:
-        return 'KeyboardCode.RSHIFT';
-      case LCONTROL:
-        return 'KeyboardCode.LCONTROL';
-      case RCONTROL:
-        return 'KeyboardCode.RCONTROL';
-      case LMENU:
-        return 'KeyboardCode.LMENU';
-      case RMENU:
-        return 'KeyboardCode.RMENU';
-      case BROWSER_BACK:
-        return 'KeyboardCode.BROWSER_BACK';
-      case BROWSER_FORWARD:
-        return 'KeyboardCode.BROWSER_FORWARD';
-      case BROWSER_REFRESH:
-        return 'KeyboardCode.BROWSER_REFRESH';
-      case BROWSER_STOP:
-        return 'KeyboardCode.BROWSER_STOP';
-      case BROWSER_SEARCH:
-        return 'KeyboardCode.BROWSER_SEARCH';
-      case BROWSER_FAVORITES:
-        return 'KeyboardCode.BROWSER_FAVORITES';
-      case BROWSER_HOME:
-        return 'KeyboardCode.BROWSER_HOME';
-      case VOLUME_MUTE:
-        return 'KeyboardCode.VOLUME_MUTE';
-      case VOLUME_DOWN:
-        return 'KeyboardCode.VOLUME_DOWN';
-      case VOLUME_UP:
-        return 'KeyboardCode.VOLUME_UP';
-      case MEDIA_NEXT_TRACK:
-        return 'KeyboardCode.MEDIA_NEXT_TRACK';
-      case MEDIA_PREV_TRACK:
-        return 'KeyboardCode.MEDIA_PREV_TRACK';
-      case MEDIA_STOP:
-        return 'KeyboardCode.MEDIA_STOP';
-      case MEDIA_PLAY_PAUSE:
-        return 'KeyboardCode.MEDIA_PLAY_PAUSE';
-      case MEDIA_LAUNCH_MAIL:
-        return 'KeyboardCode.MEDIA_LAUNCH_MAIL';
-      case MEDIA_LAUNCH_MEDIA_SELECT:
-        return 'KeyboardCode.MEDIA_LAUNCH_MEDIA_SELECT';
-      case MEDIA_LAUNCH_APP1:
-        return 'KeyboardCode.MEDIA_LAUNCH_APP1';
-      case MEDIA_LAUNCH_APP2:
-        return 'KeyboardCode.MEDIA_LAUNCH_APP2';
-      case OEM_1:
-        return 'KeyboardCode.OEM_1';
-      case OEM_PLUS:
-        return 'KeyboardCode.OEM_PLUS';
-      case OEM_COMMA:
-        return 'KeyboardCode.OEM_COMMA';
-      case OEM_MINUS:
-        return 'KeyboardCode.OEM_MINUS';
-      case OEM_PERIOD:
-        return 'KeyboardCode.OEM_PERIOD';
-      case OEM_2:
-        return 'KeyboardCode.OEM_2';
-      case OEM_3:
-        return 'KeyboardCode.OEM_3';
-      case OEM_4:
-        return 'KeyboardCode.OEM_4';
-      case OEM_5:
-        return 'KeyboardCode.OEM_5';
-      case OEM_6:
-        return 'KeyboardCode.OEM_6';
-      case OEM_7:
-        return 'KeyboardCode.OEM_7';
-      case OEM_8:
-        return 'KeyboardCode.OEM_8';
-      case OEM_102:
-        return 'KeyboardCode.OEM_102';
-      case PROCESSKEY:
-        return 'KeyboardCode.PROCESSKEY';
-      case PACKET:
-        return 'KeyboardCode.PACKET';
-      case DBE_SBCSCHAR:
-        return 'KeyboardCode.DBE_SBCSCHAR';
-      case DBE_DBCSCHAR:
-        return 'KeyboardCode.DBE_DBCSCHAR';
-      case ATTN:
-        return 'KeyboardCode.ATTN';
-      case CRSEL:
-        return 'KeyboardCode.CRSEL';
-      case EXSEL:
-        return 'KeyboardCode.EXSEL';
-      case EREOF:
-        return 'KeyboardCode.EREOF';
-      case PLAY:
-        return 'KeyboardCode.PLAY';
-      case ZOOM:
-        return 'KeyboardCode.ZOOM';
-      case NONAME:
-        return 'KeyboardCode.NONAME';
-      case PA1:
-        return 'KeyboardCode.PA1';
-      case OEM_CLEAR:
-        return 'KeyboardCode.OEM_CLEAR';
-      case UNKNOWN:
-        return 'KeyboardCode.UNKNOWN';
-      case ALTGR:
-        return 'KeyboardCode.ALTGR';
+      case back:
+        return 'KeyboardCode.back';
+      case tab:
+        return 'KeyboardCode.tab';
+      case clear:
+        return 'KeyboardCode.clear';
+      case return_:
+        return 'KeyboardCode.return_';
+      case shift:
+        return 'KeyboardCode.shift';
+      case control:
+        return 'KeyboardCode.control';
+      case menu:
+        return 'KeyboardCode.menu';
+      case pause:
+        return 'KeyboardCode.pause';
+      case capital:
+        return 'KeyboardCode.capital';
+      case kana:
+        return 'KeyboardCode.kana';
+      case hangul:
+        return 'KeyboardCode.hangul';
+      case junja:
+        return 'KeyboardCode.junja';
+      case final_:
+        return 'KeyboardCode.final_';
+      case hanja:
+        return 'KeyboardCode.hanja';
+      case kanji:
+        return 'KeyboardCode.kanji';
+      case escape:
+        return 'KeyboardCode.escape';
+      case convert:
+        return 'KeyboardCode.convert';
+      case nonconvert:
+        return 'KeyboardCode.nonconvert';
+      case accept:
+        return 'KeyboardCode.accept';
+      case modechange:
+        return 'KeyboardCode.modechange';
+      case space:
+        return 'KeyboardCode.space';
+      case prior:
+        return 'KeyboardCode.prior';
+      case next:
+        return 'KeyboardCode.next';
+      case end:
+        return 'KeyboardCode.end';
+      case home:
+        return 'KeyboardCode.home';
+      case left:
+        return 'KeyboardCode.left';
+      case up:
+        return 'KeyboardCode.up';
+      case right:
+        return 'KeyboardCode.right';
+      case down:
+        return 'KeyboardCode.down';
+      case select:
+        return 'KeyboardCode.select';
+      case print:
+        return 'KeyboardCode.print';
+      case execute:
+        return 'KeyboardCode.execute';
+      case snapshot:
+        return 'KeyboardCode.snapshot';
+      case insert:
+        return 'KeyboardCode.insert';
+      case delete:
+        return 'KeyboardCode.delete';
+      case help:
+        return 'KeyboardCode.help';
+      case num0:
+        return 'KeyboardCode.num0';
+      case num1:
+        return 'KeyboardCode.num1';
+      case num2:
+        return 'KeyboardCode.num2';
+      case num3:
+        return 'KeyboardCode.num3';
+      case num4:
+        return 'KeyboardCode.num4';
+      case num5:
+        return 'KeyboardCode.num5';
+      case num6:
+        return 'KeyboardCode.num6';
+      case num7:
+        return 'KeyboardCode.num7';
+      case num8:
+        return 'KeyboardCode.num8';
+      case num9:
+        return 'KeyboardCode.num9';
+      case a:
+        return 'KeyboardCode.a';
+      case b:
+        return 'KeyboardCode.b';
+      case c:
+        return 'KeyboardCode.c';
+      case d:
+        return 'KeyboardCode.d';
+      case e:
+        return 'KeyboardCode.e';
+      case f:
+        return 'KeyboardCode.f';
+      case g:
+        return 'KeyboardCode.g';
+      case h:
+        return 'KeyboardCode.h';
+      case i:
+        return 'KeyboardCode.i';
+      case j:
+        return 'KeyboardCode.j';
+      case k:
+        return 'KeyboardCode.k';
+      case l:
+        return 'KeyboardCode.l';
+      case m:
+        return 'KeyboardCode.m';
+      case n:
+        return 'KeyboardCode.n';
+      case o:
+        return 'KeyboardCode.o';
+      case p:
+        return 'KeyboardCode.p';
+      case q:
+        return 'KeyboardCode.q';
+      case r:
+        return 'KeyboardCode.r';
+      case s:
+        return 'KeyboardCode.s';
+      case t:
+        return 'KeyboardCode.t';
+      case u:
+        return 'KeyboardCode.u';
+      case v:
+        return 'KeyboardCode.v';
+      case w:
+        return 'KeyboardCode.w';
+      case x:
+        return 'KeyboardCode.x';
+      case y:
+        return 'KeyboardCode.y';
+      case z:
+        return 'KeyboardCode.z';
+      case lwin:
+        return 'KeyboardCode.lwin';
+      case command:
+        return 'KeyboardCode.command';
+      case rwin:
+        return 'KeyboardCode.rwin';
+      case apps:
+        return 'KeyboardCode.apps';
+      case sleep:
+        return 'KeyboardCode.sleep';
+      case numpaD0:
+        return 'KeyboardCode.numpaD0';
+      case numpaD1:
+        return 'KeyboardCode.numpaD1';
+      case numpaD2:
+        return 'KeyboardCode.numpaD2';
+      case numpaD3:
+        return 'KeyboardCode.numpaD3';
+      case numpaD4:
+        return 'KeyboardCode.numpaD4';
+      case numpaD5:
+        return 'KeyboardCode.numpaD5';
+      case numpaD6:
+        return 'KeyboardCode.numpaD6';
+      case numpaD7:
+        return 'KeyboardCode.numpaD7';
+      case numpaD8:
+        return 'KeyboardCode.numpaD8';
+      case numpaD9:
+        return 'KeyboardCode.numpaD9';
+      case multiply:
+        return 'KeyboardCode.multiply';
+      case add:
+        return 'KeyboardCode.add';
+      case separator:
+        return 'KeyboardCode.separator';
+      case subtract:
+        return 'KeyboardCode.subtract';
+      case decimal:
+        return 'KeyboardCode.decimal';
+      case divide:
+        return 'KeyboardCode.divide';
+      case f1:
+        return 'KeyboardCode.f1';
+      case f2:
+        return 'KeyboardCode.f2';
+      case f3:
+        return 'KeyboardCode.f3';
+      case f4:
+        return 'KeyboardCode.f4';
+      case f5:
+        return 'KeyboardCode.f5';
+      case f6:
+        return 'KeyboardCode.f6';
+      case f7:
+        return 'KeyboardCode.f7';
+      case f8:
+        return 'KeyboardCode.f8';
+      case f9:
+        return 'KeyboardCode.f9';
+      case f10:
+        return 'KeyboardCode.f10';
+      case f11:
+        return 'KeyboardCode.f11';
+      case f12:
+        return 'KeyboardCode.f12';
+      case f13:
+        return 'KeyboardCode.f13';
+      case f14:
+        return 'KeyboardCode.f14';
+      case f15:
+        return 'KeyboardCode.f15';
+      case f16:
+        return 'KeyboardCode.f16';
+      case f17:
+        return 'KeyboardCode.f17';
+      case f18:
+        return 'KeyboardCode.f18';
+      case f19:
+        return 'KeyboardCode.f19';
+      case f20:
+        return 'KeyboardCode.f20';
+      case f21:
+        return 'KeyboardCode.f21';
+      case f22:
+        return 'KeyboardCode.f22';
+      case f23:
+        return 'KeyboardCode.f23';
+      case f24:
+        return 'KeyboardCode.f24';
+      case numlock:
+        return 'KeyboardCode.numlock';
+      case scroll:
+        return 'KeyboardCode.scroll';
+      case lshift:
+        return 'KeyboardCode.lshift';
+      case rshift:
+        return 'KeyboardCode.rshift';
+      case lcontrol:
+        return 'KeyboardCode.lcontrol';
+      case rcontrol:
+        return 'KeyboardCode.rcontrol';
+      case lmenu:
+        return 'KeyboardCode.lmenu';
+      case rmenu:
+        return 'KeyboardCode.rmenu';
+      case browserBack:
+        return 'KeyboardCode.browserBack';
+      case browserForward:
+        return 'KeyboardCode.browserForward';
+      case browserRefresh:
+        return 'KeyboardCode.browserRefresh';
+      case browserStop:
+        return 'KeyboardCode.browserStop';
+      case browserSearch:
+        return 'KeyboardCode.browserSearch';
+      case browserFavorites:
+        return 'KeyboardCode.browserFavorites';
+      case browserHome:
+        return 'KeyboardCode.browserHome';
+      case volumeMute:
+        return 'KeyboardCode.volumeMute';
+      case volumeDown:
+        return 'KeyboardCode.volumeDown';
+      case volumeUp:
+        return 'KeyboardCode.volumeUp';
+      case mediaNextTrack:
+        return 'KeyboardCode.mediaNextTrack';
+      case mediaPrevTrack:
+        return 'KeyboardCode.mediaPrevTrack';
+      case mediaStop:
+        return 'KeyboardCode.mediaStop';
+      case mediaPlayPause:
+        return 'KeyboardCode.mediaPlayPause';
+      case mediaLaunchMail:
+        return 'KeyboardCode.mediaLaunchMail';
+      case mediaLaunchMediaSelect:
+        return 'KeyboardCode.mediaLaunchMediaSelect';
+      case mediaLaunchApP1:
+        return 'KeyboardCode.mediaLaunchApP1';
+      case mediaLaunchApP2:
+        return 'KeyboardCode.mediaLaunchApP2';
+      case oem1:
+        return 'KeyboardCode.oem1';
+      case oemPlus:
+        return 'KeyboardCode.oemPlus';
+      case oemComma:
+        return 'KeyboardCode.oemComma';
+      case oemMinus:
+        return 'KeyboardCode.oemMinus';
+      case oemPeriod:
+        return 'KeyboardCode.oemPeriod';
+      case oem2:
+        return 'KeyboardCode.oem2';
+      case oem3:
+        return 'KeyboardCode.oem3';
+      case oem4:
+        return 'KeyboardCode.oem4';
+      case oem5:
+        return 'KeyboardCode.oem5';
+      case oem6:
+        return 'KeyboardCode.oem6';
+      case oem7:
+        return 'KeyboardCode.oem7';
+      case oem8:
+        return 'KeyboardCode.oem8';
+      case oem102:
+        return 'KeyboardCode.oem102';
+      case processkey:
+        return 'KeyboardCode.processkey';
+      case packet:
+        return 'KeyboardCode.packet';
+      case dbeSbcschar:
+        return 'KeyboardCode.dbeSbcschar';
+      case dbeDbcschar:
+        return 'KeyboardCode.dbeDbcschar';
+      case attn:
+        return 'KeyboardCode.attn';
+      case crsel:
+        return 'KeyboardCode.crsel';
+      case exsel:
+        return 'KeyboardCode.exsel';
+      case ereof:
+        return 'KeyboardCode.ereof';
+      case play:
+        return 'KeyboardCode.play';
+      case zoom:
+        return 'KeyboardCode.zoom';
+      case noname:
+        return 'KeyboardCode.noname';
+      case pA1:
+        return 'KeyboardCode.pA1';
+      case oemClear:
+        return 'KeyboardCode.oemClear';
+      case unknown:
+        return 'KeyboardCode.unknown';
+      case altgr:
+        return 'KeyboardCode.altgr';
     }
   }
 
-  int toJson() => value;
+  int toJson() => mojoEnumValue;
 }
 
 

@@ -16,10 +16,10 @@ class LocationType extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(8, 0)
   ];
-  static const ROOFTOP = "ROOFTOP";
-  static const RANGE_INTERPOLATED = "RANGE_INTERPOLATED";
-  static const GEOMETRIC_CENTER = "GEOMETRIC_CENTER";
-  static const APPROXIMATE = "APPROXIMATE";
+  static const String rooftop = "ROOFTOP";
+  static const String rangeInterpolated = "RANGE_INTERPOLATED";
+  static const String geometricCenter = "GEOMETRIC_CENTER";
+  static const String approximate = "APPROXIMATE";
 
   LocationType() : super(kVersions.last.size);
 
@@ -555,11 +555,11 @@ class Status extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(8, 0)
   ];
-  static const OK = "OK";
-  static const ZERO_RESULTS = "ZERO_RESULTS";
-  static const OVER_QUERY_LIMIT = "OVER_QUERY_LIMIT";
-  static const REQUEST_DENIED = "REQUEST_DENIED";
-  static const INVALID_REQUEST = "INVALID_REQUEST";
+  static const String ok = "OK";
+  static const String zeroResults = "ZERO_RESULTS";
+  static const String overQueryLimit = "OVER_QUERY_LIMIT";
+  static const String requestDenied = "REQUEST_DENIED";
+  static const String invalidRequest = "INVALID_REQUEST";
 
   Status() : super(kVersions.last.size);
 

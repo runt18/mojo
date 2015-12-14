@@ -8,19 +8,20 @@ import 'dart:async';
 
 import 'package:mojo/bindings.dart' as bindings;
 import 'package:mojo/core.dart' as core;
+
 class OrderDirection extends bindings.MojoEnum {
-  static const ABOVE = const OrderDirection._(1);
-  static const BELOW = const OrderDirection._(2);
+  static const OrderDirection above = const OrderDirection._(1);
+  static const OrderDirection below = const OrderDirection._(2);
 
   const OrderDirection._(int v) : super(v);
 
   static const Map<String, OrderDirection> valuesMap = const {
-    "ABOVE": ABOVE,
-    "BELOW": BELOW,
+    "above": above,
+    "below": below,
   };
   static const List<OrderDirection> values = const [
-    ABOVE,
-    BELOW,
+    above,
+    below,
   ];
 
   static OrderDirection valueOf(String name) => valuesMap[name];
@@ -28,9 +29,9 @@ class OrderDirection extends bindings.MojoEnum {
   factory OrderDirection(int v) {
     switch (v) {
       case 1:
-        return ABOVE;
+        return above;
       case 2:
-        return BELOW;
+        return below;
       default:
         return null;
     }
@@ -48,14 +49,14 @@ class OrderDirection extends bindings.MojoEnum {
 
   String toString() {
     switch(this) {
-      case ABOVE:
-        return 'OrderDirection.ABOVE';
-      case BELOW:
-        return 'OrderDirection.BELOW';
+      case above:
+        return 'OrderDirection.above';
+      case below:
+        return 'OrderDirection.below';
     }
   }
 
-  int toJson() => value;
+  int toJson() => mojoEnumValue;
 }
 
 

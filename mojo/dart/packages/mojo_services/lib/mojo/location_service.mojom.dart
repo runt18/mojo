@@ -152,25 +152,26 @@ class LocationServiceGetNextLocationResponseParams extends bindings.Struct {
 
 const int kLocationService_getNextLocation_name = 0;
 const String LocationServiceName = "mojo::LocationService";
-  class LocationServiceUpdatePriority extends bindings.MojoEnum {
-  static const PRIORITY_BALANCED_POWER_ACCURACY = const LocationServiceUpdatePriority._(0);
-  static const PRIORITY_HIGH_ACCURACY = const LocationServiceUpdatePriority._(1);
-  static const PRIORITY_LOW_POWER = const LocationServiceUpdatePriority._(2);
-  static const PRIORITY_NO_POWER = const LocationServiceUpdatePriority._(3);
+  
+class LocationServiceUpdatePriority extends bindings.MojoEnum {
+  static const LocationServiceUpdatePriority priorityBalancedPowerAccuracy = const LocationServiceUpdatePriority._(0);
+  static const LocationServiceUpdatePriority priorityHighAccuracy = const LocationServiceUpdatePriority._(1);
+  static const LocationServiceUpdatePriority priorityLowPower = const LocationServiceUpdatePriority._(2);
+  static const LocationServiceUpdatePriority priorityNoPower = const LocationServiceUpdatePriority._(3);
 
   const LocationServiceUpdatePriority._(int v) : super(v);
 
   static const Map<String, LocationServiceUpdatePriority> valuesMap = const {
-    "PRIORITY_BALANCED_POWER_ACCURACY": PRIORITY_BALANCED_POWER_ACCURACY,
-    "PRIORITY_HIGH_ACCURACY": PRIORITY_HIGH_ACCURACY,
-    "PRIORITY_LOW_POWER": PRIORITY_LOW_POWER,
-    "PRIORITY_NO_POWER": PRIORITY_NO_POWER,
+    "priorityBalancedPowerAccuracy": priorityBalancedPowerAccuracy,
+    "priorityHighAccuracy": priorityHighAccuracy,
+    "priorityLowPower": priorityLowPower,
+    "priorityNoPower": priorityNoPower,
   };
   static const List<LocationServiceUpdatePriority> values = const [
-    PRIORITY_BALANCED_POWER_ACCURACY,
-    PRIORITY_HIGH_ACCURACY,
-    PRIORITY_LOW_POWER,
-    PRIORITY_NO_POWER,
+    priorityBalancedPowerAccuracy,
+    priorityHighAccuracy,
+    priorityLowPower,
+    priorityNoPower,
   ];
 
   static LocationServiceUpdatePriority valueOf(String name) => valuesMap[name];
@@ -178,13 +179,13 @@ const String LocationServiceName = "mojo::LocationService";
   factory LocationServiceUpdatePriority(int v) {
     switch (v) {
       case 0:
-        return PRIORITY_BALANCED_POWER_ACCURACY;
+        return priorityBalancedPowerAccuracy;
       case 1:
-        return PRIORITY_HIGH_ACCURACY;
+        return priorityHighAccuracy;
       case 2:
-        return PRIORITY_LOW_POWER;
+        return priorityLowPower;
       case 3:
-        return PRIORITY_NO_POWER;
+        return priorityNoPower;
       default:
         return null;
     }
@@ -202,18 +203,18 @@ const String LocationServiceName = "mojo::LocationService";
 
   String toString() {
     switch(this) {
-      case PRIORITY_BALANCED_POWER_ACCURACY:
-        return 'LocationServiceUpdatePriority.PRIORITY_BALANCED_POWER_ACCURACY';
-      case PRIORITY_HIGH_ACCURACY:
-        return 'LocationServiceUpdatePriority.PRIORITY_HIGH_ACCURACY';
-      case PRIORITY_LOW_POWER:
-        return 'LocationServiceUpdatePriority.PRIORITY_LOW_POWER';
-      case PRIORITY_NO_POWER:
-        return 'LocationServiceUpdatePriority.PRIORITY_NO_POWER';
+      case priorityBalancedPowerAccuracy:
+        return 'LocationServiceUpdatePriority.priorityBalancedPowerAccuracy';
+      case priorityHighAccuracy:
+        return 'LocationServiceUpdatePriority.priorityHighAccuracy';
+      case priorityLowPower:
+        return 'LocationServiceUpdatePriority.priorityLowPower';
+      case priorityNoPower:
+        return 'LocationServiceUpdatePriority.priorityNoPower';
     }
   }
 
-  int toJson() => value;
+  int toJson() => mojoEnumValue;
 }
 
 abstract class LocationService {

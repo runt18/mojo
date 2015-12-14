@@ -8,34 +8,35 @@ import 'dart:async';
 
 import 'package:mojo/bindings.dart' as bindings;
 import 'package:mojo/core.dart' as core;
+
 class EventType extends bindings.MojoEnum {
-  static const UNKNOWN = const EventType._(0);
-  static const KEY_PRESSED = const EventType._(1);
-  static const KEY_RELEASED = const EventType._(2);
-  static const POINTER_CANCEL = const EventType._(3);
-  static const POINTER_DOWN = const EventType._(4);
-  static const POINTER_MOVE = const EventType._(5);
-  static const POINTER_UP = const EventType._(6);
+  static const EventType unknown = const EventType._(0);
+  static const EventType keyPressed = const EventType._(1);
+  static const EventType keyReleased = const EventType._(2);
+  static const EventType pointerCancel = const EventType._(3);
+  static const EventType pointerDown = const EventType._(4);
+  static const EventType pointerMove = const EventType._(5);
+  static const EventType pointerUp = const EventType._(6);
 
   const EventType._(int v) : super(v);
 
   static const Map<String, EventType> valuesMap = const {
-    "UNKNOWN": UNKNOWN,
-    "KEY_PRESSED": KEY_PRESSED,
-    "KEY_RELEASED": KEY_RELEASED,
-    "POINTER_CANCEL": POINTER_CANCEL,
-    "POINTER_DOWN": POINTER_DOWN,
-    "POINTER_MOVE": POINTER_MOVE,
-    "POINTER_UP": POINTER_UP,
+    "unknown": unknown,
+    "keyPressed": keyPressed,
+    "keyReleased": keyReleased,
+    "pointerCancel": pointerCancel,
+    "pointerDown": pointerDown,
+    "pointerMove": pointerMove,
+    "pointerUp": pointerUp,
   };
   static const List<EventType> values = const [
-    UNKNOWN,
-    KEY_PRESSED,
-    KEY_RELEASED,
-    POINTER_CANCEL,
-    POINTER_DOWN,
-    POINTER_MOVE,
-    POINTER_UP,
+    unknown,
+    keyPressed,
+    keyReleased,
+    pointerCancel,
+    pointerDown,
+    pointerMove,
+    pointerUp,
   ];
 
   static EventType valueOf(String name) => valuesMap[name];
@@ -43,19 +44,19 @@ class EventType extends bindings.MojoEnum {
   factory EventType(int v) {
     switch (v) {
       case 0:
-        return UNKNOWN;
+        return unknown;
       case 1:
-        return KEY_PRESSED;
+        return keyPressed;
       case 2:
-        return KEY_RELEASED;
+        return keyReleased;
       case 3:
-        return POINTER_CANCEL;
+        return pointerCancel;
       case 4:
-        return POINTER_DOWN;
+        return pointerDown;
       case 5:
-        return POINTER_MOVE;
+        return pointerMove;
       case 6:
-        return POINTER_UP;
+        return pointerUp;
       default:
         return null;
     }
@@ -73,71 +74,72 @@ class EventType extends bindings.MojoEnum {
 
   String toString() {
     switch(this) {
-      case UNKNOWN:
-        return 'EventType.UNKNOWN';
-      case KEY_PRESSED:
-        return 'EventType.KEY_PRESSED';
-      case KEY_RELEASED:
-        return 'EventType.KEY_RELEASED';
-      case POINTER_CANCEL:
-        return 'EventType.POINTER_CANCEL';
-      case POINTER_DOWN:
-        return 'EventType.POINTER_DOWN';
-      case POINTER_MOVE:
-        return 'EventType.POINTER_MOVE';
-      case POINTER_UP:
-        return 'EventType.POINTER_UP';
+      case unknown:
+        return 'EventType.unknown';
+      case keyPressed:
+        return 'EventType.keyPressed';
+      case keyReleased:
+        return 'EventType.keyReleased';
+      case pointerCancel:
+        return 'EventType.pointerCancel';
+      case pointerDown:
+        return 'EventType.pointerDown';
+      case pointerMove:
+        return 'EventType.pointerMove';
+      case pointerUp:
+        return 'EventType.pointerUp';
     }
   }
 
-  int toJson() => value;
+  int toJson() => mojoEnumValue;
 }
+
 class EventFlags extends bindings.MojoEnum {
-  static const NONE = const EventFlags._(0);
-  static const CAPS_LOCK_DOWN = const EventFlags._(1);
-  static const SHIFT_DOWN = const EventFlags._(2);
-  static const CONTROL_DOWN = const EventFlags._(4);
-  static const ALT_DOWN = const EventFlags._(8);
-  static const LEFT_MOUSE_BUTTON = const EventFlags._(16);
-  static const MIDDLE_MOUSE_BUTTON = const EventFlags._(32);
-  static const RIGHT_MOUSE_BUTTON = const EventFlags._(64);
-  static const COMMAND_DOWN = const EventFlags._(128);
-  static const EXTENDED = const EventFlags._(256);
-  static const IS_SYNTHESIZED = const EventFlags._(512);
-  static const ALTGR_DOWN = const EventFlags._(1024);
-  static const MOD3_DOWN = const EventFlags._(2048);
+  static const EventFlags none = const EventFlags._(0);
+  static const EventFlags capsLockDown = const EventFlags._(1);
+  static const EventFlags shiftDown = const EventFlags._(2);
+  static const EventFlags controlDown = const EventFlags._(4);
+  static const EventFlags altDown = const EventFlags._(8);
+  static const EventFlags leftMouseButton = const EventFlags._(16);
+  static const EventFlags middleMouseButton = const EventFlags._(32);
+  static const EventFlags rightMouseButton = const EventFlags._(64);
+  static const EventFlags commandDown = const EventFlags._(128);
+  static const EventFlags extended = const EventFlags._(256);
+  static const EventFlags isSynthesized = const EventFlags._(512);
+  static const EventFlags altgrDown = const EventFlags._(1024);
+  static const EventFlags moD3Down = const EventFlags._(2048);
 
   const EventFlags._(int v) : super(v);
 
   static const Map<String, EventFlags> valuesMap = const {
-    "NONE": NONE,
-    "CAPS_LOCK_DOWN": CAPS_LOCK_DOWN,
-    "SHIFT_DOWN": SHIFT_DOWN,
-    "CONTROL_DOWN": CONTROL_DOWN,
-    "ALT_DOWN": ALT_DOWN,
-    "LEFT_MOUSE_BUTTON": LEFT_MOUSE_BUTTON,
-    "MIDDLE_MOUSE_BUTTON": MIDDLE_MOUSE_BUTTON,
-    "RIGHT_MOUSE_BUTTON": RIGHT_MOUSE_BUTTON,
-    "COMMAND_DOWN": COMMAND_DOWN,
-    "EXTENDED": EXTENDED,
-    "IS_SYNTHESIZED": IS_SYNTHESIZED,
-    "ALTGR_DOWN": ALTGR_DOWN,
-    "MOD3_DOWN": MOD3_DOWN,
+    "none": none,
+    "capsLockDown": capsLockDown,
+    "shiftDown": shiftDown,
+    "controlDown": controlDown,
+    "altDown": altDown,
+    "leftMouseButton": leftMouseButton,
+    "middleMouseButton": middleMouseButton,
+    "rightMouseButton": rightMouseButton,
+    "commandDown": commandDown,
+    "extended": extended,
+    "isSynthesized": isSynthesized,
+    "altgrDown": altgrDown,
+    "moD3Down": moD3Down,
   };
   static const List<EventFlags> values = const [
-    NONE,
-    CAPS_LOCK_DOWN,
-    SHIFT_DOWN,
-    CONTROL_DOWN,
-    ALT_DOWN,
-    LEFT_MOUSE_BUTTON,
-    MIDDLE_MOUSE_BUTTON,
-    RIGHT_MOUSE_BUTTON,
-    COMMAND_DOWN,
-    EXTENDED,
-    IS_SYNTHESIZED,
-    ALTGR_DOWN,
-    MOD3_DOWN,
+    none,
+    capsLockDown,
+    shiftDown,
+    controlDown,
+    altDown,
+    leftMouseButton,
+    middleMouseButton,
+    rightMouseButton,
+    commandDown,
+    extended,
+    isSynthesized,
+    altgrDown,
+    moD3Down,
   ];
 
   static EventFlags valueOf(String name) => valuesMap[name];
@@ -145,31 +147,31 @@ class EventFlags extends bindings.MojoEnum {
   factory EventFlags(int v) {
     switch (v) {
       case 0:
-        return NONE;
+        return none;
       case 1:
-        return CAPS_LOCK_DOWN;
+        return capsLockDown;
       case 2:
-        return SHIFT_DOWN;
+        return shiftDown;
       case 4:
-        return CONTROL_DOWN;
+        return controlDown;
       case 8:
-        return ALT_DOWN;
+        return altDown;
       case 16:
-        return LEFT_MOUSE_BUTTON;
+        return leftMouseButton;
       case 32:
-        return MIDDLE_MOUSE_BUTTON;
+        return middleMouseButton;
       case 64:
-        return RIGHT_MOUSE_BUTTON;
+        return rightMouseButton;
       case 128:
-        return COMMAND_DOWN;
+        return commandDown;
       case 256:
-        return EXTENDED;
+        return extended;
       case 512:
-        return IS_SYNTHESIZED;
+        return isSynthesized;
       case 1024:
-        return ALTGR_DOWN;
+        return altgrDown;
       case 2048:
-        return MOD3_DOWN;
+        return moD3Down;
       default:
         return null;
     }
@@ -187,53 +189,54 @@ class EventFlags extends bindings.MojoEnum {
 
   String toString() {
     switch(this) {
-      case NONE:
-        return 'EventFlags.NONE';
-      case CAPS_LOCK_DOWN:
-        return 'EventFlags.CAPS_LOCK_DOWN';
-      case SHIFT_DOWN:
-        return 'EventFlags.SHIFT_DOWN';
-      case CONTROL_DOWN:
-        return 'EventFlags.CONTROL_DOWN';
-      case ALT_DOWN:
-        return 'EventFlags.ALT_DOWN';
-      case LEFT_MOUSE_BUTTON:
-        return 'EventFlags.LEFT_MOUSE_BUTTON';
-      case MIDDLE_MOUSE_BUTTON:
-        return 'EventFlags.MIDDLE_MOUSE_BUTTON';
-      case RIGHT_MOUSE_BUTTON:
-        return 'EventFlags.RIGHT_MOUSE_BUTTON';
-      case COMMAND_DOWN:
-        return 'EventFlags.COMMAND_DOWN';
-      case EXTENDED:
-        return 'EventFlags.EXTENDED';
-      case IS_SYNTHESIZED:
-        return 'EventFlags.IS_SYNTHESIZED';
-      case ALTGR_DOWN:
-        return 'EventFlags.ALTGR_DOWN';
-      case MOD3_DOWN:
-        return 'EventFlags.MOD3_DOWN';
+      case none:
+        return 'EventFlags.none';
+      case capsLockDown:
+        return 'EventFlags.capsLockDown';
+      case shiftDown:
+        return 'EventFlags.shiftDown';
+      case controlDown:
+        return 'EventFlags.controlDown';
+      case altDown:
+        return 'EventFlags.altDown';
+      case leftMouseButton:
+        return 'EventFlags.leftMouseButton';
+      case middleMouseButton:
+        return 'EventFlags.middleMouseButton';
+      case rightMouseButton:
+        return 'EventFlags.rightMouseButton';
+      case commandDown:
+        return 'EventFlags.commandDown';
+      case extended:
+        return 'EventFlags.extended';
+      case isSynthesized:
+        return 'EventFlags.isSynthesized';
+      case altgrDown:
+        return 'EventFlags.altgrDown';
+      case moD3Down:
+        return 'EventFlags.moD3Down';
     }
   }
 
-  int toJson() => value;
+  int toJson() => mojoEnumValue;
 }
+
 class MouseEventFlags extends bindings.MojoEnum {
-  static const IS_DOUBLE_CLICK = const MouseEventFlags._(65536);
-  static const IS_TRIPLE_CLICK = const MouseEventFlags._(131072);
-  static const IS_NON_CLIENT = const MouseEventFlags._(262144);
+  static const MouseEventFlags isDoubleClick = const MouseEventFlags._(65536);
+  static const MouseEventFlags isTripleClick = const MouseEventFlags._(131072);
+  static const MouseEventFlags isNonClient = const MouseEventFlags._(262144);
 
   const MouseEventFlags._(int v) : super(v);
 
   static const Map<String, MouseEventFlags> valuesMap = const {
-    "IS_DOUBLE_CLICK": IS_DOUBLE_CLICK,
-    "IS_TRIPLE_CLICK": IS_TRIPLE_CLICK,
-    "IS_NON_CLIENT": IS_NON_CLIENT,
+    "isDoubleClick": isDoubleClick,
+    "isTripleClick": isTripleClick,
+    "isNonClient": isNonClient,
   };
   static const List<MouseEventFlags> values = const [
-    IS_DOUBLE_CLICK,
-    IS_TRIPLE_CLICK,
-    IS_NON_CLIENT,
+    isDoubleClick,
+    isTripleClick,
+    isNonClient,
   ];
 
   static MouseEventFlags valueOf(String name) => valuesMap[name];
@@ -241,11 +244,11 @@ class MouseEventFlags extends bindings.MojoEnum {
   factory MouseEventFlags(int v) {
     switch (v) {
       case 65536:
-        return IS_DOUBLE_CLICK;
+        return isDoubleClick;
       case 131072:
-        return IS_TRIPLE_CLICK;
+        return isTripleClick;
       case 262144:
-        return IS_NON_CLIENT;
+        return isNonClient;
       default:
         return null;
     }
@@ -263,30 +266,31 @@ class MouseEventFlags extends bindings.MojoEnum {
 
   String toString() {
     switch(this) {
-      case IS_DOUBLE_CLICK:
-        return 'MouseEventFlags.IS_DOUBLE_CLICK';
-      case IS_TRIPLE_CLICK:
-        return 'MouseEventFlags.IS_TRIPLE_CLICK';
-      case IS_NON_CLIENT:
-        return 'MouseEventFlags.IS_NON_CLIENT';
+      case isDoubleClick:
+        return 'MouseEventFlags.isDoubleClick';
+      case isTripleClick:
+        return 'MouseEventFlags.isTripleClick';
+      case isNonClient:
+        return 'MouseEventFlags.isNonClient';
     }
   }
 
-  int toJson() => value;
+  int toJson() => mojoEnumValue;
 }
+
 class PointerKind extends bindings.MojoEnum {
-  static const TOUCH = const PointerKind._(0);
-  static const MOUSE = const PointerKind._(1);
+  static const PointerKind touch = const PointerKind._(0);
+  static const PointerKind mouse = const PointerKind._(1);
 
   const PointerKind._(int v) : super(v);
 
   static const Map<String, PointerKind> valuesMap = const {
-    "TOUCH": TOUCH,
-    "MOUSE": MOUSE,
+    "touch": touch,
+    "mouse": mouse,
   };
   static const List<PointerKind> values = const [
-    TOUCH,
-    MOUSE,
+    touch,
+    mouse,
   ];
 
   static PointerKind valueOf(String name) => valuesMap[name];
@@ -294,9 +298,9 @@ class PointerKind extends bindings.MojoEnum {
   factory PointerKind(int v) {
     switch (v) {
       case 0:
-        return TOUCH;
+        return touch;
       case 1:
-        return MOUSE;
+        return mouse;
       default:
         return null;
     }
@@ -314,14 +318,14 @@ class PointerKind extends bindings.MojoEnum {
 
   String toString() {
     switch(this) {
-      case TOUCH:
-        return 'PointerKind.TOUCH';
-      case MOUSE:
-        return 'PointerKind.MOUSE';
+      case touch:
+        return 'PointerKind.touch';
+      case mouse:
+        return 'PointerKind.mouse';
     }
   }
 
-  int toJson() => value;
+  int toJson() => mojoEnumValue;
 }
 
 

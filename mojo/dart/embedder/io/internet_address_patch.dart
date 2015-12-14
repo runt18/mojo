@@ -185,14 +185,14 @@ class _InternetAddress implements InternetAddress {
 
 NetAddressFamily _internetAddressTypeToAddressFamily(InternetAddressType type) {
   if (type == null) {
-    return NetAddressFamily.UNSPECIFIED;
+    return NetAddressFamily.unspecified;
   }
   if (type == InternetAddressType.IP_V4) {
-    return NetAddressFamily.IPV4;
+    return NetAddressFamily.ipV4;
   } else if (type == InternetAddressType.IP_V6) {
-    return NetAddressFamily.IPV6;
+    return NetAddressFamily.ipV6;
   }
-  return NetAddressFamily.UNSPECIFIED;
+  return NetAddressFamily.unspecified;
 }
 
 class _MojoInternetAddress {

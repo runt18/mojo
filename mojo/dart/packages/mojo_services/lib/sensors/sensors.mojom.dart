@@ -8,70 +8,71 @@ import 'dart:async';
 
 import 'package:mojo/bindings.dart' as bindings;
 import 'package:mojo/core.dart' as core;
+
 class SensorType extends bindings.MojoEnum {
-  static const ACCELEROMETER = const SensorType._(0);
-  static const AMBIENT_TEMPERATURE = const SensorType._(1);
-  static const GAME_ROTATION_VECTOR = const SensorType._(2);
-  static const GEOMAGNETIC_ROTATION_VECTOR = const SensorType._(3);
-  static const GRAVITY = const SensorType._(4);
-  static const GYROSCOPE = const SensorType._(5);
-  static const GYROSCOPE_UNCALIBRATED = const SensorType._(6);
-  static const HEART_RATE = const SensorType._(7);
-  static const LIGHT = const SensorType._(8);
-  static const LINEAR_ACCELERATION = const SensorType._(9);
-  static const MAGNETIC_FIELD = const SensorType._(10);
-  static const MAGNETIC_FIELD_UNCALIBRATED = const SensorType._(11);
-  static const PRESSURE = const SensorType._(12);
-  static const PROXIMITY = const SensorType._(13);
-  static const RELATIVE_HUMIDITY = const SensorType._(14);
-  static const ROTATION_VECTOR = const SensorType._(15);
-  static const SIGNIFICANT_MOTION = const SensorType._(16);
-  static const STEP_COUNTER = const SensorType._(17);
-  static const STEP_DETECTOR = const SensorType._(18);
+  static const SensorType accelerometer = const SensorType._(0);
+  static const SensorType ambientTemperature = const SensorType._(1);
+  static const SensorType gameRotationVector = const SensorType._(2);
+  static const SensorType geomagneticRotationVector = const SensorType._(3);
+  static const SensorType gravity = const SensorType._(4);
+  static const SensorType gyroscope = const SensorType._(5);
+  static const SensorType gyroscopeUncalibrated = const SensorType._(6);
+  static const SensorType heartRate = const SensorType._(7);
+  static const SensorType light = const SensorType._(8);
+  static const SensorType linearAcceleration = const SensorType._(9);
+  static const SensorType magneticField = const SensorType._(10);
+  static const SensorType magneticFieldUncalibrated = const SensorType._(11);
+  static const SensorType pressure = const SensorType._(12);
+  static const SensorType proximity = const SensorType._(13);
+  static const SensorType relativeHumidity = const SensorType._(14);
+  static const SensorType rotationVector = const SensorType._(15);
+  static const SensorType significantMotion = const SensorType._(16);
+  static const SensorType stepCounter = const SensorType._(17);
+  static const SensorType stepDetector = const SensorType._(18);
 
   const SensorType._(int v) : super(v);
 
   static const Map<String, SensorType> valuesMap = const {
-    "ACCELEROMETER": ACCELEROMETER,
-    "AMBIENT_TEMPERATURE": AMBIENT_TEMPERATURE,
-    "GAME_ROTATION_VECTOR": GAME_ROTATION_VECTOR,
-    "GEOMAGNETIC_ROTATION_VECTOR": GEOMAGNETIC_ROTATION_VECTOR,
-    "GRAVITY": GRAVITY,
-    "GYROSCOPE": GYROSCOPE,
-    "GYROSCOPE_UNCALIBRATED": GYROSCOPE_UNCALIBRATED,
-    "HEART_RATE": HEART_RATE,
-    "LIGHT": LIGHT,
-    "LINEAR_ACCELERATION": LINEAR_ACCELERATION,
-    "MAGNETIC_FIELD": MAGNETIC_FIELD,
-    "MAGNETIC_FIELD_UNCALIBRATED": MAGNETIC_FIELD_UNCALIBRATED,
-    "PRESSURE": PRESSURE,
-    "PROXIMITY": PROXIMITY,
-    "RELATIVE_HUMIDITY": RELATIVE_HUMIDITY,
-    "ROTATION_VECTOR": ROTATION_VECTOR,
-    "SIGNIFICANT_MOTION": SIGNIFICANT_MOTION,
-    "STEP_COUNTER": STEP_COUNTER,
-    "STEP_DETECTOR": STEP_DETECTOR,
+    "accelerometer": accelerometer,
+    "ambientTemperature": ambientTemperature,
+    "gameRotationVector": gameRotationVector,
+    "geomagneticRotationVector": geomagneticRotationVector,
+    "gravity": gravity,
+    "gyroscope": gyroscope,
+    "gyroscopeUncalibrated": gyroscopeUncalibrated,
+    "heartRate": heartRate,
+    "light": light,
+    "linearAcceleration": linearAcceleration,
+    "magneticField": magneticField,
+    "magneticFieldUncalibrated": magneticFieldUncalibrated,
+    "pressure": pressure,
+    "proximity": proximity,
+    "relativeHumidity": relativeHumidity,
+    "rotationVector": rotationVector,
+    "significantMotion": significantMotion,
+    "stepCounter": stepCounter,
+    "stepDetector": stepDetector,
   };
   static const List<SensorType> values = const [
-    ACCELEROMETER,
-    AMBIENT_TEMPERATURE,
-    GAME_ROTATION_VECTOR,
-    GEOMAGNETIC_ROTATION_VECTOR,
-    GRAVITY,
-    GYROSCOPE,
-    GYROSCOPE_UNCALIBRATED,
-    HEART_RATE,
-    LIGHT,
-    LINEAR_ACCELERATION,
-    MAGNETIC_FIELD,
-    MAGNETIC_FIELD_UNCALIBRATED,
-    PRESSURE,
-    PROXIMITY,
-    RELATIVE_HUMIDITY,
-    ROTATION_VECTOR,
-    SIGNIFICANT_MOTION,
-    STEP_COUNTER,
-    STEP_DETECTOR,
+    accelerometer,
+    ambientTemperature,
+    gameRotationVector,
+    geomagneticRotationVector,
+    gravity,
+    gyroscope,
+    gyroscopeUncalibrated,
+    heartRate,
+    light,
+    linearAcceleration,
+    magneticField,
+    magneticFieldUncalibrated,
+    pressure,
+    proximity,
+    relativeHumidity,
+    rotationVector,
+    significantMotion,
+    stepCounter,
+    stepDetector,
   ];
 
   static SensorType valueOf(String name) => valuesMap[name];
@@ -79,43 +80,43 @@ class SensorType extends bindings.MojoEnum {
   factory SensorType(int v) {
     switch (v) {
       case 0:
-        return ACCELEROMETER;
+        return accelerometer;
       case 1:
-        return AMBIENT_TEMPERATURE;
+        return ambientTemperature;
       case 2:
-        return GAME_ROTATION_VECTOR;
+        return gameRotationVector;
       case 3:
-        return GEOMAGNETIC_ROTATION_VECTOR;
+        return geomagneticRotationVector;
       case 4:
-        return GRAVITY;
+        return gravity;
       case 5:
-        return GYROSCOPE;
+        return gyroscope;
       case 6:
-        return GYROSCOPE_UNCALIBRATED;
+        return gyroscopeUncalibrated;
       case 7:
-        return HEART_RATE;
+        return heartRate;
       case 8:
-        return LIGHT;
+        return light;
       case 9:
-        return LINEAR_ACCELERATION;
+        return linearAcceleration;
       case 10:
-        return MAGNETIC_FIELD;
+        return magneticField;
       case 11:
-        return MAGNETIC_FIELD_UNCALIBRATED;
+        return magneticFieldUncalibrated;
       case 12:
-        return PRESSURE;
+        return pressure;
       case 13:
-        return PROXIMITY;
+        return proximity;
       case 14:
-        return RELATIVE_HUMIDITY;
+        return relativeHumidity;
       case 15:
-        return ROTATION_VECTOR;
+        return rotationVector;
       case 16:
-        return SIGNIFICANT_MOTION;
+        return significantMotion;
       case 17:
-        return STEP_COUNTER;
+        return stepCounter;
       case 18:
-        return STEP_DETECTOR;
+        return stepDetector;
       default:
         return null;
     }
@@ -133,48 +134,48 @@ class SensorType extends bindings.MojoEnum {
 
   String toString() {
     switch(this) {
-      case ACCELEROMETER:
-        return 'SensorType.ACCELEROMETER';
-      case AMBIENT_TEMPERATURE:
-        return 'SensorType.AMBIENT_TEMPERATURE';
-      case GAME_ROTATION_VECTOR:
-        return 'SensorType.GAME_ROTATION_VECTOR';
-      case GEOMAGNETIC_ROTATION_VECTOR:
-        return 'SensorType.GEOMAGNETIC_ROTATION_VECTOR';
-      case GRAVITY:
-        return 'SensorType.GRAVITY';
-      case GYROSCOPE:
-        return 'SensorType.GYROSCOPE';
-      case GYROSCOPE_UNCALIBRATED:
-        return 'SensorType.GYROSCOPE_UNCALIBRATED';
-      case HEART_RATE:
-        return 'SensorType.HEART_RATE';
-      case LIGHT:
-        return 'SensorType.LIGHT';
-      case LINEAR_ACCELERATION:
-        return 'SensorType.LINEAR_ACCELERATION';
-      case MAGNETIC_FIELD:
-        return 'SensorType.MAGNETIC_FIELD';
-      case MAGNETIC_FIELD_UNCALIBRATED:
-        return 'SensorType.MAGNETIC_FIELD_UNCALIBRATED';
-      case PRESSURE:
-        return 'SensorType.PRESSURE';
-      case PROXIMITY:
-        return 'SensorType.PROXIMITY';
-      case RELATIVE_HUMIDITY:
-        return 'SensorType.RELATIVE_HUMIDITY';
-      case ROTATION_VECTOR:
-        return 'SensorType.ROTATION_VECTOR';
-      case SIGNIFICANT_MOTION:
-        return 'SensorType.SIGNIFICANT_MOTION';
-      case STEP_COUNTER:
-        return 'SensorType.STEP_COUNTER';
-      case STEP_DETECTOR:
-        return 'SensorType.STEP_DETECTOR';
+      case accelerometer:
+        return 'SensorType.accelerometer';
+      case ambientTemperature:
+        return 'SensorType.ambientTemperature';
+      case gameRotationVector:
+        return 'SensorType.gameRotationVector';
+      case geomagneticRotationVector:
+        return 'SensorType.geomagneticRotationVector';
+      case gravity:
+        return 'SensorType.gravity';
+      case gyroscope:
+        return 'SensorType.gyroscope';
+      case gyroscopeUncalibrated:
+        return 'SensorType.gyroscopeUncalibrated';
+      case heartRate:
+        return 'SensorType.heartRate';
+      case light:
+        return 'SensorType.light';
+      case linearAcceleration:
+        return 'SensorType.linearAcceleration';
+      case magneticField:
+        return 'SensorType.magneticField';
+      case magneticFieldUncalibrated:
+        return 'SensorType.magneticFieldUncalibrated';
+      case pressure:
+        return 'SensorType.pressure';
+      case proximity:
+        return 'SensorType.proximity';
+      case relativeHumidity:
+        return 'SensorType.relativeHumidity';
+      case rotationVector:
+        return 'SensorType.rotationVector';
+      case significantMotion:
+        return 'SensorType.significantMotion';
+      case stepCounter:
+        return 'SensorType.stepCounter';
+      case stepDetector:
+        return 'SensorType.stepDetector';
     }
   }
 
-  int toJson() => value;
+  int toJson() => mojoEnumValue;
 }
 
 

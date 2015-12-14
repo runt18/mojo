@@ -8,49 +8,50 @@ import 'dart:async';
 
 import 'package:mojo/bindings.dart' as bindings;
 import 'package:mojo/core.dart' as core;
-const kOpenFlagRead = 0x1;
-const kOpenFlagWrite = 0x2;
-const kOpenFlagCreate = 0x4;
-const kOpenFlagExclusive = 0x8;
-const kOpenFlagAppend = 0x10;
-const kOpenFlagTruncate = 0x20;
-const kDeleteFlagFileOnly = 0x1;
-const kDeleteFlagDirectoryOnly = 0x2;
-const kDeleteFlagRecursive = 0x4;
+const int kOpenFlagRead = 0x1;
+const int kOpenFlagWrite = 0x2;
+const int kOpenFlagCreate = 0x4;
+const int kOpenFlagExclusive = 0x8;
+const int kOpenFlagAppend = 0x10;
+const int kOpenFlagTruncate = 0x20;
+const int kDeleteFlagFileOnly = 0x1;
+const int kDeleteFlagDirectoryOnly = 0x2;
+const int kDeleteFlagRecursive = 0x4;
+
 class Error extends bindings.MojoEnum {
-  static const OK = const Error._(0);
-  static const UNKNOWN = const Error._(1);
-  static const INVALID_ARGUMENT = const Error._(2);
-  static const PERMISSION_DENIED = const Error._(3);
-  static const OUT_OF_RANGE = const Error._(4);
-  static const UNIMPLEMENTED = const Error._(5);
-  static const CLOSED = const Error._(6);
-  static const UNAVAILABLE = const Error._(7);
-  static const INTERNAL = const Error._(8);
+  static const Error ok = const Error._(0);
+  static const Error unknown = const Error._(1);
+  static const Error invalidArgument = const Error._(2);
+  static const Error permissionDenied = const Error._(3);
+  static const Error outOfRange = const Error._(4);
+  static const Error unimplemented = const Error._(5);
+  static const Error closed = const Error._(6);
+  static const Error unavailable = const Error._(7);
+  static const Error internal = const Error._(8);
 
   const Error._(int v) : super(v);
 
   static const Map<String, Error> valuesMap = const {
-    "OK": OK,
-    "UNKNOWN": UNKNOWN,
-    "INVALID_ARGUMENT": INVALID_ARGUMENT,
-    "PERMISSION_DENIED": PERMISSION_DENIED,
-    "OUT_OF_RANGE": OUT_OF_RANGE,
-    "UNIMPLEMENTED": UNIMPLEMENTED,
-    "CLOSED": CLOSED,
-    "UNAVAILABLE": UNAVAILABLE,
-    "INTERNAL": INTERNAL,
+    "ok": ok,
+    "unknown": unknown,
+    "invalidArgument": invalidArgument,
+    "permissionDenied": permissionDenied,
+    "outOfRange": outOfRange,
+    "unimplemented": unimplemented,
+    "closed": closed,
+    "unavailable": unavailable,
+    "internal": internal,
   };
   static const List<Error> values = const [
-    OK,
-    UNKNOWN,
-    INVALID_ARGUMENT,
-    PERMISSION_DENIED,
-    OUT_OF_RANGE,
-    UNIMPLEMENTED,
-    CLOSED,
-    UNAVAILABLE,
-    INTERNAL,
+    ok,
+    unknown,
+    invalidArgument,
+    permissionDenied,
+    outOfRange,
+    unimplemented,
+    closed,
+    unavailable,
+    internal,
   ];
 
   static Error valueOf(String name) => valuesMap[name];
@@ -58,23 +59,23 @@ class Error extends bindings.MojoEnum {
   factory Error(int v) {
     switch (v) {
       case 0:
-        return OK;
+        return ok;
       case 1:
-        return UNKNOWN;
+        return unknown;
       case 2:
-        return INVALID_ARGUMENT;
+        return invalidArgument;
       case 3:
-        return PERMISSION_DENIED;
+        return permissionDenied;
       case 4:
-        return OUT_OF_RANGE;
+        return outOfRange;
       case 5:
-        return UNIMPLEMENTED;
+        return unimplemented;
       case 6:
-        return CLOSED;
+        return closed;
       case 7:
-        return UNAVAILABLE;
+        return unavailable;
       case 8:
-        return INTERNAL;
+        return internal;
       default:
         return null;
     }
@@ -92,45 +93,46 @@ class Error extends bindings.MojoEnum {
 
   String toString() {
     switch(this) {
-      case OK:
-        return 'Error.OK';
-      case UNKNOWN:
-        return 'Error.UNKNOWN';
-      case INVALID_ARGUMENT:
-        return 'Error.INVALID_ARGUMENT';
-      case PERMISSION_DENIED:
-        return 'Error.PERMISSION_DENIED';
-      case OUT_OF_RANGE:
-        return 'Error.OUT_OF_RANGE';
-      case UNIMPLEMENTED:
-        return 'Error.UNIMPLEMENTED';
-      case CLOSED:
-        return 'Error.CLOSED';
-      case UNAVAILABLE:
-        return 'Error.UNAVAILABLE';
-      case INTERNAL:
-        return 'Error.INTERNAL';
+      case ok:
+        return 'Error.ok';
+      case unknown:
+        return 'Error.unknown';
+      case invalidArgument:
+        return 'Error.invalidArgument';
+      case permissionDenied:
+        return 'Error.permissionDenied';
+      case outOfRange:
+        return 'Error.outOfRange';
+      case unimplemented:
+        return 'Error.unimplemented';
+      case closed:
+        return 'Error.closed';
+      case unavailable:
+        return 'Error.unavailable';
+      case internal:
+        return 'Error.internal';
     }
   }
 
-  int toJson() => value;
+  int toJson() => mojoEnumValue;
 }
+
 class Whence extends bindings.MojoEnum {
-  static const FROM_CURRENT = const Whence._(0);
-  static const FROM_START = const Whence._(1);
-  static const FROM_END = const Whence._(2);
+  static const Whence fromCurrent = const Whence._(0);
+  static const Whence fromStart = const Whence._(1);
+  static const Whence fromEnd = const Whence._(2);
 
   const Whence._(int v) : super(v);
 
   static const Map<String, Whence> valuesMap = const {
-    "FROM_CURRENT": FROM_CURRENT,
-    "FROM_START": FROM_START,
-    "FROM_END": FROM_END,
+    "fromCurrent": fromCurrent,
+    "fromStart": fromStart,
+    "fromEnd": fromEnd,
   };
   static const List<Whence> values = const [
-    FROM_CURRENT,
-    FROM_START,
-    FROM_END,
+    fromCurrent,
+    fromStart,
+    fromEnd,
   ];
 
   static Whence valueOf(String name) => valuesMap[name];
@@ -138,11 +140,11 @@ class Whence extends bindings.MojoEnum {
   factory Whence(int v) {
     switch (v) {
       case 0:
-        return FROM_CURRENT;
+        return fromCurrent;
       case 1:
-        return FROM_START;
+        return fromStart;
       case 2:
-        return FROM_END;
+        return fromEnd;
       default:
         return null;
     }
@@ -160,33 +162,34 @@ class Whence extends bindings.MojoEnum {
 
   String toString() {
     switch(this) {
-      case FROM_CURRENT:
-        return 'Whence.FROM_CURRENT';
-      case FROM_START:
-        return 'Whence.FROM_START';
-      case FROM_END:
-        return 'Whence.FROM_END';
+      case fromCurrent:
+        return 'Whence.fromCurrent';
+      case fromStart:
+        return 'Whence.fromStart';
+      case fromEnd:
+        return 'Whence.fromEnd';
     }
   }
 
-  int toJson() => value;
+  int toJson() => mojoEnumValue;
 }
+
 class FileType extends bindings.MojoEnum {
-  static const UNKNOWN = const FileType._(0);
-  static const REGULAR_FILE = const FileType._(1);
-  static const DIRECTORY = const FileType._(2);
+  static const FileType unknown = const FileType._(0);
+  static const FileType regularFile = const FileType._(1);
+  static const FileType directory = const FileType._(2);
 
   const FileType._(int v) : super(v);
 
   static const Map<String, FileType> valuesMap = const {
-    "UNKNOWN": UNKNOWN,
-    "REGULAR_FILE": REGULAR_FILE,
-    "DIRECTORY": DIRECTORY,
+    "unknown": unknown,
+    "regularFile": regularFile,
+    "directory": directory,
   };
   static const List<FileType> values = const [
-    UNKNOWN,
-    REGULAR_FILE,
-    DIRECTORY,
+    unknown,
+    regularFile,
+    directory,
   ];
 
   static FileType valueOf(String name) => valuesMap[name];
@@ -194,11 +197,11 @@ class FileType extends bindings.MojoEnum {
   factory FileType(int v) {
     switch (v) {
       case 0:
-        return UNKNOWN;
+        return unknown;
       case 1:
-        return REGULAR_FILE;
+        return regularFile;
       case 2:
-        return DIRECTORY;
+        return directory;
       default:
         return null;
     }
@@ -216,16 +219,16 @@ class FileType extends bindings.MojoEnum {
 
   String toString() {
     switch(this) {
-      case UNKNOWN:
-        return 'FileType.UNKNOWN';
-      case REGULAR_FILE:
-        return 'FileType.REGULAR_FILE';
-      case DIRECTORY:
-        return 'FileType.DIRECTORY';
+      case unknown:
+        return 'FileType.unknown';
+      case regularFile:
+        return 'FileType.regularFile';
+      case directory:
+        return 'FileType.directory';
     }
   }
 
-  int toJson() => value;
+  int toJson() => mojoEnumValue;
 }
 
 

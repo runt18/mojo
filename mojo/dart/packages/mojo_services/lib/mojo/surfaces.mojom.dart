@@ -11,34 +11,35 @@ import 'package:mojo/core.dart' as core;
 import 'package:mojo_services/mojo/geometry.mojom.dart' as geometry_mojom;
 import 'package:mojo_services/mojo/quads.mojom.dart' as quads_mojom;
 import 'package:mojo_services/mojo/surface_id.mojom.dart' as surface_id_mojom;
+
 class ResourceFormat extends bindings.MojoEnum {
-  static const RGBA_8888 = const ResourceFormat._(0);
-  static const RGBA_4444 = const ResourceFormat._(1);
-  static const BGRA_8888 = const ResourceFormat._(2);
-  static const ALPHA_8 = const ResourceFormat._(3);
-  static const LUMINANCE_8 = const ResourceFormat._(4);
-  static const RGB_565 = const ResourceFormat._(5);
-  static const ETC1 = const ResourceFormat._(6);
+  static const ResourceFormat rgba8888 = const ResourceFormat._(0);
+  static const ResourceFormat rgba4444 = const ResourceFormat._(1);
+  static const ResourceFormat bgra8888 = const ResourceFormat._(2);
+  static const ResourceFormat alpha8 = const ResourceFormat._(3);
+  static const ResourceFormat luminance8 = const ResourceFormat._(4);
+  static const ResourceFormat rgb565 = const ResourceFormat._(5);
+  static const ResourceFormat etC1 = const ResourceFormat._(6);
 
   const ResourceFormat._(int v) : super(v);
 
   static const Map<String, ResourceFormat> valuesMap = const {
-    "RGBA_8888": RGBA_8888,
-    "RGBA_4444": RGBA_4444,
-    "BGRA_8888": BGRA_8888,
-    "ALPHA_8": ALPHA_8,
-    "LUMINANCE_8": LUMINANCE_8,
-    "RGB_565": RGB_565,
-    "ETC1": ETC1,
+    "rgba8888": rgba8888,
+    "rgba4444": rgba4444,
+    "bgra8888": bgra8888,
+    "alpha8": alpha8,
+    "luminance8": luminance8,
+    "rgb565": rgb565,
+    "etC1": etC1,
   };
   static const List<ResourceFormat> values = const [
-    RGBA_8888,
-    RGBA_4444,
-    BGRA_8888,
-    ALPHA_8,
-    LUMINANCE_8,
-    RGB_565,
-    ETC1,
+    rgba8888,
+    rgba4444,
+    bgra8888,
+    alpha8,
+    luminance8,
+    rgb565,
+    etC1,
   ];
 
   static ResourceFormat valueOf(String name) => valuesMap[name];
@@ -46,19 +47,19 @@ class ResourceFormat extends bindings.MojoEnum {
   factory ResourceFormat(int v) {
     switch (v) {
       case 0:
-        return RGBA_8888;
+        return rgba8888;
       case 1:
-        return RGBA_4444;
+        return rgba4444;
       case 2:
-        return BGRA_8888;
+        return bgra8888;
       case 3:
-        return ALPHA_8;
+        return alpha8;
       case 4:
-        return LUMINANCE_8;
+        return luminance8;
       case 5:
-        return RGB_565;
+        return rgb565;
       case 6:
-        return ETC1;
+        return etC1;
       default:
         return null;
     }
@@ -76,24 +77,24 @@ class ResourceFormat extends bindings.MojoEnum {
 
   String toString() {
     switch(this) {
-      case RGBA_8888:
-        return 'ResourceFormat.RGBA_8888';
-      case RGBA_4444:
-        return 'ResourceFormat.RGBA_4444';
-      case BGRA_8888:
-        return 'ResourceFormat.BGRA_8888';
-      case ALPHA_8:
-        return 'ResourceFormat.ALPHA_8';
-      case LUMINANCE_8:
-        return 'ResourceFormat.LUMINANCE_8';
-      case RGB_565:
-        return 'ResourceFormat.RGB_565';
-      case ETC1:
-        return 'ResourceFormat.ETC1';
+      case rgba8888:
+        return 'ResourceFormat.rgba8888';
+      case rgba4444:
+        return 'ResourceFormat.rgba4444';
+      case bgra8888:
+        return 'ResourceFormat.bgra8888';
+      case alpha8:
+        return 'ResourceFormat.alpha8';
+      case luminance8:
+        return 'ResourceFormat.luminance8';
+      case rgb565:
+        return 'ResourceFormat.rgb565';
+      case etC1:
+        return 'ResourceFormat.etC1';
     }
   }
 
-  int toJson() => value;
+  int toJson() => mojoEnumValue;
 }
 
 

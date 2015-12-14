@@ -9,19 +9,20 @@ import 'dart:async';
 import 'package:mojo/bindings.dart' as bindings;
 import 'package:mojo/core.dart' as core;
 import 'package:_mojo_for_test_only/mojo/test/test_included_unions.mojom.dart' as test_included_unions_mojom;
+
 class AnEnum extends bindings.MojoEnum {
-  static const FIRST = const AnEnum._(0);
-  static const SECOND = const AnEnum._(1);
+  static const AnEnum first = const AnEnum._(0);
+  static const AnEnum second = const AnEnum._(1);
 
   const AnEnum._(int v) : super(v);
 
   static const Map<String, AnEnum> valuesMap = const {
-    "FIRST": FIRST,
-    "SECOND": SECOND,
+    "first": first,
+    "second": second,
   };
   static const List<AnEnum> values = const [
-    FIRST,
-    SECOND,
+    first,
+    second,
   ];
 
   static AnEnum valueOf(String name) => valuesMap[name];
@@ -29,9 +30,9 @@ class AnEnum extends bindings.MojoEnum {
   factory AnEnum(int v) {
     switch (v) {
       case 0:
-        return FIRST;
+        return first;
       case 1:
-        return SECOND;
+        return second;
       default:
         return null;
     }
@@ -49,14 +50,14 @@ class AnEnum extends bindings.MojoEnum {
 
   String toString() {
     switch(this) {
-      case FIRST:
-        return 'AnEnum.FIRST';
-      case SECOND:
-        return 'AnEnum.SECOND';
+      case first:
+        return 'AnEnum.first';
+      case second:
+        return 'AnEnum.second';
     }
   }
 
-  int toJson() => value;
+  int toJson() => mojoEnumValue;
 }
 
 

@@ -10,28 +10,29 @@ import 'package:mojo/bindings.dart' as bindings;
 import 'package:mojo/core.dart' as core;
 import 'package:_mojo_for_test_only/imported/sample_import.mojom.dart' as sample_import_mojom;
 import 'package:_mojo_for_test_only/imported/sample_import2.mojom.dart' as sample_import2_mojom;
-const kTwelve = 12;
+const int kTwelve = 12;
+
 
 
 class BarType extends bindings.MojoEnum {
-  static const VERTICAL = const BarType._(1);
-  static const HORIZONTAL = const BarType._(2);
-  static const BOTH = const BarType._(3);
-  static const INVALID = const BarType._(4);
+  static const BarType vertical = const BarType._(1);
+  static const BarType horizontal = const BarType._(2);
+  static const BarType both = const BarType._(3);
+  static const BarType invalid = const BarType._(4);
 
   const BarType._(int v) : super(v);
 
   static const Map<String, BarType> valuesMap = const {
-    "VERTICAL": VERTICAL,
-    "HORIZONTAL": HORIZONTAL,
-    "BOTH": BOTH,
-    "INVALID": INVALID,
+    "vertical": vertical,
+    "horizontal": horizontal,
+    "both": both,
+    "invalid": invalid,
   };
   static const List<BarType> values = const [
-    VERTICAL,
-    HORIZONTAL,
-    BOTH,
-    INVALID,
+    vertical,
+    horizontal,
+    both,
+    invalid,
   ];
 
   static BarType valueOf(String name) => valuesMap[name];
@@ -39,13 +40,13 @@ class BarType extends bindings.MojoEnum {
   factory BarType(int v) {
     switch (v) {
       case 1:
-        return VERTICAL;
+        return vertical;
       case 2:
-        return HORIZONTAL;
+        return horizontal;
       case 3:
-        return BOTH;
+        return both;
       case 4:
-        return INVALID;
+        return invalid;
       default:
         return null;
     }
@@ -63,18 +64,18 @@ class BarType extends bindings.MojoEnum {
 
   String toString() {
     switch(this) {
-      case VERTICAL:
-        return 'BarType.VERTICAL';
-      case HORIZONTAL:
-        return 'BarType.HORIZONTAL';
-      case BOTH:
-        return 'BarType.BOTH';
-      case INVALID:
-        return 'BarType.INVALID';
+      case vertical:
+        return 'BarType.vertical';
+      case horizontal:
+        return 'BarType.horizontal';
+      case both:
+        return 'BarType.both';
+      case invalid:
+        return 'BarType.invalid';
     }
   }
 
-  int toJson() => value;
+  int toJson() => mojoEnumValue;
 }
 
 class Bar extends bindings.Struct {
@@ -179,7 +180,7 @@ class Foo extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(96, 0)
   ];
-  static const kFooby = "Fooby";
+  static const String kFooby = "Fooby";
   int x = 0;
   int y = 0;
   bool a = true;
@@ -1372,19 +1373,20 @@ class PortPostMessageParams extends bindings.Struct {
 const int kService_frobinate_name = 0;
 const int kService_getPort_name = 1;
 const String ServiceName = null;
-  class ServiceBazOptions extends bindings.MojoEnum {
-  static const REGULAR = const ServiceBazOptions._(0);
-  static const EXTRA = const ServiceBazOptions._(1);
+  
+class ServiceBazOptions extends bindings.MojoEnum {
+  static const ServiceBazOptions regular = const ServiceBazOptions._(0);
+  static const ServiceBazOptions extra = const ServiceBazOptions._(1);
 
   const ServiceBazOptions._(int v) : super(v);
 
   static const Map<String, ServiceBazOptions> valuesMap = const {
-    "REGULAR": REGULAR,
-    "EXTRA": EXTRA,
+    "regular": regular,
+    "extra": extra,
   };
   static const List<ServiceBazOptions> values = const [
-    REGULAR,
-    EXTRA,
+    regular,
+    extra,
   ];
 
   static ServiceBazOptions valueOf(String name) => valuesMap[name];
@@ -1392,9 +1394,9 @@ const String ServiceName = null;
   factory ServiceBazOptions(int v) {
     switch (v) {
       case 0:
-        return REGULAR;
+        return regular;
       case 1:
-        return EXTRA;
+        return extra;
       default:
         return null;
     }
@@ -1412,21 +1414,21 @@ const String ServiceName = null;
 
   String toString() {
     switch(this) {
-      case REGULAR:
-        return 'ServiceBazOptions.REGULAR';
-      case EXTRA:
-        return 'ServiceBazOptions.EXTRA';
+      case regular:
+        return 'ServiceBazOptions.regular';
+      case extra:
+        return 'ServiceBazOptions.extra';
     }
   }
 
-  int toJson() => value;
+  int toJson() => mojoEnumValue;
 }
 
 abstract class Service {
   dynamic frobinate(Foo foo,ServiceBazOptions baz,Object port,[Function responseFactory = null]);
   void getPort(Object port);
 
-  static const FAVORITE_BAZ = 1;
+  static const int kFavoriteBaz = 1;
 }
 
 

@@ -132,11 +132,24 @@ testSerializeHandleToJSON() {
       () => JSON.encode(s), (e) => e.cause is bindings.MojoCodecError);
 }
 
+testSerializeKeywordStruct() {
+  var keywordStruct = new structs.DartKeywordStruct()
+      ..await_ = structs.DartKeywordStructKeywords.await_
+      ..is_ = structs.DartKeywordStructKeywords.is_
+      ..rethrow_ = structs.DartKeywordStructKeywords.rethrow_;
+  var message = messageOfStruct(keywordStruct);
+  var decodedStruct = structs.DartKeywordStruct.deserialize(message.payload);
+  Expect.equals(keywordStruct.await_, decodedStruct.await_);
+  Expect.equals(keywordStruct.is_, decodedStruct.is_);
+  Expect.equals(keywordStruct.rethrow_, decodedStruct.rethrow_);
+}
+
 testSerializeStructs() {
   testSerializeNamedRegion();
   testSerializeArrayValueTypes();
   testSerializeToJSON();
   testSerializeHandleToJSON();
+  testSerializeKeywordStruct();
 }
 
 testSerializePodUnions() {
@@ -261,7 +274,7 @@ testCheckEnumCapsImpl() {
   var c = new Completer();
   Isolate.spawn(checkEnumCapsIsolate, pipe.endpoints[1]).then((_) {
     client.ptr.setEnumWithInternalAllCaps(
-        regression.EnumWithInternalAllCaps.STANDARD);
+        regression.EnumWithInternalAllCaps.standard);
     client.close().then((_) {
       c.complete(null);
     });
@@ -271,10 +284,10 @@ testCheckEnumCapsImpl() {
 
 testSerializeEnum() {
   var constants = new structs.ScopedConstants();
-  constants.f4 = structs.ScopedConstantsEType.E0;
+  constants.f4 = structs.ScopedConstantsEType.e0;
   var message = messageOfStruct(constants);
   var constants2 = structs.ScopedConstants.deserialize(message.payload);
-  Expect.equals(constants.f4.value, constants2.f4.value);
+  Expect.equals(constants.f4, constants2.f4);
 }
 
 testEnums() async {

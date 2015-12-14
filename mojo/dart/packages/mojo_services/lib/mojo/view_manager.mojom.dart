@@ -14,22 +14,23 @@ import 'package:mojo/mojo/service_provider.mojom.dart' as service_provider_mojom
 import 'package:mojo_services/mojo/native_viewport.mojom.dart' as native_viewport_mojom;
 import 'package:mojo_services/mojo/surface_id.mojom.dart' as surface_id_mojom;
 import 'package:mojo_services/mojo/view_manager_constants.mojom.dart' as view_manager_constants_mojom;
+
 class ErrorCode extends bindings.MojoEnum {
-  static const NONE = const ErrorCode._(0);
-  static const VALUE_IN_USE = const ErrorCode._(1);
-  static const ILLEGAL_ARGUMENT = const ErrorCode._(2);
+  static const ErrorCode none = const ErrorCode._(0);
+  static const ErrorCode valueInUse = const ErrorCode._(1);
+  static const ErrorCode illegalArgument = const ErrorCode._(2);
 
   const ErrorCode._(int v) : super(v);
 
   static const Map<String, ErrorCode> valuesMap = const {
-    "NONE": NONE,
-    "VALUE_IN_USE": VALUE_IN_USE,
-    "ILLEGAL_ARGUMENT": ILLEGAL_ARGUMENT,
+    "none": none,
+    "valueInUse": valueInUse,
+    "illegalArgument": illegalArgument,
   };
   static const List<ErrorCode> values = const [
-    NONE,
-    VALUE_IN_USE,
-    ILLEGAL_ARGUMENT,
+    none,
+    valueInUse,
+    illegalArgument,
   ];
 
   static ErrorCode valueOf(String name) => valuesMap[name];
@@ -37,11 +38,11 @@ class ErrorCode extends bindings.MojoEnum {
   factory ErrorCode(int v) {
     switch (v) {
       case 0:
-        return NONE;
+        return none;
       case 1:
-        return VALUE_IN_USE;
+        return valueInUse;
       case 2:
-        return ILLEGAL_ARGUMENT;
+        return illegalArgument;
       default:
         return null;
     }
@@ -59,16 +60,16 @@ class ErrorCode extends bindings.MojoEnum {
 
   String toString() {
     switch(this) {
-      case NONE:
-        return 'ErrorCode.NONE';
-      case VALUE_IN_USE:
-        return 'ErrorCode.VALUE_IN_USE';
-      case ILLEGAL_ARGUMENT:
-        return 'ErrorCode.ILLEGAL_ARGUMENT';
+      case none:
+        return 'ErrorCode.none';
+      case valueInUse:
+        return 'ErrorCode.valueInUse';
+      case illegalArgument:
+        return 'ErrorCode.illegalArgument';
     }
   }
 
-  int toJson() => value;
+  int toJson() => mojoEnumValue;
 }
 
 

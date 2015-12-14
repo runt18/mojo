@@ -9,25 +9,26 @@ import 'dart:async';
 import 'package:mojo/bindings.dart' as bindings;
 import 'package:mojo/core.dart' as core;
 import 'package:mojo_services/mojo/geometry.mojom.dart' as geometry_mojom;
+
 class AnimationTweenType extends bindings.MojoEnum {
-  static const LINEAR = const AnimationTweenType._(0);
-  static const EASE_IN = const AnimationTweenType._(1);
-  static const EASE_OUT = const AnimationTweenType._(2);
-  static const EASE_IN_OUT = const AnimationTweenType._(3);
+  static const AnimationTweenType linear = const AnimationTweenType._(0);
+  static const AnimationTweenType easeIn = const AnimationTweenType._(1);
+  static const AnimationTweenType easeOut = const AnimationTweenType._(2);
+  static const AnimationTweenType easeInOut = const AnimationTweenType._(3);
 
   const AnimationTweenType._(int v) : super(v);
 
   static const Map<String, AnimationTweenType> valuesMap = const {
-    "LINEAR": LINEAR,
-    "EASE_IN": EASE_IN,
-    "EASE_OUT": EASE_OUT,
-    "EASE_IN_OUT": EASE_IN_OUT,
+    "linear": linear,
+    "easeIn": easeIn,
+    "easeOut": easeOut,
+    "easeInOut": easeInOut,
   };
   static const List<AnimationTweenType> values = const [
-    LINEAR,
-    EASE_IN,
-    EASE_OUT,
-    EASE_IN_OUT,
+    linear,
+    easeIn,
+    easeOut,
+    easeInOut,
   ];
 
   static AnimationTweenType valueOf(String name) => valuesMap[name];
@@ -35,13 +36,13 @@ class AnimationTweenType extends bindings.MojoEnum {
   factory AnimationTweenType(int v) {
     switch (v) {
       case 0:
-        return LINEAR;
+        return linear;
       case 1:
-        return EASE_IN;
+        return easeIn;
       case 2:
-        return EASE_OUT;
+        return easeOut;
       case 3:
-        return EASE_IN_OUT;
+        return easeInOut;
       default:
         return null;
     }
@@ -59,35 +60,36 @@ class AnimationTweenType extends bindings.MojoEnum {
 
   String toString() {
     switch(this) {
-      case LINEAR:
-        return 'AnimationTweenType.LINEAR';
-      case EASE_IN:
-        return 'AnimationTweenType.EASE_IN';
-      case EASE_OUT:
-        return 'AnimationTweenType.EASE_OUT';
-      case EASE_IN_OUT:
-        return 'AnimationTweenType.EASE_IN_OUT';
+      case linear:
+        return 'AnimationTweenType.linear';
+      case easeIn:
+        return 'AnimationTweenType.easeIn';
+      case easeOut:
+        return 'AnimationTweenType.easeOut';
+      case easeInOut:
+        return 'AnimationTweenType.easeInOut';
     }
   }
 
-  int toJson() => value;
+  int toJson() => mojoEnumValue;
 }
+
 class AnimationProperty extends bindings.MojoEnum {
-  static const NONE = const AnimationProperty._(0);
-  static const OPACITY = const AnimationProperty._(1);
-  static const TRANSFORM = const AnimationProperty._(2);
+  static const AnimationProperty none = const AnimationProperty._(0);
+  static const AnimationProperty opacity = const AnimationProperty._(1);
+  static const AnimationProperty transform = const AnimationProperty._(2);
 
   const AnimationProperty._(int v) : super(v);
 
   static const Map<String, AnimationProperty> valuesMap = const {
-    "NONE": NONE,
-    "OPACITY": OPACITY,
-    "TRANSFORM": TRANSFORM,
+    "none": none,
+    "opacity": opacity,
+    "transform": transform,
   };
   static const List<AnimationProperty> values = const [
-    NONE,
-    OPACITY,
-    TRANSFORM,
+    none,
+    opacity,
+    transform,
   ];
 
   static AnimationProperty valueOf(String name) => valuesMap[name];
@@ -95,11 +97,11 @@ class AnimationProperty extends bindings.MojoEnum {
   factory AnimationProperty(int v) {
     switch (v) {
       case 0:
-        return NONE;
+        return none;
       case 1:
-        return OPACITY;
+        return opacity;
       case 2:
-        return TRANSFORM;
+        return transform;
       default:
         return null;
     }
@@ -117,16 +119,16 @@ class AnimationProperty extends bindings.MojoEnum {
 
   String toString() {
     switch(this) {
-      case NONE:
-        return 'AnimationProperty.NONE';
-      case OPACITY:
-        return 'AnimationProperty.OPACITY';
-      case TRANSFORM:
-        return 'AnimationProperty.TRANSFORM';
+      case none:
+        return 'AnimationProperty.none';
+      case opacity:
+        return 'AnimationProperty.opacity';
+      case transform:
+        return 'AnimationProperty.transform';
     }
   }
 
-  int toJson() => value;
+  int toJson() => mojoEnumValue;
 }
 
 

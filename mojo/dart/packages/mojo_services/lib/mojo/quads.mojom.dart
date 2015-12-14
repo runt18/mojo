@@ -10,22 +10,23 @@ import 'package:mojo/bindings.dart' as bindings;
 import 'package:mojo/core.dart' as core;
 import 'package:mojo_services/mojo/geometry.mojom.dart' as geometry_mojom;
 import 'package:mojo_services/mojo/surface_id.mojom.dart' as surface_id_mojom;
+
 class YuvColorSpace extends bindings.MojoEnum {
-  static const REC_601 = const YuvColorSpace._(0);
-  static const REC_709 = const YuvColorSpace._(1);
-  static const JPEG = const YuvColorSpace._(2);
+  static const YuvColorSpace rec601 = const YuvColorSpace._(0);
+  static const YuvColorSpace rec709 = const YuvColorSpace._(1);
+  static const YuvColorSpace jpeg = const YuvColorSpace._(2);
 
   const YuvColorSpace._(int v) : super(v);
 
   static const Map<String, YuvColorSpace> valuesMap = const {
-    "REC_601": REC_601,
-    "REC_709": REC_709,
-    "JPEG": JPEG,
+    "rec601": rec601,
+    "rec709": rec709,
+    "jpeg": jpeg,
   };
   static const List<YuvColorSpace> values = const [
-    REC_601,
-    REC_709,
-    JPEG,
+    rec601,
+    rec709,
+    jpeg,
   ];
 
   static YuvColorSpace valueOf(String name) => valuesMap[name];
@@ -33,11 +34,11 @@ class YuvColorSpace extends bindings.MojoEnum {
   factory YuvColorSpace(int v) {
     switch (v) {
       case 0:
-        return REC_601;
+        return rec601;
       case 1:
-        return REC_709;
+        return rec709;
       case 2:
-        return JPEG;
+        return jpeg;
       default:
         return null;
     }
@@ -55,57 +56,58 @@ class YuvColorSpace extends bindings.MojoEnum {
 
   String toString() {
     switch(this) {
-      case REC_601:
-        return 'YuvColorSpace.REC_601';
-      case REC_709:
-        return 'YuvColorSpace.REC_709';
-      case JPEG:
-        return 'YuvColorSpace.JPEG';
+      case rec601:
+        return 'YuvColorSpace.rec601';
+      case rec709:
+        return 'YuvColorSpace.rec709';
+      case jpeg:
+        return 'YuvColorSpace.jpeg';
     }
   }
 
-  int toJson() => value;
+  int toJson() => mojoEnumValue;
 }
+
 class Material extends bindings.MojoEnum {
-  static const CHECKERBOARD = const Material._(1);
-  static const DEBUG_BORDER = const Material._(2);
-  static const IO_SURFACE_CONTENT = const Material._(3);
-  static const PICTURE_CONTENT = const Material._(4);
-  static const RENDER_PASS = const Material._(5);
-  static const SOLID_COLOR = const Material._(6);
-  static const STREAM_VIDEO_CONTENT = const Material._(7);
-  static const SURFACE_CONTENT = const Material._(8);
-  static const TEXTURE_CONTENT = const Material._(9);
-  static const TILED_CONTENT = const Material._(10);
-  static const YUV_VIDEO_CONTENT = const Material._(11);
+  static const Material checkerboard = const Material._(1);
+  static const Material debugBorder = const Material._(2);
+  static const Material ioSurfaceContent = const Material._(3);
+  static const Material pictureContent = const Material._(4);
+  static const Material renderPass = const Material._(5);
+  static const Material solidColor = const Material._(6);
+  static const Material streamVideoContent = const Material._(7);
+  static const Material surfaceContent = const Material._(8);
+  static const Material textureContent = const Material._(9);
+  static const Material tiledContent = const Material._(10);
+  static const Material yuvVideoContent = const Material._(11);
 
   const Material._(int v) : super(v);
 
   static const Map<String, Material> valuesMap = const {
-    "CHECKERBOARD": CHECKERBOARD,
-    "DEBUG_BORDER": DEBUG_BORDER,
-    "IO_SURFACE_CONTENT": IO_SURFACE_CONTENT,
-    "PICTURE_CONTENT": PICTURE_CONTENT,
-    "RENDER_PASS": RENDER_PASS,
-    "SOLID_COLOR": SOLID_COLOR,
-    "STREAM_VIDEO_CONTENT": STREAM_VIDEO_CONTENT,
-    "SURFACE_CONTENT": SURFACE_CONTENT,
-    "TEXTURE_CONTENT": TEXTURE_CONTENT,
-    "TILED_CONTENT": TILED_CONTENT,
-    "YUV_VIDEO_CONTENT": YUV_VIDEO_CONTENT,
+    "checkerboard": checkerboard,
+    "debugBorder": debugBorder,
+    "ioSurfaceContent": ioSurfaceContent,
+    "pictureContent": pictureContent,
+    "renderPass": renderPass,
+    "solidColor": solidColor,
+    "streamVideoContent": streamVideoContent,
+    "surfaceContent": surfaceContent,
+    "textureContent": textureContent,
+    "tiledContent": tiledContent,
+    "yuvVideoContent": yuvVideoContent,
   };
   static const List<Material> values = const [
-    CHECKERBOARD,
-    DEBUG_BORDER,
-    IO_SURFACE_CONTENT,
-    PICTURE_CONTENT,
-    RENDER_PASS,
-    SOLID_COLOR,
-    STREAM_VIDEO_CONTENT,
-    SURFACE_CONTENT,
-    TEXTURE_CONTENT,
-    TILED_CONTENT,
-    YUV_VIDEO_CONTENT,
+    checkerboard,
+    debugBorder,
+    ioSurfaceContent,
+    pictureContent,
+    renderPass,
+    solidColor,
+    streamVideoContent,
+    surfaceContent,
+    textureContent,
+    tiledContent,
+    yuvVideoContent,
   ];
 
   static Material valueOf(String name) => valuesMap[name];
@@ -113,27 +115,27 @@ class Material extends bindings.MojoEnum {
   factory Material(int v) {
     switch (v) {
       case 1:
-        return CHECKERBOARD;
+        return checkerboard;
       case 2:
-        return DEBUG_BORDER;
+        return debugBorder;
       case 3:
-        return IO_SURFACE_CONTENT;
+        return ioSurfaceContent;
       case 4:
-        return PICTURE_CONTENT;
+        return pictureContent;
       case 5:
-        return RENDER_PASS;
+        return renderPass;
       case 6:
-        return SOLID_COLOR;
+        return solidColor;
       case 7:
-        return STREAM_VIDEO_CONTENT;
+        return streamVideoContent;
       case 8:
-        return SURFACE_CONTENT;
+        return surfaceContent;
       case 9:
-        return TEXTURE_CONTENT;
+        return textureContent;
       case 10:
-        return TILED_CONTENT;
+        return tiledContent;
       case 11:
-        return YUV_VIDEO_CONTENT;
+        return yuvVideoContent;
       default:
         return null;
     }
@@ -151,135 +153,136 @@ class Material extends bindings.MojoEnum {
 
   String toString() {
     switch(this) {
-      case CHECKERBOARD:
-        return 'Material.CHECKERBOARD';
-      case DEBUG_BORDER:
-        return 'Material.DEBUG_BORDER';
-      case IO_SURFACE_CONTENT:
-        return 'Material.IO_SURFACE_CONTENT';
-      case PICTURE_CONTENT:
-        return 'Material.PICTURE_CONTENT';
-      case RENDER_PASS:
-        return 'Material.RENDER_PASS';
-      case SOLID_COLOR:
-        return 'Material.SOLID_COLOR';
-      case STREAM_VIDEO_CONTENT:
-        return 'Material.STREAM_VIDEO_CONTENT';
-      case SURFACE_CONTENT:
-        return 'Material.SURFACE_CONTENT';
-      case TEXTURE_CONTENT:
-        return 'Material.TEXTURE_CONTENT';
-      case TILED_CONTENT:
-        return 'Material.TILED_CONTENT';
-      case YUV_VIDEO_CONTENT:
-        return 'Material.YUV_VIDEO_CONTENT';
+      case checkerboard:
+        return 'Material.checkerboard';
+      case debugBorder:
+        return 'Material.debugBorder';
+      case ioSurfaceContent:
+        return 'Material.ioSurfaceContent';
+      case pictureContent:
+        return 'Material.pictureContent';
+      case renderPass:
+        return 'Material.renderPass';
+      case solidColor:
+        return 'Material.solidColor';
+      case streamVideoContent:
+        return 'Material.streamVideoContent';
+      case surfaceContent:
+        return 'Material.surfaceContent';
+      case textureContent:
+        return 'Material.textureContent';
+      case tiledContent:
+        return 'Material.tiledContent';
+      case yuvVideoContent:
+        return 'Material.yuvVideoContent';
     }
   }
 
-  int toJson() => value;
+  int toJson() => mojoEnumValue;
 }
+
 class SkXfermode extends bindings.MojoEnum {
-  static const kClear_Mode = const SkXfermode._(0);
-  static const kSrc_Mode = const SkXfermode._(1);
-  static const kDst_Mode = const SkXfermode._(2);
-  static const kSrcOver_Mode = const SkXfermode._(3);
-  static const kDstOver_Mode = const SkXfermode._(4);
-  static const kSrcIn_Mode = const SkXfermode._(5);
-  static const kDstIn_Mode = const SkXfermode._(6);
-  static const kSrcOut_Mode = const SkXfermode._(7);
-  static const kDstOut_Mode = const SkXfermode._(8);
-  static const kSrcATop_Mode = const SkXfermode._(9);
-  static const kDstATop_Mode = const SkXfermode._(10);
-  static const kXor_Mode = const SkXfermode._(11);
-  static const kPlus_Mode = const SkXfermode._(12);
-  static const kModulate_Mode = const SkXfermode._(13);
-  static const kScreen_Mode = const SkXfermode._(14);
-  static const kLastCoeffMode = const SkXfermode._(14);
-  static const kOverlay_Mode = const SkXfermode._(15);
-  static const kDarken_Mode = const SkXfermode._(16);
-  static const kLighten_Mode = const SkXfermode._(17);
-  static const kColorDodge_Mode = const SkXfermode._(18);
-  static const kColorBurn_Mode = const SkXfermode._(19);
-  static const kHardLight_Mode = const SkXfermode._(20);
-  static const kSoftLight_Mode = const SkXfermode._(21);
-  static const kDifference_Mode = const SkXfermode._(22);
-  static const kExclusion_Mode = const SkXfermode._(23);
-  static const kMultiply_Mode = const SkXfermode._(24);
-  static const kLastSeparableMode = const SkXfermode._(24);
-  static const kHue_Mode = const SkXfermode._(25);
-  static const kSaturation_Mode = const SkXfermode._(26);
-  static const kColor_Mode = const SkXfermode._(27);
-  static const kLuminosity_Mode = const SkXfermode._(28);
-  static const kLastMode = const SkXfermode._(28);
+  static const SkXfermode kClearMode = const SkXfermode._(0);
+  static const SkXfermode kSrcMode = const SkXfermode._(1);
+  static const SkXfermode kDstMode = const SkXfermode._(2);
+  static const SkXfermode kSrcOverMode = const SkXfermode._(3);
+  static const SkXfermode kDstOverMode = const SkXfermode._(4);
+  static const SkXfermode kSrcInMode = const SkXfermode._(5);
+  static const SkXfermode kDstInMode = const SkXfermode._(6);
+  static const SkXfermode kSrcOutMode = const SkXfermode._(7);
+  static const SkXfermode kDstOutMode = const SkXfermode._(8);
+  static const SkXfermode kSrcATopMode = const SkXfermode._(9);
+  static const SkXfermode kDstATopMode = const SkXfermode._(10);
+  static const SkXfermode kXorMode = const SkXfermode._(11);
+  static const SkXfermode kPlusMode = const SkXfermode._(12);
+  static const SkXfermode kModulateMode = const SkXfermode._(13);
+  static const SkXfermode kScreenMode = const SkXfermode._(14);
+  static const SkXfermode kLastCoeffMode = const SkXfermode._(14);
+  static const SkXfermode kOverlayMode = const SkXfermode._(15);
+  static const SkXfermode kDarkenMode = const SkXfermode._(16);
+  static const SkXfermode kLightenMode = const SkXfermode._(17);
+  static const SkXfermode kColorDodgeMode = const SkXfermode._(18);
+  static const SkXfermode kColorBurnMode = const SkXfermode._(19);
+  static const SkXfermode kHardLightMode = const SkXfermode._(20);
+  static const SkXfermode kSoftLightMode = const SkXfermode._(21);
+  static const SkXfermode kDifferenceMode = const SkXfermode._(22);
+  static const SkXfermode kExclusionMode = const SkXfermode._(23);
+  static const SkXfermode kMultiplyMode = const SkXfermode._(24);
+  static const SkXfermode kLastSeparableMode = const SkXfermode._(24);
+  static const SkXfermode kHueMode = const SkXfermode._(25);
+  static const SkXfermode kSaturationMode = const SkXfermode._(26);
+  static const SkXfermode kColorMode = const SkXfermode._(27);
+  static const SkXfermode kLuminosityMode = const SkXfermode._(28);
+  static const SkXfermode kLastMode = const SkXfermode._(28);
 
   const SkXfermode._(int v) : super(v);
 
   static const Map<String, SkXfermode> valuesMap = const {
-    "kClear_Mode": kClear_Mode,
-    "kSrc_Mode": kSrc_Mode,
-    "kDst_Mode": kDst_Mode,
-    "kSrcOver_Mode": kSrcOver_Mode,
-    "kDstOver_Mode": kDstOver_Mode,
-    "kSrcIn_Mode": kSrcIn_Mode,
-    "kDstIn_Mode": kDstIn_Mode,
-    "kSrcOut_Mode": kSrcOut_Mode,
-    "kDstOut_Mode": kDstOut_Mode,
-    "kSrcATop_Mode": kSrcATop_Mode,
-    "kDstATop_Mode": kDstATop_Mode,
-    "kXor_Mode": kXor_Mode,
-    "kPlus_Mode": kPlus_Mode,
-    "kModulate_Mode": kModulate_Mode,
-    "kScreen_Mode": kScreen_Mode,
+    "kClearMode": kClearMode,
+    "kSrcMode": kSrcMode,
+    "kDstMode": kDstMode,
+    "kSrcOverMode": kSrcOverMode,
+    "kDstOverMode": kDstOverMode,
+    "kSrcInMode": kSrcInMode,
+    "kDstInMode": kDstInMode,
+    "kSrcOutMode": kSrcOutMode,
+    "kDstOutMode": kDstOutMode,
+    "kSrcATopMode": kSrcATopMode,
+    "kDstATopMode": kDstATopMode,
+    "kXorMode": kXorMode,
+    "kPlusMode": kPlusMode,
+    "kModulateMode": kModulateMode,
+    "kScreenMode": kScreenMode,
     "kLastCoeffMode": kLastCoeffMode,
-    "kOverlay_Mode": kOverlay_Mode,
-    "kDarken_Mode": kDarken_Mode,
-    "kLighten_Mode": kLighten_Mode,
-    "kColorDodge_Mode": kColorDodge_Mode,
-    "kColorBurn_Mode": kColorBurn_Mode,
-    "kHardLight_Mode": kHardLight_Mode,
-    "kSoftLight_Mode": kSoftLight_Mode,
-    "kDifference_Mode": kDifference_Mode,
-    "kExclusion_Mode": kExclusion_Mode,
-    "kMultiply_Mode": kMultiply_Mode,
+    "kOverlayMode": kOverlayMode,
+    "kDarkenMode": kDarkenMode,
+    "kLightenMode": kLightenMode,
+    "kColorDodgeMode": kColorDodgeMode,
+    "kColorBurnMode": kColorBurnMode,
+    "kHardLightMode": kHardLightMode,
+    "kSoftLightMode": kSoftLightMode,
+    "kDifferenceMode": kDifferenceMode,
+    "kExclusionMode": kExclusionMode,
+    "kMultiplyMode": kMultiplyMode,
     "kLastSeparableMode": kLastSeparableMode,
-    "kHue_Mode": kHue_Mode,
-    "kSaturation_Mode": kSaturation_Mode,
-    "kColor_Mode": kColor_Mode,
-    "kLuminosity_Mode": kLuminosity_Mode,
+    "kHueMode": kHueMode,
+    "kSaturationMode": kSaturationMode,
+    "kColorMode": kColorMode,
+    "kLuminosityMode": kLuminosityMode,
     "kLastMode": kLastMode,
   };
   static const List<SkXfermode> values = const [
-    kClear_Mode,
-    kSrc_Mode,
-    kDst_Mode,
-    kSrcOver_Mode,
-    kDstOver_Mode,
-    kSrcIn_Mode,
-    kDstIn_Mode,
-    kSrcOut_Mode,
-    kDstOut_Mode,
-    kSrcATop_Mode,
-    kDstATop_Mode,
-    kXor_Mode,
-    kPlus_Mode,
-    kModulate_Mode,
-    kScreen_Mode,
+    kClearMode,
+    kSrcMode,
+    kDstMode,
+    kSrcOverMode,
+    kDstOverMode,
+    kSrcInMode,
+    kDstInMode,
+    kSrcOutMode,
+    kDstOutMode,
+    kSrcATopMode,
+    kDstATopMode,
+    kXorMode,
+    kPlusMode,
+    kModulateMode,
+    kScreenMode,
     kLastCoeffMode,
-    kOverlay_Mode,
-    kDarken_Mode,
-    kLighten_Mode,
-    kColorDodge_Mode,
-    kColorBurn_Mode,
-    kHardLight_Mode,
-    kSoftLight_Mode,
-    kDifference_Mode,
-    kExclusion_Mode,
-    kMultiply_Mode,
+    kOverlayMode,
+    kDarkenMode,
+    kLightenMode,
+    kColorDodgeMode,
+    kColorBurnMode,
+    kHardLightMode,
+    kSoftLightMode,
+    kDifferenceMode,
+    kExclusionMode,
+    kMultiplyMode,
     kLastSeparableMode,
-    kHue_Mode,
-    kSaturation_Mode,
-    kColor_Mode,
-    kLuminosity_Mode,
+    kHueMode,
+    kSaturationMode,
+    kColorMode,
+    kLuminosityMode,
     kLastMode,
   ];
 
@@ -288,67 +291,67 @@ class SkXfermode extends bindings.MojoEnum {
   factory SkXfermode(int v) {
     switch (v) {
       case 0:
-        return kClear_Mode;
+        return kClearMode;
       case 1:
-        return kSrc_Mode;
+        return kSrcMode;
       case 2:
-        return kDst_Mode;
+        return kDstMode;
       case 3:
-        return kSrcOver_Mode;
+        return kSrcOverMode;
       case 4:
-        return kDstOver_Mode;
+        return kDstOverMode;
       case 5:
-        return kSrcIn_Mode;
+        return kSrcInMode;
       case 6:
-        return kDstIn_Mode;
+        return kDstInMode;
       case 7:
-        return kSrcOut_Mode;
+        return kSrcOutMode;
       case 8:
-        return kDstOut_Mode;
+        return kDstOutMode;
       case 9:
-        return kSrcATop_Mode;
+        return kSrcATopMode;
       case 10:
-        return kDstATop_Mode;
+        return kDstATopMode;
       case 11:
-        return kXor_Mode;
+        return kXorMode;
       case 12:
-        return kPlus_Mode;
+        return kPlusMode;
       case 13:
-        return kModulate_Mode;
+        return kModulateMode;
       case 14:
-        return kScreen_Mode;
+        return kScreenMode;
       case 14:
         return kLastCoeffMode;
       case 15:
-        return kOverlay_Mode;
+        return kOverlayMode;
       case 16:
-        return kDarken_Mode;
+        return kDarkenMode;
       case 17:
-        return kLighten_Mode;
+        return kLightenMode;
       case 18:
-        return kColorDodge_Mode;
+        return kColorDodgeMode;
       case 19:
-        return kColorBurn_Mode;
+        return kColorBurnMode;
       case 20:
-        return kHardLight_Mode;
+        return kHardLightMode;
       case 21:
-        return kSoftLight_Mode;
+        return kSoftLightMode;
       case 22:
-        return kDifference_Mode;
+        return kDifferenceMode;
       case 23:
-        return kExclusion_Mode;
+        return kExclusionMode;
       case 24:
-        return kMultiply_Mode;
+        return kMultiplyMode;
       case 24:
         return kLastSeparableMode;
       case 25:
-        return kHue_Mode;
+        return kHueMode;
       case 26:
-        return kSaturation_Mode;
+        return kSaturationMode;
       case 27:
-        return kColor_Mode;
+        return kColorMode;
       case 28:
-        return kLuminosity_Mode;
+        return kLuminosityMode;
       case 28:
         return kLastMode;
       default:
@@ -368,74 +371,74 @@ class SkXfermode extends bindings.MojoEnum {
 
   String toString() {
     switch(this) {
-      case kClear_Mode:
-        return 'SkXfermode.kClear_Mode';
-      case kSrc_Mode:
-        return 'SkXfermode.kSrc_Mode';
-      case kDst_Mode:
-        return 'SkXfermode.kDst_Mode';
-      case kSrcOver_Mode:
-        return 'SkXfermode.kSrcOver_Mode';
-      case kDstOver_Mode:
-        return 'SkXfermode.kDstOver_Mode';
-      case kSrcIn_Mode:
-        return 'SkXfermode.kSrcIn_Mode';
-      case kDstIn_Mode:
-        return 'SkXfermode.kDstIn_Mode';
-      case kSrcOut_Mode:
-        return 'SkXfermode.kSrcOut_Mode';
-      case kDstOut_Mode:
-        return 'SkXfermode.kDstOut_Mode';
-      case kSrcATop_Mode:
-        return 'SkXfermode.kSrcATop_Mode';
-      case kDstATop_Mode:
-        return 'SkXfermode.kDstATop_Mode';
-      case kXor_Mode:
-        return 'SkXfermode.kXor_Mode';
-      case kPlus_Mode:
-        return 'SkXfermode.kPlus_Mode';
-      case kModulate_Mode:
-        return 'SkXfermode.kModulate_Mode';
-      case kScreen_Mode:
-        return 'SkXfermode.kScreen_Mode';
+      case kClearMode:
+        return 'SkXfermode.kClearMode';
+      case kSrcMode:
+        return 'SkXfermode.kSrcMode';
+      case kDstMode:
+        return 'SkXfermode.kDstMode';
+      case kSrcOverMode:
+        return 'SkXfermode.kSrcOverMode';
+      case kDstOverMode:
+        return 'SkXfermode.kDstOverMode';
+      case kSrcInMode:
+        return 'SkXfermode.kSrcInMode';
+      case kDstInMode:
+        return 'SkXfermode.kDstInMode';
+      case kSrcOutMode:
+        return 'SkXfermode.kSrcOutMode';
+      case kDstOutMode:
+        return 'SkXfermode.kDstOutMode';
+      case kSrcATopMode:
+        return 'SkXfermode.kSrcATopMode';
+      case kDstATopMode:
+        return 'SkXfermode.kDstATopMode';
+      case kXorMode:
+        return 'SkXfermode.kXorMode';
+      case kPlusMode:
+        return 'SkXfermode.kPlusMode';
+      case kModulateMode:
+        return 'SkXfermode.kModulateMode';
+      case kScreenMode:
+        return 'SkXfermode.kScreenMode';
       case kLastCoeffMode:
         return 'SkXfermode.kLastCoeffMode';
-      case kOverlay_Mode:
-        return 'SkXfermode.kOverlay_Mode';
-      case kDarken_Mode:
-        return 'SkXfermode.kDarken_Mode';
-      case kLighten_Mode:
-        return 'SkXfermode.kLighten_Mode';
-      case kColorDodge_Mode:
-        return 'SkXfermode.kColorDodge_Mode';
-      case kColorBurn_Mode:
-        return 'SkXfermode.kColorBurn_Mode';
-      case kHardLight_Mode:
-        return 'SkXfermode.kHardLight_Mode';
-      case kSoftLight_Mode:
-        return 'SkXfermode.kSoftLight_Mode';
-      case kDifference_Mode:
-        return 'SkXfermode.kDifference_Mode';
-      case kExclusion_Mode:
-        return 'SkXfermode.kExclusion_Mode';
-      case kMultiply_Mode:
-        return 'SkXfermode.kMultiply_Mode';
+      case kOverlayMode:
+        return 'SkXfermode.kOverlayMode';
+      case kDarkenMode:
+        return 'SkXfermode.kDarkenMode';
+      case kLightenMode:
+        return 'SkXfermode.kLightenMode';
+      case kColorDodgeMode:
+        return 'SkXfermode.kColorDodgeMode';
+      case kColorBurnMode:
+        return 'SkXfermode.kColorBurnMode';
+      case kHardLightMode:
+        return 'SkXfermode.kHardLightMode';
+      case kSoftLightMode:
+        return 'SkXfermode.kSoftLightMode';
+      case kDifferenceMode:
+        return 'SkXfermode.kDifferenceMode';
+      case kExclusionMode:
+        return 'SkXfermode.kExclusionMode';
+      case kMultiplyMode:
+        return 'SkXfermode.kMultiplyMode';
       case kLastSeparableMode:
         return 'SkXfermode.kLastSeparableMode';
-      case kHue_Mode:
-        return 'SkXfermode.kHue_Mode';
-      case kSaturation_Mode:
-        return 'SkXfermode.kSaturation_Mode';
-      case kColor_Mode:
-        return 'SkXfermode.kColor_Mode';
-      case kLuminosity_Mode:
-        return 'SkXfermode.kLuminosity_Mode';
+      case kHueMode:
+        return 'SkXfermode.kHueMode';
+      case kSaturationMode:
+        return 'SkXfermode.kSaturationMode';
+      case kColorMode:
+        return 'SkXfermode.kColorMode';
+      case kLuminosityMode:
+        return 'SkXfermode.kLuminosityMode';
       case kLastMode:
         return 'SkXfermode.kLastMode';
     }
   }
 
-  int toJson() => value;
+  int toJson() => mojoEnumValue;
 }
 
 

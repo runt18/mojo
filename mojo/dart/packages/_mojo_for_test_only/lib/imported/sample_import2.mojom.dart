@@ -9,19 +9,20 @@ import 'dart:async';
 import 'package:mojo/bindings.dart' as bindings;
 import 'package:mojo/core.dart' as core;
 import 'package:_mojo_for_test_only/imported/sample_import.mojom.dart' as sample_import_mojom;
+
 class Color extends bindings.MojoEnum {
-  static const RED = const Color._(0);
-  static const BLACK = const Color._(1);
+  static const Color red = const Color._(0);
+  static const Color black = const Color._(1);
 
   const Color._(int v) : super(v);
 
   static const Map<String, Color> valuesMap = const {
-    "RED": RED,
-    "BLACK": BLACK,
+    "red": red,
+    "black": black,
   };
   static const List<Color> values = const [
-    RED,
-    BLACK,
+    red,
+    black,
   ];
 
   static Color valueOf(String name) => valuesMap[name];
@@ -29,9 +30,9 @@ class Color extends bindings.MojoEnum {
   factory Color(int v) {
     switch (v) {
       case 0:
-        return RED;
+        return red;
       case 1:
-        return BLACK;
+        return black;
       default:
         return null;
     }
@@ -49,14 +50,14 @@ class Color extends bindings.MojoEnum {
 
   String toString() {
     switch(this) {
-      case RED:
-        return 'Color.RED';
-      case BLACK:
-        return 'Color.BLACK';
+      case red:
+        return 'Color.red';
+      case black:
+        return 'Color.black';
     }
   }
 
-  int toJson() => value;
+  int toJson() => mojoEnumValue;
 }
 
 

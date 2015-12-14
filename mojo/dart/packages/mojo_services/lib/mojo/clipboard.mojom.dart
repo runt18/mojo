@@ -590,22 +590,23 @@ const int kClipboard_getAvailableMimeTypes_name = 1;
 const int kClipboard_readMimeType_name = 2;
 const int kClipboard_writeClipboardData_name = 3;
 const String ClipboardName = "mojo::Clipboard";
-  class ClipboardType extends bindings.MojoEnum {
-  static const COPY_PASTE = const ClipboardType._(0);
-  static const SELECTION = const ClipboardType._(1);
-  static const DRAG = const ClipboardType._(2);
+  
+class ClipboardType extends bindings.MojoEnum {
+  static const ClipboardType copyPaste = const ClipboardType._(0);
+  static const ClipboardType selection = const ClipboardType._(1);
+  static const ClipboardType drag = const ClipboardType._(2);
 
   const ClipboardType._(int v) : super(v);
 
   static const Map<String, ClipboardType> valuesMap = const {
-    "COPY_PASTE": COPY_PASTE,
-    "SELECTION": SELECTION,
-    "DRAG": DRAG,
+    "copyPaste": copyPaste,
+    "selection": selection,
+    "drag": drag,
   };
   static const List<ClipboardType> values = const [
-    COPY_PASTE,
-    SELECTION,
-    DRAG,
+    copyPaste,
+    selection,
+    drag,
   ];
 
   static ClipboardType valueOf(String name) => valuesMap[name];
@@ -613,11 +614,11 @@ const String ClipboardName = "mojo::Clipboard";
   factory ClipboardType(int v) {
     switch (v) {
       case 0:
-        return COPY_PASTE;
+        return copyPaste;
       case 1:
-        return SELECTION;
+        return selection;
       case 2:
-        return DRAG;
+        return drag;
       default:
         return null;
     }
@@ -635,16 +636,16 @@ const String ClipboardName = "mojo::Clipboard";
 
   String toString() {
     switch(this) {
-      case COPY_PASTE:
-        return 'ClipboardType.COPY_PASTE';
-      case SELECTION:
-        return 'ClipboardType.SELECTION';
-      case DRAG:
-        return 'ClipboardType.DRAG';
+      case copyPaste:
+        return 'ClipboardType.copyPaste';
+      case selection:
+        return 'ClipboardType.selection';
+      case drag:
+        return 'ClipboardType.drag';
     }
   }
 
-  int toJson() => value;
+  int toJson() => mojoEnumValue;
 }
 
 abstract class Clipboard {
@@ -653,9 +654,9 @@ abstract class Clipboard {
   dynamic readMimeType(ClipboardType clipboardType,String mimeType,[Function responseFactory = null]);
   void writeClipboardData(ClipboardType clipboardType, Map<String, List<int>> data);
 
-  static const MIME_TYPE_TEXT = "text/plain";
-  static const MIME_TYPE_HTML = "text/html";
-  static const MIME_TYPE_URL = "text/url";
+  static const String mimeTypeText = "text/plain";
+  static const String mimeTypeHtml = "text/html";
+  static const String mimeTypeUrl = "text/url";
 }
 
 

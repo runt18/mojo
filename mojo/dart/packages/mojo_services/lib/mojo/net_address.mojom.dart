@@ -8,22 +8,23 @@ import 'dart:async';
 
 import 'package:mojo/bindings.dart' as bindings;
 import 'package:mojo/core.dart' as core;
+
 class NetAddressFamily extends bindings.MojoEnum {
-  static const UNSPECIFIED = const NetAddressFamily._(0);
-  static const IPV4 = const NetAddressFamily._(1);
-  static const IPV6 = const NetAddressFamily._(2);
+  static const NetAddressFamily unspecified = const NetAddressFamily._(0);
+  static const NetAddressFamily ipV4 = const NetAddressFamily._(1);
+  static const NetAddressFamily ipV6 = const NetAddressFamily._(2);
 
   const NetAddressFamily._(int v) : super(v);
 
   static const Map<String, NetAddressFamily> valuesMap = const {
-    "UNSPECIFIED": UNSPECIFIED,
-    "IPV4": IPV4,
-    "IPV6": IPV6,
+    "unspecified": unspecified,
+    "ipV4": ipV4,
+    "ipV6": ipV6,
   };
   static const List<NetAddressFamily> values = const [
-    UNSPECIFIED,
-    IPV4,
-    IPV6,
+    unspecified,
+    ipV4,
+    ipV6,
   ];
 
   static NetAddressFamily valueOf(String name) => valuesMap[name];
@@ -31,11 +32,11 @@ class NetAddressFamily extends bindings.MojoEnum {
   factory NetAddressFamily(int v) {
     switch (v) {
       case 0:
-        return UNSPECIFIED;
+        return unspecified;
       case 1:
-        return IPV4;
+        return ipV4;
       case 2:
-        return IPV6;
+        return ipV6;
       default:
         return null;
     }
@@ -53,16 +54,16 @@ class NetAddressFamily extends bindings.MojoEnum {
 
   String toString() {
     switch(this) {
-      case UNSPECIFIED:
-        return 'NetAddressFamily.UNSPECIFIED';
-      case IPV4:
-        return 'NetAddressFamily.IPV4';
-      case IPV6:
-        return 'NetAddressFamily.IPV6';
+      case unspecified:
+        return 'NetAddressFamily.unspecified';
+      case ipV4:
+        return 'NetAddressFamily.ipV4';
+      case ipV6:
+        return 'NetAddressFamily.ipV6';
     }
   }
 
-  int toJson() => value;
+  int toJson() => mojoEnumValue;
 }
 
 

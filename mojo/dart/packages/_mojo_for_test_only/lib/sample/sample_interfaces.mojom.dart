@@ -8,17 +8,18 @@ import 'dart:async';
 
 import 'package:mojo/bindings.dart' as bindings;
 import 'package:mojo/core.dart' as core;
-const kLong = 4405;
+const int kLong = 4405;
+
 class Enum extends bindings.MojoEnum {
-  static const VALUE = const Enum._(0);
+  static const Enum value = const Enum._(0);
 
   const Enum._(int v) : super(v);
 
   static const Map<String, Enum> valuesMap = const {
-    "VALUE": VALUE,
+    "value": value,
   };
   static const List<Enum> values = const [
-    VALUE,
+    value,
   ];
 
   static Enum valueOf(String name) => valuesMap[name];
@@ -26,7 +27,7 @@ class Enum extends bindings.MojoEnum {
   factory Enum(int v) {
     switch (v) {
       case 0:
-        return VALUE;
+        return value;
       default:
         return null;
     }
@@ -44,12 +45,12 @@ class Enum extends bindings.MojoEnum {
 
   String toString() {
     switch(this) {
-      case VALUE:
-        return 'Enum.VALUE';
+      case value:
+        return 'Enum.value';
     }
   }
 
-  int toJson() => value;
+  int toJson() => mojoEnumValue;
 }
 
 

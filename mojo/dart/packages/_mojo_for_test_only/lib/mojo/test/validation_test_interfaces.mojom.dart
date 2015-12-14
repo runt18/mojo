@@ -8,28 +8,29 @@ import 'dart:async';
 
 import 'package:mojo/bindings.dart' as bindings;
 import 'package:mojo/core.dart' as core;
+
 class BasicEnum extends bindings.MojoEnum {
-  static const A = const BasicEnum._(0);
-  static const B = const BasicEnum._(1);
-  static const C = const BasicEnum._(0);
-  static const D = const BasicEnum._(-3);
-  static const E = const BasicEnum._(10);
+  static const BasicEnum a = const BasicEnum._(0);
+  static const BasicEnum b = const BasicEnum._(1);
+  static const BasicEnum c = const BasicEnum._(0);
+  static const BasicEnum d = const BasicEnum._(-3);
+  static const BasicEnum e = const BasicEnum._(10);
 
   const BasicEnum._(int v) : super(v);
 
   static const Map<String, BasicEnum> valuesMap = const {
-    "A": A,
-    "B": B,
-    "C": C,
-    "D": D,
-    "E": E,
+    "a": a,
+    "b": b,
+    "c": c,
+    "d": d,
+    "e": e,
   };
   static const List<BasicEnum> values = const [
-    A,
-    B,
-    C,
-    D,
-    E,
+    a,
+    b,
+    c,
+    d,
+    e,
   ];
 
   static BasicEnum valueOf(String name) => valuesMap[name];
@@ -37,15 +38,15 @@ class BasicEnum extends bindings.MojoEnum {
   factory BasicEnum(int v) {
     switch (v) {
       case 0:
-        return A;
+        return a;
       case 1:
-        return B;
+        return b;
       case 0:
-        return C;
+        return c;
       case -3:
-        return D;
+        return d;
       case 10:
-        return E;
+        return e;
       default:
         return null;
     }
@@ -63,20 +64,20 @@ class BasicEnum extends bindings.MojoEnum {
 
   String toString() {
     switch(this) {
-      case A:
-        return 'BasicEnum.A';
-      case B:
-        return 'BasicEnum.B';
-      case C:
-        return 'BasicEnum.C';
-      case D:
-        return 'BasicEnum.D';
-      case E:
-        return 'BasicEnum.E';
+      case a:
+        return 'BasicEnum.a';
+      case b:
+        return 'BasicEnum.b';
+      case c:
+        return 'BasicEnum.c';
+      case d:
+        return 'BasicEnum.d';
+      case e:
+        return 'BasicEnum.e';
     }
   }
 
-  int toJson() => value;
+  int toJson() => mojoEnumValue;
 }
 
 
@@ -825,25 +826,26 @@ class BasicStruct extends bindings.Struct {
   }
 }
 
+
 class StructWithEnumEnumWithin extends bindings.MojoEnum {
-  static const A = const StructWithEnumEnumWithin._(0);
-  static const B = const StructWithEnumEnumWithin._(1);
-  static const C = const StructWithEnumEnumWithin._(2);
-  static const D = const StructWithEnumEnumWithin._(3);
+  static const StructWithEnumEnumWithin a = const StructWithEnumEnumWithin._(0);
+  static const StructWithEnumEnumWithin b = const StructWithEnumEnumWithin._(1);
+  static const StructWithEnumEnumWithin c = const StructWithEnumEnumWithin._(2);
+  static const StructWithEnumEnumWithin d = const StructWithEnumEnumWithin._(3);
 
   const StructWithEnumEnumWithin._(int v) : super(v);
 
   static const Map<String, StructWithEnumEnumWithin> valuesMap = const {
-    "A": A,
-    "B": B,
-    "C": C,
-    "D": D,
+    "a": a,
+    "b": b,
+    "c": c,
+    "d": d,
   };
   static const List<StructWithEnumEnumWithin> values = const [
-    A,
-    B,
-    C,
-    D,
+    a,
+    b,
+    c,
+    d,
   ];
 
   static StructWithEnumEnumWithin valueOf(String name) => valuesMap[name];
@@ -851,13 +853,13 @@ class StructWithEnumEnumWithin extends bindings.MojoEnum {
   factory StructWithEnumEnumWithin(int v) {
     switch (v) {
       case 0:
-        return A;
+        return a;
       case 1:
-        return B;
+        return b;
       case 2:
-        return C;
+        return c;
       case 3:
-        return D;
+        return d;
       default:
         return null;
     }
@@ -875,18 +877,18 @@ class StructWithEnumEnumWithin extends bindings.MojoEnum {
 
   String toString() {
     switch(this) {
-      case A:
-        return 'StructWithEnumEnumWithin.A';
-      case B:
-        return 'StructWithEnumEnumWithin.B';
-      case C:
-        return 'StructWithEnumEnumWithin.C';
-      case D:
-        return 'StructWithEnumEnumWithin.D';
+      case a:
+        return 'StructWithEnumEnumWithin.a';
+      case b:
+        return 'StructWithEnumEnumWithin.b';
+      case c:
+        return 'StructWithEnumEnumWithin.c';
+      case d:
+        return 'StructWithEnumEnumWithin.d';
     }
   }
 
-  int toJson() => value;
+  int toJson() => mojoEnumValue;
 }
 
 class StructWithEnum extends bindings.Struct {

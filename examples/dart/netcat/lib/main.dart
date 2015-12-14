@@ -25,7 +25,7 @@ void ignoreFuture(Future f) {
 
 NetAddress makeIPv4NetAddress(List<int> addr, int port) {
   var rv = new NetAddress();
-  rv.family = NetAddressFamily.IPV4;
+  rv.family = NetAddressFamily.ipV4;
   rv.ipv4 = new NetAddressIPv4();
   rv.ipv4.addr = new List<int>.from(addr);
   rv.ipv4.port = port;
@@ -33,7 +33,7 @@ NetAddress makeIPv4NetAddress(List<int> addr, int port) {
 }
 
 void fputs(files.File f, String s) {
-  ignoreFuture(f.write((s + '\n').codeUnits, 0, files.Whence.FROM_CURRENT));
+  ignoreFuture(f.write((s + '\n').codeUnits, 0, files.Whence.fromCurrent));
 }
 
 // Connects the terminal |File| and the socket.
@@ -92,7 +92,7 @@ class Connector {
   void _startReadingFromTerminal() {
     // TODO(vtl): Do we have to do something on error?
     _terminal.ptr
-        .read(_writeBuffer.lengthInBytes, 0, files.Whence.FROM_CURRENT)
+        .read(_writeBuffer.lengthInBytes, 0, files.Whence.fromCurrent)
         .then(_onReadFromTerminal)
         .catchError((e) {
       _shutDown();
@@ -100,7 +100,7 @@ class Connector {
   }
 
   void _onReadFromTerminal(files.FileReadResponseParams p) {
-    if (p.error != files.Error.OK) {
+    if (p.error != files.Error.ok) {
       // TODO(vtl): Do terminal errors.
       return;
     }
@@ -131,7 +131,7 @@ class Connector {
         assert(numBytesRead > 0);
         _terminal.ptr
             .write(_readBuffer.buffer.asUint8List(0, numBytesRead), 0,
-                files.Whence.FROM_CURRENT)
+                files.Whence.fromCurrent)
             .catchError((e) {
           _shutDown();
         });

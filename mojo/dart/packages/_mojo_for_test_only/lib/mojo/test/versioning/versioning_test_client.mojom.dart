@@ -8,19 +8,20 @@ import 'dart:async';
 
 import 'package:mojo/bindings.dart' as bindings;
 import 'package:mojo/core.dart' as core;
+
 class Department extends bindings.MojoEnum {
-  static const SALES = const Department._(0);
-  static const DEV = const Department._(1);
+  static const Department sales = const Department._(0);
+  static const Department dev = const Department._(1);
 
   const Department._(int v) : super(v);
 
   static const Map<String, Department> valuesMap = const {
-    "SALES": SALES,
-    "DEV": DEV,
+    "sales": sales,
+    "dev": dev,
   };
   static const List<Department> values = const [
-    SALES,
-    DEV,
+    sales,
+    dev,
   ];
 
   static Department valueOf(String name) => valuesMap[name];
@@ -28,9 +29,9 @@ class Department extends bindings.MojoEnum {
   factory Department(int v) {
     switch (v) {
       case 0:
-        return SALES;
+        return sales;
       case 1:
-        return DEV;
+        return dev;
       default:
         return null;
     }
@@ -48,14 +49,14 @@ class Department extends bindings.MojoEnum {
 
   String toString() {
     switch(this) {
-      case SALES:
-        return 'Department.SALES';
-      case DEV:
-        return 'Department.DEV';
+      case sales:
+        return 'Department.sales';
+      case dev:
+        return 'Department.dev';
     }
   }
 
-  int toJson() => value;
+  int toJson() => mojoEnumValue;
 }
 
 

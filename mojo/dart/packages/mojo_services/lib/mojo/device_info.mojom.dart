@@ -141,34 +141,35 @@ class DeviceInfoGetDeviceTypeResponseParams extends bindings.Struct {
 
 const int kDeviceInfo_getDeviceType_name = 0;
 const String DeviceInfoName = "mojo::DeviceInfo";
-  class DeviceInfoDeviceType extends bindings.MojoEnum {
-  static const UNKNOWN = const DeviceInfoDeviceType._(0);
-  static const HEADLESS = const DeviceInfoDeviceType._(1);
-  static const WATCH = const DeviceInfoDeviceType._(2);
-  static const PHONE = const DeviceInfoDeviceType._(3);
-  static const TABLET = const DeviceInfoDeviceType._(4);
-  static const DESKTOP = const DeviceInfoDeviceType._(5);
-  static const TV = const DeviceInfoDeviceType._(6);
+  
+class DeviceInfoDeviceType extends bindings.MojoEnum {
+  static const DeviceInfoDeviceType unknown = const DeviceInfoDeviceType._(0);
+  static const DeviceInfoDeviceType headless = const DeviceInfoDeviceType._(1);
+  static const DeviceInfoDeviceType watch = const DeviceInfoDeviceType._(2);
+  static const DeviceInfoDeviceType phone = const DeviceInfoDeviceType._(3);
+  static const DeviceInfoDeviceType tablet = const DeviceInfoDeviceType._(4);
+  static const DeviceInfoDeviceType desktop = const DeviceInfoDeviceType._(5);
+  static const DeviceInfoDeviceType tv = const DeviceInfoDeviceType._(6);
 
   const DeviceInfoDeviceType._(int v) : super(v);
 
   static const Map<String, DeviceInfoDeviceType> valuesMap = const {
-    "UNKNOWN": UNKNOWN,
-    "HEADLESS": HEADLESS,
-    "WATCH": WATCH,
-    "PHONE": PHONE,
-    "TABLET": TABLET,
-    "DESKTOP": DESKTOP,
-    "TV": TV,
+    "unknown": unknown,
+    "headless": headless,
+    "watch": watch,
+    "phone": phone,
+    "tablet": tablet,
+    "desktop": desktop,
+    "tv": tv,
   };
   static const List<DeviceInfoDeviceType> values = const [
-    UNKNOWN,
-    HEADLESS,
-    WATCH,
-    PHONE,
-    TABLET,
-    DESKTOP,
-    TV,
+    unknown,
+    headless,
+    watch,
+    phone,
+    tablet,
+    desktop,
+    tv,
   ];
 
   static DeviceInfoDeviceType valueOf(String name) => valuesMap[name];
@@ -176,19 +177,19 @@ const String DeviceInfoName = "mojo::DeviceInfo";
   factory DeviceInfoDeviceType(int v) {
     switch (v) {
       case 0:
-        return UNKNOWN;
+        return unknown;
       case 1:
-        return HEADLESS;
+        return headless;
       case 2:
-        return WATCH;
+        return watch;
       case 3:
-        return PHONE;
+        return phone;
       case 4:
-        return TABLET;
+        return tablet;
       case 5:
-        return DESKTOP;
+        return desktop;
       case 6:
-        return TV;
+        return tv;
       default:
         return null;
     }
@@ -206,24 +207,24 @@ const String DeviceInfoName = "mojo::DeviceInfo";
 
   String toString() {
     switch(this) {
-      case UNKNOWN:
-        return 'DeviceInfoDeviceType.UNKNOWN';
-      case HEADLESS:
-        return 'DeviceInfoDeviceType.HEADLESS';
-      case WATCH:
-        return 'DeviceInfoDeviceType.WATCH';
-      case PHONE:
-        return 'DeviceInfoDeviceType.PHONE';
-      case TABLET:
-        return 'DeviceInfoDeviceType.TABLET';
-      case DESKTOP:
-        return 'DeviceInfoDeviceType.DESKTOP';
-      case TV:
-        return 'DeviceInfoDeviceType.TV';
+      case unknown:
+        return 'DeviceInfoDeviceType.unknown';
+      case headless:
+        return 'DeviceInfoDeviceType.headless';
+      case watch:
+        return 'DeviceInfoDeviceType.watch';
+      case phone:
+        return 'DeviceInfoDeviceType.phone';
+      case tablet:
+        return 'DeviceInfoDeviceType.tablet';
+      case desktop:
+        return 'DeviceInfoDeviceType.desktop';
+      case tv:
+        return 'DeviceInfoDeviceType.tv';
     }
   }
 
-  int toJson() => value;
+  int toJson() => mojoEnumValue;
 }
 
 abstract class DeviceInfo {
