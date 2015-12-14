@@ -307,11 +307,10 @@ type DuplicateMethodNameError struct {
 }
 
 func (e *DuplicateMethodNameError) Error() string {
-	return fmt.Sprintf("%s:%s. Duplicate definition of method '%s'. "+
-		"There is already a method with that name in interface %s.",
-		e.owningFile.CanonicalFileName,
-		e.nameToken.ShortLocationString(), e.nameToken.Text,
-		e.owningInterface.simpleName)
+	return UserErrorMessage(e.owningFile, e.nameToken,
+		fmt.Sprintf("Duplicate definition of method '%s'. "+
+			"There is already a method with that name in interface %s.",
+			e.nameToken.Text, e.owningInterface.simpleName))
 }
 
 func (i *MojomInterface) AddMethod(method *MojomMethod) DuplicateNameError {
@@ -346,25 +345,21 @@ type MethodOrdinalError struct {
 
 // MethodOrdinalError implements error.
 func (e *MethodOrdinalError) Error() string {
+	var message string
 	switch e.Err {
 	case ErrOrdinalRange:
-		return fmt.Sprintf("%s:%s. Invalid method ordinal for method %s: %d. "+
+		message = fmt.Sprintf("Invalid method ordinal for method %s: %d. "+
 			"A method ordinal must be a non-negative 32-bit integer value.",
-			e.Method.OwningFile().CanonicalFileName,
-			e.Method.NameToken().ShortLocationString(),
-			e.Method.SimpleName(),
-			e.Ord)
+			e.Method.SimpleName(), e.Ord)
 	case ErrOrdinalDuplicate:
-		return fmt.Sprintf("%s:%s. Invalid method ordinal for method %s: %d. "+
-			"There is already a method in interface %s, with that ordinal: %s.",
-			e.Method.OwningFile().CanonicalFileName,
-			e.Method.NameToken().ShortLocationString(),
-			e.Method.SimpleName(),
-			e.Ord, e.InterfaceName,
+		message = fmt.Sprintf("Invalid method ordinal for method %s: %d. "+
+			"There is already a method in interface %s with that ordinal: %s.",
+			e.Method.SimpleName(), e.Ord, e.InterfaceName,
 			e.ExistingMethod.SimpleName())
 	default:
 		panic(fmt.Sprintf("Unrecognized type of MethodOrdinalError %v", e.Err))
 	}
+	return UserErrorMessage(e.Method.OwningFile(), e.Method.NameToken(), message)
 }
 
 func (intrfc *MojomInterface) ComputeMethodOrdinals() error {

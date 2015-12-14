@@ -233,14 +233,11 @@ type DuplicateTypeNameError struct {
 }
 
 func (e *DuplicateTypeNameError) Error() string {
-	return fmt.Sprintf("%s:%s. Duplicate definition for name %q. "+
+	message := fmt.Sprintf("Duplicate definition for name %q. "+
 		"The fully-qualified name of this type would be the same as "+
-		"an existing type definition: "+
-		"%s %s in %s.", e.owningFile.CanonicalFileName,
-		e.nameToken.ShortLocationString(), e.nameToken.Text,
-		e.existingType.Kind(),
-		e.existingType.FullyQualifiedName(),
-		e.existingType.Scope())
+		"an existing type definition: %s %s in %s.", e.nameToken.Text,
+		e.existingType.Kind(), e.existingType.FullyQualifiedName(), e.existingType.Scope())
+	return UserErrorMessage(e.owningFile, e.nameToken, message)
 }
 
 type DuplicateValueNameError struct {
@@ -249,14 +246,11 @@ type DuplicateValueNameError struct {
 }
 
 func (e *DuplicateValueNameError) Error() string {
-	return fmt.Sprintf("%s:%s. Duplicate definition for name '%s'. "+
+	message := fmt.Sprintf("Duplicate definition for name %q. "+
 		"The fully-qualified name of this value would be the same as "+
-		"an existing value definition: "+
-		"%s %s in %s.", e.owningFile.CanonicalFileName,
-		e.nameToken.ShortLocationString(), e.nameToken.Text,
-		e.existingValue.Kind(),
-		e.existingValue.FullyQualifiedName(),
-		e.existingValue.Scope())
+		"an existing value definition: %s %s in %s.", e.nameToken.Text,
+		e.existingValue.Kind(), e.existingValue.FullyQualifiedName(), e.existingValue.Scope())
+	return UserErrorMessage(e.owningFile, e.nameToken, message)
 }
 
 // registerTypeWithNamePrefix is a recursive helper method used by RegisterType.
