@@ -6,8 +6,10 @@ static_library("skia") {
   sources = [
     "ganesh_context.cc",
     "ganesh_context.h",
-    "ganesh_surface.cc",
-    "ganesh_surface.h",
+    "ganesh_framebuffer_surface.cc",
+    "ganesh_framebuffer_surface.h",
+    "ganesh_texture_surface.cc",
+    "ganesh_texture_surface.h",
   ]
 
   deps = [

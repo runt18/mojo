@@ -6,7 +6,7 @@
 
 #include "base/logging.h"
 #include "base/trace_event/trace_event.h"
-#include "mojo/skia/ganesh_surface.h"
+#include "mojo/skia/ganesh_texture_surface.h"
 #include "third_party/skia/include/core/SkCanvas.h"
 #include "third_party/skia/include/core/SkColor.h"
 
@@ -64,9 +64,9 @@ void GaneshView::OnViewBoundsChanged(mojo::View* view,
 void GaneshView::Draw(const mojo::Size& size) {
   TRACE_EVENT0("ganesh_app", __func__);
   mojo::GaneshContext::Scope scope(gr_context_.get());
-  mojo::GaneshSurface surface(
+  mojo::GaneshTextureSurface surface(
       gr_context_.get(),
-      make_scoped_ptr(new mojo::GLTexture(gl_context_, size)));
+      std::unique_ptr<mojo::GLTexture>(new mojo::GLTexture(gl_context_, size)));
 
   SkCanvas* canvas = surface.canvas();
   canvas->clear(SK_ColorCYAN);
@@ -83,7 +83,8 @@ void GaneshView::Draw(const mojo::Size& size) {
 
   canvas->flush();
 
-  texture_uploader_.Upload(surface.TakeTexture());
+  texture_uploader_.Upload(
+      scoped_ptr<mojo::GLTexture>(surface.TakeTexture().release()));
 }
 
 }  // namespace examples

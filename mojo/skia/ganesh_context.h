@@ -6,7 +6,7 @@
 #define MOJO_SKIA_GANESH_CONTEXT_H_
 
 #include "base/basictypes.h"
-#include "base/memory/ref_counted.h"
+#include "base/memory/weak_ptr.h"
 #include "mojo/gpu/gl_context.h"
 #include "skia/ext/refptr.h"
 #include "third_party/skia/include/gpu/GrContext.h"
