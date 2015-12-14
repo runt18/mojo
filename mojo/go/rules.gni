@@ -101,6 +101,8 @@ template("go_test_binary") {
              "-L" + rebase_path(target_out_dir) + " -l" + static_library_name +
                  " -lstdc++ -lpthread -lm -lglib-2.0 -lrt",
              "test",
+             "-tags",
+             "include_mojo_cgo",
              "-c",
            ] + rebase_path(invoker.sources, build_dir)
   }
@@ -249,6 +251,8 @@ template("go_mojo_application") {
       "-I" + rebase_path("//"),
       "-L" + rebase_path(target_out_dir) + " -l" + static_library_name + "",
       "build",
+      "-tags",
+      "include_mojo_cgo",
     ]
     args += [ "-buildmode=c-shared" ]
     args += rebase_path(invoker.sources, build_dir)
