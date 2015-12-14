@@ -470,7 +470,7 @@ source_set("skia_opts") {
 
   if (current_cpu == "x86" || current_cpu == "x64") {
     sources = gypi_skia_opts.sse2_sources + gypi_skia_opts.ssse3_sources +
-              gypi_skia_opts.sse41_sources
+              gypi_skia_opts.sse41_sources + gypi_skia_opts.avx_sources
     if (is_linux || is_mac) {
       cflags += [ "-msse4.1" ]
     }
