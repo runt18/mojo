@@ -30,7 +30,7 @@ vars = {
   'boringssl_revision': '642f1498d056dbba3e50ed5a232ab2f482626dec',
   'lss_revision': '6f97298fe3794e92c8c896a6bc06e0b36e4c3de3',
   'nss_revision': 'bb4e75a43d007518ae7d618665ea2f25b0c60b63',
-  'nacl_revision': 'f3dcedcdb5cf72890166b9618005331bd2666e84',
+  'nacl_revision': '1946a478cab0c564d050631adbd7956d89527081',
 }
 
 # Only these hosts are allowed for dependencies in this DEPS file.
