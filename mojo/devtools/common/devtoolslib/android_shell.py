@@ -34,6 +34,9 @@ _MOJO_SHELL_PACKAGE_NAME = 'org.chromium.mojo.shell'
 # Used to parse the output of `adb devices`.
 _ADB_DEVICES_HEADER = 'List of devices attached'
 
+# Fixed port on which Flutter observatory is run.
+_FLUTTER_OBSERVATORY_PORT = 8181
+
 
 _logger = logging.getLogger()
 
@@ -398,6 +401,11 @@ class AndroidShell(Shell):
     logcat_watch_thread.daemon = True
     logcat_watch_thread.start()
 
+  def forward_flutter_observatory_port(self):
+    """Forwards the fixed port on which Flutter observatory is run."""
+    self._forward_host_port_to_device(_FLUTTER_OBSERVATORY_PORT,
+                                      _FLUTTER_OBSERVATORY_PORT)
+
   @overrides(Shell)
   def serve_local_directories(self, mappings, port, reuse_servers=False):
     assert mappings
@@ -418,6 +426,7 @@ class AndroidShell(Shell):
   def run(self, arguments):
     self.clean_logs()
     self.forward_observatory_ports()
+    self.forward_flutter_observatory_port()
 
     p = self.show_logs()
     self.start_shell(arguments, sys.stdout, p.terminate)
