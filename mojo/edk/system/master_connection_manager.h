@@ -26,6 +26,7 @@ using SlaveInfo = void*;
 }
 
 namespace platform {
+class PlatformHandleWatcher;
 class Thread;
 }
 
@@ -146,6 +147,7 @@ class MasterConnectionManager final : public ConnectionManager {
   // It is started in |Init()| and terminated in |Shutdown()|.
   std::unique_ptr<platform::Thread> private_thread_;
   util::RefPtr<platform::TaskRunner> private_thread_task_runner_;
+  platform::PlatformHandleWatcher* private_thread_platform_handle_watcher_;
 
   // The following members are only accessed on |private_thread_|:
   // TODO(vtl): Make the values unique_ptrs.

@@ -47,9 +47,7 @@ void Channel::Init(RefPtr<TaskRunner>&& io_task_runner,
   // becomes thread-safe.
   DCHECK(!is_running_);
   raw_channel_ = std::move(raw_channel);
-  // TODO(vtl): Add explicit |io_task_runner| and |io_watcher| arguments to
-  // |RawChannel::Init()| and pass them on.
-  raw_channel_->Init(this);
+  raw_channel_->Init(std::move(io_task_runner), io_watcher, this);
   is_running_ = true;
 }
 

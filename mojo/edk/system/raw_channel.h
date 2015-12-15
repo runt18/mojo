@@ -10,10 +10,13 @@
 
 #include "base/memory/weak_ptr.h"
 #include "mojo/edk/platform/platform_handle.h"
+#include "mojo/edk/platform/platform_handle_watcher.h"
 #include "mojo/edk/platform/scoped_platform_handle.h"
+#include "mojo/edk/platform/task_runner.h"
 #include "mojo/edk/system/message_in_transit.h"
 #include "mojo/edk/system/message_in_transit_queue.h"
 #include "mojo/edk/util/mutex.h"
+#include "mojo/edk/util/ref_ptr.h"
 #include "mojo/edk/util/thread_annotations.h"
 #include "mojo/public/cpp/system/macros.h"
 
@@ -92,7 +95,9 @@ class RawChannel {
   // *not* take ownership of |delegate|. Both the I/O thread and |delegate| must
   // remain alive until |Shutdown()| is called (unless this fails); |delegate|
   // will no longer be used after |Shutdown()|.
-  void Init(Delegate* delegate) MOJO_NOT_THREAD_SAFE;
+  void Init(util::RefPtr<platform::TaskRunner>&& io_task_runner,
+            platform::PlatformHandleWatcher* io_watcher,
+            Delegate* delegate) MOJO_NOT_THREAD_SAFE;
 
   // This must be called (on the I/O thread) before this object is destroyed.
   void Shutdown() MOJO_NOT_THREAD_SAFE;
@@ -316,9 +321,12 @@ class RawChannel {
 
   // Set in |Init()| and never changed (hence usable on any thread without
   // locking):
+  util::RefPtr<platform::TaskRunner> io_task_runner_;
+  // TODO(vtl): Remove this, once RawChannelPosix has been converted.
   base::MessageLoopForIO* message_loop_for_io_;
 
   // Only used on the I/O thread:
+  platform::PlatformHandleWatcher* io_watcher_;
   Delegate* delegate_;
   bool* set_on_shutdown_;
   std::unique_ptr<ReadBuffer> read_buffer_;

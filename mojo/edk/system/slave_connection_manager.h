@@ -28,6 +28,7 @@ class SlaveProcessDelegate;
 }
 
 namespace platform {
+class PlatformHandleWatcher;
 class Thread;
 }
 
@@ -109,6 +110,7 @@ class SlaveConnectionManager final : public ConnectionManager,
   // TODO(vtl): This isn't really necessary.
   std::unique_ptr<platform::Thread> private_thread_;
   util::RefPtr<platform::TaskRunner> private_thread_task_runner_;
+  platform::PlatformHandleWatcher* private_thread_platform_handle_watcher_;
 
   // Only accessed on |private_thread_|:
   std::unique_ptr<RawChannel> raw_channel_;

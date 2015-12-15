@@ -32,7 +32,8 @@ namespace system {
 SlaveConnectionManager::SlaveConnectionManager(
     embedder::PlatformSupport* platform_support)
     : ConnectionManager(platform_support),
-      slave_process_delegate_(),
+      slave_process_delegate_(nullptr),
+      private_thread_platform_handle_watcher_(nullptr),
       awaiting_ack_type_(NOT_AWAITING_ACK),
       ack_result_(nullptr),
       ack_peer_process_identifier_(nullptr),
@@ -63,10 +64,8 @@ void SlaveConnectionManager::Init(
 
   delegate_thread_task_runner_ = std::move(delegate_thread_task_runner);
   slave_process_delegate_ = slave_process_delegate;
-  // TODO(vtl): We'll need to plumb this in further.
-  PlatformHandleWatcher* platform_handle_watcher = nullptr;
   private_thread_ = platform::CreateAndStartIOThread(
-      &private_thread_task_runner_, &platform_handle_watcher);
+      &private_thread_task_runner_, &private_thread_platform_handle_watcher_);
   // TODO(vtl): With C++14 lambda captures, we'll be able to move
   // |platform_handle|.
   auto raw_platform_handle = platform_handle.release();
@@ -88,6 +87,7 @@ void SlaveConnectionManager::Shutdown() {
   private_thread_->Stop();
   private_thread_.reset();
   private_thread_task_runner_ = nullptr;
+  private_thread_platform_handle_watcher_ = nullptr;
   slave_process_delegate_ = nullptr;
   delegate_thread_task_runner_ = nullptr;
 }
@@ -148,7 +148,8 @@ void SlaveConnectionManager::InitOnPrivateThread(
   AssertOnPrivateThread();
 
   raw_channel_ = RawChannel::Create(platform_handle.Pass());
-  raw_channel_->Init(this);
+  raw_channel_->Init(private_thread_task_runner_.Clone(),
+                     private_thread_platform_handle_watcher_, this);
   event_.Signal();
 }
 

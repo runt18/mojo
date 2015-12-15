@@ -17,8 +17,11 @@
 #include "mojo/edk/system/transport_data.h"
 
 using mojo::platform::PlatformHandle;
+using mojo::platform::PlatformHandleWatcher;
 using mojo::platform::ScopedPlatformHandle;
+using mojo::platform::TaskRunner;
 using mojo::util::MutexLocker;
+using mojo::util::RefPtr;
 
 namespace mojo {
 namespace system {
@@ -159,11 +162,11 @@ void RawChannel::WriteBuffer::GetBuffers(std::vector<Buffer>* buffers) const {
 
 RawChannel::RawChannel()
     : message_loop_for_io_(nullptr),
+      io_watcher_(nullptr),
       delegate_(nullptr),
       set_on_shutdown_(nullptr),
       write_stopped_(false),
-      weak_ptr_factory_(this) {
-}
+      weak_ptr_factory_(this) {}
 
 RawChannel::~RawChannel() {
   DCHECK(!read_buffer_);
@@ -175,11 +178,19 @@ RawChannel::~RawChannel() {
   DCHECK(!weak_ptr_factory_.HasWeakPtrs());
 }
 
-void RawChannel::Init(Delegate* delegate) {
+void RawChannel::Init(RefPtr<TaskRunner>&& io_task_runner,
+                      PlatformHandleWatcher* io_watcher,
+                      Delegate* delegate) {
+  DCHECK(io_task_runner);
+  DCHECK(io_watcher);
   DCHECK(delegate);
 
   DCHECK(!delegate_);
   delegate_ = delegate;
+  DCHECK(!io_task_runner_);
+  io_task_runner_ = io_task_runner;
+  DCHECK(!io_watcher_);
+  io_watcher_ = io_watcher;
 
   CHECK_EQ(base::MessageLoop::current()->type(), base::MessageLoop::TYPE_IO);
   DCHECK(!message_loop_for_io_);
