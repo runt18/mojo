@@ -2,8 +2,6 @@
 # Use of this source code is governed by a BSD-style license that can be
 # found in the LICENSE file.
 
-assert(is_linux, "This file should only be depended on from Linux.")
-
 config("freetype2_config") {
   include_dirs = [
     "include",
@@ -11,9 +9,8 @@ config("freetype2_config") {
   ]
 }
 
-shared_library("freetype2") {
+source_set("freetype2") {
   output_name = "freetype"
-  output_extension = "so.6"
 
   sources = [
     "src/src/autofit/autofit.c",
@@ -23,6 +20,7 @@ shared_library("freetype2") {
     "src/src/base/ftbitmap.c",
     "src/src/base/ftcid.c",
     "src/src/base/ftdebug.c",
+    "src/src/base/ftfntfmt.c",
     "src/src/base/ftfstype.c",
     "src/src/base/ftgasp.c",
     "src/src/base/ftglyph.c",
@@ -36,7 +34,6 @@ shared_library("freetype2") {
     "src/src/base/ftsystem.c",
     "src/src/base/fttype1.c",
     "src/src/base/ftwinfnt.c",
-    "src/src/base/ftxf86.c",
     "src/src/bdf/bdf.c",
     "src/src/cff/cff.c",
     "src/src/cid/type1cid.c",
@@ -57,7 +54,6 @@ shared_library("freetype2") {
   ]
 
   defines = [
-    "FT_CONFIG_OPTION_SYSTEM_ZLIB",
     "FT2_BUILD_LIBRARY",
     "FT_CONFIG_CONFIG_H=<ftconfig.h>",  # See comments in README.chromium.
     "FT_CONFIG_MODULES_H=<ftmodule.h>",  # See comments in README.chromium.
@@ -69,5 +65,7 @@ shared_library("freetype2") {
 
   public_configs = [ ":freetype2_config" ]
 
-  libs = [ "z" ]
+  deps = [
+    "//third_party/zlib",
+  ]
 }
