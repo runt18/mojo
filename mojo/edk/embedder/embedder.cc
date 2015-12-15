@@ -135,11 +135,10 @@ void InitIPCSupport(ProcessType process_type,
   // And not |InitIPCSupport()| (without |ShutdownIPCSupport()|).
   DCHECK(!internal::g_ipc_support);
 
-  // TODO(vtl): Make IPCSUpport also take |io_watcher|.
   internal::g_ipc_support = new system::IPCSupport(
       internal::g_platform_support, process_type,
       std::move(delegate_thread_task_runner), process_delegate,
-      std::move(io_task_runner), platform_handle.Pass());
+      std::move(io_task_runner), io_watcher, platform_handle.Pass());
 }
 
 void ShutdownIPCSupportOnIOThread() {
@@ -153,7 +152,7 @@ void ShutdownIPCSupportOnIOThread() {
 void ShutdownIPCSupport() {
   DCHECK(internal::g_ipc_support);
 
-  internal::g_ipc_support->io_thread_task_runner()->PostTask([]() {
+  internal::g_ipc_support->io_task_runner()->PostTask([]() {
     // Save these before they get nuked by |ShutdownChannelOnIOThread()|.
     RefPtr<TaskRunner> delegate_thread_task_runner(
         internal::g_ipc_support->delegate_thread_task_runner());
