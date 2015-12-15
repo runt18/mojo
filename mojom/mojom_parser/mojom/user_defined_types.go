@@ -45,19 +45,25 @@ func (k UserDefinedTypeKind) String() string {
 	}
 }
 
+// A DeclaredObject is either a UserDefinedType or a UserDefinedValue.
+type DeclaredObject interface {
+	SimpleName() string
+	NameToken() lexer.Token
+	FullyQualifiedName() string
+	KindString() string
+	Scope() *Scope
+	RegisterInScope(scope *Scope) DuplicateNameError
+}
+
 /////////////////////////////////////////////////////////////
 // The UserDefinedType interface. This is implemented by
 // MojomStruct, MojomInterface, MojomEnum and MojomUnion
 /////////////////////////////////////////////////////////////
 type UserDefinedType interface {
-	SimpleName() string
-	NameToken() lexer.Token
-	FullyQualifiedName() string
+	DeclaredObject
 	Kind() UserDefinedTypeKind
 	TypeKey() string
-	Scope() *Scope
 	IsAssignmentCompatibleWith(value LiteralValue) bool
-	RegisterInScope(scope *Scope) DuplicateNameError
 }
 
 // This struct is embedded in each of MojomStruct, MojomInterface
@@ -79,6 +85,10 @@ func (b *UserDefinedTypeBase) TypeKind() TypeKind {
 	return TypeKindUserDefined
 }
 
+func (b *UserDefinedTypeBase) KindString() string {
+	return b.thisType.Kind().String()
+}
+
 // Generates the fully-qualified name and the type Key and registers the
 // type in the given |scope| and also with the associated MojomDescriptor.
 //
@@ -89,11 +99,11 @@ func (b *UserDefinedTypeBase) RegisterInScope(scope *Scope) DuplicateNameError {
 		panic("scope is nil")
 	}
 
-	// Register in the given scope with the given namePrefix.
+	// Set the scope on b before invoking RegisterType().
+	b.scope = scope
 	if err := scope.RegisterType(b.thisType); err != nil {
 		return err
 	}
-	b.scope = scope
 
 	b.fullyQualifiedName = buildDottedName(scope.fullyQualifiedName, b.simpleName)
 	b.typeKey = computeTypeKey(b.fullyQualifiedName)
@@ -648,7 +658,7 @@ func (k UserDefinedValueKind) String() string {
 	case UserDefinedValueKindEnum:
 		return "enum value"
 	case UserDefinedValueKindDeclaredConst:
-		return "declared constant"
+		return "const"
 	case UserDefinedValueKindBuiltInConst:
 		return "built-in constant"
 	default:
@@ -659,13 +669,9 @@ func (k UserDefinedValueKind) String() string {
 // A UserDefinedValue is a UserDefinedConstant an EnumValue, or a
 // BuiltInConstantValue
 type UserDefinedValue interface {
-	SimpleName() string
-	NameToken() lexer.Token
-	FullyQualifiedName() string
+	DeclaredObject
 	Kind() UserDefinedValueKind
-	Scope() *Scope
 	ValueKey() string
-	RegisterInScope(scope *Scope) DuplicateNameError
 }
 
 type UserDefinedValueBase struct {
@@ -690,10 +696,11 @@ func (b *UserDefinedValueBase) Init(declData DeclarationData, kind UserDefinedVa
 }
 
 func (v *UserDefinedValueBase) RegisterInScope(scope *Scope) DuplicateNameError {
+	// Set the scope on v before invoking RegisterValue().
+	v.scope = scope
 	if err := scope.RegisterValue(v.thisValue); err != nil {
 		return err
 	}
-	v.scope = scope
 
 	if v.thisValue.Kind() == UserDefinedValueKindEnum {
 		if scope.kind != ScopeEnum {
@@ -742,6 +749,10 @@ func (b UserDefinedValueBase) ValueKey() string {
 
 func (b UserDefinedValueBase) ValueRef() ValueRef {
 	return b.valueRef
+}
+
+func (b *UserDefinedValueBase) KindString() string {
+	return b.thisValue.Kind().String()
 }
 
 /////////////////////////////////////////////////////////////
@@ -884,6 +895,10 @@ func (b BuiltInConstantValue) FullyQualifiedName() string {
 
 func (b BuiltInConstantValue) Kind() UserDefinedValueKind {
 	return UserDefinedValueKindBuiltInConst
+}
+
+func (b BuiltInConstantValue) KindString() string {
+	return "built-in constant"
 }
 
 func (b BuiltInConstantValue) Scope() *Scope {

@@ -967,12 +967,7 @@ func TestLexerErrors(t *testing.T) {
 	}
 }
 
-// TestDuplicateNameErrors contains a series of test cases in which we
-// run the parser on invalid mojom input string and compare the resulting
-// error message to an expected one. The particular type of error we are testing
-// here are cases in which multiple elements of the same container are given
-// the same name
-func TestDuplicateNameErrors(t *testing.T) {
+func TestDuplicateNameErrorsSingleFile(t *testing.T) {
 	type testCase struct {
 		fileName       string
 		mojomContents  string
@@ -988,6 +983,10 @@ func TestDuplicateNameErrors(t *testing.T) {
 
 	expectError := func(expectedError string) {
 		cases[testCaseNum].expectedErrors = append(cases[testCaseNum].expectedErrors, expectedError)
+	}
+
+	fileName := func() string {
+		return cases[testCaseNum].fileName
 	}
 
 	endTestCase := func() {
@@ -1072,6 +1071,72 @@ func TestDuplicateNameErrors(t *testing.T) {
 	endTestCase()
 
 	////////////////////////////////////////////////////////////
+	// Test Case (two types with the same name in file scope)
+	////////////////////////////////////////////////////////////
+	startTestCase("")
+	cases[testCaseNum].mojomContents = `
+	module a.b.c;
+
+	interface Foo {
+	};
+
+	struct Bar {
+	};
+
+	struct Foo {
+	};
+	`
+	expectError("Duplicate definition for \"Foo\". Previous definition with the same fully-qualified name:")
+	expectError("interface a.b.c.Foo at " + fileName())
+	endTestCase()
+
+	////////////////////////////////////////////////////////////
+	// Test Case (two values with the same name in file scope)
+	////////////////////////////////////////////////////////////
+	startTestCase("")
+	cases[testCaseNum].mojomContents = `
+	module a.b.c;
+
+	const int32 NUM_HATS = 6;
+	const string NUM_HATS = "6";
+	`
+	expectError("Duplicate definition for \"NUM_HATS\". Previous definition with the same fully-qualified name:")
+	expectError("const a.b.c.NUM_HATS at " + fileName())
+	endTestCase()
+
+	////////////////////////////////////////////////////////////
+	// Test Case (a value with the same name as a type at file scope)
+	////////////////////////////////////////////////////////////
+	startTestCase("")
+	cases[testCaseNum].mojomContents = `
+	module a.b.c;
+
+	union Foo {
+	};
+
+	const int32 Foo = 42;
+	`
+	expectError("Duplicate definition for \"Foo\". Previous definition with the same fully-qualified name:")
+	expectError("union a.b.c.Foo at " + fileName())
+	endTestCase()
+
+	////////////////////////////////////////////////////////////
+	// Test Case (a type with the same name as a value)
+	////////////////////////////////////////////////////////////
+	startTestCase("")
+	cases[testCaseNum].mojomContents = `
+	module a.b.c;
+
+	const int32 Foo = 42;
+
+	union Foo {
+	};
+	`
+	expectError("Duplicate definition for \"Foo\". Previous definition with the same fully-qualified name:")
+	expectError("const a.b.c.Foo at " + fileName())
+	endTestCase()
+
+	////////////////////////////////////////////////////////////
 	// Execute all of the test cases.
 	////////////////////////////////////////////////////////////
 	for i, c := range cases {
@@ -1085,6 +1150,171 @@ func TestDuplicateNameErrors(t *testing.T) {
 			for _, expected := range c.expectedErrors {
 				if !strings.Contains(got, expected) {
 					t.Errorf("%s:\n*****expected to contain:\n%s\n****actual\n%s", c.fileName, expected, got)
+				}
+			}
+		}
+	}
+}
+
+func TestDuplicateNameErrorsTwoFiles(t *testing.T) {
+	type testFile struct {
+		fileName      string
+		mojomContents string
+	}
+
+	type testCase struct {
+		file1, file2   testFile
+		expectedErrors []string
+	}
+	cases := make([]testCase, 0)
+	testCaseNum := 0
+
+	startTestCase := func() {
+		fileNameA := fmt.Sprintf("file%dA", testCaseNum)
+		fileNameB := fmt.Sprintf("file%dB", testCaseNum)
+		cases = append(cases, testCase{
+			file1: testFile{fileName: fileNameA},
+			file2: testFile{fileName: fileNameB}})
+	}
+
+	expectError := func(expectedError string) {
+		cases[testCaseNum].expectedErrors = append(cases[testCaseNum].expectedErrors, expectedError)
+	}
+
+	fileName1 := func() string {
+		return cases[testCaseNum].file1.fileName
+	}
+
+	endTestCase := func() {
+		testCaseNum += 1
+	}
+
+	////////////////////////////////////////////////////////////
+	// Test Case (two types with the same name in different scopes)
+	////////////////////////////////////////////////////////////
+	startTestCase()
+	cases[testCaseNum].file1.mojomContents = `
+	module a.b.c;
+
+	struct Foo {
+	};
+	`
+
+	cases[testCaseNum].file2.mojomContents = `
+	module a.b;
+
+	struct c {
+		enum Foo{};
+	};
+	`
+	expectError("Duplicate definition for \"Foo\". Previous definition with the same fully-qualified name:")
+	expectError("struct a.b.c.Foo at " + fileName1())
+	endTestCase()
+
+	////////////////////////////////////////////////////////////
+	// Test Case (two vales with the same name in different scopes)
+	////////////////////////////////////////////////////////////
+	startTestCase()
+	cases[testCaseNum].file1.mojomContents = `
+	module a.b.c;
+
+	enum Hats {
+		COWBOY = 1,
+		TOP
+	};
+	`
+
+	cases[testCaseNum].file2.mojomContents = `
+	module a.b.c.Hats;
+
+	const double TOP = 4.9;
+	`
+	expectError("Duplicate definition for \"TOP\". Previous definition with the same fully-qualified name:")
+	expectError("enum value a.b.c.Hats.TOP at " + fileName1())
+	endTestCase()
+
+	////////////////////////////////////////////////////////////
+	// Test Case (a value with the same name as a type in a different scope)
+	////////////////////////////////////////////////////////////
+	startTestCase()
+	cases[testCaseNum].file1.mojomContents = `
+	module a.b.c;
+
+	interface Hats{};
+	`
+
+	cases[testCaseNum].file2.mojomContents = `
+	module a.b.c;
+
+	const double Hats = 4.9;
+	`
+	expectError("Duplicate definition for \"Hats\". Previous definition with the same fully-qualified name:")
+	expectError("interface a.b.c.Hats at " + fileName1())
+	endTestCase()
+
+	////////////////////////////////////////////////////////////
+	// Test Case (another value with the same name as a type in a different scope)
+	////////////////////////////////////////////////////////////
+	startTestCase()
+	cases[testCaseNum].file1.mojomContents = `
+	module a.b.c.Hats;
+
+	interface COWBOY{};
+	`
+
+	cases[testCaseNum].file2.mojomContents = `
+	module a.b.c;
+
+	enum Hats {
+		COWBOY = 1,
+		TOP
+	};
+	`
+	expectError("Duplicate definition for \"COWBOY\". Previous definition with the same fully-qualified name:")
+	expectError("interface a.b.c.Hats.COWBOY at " + fileName1())
+	endTestCase()
+
+	////////////////////////////////////////////////////////////
+	// Test Case (a type with the same name as a value in a different scope)
+	////////////////////////////////////////////////////////////
+	startTestCase()
+	cases[testCaseNum].file1.mojomContents = `
+	module a.b.c;
+
+	enum Hats {
+		COWBOY = 1,
+		TOP
+	};
+	`
+
+	cases[testCaseNum].file2.mojomContents = `
+	module a.b.c.Hats;
+
+	interface COWBOY{};
+	`
+	expectError("Duplicate definition for \"COWBOY\". Previous definition with the same fully-qualified name:")
+	expectError("enum value a.b.c.Hats.COWBOY at " + fileName1())
+	endTestCase()
+
+	////////////////////////////////////////////////////////////
+	// Execute all of the test cases.
+	////////////////////////////////////////////////////////////
+	for i, c := range cases {
+		descriptor := mojom.NewMojomDescriptor()
+		parser := MakeParser(c.file1.fileName, c.file1.mojomContents, descriptor, nil)
+		parser.Parse()
+		if !parser.OK() {
+			t.Errorf("Parsing was supposed to succeed for file1 but did not for test case %d: %s", i, parser.GetError().Error())
+		}
+		parser = MakeParser(c.file2.fileName, c.file2.mojomContents, descriptor, nil)
+		parser.Parse()
+		if parser.OK() {
+			t.Errorf("Parsing was supposed to fail for file2 but did not for test case %d", i)
+		} else {
+			got := parser.GetError().Error()
+			for _, expected := range c.expectedErrors {
+				if !strings.Contains(got, expected) {
+					t.Errorf("%s:\n*****expected to contain:\n%s\n****actual\n%s", c.file2.fileName, expected, got)
 				}
 			}
 		}

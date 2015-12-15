@@ -57,7 +57,7 @@ func TestSingleFileResolutionnErrors(t *testing.T) {
 	{
 		contents := `
 
-    const bool Foo = Baz;
+    const bool F = Baz;
 
     struct Foo{
       int32 x = Bar;
