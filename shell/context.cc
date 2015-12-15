@@ -319,6 +319,7 @@ bool Context::InitWithPaths(
   mojo::embedder::InitIPCSupport(mojo::embedder::ProcessType::MASTER,
                                  task_runners_->shell_runner().Clone(), this,
                                  task_runners_->io_runner().Clone(),
+                                 task_runners_->io_watcher(),
                                  mojo::platform::ScopedPlatformHandle());
 
   scoped_ptr<NativeRunnerFactory> runner_factory;

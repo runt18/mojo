@@ -23,6 +23,7 @@
 #include "mojo/edk/system/raw_channel.h"
 #include "mojo/edk/util/ref_ptr.h"
 
+using mojo::platform::PlatformHandleWatcher;
 using mojo::platform::ScopedPlatformHandle;
 using mojo::platform::TaskRunner;
 using mojo::util::RefPtr;
@@ -126,17 +127,19 @@ MojoResult PassWrappedPlatformHandle(MojoHandle platform_handle_wrapper_handle,
 void InitIPCSupport(ProcessType process_type,
                     RefPtr<TaskRunner>&& delegate_thread_task_runner,
                     ProcessDelegate* process_delegate,
-                    RefPtr<TaskRunner>&& io_thread_task_runner,
+                    RefPtr<TaskRunner>&& io_task_runner,
+                    PlatformHandleWatcher* io_watcher,
                     ScopedPlatformHandle platform_handle) {
   // |Init()| must have already been called.
   DCHECK(internal::g_core);
   // And not |InitIPCSupport()| (without |ShutdownIPCSupport()|).
   DCHECK(!internal::g_ipc_support);
 
+  // TODO(vtl): Make IPCSUpport also take |io_watcher|.
   internal::g_ipc_support = new system::IPCSupport(
       internal::g_platform_support, process_type,
       std::move(delegate_thread_task_runner), process_delegate,
-      std::move(io_thread_task_runner), platform_handle.Pass());
+      std::move(io_task_runner), platform_handle.Pass());
 }
 
 void ShutdownIPCSupportOnIOThread() {

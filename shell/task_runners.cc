@@ -5,9 +5,12 @@
 #include "shell/task_runners.h"
 
 #include "base/threading/sequenced_worker_pool.h"
+#include "mojo/edk/base_edk/platform_handle_watcher_impl.h"
 #include "mojo/edk/base_edk/platform_task_runner_impl.h"
+#include "mojo/edk/util/make_unique.h"
 
 using mojo::util::MakeRefCounted;
+using mojo::util::MakeUnique;
 
 namespace shell {
 
@@ -32,6 +35,8 @@ TaskRunners::TaskRunners(
       io_thread_(CreateIOThread("io_thread")),
       io_runner_(MakeRefCounted<base_edk::PlatformTaskRunnerImpl>(
           io_thread_->task_runner())),
+      io_watcher_(MakeUnique<base_edk::PlatformHandleWatcherImpl>(
+          static_cast<base::MessageLoopForIO*>(io_thread_->message_loop()))),
       blocking_pool_(new base::SequencedWorkerPool(kMaxBlockingPoolThreads,
                                                    "blocking_pool")) {}
 

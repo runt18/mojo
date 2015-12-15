@@ -4,6 +4,8 @@
 
 #include <unistd.h>
 
+#include <memory>
+
 #include "base/at_exit.h"
 #include "base/bind.h"
 #include "base/callback_helpers.h"
@@ -20,13 +22,16 @@
 #include "base/thread_task_runner_handle.h"
 #include "base/threading/thread.h"
 #include "base/threading/thread_checker.h"
+#include "mojo/edk/base_edk/platform_handle_watcher_impl.h"
 #include "mojo/edk/base_edk/platform_task_runner_impl.h"
 #include "mojo/edk/embedder/embedder.h"
 #include "mojo/edk/embedder/platform_channel_pair.h"
 #include "mojo/edk/embedder/simple_platform_support.h"
 #include "mojo/edk/embedder/slave_process_delegate.h"
+#include "mojo/edk/platform/platform_handle_watcher.h"
 #include "mojo/edk/platform/scoped_platform_handle.h"
 #include "mojo/edk/platform/task_runner.h"
+#include "mojo/edk/util/make_unique.h"
 #include "mojo/edk/util/ref_ptr.h"
 #include "mojo/message_pump/message_pump_mojo.h"
 #include "mojo/public/cpp/bindings/binding.h"
@@ -36,8 +41,11 @@
 #include "shell/init.h"
 #include "shell/native_application_support.h"
 
+using mojo::platform::PlatformHandleWatcher;
 using mojo::platform::ScopedPlatformHandle;
+using mojo::platform::TaskRunner;
 using mojo::util::MakeRefCounted;
+using mojo::util::MakeUnique;
 using mojo::util::RefPtr;
 
 namespace shell {
@@ -110,6 +118,8 @@ class AppContext : public mojo::embedder::SlaveProcessDelegate {
     io_runner_ = MakeRefCounted<base_edk::PlatformTaskRunnerImpl>(
         io_thread_.task_runner());
     CHECK(io_runner_);
+    io_watcher_ = MakeUnique<base_edk::PlatformHandleWatcherImpl>(
+        static_cast<base::MessageLoopForIO*>(io_thread_.message_loop()));
 
     // Create and start our controller thread.
     base::Thread::Options controller_thread_options;
@@ -122,9 +132,9 @@ class AppContext : public mojo::embedder::SlaveProcessDelegate {
         controller_thread_.task_runner());
     CHECK(controller_runner_);
 
-    mojo::embedder::InitIPCSupport(mojo::embedder::ProcessType::SLAVE,
-                                   controller_runner_.Clone(), this,
-                                   io_runner_.Clone(), platform_handle.Pass());
+    mojo::embedder::InitIPCSupport(
+        mojo::embedder::ProcessType::SLAVE, controller_runner_.Clone(), this,
+        io_runner_.Clone(), io_watcher_.get(), platform_handle.Pass());
   }
 
   void Shutdown() {
@@ -134,7 +144,7 @@ class AppContext : public mojo::embedder::SlaveProcessDelegate {
     blocker.Block();
   }
 
-  const RefPtr<mojo::platform::TaskRunner>& controller_runner() const {
+  const RefPtr<TaskRunner>& controller_runner() const {
     return controller_runner_;
   }
 
@@ -165,10 +175,11 @@ class AppContext : public mojo::embedder::SlaveProcessDelegate {
   }
 
   base::Thread io_thread_;
-  RefPtr<mojo::platform::TaskRunner> io_runner_;
+  RefPtr<TaskRunner> io_runner_;
+  std::unique_ptr<PlatformHandleWatcher> io_watcher_;
 
   base::Thread controller_thread_;
-  RefPtr<mojo::platform::TaskRunner> controller_runner_;
+  RefPtr<TaskRunner> controller_runner_;
 
   // Accessed only on the controller thread.
   scoped_ptr<ChildControllerImpl> controller_;
@@ -276,7 +287,7 @@ class ChildControllerImpl : public ChildController {
   base::ThreadChecker thread_checker_;
   AppContext* const app_context_;
   Blocker::Unblocker unblocker_;
-  RefPtr<mojo::platform::TaskRunner> mojo_task_runner_;
+  RefPtr<TaskRunner> mojo_task_runner_;
   StartAppCallback on_app_complete_;
 
   mojo::embedder::ChannelInfo* channel_info_;

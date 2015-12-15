@@ -17,6 +17,11 @@
 #include "mojo/public/cpp/system/message_pipe.h"
 
 namespace mojo {
+
+namespace platform {
+class PlatformHandleWatcher;
+}
+
 namespace embedder {
 
 struct Configuration;
@@ -79,10 +84,9 @@ MojoResult PassWrappedPlatformHandle(
 //   - |process_delegate| must be a process delegate of the appropriate type
 //     corresponding to |process_type|; its methods will be called on
 //     |delegate_thread_task_runner|.
-//   - |delegate_thread_task_runner|, |process_delegate|, and
-//     |io_thread_task_runner| should live at least until
-//     |ShutdownIPCSupport()|'s callback has been run or
-//     |ShutdownIPCSupportOnIOThread()| has completed.
+//   - |delegate_thread_task_runner|, |process_delegate|, |io_task_runner|,
+//     and |io_watcher| should live at least until |ShutdownIPCSupport()|'s
+//     callback has been run or |ShutdownIPCSupportOnIOThread()| has completed.
 //   - For slave processes (i.e., |process_type| is |ProcessType::SLAVE|),
 //     |platform_handle| should be connected to the handle passed to
 //     |ConnectToSlave()| (in the master process). For other processes,
@@ -91,7 +95,8 @@ void InitIPCSupport(
     ProcessType process_type,
     util::RefPtr<platform::TaskRunner>&& delegate_thread_task_runner,
     ProcessDelegate* process_delegate,
-    util::RefPtr<platform::TaskRunner>&& io_thread_task_runner,
+    util::RefPtr<platform::TaskRunner>&& io_task_runner,
+    platform::PlatformHandleWatcher* io_watcher,
     platform::ScopedPlatformHandle platform_handle);
 
 // Shuts down the subsystem initialized by |InitIPCSupport()|. This must be
