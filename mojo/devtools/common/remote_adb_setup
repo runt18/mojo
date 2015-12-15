@@ -46,7 +46,7 @@ adb start-server
 #   9998: http server for Flutter
 #   31839: http server for https://core.mojoapps.io
 #   31840: http server for the local mojo: origin
-#   31841: http server for base mappings
+#   31841-31842: http servers for origin mappings
 ssh -C \
     -R 5037:127.0.0.1:5037 \
     -L 8181:127.0.0.1:8181 \
@@ -54,4 +54,5 @@ ssh -C \
     -L 31839:127.0.0.1:31839 \
     -L 31840:127.0.0.1:31840 \
     -L 31841:127.0.0.1:31841 \
+    -L 31842:127.0.0.1:31842 \
     "$remote_host"
