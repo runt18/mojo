@@ -255,7 +255,7 @@ func translateMojomUnion(union *mojom.MojomUnion) *mojom_types.UserDefinedTypeUn
 	return &mojomUnion
 }
 
-func translateUnionField(unionField mojom.UnionField) mojom_types.UnionField {
+func translateUnionField(unionField *mojom.UnionField) mojom_types.UnionField {
 	outUnionField := mojom_types.UnionField{}
 	outUnionField.DeclData = translateDeclarationData(&unionField.DeclarationData)
 	outUnionField.Type = translateTypeRef(unionField.FieldType)

@@ -480,23 +480,6 @@ func TestErrorParsing(t *testing.T) {
 	endTestCase()
 
 	////////////////////////////////////////////////////////////
-	// Test Case (duplicate method names)
-	////////////////////////////////////////////////////////////
-	startTestCase("")
-	cases[testCaseNum].mojomContents = `
-	interface MyInterface {
-		MethodA();
-		MethodB();
-		MethodC();
-		MethodB();
-		MethodD();
-	};
-
-	`
-	expectError("Duplicate definition of method 'MethodB'. There is already a method with that name in interface MyInterface.")
-	endTestCase()
-
-	////////////////////////////////////////////////////////////
 	// Test Case (Invalid method ordinal: too big for uint32)
 	////////////////////////////////////////////////////////////
 	startTestCase("")
@@ -885,7 +868,7 @@ func TestLexerErrors(t *testing.T) {
 	endTestCase()
 
 	////////////////////////////////////////////////////////////
-	// Group 1: Unterminated string literal
+	// Group 2: Unterminated string literal
 	////////////////////////////////////////////////////////////
 
 	/// ////////////////////////////////////////////////////////////
@@ -962,6 +945,130 @@ func TestLexerErrors(t *testing.T) {
 	`
 	expectError("Error:")
 	expectError("Unexpected \"*\"")
+	endTestCase()
+
+	////////////////////////////////////////////////////////////
+	// Execute all of the test cases.
+	////////////////////////////////////////////////////////////
+	for i, c := range cases {
+		descriptor := mojom.NewMojomDescriptor()
+		parser := MakeParser(c.fileName, c.mojomContents, descriptor, nil)
+		parser.Parse()
+		if parser.OK() {
+			t.Errorf("Parsing was supposed to fail but did not for test case %d", i)
+		} else {
+			got := parser.GetError().Error()
+			for _, expected := range c.expectedErrors {
+				if !strings.Contains(got, expected) {
+					t.Errorf("%s:\n*****expected to contain:\n%s\n****actual\n%s", c.fileName, expected, got)
+				}
+			}
+		}
+	}
+}
+
+// TestDuplicateNameErrors contains a series of test cases in which we
+// run the parser on invalid mojom input string and compare the resulting
+// error message to an expected one. The particular type of error we are testing
+// here are cases in which multiple elements of the same container are given
+// the same name
+func TestDuplicateNameErrors(t *testing.T) {
+	type testCase struct {
+		fileName       string
+		mojomContents  string
+		expectedErrors []string
+	}
+	cases := make([]testCase, 0)
+	testCaseNum := 0
+
+	startTestCase := func(moduleNameSpace string) {
+		fileName := fmt.Sprintf("file%d", testCaseNum)
+		cases = append(cases, testCase{fileName: fileName})
+	}
+
+	expectError := func(expectedError string) {
+		cases[testCaseNum].expectedErrors = append(cases[testCaseNum].expectedErrors, expectedError)
+	}
+
+	endTestCase := func() {
+		testCaseNum += 1
+	}
+
+	////////////////////////////////////////////////////////////
+	// Test Case: Duplicate struct field name.
+	////////////////////////////////////////////////////////////
+	startTestCase("")
+	cases[testCaseNum].mojomContents = `
+	struct Foo {
+		int32 x = 3;
+		string y = "hello";
+		float x = 1.7;
+	};
+	`
+	expectError("Error")
+	expectError("Duplicate definition of 'x'.")
+	expectError("There is already a field with that name in struct Foo.")
+	endTestCase()
+
+	////////////////////////////////////////////////////////////
+	// Test Case: Duplicate union field name.
+	////////////////////////////////////////////////////////////
+	startTestCase("")
+	cases[testCaseNum].mojomContents = `
+	union Foo {
+		int32 x;
+		string y;
+		float x ;
+	};
+	`
+	expectError("Error")
+	expectError("Duplicate definition of 'x'.")
+	expectError("There is already a field with that name in union Foo.")
+	endTestCase()
+
+	////////////////////////////////////////////////////////////
+	// Test Case: Duplicate method request parameter name.
+	////////////////////////////////////////////////////////////
+	startTestCase("")
+	cases[testCaseNum].mojomContents = `
+	interface Foo {
+		DoIt(int32 x, string y, float x);
+	};
+	`
+	expectError("Error")
+	expectError("Duplicate definition of 'x'.")
+	expectError("There is already a request parameter with that name in method DoIt.")
+	endTestCase()
+
+	////////////////////////////////////////////////////////////
+	// Test Case: Duplicate method response parameter name.
+	////////////////////////////////////////////////////////////
+	startTestCase("")
+	cases[testCaseNum].mojomContents = `
+	interface Foo {
+		DoIt() => (int32 x, string y, float x);
+	};
+	`
+	expectError("Error")
+	expectError("Duplicate definition of 'x'.")
+	expectError("There is already a response parameter with that name in method DoIt.")
+	endTestCase()
+
+	////////////////////////////////////////////////////////////
+	// Test Case (duplicate method names)
+	////////////////////////////////////////////////////////////
+	startTestCase("")
+	cases[testCaseNum].mojomContents = `
+	interface MyInterface {
+		MethodA();
+		MethodB();
+		MethodC();
+		MethodB();
+		MethodD();
+	};
+
+	`
+	expectError("Duplicate definition of 'MethodB'. There is already a method with that name in interface MyInterface.")
 	endTestCase()
 
 	////////////////////////////////////////////////////////////

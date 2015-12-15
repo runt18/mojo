@@ -141,17 +141,49 @@ func (c *DeclarationContainer) AddConstant(declaredConst *UserDefinedConstant) D
 /////////////////////////////////////////////////////////////
 // Structs
 /////////////////////////////////////////////////////////////
+
+type StructType int
+
+const (
+	// A  regular struct.
+	StructTypeRegular StructType = iota
+
+	// A synthetic method request parameter struct. In this case the name
+	/// of the struct will be the name of the method.
+	StructTypeSyntheticRequest
+
+	// A synthetic method response parameter struct. In this case the name
+	// of the struct will be the name of the method.
+	StructTypeSyntheticResponse
+)
+
 type MojomStruct struct {
 	UserDefinedTypeBase
 	DeclarationContainer
 
-	Fields []*StructField
+	structType StructType
+
+	fieldsByName map[string]*StructField
+	Fields       []*StructField
 }
 
 func NewMojomStruct(declData DeclarationData) *MojomStruct {
 	mojomStruct := new(MojomStruct)
+	mojomStruct.fieldsByName = make(map[string]*StructField)
 	mojomStruct.Fields = make([]*StructField, 0)
 	mojomStruct.Init(declData, mojomStruct)
+	return mojomStruct
+}
+
+func NewSyntheticRequestStruct(declData DeclarationData) *MojomStruct {
+	mojomStruct := NewMojomStruct(declData)
+	mojomStruct.structType = StructTypeSyntheticRequest
+	return mojomStruct
+}
+
+func NewSyntheticResponseStruct(declData DeclarationData) *MojomStruct {
+	mojomStruct := NewMojomStruct(declData)
+	mojomStruct.structType = StructTypeSyntheticResponse
 	return mojomStruct
 }
 
@@ -160,11 +192,42 @@ func (s *MojomStruct) InitAsScope(parentScope *Scope) *Scope {
 	return s.containedScope
 }
 
-func (s *MojomStruct) AddField(field *StructField) {
+type DuplicateMemberNameError struct {
+	DuplicateNameErrorBase
+	duplicateObjectType, containerType, containerName string
+}
+
+func (e *DuplicateMemberNameError) Error() string {
+	return UserErrorMessage(e.owningFile, e.nameToken,
+		fmt.Sprintf("Duplicate definition of '%s'. "+
+			"There is already a %s with that name in %s %s.",
+			e.nameToken.Text, e.duplicateObjectType, e.containerType, e.containerName))
+}
+
+func (s *MojomStruct) AddField(field *StructField) DuplicateNameError {
 	if field == nil {
-		return
+		panic("field is nil")
 	}
+	if _, ok := s.fieldsByName[field.simpleName]; ok {
+		var duplicateObjectType, containerType string
+		switch s.structType {
+		case StructTypeRegular:
+			duplicateObjectType = "field"
+			containerType = "struct"
+		case StructTypeSyntheticRequest:
+			duplicateObjectType = "request parameter"
+			containerType = "method"
+		case StructTypeSyntheticResponse:
+			duplicateObjectType = "response parameter"
+			containerType = "method"
+		}
+		return &DuplicateMemberNameError{
+			DuplicateNameErrorBase{nameToken: field.NameToken(), owningFile: field.OwningFile()},
+			duplicateObjectType, containerType, s.simpleName}
+	}
+	s.fieldsByName[field.simpleName] = field
 	s.Fields = append(s.Fields, field)
+	return nil
 }
 
 func (MojomStruct) Kind() UserDefinedTypeKind {
@@ -179,7 +242,6 @@ func (MojomStruct) IsAssignmentCompatibleWith(value LiteralValue) bool {
 // to the struct.
 func (s *MojomStruct) ComputeFieldOrdinals() {
 	// TODO(rudominer) Implement MojomStruct.ComputeFieldOrdinals()
-	// Also check that field names are unique.
 }
 
 func (m MojomStruct) String() string {
@@ -301,23 +363,11 @@ func (i *MojomInterface) InitAsScope(parentScope *Scope) *Scope {
 	return i.containedScope
 }
 
-type DuplicateMethodNameError struct {
-	DuplicateNameErrorBase
-	owningInterface *MojomInterface
-}
-
-func (e *DuplicateMethodNameError) Error() string {
-	return UserErrorMessage(e.owningFile, e.nameToken,
-		fmt.Sprintf("Duplicate definition of method '%s'. "+
-			"There is already a method with that name in interface %s.",
-			e.nameToken.Text, e.owningInterface.simpleName))
-}
-
 func (i *MojomInterface) AddMethod(method *MojomMethod) DuplicateNameError {
 	if _, ok := i.methodsByName[method.simpleName]; ok {
-		return &DuplicateMethodNameError{
+		return &DuplicateMemberNameError{
 			DuplicateNameErrorBase{nameToken: method.NameToken(), owningFile: method.OwningFile()},
-			i}
+			"method", "interface", i.simpleName}
 	}
 	i.methodsByName[method.simpleName] = method
 	i.methodsByLexicalOrder = append(i.methodsByLexicalOrder, method)
@@ -437,28 +487,36 @@ func (m *MojomMethod) String() string {
 type MojomUnion struct {
 	UserDefinedTypeBase
 
-	Fields []UnionField
+	fieldsByName map[string]*UnionField
+	Fields       []*UnionField
 }
 
 func NewMojomUnion(declData DeclarationData) *MojomUnion {
 	mojomUnion := new(MojomUnion)
-	mojomUnion.Fields = make([]UnionField, 0)
+	mojomUnion.fieldsByName = make(map[string]*UnionField)
+	mojomUnion.Fields = make([]*UnionField, 0)
 	mojomUnion.Init(declData, mojomUnion)
 	return mojomUnion
 }
 
 // Adds a UnionField to this Union
-func (u *MojomUnion) AddField(declData DeclarationData, FieldType TypeRef) {
+func (u *MojomUnion) AddField(declData DeclarationData, FieldType TypeRef) DuplicateNameError {
 	field := UnionField{FieldType: FieldType}
 	field.DeclarationData = declData
-	u.Fields = append(u.Fields, field)
+	if _, ok := u.fieldsByName[field.simpleName]; ok {
+		return &DuplicateMemberNameError{
+			DuplicateNameErrorBase{nameToken: field.NameToken(), owningFile: field.OwningFile()},
+			"field", "union", u.simpleName}
+	}
+	u.fieldsByName[field.simpleName] = &field
+	u.Fields = append(u.Fields, &field)
+	return nil
 }
 
 // This should be invoked some time after all of the fields have been added
 // to the union.
 func (u *MojomUnion) ComputeFieldTags() {
 	// TODO(rudominer) Implement MojomUnion.ComputeFieldTags()
-	// Also check that names are unique.
 }
 
 func (MojomUnion) Kind() UserDefinedTypeKind {

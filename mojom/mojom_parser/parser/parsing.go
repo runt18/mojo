@@ -538,7 +538,7 @@ func (p *Parser) parseMethodDecl(attributes *mojom.Attributes) *mojom.MojomMetho
 		return nil
 	}
 
-	params := p.parseParamList()
+	params := p.parseParamList(methodName, true)
 	if !p.OK() {
 		return nil
 	}
@@ -555,7 +555,7 @@ func (p *Parser) parseMethodDecl(attributes *mojom.Attributes) *mojom.MojomMetho
 			return nil
 		}
 
-		responseParams = p.parseParamList()
+		responseParams = p.parseParamList(methodName, false)
 		if !p.OK() {
 			return nil
 		}
@@ -580,14 +580,18 @@ func (p *Parser) parseMethodDecl(attributes *mojom.Attributes) *mojom.MojomMetho
 //
 // Returns a MojomStruct containing the list of parameters. This may
 // be nil in case of an early error. Check Parser.OK().
-func (p *Parser) parseParamList() (paramStruct *mojom.MojomStruct) {
+func (p *Parser) parseParamList(methodName string, isRequest bool) (paramStruct *mojom.MojomStruct) {
 	if !p.OK() {
 		return nil
 	}
 	p.pushChildNode("paramList")
 	defer p.popNode()
 
-	paramStruct = mojom.NewMojomStruct(p.DeclData("SyntheticParamStruct", lexer.Token{}, nil))
+	if isRequest {
+		paramStruct = mojom.NewSyntheticRequestStruct(p.DeclData(methodName, lexer.Token{}, nil))
+	} else {
+		paramStruct = mojom.NewSyntheticResponseStruct(p.DeclData(methodName, lexer.Token{}, nil))
+	}
 	nextToken := p.peekNextToken("I was parsing method parameters.")
 	for nextToken.Kind != lexer.RParen {
 
@@ -610,7 +614,11 @@ func (p *Parser) parseParamList() (paramStruct *mojom.MojomStruct) {
 		}
 
 		declData := p.DeclDataWithOrdinal(name, nameToken, attributes, ordinalValue)
-		paramStruct.AddField(mojom.NewStructField(declData, fieldType, nil))
+		if duplicateNameError := paramStruct.AddField(mojom.NewStructField(
+			declData, fieldType, nil)); duplicateNameError != nil {
+			p.err = duplicateNameError
+			return nil
+		}
 
 		nextToken = p.peekNextToken("I was parsing method parameters.")
 		switch nextToken.Kind {
@@ -691,7 +699,9 @@ func (p *Parser) parseStructBody(mojomStruct *mojom.MojomStruct) bool {
 		var duplicateNameError error = nil
 		switch nextToken.Kind {
 		case lexer.Name:
-			mojomStruct.AddField(p.parseStructField(attributes))
+			if field := p.parseStructField(attributes); field != nil {
+				duplicateNameError = mojomStruct.AddField(field)
+			}
 		case lexer.Enum:
 			if mojomEnum := p.parseEnumDecl(attributes); mojomEnum != nil {
 				duplicateNameError = mojomStruct.AddEnum(mojomEnum)
@@ -858,7 +868,12 @@ func (p *Parser) parseUnionBody(union *mojom.MojomUnion) bool {
 			if !p.matchSemicolon() {
 				return false
 			}
-			union.AddField(p.DeclDataWithOrdinal(fieldName, nameToken, attributes, tag), fieldType)
+			if duplicateNameError := union.AddField(p.DeclDataWithOrdinal(
+				fieldName, nameToken, attributes, tag), fieldType); duplicateNameError != nil {
+				p.err = duplicateNameError
+				return false
+
+			}
 		case lexer.RBrace:
 			rbraceFound = true
 			if attributes != nil {
