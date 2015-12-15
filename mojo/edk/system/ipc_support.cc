@@ -67,8 +67,9 @@ IPCSupport::IPCSupport(embedder::PlatformSupport* platform_support,
       break;
   }
 
-  channel_manager_.reset(new ChannelManager(
-      platform_support, io_task_runner_.Clone(), connection_manager_.get()));
+  channel_manager_.reset(
+      new ChannelManager(platform_support, io_task_runner_.Clone(), io_watcher_,
+                         connection_manager_.get()));
 }
 
 IPCSupport::~IPCSupport() {
