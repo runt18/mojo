@@ -20,10 +20,6 @@
 #include "mojo/edk/util/thread_annotations.h"
 #include "mojo/public/cpp/system/macros.h"
 
-namespace base {
-class MessageLoopForIO;
-}
-
 namespace mojo {
 namespace system {
 
@@ -216,7 +212,10 @@ class RawChannel {
                         size_t platform_handles_written,
                         size_t bytes_written) MOJO_LOCKS_EXCLUDED(write_mutex_);
 
-  base::MessageLoopForIO* message_loop_for_io() { return message_loop_for_io_; }
+  const util::RefPtr<platform::TaskRunner>& io_task_runner() const {
+    return io_task_runner_;
+  }
+  platform::PlatformHandleWatcher* io_watcher() const { return io_watcher_; }
   util::Mutex& write_mutex() MOJO_LOCK_RETURNED(write_mutex_) {
     return write_mutex_;
   }
@@ -322,8 +321,6 @@ class RawChannel {
   // Set in |Init()| and never changed (hence usable on any thread without
   // locking):
   util::RefPtr<platform::TaskRunner> io_task_runner_;
-  // TODO(vtl): Remove this, once RawChannelPosix has been converted.
-  base::MessageLoopForIO* message_loop_for_io_;
 
   // Only used on the I/O thread:
   platform::PlatformHandleWatcher* io_watcher_;

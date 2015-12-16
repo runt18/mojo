@@ -9,7 +9,6 @@
 #include <memory>
 
 #include "base/logging.h"
-#include "base/message_loop/message_loop.h"
 #include "mojo/edk/embedder/platform_channel_pair.h"
 #include "mojo/edk/embedder/test_embedder.h"
 #include "mojo/edk/system/test/test_command_line.h"
