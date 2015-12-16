@@ -27,8 +27,3 @@ config("sdk") {
     defines += [ "MESA_EGL_NO_X11_HEADERS" ]
   }
 }
-
-config("freetype2") {
-  include_dirs = [ "$sysroot/usr/include/freetype2" ]
-  libs = [ "freetype" ]
-}

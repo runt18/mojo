@@ -29,11 +29,6 @@ config("sdk") {
   }
 }
 
-config("freetype2") {
-  include_dirs = [ "$sysroot/usr/include/freetype2" ]
-  libs = [ "freetype" ]
-}
-
 config("x11") {
   libs = [
     "X11",

@@ -442,8 +442,10 @@ component("skia") {
   ]
 
   if (is_linux) {
-    configs += [ "//build/config/linux:freetype2" ]
-    deps += [ "//third_party/icu:icuuc" ]
+    deps += [
+      "//third_party/freetype2",
+      "//third_party/icu:icuuc",
+    ]
   }
 
   if (is_android) {
