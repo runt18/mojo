@@ -13,6 +13,7 @@
 #include "third_party/skia/include/core/SkBitmap.h"
 #include "third_party/skia/include/core/SkCanvas.h"
 #include "third_party/skia/include/core/SkPixelRef.h"
+#include "third_party/skia/include/core/SkPreConfig.h"
 
 namespace skia {
 
@@ -35,7 +36,7 @@ enum OnFailureType {
   RETURN_NULL_ON_FAILURE
 };
 
-#if defined(WIN32)
+#if defined(SK_BUILD_FOR_WIN32)
   // The shared_section parameter is passed to gfx::PlatformDevice::create.
   // See it for details.
   SK_API SkCanvas* CreatePlatformCanvas(int width,
@@ -51,7 +52,7 @@ enum OnFailureType {
                                   int x,
                                   int y,
                                   const RECT* src_rect);
-#elif defined(__APPLE__)
+#elif defined(SK_BUILD_FOR_MAC)
   SK_API SkCanvas* CreatePlatformCanvas(CGContextRef context,
                                         int width,
                                         int height,
@@ -63,8 +64,7 @@ enum OnFailureType {
                                         bool is_opaque,
                                         uint8_t* context,
                                         OnFailureType failure_type);
-#elif defined(__linux__) || defined(__FreeBSD__) || defined(__OpenBSD__) || \
-      defined(__sun) || defined(ANDROID)
+#elif defined(SK_BUILD_FOR_ANDROID) || defined(SK_BUILD_FOR_UNIX)
   // Linux ---------------------------------------------------------------------
 
   // Construct a canvas from the given memory region. The memory is not cleared

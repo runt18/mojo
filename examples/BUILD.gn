@@ -17,7 +17,9 @@ group("portable_examples") {
     "//examples/dart",
     "//examples/echo",
     "//examples/echo_terminal",
+    "//examples/embedded_app",
     "//examples/forwarding_content_handler",
+    "//examples/ganesh_app",
     "//examples/http_handler",
     "//examples/indirect_service",
     "//examples/moterm_example_app",
@@ -35,13 +37,8 @@ group("portable_examples") {
 group("examples") {
   testonly = true
 
-  # TODO(smklein) - These deps are not compatible with NaCl because they depend
-  # on skia. Make Skia build with NaCl.
   deps = [
     ":portable_examples",
-    "//examples/embedded_app",
-    "//examples/ganesh_app",
-    "//examples/png_viewer",
   ]
 
   # TODO(cstout) - javascript/v8 build support for fnl/musl

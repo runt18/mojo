@@ -73,6 +73,18 @@ bool IsPreviewMetafile(const SkCanvas& canvas) {
 }
 #endif
 
+// For platforms without "platform_device_*" specific files,
+// include default behaviors for necessary methods to compile.
+#if defined(OS_NACL)
+PlatformSurface PlatformDevice::BeginPlatformPaint() {
+  return NULL;
+}
+
+void PlatformDevice::EndPlatformPaint() {
+  // By default, do nothing here.
+}
+#endif
+
 bool PlatformDevice::SupportsPlatformPaint() {
   return true;
 }
