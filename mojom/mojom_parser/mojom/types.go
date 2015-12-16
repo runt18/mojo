@@ -225,11 +225,11 @@ func (t SimpleType) isAssignmentCompatibleWithLiteral(assignedValue LiteralValue
 		return false
 	case SimpleTypeFloat:
 		switch assignedType {
-		// TODO(rudominer) We allow assigning a literal of type double to a variable of type float for now because
-		// we have not yet refined the parsing of floating point literals and so all of them currently have
-		// type double.
-		case SimpleTypeFloat, SimpleTypeDouble:
+		case SimpleTypeFloat:
 			return true
+		case SimpleTypeDouble:
+			int64Value := math.Abs(assignedValue.Value().(float64))
+			return int64Value <= math.MaxFloat32
 		default:
 			int64Value, ok := int64Value(assignedValue)
 			return ok && int64Value >= minFloatInt && int64Value <= maxFloatInt
@@ -1202,6 +1202,10 @@ func MakeUint64LiteralValue(value uint64) LiteralValue {
 
 func MakeDoubleLiteralValue(value float64) LiteralValue {
 	return LiteralValue{SimpleTypeDouble, value, false}
+}
+
+func MakeFloatLiteralValue(value float32) LiteralValue {
+	return LiteralValue{SimpleTypeFloat, value, false}
 }
 
 func MakeDefaultLiteral() LiteralValue {

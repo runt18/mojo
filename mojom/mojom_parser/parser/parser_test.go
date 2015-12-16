@@ -146,6 +146,30 @@ func TestSuccessfulParsing(t *testing.T) {
 	endTestCase()
 
 	////////////////////////////////////////////////////////////
+	// Test Case (float and double constants)
+	////////////////////////////////////////////////////////////
+	startTestCase("")
+	cases[testCaseNum].mojomContents = `
+	const float x = 123.456E7;
+	const float y = 123456789.123456789;
+	const float z = -0.01;
+	const double w = -0.01;
+	const double r = 3.14159E40;
+	`
+	{
+		expectedFile.AddConstant(mojom.NewUserDefinedConstant(mojom.DeclTestData("x"),
+			mojom.SimpleTypeFloat, mojom.MakeDoubleLiteralValue(1234560000)))
+		expectedFile.AddConstant(mojom.NewUserDefinedConstant(mojom.DeclTestData("y"),
+			mojom.SimpleTypeFloat, mojom.MakeDoubleLiteralValue(123456789.123456789)))
+		expectedFile.AddConstant(mojom.NewUserDefinedConstant(mojom.DeclTestData("z"),
+			mojom.SimpleTypeFloat, mojom.MakeDoubleLiteralValue(-0.01)))
+		expectedFile.AddConstant(mojom.NewUserDefinedConstant(mojom.DeclTestData("w"),
+			mojom.SimpleTypeDouble, mojom.MakeDoubleLiteralValue(-0.01)))
+		expectedFile.AddConstant(mojom.NewUserDefinedConstant(mojom.DeclTestData("r"),
+			mojom.SimpleTypeDouble, mojom.MakeDoubleLiteralValue(3.14159e+40)))
+	}
+	endTestCase()
+	////////////////////////////////////////////////////////////
 	// Test Case
 	////////////////////////////////////////////////////////////
 	startTestCase("mojom.test")
@@ -540,6 +564,16 @@ func TestErrorParsing(t *testing.T) {
 	endTestCase()
 
 	////////////////////////////////////////////////////////////
+	// Test Case (Constant float too big for double)
+	////////////////////////////////////////////////////////////
+	startTestCase("")
+	cases[testCaseNum].mojomContents = `
+	const uint64 veryBig = 3.14159E400;
+	`
+	expectError("Float literal value out of range: 3.14159E400")
+	endTestCase()
+
+	////////////////////////////////////////////////////////////
 	// Test Case (Use array as constant type)
 	////////////////////////////////////////////////////////////
 	startTestCase("")
@@ -691,6 +725,19 @@ func TestInvalidAssignmentDuringParsing(t *testing.T) {
 	`
 	expectError("Illegal assignment")
 	expectError("Field x of type uint8 may not be assigned the value 9999999999 of type int64.")
+	endTestCase()
+
+	////////////////////////////////////////////////////////////
+	// Test Case (Assign large float to float32)
+	////////////////////////////////////////////////////////////
+	startTestCase("")
+	cases[testCaseNum].mojomContents = `
+	struct Foo {
+		float x = 3.14159E40;
+	};
+	`
+	expectError("Illegal assignment")
+	expectError("Field x of type float may not be assigned the value 3.14159e+40 of type double.")
 	endTestCase()
 
 	////////////////////////////////////////////////////////////

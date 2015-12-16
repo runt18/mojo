@@ -149,35 +149,37 @@ func TestMarkTypeCompatible(t *testing.T) {
 		MakeInt64LiteralValue(1 << 25),
 		MakeInt64LiteralValue(1 << 53),
 		MakeInt64LiteralValue(-(1 << 54)),
-		MakeDoubleLiteralValue(0),
+		MakeFloatLiteralValue(math.MaxFloat32),
+		MakeDoubleLiteralValue(math.MaxFloat32 * 2),
 		MakeDefaultLiteral(),
 	}
 	cases := []struct {
 		typeRef TypeRef
-		allowed []bool
+		allowed []int
 	}{
-		{SimpleTypeBool, []bool{false, true, false, false, false, false, false, false, false, false, false, false}},
-		{SimpleTypeDouble, []bool{false, false, true, true, true, true, true, true, true, false, true, false}},
-		{SimpleTypeFloat, []bool{false, false, true, true, true, true, true, false, false, false, true, false}},
-		{SimpleTypeInt8, []bool{false, false, true, true, false, false, false, false, false, false, false, false}},
-		{SimpleTypeInt16, []bool{false, false, true, true, false, false, false, false, false, false, false, false}},
-		{SimpleTypeInt32, []bool{false, false, true, true, true, false, false, false, false, false, false, false}},
-		{SimpleTypeInt64, []bool{false, false, true, true, true, true, true, true, true, true, false, false}},
-		{SimpleTypeUInt8, []bool{false, false, true, false, false, false, false, false, false, false, false, false}},
-		{SimpleTypeUInt16, []bool{false, false, true, false, false, false, false, false, false, false, false, false}},
-		{SimpleTypeUInt32, []bool{false, false, true, false, true, true, false, false, false, false, false, false}},
-		{SimpleTypeUInt64, []bool{false, false, true, false, true, true, false, true, true, false, false, false}},
-		{StringType{}, []bool{true, false, false, false, false, false, false, false, false, false, false, false}},
-		{NewArrayTypeRef(SimpleTypeInt32, 0, false), []bool{false, false, false, false, false, false, false, false, false, false, false, false}},
-		{NewMapTypeRef(SimpleTypeInt32, SimpleTypeInt64, false), []bool{false, false, false, false, false, false, false, false, false, false, false, false}},
-		{BuiltInType("handle"), []bool{false, false, false, false, false, false, false, false, false, false, false, false}},
+		// In the data below 0 indicates not allowed and 1 indicates allowed.
+		{SimpleTypeBool, []int{0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}},
+		{SimpleTypeDouble, []int{0, 0, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 0}},
+		{SimpleTypeFloat, []int{0, 0, 1, 1, 1, 1, 1, 0, 0, 0, 1, 0, 0}},
+		{SimpleTypeInt8, []int{0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0}},
+		{SimpleTypeInt16, []int{0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0}},
+		{SimpleTypeInt32, []int{0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0}},
+		{SimpleTypeInt64, []int{0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0}},
+		{SimpleTypeUInt8, []int{0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}},
+		{SimpleTypeUInt16, []int{0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}},
+		{SimpleTypeUInt32, []int{0, 0, 1, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0}},
+		{SimpleTypeUInt64, []int{0, 0, 1, 0, 1, 1, 0, 1, 1, 0, 0, 0, 0}},
+		{StringType{}, []int{1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}},
+		{NewArrayTypeRef(SimpleTypeInt32, 0, false), []int{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}},
+		{NewMapTypeRef(SimpleTypeInt32, SimpleTypeInt64, false), []int{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}},
+		{BuiltInType("handle"), []int{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}},
 		// Assignments to UserTypeRefs are not validated at all during parsing.
-		{userTypeRef, []bool{true, true, true, true, true, true, true, true, true, true, true, true}},
+		{userTypeRef, []int{1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1}},
 	}
 	for _, c := range cases {
 		for i, v := range literalValues {
 			got := c.typeRef.MarkTypeCompatible(LiteralAssignment{assignedValue: v})
-			if got != c.allowed[i] {
+			if got != (c.allowed[i] == 1) {
 				t.Errorf("%v.MarkTypeCompatible(%d) == %v, want %v", c.typeRef, i, got, c.allowed[i])
 			}
 		}
