@@ -42,16 +42,6 @@ static const char* kInternalLibURL = "dart:_internal";
 static const char* kIsolateLibURL = "dart:isolate";
 static const char* kCoreLibURL = "dart:core";
 
-// Notes on isolate startup order:
-// 1) vm-service isolate is spawned by the VM when Dart_Initialize is called.
-// 2) mojo-handle-watcher is spawned by from the vm-service isolate.
-// 3) ... application isolates ...
-// 4) stop-handle-watcher is spawned to shutdown the handle watcher isolate
-//    before the controller exits.
-static const char* kVmServiceIsolateUri = "vm-service";
-static const char* kStopHandleWatcherIsolateUri = "stop-handle-watcher";
-static const char* kHandleWatcherIsolateUri = "mojo-handle-watcher";
-
 static uint8_t snapshot_magic_number[] = { 0xf5, 0xf5, 0xdc, 0xdc };
 
 static Dart_Handle SetWorkingDirectory(Dart_Handle builtin_lib) {
@@ -315,11 +305,6 @@ Dart_Isolate DartController::CreateIsolateHelper(
     const std::string& package_root,
     char** error,
     bool use_network_loader) {
-  if ((script_uri == kVmServiceIsolateUri) && service_isolate_spawned_) {
-    // Rewrite the uri so that it is easier to differentiate the actual service
-    // isolate from the handle watcher isolate.
-    script_uri = kHandleWatcherIsolateUri;
-  }
   auto isolate_data = new MojoDartState(dart_app,
                                         strict_compilation,
                                         callbacks,
@@ -390,16 +375,9 @@ Dart_Isolate DartController::CreateIsolateHelper(
       return isolate;
     }
 
-    if ((script_uri == kHandleWatcherIsolateUri) ||
-        (script_uri == kStopHandleWatcherIsolateUri)) {
-      // Special case for starting and stopping the the handle watcher isolate.
-      LoadEmptyScript(script_uri);
-    } else {
-      tonic::DartScriptLoaderSync::LoadScript(
-          script_uri,
-          isolate_data->library_provider());
-    }
-
+    tonic::DartScriptLoaderSync::LoadScript(
+        script_uri,
+        isolate_data->library_provider());
     InitializeDartMojoIo();
   }
 
@@ -669,18 +647,6 @@ void DartController::BlockForServiceIsolateLocked() {
   // running before returning.
   Dart_ServiceWaitForLoadPort();
   service_isolate_running_ = true;
-}
-
-void DartController::LoadEmptyScript(const std::string& script_uri) {
-  Dart_Handle uri = Dart_NewStringFromUTF8(
-      reinterpret_cast<const uint8_t*>(script_uri.c_str()),
-      script_uri.length());
-  DART_CHECK_VALID(uri);
-  Dart_Handle script_source = Dart_NewStringFromCString("");
-  DART_CHECK_VALID(script_source);
-  Dart_Handle result = Dart_LoadScript(uri, script_source, 0, 0);
-  DART_CHECK_VALID(result);
-  tonic::LogIfError(Dart_FinalizeLoading(true));
 }
 
 bool DartController::RunSingleDartScript(const DartControllerConfig& config) {

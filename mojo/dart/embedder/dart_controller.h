@@ -149,8 +149,6 @@ class DartController {
   static void BlockForServiceIsolate();
   static void BlockForServiceIsolateLocked();
 
-  static void LoadEmptyScript(const std::string& script_uri);
-
   static tonic::DartLibraryProvider* library_provider_;
   static base::Lock lock_;
   static MojoHandle handle_watcher_producer_handle_;
