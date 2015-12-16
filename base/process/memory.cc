@@ -45,4 +45,11 @@ bool UncheckedCalloc(size_t num_items, size_t size, void** result) {
 
 #endif
 
+#if defined(OS_NACL)
+bool UncheckedMalloc(size_t size, void** result) {
+  *result = malloc(size);
+  return *result != NULL;
+}
+#endif
+
 }  // namespace base

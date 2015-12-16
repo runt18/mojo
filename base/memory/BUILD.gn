@@ -46,10 +46,6 @@ source_set("memory") {
 
   if (is_nacl) {
     sources -= [
-      "discardable_memory.cc",
-      "discardable_memory.h",
-      "discardable_memory_allocator.cc",
-      "discardable_memory_allocator.h",
       "discardable_shared_memory.cc",
       "discardable_shared_memory.h",
       "shared_memory_posix.cc",

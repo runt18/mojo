@@ -85,8 +85,6 @@ source_set("process") {
       "launch.cc",
       "launch.h",
       "launch_posix.cc",
-      "memory.cc",
-      "memory.h",
       "process_iterator.cc",
       "process_iterator.h",
       "process_metrics.cc",
