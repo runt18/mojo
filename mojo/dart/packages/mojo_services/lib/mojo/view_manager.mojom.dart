@@ -251,15 +251,15 @@ class ViewData extends bindings.Struct {
 }
 
 
-class ViewManagerServiceCreateViewParams extends bindings.Struct {
+class _ViewManagerServiceCreateViewParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(16, 0)
   ];
   int viewId = 0;
 
-  ViewManagerServiceCreateViewParams() : super(kVersions.last.size);
+  _ViewManagerServiceCreateViewParams() : super(kVersions.last.size);
 
-  static ViewManagerServiceCreateViewParams deserialize(bindings.Message message) {
+  static _ViewManagerServiceCreateViewParams deserialize(bindings.Message message) {
     var decoder = new bindings.Decoder(message);
     var result = decode(decoder);
     if (decoder.excessHandles != null) {
@@ -268,11 +268,11 @@ class ViewManagerServiceCreateViewParams extends bindings.Struct {
     return result;
   }
 
-  static ViewManagerServiceCreateViewParams decode(bindings.Decoder decoder0) {
+  static _ViewManagerServiceCreateViewParams decode(bindings.Decoder decoder0) {
     if (decoder0 == null) {
       return null;
     }
-    ViewManagerServiceCreateViewParams result = new ViewManagerServiceCreateViewParams();
+    _ViewManagerServiceCreateViewParams result = new _ViewManagerServiceCreateViewParams();
 
     var mainDataHeader = decoder0.decodeStructDataHeader();
     if (mainDataHeader.version <= kVersions.last.version) {
@@ -306,7 +306,7 @@ class ViewManagerServiceCreateViewParams extends bindings.Struct {
   }
 
   String toString() {
-    return "ViewManagerServiceCreateViewParams("
+    return "_ViewManagerServiceCreateViewParams("
            "viewId: $viewId" ")";
   }
 
@@ -389,15 +389,15 @@ class ViewManagerServiceCreateViewResponseParams extends bindings.Struct {
 }
 
 
-class ViewManagerServiceDeleteViewParams extends bindings.Struct {
+class _ViewManagerServiceDeleteViewParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(16, 0)
   ];
   int viewId = 0;
 
-  ViewManagerServiceDeleteViewParams() : super(kVersions.last.size);
+  _ViewManagerServiceDeleteViewParams() : super(kVersions.last.size);
 
-  static ViewManagerServiceDeleteViewParams deserialize(bindings.Message message) {
+  static _ViewManagerServiceDeleteViewParams deserialize(bindings.Message message) {
     var decoder = new bindings.Decoder(message);
     var result = decode(decoder);
     if (decoder.excessHandles != null) {
@@ -406,11 +406,11 @@ class ViewManagerServiceDeleteViewParams extends bindings.Struct {
     return result;
   }
 
-  static ViewManagerServiceDeleteViewParams decode(bindings.Decoder decoder0) {
+  static _ViewManagerServiceDeleteViewParams decode(bindings.Decoder decoder0) {
     if (decoder0 == null) {
       return null;
     }
-    ViewManagerServiceDeleteViewParams result = new ViewManagerServiceDeleteViewParams();
+    _ViewManagerServiceDeleteViewParams result = new _ViewManagerServiceDeleteViewParams();
 
     var mainDataHeader = decoder0.decodeStructDataHeader();
     if (mainDataHeader.version <= kVersions.last.version) {
@@ -444,7 +444,7 @@ class ViewManagerServiceDeleteViewParams extends bindings.Struct {
   }
 
   String toString() {
-    return "ViewManagerServiceDeleteViewParams("
+    return "_ViewManagerServiceDeleteViewParams("
            "viewId: $viewId" ")";
   }
 
@@ -523,16 +523,16 @@ class ViewManagerServiceDeleteViewResponseParams extends bindings.Struct {
 }
 
 
-class ViewManagerServiceSetViewBoundsParams extends bindings.Struct {
+class _ViewManagerServiceSetViewBoundsParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(24, 0)
   ];
   int viewId = 0;
   geometry_mojom.Rect bounds = null;
 
-  ViewManagerServiceSetViewBoundsParams() : super(kVersions.last.size);
+  _ViewManagerServiceSetViewBoundsParams() : super(kVersions.last.size);
 
-  static ViewManagerServiceSetViewBoundsParams deserialize(bindings.Message message) {
+  static _ViewManagerServiceSetViewBoundsParams deserialize(bindings.Message message) {
     var decoder = new bindings.Decoder(message);
     var result = decode(decoder);
     if (decoder.excessHandles != null) {
@@ -541,11 +541,11 @@ class ViewManagerServiceSetViewBoundsParams extends bindings.Struct {
     return result;
   }
 
-  static ViewManagerServiceSetViewBoundsParams decode(bindings.Decoder decoder0) {
+  static _ViewManagerServiceSetViewBoundsParams decode(bindings.Decoder decoder0) {
     if (decoder0 == null) {
       return null;
     }
-    ViewManagerServiceSetViewBoundsParams result = new ViewManagerServiceSetViewBoundsParams();
+    _ViewManagerServiceSetViewBoundsParams result = new _ViewManagerServiceSetViewBoundsParams();
 
     var mainDataHeader = decoder0.decodeStructDataHeader();
     if (mainDataHeader.version <= kVersions.last.version) {
@@ -586,7 +586,7 @@ class ViewManagerServiceSetViewBoundsParams extends bindings.Struct {
   }
 
   String toString() {
-    return "ViewManagerServiceSetViewBoundsParams("
+    return "_ViewManagerServiceSetViewBoundsParams("
            "viewId: $viewId" ", "
            "bounds: $bounds" ")";
   }
@@ -667,16 +667,16 @@ class ViewManagerServiceSetViewBoundsResponseParams extends bindings.Struct {
 }
 
 
-class ViewManagerServiceSetViewVisibilityParams extends bindings.Struct {
+class _ViewManagerServiceSetViewVisibilityParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(16, 0)
   ];
   int viewId = 0;
   bool visible = false;
 
-  ViewManagerServiceSetViewVisibilityParams() : super(kVersions.last.size);
+  _ViewManagerServiceSetViewVisibilityParams() : super(kVersions.last.size);
 
-  static ViewManagerServiceSetViewVisibilityParams deserialize(bindings.Message message) {
+  static _ViewManagerServiceSetViewVisibilityParams deserialize(bindings.Message message) {
     var decoder = new bindings.Decoder(message);
     var result = decode(decoder);
     if (decoder.excessHandles != null) {
@@ -685,11 +685,11 @@ class ViewManagerServiceSetViewVisibilityParams extends bindings.Struct {
     return result;
   }
 
-  static ViewManagerServiceSetViewVisibilityParams decode(bindings.Decoder decoder0) {
+  static _ViewManagerServiceSetViewVisibilityParams decode(bindings.Decoder decoder0) {
     if (decoder0 == null) {
       return null;
     }
-    ViewManagerServiceSetViewVisibilityParams result = new ViewManagerServiceSetViewVisibilityParams();
+    _ViewManagerServiceSetViewVisibilityParams result = new _ViewManagerServiceSetViewVisibilityParams();
 
     var mainDataHeader = decoder0.decodeStructDataHeader();
     if (mainDataHeader.version <= kVersions.last.version) {
@@ -729,7 +729,7 @@ class ViewManagerServiceSetViewVisibilityParams extends bindings.Struct {
   }
 
   String toString() {
-    return "ViewManagerServiceSetViewVisibilityParams("
+    return "_ViewManagerServiceSetViewVisibilityParams("
            "viewId: $viewId" ", "
            "visible: $visible" ")";
   }
@@ -810,7 +810,7 @@ class ViewManagerServiceSetViewVisibilityResponseParams extends bindings.Struct 
 }
 
 
-class ViewManagerServiceSetViewPropertyParams extends bindings.Struct {
+class _ViewManagerServiceSetViewPropertyParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(32, 0)
   ];
@@ -818,9 +818,9 @@ class ViewManagerServiceSetViewPropertyParams extends bindings.Struct {
   String name = null;
   List<int> value = null;
 
-  ViewManagerServiceSetViewPropertyParams() : super(kVersions.last.size);
+  _ViewManagerServiceSetViewPropertyParams() : super(kVersions.last.size);
 
-  static ViewManagerServiceSetViewPropertyParams deserialize(bindings.Message message) {
+  static _ViewManagerServiceSetViewPropertyParams deserialize(bindings.Message message) {
     var decoder = new bindings.Decoder(message);
     var result = decode(decoder);
     if (decoder.excessHandles != null) {
@@ -829,11 +829,11 @@ class ViewManagerServiceSetViewPropertyParams extends bindings.Struct {
     return result;
   }
 
-  static ViewManagerServiceSetViewPropertyParams decode(bindings.Decoder decoder0) {
+  static _ViewManagerServiceSetViewPropertyParams decode(bindings.Decoder decoder0) {
     if (decoder0 == null) {
       return null;
     }
-    ViewManagerServiceSetViewPropertyParams result = new ViewManagerServiceSetViewPropertyParams();
+    _ViewManagerServiceSetViewPropertyParams result = new _ViewManagerServiceSetViewPropertyParams();
 
     var mainDataHeader = decoder0.decodeStructDataHeader();
     if (mainDataHeader.version <= kVersions.last.version) {
@@ -879,7 +879,7 @@ class ViewManagerServiceSetViewPropertyParams extends bindings.Struct {
   }
 
   String toString() {
-    return "ViewManagerServiceSetViewPropertyParams("
+    return "_ViewManagerServiceSetViewPropertyParams("
            "viewId: $viewId" ", "
            "name: $name" ", "
            "value: $value" ")";
@@ -962,16 +962,16 @@ class ViewManagerServiceSetViewPropertyResponseParams extends bindings.Struct {
 }
 
 
-class ViewManagerServiceAddViewParams extends bindings.Struct {
+class _ViewManagerServiceAddViewParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(16, 0)
   ];
   int parent = 0;
   int child = 0;
 
-  ViewManagerServiceAddViewParams() : super(kVersions.last.size);
+  _ViewManagerServiceAddViewParams() : super(kVersions.last.size);
 
-  static ViewManagerServiceAddViewParams deserialize(bindings.Message message) {
+  static _ViewManagerServiceAddViewParams deserialize(bindings.Message message) {
     var decoder = new bindings.Decoder(message);
     var result = decode(decoder);
     if (decoder.excessHandles != null) {
@@ -980,11 +980,11 @@ class ViewManagerServiceAddViewParams extends bindings.Struct {
     return result;
   }
 
-  static ViewManagerServiceAddViewParams decode(bindings.Decoder decoder0) {
+  static _ViewManagerServiceAddViewParams decode(bindings.Decoder decoder0) {
     if (decoder0 == null) {
       return null;
     }
-    ViewManagerServiceAddViewParams result = new ViewManagerServiceAddViewParams();
+    _ViewManagerServiceAddViewParams result = new _ViewManagerServiceAddViewParams();
 
     var mainDataHeader = decoder0.decodeStructDataHeader();
     if (mainDataHeader.version <= kVersions.last.version) {
@@ -1024,7 +1024,7 @@ class ViewManagerServiceAddViewParams extends bindings.Struct {
   }
 
   String toString() {
-    return "ViewManagerServiceAddViewParams("
+    return "_ViewManagerServiceAddViewParams("
            "parent: $parent" ", "
            "child: $child" ")";
   }
@@ -1105,15 +1105,15 @@ class ViewManagerServiceAddViewResponseParams extends bindings.Struct {
 }
 
 
-class ViewManagerServiceRemoveViewFromParentParams extends bindings.Struct {
+class _ViewManagerServiceRemoveViewFromParentParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(16, 0)
   ];
   int viewId = 0;
 
-  ViewManagerServiceRemoveViewFromParentParams() : super(kVersions.last.size);
+  _ViewManagerServiceRemoveViewFromParentParams() : super(kVersions.last.size);
 
-  static ViewManagerServiceRemoveViewFromParentParams deserialize(bindings.Message message) {
+  static _ViewManagerServiceRemoveViewFromParentParams deserialize(bindings.Message message) {
     var decoder = new bindings.Decoder(message);
     var result = decode(decoder);
     if (decoder.excessHandles != null) {
@@ -1122,11 +1122,11 @@ class ViewManagerServiceRemoveViewFromParentParams extends bindings.Struct {
     return result;
   }
 
-  static ViewManagerServiceRemoveViewFromParentParams decode(bindings.Decoder decoder0) {
+  static _ViewManagerServiceRemoveViewFromParentParams decode(bindings.Decoder decoder0) {
     if (decoder0 == null) {
       return null;
     }
-    ViewManagerServiceRemoveViewFromParentParams result = new ViewManagerServiceRemoveViewFromParentParams();
+    _ViewManagerServiceRemoveViewFromParentParams result = new _ViewManagerServiceRemoveViewFromParentParams();
 
     var mainDataHeader = decoder0.decodeStructDataHeader();
     if (mainDataHeader.version <= kVersions.last.version) {
@@ -1160,7 +1160,7 @@ class ViewManagerServiceRemoveViewFromParentParams extends bindings.Struct {
   }
 
   String toString() {
-    return "ViewManagerServiceRemoveViewFromParentParams("
+    return "_ViewManagerServiceRemoveViewFromParentParams("
            "viewId: $viewId" ")";
   }
 
@@ -1239,7 +1239,7 @@ class ViewManagerServiceRemoveViewFromParentResponseParams extends bindings.Stru
 }
 
 
-class ViewManagerServiceReorderViewParams extends bindings.Struct {
+class _ViewManagerServiceReorderViewParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(24, 0)
   ];
@@ -1247,9 +1247,9 @@ class ViewManagerServiceReorderViewParams extends bindings.Struct {
   int relativeViewId = 0;
   view_manager_constants_mojom.OrderDirection direction = null;
 
-  ViewManagerServiceReorderViewParams() : super(kVersions.last.size);
+  _ViewManagerServiceReorderViewParams() : super(kVersions.last.size);
 
-  static ViewManagerServiceReorderViewParams deserialize(bindings.Message message) {
+  static _ViewManagerServiceReorderViewParams deserialize(bindings.Message message) {
     var decoder = new bindings.Decoder(message);
     var result = decode(decoder);
     if (decoder.excessHandles != null) {
@@ -1258,11 +1258,11 @@ class ViewManagerServiceReorderViewParams extends bindings.Struct {
     return result;
   }
 
-  static ViewManagerServiceReorderViewParams decode(bindings.Decoder decoder0) {
+  static _ViewManagerServiceReorderViewParams decode(bindings.Decoder decoder0) {
     if (decoder0 == null) {
       return null;
     }
-    ViewManagerServiceReorderViewParams result = new ViewManagerServiceReorderViewParams();
+    _ViewManagerServiceReorderViewParams result = new _ViewManagerServiceReorderViewParams();
 
     var mainDataHeader = decoder0.decodeStructDataHeader();
     if (mainDataHeader.version <= kVersions.last.version) {
@@ -1312,7 +1312,7 @@ class ViewManagerServiceReorderViewParams extends bindings.Struct {
   }
 
   String toString() {
-    return "ViewManagerServiceReorderViewParams("
+    return "_ViewManagerServiceReorderViewParams("
            "viewId: $viewId" ", "
            "relativeViewId: $relativeViewId" ", "
            "direction: $direction" ")";
@@ -1395,15 +1395,15 @@ class ViewManagerServiceReorderViewResponseParams extends bindings.Struct {
 }
 
 
-class ViewManagerServiceGetViewTreeParams extends bindings.Struct {
+class _ViewManagerServiceGetViewTreeParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(16, 0)
   ];
   int viewId = 0;
 
-  ViewManagerServiceGetViewTreeParams() : super(kVersions.last.size);
+  _ViewManagerServiceGetViewTreeParams() : super(kVersions.last.size);
 
-  static ViewManagerServiceGetViewTreeParams deserialize(bindings.Message message) {
+  static _ViewManagerServiceGetViewTreeParams deserialize(bindings.Message message) {
     var decoder = new bindings.Decoder(message);
     var result = decode(decoder);
     if (decoder.excessHandles != null) {
@@ -1412,11 +1412,11 @@ class ViewManagerServiceGetViewTreeParams extends bindings.Struct {
     return result;
   }
 
-  static ViewManagerServiceGetViewTreeParams decode(bindings.Decoder decoder0) {
+  static _ViewManagerServiceGetViewTreeParams decode(bindings.Decoder decoder0) {
     if (decoder0 == null) {
       return null;
     }
-    ViewManagerServiceGetViewTreeParams result = new ViewManagerServiceGetViewTreeParams();
+    _ViewManagerServiceGetViewTreeParams result = new _ViewManagerServiceGetViewTreeParams();
 
     var mainDataHeader = decoder0.decodeStructDataHeader();
     if (mainDataHeader.version <= kVersions.last.version) {
@@ -1450,7 +1450,7 @@ class ViewManagerServiceGetViewTreeParams extends bindings.Struct {
   }
 
   String toString() {
-    return "ViewManagerServiceGetViewTreeParams("
+    return "_ViewManagerServiceGetViewTreeParams("
            "viewId: $viewId" ")";
   }
 
@@ -1546,16 +1546,16 @@ class ViewManagerServiceGetViewTreeResponseParams extends bindings.Struct {
 }
 
 
-class ViewManagerServiceSetViewSurfaceIdParams extends bindings.Struct {
+class _ViewManagerServiceSetViewSurfaceIdParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(24, 0)
   ];
   int viewId = 0;
   surface_id_mojom.SurfaceId surfaceId = null;
 
-  ViewManagerServiceSetViewSurfaceIdParams() : super(kVersions.last.size);
+  _ViewManagerServiceSetViewSurfaceIdParams() : super(kVersions.last.size);
 
-  static ViewManagerServiceSetViewSurfaceIdParams deserialize(bindings.Message message) {
+  static _ViewManagerServiceSetViewSurfaceIdParams deserialize(bindings.Message message) {
     var decoder = new bindings.Decoder(message);
     var result = decode(decoder);
     if (decoder.excessHandles != null) {
@@ -1564,11 +1564,11 @@ class ViewManagerServiceSetViewSurfaceIdParams extends bindings.Struct {
     return result;
   }
 
-  static ViewManagerServiceSetViewSurfaceIdParams decode(bindings.Decoder decoder0) {
+  static _ViewManagerServiceSetViewSurfaceIdParams decode(bindings.Decoder decoder0) {
     if (decoder0 == null) {
       return null;
     }
-    ViewManagerServiceSetViewSurfaceIdParams result = new ViewManagerServiceSetViewSurfaceIdParams();
+    _ViewManagerServiceSetViewSurfaceIdParams result = new _ViewManagerServiceSetViewSurfaceIdParams();
 
     var mainDataHeader = decoder0.decodeStructDataHeader();
     if (mainDataHeader.version <= kVersions.last.version) {
@@ -1609,7 +1609,7 @@ class ViewManagerServiceSetViewSurfaceIdParams extends bindings.Struct {
   }
 
   String toString() {
-    return "ViewManagerServiceSetViewSurfaceIdParams("
+    return "_ViewManagerServiceSetViewSurfaceIdParams("
            "viewId: $viewId" ", "
            "surfaceId: $surfaceId" ")";
   }
@@ -1690,7 +1690,7 @@ class ViewManagerServiceSetViewSurfaceIdResponseParams extends bindings.Struct {
 }
 
 
-class ViewManagerServiceEmbedUrlParams extends bindings.Struct {
+class _ViewManagerServiceEmbedUrlParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(32, 0)
   ];
@@ -1699,9 +1699,9 @@ class ViewManagerServiceEmbedUrlParams extends bindings.Struct {
   Object services = null;
   Object exposedServices = null;
 
-  ViewManagerServiceEmbedUrlParams() : super(kVersions.last.size);
+  _ViewManagerServiceEmbedUrlParams() : super(kVersions.last.size);
 
-  static ViewManagerServiceEmbedUrlParams deserialize(bindings.Message message) {
+  static _ViewManagerServiceEmbedUrlParams deserialize(bindings.Message message) {
     var decoder = new bindings.Decoder(message);
     var result = decode(decoder);
     if (decoder.excessHandles != null) {
@@ -1710,11 +1710,11 @@ class ViewManagerServiceEmbedUrlParams extends bindings.Struct {
     return result;
   }
 
-  static ViewManagerServiceEmbedUrlParams decode(bindings.Decoder decoder0) {
+  static _ViewManagerServiceEmbedUrlParams decode(bindings.Decoder decoder0) {
     if (decoder0 == null) {
       return null;
     }
-    ViewManagerServiceEmbedUrlParams result = new ViewManagerServiceEmbedUrlParams();
+    _ViewManagerServiceEmbedUrlParams result = new _ViewManagerServiceEmbedUrlParams();
 
     var mainDataHeader = decoder0.decodeStructDataHeader();
     if (mainDataHeader.version <= kVersions.last.version) {
@@ -1766,7 +1766,7 @@ class ViewManagerServiceEmbedUrlParams extends bindings.Struct {
   }
 
   String toString() {
-    return "ViewManagerServiceEmbedUrlParams("
+    return "_ViewManagerServiceEmbedUrlParams("
            "url: $url" ", "
            "viewId: $viewId" ", "
            "services: $services" ", "
@@ -1847,16 +1847,16 @@ class ViewManagerServiceEmbedUrlResponseParams extends bindings.Struct {
 }
 
 
-class ViewManagerServiceEmbedParams extends bindings.Struct {
+class _ViewManagerServiceEmbedParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(24, 0)
   ];
   int viewId = 0;
   Object client = null;
 
-  ViewManagerServiceEmbedParams() : super(kVersions.last.size);
+  _ViewManagerServiceEmbedParams() : super(kVersions.last.size);
 
-  static ViewManagerServiceEmbedParams deserialize(bindings.Message message) {
+  static _ViewManagerServiceEmbedParams deserialize(bindings.Message message) {
     var decoder = new bindings.Decoder(message);
     var result = decode(decoder);
     if (decoder.excessHandles != null) {
@@ -1865,11 +1865,11 @@ class ViewManagerServiceEmbedParams extends bindings.Struct {
     return result;
   }
 
-  static ViewManagerServiceEmbedParams decode(bindings.Decoder decoder0) {
+  static _ViewManagerServiceEmbedParams decode(bindings.Decoder decoder0) {
     if (decoder0 == null) {
       return null;
     }
-    ViewManagerServiceEmbedParams result = new ViewManagerServiceEmbedParams();
+    _ViewManagerServiceEmbedParams result = new _ViewManagerServiceEmbedParams();
 
     var mainDataHeader = decoder0.decodeStructDataHeader();
     if (mainDataHeader.version <= kVersions.last.version) {
@@ -1909,7 +1909,7 @@ class ViewManagerServiceEmbedParams extends bindings.Struct {
   }
 
   String toString() {
-    return "ViewManagerServiceEmbedParams("
+    return "_ViewManagerServiceEmbedParams("
            "viewId: $viewId" ", "
            "client: $client" ")";
   }
@@ -1988,16 +1988,16 @@ class ViewManagerServiceEmbedResponseParams extends bindings.Struct {
 }
 
 
-class ViewManagerServicePerformActionParams extends bindings.Struct {
+class _ViewManagerServicePerformActionParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(24, 0)
   ];
   int viewId = 0;
   String action = null;
 
-  ViewManagerServicePerformActionParams() : super(kVersions.last.size);
+  _ViewManagerServicePerformActionParams() : super(kVersions.last.size);
 
-  static ViewManagerServicePerformActionParams deserialize(bindings.Message message) {
+  static _ViewManagerServicePerformActionParams deserialize(bindings.Message message) {
     var decoder = new bindings.Decoder(message);
     var result = decode(decoder);
     if (decoder.excessHandles != null) {
@@ -2006,11 +2006,11 @@ class ViewManagerServicePerformActionParams extends bindings.Struct {
     return result;
   }
 
-  static ViewManagerServicePerformActionParams decode(bindings.Decoder decoder0) {
+  static _ViewManagerServicePerformActionParams decode(bindings.Decoder decoder0) {
     if (decoder0 == null) {
       return null;
     }
-    ViewManagerServicePerformActionParams result = new ViewManagerServicePerformActionParams();
+    _ViewManagerServicePerformActionParams result = new _ViewManagerServicePerformActionParams();
 
     var mainDataHeader = decoder0.decodeStructDataHeader();
     if (mainDataHeader.version <= kVersions.last.version) {
@@ -2050,7 +2050,7 @@ class ViewManagerServicePerformActionParams extends bindings.Struct {
   }
 
   String toString() {
-    return "ViewManagerServicePerformActionParams("
+    return "_ViewManagerServicePerformActionParams("
            "viewId: $viewId" ", "
            "action: $action" ")";
   }
@@ -2131,7 +2131,7 @@ class ViewManagerServicePerformActionResponseParams extends bindings.Struct {
 }
 
 
-class ViewManagerClientOnEmbedParams extends bindings.Struct {
+class _ViewManagerClientOnEmbedParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(56, 0)
   ];
@@ -2143,9 +2143,9 @@ class ViewManagerClientOnEmbedParams extends bindings.Struct {
   Object exposedServices = null;
   core.MojoMessagePipeEndpoint windowManagerPipe = null;
 
-  ViewManagerClientOnEmbedParams() : super(kVersions.last.size);
+  _ViewManagerClientOnEmbedParams() : super(kVersions.last.size);
 
-  static ViewManagerClientOnEmbedParams deserialize(bindings.Message message) {
+  static _ViewManagerClientOnEmbedParams deserialize(bindings.Message message) {
     var decoder = new bindings.Decoder(message);
     var result = decode(decoder);
     if (decoder.excessHandles != null) {
@@ -2154,11 +2154,11 @@ class ViewManagerClientOnEmbedParams extends bindings.Struct {
     return result;
   }
 
-  static ViewManagerClientOnEmbedParams decode(bindings.Decoder decoder0) {
+  static _ViewManagerClientOnEmbedParams decode(bindings.Decoder decoder0) {
     if (decoder0 == null) {
       return null;
     }
-    ViewManagerClientOnEmbedParams result = new ViewManagerClientOnEmbedParams();
+    _ViewManagerClientOnEmbedParams result = new _ViewManagerClientOnEmbedParams();
 
     var mainDataHeader = decoder0.decodeStructDataHeader();
     if (mainDataHeader.version <= kVersions.last.version) {
@@ -2229,7 +2229,7 @@ class ViewManagerClientOnEmbedParams extends bindings.Struct {
   }
 
   String toString() {
-    return "ViewManagerClientOnEmbedParams("
+    return "_ViewManagerClientOnEmbedParams("
            "connectionId: $connectionId" ", "
            "services: $services" ", "
            "embedderUrl: $embedderUrl" ", "
@@ -2246,15 +2246,15 @@ class ViewManagerClientOnEmbedParams extends bindings.Struct {
 }
 
 
-class ViewManagerClientOnEmbeddedAppDisconnectedParams extends bindings.Struct {
+class _ViewManagerClientOnEmbeddedAppDisconnectedParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(16, 0)
   ];
   int view = 0;
 
-  ViewManagerClientOnEmbeddedAppDisconnectedParams() : super(kVersions.last.size);
+  _ViewManagerClientOnEmbeddedAppDisconnectedParams() : super(kVersions.last.size);
 
-  static ViewManagerClientOnEmbeddedAppDisconnectedParams deserialize(bindings.Message message) {
+  static _ViewManagerClientOnEmbeddedAppDisconnectedParams deserialize(bindings.Message message) {
     var decoder = new bindings.Decoder(message);
     var result = decode(decoder);
     if (decoder.excessHandles != null) {
@@ -2263,11 +2263,11 @@ class ViewManagerClientOnEmbeddedAppDisconnectedParams extends bindings.Struct {
     return result;
   }
 
-  static ViewManagerClientOnEmbeddedAppDisconnectedParams decode(bindings.Decoder decoder0) {
+  static _ViewManagerClientOnEmbeddedAppDisconnectedParams decode(bindings.Decoder decoder0) {
     if (decoder0 == null) {
       return null;
     }
-    ViewManagerClientOnEmbeddedAppDisconnectedParams result = new ViewManagerClientOnEmbeddedAppDisconnectedParams();
+    _ViewManagerClientOnEmbeddedAppDisconnectedParams result = new _ViewManagerClientOnEmbeddedAppDisconnectedParams();
 
     var mainDataHeader = decoder0.decodeStructDataHeader();
     if (mainDataHeader.version <= kVersions.last.version) {
@@ -2301,7 +2301,7 @@ class ViewManagerClientOnEmbeddedAppDisconnectedParams extends bindings.Struct {
   }
 
   String toString() {
-    return "ViewManagerClientOnEmbeddedAppDisconnectedParams("
+    return "_ViewManagerClientOnEmbeddedAppDisconnectedParams("
            "view: $view" ")";
   }
 
@@ -2313,7 +2313,7 @@ class ViewManagerClientOnEmbeddedAppDisconnectedParams extends bindings.Struct {
 }
 
 
-class ViewManagerClientOnViewBoundsChangedParams extends bindings.Struct {
+class _ViewManagerClientOnViewBoundsChangedParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(32, 0)
   ];
@@ -2321,9 +2321,9 @@ class ViewManagerClientOnViewBoundsChangedParams extends bindings.Struct {
   geometry_mojom.Rect oldBounds = null;
   geometry_mojom.Rect newBounds = null;
 
-  ViewManagerClientOnViewBoundsChangedParams() : super(kVersions.last.size);
+  _ViewManagerClientOnViewBoundsChangedParams() : super(kVersions.last.size);
 
-  static ViewManagerClientOnViewBoundsChangedParams deserialize(bindings.Message message) {
+  static _ViewManagerClientOnViewBoundsChangedParams deserialize(bindings.Message message) {
     var decoder = new bindings.Decoder(message);
     var result = decode(decoder);
     if (decoder.excessHandles != null) {
@@ -2332,11 +2332,11 @@ class ViewManagerClientOnViewBoundsChangedParams extends bindings.Struct {
     return result;
   }
 
-  static ViewManagerClientOnViewBoundsChangedParams decode(bindings.Decoder decoder0) {
+  static _ViewManagerClientOnViewBoundsChangedParams decode(bindings.Decoder decoder0) {
     if (decoder0 == null) {
       return null;
     }
-    ViewManagerClientOnViewBoundsChangedParams result = new ViewManagerClientOnViewBoundsChangedParams();
+    _ViewManagerClientOnViewBoundsChangedParams result = new _ViewManagerClientOnViewBoundsChangedParams();
 
     var mainDataHeader = decoder0.decodeStructDataHeader();
     if (mainDataHeader.version <= kVersions.last.version) {
@@ -2384,7 +2384,7 @@ class ViewManagerClientOnViewBoundsChangedParams extends bindings.Struct {
   }
 
   String toString() {
-    return "ViewManagerClientOnViewBoundsChangedParams("
+    return "_ViewManagerClientOnViewBoundsChangedParams("
            "view: $view" ", "
            "oldBounds: $oldBounds" ", "
            "newBounds: $newBounds" ")";
@@ -2400,16 +2400,16 @@ class ViewManagerClientOnViewBoundsChangedParams extends bindings.Struct {
 }
 
 
-class ViewManagerClientOnViewViewportMetricsChangedParams extends bindings.Struct {
+class _ViewManagerClientOnViewViewportMetricsChangedParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(24, 0)
   ];
   native_viewport_mojom.ViewportMetrics oldMetrics = null;
   native_viewport_mojom.ViewportMetrics newMetrics = null;
 
-  ViewManagerClientOnViewViewportMetricsChangedParams() : super(kVersions.last.size);
+  _ViewManagerClientOnViewViewportMetricsChangedParams() : super(kVersions.last.size);
 
-  static ViewManagerClientOnViewViewportMetricsChangedParams deserialize(bindings.Message message) {
+  static _ViewManagerClientOnViewViewportMetricsChangedParams deserialize(bindings.Message message) {
     var decoder = new bindings.Decoder(message);
     var result = decode(decoder);
     if (decoder.excessHandles != null) {
@@ -2418,11 +2418,11 @@ class ViewManagerClientOnViewViewportMetricsChangedParams extends bindings.Struc
     return result;
   }
 
-  static ViewManagerClientOnViewViewportMetricsChangedParams decode(bindings.Decoder decoder0) {
+  static _ViewManagerClientOnViewViewportMetricsChangedParams decode(bindings.Decoder decoder0) {
     if (decoder0 == null) {
       return null;
     }
-    ViewManagerClientOnViewViewportMetricsChangedParams result = new ViewManagerClientOnViewViewportMetricsChangedParams();
+    _ViewManagerClientOnViewViewportMetricsChangedParams result = new _ViewManagerClientOnViewViewportMetricsChangedParams();
 
     var mainDataHeader = decoder0.decodeStructDataHeader();
     if (mainDataHeader.version <= kVersions.last.version) {
@@ -2464,7 +2464,7 @@ class ViewManagerClientOnViewViewportMetricsChangedParams extends bindings.Struc
   }
 
   String toString() {
-    return "ViewManagerClientOnViewViewportMetricsChangedParams("
+    return "_ViewManagerClientOnViewViewportMetricsChangedParams("
            "oldMetrics: $oldMetrics" ", "
            "newMetrics: $newMetrics" ")";
   }
@@ -2478,7 +2478,7 @@ class ViewManagerClientOnViewViewportMetricsChangedParams extends bindings.Struc
 }
 
 
-class ViewManagerClientOnViewHierarchyChangedParams extends bindings.Struct {
+class _ViewManagerClientOnViewHierarchyChangedParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(32, 0)
   ];
@@ -2487,9 +2487,9 @@ class ViewManagerClientOnViewHierarchyChangedParams extends bindings.Struct {
   int oldParent = 0;
   List<ViewData> views = null;
 
-  ViewManagerClientOnViewHierarchyChangedParams() : super(kVersions.last.size);
+  _ViewManagerClientOnViewHierarchyChangedParams() : super(kVersions.last.size);
 
-  static ViewManagerClientOnViewHierarchyChangedParams deserialize(bindings.Message message) {
+  static _ViewManagerClientOnViewHierarchyChangedParams deserialize(bindings.Message message) {
     var decoder = new bindings.Decoder(message);
     var result = decode(decoder);
     if (decoder.excessHandles != null) {
@@ -2498,11 +2498,11 @@ class ViewManagerClientOnViewHierarchyChangedParams extends bindings.Struct {
     return result;
   }
 
-  static ViewManagerClientOnViewHierarchyChangedParams decode(bindings.Decoder decoder0) {
+  static _ViewManagerClientOnViewHierarchyChangedParams decode(bindings.Decoder decoder0) {
     if (decoder0 == null) {
       return null;
     }
-    ViewManagerClientOnViewHierarchyChangedParams result = new ViewManagerClientOnViewHierarchyChangedParams();
+    _ViewManagerClientOnViewHierarchyChangedParams result = new _ViewManagerClientOnViewHierarchyChangedParams();
 
     var mainDataHeader = decoder0.decodeStructDataHeader();
     if (mainDataHeader.version <= kVersions.last.version) {
@@ -2571,7 +2571,7 @@ class ViewManagerClientOnViewHierarchyChangedParams extends bindings.Struct {
   }
 
   String toString() {
-    return "ViewManagerClientOnViewHierarchyChangedParams("
+    return "_ViewManagerClientOnViewHierarchyChangedParams("
            "view: $view" ", "
            "newParent: $newParent" ", "
            "oldParent: $oldParent" ", "
@@ -2589,7 +2589,7 @@ class ViewManagerClientOnViewHierarchyChangedParams extends bindings.Struct {
 }
 
 
-class ViewManagerClientOnViewReorderedParams extends bindings.Struct {
+class _ViewManagerClientOnViewReorderedParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(24, 0)
   ];
@@ -2597,9 +2597,9 @@ class ViewManagerClientOnViewReorderedParams extends bindings.Struct {
   int relativeViewId = 0;
   view_manager_constants_mojom.OrderDirection direction = null;
 
-  ViewManagerClientOnViewReorderedParams() : super(kVersions.last.size);
+  _ViewManagerClientOnViewReorderedParams() : super(kVersions.last.size);
 
-  static ViewManagerClientOnViewReorderedParams deserialize(bindings.Message message) {
+  static _ViewManagerClientOnViewReorderedParams deserialize(bindings.Message message) {
     var decoder = new bindings.Decoder(message);
     var result = decode(decoder);
     if (decoder.excessHandles != null) {
@@ -2608,11 +2608,11 @@ class ViewManagerClientOnViewReorderedParams extends bindings.Struct {
     return result;
   }
 
-  static ViewManagerClientOnViewReorderedParams decode(bindings.Decoder decoder0) {
+  static _ViewManagerClientOnViewReorderedParams decode(bindings.Decoder decoder0) {
     if (decoder0 == null) {
       return null;
     }
-    ViewManagerClientOnViewReorderedParams result = new ViewManagerClientOnViewReorderedParams();
+    _ViewManagerClientOnViewReorderedParams result = new _ViewManagerClientOnViewReorderedParams();
 
     var mainDataHeader = decoder0.decodeStructDataHeader();
     if (mainDataHeader.version <= kVersions.last.version) {
@@ -2662,7 +2662,7 @@ class ViewManagerClientOnViewReorderedParams extends bindings.Struct {
   }
 
   String toString() {
-    return "ViewManagerClientOnViewReorderedParams("
+    return "_ViewManagerClientOnViewReorderedParams("
            "viewId: $viewId" ", "
            "relativeViewId: $relativeViewId" ", "
            "direction: $direction" ")";
@@ -2678,15 +2678,15 @@ class ViewManagerClientOnViewReorderedParams extends bindings.Struct {
 }
 
 
-class ViewManagerClientOnViewDeletedParams extends bindings.Struct {
+class _ViewManagerClientOnViewDeletedParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(16, 0)
   ];
   int view = 0;
 
-  ViewManagerClientOnViewDeletedParams() : super(kVersions.last.size);
+  _ViewManagerClientOnViewDeletedParams() : super(kVersions.last.size);
 
-  static ViewManagerClientOnViewDeletedParams deserialize(bindings.Message message) {
+  static _ViewManagerClientOnViewDeletedParams deserialize(bindings.Message message) {
     var decoder = new bindings.Decoder(message);
     var result = decode(decoder);
     if (decoder.excessHandles != null) {
@@ -2695,11 +2695,11 @@ class ViewManagerClientOnViewDeletedParams extends bindings.Struct {
     return result;
   }
 
-  static ViewManagerClientOnViewDeletedParams decode(bindings.Decoder decoder0) {
+  static _ViewManagerClientOnViewDeletedParams decode(bindings.Decoder decoder0) {
     if (decoder0 == null) {
       return null;
     }
-    ViewManagerClientOnViewDeletedParams result = new ViewManagerClientOnViewDeletedParams();
+    _ViewManagerClientOnViewDeletedParams result = new _ViewManagerClientOnViewDeletedParams();
 
     var mainDataHeader = decoder0.decodeStructDataHeader();
     if (mainDataHeader.version <= kVersions.last.version) {
@@ -2733,7 +2733,7 @@ class ViewManagerClientOnViewDeletedParams extends bindings.Struct {
   }
 
   String toString() {
-    return "ViewManagerClientOnViewDeletedParams("
+    return "_ViewManagerClientOnViewDeletedParams("
            "view: $view" ")";
   }
 
@@ -2745,16 +2745,16 @@ class ViewManagerClientOnViewDeletedParams extends bindings.Struct {
 }
 
 
-class ViewManagerClientOnViewVisibilityChangedParams extends bindings.Struct {
+class _ViewManagerClientOnViewVisibilityChangedParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(16, 0)
   ];
   int view = 0;
   bool visible = false;
 
-  ViewManagerClientOnViewVisibilityChangedParams() : super(kVersions.last.size);
+  _ViewManagerClientOnViewVisibilityChangedParams() : super(kVersions.last.size);
 
-  static ViewManagerClientOnViewVisibilityChangedParams deserialize(bindings.Message message) {
+  static _ViewManagerClientOnViewVisibilityChangedParams deserialize(bindings.Message message) {
     var decoder = new bindings.Decoder(message);
     var result = decode(decoder);
     if (decoder.excessHandles != null) {
@@ -2763,11 +2763,11 @@ class ViewManagerClientOnViewVisibilityChangedParams extends bindings.Struct {
     return result;
   }
 
-  static ViewManagerClientOnViewVisibilityChangedParams decode(bindings.Decoder decoder0) {
+  static _ViewManagerClientOnViewVisibilityChangedParams decode(bindings.Decoder decoder0) {
     if (decoder0 == null) {
       return null;
     }
-    ViewManagerClientOnViewVisibilityChangedParams result = new ViewManagerClientOnViewVisibilityChangedParams();
+    _ViewManagerClientOnViewVisibilityChangedParams result = new _ViewManagerClientOnViewVisibilityChangedParams();
 
     var mainDataHeader = decoder0.decodeStructDataHeader();
     if (mainDataHeader.version <= kVersions.last.version) {
@@ -2807,7 +2807,7 @@ class ViewManagerClientOnViewVisibilityChangedParams extends bindings.Struct {
   }
 
   String toString() {
-    return "ViewManagerClientOnViewVisibilityChangedParams("
+    return "_ViewManagerClientOnViewVisibilityChangedParams("
            "view: $view" ", "
            "visible: $visible" ")";
   }
@@ -2821,16 +2821,16 @@ class ViewManagerClientOnViewVisibilityChangedParams extends bindings.Struct {
 }
 
 
-class ViewManagerClientOnViewDrawnStateChangedParams extends bindings.Struct {
+class _ViewManagerClientOnViewDrawnStateChangedParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(16, 0)
   ];
   int view = 0;
   bool drawn = false;
 
-  ViewManagerClientOnViewDrawnStateChangedParams() : super(kVersions.last.size);
+  _ViewManagerClientOnViewDrawnStateChangedParams() : super(kVersions.last.size);
 
-  static ViewManagerClientOnViewDrawnStateChangedParams deserialize(bindings.Message message) {
+  static _ViewManagerClientOnViewDrawnStateChangedParams deserialize(bindings.Message message) {
     var decoder = new bindings.Decoder(message);
     var result = decode(decoder);
     if (decoder.excessHandles != null) {
@@ -2839,11 +2839,11 @@ class ViewManagerClientOnViewDrawnStateChangedParams extends bindings.Struct {
     return result;
   }
 
-  static ViewManagerClientOnViewDrawnStateChangedParams decode(bindings.Decoder decoder0) {
+  static _ViewManagerClientOnViewDrawnStateChangedParams decode(bindings.Decoder decoder0) {
     if (decoder0 == null) {
       return null;
     }
-    ViewManagerClientOnViewDrawnStateChangedParams result = new ViewManagerClientOnViewDrawnStateChangedParams();
+    _ViewManagerClientOnViewDrawnStateChangedParams result = new _ViewManagerClientOnViewDrawnStateChangedParams();
 
     var mainDataHeader = decoder0.decodeStructDataHeader();
     if (mainDataHeader.version <= kVersions.last.version) {
@@ -2883,7 +2883,7 @@ class ViewManagerClientOnViewDrawnStateChangedParams extends bindings.Struct {
   }
 
   String toString() {
-    return "ViewManagerClientOnViewDrawnStateChangedParams("
+    return "_ViewManagerClientOnViewDrawnStateChangedParams("
            "view: $view" ", "
            "drawn: $drawn" ")";
   }
@@ -2897,7 +2897,7 @@ class ViewManagerClientOnViewDrawnStateChangedParams extends bindings.Struct {
 }
 
 
-class ViewManagerClientOnViewSharedPropertyChangedParams extends bindings.Struct {
+class _ViewManagerClientOnViewSharedPropertyChangedParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(32, 0)
   ];
@@ -2905,9 +2905,9 @@ class ViewManagerClientOnViewSharedPropertyChangedParams extends bindings.Struct
   String name = null;
   List<int> newData = null;
 
-  ViewManagerClientOnViewSharedPropertyChangedParams() : super(kVersions.last.size);
+  _ViewManagerClientOnViewSharedPropertyChangedParams() : super(kVersions.last.size);
 
-  static ViewManagerClientOnViewSharedPropertyChangedParams deserialize(bindings.Message message) {
+  static _ViewManagerClientOnViewSharedPropertyChangedParams deserialize(bindings.Message message) {
     var decoder = new bindings.Decoder(message);
     var result = decode(decoder);
     if (decoder.excessHandles != null) {
@@ -2916,11 +2916,11 @@ class ViewManagerClientOnViewSharedPropertyChangedParams extends bindings.Struct
     return result;
   }
 
-  static ViewManagerClientOnViewSharedPropertyChangedParams decode(bindings.Decoder decoder0) {
+  static _ViewManagerClientOnViewSharedPropertyChangedParams decode(bindings.Decoder decoder0) {
     if (decoder0 == null) {
       return null;
     }
-    ViewManagerClientOnViewSharedPropertyChangedParams result = new ViewManagerClientOnViewSharedPropertyChangedParams();
+    _ViewManagerClientOnViewSharedPropertyChangedParams result = new _ViewManagerClientOnViewSharedPropertyChangedParams();
 
     var mainDataHeader = decoder0.decodeStructDataHeader();
     if (mainDataHeader.version <= kVersions.last.version) {
@@ -2966,7 +2966,7 @@ class ViewManagerClientOnViewSharedPropertyChangedParams extends bindings.Struct
   }
 
   String toString() {
-    return "ViewManagerClientOnViewSharedPropertyChangedParams("
+    return "_ViewManagerClientOnViewSharedPropertyChangedParams("
            "view: $view" ", "
            "name: $name" ", "
            "newData: $newData" ")";
@@ -2982,16 +2982,16 @@ class ViewManagerClientOnViewSharedPropertyChangedParams extends bindings.Struct
 }
 
 
-class ViewManagerClientOnViewInputEventParams extends bindings.Struct {
+class _ViewManagerClientOnViewInputEventParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(24, 0)
   ];
   int view = 0;
   input_events_mojom.Event event = null;
 
-  ViewManagerClientOnViewInputEventParams() : super(kVersions.last.size);
+  _ViewManagerClientOnViewInputEventParams() : super(kVersions.last.size);
 
-  static ViewManagerClientOnViewInputEventParams deserialize(bindings.Message message) {
+  static _ViewManagerClientOnViewInputEventParams deserialize(bindings.Message message) {
     var decoder = new bindings.Decoder(message);
     var result = decode(decoder);
     if (decoder.excessHandles != null) {
@@ -3000,11 +3000,11 @@ class ViewManagerClientOnViewInputEventParams extends bindings.Struct {
     return result;
   }
 
-  static ViewManagerClientOnViewInputEventParams decode(bindings.Decoder decoder0) {
+  static _ViewManagerClientOnViewInputEventParams decode(bindings.Decoder decoder0) {
     if (decoder0 == null) {
       return null;
     }
-    ViewManagerClientOnViewInputEventParams result = new ViewManagerClientOnViewInputEventParams();
+    _ViewManagerClientOnViewInputEventParams result = new _ViewManagerClientOnViewInputEventParams();
 
     var mainDataHeader = decoder0.decodeStructDataHeader();
     if (mainDataHeader.version <= kVersions.last.version) {
@@ -3045,7 +3045,7 @@ class ViewManagerClientOnViewInputEventParams extends bindings.Struct {
   }
 
   String toString() {
-    return "ViewManagerClientOnViewInputEventParams("
+    return "_ViewManagerClientOnViewInputEventParams("
            "view: $view" ", "
            "event: $event" ")";
   }
@@ -3117,16 +3117,16 @@ class ViewManagerClientOnViewInputEventResponseParams extends bindings.Struct {
 }
 
 
-class ViewManagerClientOnPerformActionParams extends bindings.Struct {
+class _ViewManagerClientOnPerformActionParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(24, 0)
   ];
   int viewId = 0;
   String action = null;
 
-  ViewManagerClientOnPerformActionParams() : super(kVersions.last.size);
+  _ViewManagerClientOnPerformActionParams() : super(kVersions.last.size);
 
-  static ViewManagerClientOnPerformActionParams deserialize(bindings.Message message) {
+  static _ViewManagerClientOnPerformActionParams deserialize(bindings.Message message) {
     var decoder = new bindings.Decoder(message);
     var result = decode(decoder);
     if (decoder.excessHandles != null) {
@@ -3135,11 +3135,11 @@ class ViewManagerClientOnPerformActionParams extends bindings.Struct {
     return result;
   }
 
-  static ViewManagerClientOnPerformActionParams decode(bindings.Decoder decoder0) {
+  static _ViewManagerClientOnPerformActionParams decode(bindings.Decoder decoder0) {
     if (decoder0 == null) {
       return null;
     }
-    ViewManagerClientOnPerformActionParams result = new ViewManagerClientOnPerformActionParams();
+    _ViewManagerClientOnPerformActionParams result = new _ViewManagerClientOnPerformActionParams();
 
     var mainDataHeader = decoder0.decodeStructDataHeader();
     if (mainDataHeader.version <= kVersions.last.version) {
@@ -3179,7 +3179,7 @@ class ViewManagerClientOnPerformActionParams extends bindings.Struct {
   }
 
   String toString() {
-    return "ViewManagerClientOnPerformActionParams("
+    return "_ViewManagerClientOnPerformActionParams("
            "viewId: $viewId" ", "
            "action: $action" ")";
   }
@@ -3259,22 +3259,22 @@ class ViewManagerClientOnPerformActionResponseParams extends bindings.Struct {
   }
 }
 
-const int kViewManagerService_createView_name = 0;
-const int kViewManagerService_deleteView_name = 1;
-const int kViewManagerService_setViewBounds_name = 2;
-const int kViewManagerService_setViewVisibility_name = 3;
-const int kViewManagerService_setViewProperty_name = 4;
-const int kViewManagerService_addView_name = 5;
-const int kViewManagerService_removeViewFromParent_name = 6;
-const int kViewManagerService_reorderView_name = 7;
-const int kViewManagerService_getViewTree_name = 8;
-const int kViewManagerService_setViewSurfaceId_name = 9;
-const int kViewManagerService_embedUrl_name = 10;
-const int kViewManagerService_embed_name = 11;
-const int kViewManagerService_performAction_name = 12;
-const String ViewManagerServiceName = "mojo::ViewManagerService";
+const int _ViewManagerService_createViewName = 0;
+const int _ViewManagerService_deleteViewName = 1;
+const int _ViewManagerService_setViewBoundsName = 2;
+const int _ViewManagerService_setViewVisibilityName = 3;
+const int _ViewManagerService_setViewPropertyName = 4;
+const int _ViewManagerService_addViewName = 5;
+const int _ViewManagerService_removeViewFromParentName = 6;
+const int _ViewManagerService_reorderViewName = 7;
+const int _ViewManagerService_getViewTreeName = 8;
+const int _ViewManagerService_setViewSurfaceIdName = 9;
+const int _ViewManagerService_embedUrlName = 10;
+const int _ViewManagerService_embedName = 11;
+const int _ViewManagerService_performActionName = 12;
 
 abstract class ViewManagerService {
+  static const String serviceName = "mojo::ViewManagerService";
   dynamic createView(int viewId,[Function responseFactory = null]);
   dynamic deleteView(int viewId,[Function responseFactory = null]);
   dynamic setViewBounds(int viewId,geometry_mojom.Rect bounds,[Function responseFactory = null]);
@@ -3288,30 +3288,27 @@ abstract class ViewManagerService {
   dynamic embedUrl(String url,int viewId,Object services,Object exposedServices,[Function responseFactory = null]);
   dynamic embed(int viewId,Object client,[Function responseFactory = null]);
   dynamic performAction(int viewId,String action,[Function responseFactory = null]);
-
 }
 
 
-class ViewManagerServiceProxyImpl extends bindings.Proxy {
-  ViewManagerServiceProxyImpl.fromEndpoint(
+class _ViewManagerServiceProxyImpl extends bindings.Proxy {
+  _ViewManagerServiceProxyImpl.fromEndpoint(
       core.MojoMessagePipeEndpoint endpoint) : super.fromEndpoint(endpoint);
 
-  ViewManagerServiceProxyImpl.fromHandle(core.MojoHandle handle) :
+  _ViewManagerServiceProxyImpl.fromHandle(core.MojoHandle handle) :
       super.fromHandle(handle);
 
-  ViewManagerServiceProxyImpl.unbound() : super.unbound();
+  _ViewManagerServiceProxyImpl.unbound() : super.unbound();
 
-  static ViewManagerServiceProxyImpl newFromEndpoint(
+  static _ViewManagerServiceProxyImpl newFromEndpoint(
       core.MojoMessagePipeEndpoint endpoint) {
-    assert(endpoint.setDescription("For ViewManagerServiceProxyImpl"));
-    return new ViewManagerServiceProxyImpl.fromEndpoint(endpoint);
+    assert(endpoint.setDescription("For _ViewManagerServiceProxyImpl"));
+    return new _ViewManagerServiceProxyImpl.fromEndpoint(endpoint);
   }
-
-  String get name => ViewManagerServiceName;
 
   void handleResponse(bindings.ServiceMessage message) {
     switch (message.header.type) {
-      case kViewManagerService_createView_name:
+      case _ViewManagerService_createViewName:
         var r = ViewManagerServiceCreateViewResponseParams.deserialize(
             message.payload);
         if (!message.header.hasRequestId) {
@@ -3331,7 +3328,7 @@ class ViewManagerServiceProxyImpl extends bindings.Proxy {
         }
         c.complete(r);
         break;
-      case kViewManagerService_deleteView_name:
+      case _ViewManagerService_deleteViewName:
         var r = ViewManagerServiceDeleteViewResponseParams.deserialize(
             message.payload);
         if (!message.header.hasRequestId) {
@@ -3351,7 +3348,7 @@ class ViewManagerServiceProxyImpl extends bindings.Proxy {
         }
         c.complete(r);
         break;
-      case kViewManagerService_setViewBounds_name:
+      case _ViewManagerService_setViewBoundsName:
         var r = ViewManagerServiceSetViewBoundsResponseParams.deserialize(
             message.payload);
         if (!message.header.hasRequestId) {
@@ -3371,7 +3368,7 @@ class ViewManagerServiceProxyImpl extends bindings.Proxy {
         }
         c.complete(r);
         break;
-      case kViewManagerService_setViewVisibility_name:
+      case _ViewManagerService_setViewVisibilityName:
         var r = ViewManagerServiceSetViewVisibilityResponseParams.deserialize(
             message.payload);
         if (!message.header.hasRequestId) {
@@ -3391,7 +3388,7 @@ class ViewManagerServiceProxyImpl extends bindings.Proxy {
         }
         c.complete(r);
         break;
-      case kViewManagerService_setViewProperty_name:
+      case _ViewManagerService_setViewPropertyName:
         var r = ViewManagerServiceSetViewPropertyResponseParams.deserialize(
             message.payload);
         if (!message.header.hasRequestId) {
@@ -3411,7 +3408,7 @@ class ViewManagerServiceProxyImpl extends bindings.Proxy {
         }
         c.complete(r);
         break;
-      case kViewManagerService_addView_name:
+      case _ViewManagerService_addViewName:
         var r = ViewManagerServiceAddViewResponseParams.deserialize(
             message.payload);
         if (!message.header.hasRequestId) {
@@ -3431,7 +3428,7 @@ class ViewManagerServiceProxyImpl extends bindings.Proxy {
         }
         c.complete(r);
         break;
-      case kViewManagerService_removeViewFromParent_name:
+      case _ViewManagerService_removeViewFromParentName:
         var r = ViewManagerServiceRemoveViewFromParentResponseParams.deserialize(
             message.payload);
         if (!message.header.hasRequestId) {
@@ -3451,7 +3448,7 @@ class ViewManagerServiceProxyImpl extends bindings.Proxy {
         }
         c.complete(r);
         break;
-      case kViewManagerService_reorderView_name:
+      case _ViewManagerService_reorderViewName:
         var r = ViewManagerServiceReorderViewResponseParams.deserialize(
             message.payload);
         if (!message.header.hasRequestId) {
@@ -3471,7 +3468,7 @@ class ViewManagerServiceProxyImpl extends bindings.Proxy {
         }
         c.complete(r);
         break;
-      case kViewManagerService_getViewTree_name:
+      case _ViewManagerService_getViewTreeName:
         var r = ViewManagerServiceGetViewTreeResponseParams.deserialize(
             message.payload);
         if (!message.header.hasRequestId) {
@@ -3491,7 +3488,7 @@ class ViewManagerServiceProxyImpl extends bindings.Proxy {
         }
         c.complete(r);
         break;
-      case kViewManagerService_setViewSurfaceId_name:
+      case _ViewManagerService_setViewSurfaceIdName:
         var r = ViewManagerServiceSetViewSurfaceIdResponseParams.deserialize(
             message.payload);
         if (!message.header.hasRequestId) {
@@ -3511,7 +3508,7 @@ class ViewManagerServiceProxyImpl extends bindings.Proxy {
         }
         c.complete(r);
         break;
-      case kViewManagerService_embedUrl_name:
+      case _ViewManagerService_embedUrlName:
         var r = ViewManagerServiceEmbedUrlResponseParams.deserialize(
             message.payload);
         if (!message.header.hasRequestId) {
@@ -3531,7 +3528,7 @@ class ViewManagerServiceProxyImpl extends bindings.Proxy {
         }
         c.complete(r);
         break;
-      case kViewManagerService_embed_name:
+      case _ViewManagerService_embedName:
         var r = ViewManagerServiceEmbedResponseParams.deserialize(
             message.payload);
         if (!message.header.hasRequestId) {
@@ -3551,7 +3548,7 @@ class ViewManagerServiceProxyImpl extends bindings.Proxy {
         }
         c.complete(r);
         break;
-      case kViewManagerService_performAction_name:
+      case _ViewManagerService_performActionName:
         var r = ViewManagerServicePerformActionResponseParams.deserialize(
             message.payload);
         if (!message.header.hasRequestId) {
@@ -3580,142 +3577,142 @@ class ViewManagerServiceProxyImpl extends bindings.Proxy {
 
   String toString() {
     var superString = super.toString();
-    return "ViewManagerServiceProxyImpl($superString)";
+    return "_ViewManagerServiceProxyImpl($superString)";
   }
 }
 
 
 class _ViewManagerServiceProxyCalls implements ViewManagerService {
-  ViewManagerServiceProxyImpl _proxyImpl;
+  _ViewManagerServiceProxyImpl _proxyImpl;
 
   _ViewManagerServiceProxyCalls(this._proxyImpl);
     dynamic createView(int viewId,[Function responseFactory = null]) {
-      var params = new ViewManagerServiceCreateViewParams();
+      var params = new _ViewManagerServiceCreateViewParams();
       params.viewId = viewId;
       return _proxyImpl.sendMessageWithRequestId(
           params,
-          kViewManagerService_createView_name,
+          _ViewManagerService_createViewName,
           -1,
           bindings.MessageHeader.kMessageExpectsResponse);
     }
     dynamic deleteView(int viewId,[Function responseFactory = null]) {
-      var params = new ViewManagerServiceDeleteViewParams();
+      var params = new _ViewManagerServiceDeleteViewParams();
       params.viewId = viewId;
       return _proxyImpl.sendMessageWithRequestId(
           params,
-          kViewManagerService_deleteView_name,
+          _ViewManagerService_deleteViewName,
           -1,
           bindings.MessageHeader.kMessageExpectsResponse);
     }
     dynamic setViewBounds(int viewId,geometry_mojom.Rect bounds,[Function responseFactory = null]) {
-      var params = new ViewManagerServiceSetViewBoundsParams();
+      var params = new _ViewManagerServiceSetViewBoundsParams();
       params.viewId = viewId;
       params.bounds = bounds;
       return _proxyImpl.sendMessageWithRequestId(
           params,
-          kViewManagerService_setViewBounds_name,
+          _ViewManagerService_setViewBoundsName,
           -1,
           bindings.MessageHeader.kMessageExpectsResponse);
     }
     dynamic setViewVisibility(int viewId,bool visible,[Function responseFactory = null]) {
-      var params = new ViewManagerServiceSetViewVisibilityParams();
+      var params = new _ViewManagerServiceSetViewVisibilityParams();
       params.viewId = viewId;
       params.visible = visible;
       return _proxyImpl.sendMessageWithRequestId(
           params,
-          kViewManagerService_setViewVisibility_name,
+          _ViewManagerService_setViewVisibilityName,
           -1,
           bindings.MessageHeader.kMessageExpectsResponse);
     }
     dynamic setViewProperty(int viewId,String name,List<int> value,[Function responseFactory = null]) {
-      var params = new ViewManagerServiceSetViewPropertyParams();
+      var params = new _ViewManagerServiceSetViewPropertyParams();
       params.viewId = viewId;
       params.name = name;
       params.value = value;
       return _proxyImpl.sendMessageWithRequestId(
           params,
-          kViewManagerService_setViewProperty_name,
+          _ViewManagerService_setViewPropertyName,
           -1,
           bindings.MessageHeader.kMessageExpectsResponse);
     }
     dynamic addView(int parent,int child,[Function responseFactory = null]) {
-      var params = new ViewManagerServiceAddViewParams();
+      var params = new _ViewManagerServiceAddViewParams();
       params.parent = parent;
       params.child = child;
       return _proxyImpl.sendMessageWithRequestId(
           params,
-          kViewManagerService_addView_name,
+          _ViewManagerService_addViewName,
           -1,
           bindings.MessageHeader.kMessageExpectsResponse);
     }
     dynamic removeViewFromParent(int viewId,[Function responseFactory = null]) {
-      var params = new ViewManagerServiceRemoveViewFromParentParams();
+      var params = new _ViewManagerServiceRemoveViewFromParentParams();
       params.viewId = viewId;
       return _proxyImpl.sendMessageWithRequestId(
           params,
-          kViewManagerService_removeViewFromParent_name,
+          _ViewManagerService_removeViewFromParentName,
           -1,
           bindings.MessageHeader.kMessageExpectsResponse);
     }
     dynamic reorderView(int viewId,int relativeViewId,view_manager_constants_mojom.OrderDirection direction,[Function responseFactory = null]) {
-      var params = new ViewManagerServiceReorderViewParams();
+      var params = new _ViewManagerServiceReorderViewParams();
       params.viewId = viewId;
       params.relativeViewId = relativeViewId;
       params.direction = direction;
       return _proxyImpl.sendMessageWithRequestId(
           params,
-          kViewManagerService_reorderView_name,
+          _ViewManagerService_reorderViewName,
           -1,
           bindings.MessageHeader.kMessageExpectsResponse);
     }
     dynamic getViewTree(int viewId,[Function responseFactory = null]) {
-      var params = new ViewManagerServiceGetViewTreeParams();
+      var params = new _ViewManagerServiceGetViewTreeParams();
       params.viewId = viewId;
       return _proxyImpl.sendMessageWithRequestId(
           params,
-          kViewManagerService_getViewTree_name,
+          _ViewManagerService_getViewTreeName,
           -1,
           bindings.MessageHeader.kMessageExpectsResponse);
     }
     dynamic setViewSurfaceId(int viewId,surface_id_mojom.SurfaceId surfaceId,[Function responseFactory = null]) {
-      var params = new ViewManagerServiceSetViewSurfaceIdParams();
+      var params = new _ViewManagerServiceSetViewSurfaceIdParams();
       params.viewId = viewId;
       params.surfaceId = surfaceId;
       return _proxyImpl.sendMessageWithRequestId(
           params,
-          kViewManagerService_setViewSurfaceId_name,
+          _ViewManagerService_setViewSurfaceIdName,
           -1,
           bindings.MessageHeader.kMessageExpectsResponse);
     }
     dynamic embedUrl(String url,int viewId,Object services,Object exposedServices,[Function responseFactory = null]) {
-      var params = new ViewManagerServiceEmbedUrlParams();
+      var params = new _ViewManagerServiceEmbedUrlParams();
       params.url = url;
       params.viewId = viewId;
       params.services = services;
       params.exposedServices = exposedServices;
       return _proxyImpl.sendMessageWithRequestId(
           params,
-          kViewManagerService_embedUrl_name,
+          _ViewManagerService_embedUrlName,
           -1,
           bindings.MessageHeader.kMessageExpectsResponse);
     }
     dynamic embed(int viewId,Object client,[Function responseFactory = null]) {
-      var params = new ViewManagerServiceEmbedParams();
+      var params = new _ViewManagerServiceEmbedParams();
       params.viewId = viewId;
       params.client = client;
       return _proxyImpl.sendMessageWithRequestId(
           params,
-          kViewManagerService_embed_name,
+          _ViewManagerService_embedName,
           -1,
           bindings.MessageHeader.kMessageExpectsResponse);
     }
     dynamic performAction(int viewId,String action,[Function responseFactory = null]) {
-      var params = new ViewManagerServicePerformActionParams();
+      var params = new _ViewManagerServicePerformActionParams();
       params.viewId = viewId;
       params.action = action;
       return _proxyImpl.sendMessageWithRequestId(
           params,
-          kViewManagerService_performAction_name,
+          _ViewManagerService_performActionName,
           -1,
           bindings.MessageHeader.kMessageExpectsResponse);
     }
@@ -3725,25 +3722,24 @@ class _ViewManagerServiceProxyCalls implements ViewManagerService {
 class ViewManagerServiceProxy implements bindings.ProxyBase {
   final bindings.Proxy impl;
   ViewManagerService ptr;
-  final String name = ViewManagerServiceName;
 
-  ViewManagerServiceProxy(ViewManagerServiceProxyImpl proxyImpl) :
+  ViewManagerServiceProxy(_ViewManagerServiceProxyImpl proxyImpl) :
       impl = proxyImpl,
       ptr = new _ViewManagerServiceProxyCalls(proxyImpl);
 
   ViewManagerServiceProxy.fromEndpoint(
       core.MojoMessagePipeEndpoint endpoint) :
-      impl = new ViewManagerServiceProxyImpl.fromEndpoint(endpoint) {
+      impl = new _ViewManagerServiceProxyImpl.fromEndpoint(endpoint) {
     ptr = new _ViewManagerServiceProxyCalls(impl);
   }
 
   ViewManagerServiceProxy.fromHandle(core.MojoHandle handle) :
-      impl = new ViewManagerServiceProxyImpl.fromHandle(handle) {
+      impl = new _ViewManagerServiceProxyImpl.fromHandle(handle) {
     ptr = new _ViewManagerServiceProxyCalls(impl);
   }
 
   ViewManagerServiceProxy.unbound() :
-      impl = new ViewManagerServiceProxyImpl.unbound() {
+      impl = new _ViewManagerServiceProxyImpl.unbound() {
     ptr = new _ViewManagerServiceProxyCalls(impl);
   }
 
@@ -3759,6 +3755,8 @@ class ViewManagerServiceProxy implements bindings.ProxyBase {
     assert(endpoint.setDescription("For ViewManagerServiceProxy"));
     return new ViewManagerServiceProxy.fromEndpoint(endpoint);
   }
+
+  String get serviceName => ViewManagerService.serviceName;
 
   Future close({bool immediate: false}) => impl.close(immediate: immediate);
 
@@ -3797,8 +3795,6 @@ class ViewManagerServiceStub extends bindings.Stub {
     assert(endpoint.setDescription("For ViewManagerServiceStub"));
     return new ViewManagerServiceStub.fromEndpoint(endpoint);
   }
-
-  static const String name = ViewManagerServiceName;
 
 
   ViewManagerServiceCreateViewResponseParams _ViewManagerServiceCreateViewResponseParamsFactory(ErrorCode errorCode) {
@@ -3875,8 +3871,8 @@ class ViewManagerServiceStub extends bindings.Stub {
     }
     assert(_impl != null);
     switch (message.header.type) {
-      case kViewManagerService_createView_name:
-        var params = ViewManagerServiceCreateViewParams.deserialize(
+      case _ViewManagerService_createViewName:
+        var params = _ViewManagerServiceCreateViewParams.deserialize(
             message.payload);
         var response = _impl.createView(params.viewId,_ViewManagerServiceCreateViewResponseParamsFactory);
         if (response is Future) {
@@ -3884,7 +3880,7 @@ class ViewManagerServiceStub extends bindings.Stub {
             if (response != null) {
               return buildResponseWithId(
                   response,
-                  kViewManagerService_createView_name,
+                  _ViewManagerService_createViewName,
                   message.header.requestId,
                   bindings.MessageHeader.kMessageIsResponse);
             }
@@ -3892,13 +3888,13 @@ class ViewManagerServiceStub extends bindings.Stub {
         } else if (response != null) {
           return buildResponseWithId(
               response,
-              kViewManagerService_createView_name,
+              _ViewManagerService_createViewName,
               message.header.requestId,
               bindings.MessageHeader.kMessageIsResponse);
         }
         break;
-      case kViewManagerService_deleteView_name:
-        var params = ViewManagerServiceDeleteViewParams.deserialize(
+      case _ViewManagerService_deleteViewName:
+        var params = _ViewManagerServiceDeleteViewParams.deserialize(
             message.payload);
         var response = _impl.deleteView(params.viewId,_ViewManagerServiceDeleteViewResponseParamsFactory);
         if (response is Future) {
@@ -3906,7 +3902,7 @@ class ViewManagerServiceStub extends bindings.Stub {
             if (response != null) {
               return buildResponseWithId(
                   response,
-                  kViewManagerService_deleteView_name,
+                  _ViewManagerService_deleteViewName,
                   message.header.requestId,
                   bindings.MessageHeader.kMessageIsResponse);
             }
@@ -3914,13 +3910,13 @@ class ViewManagerServiceStub extends bindings.Stub {
         } else if (response != null) {
           return buildResponseWithId(
               response,
-              kViewManagerService_deleteView_name,
+              _ViewManagerService_deleteViewName,
               message.header.requestId,
               bindings.MessageHeader.kMessageIsResponse);
         }
         break;
-      case kViewManagerService_setViewBounds_name:
-        var params = ViewManagerServiceSetViewBoundsParams.deserialize(
+      case _ViewManagerService_setViewBoundsName:
+        var params = _ViewManagerServiceSetViewBoundsParams.deserialize(
             message.payload);
         var response = _impl.setViewBounds(params.viewId,params.bounds,_ViewManagerServiceSetViewBoundsResponseParamsFactory);
         if (response is Future) {
@@ -3928,7 +3924,7 @@ class ViewManagerServiceStub extends bindings.Stub {
             if (response != null) {
               return buildResponseWithId(
                   response,
-                  kViewManagerService_setViewBounds_name,
+                  _ViewManagerService_setViewBoundsName,
                   message.header.requestId,
                   bindings.MessageHeader.kMessageIsResponse);
             }
@@ -3936,13 +3932,13 @@ class ViewManagerServiceStub extends bindings.Stub {
         } else if (response != null) {
           return buildResponseWithId(
               response,
-              kViewManagerService_setViewBounds_name,
+              _ViewManagerService_setViewBoundsName,
               message.header.requestId,
               bindings.MessageHeader.kMessageIsResponse);
         }
         break;
-      case kViewManagerService_setViewVisibility_name:
-        var params = ViewManagerServiceSetViewVisibilityParams.deserialize(
+      case _ViewManagerService_setViewVisibilityName:
+        var params = _ViewManagerServiceSetViewVisibilityParams.deserialize(
             message.payload);
         var response = _impl.setViewVisibility(params.viewId,params.visible,_ViewManagerServiceSetViewVisibilityResponseParamsFactory);
         if (response is Future) {
@@ -3950,7 +3946,7 @@ class ViewManagerServiceStub extends bindings.Stub {
             if (response != null) {
               return buildResponseWithId(
                   response,
-                  kViewManagerService_setViewVisibility_name,
+                  _ViewManagerService_setViewVisibilityName,
                   message.header.requestId,
                   bindings.MessageHeader.kMessageIsResponse);
             }
@@ -3958,13 +3954,13 @@ class ViewManagerServiceStub extends bindings.Stub {
         } else if (response != null) {
           return buildResponseWithId(
               response,
-              kViewManagerService_setViewVisibility_name,
+              _ViewManagerService_setViewVisibilityName,
               message.header.requestId,
               bindings.MessageHeader.kMessageIsResponse);
         }
         break;
-      case kViewManagerService_setViewProperty_name:
-        var params = ViewManagerServiceSetViewPropertyParams.deserialize(
+      case _ViewManagerService_setViewPropertyName:
+        var params = _ViewManagerServiceSetViewPropertyParams.deserialize(
             message.payload);
         var response = _impl.setViewProperty(params.viewId,params.name,params.value,_ViewManagerServiceSetViewPropertyResponseParamsFactory);
         if (response is Future) {
@@ -3972,7 +3968,7 @@ class ViewManagerServiceStub extends bindings.Stub {
             if (response != null) {
               return buildResponseWithId(
                   response,
-                  kViewManagerService_setViewProperty_name,
+                  _ViewManagerService_setViewPropertyName,
                   message.header.requestId,
                   bindings.MessageHeader.kMessageIsResponse);
             }
@@ -3980,13 +3976,13 @@ class ViewManagerServiceStub extends bindings.Stub {
         } else if (response != null) {
           return buildResponseWithId(
               response,
-              kViewManagerService_setViewProperty_name,
+              _ViewManagerService_setViewPropertyName,
               message.header.requestId,
               bindings.MessageHeader.kMessageIsResponse);
         }
         break;
-      case kViewManagerService_addView_name:
-        var params = ViewManagerServiceAddViewParams.deserialize(
+      case _ViewManagerService_addViewName:
+        var params = _ViewManagerServiceAddViewParams.deserialize(
             message.payload);
         var response = _impl.addView(params.parent,params.child,_ViewManagerServiceAddViewResponseParamsFactory);
         if (response is Future) {
@@ -3994,7 +3990,7 @@ class ViewManagerServiceStub extends bindings.Stub {
             if (response != null) {
               return buildResponseWithId(
                   response,
-                  kViewManagerService_addView_name,
+                  _ViewManagerService_addViewName,
                   message.header.requestId,
                   bindings.MessageHeader.kMessageIsResponse);
             }
@@ -4002,13 +3998,13 @@ class ViewManagerServiceStub extends bindings.Stub {
         } else if (response != null) {
           return buildResponseWithId(
               response,
-              kViewManagerService_addView_name,
+              _ViewManagerService_addViewName,
               message.header.requestId,
               bindings.MessageHeader.kMessageIsResponse);
         }
         break;
-      case kViewManagerService_removeViewFromParent_name:
-        var params = ViewManagerServiceRemoveViewFromParentParams.deserialize(
+      case _ViewManagerService_removeViewFromParentName:
+        var params = _ViewManagerServiceRemoveViewFromParentParams.deserialize(
             message.payload);
         var response = _impl.removeViewFromParent(params.viewId,_ViewManagerServiceRemoveViewFromParentResponseParamsFactory);
         if (response is Future) {
@@ -4016,7 +4012,7 @@ class ViewManagerServiceStub extends bindings.Stub {
             if (response != null) {
               return buildResponseWithId(
                   response,
-                  kViewManagerService_removeViewFromParent_name,
+                  _ViewManagerService_removeViewFromParentName,
                   message.header.requestId,
                   bindings.MessageHeader.kMessageIsResponse);
             }
@@ -4024,13 +4020,13 @@ class ViewManagerServiceStub extends bindings.Stub {
         } else if (response != null) {
           return buildResponseWithId(
               response,
-              kViewManagerService_removeViewFromParent_name,
+              _ViewManagerService_removeViewFromParentName,
               message.header.requestId,
               bindings.MessageHeader.kMessageIsResponse);
         }
         break;
-      case kViewManagerService_reorderView_name:
-        var params = ViewManagerServiceReorderViewParams.deserialize(
+      case _ViewManagerService_reorderViewName:
+        var params = _ViewManagerServiceReorderViewParams.deserialize(
             message.payload);
         var response = _impl.reorderView(params.viewId,params.relativeViewId,params.direction,_ViewManagerServiceReorderViewResponseParamsFactory);
         if (response is Future) {
@@ -4038,7 +4034,7 @@ class ViewManagerServiceStub extends bindings.Stub {
             if (response != null) {
               return buildResponseWithId(
                   response,
-                  kViewManagerService_reorderView_name,
+                  _ViewManagerService_reorderViewName,
                   message.header.requestId,
                   bindings.MessageHeader.kMessageIsResponse);
             }
@@ -4046,13 +4042,13 @@ class ViewManagerServiceStub extends bindings.Stub {
         } else if (response != null) {
           return buildResponseWithId(
               response,
-              kViewManagerService_reorderView_name,
+              _ViewManagerService_reorderViewName,
               message.header.requestId,
               bindings.MessageHeader.kMessageIsResponse);
         }
         break;
-      case kViewManagerService_getViewTree_name:
-        var params = ViewManagerServiceGetViewTreeParams.deserialize(
+      case _ViewManagerService_getViewTreeName:
+        var params = _ViewManagerServiceGetViewTreeParams.deserialize(
             message.payload);
         var response = _impl.getViewTree(params.viewId,_ViewManagerServiceGetViewTreeResponseParamsFactory);
         if (response is Future) {
@@ -4060,7 +4056,7 @@ class ViewManagerServiceStub extends bindings.Stub {
             if (response != null) {
               return buildResponseWithId(
                   response,
-                  kViewManagerService_getViewTree_name,
+                  _ViewManagerService_getViewTreeName,
                   message.header.requestId,
                   bindings.MessageHeader.kMessageIsResponse);
             }
@@ -4068,13 +4064,13 @@ class ViewManagerServiceStub extends bindings.Stub {
         } else if (response != null) {
           return buildResponseWithId(
               response,
-              kViewManagerService_getViewTree_name,
+              _ViewManagerService_getViewTreeName,
               message.header.requestId,
               bindings.MessageHeader.kMessageIsResponse);
         }
         break;
-      case kViewManagerService_setViewSurfaceId_name:
-        var params = ViewManagerServiceSetViewSurfaceIdParams.deserialize(
+      case _ViewManagerService_setViewSurfaceIdName:
+        var params = _ViewManagerServiceSetViewSurfaceIdParams.deserialize(
             message.payload);
         var response = _impl.setViewSurfaceId(params.viewId,params.surfaceId,_ViewManagerServiceSetViewSurfaceIdResponseParamsFactory);
         if (response is Future) {
@@ -4082,7 +4078,7 @@ class ViewManagerServiceStub extends bindings.Stub {
             if (response != null) {
               return buildResponseWithId(
                   response,
-                  kViewManagerService_setViewSurfaceId_name,
+                  _ViewManagerService_setViewSurfaceIdName,
                   message.header.requestId,
                   bindings.MessageHeader.kMessageIsResponse);
             }
@@ -4090,13 +4086,13 @@ class ViewManagerServiceStub extends bindings.Stub {
         } else if (response != null) {
           return buildResponseWithId(
               response,
-              kViewManagerService_setViewSurfaceId_name,
+              _ViewManagerService_setViewSurfaceIdName,
               message.header.requestId,
               bindings.MessageHeader.kMessageIsResponse);
         }
         break;
-      case kViewManagerService_embedUrl_name:
-        var params = ViewManagerServiceEmbedUrlParams.deserialize(
+      case _ViewManagerService_embedUrlName:
+        var params = _ViewManagerServiceEmbedUrlParams.deserialize(
             message.payload);
         var response = _impl.embedUrl(params.url,params.viewId,params.services,params.exposedServices,_ViewManagerServiceEmbedUrlResponseParamsFactory);
         if (response is Future) {
@@ -4104,7 +4100,7 @@ class ViewManagerServiceStub extends bindings.Stub {
             if (response != null) {
               return buildResponseWithId(
                   response,
-                  kViewManagerService_embedUrl_name,
+                  _ViewManagerService_embedUrlName,
                   message.header.requestId,
                   bindings.MessageHeader.kMessageIsResponse);
             }
@@ -4112,13 +4108,13 @@ class ViewManagerServiceStub extends bindings.Stub {
         } else if (response != null) {
           return buildResponseWithId(
               response,
-              kViewManagerService_embedUrl_name,
+              _ViewManagerService_embedUrlName,
               message.header.requestId,
               bindings.MessageHeader.kMessageIsResponse);
         }
         break;
-      case kViewManagerService_embed_name:
-        var params = ViewManagerServiceEmbedParams.deserialize(
+      case _ViewManagerService_embedName:
+        var params = _ViewManagerServiceEmbedParams.deserialize(
             message.payload);
         var response = _impl.embed(params.viewId,params.client,_ViewManagerServiceEmbedResponseParamsFactory);
         if (response is Future) {
@@ -4126,7 +4122,7 @@ class ViewManagerServiceStub extends bindings.Stub {
             if (response != null) {
               return buildResponseWithId(
                   response,
-                  kViewManagerService_embed_name,
+                  _ViewManagerService_embedName,
                   message.header.requestId,
                   bindings.MessageHeader.kMessageIsResponse);
             }
@@ -4134,13 +4130,13 @@ class ViewManagerServiceStub extends bindings.Stub {
         } else if (response != null) {
           return buildResponseWithId(
               response,
-              kViewManagerService_embed_name,
+              _ViewManagerService_embedName,
               message.header.requestId,
               bindings.MessageHeader.kMessageIsResponse);
         }
         break;
-      case kViewManagerService_performAction_name:
-        var params = ViewManagerServicePerformActionParams.deserialize(
+      case _ViewManagerService_performActionName:
+        var params = _ViewManagerServicePerformActionParams.deserialize(
             message.payload);
         var response = _impl.performAction(params.viewId,params.action,_ViewManagerServicePerformActionResponseParamsFactory);
         if (response is Future) {
@@ -4148,7 +4144,7 @@ class ViewManagerServiceStub extends bindings.Stub {
             if (response != null) {
               return buildResponseWithId(
                   response,
-                  kViewManagerService_performAction_name,
+                  _ViewManagerService_performActionName,
                   message.header.requestId,
                   bindings.MessageHeader.kMessageIsResponse);
             }
@@ -4156,7 +4152,7 @@ class ViewManagerServiceStub extends bindings.Stub {
         } else if (response != null) {
           return buildResponseWithId(
               response,
-              kViewManagerService_performAction_name,
+              _ViewManagerService_performActionName,
               message.header.requestId,
               bindings.MessageHeader.kMessageIsResponse);
         }
@@ -4182,21 +4178,21 @@ class ViewManagerServiceStub extends bindings.Stub {
   int get version => 0;
 }
 
-const int kViewManagerClient_onEmbed_name = 0;
-const int kViewManagerClient_onEmbeddedAppDisconnected_name = 1;
-const int kViewManagerClient_onViewBoundsChanged_name = 2;
-const int kViewManagerClient_onViewViewportMetricsChanged_name = 3;
-const int kViewManagerClient_onViewHierarchyChanged_name = 4;
-const int kViewManagerClient_onViewReordered_name = 5;
-const int kViewManagerClient_onViewDeleted_name = 6;
-const int kViewManagerClient_onViewVisibilityChanged_name = 7;
-const int kViewManagerClient_onViewDrawnStateChanged_name = 8;
-const int kViewManagerClient_onViewSharedPropertyChanged_name = 9;
-const int kViewManagerClient_onViewInputEvent_name = 10;
-const int kViewManagerClient_onPerformAction_name = 11;
-const String ViewManagerClientName = "mojo::ViewManagerClient";
+const int _ViewManagerClient_onEmbedName = 0;
+const int _ViewManagerClient_onEmbeddedAppDisconnectedName = 1;
+const int _ViewManagerClient_onViewBoundsChangedName = 2;
+const int _ViewManagerClient_onViewViewportMetricsChangedName = 3;
+const int _ViewManagerClient_onViewHierarchyChangedName = 4;
+const int _ViewManagerClient_onViewReorderedName = 5;
+const int _ViewManagerClient_onViewDeletedName = 6;
+const int _ViewManagerClient_onViewVisibilityChangedName = 7;
+const int _ViewManagerClient_onViewDrawnStateChangedName = 8;
+const int _ViewManagerClient_onViewSharedPropertyChangedName = 9;
+const int _ViewManagerClient_onViewInputEventName = 10;
+const int _ViewManagerClient_onPerformActionName = 11;
 
 abstract class ViewManagerClient {
+  static const String serviceName = "mojo::ViewManagerClient";
   void onEmbed(int connectionId, String embedderUrl, ViewData root, Object viewManagerService, Object services, Object exposedServices, core.MojoMessagePipeEndpoint windowManagerPipe);
   void onEmbeddedAppDisconnected(int view);
   void onViewBoundsChanged(int view, geometry_mojom.Rect oldBounds, geometry_mojom.Rect newBounds);
@@ -4209,30 +4205,27 @@ abstract class ViewManagerClient {
   void onViewSharedPropertyChanged(int view, String name, List<int> newData);
   dynamic onViewInputEvent(int view,input_events_mojom.Event event,[Function responseFactory = null]);
   dynamic onPerformAction(int viewId,String action,[Function responseFactory = null]);
-
 }
 
 
-class ViewManagerClientProxyImpl extends bindings.Proxy {
-  ViewManagerClientProxyImpl.fromEndpoint(
+class _ViewManagerClientProxyImpl extends bindings.Proxy {
+  _ViewManagerClientProxyImpl.fromEndpoint(
       core.MojoMessagePipeEndpoint endpoint) : super.fromEndpoint(endpoint);
 
-  ViewManagerClientProxyImpl.fromHandle(core.MojoHandle handle) :
+  _ViewManagerClientProxyImpl.fromHandle(core.MojoHandle handle) :
       super.fromHandle(handle);
 
-  ViewManagerClientProxyImpl.unbound() : super.unbound();
+  _ViewManagerClientProxyImpl.unbound() : super.unbound();
 
-  static ViewManagerClientProxyImpl newFromEndpoint(
+  static _ViewManagerClientProxyImpl newFromEndpoint(
       core.MojoMessagePipeEndpoint endpoint) {
-    assert(endpoint.setDescription("For ViewManagerClientProxyImpl"));
-    return new ViewManagerClientProxyImpl.fromEndpoint(endpoint);
+    assert(endpoint.setDescription("For _ViewManagerClientProxyImpl"));
+    return new _ViewManagerClientProxyImpl.fromEndpoint(endpoint);
   }
-
-  String get name => ViewManagerClientName;
 
   void handleResponse(bindings.ServiceMessage message) {
     switch (message.header.type) {
-      case kViewManagerClient_onViewInputEvent_name:
+      case _ViewManagerClient_onViewInputEventName:
         var r = ViewManagerClientOnViewInputEventResponseParams.deserialize(
             message.payload);
         if (!message.header.hasRequestId) {
@@ -4252,7 +4245,7 @@ class ViewManagerClientProxyImpl extends bindings.Proxy {
         }
         c.complete(r);
         break;
-      case kViewManagerClient_onPerformAction_name:
+      case _ViewManagerClient_onPerformActionName:
         var r = ViewManagerClientOnPerformActionResponseParams.deserialize(
             message.payload);
         if (!message.header.hasRequestId) {
@@ -4281,13 +4274,13 @@ class ViewManagerClientProxyImpl extends bindings.Proxy {
 
   String toString() {
     var superString = super.toString();
-    return "ViewManagerClientProxyImpl($superString)";
+    return "_ViewManagerClientProxyImpl($superString)";
   }
 }
 
 
 class _ViewManagerClientProxyCalls implements ViewManagerClient {
-  ViewManagerClientProxyImpl _proxyImpl;
+  _ViewManagerClientProxyImpl _proxyImpl;
 
   _ViewManagerClientProxyCalls(this._proxyImpl);
     void onEmbed(int connectionId, String embedderUrl, ViewData root, Object viewManagerService, Object services, Object exposedServices, core.MojoMessagePipeEndpoint windowManagerPipe) {
@@ -4295,7 +4288,7 @@ class _ViewManagerClientProxyCalls implements ViewManagerClient {
         _proxyImpl.proxyError("The Proxy is closed.");
         return;
       }
-      var params = new ViewManagerClientOnEmbedParams();
+      var params = new _ViewManagerClientOnEmbedParams();
       params.connectionId = connectionId;
       params.embedderUrl = embedderUrl;
       params.root = root;
@@ -4303,128 +4296,118 @@ class _ViewManagerClientProxyCalls implements ViewManagerClient {
       params.services = services;
       params.exposedServices = exposedServices;
       params.windowManagerPipe = windowManagerPipe;
-      _proxyImpl.sendMessage(params, kViewManagerClient_onEmbed_name);
+      _proxyImpl.sendMessage(params, _ViewManagerClient_onEmbedName);
     }
-  
     void onEmbeddedAppDisconnected(int view) {
       if (!_proxyImpl.isBound) {
         _proxyImpl.proxyError("The Proxy is closed.");
         return;
       }
-      var params = new ViewManagerClientOnEmbeddedAppDisconnectedParams();
+      var params = new _ViewManagerClientOnEmbeddedAppDisconnectedParams();
       params.view = view;
-      _proxyImpl.sendMessage(params, kViewManagerClient_onEmbeddedAppDisconnected_name);
+      _proxyImpl.sendMessage(params, _ViewManagerClient_onEmbeddedAppDisconnectedName);
     }
-  
     void onViewBoundsChanged(int view, geometry_mojom.Rect oldBounds, geometry_mojom.Rect newBounds) {
       if (!_proxyImpl.isBound) {
         _proxyImpl.proxyError("The Proxy is closed.");
         return;
       }
-      var params = new ViewManagerClientOnViewBoundsChangedParams();
+      var params = new _ViewManagerClientOnViewBoundsChangedParams();
       params.view = view;
       params.oldBounds = oldBounds;
       params.newBounds = newBounds;
-      _proxyImpl.sendMessage(params, kViewManagerClient_onViewBoundsChanged_name);
+      _proxyImpl.sendMessage(params, _ViewManagerClient_onViewBoundsChangedName);
     }
-  
     void onViewViewportMetricsChanged(native_viewport_mojom.ViewportMetrics oldMetrics, native_viewport_mojom.ViewportMetrics newMetrics) {
       if (!_proxyImpl.isBound) {
         _proxyImpl.proxyError("The Proxy is closed.");
         return;
       }
-      var params = new ViewManagerClientOnViewViewportMetricsChangedParams();
+      var params = new _ViewManagerClientOnViewViewportMetricsChangedParams();
       params.oldMetrics = oldMetrics;
       params.newMetrics = newMetrics;
-      _proxyImpl.sendMessage(params, kViewManagerClient_onViewViewportMetricsChanged_name);
+      _proxyImpl.sendMessage(params, _ViewManagerClient_onViewViewportMetricsChangedName);
     }
-  
     void onViewHierarchyChanged(int view, int newParent, int oldParent, List<ViewData> views) {
       if (!_proxyImpl.isBound) {
         _proxyImpl.proxyError("The Proxy is closed.");
         return;
       }
-      var params = new ViewManagerClientOnViewHierarchyChangedParams();
+      var params = new _ViewManagerClientOnViewHierarchyChangedParams();
       params.view = view;
       params.newParent = newParent;
       params.oldParent = oldParent;
       params.views = views;
-      _proxyImpl.sendMessage(params, kViewManagerClient_onViewHierarchyChanged_name);
+      _proxyImpl.sendMessage(params, _ViewManagerClient_onViewHierarchyChangedName);
     }
-  
     void onViewReordered(int viewId, int relativeViewId, view_manager_constants_mojom.OrderDirection direction) {
       if (!_proxyImpl.isBound) {
         _proxyImpl.proxyError("The Proxy is closed.");
         return;
       }
-      var params = new ViewManagerClientOnViewReorderedParams();
+      var params = new _ViewManagerClientOnViewReorderedParams();
       params.viewId = viewId;
       params.relativeViewId = relativeViewId;
       params.direction = direction;
-      _proxyImpl.sendMessage(params, kViewManagerClient_onViewReordered_name);
+      _proxyImpl.sendMessage(params, _ViewManagerClient_onViewReorderedName);
     }
-  
     void onViewDeleted(int view) {
       if (!_proxyImpl.isBound) {
         _proxyImpl.proxyError("The Proxy is closed.");
         return;
       }
-      var params = new ViewManagerClientOnViewDeletedParams();
+      var params = new _ViewManagerClientOnViewDeletedParams();
       params.view = view;
-      _proxyImpl.sendMessage(params, kViewManagerClient_onViewDeleted_name);
+      _proxyImpl.sendMessage(params, _ViewManagerClient_onViewDeletedName);
     }
-  
     void onViewVisibilityChanged(int view, bool visible) {
       if (!_proxyImpl.isBound) {
         _proxyImpl.proxyError("The Proxy is closed.");
         return;
       }
-      var params = new ViewManagerClientOnViewVisibilityChangedParams();
+      var params = new _ViewManagerClientOnViewVisibilityChangedParams();
       params.view = view;
       params.visible = visible;
-      _proxyImpl.sendMessage(params, kViewManagerClient_onViewVisibilityChanged_name);
+      _proxyImpl.sendMessage(params, _ViewManagerClient_onViewVisibilityChangedName);
     }
-  
     void onViewDrawnStateChanged(int view, bool drawn) {
       if (!_proxyImpl.isBound) {
         _proxyImpl.proxyError("The Proxy is closed.");
         return;
       }
-      var params = new ViewManagerClientOnViewDrawnStateChangedParams();
+      var params = new _ViewManagerClientOnViewDrawnStateChangedParams();
       params.view = view;
       params.drawn = drawn;
-      _proxyImpl.sendMessage(params, kViewManagerClient_onViewDrawnStateChanged_name);
+      _proxyImpl.sendMessage(params, _ViewManagerClient_onViewDrawnStateChangedName);
     }
-  
     void onViewSharedPropertyChanged(int view, String name, List<int> newData) {
       if (!_proxyImpl.isBound) {
         _proxyImpl.proxyError("The Proxy is closed.");
         return;
       }
-      var params = new ViewManagerClientOnViewSharedPropertyChangedParams();
+      var params = new _ViewManagerClientOnViewSharedPropertyChangedParams();
       params.view = view;
       params.name = name;
       params.newData = newData;
-      _proxyImpl.sendMessage(params, kViewManagerClient_onViewSharedPropertyChanged_name);
+      _proxyImpl.sendMessage(params, _ViewManagerClient_onViewSharedPropertyChangedName);
     }
-  
     dynamic onViewInputEvent(int view,input_events_mojom.Event event,[Function responseFactory = null]) {
-      var params = new ViewManagerClientOnViewInputEventParams();
+      var params = new _ViewManagerClientOnViewInputEventParams();
       params.view = view;
       params.event = event;
       return _proxyImpl.sendMessageWithRequestId(
           params,
-          kViewManagerClient_onViewInputEvent_name,
+          _ViewManagerClient_onViewInputEventName,
           -1,
           bindings.MessageHeader.kMessageExpectsResponse);
     }
     dynamic onPerformAction(int viewId,String action,[Function responseFactory = null]) {
-      var params = new ViewManagerClientOnPerformActionParams();
+      var params = new _ViewManagerClientOnPerformActionParams();
       params.viewId = viewId;
       params.action = action;
       return _proxyImpl.sendMessageWithRequestId(
           params,
-          kViewManagerClient_onPerformAction_name,
+          _ViewManagerClient_onPerformActionName,
           -1,
           bindings.MessageHeader.kMessageExpectsResponse);
     }
@@ -4434,25 +4417,24 @@ class _ViewManagerClientProxyCalls implements ViewManagerClient {
 class ViewManagerClientProxy implements bindings.ProxyBase {
   final bindings.Proxy impl;
   ViewManagerClient ptr;
-  final String name = ViewManagerClientName;
 
-  ViewManagerClientProxy(ViewManagerClientProxyImpl proxyImpl) :
+  ViewManagerClientProxy(_ViewManagerClientProxyImpl proxyImpl) :
       impl = proxyImpl,
       ptr = new _ViewManagerClientProxyCalls(proxyImpl);
 
   ViewManagerClientProxy.fromEndpoint(
       core.MojoMessagePipeEndpoint endpoint) :
-      impl = new ViewManagerClientProxyImpl.fromEndpoint(endpoint) {
+      impl = new _ViewManagerClientProxyImpl.fromEndpoint(endpoint) {
     ptr = new _ViewManagerClientProxyCalls(impl);
   }
 
   ViewManagerClientProxy.fromHandle(core.MojoHandle handle) :
-      impl = new ViewManagerClientProxyImpl.fromHandle(handle) {
+      impl = new _ViewManagerClientProxyImpl.fromHandle(handle) {
     ptr = new _ViewManagerClientProxyCalls(impl);
   }
 
   ViewManagerClientProxy.unbound() :
-      impl = new ViewManagerClientProxyImpl.unbound() {
+      impl = new _ViewManagerClientProxyImpl.unbound() {
     ptr = new _ViewManagerClientProxyCalls(impl);
   }
 
@@ -4468,6 +4450,8 @@ class ViewManagerClientProxy implements bindings.ProxyBase {
     assert(endpoint.setDescription("For ViewManagerClientProxy"));
     return new ViewManagerClientProxy.fromEndpoint(endpoint);
   }
+
+  String get serviceName => ViewManagerClient.serviceName;
 
   Future close({bool immediate: false}) => impl.close(immediate: immediate);
 
@@ -4507,8 +4491,6 @@ class ViewManagerClientStub extends bindings.Stub {
     return new ViewManagerClientStub.fromEndpoint(endpoint);
   }
 
-  static const String name = ViewManagerClientName;
-
 
   ViewManagerClientOnViewInputEventResponseParams _ViewManagerClientOnViewInputEventResponseParamsFactory() {
     var mojo_factory_result = new ViewManagerClientOnViewInputEventResponseParams();
@@ -4528,58 +4510,58 @@ class ViewManagerClientStub extends bindings.Stub {
     }
     assert(_impl != null);
     switch (message.header.type) {
-      case kViewManagerClient_onEmbed_name:
-        var params = ViewManagerClientOnEmbedParams.deserialize(
+      case _ViewManagerClient_onEmbedName:
+        var params = _ViewManagerClientOnEmbedParams.deserialize(
             message.payload);
         _impl.onEmbed(params.connectionId, params.embedderUrl, params.root, params.viewManagerService, params.services, params.exposedServices, params.windowManagerPipe);
         break;
-      case kViewManagerClient_onEmbeddedAppDisconnected_name:
-        var params = ViewManagerClientOnEmbeddedAppDisconnectedParams.deserialize(
+      case _ViewManagerClient_onEmbeddedAppDisconnectedName:
+        var params = _ViewManagerClientOnEmbeddedAppDisconnectedParams.deserialize(
             message.payload);
         _impl.onEmbeddedAppDisconnected(params.view);
         break;
-      case kViewManagerClient_onViewBoundsChanged_name:
-        var params = ViewManagerClientOnViewBoundsChangedParams.deserialize(
+      case _ViewManagerClient_onViewBoundsChangedName:
+        var params = _ViewManagerClientOnViewBoundsChangedParams.deserialize(
             message.payload);
         _impl.onViewBoundsChanged(params.view, params.oldBounds, params.newBounds);
         break;
-      case kViewManagerClient_onViewViewportMetricsChanged_name:
-        var params = ViewManagerClientOnViewViewportMetricsChangedParams.deserialize(
+      case _ViewManagerClient_onViewViewportMetricsChangedName:
+        var params = _ViewManagerClientOnViewViewportMetricsChangedParams.deserialize(
             message.payload);
         _impl.onViewViewportMetricsChanged(params.oldMetrics, params.newMetrics);
         break;
-      case kViewManagerClient_onViewHierarchyChanged_name:
-        var params = ViewManagerClientOnViewHierarchyChangedParams.deserialize(
+      case _ViewManagerClient_onViewHierarchyChangedName:
+        var params = _ViewManagerClientOnViewHierarchyChangedParams.deserialize(
             message.payload);
         _impl.onViewHierarchyChanged(params.view, params.newParent, params.oldParent, params.views);
         break;
-      case kViewManagerClient_onViewReordered_name:
-        var params = ViewManagerClientOnViewReorderedParams.deserialize(
+      case _ViewManagerClient_onViewReorderedName:
+        var params = _ViewManagerClientOnViewReorderedParams.deserialize(
             message.payload);
         _impl.onViewReordered(params.viewId, params.relativeViewId, params.direction);
         break;
-      case kViewManagerClient_onViewDeleted_name:
-        var params = ViewManagerClientOnViewDeletedParams.deserialize(
+      case _ViewManagerClient_onViewDeletedName:
+        var params = _ViewManagerClientOnViewDeletedParams.deserialize(
             message.payload);
         _impl.onViewDeleted(params.view);
         break;
-      case kViewManagerClient_onViewVisibilityChanged_name:
-        var params = ViewManagerClientOnViewVisibilityChangedParams.deserialize(
+      case _ViewManagerClient_onViewVisibilityChangedName:
+        var params = _ViewManagerClientOnViewVisibilityChangedParams.deserialize(
             message.payload);
         _impl.onViewVisibilityChanged(params.view, params.visible);
         break;
-      case kViewManagerClient_onViewDrawnStateChanged_name:
-        var params = ViewManagerClientOnViewDrawnStateChangedParams.deserialize(
+      case _ViewManagerClient_onViewDrawnStateChangedName:
+        var params = _ViewManagerClientOnViewDrawnStateChangedParams.deserialize(
             message.payload);
         _impl.onViewDrawnStateChanged(params.view, params.drawn);
         break;
-      case kViewManagerClient_onViewSharedPropertyChanged_name:
-        var params = ViewManagerClientOnViewSharedPropertyChangedParams.deserialize(
+      case _ViewManagerClient_onViewSharedPropertyChangedName:
+        var params = _ViewManagerClientOnViewSharedPropertyChangedParams.deserialize(
             message.payload);
         _impl.onViewSharedPropertyChanged(params.view, params.name, params.newData);
         break;
-      case kViewManagerClient_onViewInputEvent_name:
-        var params = ViewManagerClientOnViewInputEventParams.deserialize(
+      case _ViewManagerClient_onViewInputEventName:
+        var params = _ViewManagerClientOnViewInputEventParams.deserialize(
             message.payload);
         var response = _impl.onViewInputEvent(params.view,params.event,_ViewManagerClientOnViewInputEventResponseParamsFactory);
         if (response is Future) {
@@ -4587,7 +4569,7 @@ class ViewManagerClientStub extends bindings.Stub {
             if (response != null) {
               return buildResponseWithId(
                   response,
-                  kViewManagerClient_onViewInputEvent_name,
+                  _ViewManagerClient_onViewInputEventName,
                   message.header.requestId,
                   bindings.MessageHeader.kMessageIsResponse);
             }
@@ -4595,13 +4577,13 @@ class ViewManagerClientStub extends bindings.Stub {
         } else if (response != null) {
           return buildResponseWithId(
               response,
-              kViewManagerClient_onViewInputEvent_name,
+              _ViewManagerClient_onViewInputEventName,
               message.header.requestId,
               bindings.MessageHeader.kMessageIsResponse);
         }
         break;
-      case kViewManagerClient_onPerformAction_name:
-        var params = ViewManagerClientOnPerformActionParams.deserialize(
+      case _ViewManagerClient_onPerformActionName:
+        var params = _ViewManagerClientOnPerformActionParams.deserialize(
             message.payload);
         var response = _impl.onPerformAction(params.viewId,params.action,_ViewManagerClientOnPerformActionResponseParamsFactory);
         if (response is Future) {
@@ -4609,7 +4591,7 @@ class ViewManagerClientStub extends bindings.Stub {
             if (response != null) {
               return buildResponseWithId(
                   response,
-                  kViewManagerClient_onPerformAction_name,
+                  _ViewManagerClient_onPerformActionName,
                   message.header.requestId,
                   bindings.MessageHeader.kMessageIsResponse);
             }
@@ -4617,7 +4599,7 @@ class ViewManagerClientStub extends bindings.Stub {
         } else if (response != null) {
           return buildResponseWithId(
               response,
-              kViewManagerClient_onPerformAction_name,
+              _ViewManagerClient_onPerformActionName,
               message.header.requestId,
               bindings.MessageHeader.kMessageIsResponse);
         }

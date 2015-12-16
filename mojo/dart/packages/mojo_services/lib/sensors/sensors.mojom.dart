@@ -265,15 +265,15 @@ class SensorData extends bindings.Struct {
 }
 
 
-class SensorListenerOnAccuracyChangedParams extends bindings.Struct {
+class _SensorListenerOnAccuracyChangedParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(16, 0)
   ];
   int accuracy = 0;
 
-  SensorListenerOnAccuracyChangedParams() : super(kVersions.last.size);
+  _SensorListenerOnAccuracyChangedParams() : super(kVersions.last.size);
 
-  static SensorListenerOnAccuracyChangedParams deserialize(bindings.Message message) {
+  static _SensorListenerOnAccuracyChangedParams deserialize(bindings.Message message) {
     var decoder = new bindings.Decoder(message);
     var result = decode(decoder);
     if (decoder.excessHandles != null) {
@@ -282,11 +282,11 @@ class SensorListenerOnAccuracyChangedParams extends bindings.Struct {
     return result;
   }
 
-  static SensorListenerOnAccuracyChangedParams decode(bindings.Decoder decoder0) {
+  static _SensorListenerOnAccuracyChangedParams decode(bindings.Decoder decoder0) {
     if (decoder0 == null) {
       return null;
     }
-    SensorListenerOnAccuracyChangedParams result = new SensorListenerOnAccuracyChangedParams();
+    _SensorListenerOnAccuracyChangedParams result = new _SensorListenerOnAccuracyChangedParams();
 
     var mainDataHeader = decoder0.decodeStructDataHeader();
     if (mainDataHeader.version <= kVersions.last.version) {
@@ -320,7 +320,7 @@ class SensorListenerOnAccuracyChangedParams extends bindings.Struct {
   }
 
   String toString() {
-    return "SensorListenerOnAccuracyChangedParams("
+    return "_SensorListenerOnAccuracyChangedParams("
            "accuracy: $accuracy" ")";
   }
 
@@ -332,15 +332,15 @@ class SensorListenerOnAccuracyChangedParams extends bindings.Struct {
 }
 
 
-class SensorListenerOnSensorChangedParams extends bindings.Struct {
+class _SensorListenerOnSensorChangedParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(16, 0)
   ];
   SensorData data = null;
 
-  SensorListenerOnSensorChangedParams() : super(kVersions.last.size);
+  _SensorListenerOnSensorChangedParams() : super(kVersions.last.size);
 
-  static SensorListenerOnSensorChangedParams deserialize(bindings.Message message) {
+  static _SensorListenerOnSensorChangedParams deserialize(bindings.Message message) {
     var decoder = new bindings.Decoder(message);
     var result = decode(decoder);
     if (decoder.excessHandles != null) {
@@ -349,11 +349,11 @@ class SensorListenerOnSensorChangedParams extends bindings.Struct {
     return result;
   }
 
-  static SensorListenerOnSensorChangedParams decode(bindings.Decoder decoder0) {
+  static _SensorListenerOnSensorChangedParams decode(bindings.Decoder decoder0) {
     if (decoder0 == null) {
       return null;
     }
-    SensorListenerOnSensorChangedParams result = new SensorListenerOnSensorChangedParams();
+    _SensorListenerOnSensorChangedParams result = new _SensorListenerOnSensorChangedParams();
 
     var mainDataHeader = decoder0.decodeStructDataHeader();
     if (mainDataHeader.version <= kVersions.last.version) {
@@ -388,7 +388,7 @@ class SensorListenerOnSensorChangedParams extends bindings.Struct {
   }
 
   String toString() {
-    return "SensorListenerOnSensorChangedParams("
+    return "_SensorListenerOnSensorChangedParams("
            "data: $data" ")";
   }
 
@@ -400,16 +400,16 @@ class SensorListenerOnSensorChangedParams extends bindings.Struct {
 }
 
 
-class SensorServiceAddListenerParams extends bindings.Struct {
+class _SensorServiceAddListenerParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(24, 0)
   ];
   SensorType type = null;
   Object listener = null;
 
-  SensorServiceAddListenerParams() : super(kVersions.last.size);
+  _SensorServiceAddListenerParams() : super(kVersions.last.size);
 
-  static SensorServiceAddListenerParams deserialize(bindings.Message message) {
+  static _SensorServiceAddListenerParams deserialize(bindings.Message message) {
     var decoder = new bindings.Decoder(message);
     var result = decode(decoder);
     if (decoder.excessHandles != null) {
@@ -418,11 +418,11 @@ class SensorServiceAddListenerParams extends bindings.Struct {
     return result;
   }
 
-  static SensorServiceAddListenerParams decode(bindings.Decoder decoder0) {
+  static _SensorServiceAddListenerParams decode(bindings.Decoder decoder0) {
     if (decoder0 == null) {
       return null;
     }
-    SensorServiceAddListenerParams result = new SensorServiceAddListenerParams();
+    _SensorServiceAddListenerParams result = new _SensorServiceAddListenerParams();
 
     var mainDataHeader = decoder0.decodeStructDataHeader();
     if (mainDataHeader.version <= kVersions.last.version) {
@@ -466,7 +466,7 @@ class SensorServiceAddListenerParams extends bindings.Struct {
   }
 
   String toString() {
-    return "SensorServiceAddListenerParams("
+    return "_SensorServiceAddListenerParams("
            "type: $type" ", "
            "listener: $listener" ")";
   }
@@ -477,33 +477,30 @@ class SensorServiceAddListenerParams extends bindings.Struct {
   }
 }
 
-const int kSensorListener_onAccuracyChanged_name = 0;
-const int kSensorListener_onSensorChanged_name = 1;
-const String SensorListenerName = null;
+const int _SensorListener_onAccuracyChangedName = 0;
+const int _SensorListener_onSensorChangedName = 1;
 
 abstract class SensorListener {
+  static const String serviceName = null;
   void onAccuracyChanged(int accuracy);
   void onSensorChanged(SensorData data);
-
 }
 
 
-class SensorListenerProxyImpl extends bindings.Proxy {
-  SensorListenerProxyImpl.fromEndpoint(
+class _SensorListenerProxyImpl extends bindings.Proxy {
+  _SensorListenerProxyImpl.fromEndpoint(
       core.MojoMessagePipeEndpoint endpoint) : super.fromEndpoint(endpoint);
 
-  SensorListenerProxyImpl.fromHandle(core.MojoHandle handle) :
+  _SensorListenerProxyImpl.fromHandle(core.MojoHandle handle) :
       super.fromHandle(handle);
 
-  SensorListenerProxyImpl.unbound() : super.unbound();
+  _SensorListenerProxyImpl.unbound() : super.unbound();
 
-  static SensorListenerProxyImpl newFromEndpoint(
+  static _SensorListenerProxyImpl newFromEndpoint(
       core.MojoMessagePipeEndpoint endpoint) {
-    assert(endpoint.setDescription("For SensorListenerProxyImpl"));
-    return new SensorListenerProxyImpl.fromEndpoint(endpoint);
+    assert(endpoint.setDescription("For _SensorListenerProxyImpl"));
+    return new _SensorListenerProxyImpl.fromEndpoint(endpoint);
   }
-
-  String get name => SensorListenerName;
 
   void handleResponse(bindings.ServiceMessage message) {
     switch (message.header.type) {
@@ -516,13 +513,13 @@ class SensorListenerProxyImpl extends bindings.Proxy {
 
   String toString() {
     var superString = super.toString();
-    return "SensorListenerProxyImpl($superString)";
+    return "_SensorListenerProxyImpl($superString)";
   }
 }
 
 
 class _SensorListenerProxyCalls implements SensorListener {
-  SensorListenerProxyImpl _proxyImpl;
+  _SensorListenerProxyImpl _proxyImpl;
 
   _SensorListenerProxyCalls(this._proxyImpl);
     void onAccuracyChanged(int accuracy) {
@@ -530,46 +527,43 @@ class _SensorListenerProxyCalls implements SensorListener {
         _proxyImpl.proxyError("The Proxy is closed.");
         return;
       }
-      var params = new SensorListenerOnAccuracyChangedParams();
+      var params = new _SensorListenerOnAccuracyChangedParams();
       params.accuracy = accuracy;
-      _proxyImpl.sendMessage(params, kSensorListener_onAccuracyChanged_name);
+      _proxyImpl.sendMessage(params, _SensorListener_onAccuracyChangedName);
     }
-  
     void onSensorChanged(SensorData data) {
       if (!_proxyImpl.isBound) {
         _proxyImpl.proxyError("The Proxy is closed.");
         return;
       }
-      var params = new SensorListenerOnSensorChangedParams();
+      var params = new _SensorListenerOnSensorChangedParams();
       params.data = data;
-      _proxyImpl.sendMessage(params, kSensorListener_onSensorChanged_name);
+      _proxyImpl.sendMessage(params, _SensorListener_onSensorChangedName);
     }
-  
 }
 
 
 class SensorListenerProxy implements bindings.ProxyBase {
   final bindings.Proxy impl;
   SensorListener ptr;
-  final String name = SensorListenerName;
 
-  SensorListenerProxy(SensorListenerProxyImpl proxyImpl) :
+  SensorListenerProxy(_SensorListenerProxyImpl proxyImpl) :
       impl = proxyImpl,
       ptr = new _SensorListenerProxyCalls(proxyImpl);
 
   SensorListenerProxy.fromEndpoint(
       core.MojoMessagePipeEndpoint endpoint) :
-      impl = new SensorListenerProxyImpl.fromEndpoint(endpoint) {
+      impl = new _SensorListenerProxyImpl.fromEndpoint(endpoint) {
     ptr = new _SensorListenerProxyCalls(impl);
   }
 
   SensorListenerProxy.fromHandle(core.MojoHandle handle) :
-      impl = new SensorListenerProxyImpl.fromHandle(handle) {
+      impl = new _SensorListenerProxyImpl.fromHandle(handle) {
     ptr = new _SensorListenerProxyCalls(impl);
   }
 
   SensorListenerProxy.unbound() :
-      impl = new SensorListenerProxyImpl.unbound() {
+      impl = new _SensorListenerProxyImpl.unbound() {
     ptr = new _SensorListenerProxyCalls(impl);
   }
 
@@ -585,6 +579,8 @@ class SensorListenerProxy implements bindings.ProxyBase {
     assert(endpoint.setDescription("For SensorListenerProxy"));
     return new SensorListenerProxy.fromEndpoint(endpoint);
   }
+
+  String get serviceName => SensorListener.serviceName;
 
   Future close({bool immediate: false}) => impl.close(immediate: immediate);
 
@@ -624,8 +620,6 @@ class SensorListenerStub extends bindings.Stub {
     return new SensorListenerStub.fromEndpoint(endpoint);
   }
 
-  static const String name = SensorListenerName;
-
 
 
   dynamic handleMessage(bindings.ServiceMessage message) {
@@ -636,13 +630,13 @@ class SensorListenerStub extends bindings.Stub {
     }
     assert(_impl != null);
     switch (message.header.type) {
-      case kSensorListener_onAccuracyChanged_name:
-        var params = SensorListenerOnAccuracyChangedParams.deserialize(
+      case _SensorListener_onAccuracyChangedName:
+        var params = _SensorListenerOnAccuracyChangedParams.deserialize(
             message.payload);
         _impl.onAccuracyChanged(params.accuracy);
         break;
-      case kSensorListener_onSensorChanged_name:
-        var params = SensorListenerOnSensorChangedParams.deserialize(
+      case _SensorListener_onSensorChangedName:
+        var params = _SensorListenerOnSensorChangedParams.deserialize(
             message.payload);
         _impl.onSensorChanged(params.data);
         break;
@@ -667,31 +661,28 @@ class SensorListenerStub extends bindings.Stub {
   int get version => 0;
 }
 
-const int kSensorService_addListener_name = 0;
-const String SensorServiceName = "sensors::SensorService";
+const int _SensorService_addListenerName = 0;
 
 abstract class SensorService {
+  static const String serviceName = "sensors::SensorService";
   void addListener(SensorType type, Object listener);
-
 }
 
 
-class SensorServiceProxyImpl extends bindings.Proxy {
-  SensorServiceProxyImpl.fromEndpoint(
+class _SensorServiceProxyImpl extends bindings.Proxy {
+  _SensorServiceProxyImpl.fromEndpoint(
       core.MojoMessagePipeEndpoint endpoint) : super.fromEndpoint(endpoint);
 
-  SensorServiceProxyImpl.fromHandle(core.MojoHandle handle) :
+  _SensorServiceProxyImpl.fromHandle(core.MojoHandle handle) :
       super.fromHandle(handle);
 
-  SensorServiceProxyImpl.unbound() : super.unbound();
+  _SensorServiceProxyImpl.unbound() : super.unbound();
 
-  static SensorServiceProxyImpl newFromEndpoint(
+  static _SensorServiceProxyImpl newFromEndpoint(
       core.MojoMessagePipeEndpoint endpoint) {
-    assert(endpoint.setDescription("For SensorServiceProxyImpl"));
-    return new SensorServiceProxyImpl.fromEndpoint(endpoint);
+    assert(endpoint.setDescription("For _SensorServiceProxyImpl"));
+    return new _SensorServiceProxyImpl.fromEndpoint(endpoint);
   }
-
-  String get name => SensorServiceName;
 
   void handleResponse(bindings.ServiceMessage message) {
     switch (message.header.type) {
@@ -704,13 +695,13 @@ class SensorServiceProxyImpl extends bindings.Proxy {
 
   String toString() {
     var superString = super.toString();
-    return "SensorServiceProxyImpl($superString)";
+    return "_SensorServiceProxyImpl($superString)";
   }
 }
 
 
 class _SensorServiceProxyCalls implements SensorService {
-  SensorServiceProxyImpl _proxyImpl;
+  _SensorServiceProxyImpl _proxyImpl;
 
   _SensorServiceProxyCalls(this._proxyImpl);
     void addListener(SensorType type, Object listener) {
@@ -718,37 +709,35 @@ class _SensorServiceProxyCalls implements SensorService {
         _proxyImpl.proxyError("The Proxy is closed.");
         return;
       }
-      var params = new SensorServiceAddListenerParams();
+      var params = new _SensorServiceAddListenerParams();
       params.type = type;
       params.listener = listener;
-      _proxyImpl.sendMessage(params, kSensorService_addListener_name);
+      _proxyImpl.sendMessage(params, _SensorService_addListenerName);
     }
-  
 }
 
 
 class SensorServiceProxy implements bindings.ProxyBase {
   final bindings.Proxy impl;
   SensorService ptr;
-  final String name = SensorServiceName;
 
-  SensorServiceProxy(SensorServiceProxyImpl proxyImpl) :
+  SensorServiceProxy(_SensorServiceProxyImpl proxyImpl) :
       impl = proxyImpl,
       ptr = new _SensorServiceProxyCalls(proxyImpl);
 
   SensorServiceProxy.fromEndpoint(
       core.MojoMessagePipeEndpoint endpoint) :
-      impl = new SensorServiceProxyImpl.fromEndpoint(endpoint) {
+      impl = new _SensorServiceProxyImpl.fromEndpoint(endpoint) {
     ptr = new _SensorServiceProxyCalls(impl);
   }
 
   SensorServiceProxy.fromHandle(core.MojoHandle handle) :
-      impl = new SensorServiceProxyImpl.fromHandle(handle) {
+      impl = new _SensorServiceProxyImpl.fromHandle(handle) {
     ptr = new _SensorServiceProxyCalls(impl);
   }
 
   SensorServiceProxy.unbound() :
-      impl = new SensorServiceProxyImpl.unbound() {
+      impl = new _SensorServiceProxyImpl.unbound() {
     ptr = new _SensorServiceProxyCalls(impl);
   }
 
@@ -764,6 +753,8 @@ class SensorServiceProxy implements bindings.ProxyBase {
     assert(endpoint.setDescription("For SensorServiceProxy"));
     return new SensorServiceProxy.fromEndpoint(endpoint);
   }
+
+  String get serviceName => SensorService.serviceName;
 
   Future close({bool immediate: false}) => impl.close(immediate: immediate);
 
@@ -803,8 +794,6 @@ class SensorServiceStub extends bindings.Stub {
     return new SensorServiceStub.fromEndpoint(endpoint);
   }
 
-  static const String name = SensorServiceName;
-
 
 
   dynamic handleMessage(bindings.ServiceMessage message) {
@@ -815,8 +804,8 @@ class SensorServiceStub extends bindings.Stub {
     }
     assert(_impl != null);
     switch (message.header.type) {
-      case kSensorService_addListener_name:
-        var params = SensorServiceAddListenerParams.deserialize(
+      case _SensorService_addListenerName:
+        var params = _SensorServiceAddListenerParams.deserialize(
             message.payload);
         _impl.addListener(params.type, params.listener);
         break;

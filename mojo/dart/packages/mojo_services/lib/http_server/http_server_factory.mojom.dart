@@ -13,16 +13,16 @@ import 'package:mojo_services/mojo/net_address.mojom.dart' as net_address_mojom;
 
 
 
-class HttpServerFactoryCreateHttpServerParams extends bindings.Struct {
+class _HttpServerFactoryCreateHttpServerParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(24, 0)
   ];
   Object serverRequest = null;
   net_address_mojom.NetAddress localAddress = null;
 
-  HttpServerFactoryCreateHttpServerParams() : super(kVersions.last.size);
+  _HttpServerFactoryCreateHttpServerParams() : super(kVersions.last.size);
 
-  static HttpServerFactoryCreateHttpServerParams deserialize(bindings.Message message) {
+  static _HttpServerFactoryCreateHttpServerParams deserialize(bindings.Message message) {
     var decoder = new bindings.Decoder(message);
     var result = decode(decoder);
     if (decoder.excessHandles != null) {
@@ -31,11 +31,11 @@ class HttpServerFactoryCreateHttpServerParams extends bindings.Struct {
     return result;
   }
 
-  static HttpServerFactoryCreateHttpServerParams decode(bindings.Decoder decoder0) {
+  static _HttpServerFactoryCreateHttpServerParams decode(bindings.Decoder decoder0) {
     if (decoder0 == null) {
       return null;
     }
-    HttpServerFactoryCreateHttpServerParams result = new HttpServerFactoryCreateHttpServerParams();
+    _HttpServerFactoryCreateHttpServerParams result = new _HttpServerFactoryCreateHttpServerParams();
 
     var mainDataHeader = decoder0.decodeStructDataHeader();
     if (mainDataHeader.version <= kVersions.last.version) {
@@ -76,7 +76,7 @@ class HttpServerFactoryCreateHttpServerParams extends bindings.Struct {
   }
 
   String toString() {
-    return "HttpServerFactoryCreateHttpServerParams("
+    return "_HttpServerFactoryCreateHttpServerParams("
            "serverRequest: $serverRequest" ", "
            "localAddress: $localAddress" ")";
   }
@@ -87,31 +87,28 @@ class HttpServerFactoryCreateHttpServerParams extends bindings.Struct {
   }
 }
 
-const int kHttpServerFactory_createHttpServer_name = 0;
-const String HttpServerFactoryName = "http_server::HttpServerFactory";
+const int _HttpServerFactory_createHttpServerName = 0;
 
 abstract class HttpServerFactory {
+  static const String serviceName = "http_server::HttpServerFactory";
   void createHttpServer(Object serverRequest, net_address_mojom.NetAddress localAddress);
-
 }
 
 
-class HttpServerFactoryProxyImpl extends bindings.Proxy {
-  HttpServerFactoryProxyImpl.fromEndpoint(
+class _HttpServerFactoryProxyImpl extends bindings.Proxy {
+  _HttpServerFactoryProxyImpl.fromEndpoint(
       core.MojoMessagePipeEndpoint endpoint) : super.fromEndpoint(endpoint);
 
-  HttpServerFactoryProxyImpl.fromHandle(core.MojoHandle handle) :
+  _HttpServerFactoryProxyImpl.fromHandle(core.MojoHandle handle) :
       super.fromHandle(handle);
 
-  HttpServerFactoryProxyImpl.unbound() : super.unbound();
+  _HttpServerFactoryProxyImpl.unbound() : super.unbound();
 
-  static HttpServerFactoryProxyImpl newFromEndpoint(
+  static _HttpServerFactoryProxyImpl newFromEndpoint(
       core.MojoMessagePipeEndpoint endpoint) {
-    assert(endpoint.setDescription("For HttpServerFactoryProxyImpl"));
-    return new HttpServerFactoryProxyImpl.fromEndpoint(endpoint);
+    assert(endpoint.setDescription("For _HttpServerFactoryProxyImpl"));
+    return new _HttpServerFactoryProxyImpl.fromEndpoint(endpoint);
   }
-
-  String get name => HttpServerFactoryName;
 
   void handleResponse(bindings.ServiceMessage message) {
     switch (message.header.type) {
@@ -124,13 +121,13 @@ class HttpServerFactoryProxyImpl extends bindings.Proxy {
 
   String toString() {
     var superString = super.toString();
-    return "HttpServerFactoryProxyImpl($superString)";
+    return "_HttpServerFactoryProxyImpl($superString)";
   }
 }
 
 
 class _HttpServerFactoryProxyCalls implements HttpServerFactory {
-  HttpServerFactoryProxyImpl _proxyImpl;
+  _HttpServerFactoryProxyImpl _proxyImpl;
 
   _HttpServerFactoryProxyCalls(this._proxyImpl);
     void createHttpServer(Object serverRequest, net_address_mojom.NetAddress localAddress) {
@@ -138,37 +135,35 @@ class _HttpServerFactoryProxyCalls implements HttpServerFactory {
         _proxyImpl.proxyError("The Proxy is closed.");
         return;
       }
-      var params = new HttpServerFactoryCreateHttpServerParams();
+      var params = new _HttpServerFactoryCreateHttpServerParams();
       params.serverRequest = serverRequest;
       params.localAddress = localAddress;
-      _proxyImpl.sendMessage(params, kHttpServerFactory_createHttpServer_name);
+      _proxyImpl.sendMessage(params, _HttpServerFactory_createHttpServerName);
     }
-  
 }
 
 
 class HttpServerFactoryProxy implements bindings.ProxyBase {
   final bindings.Proxy impl;
   HttpServerFactory ptr;
-  final String name = HttpServerFactoryName;
 
-  HttpServerFactoryProxy(HttpServerFactoryProxyImpl proxyImpl) :
+  HttpServerFactoryProxy(_HttpServerFactoryProxyImpl proxyImpl) :
       impl = proxyImpl,
       ptr = new _HttpServerFactoryProxyCalls(proxyImpl);
 
   HttpServerFactoryProxy.fromEndpoint(
       core.MojoMessagePipeEndpoint endpoint) :
-      impl = new HttpServerFactoryProxyImpl.fromEndpoint(endpoint) {
+      impl = new _HttpServerFactoryProxyImpl.fromEndpoint(endpoint) {
     ptr = new _HttpServerFactoryProxyCalls(impl);
   }
 
   HttpServerFactoryProxy.fromHandle(core.MojoHandle handle) :
-      impl = new HttpServerFactoryProxyImpl.fromHandle(handle) {
+      impl = new _HttpServerFactoryProxyImpl.fromHandle(handle) {
     ptr = new _HttpServerFactoryProxyCalls(impl);
   }
 
   HttpServerFactoryProxy.unbound() :
-      impl = new HttpServerFactoryProxyImpl.unbound() {
+      impl = new _HttpServerFactoryProxyImpl.unbound() {
     ptr = new _HttpServerFactoryProxyCalls(impl);
   }
 
@@ -184,6 +179,8 @@ class HttpServerFactoryProxy implements bindings.ProxyBase {
     assert(endpoint.setDescription("For HttpServerFactoryProxy"));
     return new HttpServerFactoryProxy.fromEndpoint(endpoint);
   }
+
+  String get serviceName => HttpServerFactory.serviceName;
 
   Future close({bool immediate: false}) => impl.close(immediate: immediate);
 
@@ -223,8 +220,6 @@ class HttpServerFactoryStub extends bindings.Stub {
     return new HttpServerFactoryStub.fromEndpoint(endpoint);
   }
 
-  static const String name = HttpServerFactoryName;
-
 
 
   dynamic handleMessage(bindings.ServiceMessage message) {
@@ -235,8 +230,8 @@ class HttpServerFactoryStub extends bindings.Stub {
     }
     assert(_impl != null);
     switch (message.header.type) {
-      case kHttpServerFactory_createHttpServer_name:
-        var params = HttpServerFactoryCreateHttpServerParams.deserialize(
+      case _HttpServerFactory_createHttpServerName:
+        var params = _HttpServerFactoryCreateHttpServerParams.deserialize(
             message.payload);
         _impl.createHttpServer(params.serverRequest, params.localAddress);
         break;

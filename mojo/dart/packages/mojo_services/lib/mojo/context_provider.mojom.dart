@@ -13,15 +13,15 @@ import 'package:mojo_services/mojo/viewport_parameter_listener.mojom.dart' as vi
 
 
 
-class ContextProviderCreateParams extends bindings.Struct {
+class _ContextProviderCreateParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(16, 0)
   ];
   Object viewportParameterListener = null;
 
-  ContextProviderCreateParams() : super(kVersions.last.size);
+  _ContextProviderCreateParams() : super(kVersions.last.size);
 
-  static ContextProviderCreateParams deserialize(bindings.Message message) {
+  static _ContextProviderCreateParams deserialize(bindings.Message message) {
     var decoder = new bindings.Decoder(message);
     var result = decode(decoder);
     if (decoder.excessHandles != null) {
@@ -30,11 +30,11 @@ class ContextProviderCreateParams extends bindings.Struct {
     return result;
   }
 
-  static ContextProviderCreateParams decode(bindings.Decoder decoder0) {
+  static _ContextProviderCreateParams decode(bindings.Decoder decoder0) {
     if (decoder0 == null) {
       return null;
     }
-    ContextProviderCreateParams result = new ContextProviderCreateParams();
+    _ContextProviderCreateParams result = new _ContextProviderCreateParams();
 
     var mainDataHeader = decoder0.decodeStructDataHeader();
     if (mainDataHeader.version <= kVersions.last.version) {
@@ -68,7 +68,7 @@ class ContextProviderCreateParams extends bindings.Struct {
   }
 
   String toString() {
-    return "ContextProviderCreateParams("
+    return "_ContextProviderCreateParams("
            "viewportParameterListener: $viewportParameterListener" ")";
   }
 
@@ -144,35 +144,32 @@ class ContextProviderCreateResponseParams extends bindings.Struct {
   }
 }
 
-const int kContextProvider_create_name = 0;
-const String ContextProviderName = null;
+const int _ContextProvider_createName = 0;
 
 abstract class ContextProvider {
+  static const String serviceName = null;
   dynamic create(Object viewportParameterListener,[Function responseFactory = null]);
-
 }
 
 
-class ContextProviderProxyImpl extends bindings.Proxy {
-  ContextProviderProxyImpl.fromEndpoint(
+class _ContextProviderProxyImpl extends bindings.Proxy {
+  _ContextProviderProxyImpl.fromEndpoint(
       core.MojoMessagePipeEndpoint endpoint) : super.fromEndpoint(endpoint);
 
-  ContextProviderProxyImpl.fromHandle(core.MojoHandle handle) :
+  _ContextProviderProxyImpl.fromHandle(core.MojoHandle handle) :
       super.fromHandle(handle);
 
-  ContextProviderProxyImpl.unbound() : super.unbound();
+  _ContextProviderProxyImpl.unbound() : super.unbound();
 
-  static ContextProviderProxyImpl newFromEndpoint(
+  static _ContextProviderProxyImpl newFromEndpoint(
       core.MojoMessagePipeEndpoint endpoint) {
-    assert(endpoint.setDescription("For ContextProviderProxyImpl"));
-    return new ContextProviderProxyImpl.fromEndpoint(endpoint);
+    assert(endpoint.setDescription("For _ContextProviderProxyImpl"));
+    return new _ContextProviderProxyImpl.fromEndpoint(endpoint);
   }
-
-  String get name => ContextProviderName;
 
   void handleResponse(bindings.ServiceMessage message) {
     switch (message.header.type) {
-      case kContextProvider_create_name:
+      case _ContextProvider_createName:
         var r = ContextProviderCreateResponseParams.deserialize(
             message.payload);
         if (!message.header.hasRequestId) {
@@ -201,21 +198,21 @@ class ContextProviderProxyImpl extends bindings.Proxy {
 
   String toString() {
     var superString = super.toString();
-    return "ContextProviderProxyImpl($superString)";
+    return "_ContextProviderProxyImpl($superString)";
   }
 }
 
 
 class _ContextProviderProxyCalls implements ContextProvider {
-  ContextProviderProxyImpl _proxyImpl;
+  _ContextProviderProxyImpl _proxyImpl;
 
   _ContextProviderProxyCalls(this._proxyImpl);
     dynamic create(Object viewportParameterListener,[Function responseFactory = null]) {
-      var params = new ContextProviderCreateParams();
+      var params = new _ContextProviderCreateParams();
       params.viewportParameterListener = viewportParameterListener;
       return _proxyImpl.sendMessageWithRequestId(
           params,
-          kContextProvider_create_name,
+          _ContextProvider_createName,
           -1,
           bindings.MessageHeader.kMessageExpectsResponse);
     }
@@ -225,25 +222,24 @@ class _ContextProviderProxyCalls implements ContextProvider {
 class ContextProviderProxy implements bindings.ProxyBase {
   final bindings.Proxy impl;
   ContextProvider ptr;
-  final String name = ContextProviderName;
 
-  ContextProviderProxy(ContextProviderProxyImpl proxyImpl) :
+  ContextProviderProxy(_ContextProviderProxyImpl proxyImpl) :
       impl = proxyImpl,
       ptr = new _ContextProviderProxyCalls(proxyImpl);
 
   ContextProviderProxy.fromEndpoint(
       core.MojoMessagePipeEndpoint endpoint) :
-      impl = new ContextProviderProxyImpl.fromEndpoint(endpoint) {
+      impl = new _ContextProviderProxyImpl.fromEndpoint(endpoint) {
     ptr = new _ContextProviderProxyCalls(impl);
   }
 
   ContextProviderProxy.fromHandle(core.MojoHandle handle) :
-      impl = new ContextProviderProxyImpl.fromHandle(handle) {
+      impl = new _ContextProviderProxyImpl.fromHandle(handle) {
     ptr = new _ContextProviderProxyCalls(impl);
   }
 
   ContextProviderProxy.unbound() :
-      impl = new ContextProviderProxyImpl.unbound() {
+      impl = new _ContextProviderProxyImpl.unbound() {
     ptr = new _ContextProviderProxyCalls(impl);
   }
 
@@ -259,6 +255,8 @@ class ContextProviderProxy implements bindings.ProxyBase {
     assert(endpoint.setDescription("For ContextProviderProxy"));
     return new ContextProviderProxy.fromEndpoint(endpoint);
   }
+
+  String get serviceName => ContextProvider.serviceName;
 
   Future close({bool immediate: false}) => impl.close(immediate: immediate);
 
@@ -298,8 +296,6 @@ class ContextProviderStub extends bindings.Stub {
     return new ContextProviderStub.fromEndpoint(endpoint);
   }
 
-  static const String name = ContextProviderName;
-
 
   ContextProviderCreateResponseParams _ContextProviderCreateResponseParamsFactory(Object gles2Client) {
     var mojo_factory_result = new ContextProviderCreateResponseParams();
@@ -315,8 +311,8 @@ class ContextProviderStub extends bindings.Stub {
     }
     assert(_impl != null);
     switch (message.header.type) {
-      case kContextProvider_create_name:
-        var params = ContextProviderCreateParams.deserialize(
+      case _ContextProvider_createName:
+        var params = _ContextProviderCreateParams.deserialize(
             message.payload);
         var response = _impl.create(params.viewportParameterListener,_ContextProviderCreateResponseParamsFactory);
         if (response is Future) {
@@ -324,7 +320,7 @@ class ContextProviderStub extends bindings.Stub {
             if (response != null) {
               return buildResponseWithId(
                   response,
-                  kContextProvider_create_name,
+                  _ContextProvider_createName,
                   message.header.requestId,
                   bindings.MessageHeader.kMessageIsResponse);
             }
@@ -332,7 +328,7 @@ class ContextProviderStub extends bindings.Stub {
         } else if (response != null) {
           return buildResponseWithId(
               response,
-              kContextProvider_create_name,
+              _ContextProvider_createName,
               message.header.requestId,
               bindings.MessageHeader.kMessageIsResponse);
         }

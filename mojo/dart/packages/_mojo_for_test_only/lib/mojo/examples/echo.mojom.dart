@@ -11,15 +11,15 @@ import 'package:mojo/core.dart' as core;
 
 
 
-class EchoEchoStringParams extends bindings.Struct {
+class _EchoEchoStringParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(16, 0)
   ];
   String value = null;
 
-  EchoEchoStringParams() : super(kVersions.last.size);
+  _EchoEchoStringParams() : super(kVersions.last.size);
 
-  static EchoEchoStringParams deserialize(bindings.Message message) {
+  static _EchoEchoStringParams deserialize(bindings.Message message) {
     var decoder = new bindings.Decoder(message);
     var result = decode(decoder);
     if (decoder.excessHandles != null) {
@@ -28,11 +28,11 @@ class EchoEchoStringParams extends bindings.Struct {
     return result;
   }
 
-  static EchoEchoStringParams decode(bindings.Decoder decoder0) {
+  static _EchoEchoStringParams decode(bindings.Decoder decoder0) {
     if (decoder0 == null) {
       return null;
     }
-    EchoEchoStringParams result = new EchoEchoStringParams();
+    _EchoEchoStringParams result = new _EchoEchoStringParams();
 
     var mainDataHeader = decoder0.decodeStructDataHeader();
     if (mainDataHeader.version <= kVersions.last.version) {
@@ -66,7 +66,7 @@ class EchoEchoStringParams extends bindings.Struct {
   }
 
   String toString() {
-    return "EchoEchoStringParams("
+    return "_EchoEchoStringParams("
            "value: $value" ")";
   }
 
@@ -144,35 +144,32 @@ class EchoEchoStringResponseParams extends bindings.Struct {
   }
 }
 
-const int kEcho_echoString_name = 0;
-const String EchoName = "mojo::examples::Echo";
+const int _Echo_echoStringName = 0;
 
 abstract class Echo {
+  static const String serviceName = "mojo::examples::Echo";
   dynamic echoString(String value,[Function responseFactory = null]);
-
 }
 
 
-class EchoProxyImpl extends bindings.Proxy {
-  EchoProxyImpl.fromEndpoint(
+class _EchoProxyImpl extends bindings.Proxy {
+  _EchoProxyImpl.fromEndpoint(
       core.MojoMessagePipeEndpoint endpoint) : super.fromEndpoint(endpoint);
 
-  EchoProxyImpl.fromHandle(core.MojoHandle handle) :
+  _EchoProxyImpl.fromHandle(core.MojoHandle handle) :
       super.fromHandle(handle);
 
-  EchoProxyImpl.unbound() : super.unbound();
+  _EchoProxyImpl.unbound() : super.unbound();
 
-  static EchoProxyImpl newFromEndpoint(
+  static _EchoProxyImpl newFromEndpoint(
       core.MojoMessagePipeEndpoint endpoint) {
-    assert(endpoint.setDescription("For EchoProxyImpl"));
-    return new EchoProxyImpl.fromEndpoint(endpoint);
+    assert(endpoint.setDescription("For _EchoProxyImpl"));
+    return new _EchoProxyImpl.fromEndpoint(endpoint);
   }
-
-  String get name => EchoName;
 
   void handleResponse(bindings.ServiceMessage message) {
     switch (message.header.type) {
-      case kEcho_echoString_name:
+      case _Echo_echoStringName:
         var r = EchoEchoStringResponseParams.deserialize(
             message.payload);
         if (!message.header.hasRequestId) {
@@ -201,21 +198,21 @@ class EchoProxyImpl extends bindings.Proxy {
 
   String toString() {
     var superString = super.toString();
-    return "EchoProxyImpl($superString)";
+    return "_EchoProxyImpl($superString)";
   }
 }
 
 
 class _EchoProxyCalls implements Echo {
-  EchoProxyImpl _proxyImpl;
+  _EchoProxyImpl _proxyImpl;
 
   _EchoProxyCalls(this._proxyImpl);
     dynamic echoString(String value,[Function responseFactory = null]) {
-      var params = new EchoEchoStringParams();
+      var params = new _EchoEchoStringParams();
       params.value = value;
       return _proxyImpl.sendMessageWithRequestId(
           params,
-          kEcho_echoString_name,
+          _Echo_echoStringName,
           -1,
           bindings.MessageHeader.kMessageExpectsResponse);
     }
@@ -225,25 +222,24 @@ class _EchoProxyCalls implements Echo {
 class EchoProxy implements bindings.ProxyBase {
   final bindings.Proxy impl;
   Echo ptr;
-  final String name = EchoName;
 
-  EchoProxy(EchoProxyImpl proxyImpl) :
+  EchoProxy(_EchoProxyImpl proxyImpl) :
       impl = proxyImpl,
       ptr = new _EchoProxyCalls(proxyImpl);
 
   EchoProxy.fromEndpoint(
       core.MojoMessagePipeEndpoint endpoint) :
-      impl = new EchoProxyImpl.fromEndpoint(endpoint) {
+      impl = new _EchoProxyImpl.fromEndpoint(endpoint) {
     ptr = new _EchoProxyCalls(impl);
   }
 
   EchoProxy.fromHandle(core.MojoHandle handle) :
-      impl = new EchoProxyImpl.fromHandle(handle) {
+      impl = new _EchoProxyImpl.fromHandle(handle) {
     ptr = new _EchoProxyCalls(impl);
   }
 
   EchoProxy.unbound() :
-      impl = new EchoProxyImpl.unbound() {
+      impl = new _EchoProxyImpl.unbound() {
     ptr = new _EchoProxyCalls(impl);
   }
 
@@ -259,6 +255,8 @@ class EchoProxy implements bindings.ProxyBase {
     assert(endpoint.setDescription("For EchoProxy"));
     return new EchoProxy.fromEndpoint(endpoint);
   }
+
+  String get serviceName => Echo.serviceName;
 
   Future close({bool immediate: false}) => impl.close(immediate: immediate);
 
@@ -298,8 +296,6 @@ class EchoStub extends bindings.Stub {
     return new EchoStub.fromEndpoint(endpoint);
   }
 
-  static const String name = EchoName;
-
 
   EchoEchoStringResponseParams _EchoEchoStringResponseParamsFactory(String value) {
     var mojo_factory_result = new EchoEchoStringResponseParams();
@@ -315,8 +311,8 @@ class EchoStub extends bindings.Stub {
     }
     assert(_impl != null);
     switch (message.header.type) {
-      case kEcho_echoString_name:
-        var params = EchoEchoStringParams.deserialize(
+      case _Echo_echoStringName:
+        var params = _EchoEchoStringParams.deserialize(
             message.payload);
         var response = _impl.echoString(params.value,_EchoEchoStringResponseParamsFactory);
         if (response is Future) {
@@ -324,7 +320,7 @@ class EchoStub extends bindings.Stub {
             if (response != null) {
               return buildResponseWithId(
                   response,
-                  kEcho_echoString_name,
+                  _Echo_echoStringName,
                   message.header.requestId,
                   bindings.MessageHeader.kMessageIsResponse);
             }
@@ -332,7 +328,7 @@ class EchoStub extends bindings.Stub {
         } else if (response != null) {
           return buildResponseWithId(
               response,
-              kEcho_echoString_name,
+              _Echo_echoStringName,
               message.header.requestId,
               bindings.MessageHeader.kMessageIsResponse);
         }

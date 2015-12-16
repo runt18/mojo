@@ -40,7 +40,7 @@ class EchoApplication extends Application {
   @override
   void acceptConnection(String requestorUrl, String resolvedUrl,
       ApplicationConnection connection) {
-    connection.provideService(EchoName, _createService);
+    connection.provideService(Echo.serviceName, _createService);
   }
 
   void removeService(EchoImpl service) {

@@ -341,6 +341,36 @@ Future<bool> testRegression551() {
   return c.future;
 }
 
+class ServiceNameImpl implements regression.ServiceName {
+  regression.ServiceNameStub _stub;
+
+  ServiceNameImpl(core.MojoMessagePipeEndpoint endpoint) {
+    _stub = new regression.ServiceNameStub.fromEndpoint(endpoint, this);
+  }
+
+  dynamic serviceName_(Function responseFactory) =>
+      responseFactory(ServiceName.serviceName);
+}
+
+void serviceNameIsolate(core.MojoMessagePipeEndpoint endpoint) {
+  new ServiceNameImpl(endpoint);
+}
+
+Future<bool> testServiceName() {
+  var pipe = new core.MojoMessagePipe();
+  var client = new regression.ServiceNameProxy.fromEndpoint(pipe.endpoints[0]);
+  var c = new Completer();
+  Isolate.spawn(serviceNameIsolate, pipe.endpoints[1]).then((_) {
+    client.ptr.serviceName_().then((response) {
+      Expect.equals(ServiceName.serviceName, response.serviceName_);
+      client.close().then((_) {
+        c.complete(true);
+      });
+    });
+  });
+  return c.future;
+}
+
 main() async {
   testSerializeStructs();
   testUnions();
@@ -349,4 +379,5 @@ main() async {
   await testAwaitCallResponse();
   await runOnClosedTest();
   await testRegression551();
+  await testServiceName();
 }

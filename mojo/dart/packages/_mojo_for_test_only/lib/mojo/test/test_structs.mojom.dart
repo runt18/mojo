@@ -4783,15 +4783,15 @@ class DartKeywordStruct extends bindings.Struct {
 }
 
 
-class SomeInterfaceSomeMethodParams extends bindings.Struct {
+class _SomeInterfaceSomeMethodParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(16, 0)
   ];
   RectPair pair = null;
 
-  SomeInterfaceSomeMethodParams() : super(kVersions.last.size);
+  _SomeInterfaceSomeMethodParams() : super(kVersions.last.size);
 
-  static SomeInterfaceSomeMethodParams deserialize(bindings.Message message) {
+  static _SomeInterfaceSomeMethodParams deserialize(bindings.Message message) {
     var decoder = new bindings.Decoder(message);
     var result = decode(decoder);
     if (decoder.excessHandles != null) {
@@ -4800,11 +4800,11 @@ class SomeInterfaceSomeMethodParams extends bindings.Struct {
     return result;
   }
 
-  static SomeInterfaceSomeMethodParams decode(bindings.Decoder decoder0) {
+  static _SomeInterfaceSomeMethodParams decode(bindings.Decoder decoder0) {
     if (decoder0 == null) {
       return null;
     }
-    SomeInterfaceSomeMethodParams result = new SomeInterfaceSomeMethodParams();
+    _SomeInterfaceSomeMethodParams result = new _SomeInterfaceSomeMethodParams();
 
     var mainDataHeader = decoder0.decodeStructDataHeader();
     if (mainDataHeader.version <= kVersions.last.version) {
@@ -4839,7 +4839,7 @@ class SomeInterfaceSomeMethodParams extends bindings.Struct {
   }
 
   String toString() {
-    return "SomeInterfaceSomeMethodParams("
+    return "_SomeInterfaceSomeMethodParams("
            "pair: $pair" ")";
   }
 
@@ -5215,35 +5215,32 @@ class UnionOfStructs extends bindings.Union {
     return result;
   }
 }
-const int kSomeInterface_someMethod_name = 0;
-const String SomeInterfaceName = null;
+const int _SomeInterface_someMethodName = 0;
 
 abstract class SomeInterface {
+  static const String serviceName = null;
   dynamic someMethod(RectPair pair,[Function responseFactory = null]);
-
 }
 
 
-class SomeInterfaceProxyImpl extends bindings.Proxy {
-  SomeInterfaceProxyImpl.fromEndpoint(
+class _SomeInterfaceProxyImpl extends bindings.Proxy {
+  _SomeInterfaceProxyImpl.fromEndpoint(
       core.MojoMessagePipeEndpoint endpoint) : super.fromEndpoint(endpoint);
 
-  SomeInterfaceProxyImpl.fromHandle(core.MojoHandle handle) :
+  _SomeInterfaceProxyImpl.fromHandle(core.MojoHandle handle) :
       super.fromHandle(handle);
 
-  SomeInterfaceProxyImpl.unbound() : super.unbound();
+  _SomeInterfaceProxyImpl.unbound() : super.unbound();
 
-  static SomeInterfaceProxyImpl newFromEndpoint(
+  static _SomeInterfaceProxyImpl newFromEndpoint(
       core.MojoMessagePipeEndpoint endpoint) {
-    assert(endpoint.setDescription("For SomeInterfaceProxyImpl"));
-    return new SomeInterfaceProxyImpl.fromEndpoint(endpoint);
+    assert(endpoint.setDescription("For _SomeInterfaceProxyImpl"));
+    return new _SomeInterfaceProxyImpl.fromEndpoint(endpoint);
   }
-
-  String get name => SomeInterfaceName;
 
   void handleResponse(bindings.ServiceMessage message) {
     switch (message.header.type) {
-      case kSomeInterface_someMethod_name:
+      case _SomeInterface_someMethodName:
         var r = SomeInterfaceSomeMethodResponseParams.deserialize(
             message.payload);
         if (!message.header.hasRequestId) {
@@ -5272,21 +5269,21 @@ class SomeInterfaceProxyImpl extends bindings.Proxy {
 
   String toString() {
     var superString = super.toString();
-    return "SomeInterfaceProxyImpl($superString)";
+    return "_SomeInterfaceProxyImpl($superString)";
   }
 }
 
 
 class _SomeInterfaceProxyCalls implements SomeInterface {
-  SomeInterfaceProxyImpl _proxyImpl;
+  _SomeInterfaceProxyImpl _proxyImpl;
 
   _SomeInterfaceProxyCalls(this._proxyImpl);
     dynamic someMethod(RectPair pair,[Function responseFactory = null]) {
-      var params = new SomeInterfaceSomeMethodParams();
+      var params = new _SomeInterfaceSomeMethodParams();
       params.pair = pair;
       return _proxyImpl.sendMessageWithRequestId(
           params,
-          kSomeInterface_someMethod_name,
+          _SomeInterface_someMethodName,
           -1,
           bindings.MessageHeader.kMessageExpectsResponse);
     }
@@ -5296,25 +5293,24 @@ class _SomeInterfaceProxyCalls implements SomeInterface {
 class SomeInterfaceProxy implements bindings.ProxyBase {
   final bindings.Proxy impl;
   SomeInterface ptr;
-  final String name = SomeInterfaceName;
 
-  SomeInterfaceProxy(SomeInterfaceProxyImpl proxyImpl) :
+  SomeInterfaceProxy(_SomeInterfaceProxyImpl proxyImpl) :
       impl = proxyImpl,
       ptr = new _SomeInterfaceProxyCalls(proxyImpl);
 
   SomeInterfaceProxy.fromEndpoint(
       core.MojoMessagePipeEndpoint endpoint) :
-      impl = new SomeInterfaceProxyImpl.fromEndpoint(endpoint) {
+      impl = new _SomeInterfaceProxyImpl.fromEndpoint(endpoint) {
     ptr = new _SomeInterfaceProxyCalls(impl);
   }
 
   SomeInterfaceProxy.fromHandle(core.MojoHandle handle) :
-      impl = new SomeInterfaceProxyImpl.fromHandle(handle) {
+      impl = new _SomeInterfaceProxyImpl.fromHandle(handle) {
     ptr = new _SomeInterfaceProxyCalls(impl);
   }
 
   SomeInterfaceProxy.unbound() :
-      impl = new SomeInterfaceProxyImpl.unbound() {
+      impl = new _SomeInterfaceProxyImpl.unbound() {
     ptr = new _SomeInterfaceProxyCalls(impl);
   }
 
@@ -5330,6 +5326,8 @@ class SomeInterfaceProxy implements bindings.ProxyBase {
     assert(endpoint.setDescription("For SomeInterfaceProxy"));
     return new SomeInterfaceProxy.fromEndpoint(endpoint);
   }
+
+  String get serviceName => SomeInterface.serviceName;
 
   Future close({bool immediate: false}) => impl.close(immediate: immediate);
 
@@ -5369,8 +5367,6 @@ class SomeInterfaceStub extends bindings.Stub {
     return new SomeInterfaceStub.fromEndpoint(endpoint);
   }
 
-  static const String name = SomeInterfaceName;
-
 
   SomeInterfaceSomeMethodResponseParams _SomeInterfaceSomeMethodResponseParamsFactory(RectPair otherPair) {
     var mojo_factory_result = new SomeInterfaceSomeMethodResponseParams();
@@ -5386,8 +5382,8 @@ class SomeInterfaceStub extends bindings.Stub {
     }
     assert(_impl != null);
     switch (message.header.type) {
-      case kSomeInterface_someMethod_name:
-        var params = SomeInterfaceSomeMethodParams.deserialize(
+      case _SomeInterface_someMethodName:
+        var params = _SomeInterfaceSomeMethodParams.deserialize(
             message.payload);
         var response = _impl.someMethod(params.pair,_SomeInterfaceSomeMethodResponseParamsFactory);
         if (response is Future) {
@@ -5395,7 +5391,7 @@ class SomeInterfaceStub extends bindings.Stub {
             if (response != null) {
               return buildResponseWithId(
                   response,
-                  kSomeInterface_someMethod_name,
+                  _SomeInterface_someMethodName,
                   message.header.requestId,
                   bindings.MessageHeader.kMessageIsResponse);
             }
@@ -5403,7 +5399,7 @@ class SomeInterfaceStub extends bindings.Stub {
         } else if (response != null) {
           return buildResponseWithId(
               response,
-              kSomeInterface_someMethod_name,
+              _SomeInterface_someMethodName,
               message.header.requestId,
               bindings.MessageHeader.kMessageIsResponse);
         }

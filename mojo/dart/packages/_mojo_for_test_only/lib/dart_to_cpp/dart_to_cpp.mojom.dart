@@ -307,14 +307,14 @@ class EchoArgsList extends bindings.Struct {
 }
 
 
-class CppSideStartTestParams extends bindings.Struct {
+class _CppSideStartTestParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(8, 0)
   ];
 
-  CppSideStartTestParams() : super(kVersions.last.size);
+  _CppSideStartTestParams() : super(kVersions.last.size);
 
-  static CppSideStartTestParams deserialize(bindings.Message message) {
+  static _CppSideStartTestParams deserialize(bindings.Message message) {
     var decoder = new bindings.Decoder(message);
     var result = decode(decoder);
     if (decoder.excessHandles != null) {
@@ -323,11 +323,11 @@ class CppSideStartTestParams extends bindings.Struct {
     return result;
   }
 
-  static CppSideStartTestParams decode(bindings.Decoder decoder0) {
+  static _CppSideStartTestParams decode(bindings.Decoder decoder0) {
     if (decoder0 == null) {
       return null;
     }
-    CppSideStartTestParams result = new CppSideStartTestParams();
+    _CppSideStartTestParams result = new _CppSideStartTestParams();
 
     var mainDataHeader = decoder0.decodeStructDataHeader();
     if (mainDataHeader.version <= kVersions.last.version) {
@@ -355,7 +355,7 @@ class CppSideStartTestParams extends bindings.Struct {
   }
 
   String toString() {
-    return "CppSideStartTestParams("")";
+    return "_CppSideStartTestParams("")";
   }
 
   Map toJson() {
@@ -365,14 +365,14 @@ class CppSideStartTestParams extends bindings.Struct {
 }
 
 
-class CppSideTestFinishedParams extends bindings.Struct {
+class _CppSideTestFinishedParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(8, 0)
   ];
 
-  CppSideTestFinishedParams() : super(kVersions.last.size);
+  _CppSideTestFinishedParams() : super(kVersions.last.size);
 
-  static CppSideTestFinishedParams deserialize(bindings.Message message) {
+  static _CppSideTestFinishedParams deserialize(bindings.Message message) {
     var decoder = new bindings.Decoder(message);
     var result = decode(decoder);
     if (decoder.excessHandles != null) {
@@ -381,11 +381,11 @@ class CppSideTestFinishedParams extends bindings.Struct {
     return result;
   }
 
-  static CppSideTestFinishedParams decode(bindings.Decoder decoder0) {
+  static _CppSideTestFinishedParams decode(bindings.Decoder decoder0) {
     if (decoder0 == null) {
       return null;
     }
-    CppSideTestFinishedParams result = new CppSideTestFinishedParams();
+    _CppSideTestFinishedParams result = new _CppSideTestFinishedParams();
 
     var mainDataHeader = decoder0.decodeStructDataHeader();
     if (mainDataHeader.version <= kVersions.last.version) {
@@ -413,7 +413,7 @@ class CppSideTestFinishedParams extends bindings.Struct {
   }
 
   String toString() {
-    return "CppSideTestFinishedParams("")";
+    return "_CppSideTestFinishedParams("")";
   }
 
   Map toJson() {
@@ -423,14 +423,14 @@ class CppSideTestFinishedParams extends bindings.Struct {
 }
 
 
-class CppSidePingResponseParams extends bindings.Struct {
+class _CppSidePingResponseParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(8, 0)
   ];
 
-  CppSidePingResponseParams() : super(kVersions.last.size);
+  _CppSidePingResponseParams() : super(kVersions.last.size);
 
-  static CppSidePingResponseParams deserialize(bindings.Message message) {
+  static _CppSidePingResponseParams deserialize(bindings.Message message) {
     var decoder = new bindings.Decoder(message);
     var result = decode(decoder);
     if (decoder.excessHandles != null) {
@@ -439,11 +439,11 @@ class CppSidePingResponseParams extends bindings.Struct {
     return result;
   }
 
-  static CppSidePingResponseParams decode(bindings.Decoder decoder0) {
+  static _CppSidePingResponseParams decode(bindings.Decoder decoder0) {
     if (decoder0 == null) {
       return null;
     }
-    CppSidePingResponseParams result = new CppSidePingResponseParams();
+    _CppSidePingResponseParams result = new _CppSidePingResponseParams();
 
     var mainDataHeader = decoder0.decodeStructDataHeader();
     if (mainDataHeader.version <= kVersions.last.version) {
@@ -471,7 +471,7 @@ class CppSidePingResponseParams extends bindings.Struct {
   }
 
   String toString() {
-    return "CppSidePingResponseParams("")";
+    return "_CppSidePingResponseParams("")";
   }
 
   Map toJson() {
@@ -481,15 +481,15 @@ class CppSidePingResponseParams extends bindings.Struct {
 }
 
 
-class CppSideEchoResponseParams extends bindings.Struct {
+class _CppSideEchoResponseParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(16, 0)
   ];
   EchoArgsList list = null;
 
-  CppSideEchoResponseParams() : super(kVersions.last.size);
+  _CppSideEchoResponseParams() : super(kVersions.last.size);
 
-  static CppSideEchoResponseParams deserialize(bindings.Message message) {
+  static _CppSideEchoResponseParams deserialize(bindings.Message message) {
     var decoder = new bindings.Decoder(message);
     var result = decode(decoder);
     if (decoder.excessHandles != null) {
@@ -498,11 +498,11 @@ class CppSideEchoResponseParams extends bindings.Struct {
     return result;
   }
 
-  static CppSideEchoResponseParams decode(bindings.Decoder decoder0) {
+  static _CppSideEchoResponseParams decode(bindings.Decoder decoder0) {
     if (decoder0 == null) {
       return null;
     }
-    CppSideEchoResponseParams result = new CppSideEchoResponseParams();
+    _CppSideEchoResponseParams result = new _CppSideEchoResponseParams();
 
     var mainDataHeader = decoder0.decodeStructDataHeader();
     if (mainDataHeader.version <= kVersions.last.version) {
@@ -537,7 +537,7 @@ class CppSideEchoResponseParams extends bindings.Struct {
   }
 
   String toString() {
-    return "CppSideEchoResponseParams("
+    return "_CppSideEchoResponseParams("
            "list: $list" ")";
   }
 
@@ -548,15 +548,15 @@ class CppSideEchoResponseParams extends bindings.Struct {
 }
 
 
-class DartSideSetClientParams extends bindings.Struct {
+class _DartSideSetClientParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(16, 0)
   ];
   Object cppSide = null;
 
-  DartSideSetClientParams() : super(kVersions.last.size);
+  _DartSideSetClientParams() : super(kVersions.last.size);
 
-  static DartSideSetClientParams deserialize(bindings.Message message) {
+  static _DartSideSetClientParams deserialize(bindings.Message message) {
     var decoder = new bindings.Decoder(message);
     var result = decode(decoder);
     if (decoder.excessHandles != null) {
@@ -565,11 +565,11 @@ class DartSideSetClientParams extends bindings.Struct {
     return result;
   }
 
-  static DartSideSetClientParams decode(bindings.Decoder decoder0) {
+  static _DartSideSetClientParams decode(bindings.Decoder decoder0) {
     if (decoder0 == null) {
       return null;
     }
-    DartSideSetClientParams result = new DartSideSetClientParams();
+    _DartSideSetClientParams result = new _DartSideSetClientParams();
 
     var mainDataHeader = decoder0.decodeStructDataHeader();
     if (mainDataHeader.version <= kVersions.last.version) {
@@ -603,7 +603,7 @@ class DartSideSetClientParams extends bindings.Struct {
   }
 
   String toString() {
-    return "DartSideSetClientParams("
+    return "_DartSideSetClientParams("
            "cppSide: $cppSide" ")";
   }
 
@@ -614,14 +614,14 @@ class DartSideSetClientParams extends bindings.Struct {
 }
 
 
-class DartSidePingParams extends bindings.Struct {
+class _DartSidePingParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(8, 0)
   ];
 
-  DartSidePingParams() : super(kVersions.last.size);
+  _DartSidePingParams() : super(kVersions.last.size);
 
-  static DartSidePingParams deserialize(bindings.Message message) {
+  static _DartSidePingParams deserialize(bindings.Message message) {
     var decoder = new bindings.Decoder(message);
     var result = decode(decoder);
     if (decoder.excessHandles != null) {
@@ -630,11 +630,11 @@ class DartSidePingParams extends bindings.Struct {
     return result;
   }
 
-  static DartSidePingParams decode(bindings.Decoder decoder0) {
+  static _DartSidePingParams decode(bindings.Decoder decoder0) {
     if (decoder0 == null) {
       return null;
     }
-    DartSidePingParams result = new DartSidePingParams();
+    _DartSidePingParams result = new _DartSidePingParams();
 
     var mainDataHeader = decoder0.decodeStructDataHeader();
     if (mainDataHeader.version <= kVersions.last.version) {
@@ -662,7 +662,7 @@ class DartSidePingParams extends bindings.Struct {
   }
 
   String toString() {
-    return "DartSidePingParams("")";
+    return "_DartSidePingParams("")";
   }
 
   Map toJson() {
@@ -672,16 +672,16 @@ class DartSidePingParams extends bindings.Struct {
 }
 
 
-class DartSideEchoParams extends bindings.Struct {
+class _DartSideEchoParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(24, 0)
   ];
   int numIterations = 0;
   EchoArgs arg = null;
 
-  DartSideEchoParams() : super(kVersions.last.size);
+  _DartSideEchoParams() : super(kVersions.last.size);
 
-  static DartSideEchoParams deserialize(bindings.Message message) {
+  static _DartSideEchoParams deserialize(bindings.Message message) {
     var decoder = new bindings.Decoder(message);
     var result = decode(decoder);
     if (decoder.excessHandles != null) {
@@ -690,11 +690,11 @@ class DartSideEchoParams extends bindings.Struct {
     return result;
   }
 
-  static DartSideEchoParams decode(bindings.Decoder decoder0) {
+  static _DartSideEchoParams decode(bindings.Decoder decoder0) {
     if (decoder0 == null) {
       return null;
     }
-    DartSideEchoParams result = new DartSideEchoParams();
+    _DartSideEchoParams result = new _DartSideEchoParams();
 
     var mainDataHeader = decoder0.decodeStructDataHeader();
     if (mainDataHeader.version <= kVersions.last.version) {
@@ -735,7 +735,7 @@ class DartSideEchoParams extends bindings.Struct {
   }
 
   String toString() {
-    return "DartSideEchoParams("
+    return "_DartSideEchoParams("
            "numIterations: $numIterations" ", "
            "arg: $arg" ")";
   }
@@ -746,37 +746,34 @@ class DartSideEchoParams extends bindings.Struct {
   }
 }
 
-const int kCppSide_startTest_name = 88888888;
-const int kCppSide_testFinished_name = 99999999;
-const int kCppSide_pingResponse_name = 100000000;
-const int kCppSide_echoResponse_name = 100000001;
-const String CppSideName = null;
+const int _CppSide_startTestName = 88888888;
+const int _CppSide_testFinishedName = 99999999;
+const int _CppSide_pingResponseName = 100000000;
+const int _CppSide_echoResponseName = 100000001;
 
 abstract class CppSide {
+  static const String serviceName = null;
   void startTest();
   void testFinished();
   void pingResponse();
   void echoResponse(EchoArgsList list);
-
 }
 
 
-class CppSideProxyImpl extends bindings.Proxy {
-  CppSideProxyImpl.fromEndpoint(
+class _CppSideProxyImpl extends bindings.Proxy {
+  _CppSideProxyImpl.fromEndpoint(
       core.MojoMessagePipeEndpoint endpoint) : super.fromEndpoint(endpoint);
 
-  CppSideProxyImpl.fromHandle(core.MojoHandle handle) :
+  _CppSideProxyImpl.fromHandle(core.MojoHandle handle) :
       super.fromHandle(handle);
 
-  CppSideProxyImpl.unbound() : super.unbound();
+  _CppSideProxyImpl.unbound() : super.unbound();
 
-  static CppSideProxyImpl newFromEndpoint(
+  static _CppSideProxyImpl newFromEndpoint(
       core.MojoMessagePipeEndpoint endpoint) {
-    assert(endpoint.setDescription("For CppSideProxyImpl"));
-    return new CppSideProxyImpl.fromEndpoint(endpoint);
+    assert(endpoint.setDescription("For _CppSideProxyImpl"));
+    return new _CppSideProxyImpl.fromEndpoint(endpoint);
   }
-
-  String get name => CppSideName;
 
   void handleResponse(bindings.ServiceMessage message) {
     switch (message.header.type) {
@@ -789,13 +786,13 @@ class CppSideProxyImpl extends bindings.Proxy {
 
   String toString() {
     var superString = super.toString();
-    return "CppSideProxyImpl($superString)";
+    return "_CppSideProxyImpl($superString)";
   }
 }
 
 
 class _CppSideProxyCalls implements CppSide {
-  CppSideProxyImpl _proxyImpl;
+  _CppSideProxyImpl _proxyImpl;
 
   _CppSideProxyCalls(this._proxyImpl);
     void startTest() {
@@ -803,63 +800,58 @@ class _CppSideProxyCalls implements CppSide {
         _proxyImpl.proxyError("The Proxy is closed.");
         return;
       }
-      var params = new CppSideStartTestParams();
-      _proxyImpl.sendMessage(params, kCppSide_startTest_name);
+      var params = new _CppSideStartTestParams();
+      _proxyImpl.sendMessage(params, _CppSide_startTestName);
     }
-  
     void testFinished() {
       if (!_proxyImpl.isBound) {
         _proxyImpl.proxyError("The Proxy is closed.");
         return;
       }
-      var params = new CppSideTestFinishedParams();
-      _proxyImpl.sendMessage(params, kCppSide_testFinished_name);
+      var params = new _CppSideTestFinishedParams();
+      _proxyImpl.sendMessage(params, _CppSide_testFinishedName);
     }
-  
     void pingResponse() {
       if (!_proxyImpl.isBound) {
         _proxyImpl.proxyError("The Proxy is closed.");
         return;
       }
-      var params = new CppSidePingResponseParams();
-      _proxyImpl.sendMessage(params, kCppSide_pingResponse_name);
+      var params = new _CppSidePingResponseParams();
+      _proxyImpl.sendMessage(params, _CppSide_pingResponseName);
     }
-  
     void echoResponse(EchoArgsList list) {
       if (!_proxyImpl.isBound) {
         _proxyImpl.proxyError("The Proxy is closed.");
         return;
       }
-      var params = new CppSideEchoResponseParams();
+      var params = new _CppSideEchoResponseParams();
       params.list = list;
-      _proxyImpl.sendMessage(params, kCppSide_echoResponse_name);
+      _proxyImpl.sendMessage(params, _CppSide_echoResponseName);
     }
-  
 }
 
 
 class CppSideProxy implements bindings.ProxyBase {
   final bindings.Proxy impl;
   CppSide ptr;
-  final String name = CppSideName;
 
-  CppSideProxy(CppSideProxyImpl proxyImpl) :
+  CppSideProxy(_CppSideProxyImpl proxyImpl) :
       impl = proxyImpl,
       ptr = new _CppSideProxyCalls(proxyImpl);
 
   CppSideProxy.fromEndpoint(
       core.MojoMessagePipeEndpoint endpoint) :
-      impl = new CppSideProxyImpl.fromEndpoint(endpoint) {
+      impl = new _CppSideProxyImpl.fromEndpoint(endpoint) {
     ptr = new _CppSideProxyCalls(impl);
   }
 
   CppSideProxy.fromHandle(core.MojoHandle handle) :
-      impl = new CppSideProxyImpl.fromHandle(handle) {
+      impl = new _CppSideProxyImpl.fromHandle(handle) {
     ptr = new _CppSideProxyCalls(impl);
   }
 
   CppSideProxy.unbound() :
-      impl = new CppSideProxyImpl.unbound() {
+      impl = new _CppSideProxyImpl.unbound() {
     ptr = new _CppSideProxyCalls(impl);
   }
 
@@ -875,6 +867,8 @@ class CppSideProxy implements bindings.ProxyBase {
     assert(endpoint.setDescription("For CppSideProxy"));
     return new CppSideProxy.fromEndpoint(endpoint);
   }
+
+  String get serviceName => CppSide.serviceName;
 
   Future close({bool immediate: false}) => impl.close(immediate: immediate);
 
@@ -914,8 +908,6 @@ class CppSideStub extends bindings.Stub {
     return new CppSideStub.fromEndpoint(endpoint);
   }
 
-  static const String name = CppSideName;
-
 
 
   dynamic handleMessage(bindings.ServiceMessage message) {
@@ -926,23 +918,23 @@ class CppSideStub extends bindings.Stub {
     }
     assert(_impl != null);
     switch (message.header.type) {
-      case kCppSide_startTest_name:
-        var params = CppSideStartTestParams.deserialize(
+      case _CppSide_startTestName:
+        var params = _CppSideStartTestParams.deserialize(
             message.payload);
         _impl.startTest();
         break;
-      case kCppSide_testFinished_name:
-        var params = CppSideTestFinishedParams.deserialize(
+      case _CppSide_testFinishedName:
+        var params = _CppSideTestFinishedParams.deserialize(
             message.payload);
         _impl.testFinished();
         break;
-      case kCppSide_pingResponse_name:
-        var params = CppSidePingResponseParams.deserialize(
+      case _CppSide_pingResponseName:
+        var params = _CppSidePingResponseParams.deserialize(
             message.payload);
         _impl.pingResponse();
         break;
-      case kCppSide_echoResponse_name:
-        var params = CppSideEchoResponseParams.deserialize(
+      case _CppSide_echoResponseName:
+        var params = _CppSideEchoResponseParams.deserialize(
             message.payload);
         _impl.echoResponse(params.list);
         break;
@@ -967,35 +959,32 @@ class CppSideStub extends bindings.Stub {
   int get version => 0;
 }
 
-const int kDartSide_setClient_name = 0;
-const int kDartSide_ping_name = 1;
-const int kDartSide_echo_name = 2;
-const String DartSideName = null;
+const int _DartSide_setClientName = 0;
+const int _DartSide_pingName = 1;
+const int _DartSide_echoName = 2;
 
 abstract class DartSide {
+  static const String serviceName = null;
   void setClient(Object cppSide);
   void ping();
   void echo(int numIterations, EchoArgs arg);
-
 }
 
 
-class DartSideProxyImpl extends bindings.Proxy {
-  DartSideProxyImpl.fromEndpoint(
+class _DartSideProxyImpl extends bindings.Proxy {
+  _DartSideProxyImpl.fromEndpoint(
       core.MojoMessagePipeEndpoint endpoint) : super.fromEndpoint(endpoint);
 
-  DartSideProxyImpl.fromHandle(core.MojoHandle handle) :
+  _DartSideProxyImpl.fromHandle(core.MojoHandle handle) :
       super.fromHandle(handle);
 
-  DartSideProxyImpl.unbound() : super.unbound();
+  _DartSideProxyImpl.unbound() : super.unbound();
 
-  static DartSideProxyImpl newFromEndpoint(
+  static _DartSideProxyImpl newFromEndpoint(
       core.MojoMessagePipeEndpoint endpoint) {
-    assert(endpoint.setDescription("For DartSideProxyImpl"));
-    return new DartSideProxyImpl.fromEndpoint(endpoint);
+    assert(endpoint.setDescription("For _DartSideProxyImpl"));
+    return new _DartSideProxyImpl.fromEndpoint(endpoint);
   }
-
-  String get name => DartSideName;
 
   void handleResponse(bindings.ServiceMessage message) {
     switch (message.header.type) {
@@ -1008,13 +997,13 @@ class DartSideProxyImpl extends bindings.Proxy {
 
   String toString() {
     var superString = super.toString();
-    return "DartSideProxyImpl($superString)";
+    return "_DartSideProxyImpl($superString)";
   }
 }
 
 
 class _DartSideProxyCalls implements DartSide {
-  DartSideProxyImpl _proxyImpl;
+  _DartSideProxyImpl _proxyImpl;
 
   _DartSideProxyCalls(this._proxyImpl);
     void setClient(Object cppSide) {
@@ -1022,56 +1011,52 @@ class _DartSideProxyCalls implements DartSide {
         _proxyImpl.proxyError("The Proxy is closed.");
         return;
       }
-      var params = new DartSideSetClientParams();
+      var params = new _DartSideSetClientParams();
       params.cppSide = cppSide;
-      _proxyImpl.sendMessage(params, kDartSide_setClient_name);
+      _proxyImpl.sendMessage(params, _DartSide_setClientName);
     }
-  
     void ping() {
       if (!_proxyImpl.isBound) {
         _proxyImpl.proxyError("The Proxy is closed.");
         return;
       }
-      var params = new DartSidePingParams();
-      _proxyImpl.sendMessage(params, kDartSide_ping_name);
+      var params = new _DartSidePingParams();
+      _proxyImpl.sendMessage(params, _DartSide_pingName);
     }
-  
     void echo(int numIterations, EchoArgs arg) {
       if (!_proxyImpl.isBound) {
         _proxyImpl.proxyError("The Proxy is closed.");
         return;
       }
-      var params = new DartSideEchoParams();
+      var params = new _DartSideEchoParams();
       params.numIterations = numIterations;
       params.arg = arg;
-      _proxyImpl.sendMessage(params, kDartSide_echo_name);
+      _proxyImpl.sendMessage(params, _DartSide_echoName);
     }
-  
 }
 
 
 class DartSideProxy implements bindings.ProxyBase {
   final bindings.Proxy impl;
   DartSide ptr;
-  final String name = DartSideName;
 
-  DartSideProxy(DartSideProxyImpl proxyImpl) :
+  DartSideProxy(_DartSideProxyImpl proxyImpl) :
       impl = proxyImpl,
       ptr = new _DartSideProxyCalls(proxyImpl);
 
   DartSideProxy.fromEndpoint(
       core.MojoMessagePipeEndpoint endpoint) :
-      impl = new DartSideProxyImpl.fromEndpoint(endpoint) {
+      impl = new _DartSideProxyImpl.fromEndpoint(endpoint) {
     ptr = new _DartSideProxyCalls(impl);
   }
 
   DartSideProxy.fromHandle(core.MojoHandle handle) :
-      impl = new DartSideProxyImpl.fromHandle(handle) {
+      impl = new _DartSideProxyImpl.fromHandle(handle) {
     ptr = new _DartSideProxyCalls(impl);
   }
 
   DartSideProxy.unbound() :
-      impl = new DartSideProxyImpl.unbound() {
+      impl = new _DartSideProxyImpl.unbound() {
     ptr = new _DartSideProxyCalls(impl);
   }
 
@@ -1087,6 +1072,8 @@ class DartSideProxy implements bindings.ProxyBase {
     assert(endpoint.setDescription("For DartSideProxy"));
     return new DartSideProxy.fromEndpoint(endpoint);
   }
+
+  String get serviceName => DartSide.serviceName;
 
   Future close({bool immediate: false}) => impl.close(immediate: immediate);
 
@@ -1126,8 +1113,6 @@ class DartSideStub extends bindings.Stub {
     return new DartSideStub.fromEndpoint(endpoint);
   }
 
-  static const String name = DartSideName;
-
 
 
   dynamic handleMessage(bindings.ServiceMessage message) {
@@ -1138,18 +1123,18 @@ class DartSideStub extends bindings.Stub {
     }
     assert(_impl != null);
     switch (message.header.type) {
-      case kDartSide_setClient_name:
-        var params = DartSideSetClientParams.deserialize(
+      case _DartSide_setClientName:
+        var params = _DartSideSetClientParams.deserialize(
             message.payload);
         _impl.setClient(params.cppSide);
         break;
-      case kDartSide_ping_name:
-        var params = DartSidePingParams.deserialize(
+      case _DartSide_pingName:
+        var params = _DartSidePingParams.deserialize(
             message.payload);
         _impl.ping();
         break;
-      case kDartSide_echo_name:
-        var params = DartSideEchoParams.deserialize(
+      case _DartSide_echoName:
+        var params = _DartSideEchoParams.deserialize(
             message.payload);
         _impl.echo(params.numIterations, params.arg);
         break;

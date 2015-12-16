@@ -13,16 +13,16 @@ import 'package:mojo_services/mojo/files/types.mojom.dart' as types_mojom;
 
 
 
-class FilesOpenFileSystemParams extends bindings.Struct {
+class _FilesOpenFileSystemParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(24, 0)
   ];
   String fileSystem = null;
   Object directory = null;
 
-  FilesOpenFileSystemParams() : super(kVersions.last.size);
+  _FilesOpenFileSystemParams() : super(kVersions.last.size);
 
-  static FilesOpenFileSystemParams deserialize(bindings.Message message) {
+  static _FilesOpenFileSystemParams deserialize(bindings.Message message) {
     var decoder = new bindings.Decoder(message);
     var result = decode(decoder);
     if (decoder.excessHandles != null) {
@@ -31,11 +31,11 @@ class FilesOpenFileSystemParams extends bindings.Struct {
     return result;
   }
 
-  static FilesOpenFileSystemParams decode(bindings.Decoder decoder0) {
+  static _FilesOpenFileSystemParams decode(bindings.Decoder decoder0) {
     if (decoder0 == null) {
       return null;
     }
-    FilesOpenFileSystemParams result = new FilesOpenFileSystemParams();
+    _FilesOpenFileSystemParams result = new _FilesOpenFileSystemParams();
 
     var mainDataHeader = decoder0.decodeStructDataHeader();
     if (mainDataHeader.version <= kVersions.last.version) {
@@ -75,7 +75,7 @@ class FilesOpenFileSystemParams extends bindings.Struct {
   }
 
   String toString() {
-    return "FilesOpenFileSystemParams("
+    return "_FilesOpenFileSystemParams("
            "fileSystem: $fileSystem" ", "
            "directory: $directory" ")";
   }
@@ -157,35 +157,32 @@ class FilesOpenFileSystemResponseParams extends bindings.Struct {
   }
 }
 
-const int kFiles_openFileSystem_name = 0;
-const String FilesName = "mojo::files::Files";
+const int _Files_openFileSystemName = 0;
 
 abstract class Files {
+  static const String serviceName = "mojo::files::Files";
   dynamic openFileSystem(String fileSystem,Object directory,[Function responseFactory = null]);
-
 }
 
 
-class FilesProxyImpl extends bindings.Proxy {
-  FilesProxyImpl.fromEndpoint(
+class _FilesProxyImpl extends bindings.Proxy {
+  _FilesProxyImpl.fromEndpoint(
       core.MojoMessagePipeEndpoint endpoint) : super.fromEndpoint(endpoint);
 
-  FilesProxyImpl.fromHandle(core.MojoHandle handle) :
+  _FilesProxyImpl.fromHandle(core.MojoHandle handle) :
       super.fromHandle(handle);
 
-  FilesProxyImpl.unbound() : super.unbound();
+  _FilesProxyImpl.unbound() : super.unbound();
 
-  static FilesProxyImpl newFromEndpoint(
+  static _FilesProxyImpl newFromEndpoint(
       core.MojoMessagePipeEndpoint endpoint) {
-    assert(endpoint.setDescription("For FilesProxyImpl"));
-    return new FilesProxyImpl.fromEndpoint(endpoint);
+    assert(endpoint.setDescription("For _FilesProxyImpl"));
+    return new _FilesProxyImpl.fromEndpoint(endpoint);
   }
-
-  String get name => FilesName;
 
   void handleResponse(bindings.ServiceMessage message) {
     switch (message.header.type) {
-      case kFiles_openFileSystem_name:
+      case _Files_openFileSystemName:
         var r = FilesOpenFileSystemResponseParams.deserialize(
             message.payload);
         if (!message.header.hasRequestId) {
@@ -214,22 +211,22 @@ class FilesProxyImpl extends bindings.Proxy {
 
   String toString() {
     var superString = super.toString();
-    return "FilesProxyImpl($superString)";
+    return "_FilesProxyImpl($superString)";
   }
 }
 
 
 class _FilesProxyCalls implements Files {
-  FilesProxyImpl _proxyImpl;
+  _FilesProxyImpl _proxyImpl;
 
   _FilesProxyCalls(this._proxyImpl);
     dynamic openFileSystem(String fileSystem,Object directory,[Function responseFactory = null]) {
-      var params = new FilesOpenFileSystemParams();
+      var params = new _FilesOpenFileSystemParams();
       params.fileSystem = fileSystem;
       params.directory = directory;
       return _proxyImpl.sendMessageWithRequestId(
           params,
-          kFiles_openFileSystem_name,
+          _Files_openFileSystemName,
           -1,
           bindings.MessageHeader.kMessageExpectsResponse);
     }
@@ -239,25 +236,24 @@ class _FilesProxyCalls implements Files {
 class FilesProxy implements bindings.ProxyBase {
   final bindings.Proxy impl;
   Files ptr;
-  final String name = FilesName;
 
-  FilesProxy(FilesProxyImpl proxyImpl) :
+  FilesProxy(_FilesProxyImpl proxyImpl) :
       impl = proxyImpl,
       ptr = new _FilesProxyCalls(proxyImpl);
 
   FilesProxy.fromEndpoint(
       core.MojoMessagePipeEndpoint endpoint) :
-      impl = new FilesProxyImpl.fromEndpoint(endpoint) {
+      impl = new _FilesProxyImpl.fromEndpoint(endpoint) {
     ptr = new _FilesProxyCalls(impl);
   }
 
   FilesProxy.fromHandle(core.MojoHandle handle) :
-      impl = new FilesProxyImpl.fromHandle(handle) {
+      impl = new _FilesProxyImpl.fromHandle(handle) {
     ptr = new _FilesProxyCalls(impl);
   }
 
   FilesProxy.unbound() :
-      impl = new FilesProxyImpl.unbound() {
+      impl = new _FilesProxyImpl.unbound() {
     ptr = new _FilesProxyCalls(impl);
   }
 
@@ -273,6 +269,8 @@ class FilesProxy implements bindings.ProxyBase {
     assert(endpoint.setDescription("For FilesProxy"));
     return new FilesProxy.fromEndpoint(endpoint);
   }
+
+  String get serviceName => Files.serviceName;
 
   Future close({bool immediate: false}) => impl.close(immediate: immediate);
 
@@ -312,8 +310,6 @@ class FilesStub extends bindings.Stub {
     return new FilesStub.fromEndpoint(endpoint);
   }
 
-  static const String name = FilesName;
-
 
   FilesOpenFileSystemResponseParams _FilesOpenFileSystemResponseParamsFactory(types_mojom.Error error) {
     var mojo_factory_result = new FilesOpenFileSystemResponseParams();
@@ -329,8 +325,8 @@ class FilesStub extends bindings.Stub {
     }
     assert(_impl != null);
     switch (message.header.type) {
-      case kFiles_openFileSystem_name:
-        var params = FilesOpenFileSystemParams.deserialize(
+      case _Files_openFileSystemName:
+        var params = _FilesOpenFileSystemParams.deserialize(
             message.payload);
         var response = _impl.openFileSystem(params.fileSystem,params.directory,_FilesOpenFileSystemResponseParamsFactory);
         if (response is Future) {
@@ -338,7 +334,7 @@ class FilesStub extends bindings.Stub {
             if (response != null) {
               return buildResponseWithId(
                   response,
-                  kFiles_openFileSystem_name,
+                  _Files_openFileSystemName,
                   message.header.requestId,
                   bindings.MessageHeader.kMessageIsResponse);
             }
@@ -346,7 +342,7 @@ class FilesStub extends bindings.Stub {
         } else if (response != null) {
           return buildResponseWithId(
               response,
-              kFiles_openFileSystem_name,
+              _Files_openFileSystemName,
               message.header.requestId,
               bindings.MessageHeader.kMessageIsResponse);
         }

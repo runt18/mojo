@@ -11,14 +11,14 @@ import 'package:mojo/core.dart' as core;
 
 
 
-class CalculatorClearParams extends bindings.Struct {
+class _CalculatorClearParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(8, 0)
   ];
 
-  CalculatorClearParams() : super(kVersions.last.size);
+  _CalculatorClearParams() : super(kVersions.last.size);
 
-  static CalculatorClearParams deserialize(bindings.Message message) {
+  static _CalculatorClearParams deserialize(bindings.Message message) {
     var decoder = new bindings.Decoder(message);
     var result = decode(decoder);
     if (decoder.excessHandles != null) {
@@ -27,11 +27,11 @@ class CalculatorClearParams extends bindings.Struct {
     return result;
   }
 
-  static CalculatorClearParams decode(bindings.Decoder decoder0) {
+  static _CalculatorClearParams decode(bindings.Decoder decoder0) {
     if (decoder0 == null) {
       return null;
     }
-    CalculatorClearParams result = new CalculatorClearParams();
+    _CalculatorClearParams result = new _CalculatorClearParams();
 
     var mainDataHeader = decoder0.decodeStructDataHeader();
     if (mainDataHeader.version <= kVersions.last.version) {
@@ -59,7 +59,7 @@ class CalculatorClearParams extends bindings.Struct {
   }
 
   String toString() {
-    return "CalculatorClearParams("")";
+    return "_CalculatorClearParams("")";
   }
 
   Map toJson() {
@@ -136,15 +136,15 @@ class CalculatorClearResponseParams extends bindings.Struct {
 }
 
 
-class CalculatorAddParams extends bindings.Struct {
+class _CalculatorAddParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(16, 0)
   ];
   double value = 0.0;
 
-  CalculatorAddParams() : super(kVersions.last.size);
+  _CalculatorAddParams() : super(kVersions.last.size);
 
-  static CalculatorAddParams deserialize(bindings.Message message) {
+  static _CalculatorAddParams deserialize(bindings.Message message) {
     var decoder = new bindings.Decoder(message);
     var result = decode(decoder);
     if (decoder.excessHandles != null) {
@@ -153,11 +153,11 @@ class CalculatorAddParams extends bindings.Struct {
     return result;
   }
 
-  static CalculatorAddParams decode(bindings.Decoder decoder0) {
+  static _CalculatorAddParams decode(bindings.Decoder decoder0) {
     if (decoder0 == null) {
       return null;
     }
-    CalculatorAddParams result = new CalculatorAddParams();
+    _CalculatorAddParams result = new _CalculatorAddParams();
 
     var mainDataHeader = decoder0.decodeStructDataHeader();
     if (mainDataHeader.version <= kVersions.last.version) {
@@ -191,7 +191,7 @@ class CalculatorAddParams extends bindings.Struct {
   }
 
   String toString() {
-    return "CalculatorAddParams("
+    return "_CalculatorAddParams("
            "value: $value" ")";
   }
 
@@ -270,15 +270,15 @@ class CalculatorAddResponseParams extends bindings.Struct {
 }
 
 
-class CalculatorMultiplyParams extends bindings.Struct {
+class _CalculatorMultiplyParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(16, 0)
   ];
   double value = 0.0;
 
-  CalculatorMultiplyParams() : super(kVersions.last.size);
+  _CalculatorMultiplyParams() : super(kVersions.last.size);
 
-  static CalculatorMultiplyParams deserialize(bindings.Message message) {
+  static _CalculatorMultiplyParams deserialize(bindings.Message message) {
     var decoder = new bindings.Decoder(message);
     var result = decode(decoder);
     if (decoder.excessHandles != null) {
@@ -287,11 +287,11 @@ class CalculatorMultiplyParams extends bindings.Struct {
     return result;
   }
 
-  static CalculatorMultiplyParams decode(bindings.Decoder decoder0) {
+  static _CalculatorMultiplyParams decode(bindings.Decoder decoder0) {
     if (decoder0 == null) {
       return null;
     }
-    CalculatorMultiplyParams result = new CalculatorMultiplyParams();
+    _CalculatorMultiplyParams result = new _CalculatorMultiplyParams();
 
     var mainDataHeader = decoder0.decodeStructDataHeader();
     if (mainDataHeader.version <= kVersions.last.version) {
@@ -325,7 +325,7 @@ class CalculatorMultiplyParams extends bindings.Struct {
   }
 
   String toString() {
-    return "CalculatorMultiplyParams("
+    return "_CalculatorMultiplyParams("
            "value: $value" ")";
   }
 
@@ -403,39 +403,36 @@ class CalculatorMultiplyResponseParams extends bindings.Struct {
   }
 }
 
-const int kCalculator_clear_name = 0;
-const int kCalculator_add_name = 1;
-const int kCalculator_multiply_name = 2;
-const String CalculatorName = null;
+const int _Calculator_clearName = 0;
+const int _Calculator_addName = 1;
+const int _Calculator_multiplyName = 2;
 
 abstract class Calculator {
+  static const String serviceName = null;
   dynamic clear([Function responseFactory = null]);
   dynamic add(double value,[Function responseFactory = null]);
   dynamic multiply(double value,[Function responseFactory = null]);
-
 }
 
 
-class CalculatorProxyImpl extends bindings.Proxy {
-  CalculatorProxyImpl.fromEndpoint(
+class _CalculatorProxyImpl extends bindings.Proxy {
+  _CalculatorProxyImpl.fromEndpoint(
       core.MojoMessagePipeEndpoint endpoint) : super.fromEndpoint(endpoint);
 
-  CalculatorProxyImpl.fromHandle(core.MojoHandle handle) :
+  _CalculatorProxyImpl.fromHandle(core.MojoHandle handle) :
       super.fromHandle(handle);
 
-  CalculatorProxyImpl.unbound() : super.unbound();
+  _CalculatorProxyImpl.unbound() : super.unbound();
 
-  static CalculatorProxyImpl newFromEndpoint(
+  static _CalculatorProxyImpl newFromEndpoint(
       core.MojoMessagePipeEndpoint endpoint) {
-    assert(endpoint.setDescription("For CalculatorProxyImpl"));
-    return new CalculatorProxyImpl.fromEndpoint(endpoint);
+    assert(endpoint.setDescription("For _CalculatorProxyImpl"));
+    return new _CalculatorProxyImpl.fromEndpoint(endpoint);
   }
-
-  String get name => CalculatorName;
 
   void handleResponse(bindings.ServiceMessage message) {
     switch (message.header.type) {
-      case kCalculator_clear_name:
+      case _Calculator_clearName:
         var r = CalculatorClearResponseParams.deserialize(
             message.payload);
         if (!message.header.hasRequestId) {
@@ -455,7 +452,7 @@ class CalculatorProxyImpl extends bindings.Proxy {
         }
         c.complete(r);
         break;
-      case kCalculator_add_name:
+      case _Calculator_addName:
         var r = CalculatorAddResponseParams.deserialize(
             message.payload);
         if (!message.header.hasRequestId) {
@@ -475,7 +472,7 @@ class CalculatorProxyImpl extends bindings.Proxy {
         }
         c.complete(r);
         break;
-      case kCalculator_multiply_name:
+      case _Calculator_multiplyName:
         var r = CalculatorMultiplyResponseParams.deserialize(
             message.payload);
         if (!message.header.hasRequestId) {
@@ -504,38 +501,38 @@ class CalculatorProxyImpl extends bindings.Proxy {
 
   String toString() {
     var superString = super.toString();
-    return "CalculatorProxyImpl($superString)";
+    return "_CalculatorProxyImpl($superString)";
   }
 }
 
 
 class _CalculatorProxyCalls implements Calculator {
-  CalculatorProxyImpl _proxyImpl;
+  _CalculatorProxyImpl _proxyImpl;
 
   _CalculatorProxyCalls(this._proxyImpl);
     dynamic clear([Function responseFactory = null]) {
-      var params = new CalculatorClearParams();
+      var params = new _CalculatorClearParams();
       return _proxyImpl.sendMessageWithRequestId(
           params,
-          kCalculator_clear_name,
+          _Calculator_clearName,
           -1,
           bindings.MessageHeader.kMessageExpectsResponse);
     }
     dynamic add(double value,[Function responseFactory = null]) {
-      var params = new CalculatorAddParams();
+      var params = new _CalculatorAddParams();
       params.value = value;
       return _proxyImpl.sendMessageWithRequestId(
           params,
-          kCalculator_add_name,
+          _Calculator_addName,
           -1,
           bindings.MessageHeader.kMessageExpectsResponse);
     }
     dynamic multiply(double value,[Function responseFactory = null]) {
-      var params = new CalculatorMultiplyParams();
+      var params = new _CalculatorMultiplyParams();
       params.value = value;
       return _proxyImpl.sendMessageWithRequestId(
           params,
-          kCalculator_multiply_name,
+          _Calculator_multiplyName,
           -1,
           bindings.MessageHeader.kMessageExpectsResponse);
     }
@@ -545,25 +542,24 @@ class _CalculatorProxyCalls implements Calculator {
 class CalculatorProxy implements bindings.ProxyBase {
   final bindings.Proxy impl;
   Calculator ptr;
-  final String name = CalculatorName;
 
-  CalculatorProxy(CalculatorProxyImpl proxyImpl) :
+  CalculatorProxy(_CalculatorProxyImpl proxyImpl) :
       impl = proxyImpl,
       ptr = new _CalculatorProxyCalls(proxyImpl);
 
   CalculatorProxy.fromEndpoint(
       core.MojoMessagePipeEndpoint endpoint) :
-      impl = new CalculatorProxyImpl.fromEndpoint(endpoint) {
+      impl = new _CalculatorProxyImpl.fromEndpoint(endpoint) {
     ptr = new _CalculatorProxyCalls(impl);
   }
 
   CalculatorProxy.fromHandle(core.MojoHandle handle) :
-      impl = new CalculatorProxyImpl.fromHandle(handle) {
+      impl = new _CalculatorProxyImpl.fromHandle(handle) {
     ptr = new _CalculatorProxyCalls(impl);
   }
 
   CalculatorProxy.unbound() :
-      impl = new CalculatorProxyImpl.unbound() {
+      impl = new _CalculatorProxyImpl.unbound() {
     ptr = new _CalculatorProxyCalls(impl);
   }
 
@@ -579,6 +575,8 @@ class CalculatorProxy implements bindings.ProxyBase {
     assert(endpoint.setDescription("For CalculatorProxy"));
     return new CalculatorProxy.fromEndpoint(endpoint);
   }
+
+  String get serviceName => Calculator.serviceName;
 
   Future close({bool immediate: false}) => impl.close(immediate: immediate);
 
@@ -618,8 +616,6 @@ class CalculatorStub extends bindings.Stub {
     return new CalculatorStub.fromEndpoint(endpoint);
   }
 
-  static const String name = CalculatorName;
-
 
   CalculatorClearResponseParams _CalculatorClearResponseParamsFactory(double value) {
     var mojo_factory_result = new CalculatorClearResponseParams();
@@ -645,8 +641,8 @@ class CalculatorStub extends bindings.Stub {
     }
     assert(_impl != null);
     switch (message.header.type) {
-      case kCalculator_clear_name:
-        var params = CalculatorClearParams.deserialize(
+      case _Calculator_clearName:
+        var params = _CalculatorClearParams.deserialize(
             message.payload);
         var response = _impl.clear(_CalculatorClearResponseParamsFactory);
         if (response is Future) {
@@ -654,7 +650,7 @@ class CalculatorStub extends bindings.Stub {
             if (response != null) {
               return buildResponseWithId(
                   response,
-                  kCalculator_clear_name,
+                  _Calculator_clearName,
                   message.header.requestId,
                   bindings.MessageHeader.kMessageIsResponse);
             }
@@ -662,13 +658,13 @@ class CalculatorStub extends bindings.Stub {
         } else if (response != null) {
           return buildResponseWithId(
               response,
-              kCalculator_clear_name,
+              _Calculator_clearName,
               message.header.requestId,
               bindings.MessageHeader.kMessageIsResponse);
         }
         break;
-      case kCalculator_add_name:
-        var params = CalculatorAddParams.deserialize(
+      case _Calculator_addName:
+        var params = _CalculatorAddParams.deserialize(
             message.payload);
         var response = _impl.add(params.value,_CalculatorAddResponseParamsFactory);
         if (response is Future) {
@@ -676,7 +672,7 @@ class CalculatorStub extends bindings.Stub {
             if (response != null) {
               return buildResponseWithId(
                   response,
-                  kCalculator_add_name,
+                  _Calculator_addName,
                   message.header.requestId,
                   bindings.MessageHeader.kMessageIsResponse);
             }
@@ -684,13 +680,13 @@ class CalculatorStub extends bindings.Stub {
         } else if (response != null) {
           return buildResponseWithId(
               response,
-              kCalculator_add_name,
+              _Calculator_addName,
               message.header.requestId,
               bindings.MessageHeader.kMessageIsResponse);
         }
         break;
-      case kCalculator_multiply_name:
-        var params = CalculatorMultiplyParams.deserialize(
+      case _Calculator_multiplyName:
+        var params = _CalculatorMultiplyParams.deserialize(
             message.payload);
         var response = _impl.multiply(params.value,_CalculatorMultiplyResponseParamsFactory);
         if (response is Future) {
@@ -698,7 +694,7 @@ class CalculatorStub extends bindings.Stub {
             if (response != null) {
               return buildResponseWithId(
                   response,
-                  kCalculator_multiply_name,
+                  _Calculator_multiplyName,
                   message.header.requestId,
                   bindings.MessageHeader.kMessageIsResponse);
             }
@@ -706,7 +702,7 @@ class CalculatorStub extends bindings.Stub {
         } else if (response != null) {
           return buildResponseWithId(
               response,
-              kCalculator_multiply_name,
+              _Calculator_multiplyName,
               message.header.requestId,
               bindings.MessageHeader.kMessageIsResponse);
         }

@@ -87,15 +87,15 @@ class Contact extends bindings.Struct {
 }
 
 
-class ContactsServiceGetCountParams extends bindings.Struct {
+class _ContactsServiceGetCountParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(16, 0)
   ];
   String filter = null;
 
-  ContactsServiceGetCountParams() : super(kVersions.last.size);
+  _ContactsServiceGetCountParams() : super(kVersions.last.size);
 
-  static ContactsServiceGetCountParams deserialize(bindings.Message message) {
+  static _ContactsServiceGetCountParams deserialize(bindings.Message message) {
     var decoder = new bindings.Decoder(message);
     var result = decode(decoder);
     if (decoder.excessHandles != null) {
@@ -104,11 +104,11 @@ class ContactsServiceGetCountParams extends bindings.Struct {
     return result;
   }
 
-  static ContactsServiceGetCountParams decode(bindings.Decoder decoder0) {
+  static _ContactsServiceGetCountParams decode(bindings.Decoder decoder0) {
     if (decoder0 == null) {
       return null;
     }
-    ContactsServiceGetCountParams result = new ContactsServiceGetCountParams();
+    _ContactsServiceGetCountParams result = new _ContactsServiceGetCountParams();
 
     var mainDataHeader = decoder0.decodeStructDataHeader();
     if (mainDataHeader.version <= kVersions.last.version) {
@@ -142,7 +142,7 @@ class ContactsServiceGetCountParams extends bindings.Struct {
   }
 
   String toString() {
-    return "ContactsServiceGetCountParams("
+    return "_ContactsServiceGetCountParams("
            "filter: $filter" ")";
   }
 
@@ -221,7 +221,7 @@ class ContactsServiceGetCountResponseParams extends bindings.Struct {
 }
 
 
-class ContactsServiceGetParams extends bindings.Struct {
+class _ContactsServiceGetParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(24, 0)
   ];
@@ -229,9 +229,9 @@ class ContactsServiceGetParams extends bindings.Struct {
   int offset = 0;
   int limit = 0;
 
-  ContactsServiceGetParams() : super(kVersions.last.size);
+  _ContactsServiceGetParams() : super(kVersions.last.size);
 
-  static ContactsServiceGetParams deserialize(bindings.Message message) {
+  static _ContactsServiceGetParams deserialize(bindings.Message message) {
     var decoder = new bindings.Decoder(message);
     var result = decode(decoder);
     if (decoder.excessHandles != null) {
@@ -240,11 +240,11 @@ class ContactsServiceGetParams extends bindings.Struct {
     return result;
   }
 
-  static ContactsServiceGetParams decode(bindings.Decoder decoder0) {
+  static _ContactsServiceGetParams decode(bindings.Decoder decoder0) {
     if (decoder0 == null) {
       return null;
     }
-    ContactsServiceGetParams result = new ContactsServiceGetParams();
+    _ContactsServiceGetParams result = new _ContactsServiceGetParams();
 
     var mainDataHeader = decoder0.decodeStructDataHeader();
     if (mainDataHeader.version <= kVersions.last.version) {
@@ -290,7 +290,7 @@ class ContactsServiceGetParams extends bindings.Struct {
   }
 
   String toString() {
-    return "ContactsServiceGetParams("
+    return "_ContactsServiceGetParams("
            "filter: $filter" ", "
            "offset: $offset" ", "
            "limit: $limit" ")";
@@ -390,15 +390,15 @@ class ContactsServiceGetResponseParams extends bindings.Struct {
 }
 
 
-class ContactsServiceGetEmailsParams extends bindings.Struct {
+class _ContactsServiceGetEmailsParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(16, 0)
   ];
   int id = 0;
 
-  ContactsServiceGetEmailsParams() : super(kVersions.last.size);
+  _ContactsServiceGetEmailsParams() : super(kVersions.last.size);
 
-  static ContactsServiceGetEmailsParams deserialize(bindings.Message message) {
+  static _ContactsServiceGetEmailsParams deserialize(bindings.Message message) {
     var decoder = new bindings.Decoder(message);
     var result = decode(decoder);
     if (decoder.excessHandles != null) {
@@ -407,11 +407,11 @@ class ContactsServiceGetEmailsParams extends bindings.Struct {
     return result;
   }
 
-  static ContactsServiceGetEmailsParams decode(bindings.Decoder decoder0) {
+  static _ContactsServiceGetEmailsParams decode(bindings.Decoder decoder0) {
     if (decoder0 == null) {
       return null;
     }
-    ContactsServiceGetEmailsParams result = new ContactsServiceGetEmailsParams();
+    _ContactsServiceGetEmailsParams result = new _ContactsServiceGetEmailsParams();
 
     var mainDataHeader = decoder0.decodeStructDataHeader();
     if (mainDataHeader.version <= kVersions.last.version) {
@@ -445,7 +445,7 @@ class ContactsServiceGetEmailsParams extends bindings.Struct {
   }
 
   String toString() {
-    return "ContactsServiceGetEmailsParams("
+    return "_ContactsServiceGetEmailsParams("
            "id: $id" ")";
   }
 
@@ -540,16 +540,16 @@ class ContactsServiceGetEmailsResponseParams extends bindings.Struct {
 }
 
 
-class ContactsServiceGetPhotoParams extends bindings.Struct {
+class _ContactsServiceGetPhotoParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(24, 0)
   ];
   int id = 0;
   bool highResolution = false;
 
-  ContactsServiceGetPhotoParams() : super(kVersions.last.size);
+  _ContactsServiceGetPhotoParams() : super(kVersions.last.size);
 
-  static ContactsServiceGetPhotoParams deserialize(bindings.Message message) {
+  static _ContactsServiceGetPhotoParams deserialize(bindings.Message message) {
     var decoder = new bindings.Decoder(message);
     var result = decode(decoder);
     if (decoder.excessHandles != null) {
@@ -558,11 +558,11 @@ class ContactsServiceGetPhotoParams extends bindings.Struct {
     return result;
   }
 
-  static ContactsServiceGetPhotoParams decode(bindings.Decoder decoder0) {
+  static _ContactsServiceGetPhotoParams decode(bindings.Decoder decoder0) {
     if (decoder0 == null) {
       return null;
     }
-    ContactsServiceGetPhotoParams result = new ContactsServiceGetPhotoParams();
+    _ContactsServiceGetPhotoParams result = new _ContactsServiceGetPhotoParams();
 
     var mainDataHeader = decoder0.decodeStructDataHeader();
     if (mainDataHeader.version <= kVersions.last.version) {
@@ -602,7 +602,7 @@ class ContactsServiceGetPhotoParams extends bindings.Struct {
   }
 
   String toString() {
-    return "ContactsServiceGetPhotoParams("
+    return "_ContactsServiceGetPhotoParams("
            "id: $id" ", "
            "highResolution: $highResolution" ")";
   }
@@ -682,41 +682,38 @@ class ContactsServiceGetPhotoResponseParams extends bindings.Struct {
   }
 }
 
-const int kContactsService_getCount_name = 0;
-const int kContactsService_get_name = 1;
-const int kContactsService_getEmails_name = 2;
-const int kContactsService_getPhoto_name = 3;
-const String ContactsServiceName = "contacts::ContactsService";
+const int _ContactsService_getCountName = 0;
+const int _ContactsService_getName = 1;
+const int _ContactsService_getEmailsName = 2;
+const int _ContactsService_getPhotoName = 3;
 
 abstract class ContactsService {
+  static const String serviceName = "contacts::ContactsService";
   dynamic getCount(String filter,[Function responseFactory = null]);
   dynamic get(String filter,int offset,int limit,[Function responseFactory = null]);
   dynamic getEmails(int id,[Function responseFactory = null]);
   dynamic getPhoto(int id,bool highResolution,[Function responseFactory = null]);
-
 }
 
 
-class ContactsServiceProxyImpl extends bindings.Proxy {
-  ContactsServiceProxyImpl.fromEndpoint(
+class _ContactsServiceProxyImpl extends bindings.Proxy {
+  _ContactsServiceProxyImpl.fromEndpoint(
       core.MojoMessagePipeEndpoint endpoint) : super.fromEndpoint(endpoint);
 
-  ContactsServiceProxyImpl.fromHandle(core.MojoHandle handle) :
+  _ContactsServiceProxyImpl.fromHandle(core.MojoHandle handle) :
       super.fromHandle(handle);
 
-  ContactsServiceProxyImpl.unbound() : super.unbound();
+  _ContactsServiceProxyImpl.unbound() : super.unbound();
 
-  static ContactsServiceProxyImpl newFromEndpoint(
+  static _ContactsServiceProxyImpl newFromEndpoint(
       core.MojoMessagePipeEndpoint endpoint) {
-    assert(endpoint.setDescription("For ContactsServiceProxyImpl"));
-    return new ContactsServiceProxyImpl.fromEndpoint(endpoint);
+    assert(endpoint.setDescription("For _ContactsServiceProxyImpl"));
+    return new _ContactsServiceProxyImpl.fromEndpoint(endpoint);
   }
-
-  String get name => ContactsServiceName;
 
   void handleResponse(bindings.ServiceMessage message) {
     switch (message.header.type) {
-      case kContactsService_getCount_name:
+      case _ContactsService_getCountName:
         var r = ContactsServiceGetCountResponseParams.deserialize(
             message.payload);
         if (!message.header.hasRequestId) {
@@ -736,7 +733,7 @@ class ContactsServiceProxyImpl extends bindings.Proxy {
         }
         c.complete(r);
         break;
-      case kContactsService_get_name:
+      case _ContactsService_getName:
         var r = ContactsServiceGetResponseParams.deserialize(
             message.payload);
         if (!message.header.hasRequestId) {
@@ -756,7 +753,7 @@ class ContactsServiceProxyImpl extends bindings.Proxy {
         }
         c.complete(r);
         break;
-      case kContactsService_getEmails_name:
+      case _ContactsService_getEmailsName:
         var r = ContactsServiceGetEmailsResponseParams.deserialize(
             message.payload);
         if (!message.header.hasRequestId) {
@@ -776,7 +773,7 @@ class ContactsServiceProxyImpl extends bindings.Proxy {
         }
         c.complete(r);
         break;
-      case kContactsService_getPhoto_name:
+      case _ContactsService_getPhotoName:
         var r = ContactsServiceGetPhotoResponseParams.deserialize(
             message.payload);
         if (!message.header.hasRequestId) {
@@ -805,51 +802,51 @@ class ContactsServiceProxyImpl extends bindings.Proxy {
 
   String toString() {
     var superString = super.toString();
-    return "ContactsServiceProxyImpl($superString)";
+    return "_ContactsServiceProxyImpl($superString)";
   }
 }
 
 
 class _ContactsServiceProxyCalls implements ContactsService {
-  ContactsServiceProxyImpl _proxyImpl;
+  _ContactsServiceProxyImpl _proxyImpl;
 
   _ContactsServiceProxyCalls(this._proxyImpl);
     dynamic getCount(String filter,[Function responseFactory = null]) {
-      var params = new ContactsServiceGetCountParams();
+      var params = new _ContactsServiceGetCountParams();
       params.filter = filter;
       return _proxyImpl.sendMessageWithRequestId(
           params,
-          kContactsService_getCount_name,
+          _ContactsService_getCountName,
           -1,
           bindings.MessageHeader.kMessageExpectsResponse);
     }
     dynamic get(String filter,int offset,int limit,[Function responseFactory = null]) {
-      var params = new ContactsServiceGetParams();
+      var params = new _ContactsServiceGetParams();
       params.filter = filter;
       params.offset = offset;
       params.limit = limit;
       return _proxyImpl.sendMessageWithRequestId(
           params,
-          kContactsService_get_name,
+          _ContactsService_getName,
           -1,
           bindings.MessageHeader.kMessageExpectsResponse);
     }
     dynamic getEmails(int id,[Function responseFactory = null]) {
-      var params = new ContactsServiceGetEmailsParams();
+      var params = new _ContactsServiceGetEmailsParams();
       params.id = id;
       return _proxyImpl.sendMessageWithRequestId(
           params,
-          kContactsService_getEmails_name,
+          _ContactsService_getEmailsName,
           -1,
           bindings.MessageHeader.kMessageExpectsResponse);
     }
     dynamic getPhoto(int id,bool highResolution,[Function responseFactory = null]) {
-      var params = new ContactsServiceGetPhotoParams();
+      var params = new _ContactsServiceGetPhotoParams();
       params.id = id;
       params.highResolution = highResolution;
       return _proxyImpl.sendMessageWithRequestId(
           params,
-          kContactsService_getPhoto_name,
+          _ContactsService_getPhotoName,
           -1,
           bindings.MessageHeader.kMessageExpectsResponse);
     }
@@ -859,25 +856,24 @@ class _ContactsServiceProxyCalls implements ContactsService {
 class ContactsServiceProxy implements bindings.ProxyBase {
   final bindings.Proxy impl;
   ContactsService ptr;
-  final String name = ContactsServiceName;
 
-  ContactsServiceProxy(ContactsServiceProxyImpl proxyImpl) :
+  ContactsServiceProxy(_ContactsServiceProxyImpl proxyImpl) :
       impl = proxyImpl,
       ptr = new _ContactsServiceProxyCalls(proxyImpl);
 
   ContactsServiceProxy.fromEndpoint(
       core.MojoMessagePipeEndpoint endpoint) :
-      impl = new ContactsServiceProxyImpl.fromEndpoint(endpoint) {
+      impl = new _ContactsServiceProxyImpl.fromEndpoint(endpoint) {
     ptr = new _ContactsServiceProxyCalls(impl);
   }
 
   ContactsServiceProxy.fromHandle(core.MojoHandle handle) :
-      impl = new ContactsServiceProxyImpl.fromHandle(handle) {
+      impl = new _ContactsServiceProxyImpl.fromHandle(handle) {
     ptr = new _ContactsServiceProxyCalls(impl);
   }
 
   ContactsServiceProxy.unbound() :
-      impl = new ContactsServiceProxyImpl.unbound() {
+      impl = new _ContactsServiceProxyImpl.unbound() {
     ptr = new _ContactsServiceProxyCalls(impl);
   }
 
@@ -893,6 +889,8 @@ class ContactsServiceProxy implements bindings.ProxyBase {
     assert(endpoint.setDescription("For ContactsServiceProxy"));
     return new ContactsServiceProxy.fromEndpoint(endpoint);
   }
+
+  String get serviceName => ContactsService.serviceName;
 
   Future close({bool immediate: false}) => impl.close(immediate: immediate);
 
@@ -932,8 +930,6 @@ class ContactsServiceStub extends bindings.Stub {
     return new ContactsServiceStub.fromEndpoint(endpoint);
   }
 
-  static const String name = ContactsServiceName;
-
 
   ContactsServiceGetCountResponseParams _ContactsServiceGetCountResponseParamsFactory(int count) {
     var mojo_factory_result = new ContactsServiceGetCountResponseParams();
@@ -964,8 +960,8 @@ class ContactsServiceStub extends bindings.Stub {
     }
     assert(_impl != null);
     switch (message.header.type) {
-      case kContactsService_getCount_name:
-        var params = ContactsServiceGetCountParams.deserialize(
+      case _ContactsService_getCountName:
+        var params = _ContactsServiceGetCountParams.deserialize(
             message.payload);
         var response = _impl.getCount(params.filter,_ContactsServiceGetCountResponseParamsFactory);
         if (response is Future) {
@@ -973,7 +969,7 @@ class ContactsServiceStub extends bindings.Stub {
             if (response != null) {
               return buildResponseWithId(
                   response,
-                  kContactsService_getCount_name,
+                  _ContactsService_getCountName,
                   message.header.requestId,
                   bindings.MessageHeader.kMessageIsResponse);
             }
@@ -981,13 +977,13 @@ class ContactsServiceStub extends bindings.Stub {
         } else if (response != null) {
           return buildResponseWithId(
               response,
-              kContactsService_getCount_name,
+              _ContactsService_getCountName,
               message.header.requestId,
               bindings.MessageHeader.kMessageIsResponse);
         }
         break;
-      case kContactsService_get_name:
-        var params = ContactsServiceGetParams.deserialize(
+      case _ContactsService_getName:
+        var params = _ContactsServiceGetParams.deserialize(
             message.payload);
         var response = _impl.get(params.filter,params.offset,params.limit,_ContactsServiceGetResponseParamsFactory);
         if (response is Future) {
@@ -995,7 +991,7 @@ class ContactsServiceStub extends bindings.Stub {
             if (response != null) {
               return buildResponseWithId(
                   response,
-                  kContactsService_get_name,
+                  _ContactsService_getName,
                   message.header.requestId,
                   bindings.MessageHeader.kMessageIsResponse);
             }
@@ -1003,13 +999,13 @@ class ContactsServiceStub extends bindings.Stub {
         } else if (response != null) {
           return buildResponseWithId(
               response,
-              kContactsService_get_name,
+              _ContactsService_getName,
               message.header.requestId,
               bindings.MessageHeader.kMessageIsResponse);
         }
         break;
-      case kContactsService_getEmails_name:
-        var params = ContactsServiceGetEmailsParams.deserialize(
+      case _ContactsService_getEmailsName:
+        var params = _ContactsServiceGetEmailsParams.deserialize(
             message.payload);
         var response = _impl.getEmails(params.id,_ContactsServiceGetEmailsResponseParamsFactory);
         if (response is Future) {
@@ -1017,7 +1013,7 @@ class ContactsServiceStub extends bindings.Stub {
             if (response != null) {
               return buildResponseWithId(
                   response,
-                  kContactsService_getEmails_name,
+                  _ContactsService_getEmailsName,
                   message.header.requestId,
                   bindings.MessageHeader.kMessageIsResponse);
             }
@@ -1025,13 +1021,13 @@ class ContactsServiceStub extends bindings.Stub {
         } else if (response != null) {
           return buildResponseWithId(
               response,
-              kContactsService_getEmails_name,
+              _ContactsService_getEmailsName,
               message.header.requestId,
               bindings.MessageHeader.kMessageIsResponse);
         }
         break;
-      case kContactsService_getPhoto_name:
-        var params = ContactsServiceGetPhotoParams.deserialize(
+      case _ContactsService_getPhotoName:
+        var params = _ContactsServiceGetPhotoParams.deserialize(
             message.payload);
         var response = _impl.getPhoto(params.id,params.highResolution,_ContactsServiceGetPhotoResponseParamsFactory);
         if (response is Future) {
@@ -1039,7 +1035,7 @@ class ContactsServiceStub extends bindings.Stub {
             if (response != null) {
               return buildResponseWithId(
                   response,
-                  kContactsService_getPhoto_name,
+                  _ContactsService_getPhotoName,
                   message.header.requestId,
                   bindings.MessageHeader.kMessageIsResponse);
             }
@@ -1047,7 +1043,7 @@ class ContactsServiceStub extends bindings.Stub {
         } else if (response != null) {
           return buildResponseWithId(
               response,
-              kContactsService_getPhoto_name,
+              _ContactsService_getPhotoName,
               message.header.requestId,
               bindings.MessageHeader.kMessageIsResponse);
         }

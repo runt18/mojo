@@ -227,7 +227,7 @@ class NetcatApplication extends Application {
   @override
   void acceptConnection(String requestorUrl, String resolvedUrl,
       ApplicationConnection connection) {
-    connection.provideService(TerminalClientName,
+    connection.provideService(TerminalClient.serviceName,
         (endpoint) => new TerminalClientImpl(this, resolvedUrl, endpoint));
   }
 }

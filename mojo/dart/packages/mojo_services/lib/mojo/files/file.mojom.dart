@@ -12,14 +12,14 @@ import 'package:mojo_services/mojo/files/types.mojom.dart' as types_mojom;
 
 
 
-class FileCloseParams extends bindings.Struct {
+class _FileCloseParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(8, 0)
   ];
 
-  FileCloseParams() : super(kVersions.last.size);
+  _FileCloseParams() : super(kVersions.last.size);
 
-  static FileCloseParams deserialize(bindings.Message message) {
+  static _FileCloseParams deserialize(bindings.Message message) {
     var decoder = new bindings.Decoder(message);
     var result = decode(decoder);
     if (decoder.excessHandles != null) {
@@ -28,11 +28,11 @@ class FileCloseParams extends bindings.Struct {
     return result;
   }
 
-  static FileCloseParams decode(bindings.Decoder decoder0) {
+  static _FileCloseParams decode(bindings.Decoder decoder0) {
     if (decoder0 == null) {
       return null;
     }
-    FileCloseParams result = new FileCloseParams();
+    _FileCloseParams result = new _FileCloseParams();
 
     var mainDataHeader = decoder0.decodeStructDataHeader();
     if (mainDataHeader.version <= kVersions.last.version) {
@@ -60,7 +60,7 @@ class FileCloseParams extends bindings.Struct {
   }
 
   String toString() {
-    return "FileCloseParams("")";
+    return "_FileCloseParams("")";
   }
 
   Map toJson() {
@@ -141,7 +141,7 @@ class FileCloseResponseParams extends bindings.Struct {
 }
 
 
-class FileReadParams extends bindings.Struct {
+class _FileReadParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(24, 0)
   ];
@@ -149,9 +149,9 @@ class FileReadParams extends bindings.Struct {
   types_mojom.Whence whence = null;
   int offset = 0;
 
-  FileReadParams() : super(kVersions.last.size);
+  _FileReadParams() : super(kVersions.last.size);
 
-  static FileReadParams deserialize(bindings.Message message) {
+  static _FileReadParams deserialize(bindings.Message message) {
     var decoder = new bindings.Decoder(message);
     var result = decode(decoder);
     if (decoder.excessHandles != null) {
@@ -160,11 +160,11 @@ class FileReadParams extends bindings.Struct {
     return result;
   }
 
-  static FileReadParams decode(bindings.Decoder decoder0) {
+  static _FileReadParams decode(bindings.Decoder decoder0) {
     if (decoder0 == null) {
       return null;
     }
-    FileReadParams result = new FileReadParams();
+    _FileReadParams result = new _FileReadParams();
 
     var mainDataHeader = decoder0.decodeStructDataHeader();
     if (mainDataHeader.version <= kVersions.last.version) {
@@ -214,7 +214,7 @@ class FileReadParams extends bindings.Struct {
   }
 
   String toString() {
-    return "FileReadParams("
+    return "_FileReadParams("
            "numBytesToRead: $numBytesToRead" ", "
            "whence: $whence" ", "
            "offset: $offset" ")";
@@ -310,7 +310,7 @@ class FileReadResponseParams extends bindings.Struct {
 }
 
 
-class FileWriteParams extends bindings.Struct {
+class _FileWriteParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(32, 0)
   ];
@@ -318,9 +318,9 @@ class FileWriteParams extends bindings.Struct {
   int offset = 0;
   types_mojom.Whence whence = null;
 
-  FileWriteParams() : super(kVersions.last.size);
+  _FileWriteParams() : super(kVersions.last.size);
 
-  static FileWriteParams deserialize(bindings.Message message) {
+  static _FileWriteParams deserialize(bindings.Message message) {
     var decoder = new bindings.Decoder(message);
     var result = decode(decoder);
     if (decoder.excessHandles != null) {
@@ -329,11 +329,11 @@ class FileWriteParams extends bindings.Struct {
     return result;
   }
 
-  static FileWriteParams decode(bindings.Decoder decoder0) {
+  static _FileWriteParams decode(bindings.Decoder decoder0) {
     if (decoder0 == null) {
       return null;
     }
-    FileWriteParams result = new FileWriteParams();
+    _FileWriteParams result = new _FileWriteParams();
 
     var mainDataHeader = decoder0.decodeStructDataHeader();
     if (mainDataHeader.version <= kVersions.last.version) {
@@ -383,7 +383,7 @@ class FileWriteParams extends bindings.Struct {
   }
 
   String toString() {
-    return "FileWriteParams("
+    return "_FileWriteParams("
            "bytesToWrite: $bytesToWrite" ", "
            "offset: $offset" ", "
            "whence: $whence" ")";
@@ -479,7 +479,7 @@ class FileWriteResponseParams extends bindings.Struct {
 }
 
 
-class FileReadToStreamParams extends bindings.Struct {
+class _FileReadToStreamParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(32, 0)
   ];
@@ -488,9 +488,9 @@ class FileReadToStreamParams extends bindings.Struct {
   int offset = 0;
   int numBytesToRead = 0;
 
-  FileReadToStreamParams() : super(kVersions.last.size);
+  _FileReadToStreamParams() : super(kVersions.last.size);
 
-  static FileReadToStreamParams deserialize(bindings.Message message) {
+  static _FileReadToStreamParams deserialize(bindings.Message message) {
     var decoder = new bindings.Decoder(message);
     var result = decode(decoder);
     if (decoder.excessHandles != null) {
@@ -499,11 +499,11 @@ class FileReadToStreamParams extends bindings.Struct {
     return result;
   }
 
-  static FileReadToStreamParams decode(bindings.Decoder decoder0) {
+  static _FileReadToStreamParams decode(bindings.Decoder decoder0) {
     if (decoder0 == null) {
       return null;
     }
-    FileReadToStreamParams result = new FileReadToStreamParams();
+    _FileReadToStreamParams result = new _FileReadToStreamParams();
 
     var mainDataHeader = decoder0.decodeStructDataHeader();
     if (mainDataHeader.version <= kVersions.last.version) {
@@ -559,7 +559,7 @@ class FileReadToStreamParams extends bindings.Struct {
   }
 
   String toString() {
-    return "FileReadToStreamParams("
+    return "_FileReadToStreamParams("
            "source: $source" ", "
            "whence: $whence" ", "
            "offset: $offset" ", "
@@ -644,7 +644,7 @@ class FileReadToStreamResponseParams extends bindings.Struct {
 }
 
 
-class FileWriteFromStreamParams extends bindings.Struct {
+class _FileWriteFromStreamParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(24, 0)
   ];
@@ -652,9 +652,9 @@ class FileWriteFromStreamParams extends bindings.Struct {
   types_mojom.Whence whence = null;
   int offset = 0;
 
-  FileWriteFromStreamParams() : super(kVersions.last.size);
+  _FileWriteFromStreamParams() : super(kVersions.last.size);
 
-  static FileWriteFromStreamParams deserialize(bindings.Message message) {
+  static _FileWriteFromStreamParams deserialize(bindings.Message message) {
     var decoder = new bindings.Decoder(message);
     var result = decode(decoder);
     if (decoder.excessHandles != null) {
@@ -663,11 +663,11 @@ class FileWriteFromStreamParams extends bindings.Struct {
     return result;
   }
 
-  static FileWriteFromStreamParams decode(bindings.Decoder decoder0) {
+  static _FileWriteFromStreamParams decode(bindings.Decoder decoder0) {
     if (decoder0 == null) {
       return null;
     }
-    FileWriteFromStreamParams result = new FileWriteFromStreamParams();
+    _FileWriteFromStreamParams result = new _FileWriteFromStreamParams();
 
     var mainDataHeader = decoder0.decodeStructDataHeader();
     if (mainDataHeader.version <= kVersions.last.version) {
@@ -717,7 +717,7 @@ class FileWriteFromStreamParams extends bindings.Struct {
   }
 
   String toString() {
-    return "FileWriteFromStreamParams("
+    return "_FileWriteFromStreamParams("
            "sink: $sink" ", "
            "whence: $whence" ", "
            "offset: $offset" ")";
@@ -801,14 +801,14 @@ class FileWriteFromStreamResponseParams extends bindings.Struct {
 }
 
 
-class FileTellParams extends bindings.Struct {
+class _FileTellParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(8, 0)
   ];
 
-  FileTellParams() : super(kVersions.last.size);
+  _FileTellParams() : super(kVersions.last.size);
 
-  static FileTellParams deserialize(bindings.Message message) {
+  static _FileTellParams deserialize(bindings.Message message) {
     var decoder = new bindings.Decoder(message);
     var result = decode(decoder);
     if (decoder.excessHandles != null) {
@@ -817,11 +817,11 @@ class FileTellParams extends bindings.Struct {
     return result;
   }
 
-  static FileTellParams decode(bindings.Decoder decoder0) {
+  static _FileTellParams decode(bindings.Decoder decoder0) {
     if (decoder0 == null) {
       return null;
     }
-    FileTellParams result = new FileTellParams();
+    _FileTellParams result = new _FileTellParams();
 
     var mainDataHeader = decoder0.decodeStructDataHeader();
     if (mainDataHeader.version <= kVersions.last.version) {
@@ -849,7 +849,7 @@ class FileTellParams extends bindings.Struct {
   }
 
   String toString() {
-    return "FileTellParams("")";
+    return "_FileTellParams("")";
   }
 
   Map toJson() {
@@ -939,16 +939,16 @@ class FileTellResponseParams extends bindings.Struct {
 }
 
 
-class FileSeekParams extends bindings.Struct {
+class _FileSeekParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(24, 0)
   ];
   int offset = 0;
   types_mojom.Whence whence = null;
 
-  FileSeekParams() : super(kVersions.last.size);
+  _FileSeekParams() : super(kVersions.last.size);
 
-  static FileSeekParams deserialize(bindings.Message message) {
+  static _FileSeekParams deserialize(bindings.Message message) {
     var decoder = new bindings.Decoder(message);
     var result = decode(decoder);
     if (decoder.excessHandles != null) {
@@ -957,11 +957,11 @@ class FileSeekParams extends bindings.Struct {
     return result;
   }
 
-  static FileSeekParams decode(bindings.Decoder decoder0) {
+  static _FileSeekParams decode(bindings.Decoder decoder0) {
     if (decoder0 == null) {
       return null;
     }
-    FileSeekParams result = new FileSeekParams();
+    _FileSeekParams result = new _FileSeekParams();
 
     var mainDataHeader = decoder0.decodeStructDataHeader();
     if (mainDataHeader.version <= kVersions.last.version) {
@@ -1005,7 +1005,7 @@ class FileSeekParams extends bindings.Struct {
   }
 
   String toString() {
-    return "FileSeekParams("
+    return "_FileSeekParams("
            "offset: $offset" ", "
            "whence: $whence" ")";
   }
@@ -1099,14 +1099,14 @@ class FileSeekResponseParams extends bindings.Struct {
 }
 
 
-class FileStatParams extends bindings.Struct {
+class _FileStatParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(8, 0)
   ];
 
-  FileStatParams() : super(kVersions.last.size);
+  _FileStatParams() : super(kVersions.last.size);
 
-  static FileStatParams deserialize(bindings.Message message) {
+  static _FileStatParams deserialize(bindings.Message message) {
     var decoder = new bindings.Decoder(message);
     var result = decode(decoder);
     if (decoder.excessHandles != null) {
@@ -1115,11 +1115,11 @@ class FileStatParams extends bindings.Struct {
     return result;
   }
 
-  static FileStatParams decode(bindings.Decoder decoder0) {
+  static _FileStatParams decode(bindings.Decoder decoder0) {
     if (decoder0 == null) {
       return null;
     }
-    FileStatParams result = new FileStatParams();
+    _FileStatParams result = new _FileStatParams();
 
     var mainDataHeader = decoder0.decodeStructDataHeader();
     if (mainDataHeader.version <= kVersions.last.version) {
@@ -1147,7 +1147,7 @@ class FileStatParams extends bindings.Struct {
   }
 
   String toString() {
-    return "FileStatParams("")";
+    return "_FileStatParams("")";
   }
 
   Map toJson() {
@@ -1238,15 +1238,15 @@ class FileStatResponseParams extends bindings.Struct {
 }
 
 
-class FileTruncateParams extends bindings.Struct {
+class _FileTruncateParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(16, 0)
   ];
   int size = 0;
 
-  FileTruncateParams() : super(kVersions.last.size);
+  _FileTruncateParams() : super(kVersions.last.size);
 
-  static FileTruncateParams deserialize(bindings.Message message) {
+  static _FileTruncateParams deserialize(bindings.Message message) {
     var decoder = new bindings.Decoder(message);
     var result = decode(decoder);
     if (decoder.excessHandles != null) {
@@ -1255,11 +1255,11 @@ class FileTruncateParams extends bindings.Struct {
     return result;
   }
 
-  static FileTruncateParams decode(bindings.Decoder decoder0) {
+  static _FileTruncateParams decode(bindings.Decoder decoder0) {
     if (decoder0 == null) {
       return null;
     }
-    FileTruncateParams result = new FileTruncateParams();
+    _FileTruncateParams result = new _FileTruncateParams();
 
     var mainDataHeader = decoder0.decodeStructDataHeader();
     if (mainDataHeader.version <= kVersions.last.version) {
@@ -1293,7 +1293,7 @@ class FileTruncateParams extends bindings.Struct {
   }
 
   String toString() {
-    return "FileTruncateParams("
+    return "_FileTruncateParams("
            "size: $size" ")";
   }
 
@@ -1376,16 +1376,16 @@ class FileTruncateResponseParams extends bindings.Struct {
 }
 
 
-class FileTouchParams extends bindings.Struct {
+class _FileTouchParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(24, 0)
   ];
   types_mojom.TimespecOrNow atime = null;
   types_mojom.TimespecOrNow mtime = null;
 
-  FileTouchParams() : super(kVersions.last.size);
+  _FileTouchParams() : super(kVersions.last.size);
 
-  static FileTouchParams deserialize(bindings.Message message) {
+  static _FileTouchParams deserialize(bindings.Message message) {
     var decoder = new bindings.Decoder(message);
     var result = decode(decoder);
     if (decoder.excessHandles != null) {
@@ -1394,11 +1394,11 @@ class FileTouchParams extends bindings.Struct {
     return result;
   }
 
-  static FileTouchParams decode(bindings.Decoder decoder0) {
+  static _FileTouchParams decode(bindings.Decoder decoder0) {
     if (decoder0 == null) {
       return null;
     }
-    FileTouchParams result = new FileTouchParams();
+    _FileTouchParams result = new _FileTouchParams();
 
     var mainDataHeader = decoder0.decodeStructDataHeader();
     if (mainDataHeader.version <= kVersions.last.version) {
@@ -1440,7 +1440,7 @@ class FileTouchParams extends bindings.Struct {
   }
 
   String toString() {
-    return "FileTouchParams("
+    return "_FileTouchParams("
            "atime: $atime" ", "
            "mtime: $mtime" ")";
   }
@@ -1525,15 +1525,15 @@ class FileTouchResponseParams extends bindings.Struct {
 }
 
 
-class FileDupParams extends bindings.Struct {
+class _FileDupParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(16, 0)
   ];
   Object file = null;
 
-  FileDupParams() : super(kVersions.last.size);
+  _FileDupParams() : super(kVersions.last.size);
 
-  static FileDupParams deserialize(bindings.Message message) {
+  static _FileDupParams deserialize(bindings.Message message) {
     var decoder = new bindings.Decoder(message);
     var result = decode(decoder);
     if (decoder.excessHandles != null) {
@@ -1542,11 +1542,11 @@ class FileDupParams extends bindings.Struct {
     return result;
   }
 
-  static FileDupParams decode(bindings.Decoder decoder0) {
+  static _FileDupParams decode(bindings.Decoder decoder0) {
     if (decoder0 == null) {
       return null;
     }
-    FileDupParams result = new FileDupParams();
+    _FileDupParams result = new _FileDupParams();
 
     var mainDataHeader = decoder0.decodeStructDataHeader();
     if (mainDataHeader.version <= kVersions.last.version) {
@@ -1580,7 +1580,7 @@ class FileDupParams extends bindings.Struct {
   }
 
   String toString() {
-    return "FileDupParams("
+    return "_FileDupParams("
            "file: $file" ")";
   }
 
@@ -1662,16 +1662,16 @@ class FileDupResponseParams extends bindings.Struct {
 }
 
 
-class FileReopenParams extends bindings.Struct {
+class _FileReopenParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(16, 0)
   ];
   Object file = null;
   int openFlags = 0;
 
-  FileReopenParams() : super(kVersions.last.size);
+  _FileReopenParams() : super(kVersions.last.size);
 
-  static FileReopenParams deserialize(bindings.Message message) {
+  static _FileReopenParams deserialize(bindings.Message message) {
     var decoder = new bindings.Decoder(message);
     var result = decode(decoder);
     if (decoder.excessHandles != null) {
@@ -1680,11 +1680,11 @@ class FileReopenParams extends bindings.Struct {
     return result;
   }
 
-  static FileReopenParams decode(bindings.Decoder decoder0) {
+  static _FileReopenParams decode(bindings.Decoder decoder0) {
     if (decoder0 == null) {
       return null;
     }
-    FileReopenParams result = new FileReopenParams();
+    _FileReopenParams result = new _FileReopenParams();
 
     var mainDataHeader = decoder0.decodeStructDataHeader();
     if (mainDataHeader.version <= kVersions.last.version) {
@@ -1724,7 +1724,7 @@ class FileReopenParams extends bindings.Struct {
   }
 
   String toString() {
-    return "FileReopenParams("
+    return "_FileReopenParams("
            "file: $file" ", "
            "openFlags: $openFlags" ")";
   }
@@ -1807,14 +1807,14 @@ class FileReopenResponseParams extends bindings.Struct {
 }
 
 
-class FileAsBufferParams extends bindings.Struct {
+class _FileAsBufferParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(8, 0)
   ];
 
-  FileAsBufferParams() : super(kVersions.last.size);
+  _FileAsBufferParams() : super(kVersions.last.size);
 
-  static FileAsBufferParams deserialize(bindings.Message message) {
+  static _FileAsBufferParams deserialize(bindings.Message message) {
     var decoder = new bindings.Decoder(message);
     var result = decode(decoder);
     if (decoder.excessHandles != null) {
@@ -1823,11 +1823,11 @@ class FileAsBufferParams extends bindings.Struct {
     return result;
   }
 
-  static FileAsBufferParams decode(bindings.Decoder decoder0) {
+  static _FileAsBufferParams decode(bindings.Decoder decoder0) {
     if (decoder0 == null) {
       return null;
     }
-    FileAsBufferParams result = new FileAsBufferParams();
+    _FileAsBufferParams result = new _FileAsBufferParams();
 
     var mainDataHeader = decoder0.decodeStructDataHeader();
     if (mainDataHeader.version <= kVersions.last.version) {
@@ -1855,7 +1855,7 @@ class FileAsBufferParams extends bindings.Struct {
   }
 
   String toString() {
-    return "FileAsBufferParams("")";
+    return "_FileAsBufferParams("")";
   }
 
   Map toJson() {
@@ -1943,16 +1943,16 @@ class FileAsBufferResponseParams extends bindings.Struct {
 }
 
 
-class FileIoctlParams extends bindings.Struct {
+class _FileIoctlParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(24, 0)
   ];
   int request = 0;
   List<int> inValues = null;
 
-  FileIoctlParams() : super(kVersions.last.size);
+  _FileIoctlParams() : super(kVersions.last.size);
 
-  static FileIoctlParams deserialize(bindings.Message message) {
+  static _FileIoctlParams deserialize(bindings.Message message) {
     var decoder = new bindings.Decoder(message);
     var result = decode(decoder);
     if (decoder.excessHandles != null) {
@@ -1961,11 +1961,11 @@ class FileIoctlParams extends bindings.Struct {
     return result;
   }
 
-  static FileIoctlParams decode(bindings.Decoder decoder0) {
+  static _FileIoctlParams decode(bindings.Decoder decoder0) {
     if (decoder0 == null) {
       return null;
     }
-    FileIoctlParams result = new FileIoctlParams();
+    _FileIoctlParams result = new _FileIoctlParams();
 
     var mainDataHeader = decoder0.decodeStructDataHeader();
     if (mainDataHeader.version <= kVersions.last.version) {
@@ -2005,7 +2005,7 @@ class FileIoctlParams extends bindings.Struct {
   }
 
   String toString() {
-    return "FileIoctlParams("
+    return "_FileIoctlParams("
            "request: $request" ", "
            "inValues: $inValues" ")";
   }
@@ -2098,23 +2098,23 @@ class FileIoctlResponseParams extends bindings.Struct {
   }
 }
 
-const int kFile_close_name = 0;
-const int kFile_read_name = 1;
-const int kFile_write_name = 2;
-const int kFile_readToStream_name = 3;
-const int kFile_writeFromStream_name = 4;
-const int kFile_tell_name = 5;
-const int kFile_seek_name = 6;
-const int kFile_stat_name = 7;
-const int kFile_truncate_name = 8;
-const int kFile_touch_name = 9;
-const int kFile_dup_name = 10;
-const int kFile_reopen_name = 11;
-const int kFile_asBuffer_name = 12;
-const int kFile_ioctl_name = 13;
-const String FileName = null;
+const int _File_closeName = 0;
+const int _File_readName = 1;
+const int _File_writeName = 2;
+const int _File_readToStreamName = 3;
+const int _File_writeFromStreamName = 4;
+const int _File_tellName = 5;
+const int _File_seekName = 6;
+const int _File_statName = 7;
+const int _File_truncateName = 8;
+const int _File_touchName = 9;
+const int _File_dupName = 10;
+const int _File_reopenName = 11;
+const int _File_asBufferName = 12;
+const int _File_ioctlName = 13;
 
 abstract class File {
+  static const String serviceName = null;
   dynamic close([Function responseFactory = null]);
   dynamic read(int numBytesToRead,int offset,types_mojom.Whence whence,[Function responseFactory = null]);
   dynamic write(List<int> bytesToWrite,int offset,types_mojom.Whence whence,[Function responseFactory = null]);
@@ -2129,30 +2129,27 @@ abstract class File {
   dynamic reopen(Object file,int openFlags,[Function responseFactory = null]);
   dynamic asBuffer([Function responseFactory = null]);
   dynamic ioctl(int request,List<int> inValues,[Function responseFactory = null]);
-
 }
 
 
-class FileProxyImpl extends bindings.Proxy {
-  FileProxyImpl.fromEndpoint(
+class _FileProxyImpl extends bindings.Proxy {
+  _FileProxyImpl.fromEndpoint(
       core.MojoMessagePipeEndpoint endpoint) : super.fromEndpoint(endpoint);
 
-  FileProxyImpl.fromHandle(core.MojoHandle handle) :
+  _FileProxyImpl.fromHandle(core.MojoHandle handle) :
       super.fromHandle(handle);
 
-  FileProxyImpl.unbound() : super.unbound();
+  _FileProxyImpl.unbound() : super.unbound();
 
-  static FileProxyImpl newFromEndpoint(
+  static _FileProxyImpl newFromEndpoint(
       core.MojoMessagePipeEndpoint endpoint) {
-    assert(endpoint.setDescription("For FileProxyImpl"));
-    return new FileProxyImpl.fromEndpoint(endpoint);
+    assert(endpoint.setDescription("For _FileProxyImpl"));
+    return new _FileProxyImpl.fromEndpoint(endpoint);
   }
-
-  String get name => FileName;
 
   void handleResponse(bindings.ServiceMessage message) {
     switch (message.header.type) {
-      case kFile_close_name:
+      case _File_closeName:
         var r = FileCloseResponseParams.deserialize(
             message.payload);
         if (!message.header.hasRequestId) {
@@ -2172,7 +2169,7 @@ class FileProxyImpl extends bindings.Proxy {
         }
         c.complete(r);
         break;
-      case kFile_read_name:
+      case _File_readName:
         var r = FileReadResponseParams.deserialize(
             message.payload);
         if (!message.header.hasRequestId) {
@@ -2192,7 +2189,7 @@ class FileProxyImpl extends bindings.Proxy {
         }
         c.complete(r);
         break;
-      case kFile_write_name:
+      case _File_writeName:
         var r = FileWriteResponseParams.deserialize(
             message.payload);
         if (!message.header.hasRequestId) {
@@ -2212,7 +2209,7 @@ class FileProxyImpl extends bindings.Proxy {
         }
         c.complete(r);
         break;
-      case kFile_readToStream_name:
+      case _File_readToStreamName:
         var r = FileReadToStreamResponseParams.deserialize(
             message.payload);
         if (!message.header.hasRequestId) {
@@ -2232,7 +2229,7 @@ class FileProxyImpl extends bindings.Proxy {
         }
         c.complete(r);
         break;
-      case kFile_writeFromStream_name:
+      case _File_writeFromStreamName:
         var r = FileWriteFromStreamResponseParams.deserialize(
             message.payload);
         if (!message.header.hasRequestId) {
@@ -2252,7 +2249,7 @@ class FileProxyImpl extends bindings.Proxy {
         }
         c.complete(r);
         break;
-      case kFile_tell_name:
+      case _File_tellName:
         var r = FileTellResponseParams.deserialize(
             message.payload);
         if (!message.header.hasRequestId) {
@@ -2272,7 +2269,7 @@ class FileProxyImpl extends bindings.Proxy {
         }
         c.complete(r);
         break;
-      case kFile_seek_name:
+      case _File_seekName:
         var r = FileSeekResponseParams.deserialize(
             message.payload);
         if (!message.header.hasRequestId) {
@@ -2292,7 +2289,7 @@ class FileProxyImpl extends bindings.Proxy {
         }
         c.complete(r);
         break;
-      case kFile_stat_name:
+      case _File_statName:
         var r = FileStatResponseParams.deserialize(
             message.payload);
         if (!message.header.hasRequestId) {
@@ -2312,7 +2309,7 @@ class FileProxyImpl extends bindings.Proxy {
         }
         c.complete(r);
         break;
-      case kFile_truncate_name:
+      case _File_truncateName:
         var r = FileTruncateResponseParams.deserialize(
             message.payload);
         if (!message.header.hasRequestId) {
@@ -2332,7 +2329,7 @@ class FileProxyImpl extends bindings.Proxy {
         }
         c.complete(r);
         break;
-      case kFile_touch_name:
+      case _File_touchName:
         var r = FileTouchResponseParams.deserialize(
             message.payload);
         if (!message.header.hasRequestId) {
@@ -2352,7 +2349,7 @@ class FileProxyImpl extends bindings.Proxy {
         }
         c.complete(r);
         break;
-      case kFile_dup_name:
+      case _File_dupName:
         var r = FileDupResponseParams.deserialize(
             message.payload);
         if (!message.header.hasRequestId) {
@@ -2372,7 +2369,7 @@ class FileProxyImpl extends bindings.Proxy {
         }
         c.complete(r);
         break;
-      case kFile_reopen_name:
+      case _File_reopenName:
         var r = FileReopenResponseParams.deserialize(
             message.payload);
         if (!message.header.hasRequestId) {
@@ -2392,7 +2389,7 @@ class FileProxyImpl extends bindings.Proxy {
         }
         c.complete(r);
         break;
-      case kFile_asBuffer_name:
+      case _File_asBufferName:
         var r = FileAsBufferResponseParams.deserialize(
             message.payload);
         if (!message.header.hasRequestId) {
@@ -2412,7 +2409,7 @@ class FileProxyImpl extends bindings.Proxy {
         }
         c.complete(r);
         break;
-      case kFile_ioctl_name:
+      case _File_ioctlName:
         var r = FileIoctlResponseParams.deserialize(
             message.payload);
         if (!message.header.hasRequestId) {
@@ -2441,147 +2438,147 @@ class FileProxyImpl extends bindings.Proxy {
 
   String toString() {
     var superString = super.toString();
-    return "FileProxyImpl($superString)";
+    return "_FileProxyImpl($superString)";
   }
 }
 
 
 class _FileProxyCalls implements File {
-  FileProxyImpl _proxyImpl;
+  _FileProxyImpl _proxyImpl;
 
   _FileProxyCalls(this._proxyImpl);
     dynamic close([Function responseFactory = null]) {
-      var params = new FileCloseParams();
+      var params = new _FileCloseParams();
       return _proxyImpl.sendMessageWithRequestId(
           params,
-          kFile_close_name,
+          _File_closeName,
           -1,
           bindings.MessageHeader.kMessageExpectsResponse);
     }
     dynamic read(int numBytesToRead,int offset,types_mojom.Whence whence,[Function responseFactory = null]) {
-      var params = new FileReadParams();
+      var params = new _FileReadParams();
       params.numBytesToRead = numBytesToRead;
       params.offset = offset;
       params.whence = whence;
       return _proxyImpl.sendMessageWithRequestId(
           params,
-          kFile_read_name,
+          _File_readName,
           -1,
           bindings.MessageHeader.kMessageExpectsResponse);
     }
     dynamic write(List<int> bytesToWrite,int offset,types_mojom.Whence whence,[Function responseFactory = null]) {
-      var params = new FileWriteParams();
+      var params = new _FileWriteParams();
       params.bytesToWrite = bytesToWrite;
       params.offset = offset;
       params.whence = whence;
       return _proxyImpl.sendMessageWithRequestId(
           params,
-          kFile_write_name,
+          _File_writeName,
           -1,
           bindings.MessageHeader.kMessageExpectsResponse);
     }
     dynamic readToStream(core.MojoDataPipeProducer source,int offset,types_mojom.Whence whence,int numBytesToRead,[Function responseFactory = null]) {
-      var params = new FileReadToStreamParams();
+      var params = new _FileReadToStreamParams();
       params.source = source;
       params.offset = offset;
       params.whence = whence;
       params.numBytesToRead = numBytesToRead;
       return _proxyImpl.sendMessageWithRequestId(
           params,
-          kFile_readToStream_name,
+          _File_readToStreamName,
           -1,
           bindings.MessageHeader.kMessageExpectsResponse);
     }
     dynamic writeFromStream(core.MojoDataPipeConsumer sink,int offset,types_mojom.Whence whence,[Function responseFactory = null]) {
-      var params = new FileWriteFromStreamParams();
+      var params = new _FileWriteFromStreamParams();
       params.sink = sink;
       params.offset = offset;
       params.whence = whence;
       return _proxyImpl.sendMessageWithRequestId(
           params,
-          kFile_writeFromStream_name,
+          _File_writeFromStreamName,
           -1,
           bindings.MessageHeader.kMessageExpectsResponse);
     }
     dynamic tell([Function responseFactory = null]) {
-      var params = new FileTellParams();
+      var params = new _FileTellParams();
       return _proxyImpl.sendMessageWithRequestId(
           params,
-          kFile_tell_name,
+          _File_tellName,
           -1,
           bindings.MessageHeader.kMessageExpectsResponse);
     }
     dynamic seek(int offset,types_mojom.Whence whence,[Function responseFactory = null]) {
-      var params = new FileSeekParams();
+      var params = new _FileSeekParams();
       params.offset = offset;
       params.whence = whence;
       return _proxyImpl.sendMessageWithRequestId(
           params,
-          kFile_seek_name,
+          _File_seekName,
           -1,
           bindings.MessageHeader.kMessageExpectsResponse);
     }
     dynamic stat([Function responseFactory = null]) {
-      var params = new FileStatParams();
+      var params = new _FileStatParams();
       return _proxyImpl.sendMessageWithRequestId(
           params,
-          kFile_stat_name,
+          _File_statName,
           -1,
           bindings.MessageHeader.kMessageExpectsResponse);
     }
     dynamic truncate(int size,[Function responseFactory = null]) {
-      var params = new FileTruncateParams();
+      var params = new _FileTruncateParams();
       params.size = size;
       return _proxyImpl.sendMessageWithRequestId(
           params,
-          kFile_truncate_name,
+          _File_truncateName,
           -1,
           bindings.MessageHeader.kMessageExpectsResponse);
     }
     dynamic touch(types_mojom.TimespecOrNow atime,types_mojom.TimespecOrNow mtime,[Function responseFactory = null]) {
-      var params = new FileTouchParams();
+      var params = new _FileTouchParams();
       params.atime = atime;
       params.mtime = mtime;
       return _proxyImpl.sendMessageWithRequestId(
           params,
-          kFile_touch_name,
+          _File_touchName,
           -1,
           bindings.MessageHeader.kMessageExpectsResponse);
     }
     dynamic dup(Object file,[Function responseFactory = null]) {
-      var params = new FileDupParams();
+      var params = new _FileDupParams();
       params.file = file;
       return _proxyImpl.sendMessageWithRequestId(
           params,
-          kFile_dup_name,
+          _File_dupName,
           -1,
           bindings.MessageHeader.kMessageExpectsResponse);
     }
     dynamic reopen(Object file,int openFlags,[Function responseFactory = null]) {
-      var params = new FileReopenParams();
+      var params = new _FileReopenParams();
       params.file = file;
       params.openFlags = openFlags;
       return _proxyImpl.sendMessageWithRequestId(
           params,
-          kFile_reopen_name,
+          _File_reopenName,
           -1,
           bindings.MessageHeader.kMessageExpectsResponse);
     }
     dynamic asBuffer([Function responseFactory = null]) {
-      var params = new FileAsBufferParams();
+      var params = new _FileAsBufferParams();
       return _proxyImpl.sendMessageWithRequestId(
           params,
-          kFile_asBuffer_name,
+          _File_asBufferName,
           -1,
           bindings.MessageHeader.kMessageExpectsResponse);
     }
     dynamic ioctl(int request,List<int> inValues,[Function responseFactory = null]) {
-      var params = new FileIoctlParams();
+      var params = new _FileIoctlParams();
       params.request = request;
       params.inValues = inValues;
       return _proxyImpl.sendMessageWithRequestId(
           params,
-          kFile_ioctl_name,
+          _File_ioctlName,
           -1,
           bindings.MessageHeader.kMessageExpectsResponse);
     }
@@ -2591,25 +2588,24 @@ class _FileProxyCalls implements File {
 class FileProxy implements bindings.ProxyBase {
   final bindings.Proxy impl;
   File ptr;
-  final String name = FileName;
 
-  FileProxy(FileProxyImpl proxyImpl) :
+  FileProxy(_FileProxyImpl proxyImpl) :
       impl = proxyImpl,
       ptr = new _FileProxyCalls(proxyImpl);
 
   FileProxy.fromEndpoint(
       core.MojoMessagePipeEndpoint endpoint) :
-      impl = new FileProxyImpl.fromEndpoint(endpoint) {
+      impl = new _FileProxyImpl.fromEndpoint(endpoint) {
     ptr = new _FileProxyCalls(impl);
   }
 
   FileProxy.fromHandle(core.MojoHandle handle) :
-      impl = new FileProxyImpl.fromHandle(handle) {
+      impl = new _FileProxyImpl.fromHandle(handle) {
     ptr = new _FileProxyCalls(impl);
   }
 
   FileProxy.unbound() :
-      impl = new FileProxyImpl.unbound() {
+      impl = new _FileProxyImpl.unbound() {
     ptr = new _FileProxyCalls(impl);
   }
 
@@ -2625,6 +2621,8 @@ class FileProxy implements bindings.ProxyBase {
     assert(endpoint.setDescription("For FileProxy"));
     return new FileProxy.fromEndpoint(endpoint);
   }
+
+  String get serviceName => File.serviceName;
 
   Future close({bool immediate: false}) => impl.close(immediate: immediate);
 
@@ -2663,8 +2661,6 @@ class FileStub extends bindings.Stub {
     assert(endpoint.setDescription("For FileStub"));
     return new FileStub.fromEndpoint(endpoint);
   }
-
-  static const String name = FileName;
 
 
   FileCloseResponseParams _FileCloseResponseParamsFactory(types_mojom.Error err) {
@@ -2753,8 +2749,8 @@ class FileStub extends bindings.Stub {
     }
     assert(_impl != null);
     switch (message.header.type) {
-      case kFile_close_name:
-        var params = FileCloseParams.deserialize(
+      case _File_closeName:
+        var params = _FileCloseParams.deserialize(
             message.payload);
         var response = _impl.close(_FileCloseResponseParamsFactory);
         if (response is Future) {
@@ -2762,7 +2758,7 @@ class FileStub extends bindings.Stub {
             if (response != null) {
               return buildResponseWithId(
                   response,
-                  kFile_close_name,
+                  _File_closeName,
                   message.header.requestId,
                   bindings.MessageHeader.kMessageIsResponse);
             }
@@ -2770,13 +2766,13 @@ class FileStub extends bindings.Stub {
         } else if (response != null) {
           return buildResponseWithId(
               response,
-              kFile_close_name,
+              _File_closeName,
               message.header.requestId,
               bindings.MessageHeader.kMessageIsResponse);
         }
         break;
-      case kFile_read_name:
-        var params = FileReadParams.deserialize(
+      case _File_readName:
+        var params = _FileReadParams.deserialize(
             message.payload);
         var response = _impl.read(params.numBytesToRead,params.offset,params.whence,_FileReadResponseParamsFactory);
         if (response is Future) {
@@ -2784,7 +2780,7 @@ class FileStub extends bindings.Stub {
             if (response != null) {
               return buildResponseWithId(
                   response,
-                  kFile_read_name,
+                  _File_readName,
                   message.header.requestId,
                   bindings.MessageHeader.kMessageIsResponse);
             }
@@ -2792,13 +2788,13 @@ class FileStub extends bindings.Stub {
         } else if (response != null) {
           return buildResponseWithId(
               response,
-              kFile_read_name,
+              _File_readName,
               message.header.requestId,
               bindings.MessageHeader.kMessageIsResponse);
         }
         break;
-      case kFile_write_name:
-        var params = FileWriteParams.deserialize(
+      case _File_writeName:
+        var params = _FileWriteParams.deserialize(
             message.payload);
         var response = _impl.write(params.bytesToWrite,params.offset,params.whence,_FileWriteResponseParamsFactory);
         if (response is Future) {
@@ -2806,7 +2802,7 @@ class FileStub extends bindings.Stub {
             if (response != null) {
               return buildResponseWithId(
                   response,
-                  kFile_write_name,
+                  _File_writeName,
                   message.header.requestId,
                   bindings.MessageHeader.kMessageIsResponse);
             }
@@ -2814,13 +2810,13 @@ class FileStub extends bindings.Stub {
         } else if (response != null) {
           return buildResponseWithId(
               response,
-              kFile_write_name,
+              _File_writeName,
               message.header.requestId,
               bindings.MessageHeader.kMessageIsResponse);
         }
         break;
-      case kFile_readToStream_name:
-        var params = FileReadToStreamParams.deserialize(
+      case _File_readToStreamName:
+        var params = _FileReadToStreamParams.deserialize(
             message.payload);
         var response = _impl.readToStream(params.source,params.offset,params.whence,params.numBytesToRead,_FileReadToStreamResponseParamsFactory);
         if (response is Future) {
@@ -2828,7 +2824,7 @@ class FileStub extends bindings.Stub {
             if (response != null) {
               return buildResponseWithId(
                   response,
-                  kFile_readToStream_name,
+                  _File_readToStreamName,
                   message.header.requestId,
                   bindings.MessageHeader.kMessageIsResponse);
             }
@@ -2836,13 +2832,13 @@ class FileStub extends bindings.Stub {
         } else if (response != null) {
           return buildResponseWithId(
               response,
-              kFile_readToStream_name,
+              _File_readToStreamName,
               message.header.requestId,
               bindings.MessageHeader.kMessageIsResponse);
         }
         break;
-      case kFile_writeFromStream_name:
-        var params = FileWriteFromStreamParams.deserialize(
+      case _File_writeFromStreamName:
+        var params = _FileWriteFromStreamParams.deserialize(
             message.payload);
         var response = _impl.writeFromStream(params.sink,params.offset,params.whence,_FileWriteFromStreamResponseParamsFactory);
         if (response is Future) {
@@ -2850,7 +2846,7 @@ class FileStub extends bindings.Stub {
             if (response != null) {
               return buildResponseWithId(
                   response,
-                  kFile_writeFromStream_name,
+                  _File_writeFromStreamName,
                   message.header.requestId,
                   bindings.MessageHeader.kMessageIsResponse);
             }
@@ -2858,13 +2854,13 @@ class FileStub extends bindings.Stub {
         } else if (response != null) {
           return buildResponseWithId(
               response,
-              kFile_writeFromStream_name,
+              _File_writeFromStreamName,
               message.header.requestId,
               bindings.MessageHeader.kMessageIsResponse);
         }
         break;
-      case kFile_tell_name:
-        var params = FileTellParams.deserialize(
+      case _File_tellName:
+        var params = _FileTellParams.deserialize(
             message.payload);
         var response = _impl.tell(_FileTellResponseParamsFactory);
         if (response is Future) {
@@ -2872,7 +2868,7 @@ class FileStub extends bindings.Stub {
             if (response != null) {
               return buildResponseWithId(
                   response,
-                  kFile_tell_name,
+                  _File_tellName,
                   message.header.requestId,
                   bindings.MessageHeader.kMessageIsResponse);
             }
@@ -2880,13 +2876,13 @@ class FileStub extends bindings.Stub {
         } else if (response != null) {
           return buildResponseWithId(
               response,
-              kFile_tell_name,
+              _File_tellName,
               message.header.requestId,
               bindings.MessageHeader.kMessageIsResponse);
         }
         break;
-      case kFile_seek_name:
-        var params = FileSeekParams.deserialize(
+      case _File_seekName:
+        var params = _FileSeekParams.deserialize(
             message.payload);
         var response = _impl.seek(params.offset,params.whence,_FileSeekResponseParamsFactory);
         if (response is Future) {
@@ -2894,7 +2890,7 @@ class FileStub extends bindings.Stub {
             if (response != null) {
               return buildResponseWithId(
                   response,
-                  kFile_seek_name,
+                  _File_seekName,
                   message.header.requestId,
                   bindings.MessageHeader.kMessageIsResponse);
             }
@@ -2902,13 +2898,13 @@ class FileStub extends bindings.Stub {
         } else if (response != null) {
           return buildResponseWithId(
               response,
-              kFile_seek_name,
+              _File_seekName,
               message.header.requestId,
               bindings.MessageHeader.kMessageIsResponse);
         }
         break;
-      case kFile_stat_name:
-        var params = FileStatParams.deserialize(
+      case _File_statName:
+        var params = _FileStatParams.deserialize(
             message.payload);
         var response = _impl.stat(_FileStatResponseParamsFactory);
         if (response is Future) {
@@ -2916,7 +2912,7 @@ class FileStub extends bindings.Stub {
             if (response != null) {
               return buildResponseWithId(
                   response,
-                  kFile_stat_name,
+                  _File_statName,
                   message.header.requestId,
                   bindings.MessageHeader.kMessageIsResponse);
             }
@@ -2924,13 +2920,13 @@ class FileStub extends bindings.Stub {
         } else if (response != null) {
           return buildResponseWithId(
               response,
-              kFile_stat_name,
+              _File_statName,
               message.header.requestId,
               bindings.MessageHeader.kMessageIsResponse);
         }
         break;
-      case kFile_truncate_name:
-        var params = FileTruncateParams.deserialize(
+      case _File_truncateName:
+        var params = _FileTruncateParams.deserialize(
             message.payload);
         var response = _impl.truncate(params.size,_FileTruncateResponseParamsFactory);
         if (response is Future) {
@@ -2938,7 +2934,7 @@ class FileStub extends bindings.Stub {
             if (response != null) {
               return buildResponseWithId(
                   response,
-                  kFile_truncate_name,
+                  _File_truncateName,
                   message.header.requestId,
                   bindings.MessageHeader.kMessageIsResponse);
             }
@@ -2946,13 +2942,13 @@ class FileStub extends bindings.Stub {
         } else if (response != null) {
           return buildResponseWithId(
               response,
-              kFile_truncate_name,
+              _File_truncateName,
               message.header.requestId,
               bindings.MessageHeader.kMessageIsResponse);
         }
         break;
-      case kFile_touch_name:
-        var params = FileTouchParams.deserialize(
+      case _File_touchName:
+        var params = _FileTouchParams.deserialize(
             message.payload);
         var response = _impl.touch(params.atime,params.mtime,_FileTouchResponseParamsFactory);
         if (response is Future) {
@@ -2960,7 +2956,7 @@ class FileStub extends bindings.Stub {
             if (response != null) {
               return buildResponseWithId(
                   response,
-                  kFile_touch_name,
+                  _File_touchName,
                   message.header.requestId,
                   bindings.MessageHeader.kMessageIsResponse);
             }
@@ -2968,13 +2964,13 @@ class FileStub extends bindings.Stub {
         } else if (response != null) {
           return buildResponseWithId(
               response,
-              kFile_touch_name,
+              _File_touchName,
               message.header.requestId,
               bindings.MessageHeader.kMessageIsResponse);
         }
         break;
-      case kFile_dup_name:
-        var params = FileDupParams.deserialize(
+      case _File_dupName:
+        var params = _FileDupParams.deserialize(
             message.payload);
         var response = _impl.dup(params.file,_FileDupResponseParamsFactory);
         if (response is Future) {
@@ -2982,7 +2978,7 @@ class FileStub extends bindings.Stub {
             if (response != null) {
               return buildResponseWithId(
                   response,
-                  kFile_dup_name,
+                  _File_dupName,
                   message.header.requestId,
                   bindings.MessageHeader.kMessageIsResponse);
             }
@@ -2990,13 +2986,13 @@ class FileStub extends bindings.Stub {
         } else if (response != null) {
           return buildResponseWithId(
               response,
-              kFile_dup_name,
+              _File_dupName,
               message.header.requestId,
               bindings.MessageHeader.kMessageIsResponse);
         }
         break;
-      case kFile_reopen_name:
-        var params = FileReopenParams.deserialize(
+      case _File_reopenName:
+        var params = _FileReopenParams.deserialize(
             message.payload);
         var response = _impl.reopen(params.file,params.openFlags,_FileReopenResponseParamsFactory);
         if (response is Future) {
@@ -3004,7 +3000,7 @@ class FileStub extends bindings.Stub {
             if (response != null) {
               return buildResponseWithId(
                   response,
-                  kFile_reopen_name,
+                  _File_reopenName,
                   message.header.requestId,
                   bindings.MessageHeader.kMessageIsResponse);
             }
@@ -3012,13 +3008,13 @@ class FileStub extends bindings.Stub {
         } else if (response != null) {
           return buildResponseWithId(
               response,
-              kFile_reopen_name,
+              _File_reopenName,
               message.header.requestId,
               bindings.MessageHeader.kMessageIsResponse);
         }
         break;
-      case kFile_asBuffer_name:
-        var params = FileAsBufferParams.deserialize(
+      case _File_asBufferName:
+        var params = _FileAsBufferParams.deserialize(
             message.payload);
         var response = _impl.asBuffer(_FileAsBufferResponseParamsFactory);
         if (response is Future) {
@@ -3026,7 +3022,7 @@ class FileStub extends bindings.Stub {
             if (response != null) {
               return buildResponseWithId(
                   response,
-                  kFile_asBuffer_name,
+                  _File_asBufferName,
                   message.header.requestId,
                   bindings.MessageHeader.kMessageIsResponse);
             }
@@ -3034,13 +3030,13 @@ class FileStub extends bindings.Stub {
         } else if (response != null) {
           return buildResponseWithId(
               response,
-              kFile_asBuffer_name,
+              _File_asBufferName,
               message.header.requestId,
               bindings.MessageHeader.kMessageIsResponse);
         }
         break;
-      case kFile_ioctl_name:
-        var params = FileIoctlParams.deserialize(
+      case _File_ioctlName:
+        var params = _FileIoctlParams.deserialize(
             message.payload);
         var response = _impl.ioctl(params.request,params.inValues,_FileIoctlResponseParamsFactory);
         if (response is Future) {
@@ -3048,7 +3044,7 @@ class FileStub extends bindings.Stub {
             if (response != null) {
               return buildResponseWithId(
                   response,
-                  kFile_ioctl_name,
+                  _File_ioctlName,
                   message.header.requestId,
                   bindings.MessageHeader.kMessageIsResponse);
             }
@@ -3056,7 +3052,7 @@ class FileStub extends bindings.Stub {
         } else if (response != null) {
           return buildResponseWithId(
               response,
-              kFile_ioctl_name,
+              _File_ioctlName,
               message.header.requestId,
               bindings.MessageHeader.kMessageIsResponse);
         }

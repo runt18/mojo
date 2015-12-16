@@ -12,16 +12,16 @@ import 'package:mojo/mojo/service_provider.mojom.dart' as service_provider_mojom
 
 
 
-class ServiceRegistryAddServicesParams extends bindings.Struct {
+class _ServiceRegistryAddServicesParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(24, 0)
   ];
   List<String> interfaceNames = null;
   Object serviceProvider = null;
 
-  ServiceRegistryAddServicesParams() : super(kVersions.last.size);
+  _ServiceRegistryAddServicesParams() : super(kVersions.last.size);
 
-  static ServiceRegistryAddServicesParams deserialize(bindings.Message message) {
+  static _ServiceRegistryAddServicesParams deserialize(bindings.Message message) {
     var decoder = new bindings.Decoder(message);
     var result = decode(decoder);
     if (decoder.excessHandles != null) {
@@ -30,11 +30,11 @@ class ServiceRegistryAddServicesParams extends bindings.Struct {
     return result;
   }
 
-  static ServiceRegistryAddServicesParams decode(bindings.Decoder decoder0) {
+  static _ServiceRegistryAddServicesParams decode(bindings.Decoder decoder0) {
     if (decoder0 == null) {
       return null;
     }
-    ServiceRegistryAddServicesParams result = new ServiceRegistryAddServicesParams();
+    _ServiceRegistryAddServicesParams result = new _ServiceRegistryAddServicesParams();
 
     var mainDataHeader = decoder0.decodeStructDataHeader();
     if (mainDataHeader.version <= kVersions.last.version) {
@@ -90,7 +90,7 @@ class ServiceRegistryAddServicesParams extends bindings.Struct {
   }
 
   String toString() {
-    return "ServiceRegistryAddServicesParams("
+    return "_ServiceRegistryAddServicesParams("
            "interfaceNames: $interfaceNames" ", "
            "serviceProvider: $serviceProvider" ")";
   }
@@ -101,31 +101,28 @@ class ServiceRegistryAddServicesParams extends bindings.Struct {
   }
 }
 
-const int kServiceRegistry_addServices_name = 0;
-const String ServiceRegistryName = "mojo::ServiceRegistry";
+const int _ServiceRegistry_addServicesName = 0;
 
 abstract class ServiceRegistry {
+  static const String serviceName = "mojo::ServiceRegistry";
   void addServices(List<String> interfaceNames, Object serviceProvider);
-
 }
 
 
-class ServiceRegistryProxyImpl extends bindings.Proxy {
-  ServiceRegistryProxyImpl.fromEndpoint(
+class _ServiceRegistryProxyImpl extends bindings.Proxy {
+  _ServiceRegistryProxyImpl.fromEndpoint(
       core.MojoMessagePipeEndpoint endpoint) : super.fromEndpoint(endpoint);
 
-  ServiceRegistryProxyImpl.fromHandle(core.MojoHandle handle) :
+  _ServiceRegistryProxyImpl.fromHandle(core.MojoHandle handle) :
       super.fromHandle(handle);
 
-  ServiceRegistryProxyImpl.unbound() : super.unbound();
+  _ServiceRegistryProxyImpl.unbound() : super.unbound();
 
-  static ServiceRegistryProxyImpl newFromEndpoint(
+  static _ServiceRegistryProxyImpl newFromEndpoint(
       core.MojoMessagePipeEndpoint endpoint) {
-    assert(endpoint.setDescription("For ServiceRegistryProxyImpl"));
-    return new ServiceRegistryProxyImpl.fromEndpoint(endpoint);
+    assert(endpoint.setDescription("For _ServiceRegistryProxyImpl"));
+    return new _ServiceRegistryProxyImpl.fromEndpoint(endpoint);
   }
-
-  String get name => ServiceRegistryName;
 
   void handleResponse(bindings.ServiceMessage message) {
     switch (message.header.type) {
@@ -138,13 +135,13 @@ class ServiceRegistryProxyImpl extends bindings.Proxy {
 
   String toString() {
     var superString = super.toString();
-    return "ServiceRegistryProxyImpl($superString)";
+    return "_ServiceRegistryProxyImpl($superString)";
   }
 }
 
 
 class _ServiceRegistryProxyCalls implements ServiceRegistry {
-  ServiceRegistryProxyImpl _proxyImpl;
+  _ServiceRegistryProxyImpl _proxyImpl;
 
   _ServiceRegistryProxyCalls(this._proxyImpl);
     void addServices(List<String> interfaceNames, Object serviceProvider) {
@@ -152,37 +149,35 @@ class _ServiceRegistryProxyCalls implements ServiceRegistry {
         _proxyImpl.proxyError("The Proxy is closed.");
         return;
       }
-      var params = new ServiceRegistryAddServicesParams();
+      var params = new _ServiceRegistryAddServicesParams();
       params.interfaceNames = interfaceNames;
       params.serviceProvider = serviceProvider;
-      _proxyImpl.sendMessage(params, kServiceRegistry_addServices_name);
+      _proxyImpl.sendMessage(params, _ServiceRegistry_addServicesName);
     }
-  
 }
 
 
 class ServiceRegistryProxy implements bindings.ProxyBase {
   final bindings.Proxy impl;
   ServiceRegistry ptr;
-  final String name = ServiceRegistryName;
 
-  ServiceRegistryProxy(ServiceRegistryProxyImpl proxyImpl) :
+  ServiceRegistryProxy(_ServiceRegistryProxyImpl proxyImpl) :
       impl = proxyImpl,
       ptr = new _ServiceRegistryProxyCalls(proxyImpl);
 
   ServiceRegistryProxy.fromEndpoint(
       core.MojoMessagePipeEndpoint endpoint) :
-      impl = new ServiceRegistryProxyImpl.fromEndpoint(endpoint) {
+      impl = new _ServiceRegistryProxyImpl.fromEndpoint(endpoint) {
     ptr = new _ServiceRegistryProxyCalls(impl);
   }
 
   ServiceRegistryProxy.fromHandle(core.MojoHandle handle) :
-      impl = new ServiceRegistryProxyImpl.fromHandle(handle) {
+      impl = new _ServiceRegistryProxyImpl.fromHandle(handle) {
     ptr = new _ServiceRegistryProxyCalls(impl);
   }
 
   ServiceRegistryProxy.unbound() :
-      impl = new ServiceRegistryProxyImpl.unbound() {
+      impl = new _ServiceRegistryProxyImpl.unbound() {
     ptr = new _ServiceRegistryProxyCalls(impl);
   }
 
@@ -198,6 +193,8 @@ class ServiceRegistryProxy implements bindings.ProxyBase {
     assert(endpoint.setDescription("For ServiceRegistryProxy"));
     return new ServiceRegistryProxy.fromEndpoint(endpoint);
   }
+
+  String get serviceName => ServiceRegistry.serviceName;
 
   Future close({bool immediate: false}) => impl.close(immediate: immediate);
 
@@ -237,8 +234,6 @@ class ServiceRegistryStub extends bindings.Stub {
     return new ServiceRegistryStub.fromEndpoint(endpoint);
   }
 
-  static const String name = ServiceRegistryName;
-
 
 
   dynamic handleMessage(bindings.ServiceMessage message) {
@@ -249,8 +244,8 @@ class ServiceRegistryStub extends bindings.Stub {
     }
     assert(_impl != null);
     switch (message.header.type) {
-      case kServiceRegistry_addServices_name:
-        var params = ServiceRegistryAddServicesParams.deserialize(
+      case _ServiceRegistry_addServicesName:
+        var params = _ServiceRegistryAddServicesParams.deserialize(
             message.payload);
         _impl.addServices(params.interfaceNames, params.serviceProvider);
         break;

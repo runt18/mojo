@@ -11,15 +11,15 @@ import 'package:mojo/core.dart' as core;
 
 
 
-class ClipboardGetSequenceNumberParams extends bindings.Struct {
+class _ClipboardGetSequenceNumberParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(16, 0)
   ];
   ClipboardType clipboardType = null;
 
-  ClipboardGetSequenceNumberParams() : super(kVersions.last.size);
+  _ClipboardGetSequenceNumberParams() : super(kVersions.last.size);
 
-  static ClipboardGetSequenceNumberParams deserialize(bindings.Message message) {
+  static _ClipboardGetSequenceNumberParams deserialize(bindings.Message message) {
     var decoder = new bindings.Decoder(message);
     var result = decode(decoder);
     if (decoder.excessHandles != null) {
@@ -28,11 +28,11 @@ class ClipboardGetSequenceNumberParams extends bindings.Struct {
     return result;
   }
 
-  static ClipboardGetSequenceNumberParams decode(bindings.Decoder decoder0) {
+  static _ClipboardGetSequenceNumberParams decode(bindings.Decoder decoder0) {
     if (decoder0 == null) {
       return null;
     }
-    ClipboardGetSequenceNumberParams result = new ClipboardGetSequenceNumberParams();
+    _ClipboardGetSequenceNumberParams result = new _ClipboardGetSequenceNumberParams();
 
     var mainDataHeader = decoder0.decodeStructDataHeader();
     if (mainDataHeader.version <= kVersions.last.version) {
@@ -70,7 +70,7 @@ class ClipboardGetSequenceNumberParams extends bindings.Struct {
   }
 
   String toString() {
-    return "ClipboardGetSequenceNumberParams("
+    return "_ClipboardGetSequenceNumberParams("
            "clipboardType: $clipboardType" ")";
   }
 
@@ -149,15 +149,15 @@ class ClipboardGetSequenceNumberResponseParams extends bindings.Struct {
 }
 
 
-class ClipboardGetAvailableMimeTypesParams extends bindings.Struct {
+class _ClipboardGetAvailableMimeTypesParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(16, 0)
   ];
   ClipboardType clipboardTypes = null;
 
-  ClipboardGetAvailableMimeTypesParams() : super(kVersions.last.size);
+  _ClipboardGetAvailableMimeTypesParams() : super(kVersions.last.size);
 
-  static ClipboardGetAvailableMimeTypesParams deserialize(bindings.Message message) {
+  static _ClipboardGetAvailableMimeTypesParams deserialize(bindings.Message message) {
     var decoder = new bindings.Decoder(message);
     var result = decode(decoder);
     if (decoder.excessHandles != null) {
@@ -166,11 +166,11 @@ class ClipboardGetAvailableMimeTypesParams extends bindings.Struct {
     return result;
   }
 
-  static ClipboardGetAvailableMimeTypesParams decode(bindings.Decoder decoder0) {
+  static _ClipboardGetAvailableMimeTypesParams decode(bindings.Decoder decoder0) {
     if (decoder0 == null) {
       return null;
     }
-    ClipboardGetAvailableMimeTypesParams result = new ClipboardGetAvailableMimeTypesParams();
+    _ClipboardGetAvailableMimeTypesParams result = new _ClipboardGetAvailableMimeTypesParams();
 
     var mainDataHeader = decoder0.decodeStructDataHeader();
     if (mainDataHeader.version <= kVersions.last.version) {
@@ -208,7 +208,7 @@ class ClipboardGetAvailableMimeTypesParams extends bindings.Struct {
   }
 
   String toString() {
-    return "ClipboardGetAvailableMimeTypesParams("
+    return "_ClipboardGetAvailableMimeTypesParams("
            "clipboardTypes: $clipboardTypes" ")";
   }
 
@@ -303,16 +303,16 @@ class ClipboardGetAvailableMimeTypesResponseParams extends bindings.Struct {
 }
 
 
-class ClipboardReadMimeTypeParams extends bindings.Struct {
+class _ClipboardReadMimeTypeParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(24, 0)
   ];
   ClipboardType clipboardType = null;
   String mimeType = null;
 
-  ClipboardReadMimeTypeParams() : super(kVersions.last.size);
+  _ClipboardReadMimeTypeParams() : super(kVersions.last.size);
 
-  static ClipboardReadMimeTypeParams deserialize(bindings.Message message) {
+  static _ClipboardReadMimeTypeParams deserialize(bindings.Message message) {
     var decoder = new bindings.Decoder(message);
     var result = decode(decoder);
     if (decoder.excessHandles != null) {
@@ -321,11 +321,11 @@ class ClipboardReadMimeTypeParams extends bindings.Struct {
     return result;
   }
 
-  static ClipboardReadMimeTypeParams decode(bindings.Decoder decoder0) {
+  static _ClipboardReadMimeTypeParams decode(bindings.Decoder decoder0) {
     if (decoder0 == null) {
       return null;
     }
-    ClipboardReadMimeTypeParams result = new ClipboardReadMimeTypeParams();
+    _ClipboardReadMimeTypeParams result = new _ClipboardReadMimeTypeParams();
 
     var mainDataHeader = decoder0.decodeStructDataHeader();
     if (mainDataHeader.version <= kVersions.last.version) {
@@ -369,7 +369,7 @@ class ClipboardReadMimeTypeParams extends bindings.Struct {
   }
 
   String toString() {
-    return "ClipboardReadMimeTypeParams("
+    return "_ClipboardReadMimeTypeParams("
            "clipboardType: $clipboardType" ", "
            "mimeType: $mimeType" ")";
   }
@@ -450,16 +450,16 @@ class ClipboardReadMimeTypeResponseParams extends bindings.Struct {
 }
 
 
-class ClipboardWriteClipboardDataParams extends bindings.Struct {
+class _ClipboardWriteClipboardDataParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(24, 0)
   ];
   ClipboardType clipboardType = null;
   Map<String, List<int>> data = null;
 
-  ClipboardWriteClipboardDataParams() : super(kVersions.last.size);
+  _ClipboardWriteClipboardDataParams() : super(kVersions.last.size);
 
-  static ClipboardWriteClipboardDataParams deserialize(bindings.Message message) {
+  static _ClipboardWriteClipboardDataParams deserialize(bindings.Message message) {
     var decoder = new bindings.Decoder(message);
     var result = decode(decoder);
     if (decoder.excessHandles != null) {
@@ -468,11 +468,11 @@ class ClipboardWriteClipboardDataParams extends bindings.Struct {
     return result;
   }
 
-  static ClipboardWriteClipboardDataParams decode(bindings.Decoder decoder0) {
+  static _ClipboardWriteClipboardDataParams decode(bindings.Decoder decoder0) {
     if (decoder0 == null) {
       return null;
     }
-    ClipboardWriteClipboardDataParams result = new ClipboardWriteClipboardDataParams();
+    _ClipboardWriteClipboardDataParams result = new _ClipboardWriteClipboardDataParams();
 
     var mainDataHeader = decoder0.decodeStructDataHeader();
     if (mainDataHeader.version <= kVersions.last.version) {
@@ -572,7 +572,7 @@ class ClipboardWriteClipboardDataParams extends bindings.Struct {
   }
 
   String toString() {
-    return "ClipboardWriteClipboardDataParams("
+    return "_ClipboardWriteClipboardDataParams("
            "clipboardType: $clipboardType" ", "
            "data: $data" ")";
   }
@@ -585,11 +585,10 @@ class ClipboardWriteClipboardDataParams extends bindings.Struct {
   }
 }
 
-const int kClipboard_getSequenceNumber_name = 0;
-const int kClipboard_getAvailableMimeTypes_name = 1;
-const int kClipboard_readMimeType_name = 2;
-const int kClipboard_writeClipboardData_name = 3;
-const String ClipboardName = "mojo::Clipboard";
+const int _Clipboard_getSequenceNumberName = 0;
+const int _Clipboard_getAvailableMimeTypesName = 1;
+const int _Clipboard_readMimeTypeName = 2;
+const int _Clipboard_writeClipboardDataName = 3;
   
 class ClipboardType extends bindings.MojoEnum {
   static const ClipboardType copyPaste = const ClipboardType._(0);
@@ -649,37 +648,35 @@ class ClipboardType extends bindings.MojoEnum {
 }
 
 abstract class Clipboard {
+  static const String serviceName = "mojo::Clipboard";
   dynamic getSequenceNumber(ClipboardType clipboardType,[Function responseFactory = null]);
   dynamic getAvailableMimeTypes(ClipboardType clipboardTypes,[Function responseFactory = null]);
   dynamic readMimeType(ClipboardType clipboardType,String mimeType,[Function responseFactory = null]);
   void writeClipboardData(ClipboardType clipboardType, Map<String, List<int>> data);
-
   static const String mimeTypeText = "text/plain";
   static const String mimeTypeHtml = "text/html";
   static const String mimeTypeUrl = "text/url";
 }
 
 
-class ClipboardProxyImpl extends bindings.Proxy {
-  ClipboardProxyImpl.fromEndpoint(
+class _ClipboardProxyImpl extends bindings.Proxy {
+  _ClipboardProxyImpl.fromEndpoint(
       core.MojoMessagePipeEndpoint endpoint) : super.fromEndpoint(endpoint);
 
-  ClipboardProxyImpl.fromHandle(core.MojoHandle handle) :
+  _ClipboardProxyImpl.fromHandle(core.MojoHandle handle) :
       super.fromHandle(handle);
 
-  ClipboardProxyImpl.unbound() : super.unbound();
+  _ClipboardProxyImpl.unbound() : super.unbound();
 
-  static ClipboardProxyImpl newFromEndpoint(
+  static _ClipboardProxyImpl newFromEndpoint(
       core.MojoMessagePipeEndpoint endpoint) {
-    assert(endpoint.setDescription("For ClipboardProxyImpl"));
-    return new ClipboardProxyImpl.fromEndpoint(endpoint);
+    assert(endpoint.setDescription("For _ClipboardProxyImpl"));
+    return new _ClipboardProxyImpl.fromEndpoint(endpoint);
   }
-
-  String get name => ClipboardName;
 
   void handleResponse(bindings.ServiceMessage message) {
     switch (message.header.type) {
-      case kClipboard_getSequenceNumber_name:
+      case _Clipboard_getSequenceNumberName:
         var r = ClipboardGetSequenceNumberResponseParams.deserialize(
             message.payload);
         if (!message.header.hasRequestId) {
@@ -699,7 +696,7 @@ class ClipboardProxyImpl extends bindings.Proxy {
         }
         c.complete(r);
         break;
-      case kClipboard_getAvailableMimeTypes_name:
+      case _Clipboard_getAvailableMimeTypesName:
         var r = ClipboardGetAvailableMimeTypesResponseParams.deserialize(
             message.payload);
         if (!message.header.hasRequestId) {
@@ -719,7 +716,7 @@ class ClipboardProxyImpl extends bindings.Proxy {
         }
         c.complete(r);
         break;
-      case kClipboard_readMimeType_name:
+      case _Clipboard_readMimeTypeName:
         var r = ClipboardReadMimeTypeResponseParams.deserialize(
             message.payload);
         if (!message.header.hasRequestId) {
@@ -748,40 +745,40 @@ class ClipboardProxyImpl extends bindings.Proxy {
 
   String toString() {
     var superString = super.toString();
-    return "ClipboardProxyImpl($superString)";
+    return "_ClipboardProxyImpl($superString)";
   }
 }
 
 
 class _ClipboardProxyCalls implements Clipboard {
-  ClipboardProxyImpl _proxyImpl;
+  _ClipboardProxyImpl _proxyImpl;
 
   _ClipboardProxyCalls(this._proxyImpl);
     dynamic getSequenceNumber(ClipboardType clipboardType,[Function responseFactory = null]) {
-      var params = new ClipboardGetSequenceNumberParams();
+      var params = new _ClipboardGetSequenceNumberParams();
       params.clipboardType = clipboardType;
       return _proxyImpl.sendMessageWithRequestId(
           params,
-          kClipboard_getSequenceNumber_name,
+          _Clipboard_getSequenceNumberName,
           -1,
           bindings.MessageHeader.kMessageExpectsResponse);
     }
     dynamic getAvailableMimeTypes(ClipboardType clipboardTypes,[Function responseFactory = null]) {
-      var params = new ClipboardGetAvailableMimeTypesParams();
+      var params = new _ClipboardGetAvailableMimeTypesParams();
       params.clipboardTypes = clipboardTypes;
       return _proxyImpl.sendMessageWithRequestId(
           params,
-          kClipboard_getAvailableMimeTypes_name,
+          _Clipboard_getAvailableMimeTypesName,
           -1,
           bindings.MessageHeader.kMessageExpectsResponse);
     }
     dynamic readMimeType(ClipboardType clipboardType,String mimeType,[Function responseFactory = null]) {
-      var params = new ClipboardReadMimeTypeParams();
+      var params = new _ClipboardReadMimeTypeParams();
       params.clipboardType = clipboardType;
       params.mimeType = mimeType;
       return _proxyImpl.sendMessageWithRequestId(
           params,
-          kClipboard_readMimeType_name,
+          _Clipboard_readMimeTypeName,
           -1,
           bindings.MessageHeader.kMessageExpectsResponse);
     }
@@ -790,37 +787,35 @@ class _ClipboardProxyCalls implements Clipboard {
         _proxyImpl.proxyError("The Proxy is closed.");
         return;
       }
-      var params = new ClipboardWriteClipboardDataParams();
+      var params = new _ClipboardWriteClipboardDataParams();
       params.clipboardType = clipboardType;
       params.data = data;
-      _proxyImpl.sendMessage(params, kClipboard_writeClipboardData_name);
+      _proxyImpl.sendMessage(params, _Clipboard_writeClipboardDataName);
     }
-  
 }
 
 
 class ClipboardProxy implements bindings.ProxyBase {
   final bindings.Proxy impl;
   Clipboard ptr;
-  final String name = ClipboardName;
 
-  ClipboardProxy(ClipboardProxyImpl proxyImpl) :
+  ClipboardProxy(_ClipboardProxyImpl proxyImpl) :
       impl = proxyImpl,
       ptr = new _ClipboardProxyCalls(proxyImpl);
 
   ClipboardProxy.fromEndpoint(
       core.MojoMessagePipeEndpoint endpoint) :
-      impl = new ClipboardProxyImpl.fromEndpoint(endpoint) {
+      impl = new _ClipboardProxyImpl.fromEndpoint(endpoint) {
     ptr = new _ClipboardProxyCalls(impl);
   }
 
   ClipboardProxy.fromHandle(core.MojoHandle handle) :
-      impl = new ClipboardProxyImpl.fromHandle(handle) {
+      impl = new _ClipboardProxyImpl.fromHandle(handle) {
     ptr = new _ClipboardProxyCalls(impl);
   }
 
   ClipboardProxy.unbound() :
-      impl = new ClipboardProxyImpl.unbound() {
+      impl = new _ClipboardProxyImpl.unbound() {
     ptr = new _ClipboardProxyCalls(impl);
   }
 
@@ -836,6 +831,8 @@ class ClipboardProxy implements bindings.ProxyBase {
     assert(endpoint.setDescription("For ClipboardProxy"));
     return new ClipboardProxy.fromEndpoint(endpoint);
   }
+
+  String get serviceName => Clipboard.serviceName;
 
   Future close({bool immediate: false}) => impl.close(immediate: immediate);
 
@@ -875,8 +872,6 @@ class ClipboardStub extends bindings.Stub {
     return new ClipboardStub.fromEndpoint(endpoint);
   }
 
-  static const String name = ClipboardName;
-
 
   ClipboardGetSequenceNumberResponseParams _ClipboardGetSequenceNumberResponseParamsFactory(int sequence) {
     var mojo_factory_result = new ClipboardGetSequenceNumberResponseParams();
@@ -902,8 +897,8 @@ class ClipboardStub extends bindings.Stub {
     }
     assert(_impl != null);
     switch (message.header.type) {
-      case kClipboard_getSequenceNumber_name:
-        var params = ClipboardGetSequenceNumberParams.deserialize(
+      case _Clipboard_getSequenceNumberName:
+        var params = _ClipboardGetSequenceNumberParams.deserialize(
             message.payload);
         var response = _impl.getSequenceNumber(params.clipboardType,_ClipboardGetSequenceNumberResponseParamsFactory);
         if (response is Future) {
@@ -911,7 +906,7 @@ class ClipboardStub extends bindings.Stub {
             if (response != null) {
               return buildResponseWithId(
                   response,
-                  kClipboard_getSequenceNumber_name,
+                  _Clipboard_getSequenceNumberName,
                   message.header.requestId,
                   bindings.MessageHeader.kMessageIsResponse);
             }
@@ -919,13 +914,13 @@ class ClipboardStub extends bindings.Stub {
         } else if (response != null) {
           return buildResponseWithId(
               response,
-              kClipboard_getSequenceNumber_name,
+              _Clipboard_getSequenceNumberName,
               message.header.requestId,
               bindings.MessageHeader.kMessageIsResponse);
         }
         break;
-      case kClipboard_getAvailableMimeTypes_name:
-        var params = ClipboardGetAvailableMimeTypesParams.deserialize(
+      case _Clipboard_getAvailableMimeTypesName:
+        var params = _ClipboardGetAvailableMimeTypesParams.deserialize(
             message.payload);
         var response = _impl.getAvailableMimeTypes(params.clipboardTypes,_ClipboardGetAvailableMimeTypesResponseParamsFactory);
         if (response is Future) {
@@ -933,7 +928,7 @@ class ClipboardStub extends bindings.Stub {
             if (response != null) {
               return buildResponseWithId(
                   response,
-                  kClipboard_getAvailableMimeTypes_name,
+                  _Clipboard_getAvailableMimeTypesName,
                   message.header.requestId,
                   bindings.MessageHeader.kMessageIsResponse);
             }
@@ -941,13 +936,13 @@ class ClipboardStub extends bindings.Stub {
         } else if (response != null) {
           return buildResponseWithId(
               response,
-              kClipboard_getAvailableMimeTypes_name,
+              _Clipboard_getAvailableMimeTypesName,
               message.header.requestId,
               bindings.MessageHeader.kMessageIsResponse);
         }
         break;
-      case kClipboard_readMimeType_name:
-        var params = ClipboardReadMimeTypeParams.deserialize(
+      case _Clipboard_readMimeTypeName:
+        var params = _ClipboardReadMimeTypeParams.deserialize(
             message.payload);
         var response = _impl.readMimeType(params.clipboardType,params.mimeType,_ClipboardReadMimeTypeResponseParamsFactory);
         if (response is Future) {
@@ -955,7 +950,7 @@ class ClipboardStub extends bindings.Stub {
             if (response != null) {
               return buildResponseWithId(
                   response,
-                  kClipboard_readMimeType_name,
+                  _Clipboard_readMimeTypeName,
                   message.header.requestId,
                   bindings.MessageHeader.kMessageIsResponse);
             }
@@ -963,13 +958,13 @@ class ClipboardStub extends bindings.Stub {
         } else if (response != null) {
           return buildResponseWithId(
               response,
-              kClipboard_readMimeType_name,
+              _Clipboard_readMimeTypeName,
               message.header.requestId,
               bindings.MessageHeader.kMessageIsResponse);
         }
         break;
-      case kClipboard_writeClipboardData_name:
-        var params = ClipboardWriteClipboardDataParams.deserialize(
+      case _Clipboard_writeClipboardDataName:
+        var params = _ClipboardWriteClipboardDataParams.deserialize(
             message.payload);
         _impl.writeClipboardData(params.clipboardType, params.data);
         break;

@@ -11,15 +11,15 @@ import 'package:mojo/core.dart' as core;
 
 
 
-class SharingServiceShareTextParams extends bindings.Struct {
+class _SharingServiceShareTextParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(16, 0)
   ];
   String text = null;
 
-  SharingServiceShareTextParams() : super(kVersions.last.size);
+  _SharingServiceShareTextParams() : super(kVersions.last.size);
 
-  static SharingServiceShareTextParams deserialize(bindings.Message message) {
+  static _SharingServiceShareTextParams deserialize(bindings.Message message) {
     var decoder = new bindings.Decoder(message);
     var result = decode(decoder);
     if (decoder.excessHandles != null) {
@@ -28,11 +28,11 @@ class SharingServiceShareTextParams extends bindings.Struct {
     return result;
   }
 
-  static SharingServiceShareTextParams decode(bindings.Decoder decoder0) {
+  static _SharingServiceShareTextParams decode(bindings.Decoder decoder0) {
     if (decoder0 == null) {
       return null;
     }
-    SharingServiceShareTextParams result = new SharingServiceShareTextParams();
+    _SharingServiceShareTextParams result = new _SharingServiceShareTextParams();
 
     var mainDataHeader = decoder0.decodeStructDataHeader();
     if (mainDataHeader.version <= kVersions.last.version) {
@@ -66,7 +66,7 @@ class SharingServiceShareTextParams extends bindings.Struct {
   }
 
   String toString() {
-    return "SharingServiceShareTextParams("
+    return "_SharingServiceShareTextParams("
            "text: $text" ")";
   }
 
@@ -77,31 +77,28 @@ class SharingServiceShareTextParams extends bindings.Struct {
   }
 }
 
-const int kSharingService_shareText_name = 0;
-const String SharingServiceName = "mojo::SharingService";
+const int _SharingService_shareTextName = 0;
 
 abstract class SharingService {
+  static const String serviceName = "mojo::SharingService";
   void shareText(String text);
-
 }
 
 
-class SharingServiceProxyImpl extends bindings.Proxy {
-  SharingServiceProxyImpl.fromEndpoint(
+class _SharingServiceProxyImpl extends bindings.Proxy {
+  _SharingServiceProxyImpl.fromEndpoint(
       core.MojoMessagePipeEndpoint endpoint) : super.fromEndpoint(endpoint);
 
-  SharingServiceProxyImpl.fromHandle(core.MojoHandle handle) :
+  _SharingServiceProxyImpl.fromHandle(core.MojoHandle handle) :
       super.fromHandle(handle);
 
-  SharingServiceProxyImpl.unbound() : super.unbound();
+  _SharingServiceProxyImpl.unbound() : super.unbound();
 
-  static SharingServiceProxyImpl newFromEndpoint(
+  static _SharingServiceProxyImpl newFromEndpoint(
       core.MojoMessagePipeEndpoint endpoint) {
-    assert(endpoint.setDescription("For SharingServiceProxyImpl"));
-    return new SharingServiceProxyImpl.fromEndpoint(endpoint);
+    assert(endpoint.setDescription("For _SharingServiceProxyImpl"));
+    return new _SharingServiceProxyImpl.fromEndpoint(endpoint);
   }
-
-  String get name => SharingServiceName;
 
   void handleResponse(bindings.ServiceMessage message) {
     switch (message.header.type) {
@@ -114,13 +111,13 @@ class SharingServiceProxyImpl extends bindings.Proxy {
 
   String toString() {
     var superString = super.toString();
-    return "SharingServiceProxyImpl($superString)";
+    return "_SharingServiceProxyImpl($superString)";
   }
 }
 
 
 class _SharingServiceProxyCalls implements SharingService {
-  SharingServiceProxyImpl _proxyImpl;
+  _SharingServiceProxyImpl _proxyImpl;
 
   _SharingServiceProxyCalls(this._proxyImpl);
     void shareText(String text) {
@@ -128,36 +125,34 @@ class _SharingServiceProxyCalls implements SharingService {
         _proxyImpl.proxyError("The Proxy is closed.");
         return;
       }
-      var params = new SharingServiceShareTextParams();
+      var params = new _SharingServiceShareTextParams();
       params.text = text;
-      _proxyImpl.sendMessage(params, kSharingService_shareText_name);
+      _proxyImpl.sendMessage(params, _SharingService_shareTextName);
     }
-  
 }
 
 
 class SharingServiceProxy implements bindings.ProxyBase {
   final bindings.Proxy impl;
   SharingService ptr;
-  final String name = SharingServiceName;
 
-  SharingServiceProxy(SharingServiceProxyImpl proxyImpl) :
+  SharingServiceProxy(_SharingServiceProxyImpl proxyImpl) :
       impl = proxyImpl,
       ptr = new _SharingServiceProxyCalls(proxyImpl);
 
   SharingServiceProxy.fromEndpoint(
       core.MojoMessagePipeEndpoint endpoint) :
-      impl = new SharingServiceProxyImpl.fromEndpoint(endpoint) {
+      impl = new _SharingServiceProxyImpl.fromEndpoint(endpoint) {
     ptr = new _SharingServiceProxyCalls(impl);
   }
 
   SharingServiceProxy.fromHandle(core.MojoHandle handle) :
-      impl = new SharingServiceProxyImpl.fromHandle(handle) {
+      impl = new _SharingServiceProxyImpl.fromHandle(handle) {
     ptr = new _SharingServiceProxyCalls(impl);
   }
 
   SharingServiceProxy.unbound() :
-      impl = new SharingServiceProxyImpl.unbound() {
+      impl = new _SharingServiceProxyImpl.unbound() {
     ptr = new _SharingServiceProxyCalls(impl);
   }
 
@@ -173,6 +168,8 @@ class SharingServiceProxy implements bindings.ProxyBase {
     assert(endpoint.setDescription("For SharingServiceProxy"));
     return new SharingServiceProxy.fromEndpoint(endpoint);
   }
+
+  String get serviceName => SharingService.serviceName;
 
   Future close({bool immediate: false}) => impl.close(immediate: immediate);
 
@@ -212,8 +209,6 @@ class SharingServiceStub extends bindings.Stub {
     return new SharingServiceStub.fromEndpoint(endpoint);
   }
 
-  static const String name = SharingServiceName;
-
 
 
   dynamic handleMessage(bindings.ServiceMessage message) {
@@ -224,8 +219,8 @@ class SharingServiceStub extends bindings.Stub {
     }
     assert(_impl != null);
     switch (message.header.type) {
-      case kSharingService_shareText_name:
-        var params = SharingServiceShareTextParams.deserialize(
+      case _SharingService_shareTextName:
+        var params = _SharingServiceShareTextParams.deserialize(
             message.payload);
         _impl.shareText(params.text);
         break;

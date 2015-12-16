@@ -133,16 +133,16 @@ class CommandBufferState extends bindings.Struct {
 }
 
 
-class CommandBufferSyncClientDidInitializeParams extends bindings.Struct {
+class _CommandBufferSyncClientDidInitializeParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(24, 0)
   ];
   bool success = false;
   gpu_capabilities_mojom.GpuCapabilities capabilities = null;
 
-  CommandBufferSyncClientDidInitializeParams() : super(kVersions.last.size);
+  _CommandBufferSyncClientDidInitializeParams() : super(kVersions.last.size);
 
-  static CommandBufferSyncClientDidInitializeParams deserialize(bindings.Message message) {
+  static _CommandBufferSyncClientDidInitializeParams deserialize(bindings.Message message) {
     var decoder = new bindings.Decoder(message);
     var result = decode(decoder);
     if (decoder.excessHandles != null) {
@@ -151,11 +151,11 @@ class CommandBufferSyncClientDidInitializeParams extends bindings.Struct {
     return result;
   }
 
-  static CommandBufferSyncClientDidInitializeParams decode(bindings.Decoder decoder0) {
+  static _CommandBufferSyncClientDidInitializeParams decode(bindings.Decoder decoder0) {
     if (decoder0 == null) {
       return null;
     }
-    CommandBufferSyncClientDidInitializeParams result = new CommandBufferSyncClientDidInitializeParams();
+    _CommandBufferSyncClientDidInitializeParams result = new _CommandBufferSyncClientDidInitializeParams();
 
     var mainDataHeader = decoder0.decodeStructDataHeader();
     if (mainDataHeader.version <= kVersions.last.version) {
@@ -196,7 +196,7 @@ class CommandBufferSyncClientDidInitializeParams extends bindings.Struct {
   }
 
   String toString() {
-    return "CommandBufferSyncClientDidInitializeParams("
+    return "_CommandBufferSyncClientDidInitializeParams("
            "success: $success" ", "
            "capabilities: $capabilities" ")";
   }
@@ -210,15 +210,15 @@ class CommandBufferSyncClientDidInitializeParams extends bindings.Struct {
 }
 
 
-class CommandBufferSyncClientDidMakeProgressParams extends bindings.Struct {
+class _CommandBufferSyncClientDidMakeProgressParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(16, 0)
   ];
   CommandBufferState state = null;
 
-  CommandBufferSyncClientDidMakeProgressParams() : super(kVersions.last.size);
+  _CommandBufferSyncClientDidMakeProgressParams() : super(kVersions.last.size);
 
-  static CommandBufferSyncClientDidMakeProgressParams deserialize(bindings.Message message) {
+  static _CommandBufferSyncClientDidMakeProgressParams deserialize(bindings.Message message) {
     var decoder = new bindings.Decoder(message);
     var result = decode(decoder);
     if (decoder.excessHandles != null) {
@@ -227,11 +227,11 @@ class CommandBufferSyncClientDidMakeProgressParams extends bindings.Struct {
     return result;
   }
 
-  static CommandBufferSyncClientDidMakeProgressParams decode(bindings.Decoder decoder0) {
+  static _CommandBufferSyncClientDidMakeProgressParams decode(bindings.Decoder decoder0) {
     if (decoder0 == null) {
       return null;
     }
-    CommandBufferSyncClientDidMakeProgressParams result = new CommandBufferSyncClientDidMakeProgressParams();
+    _CommandBufferSyncClientDidMakeProgressParams result = new _CommandBufferSyncClientDidMakeProgressParams();
 
     var mainDataHeader = decoder0.decodeStructDataHeader();
     if (mainDataHeader.version <= kVersions.last.version) {
@@ -266,7 +266,7 @@ class CommandBufferSyncClientDidMakeProgressParams extends bindings.Struct {
   }
 
   String toString() {
-    return "CommandBufferSyncClientDidMakeProgressParams("
+    return "_CommandBufferSyncClientDidMakeProgressParams("
            "state: $state" ")";
   }
 
@@ -278,15 +278,15 @@ class CommandBufferSyncClientDidMakeProgressParams extends bindings.Struct {
 }
 
 
-class CommandBufferSyncPointClientDidInsertSyncPointParams extends bindings.Struct {
+class _CommandBufferSyncPointClientDidInsertSyncPointParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(16, 0)
   ];
   int syncPoint = 0;
 
-  CommandBufferSyncPointClientDidInsertSyncPointParams() : super(kVersions.last.size);
+  _CommandBufferSyncPointClientDidInsertSyncPointParams() : super(kVersions.last.size);
 
-  static CommandBufferSyncPointClientDidInsertSyncPointParams deserialize(bindings.Message message) {
+  static _CommandBufferSyncPointClientDidInsertSyncPointParams deserialize(bindings.Message message) {
     var decoder = new bindings.Decoder(message);
     var result = decode(decoder);
     if (decoder.excessHandles != null) {
@@ -295,11 +295,11 @@ class CommandBufferSyncPointClientDidInsertSyncPointParams extends bindings.Stru
     return result;
   }
 
-  static CommandBufferSyncPointClientDidInsertSyncPointParams decode(bindings.Decoder decoder0) {
+  static _CommandBufferSyncPointClientDidInsertSyncPointParams decode(bindings.Decoder decoder0) {
     if (decoder0 == null) {
       return null;
     }
-    CommandBufferSyncPointClientDidInsertSyncPointParams result = new CommandBufferSyncPointClientDidInsertSyncPointParams();
+    _CommandBufferSyncPointClientDidInsertSyncPointParams result = new _CommandBufferSyncPointClientDidInsertSyncPointParams();
 
     var mainDataHeader = decoder0.decodeStructDataHeader();
     if (mainDataHeader.version <= kVersions.last.version) {
@@ -333,7 +333,7 @@ class CommandBufferSyncPointClientDidInsertSyncPointParams extends bindings.Stru
   }
 
   String toString() {
-    return "CommandBufferSyncPointClientDidInsertSyncPointParams("
+    return "_CommandBufferSyncPointClientDidInsertSyncPointParams("
            "syncPoint: $syncPoint" ")";
   }
 
@@ -345,15 +345,15 @@ class CommandBufferSyncPointClientDidInsertSyncPointParams extends bindings.Stru
 }
 
 
-class CommandBufferLostContextObserverDidLoseContextParams extends bindings.Struct {
+class _CommandBufferLostContextObserverDidLoseContextParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(16, 0)
   ];
   int contextLostReason = 0;
 
-  CommandBufferLostContextObserverDidLoseContextParams() : super(kVersions.last.size);
+  _CommandBufferLostContextObserverDidLoseContextParams() : super(kVersions.last.size);
 
-  static CommandBufferLostContextObserverDidLoseContextParams deserialize(bindings.Message message) {
+  static _CommandBufferLostContextObserverDidLoseContextParams deserialize(bindings.Message message) {
     var decoder = new bindings.Decoder(message);
     var result = decode(decoder);
     if (decoder.excessHandles != null) {
@@ -362,11 +362,11 @@ class CommandBufferLostContextObserverDidLoseContextParams extends bindings.Stru
     return result;
   }
 
-  static CommandBufferLostContextObserverDidLoseContextParams decode(bindings.Decoder decoder0) {
+  static _CommandBufferLostContextObserverDidLoseContextParams decode(bindings.Decoder decoder0) {
     if (decoder0 == null) {
       return null;
     }
-    CommandBufferLostContextObserverDidLoseContextParams result = new CommandBufferLostContextObserverDidLoseContextParams();
+    _CommandBufferLostContextObserverDidLoseContextParams result = new _CommandBufferLostContextObserverDidLoseContextParams();
 
     var mainDataHeader = decoder0.decodeStructDataHeader();
     if (mainDataHeader.version <= kVersions.last.version) {
@@ -400,7 +400,7 @@ class CommandBufferLostContextObserverDidLoseContextParams extends bindings.Stru
   }
 
   String toString() {
-    return "CommandBufferLostContextObserverDidLoseContextParams("
+    return "_CommandBufferLostContextObserverDidLoseContextParams("
            "contextLostReason: $contextLostReason" ")";
   }
 
@@ -412,7 +412,7 @@ class CommandBufferLostContextObserverDidLoseContextParams extends bindings.Stru
 }
 
 
-class CommandBufferInitializeParams extends bindings.Struct {
+class _CommandBufferInitializeParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(40, 0)
   ];
@@ -421,9 +421,9 @@ class CommandBufferInitializeParams extends bindings.Struct {
   Object lostObserver = null;
   core.MojoSharedBuffer sharedState = null;
 
-  CommandBufferInitializeParams() : super(kVersions.last.size);
+  _CommandBufferInitializeParams() : super(kVersions.last.size);
 
-  static CommandBufferInitializeParams deserialize(bindings.Message message) {
+  static _CommandBufferInitializeParams deserialize(bindings.Message message) {
     var decoder = new bindings.Decoder(message);
     var result = decode(decoder);
     if (decoder.excessHandles != null) {
@@ -432,11 +432,11 @@ class CommandBufferInitializeParams extends bindings.Struct {
     return result;
   }
 
-  static CommandBufferInitializeParams decode(bindings.Decoder decoder0) {
+  static _CommandBufferInitializeParams decode(bindings.Decoder decoder0) {
     if (decoder0 == null) {
       return null;
     }
-    CommandBufferInitializeParams result = new CommandBufferInitializeParams();
+    _CommandBufferInitializeParams result = new _CommandBufferInitializeParams();
 
     var mainDataHeader = decoder0.decodeStructDataHeader();
     if (mainDataHeader.version <= kVersions.last.version) {
@@ -488,7 +488,7 @@ class CommandBufferInitializeParams extends bindings.Struct {
   }
 
   String toString() {
-    return "CommandBufferInitializeParams("
+    return "_CommandBufferInitializeParams("
            "syncClient: $syncClient" ", "
            "syncPointClient: $syncPointClient" ", "
            "lostObserver: $lostObserver" ", "
@@ -502,15 +502,15 @@ class CommandBufferInitializeParams extends bindings.Struct {
 }
 
 
-class CommandBufferSetGetBufferParams extends bindings.Struct {
+class _CommandBufferSetGetBufferParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(16, 0)
   ];
   int buffer = 0;
 
-  CommandBufferSetGetBufferParams() : super(kVersions.last.size);
+  _CommandBufferSetGetBufferParams() : super(kVersions.last.size);
 
-  static CommandBufferSetGetBufferParams deserialize(bindings.Message message) {
+  static _CommandBufferSetGetBufferParams deserialize(bindings.Message message) {
     var decoder = new bindings.Decoder(message);
     var result = decode(decoder);
     if (decoder.excessHandles != null) {
@@ -519,11 +519,11 @@ class CommandBufferSetGetBufferParams extends bindings.Struct {
     return result;
   }
 
-  static CommandBufferSetGetBufferParams decode(bindings.Decoder decoder0) {
+  static _CommandBufferSetGetBufferParams decode(bindings.Decoder decoder0) {
     if (decoder0 == null) {
       return null;
     }
-    CommandBufferSetGetBufferParams result = new CommandBufferSetGetBufferParams();
+    _CommandBufferSetGetBufferParams result = new _CommandBufferSetGetBufferParams();
 
     var mainDataHeader = decoder0.decodeStructDataHeader();
     if (mainDataHeader.version <= kVersions.last.version) {
@@ -557,7 +557,7 @@ class CommandBufferSetGetBufferParams extends bindings.Struct {
   }
 
   String toString() {
-    return "CommandBufferSetGetBufferParams("
+    return "_CommandBufferSetGetBufferParams("
            "buffer: $buffer" ")";
   }
 
@@ -569,15 +569,15 @@ class CommandBufferSetGetBufferParams extends bindings.Struct {
 }
 
 
-class CommandBufferFlushParams extends bindings.Struct {
+class _CommandBufferFlushParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(16, 0)
   ];
   int putOffset = 0;
 
-  CommandBufferFlushParams() : super(kVersions.last.size);
+  _CommandBufferFlushParams() : super(kVersions.last.size);
 
-  static CommandBufferFlushParams deserialize(bindings.Message message) {
+  static _CommandBufferFlushParams deserialize(bindings.Message message) {
     var decoder = new bindings.Decoder(message);
     var result = decode(decoder);
     if (decoder.excessHandles != null) {
@@ -586,11 +586,11 @@ class CommandBufferFlushParams extends bindings.Struct {
     return result;
   }
 
-  static CommandBufferFlushParams decode(bindings.Decoder decoder0) {
+  static _CommandBufferFlushParams decode(bindings.Decoder decoder0) {
     if (decoder0 == null) {
       return null;
     }
-    CommandBufferFlushParams result = new CommandBufferFlushParams();
+    _CommandBufferFlushParams result = new _CommandBufferFlushParams();
 
     var mainDataHeader = decoder0.decodeStructDataHeader();
     if (mainDataHeader.version <= kVersions.last.version) {
@@ -624,7 +624,7 @@ class CommandBufferFlushParams extends bindings.Struct {
   }
 
   String toString() {
-    return "CommandBufferFlushParams("
+    return "_CommandBufferFlushParams("
            "putOffset: $putOffset" ")";
   }
 
@@ -636,15 +636,15 @@ class CommandBufferFlushParams extends bindings.Struct {
 }
 
 
-class CommandBufferMakeProgressParams extends bindings.Struct {
+class _CommandBufferMakeProgressParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(16, 0)
   ];
   int lastGetOffset = 0;
 
-  CommandBufferMakeProgressParams() : super(kVersions.last.size);
+  _CommandBufferMakeProgressParams() : super(kVersions.last.size);
 
-  static CommandBufferMakeProgressParams deserialize(bindings.Message message) {
+  static _CommandBufferMakeProgressParams deserialize(bindings.Message message) {
     var decoder = new bindings.Decoder(message);
     var result = decode(decoder);
     if (decoder.excessHandles != null) {
@@ -653,11 +653,11 @@ class CommandBufferMakeProgressParams extends bindings.Struct {
     return result;
   }
 
-  static CommandBufferMakeProgressParams decode(bindings.Decoder decoder0) {
+  static _CommandBufferMakeProgressParams decode(bindings.Decoder decoder0) {
     if (decoder0 == null) {
       return null;
     }
-    CommandBufferMakeProgressParams result = new CommandBufferMakeProgressParams();
+    _CommandBufferMakeProgressParams result = new _CommandBufferMakeProgressParams();
 
     var mainDataHeader = decoder0.decodeStructDataHeader();
     if (mainDataHeader.version <= kVersions.last.version) {
@@ -691,7 +691,7 @@ class CommandBufferMakeProgressParams extends bindings.Struct {
   }
 
   String toString() {
-    return "CommandBufferMakeProgressParams("
+    return "_CommandBufferMakeProgressParams("
            "lastGetOffset: $lastGetOffset" ")";
   }
 
@@ -703,7 +703,7 @@ class CommandBufferMakeProgressParams extends bindings.Struct {
 }
 
 
-class CommandBufferRegisterTransferBufferParams extends bindings.Struct {
+class _CommandBufferRegisterTransferBufferParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(24, 0)
   ];
@@ -711,9 +711,9 @@ class CommandBufferRegisterTransferBufferParams extends bindings.Struct {
   core.MojoSharedBuffer transferBuffer = null;
   int size = 0;
 
-  CommandBufferRegisterTransferBufferParams() : super(kVersions.last.size);
+  _CommandBufferRegisterTransferBufferParams() : super(kVersions.last.size);
 
-  static CommandBufferRegisterTransferBufferParams deserialize(bindings.Message message) {
+  static _CommandBufferRegisterTransferBufferParams deserialize(bindings.Message message) {
     var decoder = new bindings.Decoder(message);
     var result = decode(decoder);
     if (decoder.excessHandles != null) {
@@ -722,11 +722,11 @@ class CommandBufferRegisterTransferBufferParams extends bindings.Struct {
     return result;
   }
 
-  static CommandBufferRegisterTransferBufferParams decode(bindings.Decoder decoder0) {
+  static _CommandBufferRegisterTransferBufferParams decode(bindings.Decoder decoder0) {
     if (decoder0 == null) {
       return null;
     }
-    CommandBufferRegisterTransferBufferParams result = new CommandBufferRegisterTransferBufferParams();
+    _CommandBufferRegisterTransferBufferParams result = new _CommandBufferRegisterTransferBufferParams();
 
     var mainDataHeader = decoder0.decodeStructDataHeader();
     if (mainDataHeader.version <= kVersions.last.version) {
@@ -772,7 +772,7 @@ class CommandBufferRegisterTransferBufferParams extends bindings.Struct {
   }
 
   String toString() {
-    return "CommandBufferRegisterTransferBufferParams("
+    return "_CommandBufferRegisterTransferBufferParams("
            "id: $id" ", "
            "transferBuffer: $transferBuffer" ", "
            "size: $size" ")";
@@ -785,15 +785,15 @@ class CommandBufferRegisterTransferBufferParams extends bindings.Struct {
 }
 
 
-class CommandBufferDestroyTransferBufferParams extends bindings.Struct {
+class _CommandBufferDestroyTransferBufferParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(16, 0)
   ];
   int id = 0;
 
-  CommandBufferDestroyTransferBufferParams() : super(kVersions.last.size);
+  _CommandBufferDestroyTransferBufferParams() : super(kVersions.last.size);
 
-  static CommandBufferDestroyTransferBufferParams deserialize(bindings.Message message) {
+  static _CommandBufferDestroyTransferBufferParams deserialize(bindings.Message message) {
     var decoder = new bindings.Decoder(message);
     var result = decode(decoder);
     if (decoder.excessHandles != null) {
@@ -802,11 +802,11 @@ class CommandBufferDestroyTransferBufferParams extends bindings.Struct {
     return result;
   }
 
-  static CommandBufferDestroyTransferBufferParams decode(bindings.Decoder decoder0) {
+  static _CommandBufferDestroyTransferBufferParams decode(bindings.Decoder decoder0) {
     if (decoder0 == null) {
       return null;
     }
-    CommandBufferDestroyTransferBufferParams result = new CommandBufferDestroyTransferBufferParams();
+    _CommandBufferDestroyTransferBufferParams result = new _CommandBufferDestroyTransferBufferParams();
 
     var mainDataHeader = decoder0.decodeStructDataHeader();
     if (mainDataHeader.version <= kVersions.last.version) {
@@ -840,7 +840,7 @@ class CommandBufferDestroyTransferBufferParams extends bindings.Struct {
   }
 
   String toString() {
-    return "CommandBufferDestroyTransferBufferParams("
+    return "_CommandBufferDestroyTransferBufferParams("
            "id: $id" ")";
   }
 
@@ -852,15 +852,15 @@ class CommandBufferDestroyTransferBufferParams extends bindings.Struct {
 }
 
 
-class CommandBufferInsertSyncPointParams extends bindings.Struct {
+class _CommandBufferInsertSyncPointParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(16, 0)
   ];
   bool retire = false;
 
-  CommandBufferInsertSyncPointParams() : super(kVersions.last.size);
+  _CommandBufferInsertSyncPointParams() : super(kVersions.last.size);
 
-  static CommandBufferInsertSyncPointParams deserialize(bindings.Message message) {
+  static _CommandBufferInsertSyncPointParams deserialize(bindings.Message message) {
     var decoder = new bindings.Decoder(message);
     var result = decode(decoder);
     if (decoder.excessHandles != null) {
@@ -869,11 +869,11 @@ class CommandBufferInsertSyncPointParams extends bindings.Struct {
     return result;
   }
 
-  static CommandBufferInsertSyncPointParams decode(bindings.Decoder decoder0) {
+  static _CommandBufferInsertSyncPointParams decode(bindings.Decoder decoder0) {
     if (decoder0 == null) {
       return null;
     }
-    CommandBufferInsertSyncPointParams result = new CommandBufferInsertSyncPointParams();
+    _CommandBufferInsertSyncPointParams result = new _CommandBufferInsertSyncPointParams();
 
     var mainDataHeader = decoder0.decodeStructDataHeader();
     if (mainDataHeader.version <= kVersions.last.version) {
@@ -907,7 +907,7 @@ class CommandBufferInsertSyncPointParams extends bindings.Struct {
   }
 
   String toString() {
-    return "CommandBufferInsertSyncPointParams("
+    return "_CommandBufferInsertSyncPointParams("
            "retire: $retire" ")";
   }
 
@@ -919,15 +919,15 @@ class CommandBufferInsertSyncPointParams extends bindings.Struct {
 }
 
 
-class CommandBufferRetireSyncPointParams extends bindings.Struct {
+class _CommandBufferRetireSyncPointParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(16, 0)
   ];
   int syncPoint = 0;
 
-  CommandBufferRetireSyncPointParams() : super(kVersions.last.size);
+  _CommandBufferRetireSyncPointParams() : super(kVersions.last.size);
 
-  static CommandBufferRetireSyncPointParams deserialize(bindings.Message message) {
+  static _CommandBufferRetireSyncPointParams deserialize(bindings.Message message) {
     var decoder = new bindings.Decoder(message);
     var result = decode(decoder);
     if (decoder.excessHandles != null) {
@@ -936,11 +936,11 @@ class CommandBufferRetireSyncPointParams extends bindings.Struct {
     return result;
   }
 
-  static CommandBufferRetireSyncPointParams decode(bindings.Decoder decoder0) {
+  static _CommandBufferRetireSyncPointParams decode(bindings.Decoder decoder0) {
     if (decoder0 == null) {
       return null;
     }
-    CommandBufferRetireSyncPointParams result = new CommandBufferRetireSyncPointParams();
+    _CommandBufferRetireSyncPointParams result = new _CommandBufferRetireSyncPointParams();
 
     var mainDataHeader = decoder0.decodeStructDataHeader();
     if (mainDataHeader.version <= kVersions.last.version) {
@@ -974,7 +974,7 @@ class CommandBufferRetireSyncPointParams extends bindings.Struct {
   }
 
   String toString() {
-    return "CommandBufferRetireSyncPointParams("
+    return "_CommandBufferRetireSyncPointParams("
            "syncPoint: $syncPoint" ")";
   }
 
@@ -986,14 +986,14 @@ class CommandBufferRetireSyncPointParams extends bindings.Struct {
 }
 
 
-class CommandBufferEchoParams extends bindings.Struct {
+class _CommandBufferEchoParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(8, 0)
   ];
 
-  CommandBufferEchoParams() : super(kVersions.last.size);
+  _CommandBufferEchoParams() : super(kVersions.last.size);
 
-  static CommandBufferEchoParams deserialize(bindings.Message message) {
+  static _CommandBufferEchoParams deserialize(bindings.Message message) {
     var decoder = new bindings.Decoder(message);
     var result = decode(decoder);
     if (decoder.excessHandles != null) {
@@ -1002,11 +1002,11 @@ class CommandBufferEchoParams extends bindings.Struct {
     return result;
   }
 
-  static CommandBufferEchoParams decode(bindings.Decoder decoder0) {
+  static _CommandBufferEchoParams decode(bindings.Decoder decoder0) {
     if (decoder0 == null) {
       return null;
     }
-    CommandBufferEchoParams result = new CommandBufferEchoParams();
+    _CommandBufferEchoParams result = new _CommandBufferEchoParams();
 
     var mainDataHeader = decoder0.decodeStructDataHeader();
     if (mainDataHeader.version <= kVersions.last.version) {
@@ -1034,7 +1034,7 @@ class CommandBufferEchoParams extends bindings.Struct {
   }
 
   String toString() {
-    return "CommandBufferEchoParams("")";
+    return "_CommandBufferEchoParams("")";
   }
 
   Map toJson() {
@@ -1101,33 +1101,30 @@ class CommandBufferEchoResponseParams extends bindings.Struct {
   }
 }
 
-const int kCommandBufferSyncClient_didInitialize_name = 0;
-const int kCommandBufferSyncClient_didMakeProgress_name = 1;
-const String CommandBufferSyncClientName = null;
+const int _CommandBufferSyncClient_didInitializeName = 0;
+const int _CommandBufferSyncClient_didMakeProgressName = 1;
 
 abstract class CommandBufferSyncClient {
+  static const String serviceName = null;
   void didInitialize(bool success, gpu_capabilities_mojom.GpuCapabilities capabilities);
   void didMakeProgress(CommandBufferState state);
-
 }
 
 
-class CommandBufferSyncClientProxyImpl extends bindings.Proxy {
-  CommandBufferSyncClientProxyImpl.fromEndpoint(
+class _CommandBufferSyncClientProxyImpl extends bindings.Proxy {
+  _CommandBufferSyncClientProxyImpl.fromEndpoint(
       core.MojoMessagePipeEndpoint endpoint) : super.fromEndpoint(endpoint);
 
-  CommandBufferSyncClientProxyImpl.fromHandle(core.MojoHandle handle) :
+  _CommandBufferSyncClientProxyImpl.fromHandle(core.MojoHandle handle) :
       super.fromHandle(handle);
 
-  CommandBufferSyncClientProxyImpl.unbound() : super.unbound();
+  _CommandBufferSyncClientProxyImpl.unbound() : super.unbound();
 
-  static CommandBufferSyncClientProxyImpl newFromEndpoint(
+  static _CommandBufferSyncClientProxyImpl newFromEndpoint(
       core.MojoMessagePipeEndpoint endpoint) {
-    assert(endpoint.setDescription("For CommandBufferSyncClientProxyImpl"));
-    return new CommandBufferSyncClientProxyImpl.fromEndpoint(endpoint);
+    assert(endpoint.setDescription("For _CommandBufferSyncClientProxyImpl"));
+    return new _CommandBufferSyncClientProxyImpl.fromEndpoint(endpoint);
   }
-
-  String get name => CommandBufferSyncClientName;
 
   void handleResponse(bindings.ServiceMessage message) {
     switch (message.header.type) {
@@ -1140,13 +1137,13 @@ class CommandBufferSyncClientProxyImpl extends bindings.Proxy {
 
   String toString() {
     var superString = super.toString();
-    return "CommandBufferSyncClientProxyImpl($superString)";
+    return "_CommandBufferSyncClientProxyImpl($superString)";
   }
 }
 
 
 class _CommandBufferSyncClientProxyCalls implements CommandBufferSyncClient {
-  CommandBufferSyncClientProxyImpl _proxyImpl;
+  _CommandBufferSyncClientProxyImpl _proxyImpl;
 
   _CommandBufferSyncClientProxyCalls(this._proxyImpl);
     void didInitialize(bool success, gpu_capabilities_mojom.GpuCapabilities capabilities) {
@@ -1154,47 +1151,44 @@ class _CommandBufferSyncClientProxyCalls implements CommandBufferSyncClient {
         _proxyImpl.proxyError("The Proxy is closed.");
         return;
       }
-      var params = new CommandBufferSyncClientDidInitializeParams();
+      var params = new _CommandBufferSyncClientDidInitializeParams();
       params.success = success;
       params.capabilities = capabilities;
-      _proxyImpl.sendMessage(params, kCommandBufferSyncClient_didInitialize_name);
+      _proxyImpl.sendMessage(params, _CommandBufferSyncClient_didInitializeName);
     }
-  
     void didMakeProgress(CommandBufferState state) {
       if (!_proxyImpl.isBound) {
         _proxyImpl.proxyError("The Proxy is closed.");
         return;
       }
-      var params = new CommandBufferSyncClientDidMakeProgressParams();
+      var params = new _CommandBufferSyncClientDidMakeProgressParams();
       params.state = state;
-      _proxyImpl.sendMessage(params, kCommandBufferSyncClient_didMakeProgress_name);
+      _proxyImpl.sendMessage(params, _CommandBufferSyncClient_didMakeProgressName);
     }
-  
 }
 
 
 class CommandBufferSyncClientProxy implements bindings.ProxyBase {
   final bindings.Proxy impl;
   CommandBufferSyncClient ptr;
-  final String name = CommandBufferSyncClientName;
 
-  CommandBufferSyncClientProxy(CommandBufferSyncClientProxyImpl proxyImpl) :
+  CommandBufferSyncClientProxy(_CommandBufferSyncClientProxyImpl proxyImpl) :
       impl = proxyImpl,
       ptr = new _CommandBufferSyncClientProxyCalls(proxyImpl);
 
   CommandBufferSyncClientProxy.fromEndpoint(
       core.MojoMessagePipeEndpoint endpoint) :
-      impl = new CommandBufferSyncClientProxyImpl.fromEndpoint(endpoint) {
+      impl = new _CommandBufferSyncClientProxyImpl.fromEndpoint(endpoint) {
     ptr = new _CommandBufferSyncClientProxyCalls(impl);
   }
 
   CommandBufferSyncClientProxy.fromHandle(core.MojoHandle handle) :
-      impl = new CommandBufferSyncClientProxyImpl.fromHandle(handle) {
+      impl = new _CommandBufferSyncClientProxyImpl.fromHandle(handle) {
     ptr = new _CommandBufferSyncClientProxyCalls(impl);
   }
 
   CommandBufferSyncClientProxy.unbound() :
-      impl = new CommandBufferSyncClientProxyImpl.unbound() {
+      impl = new _CommandBufferSyncClientProxyImpl.unbound() {
     ptr = new _CommandBufferSyncClientProxyCalls(impl);
   }
 
@@ -1210,6 +1204,8 @@ class CommandBufferSyncClientProxy implements bindings.ProxyBase {
     assert(endpoint.setDescription("For CommandBufferSyncClientProxy"));
     return new CommandBufferSyncClientProxy.fromEndpoint(endpoint);
   }
+
+  String get serviceName => CommandBufferSyncClient.serviceName;
 
   Future close({bool immediate: false}) => impl.close(immediate: immediate);
 
@@ -1249,8 +1245,6 @@ class CommandBufferSyncClientStub extends bindings.Stub {
     return new CommandBufferSyncClientStub.fromEndpoint(endpoint);
   }
 
-  static const String name = CommandBufferSyncClientName;
-
 
 
   dynamic handleMessage(bindings.ServiceMessage message) {
@@ -1261,13 +1255,13 @@ class CommandBufferSyncClientStub extends bindings.Stub {
     }
     assert(_impl != null);
     switch (message.header.type) {
-      case kCommandBufferSyncClient_didInitialize_name:
-        var params = CommandBufferSyncClientDidInitializeParams.deserialize(
+      case _CommandBufferSyncClient_didInitializeName:
+        var params = _CommandBufferSyncClientDidInitializeParams.deserialize(
             message.payload);
         _impl.didInitialize(params.success, params.capabilities);
         break;
-      case kCommandBufferSyncClient_didMakeProgress_name:
-        var params = CommandBufferSyncClientDidMakeProgressParams.deserialize(
+      case _CommandBufferSyncClient_didMakeProgressName:
+        var params = _CommandBufferSyncClientDidMakeProgressParams.deserialize(
             message.payload);
         _impl.didMakeProgress(params.state);
         break;
@@ -1292,31 +1286,28 @@ class CommandBufferSyncClientStub extends bindings.Stub {
   int get version => 0;
 }
 
-const int kCommandBufferSyncPointClient_didInsertSyncPoint_name = 0;
-const String CommandBufferSyncPointClientName = null;
+const int _CommandBufferSyncPointClient_didInsertSyncPointName = 0;
 
 abstract class CommandBufferSyncPointClient {
+  static const String serviceName = null;
   void didInsertSyncPoint(int syncPoint);
-
 }
 
 
-class CommandBufferSyncPointClientProxyImpl extends bindings.Proxy {
-  CommandBufferSyncPointClientProxyImpl.fromEndpoint(
+class _CommandBufferSyncPointClientProxyImpl extends bindings.Proxy {
+  _CommandBufferSyncPointClientProxyImpl.fromEndpoint(
       core.MojoMessagePipeEndpoint endpoint) : super.fromEndpoint(endpoint);
 
-  CommandBufferSyncPointClientProxyImpl.fromHandle(core.MojoHandle handle) :
+  _CommandBufferSyncPointClientProxyImpl.fromHandle(core.MojoHandle handle) :
       super.fromHandle(handle);
 
-  CommandBufferSyncPointClientProxyImpl.unbound() : super.unbound();
+  _CommandBufferSyncPointClientProxyImpl.unbound() : super.unbound();
 
-  static CommandBufferSyncPointClientProxyImpl newFromEndpoint(
+  static _CommandBufferSyncPointClientProxyImpl newFromEndpoint(
       core.MojoMessagePipeEndpoint endpoint) {
-    assert(endpoint.setDescription("For CommandBufferSyncPointClientProxyImpl"));
-    return new CommandBufferSyncPointClientProxyImpl.fromEndpoint(endpoint);
+    assert(endpoint.setDescription("For _CommandBufferSyncPointClientProxyImpl"));
+    return new _CommandBufferSyncPointClientProxyImpl.fromEndpoint(endpoint);
   }
-
-  String get name => CommandBufferSyncPointClientName;
 
   void handleResponse(bindings.ServiceMessage message) {
     switch (message.header.type) {
@@ -1329,13 +1320,13 @@ class CommandBufferSyncPointClientProxyImpl extends bindings.Proxy {
 
   String toString() {
     var superString = super.toString();
-    return "CommandBufferSyncPointClientProxyImpl($superString)";
+    return "_CommandBufferSyncPointClientProxyImpl($superString)";
   }
 }
 
 
 class _CommandBufferSyncPointClientProxyCalls implements CommandBufferSyncPointClient {
-  CommandBufferSyncPointClientProxyImpl _proxyImpl;
+  _CommandBufferSyncPointClientProxyImpl _proxyImpl;
 
   _CommandBufferSyncPointClientProxyCalls(this._proxyImpl);
     void didInsertSyncPoint(int syncPoint) {
@@ -1343,36 +1334,34 @@ class _CommandBufferSyncPointClientProxyCalls implements CommandBufferSyncPointC
         _proxyImpl.proxyError("The Proxy is closed.");
         return;
       }
-      var params = new CommandBufferSyncPointClientDidInsertSyncPointParams();
+      var params = new _CommandBufferSyncPointClientDidInsertSyncPointParams();
       params.syncPoint = syncPoint;
-      _proxyImpl.sendMessage(params, kCommandBufferSyncPointClient_didInsertSyncPoint_name);
+      _proxyImpl.sendMessage(params, _CommandBufferSyncPointClient_didInsertSyncPointName);
     }
-  
 }
 
 
 class CommandBufferSyncPointClientProxy implements bindings.ProxyBase {
   final bindings.Proxy impl;
   CommandBufferSyncPointClient ptr;
-  final String name = CommandBufferSyncPointClientName;
 
-  CommandBufferSyncPointClientProxy(CommandBufferSyncPointClientProxyImpl proxyImpl) :
+  CommandBufferSyncPointClientProxy(_CommandBufferSyncPointClientProxyImpl proxyImpl) :
       impl = proxyImpl,
       ptr = new _CommandBufferSyncPointClientProxyCalls(proxyImpl);
 
   CommandBufferSyncPointClientProxy.fromEndpoint(
       core.MojoMessagePipeEndpoint endpoint) :
-      impl = new CommandBufferSyncPointClientProxyImpl.fromEndpoint(endpoint) {
+      impl = new _CommandBufferSyncPointClientProxyImpl.fromEndpoint(endpoint) {
     ptr = new _CommandBufferSyncPointClientProxyCalls(impl);
   }
 
   CommandBufferSyncPointClientProxy.fromHandle(core.MojoHandle handle) :
-      impl = new CommandBufferSyncPointClientProxyImpl.fromHandle(handle) {
+      impl = new _CommandBufferSyncPointClientProxyImpl.fromHandle(handle) {
     ptr = new _CommandBufferSyncPointClientProxyCalls(impl);
   }
 
   CommandBufferSyncPointClientProxy.unbound() :
-      impl = new CommandBufferSyncPointClientProxyImpl.unbound() {
+      impl = new _CommandBufferSyncPointClientProxyImpl.unbound() {
     ptr = new _CommandBufferSyncPointClientProxyCalls(impl);
   }
 
@@ -1388,6 +1377,8 @@ class CommandBufferSyncPointClientProxy implements bindings.ProxyBase {
     assert(endpoint.setDescription("For CommandBufferSyncPointClientProxy"));
     return new CommandBufferSyncPointClientProxy.fromEndpoint(endpoint);
   }
+
+  String get serviceName => CommandBufferSyncPointClient.serviceName;
 
   Future close({bool immediate: false}) => impl.close(immediate: immediate);
 
@@ -1427,8 +1418,6 @@ class CommandBufferSyncPointClientStub extends bindings.Stub {
     return new CommandBufferSyncPointClientStub.fromEndpoint(endpoint);
   }
 
-  static const String name = CommandBufferSyncPointClientName;
-
 
 
   dynamic handleMessage(bindings.ServiceMessage message) {
@@ -1439,8 +1428,8 @@ class CommandBufferSyncPointClientStub extends bindings.Stub {
     }
     assert(_impl != null);
     switch (message.header.type) {
-      case kCommandBufferSyncPointClient_didInsertSyncPoint_name:
-        var params = CommandBufferSyncPointClientDidInsertSyncPointParams.deserialize(
+      case _CommandBufferSyncPointClient_didInsertSyncPointName:
+        var params = _CommandBufferSyncPointClientDidInsertSyncPointParams.deserialize(
             message.payload);
         _impl.didInsertSyncPoint(params.syncPoint);
         break;
@@ -1465,31 +1454,28 @@ class CommandBufferSyncPointClientStub extends bindings.Stub {
   int get version => 0;
 }
 
-const int kCommandBufferLostContextObserver_didLoseContext_name = 0;
-const String CommandBufferLostContextObserverName = null;
+const int _CommandBufferLostContextObserver_didLoseContextName = 0;
 
 abstract class CommandBufferLostContextObserver {
+  static const String serviceName = null;
   void didLoseContext(int contextLostReason);
-
 }
 
 
-class CommandBufferLostContextObserverProxyImpl extends bindings.Proxy {
-  CommandBufferLostContextObserverProxyImpl.fromEndpoint(
+class _CommandBufferLostContextObserverProxyImpl extends bindings.Proxy {
+  _CommandBufferLostContextObserverProxyImpl.fromEndpoint(
       core.MojoMessagePipeEndpoint endpoint) : super.fromEndpoint(endpoint);
 
-  CommandBufferLostContextObserverProxyImpl.fromHandle(core.MojoHandle handle) :
+  _CommandBufferLostContextObserverProxyImpl.fromHandle(core.MojoHandle handle) :
       super.fromHandle(handle);
 
-  CommandBufferLostContextObserverProxyImpl.unbound() : super.unbound();
+  _CommandBufferLostContextObserverProxyImpl.unbound() : super.unbound();
 
-  static CommandBufferLostContextObserverProxyImpl newFromEndpoint(
+  static _CommandBufferLostContextObserverProxyImpl newFromEndpoint(
       core.MojoMessagePipeEndpoint endpoint) {
-    assert(endpoint.setDescription("For CommandBufferLostContextObserverProxyImpl"));
-    return new CommandBufferLostContextObserverProxyImpl.fromEndpoint(endpoint);
+    assert(endpoint.setDescription("For _CommandBufferLostContextObserverProxyImpl"));
+    return new _CommandBufferLostContextObserverProxyImpl.fromEndpoint(endpoint);
   }
-
-  String get name => CommandBufferLostContextObserverName;
 
   void handleResponse(bindings.ServiceMessage message) {
     switch (message.header.type) {
@@ -1502,13 +1488,13 @@ class CommandBufferLostContextObserverProxyImpl extends bindings.Proxy {
 
   String toString() {
     var superString = super.toString();
-    return "CommandBufferLostContextObserverProxyImpl($superString)";
+    return "_CommandBufferLostContextObserverProxyImpl($superString)";
   }
 }
 
 
 class _CommandBufferLostContextObserverProxyCalls implements CommandBufferLostContextObserver {
-  CommandBufferLostContextObserverProxyImpl _proxyImpl;
+  _CommandBufferLostContextObserverProxyImpl _proxyImpl;
 
   _CommandBufferLostContextObserverProxyCalls(this._proxyImpl);
     void didLoseContext(int contextLostReason) {
@@ -1516,36 +1502,34 @@ class _CommandBufferLostContextObserverProxyCalls implements CommandBufferLostCo
         _proxyImpl.proxyError("The Proxy is closed.");
         return;
       }
-      var params = new CommandBufferLostContextObserverDidLoseContextParams();
+      var params = new _CommandBufferLostContextObserverDidLoseContextParams();
       params.contextLostReason = contextLostReason;
-      _proxyImpl.sendMessage(params, kCommandBufferLostContextObserver_didLoseContext_name);
+      _proxyImpl.sendMessage(params, _CommandBufferLostContextObserver_didLoseContextName);
     }
-  
 }
 
 
 class CommandBufferLostContextObserverProxy implements bindings.ProxyBase {
   final bindings.Proxy impl;
   CommandBufferLostContextObserver ptr;
-  final String name = CommandBufferLostContextObserverName;
 
-  CommandBufferLostContextObserverProxy(CommandBufferLostContextObserverProxyImpl proxyImpl) :
+  CommandBufferLostContextObserverProxy(_CommandBufferLostContextObserverProxyImpl proxyImpl) :
       impl = proxyImpl,
       ptr = new _CommandBufferLostContextObserverProxyCalls(proxyImpl);
 
   CommandBufferLostContextObserverProxy.fromEndpoint(
       core.MojoMessagePipeEndpoint endpoint) :
-      impl = new CommandBufferLostContextObserverProxyImpl.fromEndpoint(endpoint) {
+      impl = new _CommandBufferLostContextObserverProxyImpl.fromEndpoint(endpoint) {
     ptr = new _CommandBufferLostContextObserverProxyCalls(impl);
   }
 
   CommandBufferLostContextObserverProxy.fromHandle(core.MojoHandle handle) :
-      impl = new CommandBufferLostContextObserverProxyImpl.fromHandle(handle) {
+      impl = new _CommandBufferLostContextObserverProxyImpl.fromHandle(handle) {
     ptr = new _CommandBufferLostContextObserverProxyCalls(impl);
   }
 
   CommandBufferLostContextObserverProxy.unbound() :
-      impl = new CommandBufferLostContextObserverProxyImpl.unbound() {
+      impl = new _CommandBufferLostContextObserverProxyImpl.unbound() {
     ptr = new _CommandBufferLostContextObserverProxyCalls(impl);
   }
 
@@ -1561,6 +1545,8 @@ class CommandBufferLostContextObserverProxy implements bindings.ProxyBase {
     assert(endpoint.setDescription("For CommandBufferLostContextObserverProxy"));
     return new CommandBufferLostContextObserverProxy.fromEndpoint(endpoint);
   }
+
+  String get serviceName => CommandBufferLostContextObserver.serviceName;
 
   Future close({bool immediate: false}) => impl.close(immediate: immediate);
 
@@ -1600,8 +1586,6 @@ class CommandBufferLostContextObserverStub extends bindings.Stub {
     return new CommandBufferLostContextObserverStub.fromEndpoint(endpoint);
   }
 
-  static const String name = CommandBufferLostContextObserverName;
-
 
 
   dynamic handleMessage(bindings.ServiceMessage message) {
@@ -1612,8 +1596,8 @@ class CommandBufferLostContextObserverStub extends bindings.Stub {
     }
     assert(_impl != null);
     switch (message.header.type) {
-      case kCommandBufferLostContextObserver_didLoseContext_name:
-        var params = CommandBufferLostContextObserverDidLoseContextParams.deserialize(
+      case _CommandBufferLostContextObserver_didLoseContextName:
+        var params = _CommandBufferLostContextObserverDidLoseContextParams.deserialize(
             message.payload);
         _impl.didLoseContext(params.contextLostReason);
         break;
@@ -1638,18 +1622,18 @@ class CommandBufferLostContextObserverStub extends bindings.Stub {
   int get version => 0;
 }
 
-const int kCommandBuffer_initialize_name = 0;
-const int kCommandBuffer_setGetBuffer_name = 1;
-const int kCommandBuffer_flush_name = 2;
-const int kCommandBuffer_makeProgress_name = 3;
-const int kCommandBuffer_registerTransferBuffer_name = 4;
-const int kCommandBuffer_destroyTransferBuffer_name = 5;
-const int kCommandBuffer_insertSyncPoint_name = 6;
-const int kCommandBuffer_retireSyncPoint_name = 7;
-const int kCommandBuffer_echo_name = 8;
-const String CommandBufferName = null;
+const int _CommandBuffer_initializeName = 0;
+const int _CommandBuffer_setGetBufferName = 1;
+const int _CommandBuffer_flushName = 2;
+const int _CommandBuffer_makeProgressName = 3;
+const int _CommandBuffer_registerTransferBufferName = 4;
+const int _CommandBuffer_destroyTransferBufferName = 5;
+const int _CommandBuffer_insertSyncPointName = 6;
+const int _CommandBuffer_retireSyncPointName = 7;
+const int _CommandBuffer_echoName = 8;
 
 abstract class CommandBuffer {
+  static const String serviceName = null;
   void initialize(Object syncClient, Object syncPointClient, Object lostObserver, core.MojoSharedBuffer sharedState);
   void setGetBuffer(int buffer);
   void flush(int putOffset);
@@ -1659,30 +1643,27 @@ abstract class CommandBuffer {
   void insertSyncPoint(bool retire);
   void retireSyncPoint(int syncPoint);
   dynamic echo([Function responseFactory = null]);
-
 }
 
 
-class CommandBufferProxyImpl extends bindings.Proxy {
-  CommandBufferProxyImpl.fromEndpoint(
+class _CommandBufferProxyImpl extends bindings.Proxy {
+  _CommandBufferProxyImpl.fromEndpoint(
       core.MojoMessagePipeEndpoint endpoint) : super.fromEndpoint(endpoint);
 
-  CommandBufferProxyImpl.fromHandle(core.MojoHandle handle) :
+  _CommandBufferProxyImpl.fromHandle(core.MojoHandle handle) :
       super.fromHandle(handle);
 
-  CommandBufferProxyImpl.unbound() : super.unbound();
+  _CommandBufferProxyImpl.unbound() : super.unbound();
 
-  static CommandBufferProxyImpl newFromEndpoint(
+  static _CommandBufferProxyImpl newFromEndpoint(
       core.MojoMessagePipeEndpoint endpoint) {
-    assert(endpoint.setDescription("For CommandBufferProxyImpl"));
-    return new CommandBufferProxyImpl.fromEndpoint(endpoint);
+    assert(endpoint.setDescription("For _CommandBufferProxyImpl"));
+    return new _CommandBufferProxyImpl.fromEndpoint(endpoint);
   }
-
-  String get name => CommandBufferName;
 
   void handleResponse(bindings.ServiceMessage message) {
     switch (message.header.type) {
-      case kCommandBuffer_echo_name:
+      case _CommandBuffer_echoName:
         var r = CommandBufferEchoResponseParams.deserialize(
             message.payload);
         if (!message.header.hasRequestId) {
@@ -1711,13 +1692,13 @@ class CommandBufferProxyImpl extends bindings.Proxy {
 
   String toString() {
     var superString = super.toString();
-    return "CommandBufferProxyImpl($superString)";
+    return "_CommandBufferProxyImpl($superString)";
   }
 }
 
 
 class _CommandBufferProxyCalls implements CommandBuffer {
-  CommandBufferProxyImpl _proxyImpl;
+  _CommandBufferProxyImpl _proxyImpl;
 
   _CommandBufferProxyCalls(this._proxyImpl);
     void initialize(Object syncClient, Object syncPointClient, Object lostObserver, core.MojoSharedBuffer sharedState) {
@@ -1725,91 +1706,83 @@ class _CommandBufferProxyCalls implements CommandBuffer {
         _proxyImpl.proxyError("The Proxy is closed.");
         return;
       }
-      var params = new CommandBufferInitializeParams();
+      var params = new _CommandBufferInitializeParams();
       params.syncClient = syncClient;
       params.syncPointClient = syncPointClient;
       params.lostObserver = lostObserver;
       params.sharedState = sharedState;
-      _proxyImpl.sendMessage(params, kCommandBuffer_initialize_name);
+      _proxyImpl.sendMessage(params, _CommandBuffer_initializeName);
     }
-  
     void setGetBuffer(int buffer) {
       if (!_proxyImpl.isBound) {
         _proxyImpl.proxyError("The Proxy is closed.");
         return;
       }
-      var params = new CommandBufferSetGetBufferParams();
+      var params = new _CommandBufferSetGetBufferParams();
       params.buffer = buffer;
-      _proxyImpl.sendMessage(params, kCommandBuffer_setGetBuffer_name);
+      _proxyImpl.sendMessage(params, _CommandBuffer_setGetBufferName);
     }
-  
     void flush(int putOffset) {
       if (!_proxyImpl.isBound) {
         _proxyImpl.proxyError("The Proxy is closed.");
         return;
       }
-      var params = new CommandBufferFlushParams();
+      var params = new _CommandBufferFlushParams();
       params.putOffset = putOffset;
-      _proxyImpl.sendMessage(params, kCommandBuffer_flush_name);
+      _proxyImpl.sendMessage(params, _CommandBuffer_flushName);
     }
-  
     void makeProgress(int lastGetOffset) {
       if (!_proxyImpl.isBound) {
         _proxyImpl.proxyError("The Proxy is closed.");
         return;
       }
-      var params = new CommandBufferMakeProgressParams();
+      var params = new _CommandBufferMakeProgressParams();
       params.lastGetOffset = lastGetOffset;
-      _proxyImpl.sendMessage(params, kCommandBuffer_makeProgress_name);
+      _proxyImpl.sendMessage(params, _CommandBuffer_makeProgressName);
     }
-  
     void registerTransferBuffer(int id, core.MojoSharedBuffer transferBuffer, int size) {
       if (!_proxyImpl.isBound) {
         _proxyImpl.proxyError("The Proxy is closed.");
         return;
       }
-      var params = new CommandBufferRegisterTransferBufferParams();
+      var params = new _CommandBufferRegisterTransferBufferParams();
       params.id = id;
       params.transferBuffer = transferBuffer;
       params.size = size;
-      _proxyImpl.sendMessage(params, kCommandBuffer_registerTransferBuffer_name);
+      _proxyImpl.sendMessage(params, _CommandBuffer_registerTransferBufferName);
     }
-  
     void destroyTransferBuffer(int id) {
       if (!_proxyImpl.isBound) {
         _proxyImpl.proxyError("The Proxy is closed.");
         return;
       }
-      var params = new CommandBufferDestroyTransferBufferParams();
+      var params = new _CommandBufferDestroyTransferBufferParams();
       params.id = id;
-      _proxyImpl.sendMessage(params, kCommandBuffer_destroyTransferBuffer_name);
+      _proxyImpl.sendMessage(params, _CommandBuffer_destroyTransferBufferName);
     }
-  
     void insertSyncPoint(bool retire) {
       if (!_proxyImpl.isBound) {
         _proxyImpl.proxyError("The Proxy is closed.");
         return;
       }
-      var params = new CommandBufferInsertSyncPointParams();
+      var params = new _CommandBufferInsertSyncPointParams();
       params.retire = retire;
-      _proxyImpl.sendMessage(params, kCommandBuffer_insertSyncPoint_name);
+      _proxyImpl.sendMessage(params, _CommandBuffer_insertSyncPointName);
     }
-  
     void retireSyncPoint(int syncPoint) {
       if (!_proxyImpl.isBound) {
         _proxyImpl.proxyError("The Proxy is closed.");
         return;
       }
-      var params = new CommandBufferRetireSyncPointParams();
+      var params = new _CommandBufferRetireSyncPointParams();
       params.syncPoint = syncPoint;
-      _proxyImpl.sendMessage(params, kCommandBuffer_retireSyncPoint_name);
+      _proxyImpl.sendMessage(params, _CommandBuffer_retireSyncPointName);
     }
-  
     dynamic echo([Function responseFactory = null]) {
-      var params = new CommandBufferEchoParams();
+      var params = new _CommandBufferEchoParams();
       return _proxyImpl.sendMessageWithRequestId(
           params,
-          kCommandBuffer_echo_name,
+          _CommandBuffer_echoName,
           -1,
           bindings.MessageHeader.kMessageExpectsResponse);
     }
@@ -1819,25 +1792,24 @@ class _CommandBufferProxyCalls implements CommandBuffer {
 class CommandBufferProxy implements bindings.ProxyBase {
   final bindings.Proxy impl;
   CommandBuffer ptr;
-  final String name = CommandBufferName;
 
-  CommandBufferProxy(CommandBufferProxyImpl proxyImpl) :
+  CommandBufferProxy(_CommandBufferProxyImpl proxyImpl) :
       impl = proxyImpl,
       ptr = new _CommandBufferProxyCalls(proxyImpl);
 
   CommandBufferProxy.fromEndpoint(
       core.MojoMessagePipeEndpoint endpoint) :
-      impl = new CommandBufferProxyImpl.fromEndpoint(endpoint) {
+      impl = new _CommandBufferProxyImpl.fromEndpoint(endpoint) {
     ptr = new _CommandBufferProxyCalls(impl);
   }
 
   CommandBufferProxy.fromHandle(core.MojoHandle handle) :
-      impl = new CommandBufferProxyImpl.fromHandle(handle) {
+      impl = new _CommandBufferProxyImpl.fromHandle(handle) {
     ptr = new _CommandBufferProxyCalls(impl);
   }
 
   CommandBufferProxy.unbound() :
-      impl = new CommandBufferProxyImpl.unbound() {
+      impl = new _CommandBufferProxyImpl.unbound() {
     ptr = new _CommandBufferProxyCalls(impl);
   }
 
@@ -1853,6 +1825,8 @@ class CommandBufferProxy implements bindings.ProxyBase {
     assert(endpoint.setDescription("For CommandBufferProxy"));
     return new CommandBufferProxy.fromEndpoint(endpoint);
   }
+
+  String get serviceName => CommandBuffer.serviceName;
 
   Future close({bool immediate: false}) => impl.close(immediate: immediate);
 
@@ -1892,8 +1866,6 @@ class CommandBufferStub extends bindings.Stub {
     return new CommandBufferStub.fromEndpoint(endpoint);
   }
 
-  static const String name = CommandBufferName;
-
 
   CommandBufferEchoResponseParams _CommandBufferEchoResponseParamsFactory() {
     var mojo_factory_result = new CommandBufferEchoResponseParams();
@@ -1908,48 +1880,48 @@ class CommandBufferStub extends bindings.Stub {
     }
     assert(_impl != null);
     switch (message.header.type) {
-      case kCommandBuffer_initialize_name:
-        var params = CommandBufferInitializeParams.deserialize(
+      case _CommandBuffer_initializeName:
+        var params = _CommandBufferInitializeParams.deserialize(
             message.payload);
         _impl.initialize(params.syncClient, params.syncPointClient, params.lostObserver, params.sharedState);
         break;
-      case kCommandBuffer_setGetBuffer_name:
-        var params = CommandBufferSetGetBufferParams.deserialize(
+      case _CommandBuffer_setGetBufferName:
+        var params = _CommandBufferSetGetBufferParams.deserialize(
             message.payload);
         _impl.setGetBuffer(params.buffer);
         break;
-      case kCommandBuffer_flush_name:
-        var params = CommandBufferFlushParams.deserialize(
+      case _CommandBuffer_flushName:
+        var params = _CommandBufferFlushParams.deserialize(
             message.payload);
         _impl.flush(params.putOffset);
         break;
-      case kCommandBuffer_makeProgress_name:
-        var params = CommandBufferMakeProgressParams.deserialize(
+      case _CommandBuffer_makeProgressName:
+        var params = _CommandBufferMakeProgressParams.deserialize(
             message.payload);
         _impl.makeProgress(params.lastGetOffset);
         break;
-      case kCommandBuffer_registerTransferBuffer_name:
-        var params = CommandBufferRegisterTransferBufferParams.deserialize(
+      case _CommandBuffer_registerTransferBufferName:
+        var params = _CommandBufferRegisterTransferBufferParams.deserialize(
             message.payload);
         _impl.registerTransferBuffer(params.id, params.transferBuffer, params.size);
         break;
-      case kCommandBuffer_destroyTransferBuffer_name:
-        var params = CommandBufferDestroyTransferBufferParams.deserialize(
+      case _CommandBuffer_destroyTransferBufferName:
+        var params = _CommandBufferDestroyTransferBufferParams.deserialize(
             message.payload);
         _impl.destroyTransferBuffer(params.id);
         break;
-      case kCommandBuffer_insertSyncPoint_name:
-        var params = CommandBufferInsertSyncPointParams.deserialize(
+      case _CommandBuffer_insertSyncPointName:
+        var params = _CommandBufferInsertSyncPointParams.deserialize(
             message.payload);
         _impl.insertSyncPoint(params.retire);
         break;
-      case kCommandBuffer_retireSyncPoint_name:
-        var params = CommandBufferRetireSyncPointParams.deserialize(
+      case _CommandBuffer_retireSyncPointName:
+        var params = _CommandBufferRetireSyncPointParams.deserialize(
             message.payload);
         _impl.retireSyncPoint(params.syncPoint);
         break;
-      case kCommandBuffer_echo_name:
-        var params = CommandBufferEchoParams.deserialize(
+      case _CommandBuffer_echoName:
+        var params = _CommandBufferEchoParams.deserialize(
             message.payload);
         var response = _impl.echo(_CommandBufferEchoResponseParamsFactory);
         if (response is Future) {
@@ -1957,7 +1929,7 @@ class CommandBufferStub extends bindings.Stub {
             if (response != null) {
               return buildResponseWithId(
                   response,
-                  kCommandBuffer_echo_name,
+                  _CommandBuffer_echoName,
                   message.header.requestId,
                   bindings.MessageHeader.kMessageIsResponse);
             }
@@ -1965,7 +1937,7 @@ class CommandBufferStub extends bindings.Stub {
         } else if (response != null) {
           return buildResponseWithId(
               response,
-              kCommandBuffer_echo_name,
+              _CommandBuffer_echoName,
               message.header.requestId,
               bindings.MessageHeader.kMessageIsResponse);
         }

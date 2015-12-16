@@ -12,7 +12,7 @@ import 'package:mojo/mojo/network_error.mojom.dart' as network_error_mojom;
 
 
 
-class WebSocketConnectParams extends bindings.Struct {
+class _WebSocketConnectParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(48, 0)
   ];
@@ -22,9 +22,9 @@ class WebSocketConnectParams extends bindings.Struct {
   core.MojoDataPipeConsumer sendStream = null;
   Object client = null;
 
-  WebSocketConnectParams() : super(kVersions.last.size);
+  _WebSocketConnectParams() : super(kVersions.last.size);
 
-  static WebSocketConnectParams deserialize(bindings.Message message) {
+  static _WebSocketConnectParams deserialize(bindings.Message message) {
     var decoder = new bindings.Decoder(message);
     var result = decode(decoder);
     if (decoder.excessHandles != null) {
@@ -33,11 +33,11 @@ class WebSocketConnectParams extends bindings.Struct {
     return result;
   }
 
-  static WebSocketConnectParams decode(bindings.Decoder decoder0) {
+  static _WebSocketConnectParams decode(bindings.Decoder decoder0) {
     if (decoder0 == null) {
       return null;
     }
-    WebSocketConnectParams result = new WebSocketConnectParams();
+    _WebSocketConnectParams result = new _WebSocketConnectParams();
 
     var mainDataHeader = decoder0.decodeStructDataHeader();
     if (mainDataHeader.version <= kVersions.last.version) {
@@ -111,7 +111,7 @@ class WebSocketConnectParams extends bindings.Struct {
   }
 
   String toString() {
-    return "WebSocketConnectParams("
+    return "_WebSocketConnectParams("
            "url: $url" ", "
            "protocols: $protocols" ", "
            "origin: $origin" ", "
@@ -126,7 +126,7 @@ class WebSocketConnectParams extends bindings.Struct {
 }
 
 
-class WebSocketSendParams extends bindings.Struct {
+class _WebSocketSendParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(24, 0)
   ];
@@ -134,9 +134,9 @@ class WebSocketSendParams extends bindings.Struct {
   WebSocketMessageType type = null;
   int numBytes = 0;
 
-  WebSocketSendParams() : super(kVersions.last.size);
+  _WebSocketSendParams() : super(kVersions.last.size);
 
-  static WebSocketSendParams deserialize(bindings.Message message) {
+  static _WebSocketSendParams deserialize(bindings.Message message) {
     var decoder = new bindings.Decoder(message);
     var result = decode(decoder);
     if (decoder.excessHandles != null) {
@@ -145,11 +145,11 @@ class WebSocketSendParams extends bindings.Struct {
     return result;
   }
 
-  static WebSocketSendParams decode(bindings.Decoder decoder0) {
+  static _WebSocketSendParams decode(bindings.Decoder decoder0) {
     if (decoder0 == null) {
       return null;
     }
-    WebSocketSendParams result = new WebSocketSendParams();
+    _WebSocketSendParams result = new _WebSocketSendParams();
 
     var mainDataHeader = decoder0.decodeStructDataHeader();
     if (mainDataHeader.version <= kVersions.last.version) {
@@ -199,7 +199,7 @@ class WebSocketSendParams extends bindings.Struct {
   }
 
   String toString() {
-    return "WebSocketSendParams("
+    return "_WebSocketSendParams("
            "fin: $fin" ", "
            "type: $type" ", "
            "numBytes: $numBytes" ")";
@@ -215,15 +215,15 @@ class WebSocketSendParams extends bindings.Struct {
 }
 
 
-class WebSocketFlowControlParams extends bindings.Struct {
+class _WebSocketFlowControlParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(16, 0)
   ];
   int quota = 0;
 
-  WebSocketFlowControlParams() : super(kVersions.last.size);
+  _WebSocketFlowControlParams() : super(kVersions.last.size);
 
-  static WebSocketFlowControlParams deserialize(bindings.Message message) {
+  static _WebSocketFlowControlParams deserialize(bindings.Message message) {
     var decoder = new bindings.Decoder(message);
     var result = decode(decoder);
     if (decoder.excessHandles != null) {
@@ -232,11 +232,11 @@ class WebSocketFlowControlParams extends bindings.Struct {
     return result;
   }
 
-  static WebSocketFlowControlParams decode(bindings.Decoder decoder0) {
+  static _WebSocketFlowControlParams decode(bindings.Decoder decoder0) {
     if (decoder0 == null) {
       return null;
     }
-    WebSocketFlowControlParams result = new WebSocketFlowControlParams();
+    _WebSocketFlowControlParams result = new _WebSocketFlowControlParams();
 
     var mainDataHeader = decoder0.decodeStructDataHeader();
     if (mainDataHeader.version <= kVersions.last.version) {
@@ -270,7 +270,7 @@ class WebSocketFlowControlParams extends bindings.Struct {
   }
 
   String toString() {
-    return "WebSocketFlowControlParams("
+    return "_WebSocketFlowControlParams("
            "quota: $quota" ")";
   }
 
@@ -282,16 +282,16 @@ class WebSocketFlowControlParams extends bindings.Struct {
 }
 
 
-class WebSocketCloseParams extends bindings.Struct {
+class _WebSocketCloseParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(24, 0)
   ];
   int code = 0;
   String reason = null;
 
-  WebSocketCloseParams() : super(kVersions.last.size);
+  _WebSocketCloseParams() : super(kVersions.last.size);
 
-  static WebSocketCloseParams deserialize(bindings.Message message) {
+  static _WebSocketCloseParams deserialize(bindings.Message message) {
     var decoder = new bindings.Decoder(message);
     var result = decode(decoder);
     if (decoder.excessHandles != null) {
@@ -300,11 +300,11 @@ class WebSocketCloseParams extends bindings.Struct {
     return result;
   }
 
-  static WebSocketCloseParams decode(bindings.Decoder decoder0) {
+  static _WebSocketCloseParams decode(bindings.Decoder decoder0) {
     if (decoder0 == null) {
       return null;
     }
-    WebSocketCloseParams result = new WebSocketCloseParams();
+    _WebSocketCloseParams result = new _WebSocketCloseParams();
 
     var mainDataHeader = decoder0.decodeStructDataHeader();
     if (mainDataHeader.version <= kVersions.last.version) {
@@ -344,7 +344,7 @@ class WebSocketCloseParams extends bindings.Struct {
   }
 
   String toString() {
-    return "WebSocketCloseParams("
+    return "_WebSocketCloseParams("
            "code: $code" ", "
            "reason: $reason" ")";
   }
@@ -358,7 +358,7 @@ class WebSocketCloseParams extends bindings.Struct {
 }
 
 
-class WebSocketClientDidConnectParams extends bindings.Struct {
+class _WebSocketClientDidConnectParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(32, 0)
   ];
@@ -366,9 +366,9 @@ class WebSocketClientDidConnectParams extends bindings.Struct {
   String extensions = null;
   core.MojoDataPipeConsumer receiveStream = null;
 
-  WebSocketClientDidConnectParams() : super(kVersions.last.size);
+  _WebSocketClientDidConnectParams() : super(kVersions.last.size);
 
-  static WebSocketClientDidConnectParams deserialize(bindings.Message message) {
+  static _WebSocketClientDidConnectParams deserialize(bindings.Message message) {
     var decoder = new bindings.Decoder(message);
     var result = decode(decoder);
     if (decoder.excessHandles != null) {
@@ -377,11 +377,11 @@ class WebSocketClientDidConnectParams extends bindings.Struct {
     return result;
   }
 
-  static WebSocketClientDidConnectParams decode(bindings.Decoder decoder0) {
+  static _WebSocketClientDidConnectParams decode(bindings.Decoder decoder0) {
     if (decoder0 == null) {
       return null;
     }
-    WebSocketClientDidConnectParams result = new WebSocketClientDidConnectParams();
+    _WebSocketClientDidConnectParams result = new _WebSocketClientDidConnectParams();
 
     var mainDataHeader = decoder0.decodeStructDataHeader();
     if (mainDataHeader.version <= kVersions.last.version) {
@@ -427,7 +427,7 @@ class WebSocketClientDidConnectParams extends bindings.Struct {
   }
 
   String toString() {
-    return "WebSocketClientDidConnectParams("
+    return "_WebSocketClientDidConnectParams("
            "selectedSubprotocol: $selectedSubprotocol" ", "
            "extensions: $extensions" ", "
            "receiveStream: $receiveStream" ")";
@@ -440,7 +440,7 @@ class WebSocketClientDidConnectParams extends bindings.Struct {
 }
 
 
-class WebSocketClientDidReceiveDataParams extends bindings.Struct {
+class _WebSocketClientDidReceiveDataParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(24, 0)
   ];
@@ -448,9 +448,9 @@ class WebSocketClientDidReceiveDataParams extends bindings.Struct {
   WebSocketMessageType type = null;
   int numBytes = 0;
 
-  WebSocketClientDidReceiveDataParams() : super(kVersions.last.size);
+  _WebSocketClientDidReceiveDataParams() : super(kVersions.last.size);
 
-  static WebSocketClientDidReceiveDataParams deserialize(bindings.Message message) {
+  static _WebSocketClientDidReceiveDataParams deserialize(bindings.Message message) {
     var decoder = new bindings.Decoder(message);
     var result = decode(decoder);
     if (decoder.excessHandles != null) {
@@ -459,11 +459,11 @@ class WebSocketClientDidReceiveDataParams extends bindings.Struct {
     return result;
   }
 
-  static WebSocketClientDidReceiveDataParams decode(bindings.Decoder decoder0) {
+  static _WebSocketClientDidReceiveDataParams decode(bindings.Decoder decoder0) {
     if (decoder0 == null) {
       return null;
     }
-    WebSocketClientDidReceiveDataParams result = new WebSocketClientDidReceiveDataParams();
+    _WebSocketClientDidReceiveDataParams result = new _WebSocketClientDidReceiveDataParams();
 
     var mainDataHeader = decoder0.decodeStructDataHeader();
     if (mainDataHeader.version <= kVersions.last.version) {
@@ -513,7 +513,7 @@ class WebSocketClientDidReceiveDataParams extends bindings.Struct {
   }
 
   String toString() {
-    return "WebSocketClientDidReceiveDataParams("
+    return "_WebSocketClientDidReceiveDataParams("
            "fin: $fin" ", "
            "type: $type" ", "
            "numBytes: $numBytes" ")";
@@ -529,15 +529,15 @@ class WebSocketClientDidReceiveDataParams extends bindings.Struct {
 }
 
 
-class WebSocketClientDidReceiveFlowControlParams extends bindings.Struct {
+class _WebSocketClientDidReceiveFlowControlParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(16, 0)
   ];
   int quota = 0;
 
-  WebSocketClientDidReceiveFlowControlParams() : super(kVersions.last.size);
+  _WebSocketClientDidReceiveFlowControlParams() : super(kVersions.last.size);
 
-  static WebSocketClientDidReceiveFlowControlParams deserialize(bindings.Message message) {
+  static _WebSocketClientDidReceiveFlowControlParams deserialize(bindings.Message message) {
     var decoder = new bindings.Decoder(message);
     var result = decode(decoder);
     if (decoder.excessHandles != null) {
@@ -546,11 +546,11 @@ class WebSocketClientDidReceiveFlowControlParams extends bindings.Struct {
     return result;
   }
 
-  static WebSocketClientDidReceiveFlowControlParams decode(bindings.Decoder decoder0) {
+  static _WebSocketClientDidReceiveFlowControlParams decode(bindings.Decoder decoder0) {
     if (decoder0 == null) {
       return null;
     }
-    WebSocketClientDidReceiveFlowControlParams result = new WebSocketClientDidReceiveFlowControlParams();
+    _WebSocketClientDidReceiveFlowControlParams result = new _WebSocketClientDidReceiveFlowControlParams();
 
     var mainDataHeader = decoder0.decodeStructDataHeader();
     if (mainDataHeader.version <= kVersions.last.version) {
@@ -584,7 +584,7 @@ class WebSocketClientDidReceiveFlowControlParams extends bindings.Struct {
   }
 
   String toString() {
-    return "WebSocketClientDidReceiveFlowControlParams("
+    return "_WebSocketClientDidReceiveFlowControlParams("
            "quota: $quota" ")";
   }
 
@@ -596,15 +596,15 @@ class WebSocketClientDidReceiveFlowControlParams extends bindings.Struct {
 }
 
 
-class WebSocketClientDidFailParams extends bindings.Struct {
+class _WebSocketClientDidFailParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(16, 0)
   ];
   String message = null;
 
-  WebSocketClientDidFailParams() : super(kVersions.last.size);
+  _WebSocketClientDidFailParams() : super(kVersions.last.size);
 
-  static WebSocketClientDidFailParams deserialize(bindings.Message message) {
+  static _WebSocketClientDidFailParams deserialize(bindings.Message message) {
     var decoder = new bindings.Decoder(message);
     var result = decode(decoder);
     if (decoder.excessHandles != null) {
@@ -613,11 +613,11 @@ class WebSocketClientDidFailParams extends bindings.Struct {
     return result;
   }
 
-  static WebSocketClientDidFailParams decode(bindings.Decoder decoder0) {
+  static _WebSocketClientDidFailParams decode(bindings.Decoder decoder0) {
     if (decoder0 == null) {
       return null;
     }
-    WebSocketClientDidFailParams result = new WebSocketClientDidFailParams();
+    _WebSocketClientDidFailParams result = new _WebSocketClientDidFailParams();
 
     var mainDataHeader = decoder0.decodeStructDataHeader();
     if (mainDataHeader.version <= kVersions.last.version) {
@@ -651,7 +651,7 @@ class WebSocketClientDidFailParams extends bindings.Struct {
   }
 
   String toString() {
-    return "WebSocketClientDidFailParams("
+    return "_WebSocketClientDidFailParams("
            "message: $message" ")";
   }
 
@@ -663,7 +663,7 @@ class WebSocketClientDidFailParams extends bindings.Struct {
 }
 
 
-class WebSocketClientDidCloseParams extends bindings.Struct {
+class _WebSocketClientDidCloseParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(24, 0)
   ];
@@ -671,9 +671,9 @@ class WebSocketClientDidCloseParams extends bindings.Struct {
   int code = 0;
   String reason = null;
 
-  WebSocketClientDidCloseParams() : super(kVersions.last.size);
+  _WebSocketClientDidCloseParams() : super(kVersions.last.size);
 
-  static WebSocketClientDidCloseParams deserialize(bindings.Message message) {
+  static _WebSocketClientDidCloseParams deserialize(bindings.Message message) {
     var decoder = new bindings.Decoder(message);
     var result = decode(decoder);
     if (decoder.excessHandles != null) {
@@ -682,11 +682,11 @@ class WebSocketClientDidCloseParams extends bindings.Struct {
     return result;
   }
 
-  static WebSocketClientDidCloseParams decode(bindings.Decoder decoder0) {
+  static _WebSocketClientDidCloseParams decode(bindings.Decoder decoder0) {
     if (decoder0 == null) {
       return null;
     }
-    WebSocketClientDidCloseParams result = new WebSocketClientDidCloseParams();
+    _WebSocketClientDidCloseParams result = new _WebSocketClientDidCloseParams();
 
     var mainDataHeader = decoder0.decodeStructDataHeader();
     if (mainDataHeader.version <= kVersions.last.version) {
@@ -732,7 +732,7 @@ class WebSocketClientDidCloseParams extends bindings.Struct {
   }
 
   String toString() {
-    return "WebSocketClientDidCloseParams("
+    return "_WebSocketClientDidCloseParams("
            "wasClean: $wasClean" ", "
            "code: $code" ", "
            "reason: $reason" ")";
@@ -747,11 +747,10 @@ class WebSocketClientDidCloseParams extends bindings.Struct {
   }
 }
 
-const int kWebSocket_connect_name = 0;
-const int kWebSocket_send_name = 1;
-const int kWebSocket_flowControl_name = 2;
-const int kWebSocket_close_name = 3;
-const String WebSocketName = null;
+const int _WebSocket_connectName = 0;
+const int _WebSocket_sendName = 1;
+const int _WebSocket_flowControlName = 2;
+const int _WebSocket_closeName = 3;
   
 class WebSocketMessageType extends bindings.MojoEnum {
   static const WebSocketMessageType continuation = const WebSocketMessageType._(0);
@@ -811,31 +810,29 @@ class WebSocketMessageType extends bindings.MojoEnum {
 }
 
 abstract class WebSocket {
+  static const String serviceName = null;
   void connect(String url, List<String> protocols, String origin, core.MojoDataPipeConsumer sendStream, Object client);
   void send(bool fin, WebSocketMessageType type, int numBytes);
   void flowControl(int quota);
   void close(int code, String reason);
-
   static const int kAbnormalCloseCode = 1006;
 }
 
 
-class WebSocketProxyImpl extends bindings.Proxy {
-  WebSocketProxyImpl.fromEndpoint(
+class _WebSocketProxyImpl extends bindings.Proxy {
+  _WebSocketProxyImpl.fromEndpoint(
       core.MojoMessagePipeEndpoint endpoint) : super.fromEndpoint(endpoint);
 
-  WebSocketProxyImpl.fromHandle(core.MojoHandle handle) :
+  _WebSocketProxyImpl.fromHandle(core.MojoHandle handle) :
       super.fromHandle(handle);
 
-  WebSocketProxyImpl.unbound() : super.unbound();
+  _WebSocketProxyImpl.unbound() : super.unbound();
 
-  static WebSocketProxyImpl newFromEndpoint(
+  static _WebSocketProxyImpl newFromEndpoint(
       core.MojoMessagePipeEndpoint endpoint) {
-    assert(endpoint.setDescription("For WebSocketProxyImpl"));
-    return new WebSocketProxyImpl.fromEndpoint(endpoint);
+    assert(endpoint.setDescription("For _WebSocketProxyImpl"));
+    return new _WebSocketProxyImpl.fromEndpoint(endpoint);
   }
-
-  String get name => WebSocketName;
 
   void handleResponse(bindings.ServiceMessage message) {
     switch (message.header.type) {
@@ -848,13 +845,13 @@ class WebSocketProxyImpl extends bindings.Proxy {
 
   String toString() {
     var superString = super.toString();
-    return "WebSocketProxyImpl($superString)";
+    return "_WebSocketProxyImpl($superString)";
   }
 }
 
 
 class _WebSocketProxyCalls implements WebSocket {
-  WebSocketProxyImpl _proxyImpl;
+  _WebSocketProxyImpl _proxyImpl;
 
   _WebSocketProxyCalls(this._proxyImpl);
     void connect(String url, List<String> protocols, String origin, core.MojoDataPipeConsumer sendStream, Object client) {
@@ -862,73 +859,68 @@ class _WebSocketProxyCalls implements WebSocket {
         _proxyImpl.proxyError("The Proxy is closed.");
         return;
       }
-      var params = new WebSocketConnectParams();
+      var params = new _WebSocketConnectParams();
       params.url = url;
       params.protocols = protocols;
       params.origin = origin;
       params.sendStream = sendStream;
       params.client = client;
-      _proxyImpl.sendMessage(params, kWebSocket_connect_name);
+      _proxyImpl.sendMessage(params, _WebSocket_connectName);
     }
-  
     void send(bool fin, WebSocketMessageType type, int numBytes) {
       if (!_proxyImpl.isBound) {
         _proxyImpl.proxyError("The Proxy is closed.");
         return;
       }
-      var params = new WebSocketSendParams();
+      var params = new _WebSocketSendParams();
       params.fin = fin;
       params.type = type;
       params.numBytes = numBytes;
-      _proxyImpl.sendMessage(params, kWebSocket_send_name);
+      _proxyImpl.sendMessage(params, _WebSocket_sendName);
     }
-  
     void flowControl(int quota) {
       if (!_proxyImpl.isBound) {
         _proxyImpl.proxyError("The Proxy is closed.");
         return;
       }
-      var params = new WebSocketFlowControlParams();
+      var params = new _WebSocketFlowControlParams();
       params.quota = quota;
-      _proxyImpl.sendMessage(params, kWebSocket_flowControl_name);
+      _proxyImpl.sendMessage(params, _WebSocket_flowControlName);
     }
-  
     void close(int code, String reason) {
       if (!_proxyImpl.isBound) {
         _proxyImpl.proxyError("The Proxy is closed.");
         return;
       }
-      var params = new WebSocketCloseParams();
+      var params = new _WebSocketCloseParams();
       params.code = code;
       params.reason = reason;
-      _proxyImpl.sendMessage(params, kWebSocket_close_name);
+      _proxyImpl.sendMessage(params, _WebSocket_closeName);
     }
-  
 }
 
 
 class WebSocketProxy implements bindings.ProxyBase {
   final bindings.Proxy impl;
   WebSocket ptr;
-  final String name = WebSocketName;
 
-  WebSocketProxy(WebSocketProxyImpl proxyImpl) :
+  WebSocketProxy(_WebSocketProxyImpl proxyImpl) :
       impl = proxyImpl,
       ptr = new _WebSocketProxyCalls(proxyImpl);
 
   WebSocketProxy.fromEndpoint(
       core.MojoMessagePipeEndpoint endpoint) :
-      impl = new WebSocketProxyImpl.fromEndpoint(endpoint) {
+      impl = new _WebSocketProxyImpl.fromEndpoint(endpoint) {
     ptr = new _WebSocketProxyCalls(impl);
   }
 
   WebSocketProxy.fromHandle(core.MojoHandle handle) :
-      impl = new WebSocketProxyImpl.fromHandle(handle) {
+      impl = new _WebSocketProxyImpl.fromHandle(handle) {
     ptr = new _WebSocketProxyCalls(impl);
   }
 
   WebSocketProxy.unbound() :
-      impl = new WebSocketProxyImpl.unbound() {
+      impl = new _WebSocketProxyImpl.unbound() {
     ptr = new _WebSocketProxyCalls(impl);
   }
 
@@ -944,6 +936,8 @@ class WebSocketProxy implements bindings.ProxyBase {
     assert(endpoint.setDescription("For WebSocketProxy"));
     return new WebSocketProxy.fromEndpoint(endpoint);
   }
+
+  String get serviceName => WebSocket.serviceName;
 
   Future close({bool immediate: false}) => impl.close(immediate: immediate);
 
@@ -983,8 +977,6 @@ class WebSocketStub extends bindings.Stub {
     return new WebSocketStub.fromEndpoint(endpoint);
   }
 
-  static const String name = WebSocketName;
-
 
 
   dynamic handleMessage(bindings.ServiceMessage message) {
@@ -995,23 +987,23 @@ class WebSocketStub extends bindings.Stub {
     }
     assert(_impl != null);
     switch (message.header.type) {
-      case kWebSocket_connect_name:
-        var params = WebSocketConnectParams.deserialize(
+      case _WebSocket_connectName:
+        var params = _WebSocketConnectParams.deserialize(
             message.payload);
         _impl.connect(params.url, params.protocols, params.origin, params.sendStream, params.client);
         break;
-      case kWebSocket_send_name:
-        var params = WebSocketSendParams.deserialize(
+      case _WebSocket_sendName:
+        var params = _WebSocketSendParams.deserialize(
             message.payload);
         _impl.send(params.fin, params.type, params.numBytes);
         break;
-      case kWebSocket_flowControl_name:
-        var params = WebSocketFlowControlParams.deserialize(
+      case _WebSocket_flowControlName:
+        var params = _WebSocketFlowControlParams.deserialize(
             message.payload);
         _impl.flowControl(params.quota);
         break;
-      case kWebSocket_close_name:
-        var params = WebSocketCloseParams.deserialize(
+      case _WebSocket_closeName:
+        var params = _WebSocketCloseParams.deserialize(
             message.payload);
         _impl.close(params.code, params.reason);
         break;
@@ -1036,39 +1028,36 @@ class WebSocketStub extends bindings.Stub {
   int get version => 0;
 }
 
-const int kWebSocketClient_didConnect_name = 0;
-const int kWebSocketClient_didReceiveData_name = 1;
-const int kWebSocketClient_didReceiveFlowControl_name = 2;
-const int kWebSocketClient_didFail_name = 3;
-const int kWebSocketClient_didClose_name = 4;
-const String WebSocketClientName = null;
+const int _WebSocketClient_didConnectName = 0;
+const int _WebSocketClient_didReceiveDataName = 1;
+const int _WebSocketClient_didReceiveFlowControlName = 2;
+const int _WebSocketClient_didFailName = 3;
+const int _WebSocketClient_didCloseName = 4;
 
 abstract class WebSocketClient {
+  static const String serviceName = null;
   void didConnect(String selectedSubprotocol, String extensions, core.MojoDataPipeConsumer receiveStream);
   void didReceiveData(bool fin, WebSocketMessageType type, int numBytes);
   void didReceiveFlowControl(int quota);
   void didFail(String message);
   void didClose(bool wasClean, int code, String reason);
-
 }
 
 
-class WebSocketClientProxyImpl extends bindings.Proxy {
-  WebSocketClientProxyImpl.fromEndpoint(
+class _WebSocketClientProxyImpl extends bindings.Proxy {
+  _WebSocketClientProxyImpl.fromEndpoint(
       core.MojoMessagePipeEndpoint endpoint) : super.fromEndpoint(endpoint);
 
-  WebSocketClientProxyImpl.fromHandle(core.MojoHandle handle) :
+  _WebSocketClientProxyImpl.fromHandle(core.MojoHandle handle) :
       super.fromHandle(handle);
 
-  WebSocketClientProxyImpl.unbound() : super.unbound();
+  _WebSocketClientProxyImpl.unbound() : super.unbound();
 
-  static WebSocketClientProxyImpl newFromEndpoint(
+  static _WebSocketClientProxyImpl newFromEndpoint(
       core.MojoMessagePipeEndpoint endpoint) {
-    assert(endpoint.setDescription("For WebSocketClientProxyImpl"));
-    return new WebSocketClientProxyImpl.fromEndpoint(endpoint);
+    assert(endpoint.setDescription("For _WebSocketClientProxyImpl"));
+    return new _WebSocketClientProxyImpl.fromEndpoint(endpoint);
   }
-
-  String get name => WebSocketClientName;
 
   void handleResponse(bindings.ServiceMessage message) {
     switch (message.header.type) {
@@ -1081,13 +1070,13 @@ class WebSocketClientProxyImpl extends bindings.Proxy {
 
   String toString() {
     var superString = super.toString();
-    return "WebSocketClientProxyImpl($superString)";
+    return "_WebSocketClientProxyImpl($superString)";
   }
 }
 
 
 class _WebSocketClientProxyCalls implements WebSocketClient {
-  WebSocketClientProxyImpl _proxyImpl;
+  _WebSocketClientProxyImpl _proxyImpl;
 
   _WebSocketClientProxyCalls(this._proxyImpl);
     void didConnect(String selectedSubprotocol, String extensions, core.MojoDataPipeConsumer receiveStream) {
@@ -1095,82 +1084,76 @@ class _WebSocketClientProxyCalls implements WebSocketClient {
         _proxyImpl.proxyError("The Proxy is closed.");
         return;
       }
-      var params = new WebSocketClientDidConnectParams();
+      var params = new _WebSocketClientDidConnectParams();
       params.selectedSubprotocol = selectedSubprotocol;
       params.extensions = extensions;
       params.receiveStream = receiveStream;
-      _proxyImpl.sendMessage(params, kWebSocketClient_didConnect_name);
+      _proxyImpl.sendMessage(params, _WebSocketClient_didConnectName);
     }
-  
     void didReceiveData(bool fin, WebSocketMessageType type, int numBytes) {
       if (!_proxyImpl.isBound) {
         _proxyImpl.proxyError("The Proxy is closed.");
         return;
       }
-      var params = new WebSocketClientDidReceiveDataParams();
+      var params = new _WebSocketClientDidReceiveDataParams();
       params.fin = fin;
       params.type = type;
       params.numBytes = numBytes;
-      _proxyImpl.sendMessage(params, kWebSocketClient_didReceiveData_name);
+      _proxyImpl.sendMessage(params, _WebSocketClient_didReceiveDataName);
     }
-  
     void didReceiveFlowControl(int quota) {
       if (!_proxyImpl.isBound) {
         _proxyImpl.proxyError("The Proxy is closed.");
         return;
       }
-      var params = new WebSocketClientDidReceiveFlowControlParams();
+      var params = new _WebSocketClientDidReceiveFlowControlParams();
       params.quota = quota;
-      _proxyImpl.sendMessage(params, kWebSocketClient_didReceiveFlowControl_name);
+      _proxyImpl.sendMessage(params, _WebSocketClient_didReceiveFlowControlName);
     }
-  
     void didFail(String message) {
       if (!_proxyImpl.isBound) {
         _proxyImpl.proxyError("The Proxy is closed.");
         return;
       }
-      var params = new WebSocketClientDidFailParams();
+      var params = new _WebSocketClientDidFailParams();
       params.message = message;
-      _proxyImpl.sendMessage(params, kWebSocketClient_didFail_name);
+      _proxyImpl.sendMessage(params, _WebSocketClient_didFailName);
     }
-  
     void didClose(bool wasClean, int code, String reason) {
       if (!_proxyImpl.isBound) {
         _proxyImpl.proxyError("The Proxy is closed.");
         return;
       }
-      var params = new WebSocketClientDidCloseParams();
+      var params = new _WebSocketClientDidCloseParams();
       params.wasClean = wasClean;
       params.code = code;
       params.reason = reason;
-      _proxyImpl.sendMessage(params, kWebSocketClient_didClose_name);
+      _proxyImpl.sendMessage(params, _WebSocketClient_didCloseName);
     }
-  
 }
 
 
 class WebSocketClientProxy implements bindings.ProxyBase {
   final bindings.Proxy impl;
   WebSocketClient ptr;
-  final String name = WebSocketClientName;
 
-  WebSocketClientProxy(WebSocketClientProxyImpl proxyImpl) :
+  WebSocketClientProxy(_WebSocketClientProxyImpl proxyImpl) :
       impl = proxyImpl,
       ptr = new _WebSocketClientProxyCalls(proxyImpl);
 
   WebSocketClientProxy.fromEndpoint(
       core.MojoMessagePipeEndpoint endpoint) :
-      impl = new WebSocketClientProxyImpl.fromEndpoint(endpoint) {
+      impl = new _WebSocketClientProxyImpl.fromEndpoint(endpoint) {
     ptr = new _WebSocketClientProxyCalls(impl);
   }
 
   WebSocketClientProxy.fromHandle(core.MojoHandle handle) :
-      impl = new WebSocketClientProxyImpl.fromHandle(handle) {
+      impl = new _WebSocketClientProxyImpl.fromHandle(handle) {
     ptr = new _WebSocketClientProxyCalls(impl);
   }
 
   WebSocketClientProxy.unbound() :
-      impl = new WebSocketClientProxyImpl.unbound() {
+      impl = new _WebSocketClientProxyImpl.unbound() {
     ptr = new _WebSocketClientProxyCalls(impl);
   }
 
@@ -1186,6 +1169,8 @@ class WebSocketClientProxy implements bindings.ProxyBase {
     assert(endpoint.setDescription("For WebSocketClientProxy"));
     return new WebSocketClientProxy.fromEndpoint(endpoint);
   }
+
+  String get serviceName => WebSocketClient.serviceName;
 
   Future close({bool immediate: false}) => impl.close(immediate: immediate);
 
@@ -1225,8 +1210,6 @@ class WebSocketClientStub extends bindings.Stub {
     return new WebSocketClientStub.fromEndpoint(endpoint);
   }
 
-  static const String name = WebSocketClientName;
-
 
 
   dynamic handleMessage(bindings.ServiceMessage message) {
@@ -1237,28 +1220,28 @@ class WebSocketClientStub extends bindings.Stub {
     }
     assert(_impl != null);
     switch (message.header.type) {
-      case kWebSocketClient_didConnect_name:
-        var params = WebSocketClientDidConnectParams.deserialize(
+      case _WebSocketClient_didConnectName:
+        var params = _WebSocketClientDidConnectParams.deserialize(
             message.payload);
         _impl.didConnect(params.selectedSubprotocol, params.extensions, params.receiveStream);
         break;
-      case kWebSocketClient_didReceiveData_name:
-        var params = WebSocketClientDidReceiveDataParams.deserialize(
+      case _WebSocketClient_didReceiveDataName:
+        var params = _WebSocketClientDidReceiveDataParams.deserialize(
             message.payload);
         _impl.didReceiveData(params.fin, params.type, params.numBytes);
         break;
-      case kWebSocketClient_didReceiveFlowControl_name:
-        var params = WebSocketClientDidReceiveFlowControlParams.deserialize(
+      case _WebSocketClient_didReceiveFlowControlName:
+        var params = _WebSocketClientDidReceiveFlowControlParams.deserialize(
             message.payload);
         _impl.didReceiveFlowControl(params.quota);
         break;
-      case kWebSocketClient_didFail_name:
-        var params = WebSocketClientDidFailParams.deserialize(
+      case _WebSocketClient_didFailName:
+        var params = _WebSocketClientDidFailParams.deserialize(
             message.payload);
         _impl.didFail(params.message);
         break;
-      case kWebSocketClient_didClose_name:
-        var params = WebSocketClientDidCloseParams.deserialize(
+      case _WebSocketClient_didCloseName:
+        var params = _WebSocketClientDidCloseParams.deserialize(
             message.payload);
         _impl.didClose(params.wasClean, params.code, params.reason);
         break;

@@ -69,16 +69,16 @@ class Target extends bindings.MojoEnum {
 
 
 
-class NavigatorHostRequestNavigateParams extends bindings.Struct {
+class _NavigatorHostRequestNavigateParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(24, 0)
   ];
   Target target = null;
   url_request_mojom.UrlRequest request = null;
 
-  NavigatorHostRequestNavigateParams() : super(kVersions.last.size);
+  _NavigatorHostRequestNavigateParams() : super(kVersions.last.size);
 
-  static NavigatorHostRequestNavigateParams deserialize(bindings.Message message) {
+  static _NavigatorHostRequestNavigateParams deserialize(bindings.Message message) {
     var decoder = new bindings.Decoder(message);
     var result = decode(decoder);
     if (decoder.excessHandles != null) {
@@ -87,11 +87,11 @@ class NavigatorHostRequestNavigateParams extends bindings.Struct {
     return result;
   }
 
-  static NavigatorHostRequestNavigateParams decode(bindings.Decoder decoder0) {
+  static _NavigatorHostRequestNavigateParams decode(bindings.Decoder decoder0) {
     if (decoder0 == null) {
       return null;
     }
-    NavigatorHostRequestNavigateParams result = new NavigatorHostRequestNavigateParams();
+    _NavigatorHostRequestNavigateParams result = new _NavigatorHostRequestNavigateParams();
 
     var mainDataHeader = decoder0.decodeStructDataHeader();
     if (mainDataHeader.version <= kVersions.last.version) {
@@ -136,7 +136,7 @@ class NavigatorHostRequestNavigateParams extends bindings.Struct {
   }
 
   String toString() {
-    return "NavigatorHostRequestNavigateParams("
+    return "_NavigatorHostRequestNavigateParams("
            "target: $target" ", "
            "request: $request" ")";
   }
@@ -148,15 +148,15 @@ class NavigatorHostRequestNavigateParams extends bindings.Struct {
 }
 
 
-class NavigatorHostRequestNavigateHistoryParams extends bindings.Struct {
+class _NavigatorHostRequestNavigateHistoryParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(16, 0)
   ];
   int delta = 0;
 
-  NavigatorHostRequestNavigateHistoryParams() : super(kVersions.last.size);
+  _NavigatorHostRequestNavigateHistoryParams() : super(kVersions.last.size);
 
-  static NavigatorHostRequestNavigateHistoryParams deserialize(bindings.Message message) {
+  static _NavigatorHostRequestNavigateHistoryParams deserialize(bindings.Message message) {
     var decoder = new bindings.Decoder(message);
     var result = decode(decoder);
     if (decoder.excessHandles != null) {
@@ -165,11 +165,11 @@ class NavigatorHostRequestNavigateHistoryParams extends bindings.Struct {
     return result;
   }
 
-  static NavigatorHostRequestNavigateHistoryParams decode(bindings.Decoder decoder0) {
+  static _NavigatorHostRequestNavigateHistoryParams decode(bindings.Decoder decoder0) {
     if (decoder0 == null) {
       return null;
     }
-    NavigatorHostRequestNavigateHistoryParams result = new NavigatorHostRequestNavigateHistoryParams();
+    _NavigatorHostRequestNavigateHistoryParams result = new _NavigatorHostRequestNavigateHistoryParams();
 
     var mainDataHeader = decoder0.decodeStructDataHeader();
     if (mainDataHeader.version <= kVersions.last.version) {
@@ -203,7 +203,7 @@ class NavigatorHostRequestNavigateHistoryParams extends bindings.Struct {
   }
 
   String toString() {
-    return "NavigatorHostRequestNavigateHistoryParams("
+    return "_NavigatorHostRequestNavigateHistoryParams("
            "delta: $delta" ")";
   }
 
@@ -215,15 +215,15 @@ class NavigatorHostRequestNavigateHistoryParams extends bindings.Struct {
 }
 
 
-class NavigatorHostDidNavigateLocallyParams extends bindings.Struct {
+class _NavigatorHostDidNavigateLocallyParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(16, 0)
   ];
   String url = null;
 
-  NavigatorHostDidNavigateLocallyParams() : super(kVersions.last.size);
+  _NavigatorHostDidNavigateLocallyParams() : super(kVersions.last.size);
 
-  static NavigatorHostDidNavigateLocallyParams deserialize(bindings.Message message) {
+  static _NavigatorHostDidNavigateLocallyParams deserialize(bindings.Message message) {
     var decoder = new bindings.Decoder(message);
     var result = decode(decoder);
     if (decoder.excessHandles != null) {
@@ -232,11 +232,11 @@ class NavigatorHostDidNavigateLocallyParams extends bindings.Struct {
     return result;
   }
 
-  static NavigatorHostDidNavigateLocallyParams decode(bindings.Decoder decoder0) {
+  static _NavigatorHostDidNavigateLocallyParams decode(bindings.Decoder decoder0) {
     if (decoder0 == null) {
       return null;
     }
-    NavigatorHostDidNavigateLocallyParams result = new NavigatorHostDidNavigateLocallyParams();
+    _NavigatorHostDidNavigateLocallyParams result = new _NavigatorHostDidNavigateLocallyParams();
 
     var mainDataHeader = decoder0.decodeStructDataHeader();
     if (mainDataHeader.version <= kVersions.last.version) {
@@ -270,7 +270,7 @@ class NavigatorHostDidNavigateLocallyParams extends bindings.Struct {
   }
 
   String toString() {
-    return "NavigatorHostDidNavigateLocallyParams("
+    return "_NavigatorHostDidNavigateLocallyParams("
            "url: $url" ")";
   }
 
@@ -281,35 +281,32 @@ class NavigatorHostDidNavigateLocallyParams extends bindings.Struct {
   }
 }
 
-const int kNavigatorHost_requestNavigate_name = 0;
-const int kNavigatorHost_requestNavigateHistory_name = 1;
-const int kNavigatorHost_didNavigateLocally_name = 2;
-const String NavigatorHostName = "mojo::NavigatorHost";
+const int _NavigatorHost_requestNavigateName = 0;
+const int _NavigatorHost_requestNavigateHistoryName = 1;
+const int _NavigatorHost_didNavigateLocallyName = 2;
 
 abstract class NavigatorHost {
+  static const String serviceName = "mojo::NavigatorHost";
   void requestNavigate(Target target, url_request_mojom.UrlRequest request);
   void requestNavigateHistory(int delta);
   void didNavigateLocally(String url);
-
 }
 
 
-class NavigatorHostProxyImpl extends bindings.Proxy {
-  NavigatorHostProxyImpl.fromEndpoint(
+class _NavigatorHostProxyImpl extends bindings.Proxy {
+  _NavigatorHostProxyImpl.fromEndpoint(
       core.MojoMessagePipeEndpoint endpoint) : super.fromEndpoint(endpoint);
 
-  NavigatorHostProxyImpl.fromHandle(core.MojoHandle handle) :
+  _NavigatorHostProxyImpl.fromHandle(core.MojoHandle handle) :
       super.fromHandle(handle);
 
-  NavigatorHostProxyImpl.unbound() : super.unbound();
+  _NavigatorHostProxyImpl.unbound() : super.unbound();
 
-  static NavigatorHostProxyImpl newFromEndpoint(
+  static _NavigatorHostProxyImpl newFromEndpoint(
       core.MojoMessagePipeEndpoint endpoint) {
-    assert(endpoint.setDescription("For NavigatorHostProxyImpl"));
-    return new NavigatorHostProxyImpl.fromEndpoint(endpoint);
+    assert(endpoint.setDescription("For _NavigatorHostProxyImpl"));
+    return new _NavigatorHostProxyImpl.fromEndpoint(endpoint);
   }
-
-  String get name => NavigatorHostName;
 
   void handleResponse(bindings.ServiceMessage message) {
     switch (message.header.type) {
@@ -322,13 +319,13 @@ class NavigatorHostProxyImpl extends bindings.Proxy {
 
   String toString() {
     var superString = super.toString();
-    return "NavigatorHostProxyImpl($superString)";
+    return "_NavigatorHostProxyImpl($superString)";
   }
 }
 
 
 class _NavigatorHostProxyCalls implements NavigatorHost {
-  NavigatorHostProxyImpl _proxyImpl;
+  _NavigatorHostProxyImpl _proxyImpl;
 
   _NavigatorHostProxyCalls(this._proxyImpl);
     void requestNavigate(Target target, url_request_mojom.UrlRequest request) {
@@ -336,57 +333,53 @@ class _NavigatorHostProxyCalls implements NavigatorHost {
         _proxyImpl.proxyError("The Proxy is closed.");
         return;
       }
-      var params = new NavigatorHostRequestNavigateParams();
+      var params = new _NavigatorHostRequestNavigateParams();
       params.target = target;
       params.request = request;
-      _proxyImpl.sendMessage(params, kNavigatorHost_requestNavigate_name);
+      _proxyImpl.sendMessage(params, _NavigatorHost_requestNavigateName);
     }
-  
     void requestNavigateHistory(int delta) {
       if (!_proxyImpl.isBound) {
         _proxyImpl.proxyError("The Proxy is closed.");
         return;
       }
-      var params = new NavigatorHostRequestNavigateHistoryParams();
+      var params = new _NavigatorHostRequestNavigateHistoryParams();
       params.delta = delta;
-      _proxyImpl.sendMessage(params, kNavigatorHost_requestNavigateHistory_name);
+      _proxyImpl.sendMessage(params, _NavigatorHost_requestNavigateHistoryName);
     }
-  
     void didNavigateLocally(String url) {
       if (!_proxyImpl.isBound) {
         _proxyImpl.proxyError("The Proxy is closed.");
         return;
       }
-      var params = new NavigatorHostDidNavigateLocallyParams();
+      var params = new _NavigatorHostDidNavigateLocallyParams();
       params.url = url;
-      _proxyImpl.sendMessage(params, kNavigatorHost_didNavigateLocally_name);
+      _proxyImpl.sendMessage(params, _NavigatorHost_didNavigateLocallyName);
     }
-  
 }
 
 
 class NavigatorHostProxy implements bindings.ProxyBase {
   final bindings.Proxy impl;
   NavigatorHost ptr;
-  final String name = NavigatorHostName;
 
-  NavigatorHostProxy(NavigatorHostProxyImpl proxyImpl) :
+  NavigatorHostProxy(_NavigatorHostProxyImpl proxyImpl) :
       impl = proxyImpl,
       ptr = new _NavigatorHostProxyCalls(proxyImpl);
 
   NavigatorHostProxy.fromEndpoint(
       core.MojoMessagePipeEndpoint endpoint) :
-      impl = new NavigatorHostProxyImpl.fromEndpoint(endpoint) {
+      impl = new _NavigatorHostProxyImpl.fromEndpoint(endpoint) {
     ptr = new _NavigatorHostProxyCalls(impl);
   }
 
   NavigatorHostProxy.fromHandle(core.MojoHandle handle) :
-      impl = new NavigatorHostProxyImpl.fromHandle(handle) {
+      impl = new _NavigatorHostProxyImpl.fromHandle(handle) {
     ptr = new _NavigatorHostProxyCalls(impl);
   }
 
   NavigatorHostProxy.unbound() :
-      impl = new NavigatorHostProxyImpl.unbound() {
+      impl = new _NavigatorHostProxyImpl.unbound() {
     ptr = new _NavigatorHostProxyCalls(impl);
   }
 
@@ -402,6 +395,8 @@ class NavigatorHostProxy implements bindings.ProxyBase {
     assert(endpoint.setDescription("For NavigatorHostProxy"));
     return new NavigatorHostProxy.fromEndpoint(endpoint);
   }
+
+  String get serviceName => NavigatorHost.serviceName;
 
   Future close({bool immediate: false}) => impl.close(immediate: immediate);
 
@@ -441,8 +436,6 @@ class NavigatorHostStub extends bindings.Stub {
     return new NavigatorHostStub.fromEndpoint(endpoint);
   }
 
-  static const String name = NavigatorHostName;
-
 
 
   dynamic handleMessage(bindings.ServiceMessage message) {
@@ -453,18 +446,18 @@ class NavigatorHostStub extends bindings.Stub {
     }
     assert(_impl != null);
     switch (message.header.type) {
-      case kNavigatorHost_requestNavigate_name:
-        var params = NavigatorHostRequestNavigateParams.deserialize(
+      case _NavigatorHost_requestNavigateName:
+        var params = _NavigatorHostRequestNavigateParams.deserialize(
             message.payload);
         _impl.requestNavigate(params.target, params.request);
         break;
-      case kNavigatorHost_requestNavigateHistory_name:
-        var params = NavigatorHostRequestNavigateHistoryParams.deserialize(
+      case _NavigatorHost_requestNavigateHistoryName:
+        var params = _NavigatorHostRequestNavigateHistoryParams.deserialize(
             message.payload);
         _impl.requestNavigateHistory(params.delta);
         break;
-      case kNavigatorHost_didNavigateLocally_name:
-        var params = NavigatorHostDidNavigateLocallyParams.deserialize(
+      case _NavigatorHost_didNavigateLocallyName:
+        var params = _NavigatorHostDidNavigateLocallyParams.deserialize(
             message.payload);
         _impl.didNavigateLocally(params.url);
         break;

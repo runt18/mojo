@@ -11,14 +11,14 @@ import 'package:mojo/core.dart' as core;
 
 
 
-class InputClientOnBackButtonParams extends bindings.Struct {
+class _InputClientOnBackButtonParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(8, 0)
   ];
 
-  InputClientOnBackButtonParams() : super(kVersions.last.size);
+  _InputClientOnBackButtonParams() : super(kVersions.last.size);
 
-  static InputClientOnBackButtonParams deserialize(bindings.Message message) {
+  static _InputClientOnBackButtonParams deserialize(bindings.Message message) {
     var decoder = new bindings.Decoder(message);
     var result = decode(decoder);
     if (decoder.excessHandles != null) {
@@ -27,11 +27,11 @@ class InputClientOnBackButtonParams extends bindings.Struct {
     return result;
   }
 
-  static InputClientOnBackButtonParams decode(bindings.Decoder decoder0) {
+  static _InputClientOnBackButtonParams decode(bindings.Decoder decoder0) {
     if (decoder0 == null) {
       return null;
     }
-    InputClientOnBackButtonParams result = new InputClientOnBackButtonParams();
+    _InputClientOnBackButtonParams result = new _InputClientOnBackButtonParams();
 
     var mainDataHeader = decoder0.decodeStructDataHeader();
     if (mainDataHeader.version <= kVersions.last.version) {
@@ -59,7 +59,7 @@ class InputClientOnBackButtonParams extends bindings.Struct {
   }
 
   String toString() {
-    return "InputClientOnBackButtonParams("")";
+    return "_InputClientOnBackButtonParams("")";
   }
 
   Map toJson() {
@@ -127,15 +127,15 @@ class InputClientOnBackButtonResponseParams extends bindings.Struct {
 }
 
 
-class InputServiceSetClientParams extends bindings.Struct {
+class _InputServiceSetClientParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(16, 0)
   ];
   Object client = null;
 
-  InputServiceSetClientParams() : super(kVersions.last.size);
+  _InputServiceSetClientParams() : super(kVersions.last.size);
 
-  static InputServiceSetClientParams deserialize(bindings.Message message) {
+  static _InputServiceSetClientParams deserialize(bindings.Message message) {
     var decoder = new bindings.Decoder(message);
     var result = decode(decoder);
     if (decoder.excessHandles != null) {
@@ -144,11 +144,11 @@ class InputServiceSetClientParams extends bindings.Struct {
     return result;
   }
 
-  static InputServiceSetClientParams decode(bindings.Decoder decoder0) {
+  static _InputServiceSetClientParams decode(bindings.Decoder decoder0) {
     if (decoder0 == null) {
       return null;
     }
-    InputServiceSetClientParams result = new InputServiceSetClientParams();
+    _InputServiceSetClientParams result = new _InputServiceSetClientParams();
 
     var mainDataHeader = decoder0.decodeStructDataHeader();
     if (mainDataHeader.version <= kVersions.last.version) {
@@ -182,7 +182,7 @@ class InputServiceSetClientParams extends bindings.Struct {
   }
 
   String toString() {
-    return "InputServiceSetClientParams("
+    return "_InputServiceSetClientParams("
            "client: $client" ")";
   }
 
@@ -192,35 +192,32 @@ class InputServiceSetClientParams extends bindings.Struct {
   }
 }
 
-const int kInputClient_onBackButton_name = 0;
-const String InputClientName = null;
+const int _InputClient_onBackButtonName = 0;
 
 abstract class InputClient {
+  static const String serviceName = null;
   dynamic onBackButton([Function responseFactory = null]);
-
 }
 
 
-class InputClientProxyImpl extends bindings.Proxy {
-  InputClientProxyImpl.fromEndpoint(
+class _InputClientProxyImpl extends bindings.Proxy {
+  _InputClientProxyImpl.fromEndpoint(
       core.MojoMessagePipeEndpoint endpoint) : super.fromEndpoint(endpoint);
 
-  InputClientProxyImpl.fromHandle(core.MojoHandle handle) :
+  _InputClientProxyImpl.fromHandle(core.MojoHandle handle) :
       super.fromHandle(handle);
 
-  InputClientProxyImpl.unbound() : super.unbound();
+  _InputClientProxyImpl.unbound() : super.unbound();
 
-  static InputClientProxyImpl newFromEndpoint(
+  static _InputClientProxyImpl newFromEndpoint(
       core.MojoMessagePipeEndpoint endpoint) {
-    assert(endpoint.setDescription("For InputClientProxyImpl"));
-    return new InputClientProxyImpl.fromEndpoint(endpoint);
+    assert(endpoint.setDescription("For _InputClientProxyImpl"));
+    return new _InputClientProxyImpl.fromEndpoint(endpoint);
   }
-
-  String get name => InputClientName;
 
   void handleResponse(bindings.ServiceMessage message) {
     switch (message.header.type) {
-      case kInputClient_onBackButton_name:
+      case _InputClient_onBackButtonName:
         var r = InputClientOnBackButtonResponseParams.deserialize(
             message.payload);
         if (!message.header.hasRequestId) {
@@ -249,20 +246,20 @@ class InputClientProxyImpl extends bindings.Proxy {
 
   String toString() {
     var superString = super.toString();
-    return "InputClientProxyImpl($superString)";
+    return "_InputClientProxyImpl($superString)";
   }
 }
 
 
 class _InputClientProxyCalls implements InputClient {
-  InputClientProxyImpl _proxyImpl;
+  _InputClientProxyImpl _proxyImpl;
 
   _InputClientProxyCalls(this._proxyImpl);
     dynamic onBackButton([Function responseFactory = null]) {
-      var params = new InputClientOnBackButtonParams();
+      var params = new _InputClientOnBackButtonParams();
       return _proxyImpl.sendMessageWithRequestId(
           params,
-          kInputClient_onBackButton_name,
+          _InputClient_onBackButtonName,
           -1,
           bindings.MessageHeader.kMessageExpectsResponse);
     }
@@ -272,25 +269,24 @@ class _InputClientProxyCalls implements InputClient {
 class InputClientProxy implements bindings.ProxyBase {
   final bindings.Proxy impl;
   InputClient ptr;
-  final String name = InputClientName;
 
-  InputClientProxy(InputClientProxyImpl proxyImpl) :
+  InputClientProxy(_InputClientProxyImpl proxyImpl) :
       impl = proxyImpl,
       ptr = new _InputClientProxyCalls(proxyImpl);
 
   InputClientProxy.fromEndpoint(
       core.MojoMessagePipeEndpoint endpoint) :
-      impl = new InputClientProxyImpl.fromEndpoint(endpoint) {
+      impl = new _InputClientProxyImpl.fromEndpoint(endpoint) {
     ptr = new _InputClientProxyCalls(impl);
   }
 
   InputClientProxy.fromHandle(core.MojoHandle handle) :
-      impl = new InputClientProxyImpl.fromHandle(handle) {
+      impl = new _InputClientProxyImpl.fromHandle(handle) {
     ptr = new _InputClientProxyCalls(impl);
   }
 
   InputClientProxy.unbound() :
-      impl = new InputClientProxyImpl.unbound() {
+      impl = new _InputClientProxyImpl.unbound() {
     ptr = new _InputClientProxyCalls(impl);
   }
 
@@ -306,6 +302,8 @@ class InputClientProxy implements bindings.ProxyBase {
     assert(endpoint.setDescription("For InputClientProxy"));
     return new InputClientProxy.fromEndpoint(endpoint);
   }
+
+  String get serviceName => InputClient.serviceName;
 
   Future close({bool immediate: false}) => impl.close(immediate: immediate);
 
@@ -345,8 +343,6 @@ class InputClientStub extends bindings.Stub {
     return new InputClientStub.fromEndpoint(endpoint);
   }
 
-  static const String name = InputClientName;
-
 
   InputClientOnBackButtonResponseParams _InputClientOnBackButtonResponseParamsFactory() {
     var mojo_factory_result = new InputClientOnBackButtonResponseParams();
@@ -361,8 +357,8 @@ class InputClientStub extends bindings.Stub {
     }
     assert(_impl != null);
     switch (message.header.type) {
-      case kInputClient_onBackButton_name:
-        var params = InputClientOnBackButtonParams.deserialize(
+      case _InputClient_onBackButtonName:
+        var params = _InputClientOnBackButtonParams.deserialize(
             message.payload);
         var response = _impl.onBackButton(_InputClientOnBackButtonResponseParamsFactory);
         if (response is Future) {
@@ -370,7 +366,7 @@ class InputClientStub extends bindings.Stub {
             if (response != null) {
               return buildResponseWithId(
                   response,
-                  kInputClient_onBackButton_name,
+                  _InputClient_onBackButtonName,
                   message.header.requestId,
                   bindings.MessageHeader.kMessageIsResponse);
             }
@@ -378,7 +374,7 @@ class InputClientStub extends bindings.Stub {
         } else if (response != null) {
           return buildResponseWithId(
               response,
-              kInputClient_onBackButton_name,
+              _InputClient_onBackButtonName,
               message.header.requestId,
               bindings.MessageHeader.kMessageIsResponse);
         }
@@ -404,31 +400,28 @@ class InputClientStub extends bindings.Stub {
   int get version => 0;
 }
 
-const int kInputService_setClient_name = 0;
-const String InputServiceName = "input::InputService";
+const int _InputService_setClientName = 0;
 
 abstract class InputService {
+  static const String serviceName = "input::InputService";
   void setClient(Object client);
-
 }
 
 
-class InputServiceProxyImpl extends bindings.Proxy {
-  InputServiceProxyImpl.fromEndpoint(
+class _InputServiceProxyImpl extends bindings.Proxy {
+  _InputServiceProxyImpl.fromEndpoint(
       core.MojoMessagePipeEndpoint endpoint) : super.fromEndpoint(endpoint);
 
-  InputServiceProxyImpl.fromHandle(core.MojoHandle handle) :
+  _InputServiceProxyImpl.fromHandle(core.MojoHandle handle) :
       super.fromHandle(handle);
 
-  InputServiceProxyImpl.unbound() : super.unbound();
+  _InputServiceProxyImpl.unbound() : super.unbound();
 
-  static InputServiceProxyImpl newFromEndpoint(
+  static _InputServiceProxyImpl newFromEndpoint(
       core.MojoMessagePipeEndpoint endpoint) {
-    assert(endpoint.setDescription("For InputServiceProxyImpl"));
-    return new InputServiceProxyImpl.fromEndpoint(endpoint);
+    assert(endpoint.setDescription("For _InputServiceProxyImpl"));
+    return new _InputServiceProxyImpl.fromEndpoint(endpoint);
   }
-
-  String get name => InputServiceName;
 
   void handleResponse(bindings.ServiceMessage message) {
     switch (message.header.type) {
@@ -441,13 +434,13 @@ class InputServiceProxyImpl extends bindings.Proxy {
 
   String toString() {
     var superString = super.toString();
-    return "InputServiceProxyImpl($superString)";
+    return "_InputServiceProxyImpl($superString)";
   }
 }
 
 
 class _InputServiceProxyCalls implements InputService {
-  InputServiceProxyImpl _proxyImpl;
+  _InputServiceProxyImpl _proxyImpl;
 
   _InputServiceProxyCalls(this._proxyImpl);
     void setClient(Object client) {
@@ -455,36 +448,34 @@ class _InputServiceProxyCalls implements InputService {
         _proxyImpl.proxyError("The Proxy is closed.");
         return;
       }
-      var params = new InputServiceSetClientParams();
+      var params = new _InputServiceSetClientParams();
       params.client = client;
-      _proxyImpl.sendMessage(params, kInputService_setClient_name);
+      _proxyImpl.sendMessage(params, _InputService_setClientName);
     }
-  
 }
 
 
 class InputServiceProxy implements bindings.ProxyBase {
   final bindings.Proxy impl;
   InputService ptr;
-  final String name = InputServiceName;
 
-  InputServiceProxy(InputServiceProxyImpl proxyImpl) :
+  InputServiceProxy(_InputServiceProxyImpl proxyImpl) :
       impl = proxyImpl,
       ptr = new _InputServiceProxyCalls(proxyImpl);
 
   InputServiceProxy.fromEndpoint(
       core.MojoMessagePipeEndpoint endpoint) :
-      impl = new InputServiceProxyImpl.fromEndpoint(endpoint) {
+      impl = new _InputServiceProxyImpl.fromEndpoint(endpoint) {
     ptr = new _InputServiceProxyCalls(impl);
   }
 
   InputServiceProxy.fromHandle(core.MojoHandle handle) :
-      impl = new InputServiceProxyImpl.fromHandle(handle) {
+      impl = new _InputServiceProxyImpl.fromHandle(handle) {
     ptr = new _InputServiceProxyCalls(impl);
   }
 
   InputServiceProxy.unbound() :
-      impl = new InputServiceProxyImpl.unbound() {
+      impl = new _InputServiceProxyImpl.unbound() {
     ptr = new _InputServiceProxyCalls(impl);
   }
 
@@ -500,6 +491,8 @@ class InputServiceProxy implements bindings.ProxyBase {
     assert(endpoint.setDescription("For InputServiceProxy"));
     return new InputServiceProxy.fromEndpoint(endpoint);
   }
+
+  String get serviceName => InputService.serviceName;
 
   Future close({bool immediate: false}) => impl.close(immediate: immediate);
 
@@ -539,8 +532,6 @@ class InputServiceStub extends bindings.Stub {
     return new InputServiceStub.fromEndpoint(endpoint);
   }
 
-  static const String name = InputServiceName;
-
 
 
   dynamic handleMessage(bindings.ServiceMessage message) {
@@ -551,8 +542,8 @@ class InputServiceStub extends bindings.Stub {
     }
     assert(_impl != null);
     switch (message.header.type) {
-      case kInputService_setClient_name:
-        var params = InputServiceSetClientParams.deserialize(
+      case _InputService_setClientName:
+        var params = _InputServiceSetClientParams.deserialize(
             message.payload);
         _impl.setClient(params.client);
         break;

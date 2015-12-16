@@ -13,14 +13,14 @@ import 'package:mojo_services/mojo/files/types.mojom.dart' as types_mojom;
 
 
 
-class DirectoryReadParams extends bindings.Struct {
+class _DirectoryReadParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(8, 0)
   ];
 
-  DirectoryReadParams() : super(kVersions.last.size);
+  _DirectoryReadParams() : super(kVersions.last.size);
 
-  static DirectoryReadParams deserialize(bindings.Message message) {
+  static _DirectoryReadParams deserialize(bindings.Message message) {
     var decoder = new bindings.Decoder(message);
     var result = decode(decoder);
     if (decoder.excessHandles != null) {
@@ -29,11 +29,11 @@ class DirectoryReadParams extends bindings.Struct {
     return result;
   }
 
-  static DirectoryReadParams decode(bindings.Decoder decoder0) {
+  static _DirectoryReadParams decode(bindings.Decoder decoder0) {
     if (decoder0 == null) {
       return null;
     }
-    DirectoryReadParams result = new DirectoryReadParams();
+    _DirectoryReadParams result = new _DirectoryReadParams();
 
     var mainDataHeader = decoder0.decodeStructDataHeader();
     if (mainDataHeader.version <= kVersions.last.version) {
@@ -61,7 +61,7 @@ class DirectoryReadParams extends bindings.Struct {
   }
 
   String toString() {
-    return "DirectoryReadParams("")";
+    return "_DirectoryReadParams("")";
   }
 
   Map toJson() {
@@ -170,14 +170,14 @@ class DirectoryReadResponseParams extends bindings.Struct {
 }
 
 
-class DirectoryStatParams extends bindings.Struct {
+class _DirectoryStatParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(8, 0)
   ];
 
-  DirectoryStatParams() : super(kVersions.last.size);
+  _DirectoryStatParams() : super(kVersions.last.size);
 
-  static DirectoryStatParams deserialize(bindings.Message message) {
+  static _DirectoryStatParams deserialize(bindings.Message message) {
     var decoder = new bindings.Decoder(message);
     var result = decode(decoder);
     if (decoder.excessHandles != null) {
@@ -186,11 +186,11 @@ class DirectoryStatParams extends bindings.Struct {
     return result;
   }
 
-  static DirectoryStatParams decode(bindings.Decoder decoder0) {
+  static _DirectoryStatParams decode(bindings.Decoder decoder0) {
     if (decoder0 == null) {
       return null;
     }
-    DirectoryStatParams result = new DirectoryStatParams();
+    _DirectoryStatParams result = new _DirectoryStatParams();
 
     var mainDataHeader = decoder0.decodeStructDataHeader();
     if (mainDataHeader.version <= kVersions.last.version) {
@@ -218,7 +218,7 @@ class DirectoryStatParams extends bindings.Struct {
   }
 
   String toString() {
-    return "DirectoryStatParams("")";
+    return "_DirectoryStatParams("")";
   }
 
   Map toJson() {
@@ -309,16 +309,16 @@ class DirectoryStatResponseParams extends bindings.Struct {
 }
 
 
-class DirectoryTouchParams extends bindings.Struct {
+class _DirectoryTouchParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(24, 0)
   ];
   types_mojom.TimespecOrNow atime = null;
   types_mojom.TimespecOrNow mtime = null;
 
-  DirectoryTouchParams() : super(kVersions.last.size);
+  _DirectoryTouchParams() : super(kVersions.last.size);
 
-  static DirectoryTouchParams deserialize(bindings.Message message) {
+  static _DirectoryTouchParams deserialize(bindings.Message message) {
     var decoder = new bindings.Decoder(message);
     var result = decode(decoder);
     if (decoder.excessHandles != null) {
@@ -327,11 +327,11 @@ class DirectoryTouchParams extends bindings.Struct {
     return result;
   }
 
-  static DirectoryTouchParams decode(bindings.Decoder decoder0) {
+  static _DirectoryTouchParams decode(bindings.Decoder decoder0) {
     if (decoder0 == null) {
       return null;
     }
-    DirectoryTouchParams result = new DirectoryTouchParams();
+    _DirectoryTouchParams result = new _DirectoryTouchParams();
 
     var mainDataHeader = decoder0.decodeStructDataHeader();
     if (mainDataHeader.version <= kVersions.last.version) {
@@ -373,7 +373,7 @@ class DirectoryTouchParams extends bindings.Struct {
   }
 
   String toString() {
-    return "DirectoryTouchParams("
+    return "_DirectoryTouchParams("
            "atime: $atime" ", "
            "mtime: $mtime" ")";
   }
@@ -458,7 +458,7 @@ class DirectoryTouchResponseParams extends bindings.Struct {
 }
 
 
-class DirectoryOpenFileParams extends bindings.Struct {
+class _DirectoryOpenFileParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(24, 0)
   ];
@@ -466,9 +466,9 @@ class DirectoryOpenFileParams extends bindings.Struct {
   Object file = null;
   int openFlags = 0;
 
-  DirectoryOpenFileParams() : super(kVersions.last.size);
+  _DirectoryOpenFileParams() : super(kVersions.last.size);
 
-  static DirectoryOpenFileParams deserialize(bindings.Message message) {
+  static _DirectoryOpenFileParams deserialize(bindings.Message message) {
     var decoder = new bindings.Decoder(message);
     var result = decode(decoder);
     if (decoder.excessHandles != null) {
@@ -477,11 +477,11 @@ class DirectoryOpenFileParams extends bindings.Struct {
     return result;
   }
 
-  static DirectoryOpenFileParams decode(bindings.Decoder decoder0) {
+  static _DirectoryOpenFileParams decode(bindings.Decoder decoder0) {
     if (decoder0 == null) {
       return null;
     }
-    DirectoryOpenFileParams result = new DirectoryOpenFileParams();
+    _DirectoryOpenFileParams result = new _DirectoryOpenFileParams();
 
     var mainDataHeader = decoder0.decodeStructDataHeader();
     if (mainDataHeader.version <= kVersions.last.version) {
@@ -527,7 +527,7 @@ class DirectoryOpenFileParams extends bindings.Struct {
   }
 
   String toString() {
-    return "DirectoryOpenFileParams("
+    return "_DirectoryOpenFileParams("
            "path: $path" ", "
            "file: $file" ", "
            "openFlags: $openFlags" ")";
@@ -611,7 +611,7 @@ class DirectoryOpenFileResponseParams extends bindings.Struct {
 }
 
 
-class DirectoryOpenDirectoryParams extends bindings.Struct {
+class _DirectoryOpenDirectoryParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(24, 0)
   ];
@@ -619,9 +619,9 @@ class DirectoryOpenDirectoryParams extends bindings.Struct {
   Object directory = null;
   int openFlags = 0;
 
-  DirectoryOpenDirectoryParams() : super(kVersions.last.size);
+  _DirectoryOpenDirectoryParams() : super(kVersions.last.size);
 
-  static DirectoryOpenDirectoryParams deserialize(bindings.Message message) {
+  static _DirectoryOpenDirectoryParams deserialize(bindings.Message message) {
     var decoder = new bindings.Decoder(message);
     var result = decode(decoder);
     if (decoder.excessHandles != null) {
@@ -630,11 +630,11 @@ class DirectoryOpenDirectoryParams extends bindings.Struct {
     return result;
   }
 
-  static DirectoryOpenDirectoryParams decode(bindings.Decoder decoder0) {
+  static _DirectoryOpenDirectoryParams decode(bindings.Decoder decoder0) {
     if (decoder0 == null) {
       return null;
     }
-    DirectoryOpenDirectoryParams result = new DirectoryOpenDirectoryParams();
+    _DirectoryOpenDirectoryParams result = new _DirectoryOpenDirectoryParams();
 
     var mainDataHeader = decoder0.decodeStructDataHeader();
     if (mainDataHeader.version <= kVersions.last.version) {
@@ -680,7 +680,7 @@ class DirectoryOpenDirectoryParams extends bindings.Struct {
   }
 
   String toString() {
-    return "DirectoryOpenDirectoryParams("
+    return "_DirectoryOpenDirectoryParams("
            "path: $path" ", "
            "directory: $directory" ", "
            "openFlags: $openFlags" ")";
@@ -764,16 +764,16 @@ class DirectoryOpenDirectoryResponseParams extends bindings.Struct {
 }
 
 
-class DirectoryRenameParams extends bindings.Struct {
+class _DirectoryRenameParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(24, 0)
   ];
   String path = null;
   String newPath = null;
 
-  DirectoryRenameParams() : super(kVersions.last.size);
+  _DirectoryRenameParams() : super(kVersions.last.size);
 
-  static DirectoryRenameParams deserialize(bindings.Message message) {
+  static _DirectoryRenameParams deserialize(bindings.Message message) {
     var decoder = new bindings.Decoder(message);
     var result = decode(decoder);
     if (decoder.excessHandles != null) {
@@ -782,11 +782,11 @@ class DirectoryRenameParams extends bindings.Struct {
     return result;
   }
 
-  static DirectoryRenameParams decode(bindings.Decoder decoder0) {
+  static _DirectoryRenameParams decode(bindings.Decoder decoder0) {
     if (decoder0 == null) {
       return null;
     }
-    DirectoryRenameParams result = new DirectoryRenameParams();
+    _DirectoryRenameParams result = new _DirectoryRenameParams();
 
     var mainDataHeader = decoder0.decodeStructDataHeader();
     if (mainDataHeader.version <= kVersions.last.version) {
@@ -826,7 +826,7 @@ class DirectoryRenameParams extends bindings.Struct {
   }
 
   String toString() {
-    return "DirectoryRenameParams("
+    return "_DirectoryRenameParams("
            "path: $path" ", "
            "newPath: $newPath" ")";
   }
@@ -911,16 +911,16 @@ class DirectoryRenameResponseParams extends bindings.Struct {
 }
 
 
-class DirectoryDeleteParams extends bindings.Struct {
+class _DirectoryDeleteParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(24, 0)
   ];
   String path = null;
   int deleteFlags = 0;
 
-  DirectoryDeleteParams() : super(kVersions.last.size);
+  _DirectoryDeleteParams() : super(kVersions.last.size);
 
-  static DirectoryDeleteParams deserialize(bindings.Message message) {
+  static _DirectoryDeleteParams deserialize(bindings.Message message) {
     var decoder = new bindings.Decoder(message);
     var result = decode(decoder);
     if (decoder.excessHandles != null) {
@@ -929,11 +929,11 @@ class DirectoryDeleteParams extends bindings.Struct {
     return result;
   }
 
-  static DirectoryDeleteParams decode(bindings.Decoder decoder0) {
+  static _DirectoryDeleteParams decode(bindings.Decoder decoder0) {
     if (decoder0 == null) {
       return null;
     }
-    DirectoryDeleteParams result = new DirectoryDeleteParams();
+    _DirectoryDeleteParams result = new _DirectoryDeleteParams();
 
     var mainDataHeader = decoder0.decodeStructDataHeader();
     if (mainDataHeader.version <= kVersions.last.version) {
@@ -973,7 +973,7 @@ class DirectoryDeleteParams extends bindings.Struct {
   }
 
   String toString() {
-    return "DirectoryDeleteParams("
+    return "_DirectoryDeleteParams("
            "path: $path" ", "
            "deleteFlags: $deleteFlags" ")";
   }
@@ -1057,16 +1057,16 @@ class DirectoryDeleteResponseParams extends bindings.Struct {
   }
 }
 
-const int kDirectory_read_name = 0;
-const int kDirectory_stat_name = 1;
-const int kDirectory_touch_name = 2;
-const int kDirectory_openFile_name = 3;
-const int kDirectory_openDirectory_name = 4;
-const int kDirectory_rename_name = 5;
-const int kDirectory_delete_name = 6;
-const String DirectoryName = null;
+const int _Directory_readName = 0;
+const int _Directory_statName = 1;
+const int _Directory_touchName = 2;
+const int _Directory_openFileName = 3;
+const int _Directory_openDirectoryName = 4;
+const int _Directory_renameName = 5;
+const int _Directory_deleteName = 6;
 
 abstract class Directory {
+  static const String serviceName = null;
   dynamic read([Function responseFactory = null]);
   dynamic stat([Function responseFactory = null]);
   dynamic touch(types_mojom.TimespecOrNow atime,types_mojom.TimespecOrNow mtime,[Function responseFactory = null]);
@@ -1074,30 +1074,27 @@ abstract class Directory {
   dynamic openDirectory(String path,Object directory,int openFlags,[Function responseFactory = null]);
   dynamic rename(String path,String newPath,[Function responseFactory = null]);
   dynamic delete(String path,int deleteFlags,[Function responseFactory = null]);
-
 }
 
 
-class DirectoryProxyImpl extends bindings.Proxy {
-  DirectoryProxyImpl.fromEndpoint(
+class _DirectoryProxyImpl extends bindings.Proxy {
+  _DirectoryProxyImpl.fromEndpoint(
       core.MojoMessagePipeEndpoint endpoint) : super.fromEndpoint(endpoint);
 
-  DirectoryProxyImpl.fromHandle(core.MojoHandle handle) :
+  _DirectoryProxyImpl.fromHandle(core.MojoHandle handle) :
       super.fromHandle(handle);
 
-  DirectoryProxyImpl.unbound() : super.unbound();
+  _DirectoryProxyImpl.unbound() : super.unbound();
 
-  static DirectoryProxyImpl newFromEndpoint(
+  static _DirectoryProxyImpl newFromEndpoint(
       core.MojoMessagePipeEndpoint endpoint) {
-    assert(endpoint.setDescription("For DirectoryProxyImpl"));
-    return new DirectoryProxyImpl.fromEndpoint(endpoint);
+    assert(endpoint.setDescription("For _DirectoryProxyImpl"));
+    return new _DirectoryProxyImpl.fromEndpoint(endpoint);
   }
-
-  String get name => DirectoryName;
 
   void handleResponse(bindings.ServiceMessage message) {
     switch (message.header.type) {
-      case kDirectory_read_name:
+      case _Directory_readName:
         var r = DirectoryReadResponseParams.deserialize(
             message.payload);
         if (!message.header.hasRequestId) {
@@ -1117,7 +1114,7 @@ class DirectoryProxyImpl extends bindings.Proxy {
         }
         c.complete(r);
         break;
-      case kDirectory_stat_name:
+      case _Directory_statName:
         var r = DirectoryStatResponseParams.deserialize(
             message.payload);
         if (!message.header.hasRequestId) {
@@ -1137,7 +1134,7 @@ class DirectoryProxyImpl extends bindings.Proxy {
         }
         c.complete(r);
         break;
-      case kDirectory_touch_name:
+      case _Directory_touchName:
         var r = DirectoryTouchResponseParams.deserialize(
             message.payload);
         if (!message.header.hasRequestId) {
@@ -1157,7 +1154,7 @@ class DirectoryProxyImpl extends bindings.Proxy {
         }
         c.complete(r);
         break;
-      case kDirectory_openFile_name:
+      case _Directory_openFileName:
         var r = DirectoryOpenFileResponseParams.deserialize(
             message.payload);
         if (!message.header.hasRequestId) {
@@ -1177,7 +1174,7 @@ class DirectoryProxyImpl extends bindings.Proxy {
         }
         c.complete(r);
         break;
-      case kDirectory_openDirectory_name:
+      case _Directory_openDirectoryName:
         var r = DirectoryOpenDirectoryResponseParams.deserialize(
             message.payload);
         if (!message.header.hasRequestId) {
@@ -1197,7 +1194,7 @@ class DirectoryProxyImpl extends bindings.Proxy {
         }
         c.complete(r);
         break;
-      case kDirectory_rename_name:
+      case _Directory_renameName:
         var r = DirectoryRenameResponseParams.deserialize(
             message.payload);
         if (!message.header.hasRequestId) {
@@ -1217,7 +1214,7 @@ class DirectoryProxyImpl extends bindings.Proxy {
         }
         c.complete(r);
         break;
-      case kDirectory_delete_name:
+      case _Directory_deleteName:
         var r = DirectoryDeleteResponseParams.deserialize(
             message.payload);
         if (!message.header.hasRequestId) {
@@ -1246,80 +1243,80 @@ class DirectoryProxyImpl extends bindings.Proxy {
 
   String toString() {
     var superString = super.toString();
-    return "DirectoryProxyImpl($superString)";
+    return "_DirectoryProxyImpl($superString)";
   }
 }
 
 
 class _DirectoryProxyCalls implements Directory {
-  DirectoryProxyImpl _proxyImpl;
+  _DirectoryProxyImpl _proxyImpl;
 
   _DirectoryProxyCalls(this._proxyImpl);
     dynamic read([Function responseFactory = null]) {
-      var params = new DirectoryReadParams();
+      var params = new _DirectoryReadParams();
       return _proxyImpl.sendMessageWithRequestId(
           params,
-          kDirectory_read_name,
+          _Directory_readName,
           -1,
           bindings.MessageHeader.kMessageExpectsResponse);
     }
     dynamic stat([Function responseFactory = null]) {
-      var params = new DirectoryStatParams();
+      var params = new _DirectoryStatParams();
       return _proxyImpl.sendMessageWithRequestId(
           params,
-          kDirectory_stat_name,
+          _Directory_statName,
           -1,
           bindings.MessageHeader.kMessageExpectsResponse);
     }
     dynamic touch(types_mojom.TimespecOrNow atime,types_mojom.TimespecOrNow mtime,[Function responseFactory = null]) {
-      var params = new DirectoryTouchParams();
+      var params = new _DirectoryTouchParams();
       params.atime = atime;
       params.mtime = mtime;
       return _proxyImpl.sendMessageWithRequestId(
           params,
-          kDirectory_touch_name,
+          _Directory_touchName,
           -1,
           bindings.MessageHeader.kMessageExpectsResponse);
     }
     dynamic openFile(String path,Object file,int openFlags,[Function responseFactory = null]) {
-      var params = new DirectoryOpenFileParams();
+      var params = new _DirectoryOpenFileParams();
       params.path = path;
       params.file = file;
       params.openFlags = openFlags;
       return _proxyImpl.sendMessageWithRequestId(
           params,
-          kDirectory_openFile_name,
+          _Directory_openFileName,
           -1,
           bindings.MessageHeader.kMessageExpectsResponse);
     }
     dynamic openDirectory(String path,Object directory,int openFlags,[Function responseFactory = null]) {
-      var params = new DirectoryOpenDirectoryParams();
+      var params = new _DirectoryOpenDirectoryParams();
       params.path = path;
       params.directory = directory;
       params.openFlags = openFlags;
       return _proxyImpl.sendMessageWithRequestId(
           params,
-          kDirectory_openDirectory_name,
+          _Directory_openDirectoryName,
           -1,
           bindings.MessageHeader.kMessageExpectsResponse);
     }
     dynamic rename(String path,String newPath,[Function responseFactory = null]) {
-      var params = new DirectoryRenameParams();
+      var params = new _DirectoryRenameParams();
       params.path = path;
       params.newPath = newPath;
       return _proxyImpl.sendMessageWithRequestId(
           params,
-          kDirectory_rename_name,
+          _Directory_renameName,
           -1,
           bindings.MessageHeader.kMessageExpectsResponse);
     }
     dynamic delete(String path,int deleteFlags,[Function responseFactory = null]) {
-      var params = new DirectoryDeleteParams();
+      var params = new _DirectoryDeleteParams();
       params.path = path;
       params.deleteFlags = deleteFlags;
       return _proxyImpl.sendMessageWithRequestId(
           params,
-          kDirectory_delete_name,
+          _Directory_deleteName,
           -1,
           bindings.MessageHeader.kMessageExpectsResponse);
     }
@@ -1329,25 +1326,24 @@ class _DirectoryProxyCalls implements Directory {
 class DirectoryProxy implements bindings.ProxyBase {
   final bindings.Proxy impl;
   Directory ptr;
-  final String name = DirectoryName;
 
-  DirectoryProxy(DirectoryProxyImpl proxyImpl) :
+  DirectoryProxy(_DirectoryProxyImpl proxyImpl) :
       impl = proxyImpl,
       ptr = new _DirectoryProxyCalls(proxyImpl);
 
   DirectoryProxy.fromEndpoint(
       core.MojoMessagePipeEndpoint endpoint) :
-      impl = new DirectoryProxyImpl.fromEndpoint(endpoint) {
+      impl = new _DirectoryProxyImpl.fromEndpoint(endpoint) {
     ptr = new _DirectoryProxyCalls(impl);
   }
 
   DirectoryProxy.fromHandle(core.MojoHandle handle) :
-      impl = new DirectoryProxyImpl.fromHandle(handle) {
+      impl = new _DirectoryProxyImpl.fromHandle(handle) {
     ptr = new _DirectoryProxyCalls(impl);
   }
 
   DirectoryProxy.unbound() :
-      impl = new DirectoryProxyImpl.unbound() {
+      impl = new _DirectoryProxyImpl.unbound() {
     ptr = new _DirectoryProxyCalls(impl);
   }
 
@@ -1363,6 +1359,8 @@ class DirectoryProxy implements bindings.ProxyBase {
     assert(endpoint.setDescription("For DirectoryProxy"));
     return new DirectoryProxy.fromEndpoint(endpoint);
   }
+
+  String get serviceName => Directory.serviceName;
 
   Future close({bool immediate: false}) => impl.close(immediate: immediate);
 
@@ -1401,8 +1399,6 @@ class DirectoryStub extends bindings.Stub {
     assert(endpoint.setDescription("For DirectoryStub"));
     return new DirectoryStub.fromEndpoint(endpoint);
   }
-
-  static const String name = DirectoryName;
 
 
   DirectoryReadResponseParams _DirectoryReadResponseParamsFactory(types_mojom.Error error, List<types_mojom.DirectoryEntry> directoryContents) {
@@ -1451,8 +1447,8 @@ class DirectoryStub extends bindings.Stub {
     }
     assert(_impl != null);
     switch (message.header.type) {
-      case kDirectory_read_name:
-        var params = DirectoryReadParams.deserialize(
+      case _Directory_readName:
+        var params = _DirectoryReadParams.deserialize(
             message.payload);
         var response = _impl.read(_DirectoryReadResponseParamsFactory);
         if (response is Future) {
@@ -1460,7 +1456,7 @@ class DirectoryStub extends bindings.Stub {
             if (response != null) {
               return buildResponseWithId(
                   response,
-                  kDirectory_read_name,
+                  _Directory_readName,
                   message.header.requestId,
                   bindings.MessageHeader.kMessageIsResponse);
             }
@@ -1468,13 +1464,13 @@ class DirectoryStub extends bindings.Stub {
         } else if (response != null) {
           return buildResponseWithId(
               response,
-              kDirectory_read_name,
+              _Directory_readName,
               message.header.requestId,
               bindings.MessageHeader.kMessageIsResponse);
         }
         break;
-      case kDirectory_stat_name:
-        var params = DirectoryStatParams.deserialize(
+      case _Directory_statName:
+        var params = _DirectoryStatParams.deserialize(
             message.payload);
         var response = _impl.stat(_DirectoryStatResponseParamsFactory);
         if (response is Future) {
@@ -1482,7 +1478,7 @@ class DirectoryStub extends bindings.Stub {
             if (response != null) {
               return buildResponseWithId(
                   response,
-                  kDirectory_stat_name,
+                  _Directory_statName,
                   message.header.requestId,
                   bindings.MessageHeader.kMessageIsResponse);
             }
@@ -1490,13 +1486,13 @@ class DirectoryStub extends bindings.Stub {
         } else if (response != null) {
           return buildResponseWithId(
               response,
-              kDirectory_stat_name,
+              _Directory_statName,
               message.header.requestId,
               bindings.MessageHeader.kMessageIsResponse);
         }
         break;
-      case kDirectory_touch_name:
-        var params = DirectoryTouchParams.deserialize(
+      case _Directory_touchName:
+        var params = _DirectoryTouchParams.deserialize(
             message.payload);
         var response = _impl.touch(params.atime,params.mtime,_DirectoryTouchResponseParamsFactory);
         if (response is Future) {
@@ -1504,7 +1500,7 @@ class DirectoryStub extends bindings.Stub {
             if (response != null) {
               return buildResponseWithId(
                   response,
-                  kDirectory_touch_name,
+                  _Directory_touchName,
                   message.header.requestId,
                   bindings.MessageHeader.kMessageIsResponse);
             }
@@ -1512,13 +1508,13 @@ class DirectoryStub extends bindings.Stub {
         } else if (response != null) {
           return buildResponseWithId(
               response,
-              kDirectory_touch_name,
+              _Directory_touchName,
               message.header.requestId,
               bindings.MessageHeader.kMessageIsResponse);
         }
         break;
-      case kDirectory_openFile_name:
-        var params = DirectoryOpenFileParams.deserialize(
+      case _Directory_openFileName:
+        var params = _DirectoryOpenFileParams.deserialize(
             message.payload);
         var response = _impl.openFile(params.path,params.file,params.openFlags,_DirectoryOpenFileResponseParamsFactory);
         if (response is Future) {
@@ -1526,7 +1522,7 @@ class DirectoryStub extends bindings.Stub {
             if (response != null) {
               return buildResponseWithId(
                   response,
-                  kDirectory_openFile_name,
+                  _Directory_openFileName,
                   message.header.requestId,
                   bindings.MessageHeader.kMessageIsResponse);
             }
@@ -1534,13 +1530,13 @@ class DirectoryStub extends bindings.Stub {
         } else if (response != null) {
           return buildResponseWithId(
               response,
-              kDirectory_openFile_name,
+              _Directory_openFileName,
               message.header.requestId,
               bindings.MessageHeader.kMessageIsResponse);
         }
         break;
-      case kDirectory_openDirectory_name:
-        var params = DirectoryOpenDirectoryParams.deserialize(
+      case _Directory_openDirectoryName:
+        var params = _DirectoryOpenDirectoryParams.deserialize(
             message.payload);
         var response = _impl.openDirectory(params.path,params.directory,params.openFlags,_DirectoryOpenDirectoryResponseParamsFactory);
         if (response is Future) {
@@ -1548,7 +1544,7 @@ class DirectoryStub extends bindings.Stub {
             if (response != null) {
               return buildResponseWithId(
                   response,
-                  kDirectory_openDirectory_name,
+                  _Directory_openDirectoryName,
                   message.header.requestId,
                   bindings.MessageHeader.kMessageIsResponse);
             }
@@ -1556,13 +1552,13 @@ class DirectoryStub extends bindings.Stub {
         } else if (response != null) {
           return buildResponseWithId(
               response,
-              kDirectory_openDirectory_name,
+              _Directory_openDirectoryName,
               message.header.requestId,
               bindings.MessageHeader.kMessageIsResponse);
         }
         break;
-      case kDirectory_rename_name:
-        var params = DirectoryRenameParams.deserialize(
+      case _Directory_renameName:
+        var params = _DirectoryRenameParams.deserialize(
             message.payload);
         var response = _impl.rename(params.path,params.newPath,_DirectoryRenameResponseParamsFactory);
         if (response is Future) {
@@ -1570,7 +1566,7 @@ class DirectoryStub extends bindings.Stub {
             if (response != null) {
               return buildResponseWithId(
                   response,
-                  kDirectory_rename_name,
+                  _Directory_renameName,
                   message.header.requestId,
                   bindings.MessageHeader.kMessageIsResponse);
             }
@@ -1578,13 +1574,13 @@ class DirectoryStub extends bindings.Stub {
         } else if (response != null) {
           return buildResponseWithId(
               response,
-              kDirectory_rename_name,
+              _Directory_renameName,
               message.header.requestId,
               bindings.MessageHeader.kMessageIsResponse);
         }
         break;
-      case kDirectory_delete_name:
-        var params = DirectoryDeleteParams.deserialize(
+      case _Directory_deleteName:
+        var params = _DirectoryDeleteParams.deserialize(
             message.payload);
         var response = _impl.delete(params.path,params.deleteFlags,_DirectoryDeleteResponseParamsFactory);
         if (response is Future) {
@@ -1592,7 +1588,7 @@ class DirectoryStub extends bindings.Stub {
             if (response != null) {
               return buildResponseWithId(
                   response,
-                  kDirectory_delete_name,
+                  _Directory_deleteName,
                   message.header.requestId,
                   bindings.MessageHeader.kMessageIsResponse);
             }
@@ -1600,7 +1596,7 @@ class DirectoryStub extends bindings.Stub {
         } else if (response != null) {
           return buildResponseWithId(
               response,
-              kDirectory_delete_name,
+              _Directory_deleteName,
               message.header.requestId,
               bindings.MessageHeader.kMessageIsResponse);
         }

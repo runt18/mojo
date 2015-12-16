@@ -11,14 +11,14 @@ import 'package:mojo/core.dart' as core;
 
 
 
-class VSyncProviderAwaitVSyncParams extends bindings.Struct {
+class _VSyncProviderAwaitVSyncParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(8, 0)
   ];
 
-  VSyncProviderAwaitVSyncParams() : super(kVersions.last.size);
+  _VSyncProviderAwaitVSyncParams() : super(kVersions.last.size);
 
-  static VSyncProviderAwaitVSyncParams deserialize(bindings.Message message) {
+  static _VSyncProviderAwaitVSyncParams deserialize(bindings.Message message) {
     var decoder = new bindings.Decoder(message);
     var result = decode(decoder);
     if (decoder.excessHandles != null) {
@@ -27,11 +27,11 @@ class VSyncProviderAwaitVSyncParams extends bindings.Struct {
     return result;
   }
 
-  static VSyncProviderAwaitVSyncParams decode(bindings.Decoder decoder0) {
+  static _VSyncProviderAwaitVSyncParams decode(bindings.Decoder decoder0) {
     if (decoder0 == null) {
       return null;
     }
-    VSyncProviderAwaitVSyncParams result = new VSyncProviderAwaitVSyncParams();
+    _VSyncProviderAwaitVSyncParams result = new _VSyncProviderAwaitVSyncParams();
 
     var mainDataHeader = decoder0.decodeStructDataHeader();
     if (mainDataHeader.version <= kVersions.last.version) {
@@ -59,7 +59,7 @@ class VSyncProviderAwaitVSyncParams extends bindings.Struct {
   }
 
   String toString() {
-    return "VSyncProviderAwaitVSyncParams("")";
+    return "_VSyncProviderAwaitVSyncParams("")";
   }
 
   Map toJson() {
@@ -135,35 +135,32 @@ class VSyncProviderAwaitVSyncResponseParams extends bindings.Struct {
   }
 }
 
-const int kVSyncProvider_awaitVSync_name = 0;
-const String VSyncProviderName = "vsync::VSyncProvider";
+const int _VSyncProvider_awaitVSyncName = 0;
 
 abstract class VSyncProvider {
+  static const String serviceName = "vsync::VSyncProvider";
   dynamic awaitVSync([Function responseFactory = null]);
-
 }
 
 
-class VSyncProviderProxyImpl extends bindings.Proxy {
-  VSyncProviderProxyImpl.fromEndpoint(
+class _VSyncProviderProxyImpl extends bindings.Proxy {
+  _VSyncProviderProxyImpl.fromEndpoint(
       core.MojoMessagePipeEndpoint endpoint) : super.fromEndpoint(endpoint);
 
-  VSyncProviderProxyImpl.fromHandle(core.MojoHandle handle) :
+  _VSyncProviderProxyImpl.fromHandle(core.MojoHandle handle) :
       super.fromHandle(handle);
 
-  VSyncProviderProxyImpl.unbound() : super.unbound();
+  _VSyncProviderProxyImpl.unbound() : super.unbound();
 
-  static VSyncProviderProxyImpl newFromEndpoint(
+  static _VSyncProviderProxyImpl newFromEndpoint(
       core.MojoMessagePipeEndpoint endpoint) {
-    assert(endpoint.setDescription("For VSyncProviderProxyImpl"));
-    return new VSyncProviderProxyImpl.fromEndpoint(endpoint);
+    assert(endpoint.setDescription("For _VSyncProviderProxyImpl"));
+    return new _VSyncProviderProxyImpl.fromEndpoint(endpoint);
   }
-
-  String get name => VSyncProviderName;
 
   void handleResponse(bindings.ServiceMessage message) {
     switch (message.header.type) {
-      case kVSyncProvider_awaitVSync_name:
+      case _VSyncProvider_awaitVSyncName:
         var r = VSyncProviderAwaitVSyncResponseParams.deserialize(
             message.payload);
         if (!message.header.hasRequestId) {
@@ -192,20 +189,20 @@ class VSyncProviderProxyImpl extends bindings.Proxy {
 
   String toString() {
     var superString = super.toString();
-    return "VSyncProviderProxyImpl($superString)";
+    return "_VSyncProviderProxyImpl($superString)";
   }
 }
 
 
 class _VSyncProviderProxyCalls implements VSyncProvider {
-  VSyncProviderProxyImpl _proxyImpl;
+  _VSyncProviderProxyImpl _proxyImpl;
 
   _VSyncProviderProxyCalls(this._proxyImpl);
     dynamic awaitVSync([Function responseFactory = null]) {
-      var params = new VSyncProviderAwaitVSyncParams();
+      var params = new _VSyncProviderAwaitVSyncParams();
       return _proxyImpl.sendMessageWithRequestId(
           params,
-          kVSyncProvider_awaitVSync_name,
+          _VSyncProvider_awaitVSyncName,
           -1,
           bindings.MessageHeader.kMessageExpectsResponse);
     }
@@ -215,25 +212,24 @@ class _VSyncProviderProxyCalls implements VSyncProvider {
 class VSyncProviderProxy implements bindings.ProxyBase {
   final bindings.Proxy impl;
   VSyncProvider ptr;
-  final String name = VSyncProviderName;
 
-  VSyncProviderProxy(VSyncProviderProxyImpl proxyImpl) :
+  VSyncProviderProxy(_VSyncProviderProxyImpl proxyImpl) :
       impl = proxyImpl,
       ptr = new _VSyncProviderProxyCalls(proxyImpl);
 
   VSyncProviderProxy.fromEndpoint(
       core.MojoMessagePipeEndpoint endpoint) :
-      impl = new VSyncProviderProxyImpl.fromEndpoint(endpoint) {
+      impl = new _VSyncProviderProxyImpl.fromEndpoint(endpoint) {
     ptr = new _VSyncProviderProxyCalls(impl);
   }
 
   VSyncProviderProxy.fromHandle(core.MojoHandle handle) :
-      impl = new VSyncProviderProxyImpl.fromHandle(handle) {
+      impl = new _VSyncProviderProxyImpl.fromHandle(handle) {
     ptr = new _VSyncProviderProxyCalls(impl);
   }
 
   VSyncProviderProxy.unbound() :
-      impl = new VSyncProviderProxyImpl.unbound() {
+      impl = new _VSyncProviderProxyImpl.unbound() {
     ptr = new _VSyncProviderProxyCalls(impl);
   }
 
@@ -249,6 +245,8 @@ class VSyncProviderProxy implements bindings.ProxyBase {
     assert(endpoint.setDescription("For VSyncProviderProxy"));
     return new VSyncProviderProxy.fromEndpoint(endpoint);
   }
+
+  String get serviceName => VSyncProvider.serviceName;
 
   Future close({bool immediate: false}) => impl.close(immediate: immediate);
 
@@ -288,8 +286,6 @@ class VSyncProviderStub extends bindings.Stub {
     return new VSyncProviderStub.fromEndpoint(endpoint);
   }
 
-  static const String name = VSyncProviderName;
-
 
   VSyncProviderAwaitVSyncResponseParams _VSyncProviderAwaitVSyncResponseParamsFactory(int timeStamp) {
     var mojo_factory_result = new VSyncProviderAwaitVSyncResponseParams();
@@ -305,8 +301,8 @@ class VSyncProviderStub extends bindings.Stub {
     }
     assert(_impl != null);
     switch (message.header.type) {
-      case kVSyncProvider_awaitVSync_name:
-        var params = VSyncProviderAwaitVSyncParams.deserialize(
+      case _VSyncProvider_awaitVSyncName:
+        var params = _VSyncProviderAwaitVSyncParams.deserialize(
             message.payload);
         var response = _impl.awaitVSync(_VSyncProviderAwaitVSyncResponseParamsFactory);
         if (response is Future) {
@@ -314,7 +310,7 @@ class VSyncProviderStub extends bindings.Stub {
             if (response != null) {
               return buildResponseWithId(
                   response,
-                  kVSyncProvider_awaitVSync_name,
+                  _VSyncProvider_awaitVSyncName,
                   message.header.requestId,
                   bindings.MessageHeader.kMessageIsResponse);
             }
@@ -322,7 +318,7 @@ class VSyncProviderStub extends bindings.Stub {
         } else if (response != null) {
           return buildResponseWithId(
               response,
-              kVSyncProvider_awaitVSync_name,
+              _VSyncProvider_awaitVSyncName,
               message.header.requestId,
               bindings.MessageHeader.kMessageIsResponse);
         }

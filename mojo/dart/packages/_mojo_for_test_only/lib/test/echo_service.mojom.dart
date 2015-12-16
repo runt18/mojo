@@ -11,15 +11,15 @@ import 'package:mojo/core.dart' as core;
 
 
 
-class EchoServiceEchoStringParams extends bindings.Struct {
+class _EchoServiceEchoStringParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(16, 0)
   ];
   String value = null;
 
-  EchoServiceEchoStringParams() : super(kVersions.last.size);
+  _EchoServiceEchoStringParams() : super(kVersions.last.size);
 
-  static EchoServiceEchoStringParams deserialize(bindings.Message message) {
+  static _EchoServiceEchoStringParams deserialize(bindings.Message message) {
     var decoder = new bindings.Decoder(message);
     var result = decode(decoder);
     if (decoder.excessHandles != null) {
@@ -28,11 +28,11 @@ class EchoServiceEchoStringParams extends bindings.Struct {
     return result;
   }
 
-  static EchoServiceEchoStringParams decode(bindings.Decoder decoder0) {
+  static _EchoServiceEchoStringParams decode(bindings.Decoder decoder0) {
     if (decoder0 == null) {
       return null;
     }
-    EchoServiceEchoStringParams result = new EchoServiceEchoStringParams();
+    _EchoServiceEchoStringParams result = new _EchoServiceEchoStringParams();
 
     var mainDataHeader = decoder0.decodeStructDataHeader();
     if (mainDataHeader.version <= kVersions.last.version) {
@@ -66,7 +66,7 @@ class EchoServiceEchoStringParams extends bindings.Struct {
   }
 
   String toString() {
-    return "EchoServiceEchoStringParams("
+    return "_EchoServiceEchoStringParams("
            "value: $value" ")";
   }
 
@@ -145,16 +145,16 @@ class EchoServiceEchoStringResponseParams extends bindings.Struct {
 }
 
 
-class EchoServiceDelayedEchoStringParams extends bindings.Struct {
+class _EchoServiceDelayedEchoStringParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(24, 0)
   ];
   String value = null;
   int millis = 0;
 
-  EchoServiceDelayedEchoStringParams() : super(kVersions.last.size);
+  _EchoServiceDelayedEchoStringParams() : super(kVersions.last.size);
 
-  static EchoServiceDelayedEchoStringParams deserialize(bindings.Message message) {
+  static _EchoServiceDelayedEchoStringParams deserialize(bindings.Message message) {
     var decoder = new bindings.Decoder(message);
     var result = decode(decoder);
     if (decoder.excessHandles != null) {
@@ -163,11 +163,11 @@ class EchoServiceDelayedEchoStringParams extends bindings.Struct {
     return result;
   }
 
-  static EchoServiceDelayedEchoStringParams decode(bindings.Decoder decoder0) {
+  static _EchoServiceDelayedEchoStringParams decode(bindings.Decoder decoder0) {
     if (decoder0 == null) {
       return null;
     }
-    EchoServiceDelayedEchoStringParams result = new EchoServiceDelayedEchoStringParams();
+    _EchoServiceDelayedEchoStringParams result = new _EchoServiceDelayedEchoStringParams();
 
     var mainDataHeader = decoder0.decodeStructDataHeader();
     if (mainDataHeader.version <= kVersions.last.version) {
@@ -207,7 +207,7 @@ class EchoServiceDelayedEchoStringParams extends bindings.Struct {
   }
 
   String toString() {
-    return "EchoServiceDelayedEchoStringParams("
+    return "_EchoServiceDelayedEchoStringParams("
            "value: $value" ", "
            "millis: $millis" ")";
   }
@@ -287,37 +287,34 @@ class EchoServiceDelayedEchoStringResponseParams extends bindings.Struct {
   }
 }
 
-const int kEchoService_echoString_name = 0;
-const int kEchoService_delayedEchoString_name = 1;
-const String EchoServiceName = "test::EchoService";
+const int _EchoService_echoStringName = 0;
+const int _EchoService_delayedEchoStringName = 1;
 
 abstract class EchoService {
+  static const String serviceName = "test::EchoService";
   dynamic echoString(String value,[Function responseFactory = null]);
   dynamic delayedEchoString(String value,int millis,[Function responseFactory = null]);
-
 }
 
 
-class EchoServiceProxyImpl extends bindings.Proxy {
-  EchoServiceProxyImpl.fromEndpoint(
+class _EchoServiceProxyImpl extends bindings.Proxy {
+  _EchoServiceProxyImpl.fromEndpoint(
       core.MojoMessagePipeEndpoint endpoint) : super.fromEndpoint(endpoint);
 
-  EchoServiceProxyImpl.fromHandle(core.MojoHandle handle) :
+  _EchoServiceProxyImpl.fromHandle(core.MojoHandle handle) :
       super.fromHandle(handle);
 
-  EchoServiceProxyImpl.unbound() : super.unbound();
+  _EchoServiceProxyImpl.unbound() : super.unbound();
 
-  static EchoServiceProxyImpl newFromEndpoint(
+  static _EchoServiceProxyImpl newFromEndpoint(
       core.MojoMessagePipeEndpoint endpoint) {
-    assert(endpoint.setDescription("For EchoServiceProxyImpl"));
-    return new EchoServiceProxyImpl.fromEndpoint(endpoint);
+    assert(endpoint.setDescription("For _EchoServiceProxyImpl"));
+    return new _EchoServiceProxyImpl.fromEndpoint(endpoint);
   }
-
-  String get name => EchoServiceName;
 
   void handleResponse(bindings.ServiceMessage message) {
     switch (message.header.type) {
-      case kEchoService_echoString_name:
+      case _EchoService_echoStringName:
         var r = EchoServiceEchoStringResponseParams.deserialize(
             message.payload);
         if (!message.header.hasRequestId) {
@@ -337,7 +334,7 @@ class EchoServiceProxyImpl extends bindings.Proxy {
         }
         c.complete(r);
         break;
-      case kEchoService_delayedEchoString_name:
+      case _EchoService_delayedEchoStringName:
         var r = EchoServiceDelayedEchoStringResponseParams.deserialize(
             message.payload);
         if (!message.header.hasRequestId) {
@@ -366,31 +363,31 @@ class EchoServiceProxyImpl extends bindings.Proxy {
 
   String toString() {
     var superString = super.toString();
-    return "EchoServiceProxyImpl($superString)";
+    return "_EchoServiceProxyImpl($superString)";
   }
 }
 
 
 class _EchoServiceProxyCalls implements EchoService {
-  EchoServiceProxyImpl _proxyImpl;
+  _EchoServiceProxyImpl _proxyImpl;
 
   _EchoServiceProxyCalls(this._proxyImpl);
     dynamic echoString(String value,[Function responseFactory = null]) {
-      var params = new EchoServiceEchoStringParams();
+      var params = new _EchoServiceEchoStringParams();
       params.value = value;
       return _proxyImpl.sendMessageWithRequestId(
           params,
-          kEchoService_echoString_name,
+          _EchoService_echoStringName,
           -1,
           bindings.MessageHeader.kMessageExpectsResponse);
     }
     dynamic delayedEchoString(String value,int millis,[Function responseFactory = null]) {
-      var params = new EchoServiceDelayedEchoStringParams();
+      var params = new _EchoServiceDelayedEchoStringParams();
       params.value = value;
       params.millis = millis;
       return _proxyImpl.sendMessageWithRequestId(
           params,
-          kEchoService_delayedEchoString_name,
+          _EchoService_delayedEchoStringName,
           -1,
           bindings.MessageHeader.kMessageExpectsResponse);
     }
@@ -400,25 +397,24 @@ class _EchoServiceProxyCalls implements EchoService {
 class EchoServiceProxy implements bindings.ProxyBase {
   final bindings.Proxy impl;
   EchoService ptr;
-  final String name = EchoServiceName;
 
-  EchoServiceProxy(EchoServiceProxyImpl proxyImpl) :
+  EchoServiceProxy(_EchoServiceProxyImpl proxyImpl) :
       impl = proxyImpl,
       ptr = new _EchoServiceProxyCalls(proxyImpl);
 
   EchoServiceProxy.fromEndpoint(
       core.MojoMessagePipeEndpoint endpoint) :
-      impl = new EchoServiceProxyImpl.fromEndpoint(endpoint) {
+      impl = new _EchoServiceProxyImpl.fromEndpoint(endpoint) {
     ptr = new _EchoServiceProxyCalls(impl);
   }
 
   EchoServiceProxy.fromHandle(core.MojoHandle handle) :
-      impl = new EchoServiceProxyImpl.fromHandle(handle) {
+      impl = new _EchoServiceProxyImpl.fromHandle(handle) {
     ptr = new _EchoServiceProxyCalls(impl);
   }
 
   EchoServiceProxy.unbound() :
-      impl = new EchoServiceProxyImpl.unbound() {
+      impl = new _EchoServiceProxyImpl.unbound() {
     ptr = new _EchoServiceProxyCalls(impl);
   }
 
@@ -434,6 +430,8 @@ class EchoServiceProxy implements bindings.ProxyBase {
     assert(endpoint.setDescription("For EchoServiceProxy"));
     return new EchoServiceProxy.fromEndpoint(endpoint);
   }
+
+  String get serviceName => EchoService.serviceName;
 
   Future close({bool immediate: false}) => impl.close(immediate: immediate);
 
@@ -473,8 +471,6 @@ class EchoServiceStub extends bindings.Stub {
     return new EchoServiceStub.fromEndpoint(endpoint);
   }
 
-  static const String name = EchoServiceName;
-
 
   EchoServiceEchoStringResponseParams _EchoServiceEchoStringResponseParamsFactory(String value) {
     var mojo_factory_result = new EchoServiceEchoStringResponseParams();
@@ -495,8 +491,8 @@ class EchoServiceStub extends bindings.Stub {
     }
     assert(_impl != null);
     switch (message.header.type) {
-      case kEchoService_echoString_name:
-        var params = EchoServiceEchoStringParams.deserialize(
+      case _EchoService_echoStringName:
+        var params = _EchoServiceEchoStringParams.deserialize(
             message.payload);
         var response = _impl.echoString(params.value,_EchoServiceEchoStringResponseParamsFactory);
         if (response is Future) {
@@ -504,7 +500,7 @@ class EchoServiceStub extends bindings.Stub {
             if (response != null) {
               return buildResponseWithId(
                   response,
-                  kEchoService_echoString_name,
+                  _EchoService_echoStringName,
                   message.header.requestId,
                   bindings.MessageHeader.kMessageIsResponse);
             }
@@ -512,13 +508,13 @@ class EchoServiceStub extends bindings.Stub {
         } else if (response != null) {
           return buildResponseWithId(
               response,
-              kEchoService_echoString_name,
+              _EchoService_echoStringName,
               message.header.requestId,
               bindings.MessageHeader.kMessageIsResponse);
         }
         break;
-      case kEchoService_delayedEchoString_name:
-        var params = EchoServiceDelayedEchoStringParams.deserialize(
+      case _EchoService_delayedEchoStringName:
+        var params = _EchoServiceDelayedEchoStringParams.deserialize(
             message.payload);
         var response = _impl.delayedEchoString(params.value,params.millis,_EchoServiceDelayedEchoStringResponseParamsFactory);
         if (response is Future) {
@@ -526,7 +522,7 @@ class EchoServiceStub extends bindings.Stub {
             if (response != null) {
               return buildResponseWithId(
                   response,
-                  kEchoService_delayedEchoString_name,
+                  _EchoService_delayedEchoStringName,
                   message.header.requestId,
                   bindings.MessageHeader.kMessageIsResponse);
             }
@@ -534,7 +530,7 @@ class EchoServiceStub extends bindings.Stub {
         } else if (response != null) {
           return buildResponseWithId(
               response,
-              kEchoService_delayedEchoString_name,
+              _EchoService_delayedEchoStringName,
               message.header.requestId,
               bindings.MessageHeader.kMessageIsResponse);
         }

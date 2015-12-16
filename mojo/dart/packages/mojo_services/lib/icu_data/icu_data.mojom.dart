@@ -11,15 +11,15 @@ import 'package:mojo/core.dart' as core;
 
 
 
-class IcuDataMapParams extends bindings.Struct {
+class _IcuDataMapParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(16, 0)
   ];
   String sha1hash = null;
 
-  IcuDataMapParams() : super(kVersions.last.size);
+  _IcuDataMapParams() : super(kVersions.last.size);
 
-  static IcuDataMapParams deserialize(bindings.Message message) {
+  static _IcuDataMapParams deserialize(bindings.Message message) {
     var decoder = new bindings.Decoder(message);
     var result = decode(decoder);
     if (decoder.excessHandles != null) {
@@ -28,11 +28,11 @@ class IcuDataMapParams extends bindings.Struct {
     return result;
   }
 
-  static IcuDataMapParams decode(bindings.Decoder decoder0) {
+  static _IcuDataMapParams decode(bindings.Decoder decoder0) {
     if (decoder0 == null) {
       return null;
     }
-    IcuDataMapParams result = new IcuDataMapParams();
+    _IcuDataMapParams result = new _IcuDataMapParams();
 
     var mainDataHeader = decoder0.decodeStructDataHeader();
     if (mainDataHeader.version <= kVersions.last.version) {
@@ -66,7 +66,7 @@ class IcuDataMapParams extends bindings.Struct {
   }
 
   String toString() {
-    return "IcuDataMapParams("
+    return "_IcuDataMapParams("
            "sha1hash: $sha1hash" ")";
   }
 
@@ -143,35 +143,32 @@ class IcuDataMapResponseParams extends bindings.Struct {
   }
 }
 
-const int kIcuData_map_name = 0;
-const String IcuDataName = "icu_data::ICUData";
+const int _IcuData_mapName = 0;
 
 abstract class IcuData {
+  static const String serviceName = "icu_data::ICUData";
   dynamic map(String sha1hash,[Function responseFactory = null]);
-
 }
 
 
-class IcuDataProxyImpl extends bindings.Proxy {
-  IcuDataProxyImpl.fromEndpoint(
+class _IcuDataProxyImpl extends bindings.Proxy {
+  _IcuDataProxyImpl.fromEndpoint(
       core.MojoMessagePipeEndpoint endpoint) : super.fromEndpoint(endpoint);
 
-  IcuDataProxyImpl.fromHandle(core.MojoHandle handle) :
+  _IcuDataProxyImpl.fromHandle(core.MojoHandle handle) :
       super.fromHandle(handle);
 
-  IcuDataProxyImpl.unbound() : super.unbound();
+  _IcuDataProxyImpl.unbound() : super.unbound();
 
-  static IcuDataProxyImpl newFromEndpoint(
+  static _IcuDataProxyImpl newFromEndpoint(
       core.MojoMessagePipeEndpoint endpoint) {
-    assert(endpoint.setDescription("For IcuDataProxyImpl"));
-    return new IcuDataProxyImpl.fromEndpoint(endpoint);
+    assert(endpoint.setDescription("For _IcuDataProxyImpl"));
+    return new _IcuDataProxyImpl.fromEndpoint(endpoint);
   }
-
-  String get name => IcuDataName;
 
   void handleResponse(bindings.ServiceMessage message) {
     switch (message.header.type) {
-      case kIcuData_map_name:
+      case _IcuData_mapName:
         var r = IcuDataMapResponseParams.deserialize(
             message.payload);
         if (!message.header.hasRequestId) {
@@ -200,21 +197,21 @@ class IcuDataProxyImpl extends bindings.Proxy {
 
   String toString() {
     var superString = super.toString();
-    return "IcuDataProxyImpl($superString)";
+    return "_IcuDataProxyImpl($superString)";
   }
 }
 
 
 class _IcuDataProxyCalls implements IcuData {
-  IcuDataProxyImpl _proxyImpl;
+  _IcuDataProxyImpl _proxyImpl;
 
   _IcuDataProxyCalls(this._proxyImpl);
     dynamic map(String sha1hash,[Function responseFactory = null]) {
-      var params = new IcuDataMapParams();
+      var params = new _IcuDataMapParams();
       params.sha1hash = sha1hash;
       return _proxyImpl.sendMessageWithRequestId(
           params,
-          kIcuData_map_name,
+          _IcuData_mapName,
           -1,
           bindings.MessageHeader.kMessageExpectsResponse);
     }
@@ -224,25 +221,24 @@ class _IcuDataProxyCalls implements IcuData {
 class IcuDataProxy implements bindings.ProxyBase {
   final bindings.Proxy impl;
   IcuData ptr;
-  final String name = IcuDataName;
 
-  IcuDataProxy(IcuDataProxyImpl proxyImpl) :
+  IcuDataProxy(_IcuDataProxyImpl proxyImpl) :
       impl = proxyImpl,
       ptr = new _IcuDataProxyCalls(proxyImpl);
 
   IcuDataProxy.fromEndpoint(
       core.MojoMessagePipeEndpoint endpoint) :
-      impl = new IcuDataProxyImpl.fromEndpoint(endpoint) {
+      impl = new _IcuDataProxyImpl.fromEndpoint(endpoint) {
     ptr = new _IcuDataProxyCalls(impl);
   }
 
   IcuDataProxy.fromHandle(core.MojoHandle handle) :
-      impl = new IcuDataProxyImpl.fromHandle(handle) {
+      impl = new _IcuDataProxyImpl.fromHandle(handle) {
     ptr = new _IcuDataProxyCalls(impl);
   }
 
   IcuDataProxy.unbound() :
-      impl = new IcuDataProxyImpl.unbound() {
+      impl = new _IcuDataProxyImpl.unbound() {
     ptr = new _IcuDataProxyCalls(impl);
   }
 
@@ -258,6 +254,8 @@ class IcuDataProxy implements bindings.ProxyBase {
     assert(endpoint.setDescription("For IcuDataProxy"));
     return new IcuDataProxy.fromEndpoint(endpoint);
   }
+
+  String get serviceName => IcuData.serviceName;
 
   Future close({bool immediate: false}) => impl.close(immediate: immediate);
 
@@ -297,8 +295,6 @@ class IcuDataStub extends bindings.Stub {
     return new IcuDataStub.fromEndpoint(endpoint);
   }
 
-  static const String name = IcuDataName;
-
 
   IcuDataMapResponseParams _IcuDataMapResponseParamsFactory(core.MojoSharedBuffer icuData) {
     var mojo_factory_result = new IcuDataMapResponseParams();
@@ -314,8 +310,8 @@ class IcuDataStub extends bindings.Stub {
     }
     assert(_impl != null);
     switch (message.header.type) {
-      case kIcuData_map_name:
-        var params = IcuDataMapParams.deserialize(
+      case _IcuData_mapName:
+        var params = _IcuDataMapParams.deserialize(
             message.payload);
         var response = _impl.map(params.sha1hash,_IcuDataMapResponseParamsFactory);
         if (response is Future) {
@@ -323,7 +319,7 @@ class IcuDataStub extends bindings.Stub {
             if (response != null) {
               return buildResponseWithId(
                   response,
-                  kIcuData_map_name,
+                  _IcuData_mapName,
                   message.header.requestId,
                   bindings.MessageHeader.kMessageIsResponse);
             }
@@ -331,7 +327,7 @@ class IcuDataStub extends bindings.Stub {
         } else if (response != null) {
           return buildResponseWithId(
               response,
-              kIcuData_map_name,
+              _IcuData_mapName,
               message.header.requestId,
               bindings.MessageHeader.kMessageIsResponse);
         }

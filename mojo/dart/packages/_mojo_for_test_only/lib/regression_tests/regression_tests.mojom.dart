@@ -911,14 +911,14 @@ class ContainsArrayOfEnum extends bindings.Struct {
 }
 
 
-class CheckMethodWithEmptyResponseWithoutParameterAndEmptyResponseParams extends bindings.Struct {
+class _CheckMethodWithEmptyResponseWithoutParameterAndEmptyResponseParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(8, 0)
   ];
 
-  CheckMethodWithEmptyResponseWithoutParameterAndEmptyResponseParams() : super(kVersions.last.size);
+  _CheckMethodWithEmptyResponseWithoutParameterAndEmptyResponseParams() : super(kVersions.last.size);
 
-  static CheckMethodWithEmptyResponseWithoutParameterAndEmptyResponseParams deserialize(bindings.Message message) {
+  static _CheckMethodWithEmptyResponseWithoutParameterAndEmptyResponseParams deserialize(bindings.Message message) {
     var decoder = new bindings.Decoder(message);
     var result = decode(decoder);
     if (decoder.excessHandles != null) {
@@ -927,11 +927,11 @@ class CheckMethodWithEmptyResponseWithoutParameterAndEmptyResponseParams extends
     return result;
   }
 
-  static CheckMethodWithEmptyResponseWithoutParameterAndEmptyResponseParams decode(bindings.Decoder decoder0) {
+  static _CheckMethodWithEmptyResponseWithoutParameterAndEmptyResponseParams decode(bindings.Decoder decoder0) {
     if (decoder0 == null) {
       return null;
     }
-    CheckMethodWithEmptyResponseWithoutParameterAndEmptyResponseParams result = new CheckMethodWithEmptyResponseWithoutParameterAndEmptyResponseParams();
+    _CheckMethodWithEmptyResponseWithoutParameterAndEmptyResponseParams result = new _CheckMethodWithEmptyResponseWithoutParameterAndEmptyResponseParams();
 
     var mainDataHeader = decoder0.decodeStructDataHeader();
     if (mainDataHeader.version <= kVersions.last.version) {
@@ -959,7 +959,7 @@ class CheckMethodWithEmptyResponseWithoutParameterAndEmptyResponseParams extends
   }
 
   String toString() {
-    return "CheckMethodWithEmptyResponseWithoutParameterAndEmptyResponseParams("")";
+    return "_CheckMethodWithEmptyResponseWithoutParameterAndEmptyResponseParams("")";
   }
 
   Map toJson() {
@@ -1027,15 +1027,15 @@ class CheckMethodWithEmptyResponseWithoutParameterAndEmptyResponseResponseParams
 }
 
 
-class CheckMethodWithEmptyResponseWithParameterAndEmptyResponseParams extends bindings.Struct {
+class _CheckMethodWithEmptyResponseWithParameterAndEmptyResponseParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(16, 0)
   ];
   bool b = false;
 
-  CheckMethodWithEmptyResponseWithParameterAndEmptyResponseParams() : super(kVersions.last.size);
+  _CheckMethodWithEmptyResponseWithParameterAndEmptyResponseParams() : super(kVersions.last.size);
 
-  static CheckMethodWithEmptyResponseWithParameterAndEmptyResponseParams deserialize(bindings.Message message) {
+  static _CheckMethodWithEmptyResponseWithParameterAndEmptyResponseParams deserialize(bindings.Message message) {
     var decoder = new bindings.Decoder(message);
     var result = decode(decoder);
     if (decoder.excessHandles != null) {
@@ -1044,11 +1044,11 @@ class CheckMethodWithEmptyResponseWithParameterAndEmptyResponseParams extends bi
     return result;
   }
 
-  static CheckMethodWithEmptyResponseWithParameterAndEmptyResponseParams decode(bindings.Decoder decoder0) {
+  static _CheckMethodWithEmptyResponseWithParameterAndEmptyResponseParams decode(bindings.Decoder decoder0) {
     if (decoder0 == null) {
       return null;
     }
-    CheckMethodWithEmptyResponseWithParameterAndEmptyResponseParams result = new CheckMethodWithEmptyResponseWithParameterAndEmptyResponseParams();
+    _CheckMethodWithEmptyResponseWithParameterAndEmptyResponseParams result = new _CheckMethodWithEmptyResponseWithParameterAndEmptyResponseParams();
 
     var mainDataHeader = decoder0.decodeStructDataHeader();
     if (mainDataHeader.version <= kVersions.last.version) {
@@ -1082,7 +1082,7 @@ class CheckMethodWithEmptyResponseWithParameterAndEmptyResponseParams extends bi
   }
 
   String toString() {
-    return "CheckMethodWithEmptyResponseWithParameterAndEmptyResponseParams("
+    return "_CheckMethodWithEmptyResponseWithParameterAndEmptyResponseParams("
            "b: $b" ")";
   }
 
@@ -1152,16 +1152,16 @@ class CheckMethodWithEmptyResponseWithParameterAndEmptyResponseResponseParams ex
 }
 
 
-class CheckNameCollisionWithNameCollisionParams extends bindings.Struct {
+class _CheckNameCollisionWithNameCollisionParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(16, 0)
   ];
   bool message = false;
   bool response = false;
 
-  CheckNameCollisionWithNameCollisionParams() : super(kVersions.last.size);
+  _CheckNameCollisionWithNameCollisionParams() : super(kVersions.last.size);
 
-  static CheckNameCollisionWithNameCollisionParams deserialize(bindings.Message message) {
+  static _CheckNameCollisionWithNameCollisionParams deserialize(bindings.Message message) {
     var decoder = new bindings.Decoder(message);
     var result = decode(decoder);
     if (decoder.excessHandles != null) {
@@ -1170,11 +1170,11 @@ class CheckNameCollisionWithNameCollisionParams extends bindings.Struct {
     return result;
   }
 
-  static CheckNameCollisionWithNameCollisionParams decode(bindings.Decoder decoder0) {
+  static _CheckNameCollisionWithNameCollisionParams decode(bindings.Decoder decoder0) {
     if (decoder0 == null) {
       return null;
     }
-    CheckNameCollisionWithNameCollisionParams result = new CheckNameCollisionWithNameCollisionParams();
+    _CheckNameCollisionWithNameCollisionParams result = new _CheckNameCollisionWithNameCollisionParams();
 
     var mainDataHeader = decoder0.decodeStructDataHeader();
     if (mainDataHeader.version <= kVersions.last.version) {
@@ -1214,7 +1214,7 @@ class CheckNameCollisionWithNameCollisionParams extends bindings.Struct {
   }
 
   String toString() {
-    return "CheckNameCollisionWithNameCollisionParams("
+    return "_CheckNameCollisionWithNameCollisionParams("
            "message: $message" ", "
            "response: $response" ")";
   }
@@ -1304,15 +1304,15 @@ class CheckNameCollisionWithNameCollisionResponseParams extends bindings.Struct 
 }
 
 
-class CheckEnumCapsSetEnumWithInternalAllCapsParams extends bindings.Struct {
+class _CheckEnumCapsSetEnumWithInternalAllCapsParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(16, 0)
   ];
   EnumWithInternalAllCaps e = null;
 
-  CheckEnumCapsSetEnumWithInternalAllCapsParams() : super(kVersions.last.size);
+  _CheckEnumCapsSetEnumWithInternalAllCapsParams() : super(kVersions.last.size);
 
-  static CheckEnumCapsSetEnumWithInternalAllCapsParams deserialize(bindings.Message message) {
+  static _CheckEnumCapsSetEnumWithInternalAllCapsParams deserialize(bindings.Message message) {
     var decoder = new bindings.Decoder(message);
     var result = decode(decoder);
     if (decoder.excessHandles != null) {
@@ -1321,11 +1321,11 @@ class CheckEnumCapsSetEnumWithInternalAllCapsParams extends bindings.Struct {
     return result;
   }
 
-  static CheckEnumCapsSetEnumWithInternalAllCapsParams decode(bindings.Decoder decoder0) {
+  static _CheckEnumCapsSetEnumWithInternalAllCapsParams decode(bindings.Decoder decoder0) {
     if (decoder0 == null) {
       return null;
     }
-    CheckEnumCapsSetEnumWithInternalAllCapsParams result = new CheckEnumCapsSetEnumWithInternalAllCapsParams();
+    _CheckEnumCapsSetEnumWithInternalAllCapsParams result = new _CheckEnumCapsSetEnumWithInternalAllCapsParams();
 
     var mainDataHeader = decoder0.decodeStructDataHeader();
     if (mainDataHeader.version <= kVersions.last.version) {
@@ -1363,7 +1363,7 @@ class CheckEnumCapsSetEnumWithInternalAllCapsParams extends bindings.Struct {
   }
 
   String toString() {
-    return "CheckEnumCapsSetEnumWithInternalAllCapsParams("
+    return "_CheckEnumCapsSetEnumWithInternalAllCapsParams("
            "e: $e" ")";
   }
 
@@ -1375,14 +1375,14 @@ class CheckEnumCapsSetEnumWithInternalAllCapsParams extends bindings.Struct {
 }
 
 
-class TestInterfaceSomeMessageParams extends bindings.Struct {
+class _TestInterfaceSomeMessageParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(8, 0)
   ];
 
-  TestInterfaceSomeMessageParams() : super(kVersions.last.size);
+  _TestInterfaceSomeMessageParams() : super(kVersions.last.size);
 
-  static TestInterfaceSomeMessageParams deserialize(bindings.Message message) {
+  static _TestInterfaceSomeMessageParams deserialize(bindings.Message message) {
     var decoder = new bindings.Decoder(message);
     var result = decode(decoder);
     if (decoder.excessHandles != null) {
@@ -1391,11 +1391,11 @@ class TestInterfaceSomeMessageParams extends bindings.Struct {
     return result;
   }
 
-  static TestInterfaceSomeMessageParams decode(bindings.Decoder decoder0) {
+  static _TestInterfaceSomeMessageParams decode(bindings.Decoder decoder0) {
     if (decoder0 == null) {
       return null;
     }
-    TestInterfaceSomeMessageParams result = new TestInterfaceSomeMessageParams();
+    _TestInterfaceSomeMessageParams result = new _TestInterfaceSomeMessageParams();
 
     var mainDataHeader = decoder0.decodeStructDataHeader();
     if (mainDataHeader.version <= kVersions.last.version) {
@@ -1423,7 +1423,7 @@ class TestInterfaceSomeMessageParams extends bindings.Struct {
   }
 
   String toString() {
-    return "TestInterfaceSomeMessageParams("")";
+    return "_TestInterfaceSomeMessageParams("")";
   }
 
   Map toJson() {
@@ -1433,15 +1433,15 @@ class TestInterfaceSomeMessageParams extends bindings.Struct {
 }
 
 
-class Regression551GetParams extends bindings.Struct {
+class _Regression551GetParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(16, 0)
   ];
   List<String> keyPrefixes = null;
 
-  Regression551GetParams() : super(kVersions.last.size);
+  _Regression551GetParams() : super(kVersions.last.size);
 
-  static Regression551GetParams deserialize(bindings.Message message) {
+  static _Regression551GetParams deserialize(bindings.Message message) {
     var decoder = new bindings.Decoder(message);
     var result = decode(decoder);
     if (decoder.excessHandles != null) {
@@ -1450,11 +1450,11 @@ class Regression551GetParams extends bindings.Struct {
     return result;
   }
 
-  static Regression551GetParams decode(bindings.Decoder decoder0) {
+  static _Regression551GetParams decode(bindings.Decoder decoder0) {
     if (decoder0 == null) {
       return null;
     }
-    Regression551GetParams result = new Regression551GetParams();
+    _Regression551GetParams result = new _Regression551GetParams();
 
     var mainDataHeader = decoder0.decodeStructDataHeader();
     if (mainDataHeader.version <= kVersions.last.version) {
@@ -1504,7 +1504,7 @@ class Regression551GetParams extends bindings.Struct {
   }
 
   String toString() {
-    return "Regression551GetParams("
+    return "_Regression551GetParams("
            "keyPrefixes: $keyPrefixes" ")";
   }
 
@@ -1582,37 +1582,159 @@ class Regression551GetResponseParams extends bindings.Struct {
   }
 }
 
-const int kCheckMethodWithEmptyResponse_withoutParameterAndEmptyResponse_name = 0;
-const int kCheckMethodWithEmptyResponse_withParameterAndEmptyResponse_name = 1;
-const String CheckMethodWithEmptyResponseName = null;
 
-abstract class CheckMethodWithEmptyResponse {
-  dynamic withoutParameterAndEmptyResponse([Function responseFactory = null]);
-  dynamic withParameterAndEmptyResponse(bool b,[Function responseFactory = null]);
+class _ServiceNameServiceNameParams extends bindings.Struct {
+  static const List<bindings.StructDataHeader> kVersions = const [
+    const bindings.StructDataHeader(8, 0)
+  ];
 
+  _ServiceNameServiceNameParams() : super(kVersions.last.size);
+
+  static _ServiceNameServiceNameParams deserialize(bindings.Message message) {
+    var decoder = new bindings.Decoder(message);
+    var result = decode(decoder);
+    if (decoder.excessHandles != null) {
+      decoder.excessHandles.forEach((h) => h.close());
+    }
+    return result;
+  }
+
+  static _ServiceNameServiceNameParams decode(bindings.Decoder decoder0) {
+    if (decoder0 == null) {
+      return null;
+    }
+    _ServiceNameServiceNameParams result = new _ServiceNameServiceNameParams();
+
+    var mainDataHeader = decoder0.decodeStructDataHeader();
+    if (mainDataHeader.version <= kVersions.last.version) {
+      // Scan in reverse order to optimize for more recent versions.
+      for (int i = kVersions.length - 1; i >= 0; --i) {
+        if (mainDataHeader.version >= kVersions[i].version) {
+          if (mainDataHeader.size == kVersions[i].size) {
+            // Found a match.
+            break;
+          }
+          throw new bindings.MojoCodecError(
+              'Header size doesn\'t correspond to known version size.');
+        }
+      }
+    } else if (mainDataHeader.size < kVersions.last.size) {
+      throw new bindings.MojoCodecError(
+        'Message newer than the last known version cannot be shorter than '
+        'required by the last known version.');
+    }
+    return result;
+  }
+
+  void encode(bindings.Encoder encoder) {
+    encoder.getStructEncoderAtOffset(kVersions.last);
+  }
+
+  String toString() {
+    return "_ServiceNameServiceNameParams("")";
+  }
+
+  Map toJson() {
+    Map map = new Map();
+    return map;
+  }
 }
 
 
-class CheckMethodWithEmptyResponseProxyImpl extends bindings.Proxy {
-  CheckMethodWithEmptyResponseProxyImpl.fromEndpoint(
-      core.MojoMessagePipeEndpoint endpoint) : super.fromEndpoint(endpoint);
+class ServiceNameServiceNameResponseParams extends bindings.Struct {
+  static const List<bindings.StructDataHeader> kVersions = const [
+    const bindings.StructDataHeader(16, 0)
+  ];
+  String serviceName_ = null;
 
-  CheckMethodWithEmptyResponseProxyImpl.fromHandle(core.MojoHandle handle) :
-      super.fromHandle(handle);
+  ServiceNameServiceNameResponseParams() : super(kVersions.last.size);
 
-  CheckMethodWithEmptyResponseProxyImpl.unbound() : super.unbound();
-
-  static CheckMethodWithEmptyResponseProxyImpl newFromEndpoint(
-      core.MojoMessagePipeEndpoint endpoint) {
-    assert(endpoint.setDescription("For CheckMethodWithEmptyResponseProxyImpl"));
-    return new CheckMethodWithEmptyResponseProxyImpl.fromEndpoint(endpoint);
+  static ServiceNameServiceNameResponseParams deserialize(bindings.Message message) {
+    var decoder = new bindings.Decoder(message);
+    var result = decode(decoder);
+    if (decoder.excessHandles != null) {
+      decoder.excessHandles.forEach((h) => h.close());
+    }
+    return result;
   }
 
-  String get name => CheckMethodWithEmptyResponseName;
+  static ServiceNameServiceNameResponseParams decode(bindings.Decoder decoder0) {
+    if (decoder0 == null) {
+      return null;
+    }
+    ServiceNameServiceNameResponseParams result = new ServiceNameServiceNameResponseParams();
+
+    var mainDataHeader = decoder0.decodeStructDataHeader();
+    if (mainDataHeader.version <= kVersions.last.version) {
+      // Scan in reverse order to optimize for more recent versions.
+      for (int i = kVersions.length - 1; i >= 0; --i) {
+        if (mainDataHeader.version >= kVersions[i].version) {
+          if (mainDataHeader.size == kVersions[i].size) {
+            // Found a match.
+            break;
+          }
+          throw new bindings.MojoCodecError(
+              'Header size doesn\'t correspond to known version size.');
+        }
+      }
+    } else if (mainDataHeader.size < kVersions.last.size) {
+      throw new bindings.MojoCodecError(
+        'Message newer than the last known version cannot be shorter than '
+        'required by the last known version.');
+    }
+    if (mainDataHeader.version >= 0) {
+      
+      result.serviceName_ = decoder0.decodeString(8, false);
+    }
+    return result;
+  }
+
+  void encode(bindings.Encoder encoder) {
+    var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
+    
+    encoder0.encodeString(serviceName_, 8, false);
+  }
+
+  String toString() {
+    return "ServiceNameServiceNameResponseParams("
+           "serviceName_: $serviceName_" ")";
+  }
+
+  Map toJson() {
+    Map map = new Map();
+    map["serviceName_"] = serviceName_;
+    return map;
+  }
+}
+
+const int _CheckMethodWithEmptyResponse_withoutParameterAndEmptyResponseName = 0;
+const int _CheckMethodWithEmptyResponse_withParameterAndEmptyResponseName = 1;
+
+abstract class CheckMethodWithEmptyResponse {
+  static const String serviceName = null;
+  dynamic withoutParameterAndEmptyResponse([Function responseFactory = null]);
+  dynamic withParameterAndEmptyResponse(bool b,[Function responseFactory = null]);
+}
+
+
+class _CheckMethodWithEmptyResponseProxyImpl extends bindings.Proxy {
+  _CheckMethodWithEmptyResponseProxyImpl.fromEndpoint(
+      core.MojoMessagePipeEndpoint endpoint) : super.fromEndpoint(endpoint);
+
+  _CheckMethodWithEmptyResponseProxyImpl.fromHandle(core.MojoHandle handle) :
+      super.fromHandle(handle);
+
+  _CheckMethodWithEmptyResponseProxyImpl.unbound() : super.unbound();
+
+  static _CheckMethodWithEmptyResponseProxyImpl newFromEndpoint(
+      core.MojoMessagePipeEndpoint endpoint) {
+    assert(endpoint.setDescription("For _CheckMethodWithEmptyResponseProxyImpl"));
+    return new _CheckMethodWithEmptyResponseProxyImpl.fromEndpoint(endpoint);
+  }
 
   void handleResponse(bindings.ServiceMessage message) {
     switch (message.header.type) {
-      case kCheckMethodWithEmptyResponse_withoutParameterAndEmptyResponse_name:
+      case _CheckMethodWithEmptyResponse_withoutParameterAndEmptyResponseName:
         var r = CheckMethodWithEmptyResponseWithoutParameterAndEmptyResponseResponseParams.deserialize(
             message.payload);
         if (!message.header.hasRequestId) {
@@ -1632,7 +1754,7 @@ class CheckMethodWithEmptyResponseProxyImpl extends bindings.Proxy {
         }
         c.complete(r);
         break;
-      case kCheckMethodWithEmptyResponse_withParameterAndEmptyResponse_name:
+      case _CheckMethodWithEmptyResponse_withParameterAndEmptyResponseName:
         var r = CheckMethodWithEmptyResponseWithParameterAndEmptyResponseResponseParams.deserialize(
             message.payload);
         if (!message.header.hasRequestId) {
@@ -1661,29 +1783,29 @@ class CheckMethodWithEmptyResponseProxyImpl extends bindings.Proxy {
 
   String toString() {
     var superString = super.toString();
-    return "CheckMethodWithEmptyResponseProxyImpl($superString)";
+    return "_CheckMethodWithEmptyResponseProxyImpl($superString)";
   }
 }
 
 
 class _CheckMethodWithEmptyResponseProxyCalls implements CheckMethodWithEmptyResponse {
-  CheckMethodWithEmptyResponseProxyImpl _proxyImpl;
+  _CheckMethodWithEmptyResponseProxyImpl _proxyImpl;
 
   _CheckMethodWithEmptyResponseProxyCalls(this._proxyImpl);
     dynamic withoutParameterAndEmptyResponse([Function responseFactory = null]) {
-      var params = new CheckMethodWithEmptyResponseWithoutParameterAndEmptyResponseParams();
+      var params = new _CheckMethodWithEmptyResponseWithoutParameterAndEmptyResponseParams();
       return _proxyImpl.sendMessageWithRequestId(
           params,
-          kCheckMethodWithEmptyResponse_withoutParameterAndEmptyResponse_name,
+          _CheckMethodWithEmptyResponse_withoutParameterAndEmptyResponseName,
           -1,
           bindings.MessageHeader.kMessageExpectsResponse);
     }
     dynamic withParameterAndEmptyResponse(bool b,[Function responseFactory = null]) {
-      var params = new CheckMethodWithEmptyResponseWithParameterAndEmptyResponseParams();
+      var params = new _CheckMethodWithEmptyResponseWithParameterAndEmptyResponseParams();
       params.b = b;
       return _proxyImpl.sendMessageWithRequestId(
           params,
-          kCheckMethodWithEmptyResponse_withParameterAndEmptyResponse_name,
+          _CheckMethodWithEmptyResponse_withParameterAndEmptyResponseName,
           -1,
           bindings.MessageHeader.kMessageExpectsResponse);
     }
@@ -1693,25 +1815,24 @@ class _CheckMethodWithEmptyResponseProxyCalls implements CheckMethodWithEmptyRes
 class CheckMethodWithEmptyResponseProxy implements bindings.ProxyBase {
   final bindings.Proxy impl;
   CheckMethodWithEmptyResponse ptr;
-  final String name = CheckMethodWithEmptyResponseName;
 
-  CheckMethodWithEmptyResponseProxy(CheckMethodWithEmptyResponseProxyImpl proxyImpl) :
+  CheckMethodWithEmptyResponseProxy(_CheckMethodWithEmptyResponseProxyImpl proxyImpl) :
       impl = proxyImpl,
       ptr = new _CheckMethodWithEmptyResponseProxyCalls(proxyImpl);
 
   CheckMethodWithEmptyResponseProxy.fromEndpoint(
       core.MojoMessagePipeEndpoint endpoint) :
-      impl = new CheckMethodWithEmptyResponseProxyImpl.fromEndpoint(endpoint) {
+      impl = new _CheckMethodWithEmptyResponseProxyImpl.fromEndpoint(endpoint) {
     ptr = new _CheckMethodWithEmptyResponseProxyCalls(impl);
   }
 
   CheckMethodWithEmptyResponseProxy.fromHandle(core.MojoHandle handle) :
-      impl = new CheckMethodWithEmptyResponseProxyImpl.fromHandle(handle) {
+      impl = new _CheckMethodWithEmptyResponseProxyImpl.fromHandle(handle) {
     ptr = new _CheckMethodWithEmptyResponseProxyCalls(impl);
   }
 
   CheckMethodWithEmptyResponseProxy.unbound() :
-      impl = new CheckMethodWithEmptyResponseProxyImpl.unbound() {
+      impl = new _CheckMethodWithEmptyResponseProxyImpl.unbound() {
     ptr = new _CheckMethodWithEmptyResponseProxyCalls(impl);
   }
 
@@ -1727,6 +1848,8 @@ class CheckMethodWithEmptyResponseProxy implements bindings.ProxyBase {
     assert(endpoint.setDescription("For CheckMethodWithEmptyResponseProxy"));
     return new CheckMethodWithEmptyResponseProxy.fromEndpoint(endpoint);
   }
+
+  String get serviceName => CheckMethodWithEmptyResponse.serviceName;
 
   Future close({bool immediate: false}) => impl.close(immediate: immediate);
 
@@ -1766,8 +1889,6 @@ class CheckMethodWithEmptyResponseStub extends bindings.Stub {
     return new CheckMethodWithEmptyResponseStub.fromEndpoint(endpoint);
   }
 
-  static const String name = CheckMethodWithEmptyResponseName;
-
 
   CheckMethodWithEmptyResponseWithoutParameterAndEmptyResponseResponseParams _CheckMethodWithEmptyResponseWithoutParameterAndEmptyResponseResponseParamsFactory() {
     var mojo_factory_result = new CheckMethodWithEmptyResponseWithoutParameterAndEmptyResponseResponseParams();
@@ -1786,8 +1907,8 @@ class CheckMethodWithEmptyResponseStub extends bindings.Stub {
     }
     assert(_impl != null);
     switch (message.header.type) {
-      case kCheckMethodWithEmptyResponse_withoutParameterAndEmptyResponse_name:
-        var params = CheckMethodWithEmptyResponseWithoutParameterAndEmptyResponseParams.deserialize(
+      case _CheckMethodWithEmptyResponse_withoutParameterAndEmptyResponseName:
+        var params = _CheckMethodWithEmptyResponseWithoutParameterAndEmptyResponseParams.deserialize(
             message.payload);
         var response = _impl.withoutParameterAndEmptyResponse(_CheckMethodWithEmptyResponseWithoutParameterAndEmptyResponseResponseParamsFactory);
         if (response is Future) {
@@ -1795,7 +1916,7 @@ class CheckMethodWithEmptyResponseStub extends bindings.Stub {
             if (response != null) {
               return buildResponseWithId(
                   response,
-                  kCheckMethodWithEmptyResponse_withoutParameterAndEmptyResponse_name,
+                  _CheckMethodWithEmptyResponse_withoutParameterAndEmptyResponseName,
                   message.header.requestId,
                   bindings.MessageHeader.kMessageIsResponse);
             }
@@ -1803,13 +1924,13 @@ class CheckMethodWithEmptyResponseStub extends bindings.Stub {
         } else if (response != null) {
           return buildResponseWithId(
               response,
-              kCheckMethodWithEmptyResponse_withoutParameterAndEmptyResponse_name,
+              _CheckMethodWithEmptyResponse_withoutParameterAndEmptyResponseName,
               message.header.requestId,
               bindings.MessageHeader.kMessageIsResponse);
         }
         break;
-      case kCheckMethodWithEmptyResponse_withParameterAndEmptyResponse_name:
-        var params = CheckMethodWithEmptyResponseWithParameterAndEmptyResponseParams.deserialize(
+      case _CheckMethodWithEmptyResponse_withParameterAndEmptyResponseName:
+        var params = _CheckMethodWithEmptyResponseWithParameterAndEmptyResponseParams.deserialize(
             message.payload);
         var response = _impl.withParameterAndEmptyResponse(params.b,_CheckMethodWithEmptyResponseWithParameterAndEmptyResponseResponseParamsFactory);
         if (response is Future) {
@@ -1817,7 +1938,7 @@ class CheckMethodWithEmptyResponseStub extends bindings.Stub {
             if (response != null) {
               return buildResponseWithId(
                   response,
-                  kCheckMethodWithEmptyResponse_withParameterAndEmptyResponse_name,
+                  _CheckMethodWithEmptyResponse_withParameterAndEmptyResponseName,
                   message.header.requestId,
                   bindings.MessageHeader.kMessageIsResponse);
             }
@@ -1825,7 +1946,7 @@ class CheckMethodWithEmptyResponseStub extends bindings.Stub {
         } else if (response != null) {
           return buildResponseWithId(
               response,
-              kCheckMethodWithEmptyResponse_withParameterAndEmptyResponse_name,
+              _CheckMethodWithEmptyResponse_withParameterAndEmptyResponseName,
               message.header.requestId,
               bindings.MessageHeader.kMessageIsResponse);
         }
@@ -1851,35 +1972,32 @@ class CheckMethodWithEmptyResponseStub extends bindings.Stub {
   int get version => 0;
 }
 
-const int kCheckNameCollision_withNameCollision_name = 0;
-const String CheckNameCollisionName = null;
+const int _CheckNameCollision_withNameCollisionName = 0;
 
 abstract class CheckNameCollision {
+  static const String serviceName = null;
   dynamic withNameCollision(bool message,bool response,[Function responseFactory = null]);
-
 }
 
 
-class CheckNameCollisionProxyImpl extends bindings.Proxy {
-  CheckNameCollisionProxyImpl.fromEndpoint(
+class _CheckNameCollisionProxyImpl extends bindings.Proxy {
+  _CheckNameCollisionProxyImpl.fromEndpoint(
       core.MojoMessagePipeEndpoint endpoint) : super.fromEndpoint(endpoint);
 
-  CheckNameCollisionProxyImpl.fromHandle(core.MojoHandle handle) :
+  _CheckNameCollisionProxyImpl.fromHandle(core.MojoHandle handle) :
       super.fromHandle(handle);
 
-  CheckNameCollisionProxyImpl.unbound() : super.unbound();
+  _CheckNameCollisionProxyImpl.unbound() : super.unbound();
 
-  static CheckNameCollisionProxyImpl newFromEndpoint(
+  static _CheckNameCollisionProxyImpl newFromEndpoint(
       core.MojoMessagePipeEndpoint endpoint) {
-    assert(endpoint.setDescription("For CheckNameCollisionProxyImpl"));
-    return new CheckNameCollisionProxyImpl.fromEndpoint(endpoint);
+    assert(endpoint.setDescription("For _CheckNameCollisionProxyImpl"));
+    return new _CheckNameCollisionProxyImpl.fromEndpoint(endpoint);
   }
-
-  String get name => CheckNameCollisionName;
 
   void handleResponse(bindings.ServiceMessage message) {
     switch (message.header.type) {
-      case kCheckNameCollision_withNameCollision_name:
+      case _CheckNameCollision_withNameCollisionName:
         var r = CheckNameCollisionWithNameCollisionResponseParams.deserialize(
             message.payload);
         if (!message.header.hasRequestId) {
@@ -1908,22 +2026,22 @@ class CheckNameCollisionProxyImpl extends bindings.Proxy {
 
   String toString() {
     var superString = super.toString();
-    return "CheckNameCollisionProxyImpl($superString)";
+    return "_CheckNameCollisionProxyImpl($superString)";
   }
 }
 
 
 class _CheckNameCollisionProxyCalls implements CheckNameCollision {
-  CheckNameCollisionProxyImpl _proxyImpl;
+  _CheckNameCollisionProxyImpl _proxyImpl;
 
   _CheckNameCollisionProxyCalls(this._proxyImpl);
     dynamic withNameCollision(bool message,bool response,[Function responseFactory = null]) {
-      var params = new CheckNameCollisionWithNameCollisionParams();
+      var params = new _CheckNameCollisionWithNameCollisionParams();
       params.message = message;
       params.response = response;
       return _proxyImpl.sendMessageWithRequestId(
           params,
-          kCheckNameCollision_withNameCollision_name,
+          _CheckNameCollision_withNameCollisionName,
           -1,
           bindings.MessageHeader.kMessageExpectsResponse);
     }
@@ -1933,25 +2051,24 @@ class _CheckNameCollisionProxyCalls implements CheckNameCollision {
 class CheckNameCollisionProxy implements bindings.ProxyBase {
   final bindings.Proxy impl;
   CheckNameCollision ptr;
-  final String name = CheckNameCollisionName;
 
-  CheckNameCollisionProxy(CheckNameCollisionProxyImpl proxyImpl) :
+  CheckNameCollisionProxy(_CheckNameCollisionProxyImpl proxyImpl) :
       impl = proxyImpl,
       ptr = new _CheckNameCollisionProxyCalls(proxyImpl);
 
   CheckNameCollisionProxy.fromEndpoint(
       core.MojoMessagePipeEndpoint endpoint) :
-      impl = new CheckNameCollisionProxyImpl.fromEndpoint(endpoint) {
+      impl = new _CheckNameCollisionProxyImpl.fromEndpoint(endpoint) {
     ptr = new _CheckNameCollisionProxyCalls(impl);
   }
 
   CheckNameCollisionProxy.fromHandle(core.MojoHandle handle) :
-      impl = new CheckNameCollisionProxyImpl.fromHandle(handle) {
+      impl = new _CheckNameCollisionProxyImpl.fromHandle(handle) {
     ptr = new _CheckNameCollisionProxyCalls(impl);
   }
 
   CheckNameCollisionProxy.unbound() :
-      impl = new CheckNameCollisionProxyImpl.unbound() {
+      impl = new _CheckNameCollisionProxyImpl.unbound() {
     ptr = new _CheckNameCollisionProxyCalls(impl);
   }
 
@@ -1967,6 +2084,8 @@ class CheckNameCollisionProxy implements bindings.ProxyBase {
     assert(endpoint.setDescription("For CheckNameCollisionProxy"));
     return new CheckNameCollisionProxy.fromEndpoint(endpoint);
   }
+
+  String get serviceName => CheckNameCollision.serviceName;
 
   Future close({bool immediate: false}) => impl.close(immediate: immediate);
 
@@ -2006,8 +2125,6 @@ class CheckNameCollisionStub extends bindings.Stub {
     return new CheckNameCollisionStub.fromEndpoint(endpoint);
   }
 
-  static const String name = CheckNameCollisionName;
-
 
   CheckNameCollisionWithNameCollisionResponseParams _CheckNameCollisionWithNameCollisionResponseParamsFactory(bool message, bool response) {
     var mojo_factory_result = new CheckNameCollisionWithNameCollisionResponseParams();
@@ -2024,8 +2141,8 @@ class CheckNameCollisionStub extends bindings.Stub {
     }
     assert(_impl != null);
     switch (message.header.type) {
-      case kCheckNameCollision_withNameCollision_name:
-        var params = CheckNameCollisionWithNameCollisionParams.deserialize(
+      case _CheckNameCollision_withNameCollisionName:
+        var params = _CheckNameCollisionWithNameCollisionParams.deserialize(
             message.payload);
         var response = _impl.withNameCollision(params.message,params.response,_CheckNameCollisionWithNameCollisionResponseParamsFactory);
         if (response is Future) {
@@ -2033,7 +2150,7 @@ class CheckNameCollisionStub extends bindings.Stub {
             if (response != null) {
               return buildResponseWithId(
                   response,
-                  kCheckNameCollision_withNameCollision_name,
+                  _CheckNameCollision_withNameCollisionName,
                   message.header.requestId,
                   bindings.MessageHeader.kMessageIsResponse);
             }
@@ -2041,7 +2158,7 @@ class CheckNameCollisionStub extends bindings.Stub {
         } else if (response != null) {
           return buildResponseWithId(
               response,
-              kCheckNameCollision_withNameCollision_name,
+              _CheckNameCollision_withNameCollisionName,
               message.header.requestId,
               bindings.MessageHeader.kMessageIsResponse);
         }
@@ -2067,31 +2184,28 @@ class CheckNameCollisionStub extends bindings.Stub {
   int get version => 0;
 }
 
-const int kCheckEnumCaps_setEnumWithInternalAllCaps_name = 0;
-const String CheckEnumCapsName = null;
+const int _CheckEnumCaps_setEnumWithInternalAllCapsName = 0;
 
 abstract class CheckEnumCaps {
+  static const String serviceName = null;
   void setEnumWithInternalAllCaps(EnumWithInternalAllCaps e);
-
 }
 
 
-class CheckEnumCapsProxyImpl extends bindings.Proxy {
-  CheckEnumCapsProxyImpl.fromEndpoint(
+class _CheckEnumCapsProxyImpl extends bindings.Proxy {
+  _CheckEnumCapsProxyImpl.fromEndpoint(
       core.MojoMessagePipeEndpoint endpoint) : super.fromEndpoint(endpoint);
 
-  CheckEnumCapsProxyImpl.fromHandle(core.MojoHandle handle) :
+  _CheckEnumCapsProxyImpl.fromHandle(core.MojoHandle handle) :
       super.fromHandle(handle);
 
-  CheckEnumCapsProxyImpl.unbound() : super.unbound();
+  _CheckEnumCapsProxyImpl.unbound() : super.unbound();
 
-  static CheckEnumCapsProxyImpl newFromEndpoint(
+  static _CheckEnumCapsProxyImpl newFromEndpoint(
       core.MojoMessagePipeEndpoint endpoint) {
-    assert(endpoint.setDescription("For CheckEnumCapsProxyImpl"));
-    return new CheckEnumCapsProxyImpl.fromEndpoint(endpoint);
+    assert(endpoint.setDescription("For _CheckEnumCapsProxyImpl"));
+    return new _CheckEnumCapsProxyImpl.fromEndpoint(endpoint);
   }
-
-  String get name => CheckEnumCapsName;
 
   void handleResponse(bindings.ServiceMessage message) {
     switch (message.header.type) {
@@ -2104,13 +2218,13 @@ class CheckEnumCapsProxyImpl extends bindings.Proxy {
 
   String toString() {
     var superString = super.toString();
-    return "CheckEnumCapsProxyImpl($superString)";
+    return "_CheckEnumCapsProxyImpl($superString)";
   }
 }
 
 
 class _CheckEnumCapsProxyCalls implements CheckEnumCaps {
-  CheckEnumCapsProxyImpl _proxyImpl;
+  _CheckEnumCapsProxyImpl _proxyImpl;
 
   _CheckEnumCapsProxyCalls(this._proxyImpl);
     void setEnumWithInternalAllCaps(EnumWithInternalAllCaps e) {
@@ -2118,36 +2232,34 @@ class _CheckEnumCapsProxyCalls implements CheckEnumCaps {
         _proxyImpl.proxyError("The Proxy is closed.");
         return;
       }
-      var params = new CheckEnumCapsSetEnumWithInternalAllCapsParams();
+      var params = new _CheckEnumCapsSetEnumWithInternalAllCapsParams();
       params.e = e;
-      _proxyImpl.sendMessage(params, kCheckEnumCaps_setEnumWithInternalAllCaps_name);
+      _proxyImpl.sendMessage(params, _CheckEnumCaps_setEnumWithInternalAllCapsName);
     }
-  
 }
 
 
 class CheckEnumCapsProxy implements bindings.ProxyBase {
   final bindings.Proxy impl;
   CheckEnumCaps ptr;
-  final String name = CheckEnumCapsName;
 
-  CheckEnumCapsProxy(CheckEnumCapsProxyImpl proxyImpl) :
+  CheckEnumCapsProxy(_CheckEnumCapsProxyImpl proxyImpl) :
       impl = proxyImpl,
       ptr = new _CheckEnumCapsProxyCalls(proxyImpl);
 
   CheckEnumCapsProxy.fromEndpoint(
       core.MojoMessagePipeEndpoint endpoint) :
-      impl = new CheckEnumCapsProxyImpl.fromEndpoint(endpoint) {
+      impl = new _CheckEnumCapsProxyImpl.fromEndpoint(endpoint) {
     ptr = new _CheckEnumCapsProxyCalls(impl);
   }
 
   CheckEnumCapsProxy.fromHandle(core.MojoHandle handle) :
-      impl = new CheckEnumCapsProxyImpl.fromHandle(handle) {
+      impl = new _CheckEnumCapsProxyImpl.fromHandle(handle) {
     ptr = new _CheckEnumCapsProxyCalls(impl);
   }
 
   CheckEnumCapsProxy.unbound() :
-      impl = new CheckEnumCapsProxyImpl.unbound() {
+      impl = new _CheckEnumCapsProxyImpl.unbound() {
     ptr = new _CheckEnumCapsProxyCalls(impl);
   }
 
@@ -2163,6 +2275,8 @@ class CheckEnumCapsProxy implements bindings.ProxyBase {
     assert(endpoint.setDescription("For CheckEnumCapsProxy"));
     return new CheckEnumCapsProxy.fromEndpoint(endpoint);
   }
+
+  String get serviceName => CheckEnumCaps.serviceName;
 
   Future close({bool immediate: false}) => impl.close(immediate: immediate);
 
@@ -2202,8 +2316,6 @@ class CheckEnumCapsStub extends bindings.Stub {
     return new CheckEnumCapsStub.fromEndpoint(endpoint);
   }
 
-  static const String name = CheckEnumCapsName;
-
 
 
   dynamic handleMessage(bindings.ServiceMessage message) {
@@ -2214,8 +2326,8 @@ class CheckEnumCapsStub extends bindings.Stub {
     }
     assert(_impl != null);
     switch (message.header.type) {
-      case kCheckEnumCaps_setEnumWithInternalAllCaps_name:
-        var params = CheckEnumCapsSetEnumWithInternalAllCapsParams.deserialize(
+      case _CheckEnumCaps_setEnumWithInternalAllCapsName:
+        var params = _CheckEnumCapsSetEnumWithInternalAllCapsParams.deserialize(
             message.payload);
         _impl.setEnumWithInternalAllCaps(params.e);
         break;
@@ -2240,31 +2352,28 @@ class CheckEnumCapsStub extends bindings.Stub {
   int get version => 0;
 }
 
-const int kTestInterface_someMessage_name = 0;
-const String TestInterfaceName = null;
+const int _TestInterface_someMessageName = 0;
 
 abstract class TestInterface {
+  static const String serviceName = null;
   void someMessage();
-
 }
 
 
-class TestInterfaceProxyImpl extends bindings.Proxy {
-  TestInterfaceProxyImpl.fromEndpoint(
+class _TestInterfaceProxyImpl extends bindings.Proxy {
+  _TestInterfaceProxyImpl.fromEndpoint(
       core.MojoMessagePipeEndpoint endpoint) : super.fromEndpoint(endpoint);
 
-  TestInterfaceProxyImpl.fromHandle(core.MojoHandle handle) :
+  _TestInterfaceProxyImpl.fromHandle(core.MojoHandle handle) :
       super.fromHandle(handle);
 
-  TestInterfaceProxyImpl.unbound() : super.unbound();
+  _TestInterfaceProxyImpl.unbound() : super.unbound();
 
-  static TestInterfaceProxyImpl newFromEndpoint(
+  static _TestInterfaceProxyImpl newFromEndpoint(
       core.MojoMessagePipeEndpoint endpoint) {
-    assert(endpoint.setDescription("For TestInterfaceProxyImpl"));
-    return new TestInterfaceProxyImpl.fromEndpoint(endpoint);
+    assert(endpoint.setDescription("For _TestInterfaceProxyImpl"));
+    return new _TestInterfaceProxyImpl.fromEndpoint(endpoint);
   }
-
-  String get name => TestInterfaceName;
 
   void handleResponse(bindings.ServiceMessage message) {
     switch (message.header.type) {
@@ -2277,13 +2386,13 @@ class TestInterfaceProxyImpl extends bindings.Proxy {
 
   String toString() {
     var superString = super.toString();
-    return "TestInterfaceProxyImpl($superString)";
+    return "_TestInterfaceProxyImpl($superString)";
   }
 }
 
 
 class _TestInterfaceProxyCalls implements TestInterface {
-  TestInterfaceProxyImpl _proxyImpl;
+  _TestInterfaceProxyImpl _proxyImpl;
 
   _TestInterfaceProxyCalls(this._proxyImpl);
     void someMessage() {
@@ -2291,35 +2400,33 @@ class _TestInterfaceProxyCalls implements TestInterface {
         _proxyImpl.proxyError("The Proxy is closed.");
         return;
       }
-      var params = new TestInterfaceSomeMessageParams();
-      _proxyImpl.sendMessage(params, kTestInterface_someMessage_name);
+      var params = new _TestInterfaceSomeMessageParams();
+      _proxyImpl.sendMessage(params, _TestInterface_someMessageName);
     }
-  
 }
 
 
 class TestInterfaceProxy implements bindings.ProxyBase {
   final bindings.Proxy impl;
   TestInterface ptr;
-  final String name = TestInterfaceName;
 
-  TestInterfaceProxy(TestInterfaceProxyImpl proxyImpl) :
+  TestInterfaceProxy(_TestInterfaceProxyImpl proxyImpl) :
       impl = proxyImpl,
       ptr = new _TestInterfaceProxyCalls(proxyImpl);
 
   TestInterfaceProxy.fromEndpoint(
       core.MojoMessagePipeEndpoint endpoint) :
-      impl = new TestInterfaceProxyImpl.fromEndpoint(endpoint) {
+      impl = new _TestInterfaceProxyImpl.fromEndpoint(endpoint) {
     ptr = new _TestInterfaceProxyCalls(impl);
   }
 
   TestInterfaceProxy.fromHandle(core.MojoHandle handle) :
-      impl = new TestInterfaceProxyImpl.fromHandle(handle) {
+      impl = new _TestInterfaceProxyImpl.fromHandle(handle) {
     ptr = new _TestInterfaceProxyCalls(impl);
   }
 
   TestInterfaceProxy.unbound() :
-      impl = new TestInterfaceProxyImpl.unbound() {
+      impl = new _TestInterfaceProxyImpl.unbound() {
     ptr = new _TestInterfaceProxyCalls(impl);
   }
 
@@ -2335,6 +2442,8 @@ class TestInterfaceProxy implements bindings.ProxyBase {
     assert(endpoint.setDescription("For TestInterfaceProxy"));
     return new TestInterfaceProxy.fromEndpoint(endpoint);
   }
+
+  String get serviceName => TestInterface.serviceName;
 
   Future close({bool immediate: false}) => impl.close(immediate: immediate);
 
@@ -2374,8 +2483,6 @@ class TestInterfaceStub extends bindings.Stub {
     return new TestInterfaceStub.fromEndpoint(endpoint);
   }
 
-  static const String name = TestInterfaceName;
-
 
 
   dynamic handleMessage(bindings.ServiceMessage message) {
@@ -2386,8 +2493,8 @@ class TestInterfaceStub extends bindings.Stub {
     }
     assert(_impl != null);
     switch (message.header.type) {
-      case kTestInterface_someMessage_name:
-        var params = TestInterfaceSomeMessageParams.deserialize(
+      case _TestInterface_someMessageName:
+        var params = _TestInterfaceSomeMessageParams.deserialize(
             message.payload);
         _impl.someMessage();
         break;
@@ -2412,35 +2519,32 @@ class TestInterfaceStub extends bindings.Stub {
   int get version => 0;
 }
 
-const int kRegression551_get_name = 0;
-const String Regression551Name = null;
+const int _Regression551_getName = 0;
 
 abstract class Regression551 {
+  static const String serviceName = null;
   dynamic get(List<String> keyPrefixes,[Function responseFactory = null]);
-
 }
 
 
-class Regression551ProxyImpl extends bindings.Proxy {
-  Regression551ProxyImpl.fromEndpoint(
+class _Regression551ProxyImpl extends bindings.Proxy {
+  _Regression551ProxyImpl.fromEndpoint(
       core.MojoMessagePipeEndpoint endpoint) : super.fromEndpoint(endpoint);
 
-  Regression551ProxyImpl.fromHandle(core.MojoHandle handle) :
+  _Regression551ProxyImpl.fromHandle(core.MojoHandle handle) :
       super.fromHandle(handle);
 
-  Regression551ProxyImpl.unbound() : super.unbound();
+  _Regression551ProxyImpl.unbound() : super.unbound();
 
-  static Regression551ProxyImpl newFromEndpoint(
+  static _Regression551ProxyImpl newFromEndpoint(
       core.MojoMessagePipeEndpoint endpoint) {
-    assert(endpoint.setDescription("For Regression551ProxyImpl"));
-    return new Regression551ProxyImpl.fromEndpoint(endpoint);
+    assert(endpoint.setDescription("For _Regression551ProxyImpl"));
+    return new _Regression551ProxyImpl.fromEndpoint(endpoint);
   }
-
-  String get name => Regression551Name;
 
   void handleResponse(bindings.ServiceMessage message) {
     switch (message.header.type) {
-      case kRegression551_get_name:
+      case _Regression551_getName:
         var r = Regression551GetResponseParams.deserialize(
             message.payload);
         if (!message.header.hasRequestId) {
@@ -2469,21 +2573,21 @@ class Regression551ProxyImpl extends bindings.Proxy {
 
   String toString() {
     var superString = super.toString();
-    return "Regression551ProxyImpl($superString)";
+    return "_Regression551ProxyImpl($superString)";
   }
 }
 
 
 class _Regression551ProxyCalls implements Regression551 {
-  Regression551ProxyImpl _proxyImpl;
+  _Regression551ProxyImpl _proxyImpl;
 
   _Regression551ProxyCalls(this._proxyImpl);
     dynamic get(List<String> keyPrefixes,[Function responseFactory = null]) {
-      var params = new Regression551GetParams();
+      var params = new _Regression551GetParams();
       params.keyPrefixes = keyPrefixes;
       return _proxyImpl.sendMessageWithRequestId(
           params,
-          kRegression551_get_name,
+          _Regression551_getName,
           -1,
           bindings.MessageHeader.kMessageExpectsResponse);
     }
@@ -2493,25 +2597,24 @@ class _Regression551ProxyCalls implements Regression551 {
 class Regression551Proxy implements bindings.ProxyBase {
   final bindings.Proxy impl;
   Regression551 ptr;
-  final String name = Regression551Name;
 
-  Regression551Proxy(Regression551ProxyImpl proxyImpl) :
+  Regression551Proxy(_Regression551ProxyImpl proxyImpl) :
       impl = proxyImpl,
       ptr = new _Regression551ProxyCalls(proxyImpl);
 
   Regression551Proxy.fromEndpoint(
       core.MojoMessagePipeEndpoint endpoint) :
-      impl = new Regression551ProxyImpl.fromEndpoint(endpoint) {
+      impl = new _Regression551ProxyImpl.fromEndpoint(endpoint) {
     ptr = new _Regression551ProxyCalls(impl);
   }
 
   Regression551Proxy.fromHandle(core.MojoHandle handle) :
-      impl = new Regression551ProxyImpl.fromHandle(handle) {
+      impl = new _Regression551ProxyImpl.fromHandle(handle) {
     ptr = new _Regression551ProxyCalls(impl);
   }
 
   Regression551Proxy.unbound() :
-      impl = new Regression551ProxyImpl.unbound() {
+      impl = new _Regression551ProxyImpl.unbound() {
     ptr = new _Regression551ProxyCalls(impl);
   }
 
@@ -2527,6 +2630,8 @@ class Regression551Proxy implements bindings.ProxyBase {
     assert(endpoint.setDescription("For Regression551Proxy"));
     return new Regression551Proxy.fromEndpoint(endpoint);
   }
+
+  String get serviceName => Regression551.serviceName;
 
   Future close({bool immediate: false}) => impl.close(immediate: immediate);
 
@@ -2566,8 +2671,6 @@ class Regression551Stub extends bindings.Stub {
     return new Regression551Stub.fromEndpoint(endpoint);
   }
 
-  static const String name = Regression551Name;
-
 
   Regression551GetResponseParams _Regression551GetResponseParamsFactory(int result) {
     var mojo_factory_result = new Regression551GetResponseParams();
@@ -2583,8 +2686,8 @@ class Regression551Stub extends bindings.Stub {
     }
     assert(_impl != null);
     switch (message.header.type) {
-      case kRegression551_get_name:
-        var params = Regression551GetParams.deserialize(
+      case _Regression551_getName:
+        var params = _Regression551GetParams.deserialize(
             message.payload);
         var response = _impl.get(params.keyPrefixes,_Regression551GetResponseParamsFactory);
         if (response is Future) {
@@ -2592,7 +2695,7 @@ class Regression551Stub extends bindings.Stub {
             if (response != null) {
               return buildResponseWithId(
                   response,
-                  kRegression551_get_name,
+                  _Regression551_getName,
                   message.header.requestId,
                   bindings.MessageHeader.kMessageIsResponse);
             }
@@ -2600,7 +2703,7 @@ class Regression551Stub extends bindings.Stub {
         } else if (response != null) {
           return buildResponseWithId(
               response,
-              kRegression551_get_name,
+              _Regression551_getName,
               message.header.requestId,
               bindings.MessageHeader.kMessageIsResponse);
         }
@@ -2621,6 +2724,215 @@ class Regression551Stub extends bindings.Stub {
   String toString() {
     var superString = super.toString();
     return "Regression551Stub($superString)";
+  }
+
+  int get version => 0;
+}
+
+const int _ServiceName_serviceName_Name = 0;
+
+abstract class ServiceName {
+  static const String serviceName = null;
+  dynamic serviceName_([Function responseFactory = null]);
+}
+
+
+class _ServiceNameProxyImpl extends bindings.Proxy {
+  _ServiceNameProxyImpl.fromEndpoint(
+      core.MojoMessagePipeEndpoint endpoint) : super.fromEndpoint(endpoint);
+
+  _ServiceNameProxyImpl.fromHandle(core.MojoHandle handle) :
+      super.fromHandle(handle);
+
+  _ServiceNameProxyImpl.unbound() : super.unbound();
+
+  static _ServiceNameProxyImpl newFromEndpoint(
+      core.MojoMessagePipeEndpoint endpoint) {
+    assert(endpoint.setDescription("For _ServiceNameProxyImpl"));
+    return new _ServiceNameProxyImpl.fromEndpoint(endpoint);
+  }
+
+  void handleResponse(bindings.ServiceMessage message) {
+    switch (message.header.type) {
+      case _ServiceName_serviceName_Name:
+        var r = ServiceNameServiceNameResponseParams.deserialize(
+            message.payload);
+        if (!message.header.hasRequestId) {
+          proxyError("Expected a message with a valid request Id.");
+          return;
+        }
+        Completer c = completerMap[message.header.requestId];
+        if (c == null) {
+          proxyError(
+              "Message had unknown request Id: ${message.header.requestId}");
+          return;
+        }
+        completerMap.remove(message.header.requestId);
+        if (c.isCompleted) {
+          proxyError("Response completer already completed");
+          return;
+        }
+        c.complete(r);
+        break;
+      default:
+        proxyError("Unexpected message type: ${message.header.type}");
+        close(immediate: true);
+        break;
+    }
+  }
+
+  String toString() {
+    var superString = super.toString();
+    return "_ServiceNameProxyImpl($superString)";
+  }
+}
+
+
+class _ServiceNameProxyCalls implements ServiceName {
+  _ServiceNameProxyImpl _proxyImpl;
+
+  _ServiceNameProxyCalls(this._proxyImpl);
+    dynamic serviceName_([Function responseFactory = null]) {
+      var params = new _ServiceNameServiceNameParams();
+      return _proxyImpl.sendMessageWithRequestId(
+          params,
+          _ServiceName_serviceName_Name,
+          -1,
+          bindings.MessageHeader.kMessageExpectsResponse);
+    }
+}
+
+
+class ServiceNameProxy implements bindings.ProxyBase {
+  final bindings.Proxy impl;
+  ServiceName ptr;
+
+  ServiceNameProxy(_ServiceNameProxyImpl proxyImpl) :
+      impl = proxyImpl,
+      ptr = new _ServiceNameProxyCalls(proxyImpl);
+
+  ServiceNameProxy.fromEndpoint(
+      core.MojoMessagePipeEndpoint endpoint) :
+      impl = new _ServiceNameProxyImpl.fromEndpoint(endpoint) {
+    ptr = new _ServiceNameProxyCalls(impl);
+  }
+
+  ServiceNameProxy.fromHandle(core.MojoHandle handle) :
+      impl = new _ServiceNameProxyImpl.fromHandle(handle) {
+    ptr = new _ServiceNameProxyCalls(impl);
+  }
+
+  ServiceNameProxy.unbound() :
+      impl = new _ServiceNameProxyImpl.unbound() {
+    ptr = new _ServiceNameProxyCalls(impl);
+  }
+
+  factory ServiceNameProxy.connectToService(
+      bindings.ServiceConnector s, String url, [String serviceName]) {
+    ServiceNameProxy p = new ServiceNameProxy.unbound();
+    s.connectToService(url, p, serviceName);
+    return p;
+  }
+
+  static ServiceNameProxy newFromEndpoint(
+      core.MojoMessagePipeEndpoint endpoint) {
+    assert(endpoint.setDescription("For ServiceNameProxy"));
+    return new ServiceNameProxy.fromEndpoint(endpoint);
+  }
+
+  String get serviceName => ServiceName.serviceName;
+
+  Future close({bool immediate: false}) => impl.close(immediate: immediate);
+
+  Future responseOrError(Future f) => impl.responseOrError(f);
+
+  Future get errorFuture => impl.errorFuture;
+
+  int get version => impl.version;
+
+  Future<int> queryVersion() => impl.queryVersion();
+
+  void requireVersion(int requiredVersion) {
+    impl.requireVersion(requiredVersion);
+  }
+
+  String toString() {
+    return "ServiceNameProxy($impl)";
+  }
+}
+
+
+class ServiceNameStub extends bindings.Stub {
+  ServiceName _impl = null;
+
+  ServiceNameStub.fromEndpoint(
+      core.MojoMessagePipeEndpoint endpoint, [this._impl])
+      : super.fromEndpoint(endpoint);
+
+  ServiceNameStub.fromHandle(core.MojoHandle handle, [this._impl])
+      : super.fromHandle(handle);
+
+  ServiceNameStub.unbound() : super.unbound();
+
+  static ServiceNameStub newFromEndpoint(
+      core.MojoMessagePipeEndpoint endpoint) {
+    assert(endpoint.setDescription("For ServiceNameStub"));
+    return new ServiceNameStub.fromEndpoint(endpoint);
+  }
+
+
+  ServiceNameServiceNameResponseParams _ServiceNameServiceNameResponseParamsFactory(String serviceName_) {
+    var mojo_factory_result = new ServiceNameServiceNameResponseParams();
+    mojo_factory_result.serviceName_ = serviceName_;
+    return mojo_factory_result;
+  }
+
+  dynamic handleMessage(bindings.ServiceMessage message) {
+    if (bindings.ControlMessageHandler.isControlMessage(message)) {
+      return bindings.ControlMessageHandler.handleMessage(this,
+                                                          0,
+                                                          message);
+    }
+    assert(_impl != null);
+    switch (message.header.type) {
+      case _ServiceName_serviceName_Name:
+        var params = _ServiceNameServiceNameParams.deserialize(
+            message.payload);
+        var response = _impl.serviceName_(_ServiceNameServiceNameResponseParamsFactory);
+        if (response is Future) {
+          return response.then((response) {
+            if (response != null) {
+              return buildResponseWithId(
+                  response,
+                  _ServiceName_serviceName_Name,
+                  message.header.requestId,
+                  bindings.MessageHeader.kMessageIsResponse);
+            }
+          });
+        } else if (response != null) {
+          return buildResponseWithId(
+              response,
+              _ServiceName_serviceName_Name,
+              message.header.requestId,
+              bindings.MessageHeader.kMessageIsResponse);
+        }
+        break;
+      default:
+        throw new bindings.MojoCodecError("Unexpected message name");
+        break;
+    }
+    return null;
+  }
+
+  ServiceName get impl => _impl;
+  set impl(ServiceName d) {
+    assert(_impl == null);
+    _impl = d;
+  }
+
+  String toString() {
+    var superString = super.toString();
+    return "ServiceNameStub($superString)";
   }
 
   int get version => 0;

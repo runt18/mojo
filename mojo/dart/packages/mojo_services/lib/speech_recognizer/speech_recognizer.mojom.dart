@@ -186,14 +186,14 @@ class UtteranceCandidate extends bindings.Struct {
 }
 
 
-class SpeechRecognizerServiceListenParams extends bindings.Struct {
+class _SpeechRecognizerServiceListenParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(8, 0)
   ];
 
-  SpeechRecognizerServiceListenParams() : super(kVersions.last.size);
+  _SpeechRecognizerServiceListenParams() : super(kVersions.last.size);
 
-  static SpeechRecognizerServiceListenParams deserialize(bindings.Message message) {
+  static _SpeechRecognizerServiceListenParams deserialize(bindings.Message message) {
     var decoder = new bindings.Decoder(message);
     var result = decode(decoder);
     if (decoder.excessHandles != null) {
@@ -202,11 +202,11 @@ class SpeechRecognizerServiceListenParams extends bindings.Struct {
     return result;
   }
 
-  static SpeechRecognizerServiceListenParams decode(bindings.Decoder decoder0) {
+  static _SpeechRecognizerServiceListenParams decode(bindings.Decoder decoder0) {
     if (decoder0 == null) {
       return null;
     }
-    SpeechRecognizerServiceListenParams result = new SpeechRecognizerServiceListenParams();
+    _SpeechRecognizerServiceListenParams result = new _SpeechRecognizerServiceListenParams();
 
     var mainDataHeader = decoder0.decodeStructDataHeader();
     if (mainDataHeader.version <= kVersions.last.version) {
@@ -234,7 +234,7 @@ class SpeechRecognizerServiceListenParams extends bindings.Struct {
   }
 
   String toString() {
-    return "SpeechRecognizerServiceListenParams("")";
+    return "_SpeechRecognizerServiceListenParams("")";
   }
 
   Map toJson() {
@@ -315,14 +315,14 @@ class SpeechRecognizerServiceListenResponseParams extends bindings.Struct {
 }
 
 
-class SpeechRecognizerServiceStopListeningParams extends bindings.Struct {
+class _SpeechRecognizerServiceStopListeningParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(8, 0)
   ];
 
-  SpeechRecognizerServiceStopListeningParams() : super(kVersions.last.size);
+  _SpeechRecognizerServiceStopListeningParams() : super(kVersions.last.size);
 
-  static SpeechRecognizerServiceStopListeningParams deserialize(bindings.Message message) {
+  static _SpeechRecognizerServiceStopListeningParams deserialize(bindings.Message message) {
     var decoder = new bindings.Decoder(message);
     var result = decode(decoder);
     if (decoder.excessHandles != null) {
@@ -331,11 +331,11 @@ class SpeechRecognizerServiceStopListeningParams extends bindings.Struct {
     return result;
   }
 
-  static SpeechRecognizerServiceStopListeningParams decode(bindings.Decoder decoder0) {
+  static _SpeechRecognizerServiceStopListeningParams decode(bindings.Decoder decoder0) {
     if (decoder0 == null) {
       return null;
     }
-    SpeechRecognizerServiceStopListeningParams result = new SpeechRecognizerServiceStopListeningParams();
+    _SpeechRecognizerServiceStopListeningParams result = new _SpeechRecognizerServiceStopListeningParams();
 
     var mainDataHeader = decoder0.decodeStructDataHeader();
     if (mainDataHeader.version <= kVersions.last.version) {
@@ -363,7 +363,7 @@ class SpeechRecognizerServiceStopListeningParams extends bindings.Struct {
   }
 
   String toString() {
-    return "SpeechRecognizerServiceStopListeningParams("")";
+    return "_SpeechRecognizerServiceStopListeningParams("")";
   }
 
   Map toJson() {
@@ -498,37 +498,34 @@ class ResultOrError extends bindings.Union {
     return result;
   }
 }
-const int kSpeechRecognizerService_listen_name = 0;
-const int kSpeechRecognizerService_stopListening_name = 1;
-const String SpeechRecognizerServiceName = "speech_recognizer::SpeechRecognizerService";
+const int _SpeechRecognizerService_listenName = 0;
+const int _SpeechRecognizerService_stopListeningName = 1;
 
 abstract class SpeechRecognizerService {
+  static const String serviceName = "speech_recognizer::SpeechRecognizerService";
   dynamic listen([Function responseFactory = null]);
   void stopListening();
-
 }
 
 
-class SpeechRecognizerServiceProxyImpl extends bindings.Proxy {
-  SpeechRecognizerServiceProxyImpl.fromEndpoint(
+class _SpeechRecognizerServiceProxyImpl extends bindings.Proxy {
+  _SpeechRecognizerServiceProxyImpl.fromEndpoint(
       core.MojoMessagePipeEndpoint endpoint) : super.fromEndpoint(endpoint);
 
-  SpeechRecognizerServiceProxyImpl.fromHandle(core.MojoHandle handle) :
+  _SpeechRecognizerServiceProxyImpl.fromHandle(core.MojoHandle handle) :
       super.fromHandle(handle);
 
-  SpeechRecognizerServiceProxyImpl.unbound() : super.unbound();
+  _SpeechRecognizerServiceProxyImpl.unbound() : super.unbound();
 
-  static SpeechRecognizerServiceProxyImpl newFromEndpoint(
+  static _SpeechRecognizerServiceProxyImpl newFromEndpoint(
       core.MojoMessagePipeEndpoint endpoint) {
-    assert(endpoint.setDescription("For SpeechRecognizerServiceProxyImpl"));
-    return new SpeechRecognizerServiceProxyImpl.fromEndpoint(endpoint);
+    assert(endpoint.setDescription("For _SpeechRecognizerServiceProxyImpl"));
+    return new _SpeechRecognizerServiceProxyImpl.fromEndpoint(endpoint);
   }
-
-  String get name => SpeechRecognizerServiceName;
 
   void handleResponse(bindings.ServiceMessage message) {
     switch (message.header.type) {
-      case kSpeechRecognizerService_listen_name:
+      case _SpeechRecognizerService_listenName:
         var r = SpeechRecognizerServiceListenResponseParams.deserialize(
             message.payload);
         if (!message.header.hasRequestId) {
@@ -557,20 +554,20 @@ class SpeechRecognizerServiceProxyImpl extends bindings.Proxy {
 
   String toString() {
     var superString = super.toString();
-    return "SpeechRecognizerServiceProxyImpl($superString)";
+    return "_SpeechRecognizerServiceProxyImpl($superString)";
   }
 }
 
 
 class _SpeechRecognizerServiceProxyCalls implements SpeechRecognizerService {
-  SpeechRecognizerServiceProxyImpl _proxyImpl;
+  _SpeechRecognizerServiceProxyImpl _proxyImpl;
 
   _SpeechRecognizerServiceProxyCalls(this._proxyImpl);
     dynamic listen([Function responseFactory = null]) {
-      var params = new SpeechRecognizerServiceListenParams();
+      var params = new _SpeechRecognizerServiceListenParams();
       return _proxyImpl.sendMessageWithRequestId(
           params,
-          kSpeechRecognizerService_listen_name,
+          _SpeechRecognizerService_listenName,
           -1,
           bindings.MessageHeader.kMessageExpectsResponse);
     }
@@ -579,35 +576,33 @@ class _SpeechRecognizerServiceProxyCalls implements SpeechRecognizerService {
         _proxyImpl.proxyError("The Proxy is closed.");
         return;
       }
-      var params = new SpeechRecognizerServiceStopListeningParams();
-      _proxyImpl.sendMessage(params, kSpeechRecognizerService_stopListening_name);
+      var params = new _SpeechRecognizerServiceStopListeningParams();
+      _proxyImpl.sendMessage(params, _SpeechRecognizerService_stopListeningName);
     }
-  
 }
 
 
 class SpeechRecognizerServiceProxy implements bindings.ProxyBase {
   final bindings.Proxy impl;
   SpeechRecognizerService ptr;
-  final String name = SpeechRecognizerServiceName;
 
-  SpeechRecognizerServiceProxy(SpeechRecognizerServiceProxyImpl proxyImpl) :
+  SpeechRecognizerServiceProxy(_SpeechRecognizerServiceProxyImpl proxyImpl) :
       impl = proxyImpl,
       ptr = new _SpeechRecognizerServiceProxyCalls(proxyImpl);
 
   SpeechRecognizerServiceProxy.fromEndpoint(
       core.MojoMessagePipeEndpoint endpoint) :
-      impl = new SpeechRecognizerServiceProxyImpl.fromEndpoint(endpoint) {
+      impl = new _SpeechRecognizerServiceProxyImpl.fromEndpoint(endpoint) {
     ptr = new _SpeechRecognizerServiceProxyCalls(impl);
   }
 
   SpeechRecognizerServiceProxy.fromHandle(core.MojoHandle handle) :
-      impl = new SpeechRecognizerServiceProxyImpl.fromHandle(handle) {
+      impl = new _SpeechRecognizerServiceProxyImpl.fromHandle(handle) {
     ptr = new _SpeechRecognizerServiceProxyCalls(impl);
   }
 
   SpeechRecognizerServiceProxy.unbound() :
-      impl = new SpeechRecognizerServiceProxyImpl.unbound() {
+      impl = new _SpeechRecognizerServiceProxyImpl.unbound() {
     ptr = new _SpeechRecognizerServiceProxyCalls(impl);
   }
 
@@ -623,6 +618,8 @@ class SpeechRecognizerServiceProxy implements bindings.ProxyBase {
     assert(endpoint.setDescription("For SpeechRecognizerServiceProxy"));
     return new SpeechRecognizerServiceProxy.fromEndpoint(endpoint);
   }
+
+  String get serviceName => SpeechRecognizerService.serviceName;
 
   Future close({bool immediate: false}) => impl.close(immediate: immediate);
 
@@ -662,8 +659,6 @@ class SpeechRecognizerServiceStub extends bindings.Stub {
     return new SpeechRecognizerServiceStub.fromEndpoint(endpoint);
   }
 
-  static const String name = SpeechRecognizerServiceName;
-
 
   SpeechRecognizerServiceListenResponseParams _SpeechRecognizerServiceListenResponseParamsFactory(ResultOrError resultOrError) {
     var mojo_factory_result = new SpeechRecognizerServiceListenResponseParams();
@@ -679,8 +674,8 @@ class SpeechRecognizerServiceStub extends bindings.Stub {
     }
     assert(_impl != null);
     switch (message.header.type) {
-      case kSpeechRecognizerService_listen_name:
-        var params = SpeechRecognizerServiceListenParams.deserialize(
+      case _SpeechRecognizerService_listenName:
+        var params = _SpeechRecognizerServiceListenParams.deserialize(
             message.payload);
         var response = _impl.listen(_SpeechRecognizerServiceListenResponseParamsFactory);
         if (response is Future) {
@@ -688,7 +683,7 @@ class SpeechRecognizerServiceStub extends bindings.Stub {
             if (response != null) {
               return buildResponseWithId(
                   response,
-                  kSpeechRecognizerService_listen_name,
+                  _SpeechRecognizerService_listenName,
                   message.header.requestId,
                   bindings.MessageHeader.kMessageIsResponse);
             }
@@ -696,13 +691,13 @@ class SpeechRecognizerServiceStub extends bindings.Stub {
         } else if (response != null) {
           return buildResponseWithId(
               response,
-              kSpeechRecognizerService_listen_name,
+              _SpeechRecognizerService_listenName,
               message.header.requestId,
               bindings.MessageHeader.kMessageIsResponse);
         }
         break;
-      case kSpeechRecognizerService_stopListening_name:
-        var params = SpeechRecognizerServiceStopListeningParams.deserialize(
+      case _SpeechRecognizerService_stopListeningName:
+        var params = _SpeechRecognizerServiceStopListeningParams.deserialize(
             message.payload);
         _impl.stopListening();
         break;

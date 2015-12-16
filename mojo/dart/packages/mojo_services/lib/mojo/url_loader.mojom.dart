@@ -91,15 +91,15 @@ class UrlLoaderStatus extends bindings.Struct {
 }
 
 
-class UrlLoaderStartParams extends bindings.Struct {
+class _UrlLoaderStartParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(16, 0)
   ];
   url_request_mojom.UrlRequest request = null;
 
-  UrlLoaderStartParams() : super(kVersions.last.size);
+  _UrlLoaderStartParams() : super(kVersions.last.size);
 
-  static UrlLoaderStartParams deserialize(bindings.Message message) {
+  static _UrlLoaderStartParams deserialize(bindings.Message message) {
     var decoder = new bindings.Decoder(message);
     var result = decode(decoder);
     if (decoder.excessHandles != null) {
@@ -108,11 +108,11 @@ class UrlLoaderStartParams extends bindings.Struct {
     return result;
   }
 
-  static UrlLoaderStartParams decode(bindings.Decoder decoder0) {
+  static _UrlLoaderStartParams decode(bindings.Decoder decoder0) {
     if (decoder0 == null) {
       return null;
     }
-    UrlLoaderStartParams result = new UrlLoaderStartParams();
+    _UrlLoaderStartParams result = new _UrlLoaderStartParams();
 
     var mainDataHeader = decoder0.decodeStructDataHeader();
     if (mainDataHeader.version <= kVersions.last.version) {
@@ -147,7 +147,7 @@ class UrlLoaderStartParams extends bindings.Struct {
   }
 
   String toString() {
-    return "UrlLoaderStartParams("
+    return "_UrlLoaderStartParams("
            "request: $request" ")";
   }
 
@@ -225,14 +225,14 @@ class UrlLoaderStartResponseParams extends bindings.Struct {
 }
 
 
-class UrlLoaderFollowRedirectParams extends bindings.Struct {
+class _UrlLoaderFollowRedirectParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(8, 0)
   ];
 
-  UrlLoaderFollowRedirectParams() : super(kVersions.last.size);
+  _UrlLoaderFollowRedirectParams() : super(kVersions.last.size);
 
-  static UrlLoaderFollowRedirectParams deserialize(bindings.Message message) {
+  static _UrlLoaderFollowRedirectParams deserialize(bindings.Message message) {
     var decoder = new bindings.Decoder(message);
     var result = decode(decoder);
     if (decoder.excessHandles != null) {
@@ -241,11 +241,11 @@ class UrlLoaderFollowRedirectParams extends bindings.Struct {
     return result;
   }
 
-  static UrlLoaderFollowRedirectParams decode(bindings.Decoder decoder0) {
+  static _UrlLoaderFollowRedirectParams decode(bindings.Decoder decoder0) {
     if (decoder0 == null) {
       return null;
     }
-    UrlLoaderFollowRedirectParams result = new UrlLoaderFollowRedirectParams();
+    _UrlLoaderFollowRedirectParams result = new _UrlLoaderFollowRedirectParams();
 
     var mainDataHeader = decoder0.decodeStructDataHeader();
     if (mainDataHeader.version <= kVersions.last.version) {
@@ -273,7 +273,7 @@ class UrlLoaderFollowRedirectParams extends bindings.Struct {
   }
 
   String toString() {
-    return "UrlLoaderFollowRedirectParams("")";
+    return "_UrlLoaderFollowRedirectParams("")";
   }
 
   Map toJson() {
@@ -350,14 +350,14 @@ class UrlLoaderFollowRedirectResponseParams extends bindings.Struct {
 }
 
 
-class UrlLoaderQueryStatusParams extends bindings.Struct {
+class _UrlLoaderQueryStatusParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(8, 0)
   ];
 
-  UrlLoaderQueryStatusParams() : super(kVersions.last.size);
+  _UrlLoaderQueryStatusParams() : super(kVersions.last.size);
 
-  static UrlLoaderQueryStatusParams deserialize(bindings.Message message) {
+  static _UrlLoaderQueryStatusParams deserialize(bindings.Message message) {
     var decoder = new bindings.Decoder(message);
     var result = decode(decoder);
     if (decoder.excessHandles != null) {
@@ -366,11 +366,11 @@ class UrlLoaderQueryStatusParams extends bindings.Struct {
     return result;
   }
 
-  static UrlLoaderQueryStatusParams decode(bindings.Decoder decoder0) {
+  static _UrlLoaderQueryStatusParams decode(bindings.Decoder decoder0) {
     if (decoder0 == null) {
       return null;
     }
-    UrlLoaderQueryStatusParams result = new UrlLoaderQueryStatusParams();
+    _UrlLoaderQueryStatusParams result = new _UrlLoaderQueryStatusParams();
 
     var mainDataHeader = decoder0.decodeStructDataHeader();
     if (mainDataHeader.version <= kVersions.last.version) {
@@ -398,7 +398,7 @@ class UrlLoaderQueryStatusParams extends bindings.Struct {
   }
 
   String toString() {
-    return "UrlLoaderQueryStatusParams("")";
+    return "_UrlLoaderQueryStatusParams("")";
   }
 
   Map toJson() {
@@ -475,39 +475,36 @@ class UrlLoaderQueryStatusResponseParams extends bindings.Struct {
   }
 }
 
-const int kUrlLoader_start_name = 0;
-const int kUrlLoader_followRedirect_name = 1;
-const int kUrlLoader_queryStatus_name = 2;
-const String UrlLoaderName = null;
+const int _UrlLoader_startName = 0;
+const int _UrlLoader_followRedirectName = 1;
+const int _UrlLoader_queryStatusName = 2;
 
 abstract class UrlLoader {
+  static const String serviceName = null;
   dynamic start(url_request_mojom.UrlRequest request,[Function responseFactory = null]);
   dynamic followRedirect([Function responseFactory = null]);
   dynamic queryStatus([Function responseFactory = null]);
-
 }
 
 
-class UrlLoaderProxyImpl extends bindings.Proxy {
-  UrlLoaderProxyImpl.fromEndpoint(
+class _UrlLoaderProxyImpl extends bindings.Proxy {
+  _UrlLoaderProxyImpl.fromEndpoint(
       core.MojoMessagePipeEndpoint endpoint) : super.fromEndpoint(endpoint);
 
-  UrlLoaderProxyImpl.fromHandle(core.MojoHandle handle) :
+  _UrlLoaderProxyImpl.fromHandle(core.MojoHandle handle) :
       super.fromHandle(handle);
 
-  UrlLoaderProxyImpl.unbound() : super.unbound();
+  _UrlLoaderProxyImpl.unbound() : super.unbound();
 
-  static UrlLoaderProxyImpl newFromEndpoint(
+  static _UrlLoaderProxyImpl newFromEndpoint(
       core.MojoMessagePipeEndpoint endpoint) {
-    assert(endpoint.setDescription("For UrlLoaderProxyImpl"));
-    return new UrlLoaderProxyImpl.fromEndpoint(endpoint);
+    assert(endpoint.setDescription("For _UrlLoaderProxyImpl"));
+    return new _UrlLoaderProxyImpl.fromEndpoint(endpoint);
   }
-
-  String get name => UrlLoaderName;
 
   void handleResponse(bindings.ServiceMessage message) {
     switch (message.header.type) {
-      case kUrlLoader_start_name:
+      case _UrlLoader_startName:
         var r = UrlLoaderStartResponseParams.deserialize(
             message.payload);
         if (!message.header.hasRequestId) {
@@ -527,7 +524,7 @@ class UrlLoaderProxyImpl extends bindings.Proxy {
         }
         c.complete(r);
         break;
-      case kUrlLoader_followRedirect_name:
+      case _UrlLoader_followRedirectName:
         var r = UrlLoaderFollowRedirectResponseParams.deserialize(
             message.payload);
         if (!message.header.hasRequestId) {
@@ -547,7 +544,7 @@ class UrlLoaderProxyImpl extends bindings.Proxy {
         }
         c.complete(r);
         break;
-      case kUrlLoader_queryStatus_name:
+      case _UrlLoader_queryStatusName:
         var r = UrlLoaderQueryStatusResponseParams.deserialize(
             message.payload);
         if (!message.header.hasRequestId) {
@@ -576,37 +573,37 @@ class UrlLoaderProxyImpl extends bindings.Proxy {
 
   String toString() {
     var superString = super.toString();
-    return "UrlLoaderProxyImpl($superString)";
+    return "_UrlLoaderProxyImpl($superString)";
   }
 }
 
 
 class _UrlLoaderProxyCalls implements UrlLoader {
-  UrlLoaderProxyImpl _proxyImpl;
+  _UrlLoaderProxyImpl _proxyImpl;
 
   _UrlLoaderProxyCalls(this._proxyImpl);
     dynamic start(url_request_mojom.UrlRequest request,[Function responseFactory = null]) {
-      var params = new UrlLoaderStartParams();
+      var params = new _UrlLoaderStartParams();
       params.request = request;
       return _proxyImpl.sendMessageWithRequestId(
           params,
-          kUrlLoader_start_name,
+          _UrlLoader_startName,
           -1,
           bindings.MessageHeader.kMessageExpectsResponse);
     }
     dynamic followRedirect([Function responseFactory = null]) {
-      var params = new UrlLoaderFollowRedirectParams();
+      var params = new _UrlLoaderFollowRedirectParams();
       return _proxyImpl.sendMessageWithRequestId(
           params,
-          kUrlLoader_followRedirect_name,
+          _UrlLoader_followRedirectName,
           -1,
           bindings.MessageHeader.kMessageExpectsResponse);
     }
     dynamic queryStatus([Function responseFactory = null]) {
-      var params = new UrlLoaderQueryStatusParams();
+      var params = new _UrlLoaderQueryStatusParams();
       return _proxyImpl.sendMessageWithRequestId(
           params,
-          kUrlLoader_queryStatus_name,
+          _UrlLoader_queryStatusName,
           -1,
           bindings.MessageHeader.kMessageExpectsResponse);
     }
@@ -616,25 +613,24 @@ class _UrlLoaderProxyCalls implements UrlLoader {
 class UrlLoaderProxy implements bindings.ProxyBase {
   final bindings.Proxy impl;
   UrlLoader ptr;
-  final String name = UrlLoaderName;
 
-  UrlLoaderProxy(UrlLoaderProxyImpl proxyImpl) :
+  UrlLoaderProxy(_UrlLoaderProxyImpl proxyImpl) :
       impl = proxyImpl,
       ptr = new _UrlLoaderProxyCalls(proxyImpl);
 
   UrlLoaderProxy.fromEndpoint(
       core.MojoMessagePipeEndpoint endpoint) :
-      impl = new UrlLoaderProxyImpl.fromEndpoint(endpoint) {
+      impl = new _UrlLoaderProxyImpl.fromEndpoint(endpoint) {
     ptr = new _UrlLoaderProxyCalls(impl);
   }
 
   UrlLoaderProxy.fromHandle(core.MojoHandle handle) :
-      impl = new UrlLoaderProxyImpl.fromHandle(handle) {
+      impl = new _UrlLoaderProxyImpl.fromHandle(handle) {
     ptr = new _UrlLoaderProxyCalls(impl);
   }
 
   UrlLoaderProxy.unbound() :
-      impl = new UrlLoaderProxyImpl.unbound() {
+      impl = new _UrlLoaderProxyImpl.unbound() {
     ptr = new _UrlLoaderProxyCalls(impl);
   }
 
@@ -650,6 +646,8 @@ class UrlLoaderProxy implements bindings.ProxyBase {
     assert(endpoint.setDescription("For UrlLoaderProxy"));
     return new UrlLoaderProxy.fromEndpoint(endpoint);
   }
+
+  String get serviceName => UrlLoader.serviceName;
 
   Future close({bool immediate: false}) => impl.close(immediate: immediate);
 
@@ -689,8 +687,6 @@ class UrlLoaderStub extends bindings.Stub {
     return new UrlLoaderStub.fromEndpoint(endpoint);
   }
 
-  static const String name = UrlLoaderName;
-
 
   UrlLoaderStartResponseParams _UrlLoaderStartResponseParamsFactory(url_response_mojom.UrlResponse response) {
     var mojo_factory_result = new UrlLoaderStartResponseParams();
@@ -716,8 +712,8 @@ class UrlLoaderStub extends bindings.Stub {
     }
     assert(_impl != null);
     switch (message.header.type) {
-      case kUrlLoader_start_name:
-        var params = UrlLoaderStartParams.deserialize(
+      case _UrlLoader_startName:
+        var params = _UrlLoaderStartParams.deserialize(
             message.payload);
         var response = _impl.start(params.request,_UrlLoaderStartResponseParamsFactory);
         if (response is Future) {
@@ -725,7 +721,7 @@ class UrlLoaderStub extends bindings.Stub {
             if (response != null) {
               return buildResponseWithId(
                   response,
-                  kUrlLoader_start_name,
+                  _UrlLoader_startName,
                   message.header.requestId,
                   bindings.MessageHeader.kMessageIsResponse);
             }
@@ -733,13 +729,13 @@ class UrlLoaderStub extends bindings.Stub {
         } else if (response != null) {
           return buildResponseWithId(
               response,
-              kUrlLoader_start_name,
+              _UrlLoader_startName,
               message.header.requestId,
               bindings.MessageHeader.kMessageIsResponse);
         }
         break;
-      case kUrlLoader_followRedirect_name:
-        var params = UrlLoaderFollowRedirectParams.deserialize(
+      case _UrlLoader_followRedirectName:
+        var params = _UrlLoaderFollowRedirectParams.deserialize(
             message.payload);
         var response = _impl.followRedirect(_UrlLoaderFollowRedirectResponseParamsFactory);
         if (response is Future) {
@@ -747,7 +743,7 @@ class UrlLoaderStub extends bindings.Stub {
             if (response != null) {
               return buildResponseWithId(
                   response,
-                  kUrlLoader_followRedirect_name,
+                  _UrlLoader_followRedirectName,
                   message.header.requestId,
                   bindings.MessageHeader.kMessageIsResponse);
             }
@@ -755,13 +751,13 @@ class UrlLoaderStub extends bindings.Stub {
         } else if (response != null) {
           return buildResponseWithId(
               response,
-              kUrlLoader_followRedirect_name,
+              _UrlLoader_followRedirectName,
               message.header.requestId,
               bindings.MessageHeader.kMessageIsResponse);
         }
         break;
-      case kUrlLoader_queryStatus_name:
-        var params = UrlLoaderQueryStatusParams.deserialize(
+      case _UrlLoader_queryStatusName:
+        var params = _UrlLoaderQueryStatusParams.deserialize(
             message.payload);
         var response = _impl.queryStatus(_UrlLoaderQueryStatusResponseParamsFactory);
         if (response is Future) {
@@ -769,7 +765,7 @@ class UrlLoaderStub extends bindings.Stub {
             if (response != null) {
               return buildResponseWithId(
                   response,
-                  kUrlLoader_queryStatus_name,
+                  _UrlLoader_queryStatusName,
                   message.header.requestId,
                   bindings.MessageHeader.kMessageIsResponse);
             }
@@ -777,7 +773,7 @@ class UrlLoaderStub extends bindings.Stub {
         } else if (response != null) {
           return buildResponseWithId(
               response,
-              kUrlLoader_queryStatus_name,
+              _UrlLoader_queryStatusName,
               message.header.requestId,
               bindings.MessageHeader.kMessageIsResponse);
         }

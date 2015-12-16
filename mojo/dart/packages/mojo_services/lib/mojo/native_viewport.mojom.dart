@@ -203,16 +203,16 @@ class SurfaceConfiguration extends bindings.Struct {
 }
 
 
-class NativeViewportCreateParams extends bindings.Struct {
+class _NativeViewportCreateParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(24, 0)
   ];
   geometry_mojom.Size size = null;
   SurfaceConfiguration requestedConfiguration = null;
 
-  NativeViewportCreateParams() : super(kVersions.last.size);
+  _NativeViewportCreateParams() : super(kVersions.last.size);
 
-  static NativeViewportCreateParams deserialize(bindings.Message message) {
+  static _NativeViewportCreateParams deserialize(bindings.Message message) {
     var decoder = new bindings.Decoder(message);
     var result = decode(decoder);
     if (decoder.excessHandles != null) {
@@ -221,11 +221,11 @@ class NativeViewportCreateParams extends bindings.Struct {
     return result;
   }
 
-  static NativeViewportCreateParams decode(bindings.Decoder decoder0) {
+  static _NativeViewportCreateParams decode(bindings.Decoder decoder0) {
     if (decoder0 == null) {
       return null;
     }
-    NativeViewportCreateParams result = new NativeViewportCreateParams();
+    _NativeViewportCreateParams result = new _NativeViewportCreateParams();
 
     var mainDataHeader = decoder0.decodeStructDataHeader();
     if (mainDataHeader.version <= kVersions.last.version) {
@@ -267,7 +267,7 @@ class NativeViewportCreateParams extends bindings.Struct {
   }
 
   String toString() {
-    return "NativeViewportCreateParams("
+    return "_NativeViewportCreateParams("
            "size: $size" ", "
            "requestedConfiguration: $requestedConfiguration" ")";
   }
@@ -349,14 +349,14 @@ class NativeViewportCreateResponseParams extends bindings.Struct {
 }
 
 
-class NativeViewportShowParams extends bindings.Struct {
+class _NativeViewportShowParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(8, 0)
   ];
 
-  NativeViewportShowParams() : super(kVersions.last.size);
+  _NativeViewportShowParams() : super(kVersions.last.size);
 
-  static NativeViewportShowParams deserialize(bindings.Message message) {
+  static _NativeViewportShowParams deserialize(bindings.Message message) {
     var decoder = new bindings.Decoder(message);
     var result = decode(decoder);
     if (decoder.excessHandles != null) {
@@ -365,11 +365,11 @@ class NativeViewportShowParams extends bindings.Struct {
     return result;
   }
 
-  static NativeViewportShowParams decode(bindings.Decoder decoder0) {
+  static _NativeViewportShowParams decode(bindings.Decoder decoder0) {
     if (decoder0 == null) {
       return null;
     }
-    NativeViewportShowParams result = new NativeViewportShowParams();
+    _NativeViewportShowParams result = new _NativeViewportShowParams();
 
     var mainDataHeader = decoder0.decodeStructDataHeader();
     if (mainDataHeader.version <= kVersions.last.version) {
@@ -397,7 +397,7 @@ class NativeViewportShowParams extends bindings.Struct {
   }
 
   String toString() {
-    return "NativeViewportShowParams("")";
+    return "_NativeViewportShowParams("")";
   }
 
   Map toJson() {
@@ -407,14 +407,14 @@ class NativeViewportShowParams extends bindings.Struct {
 }
 
 
-class NativeViewportHideParams extends bindings.Struct {
+class _NativeViewportHideParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(8, 0)
   ];
 
-  NativeViewportHideParams() : super(kVersions.last.size);
+  _NativeViewportHideParams() : super(kVersions.last.size);
 
-  static NativeViewportHideParams deserialize(bindings.Message message) {
+  static _NativeViewportHideParams deserialize(bindings.Message message) {
     var decoder = new bindings.Decoder(message);
     var result = decode(decoder);
     if (decoder.excessHandles != null) {
@@ -423,11 +423,11 @@ class NativeViewportHideParams extends bindings.Struct {
     return result;
   }
 
-  static NativeViewportHideParams decode(bindings.Decoder decoder0) {
+  static _NativeViewportHideParams decode(bindings.Decoder decoder0) {
     if (decoder0 == null) {
       return null;
     }
-    NativeViewportHideParams result = new NativeViewportHideParams();
+    _NativeViewportHideParams result = new _NativeViewportHideParams();
 
     var mainDataHeader = decoder0.decodeStructDataHeader();
     if (mainDataHeader.version <= kVersions.last.version) {
@@ -455,7 +455,7 @@ class NativeViewportHideParams extends bindings.Struct {
   }
 
   String toString() {
-    return "NativeViewportHideParams("")";
+    return "_NativeViewportHideParams("")";
   }
 
   Map toJson() {
@@ -465,14 +465,14 @@ class NativeViewportHideParams extends bindings.Struct {
 }
 
 
-class NativeViewportCloseParams extends bindings.Struct {
+class _NativeViewportCloseParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(8, 0)
   ];
 
-  NativeViewportCloseParams() : super(kVersions.last.size);
+  _NativeViewportCloseParams() : super(kVersions.last.size);
 
-  static NativeViewportCloseParams deserialize(bindings.Message message) {
+  static _NativeViewportCloseParams deserialize(bindings.Message message) {
     var decoder = new bindings.Decoder(message);
     var result = decode(decoder);
     if (decoder.excessHandles != null) {
@@ -481,11 +481,11 @@ class NativeViewportCloseParams extends bindings.Struct {
     return result;
   }
 
-  static NativeViewportCloseParams decode(bindings.Decoder decoder0) {
+  static _NativeViewportCloseParams decode(bindings.Decoder decoder0) {
     if (decoder0 == null) {
       return null;
     }
-    NativeViewportCloseParams result = new NativeViewportCloseParams();
+    _NativeViewportCloseParams result = new _NativeViewportCloseParams();
 
     var mainDataHeader = decoder0.decodeStructDataHeader();
     if (mainDataHeader.version <= kVersions.last.version) {
@@ -513,7 +513,7 @@ class NativeViewportCloseParams extends bindings.Struct {
   }
 
   String toString() {
-    return "NativeViewportCloseParams("")";
+    return "_NativeViewportCloseParams("")";
   }
 
   Map toJson() {
@@ -523,15 +523,15 @@ class NativeViewportCloseParams extends bindings.Struct {
 }
 
 
-class NativeViewportSetSizeParams extends bindings.Struct {
+class _NativeViewportSetSizeParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(16, 0)
   ];
   geometry_mojom.Size size = null;
 
-  NativeViewportSetSizeParams() : super(kVersions.last.size);
+  _NativeViewportSetSizeParams() : super(kVersions.last.size);
 
-  static NativeViewportSetSizeParams deserialize(bindings.Message message) {
+  static _NativeViewportSetSizeParams deserialize(bindings.Message message) {
     var decoder = new bindings.Decoder(message);
     var result = decode(decoder);
     if (decoder.excessHandles != null) {
@@ -540,11 +540,11 @@ class NativeViewportSetSizeParams extends bindings.Struct {
     return result;
   }
 
-  static NativeViewportSetSizeParams decode(bindings.Decoder decoder0) {
+  static _NativeViewportSetSizeParams decode(bindings.Decoder decoder0) {
     if (decoder0 == null) {
       return null;
     }
-    NativeViewportSetSizeParams result = new NativeViewportSetSizeParams();
+    _NativeViewportSetSizeParams result = new _NativeViewportSetSizeParams();
 
     var mainDataHeader = decoder0.decodeStructDataHeader();
     if (mainDataHeader.version <= kVersions.last.version) {
@@ -579,7 +579,7 @@ class NativeViewportSetSizeParams extends bindings.Struct {
   }
 
   String toString() {
-    return "NativeViewportSetSizeParams("
+    return "_NativeViewportSetSizeParams("
            "size: $size" ")";
   }
 
@@ -591,15 +591,15 @@ class NativeViewportSetSizeParams extends bindings.Struct {
 }
 
 
-class NativeViewportSetEventDispatcherParams extends bindings.Struct {
+class _NativeViewportSetEventDispatcherParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(16, 0)
   ];
   Object dispatcher = null;
 
-  NativeViewportSetEventDispatcherParams() : super(kVersions.last.size);
+  _NativeViewportSetEventDispatcherParams() : super(kVersions.last.size);
 
-  static NativeViewportSetEventDispatcherParams deserialize(bindings.Message message) {
+  static _NativeViewportSetEventDispatcherParams deserialize(bindings.Message message) {
     var decoder = new bindings.Decoder(message);
     var result = decode(decoder);
     if (decoder.excessHandles != null) {
@@ -608,11 +608,11 @@ class NativeViewportSetEventDispatcherParams extends bindings.Struct {
     return result;
   }
 
-  static NativeViewportSetEventDispatcherParams decode(bindings.Decoder decoder0) {
+  static _NativeViewportSetEventDispatcherParams decode(bindings.Decoder decoder0) {
     if (decoder0 == null) {
       return null;
     }
-    NativeViewportSetEventDispatcherParams result = new NativeViewportSetEventDispatcherParams();
+    _NativeViewportSetEventDispatcherParams result = new _NativeViewportSetEventDispatcherParams();
 
     var mainDataHeader = decoder0.decodeStructDataHeader();
     if (mainDataHeader.version <= kVersions.last.version) {
@@ -646,7 +646,7 @@ class NativeViewportSetEventDispatcherParams extends bindings.Struct {
   }
 
   String toString() {
-    return "NativeViewportSetEventDispatcherParams("
+    return "_NativeViewportSetEventDispatcherParams("
            "dispatcher: $dispatcher" ")";
   }
 
@@ -657,15 +657,15 @@ class NativeViewportSetEventDispatcherParams extends bindings.Struct {
 }
 
 
-class NativeViewportGetContextProviderParams extends bindings.Struct {
+class _NativeViewportGetContextProviderParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(16, 0)
   ];
   Object provider = null;
 
-  NativeViewportGetContextProviderParams() : super(kVersions.last.size);
+  _NativeViewportGetContextProviderParams() : super(kVersions.last.size);
 
-  static NativeViewportGetContextProviderParams deserialize(bindings.Message message) {
+  static _NativeViewportGetContextProviderParams deserialize(bindings.Message message) {
     var decoder = new bindings.Decoder(message);
     var result = decode(decoder);
     if (decoder.excessHandles != null) {
@@ -674,11 +674,11 @@ class NativeViewportGetContextProviderParams extends bindings.Struct {
     return result;
   }
 
-  static NativeViewportGetContextProviderParams decode(bindings.Decoder decoder0) {
+  static _NativeViewportGetContextProviderParams decode(bindings.Decoder decoder0) {
     if (decoder0 == null) {
       return null;
     }
-    NativeViewportGetContextProviderParams result = new NativeViewportGetContextProviderParams();
+    _NativeViewportGetContextProviderParams result = new _NativeViewportGetContextProviderParams();
 
     var mainDataHeader = decoder0.decodeStructDataHeader();
     if (mainDataHeader.version <= kVersions.last.version) {
@@ -712,7 +712,7 @@ class NativeViewportGetContextProviderParams extends bindings.Struct {
   }
 
   String toString() {
-    return "NativeViewportGetContextProviderParams("
+    return "_NativeViewportGetContextProviderParams("
            "provider: $provider" ")";
   }
 
@@ -723,14 +723,14 @@ class NativeViewportGetContextProviderParams extends bindings.Struct {
 }
 
 
-class NativeViewportRequestMetricsParams extends bindings.Struct {
+class _NativeViewportRequestMetricsParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(8, 0)
   ];
 
-  NativeViewportRequestMetricsParams() : super(kVersions.last.size);
+  _NativeViewportRequestMetricsParams() : super(kVersions.last.size);
 
-  static NativeViewportRequestMetricsParams deserialize(bindings.Message message) {
+  static _NativeViewportRequestMetricsParams deserialize(bindings.Message message) {
     var decoder = new bindings.Decoder(message);
     var result = decode(decoder);
     if (decoder.excessHandles != null) {
@@ -739,11 +739,11 @@ class NativeViewportRequestMetricsParams extends bindings.Struct {
     return result;
   }
 
-  static NativeViewportRequestMetricsParams decode(bindings.Decoder decoder0) {
+  static _NativeViewportRequestMetricsParams decode(bindings.Decoder decoder0) {
     if (decoder0 == null) {
       return null;
     }
-    NativeViewportRequestMetricsParams result = new NativeViewportRequestMetricsParams();
+    _NativeViewportRequestMetricsParams result = new _NativeViewportRequestMetricsParams();
 
     var mainDataHeader = decoder0.decodeStructDataHeader();
     if (mainDataHeader.version <= kVersions.last.version) {
@@ -771,7 +771,7 @@ class NativeViewportRequestMetricsParams extends bindings.Struct {
   }
 
   String toString() {
-    return "NativeViewportRequestMetricsParams("")";
+    return "_NativeViewportRequestMetricsParams("")";
   }
 
   Map toJson() {
@@ -849,15 +849,15 @@ class NativeViewportRequestMetricsResponseParams extends bindings.Struct {
 }
 
 
-class NativeViewportEventDispatcherOnEventParams extends bindings.Struct {
+class _NativeViewportEventDispatcherOnEventParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(16, 0)
   ];
   input_events_mojom.Event event = null;
 
-  NativeViewportEventDispatcherOnEventParams() : super(kVersions.last.size);
+  _NativeViewportEventDispatcherOnEventParams() : super(kVersions.last.size);
 
-  static NativeViewportEventDispatcherOnEventParams deserialize(bindings.Message message) {
+  static _NativeViewportEventDispatcherOnEventParams deserialize(bindings.Message message) {
     var decoder = new bindings.Decoder(message);
     var result = decode(decoder);
     if (decoder.excessHandles != null) {
@@ -866,11 +866,11 @@ class NativeViewportEventDispatcherOnEventParams extends bindings.Struct {
     return result;
   }
 
-  static NativeViewportEventDispatcherOnEventParams decode(bindings.Decoder decoder0) {
+  static _NativeViewportEventDispatcherOnEventParams decode(bindings.Decoder decoder0) {
     if (decoder0 == null) {
       return null;
     }
-    NativeViewportEventDispatcherOnEventParams result = new NativeViewportEventDispatcherOnEventParams();
+    _NativeViewportEventDispatcherOnEventParams result = new _NativeViewportEventDispatcherOnEventParams();
 
     var mainDataHeader = decoder0.decodeStructDataHeader();
     if (mainDataHeader.version <= kVersions.last.version) {
@@ -905,7 +905,7 @@ class NativeViewportEventDispatcherOnEventParams extends bindings.Struct {
   }
 
   String toString() {
-    return "NativeViewportEventDispatcherOnEventParams("
+    return "_NativeViewportEventDispatcherOnEventParams("
            "event: $event" ")";
   }
 
@@ -974,17 +974,17 @@ class NativeViewportEventDispatcherOnEventResponseParams extends bindings.Struct
   }
 }
 
-const int kNativeViewport_create_name = 0;
-const int kNativeViewport_show_name = 1;
-const int kNativeViewport_hide_name = 2;
-const int kNativeViewport_close_name = 3;
-const int kNativeViewport_setSize_name = 4;
-const int kNativeViewport_setEventDispatcher_name = 5;
-const int kNativeViewport_getContextProvider_name = 6;
-const int kNativeViewport_requestMetrics_name = 7;
-const String NativeViewportName = "mojo::NativeViewport";
+const int _NativeViewport_createName = 0;
+const int _NativeViewport_showName = 1;
+const int _NativeViewport_hideName = 2;
+const int _NativeViewport_closeName = 3;
+const int _NativeViewport_setSizeName = 4;
+const int _NativeViewport_setEventDispatcherName = 5;
+const int _NativeViewport_getContextProviderName = 6;
+const int _NativeViewport_requestMetricsName = 7;
 
 abstract class NativeViewport {
+  static const String serviceName = "mojo::NativeViewport";
   dynamic create(geometry_mojom.Size size,SurfaceConfiguration requestedConfiguration,[Function responseFactory = null]);
   void show();
   void hide();
@@ -993,30 +993,27 @@ abstract class NativeViewport {
   void setEventDispatcher(Object dispatcher);
   void getContextProvider(Object provider);
   dynamic requestMetrics([Function responseFactory = null]);
-
 }
 
 
-class NativeViewportProxyImpl extends bindings.Proxy {
-  NativeViewportProxyImpl.fromEndpoint(
+class _NativeViewportProxyImpl extends bindings.Proxy {
+  _NativeViewportProxyImpl.fromEndpoint(
       core.MojoMessagePipeEndpoint endpoint) : super.fromEndpoint(endpoint);
 
-  NativeViewportProxyImpl.fromHandle(core.MojoHandle handle) :
+  _NativeViewportProxyImpl.fromHandle(core.MojoHandle handle) :
       super.fromHandle(handle);
 
-  NativeViewportProxyImpl.unbound() : super.unbound();
+  _NativeViewportProxyImpl.unbound() : super.unbound();
 
-  static NativeViewportProxyImpl newFromEndpoint(
+  static _NativeViewportProxyImpl newFromEndpoint(
       core.MojoMessagePipeEndpoint endpoint) {
-    assert(endpoint.setDescription("For NativeViewportProxyImpl"));
-    return new NativeViewportProxyImpl.fromEndpoint(endpoint);
+    assert(endpoint.setDescription("For _NativeViewportProxyImpl"));
+    return new _NativeViewportProxyImpl.fromEndpoint(endpoint);
   }
-
-  String get name => NativeViewportName;
 
   void handleResponse(bindings.ServiceMessage message) {
     switch (message.header.type) {
-      case kNativeViewport_create_name:
+      case _NativeViewport_createName:
         var r = NativeViewportCreateResponseParams.deserialize(
             message.payload);
         if (!message.header.hasRequestId) {
@@ -1036,7 +1033,7 @@ class NativeViewportProxyImpl extends bindings.Proxy {
         }
         c.complete(r);
         break;
-      case kNativeViewport_requestMetrics_name:
+      case _NativeViewport_requestMetricsName:
         var r = NativeViewportRequestMetricsResponseParams.deserialize(
             message.payload);
         if (!message.header.hasRequestId) {
@@ -1065,22 +1062,22 @@ class NativeViewportProxyImpl extends bindings.Proxy {
 
   String toString() {
     var superString = super.toString();
-    return "NativeViewportProxyImpl($superString)";
+    return "_NativeViewportProxyImpl($superString)";
   }
 }
 
 
 class _NativeViewportProxyCalls implements NativeViewport {
-  NativeViewportProxyImpl _proxyImpl;
+  _NativeViewportProxyImpl _proxyImpl;
 
   _NativeViewportProxyCalls(this._proxyImpl);
     dynamic create(geometry_mojom.Size size,SurfaceConfiguration requestedConfiguration,[Function responseFactory = null]) {
-      var params = new NativeViewportCreateParams();
+      var params = new _NativeViewportCreateParams();
       params.size = size;
       params.requestedConfiguration = requestedConfiguration;
       return _proxyImpl.sendMessageWithRequestId(
           params,
-          kNativeViewport_create_name,
+          _NativeViewport_createName,
           -1,
           bindings.MessageHeader.kMessageExpectsResponse);
     }
@@ -1089,63 +1086,57 @@ class _NativeViewportProxyCalls implements NativeViewport {
         _proxyImpl.proxyError("The Proxy is closed.");
         return;
       }
-      var params = new NativeViewportShowParams();
-      _proxyImpl.sendMessage(params, kNativeViewport_show_name);
+      var params = new _NativeViewportShowParams();
+      _proxyImpl.sendMessage(params, _NativeViewport_showName);
     }
-  
     void hide() {
       if (!_proxyImpl.isBound) {
         _proxyImpl.proxyError("The Proxy is closed.");
         return;
       }
-      var params = new NativeViewportHideParams();
-      _proxyImpl.sendMessage(params, kNativeViewport_hide_name);
+      var params = new _NativeViewportHideParams();
+      _proxyImpl.sendMessage(params, _NativeViewport_hideName);
     }
-  
     void close() {
       if (!_proxyImpl.isBound) {
         _proxyImpl.proxyError("The Proxy is closed.");
         return;
       }
-      var params = new NativeViewportCloseParams();
-      _proxyImpl.sendMessage(params, kNativeViewport_close_name);
+      var params = new _NativeViewportCloseParams();
+      _proxyImpl.sendMessage(params, _NativeViewport_closeName);
     }
-  
     void setSize(geometry_mojom.Size size) {
       if (!_proxyImpl.isBound) {
         _proxyImpl.proxyError("The Proxy is closed.");
         return;
       }
-      var params = new NativeViewportSetSizeParams();
+      var params = new _NativeViewportSetSizeParams();
       params.size = size;
-      _proxyImpl.sendMessage(params, kNativeViewport_setSize_name);
+      _proxyImpl.sendMessage(params, _NativeViewport_setSizeName);
     }
-  
     void setEventDispatcher(Object dispatcher) {
       if (!_proxyImpl.isBound) {
         _proxyImpl.proxyError("The Proxy is closed.");
         return;
       }
-      var params = new NativeViewportSetEventDispatcherParams();
+      var params = new _NativeViewportSetEventDispatcherParams();
       params.dispatcher = dispatcher;
-      _proxyImpl.sendMessage(params, kNativeViewport_setEventDispatcher_name);
+      _proxyImpl.sendMessage(params, _NativeViewport_setEventDispatcherName);
     }
-  
     void getContextProvider(Object provider) {
       if (!_proxyImpl.isBound) {
         _proxyImpl.proxyError("The Proxy is closed.");
         return;
       }
-      var params = new NativeViewportGetContextProviderParams();
+      var params = new _NativeViewportGetContextProviderParams();
       params.provider = provider;
-      _proxyImpl.sendMessage(params, kNativeViewport_getContextProvider_name);
+      _proxyImpl.sendMessage(params, _NativeViewport_getContextProviderName);
     }
-  
     dynamic requestMetrics([Function responseFactory = null]) {
-      var params = new NativeViewportRequestMetricsParams();
+      var params = new _NativeViewportRequestMetricsParams();
       return _proxyImpl.sendMessageWithRequestId(
           params,
-          kNativeViewport_requestMetrics_name,
+          _NativeViewport_requestMetricsName,
           -1,
           bindings.MessageHeader.kMessageExpectsResponse);
     }
@@ -1155,25 +1146,24 @@ class _NativeViewportProxyCalls implements NativeViewport {
 class NativeViewportProxy implements bindings.ProxyBase {
   final bindings.Proxy impl;
   NativeViewport ptr;
-  final String name = NativeViewportName;
 
-  NativeViewportProxy(NativeViewportProxyImpl proxyImpl) :
+  NativeViewportProxy(_NativeViewportProxyImpl proxyImpl) :
       impl = proxyImpl,
       ptr = new _NativeViewportProxyCalls(proxyImpl);
 
   NativeViewportProxy.fromEndpoint(
       core.MojoMessagePipeEndpoint endpoint) :
-      impl = new NativeViewportProxyImpl.fromEndpoint(endpoint) {
+      impl = new _NativeViewportProxyImpl.fromEndpoint(endpoint) {
     ptr = new _NativeViewportProxyCalls(impl);
   }
 
   NativeViewportProxy.fromHandle(core.MojoHandle handle) :
-      impl = new NativeViewportProxyImpl.fromHandle(handle) {
+      impl = new _NativeViewportProxyImpl.fromHandle(handle) {
     ptr = new _NativeViewportProxyCalls(impl);
   }
 
   NativeViewportProxy.unbound() :
-      impl = new NativeViewportProxyImpl.unbound() {
+      impl = new _NativeViewportProxyImpl.unbound() {
     ptr = new _NativeViewportProxyCalls(impl);
   }
 
@@ -1189,6 +1179,8 @@ class NativeViewportProxy implements bindings.ProxyBase {
     assert(endpoint.setDescription("For NativeViewportProxy"));
     return new NativeViewportProxy.fromEndpoint(endpoint);
   }
+
+  String get serviceName => NativeViewport.serviceName;
 
   Future close({bool immediate: false}) => impl.close(immediate: immediate);
 
@@ -1228,8 +1220,6 @@ class NativeViewportStub extends bindings.Stub {
     return new NativeViewportStub.fromEndpoint(endpoint);
   }
 
-  static const String name = NativeViewportName;
-
 
   NativeViewportCreateResponseParams _NativeViewportCreateResponseParamsFactory(ViewportMetrics metrics) {
     var mojo_factory_result = new NativeViewportCreateResponseParams();
@@ -1250,8 +1240,8 @@ class NativeViewportStub extends bindings.Stub {
     }
     assert(_impl != null);
     switch (message.header.type) {
-      case kNativeViewport_create_name:
-        var params = NativeViewportCreateParams.deserialize(
+      case _NativeViewport_createName:
+        var params = _NativeViewportCreateParams.deserialize(
             message.payload);
         var response = _impl.create(params.size,params.requestedConfiguration,_NativeViewportCreateResponseParamsFactory);
         if (response is Future) {
@@ -1259,7 +1249,7 @@ class NativeViewportStub extends bindings.Stub {
             if (response != null) {
               return buildResponseWithId(
                   response,
-                  kNativeViewport_create_name,
+                  _NativeViewport_createName,
                   message.header.requestId,
                   bindings.MessageHeader.kMessageIsResponse);
             }
@@ -1267,43 +1257,43 @@ class NativeViewportStub extends bindings.Stub {
         } else if (response != null) {
           return buildResponseWithId(
               response,
-              kNativeViewport_create_name,
+              _NativeViewport_createName,
               message.header.requestId,
               bindings.MessageHeader.kMessageIsResponse);
         }
         break;
-      case kNativeViewport_show_name:
-        var params = NativeViewportShowParams.deserialize(
+      case _NativeViewport_showName:
+        var params = _NativeViewportShowParams.deserialize(
             message.payload);
         _impl.show();
         break;
-      case kNativeViewport_hide_name:
-        var params = NativeViewportHideParams.deserialize(
+      case _NativeViewport_hideName:
+        var params = _NativeViewportHideParams.deserialize(
             message.payload);
         _impl.hide();
         break;
-      case kNativeViewport_close_name:
-        var params = NativeViewportCloseParams.deserialize(
+      case _NativeViewport_closeName:
+        var params = _NativeViewportCloseParams.deserialize(
             message.payload);
         _impl.close();
         break;
-      case kNativeViewport_setSize_name:
-        var params = NativeViewportSetSizeParams.deserialize(
+      case _NativeViewport_setSizeName:
+        var params = _NativeViewportSetSizeParams.deserialize(
             message.payload);
         _impl.setSize(params.size);
         break;
-      case kNativeViewport_setEventDispatcher_name:
-        var params = NativeViewportSetEventDispatcherParams.deserialize(
+      case _NativeViewport_setEventDispatcherName:
+        var params = _NativeViewportSetEventDispatcherParams.deserialize(
             message.payload);
         _impl.setEventDispatcher(params.dispatcher);
         break;
-      case kNativeViewport_getContextProvider_name:
-        var params = NativeViewportGetContextProviderParams.deserialize(
+      case _NativeViewport_getContextProviderName:
+        var params = _NativeViewportGetContextProviderParams.deserialize(
             message.payload);
         _impl.getContextProvider(params.provider);
         break;
-      case kNativeViewport_requestMetrics_name:
-        var params = NativeViewportRequestMetricsParams.deserialize(
+      case _NativeViewport_requestMetricsName:
+        var params = _NativeViewportRequestMetricsParams.deserialize(
             message.payload);
         var response = _impl.requestMetrics(_NativeViewportRequestMetricsResponseParamsFactory);
         if (response is Future) {
@@ -1311,7 +1301,7 @@ class NativeViewportStub extends bindings.Stub {
             if (response != null) {
               return buildResponseWithId(
                   response,
-                  kNativeViewport_requestMetrics_name,
+                  _NativeViewport_requestMetricsName,
                   message.header.requestId,
                   bindings.MessageHeader.kMessageIsResponse);
             }
@@ -1319,7 +1309,7 @@ class NativeViewportStub extends bindings.Stub {
         } else if (response != null) {
           return buildResponseWithId(
               response,
-              kNativeViewport_requestMetrics_name,
+              _NativeViewport_requestMetricsName,
               message.header.requestId,
               bindings.MessageHeader.kMessageIsResponse);
         }
@@ -1345,35 +1335,32 @@ class NativeViewportStub extends bindings.Stub {
   int get version => 0;
 }
 
-const int kNativeViewportEventDispatcher_onEvent_name = 0;
-const String NativeViewportEventDispatcherName = "mojo::NativeViewportEventDispatcher";
+const int _NativeViewportEventDispatcher_onEventName = 0;
 
 abstract class NativeViewportEventDispatcher {
+  static const String serviceName = "mojo::NativeViewportEventDispatcher";
   dynamic onEvent(input_events_mojom.Event event,[Function responseFactory = null]);
-
 }
 
 
-class NativeViewportEventDispatcherProxyImpl extends bindings.Proxy {
-  NativeViewportEventDispatcherProxyImpl.fromEndpoint(
+class _NativeViewportEventDispatcherProxyImpl extends bindings.Proxy {
+  _NativeViewportEventDispatcherProxyImpl.fromEndpoint(
       core.MojoMessagePipeEndpoint endpoint) : super.fromEndpoint(endpoint);
 
-  NativeViewportEventDispatcherProxyImpl.fromHandle(core.MojoHandle handle) :
+  _NativeViewportEventDispatcherProxyImpl.fromHandle(core.MojoHandle handle) :
       super.fromHandle(handle);
 
-  NativeViewportEventDispatcherProxyImpl.unbound() : super.unbound();
+  _NativeViewportEventDispatcherProxyImpl.unbound() : super.unbound();
 
-  static NativeViewportEventDispatcherProxyImpl newFromEndpoint(
+  static _NativeViewportEventDispatcherProxyImpl newFromEndpoint(
       core.MojoMessagePipeEndpoint endpoint) {
-    assert(endpoint.setDescription("For NativeViewportEventDispatcherProxyImpl"));
-    return new NativeViewportEventDispatcherProxyImpl.fromEndpoint(endpoint);
+    assert(endpoint.setDescription("For _NativeViewportEventDispatcherProxyImpl"));
+    return new _NativeViewportEventDispatcherProxyImpl.fromEndpoint(endpoint);
   }
-
-  String get name => NativeViewportEventDispatcherName;
 
   void handleResponse(bindings.ServiceMessage message) {
     switch (message.header.type) {
-      case kNativeViewportEventDispatcher_onEvent_name:
+      case _NativeViewportEventDispatcher_onEventName:
         var r = NativeViewportEventDispatcherOnEventResponseParams.deserialize(
             message.payload);
         if (!message.header.hasRequestId) {
@@ -1402,21 +1389,21 @@ class NativeViewportEventDispatcherProxyImpl extends bindings.Proxy {
 
   String toString() {
     var superString = super.toString();
-    return "NativeViewportEventDispatcherProxyImpl($superString)";
+    return "_NativeViewportEventDispatcherProxyImpl($superString)";
   }
 }
 
 
 class _NativeViewportEventDispatcherProxyCalls implements NativeViewportEventDispatcher {
-  NativeViewportEventDispatcherProxyImpl _proxyImpl;
+  _NativeViewportEventDispatcherProxyImpl _proxyImpl;
 
   _NativeViewportEventDispatcherProxyCalls(this._proxyImpl);
     dynamic onEvent(input_events_mojom.Event event,[Function responseFactory = null]) {
-      var params = new NativeViewportEventDispatcherOnEventParams();
+      var params = new _NativeViewportEventDispatcherOnEventParams();
       params.event = event;
       return _proxyImpl.sendMessageWithRequestId(
           params,
-          kNativeViewportEventDispatcher_onEvent_name,
+          _NativeViewportEventDispatcher_onEventName,
           -1,
           bindings.MessageHeader.kMessageExpectsResponse);
     }
@@ -1426,25 +1413,24 @@ class _NativeViewportEventDispatcherProxyCalls implements NativeViewportEventDis
 class NativeViewportEventDispatcherProxy implements bindings.ProxyBase {
   final bindings.Proxy impl;
   NativeViewportEventDispatcher ptr;
-  final String name = NativeViewportEventDispatcherName;
 
-  NativeViewportEventDispatcherProxy(NativeViewportEventDispatcherProxyImpl proxyImpl) :
+  NativeViewportEventDispatcherProxy(_NativeViewportEventDispatcherProxyImpl proxyImpl) :
       impl = proxyImpl,
       ptr = new _NativeViewportEventDispatcherProxyCalls(proxyImpl);
 
   NativeViewportEventDispatcherProxy.fromEndpoint(
       core.MojoMessagePipeEndpoint endpoint) :
-      impl = new NativeViewportEventDispatcherProxyImpl.fromEndpoint(endpoint) {
+      impl = new _NativeViewportEventDispatcherProxyImpl.fromEndpoint(endpoint) {
     ptr = new _NativeViewportEventDispatcherProxyCalls(impl);
   }
 
   NativeViewportEventDispatcherProxy.fromHandle(core.MojoHandle handle) :
-      impl = new NativeViewportEventDispatcherProxyImpl.fromHandle(handle) {
+      impl = new _NativeViewportEventDispatcherProxyImpl.fromHandle(handle) {
     ptr = new _NativeViewportEventDispatcherProxyCalls(impl);
   }
 
   NativeViewportEventDispatcherProxy.unbound() :
-      impl = new NativeViewportEventDispatcherProxyImpl.unbound() {
+      impl = new _NativeViewportEventDispatcherProxyImpl.unbound() {
     ptr = new _NativeViewportEventDispatcherProxyCalls(impl);
   }
 
@@ -1460,6 +1446,8 @@ class NativeViewportEventDispatcherProxy implements bindings.ProxyBase {
     assert(endpoint.setDescription("For NativeViewportEventDispatcherProxy"));
     return new NativeViewportEventDispatcherProxy.fromEndpoint(endpoint);
   }
+
+  String get serviceName => NativeViewportEventDispatcher.serviceName;
 
   Future close({bool immediate: false}) => impl.close(immediate: immediate);
 
@@ -1499,8 +1487,6 @@ class NativeViewportEventDispatcherStub extends bindings.Stub {
     return new NativeViewportEventDispatcherStub.fromEndpoint(endpoint);
   }
 
-  static const String name = NativeViewportEventDispatcherName;
-
 
   NativeViewportEventDispatcherOnEventResponseParams _NativeViewportEventDispatcherOnEventResponseParamsFactory() {
     var mojo_factory_result = new NativeViewportEventDispatcherOnEventResponseParams();
@@ -1515,8 +1501,8 @@ class NativeViewportEventDispatcherStub extends bindings.Stub {
     }
     assert(_impl != null);
     switch (message.header.type) {
-      case kNativeViewportEventDispatcher_onEvent_name:
-        var params = NativeViewportEventDispatcherOnEventParams.deserialize(
+      case _NativeViewportEventDispatcher_onEventName:
+        var params = _NativeViewportEventDispatcherOnEventParams.deserialize(
             message.payload);
         var response = _impl.onEvent(params.event,_NativeViewportEventDispatcherOnEventResponseParamsFactory);
         if (response is Future) {
@@ -1524,7 +1510,7 @@ class NativeViewportEventDispatcherStub extends bindings.Stub {
             if (response != null) {
               return buildResponseWithId(
                   response,
-                  kNativeViewportEventDispatcher_onEvent_name,
+                  _NativeViewportEventDispatcher_onEventName,
                   message.header.requestId,
                   bindings.MessageHeader.kMessageIsResponse);
             }
@@ -1532,7 +1518,7 @@ class NativeViewportEventDispatcherStub extends bindings.Stub {
         } else if (response != null) {
           return buildResponseWithId(
               response,
-              kNativeViewportEventDispatcher_onEvent_name,
+              _NativeViewportEventDispatcher_onEventName,
               message.header.requestId,
               bindings.MessageHeader.kMessageIsResponse);
         }

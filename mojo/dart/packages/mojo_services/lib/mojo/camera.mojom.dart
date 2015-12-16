@@ -85,14 +85,14 @@ class Photo extends bindings.Struct {
 }
 
 
-class CameraRollServiceUpdateParams extends bindings.Struct {
+class _CameraRollServiceUpdateParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(8, 0)
   ];
 
-  CameraRollServiceUpdateParams() : super(kVersions.last.size);
+  _CameraRollServiceUpdateParams() : super(kVersions.last.size);
 
-  static CameraRollServiceUpdateParams deserialize(bindings.Message message) {
+  static _CameraRollServiceUpdateParams deserialize(bindings.Message message) {
     var decoder = new bindings.Decoder(message);
     var result = decode(decoder);
     if (decoder.excessHandles != null) {
@@ -101,11 +101,11 @@ class CameraRollServiceUpdateParams extends bindings.Struct {
     return result;
   }
 
-  static CameraRollServiceUpdateParams decode(bindings.Decoder decoder0) {
+  static _CameraRollServiceUpdateParams decode(bindings.Decoder decoder0) {
     if (decoder0 == null) {
       return null;
     }
-    CameraRollServiceUpdateParams result = new CameraRollServiceUpdateParams();
+    _CameraRollServiceUpdateParams result = new _CameraRollServiceUpdateParams();
 
     var mainDataHeader = decoder0.decodeStructDataHeader();
     if (mainDataHeader.version <= kVersions.last.version) {
@@ -133,7 +133,7 @@ class CameraRollServiceUpdateParams extends bindings.Struct {
   }
 
   String toString() {
-    return "CameraRollServiceUpdateParams("")";
+    return "_CameraRollServiceUpdateParams("")";
   }
 
   Map toJson() {
@@ -143,14 +143,14 @@ class CameraRollServiceUpdateParams extends bindings.Struct {
 }
 
 
-class CameraRollServiceGetCountParams extends bindings.Struct {
+class _CameraRollServiceGetCountParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(8, 0)
   ];
 
-  CameraRollServiceGetCountParams() : super(kVersions.last.size);
+  _CameraRollServiceGetCountParams() : super(kVersions.last.size);
 
-  static CameraRollServiceGetCountParams deserialize(bindings.Message message) {
+  static _CameraRollServiceGetCountParams deserialize(bindings.Message message) {
     var decoder = new bindings.Decoder(message);
     var result = decode(decoder);
     if (decoder.excessHandles != null) {
@@ -159,11 +159,11 @@ class CameraRollServiceGetCountParams extends bindings.Struct {
     return result;
   }
 
-  static CameraRollServiceGetCountParams decode(bindings.Decoder decoder0) {
+  static _CameraRollServiceGetCountParams decode(bindings.Decoder decoder0) {
     if (decoder0 == null) {
       return null;
     }
-    CameraRollServiceGetCountParams result = new CameraRollServiceGetCountParams();
+    _CameraRollServiceGetCountParams result = new _CameraRollServiceGetCountParams();
 
     var mainDataHeader = decoder0.decodeStructDataHeader();
     if (mainDataHeader.version <= kVersions.last.version) {
@@ -191,7 +191,7 @@ class CameraRollServiceGetCountParams extends bindings.Struct {
   }
 
   String toString() {
-    return "CameraRollServiceGetCountParams("")";
+    return "_CameraRollServiceGetCountParams("")";
   }
 
   Map toJson() {
@@ -268,15 +268,15 @@ class CameraRollServiceGetCountResponseParams extends bindings.Struct {
 }
 
 
-class CameraRollServiceGetPhotoParams extends bindings.Struct {
+class _CameraRollServiceGetPhotoParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(16, 0)
   ];
   int index = 0;
 
-  CameraRollServiceGetPhotoParams() : super(kVersions.last.size);
+  _CameraRollServiceGetPhotoParams() : super(kVersions.last.size);
 
-  static CameraRollServiceGetPhotoParams deserialize(bindings.Message message) {
+  static _CameraRollServiceGetPhotoParams deserialize(bindings.Message message) {
     var decoder = new bindings.Decoder(message);
     var result = decode(decoder);
     if (decoder.excessHandles != null) {
@@ -285,11 +285,11 @@ class CameraRollServiceGetPhotoParams extends bindings.Struct {
     return result;
   }
 
-  static CameraRollServiceGetPhotoParams decode(bindings.Decoder decoder0) {
+  static _CameraRollServiceGetPhotoParams decode(bindings.Decoder decoder0) {
     if (decoder0 == null) {
       return null;
     }
-    CameraRollServiceGetPhotoParams result = new CameraRollServiceGetPhotoParams();
+    _CameraRollServiceGetPhotoParams result = new _CameraRollServiceGetPhotoParams();
 
     var mainDataHeader = decoder0.decodeStructDataHeader();
     if (mainDataHeader.version <= kVersions.last.version) {
@@ -323,7 +323,7 @@ class CameraRollServiceGetPhotoParams extends bindings.Struct {
   }
 
   String toString() {
-    return "CameraRollServiceGetPhotoParams("
+    return "_CameraRollServiceGetPhotoParams("
            "index: $index" ")";
   }
 
@@ -402,14 +402,14 @@ class CameraRollServiceGetPhotoResponseParams extends bindings.Struct {
 }
 
 
-class CameraServiceGetLatestFrameParams extends bindings.Struct {
+class _CameraServiceGetLatestFrameParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(8, 0)
   ];
 
-  CameraServiceGetLatestFrameParams() : super(kVersions.last.size);
+  _CameraServiceGetLatestFrameParams() : super(kVersions.last.size);
 
-  static CameraServiceGetLatestFrameParams deserialize(bindings.Message message) {
+  static _CameraServiceGetLatestFrameParams deserialize(bindings.Message message) {
     var decoder = new bindings.Decoder(message);
     var result = decode(decoder);
     if (decoder.excessHandles != null) {
@@ -418,11 +418,11 @@ class CameraServiceGetLatestFrameParams extends bindings.Struct {
     return result;
   }
 
-  static CameraServiceGetLatestFrameParams decode(bindings.Decoder decoder0) {
+  static _CameraServiceGetLatestFrameParams decode(bindings.Decoder decoder0) {
     if (decoder0 == null) {
       return null;
     }
-    CameraServiceGetLatestFrameParams result = new CameraServiceGetLatestFrameParams();
+    _CameraServiceGetLatestFrameParams result = new _CameraServiceGetLatestFrameParams();
 
     var mainDataHeader = decoder0.decodeStructDataHeader();
     if (mainDataHeader.version <= kVersions.last.version) {
@@ -450,7 +450,7 @@ class CameraServiceGetLatestFrameParams extends bindings.Struct {
   }
 
   String toString() {
-    return "CameraServiceGetLatestFrameParams("")";
+    return "_CameraServiceGetLatestFrameParams("")";
   }
 
   Map toJson() {
@@ -525,39 +525,36 @@ class CameraServiceGetLatestFrameResponseParams extends bindings.Struct {
   }
 }
 
-const int kCameraRollService_update_name = 0;
-const int kCameraRollService_getCount_name = 1;
-const int kCameraRollService_getPhoto_name = 2;
-const String CameraRollServiceName = "mojo::CameraRollService";
+const int _CameraRollService_updateName = 0;
+const int _CameraRollService_getCountName = 1;
+const int _CameraRollService_getPhotoName = 2;
 
 abstract class CameraRollService {
+  static const String serviceName = "mojo::CameraRollService";
   void update();
   dynamic getCount([Function responseFactory = null]);
   dynamic getPhoto(int index,[Function responseFactory = null]);
-
 }
 
 
-class CameraRollServiceProxyImpl extends bindings.Proxy {
-  CameraRollServiceProxyImpl.fromEndpoint(
+class _CameraRollServiceProxyImpl extends bindings.Proxy {
+  _CameraRollServiceProxyImpl.fromEndpoint(
       core.MojoMessagePipeEndpoint endpoint) : super.fromEndpoint(endpoint);
 
-  CameraRollServiceProxyImpl.fromHandle(core.MojoHandle handle) :
+  _CameraRollServiceProxyImpl.fromHandle(core.MojoHandle handle) :
       super.fromHandle(handle);
 
-  CameraRollServiceProxyImpl.unbound() : super.unbound();
+  _CameraRollServiceProxyImpl.unbound() : super.unbound();
 
-  static CameraRollServiceProxyImpl newFromEndpoint(
+  static _CameraRollServiceProxyImpl newFromEndpoint(
       core.MojoMessagePipeEndpoint endpoint) {
-    assert(endpoint.setDescription("For CameraRollServiceProxyImpl"));
-    return new CameraRollServiceProxyImpl.fromEndpoint(endpoint);
+    assert(endpoint.setDescription("For _CameraRollServiceProxyImpl"));
+    return new _CameraRollServiceProxyImpl.fromEndpoint(endpoint);
   }
-
-  String get name => CameraRollServiceName;
 
   void handleResponse(bindings.ServiceMessage message) {
     switch (message.header.type) {
-      case kCameraRollService_getCount_name:
+      case _CameraRollService_getCountName:
         var r = CameraRollServiceGetCountResponseParams.deserialize(
             message.payload);
         if (!message.header.hasRequestId) {
@@ -577,7 +574,7 @@ class CameraRollServiceProxyImpl extends bindings.Proxy {
         }
         c.complete(r);
         break;
-      case kCameraRollService_getPhoto_name:
+      case _CameraRollService_getPhotoName:
         var r = CameraRollServiceGetPhotoResponseParams.deserialize(
             message.payload);
         if (!message.header.hasRequestId) {
@@ -606,13 +603,13 @@ class CameraRollServiceProxyImpl extends bindings.Proxy {
 
   String toString() {
     var superString = super.toString();
-    return "CameraRollServiceProxyImpl($superString)";
+    return "_CameraRollServiceProxyImpl($superString)";
   }
 }
 
 
 class _CameraRollServiceProxyCalls implements CameraRollService {
-  CameraRollServiceProxyImpl _proxyImpl;
+  _CameraRollServiceProxyImpl _proxyImpl;
 
   _CameraRollServiceProxyCalls(this._proxyImpl);
     void update() {
@@ -620,24 +617,23 @@ class _CameraRollServiceProxyCalls implements CameraRollService {
         _proxyImpl.proxyError("The Proxy is closed.");
         return;
       }
-      var params = new CameraRollServiceUpdateParams();
-      _proxyImpl.sendMessage(params, kCameraRollService_update_name);
+      var params = new _CameraRollServiceUpdateParams();
+      _proxyImpl.sendMessage(params, _CameraRollService_updateName);
     }
-  
     dynamic getCount([Function responseFactory = null]) {
-      var params = new CameraRollServiceGetCountParams();
+      var params = new _CameraRollServiceGetCountParams();
       return _proxyImpl.sendMessageWithRequestId(
           params,
-          kCameraRollService_getCount_name,
+          _CameraRollService_getCountName,
           -1,
           bindings.MessageHeader.kMessageExpectsResponse);
     }
     dynamic getPhoto(int index,[Function responseFactory = null]) {
-      var params = new CameraRollServiceGetPhotoParams();
+      var params = new _CameraRollServiceGetPhotoParams();
       params.index = index;
       return _proxyImpl.sendMessageWithRequestId(
           params,
-          kCameraRollService_getPhoto_name,
+          _CameraRollService_getPhotoName,
           -1,
           bindings.MessageHeader.kMessageExpectsResponse);
     }
@@ -647,25 +643,24 @@ class _CameraRollServiceProxyCalls implements CameraRollService {
 class CameraRollServiceProxy implements bindings.ProxyBase {
   final bindings.Proxy impl;
   CameraRollService ptr;
-  final String name = CameraRollServiceName;
 
-  CameraRollServiceProxy(CameraRollServiceProxyImpl proxyImpl) :
+  CameraRollServiceProxy(_CameraRollServiceProxyImpl proxyImpl) :
       impl = proxyImpl,
       ptr = new _CameraRollServiceProxyCalls(proxyImpl);
 
   CameraRollServiceProxy.fromEndpoint(
       core.MojoMessagePipeEndpoint endpoint) :
-      impl = new CameraRollServiceProxyImpl.fromEndpoint(endpoint) {
+      impl = new _CameraRollServiceProxyImpl.fromEndpoint(endpoint) {
     ptr = new _CameraRollServiceProxyCalls(impl);
   }
 
   CameraRollServiceProxy.fromHandle(core.MojoHandle handle) :
-      impl = new CameraRollServiceProxyImpl.fromHandle(handle) {
+      impl = new _CameraRollServiceProxyImpl.fromHandle(handle) {
     ptr = new _CameraRollServiceProxyCalls(impl);
   }
 
   CameraRollServiceProxy.unbound() :
-      impl = new CameraRollServiceProxyImpl.unbound() {
+      impl = new _CameraRollServiceProxyImpl.unbound() {
     ptr = new _CameraRollServiceProxyCalls(impl);
   }
 
@@ -681,6 +676,8 @@ class CameraRollServiceProxy implements bindings.ProxyBase {
     assert(endpoint.setDescription("For CameraRollServiceProxy"));
     return new CameraRollServiceProxy.fromEndpoint(endpoint);
   }
+
+  String get serviceName => CameraRollService.serviceName;
 
   Future close({bool immediate: false}) => impl.close(immediate: immediate);
 
@@ -720,8 +717,6 @@ class CameraRollServiceStub extends bindings.Stub {
     return new CameraRollServiceStub.fromEndpoint(endpoint);
   }
 
-  static const String name = CameraRollServiceName;
-
 
   CameraRollServiceGetCountResponseParams _CameraRollServiceGetCountResponseParamsFactory(int numPhotos) {
     var mojo_factory_result = new CameraRollServiceGetCountResponseParams();
@@ -742,13 +737,13 @@ class CameraRollServiceStub extends bindings.Stub {
     }
     assert(_impl != null);
     switch (message.header.type) {
-      case kCameraRollService_update_name:
-        var params = CameraRollServiceUpdateParams.deserialize(
+      case _CameraRollService_updateName:
+        var params = _CameraRollServiceUpdateParams.deserialize(
             message.payload);
         _impl.update();
         break;
-      case kCameraRollService_getCount_name:
-        var params = CameraRollServiceGetCountParams.deserialize(
+      case _CameraRollService_getCountName:
+        var params = _CameraRollServiceGetCountParams.deserialize(
             message.payload);
         var response = _impl.getCount(_CameraRollServiceGetCountResponseParamsFactory);
         if (response is Future) {
@@ -756,7 +751,7 @@ class CameraRollServiceStub extends bindings.Stub {
             if (response != null) {
               return buildResponseWithId(
                   response,
-                  kCameraRollService_getCount_name,
+                  _CameraRollService_getCountName,
                   message.header.requestId,
                   bindings.MessageHeader.kMessageIsResponse);
             }
@@ -764,13 +759,13 @@ class CameraRollServiceStub extends bindings.Stub {
         } else if (response != null) {
           return buildResponseWithId(
               response,
-              kCameraRollService_getCount_name,
+              _CameraRollService_getCountName,
               message.header.requestId,
               bindings.MessageHeader.kMessageIsResponse);
         }
         break;
-      case kCameraRollService_getPhoto_name:
-        var params = CameraRollServiceGetPhotoParams.deserialize(
+      case _CameraRollService_getPhotoName:
+        var params = _CameraRollServiceGetPhotoParams.deserialize(
             message.payload);
         var response = _impl.getPhoto(params.index,_CameraRollServiceGetPhotoResponseParamsFactory);
         if (response is Future) {
@@ -778,7 +773,7 @@ class CameraRollServiceStub extends bindings.Stub {
             if (response != null) {
               return buildResponseWithId(
                   response,
-                  kCameraRollService_getPhoto_name,
+                  _CameraRollService_getPhotoName,
                   message.header.requestId,
                   bindings.MessageHeader.kMessageIsResponse);
             }
@@ -786,7 +781,7 @@ class CameraRollServiceStub extends bindings.Stub {
         } else if (response != null) {
           return buildResponseWithId(
               response,
-              kCameraRollService_getPhoto_name,
+              _CameraRollService_getPhotoName,
               message.header.requestId,
               bindings.MessageHeader.kMessageIsResponse);
         }
@@ -812,35 +807,32 @@ class CameraRollServiceStub extends bindings.Stub {
   int get version => 0;
 }
 
-const int kCameraService_getLatestFrame_name = 0;
-const String CameraServiceName = "mojo::CameraService";
+const int _CameraService_getLatestFrameName = 0;
 
 abstract class CameraService {
+  static const String serviceName = "mojo::CameraService";
   dynamic getLatestFrame([Function responseFactory = null]);
-
 }
 
 
-class CameraServiceProxyImpl extends bindings.Proxy {
-  CameraServiceProxyImpl.fromEndpoint(
+class _CameraServiceProxyImpl extends bindings.Proxy {
+  _CameraServiceProxyImpl.fromEndpoint(
       core.MojoMessagePipeEndpoint endpoint) : super.fromEndpoint(endpoint);
 
-  CameraServiceProxyImpl.fromHandle(core.MojoHandle handle) :
+  _CameraServiceProxyImpl.fromHandle(core.MojoHandle handle) :
       super.fromHandle(handle);
 
-  CameraServiceProxyImpl.unbound() : super.unbound();
+  _CameraServiceProxyImpl.unbound() : super.unbound();
 
-  static CameraServiceProxyImpl newFromEndpoint(
+  static _CameraServiceProxyImpl newFromEndpoint(
       core.MojoMessagePipeEndpoint endpoint) {
-    assert(endpoint.setDescription("For CameraServiceProxyImpl"));
-    return new CameraServiceProxyImpl.fromEndpoint(endpoint);
+    assert(endpoint.setDescription("For _CameraServiceProxyImpl"));
+    return new _CameraServiceProxyImpl.fromEndpoint(endpoint);
   }
-
-  String get name => CameraServiceName;
 
   void handleResponse(bindings.ServiceMessage message) {
     switch (message.header.type) {
-      case kCameraService_getLatestFrame_name:
+      case _CameraService_getLatestFrameName:
         var r = CameraServiceGetLatestFrameResponseParams.deserialize(
             message.payload);
         if (!message.header.hasRequestId) {
@@ -869,20 +861,20 @@ class CameraServiceProxyImpl extends bindings.Proxy {
 
   String toString() {
     var superString = super.toString();
-    return "CameraServiceProxyImpl($superString)";
+    return "_CameraServiceProxyImpl($superString)";
   }
 }
 
 
 class _CameraServiceProxyCalls implements CameraService {
-  CameraServiceProxyImpl _proxyImpl;
+  _CameraServiceProxyImpl _proxyImpl;
 
   _CameraServiceProxyCalls(this._proxyImpl);
     dynamic getLatestFrame([Function responseFactory = null]) {
-      var params = new CameraServiceGetLatestFrameParams();
+      var params = new _CameraServiceGetLatestFrameParams();
       return _proxyImpl.sendMessageWithRequestId(
           params,
-          kCameraService_getLatestFrame_name,
+          _CameraService_getLatestFrameName,
           -1,
           bindings.MessageHeader.kMessageExpectsResponse);
     }
@@ -892,25 +884,24 @@ class _CameraServiceProxyCalls implements CameraService {
 class CameraServiceProxy implements bindings.ProxyBase {
   final bindings.Proxy impl;
   CameraService ptr;
-  final String name = CameraServiceName;
 
-  CameraServiceProxy(CameraServiceProxyImpl proxyImpl) :
+  CameraServiceProxy(_CameraServiceProxyImpl proxyImpl) :
       impl = proxyImpl,
       ptr = new _CameraServiceProxyCalls(proxyImpl);
 
   CameraServiceProxy.fromEndpoint(
       core.MojoMessagePipeEndpoint endpoint) :
-      impl = new CameraServiceProxyImpl.fromEndpoint(endpoint) {
+      impl = new _CameraServiceProxyImpl.fromEndpoint(endpoint) {
     ptr = new _CameraServiceProxyCalls(impl);
   }
 
   CameraServiceProxy.fromHandle(core.MojoHandle handle) :
-      impl = new CameraServiceProxyImpl.fromHandle(handle) {
+      impl = new _CameraServiceProxyImpl.fromHandle(handle) {
     ptr = new _CameraServiceProxyCalls(impl);
   }
 
   CameraServiceProxy.unbound() :
-      impl = new CameraServiceProxyImpl.unbound() {
+      impl = new _CameraServiceProxyImpl.unbound() {
     ptr = new _CameraServiceProxyCalls(impl);
   }
 
@@ -926,6 +917,8 @@ class CameraServiceProxy implements bindings.ProxyBase {
     assert(endpoint.setDescription("For CameraServiceProxy"));
     return new CameraServiceProxy.fromEndpoint(endpoint);
   }
+
+  String get serviceName => CameraService.serviceName;
 
   Future close({bool immediate: false}) => impl.close(immediate: immediate);
 
@@ -965,8 +958,6 @@ class CameraServiceStub extends bindings.Stub {
     return new CameraServiceStub.fromEndpoint(endpoint);
   }
 
-  static const String name = CameraServiceName;
-
 
   CameraServiceGetLatestFrameResponseParams _CameraServiceGetLatestFrameResponseParamsFactory(core.MojoDataPipeConsumer content) {
     var mojo_factory_result = new CameraServiceGetLatestFrameResponseParams();
@@ -982,8 +973,8 @@ class CameraServiceStub extends bindings.Stub {
     }
     assert(_impl != null);
     switch (message.header.type) {
-      case kCameraService_getLatestFrame_name:
-        var params = CameraServiceGetLatestFrameParams.deserialize(
+      case _CameraService_getLatestFrameName:
+        var params = _CameraServiceGetLatestFrameParams.deserialize(
             message.payload);
         var response = _impl.getLatestFrame(_CameraServiceGetLatestFrameResponseParamsFactory);
         if (response is Future) {
@@ -991,7 +982,7 @@ class CameraServiceStub extends bindings.Stub {
             if (response != null) {
               return buildResponseWithId(
                   response,
-                  kCameraService_getLatestFrame_name,
+                  _CameraService_getLatestFrameName,
                   message.header.requestId,
                   bindings.MessageHeader.kMessageIsResponse);
             }
@@ -999,7 +990,7 @@ class CameraServiceStub extends bindings.Stub {
         } else if (response != null) {
           return buildResponseWithId(
               response,
-              kCameraService_getLatestFrame_name,
+              _CameraService_getLatestFrameName,
               message.header.requestId,
               bindings.MessageHeader.kMessageIsResponse);
         }

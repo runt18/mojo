@@ -11,15 +11,15 @@ import 'package:mojo/core.dart' as core;
 
 
 
-class PingPongServiceSetClientParams extends bindings.Struct {
+class _PingPongServiceSetClientParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(16, 0)
   ];
   Object client = null;
 
-  PingPongServiceSetClientParams() : super(kVersions.last.size);
+  _PingPongServiceSetClientParams() : super(kVersions.last.size);
 
-  static PingPongServiceSetClientParams deserialize(bindings.Message message) {
+  static _PingPongServiceSetClientParams deserialize(bindings.Message message) {
     var decoder = new bindings.Decoder(message);
     var result = decode(decoder);
     if (decoder.excessHandles != null) {
@@ -28,11 +28,11 @@ class PingPongServiceSetClientParams extends bindings.Struct {
     return result;
   }
 
-  static PingPongServiceSetClientParams decode(bindings.Decoder decoder0) {
+  static _PingPongServiceSetClientParams decode(bindings.Decoder decoder0) {
     if (decoder0 == null) {
       return null;
     }
-    PingPongServiceSetClientParams result = new PingPongServiceSetClientParams();
+    _PingPongServiceSetClientParams result = new _PingPongServiceSetClientParams();
 
     var mainDataHeader = decoder0.decodeStructDataHeader();
     if (mainDataHeader.version <= kVersions.last.version) {
@@ -66,7 +66,7 @@ class PingPongServiceSetClientParams extends bindings.Struct {
   }
 
   String toString() {
-    return "PingPongServiceSetClientParams("
+    return "_PingPongServiceSetClientParams("
            "client: $client" ")";
   }
 
@@ -77,15 +77,15 @@ class PingPongServiceSetClientParams extends bindings.Struct {
 }
 
 
-class PingPongServicePingParams extends bindings.Struct {
+class _PingPongServicePingParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(16, 0)
   ];
   int pingValue = 0;
 
-  PingPongServicePingParams() : super(kVersions.last.size);
+  _PingPongServicePingParams() : super(kVersions.last.size);
 
-  static PingPongServicePingParams deserialize(bindings.Message message) {
+  static _PingPongServicePingParams deserialize(bindings.Message message) {
     var decoder = new bindings.Decoder(message);
     var result = decode(decoder);
     if (decoder.excessHandles != null) {
@@ -94,11 +94,11 @@ class PingPongServicePingParams extends bindings.Struct {
     return result;
   }
 
-  static PingPongServicePingParams decode(bindings.Decoder decoder0) {
+  static _PingPongServicePingParams decode(bindings.Decoder decoder0) {
     if (decoder0 == null) {
       return null;
     }
-    PingPongServicePingParams result = new PingPongServicePingParams();
+    _PingPongServicePingParams result = new _PingPongServicePingParams();
 
     var mainDataHeader = decoder0.decodeStructDataHeader();
     if (mainDataHeader.version <= kVersions.last.version) {
@@ -132,7 +132,7 @@ class PingPongServicePingParams extends bindings.Struct {
   }
 
   String toString() {
-    return "PingPongServicePingParams("
+    return "_PingPongServicePingParams("
            "pingValue: $pingValue" ")";
   }
 
@@ -144,16 +144,16 @@ class PingPongServicePingParams extends bindings.Struct {
 }
 
 
-class PingPongServicePingTargetUrlParams extends bindings.Struct {
+class _PingPongServicePingTargetUrlParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(24, 0)
   ];
   String url = null;
   int count = 0;
 
-  PingPongServicePingTargetUrlParams() : super(kVersions.last.size);
+  _PingPongServicePingTargetUrlParams() : super(kVersions.last.size);
 
-  static PingPongServicePingTargetUrlParams deserialize(bindings.Message message) {
+  static _PingPongServicePingTargetUrlParams deserialize(bindings.Message message) {
     var decoder = new bindings.Decoder(message);
     var result = decode(decoder);
     if (decoder.excessHandles != null) {
@@ -162,11 +162,11 @@ class PingPongServicePingTargetUrlParams extends bindings.Struct {
     return result;
   }
 
-  static PingPongServicePingTargetUrlParams decode(bindings.Decoder decoder0) {
+  static _PingPongServicePingTargetUrlParams decode(bindings.Decoder decoder0) {
     if (decoder0 == null) {
       return null;
     }
-    PingPongServicePingTargetUrlParams result = new PingPongServicePingTargetUrlParams();
+    _PingPongServicePingTargetUrlParams result = new _PingPongServicePingTargetUrlParams();
 
     var mainDataHeader = decoder0.decodeStructDataHeader();
     if (mainDataHeader.version <= kVersions.last.version) {
@@ -206,7 +206,7 @@ class PingPongServicePingTargetUrlParams extends bindings.Struct {
   }
 
   String toString() {
-    return "PingPongServicePingTargetUrlParams("
+    return "_PingPongServicePingTargetUrlParams("
            "url: $url" ", "
            "count: $count" ")";
   }
@@ -287,16 +287,16 @@ class PingPongServicePingTargetUrlResponseParams extends bindings.Struct {
 }
 
 
-class PingPongServicePingTargetServiceParams extends bindings.Struct {
+class _PingPongServicePingTargetServiceParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(24, 0)
   ];
   Object service = null;
   int count = 0;
 
-  PingPongServicePingTargetServiceParams() : super(kVersions.last.size);
+  _PingPongServicePingTargetServiceParams() : super(kVersions.last.size);
 
-  static PingPongServicePingTargetServiceParams deserialize(bindings.Message message) {
+  static _PingPongServicePingTargetServiceParams deserialize(bindings.Message message) {
     var decoder = new bindings.Decoder(message);
     var result = decode(decoder);
     if (decoder.excessHandles != null) {
@@ -305,11 +305,11 @@ class PingPongServicePingTargetServiceParams extends bindings.Struct {
     return result;
   }
 
-  static PingPongServicePingTargetServiceParams decode(bindings.Decoder decoder0) {
+  static _PingPongServicePingTargetServiceParams decode(bindings.Decoder decoder0) {
     if (decoder0 == null) {
       return null;
     }
-    PingPongServicePingTargetServiceParams result = new PingPongServicePingTargetServiceParams();
+    _PingPongServicePingTargetServiceParams result = new _PingPongServicePingTargetServiceParams();
 
     var mainDataHeader = decoder0.decodeStructDataHeader();
     if (mainDataHeader.version <= kVersions.last.version) {
@@ -349,7 +349,7 @@ class PingPongServicePingTargetServiceParams extends bindings.Struct {
   }
 
   String toString() {
-    return "PingPongServicePingTargetServiceParams("
+    return "_PingPongServicePingTargetServiceParams("
            "service: $service" ", "
            "count: $count" ")";
   }
@@ -428,15 +428,15 @@ class PingPongServicePingTargetServiceResponseParams extends bindings.Struct {
 }
 
 
-class PingPongServiceGetPingPongServiceParams extends bindings.Struct {
+class _PingPongServiceGetPingPongServiceParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(16, 0)
   ];
   Object service = null;
 
-  PingPongServiceGetPingPongServiceParams() : super(kVersions.last.size);
+  _PingPongServiceGetPingPongServiceParams() : super(kVersions.last.size);
 
-  static PingPongServiceGetPingPongServiceParams deserialize(bindings.Message message) {
+  static _PingPongServiceGetPingPongServiceParams deserialize(bindings.Message message) {
     var decoder = new bindings.Decoder(message);
     var result = decode(decoder);
     if (decoder.excessHandles != null) {
@@ -445,11 +445,11 @@ class PingPongServiceGetPingPongServiceParams extends bindings.Struct {
     return result;
   }
 
-  static PingPongServiceGetPingPongServiceParams decode(bindings.Decoder decoder0) {
+  static _PingPongServiceGetPingPongServiceParams decode(bindings.Decoder decoder0) {
     if (decoder0 == null) {
       return null;
     }
-    PingPongServiceGetPingPongServiceParams result = new PingPongServiceGetPingPongServiceParams();
+    _PingPongServiceGetPingPongServiceParams result = new _PingPongServiceGetPingPongServiceParams();
 
     var mainDataHeader = decoder0.decodeStructDataHeader();
     if (mainDataHeader.version <= kVersions.last.version) {
@@ -483,7 +483,7 @@ class PingPongServiceGetPingPongServiceParams extends bindings.Struct {
   }
 
   String toString() {
-    return "PingPongServiceGetPingPongServiceParams("
+    return "_PingPongServiceGetPingPongServiceParams("
            "service: $service" ")";
   }
 
@@ -494,14 +494,14 @@ class PingPongServiceGetPingPongServiceParams extends bindings.Struct {
 }
 
 
-class PingPongServiceQuitParams extends bindings.Struct {
+class _PingPongServiceQuitParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(8, 0)
   ];
 
-  PingPongServiceQuitParams() : super(kVersions.last.size);
+  _PingPongServiceQuitParams() : super(kVersions.last.size);
 
-  static PingPongServiceQuitParams deserialize(bindings.Message message) {
+  static _PingPongServiceQuitParams deserialize(bindings.Message message) {
     var decoder = new bindings.Decoder(message);
     var result = decode(decoder);
     if (decoder.excessHandles != null) {
@@ -510,11 +510,11 @@ class PingPongServiceQuitParams extends bindings.Struct {
     return result;
   }
 
-  static PingPongServiceQuitParams decode(bindings.Decoder decoder0) {
+  static _PingPongServiceQuitParams decode(bindings.Decoder decoder0) {
     if (decoder0 == null) {
       return null;
     }
-    PingPongServiceQuitParams result = new PingPongServiceQuitParams();
+    _PingPongServiceQuitParams result = new _PingPongServiceQuitParams();
 
     var mainDataHeader = decoder0.decodeStructDataHeader();
     if (mainDataHeader.version <= kVersions.last.version) {
@@ -542,7 +542,7 @@ class PingPongServiceQuitParams extends bindings.Struct {
   }
 
   String toString() {
-    return "PingPongServiceQuitParams("")";
+    return "_PingPongServiceQuitParams("")";
   }
 
   Map toJson() {
@@ -552,15 +552,15 @@ class PingPongServiceQuitParams extends bindings.Struct {
 }
 
 
-class PingPongClientPongParams extends bindings.Struct {
+class _PingPongClientPongParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(16, 0)
   ];
   int pongValue = 0;
 
-  PingPongClientPongParams() : super(kVersions.last.size);
+  _PingPongClientPongParams() : super(kVersions.last.size);
 
-  static PingPongClientPongParams deserialize(bindings.Message message) {
+  static _PingPongClientPongParams deserialize(bindings.Message message) {
     var decoder = new bindings.Decoder(message);
     var result = decode(decoder);
     if (decoder.excessHandles != null) {
@@ -569,11 +569,11 @@ class PingPongClientPongParams extends bindings.Struct {
     return result;
   }
 
-  static PingPongClientPongParams decode(bindings.Decoder decoder0) {
+  static _PingPongClientPongParams decode(bindings.Decoder decoder0) {
     if (decoder0 == null) {
       return null;
     }
-    PingPongClientPongParams result = new PingPongClientPongParams();
+    _PingPongClientPongParams result = new _PingPongClientPongParams();
 
     var mainDataHeader = decoder0.decodeStructDataHeader();
     if (mainDataHeader.version <= kVersions.last.version) {
@@ -607,7 +607,7 @@ class PingPongClientPongParams extends bindings.Struct {
   }
 
   String toString() {
-    return "PingPongClientPongParams("
+    return "_PingPongClientPongParams("
            "pongValue: $pongValue" ")";
   }
 
@@ -618,45 +618,42 @@ class PingPongClientPongParams extends bindings.Struct {
   }
 }
 
-const int kPingPongService_setClient_name = 0;
-const int kPingPongService_ping_name = 1;
-const int kPingPongService_pingTargetUrl_name = 2;
-const int kPingPongService_pingTargetService_name = 3;
-const int kPingPongService_getPingPongService_name = 4;
-const int kPingPongService_quit_name = 5;
-const String PingPongServiceName = "test::PingPongService";
+const int _PingPongService_setClientName = 0;
+const int _PingPongService_pingName = 1;
+const int _PingPongService_pingTargetUrlName = 2;
+const int _PingPongService_pingTargetServiceName = 3;
+const int _PingPongService_getPingPongServiceName = 4;
+const int _PingPongService_quitName = 5;
 
 abstract class PingPongService {
+  static const String serviceName = "test::PingPongService";
   void setClient(Object client);
   void ping(int pingValue);
   dynamic pingTargetUrl(String url,int count,[Function responseFactory = null]);
   dynamic pingTargetService(Object service,int count,[Function responseFactory = null]);
   void getPingPongService(Object service);
   void quit();
-
 }
 
 
-class PingPongServiceProxyImpl extends bindings.Proxy {
-  PingPongServiceProxyImpl.fromEndpoint(
+class _PingPongServiceProxyImpl extends bindings.Proxy {
+  _PingPongServiceProxyImpl.fromEndpoint(
       core.MojoMessagePipeEndpoint endpoint) : super.fromEndpoint(endpoint);
 
-  PingPongServiceProxyImpl.fromHandle(core.MojoHandle handle) :
+  _PingPongServiceProxyImpl.fromHandle(core.MojoHandle handle) :
       super.fromHandle(handle);
 
-  PingPongServiceProxyImpl.unbound() : super.unbound();
+  _PingPongServiceProxyImpl.unbound() : super.unbound();
 
-  static PingPongServiceProxyImpl newFromEndpoint(
+  static _PingPongServiceProxyImpl newFromEndpoint(
       core.MojoMessagePipeEndpoint endpoint) {
-    assert(endpoint.setDescription("For PingPongServiceProxyImpl"));
-    return new PingPongServiceProxyImpl.fromEndpoint(endpoint);
+    assert(endpoint.setDescription("For _PingPongServiceProxyImpl"));
+    return new _PingPongServiceProxyImpl.fromEndpoint(endpoint);
   }
-
-  String get name => PingPongServiceName;
 
   void handleResponse(bindings.ServiceMessage message) {
     switch (message.header.type) {
-      case kPingPongService_pingTargetUrl_name:
+      case _PingPongService_pingTargetUrlName:
         var r = PingPongServicePingTargetUrlResponseParams.deserialize(
             message.payload);
         if (!message.header.hasRequestId) {
@@ -676,7 +673,7 @@ class PingPongServiceProxyImpl extends bindings.Proxy {
         }
         c.complete(r);
         break;
-      case kPingPongService_pingTargetService_name:
+      case _PingPongService_pingTargetServiceName:
         var r = PingPongServicePingTargetServiceResponseParams.deserialize(
             message.payload);
         if (!message.header.hasRequestId) {
@@ -705,13 +702,13 @@ class PingPongServiceProxyImpl extends bindings.Proxy {
 
   String toString() {
     var superString = super.toString();
-    return "PingPongServiceProxyImpl($superString)";
+    return "_PingPongServiceProxyImpl($superString)";
   }
 }
 
 
 class _PingPongServiceProxyCalls implements PingPongService {
-  PingPongServiceProxyImpl _proxyImpl;
+  _PingPongServiceProxyImpl _proxyImpl;
 
   _PingPongServiceProxyCalls(this._proxyImpl);
     void setClient(Object client) {
@@ -719,38 +716,36 @@ class _PingPongServiceProxyCalls implements PingPongService {
         _proxyImpl.proxyError("The Proxy is closed.");
         return;
       }
-      var params = new PingPongServiceSetClientParams();
+      var params = new _PingPongServiceSetClientParams();
       params.client = client;
-      _proxyImpl.sendMessage(params, kPingPongService_setClient_name);
+      _proxyImpl.sendMessage(params, _PingPongService_setClientName);
     }
-  
     void ping(int pingValue) {
       if (!_proxyImpl.isBound) {
         _proxyImpl.proxyError("The Proxy is closed.");
         return;
       }
-      var params = new PingPongServicePingParams();
+      var params = new _PingPongServicePingParams();
       params.pingValue = pingValue;
-      _proxyImpl.sendMessage(params, kPingPongService_ping_name);
+      _proxyImpl.sendMessage(params, _PingPongService_pingName);
     }
-  
     dynamic pingTargetUrl(String url,int count,[Function responseFactory = null]) {
-      var params = new PingPongServicePingTargetUrlParams();
+      var params = new _PingPongServicePingTargetUrlParams();
       params.url = url;
       params.count = count;
       return _proxyImpl.sendMessageWithRequestId(
           params,
-          kPingPongService_pingTargetUrl_name,
+          _PingPongService_pingTargetUrlName,
           -1,
           bindings.MessageHeader.kMessageExpectsResponse);
     }
     dynamic pingTargetService(Object service,int count,[Function responseFactory = null]) {
-      var params = new PingPongServicePingTargetServiceParams();
+      var params = new _PingPongServicePingTargetServiceParams();
       params.service = service;
       params.count = count;
       return _proxyImpl.sendMessageWithRequestId(
           params,
-          kPingPongService_pingTargetService_name,
+          _PingPongService_pingTargetServiceName,
           -1,
           bindings.MessageHeader.kMessageExpectsResponse);
     }
@@ -759,45 +754,42 @@ class _PingPongServiceProxyCalls implements PingPongService {
         _proxyImpl.proxyError("The Proxy is closed.");
         return;
       }
-      var params = new PingPongServiceGetPingPongServiceParams();
+      var params = new _PingPongServiceGetPingPongServiceParams();
       params.service = service;
-      _proxyImpl.sendMessage(params, kPingPongService_getPingPongService_name);
+      _proxyImpl.sendMessage(params, _PingPongService_getPingPongServiceName);
     }
-  
     void quit() {
       if (!_proxyImpl.isBound) {
         _proxyImpl.proxyError("The Proxy is closed.");
         return;
       }
-      var params = new PingPongServiceQuitParams();
-      _proxyImpl.sendMessage(params, kPingPongService_quit_name);
+      var params = new _PingPongServiceQuitParams();
+      _proxyImpl.sendMessage(params, _PingPongService_quitName);
     }
-  
 }
 
 
 class PingPongServiceProxy implements bindings.ProxyBase {
   final bindings.Proxy impl;
   PingPongService ptr;
-  final String name = PingPongServiceName;
 
-  PingPongServiceProxy(PingPongServiceProxyImpl proxyImpl) :
+  PingPongServiceProxy(_PingPongServiceProxyImpl proxyImpl) :
       impl = proxyImpl,
       ptr = new _PingPongServiceProxyCalls(proxyImpl);
 
   PingPongServiceProxy.fromEndpoint(
       core.MojoMessagePipeEndpoint endpoint) :
-      impl = new PingPongServiceProxyImpl.fromEndpoint(endpoint) {
+      impl = new _PingPongServiceProxyImpl.fromEndpoint(endpoint) {
     ptr = new _PingPongServiceProxyCalls(impl);
   }
 
   PingPongServiceProxy.fromHandle(core.MojoHandle handle) :
-      impl = new PingPongServiceProxyImpl.fromHandle(handle) {
+      impl = new _PingPongServiceProxyImpl.fromHandle(handle) {
     ptr = new _PingPongServiceProxyCalls(impl);
   }
 
   PingPongServiceProxy.unbound() :
-      impl = new PingPongServiceProxyImpl.unbound() {
+      impl = new _PingPongServiceProxyImpl.unbound() {
     ptr = new _PingPongServiceProxyCalls(impl);
   }
 
@@ -813,6 +805,8 @@ class PingPongServiceProxy implements bindings.ProxyBase {
     assert(endpoint.setDescription("For PingPongServiceProxy"));
     return new PingPongServiceProxy.fromEndpoint(endpoint);
   }
+
+  String get serviceName => PingPongService.serviceName;
 
   Future close({bool immediate: false}) => impl.close(immediate: immediate);
 
@@ -852,8 +846,6 @@ class PingPongServiceStub extends bindings.Stub {
     return new PingPongServiceStub.fromEndpoint(endpoint);
   }
 
-  static const String name = PingPongServiceName;
-
 
   PingPongServicePingTargetUrlResponseParams _PingPongServicePingTargetUrlResponseParamsFactory(bool ok) {
     var mojo_factory_result = new PingPongServicePingTargetUrlResponseParams();
@@ -874,18 +866,18 @@ class PingPongServiceStub extends bindings.Stub {
     }
     assert(_impl != null);
     switch (message.header.type) {
-      case kPingPongService_setClient_name:
-        var params = PingPongServiceSetClientParams.deserialize(
+      case _PingPongService_setClientName:
+        var params = _PingPongServiceSetClientParams.deserialize(
             message.payload);
         _impl.setClient(params.client);
         break;
-      case kPingPongService_ping_name:
-        var params = PingPongServicePingParams.deserialize(
+      case _PingPongService_pingName:
+        var params = _PingPongServicePingParams.deserialize(
             message.payload);
         _impl.ping(params.pingValue);
         break;
-      case kPingPongService_pingTargetUrl_name:
-        var params = PingPongServicePingTargetUrlParams.deserialize(
+      case _PingPongService_pingTargetUrlName:
+        var params = _PingPongServicePingTargetUrlParams.deserialize(
             message.payload);
         var response = _impl.pingTargetUrl(params.url,params.count,_PingPongServicePingTargetUrlResponseParamsFactory);
         if (response is Future) {
@@ -893,7 +885,7 @@ class PingPongServiceStub extends bindings.Stub {
             if (response != null) {
               return buildResponseWithId(
                   response,
-                  kPingPongService_pingTargetUrl_name,
+                  _PingPongService_pingTargetUrlName,
                   message.header.requestId,
                   bindings.MessageHeader.kMessageIsResponse);
             }
@@ -901,13 +893,13 @@ class PingPongServiceStub extends bindings.Stub {
         } else if (response != null) {
           return buildResponseWithId(
               response,
-              kPingPongService_pingTargetUrl_name,
+              _PingPongService_pingTargetUrlName,
               message.header.requestId,
               bindings.MessageHeader.kMessageIsResponse);
         }
         break;
-      case kPingPongService_pingTargetService_name:
-        var params = PingPongServicePingTargetServiceParams.deserialize(
+      case _PingPongService_pingTargetServiceName:
+        var params = _PingPongServicePingTargetServiceParams.deserialize(
             message.payload);
         var response = _impl.pingTargetService(params.service,params.count,_PingPongServicePingTargetServiceResponseParamsFactory);
         if (response is Future) {
@@ -915,7 +907,7 @@ class PingPongServiceStub extends bindings.Stub {
             if (response != null) {
               return buildResponseWithId(
                   response,
-                  kPingPongService_pingTargetService_name,
+                  _PingPongService_pingTargetServiceName,
                   message.header.requestId,
                   bindings.MessageHeader.kMessageIsResponse);
             }
@@ -923,18 +915,18 @@ class PingPongServiceStub extends bindings.Stub {
         } else if (response != null) {
           return buildResponseWithId(
               response,
-              kPingPongService_pingTargetService_name,
+              _PingPongService_pingTargetServiceName,
               message.header.requestId,
               bindings.MessageHeader.kMessageIsResponse);
         }
         break;
-      case kPingPongService_getPingPongService_name:
-        var params = PingPongServiceGetPingPongServiceParams.deserialize(
+      case _PingPongService_getPingPongServiceName:
+        var params = _PingPongServiceGetPingPongServiceParams.deserialize(
             message.payload);
         _impl.getPingPongService(params.service);
         break;
-      case kPingPongService_quit_name:
-        var params = PingPongServiceQuitParams.deserialize(
+      case _PingPongService_quitName:
+        var params = _PingPongServiceQuitParams.deserialize(
             message.payload);
         _impl.quit();
         break;
@@ -959,31 +951,28 @@ class PingPongServiceStub extends bindings.Stub {
   int get version => 0;
 }
 
-const int kPingPongClient_pong_name = 0;
-const String PingPongClientName = null;
+const int _PingPongClient_pongName = 0;
 
 abstract class PingPongClient {
+  static const String serviceName = null;
   void pong(int pongValue);
-
 }
 
 
-class PingPongClientProxyImpl extends bindings.Proxy {
-  PingPongClientProxyImpl.fromEndpoint(
+class _PingPongClientProxyImpl extends bindings.Proxy {
+  _PingPongClientProxyImpl.fromEndpoint(
       core.MojoMessagePipeEndpoint endpoint) : super.fromEndpoint(endpoint);
 
-  PingPongClientProxyImpl.fromHandle(core.MojoHandle handle) :
+  _PingPongClientProxyImpl.fromHandle(core.MojoHandle handle) :
       super.fromHandle(handle);
 
-  PingPongClientProxyImpl.unbound() : super.unbound();
+  _PingPongClientProxyImpl.unbound() : super.unbound();
 
-  static PingPongClientProxyImpl newFromEndpoint(
+  static _PingPongClientProxyImpl newFromEndpoint(
       core.MojoMessagePipeEndpoint endpoint) {
-    assert(endpoint.setDescription("For PingPongClientProxyImpl"));
-    return new PingPongClientProxyImpl.fromEndpoint(endpoint);
+    assert(endpoint.setDescription("For _PingPongClientProxyImpl"));
+    return new _PingPongClientProxyImpl.fromEndpoint(endpoint);
   }
-
-  String get name => PingPongClientName;
 
   void handleResponse(bindings.ServiceMessage message) {
     switch (message.header.type) {
@@ -996,13 +985,13 @@ class PingPongClientProxyImpl extends bindings.Proxy {
 
   String toString() {
     var superString = super.toString();
-    return "PingPongClientProxyImpl($superString)";
+    return "_PingPongClientProxyImpl($superString)";
   }
 }
 
 
 class _PingPongClientProxyCalls implements PingPongClient {
-  PingPongClientProxyImpl _proxyImpl;
+  _PingPongClientProxyImpl _proxyImpl;
 
   _PingPongClientProxyCalls(this._proxyImpl);
     void pong(int pongValue) {
@@ -1010,36 +999,34 @@ class _PingPongClientProxyCalls implements PingPongClient {
         _proxyImpl.proxyError("The Proxy is closed.");
         return;
       }
-      var params = new PingPongClientPongParams();
+      var params = new _PingPongClientPongParams();
       params.pongValue = pongValue;
-      _proxyImpl.sendMessage(params, kPingPongClient_pong_name);
+      _proxyImpl.sendMessage(params, _PingPongClient_pongName);
     }
-  
 }
 
 
 class PingPongClientProxy implements bindings.ProxyBase {
   final bindings.Proxy impl;
   PingPongClient ptr;
-  final String name = PingPongClientName;
 
-  PingPongClientProxy(PingPongClientProxyImpl proxyImpl) :
+  PingPongClientProxy(_PingPongClientProxyImpl proxyImpl) :
       impl = proxyImpl,
       ptr = new _PingPongClientProxyCalls(proxyImpl);
 
   PingPongClientProxy.fromEndpoint(
       core.MojoMessagePipeEndpoint endpoint) :
-      impl = new PingPongClientProxyImpl.fromEndpoint(endpoint) {
+      impl = new _PingPongClientProxyImpl.fromEndpoint(endpoint) {
     ptr = new _PingPongClientProxyCalls(impl);
   }
 
   PingPongClientProxy.fromHandle(core.MojoHandle handle) :
-      impl = new PingPongClientProxyImpl.fromHandle(handle) {
+      impl = new _PingPongClientProxyImpl.fromHandle(handle) {
     ptr = new _PingPongClientProxyCalls(impl);
   }
 
   PingPongClientProxy.unbound() :
-      impl = new PingPongClientProxyImpl.unbound() {
+      impl = new _PingPongClientProxyImpl.unbound() {
     ptr = new _PingPongClientProxyCalls(impl);
   }
 
@@ -1055,6 +1042,8 @@ class PingPongClientProxy implements bindings.ProxyBase {
     assert(endpoint.setDescription("For PingPongClientProxy"));
     return new PingPongClientProxy.fromEndpoint(endpoint);
   }
+
+  String get serviceName => PingPongClient.serviceName;
 
   Future close({bool immediate: false}) => impl.close(immediate: immediate);
 
@@ -1094,8 +1083,6 @@ class PingPongClientStub extends bindings.Stub {
     return new PingPongClientStub.fromEndpoint(endpoint);
   }
 
-  static const String name = PingPongClientName;
-
 
 
   dynamic handleMessage(bindings.ServiceMessage message) {
@@ -1106,8 +1093,8 @@ class PingPongClientStub extends bindings.Stub {
     }
     assert(_impl != null);
     switch (message.header.type) {
-      case kPingPongClient_pong_name:
-        var params = PingPongClientPongParams.deserialize(
+      case _PingPongClient_pongName:
+        var params = _PingPongClientPongParams.deserialize(
             message.payload);
         _impl.pong(params.pongValue);
         break;

@@ -11,16 +11,16 @@ import 'package:mojo/core.dart' as core;
 
 
 
-class TraceProviderStartTracingParams extends bindings.Struct {
+class _TraceProviderStartTracingParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(24, 0)
   ];
   String categories = null;
   Object recorder = null;
 
-  TraceProviderStartTracingParams() : super(kVersions.last.size);
+  _TraceProviderStartTracingParams() : super(kVersions.last.size);
 
-  static TraceProviderStartTracingParams deserialize(bindings.Message message) {
+  static _TraceProviderStartTracingParams deserialize(bindings.Message message) {
     var decoder = new bindings.Decoder(message);
     var result = decode(decoder);
     if (decoder.excessHandles != null) {
@@ -29,11 +29,11 @@ class TraceProviderStartTracingParams extends bindings.Struct {
     return result;
   }
 
-  static TraceProviderStartTracingParams decode(bindings.Decoder decoder0) {
+  static _TraceProviderStartTracingParams decode(bindings.Decoder decoder0) {
     if (decoder0 == null) {
       return null;
     }
-    TraceProviderStartTracingParams result = new TraceProviderStartTracingParams();
+    _TraceProviderStartTracingParams result = new _TraceProviderStartTracingParams();
 
     var mainDataHeader = decoder0.decodeStructDataHeader();
     if (mainDataHeader.version <= kVersions.last.version) {
@@ -73,7 +73,7 @@ class TraceProviderStartTracingParams extends bindings.Struct {
   }
 
   String toString() {
-    return "TraceProviderStartTracingParams("
+    return "_TraceProviderStartTracingParams("
            "categories: $categories" ", "
            "recorder: $recorder" ")";
   }
@@ -85,14 +85,14 @@ class TraceProviderStartTracingParams extends bindings.Struct {
 }
 
 
-class TraceProviderStopTracingParams extends bindings.Struct {
+class _TraceProviderStopTracingParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(8, 0)
   ];
 
-  TraceProviderStopTracingParams() : super(kVersions.last.size);
+  _TraceProviderStopTracingParams() : super(kVersions.last.size);
 
-  static TraceProviderStopTracingParams deserialize(bindings.Message message) {
+  static _TraceProviderStopTracingParams deserialize(bindings.Message message) {
     var decoder = new bindings.Decoder(message);
     var result = decode(decoder);
     if (decoder.excessHandles != null) {
@@ -101,11 +101,11 @@ class TraceProviderStopTracingParams extends bindings.Struct {
     return result;
   }
 
-  static TraceProviderStopTracingParams decode(bindings.Decoder decoder0) {
+  static _TraceProviderStopTracingParams decode(bindings.Decoder decoder0) {
     if (decoder0 == null) {
       return null;
     }
-    TraceProviderStopTracingParams result = new TraceProviderStopTracingParams();
+    _TraceProviderStopTracingParams result = new _TraceProviderStopTracingParams();
 
     var mainDataHeader = decoder0.decodeStructDataHeader();
     if (mainDataHeader.version <= kVersions.last.version) {
@@ -133,7 +133,7 @@ class TraceProviderStopTracingParams extends bindings.Struct {
   }
 
   String toString() {
-    return "TraceProviderStopTracingParams("")";
+    return "_TraceProviderStopTracingParams("")";
   }
 
   Map toJson() {
@@ -143,15 +143,15 @@ class TraceProviderStopTracingParams extends bindings.Struct {
 }
 
 
-class TraceRecorderRecordParams extends bindings.Struct {
+class _TraceRecorderRecordParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(16, 0)
   ];
   String json = null;
 
-  TraceRecorderRecordParams() : super(kVersions.last.size);
+  _TraceRecorderRecordParams() : super(kVersions.last.size);
 
-  static TraceRecorderRecordParams deserialize(bindings.Message message) {
+  static _TraceRecorderRecordParams deserialize(bindings.Message message) {
     var decoder = new bindings.Decoder(message);
     var result = decode(decoder);
     if (decoder.excessHandles != null) {
@@ -160,11 +160,11 @@ class TraceRecorderRecordParams extends bindings.Struct {
     return result;
   }
 
-  static TraceRecorderRecordParams decode(bindings.Decoder decoder0) {
+  static _TraceRecorderRecordParams decode(bindings.Decoder decoder0) {
     if (decoder0 == null) {
       return null;
     }
-    TraceRecorderRecordParams result = new TraceRecorderRecordParams();
+    _TraceRecorderRecordParams result = new _TraceRecorderRecordParams();
 
     var mainDataHeader = decoder0.decodeStructDataHeader();
     if (mainDataHeader.version <= kVersions.last.version) {
@@ -198,7 +198,7 @@ class TraceRecorderRecordParams extends bindings.Struct {
   }
 
   String toString() {
-    return "TraceRecorderRecordParams("
+    return "_TraceRecorderRecordParams("
            "json: $json" ")";
   }
 
@@ -210,16 +210,16 @@ class TraceRecorderRecordParams extends bindings.Struct {
 }
 
 
-class TraceCollectorStartParams extends bindings.Struct {
+class _TraceCollectorStartParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(24, 0)
   ];
   core.MojoDataPipeProducer stream = null;
   String categories = null;
 
-  TraceCollectorStartParams() : super(kVersions.last.size);
+  _TraceCollectorStartParams() : super(kVersions.last.size);
 
-  static TraceCollectorStartParams deserialize(bindings.Message message) {
+  static _TraceCollectorStartParams deserialize(bindings.Message message) {
     var decoder = new bindings.Decoder(message);
     var result = decode(decoder);
     if (decoder.excessHandles != null) {
@@ -228,11 +228,11 @@ class TraceCollectorStartParams extends bindings.Struct {
     return result;
   }
 
-  static TraceCollectorStartParams decode(bindings.Decoder decoder0) {
+  static _TraceCollectorStartParams decode(bindings.Decoder decoder0) {
     if (decoder0 == null) {
       return null;
     }
-    TraceCollectorStartParams result = new TraceCollectorStartParams();
+    _TraceCollectorStartParams result = new _TraceCollectorStartParams();
 
     var mainDataHeader = decoder0.decodeStructDataHeader();
     if (mainDataHeader.version <= kVersions.last.version) {
@@ -272,7 +272,7 @@ class TraceCollectorStartParams extends bindings.Struct {
   }
 
   String toString() {
-    return "TraceCollectorStartParams("
+    return "_TraceCollectorStartParams("
            "stream: $stream" ", "
            "categories: $categories" ")";
   }
@@ -284,14 +284,14 @@ class TraceCollectorStartParams extends bindings.Struct {
 }
 
 
-class TraceCollectorStopAndFlushParams extends bindings.Struct {
+class _TraceCollectorStopAndFlushParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(8, 0)
   ];
 
-  TraceCollectorStopAndFlushParams() : super(kVersions.last.size);
+  _TraceCollectorStopAndFlushParams() : super(kVersions.last.size);
 
-  static TraceCollectorStopAndFlushParams deserialize(bindings.Message message) {
+  static _TraceCollectorStopAndFlushParams deserialize(bindings.Message message) {
     var decoder = new bindings.Decoder(message);
     var result = decode(decoder);
     if (decoder.excessHandles != null) {
@@ -300,11 +300,11 @@ class TraceCollectorStopAndFlushParams extends bindings.Struct {
     return result;
   }
 
-  static TraceCollectorStopAndFlushParams decode(bindings.Decoder decoder0) {
+  static _TraceCollectorStopAndFlushParams decode(bindings.Decoder decoder0) {
     if (decoder0 == null) {
       return null;
     }
-    TraceCollectorStopAndFlushParams result = new TraceCollectorStopAndFlushParams();
+    _TraceCollectorStopAndFlushParams result = new _TraceCollectorStopAndFlushParams();
 
     var mainDataHeader = decoder0.decodeStructDataHeader();
     if (mainDataHeader.version <= kVersions.last.version) {
@@ -332,7 +332,7 @@ class TraceCollectorStopAndFlushParams extends bindings.Struct {
   }
 
   String toString() {
-    return "TraceCollectorStopAndFlushParams("")";
+    return "_TraceCollectorStopAndFlushParams("")";
   }
 
   Map toJson() {
@@ -341,33 +341,30 @@ class TraceCollectorStopAndFlushParams extends bindings.Struct {
   }
 }
 
-const int kTraceProvider_startTracing_name = 0;
-const int kTraceProvider_stopTracing_name = 1;
-const String TraceProviderName = "tracing::TraceProvider";
+const int _TraceProvider_startTracingName = 0;
+const int _TraceProvider_stopTracingName = 1;
 
 abstract class TraceProvider {
+  static const String serviceName = "tracing::TraceProvider";
   void startTracing(String categories, Object recorder);
   void stopTracing();
-
 }
 
 
-class TraceProviderProxyImpl extends bindings.Proxy {
-  TraceProviderProxyImpl.fromEndpoint(
+class _TraceProviderProxyImpl extends bindings.Proxy {
+  _TraceProviderProxyImpl.fromEndpoint(
       core.MojoMessagePipeEndpoint endpoint) : super.fromEndpoint(endpoint);
 
-  TraceProviderProxyImpl.fromHandle(core.MojoHandle handle) :
+  _TraceProviderProxyImpl.fromHandle(core.MojoHandle handle) :
       super.fromHandle(handle);
 
-  TraceProviderProxyImpl.unbound() : super.unbound();
+  _TraceProviderProxyImpl.unbound() : super.unbound();
 
-  static TraceProviderProxyImpl newFromEndpoint(
+  static _TraceProviderProxyImpl newFromEndpoint(
       core.MojoMessagePipeEndpoint endpoint) {
-    assert(endpoint.setDescription("For TraceProviderProxyImpl"));
-    return new TraceProviderProxyImpl.fromEndpoint(endpoint);
+    assert(endpoint.setDescription("For _TraceProviderProxyImpl"));
+    return new _TraceProviderProxyImpl.fromEndpoint(endpoint);
   }
-
-  String get name => TraceProviderName;
 
   void handleResponse(bindings.ServiceMessage message) {
     switch (message.header.type) {
@@ -380,13 +377,13 @@ class TraceProviderProxyImpl extends bindings.Proxy {
 
   String toString() {
     var superString = super.toString();
-    return "TraceProviderProxyImpl($superString)";
+    return "_TraceProviderProxyImpl($superString)";
   }
 }
 
 
 class _TraceProviderProxyCalls implements TraceProvider {
-  TraceProviderProxyImpl _proxyImpl;
+  _TraceProviderProxyImpl _proxyImpl;
 
   _TraceProviderProxyCalls(this._proxyImpl);
     void startTracing(String categories, Object recorder) {
@@ -394,46 +391,43 @@ class _TraceProviderProxyCalls implements TraceProvider {
         _proxyImpl.proxyError("The Proxy is closed.");
         return;
       }
-      var params = new TraceProviderStartTracingParams();
+      var params = new _TraceProviderStartTracingParams();
       params.categories = categories;
       params.recorder = recorder;
-      _proxyImpl.sendMessage(params, kTraceProvider_startTracing_name);
+      _proxyImpl.sendMessage(params, _TraceProvider_startTracingName);
     }
-  
     void stopTracing() {
       if (!_proxyImpl.isBound) {
         _proxyImpl.proxyError("The Proxy is closed.");
         return;
       }
-      var params = new TraceProviderStopTracingParams();
-      _proxyImpl.sendMessage(params, kTraceProvider_stopTracing_name);
+      var params = new _TraceProviderStopTracingParams();
+      _proxyImpl.sendMessage(params, _TraceProvider_stopTracingName);
     }
-  
 }
 
 
 class TraceProviderProxy implements bindings.ProxyBase {
   final bindings.Proxy impl;
   TraceProvider ptr;
-  final String name = TraceProviderName;
 
-  TraceProviderProxy(TraceProviderProxyImpl proxyImpl) :
+  TraceProviderProxy(_TraceProviderProxyImpl proxyImpl) :
       impl = proxyImpl,
       ptr = new _TraceProviderProxyCalls(proxyImpl);
 
   TraceProviderProxy.fromEndpoint(
       core.MojoMessagePipeEndpoint endpoint) :
-      impl = new TraceProviderProxyImpl.fromEndpoint(endpoint) {
+      impl = new _TraceProviderProxyImpl.fromEndpoint(endpoint) {
     ptr = new _TraceProviderProxyCalls(impl);
   }
 
   TraceProviderProxy.fromHandle(core.MojoHandle handle) :
-      impl = new TraceProviderProxyImpl.fromHandle(handle) {
+      impl = new _TraceProviderProxyImpl.fromHandle(handle) {
     ptr = new _TraceProviderProxyCalls(impl);
   }
 
   TraceProviderProxy.unbound() :
-      impl = new TraceProviderProxyImpl.unbound() {
+      impl = new _TraceProviderProxyImpl.unbound() {
     ptr = new _TraceProviderProxyCalls(impl);
   }
 
@@ -449,6 +443,8 @@ class TraceProviderProxy implements bindings.ProxyBase {
     assert(endpoint.setDescription("For TraceProviderProxy"));
     return new TraceProviderProxy.fromEndpoint(endpoint);
   }
+
+  String get serviceName => TraceProvider.serviceName;
 
   Future close({bool immediate: false}) => impl.close(immediate: immediate);
 
@@ -488,8 +484,6 @@ class TraceProviderStub extends bindings.Stub {
     return new TraceProviderStub.fromEndpoint(endpoint);
   }
 
-  static const String name = TraceProviderName;
-
 
 
   dynamic handleMessage(bindings.ServiceMessage message) {
@@ -500,13 +494,13 @@ class TraceProviderStub extends bindings.Stub {
     }
     assert(_impl != null);
     switch (message.header.type) {
-      case kTraceProvider_startTracing_name:
-        var params = TraceProviderStartTracingParams.deserialize(
+      case _TraceProvider_startTracingName:
+        var params = _TraceProviderStartTracingParams.deserialize(
             message.payload);
         _impl.startTracing(params.categories, params.recorder);
         break;
-      case kTraceProvider_stopTracing_name:
-        var params = TraceProviderStopTracingParams.deserialize(
+      case _TraceProvider_stopTracingName:
+        var params = _TraceProviderStopTracingParams.deserialize(
             message.payload);
         _impl.stopTracing();
         break;
@@ -531,31 +525,28 @@ class TraceProviderStub extends bindings.Stub {
   int get version => 0;
 }
 
-const int kTraceRecorder_record_name = 0;
-const String TraceRecorderName = null;
+const int _TraceRecorder_recordName = 0;
 
 abstract class TraceRecorder {
+  static const String serviceName = null;
   void record(String json);
-
 }
 
 
-class TraceRecorderProxyImpl extends bindings.Proxy {
-  TraceRecorderProxyImpl.fromEndpoint(
+class _TraceRecorderProxyImpl extends bindings.Proxy {
+  _TraceRecorderProxyImpl.fromEndpoint(
       core.MojoMessagePipeEndpoint endpoint) : super.fromEndpoint(endpoint);
 
-  TraceRecorderProxyImpl.fromHandle(core.MojoHandle handle) :
+  _TraceRecorderProxyImpl.fromHandle(core.MojoHandle handle) :
       super.fromHandle(handle);
 
-  TraceRecorderProxyImpl.unbound() : super.unbound();
+  _TraceRecorderProxyImpl.unbound() : super.unbound();
 
-  static TraceRecorderProxyImpl newFromEndpoint(
+  static _TraceRecorderProxyImpl newFromEndpoint(
       core.MojoMessagePipeEndpoint endpoint) {
-    assert(endpoint.setDescription("For TraceRecorderProxyImpl"));
-    return new TraceRecorderProxyImpl.fromEndpoint(endpoint);
+    assert(endpoint.setDescription("For _TraceRecorderProxyImpl"));
+    return new _TraceRecorderProxyImpl.fromEndpoint(endpoint);
   }
-
-  String get name => TraceRecorderName;
 
   void handleResponse(bindings.ServiceMessage message) {
     switch (message.header.type) {
@@ -568,13 +559,13 @@ class TraceRecorderProxyImpl extends bindings.Proxy {
 
   String toString() {
     var superString = super.toString();
-    return "TraceRecorderProxyImpl($superString)";
+    return "_TraceRecorderProxyImpl($superString)";
   }
 }
 
 
 class _TraceRecorderProxyCalls implements TraceRecorder {
-  TraceRecorderProxyImpl _proxyImpl;
+  _TraceRecorderProxyImpl _proxyImpl;
 
   _TraceRecorderProxyCalls(this._proxyImpl);
     void record(String json) {
@@ -582,36 +573,34 @@ class _TraceRecorderProxyCalls implements TraceRecorder {
         _proxyImpl.proxyError("The Proxy is closed.");
         return;
       }
-      var params = new TraceRecorderRecordParams();
+      var params = new _TraceRecorderRecordParams();
       params.json = json;
-      _proxyImpl.sendMessage(params, kTraceRecorder_record_name);
+      _proxyImpl.sendMessage(params, _TraceRecorder_recordName);
     }
-  
 }
 
 
 class TraceRecorderProxy implements bindings.ProxyBase {
   final bindings.Proxy impl;
   TraceRecorder ptr;
-  final String name = TraceRecorderName;
 
-  TraceRecorderProxy(TraceRecorderProxyImpl proxyImpl) :
+  TraceRecorderProxy(_TraceRecorderProxyImpl proxyImpl) :
       impl = proxyImpl,
       ptr = new _TraceRecorderProxyCalls(proxyImpl);
 
   TraceRecorderProxy.fromEndpoint(
       core.MojoMessagePipeEndpoint endpoint) :
-      impl = new TraceRecorderProxyImpl.fromEndpoint(endpoint) {
+      impl = new _TraceRecorderProxyImpl.fromEndpoint(endpoint) {
     ptr = new _TraceRecorderProxyCalls(impl);
   }
 
   TraceRecorderProxy.fromHandle(core.MojoHandle handle) :
-      impl = new TraceRecorderProxyImpl.fromHandle(handle) {
+      impl = new _TraceRecorderProxyImpl.fromHandle(handle) {
     ptr = new _TraceRecorderProxyCalls(impl);
   }
 
   TraceRecorderProxy.unbound() :
-      impl = new TraceRecorderProxyImpl.unbound() {
+      impl = new _TraceRecorderProxyImpl.unbound() {
     ptr = new _TraceRecorderProxyCalls(impl);
   }
 
@@ -627,6 +616,8 @@ class TraceRecorderProxy implements bindings.ProxyBase {
     assert(endpoint.setDescription("For TraceRecorderProxy"));
     return new TraceRecorderProxy.fromEndpoint(endpoint);
   }
+
+  String get serviceName => TraceRecorder.serviceName;
 
   Future close({bool immediate: false}) => impl.close(immediate: immediate);
 
@@ -666,8 +657,6 @@ class TraceRecorderStub extends bindings.Stub {
     return new TraceRecorderStub.fromEndpoint(endpoint);
   }
 
-  static const String name = TraceRecorderName;
-
 
 
   dynamic handleMessage(bindings.ServiceMessage message) {
@@ -678,8 +667,8 @@ class TraceRecorderStub extends bindings.Stub {
     }
     assert(_impl != null);
     switch (message.header.type) {
-      case kTraceRecorder_record_name:
-        var params = TraceRecorderRecordParams.deserialize(
+      case _TraceRecorder_recordName:
+        var params = _TraceRecorderRecordParams.deserialize(
             message.payload);
         _impl.record(params.json);
         break;
@@ -704,33 +693,30 @@ class TraceRecorderStub extends bindings.Stub {
   int get version => 0;
 }
 
-const int kTraceCollector_start_name = 0;
-const int kTraceCollector_stopAndFlush_name = 1;
-const String TraceCollectorName = "tracing::TraceCollector";
+const int _TraceCollector_startName = 0;
+const int _TraceCollector_stopAndFlushName = 1;
 
 abstract class TraceCollector {
+  static const String serviceName = "tracing::TraceCollector";
   void start(core.MojoDataPipeProducer stream, String categories);
   void stopAndFlush();
-
 }
 
 
-class TraceCollectorProxyImpl extends bindings.Proxy {
-  TraceCollectorProxyImpl.fromEndpoint(
+class _TraceCollectorProxyImpl extends bindings.Proxy {
+  _TraceCollectorProxyImpl.fromEndpoint(
       core.MojoMessagePipeEndpoint endpoint) : super.fromEndpoint(endpoint);
 
-  TraceCollectorProxyImpl.fromHandle(core.MojoHandle handle) :
+  _TraceCollectorProxyImpl.fromHandle(core.MojoHandle handle) :
       super.fromHandle(handle);
 
-  TraceCollectorProxyImpl.unbound() : super.unbound();
+  _TraceCollectorProxyImpl.unbound() : super.unbound();
 
-  static TraceCollectorProxyImpl newFromEndpoint(
+  static _TraceCollectorProxyImpl newFromEndpoint(
       core.MojoMessagePipeEndpoint endpoint) {
-    assert(endpoint.setDescription("For TraceCollectorProxyImpl"));
-    return new TraceCollectorProxyImpl.fromEndpoint(endpoint);
+    assert(endpoint.setDescription("For _TraceCollectorProxyImpl"));
+    return new _TraceCollectorProxyImpl.fromEndpoint(endpoint);
   }
-
-  String get name => TraceCollectorName;
 
   void handleResponse(bindings.ServiceMessage message) {
     switch (message.header.type) {
@@ -743,13 +729,13 @@ class TraceCollectorProxyImpl extends bindings.Proxy {
 
   String toString() {
     var superString = super.toString();
-    return "TraceCollectorProxyImpl($superString)";
+    return "_TraceCollectorProxyImpl($superString)";
   }
 }
 
 
 class _TraceCollectorProxyCalls implements TraceCollector {
-  TraceCollectorProxyImpl _proxyImpl;
+  _TraceCollectorProxyImpl _proxyImpl;
 
   _TraceCollectorProxyCalls(this._proxyImpl);
     void start(core.MojoDataPipeProducer stream, String categories) {
@@ -757,46 +743,43 @@ class _TraceCollectorProxyCalls implements TraceCollector {
         _proxyImpl.proxyError("The Proxy is closed.");
         return;
       }
-      var params = new TraceCollectorStartParams();
+      var params = new _TraceCollectorStartParams();
       params.stream = stream;
       params.categories = categories;
-      _proxyImpl.sendMessage(params, kTraceCollector_start_name);
+      _proxyImpl.sendMessage(params, _TraceCollector_startName);
     }
-  
     void stopAndFlush() {
       if (!_proxyImpl.isBound) {
         _proxyImpl.proxyError("The Proxy is closed.");
         return;
       }
-      var params = new TraceCollectorStopAndFlushParams();
-      _proxyImpl.sendMessage(params, kTraceCollector_stopAndFlush_name);
+      var params = new _TraceCollectorStopAndFlushParams();
+      _proxyImpl.sendMessage(params, _TraceCollector_stopAndFlushName);
     }
-  
 }
 
 
 class TraceCollectorProxy implements bindings.ProxyBase {
   final bindings.Proxy impl;
   TraceCollector ptr;
-  final String name = TraceCollectorName;
 
-  TraceCollectorProxy(TraceCollectorProxyImpl proxyImpl) :
+  TraceCollectorProxy(_TraceCollectorProxyImpl proxyImpl) :
       impl = proxyImpl,
       ptr = new _TraceCollectorProxyCalls(proxyImpl);
 
   TraceCollectorProxy.fromEndpoint(
       core.MojoMessagePipeEndpoint endpoint) :
-      impl = new TraceCollectorProxyImpl.fromEndpoint(endpoint) {
+      impl = new _TraceCollectorProxyImpl.fromEndpoint(endpoint) {
     ptr = new _TraceCollectorProxyCalls(impl);
   }
 
   TraceCollectorProxy.fromHandle(core.MojoHandle handle) :
-      impl = new TraceCollectorProxyImpl.fromHandle(handle) {
+      impl = new _TraceCollectorProxyImpl.fromHandle(handle) {
     ptr = new _TraceCollectorProxyCalls(impl);
   }
 
   TraceCollectorProxy.unbound() :
-      impl = new TraceCollectorProxyImpl.unbound() {
+      impl = new _TraceCollectorProxyImpl.unbound() {
     ptr = new _TraceCollectorProxyCalls(impl);
   }
 
@@ -812,6 +795,8 @@ class TraceCollectorProxy implements bindings.ProxyBase {
     assert(endpoint.setDescription("For TraceCollectorProxy"));
     return new TraceCollectorProxy.fromEndpoint(endpoint);
   }
+
+  String get serviceName => TraceCollector.serviceName;
 
   Future close({bool immediate: false}) => impl.close(immediate: immediate);
 
@@ -851,8 +836,6 @@ class TraceCollectorStub extends bindings.Stub {
     return new TraceCollectorStub.fromEndpoint(endpoint);
   }
 
-  static const String name = TraceCollectorName;
-
 
 
   dynamic handleMessage(bindings.ServiceMessage message) {
@@ -863,13 +846,13 @@ class TraceCollectorStub extends bindings.Stub {
     }
     assert(_impl != null);
     switch (message.header.type) {
-      case kTraceCollector_start_name:
-        var params = TraceCollectorStartParams.deserialize(
+      case _TraceCollector_startName:
+        var params = _TraceCollectorStartParams.deserialize(
             message.payload);
         _impl.start(params.stream, params.categories);
         break;
-      case kTraceCollector_stopAndFlush_name:
-        var params = TraceCollectorStopAndFlushParams.deserialize(
+      case _TraceCollector_stopAndFlushName:
+        var params = _TraceCollectorStopAndFlushParams.deserialize(
             message.payload);
         _impl.stopAndFlush();
         break;

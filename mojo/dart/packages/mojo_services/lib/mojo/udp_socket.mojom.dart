@@ -13,14 +13,14 @@ import 'package:mojo_services/mojo/net_address.mojom.dart' as net_address_mojom;
 
 
 
-class UdpSocketAllowAddressReuseParams extends bindings.Struct {
+class _UdpSocketAllowAddressReuseParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(8, 0)
   ];
 
-  UdpSocketAllowAddressReuseParams() : super(kVersions.last.size);
+  _UdpSocketAllowAddressReuseParams() : super(kVersions.last.size);
 
-  static UdpSocketAllowAddressReuseParams deserialize(bindings.Message message) {
+  static _UdpSocketAllowAddressReuseParams deserialize(bindings.Message message) {
     var decoder = new bindings.Decoder(message);
     var result = decode(decoder);
     if (decoder.excessHandles != null) {
@@ -29,11 +29,11 @@ class UdpSocketAllowAddressReuseParams extends bindings.Struct {
     return result;
   }
 
-  static UdpSocketAllowAddressReuseParams decode(bindings.Decoder decoder0) {
+  static _UdpSocketAllowAddressReuseParams decode(bindings.Decoder decoder0) {
     if (decoder0 == null) {
       return null;
     }
-    UdpSocketAllowAddressReuseParams result = new UdpSocketAllowAddressReuseParams();
+    _UdpSocketAllowAddressReuseParams result = new _UdpSocketAllowAddressReuseParams();
 
     var mainDataHeader = decoder0.decodeStructDataHeader();
     if (mainDataHeader.version <= kVersions.last.version) {
@@ -61,7 +61,7 @@ class UdpSocketAllowAddressReuseParams extends bindings.Struct {
   }
 
   String toString() {
-    return "UdpSocketAllowAddressReuseParams("")";
+    return "_UdpSocketAllowAddressReuseParams("")";
   }
 
   Map toJson() {
@@ -139,15 +139,15 @@ class UdpSocketAllowAddressReuseResponseParams extends bindings.Struct {
 }
 
 
-class UdpSocketBindParams extends bindings.Struct {
+class _UdpSocketBindParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(16, 0)
   ];
   net_address_mojom.NetAddress addr = null;
 
-  UdpSocketBindParams() : super(kVersions.last.size);
+  _UdpSocketBindParams() : super(kVersions.last.size);
 
-  static UdpSocketBindParams deserialize(bindings.Message message) {
+  static _UdpSocketBindParams deserialize(bindings.Message message) {
     var decoder = new bindings.Decoder(message);
     var result = decode(decoder);
     if (decoder.excessHandles != null) {
@@ -156,11 +156,11 @@ class UdpSocketBindParams extends bindings.Struct {
     return result;
   }
 
-  static UdpSocketBindParams decode(bindings.Decoder decoder0) {
+  static _UdpSocketBindParams decode(bindings.Decoder decoder0) {
     if (decoder0 == null) {
       return null;
     }
-    UdpSocketBindParams result = new UdpSocketBindParams();
+    _UdpSocketBindParams result = new _UdpSocketBindParams();
 
     var mainDataHeader = decoder0.decodeStructDataHeader();
     if (mainDataHeader.version <= kVersions.last.version) {
@@ -195,7 +195,7 @@ class UdpSocketBindParams extends bindings.Struct {
   }
 
   String toString() {
-    return "UdpSocketBindParams("
+    return "_UdpSocketBindParams("
            "addr: $addr" ")";
   }
 
@@ -291,15 +291,15 @@ class UdpSocketBindResponseParams extends bindings.Struct {
 }
 
 
-class UdpSocketConnectParams extends bindings.Struct {
+class _UdpSocketConnectParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(16, 0)
   ];
   net_address_mojom.NetAddress remoteAddr = null;
 
-  UdpSocketConnectParams() : super(kVersions.last.size);
+  _UdpSocketConnectParams() : super(kVersions.last.size);
 
-  static UdpSocketConnectParams deserialize(bindings.Message message) {
+  static _UdpSocketConnectParams deserialize(bindings.Message message) {
     var decoder = new bindings.Decoder(message);
     var result = decode(decoder);
     if (decoder.excessHandles != null) {
@@ -308,11 +308,11 @@ class UdpSocketConnectParams extends bindings.Struct {
     return result;
   }
 
-  static UdpSocketConnectParams decode(bindings.Decoder decoder0) {
+  static _UdpSocketConnectParams decode(bindings.Decoder decoder0) {
     if (decoder0 == null) {
       return null;
     }
-    UdpSocketConnectParams result = new UdpSocketConnectParams();
+    _UdpSocketConnectParams result = new _UdpSocketConnectParams();
 
     var mainDataHeader = decoder0.decodeStructDataHeader();
     if (mainDataHeader.version <= kVersions.last.version) {
@@ -347,7 +347,7 @@ class UdpSocketConnectParams extends bindings.Struct {
   }
 
   String toString() {
-    return "UdpSocketConnectParams("
+    return "_UdpSocketConnectParams("
            "remoteAddr: $remoteAddr" ")";
   }
 
@@ -443,15 +443,15 @@ class UdpSocketConnectResponseParams extends bindings.Struct {
 }
 
 
-class UdpSocketSetSendBufferSizeParams extends bindings.Struct {
+class _UdpSocketSetSendBufferSizeParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(16, 0)
   ];
   int size = 0;
 
-  UdpSocketSetSendBufferSizeParams() : super(kVersions.last.size);
+  _UdpSocketSetSendBufferSizeParams() : super(kVersions.last.size);
 
-  static UdpSocketSetSendBufferSizeParams deserialize(bindings.Message message) {
+  static _UdpSocketSetSendBufferSizeParams deserialize(bindings.Message message) {
     var decoder = new bindings.Decoder(message);
     var result = decode(decoder);
     if (decoder.excessHandles != null) {
@@ -460,11 +460,11 @@ class UdpSocketSetSendBufferSizeParams extends bindings.Struct {
     return result;
   }
 
-  static UdpSocketSetSendBufferSizeParams decode(bindings.Decoder decoder0) {
+  static _UdpSocketSetSendBufferSizeParams decode(bindings.Decoder decoder0) {
     if (decoder0 == null) {
       return null;
     }
-    UdpSocketSetSendBufferSizeParams result = new UdpSocketSetSendBufferSizeParams();
+    _UdpSocketSetSendBufferSizeParams result = new _UdpSocketSetSendBufferSizeParams();
 
     var mainDataHeader = decoder0.decodeStructDataHeader();
     if (mainDataHeader.version <= kVersions.last.version) {
@@ -498,7 +498,7 @@ class UdpSocketSetSendBufferSizeParams extends bindings.Struct {
   }
 
   String toString() {
-    return "UdpSocketSetSendBufferSizeParams("
+    return "_UdpSocketSetSendBufferSizeParams("
            "size: $size" ")";
   }
 
@@ -578,15 +578,15 @@ class UdpSocketSetSendBufferSizeResponseParams extends bindings.Struct {
 }
 
 
-class UdpSocketSetReceiveBufferSizeParams extends bindings.Struct {
+class _UdpSocketSetReceiveBufferSizeParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(16, 0)
   ];
   int size = 0;
 
-  UdpSocketSetReceiveBufferSizeParams() : super(kVersions.last.size);
+  _UdpSocketSetReceiveBufferSizeParams() : super(kVersions.last.size);
 
-  static UdpSocketSetReceiveBufferSizeParams deserialize(bindings.Message message) {
+  static _UdpSocketSetReceiveBufferSizeParams deserialize(bindings.Message message) {
     var decoder = new bindings.Decoder(message);
     var result = decode(decoder);
     if (decoder.excessHandles != null) {
@@ -595,11 +595,11 @@ class UdpSocketSetReceiveBufferSizeParams extends bindings.Struct {
     return result;
   }
 
-  static UdpSocketSetReceiveBufferSizeParams decode(bindings.Decoder decoder0) {
+  static _UdpSocketSetReceiveBufferSizeParams decode(bindings.Decoder decoder0) {
     if (decoder0 == null) {
       return null;
     }
-    UdpSocketSetReceiveBufferSizeParams result = new UdpSocketSetReceiveBufferSizeParams();
+    _UdpSocketSetReceiveBufferSizeParams result = new _UdpSocketSetReceiveBufferSizeParams();
 
     var mainDataHeader = decoder0.decodeStructDataHeader();
     if (mainDataHeader.version <= kVersions.last.version) {
@@ -633,7 +633,7 @@ class UdpSocketSetReceiveBufferSizeParams extends bindings.Struct {
   }
 
   String toString() {
-    return "UdpSocketSetReceiveBufferSizeParams("
+    return "_UdpSocketSetReceiveBufferSizeParams("
            "size: $size" ")";
   }
 
@@ -713,15 +713,15 @@ class UdpSocketSetReceiveBufferSizeResponseParams extends bindings.Struct {
 }
 
 
-class UdpSocketNegotiateMaxPendingSendRequestsParams extends bindings.Struct {
+class _UdpSocketNegotiateMaxPendingSendRequestsParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(16, 0)
   ];
   int requestedSize = 0;
 
-  UdpSocketNegotiateMaxPendingSendRequestsParams() : super(kVersions.last.size);
+  _UdpSocketNegotiateMaxPendingSendRequestsParams() : super(kVersions.last.size);
 
-  static UdpSocketNegotiateMaxPendingSendRequestsParams deserialize(bindings.Message message) {
+  static _UdpSocketNegotiateMaxPendingSendRequestsParams deserialize(bindings.Message message) {
     var decoder = new bindings.Decoder(message);
     var result = decode(decoder);
     if (decoder.excessHandles != null) {
@@ -730,11 +730,11 @@ class UdpSocketNegotiateMaxPendingSendRequestsParams extends bindings.Struct {
     return result;
   }
 
-  static UdpSocketNegotiateMaxPendingSendRequestsParams decode(bindings.Decoder decoder0) {
+  static _UdpSocketNegotiateMaxPendingSendRequestsParams decode(bindings.Decoder decoder0) {
     if (decoder0 == null) {
       return null;
     }
-    UdpSocketNegotiateMaxPendingSendRequestsParams result = new UdpSocketNegotiateMaxPendingSendRequestsParams();
+    _UdpSocketNegotiateMaxPendingSendRequestsParams result = new _UdpSocketNegotiateMaxPendingSendRequestsParams();
 
     var mainDataHeader = decoder0.decodeStructDataHeader();
     if (mainDataHeader.version <= kVersions.last.version) {
@@ -768,7 +768,7 @@ class UdpSocketNegotiateMaxPendingSendRequestsParams extends bindings.Struct {
   }
 
   String toString() {
-    return "UdpSocketNegotiateMaxPendingSendRequestsParams("
+    return "_UdpSocketNegotiateMaxPendingSendRequestsParams("
            "requestedSize: $requestedSize" ")";
   }
 
@@ -847,15 +847,15 @@ class UdpSocketNegotiateMaxPendingSendRequestsResponseParams extends bindings.St
 }
 
 
-class UdpSocketReceiveMoreParams extends bindings.Struct {
+class _UdpSocketReceiveMoreParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(16, 0)
   ];
   int datagramNumber = 0;
 
-  UdpSocketReceiveMoreParams() : super(kVersions.last.size);
+  _UdpSocketReceiveMoreParams() : super(kVersions.last.size);
 
-  static UdpSocketReceiveMoreParams deserialize(bindings.Message message) {
+  static _UdpSocketReceiveMoreParams deserialize(bindings.Message message) {
     var decoder = new bindings.Decoder(message);
     var result = decode(decoder);
     if (decoder.excessHandles != null) {
@@ -864,11 +864,11 @@ class UdpSocketReceiveMoreParams extends bindings.Struct {
     return result;
   }
 
-  static UdpSocketReceiveMoreParams decode(bindings.Decoder decoder0) {
+  static _UdpSocketReceiveMoreParams decode(bindings.Decoder decoder0) {
     if (decoder0 == null) {
       return null;
     }
-    UdpSocketReceiveMoreParams result = new UdpSocketReceiveMoreParams();
+    _UdpSocketReceiveMoreParams result = new _UdpSocketReceiveMoreParams();
 
     var mainDataHeader = decoder0.decodeStructDataHeader();
     if (mainDataHeader.version <= kVersions.last.version) {
@@ -902,7 +902,7 @@ class UdpSocketReceiveMoreParams extends bindings.Struct {
   }
 
   String toString() {
-    return "UdpSocketReceiveMoreParams("
+    return "_UdpSocketReceiveMoreParams("
            "datagramNumber: $datagramNumber" ")";
   }
 
@@ -914,16 +914,16 @@ class UdpSocketReceiveMoreParams extends bindings.Struct {
 }
 
 
-class UdpSocketSendToParams extends bindings.Struct {
+class _UdpSocketSendToParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(24, 0)
   ];
   net_address_mojom.NetAddress destAddr = null;
   List<int> data = null;
 
-  UdpSocketSendToParams() : super(kVersions.last.size);
+  _UdpSocketSendToParams() : super(kVersions.last.size);
 
-  static UdpSocketSendToParams deserialize(bindings.Message message) {
+  static _UdpSocketSendToParams deserialize(bindings.Message message) {
     var decoder = new bindings.Decoder(message);
     var result = decode(decoder);
     if (decoder.excessHandles != null) {
@@ -932,11 +932,11 @@ class UdpSocketSendToParams extends bindings.Struct {
     return result;
   }
 
-  static UdpSocketSendToParams decode(bindings.Decoder decoder0) {
+  static _UdpSocketSendToParams decode(bindings.Decoder decoder0) {
     if (decoder0 == null) {
       return null;
     }
-    UdpSocketSendToParams result = new UdpSocketSendToParams();
+    _UdpSocketSendToParams result = new _UdpSocketSendToParams();
 
     var mainDataHeader = decoder0.decodeStructDataHeader();
     if (mainDataHeader.version <= kVersions.last.version) {
@@ -977,7 +977,7 @@ class UdpSocketSendToParams extends bindings.Struct {
   }
 
   String toString() {
-    return "UdpSocketSendToParams("
+    return "_UdpSocketSendToParams("
            "destAddr: $destAddr" ", "
            "data: $data" ")";
   }
@@ -1059,7 +1059,7 @@ class UdpSocketSendToResponseParams extends bindings.Struct {
 }
 
 
-class UdpSocketReceiverOnReceivedParams extends bindings.Struct {
+class _UdpSocketReceiverOnReceivedParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(32, 0)
   ];
@@ -1067,9 +1067,9 @@ class UdpSocketReceiverOnReceivedParams extends bindings.Struct {
   net_address_mojom.NetAddress srcAddr = null;
   List<int> data = null;
 
-  UdpSocketReceiverOnReceivedParams() : super(kVersions.last.size);
+  _UdpSocketReceiverOnReceivedParams() : super(kVersions.last.size);
 
-  static UdpSocketReceiverOnReceivedParams deserialize(bindings.Message message) {
+  static _UdpSocketReceiverOnReceivedParams deserialize(bindings.Message message) {
     var decoder = new bindings.Decoder(message);
     var result = decode(decoder);
     if (decoder.excessHandles != null) {
@@ -1078,11 +1078,11 @@ class UdpSocketReceiverOnReceivedParams extends bindings.Struct {
     return result;
   }
 
-  static UdpSocketReceiverOnReceivedParams decode(bindings.Decoder decoder0) {
+  static _UdpSocketReceiverOnReceivedParams decode(bindings.Decoder decoder0) {
     if (decoder0 == null) {
       return null;
     }
-    UdpSocketReceiverOnReceivedParams result = new UdpSocketReceiverOnReceivedParams();
+    _UdpSocketReceiverOnReceivedParams result = new _UdpSocketReceiverOnReceivedParams();
 
     var mainDataHeader = decoder0.decodeStructDataHeader();
     if (mainDataHeader.version <= kVersions.last.version) {
@@ -1130,7 +1130,7 @@ class UdpSocketReceiverOnReceivedParams extends bindings.Struct {
   }
 
   String toString() {
-    return "UdpSocketReceiverOnReceivedParams("
+    return "_UdpSocketReceiverOnReceivedParams("
            "result: $result" ", "
            "srcAddr: $srcAddr" ", "
            "data: $data" ")";
@@ -1145,17 +1145,17 @@ class UdpSocketReceiverOnReceivedParams extends bindings.Struct {
   }
 }
 
-const int kUdpSocket_allowAddressReuse_name = 0;
-const int kUdpSocket_bind_name = 1;
-const int kUdpSocket_connect_name = 2;
-const int kUdpSocket_setSendBufferSize_name = 3;
-const int kUdpSocket_setReceiveBufferSize_name = 4;
-const int kUdpSocket_negotiateMaxPendingSendRequests_name = 5;
-const int kUdpSocket_receiveMore_name = 6;
-const int kUdpSocket_sendTo_name = 7;
-const String UdpSocketName = null;
+const int _UdpSocket_allowAddressReuseName = 0;
+const int _UdpSocket_bindName = 1;
+const int _UdpSocket_connectName = 2;
+const int _UdpSocket_setSendBufferSizeName = 3;
+const int _UdpSocket_setReceiveBufferSizeName = 4;
+const int _UdpSocket_negotiateMaxPendingSendRequestsName = 5;
+const int _UdpSocket_receiveMoreName = 6;
+const int _UdpSocket_sendToName = 7;
 
 abstract class UdpSocket {
+  static const String serviceName = null;
   dynamic allowAddressReuse([Function responseFactory = null]);
   dynamic bind(net_address_mojom.NetAddress addr,[Function responseFactory = null]);
   dynamic connect(net_address_mojom.NetAddress remoteAddr,[Function responseFactory = null]);
@@ -1164,30 +1164,27 @@ abstract class UdpSocket {
   dynamic negotiateMaxPendingSendRequests(int requestedSize,[Function responseFactory = null]);
   void receiveMore(int datagramNumber);
   dynamic sendTo(net_address_mojom.NetAddress destAddr,List<int> data,[Function responseFactory = null]);
-
 }
 
 
-class UdpSocketProxyImpl extends bindings.Proxy {
-  UdpSocketProxyImpl.fromEndpoint(
+class _UdpSocketProxyImpl extends bindings.Proxy {
+  _UdpSocketProxyImpl.fromEndpoint(
       core.MojoMessagePipeEndpoint endpoint) : super.fromEndpoint(endpoint);
 
-  UdpSocketProxyImpl.fromHandle(core.MojoHandle handle) :
+  _UdpSocketProxyImpl.fromHandle(core.MojoHandle handle) :
       super.fromHandle(handle);
 
-  UdpSocketProxyImpl.unbound() : super.unbound();
+  _UdpSocketProxyImpl.unbound() : super.unbound();
 
-  static UdpSocketProxyImpl newFromEndpoint(
+  static _UdpSocketProxyImpl newFromEndpoint(
       core.MojoMessagePipeEndpoint endpoint) {
-    assert(endpoint.setDescription("For UdpSocketProxyImpl"));
-    return new UdpSocketProxyImpl.fromEndpoint(endpoint);
+    assert(endpoint.setDescription("For _UdpSocketProxyImpl"));
+    return new _UdpSocketProxyImpl.fromEndpoint(endpoint);
   }
-
-  String get name => UdpSocketName;
 
   void handleResponse(bindings.ServiceMessage message) {
     switch (message.header.type) {
-      case kUdpSocket_allowAddressReuse_name:
+      case _UdpSocket_allowAddressReuseName:
         var r = UdpSocketAllowAddressReuseResponseParams.deserialize(
             message.payload);
         if (!message.header.hasRequestId) {
@@ -1207,7 +1204,7 @@ class UdpSocketProxyImpl extends bindings.Proxy {
         }
         c.complete(r);
         break;
-      case kUdpSocket_bind_name:
+      case _UdpSocket_bindName:
         var r = UdpSocketBindResponseParams.deserialize(
             message.payload);
         if (!message.header.hasRequestId) {
@@ -1227,7 +1224,7 @@ class UdpSocketProxyImpl extends bindings.Proxy {
         }
         c.complete(r);
         break;
-      case kUdpSocket_connect_name:
+      case _UdpSocket_connectName:
         var r = UdpSocketConnectResponseParams.deserialize(
             message.payload);
         if (!message.header.hasRequestId) {
@@ -1247,7 +1244,7 @@ class UdpSocketProxyImpl extends bindings.Proxy {
         }
         c.complete(r);
         break;
-      case kUdpSocket_setSendBufferSize_name:
+      case _UdpSocket_setSendBufferSizeName:
         var r = UdpSocketSetSendBufferSizeResponseParams.deserialize(
             message.payload);
         if (!message.header.hasRequestId) {
@@ -1267,7 +1264,7 @@ class UdpSocketProxyImpl extends bindings.Proxy {
         }
         c.complete(r);
         break;
-      case kUdpSocket_setReceiveBufferSize_name:
+      case _UdpSocket_setReceiveBufferSizeName:
         var r = UdpSocketSetReceiveBufferSizeResponseParams.deserialize(
             message.payload);
         if (!message.header.hasRequestId) {
@@ -1287,7 +1284,7 @@ class UdpSocketProxyImpl extends bindings.Proxy {
         }
         c.complete(r);
         break;
-      case kUdpSocket_negotiateMaxPendingSendRequests_name:
+      case _UdpSocket_negotiateMaxPendingSendRequestsName:
         var r = UdpSocketNegotiateMaxPendingSendRequestsResponseParams.deserialize(
             message.payload);
         if (!message.header.hasRequestId) {
@@ -1307,7 +1304,7 @@ class UdpSocketProxyImpl extends bindings.Proxy {
         }
         c.complete(r);
         break;
-      case kUdpSocket_sendTo_name:
+      case _UdpSocket_sendToName:
         var r = UdpSocketSendToResponseParams.deserialize(
             message.payload);
         if (!message.header.hasRequestId) {
@@ -1336,65 +1333,65 @@ class UdpSocketProxyImpl extends bindings.Proxy {
 
   String toString() {
     var superString = super.toString();
-    return "UdpSocketProxyImpl($superString)";
+    return "_UdpSocketProxyImpl($superString)";
   }
 }
 
 
 class _UdpSocketProxyCalls implements UdpSocket {
-  UdpSocketProxyImpl _proxyImpl;
+  _UdpSocketProxyImpl _proxyImpl;
 
   _UdpSocketProxyCalls(this._proxyImpl);
     dynamic allowAddressReuse([Function responseFactory = null]) {
-      var params = new UdpSocketAllowAddressReuseParams();
+      var params = new _UdpSocketAllowAddressReuseParams();
       return _proxyImpl.sendMessageWithRequestId(
           params,
-          kUdpSocket_allowAddressReuse_name,
+          _UdpSocket_allowAddressReuseName,
           -1,
           bindings.MessageHeader.kMessageExpectsResponse);
     }
     dynamic bind(net_address_mojom.NetAddress addr,[Function responseFactory = null]) {
-      var params = new UdpSocketBindParams();
+      var params = new _UdpSocketBindParams();
       params.addr = addr;
       return _proxyImpl.sendMessageWithRequestId(
           params,
-          kUdpSocket_bind_name,
+          _UdpSocket_bindName,
           -1,
           bindings.MessageHeader.kMessageExpectsResponse);
     }
     dynamic connect(net_address_mojom.NetAddress remoteAddr,[Function responseFactory = null]) {
-      var params = new UdpSocketConnectParams();
+      var params = new _UdpSocketConnectParams();
       params.remoteAddr = remoteAddr;
       return _proxyImpl.sendMessageWithRequestId(
           params,
-          kUdpSocket_connect_name,
+          _UdpSocket_connectName,
           -1,
           bindings.MessageHeader.kMessageExpectsResponse);
     }
     dynamic setSendBufferSize(int size,[Function responseFactory = null]) {
-      var params = new UdpSocketSetSendBufferSizeParams();
+      var params = new _UdpSocketSetSendBufferSizeParams();
       params.size = size;
       return _proxyImpl.sendMessageWithRequestId(
           params,
-          kUdpSocket_setSendBufferSize_name,
+          _UdpSocket_setSendBufferSizeName,
           -1,
           bindings.MessageHeader.kMessageExpectsResponse);
     }
     dynamic setReceiveBufferSize(int size,[Function responseFactory = null]) {
-      var params = new UdpSocketSetReceiveBufferSizeParams();
+      var params = new _UdpSocketSetReceiveBufferSizeParams();
       params.size = size;
       return _proxyImpl.sendMessageWithRequestId(
           params,
-          kUdpSocket_setReceiveBufferSize_name,
+          _UdpSocket_setReceiveBufferSizeName,
           -1,
           bindings.MessageHeader.kMessageExpectsResponse);
     }
     dynamic negotiateMaxPendingSendRequests(int requestedSize,[Function responseFactory = null]) {
-      var params = new UdpSocketNegotiateMaxPendingSendRequestsParams();
+      var params = new _UdpSocketNegotiateMaxPendingSendRequestsParams();
       params.requestedSize = requestedSize;
       return _proxyImpl.sendMessageWithRequestId(
           params,
-          kUdpSocket_negotiateMaxPendingSendRequests_name,
+          _UdpSocket_negotiateMaxPendingSendRequestsName,
           -1,
           bindings.MessageHeader.kMessageExpectsResponse);
     }
@@ -1403,18 +1400,17 @@ class _UdpSocketProxyCalls implements UdpSocket {
         _proxyImpl.proxyError("The Proxy is closed.");
         return;
       }
-      var params = new UdpSocketReceiveMoreParams();
+      var params = new _UdpSocketReceiveMoreParams();
       params.datagramNumber = datagramNumber;
-      _proxyImpl.sendMessage(params, kUdpSocket_receiveMore_name);
+      _proxyImpl.sendMessage(params, _UdpSocket_receiveMoreName);
     }
-  
     dynamic sendTo(net_address_mojom.NetAddress destAddr,List<int> data,[Function responseFactory = null]) {
-      var params = new UdpSocketSendToParams();
+      var params = new _UdpSocketSendToParams();
       params.destAddr = destAddr;
       params.data = data;
       return _proxyImpl.sendMessageWithRequestId(
           params,
-          kUdpSocket_sendTo_name,
+          _UdpSocket_sendToName,
           -1,
           bindings.MessageHeader.kMessageExpectsResponse);
     }
@@ -1424,25 +1420,24 @@ class _UdpSocketProxyCalls implements UdpSocket {
 class UdpSocketProxy implements bindings.ProxyBase {
   final bindings.Proxy impl;
   UdpSocket ptr;
-  final String name = UdpSocketName;
 
-  UdpSocketProxy(UdpSocketProxyImpl proxyImpl) :
+  UdpSocketProxy(_UdpSocketProxyImpl proxyImpl) :
       impl = proxyImpl,
       ptr = new _UdpSocketProxyCalls(proxyImpl);
 
   UdpSocketProxy.fromEndpoint(
       core.MojoMessagePipeEndpoint endpoint) :
-      impl = new UdpSocketProxyImpl.fromEndpoint(endpoint) {
+      impl = new _UdpSocketProxyImpl.fromEndpoint(endpoint) {
     ptr = new _UdpSocketProxyCalls(impl);
   }
 
   UdpSocketProxy.fromHandle(core.MojoHandle handle) :
-      impl = new UdpSocketProxyImpl.fromHandle(handle) {
+      impl = new _UdpSocketProxyImpl.fromHandle(handle) {
     ptr = new _UdpSocketProxyCalls(impl);
   }
 
   UdpSocketProxy.unbound() :
-      impl = new UdpSocketProxyImpl.unbound() {
+      impl = new _UdpSocketProxyImpl.unbound() {
     ptr = new _UdpSocketProxyCalls(impl);
   }
 
@@ -1458,6 +1453,8 @@ class UdpSocketProxy implements bindings.ProxyBase {
     assert(endpoint.setDescription("For UdpSocketProxy"));
     return new UdpSocketProxy.fromEndpoint(endpoint);
   }
+
+  String get serviceName => UdpSocket.serviceName;
 
   Future close({bool immediate: false}) => impl.close(immediate: immediate);
 
@@ -1496,8 +1493,6 @@ class UdpSocketStub extends bindings.Stub {
     assert(endpoint.setDescription("For UdpSocketStub"));
     return new UdpSocketStub.fromEndpoint(endpoint);
   }
-
-  static const String name = UdpSocketName;
 
 
   UdpSocketAllowAddressReuseResponseParams _UdpSocketAllowAddressReuseResponseParamsFactory(network_error_mojom.NetworkError result) {
@@ -1548,8 +1543,8 @@ class UdpSocketStub extends bindings.Stub {
     }
     assert(_impl != null);
     switch (message.header.type) {
-      case kUdpSocket_allowAddressReuse_name:
-        var params = UdpSocketAllowAddressReuseParams.deserialize(
+      case _UdpSocket_allowAddressReuseName:
+        var params = _UdpSocketAllowAddressReuseParams.deserialize(
             message.payload);
         var response = _impl.allowAddressReuse(_UdpSocketAllowAddressReuseResponseParamsFactory);
         if (response is Future) {
@@ -1557,7 +1552,7 @@ class UdpSocketStub extends bindings.Stub {
             if (response != null) {
               return buildResponseWithId(
                   response,
-                  kUdpSocket_allowAddressReuse_name,
+                  _UdpSocket_allowAddressReuseName,
                   message.header.requestId,
                   bindings.MessageHeader.kMessageIsResponse);
             }
@@ -1565,13 +1560,13 @@ class UdpSocketStub extends bindings.Stub {
         } else if (response != null) {
           return buildResponseWithId(
               response,
-              kUdpSocket_allowAddressReuse_name,
+              _UdpSocket_allowAddressReuseName,
               message.header.requestId,
               bindings.MessageHeader.kMessageIsResponse);
         }
         break;
-      case kUdpSocket_bind_name:
-        var params = UdpSocketBindParams.deserialize(
+      case _UdpSocket_bindName:
+        var params = _UdpSocketBindParams.deserialize(
             message.payload);
         var response = _impl.bind(params.addr,_UdpSocketBindResponseParamsFactory);
         if (response is Future) {
@@ -1579,7 +1574,7 @@ class UdpSocketStub extends bindings.Stub {
             if (response != null) {
               return buildResponseWithId(
                   response,
-                  kUdpSocket_bind_name,
+                  _UdpSocket_bindName,
                   message.header.requestId,
                   bindings.MessageHeader.kMessageIsResponse);
             }
@@ -1587,13 +1582,13 @@ class UdpSocketStub extends bindings.Stub {
         } else if (response != null) {
           return buildResponseWithId(
               response,
-              kUdpSocket_bind_name,
+              _UdpSocket_bindName,
               message.header.requestId,
               bindings.MessageHeader.kMessageIsResponse);
         }
         break;
-      case kUdpSocket_connect_name:
-        var params = UdpSocketConnectParams.deserialize(
+      case _UdpSocket_connectName:
+        var params = _UdpSocketConnectParams.deserialize(
             message.payload);
         var response = _impl.connect(params.remoteAddr,_UdpSocketConnectResponseParamsFactory);
         if (response is Future) {
@@ -1601,7 +1596,7 @@ class UdpSocketStub extends bindings.Stub {
             if (response != null) {
               return buildResponseWithId(
                   response,
-                  kUdpSocket_connect_name,
+                  _UdpSocket_connectName,
                   message.header.requestId,
                   bindings.MessageHeader.kMessageIsResponse);
             }
@@ -1609,13 +1604,13 @@ class UdpSocketStub extends bindings.Stub {
         } else if (response != null) {
           return buildResponseWithId(
               response,
-              kUdpSocket_connect_name,
+              _UdpSocket_connectName,
               message.header.requestId,
               bindings.MessageHeader.kMessageIsResponse);
         }
         break;
-      case kUdpSocket_setSendBufferSize_name:
-        var params = UdpSocketSetSendBufferSizeParams.deserialize(
+      case _UdpSocket_setSendBufferSizeName:
+        var params = _UdpSocketSetSendBufferSizeParams.deserialize(
             message.payload);
         var response = _impl.setSendBufferSize(params.size,_UdpSocketSetSendBufferSizeResponseParamsFactory);
         if (response is Future) {
@@ -1623,7 +1618,7 @@ class UdpSocketStub extends bindings.Stub {
             if (response != null) {
               return buildResponseWithId(
                   response,
-                  kUdpSocket_setSendBufferSize_name,
+                  _UdpSocket_setSendBufferSizeName,
                   message.header.requestId,
                   bindings.MessageHeader.kMessageIsResponse);
             }
@@ -1631,13 +1626,13 @@ class UdpSocketStub extends bindings.Stub {
         } else if (response != null) {
           return buildResponseWithId(
               response,
-              kUdpSocket_setSendBufferSize_name,
+              _UdpSocket_setSendBufferSizeName,
               message.header.requestId,
               bindings.MessageHeader.kMessageIsResponse);
         }
         break;
-      case kUdpSocket_setReceiveBufferSize_name:
-        var params = UdpSocketSetReceiveBufferSizeParams.deserialize(
+      case _UdpSocket_setReceiveBufferSizeName:
+        var params = _UdpSocketSetReceiveBufferSizeParams.deserialize(
             message.payload);
         var response = _impl.setReceiveBufferSize(params.size,_UdpSocketSetReceiveBufferSizeResponseParamsFactory);
         if (response is Future) {
@@ -1645,7 +1640,7 @@ class UdpSocketStub extends bindings.Stub {
             if (response != null) {
               return buildResponseWithId(
                   response,
-                  kUdpSocket_setReceiveBufferSize_name,
+                  _UdpSocket_setReceiveBufferSizeName,
                   message.header.requestId,
                   bindings.MessageHeader.kMessageIsResponse);
             }
@@ -1653,13 +1648,13 @@ class UdpSocketStub extends bindings.Stub {
         } else if (response != null) {
           return buildResponseWithId(
               response,
-              kUdpSocket_setReceiveBufferSize_name,
+              _UdpSocket_setReceiveBufferSizeName,
               message.header.requestId,
               bindings.MessageHeader.kMessageIsResponse);
         }
         break;
-      case kUdpSocket_negotiateMaxPendingSendRequests_name:
-        var params = UdpSocketNegotiateMaxPendingSendRequestsParams.deserialize(
+      case _UdpSocket_negotiateMaxPendingSendRequestsName:
+        var params = _UdpSocketNegotiateMaxPendingSendRequestsParams.deserialize(
             message.payload);
         var response = _impl.negotiateMaxPendingSendRequests(params.requestedSize,_UdpSocketNegotiateMaxPendingSendRequestsResponseParamsFactory);
         if (response is Future) {
@@ -1667,7 +1662,7 @@ class UdpSocketStub extends bindings.Stub {
             if (response != null) {
               return buildResponseWithId(
                   response,
-                  kUdpSocket_negotiateMaxPendingSendRequests_name,
+                  _UdpSocket_negotiateMaxPendingSendRequestsName,
                   message.header.requestId,
                   bindings.MessageHeader.kMessageIsResponse);
             }
@@ -1675,18 +1670,18 @@ class UdpSocketStub extends bindings.Stub {
         } else if (response != null) {
           return buildResponseWithId(
               response,
-              kUdpSocket_negotiateMaxPendingSendRequests_name,
+              _UdpSocket_negotiateMaxPendingSendRequestsName,
               message.header.requestId,
               bindings.MessageHeader.kMessageIsResponse);
         }
         break;
-      case kUdpSocket_receiveMore_name:
-        var params = UdpSocketReceiveMoreParams.deserialize(
+      case _UdpSocket_receiveMoreName:
+        var params = _UdpSocketReceiveMoreParams.deserialize(
             message.payload);
         _impl.receiveMore(params.datagramNumber);
         break;
-      case kUdpSocket_sendTo_name:
-        var params = UdpSocketSendToParams.deserialize(
+      case _UdpSocket_sendToName:
+        var params = _UdpSocketSendToParams.deserialize(
             message.payload);
         var response = _impl.sendTo(params.destAddr,params.data,_UdpSocketSendToResponseParamsFactory);
         if (response is Future) {
@@ -1694,7 +1689,7 @@ class UdpSocketStub extends bindings.Stub {
             if (response != null) {
               return buildResponseWithId(
                   response,
-                  kUdpSocket_sendTo_name,
+                  _UdpSocket_sendToName,
                   message.header.requestId,
                   bindings.MessageHeader.kMessageIsResponse);
             }
@@ -1702,7 +1697,7 @@ class UdpSocketStub extends bindings.Stub {
         } else if (response != null) {
           return buildResponseWithId(
               response,
-              kUdpSocket_sendTo_name,
+              _UdpSocket_sendToName,
               message.header.requestId,
               bindings.MessageHeader.kMessageIsResponse);
         }
@@ -1728,31 +1723,28 @@ class UdpSocketStub extends bindings.Stub {
   int get version => 0;
 }
 
-const int kUdpSocketReceiver_onReceived_name = 0;
-const String UdpSocketReceiverName = null;
+const int _UdpSocketReceiver_onReceivedName = 0;
 
 abstract class UdpSocketReceiver {
+  static const String serviceName = null;
   void onReceived(network_error_mojom.NetworkError result, net_address_mojom.NetAddress srcAddr, List<int> data);
-
 }
 
 
-class UdpSocketReceiverProxyImpl extends bindings.Proxy {
-  UdpSocketReceiverProxyImpl.fromEndpoint(
+class _UdpSocketReceiverProxyImpl extends bindings.Proxy {
+  _UdpSocketReceiverProxyImpl.fromEndpoint(
       core.MojoMessagePipeEndpoint endpoint) : super.fromEndpoint(endpoint);
 
-  UdpSocketReceiverProxyImpl.fromHandle(core.MojoHandle handle) :
+  _UdpSocketReceiverProxyImpl.fromHandle(core.MojoHandle handle) :
       super.fromHandle(handle);
 
-  UdpSocketReceiverProxyImpl.unbound() : super.unbound();
+  _UdpSocketReceiverProxyImpl.unbound() : super.unbound();
 
-  static UdpSocketReceiverProxyImpl newFromEndpoint(
+  static _UdpSocketReceiverProxyImpl newFromEndpoint(
       core.MojoMessagePipeEndpoint endpoint) {
-    assert(endpoint.setDescription("For UdpSocketReceiverProxyImpl"));
-    return new UdpSocketReceiverProxyImpl.fromEndpoint(endpoint);
+    assert(endpoint.setDescription("For _UdpSocketReceiverProxyImpl"));
+    return new _UdpSocketReceiverProxyImpl.fromEndpoint(endpoint);
   }
-
-  String get name => UdpSocketReceiverName;
 
   void handleResponse(bindings.ServiceMessage message) {
     switch (message.header.type) {
@@ -1765,13 +1757,13 @@ class UdpSocketReceiverProxyImpl extends bindings.Proxy {
 
   String toString() {
     var superString = super.toString();
-    return "UdpSocketReceiverProxyImpl($superString)";
+    return "_UdpSocketReceiverProxyImpl($superString)";
   }
 }
 
 
 class _UdpSocketReceiverProxyCalls implements UdpSocketReceiver {
-  UdpSocketReceiverProxyImpl _proxyImpl;
+  _UdpSocketReceiverProxyImpl _proxyImpl;
 
   _UdpSocketReceiverProxyCalls(this._proxyImpl);
     void onReceived(network_error_mojom.NetworkError result, net_address_mojom.NetAddress srcAddr, List<int> data) {
@@ -1779,38 +1771,36 @@ class _UdpSocketReceiverProxyCalls implements UdpSocketReceiver {
         _proxyImpl.proxyError("The Proxy is closed.");
         return;
       }
-      var params = new UdpSocketReceiverOnReceivedParams();
+      var params = new _UdpSocketReceiverOnReceivedParams();
       params.result = result;
       params.srcAddr = srcAddr;
       params.data = data;
-      _proxyImpl.sendMessage(params, kUdpSocketReceiver_onReceived_name);
+      _proxyImpl.sendMessage(params, _UdpSocketReceiver_onReceivedName);
     }
-  
 }
 
 
 class UdpSocketReceiverProxy implements bindings.ProxyBase {
   final bindings.Proxy impl;
   UdpSocketReceiver ptr;
-  final String name = UdpSocketReceiverName;
 
-  UdpSocketReceiverProxy(UdpSocketReceiverProxyImpl proxyImpl) :
+  UdpSocketReceiverProxy(_UdpSocketReceiverProxyImpl proxyImpl) :
       impl = proxyImpl,
       ptr = new _UdpSocketReceiverProxyCalls(proxyImpl);
 
   UdpSocketReceiverProxy.fromEndpoint(
       core.MojoMessagePipeEndpoint endpoint) :
-      impl = new UdpSocketReceiverProxyImpl.fromEndpoint(endpoint) {
+      impl = new _UdpSocketReceiverProxyImpl.fromEndpoint(endpoint) {
     ptr = new _UdpSocketReceiverProxyCalls(impl);
   }
 
   UdpSocketReceiverProxy.fromHandle(core.MojoHandle handle) :
-      impl = new UdpSocketReceiverProxyImpl.fromHandle(handle) {
+      impl = new _UdpSocketReceiverProxyImpl.fromHandle(handle) {
     ptr = new _UdpSocketReceiverProxyCalls(impl);
   }
 
   UdpSocketReceiverProxy.unbound() :
-      impl = new UdpSocketReceiverProxyImpl.unbound() {
+      impl = new _UdpSocketReceiverProxyImpl.unbound() {
     ptr = new _UdpSocketReceiverProxyCalls(impl);
   }
 
@@ -1826,6 +1816,8 @@ class UdpSocketReceiverProxy implements bindings.ProxyBase {
     assert(endpoint.setDescription("For UdpSocketReceiverProxy"));
     return new UdpSocketReceiverProxy.fromEndpoint(endpoint);
   }
+
+  String get serviceName => UdpSocketReceiver.serviceName;
 
   Future close({bool immediate: false}) => impl.close(immediate: immediate);
 
@@ -1865,8 +1857,6 @@ class UdpSocketReceiverStub extends bindings.Stub {
     return new UdpSocketReceiverStub.fromEndpoint(endpoint);
   }
 
-  static const String name = UdpSocketReceiverName;
-
 
 
   dynamic handleMessage(bindings.ServiceMessage message) {
@@ -1877,8 +1867,8 @@ class UdpSocketReceiverStub extends bindings.Stub {
     }
     assert(_impl != null);
     switch (message.header.type) {
-      case kUdpSocketReceiver_onReceived_name:
-        var params = UdpSocketReceiverOnReceivedParams.deserialize(
+      case _UdpSocketReceiver_onReceivedName:
+        var params = _UdpSocketReceiverOnReceivedParams.deserialize(
             message.payload);
         _impl.onReceived(params.result, params.srcAddr, params.data);
         break;

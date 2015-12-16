@@ -11,14 +11,14 @@ import 'package:mojo/core.dart' as core;
 
 
 
-class DeviceInfoGetDeviceTypeParams extends bindings.Struct {
+class _DeviceInfoGetDeviceTypeParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(8, 0)
   ];
 
-  DeviceInfoGetDeviceTypeParams() : super(kVersions.last.size);
+  _DeviceInfoGetDeviceTypeParams() : super(kVersions.last.size);
 
-  static DeviceInfoGetDeviceTypeParams deserialize(bindings.Message message) {
+  static _DeviceInfoGetDeviceTypeParams deserialize(bindings.Message message) {
     var decoder = new bindings.Decoder(message);
     var result = decode(decoder);
     if (decoder.excessHandles != null) {
@@ -27,11 +27,11 @@ class DeviceInfoGetDeviceTypeParams extends bindings.Struct {
     return result;
   }
 
-  static DeviceInfoGetDeviceTypeParams decode(bindings.Decoder decoder0) {
+  static _DeviceInfoGetDeviceTypeParams decode(bindings.Decoder decoder0) {
     if (decoder0 == null) {
       return null;
     }
-    DeviceInfoGetDeviceTypeParams result = new DeviceInfoGetDeviceTypeParams();
+    _DeviceInfoGetDeviceTypeParams result = new _DeviceInfoGetDeviceTypeParams();
 
     var mainDataHeader = decoder0.decodeStructDataHeader();
     if (mainDataHeader.version <= kVersions.last.version) {
@@ -59,7 +59,7 @@ class DeviceInfoGetDeviceTypeParams extends bindings.Struct {
   }
 
   String toString() {
-    return "DeviceInfoGetDeviceTypeParams("")";
+    return "_DeviceInfoGetDeviceTypeParams("")";
   }
 
   Map toJson() {
@@ -139,8 +139,7 @@ class DeviceInfoGetDeviceTypeResponseParams extends bindings.Struct {
   }
 }
 
-const int kDeviceInfo_getDeviceType_name = 0;
-const String DeviceInfoName = "mojo::DeviceInfo";
+const int _DeviceInfo_getDeviceTypeName = 0;
   
 class DeviceInfoDeviceType extends bindings.MojoEnum {
   static const DeviceInfoDeviceType unknown = const DeviceInfoDeviceType._(0);
@@ -228,31 +227,29 @@ class DeviceInfoDeviceType extends bindings.MojoEnum {
 }
 
 abstract class DeviceInfo {
+  static const String serviceName = "mojo::DeviceInfo";
   dynamic getDeviceType([Function responseFactory = null]);
-
 }
 
 
-class DeviceInfoProxyImpl extends bindings.Proxy {
-  DeviceInfoProxyImpl.fromEndpoint(
+class _DeviceInfoProxyImpl extends bindings.Proxy {
+  _DeviceInfoProxyImpl.fromEndpoint(
       core.MojoMessagePipeEndpoint endpoint) : super.fromEndpoint(endpoint);
 
-  DeviceInfoProxyImpl.fromHandle(core.MojoHandle handle) :
+  _DeviceInfoProxyImpl.fromHandle(core.MojoHandle handle) :
       super.fromHandle(handle);
 
-  DeviceInfoProxyImpl.unbound() : super.unbound();
+  _DeviceInfoProxyImpl.unbound() : super.unbound();
 
-  static DeviceInfoProxyImpl newFromEndpoint(
+  static _DeviceInfoProxyImpl newFromEndpoint(
       core.MojoMessagePipeEndpoint endpoint) {
-    assert(endpoint.setDescription("For DeviceInfoProxyImpl"));
-    return new DeviceInfoProxyImpl.fromEndpoint(endpoint);
+    assert(endpoint.setDescription("For _DeviceInfoProxyImpl"));
+    return new _DeviceInfoProxyImpl.fromEndpoint(endpoint);
   }
-
-  String get name => DeviceInfoName;
 
   void handleResponse(bindings.ServiceMessage message) {
     switch (message.header.type) {
-      case kDeviceInfo_getDeviceType_name:
+      case _DeviceInfo_getDeviceTypeName:
         var r = DeviceInfoGetDeviceTypeResponseParams.deserialize(
             message.payload);
         if (!message.header.hasRequestId) {
@@ -281,20 +278,20 @@ class DeviceInfoProxyImpl extends bindings.Proxy {
 
   String toString() {
     var superString = super.toString();
-    return "DeviceInfoProxyImpl($superString)";
+    return "_DeviceInfoProxyImpl($superString)";
   }
 }
 
 
 class _DeviceInfoProxyCalls implements DeviceInfo {
-  DeviceInfoProxyImpl _proxyImpl;
+  _DeviceInfoProxyImpl _proxyImpl;
 
   _DeviceInfoProxyCalls(this._proxyImpl);
     dynamic getDeviceType([Function responseFactory = null]) {
-      var params = new DeviceInfoGetDeviceTypeParams();
+      var params = new _DeviceInfoGetDeviceTypeParams();
       return _proxyImpl.sendMessageWithRequestId(
           params,
-          kDeviceInfo_getDeviceType_name,
+          _DeviceInfo_getDeviceTypeName,
           -1,
           bindings.MessageHeader.kMessageExpectsResponse);
     }
@@ -304,25 +301,24 @@ class _DeviceInfoProxyCalls implements DeviceInfo {
 class DeviceInfoProxy implements bindings.ProxyBase {
   final bindings.Proxy impl;
   DeviceInfo ptr;
-  final String name = DeviceInfoName;
 
-  DeviceInfoProxy(DeviceInfoProxyImpl proxyImpl) :
+  DeviceInfoProxy(_DeviceInfoProxyImpl proxyImpl) :
       impl = proxyImpl,
       ptr = new _DeviceInfoProxyCalls(proxyImpl);
 
   DeviceInfoProxy.fromEndpoint(
       core.MojoMessagePipeEndpoint endpoint) :
-      impl = new DeviceInfoProxyImpl.fromEndpoint(endpoint) {
+      impl = new _DeviceInfoProxyImpl.fromEndpoint(endpoint) {
     ptr = new _DeviceInfoProxyCalls(impl);
   }
 
   DeviceInfoProxy.fromHandle(core.MojoHandle handle) :
-      impl = new DeviceInfoProxyImpl.fromHandle(handle) {
+      impl = new _DeviceInfoProxyImpl.fromHandle(handle) {
     ptr = new _DeviceInfoProxyCalls(impl);
   }
 
   DeviceInfoProxy.unbound() :
-      impl = new DeviceInfoProxyImpl.unbound() {
+      impl = new _DeviceInfoProxyImpl.unbound() {
     ptr = new _DeviceInfoProxyCalls(impl);
   }
 
@@ -338,6 +334,8 @@ class DeviceInfoProxy implements bindings.ProxyBase {
     assert(endpoint.setDescription("For DeviceInfoProxy"));
     return new DeviceInfoProxy.fromEndpoint(endpoint);
   }
+
+  String get serviceName => DeviceInfo.serviceName;
 
   Future close({bool immediate: false}) => impl.close(immediate: immediate);
 
@@ -377,8 +375,6 @@ class DeviceInfoStub extends bindings.Stub {
     return new DeviceInfoStub.fromEndpoint(endpoint);
   }
 
-  static const String name = DeviceInfoName;
-
 
   DeviceInfoGetDeviceTypeResponseParams _DeviceInfoGetDeviceTypeResponseParamsFactory(DeviceInfoDeviceType deviceType) {
     var mojo_factory_result = new DeviceInfoGetDeviceTypeResponseParams();
@@ -394,8 +390,8 @@ class DeviceInfoStub extends bindings.Stub {
     }
     assert(_impl != null);
     switch (message.header.type) {
-      case kDeviceInfo_getDeviceType_name:
-        var params = DeviceInfoGetDeviceTypeParams.deserialize(
+      case _DeviceInfo_getDeviceTypeName:
+        var params = _DeviceInfoGetDeviceTypeParams.deserialize(
             message.payload);
         var response = _impl.getDeviceType(_DeviceInfoGetDeviceTypeResponseParamsFactory);
         if (response is Future) {
@@ -403,7 +399,7 @@ class DeviceInfoStub extends bindings.Stub {
             if (response != null) {
               return buildResponseWithId(
                   response,
-                  kDeviceInfo_getDeviceType_name,
+                  _DeviceInfo_getDeviceTypeName,
                   message.header.requestId,
                   bindings.MessageHeader.kMessageIsResponse);
             }
@@ -411,7 +407,7 @@ class DeviceInfoStub extends bindings.Stub {
         } else if (response != null) {
           return buildResponseWithId(
               response,
-              kDeviceInfo_getDeviceType_name,
+              _DeviceInfo_getDeviceTypeName,
               message.header.requestId,
               bindings.MessageHeader.kMessageIsResponse);
         }

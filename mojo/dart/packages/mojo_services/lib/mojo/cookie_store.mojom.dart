@@ -11,15 +11,15 @@ import 'package:mojo/core.dart' as core;
 
 
 
-class CookieStoreGetParams extends bindings.Struct {
+class _CookieStoreGetParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(16, 0)
   ];
   String url = null;
 
-  CookieStoreGetParams() : super(kVersions.last.size);
+  _CookieStoreGetParams() : super(kVersions.last.size);
 
-  static CookieStoreGetParams deserialize(bindings.Message message) {
+  static _CookieStoreGetParams deserialize(bindings.Message message) {
     var decoder = new bindings.Decoder(message);
     var result = decode(decoder);
     if (decoder.excessHandles != null) {
@@ -28,11 +28,11 @@ class CookieStoreGetParams extends bindings.Struct {
     return result;
   }
 
-  static CookieStoreGetParams decode(bindings.Decoder decoder0) {
+  static _CookieStoreGetParams decode(bindings.Decoder decoder0) {
     if (decoder0 == null) {
       return null;
     }
-    CookieStoreGetParams result = new CookieStoreGetParams();
+    _CookieStoreGetParams result = new _CookieStoreGetParams();
 
     var mainDataHeader = decoder0.decodeStructDataHeader();
     if (mainDataHeader.version <= kVersions.last.version) {
@@ -66,7 +66,7 @@ class CookieStoreGetParams extends bindings.Struct {
   }
 
   String toString() {
-    return "CookieStoreGetParams("
+    return "_CookieStoreGetParams("
            "url: $url" ")";
   }
 
@@ -145,16 +145,16 @@ class CookieStoreGetResponseParams extends bindings.Struct {
 }
 
 
-class CookieStoreSetParams extends bindings.Struct {
+class _CookieStoreSetParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(24, 0)
   ];
   String url = null;
   String cookie = null;
 
-  CookieStoreSetParams() : super(kVersions.last.size);
+  _CookieStoreSetParams() : super(kVersions.last.size);
 
-  static CookieStoreSetParams deserialize(bindings.Message message) {
+  static _CookieStoreSetParams deserialize(bindings.Message message) {
     var decoder = new bindings.Decoder(message);
     var result = decode(decoder);
     if (decoder.excessHandles != null) {
@@ -163,11 +163,11 @@ class CookieStoreSetParams extends bindings.Struct {
     return result;
   }
 
-  static CookieStoreSetParams decode(bindings.Decoder decoder0) {
+  static _CookieStoreSetParams decode(bindings.Decoder decoder0) {
     if (decoder0 == null) {
       return null;
     }
-    CookieStoreSetParams result = new CookieStoreSetParams();
+    _CookieStoreSetParams result = new _CookieStoreSetParams();
 
     var mainDataHeader = decoder0.decodeStructDataHeader();
     if (mainDataHeader.version <= kVersions.last.version) {
@@ -207,7 +207,7 @@ class CookieStoreSetParams extends bindings.Struct {
   }
 
   String toString() {
-    return "CookieStoreSetParams("
+    return "_CookieStoreSetParams("
            "url: $url" ", "
            "cookie: $cookie" ")";
   }
@@ -287,37 +287,34 @@ class CookieStoreSetResponseParams extends bindings.Struct {
   }
 }
 
-const int kCookieStore_get_name = 0;
-const int kCookieStore_set_name = 1;
-const String CookieStoreName = null;
+const int _CookieStore_getName = 0;
+const int _CookieStore_setName = 1;
 
 abstract class CookieStore {
+  static const String serviceName = null;
   dynamic get(String url,[Function responseFactory = null]);
   dynamic set(String url,String cookie,[Function responseFactory = null]);
-
 }
 
 
-class CookieStoreProxyImpl extends bindings.Proxy {
-  CookieStoreProxyImpl.fromEndpoint(
+class _CookieStoreProxyImpl extends bindings.Proxy {
+  _CookieStoreProxyImpl.fromEndpoint(
       core.MojoMessagePipeEndpoint endpoint) : super.fromEndpoint(endpoint);
 
-  CookieStoreProxyImpl.fromHandle(core.MojoHandle handle) :
+  _CookieStoreProxyImpl.fromHandle(core.MojoHandle handle) :
       super.fromHandle(handle);
 
-  CookieStoreProxyImpl.unbound() : super.unbound();
+  _CookieStoreProxyImpl.unbound() : super.unbound();
 
-  static CookieStoreProxyImpl newFromEndpoint(
+  static _CookieStoreProxyImpl newFromEndpoint(
       core.MojoMessagePipeEndpoint endpoint) {
-    assert(endpoint.setDescription("For CookieStoreProxyImpl"));
-    return new CookieStoreProxyImpl.fromEndpoint(endpoint);
+    assert(endpoint.setDescription("For _CookieStoreProxyImpl"));
+    return new _CookieStoreProxyImpl.fromEndpoint(endpoint);
   }
-
-  String get name => CookieStoreName;
 
   void handleResponse(bindings.ServiceMessage message) {
     switch (message.header.type) {
-      case kCookieStore_get_name:
+      case _CookieStore_getName:
         var r = CookieStoreGetResponseParams.deserialize(
             message.payload);
         if (!message.header.hasRequestId) {
@@ -337,7 +334,7 @@ class CookieStoreProxyImpl extends bindings.Proxy {
         }
         c.complete(r);
         break;
-      case kCookieStore_set_name:
+      case _CookieStore_setName:
         var r = CookieStoreSetResponseParams.deserialize(
             message.payload);
         if (!message.header.hasRequestId) {
@@ -366,31 +363,31 @@ class CookieStoreProxyImpl extends bindings.Proxy {
 
   String toString() {
     var superString = super.toString();
-    return "CookieStoreProxyImpl($superString)";
+    return "_CookieStoreProxyImpl($superString)";
   }
 }
 
 
 class _CookieStoreProxyCalls implements CookieStore {
-  CookieStoreProxyImpl _proxyImpl;
+  _CookieStoreProxyImpl _proxyImpl;
 
   _CookieStoreProxyCalls(this._proxyImpl);
     dynamic get(String url,[Function responseFactory = null]) {
-      var params = new CookieStoreGetParams();
+      var params = new _CookieStoreGetParams();
       params.url = url;
       return _proxyImpl.sendMessageWithRequestId(
           params,
-          kCookieStore_get_name,
+          _CookieStore_getName,
           -1,
           bindings.MessageHeader.kMessageExpectsResponse);
     }
     dynamic set(String url,String cookie,[Function responseFactory = null]) {
-      var params = new CookieStoreSetParams();
+      var params = new _CookieStoreSetParams();
       params.url = url;
       params.cookie = cookie;
       return _proxyImpl.sendMessageWithRequestId(
           params,
-          kCookieStore_set_name,
+          _CookieStore_setName,
           -1,
           bindings.MessageHeader.kMessageExpectsResponse);
     }
@@ -400,25 +397,24 @@ class _CookieStoreProxyCalls implements CookieStore {
 class CookieStoreProxy implements bindings.ProxyBase {
   final bindings.Proxy impl;
   CookieStore ptr;
-  final String name = CookieStoreName;
 
-  CookieStoreProxy(CookieStoreProxyImpl proxyImpl) :
+  CookieStoreProxy(_CookieStoreProxyImpl proxyImpl) :
       impl = proxyImpl,
       ptr = new _CookieStoreProxyCalls(proxyImpl);
 
   CookieStoreProxy.fromEndpoint(
       core.MojoMessagePipeEndpoint endpoint) :
-      impl = new CookieStoreProxyImpl.fromEndpoint(endpoint) {
+      impl = new _CookieStoreProxyImpl.fromEndpoint(endpoint) {
     ptr = new _CookieStoreProxyCalls(impl);
   }
 
   CookieStoreProxy.fromHandle(core.MojoHandle handle) :
-      impl = new CookieStoreProxyImpl.fromHandle(handle) {
+      impl = new _CookieStoreProxyImpl.fromHandle(handle) {
     ptr = new _CookieStoreProxyCalls(impl);
   }
 
   CookieStoreProxy.unbound() :
-      impl = new CookieStoreProxyImpl.unbound() {
+      impl = new _CookieStoreProxyImpl.unbound() {
     ptr = new _CookieStoreProxyCalls(impl);
   }
 
@@ -434,6 +430,8 @@ class CookieStoreProxy implements bindings.ProxyBase {
     assert(endpoint.setDescription("For CookieStoreProxy"));
     return new CookieStoreProxy.fromEndpoint(endpoint);
   }
+
+  String get serviceName => CookieStore.serviceName;
 
   Future close({bool immediate: false}) => impl.close(immediate: immediate);
 
@@ -473,8 +471,6 @@ class CookieStoreStub extends bindings.Stub {
     return new CookieStoreStub.fromEndpoint(endpoint);
   }
 
-  static const String name = CookieStoreName;
-
 
   CookieStoreGetResponseParams _CookieStoreGetResponseParamsFactory(String cookies) {
     var mojo_factory_result = new CookieStoreGetResponseParams();
@@ -495,8 +491,8 @@ class CookieStoreStub extends bindings.Stub {
     }
     assert(_impl != null);
     switch (message.header.type) {
-      case kCookieStore_get_name:
-        var params = CookieStoreGetParams.deserialize(
+      case _CookieStore_getName:
+        var params = _CookieStoreGetParams.deserialize(
             message.payload);
         var response = _impl.get(params.url,_CookieStoreGetResponseParamsFactory);
         if (response is Future) {
@@ -504,7 +500,7 @@ class CookieStoreStub extends bindings.Stub {
             if (response != null) {
               return buildResponseWithId(
                   response,
-                  kCookieStore_get_name,
+                  _CookieStore_getName,
                   message.header.requestId,
                   bindings.MessageHeader.kMessageIsResponse);
             }
@@ -512,13 +508,13 @@ class CookieStoreStub extends bindings.Stub {
         } else if (response != null) {
           return buildResponseWithId(
               response,
-              kCookieStore_get_name,
+              _CookieStore_getName,
               message.header.requestId,
               bindings.MessageHeader.kMessageIsResponse);
         }
         break;
-      case kCookieStore_set_name:
-        var params = CookieStoreSetParams.deserialize(
+      case _CookieStore_setName:
+        var params = _CookieStoreSetParams.deserialize(
             message.payload);
         var response = _impl.set(params.url,params.cookie,_CookieStoreSetResponseParamsFactory);
         if (response is Future) {
@@ -526,7 +522,7 @@ class CookieStoreStub extends bindings.Stub {
             if (response != null) {
               return buildResponseWithId(
                   response,
-                  kCookieStore_set_name,
+                  _CookieStore_setName,
                   message.header.requestId,
                   bindings.MessageHeader.kMessageIsResponse);
             }
@@ -534,7 +530,7 @@ class CookieStoreStub extends bindings.Stub {
         } else if (response != null) {
           return buildResponseWithId(
               response,
-              kCookieStore_set_name,
+              _CookieStore_setName,
               message.header.requestId,
               bindings.MessageHeader.kMessageIsResponse);
         }

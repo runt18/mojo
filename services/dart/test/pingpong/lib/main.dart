@@ -111,7 +111,7 @@ class PingPongApplication extends Application {
   @override
   void acceptConnection(String requestorUrl, String resolvedUrl,
       ApplicationConnection connection) {
-    connection.provideService(PingPongServiceName,
+    connection.provideService(PingPongService.serviceName,
         (endpoint) => new PingPongServiceImpl(this, endpoint));
   }
 }

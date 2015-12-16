@@ -12,15 +12,15 @@ import 'package:mojo_services/mojo/files/file.mojom.dart' as file_mojom;
 
 
 
-class TerminalClientConnectToTerminalParams extends bindings.Struct {
+class _TerminalClientConnectToTerminalParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(16, 0)
   ];
   Object terminal = null;
 
-  TerminalClientConnectToTerminalParams() : super(kVersions.last.size);
+  _TerminalClientConnectToTerminalParams() : super(kVersions.last.size);
 
-  static TerminalClientConnectToTerminalParams deserialize(bindings.Message message) {
+  static _TerminalClientConnectToTerminalParams deserialize(bindings.Message message) {
     var decoder = new bindings.Decoder(message);
     var result = decode(decoder);
     if (decoder.excessHandles != null) {
@@ -29,11 +29,11 @@ class TerminalClientConnectToTerminalParams extends bindings.Struct {
     return result;
   }
 
-  static TerminalClientConnectToTerminalParams decode(bindings.Decoder decoder0) {
+  static _TerminalClientConnectToTerminalParams decode(bindings.Decoder decoder0) {
     if (decoder0 == null) {
       return null;
     }
-    TerminalClientConnectToTerminalParams result = new TerminalClientConnectToTerminalParams();
+    _TerminalClientConnectToTerminalParams result = new _TerminalClientConnectToTerminalParams();
 
     var mainDataHeader = decoder0.decodeStructDataHeader();
     if (mainDataHeader.version <= kVersions.last.version) {
@@ -67,7 +67,7 @@ class TerminalClientConnectToTerminalParams extends bindings.Struct {
   }
 
   String toString() {
-    return "TerminalClientConnectToTerminalParams("
+    return "_TerminalClientConnectToTerminalParams("
            "terminal: $terminal" ")";
   }
 
@@ -77,31 +77,28 @@ class TerminalClientConnectToTerminalParams extends bindings.Struct {
   }
 }
 
-const int kTerminalClient_connectToTerminal_name = 0;
-const String TerminalClientName = "mojo::terminal::TerminalClient";
+const int _TerminalClient_connectToTerminalName = 0;
 
 abstract class TerminalClient {
+  static const String serviceName = "mojo::terminal::TerminalClient";
   void connectToTerminal(Object terminal);
-
 }
 
 
-class TerminalClientProxyImpl extends bindings.Proxy {
-  TerminalClientProxyImpl.fromEndpoint(
+class _TerminalClientProxyImpl extends bindings.Proxy {
+  _TerminalClientProxyImpl.fromEndpoint(
       core.MojoMessagePipeEndpoint endpoint) : super.fromEndpoint(endpoint);
 
-  TerminalClientProxyImpl.fromHandle(core.MojoHandle handle) :
+  _TerminalClientProxyImpl.fromHandle(core.MojoHandle handle) :
       super.fromHandle(handle);
 
-  TerminalClientProxyImpl.unbound() : super.unbound();
+  _TerminalClientProxyImpl.unbound() : super.unbound();
 
-  static TerminalClientProxyImpl newFromEndpoint(
+  static _TerminalClientProxyImpl newFromEndpoint(
       core.MojoMessagePipeEndpoint endpoint) {
-    assert(endpoint.setDescription("For TerminalClientProxyImpl"));
-    return new TerminalClientProxyImpl.fromEndpoint(endpoint);
+    assert(endpoint.setDescription("For _TerminalClientProxyImpl"));
+    return new _TerminalClientProxyImpl.fromEndpoint(endpoint);
   }
-
-  String get name => TerminalClientName;
 
   void handleResponse(bindings.ServiceMessage message) {
     switch (message.header.type) {
@@ -114,13 +111,13 @@ class TerminalClientProxyImpl extends bindings.Proxy {
 
   String toString() {
     var superString = super.toString();
-    return "TerminalClientProxyImpl($superString)";
+    return "_TerminalClientProxyImpl($superString)";
   }
 }
 
 
 class _TerminalClientProxyCalls implements TerminalClient {
-  TerminalClientProxyImpl _proxyImpl;
+  _TerminalClientProxyImpl _proxyImpl;
 
   _TerminalClientProxyCalls(this._proxyImpl);
     void connectToTerminal(Object terminal) {
@@ -128,36 +125,34 @@ class _TerminalClientProxyCalls implements TerminalClient {
         _proxyImpl.proxyError("The Proxy is closed.");
         return;
       }
-      var params = new TerminalClientConnectToTerminalParams();
+      var params = new _TerminalClientConnectToTerminalParams();
       params.terminal = terminal;
-      _proxyImpl.sendMessage(params, kTerminalClient_connectToTerminal_name);
+      _proxyImpl.sendMessage(params, _TerminalClient_connectToTerminalName);
     }
-  
 }
 
 
 class TerminalClientProxy implements bindings.ProxyBase {
   final bindings.Proxy impl;
   TerminalClient ptr;
-  final String name = TerminalClientName;
 
-  TerminalClientProxy(TerminalClientProxyImpl proxyImpl) :
+  TerminalClientProxy(_TerminalClientProxyImpl proxyImpl) :
       impl = proxyImpl,
       ptr = new _TerminalClientProxyCalls(proxyImpl);
 
   TerminalClientProxy.fromEndpoint(
       core.MojoMessagePipeEndpoint endpoint) :
-      impl = new TerminalClientProxyImpl.fromEndpoint(endpoint) {
+      impl = new _TerminalClientProxyImpl.fromEndpoint(endpoint) {
     ptr = new _TerminalClientProxyCalls(impl);
   }
 
   TerminalClientProxy.fromHandle(core.MojoHandle handle) :
-      impl = new TerminalClientProxyImpl.fromHandle(handle) {
+      impl = new _TerminalClientProxyImpl.fromHandle(handle) {
     ptr = new _TerminalClientProxyCalls(impl);
   }
 
   TerminalClientProxy.unbound() :
-      impl = new TerminalClientProxyImpl.unbound() {
+      impl = new _TerminalClientProxyImpl.unbound() {
     ptr = new _TerminalClientProxyCalls(impl);
   }
 
@@ -173,6 +168,8 @@ class TerminalClientProxy implements bindings.ProxyBase {
     assert(endpoint.setDescription("For TerminalClientProxy"));
     return new TerminalClientProxy.fromEndpoint(endpoint);
   }
+
+  String get serviceName => TerminalClient.serviceName;
 
   Future close({bool immediate: false}) => impl.close(immediate: immediate);
 
@@ -212,8 +209,6 @@ class TerminalClientStub extends bindings.Stub {
     return new TerminalClientStub.fromEndpoint(endpoint);
   }
 
-  static const String name = TerminalClientName;
-
 
 
   dynamic handleMessage(bindings.ServiceMessage message) {
@@ -224,8 +219,8 @@ class TerminalClientStub extends bindings.Stub {
     }
     assert(_impl != null);
     switch (message.header.type) {
-      case kTerminalClient_connectToTerminal_name:
-        var params = TerminalClientConnectToTerminalParams.deserialize(
+      case _TerminalClient_connectToTerminalName:
+        var params = _TerminalClientConnectToTerminalParams.deserialize(
             message.payload);
         _impl.connectToTerminal(params.terminal);
         break;

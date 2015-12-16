@@ -10,29 +10,26 @@ import 'package:mojo/bindings.dart' as bindings;
 import 'package:mojo/core.dart' as core;
 
 
-const String TcpConnectedSocketName = null;
 
 abstract class TcpConnectedSocket {
-
+  static const String serviceName = null;
 }
 
 
-class TcpConnectedSocketProxyImpl extends bindings.Proxy {
-  TcpConnectedSocketProxyImpl.fromEndpoint(
+class _TcpConnectedSocketProxyImpl extends bindings.Proxy {
+  _TcpConnectedSocketProxyImpl.fromEndpoint(
       core.MojoMessagePipeEndpoint endpoint) : super.fromEndpoint(endpoint);
 
-  TcpConnectedSocketProxyImpl.fromHandle(core.MojoHandle handle) :
+  _TcpConnectedSocketProxyImpl.fromHandle(core.MojoHandle handle) :
       super.fromHandle(handle);
 
-  TcpConnectedSocketProxyImpl.unbound() : super.unbound();
+  _TcpConnectedSocketProxyImpl.unbound() : super.unbound();
 
-  static TcpConnectedSocketProxyImpl newFromEndpoint(
+  static _TcpConnectedSocketProxyImpl newFromEndpoint(
       core.MojoMessagePipeEndpoint endpoint) {
-    assert(endpoint.setDescription("For TcpConnectedSocketProxyImpl"));
-    return new TcpConnectedSocketProxyImpl.fromEndpoint(endpoint);
+    assert(endpoint.setDescription("For _TcpConnectedSocketProxyImpl"));
+    return new _TcpConnectedSocketProxyImpl.fromEndpoint(endpoint);
   }
-
-  String get name => TcpConnectedSocketName;
 
   void handleResponse(bindings.ServiceMessage message) {
     switch (message.header.type) {
@@ -45,13 +42,13 @@ class TcpConnectedSocketProxyImpl extends bindings.Proxy {
 
   String toString() {
     var superString = super.toString();
-    return "TcpConnectedSocketProxyImpl($superString)";
+    return "_TcpConnectedSocketProxyImpl($superString)";
   }
 }
 
 
 class _TcpConnectedSocketProxyCalls implements TcpConnectedSocket {
-  TcpConnectedSocketProxyImpl _proxyImpl;
+  _TcpConnectedSocketProxyImpl _proxyImpl;
 
   _TcpConnectedSocketProxyCalls(this._proxyImpl);
 }
@@ -60,25 +57,24 @@ class _TcpConnectedSocketProxyCalls implements TcpConnectedSocket {
 class TcpConnectedSocketProxy implements bindings.ProxyBase {
   final bindings.Proxy impl;
   TcpConnectedSocket ptr;
-  final String name = TcpConnectedSocketName;
 
-  TcpConnectedSocketProxy(TcpConnectedSocketProxyImpl proxyImpl) :
+  TcpConnectedSocketProxy(_TcpConnectedSocketProxyImpl proxyImpl) :
       impl = proxyImpl,
       ptr = new _TcpConnectedSocketProxyCalls(proxyImpl);
 
   TcpConnectedSocketProxy.fromEndpoint(
       core.MojoMessagePipeEndpoint endpoint) :
-      impl = new TcpConnectedSocketProxyImpl.fromEndpoint(endpoint) {
+      impl = new _TcpConnectedSocketProxyImpl.fromEndpoint(endpoint) {
     ptr = new _TcpConnectedSocketProxyCalls(impl);
   }
 
   TcpConnectedSocketProxy.fromHandle(core.MojoHandle handle) :
-      impl = new TcpConnectedSocketProxyImpl.fromHandle(handle) {
+      impl = new _TcpConnectedSocketProxyImpl.fromHandle(handle) {
     ptr = new _TcpConnectedSocketProxyCalls(impl);
   }
 
   TcpConnectedSocketProxy.unbound() :
-      impl = new TcpConnectedSocketProxyImpl.unbound() {
+      impl = new _TcpConnectedSocketProxyImpl.unbound() {
     ptr = new _TcpConnectedSocketProxyCalls(impl);
   }
 
@@ -94,6 +90,8 @@ class TcpConnectedSocketProxy implements bindings.ProxyBase {
     assert(endpoint.setDescription("For TcpConnectedSocketProxy"));
     return new TcpConnectedSocketProxy.fromEndpoint(endpoint);
   }
+
+  String get serviceName => TcpConnectedSocket.serviceName;
 
   Future close({bool immediate: false}) => impl.close(immediate: immediate);
 
@@ -132,8 +130,6 @@ class TcpConnectedSocketStub extends bindings.Stub {
     assert(endpoint.setDescription("For TcpConnectedSocketStub"));
     return new TcpConnectedSocketStub.fromEndpoint(endpoint);
   }
-
-  static const String name = TcpConnectedSocketName;
 
 
 

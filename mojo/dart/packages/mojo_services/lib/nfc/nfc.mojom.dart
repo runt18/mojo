@@ -78,14 +78,14 @@ class NfcData extends bindings.Struct {
 }
 
 
-class NfcTransmissionCancelParams extends bindings.Struct {
+class _NfcTransmissionCancelParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(8, 0)
   ];
 
-  NfcTransmissionCancelParams() : super(kVersions.last.size);
+  _NfcTransmissionCancelParams() : super(kVersions.last.size);
 
-  static NfcTransmissionCancelParams deserialize(bindings.Message message) {
+  static _NfcTransmissionCancelParams deserialize(bindings.Message message) {
     var decoder = new bindings.Decoder(message);
     var result = decode(decoder);
     if (decoder.excessHandles != null) {
@@ -94,11 +94,11 @@ class NfcTransmissionCancelParams extends bindings.Struct {
     return result;
   }
 
-  static NfcTransmissionCancelParams decode(bindings.Decoder decoder0) {
+  static _NfcTransmissionCancelParams decode(bindings.Decoder decoder0) {
     if (decoder0 == null) {
       return null;
     }
-    NfcTransmissionCancelParams result = new NfcTransmissionCancelParams();
+    _NfcTransmissionCancelParams result = new _NfcTransmissionCancelParams();
 
     var mainDataHeader = decoder0.decodeStructDataHeader();
     if (mainDataHeader.version <= kVersions.last.version) {
@@ -126,7 +126,7 @@ class NfcTransmissionCancelParams extends bindings.Struct {
   }
 
   String toString() {
-    return "NfcTransmissionCancelParams("")";
+    return "_NfcTransmissionCancelParams("")";
   }
 
   Map toJson() {
@@ -136,15 +136,15 @@ class NfcTransmissionCancelParams extends bindings.Struct {
 }
 
 
-class NfcReceiverOnReceivedNfcDataParams extends bindings.Struct {
+class _NfcReceiverOnReceivedNfcDataParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(16, 0)
   ];
   NfcData nfcData = null;
 
-  NfcReceiverOnReceivedNfcDataParams() : super(kVersions.last.size);
+  _NfcReceiverOnReceivedNfcDataParams() : super(kVersions.last.size);
 
-  static NfcReceiverOnReceivedNfcDataParams deserialize(bindings.Message message) {
+  static _NfcReceiverOnReceivedNfcDataParams deserialize(bindings.Message message) {
     var decoder = new bindings.Decoder(message);
     var result = decode(decoder);
     if (decoder.excessHandles != null) {
@@ -153,11 +153,11 @@ class NfcReceiverOnReceivedNfcDataParams extends bindings.Struct {
     return result;
   }
 
-  static NfcReceiverOnReceivedNfcDataParams decode(bindings.Decoder decoder0) {
+  static _NfcReceiverOnReceivedNfcDataParams decode(bindings.Decoder decoder0) {
     if (decoder0 == null) {
       return null;
     }
-    NfcReceiverOnReceivedNfcDataParams result = new NfcReceiverOnReceivedNfcDataParams();
+    _NfcReceiverOnReceivedNfcDataParams result = new _NfcReceiverOnReceivedNfcDataParams();
 
     var mainDataHeader = decoder0.decodeStructDataHeader();
     if (mainDataHeader.version <= kVersions.last.version) {
@@ -192,7 +192,7 @@ class NfcReceiverOnReceivedNfcDataParams extends bindings.Struct {
   }
 
   String toString() {
-    return "NfcReceiverOnReceivedNfcDataParams("
+    return "_NfcReceiverOnReceivedNfcDataParams("
            "nfcData: $nfcData" ")";
   }
 
@@ -204,16 +204,16 @@ class NfcReceiverOnReceivedNfcDataParams extends bindings.Struct {
 }
 
 
-class NfcTransmitOnNextConnectionParams extends bindings.Struct {
+class _NfcTransmitOnNextConnectionParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(24, 0)
   ];
   NfcData nfcData = null;
   Object transmission = null;
 
-  NfcTransmitOnNextConnectionParams() : super(kVersions.last.size);
+  _NfcTransmitOnNextConnectionParams() : super(kVersions.last.size);
 
-  static NfcTransmitOnNextConnectionParams deserialize(bindings.Message message) {
+  static _NfcTransmitOnNextConnectionParams deserialize(bindings.Message message) {
     var decoder = new bindings.Decoder(message);
     var result = decode(decoder);
     if (decoder.excessHandles != null) {
@@ -222,11 +222,11 @@ class NfcTransmitOnNextConnectionParams extends bindings.Struct {
     return result;
   }
 
-  static NfcTransmitOnNextConnectionParams decode(bindings.Decoder decoder0) {
+  static _NfcTransmitOnNextConnectionParams decode(bindings.Decoder decoder0) {
     if (decoder0 == null) {
       return null;
     }
-    NfcTransmitOnNextConnectionParams result = new NfcTransmitOnNextConnectionParams();
+    _NfcTransmitOnNextConnectionParams result = new _NfcTransmitOnNextConnectionParams();
 
     var mainDataHeader = decoder0.decodeStructDataHeader();
     if (mainDataHeader.version <= kVersions.last.version) {
@@ -267,7 +267,7 @@ class NfcTransmitOnNextConnectionParams extends bindings.Struct {
   }
 
   String toString() {
-    return "NfcTransmitOnNextConnectionParams("
+    return "_NfcTransmitOnNextConnectionParams("
            "nfcData: $nfcData" ", "
            "transmission: $transmission" ")";
   }
@@ -346,14 +346,14 @@ class NfcTransmitOnNextConnectionResponseParams extends bindings.Struct {
 }
 
 
-class NfcRegisterParams extends bindings.Struct {
+class _NfcRegisterParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(8, 0)
   ];
 
-  NfcRegisterParams() : super(kVersions.last.size);
+  _NfcRegisterParams() : super(kVersions.last.size);
 
-  static NfcRegisterParams deserialize(bindings.Message message) {
+  static _NfcRegisterParams deserialize(bindings.Message message) {
     var decoder = new bindings.Decoder(message);
     var result = decode(decoder);
     if (decoder.excessHandles != null) {
@@ -362,11 +362,11 @@ class NfcRegisterParams extends bindings.Struct {
     return result;
   }
 
-  static NfcRegisterParams decode(bindings.Decoder decoder0) {
+  static _NfcRegisterParams decode(bindings.Decoder decoder0) {
     if (decoder0 == null) {
       return null;
     }
-    NfcRegisterParams result = new NfcRegisterParams();
+    _NfcRegisterParams result = new _NfcRegisterParams();
 
     var mainDataHeader = decoder0.decodeStructDataHeader();
     if (mainDataHeader.version <= kVersions.last.version) {
@@ -394,7 +394,7 @@ class NfcRegisterParams extends bindings.Struct {
   }
 
   String toString() {
-    return "NfcRegisterParams("")";
+    return "_NfcRegisterParams("")";
   }
 
   Map toJson() {
@@ -404,14 +404,14 @@ class NfcRegisterParams extends bindings.Struct {
 }
 
 
-class NfcUnregisterParams extends bindings.Struct {
+class _NfcUnregisterParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(8, 0)
   ];
 
-  NfcUnregisterParams() : super(kVersions.last.size);
+  _NfcUnregisterParams() : super(kVersions.last.size);
 
-  static NfcUnregisterParams deserialize(bindings.Message message) {
+  static _NfcUnregisterParams deserialize(bindings.Message message) {
     var decoder = new bindings.Decoder(message);
     var result = decode(decoder);
     if (decoder.excessHandles != null) {
@@ -420,11 +420,11 @@ class NfcUnregisterParams extends bindings.Struct {
     return result;
   }
 
-  static NfcUnregisterParams decode(bindings.Decoder decoder0) {
+  static _NfcUnregisterParams decode(bindings.Decoder decoder0) {
     if (decoder0 == null) {
       return null;
     }
-    NfcUnregisterParams result = new NfcUnregisterParams();
+    _NfcUnregisterParams result = new _NfcUnregisterParams();
 
     var mainDataHeader = decoder0.decodeStructDataHeader();
     if (mainDataHeader.version <= kVersions.last.version) {
@@ -452,7 +452,7 @@ class NfcUnregisterParams extends bindings.Struct {
   }
 
   String toString() {
-    return "NfcUnregisterParams("")";
+    return "_NfcUnregisterParams("")";
   }
 
   Map toJson() {
@@ -461,31 +461,28 @@ class NfcUnregisterParams extends bindings.Struct {
   }
 }
 
-const int kNfcTransmission_cancel_name = 0;
-const String NfcTransmissionName = null;
+const int _NfcTransmission_cancelName = 0;
 
 abstract class NfcTransmission {
+  static const String serviceName = null;
   void cancel();
-
 }
 
 
-class NfcTransmissionProxyImpl extends bindings.Proxy {
-  NfcTransmissionProxyImpl.fromEndpoint(
+class _NfcTransmissionProxyImpl extends bindings.Proxy {
+  _NfcTransmissionProxyImpl.fromEndpoint(
       core.MojoMessagePipeEndpoint endpoint) : super.fromEndpoint(endpoint);
 
-  NfcTransmissionProxyImpl.fromHandle(core.MojoHandle handle) :
+  _NfcTransmissionProxyImpl.fromHandle(core.MojoHandle handle) :
       super.fromHandle(handle);
 
-  NfcTransmissionProxyImpl.unbound() : super.unbound();
+  _NfcTransmissionProxyImpl.unbound() : super.unbound();
 
-  static NfcTransmissionProxyImpl newFromEndpoint(
+  static _NfcTransmissionProxyImpl newFromEndpoint(
       core.MojoMessagePipeEndpoint endpoint) {
-    assert(endpoint.setDescription("For NfcTransmissionProxyImpl"));
-    return new NfcTransmissionProxyImpl.fromEndpoint(endpoint);
+    assert(endpoint.setDescription("For _NfcTransmissionProxyImpl"));
+    return new _NfcTransmissionProxyImpl.fromEndpoint(endpoint);
   }
-
-  String get name => NfcTransmissionName;
 
   void handleResponse(bindings.ServiceMessage message) {
     switch (message.header.type) {
@@ -498,13 +495,13 @@ class NfcTransmissionProxyImpl extends bindings.Proxy {
 
   String toString() {
     var superString = super.toString();
-    return "NfcTransmissionProxyImpl($superString)";
+    return "_NfcTransmissionProxyImpl($superString)";
   }
 }
 
 
 class _NfcTransmissionProxyCalls implements NfcTransmission {
-  NfcTransmissionProxyImpl _proxyImpl;
+  _NfcTransmissionProxyImpl _proxyImpl;
 
   _NfcTransmissionProxyCalls(this._proxyImpl);
     void cancel() {
@@ -512,35 +509,33 @@ class _NfcTransmissionProxyCalls implements NfcTransmission {
         _proxyImpl.proxyError("The Proxy is closed.");
         return;
       }
-      var params = new NfcTransmissionCancelParams();
-      _proxyImpl.sendMessage(params, kNfcTransmission_cancel_name);
+      var params = new _NfcTransmissionCancelParams();
+      _proxyImpl.sendMessage(params, _NfcTransmission_cancelName);
     }
-  
 }
 
 
 class NfcTransmissionProxy implements bindings.ProxyBase {
   final bindings.Proxy impl;
   NfcTransmission ptr;
-  final String name = NfcTransmissionName;
 
-  NfcTransmissionProxy(NfcTransmissionProxyImpl proxyImpl) :
+  NfcTransmissionProxy(_NfcTransmissionProxyImpl proxyImpl) :
       impl = proxyImpl,
       ptr = new _NfcTransmissionProxyCalls(proxyImpl);
 
   NfcTransmissionProxy.fromEndpoint(
       core.MojoMessagePipeEndpoint endpoint) :
-      impl = new NfcTransmissionProxyImpl.fromEndpoint(endpoint) {
+      impl = new _NfcTransmissionProxyImpl.fromEndpoint(endpoint) {
     ptr = new _NfcTransmissionProxyCalls(impl);
   }
 
   NfcTransmissionProxy.fromHandle(core.MojoHandle handle) :
-      impl = new NfcTransmissionProxyImpl.fromHandle(handle) {
+      impl = new _NfcTransmissionProxyImpl.fromHandle(handle) {
     ptr = new _NfcTransmissionProxyCalls(impl);
   }
 
   NfcTransmissionProxy.unbound() :
-      impl = new NfcTransmissionProxyImpl.unbound() {
+      impl = new _NfcTransmissionProxyImpl.unbound() {
     ptr = new _NfcTransmissionProxyCalls(impl);
   }
 
@@ -556,6 +551,8 @@ class NfcTransmissionProxy implements bindings.ProxyBase {
     assert(endpoint.setDescription("For NfcTransmissionProxy"));
     return new NfcTransmissionProxy.fromEndpoint(endpoint);
   }
+
+  String get serviceName => NfcTransmission.serviceName;
 
   Future close({bool immediate: false}) => impl.close(immediate: immediate);
 
@@ -595,8 +592,6 @@ class NfcTransmissionStub extends bindings.Stub {
     return new NfcTransmissionStub.fromEndpoint(endpoint);
   }
 
-  static const String name = NfcTransmissionName;
-
 
 
   dynamic handleMessage(bindings.ServiceMessage message) {
@@ -607,8 +602,8 @@ class NfcTransmissionStub extends bindings.Stub {
     }
     assert(_impl != null);
     switch (message.header.type) {
-      case kNfcTransmission_cancel_name:
-        var params = NfcTransmissionCancelParams.deserialize(
+      case _NfcTransmission_cancelName:
+        var params = _NfcTransmissionCancelParams.deserialize(
             message.payload);
         _impl.cancel();
         break;
@@ -633,31 +628,28 @@ class NfcTransmissionStub extends bindings.Stub {
   int get version => 0;
 }
 
-const int kNfcReceiver_onReceivedNfcData_name = 0;
-const String NfcReceiverName = "nfc::NfcReceiver";
+const int _NfcReceiver_onReceivedNfcDataName = 0;
 
 abstract class NfcReceiver {
+  static const String serviceName = "nfc::NfcReceiver";
   void onReceivedNfcData(NfcData nfcData);
-
 }
 
 
-class NfcReceiverProxyImpl extends bindings.Proxy {
-  NfcReceiverProxyImpl.fromEndpoint(
+class _NfcReceiverProxyImpl extends bindings.Proxy {
+  _NfcReceiverProxyImpl.fromEndpoint(
       core.MojoMessagePipeEndpoint endpoint) : super.fromEndpoint(endpoint);
 
-  NfcReceiverProxyImpl.fromHandle(core.MojoHandle handle) :
+  _NfcReceiverProxyImpl.fromHandle(core.MojoHandle handle) :
       super.fromHandle(handle);
 
-  NfcReceiverProxyImpl.unbound() : super.unbound();
+  _NfcReceiverProxyImpl.unbound() : super.unbound();
 
-  static NfcReceiverProxyImpl newFromEndpoint(
+  static _NfcReceiverProxyImpl newFromEndpoint(
       core.MojoMessagePipeEndpoint endpoint) {
-    assert(endpoint.setDescription("For NfcReceiverProxyImpl"));
-    return new NfcReceiverProxyImpl.fromEndpoint(endpoint);
+    assert(endpoint.setDescription("For _NfcReceiverProxyImpl"));
+    return new _NfcReceiverProxyImpl.fromEndpoint(endpoint);
   }
-
-  String get name => NfcReceiverName;
 
   void handleResponse(bindings.ServiceMessage message) {
     switch (message.header.type) {
@@ -670,13 +662,13 @@ class NfcReceiverProxyImpl extends bindings.Proxy {
 
   String toString() {
     var superString = super.toString();
-    return "NfcReceiverProxyImpl($superString)";
+    return "_NfcReceiverProxyImpl($superString)";
   }
 }
 
 
 class _NfcReceiverProxyCalls implements NfcReceiver {
-  NfcReceiverProxyImpl _proxyImpl;
+  _NfcReceiverProxyImpl _proxyImpl;
 
   _NfcReceiverProxyCalls(this._proxyImpl);
     void onReceivedNfcData(NfcData nfcData) {
@@ -684,36 +676,34 @@ class _NfcReceiverProxyCalls implements NfcReceiver {
         _proxyImpl.proxyError("The Proxy is closed.");
         return;
       }
-      var params = new NfcReceiverOnReceivedNfcDataParams();
+      var params = new _NfcReceiverOnReceivedNfcDataParams();
       params.nfcData = nfcData;
-      _proxyImpl.sendMessage(params, kNfcReceiver_onReceivedNfcData_name);
+      _proxyImpl.sendMessage(params, _NfcReceiver_onReceivedNfcDataName);
     }
-  
 }
 
 
 class NfcReceiverProxy implements bindings.ProxyBase {
   final bindings.Proxy impl;
   NfcReceiver ptr;
-  final String name = NfcReceiverName;
 
-  NfcReceiverProxy(NfcReceiverProxyImpl proxyImpl) :
+  NfcReceiverProxy(_NfcReceiverProxyImpl proxyImpl) :
       impl = proxyImpl,
       ptr = new _NfcReceiverProxyCalls(proxyImpl);
 
   NfcReceiverProxy.fromEndpoint(
       core.MojoMessagePipeEndpoint endpoint) :
-      impl = new NfcReceiverProxyImpl.fromEndpoint(endpoint) {
+      impl = new _NfcReceiverProxyImpl.fromEndpoint(endpoint) {
     ptr = new _NfcReceiverProxyCalls(impl);
   }
 
   NfcReceiverProxy.fromHandle(core.MojoHandle handle) :
-      impl = new NfcReceiverProxyImpl.fromHandle(handle) {
+      impl = new _NfcReceiverProxyImpl.fromHandle(handle) {
     ptr = new _NfcReceiverProxyCalls(impl);
   }
 
   NfcReceiverProxy.unbound() :
-      impl = new NfcReceiverProxyImpl.unbound() {
+      impl = new _NfcReceiverProxyImpl.unbound() {
     ptr = new _NfcReceiverProxyCalls(impl);
   }
 
@@ -729,6 +719,8 @@ class NfcReceiverProxy implements bindings.ProxyBase {
     assert(endpoint.setDescription("For NfcReceiverProxy"));
     return new NfcReceiverProxy.fromEndpoint(endpoint);
   }
+
+  String get serviceName => NfcReceiver.serviceName;
 
   Future close({bool immediate: false}) => impl.close(immediate: immediate);
 
@@ -768,8 +760,6 @@ class NfcReceiverStub extends bindings.Stub {
     return new NfcReceiverStub.fromEndpoint(endpoint);
   }
 
-  static const String name = NfcReceiverName;
-
 
 
   dynamic handleMessage(bindings.ServiceMessage message) {
@@ -780,8 +770,8 @@ class NfcReceiverStub extends bindings.Stub {
     }
     assert(_impl != null);
     switch (message.header.type) {
-      case kNfcReceiver_onReceivedNfcData_name:
-        var params = NfcReceiverOnReceivedNfcDataParams.deserialize(
+      case _NfcReceiver_onReceivedNfcDataName:
+        var params = _NfcReceiverOnReceivedNfcDataParams.deserialize(
             message.payload);
         _impl.onReceivedNfcData(params.nfcData);
         break;
@@ -806,39 +796,36 @@ class NfcReceiverStub extends bindings.Stub {
   int get version => 0;
 }
 
-const int kNfc_transmitOnNextConnection_name = 0;
-const int kNfc_register_name = 1;
-const int kNfc_unregister_name = 2;
-const String NfcName = "nfc::Nfc";
+const int _Nfc_transmitOnNextConnectionName = 0;
+const int _Nfc_registerName = 1;
+const int _Nfc_unregisterName = 2;
 
 abstract class Nfc {
+  static const String serviceName = "nfc::Nfc";
   dynamic transmitOnNextConnection(NfcData nfcData,Object transmission,[Function responseFactory = null]);
   void register();
   void unregister();
-
 }
 
 
-class NfcProxyImpl extends bindings.Proxy {
-  NfcProxyImpl.fromEndpoint(
+class _NfcProxyImpl extends bindings.Proxy {
+  _NfcProxyImpl.fromEndpoint(
       core.MojoMessagePipeEndpoint endpoint) : super.fromEndpoint(endpoint);
 
-  NfcProxyImpl.fromHandle(core.MojoHandle handle) :
+  _NfcProxyImpl.fromHandle(core.MojoHandle handle) :
       super.fromHandle(handle);
 
-  NfcProxyImpl.unbound() : super.unbound();
+  _NfcProxyImpl.unbound() : super.unbound();
 
-  static NfcProxyImpl newFromEndpoint(
+  static _NfcProxyImpl newFromEndpoint(
       core.MojoMessagePipeEndpoint endpoint) {
-    assert(endpoint.setDescription("For NfcProxyImpl"));
-    return new NfcProxyImpl.fromEndpoint(endpoint);
+    assert(endpoint.setDescription("For _NfcProxyImpl"));
+    return new _NfcProxyImpl.fromEndpoint(endpoint);
   }
-
-  String get name => NfcName;
 
   void handleResponse(bindings.ServiceMessage message) {
     switch (message.header.type) {
-      case kNfc_transmitOnNextConnection_name:
+      case _Nfc_transmitOnNextConnectionName:
         var r = NfcTransmitOnNextConnectionResponseParams.deserialize(
             message.payload);
         if (!message.header.hasRequestId) {
@@ -867,22 +854,22 @@ class NfcProxyImpl extends bindings.Proxy {
 
   String toString() {
     var superString = super.toString();
-    return "NfcProxyImpl($superString)";
+    return "_NfcProxyImpl($superString)";
   }
 }
 
 
 class _NfcProxyCalls implements Nfc {
-  NfcProxyImpl _proxyImpl;
+  _NfcProxyImpl _proxyImpl;
 
   _NfcProxyCalls(this._proxyImpl);
     dynamic transmitOnNextConnection(NfcData nfcData,Object transmission,[Function responseFactory = null]) {
-      var params = new NfcTransmitOnNextConnectionParams();
+      var params = new _NfcTransmitOnNextConnectionParams();
       params.nfcData = nfcData;
       params.transmission = transmission;
       return _proxyImpl.sendMessageWithRequestId(
           params,
-          kNfc_transmitOnNextConnection_name,
+          _Nfc_transmitOnNextConnectionName,
           -1,
           bindings.MessageHeader.kMessageExpectsResponse);
     }
@@ -891,44 +878,41 @@ class _NfcProxyCalls implements Nfc {
         _proxyImpl.proxyError("The Proxy is closed.");
         return;
       }
-      var params = new NfcRegisterParams();
-      _proxyImpl.sendMessage(params, kNfc_register_name);
+      var params = new _NfcRegisterParams();
+      _proxyImpl.sendMessage(params, _Nfc_registerName);
     }
-  
     void unregister() {
       if (!_proxyImpl.isBound) {
         _proxyImpl.proxyError("The Proxy is closed.");
         return;
       }
-      var params = new NfcUnregisterParams();
-      _proxyImpl.sendMessage(params, kNfc_unregister_name);
+      var params = new _NfcUnregisterParams();
+      _proxyImpl.sendMessage(params, _Nfc_unregisterName);
     }
-  
 }
 
 
 class NfcProxy implements bindings.ProxyBase {
   final bindings.Proxy impl;
   Nfc ptr;
-  final String name = NfcName;
 
-  NfcProxy(NfcProxyImpl proxyImpl) :
+  NfcProxy(_NfcProxyImpl proxyImpl) :
       impl = proxyImpl,
       ptr = new _NfcProxyCalls(proxyImpl);
 
   NfcProxy.fromEndpoint(
       core.MojoMessagePipeEndpoint endpoint) :
-      impl = new NfcProxyImpl.fromEndpoint(endpoint) {
+      impl = new _NfcProxyImpl.fromEndpoint(endpoint) {
     ptr = new _NfcProxyCalls(impl);
   }
 
   NfcProxy.fromHandle(core.MojoHandle handle) :
-      impl = new NfcProxyImpl.fromHandle(handle) {
+      impl = new _NfcProxyImpl.fromHandle(handle) {
     ptr = new _NfcProxyCalls(impl);
   }
 
   NfcProxy.unbound() :
-      impl = new NfcProxyImpl.unbound() {
+      impl = new _NfcProxyImpl.unbound() {
     ptr = new _NfcProxyCalls(impl);
   }
 
@@ -944,6 +928,8 @@ class NfcProxy implements bindings.ProxyBase {
     assert(endpoint.setDescription("For NfcProxy"));
     return new NfcProxy.fromEndpoint(endpoint);
   }
+
+  String get serviceName => Nfc.serviceName;
 
   Future close({bool immediate: false}) => impl.close(immediate: immediate);
 
@@ -983,8 +969,6 @@ class NfcStub extends bindings.Stub {
     return new NfcStub.fromEndpoint(endpoint);
   }
 
-  static const String name = NfcName;
-
 
   NfcTransmitOnNextConnectionResponseParams _NfcTransmitOnNextConnectionResponseParamsFactory(bool success) {
     var mojo_factory_result = new NfcTransmitOnNextConnectionResponseParams();
@@ -1000,8 +984,8 @@ class NfcStub extends bindings.Stub {
     }
     assert(_impl != null);
     switch (message.header.type) {
-      case kNfc_transmitOnNextConnection_name:
-        var params = NfcTransmitOnNextConnectionParams.deserialize(
+      case _Nfc_transmitOnNextConnectionName:
+        var params = _NfcTransmitOnNextConnectionParams.deserialize(
             message.payload);
         var response = _impl.transmitOnNextConnection(params.nfcData,params.transmission,_NfcTransmitOnNextConnectionResponseParamsFactory);
         if (response is Future) {
@@ -1009,7 +993,7 @@ class NfcStub extends bindings.Stub {
             if (response != null) {
               return buildResponseWithId(
                   response,
-                  kNfc_transmitOnNextConnection_name,
+                  _Nfc_transmitOnNextConnectionName,
                   message.header.requestId,
                   bindings.MessageHeader.kMessageIsResponse);
             }
@@ -1017,18 +1001,18 @@ class NfcStub extends bindings.Stub {
         } else if (response != null) {
           return buildResponseWithId(
               response,
-              kNfc_transmitOnNextConnection_name,
+              _Nfc_transmitOnNextConnectionName,
               message.header.requestId,
               bindings.MessageHeader.kMessageIsResponse);
         }
         break;
-      case kNfc_register_name:
-        var params = NfcRegisterParams.deserialize(
+      case _Nfc_registerName:
+        var params = _NfcRegisterParams.deserialize(
             message.payload);
         _impl.register();
         break;
-      case kNfc_unregister_name:
-        var params = NfcUnregisterParams.deserialize(
+      case _Nfc_unregisterName:
+        var params = _NfcUnregisterParams.deserialize(
             message.payload);
         _impl.unregister();
         break;

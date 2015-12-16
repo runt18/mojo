@@ -13,16 +13,16 @@ import 'package:mojo_services/http_server/http_response.mojom.dart' as http_resp
 
 
 
-class HttpServerSetHandlerParams extends bindings.Struct {
+class _HttpServerSetHandlerParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(24, 0)
   ];
   String pattern = null;
   Object handler = null;
 
-  HttpServerSetHandlerParams() : super(kVersions.last.size);
+  _HttpServerSetHandlerParams() : super(kVersions.last.size);
 
-  static HttpServerSetHandlerParams deserialize(bindings.Message message) {
+  static _HttpServerSetHandlerParams deserialize(bindings.Message message) {
     var decoder = new bindings.Decoder(message);
     var result = decode(decoder);
     if (decoder.excessHandles != null) {
@@ -31,11 +31,11 @@ class HttpServerSetHandlerParams extends bindings.Struct {
     return result;
   }
 
-  static HttpServerSetHandlerParams decode(bindings.Decoder decoder0) {
+  static _HttpServerSetHandlerParams decode(bindings.Decoder decoder0) {
     if (decoder0 == null) {
       return null;
     }
-    HttpServerSetHandlerParams result = new HttpServerSetHandlerParams();
+    _HttpServerSetHandlerParams result = new _HttpServerSetHandlerParams();
 
     var mainDataHeader = decoder0.decodeStructDataHeader();
     if (mainDataHeader.version <= kVersions.last.version) {
@@ -75,7 +75,7 @@ class HttpServerSetHandlerParams extends bindings.Struct {
   }
 
   String toString() {
-    return "HttpServerSetHandlerParams("
+    return "_HttpServerSetHandlerParams("
            "pattern: $pattern" ", "
            "handler: $handler" ")";
   }
@@ -154,14 +154,14 @@ class HttpServerSetHandlerResponseParams extends bindings.Struct {
 }
 
 
-class HttpServerGetPortParams extends bindings.Struct {
+class _HttpServerGetPortParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(8, 0)
   ];
 
-  HttpServerGetPortParams() : super(kVersions.last.size);
+  _HttpServerGetPortParams() : super(kVersions.last.size);
 
-  static HttpServerGetPortParams deserialize(bindings.Message message) {
+  static _HttpServerGetPortParams deserialize(bindings.Message message) {
     var decoder = new bindings.Decoder(message);
     var result = decode(decoder);
     if (decoder.excessHandles != null) {
@@ -170,11 +170,11 @@ class HttpServerGetPortParams extends bindings.Struct {
     return result;
   }
 
-  static HttpServerGetPortParams decode(bindings.Decoder decoder0) {
+  static _HttpServerGetPortParams decode(bindings.Decoder decoder0) {
     if (decoder0 == null) {
       return null;
     }
-    HttpServerGetPortParams result = new HttpServerGetPortParams();
+    _HttpServerGetPortParams result = new _HttpServerGetPortParams();
 
     var mainDataHeader = decoder0.decodeStructDataHeader();
     if (mainDataHeader.version <= kVersions.last.version) {
@@ -202,7 +202,7 @@ class HttpServerGetPortParams extends bindings.Struct {
   }
 
   String toString() {
-    return "HttpServerGetPortParams("")";
+    return "_HttpServerGetPortParams("")";
   }
 
   Map toJson() {
@@ -279,15 +279,15 @@ class HttpServerGetPortResponseParams extends bindings.Struct {
 }
 
 
-class HttpHandlerHandleRequestParams extends bindings.Struct {
+class _HttpHandlerHandleRequestParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(16, 0)
   ];
   http_request_mojom.HttpRequest request = null;
 
-  HttpHandlerHandleRequestParams() : super(kVersions.last.size);
+  _HttpHandlerHandleRequestParams() : super(kVersions.last.size);
 
-  static HttpHandlerHandleRequestParams deserialize(bindings.Message message) {
+  static _HttpHandlerHandleRequestParams deserialize(bindings.Message message) {
     var decoder = new bindings.Decoder(message);
     var result = decode(decoder);
     if (decoder.excessHandles != null) {
@@ -296,11 +296,11 @@ class HttpHandlerHandleRequestParams extends bindings.Struct {
     return result;
   }
 
-  static HttpHandlerHandleRequestParams decode(bindings.Decoder decoder0) {
+  static _HttpHandlerHandleRequestParams decode(bindings.Decoder decoder0) {
     if (decoder0 == null) {
       return null;
     }
-    HttpHandlerHandleRequestParams result = new HttpHandlerHandleRequestParams();
+    _HttpHandlerHandleRequestParams result = new _HttpHandlerHandleRequestParams();
 
     var mainDataHeader = decoder0.decodeStructDataHeader();
     if (mainDataHeader.version <= kVersions.last.version) {
@@ -335,7 +335,7 @@ class HttpHandlerHandleRequestParams extends bindings.Struct {
   }
 
   String toString() {
-    return "HttpHandlerHandleRequestParams("
+    return "_HttpHandlerHandleRequestParams("
            "request: $request" ")";
   }
 
@@ -412,37 +412,34 @@ class HttpHandlerHandleRequestResponseParams extends bindings.Struct {
   }
 }
 
-const int kHttpServer_setHandler_name = 0;
-const int kHttpServer_getPort_name = 1;
-const String HttpServerName = null;
+const int _HttpServer_setHandlerName = 0;
+const int _HttpServer_getPortName = 1;
 
 abstract class HttpServer {
+  static const String serviceName = null;
   dynamic setHandler(String pattern,Object handler,[Function responseFactory = null]);
   dynamic getPort([Function responseFactory = null]);
-
 }
 
 
-class HttpServerProxyImpl extends bindings.Proxy {
-  HttpServerProxyImpl.fromEndpoint(
+class _HttpServerProxyImpl extends bindings.Proxy {
+  _HttpServerProxyImpl.fromEndpoint(
       core.MojoMessagePipeEndpoint endpoint) : super.fromEndpoint(endpoint);
 
-  HttpServerProxyImpl.fromHandle(core.MojoHandle handle) :
+  _HttpServerProxyImpl.fromHandle(core.MojoHandle handle) :
       super.fromHandle(handle);
 
-  HttpServerProxyImpl.unbound() : super.unbound();
+  _HttpServerProxyImpl.unbound() : super.unbound();
 
-  static HttpServerProxyImpl newFromEndpoint(
+  static _HttpServerProxyImpl newFromEndpoint(
       core.MojoMessagePipeEndpoint endpoint) {
-    assert(endpoint.setDescription("For HttpServerProxyImpl"));
-    return new HttpServerProxyImpl.fromEndpoint(endpoint);
+    assert(endpoint.setDescription("For _HttpServerProxyImpl"));
+    return new _HttpServerProxyImpl.fromEndpoint(endpoint);
   }
-
-  String get name => HttpServerName;
 
   void handleResponse(bindings.ServiceMessage message) {
     switch (message.header.type) {
-      case kHttpServer_setHandler_name:
+      case _HttpServer_setHandlerName:
         var r = HttpServerSetHandlerResponseParams.deserialize(
             message.payload);
         if (!message.header.hasRequestId) {
@@ -462,7 +459,7 @@ class HttpServerProxyImpl extends bindings.Proxy {
         }
         c.complete(r);
         break;
-      case kHttpServer_getPort_name:
+      case _HttpServer_getPortName:
         var r = HttpServerGetPortResponseParams.deserialize(
             message.payload);
         if (!message.header.hasRequestId) {
@@ -491,30 +488,30 @@ class HttpServerProxyImpl extends bindings.Proxy {
 
   String toString() {
     var superString = super.toString();
-    return "HttpServerProxyImpl($superString)";
+    return "_HttpServerProxyImpl($superString)";
   }
 }
 
 
 class _HttpServerProxyCalls implements HttpServer {
-  HttpServerProxyImpl _proxyImpl;
+  _HttpServerProxyImpl _proxyImpl;
 
   _HttpServerProxyCalls(this._proxyImpl);
     dynamic setHandler(String pattern,Object handler,[Function responseFactory = null]) {
-      var params = new HttpServerSetHandlerParams();
+      var params = new _HttpServerSetHandlerParams();
       params.pattern = pattern;
       params.handler = handler;
       return _proxyImpl.sendMessageWithRequestId(
           params,
-          kHttpServer_setHandler_name,
+          _HttpServer_setHandlerName,
           -1,
           bindings.MessageHeader.kMessageExpectsResponse);
     }
     dynamic getPort([Function responseFactory = null]) {
-      var params = new HttpServerGetPortParams();
+      var params = new _HttpServerGetPortParams();
       return _proxyImpl.sendMessageWithRequestId(
           params,
-          kHttpServer_getPort_name,
+          _HttpServer_getPortName,
           -1,
           bindings.MessageHeader.kMessageExpectsResponse);
     }
@@ -524,25 +521,24 @@ class _HttpServerProxyCalls implements HttpServer {
 class HttpServerProxy implements bindings.ProxyBase {
   final bindings.Proxy impl;
   HttpServer ptr;
-  final String name = HttpServerName;
 
-  HttpServerProxy(HttpServerProxyImpl proxyImpl) :
+  HttpServerProxy(_HttpServerProxyImpl proxyImpl) :
       impl = proxyImpl,
       ptr = new _HttpServerProxyCalls(proxyImpl);
 
   HttpServerProxy.fromEndpoint(
       core.MojoMessagePipeEndpoint endpoint) :
-      impl = new HttpServerProxyImpl.fromEndpoint(endpoint) {
+      impl = new _HttpServerProxyImpl.fromEndpoint(endpoint) {
     ptr = new _HttpServerProxyCalls(impl);
   }
 
   HttpServerProxy.fromHandle(core.MojoHandle handle) :
-      impl = new HttpServerProxyImpl.fromHandle(handle) {
+      impl = new _HttpServerProxyImpl.fromHandle(handle) {
     ptr = new _HttpServerProxyCalls(impl);
   }
 
   HttpServerProxy.unbound() :
-      impl = new HttpServerProxyImpl.unbound() {
+      impl = new _HttpServerProxyImpl.unbound() {
     ptr = new _HttpServerProxyCalls(impl);
   }
 
@@ -558,6 +554,8 @@ class HttpServerProxy implements bindings.ProxyBase {
     assert(endpoint.setDescription("For HttpServerProxy"));
     return new HttpServerProxy.fromEndpoint(endpoint);
   }
+
+  String get serviceName => HttpServer.serviceName;
 
   Future close({bool immediate: false}) => impl.close(immediate: immediate);
 
@@ -597,8 +595,6 @@ class HttpServerStub extends bindings.Stub {
     return new HttpServerStub.fromEndpoint(endpoint);
   }
 
-  static const String name = HttpServerName;
-
 
   HttpServerSetHandlerResponseParams _HttpServerSetHandlerResponseParamsFactory(bool success) {
     var mojo_factory_result = new HttpServerSetHandlerResponseParams();
@@ -619,8 +615,8 @@ class HttpServerStub extends bindings.Stub {
     }
     assert(_impl != null);
     switch (message.header.type) {
-      case kHttpServer_setHandler_name:
-        var params = HttpServerSetHandlerParams.deserialize(
+      case _HttpServer_setHandlerName:
+        var params = _HttpServerSetHandlerParams.deserialize(
             message.payload);
         var response = _impl.setHandler(params.pattern,params.handler,_HttpServerSetHandlerResponseParamsFactory);
         if (response is Future) {
@@ -628,7 +624,7 @@ class HttpServerStub extends bindings.Stub {
             if (response != null) {
               return buildResponseWithId(
                   response,
-                  kHttpServer_setHandler_name,
+                  _HttpServer_setHandlerName,
                   message.header.requestId,
                   bindings.MessageHeader.kMessageIsResponse);
             }
@@ -636,13 +632,13 @@ class HttpServerStub extends bindings.Stub {
         } else if (response != null) {
           return buildResponseWithId(
               response,
-              kHttpServer_setHandler_name,
+              _HttpServer_setHandlerName,
               message.header.requestId,
               bindings.MessageHeader.kMessageIsResponse);
         }
         break;
-      case kHttpServer_getPort_name:
-        var params = HttpServerGetPortParams.deserialize(
+      case _HttpServer_getPortName:
+        var params = _HttpServerGetPortParams.deserialize(
             message.payload);
         var response = _impl.getPort(_HttpServerGetPortResponseParamsFactory);
         if (response is Future) {
@@ -650,7 +646,7 @@ class HttpServerStub extends bindings.Stub {
             if (response != null) {
               return buildResponseWithId(
                   response,
-                  kHttpServer_getPort_name,
+                  _HttpServer_getPortName,
                   message.header.requestId,
                   bindings.MessageHeader.kMessageIsResponse);
             }
@@ -658,7 +654,7 @@ class HttpServerStub extends bindings.Stub {
         } else if (response != null) {
           return buildResponseWithId(
               response,
-              kHttpServer_getPort_name,
+              _HttpServer_getPortName,
               message.header.requestId,
               bindings.MessageHeader.kMessageIsResponse);
         }
@@ -684,35 +680,32 @@ class HttpServerStub extends bindings.Stub {
   int get version => 0;
 }
 
-const int kHttpHandler_handleRequest_name = 0;
-const String HttpHandlerName = null;
+const int _HttpHandler_handleRequestName = 0;
 
 abstract class HttpHandler {
+  static const String serviceName = null;
   dynamic handleRequest(http_request_mojom.HttpRequest request,[Function responseFactory = null]);
-
 }
 
 
-class HttpHandlerProxyImpl extends bindings.Proxy {
-  HttpHandlerProxyImpl.fromEndpoint(
+class _HttpHandlerProxyImpl extends bindings.Proxy {
+  _HttpHandlerProxyImpl.fromEndpoint(
       core.MojoMessagePipeEndpoint endpoint) : super.fromEndpoint(endpoint);
 
-  HttpHandlerProxyImpl.fromHandle(core.MojoHandle handle) :
+  _HttpHandlerProxyImpl.fromHandle(core.MojoHandle handle) :
       super.fromHandle(handle);
 
-  HttpHandlerProxyImpl.unbound() : super.unbound();
+  _HttpHandlerProxyImpl.unbound() : super.unbound();
 
-  static HttpHandlerProxyImpl newFromEndpoint(
+  static _HttpHandlerProxyImpl newFromEndpoint(
       core.MojoMessagePipeEndpoint endpoint) {
-    assert(endpoint.setDescription("For HttpHandlerProxyImpl"));
-    return new HttpHandlerProxyImpl.fromEndpoint(endpoint);
+    assert(endpoint.setDescription("For _HttpHandlerProxyImpl"));
+    return new _HttpHandlerProxyImpl.fromEndpoint(endpoint);
   }
-
-  String get name => HttpHandlerName;
 
   void handleResponse(bindings.ServiceMessage message) {
     switch (message.header.type) {
-      case kHttpHandler_handleRequest_name:
+      case _HttpHandler_handleRequestName:
         var r = HttpHandlerHandleRequestResponseParams.deserialize(
             message.payload);
         if (!message.header.hasRequestId) {
@@ -741,21 +734,21 @@ class HttpHandlerProxyImpl extends bindings.Proxy {
 
   String toString() {
     var superString = super.toString();
-    return "HttpHandlerProxyImpl($superString)";
+    return "_HttpHandlerProxyImpl($superString)";
   }
 }
 
 
 class _HttpHandlerProxyCalls implements HttpHandler {
-  HttpHandlerProxyImpl _proxyImpl;
+  _HttpHandlerProxyImpl _proxyImpl;
 
   _HttpHandlerProxyCalls(this._proxyImpl);
     dynamic handleRequest(http_request_mojom.HttpRequest request,[Function responseFactory = null]) {
-      var params = new HttpHandlerHandleRequestParams();
+      var params = new _HttpHandlerHandleRequestParams();
       params.request = request;
       return _proxyImpl.sendMessageWithRequestId(
           params,
-          kHttpHandler_handleRequest_name,
+          _HttpHandler_handleRequestName,
           -1,
           bindings.MessageHeader.kMessageExpectsResponse);
     }
@@ -765,25 +758,24 @@ class _HttpHandlerProxyCalls implements HttpHandler {
 class HttpHandlerProxy implements bindings.ProxyBase {
   final bindings.Proxy impl;
   HttpHandler ptr;
-  final String name = HttpHandlerName;
 
-  HttpHandlerProxy(HttpHandlerProxyImpl proxyImpl) :
+  HttpHandlerProxy(_HttpHandlerProxyImpl proxyImpl) :
       impl = proxyImpl,
       ptr = new _HttpHandlerProxyCalls(proxyImpl);
 
   HttpHandlerProxy.fromEndpoint(
       core.MojoMessagePipeEndpoint endpoint) :
-      impl = new HttpHandlerProxyImpl.fromEndpoint(endpoint) {
+      impl = new _HttpHandlerProxyImpl.fromEndpoint(endpoint) {
     ptr = new _HttpHandlerProxyCalls(impl);
   }
 
   HttpHandlerProxy.fromHandle(core.MojoHandle handle) :
-      impl = new HttpHandlerProxyImpl.fromHandle(handle) {
+      impl = new _HttpHandlerProxyImpl.fromHandle(handle) {
     ptr = new _HttpHandlerProxyCalls(impl);
   }
 
   HttpHandlerProxy.unbound() :
-      impl = new HttpHandlerProxyImpl.unbound() {
+      impl = new _HttpHandlerProxyImpl.unbound() {
     ptr = new _HttpHandlerProxyCalls(impl);
   }
 
@@ -799,6 +791,8 @@ class HttpHandlerProxy implements bindings.ProxyBase {
     assert(endpoint.setDescription("For HttpHandlerProxy"));
     return new HttpHandlerProxy.fromEndpoint(endpoint);
   }
+
+  String get serviceName => HttpHandler.serviceName;
 
   Future close({bool immediate: false}) => impl.close(immediate: immediate);
 
@@ -838,8 +832,6 @@ class HttpHandlerStub extends bindings.Stub {
     return new HttpHandlerStub.fromEndpoint(endpoint);
   }
 
-  static const String name = HttpHandlerName;
-
 
   HttpHandlerHandleRequestResponseParams _HttpHandlerHandleRequestResponseParamsFactory(http_response_mojom.HttpResponse response) {
     var mojo_factory_result = new HttpHandlerHandleRequestResponseParams();
@@ -855,8 +847,8 @@ class HttpHandlerStub extends bindings.Stub {
     }
     assert(_impl != null);
     switch (message.header.type) {
-      case kHttpHandler_handleRequest_name:
-        var params = HttpHandlerHandleRequestParams.deserialize(
+      case _HttpHandler_handleRequestName:
+        var params = _HttpHandlerHandleRequestParams.deserialize(
             message.payload);
         var response = _impl.handleRequest(params.request,_HttpHandlerHandleRequestResponseParamsFactory);
         if (response is Future) {
@@ -864,7 +856,7 @@ class HttpHandlerStub extends bindings.Stub {
             if (response != null) {
               return buildResponseWithId(
                   response,
-                  kHttpHandler_handleRequest_name,
+                  _HttpHandler_handleRequestName,
                   message.header.requestId,
                   bindings.MessageHeader.kMessageIsResponse);
             }
@@ -872,7 +864,7 @@ class HttpHandlerStub extends bindings.Stub {
         } else if (response != null) {
           return buildResponseWithId(
               response,
-              kHttpHandler_handleRequest_name,
+              _HttpHandler_handleRequestName,
               message.header.requestId,
               bindings.MessageHeader.kMessageIsResponse);
         }

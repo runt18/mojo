@@ -13,16 +13,16 @@ import 'package:mojo_services/mojo/ui/views.mojom.dart' as views_mojom;
 
 
 
-class ViewProviderCreateViewParams extends bindings.Struct {
+class _ViewProviderCreateViewParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(24, 0)
   ];
   Object services = null;
   Object exposedServices = null;
 
-  ViewProviderCreateViewParams() : super(kVersions.last.size);
+  _ViewProviderCreateViewParams() : super(kVersions.last.size);
 
-  static ViewProviderCreateViewParams deserialize(bindings.Message message) {
+  static _ViewProviderCreateViewParams deserialize(bindings.Message message) {
     var decoder = new bindings.Decoder(message);
     var result = decode(decoder);
     if (decoder.excessHandles != null) {
@@ -31,11 +31,11 @@ class ViewProviderCreateViewParams extends bindings.Struct {
     return result;
   }
 
-  static ViewProviderCreateViewParams decode(bindings.Decoder decoder0) {
+  static _ViewProviderCreateViewParams decode(bindings.Decoder decoder0) {
     if (decoder0 == null) {
       return null;
     }
-    ViewProviderCreateViewParams result = new ViewProviderCreateViewParams();
+    _ViewProviderCreateViewParams result = new _ViewProviderCreateViewParams();
 
     var mainDataHeader = decoder0.decodeStructDataHeader();
     if (mainDataHeader.version <= kVersions.last.version) {
@@ -75,7 +75,7 @@ class ViewProviderCreateViewParams extends bindings.Struct {
   }
 
   String toString() {
-    return "ViewProviderCreateViewParams("
+    return "_ViewProviderCreateViewParams("
            "services: $services" ", "
            "exposedServices: $exposedServices" ")";
   }
@@ -154,35 +154,32 @@ class ViewProviderCreateViewResponseParams extends bindings.Struct {
   }
 }
 
-const int kViewProvider_createView_name = 0;
-const String ViewProviderName = "mojo::ui::ViewProvider";
+const int _ViewProvider_createViewName = 0;
 
 abstract class ViewProvider {
+  static const String serviceName = "mojo::ui::ViewProvider";
   dynamic createView(Object services,Object exposedServices,[Function responseFactory = null]);
-
 }
 
 
-class ViewProviderProxyImpl extends bindings.Proxy {
-  ViewProviderProxyImpl.fromEndpoint(
+class _ViewProviderProxyImpl extends bindings.Proxy {
+  _ViewProviderProxyImpl.fromEndpoint(
       core.MojoMessagePipeEndpoint endpoint) : super.fromEndpoint(endpoint);
 
-  ViewProviderProxyImpl.fromHandle(core.MojoHandle handle) :
+  _ViewProviderProxyImpl.fromHandle(core.MojoHandle handle) :
       super.fromHandle(handle);
 
-  ViewProviderProxyImpl.unbound() : super.unbound();
+  _ViewProviderProxyImpl.unbound() : super.unbound();
 
-  static ViewProviderProxyImpl newFromEndpoint(
+  static _ViewProviderProxyImpl newFromEndpoint(
       core.MojoMessagePipeEndpoint endpoint) {
-    assert(endpoint.setDescription("For ViewProviderProxyImpl"));
-    return new ViewProviderProxyImpl.fromEndpoint(endpoint);
+    assert(endpoint.setDescription("For _ViewProviderProxyImpl"));
+    return new _ViewProviderProxyImpl.fromEndpoint(endpoint);
   }
-
-  String get name => ViewProviderName;
 
   void handleResponse(bindings.ServiceMessage message) {
     switch (message.header.type) {
-      case kViewProvider_createView_name:
+      case _ViewProvider_createViewName:
         var r = ViewProviderCreateViewResponseParams.deserialize(
             message.payload);
         if (!message.header.hasRequestId) {
@@ -211,22 +208,22 @@ class ViewProviderProxyImpl extends bindings.Proxy {
 
   String toString() {
     var superString = super.toString();
-    return "ViewProviderProxyImpl($superString)";
+    return "_ViewProviderProxyImpl($superString)";
   }
 }
 
 
 class _ViewProviderProxyCalls implements ViewProvider {
-  ViewProviderProxyImpl _proxyImpl;
+  _ViewProviderProxyImpl _proxyImpl;
 
   _ViewProviderProxyCalls(this._proxyImpl);
     dynamic createView(Object services,Object exposedServices,[Function responseFactory = null]) {
-      var params = new ViewProviderCreateViewParams();
+      var params = new _ViewProviderCreateViewParams();
       params.services = services;
       params.exposedServices = exposedServices;
       return _proxyImpl.sendMessageWithRequestId(
           params,
-          kViewProvider_createView_name,
+          _ViewProvider_createViewName,
           -1,
           bindings.MessageHeader.kMessageExpectsResponse);
     }
@@ -236,25 +233,24 @@ class _ViewProviderProxyCalls implements ViewProvider {
 class ViewProviderProxy implements bindings.ProxyBase {
   final bindings.Proxy impl;
   ViewProvider ptr;
-  final String name = ViewProviderName;
 
-  ViewProviderProxy(ViewProviderProxyImpl proxyImpl) :
+  ViewProviderProxy(_ViewProviderProxyImpl proxyImpl) :
       impl = proxyImpl,
       ptr = new _ViewProviderProxyCalls(proxyImpl);
 
   ViewProviderProxy.fromEndpoint(
       core.MojoMessagePipeEndpoint endpoint) :
-      impl = new ViewProviderProxyImpl.fromEndpoint(endpoint) {
+      impl = new _ViewProviderProxyImpl.fromEndpoint(endpoint) {
     ptr = new _ViewProviderProxyCalls(impl);
   }
 
   ViewProviderProxy.fromHandle(core.MojoHandle handle) :
-      impl = new ViewProviderProxyImpl.fromHandle(handle) {
+      impl = new _ViewProviderProxyImpl.fromHandle(handle) {
     ptr = new _ViewProviderProxyCalls(impl);
   }
 
   ViewProviderProxy.unbound() :
-      impl = new ViewProviderProxyImpl.unbound() {
+      impl = new _ViewProviderProxyImpl.unbound() {
     ptr = new _ViewProviderProxyCalls(impl);
   }
 
@@ -270,6 +266,8 @@ class ViewProviderProxy implements bindings.ProxyBase {
     assert(endpoint.setDescription("For ViewProviderProxy"));
     return new ViewProviderProxy.fromEndpoint(endpoint);
   }
+
+  String get serviceName => ViewProvider.serviceName;
 
   Future close({bool immediate: false}) => impl.close(immediate: immediate);
 
@@ -309,8 +307,6 @@ class ViewProviderStub extends bindings.Stub {
     return new ViewProviderStub.fromEndpoint(endpoint);
   }
 
-  static const String name = ViewProviderName;
-
 
   ViewProviderCreateViewResponseParams _ViewProviderCreateViewResponseParamsFactory(views_mojom.ViewToken viewToken) {
     var mojo_factory_result = new ViewProviderCreateViewResponseParams();
@@ -326,8 +322,8 @@ class ViewProviderStub extends bindings.Stub {
     }
     assert(_impl != null);
     switch (message.header.type) {
-      case kViewProvider_createView_name:
-        var params = ViewProviderCreateViewParams.deserialize(
+      case _ViewProvider_createViewName:
+        var params = _ViewProviderCreateViewParams.deserialize(
             message.payload);
         var response = _impl.createView(params.services,params.exposedServices,_ViewProviderCreateViewResponseParamsFactory);
         if (response is Future) {
@@ -335,7 +331,7 @@ class ViewProviderStub extends bindings.Stub {
             if (response != null) {
               return buildResponseWithId(
                   response,
-                  kViewProvider_createView_name,
+                  _ViewProvider_createViewName,
                   message.header.requestId,
                   bindings.MessageHeader.kMessageIsResponse);
             }
@@ -343,7 +339,7 @@ class ViewProviderStub extends bindings.Stub {
         } else if (response != null) {
           return buildResponseWithId(
               response,
-              kViewProvider_createView_name,
+              _ViewProvider_createViewName,
               message.header.requestId,
               bindings.MessageHeader.kMessageIsResponse);
         }

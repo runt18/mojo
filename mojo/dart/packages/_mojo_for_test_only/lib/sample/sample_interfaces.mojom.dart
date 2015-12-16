@@ -55,15 +55,15 @@ class Enum extends bindings.MojoEnum {
 
 
 
-class ProviderEchoStringParams extends bindings.Struct {
+class _ProviderEchoStringParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(16, 0)
   ];
   String a = null;
 
-  ProviderEchoStringParams() : super(kVersions.last.size);
+  _ProviderEchoStringParams() : super(kVersions.last.size);
 
-  static ProviderEchoStringParams deserialize(bindings.Message message) {
+  static _ProviderEchoStringParams deserialize(bindings.Message message) {
     var decoder = new bindings.Decoder(message);
     var result = decode(decoder);
     if (decoder.excessHandles != null) {
@@ -72,11 +72,11 @@ class ProviderEchoStringParams extends bindings.Struct {
     return result;
   }
 
-  static ProviderEchoStringParams decode(bindings.Decoder decoder0) {
+  static _ProviderEchoStringParams decode(bindings.Decoder decoder0) {
     if (decoder0 == null) {
       return null;
     }
-    ProviderEchoStringParams result = new ProviderEchoStringParams();
+    _ProviderEchoStringParams result = new _ProviderEchoStringParams();
 
     var mainDataHeader = decoder0.decodeStructDataHeader();
     if (mainDataHeader.version <= kVersions.last.version) {
@@ -110,7 +110,7 @@ class ProviderEchoStringParams extends bindings.Struct {
   }
 
   String toString() {
-    return "ProviderEchoStringParams("
+    return "_ProviderEchoStringParams("
            "a: $a" ")";
   }
 
@@ -189,16 +189,16 @@ class ProviderEchoStringResponseParams extends bindings.Struct {
 }
 
 
-class ProviderEchoStringsParams extends bindings.Struct {
+class _ProviderEchoStringsParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(24, 0)
   ];
   String a = null;
   String b = null;
 
-  ProviderEchoStringsParams() : super(kVersions.last.size);
+  _ProviderEchoStringsParams() : super(kVersions.last.size);
 
-  static ProviderEchoStringsParams deserialize(bindings.Message message) {
+  static _ProviderEchoStringsParams deserialize(bindings.Message message) {
     var decoder = new bindings.Decoder(message);
     var result = decode(decoder);
     if (decoder.excessHandles != null) {
@@ -207,11 +207,11 @@ class ProviderEchoStringsParams extends bindings.Struct {
     return result;
   }
 
-  static ProviderEchoStringsParams decode(bindings.Decoder decoder0) {
+  static _ProviderEchoStringsParams decode(bindings.Decoder decoder0) {
     if (decoder0 == null) {
       return null;
     }
-    ProviderEchoStringsParams result = new ProviderEchoStringsParams();
+    _ProviderEchoStringsParams result = new _ProviderEchoStringsParams();
 
     var mainDataHeader = decoder0.decodeStructDataHeader();
     if (mainDataHeader.version <= kVersions.last.version) {
@@ -251,7 +251,7 @@ class ProviderEchoStringsParams extends bindings.Struct {
   }
 
   String toString() {
-    return "ProviderEchoStringsParams("
+    return "_ProviderEchoStringsParams("
            "a: $a" ", "
            "b: $b" ")";
   }
@@ -341,15 +341,15 @@ class ProviderEchoStringsResponseParams extends bindings.Struct {
 }
 
 
-class ProviderEchoMessagePipeHandleParams extends bindings.Struct {
+class _ProviderEchoMessagePipeHandleParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(16, 0)
   ];
   core.MojoMessagePipeEndpoint a = null;
 
-  ProviderEchoMessagePipeHandleParams() : super(kVersions.last.size);
+  _ProviderEchoMessagePipeHandleParams() : super(kVersions.last.size);
 
-  static ProviderEchoMessagePipeHandleParams deserialize(bindings.Message message) {
+  static _ProviderEchoMessagePipeHandleParams deserialize(bindings.Message message) {
     var decoder = new bindings.Decoder(message);
     var result = decode(decoder);
     if (decoder.excessHandles != null) {
@@ -358,11 +358,11 @@ class ProviderEchoMessagePipeHandleParams extends bindings.Struct {
     return result;
   }
 
-  static ProviderEchoMessagePipeHandleParams decode(bindings.Decoder decoder0) {
+  static _ProviderEchoMessagePipeHandleParams decode(bindings.Decoder decoder0) {
     if (decoder0 == null) {
       return null;
     }
-    ProviderEchoMessagePipeHandleParams result = new ProviderEchoMessagePipeHandleParams();
+    _ProviderEchoMessagePipeHandleParams result = new _ProviderEchoMessagePipeHandleParams();
 
     var mainDataHeader = decoder0.decodeStructDataHeader();
     if (mainDataHeader.version <= kVersions.last.version) {
@@ -396,7 +396,7 @@ class ProviderEchoMessagePipeHandleParams extends bindings.Struct {
   }
 
   String toString() {
-    return "ProviderEchoMessagePipeHandleParams("
+    return "_ProviderEchoMessagePipeHandleParams("
            "a: $a" ")";
   }
 
@@ -473,15 +473,15 @@ class ProviderEchoMessagePipeHandleResponseParams extends bindings.Struct {
 }
 
 
-class ProviderEchoEnumParams extends bindings.Struct {
+class _ProviderEchoEnumParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(16, 0)
   ];
   Enum a = null;
 
-  ProviderEchoEnumParams() : super(kVersions.last.size);
+  _ProviderEchoEnumParams() : super(kVersions.last.size);
 
-  static ProviderEchoEnumParams deserialize(bindings.Message message) {
+  static _ProviderEchoEnumParams deserialize(bindings.Message message) {
     var decoder = new bindings.Decoder(message);
     var result = decode(decoder);
     if (decoder.excessHandles != null) {
@@ -490,11 +490,11 @@ class ProviderEchoEnumParams extends bindings.Struct {
     return result;
   }
 
-  static ProviderEchoEnumParams decode(bindings.Decoder decoder0) {
+  static _ProviderEchoEnumParams decode(bindings.Decoder decoder0) {
     if (decoder0 == null) {
       return null;
     }
-    ProviderEchoEnumParams result = new ProviderEchoEnumParams();
+    _ProviderEchoEnumParams result = new _ProviderEchoEnumParams();
 
     var mainDataHeader = decoder0.decodeStructDataHeader();
     if (mainDataHeader.version <= kVersions.last.version) {
@@ -532,7 +532,7 @@ class ProviderEchoEnumParams extends bindings.Struct {
   }
 
   String toString() {
-    return "ProviderEchoEnumParams("
+    return "_ProviderEchoEnumParams("
            "a: $a" ")";
   }
 
@@ -615,15 +615,15 @@ class ProviderEchoEnumResponseParams extends bindings.Struct {
 }
 
 
-class ProviderEchoIntParams extends bindings.Struct {
+class _ProviderEchoIntParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(16, 0)
   ];
   int a = 0;
 
-  ProviderEchoIntParams() : super(kVersions.last.size);
+  _ProviderEchoIntParams() : super(kVersions.last.size);
 
-  static ProviderEchoIntParams deserialize(bindings.Message message) {
+  static _ProviderEchoIntParams deserialize(bindings.Message message) {
     var decoder = new bindings.Decoder(message);
     var result = decode(decoder);
     if (decoder.excessHandles != null) {
@@ -632,11 +632,11 @@ class ProviderEchoIntParams extends bindings.Struct {
     return result;
   }
 
-  static ProviderEchoIntParams decode(bindings.Decoder decoder0) {
+  static _ProviderEchoIntParams decode(bindings.Decoder decoder0) {
     if (decoder0 == null) {
       return null;
     }
-    ProviderEchoIntParams result = new ProviderEchoIntParams();
+    _ProviderEchoIntParams result = new _ProviderEchoIntParams();
 
     var mainDataHeader = decoder0.decodeStructDataHeader();
     if (mainDataHeader.version <= kVersions.last.version) {
@@ -670,7 +670,7 @@ class ProviderEchoIntParams extends bindings.Struct {
   }
 
   String toString() {
-    return "ProviderEchoIntParams("
+    return "_ProviderEchoIntParams("
            "a: $a" ")";
   }
 
@@ -749,14 +749,14 @@ class ProviderEchoIntResponseParams extends bindings.Struct {
 }
 
 
-class IntegerAccessorGetIntegerParams extends bindings.Struct {
+class _IntegerAccessorGetIntegerParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(8, 0)
   ];
 
-  IntegerAccessorGetIntegerParams() : super(kVersions.last.size);
+  _IntegerAccessorGetIntegerParams() : super(kVersions.last.size);
 
-  static IntegerAccessorGetIntegerParams deserialize(bindings.Message message) {
+  static _IntegerAccessorGetIntegerParams deserialize(bindings.Message message) {
     var decoder = new bindings.Decoder(message);
     var result = decode(decoder);
     if (decoder.excessHandles != null) {
@@ -765,11 +765,11 @@ class IntegerAccessorGetIntegerParams extends bindings.Struct {
     return result;
   }
 
-  static IntegerAccessorGetIntegerParams decode(bindings.Decoder decoder0) {
+  static _IntegerAccessorGetIntegerParams decode(bindings.Decoder decoder0) {
     if (decoder0 == null) {
       return null;
     }
-    IntegerAccessorGetIntegerParams result = new IntegerAccessorGetIntegerParams();
+    _IntegerAccessorGetIntegerParams result = new _IntegerAccessorGetIntegerParams();
 
     var mainDataHeader = decoder0.decodeStructDataHeader();
     if (mainDataHeader.version <= kVersions.last.version) {
@@ -797,7 +797,7 @@ class IntegerAccessorGetIntegerParams extends bindings.Struct {
   }
 
   String toString() {
-    return "IntegerAccessorGetIntegerParams("")";
+    return "_IntegerAccessorGetIntegerParams("")";
   }
 
   Map toJson() {
@@ -888,7 +888,7 @@ class IntegerAccessorGetIntegerResponseParams extends bindings.Struct {
 }
 
 
-class IntegerAccessorSetIntegerParams extends bindings.Struct {
+class _IntegerAccessorSetIntegerParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(16, 0),
     const bindings.StructDataHeader(24, 3)
@@ -896,9 +896,9 @@ class IntegerAccessorSetIntegerParams extends bindings.Struct {
   int data = 0;
   Enum type = null;
 
-  IntegerAccessorSetIntegerParams() : super(kVersions.last.size);
+  _IntegerAccessorSetIntegerParams() : super(kVersions.last.size);
 
-  static IntegerAccessorSetIntegerParams deserialize(bindings.Message message) {
+  static _IntegerAccessorSetIntegerParams deserialize(bindings.Message message) {
     var decoder = new bindings.Decoder(message);
     var result = decode(decoder);
     if (decoder.excessHandles != null) {
@@ -907,11 +907,11 @@ class IntegerAccessorSetIntegerParams extends bindings.Struct {
     return result;
   }
 
-  static IntegerAccessorSetIntegerParams decode(bindings.Decoder decoder0) {
+  static _IntegerAccessorSetIntegerParams decode(bindings.Decoder decoder0) {
     if (decoder0 == null) {
       return null;
     }
-    IntegerAccessorSetIntegerParams result = new IntegerAccessorSetIntegerParams();
+    _IntegerAccessorSetIntegerParams result = new _IntegerAccessorSetIntegerParams();
 
     var mainDataHeader = decoder0.decodeStructDataHeader();
     if (mainDataHeader.version <= kVersions.last.version) {
@@ -955,7 +955,7 @@ class IntegerAccessorSetIntegerParams extends bindings.Struct {
   }
 
   String toString() {
-    return "IntegerAccessorSetIntegerParams("
+    return "_IntegerAccessorSetIntegerParams("
            "data: $data" ", "
            "type: $type" ")";
   }
@@ -969,16 +969,16 @@ class IntegerAccessorSetIntegerParams extends bindings.Struct {
 }
 
 
-class SampleInterfaceSampleMethod1Params extends bindings.Struct {
+class _SampleInterfaceSampleMethod1Params extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(24, 0)
   ];
   int in1 = 0;
   String in2 = null;
 
-  SampleInterfaceSampleMethod1Params() : super(kVersions.last.size);
+  _SampleInterfaceSampleMethod1Params() : super(kVersions.last.size);
 
-  static SampleInterfaceSampleMethod1Params deserialize(bindings.Message message) {
+  static _SampleInterfaceSampleMethod1Params deserialize(bindings.Message message) {
     var decoder = new bindings.Decoder(message);
     var result = decode(decoder);
     if (decoder.excessHandles != null) {
@@ -987,11 +987,11 @@ class SampleInterfaceSampleMethod1Params extends bindings.Struct {
     return result;
   }
 
-  static SampleInterfaceSampleMethod1Params decode(bindings.Decoder decoder0) {
+  static _SampleInterfaceSampleMethod1Params decode(bindings.Decoder decoder0) {
     if (decoder0 == null) {
       return null;
     }
-    SampleInterfaceSampleMethod1Params result = new SampleInterfaceSampleMethod1Params();
+    _SampleInterfaceSampleMethod1Params result = new _SampleInterfaceSampleMethod1Params();
 
     var mainDataHeader = decoder0.decodeStructDataHeader();
     if (mainDataHeader.version <= kVersions.last.version) {
@@ -1031,7 +1031,7 @@ class SampleInterfaceSampleMethod1Params extends bindings.Struct {
   }
 
   String toString() {
-    return "SampleInterfaceSampleMethod1Params("
+    return "_SampleInterfaceSampleMethod1Params("
            "in1: $in1" ", "
            "in2: $in2" ")";
   }
@@ -1125,14 +1125,14 @@ class SampleInterfaceSampleMethod1ResponseParams extends bindings.Struct {
 }
 
 
-class SampleInterfaceSampleMethod0Params extends bindings.Struct {
+class _SampleInterfaceSampleMethod0Params extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(8, 0)
   ];
 
-  SampleInterfaceSampleMethod0Params() : super(kVersions.last.size);
+  _SampleInterfaceSampleMethod0Params() : super(kVersions.last.size);
 
-  static SampleInterfaceSampleMethod0Params deserialize(bindings.Message message) {
+  static _SampleInterfaceSampleMethod0Params deserialize(bindings.Message message) {
     var decoder = new bindings.Decoder(message);
     var result = decode(decoder);
     if (decoder.excessHandles != null) {
@@ -1141,11 +1141,11 @@ class SampleInterfaceSampleMethod0Params extends bindings.Struct {
     return result;
   }
 
-  static SampleInterfaceSampleMethod0Params decode(bindings.Decoder decoder0) {
+  static _SampleInterfaceSampleMethod0Params decode(bindings.Decoder decoder0) {
     if (decoder0 == null) {
       return null;
     }
-    SampleInterfaceSampleMethod0Params result = new SampleInterfaceSampleMethod0Params();
+    _SampleInterfaceSampleMethod0Params result = new _SampleInterfaceSampleMethod0Params();
 
     var mainDataHeader = decoder0.decodeStructDataHeader();
     if (mainDataHeader.version <= kVersions.last.version) {
@@ -1173,7 +1173,7 @@ class SampleInterfaceSampleMethod0Params extends bindings.Struct {
   }
 
   String toString() {
-    return "SampleInterfaceSampleMethod0Params("")";
+    return "_SampleInterfaceSampleMethod0Params("")";
   }
 
   Map toJson() {
@@ -1183,14 +1183,14 @@ class SampleInterfaceSampleMethod0Params extends bindings.Struct {
 }
 
 
-class SampleInterfaceSampleMethod2Params extends bindings.Struct {
+class _SampleInterfaceSampleMethod2Params extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(8, 0)
   ];
 
-  SampleInterfaceSampleMethod2Params() : super(kVersions.last.size);
+  _SampleInterfaceSampleMethod2Params() : super(kVersions.last.size);
 
-  static SampleInterfaceSampleMethod2Params deserialize(bindings.Message message) {
+  static _SampleInterfaceSampleMethod2Params deserialize(bindings.Message message) {
     var decoder = new bindings.Decoder(message);
     var result = decode(decoder);
     if (decoder.excessHandles != null) {
@@ -1199,11 +1199,11 @@ class SampleInterfaceSampleMethod2Params extends bindings.Struct {
     return result;
   }
 
-  static SampleInterfaceSampleMethod2Params decode(bindings.Decoder decoder0) {
+  static _SampleInterfaceSampleMethod2Params decode(bindings.Decoder decoder0) {
     if (decoder0 == null) {
       return null;
     }
-    SampleInterfaceSampleMethod2Params result = new SampleInterfaceSampleMethod2Params();
+    _SampleInterfaceSampleMethod2Params result = new _SampleInterfaceSampleMethod2Params();
 
     var mainDataHeader = decoder0.decodeStructDataHeader();
     if (mainDataHeader.version <= kVersions.last.version) {
@@ -1231,7 +1231,7 @@ class SampleInterfaceSampleMethod2Params extends bindings.Struct {
   }
 
   String toString() {
-    return "SampleInterfaceSampleMethod2Params("")";
+    return "_SampleInterfaceSampleMethod2Params("")";
   }
 
   Map toJson() {
@@ -1240,43 +1240,40 @@ class SampleInterfaceSampleMethod2Params extends bindings.Struct {
   }
 }
 
-const int kProvider_echoString_name = 0;
-const int kProvider_echoStrings_name = 1;
-const int kProvider_echoMessagePipeHandle_name = 2;
-const int kProvider_echoEnum_name = 3;
-const int kProvider_echoInt_name = 4;
-const String ProviderName = null;
+const int _Provider_echoStringName = 0;
+const int _Provider_echoStringsName = 1;
+const int _Provider_echoMessagePipeHandleName = 2;
+const int _Provider_echoEnumName = 3;
+const int _Provider_echoIntName = 4;
 
 abstract class Provider {
+  static const String serviceName = null;
   dynamic echoString(String a,[Function responseFactory = null]);
   dynamic echoStrings(String a,String b,[Function responseFactory = null]);
   dynamic echoMessagePipeHandle(core.MojoMessagePipeEndpoint a,[Function responseFactory = null]);
   dynamic echoEnum(Enum a,[Function responseFactory = null]);
   dynamic echoInt(int a,[Function responseFactory = null]);
-
 }
 
 
-class ProviderProxyImpl extends bindings.Proxy {
-  ProviderProxyImpl.fromEndpoint(
+class _ProviderProxyImpl extends bindings.Proxy {
+  _ProviderProxyImpl.fromEndpoint(
       core.MojoMessagePipeEndpoint endpoint) : super.fromEndpoint(endpoint);
 
-  ProviderProxyImpl.fromHandle(core.MojoHandle handle) :
+  _ProviderProxyImpl.fromHandle(core.MojoHandle handle) :
       super.fromHandle(handle);
 
-  ProviderProxyImpl.unbound() : super.unbound();
+  _ProviderProxyImpl.unbound() : super.unbound();
 
-  static ProviderProxyImpl newFromEndpoint(
+  static _ProviderProxyImpl newFromEndpoint(
       core.MojoMessagePipeEndpoint endpoint) {
-    assert(endpoint.setDescription("For ProviderProxyImpl"));
-    return new ProviderProxyImpl.fromEndpoint(endpoint);
+    assert(endpoint.setDescription("For _ProviderProxyImpl"));
+    return new _ProviderProxyImpl.fromEndpoint(endpoint);
   }
-
-  String get name => ProviderName;
 
   void handleResponse(bindings.ServiceMessage message) {
     switch (message.header.type) {
-      case kProvider_echoString_name:
+      case _Provider_echoStringName:
         var r = ProviderEchoStringResponseParams.deserialize(
             message.payload);
         if (!message.header.hasRequestId) {
@@ -1296,7 +1293,7 @@ class ProviderProxyImpl extends bindings.Proxy {
         }
         c.complete(r);
         break;
-      case kProvider_echoStrings_name:
+      case _Provider_echoStringsName:
         var r = ProviderEchoStringsResponseParams.deserialize(
             message.payload);
         if (!message.header.hasRequestId) {
@@ -1316,7 +1313,7 @@ class ProviderProxyImpl extends bindings.Proxy {
         }
         c.complete(r);
         break;
-      case kProvider_echoMessagePipeHandle_name:
+      case _Provider_echoMessagePipeHandleName:
         var r = ProviderEchoMessagePipeHandleResponseParams.deserialize(
             message.payload);
         if (!message.header.hasRequestId) {
@@ -1336,7 +1333,7 @@ class ProviderProxyImpl extends bindings.Proxy {
         }
         c.complete(r);
         break;
-      case kProvider_echoEnum_name:
+      case _Provider_echoEnumName:
         var r = ProviderEchoEnumResponseParams.deserialize(
             message.payload);
         if (!message.header.hasRequestId) {
@@ -1356,7 +1353,7 @@ class ProviderProxyImpl extends bindings.Proxy {
         }
         c.complete(r);
         break;
-      case kProvider_echoInt_name:
+      case _Provider_echoIntName:
         var r = ProviderEchoIntResponseParams.deserialize(
             message.payload);
         if (!message.header.hasRequestId) {
@@ -1385,58 +1382,58 @@ class ProviderProxyImpl extends bindings.Proxy {
 
   String toString() {
     var superString = super.toString();
-    return "ProviderProxyImpl($superString)";
+    return "_ProviderProxyImpl($superString)";
   }
 }
 
 
 class _ProviderProxyCalls implements Provider {
-  ProviderProxyImpl _proxyImpl;
+  _ProviderProxyImpl _proxyImpl;
 
   _ProviderProxyCalls(this._proxyImpl);
     dynamic echoString(String a,[Function responseFactory = null]) {
-      var params = new ProviderEchoStringParams();
+      var params = new _ProviderEchoStringParams();
       params.a = a;
       return _proxyImpl.sendMessageWithRequestId(
           params,
-          kProvider_echoString_name,
+          _Provider_echoStringName,
           -1,
           bindings.MessageHeader.kMessageExpectsResponse);
     }
     dynamic echoStrings(String a,String b,[Function responseFactory = null]) {
-      var params = new ProviderEchoStringsParams();
+      var params = new _ProviderEchoStringsParams();
       params.a = a;
       params.b = b;
       return _proxyImpl.sendMessageWithRequestId(
           params,
-          kProvider_echoStrings_name,
+          _Provider_echoStringsName,
           -1,
           bindings.MessageHeader.kMessageExpectsResponse);
     }
     dynamic echoMessagePipeHandle(core.MojoMessagePipeEndpoint a,[Function responseFactory = null]) {
-      var params = new ProviderEchoMessagePipeHandleParams();
+      var params = new _ProviderEchoMessagePipeHandleParams();
       params.a = a;
       return _proxyImpl.sendMessageWithRequestId(
           params,
-          kProvider_echoMessagePipeHandle_name,
+          _Provider_echoMessagePipeHandleName,
           -1,
           bindings.MessageHeader.kMessageExpectsResponse);
     }
     dynamic echoEnum(Enum a,[Function responseFactory = null]) {
-      var params = new ProviderEchoEnumParams();
+      var params = new _ProviderEchoEnumParams();
       params.a = a;
       return _proxyImpl.sendMessageWithRequestId(
           params,
-          kProvider_echoEnum_name,
+          _Provider_echoEnumName,
           -1,
           bindings.MessageHeader.kMessageExpectsResponse);
     }
     dynamic echoInt(int a,[Function responseFactory = null]) {
-      var params = new ProviderEchoIntParams();
+      var params = new _ProviderEchoIntParams();
       params.a = a;
       return _proxyImpl.sendMessageWithRequestId(
           params,
-          kProvider_echoInt_name,
+          _Provider_echoIntName,
           -1,
           bindings.MessageHeader.kMessageExpectsResponse);
     }
@@ -1446,25 +1443,24 @@ class _ProviderProxyCalls implements Provider {
 class ProviderProxy implements bindings.ProxyBase {
   final bindings.Proxy impl;
   Provider ptr;
-  final String name = ProviderName;
 
-  ProviderProxy(ProviderProxyImpl proxyImpl) :
+  ProviderProxy(_ProviderProxyImpl proxyImpl) :
       impl = proxyImpl,
       ptr = new _ProviderProxyCalls(proxyImpl);
 
   ProviderProxy.fromEndpoint(
       core.MojoMessagePipeEndpoint endpoint) :
-      impl = new ProviderProxyImpl.fromEndpoint(endpoint) {
+      impl = new _ProviderProxyImpl.fromEndpoint(endpoint) {
     ptr = new _ProviderProxyCalls(impl);
   }
 
   ProviderProxy.fromHandle(core.MojoHandle handle) :
-      impl = new ProviderProxyImpl.fromHandle(handle) {
+      impl = new _ProviderProxyImpl.fromHandle(handle) {
     ptr = new _ProviderProxyCalls(impl);
   }
 
   ProviderProxy.unbound() :
-      impl = new ProviderProxyImpl.unbound() {
+      impl = new _ProviderProxyImpl.unbound() {
     ptr = new _ProviderProxyCalls(impl);
   }
 
@@ -1480,6 +1476,8 @@ class ProviderProxy implements bindings.ProxyBase {
     assert(endpoint.setDescription("For ProviderProxy"));
     return new ProviderProxy.fromEndpoint(endpoint);
   }
+
+  String get serviceName => Provider.serviceName;
 
   Future close({bool immediate: false}) => impl.close(immediate: immediate);
 
@@ -1519,8 +1517,6 @@ class ProviderStub extends bindings.Stub {
     return new ProviderStub.fromEndpoint(endpoint);
   }
 
-  static const String name = ProviderName;
-
 
   ProviderEchoStringResponseParams _ProviderEchoStringResponseParamsFactory(String a) {
     var mojo_factory_result = new ProviderEchoStringResponseParams();
@@ -1557,8 +1553,8 @@ class ProviderStub extends bindings.Stub {
     }
     assert(_impl != null);
     switch (message.header.type) {
-      case kProvider_echoString_name:
-        var params = ProviderEchoStringParams.deserialize(
+      case _Provider_echoStringName:
+        var params = _ProviderEchoStringParams.deserialize(
             message.payload);
         var response = _impl.echoString(params.a,_ProviderEchoStringResponseParamsFactory);
         if (response is Future) {
@@ -1566,7 +1562,7 @@ class ProviderStub extends bindings.Stub {
             if (response != null) {
               return buildResponseWithId(
                   response,
-                  kProvider_echoString_name,
+                  _Provider_echoStringName,
                   message.header.requestId,
                   bindings.MessageHeader.kMessageIsResponse);
             }
@@ -1574,13 +1570,13 @@ class ProviderStub extends bindings.Stub {
         } else if (response != null) {
           return buildResponseWithId(
               response,
-              kProvider_echoString_name,
+              _Provider_echoStringName,
               message.header.requestId,
               bindings.MessageHeader.kMessageIsResponse);
         }
         break;
-      case kProvider_echoStrings_name:
-        var params = ProviderEchoStringsParams.deserialize(
+      case _Provider_echoStringsName:
+        var params = _ProviderEchoStringsParams.deserialize(
             message.payload);
         var response = _impl.echoStrings(params.a,params.b,_ProviderEchoStringsResponseParamsFactory);
         if (response is Future) {
@@ -1588,7 +1584,7 @@ class ProviderStub extends bindings.Stub {
             if (response != null) {
               return buildResponseWithId(
                   response,
-                  kProvider_echoStrings_name,
+                  _Provider_echoStringsName,
                   message.header.requestId,
                   bindings.MessageHeader.kMessageIsResponse);
             }
@@ -1596,13 +1592,13 @@ class ProviderStub extends bindings.Stub {
         } else if (response != null) {
           return buildResponseWithId(
               response,
-              kProvider_echoStrings_name,
+              _Provider_echoStringsName,
               message.header.requestId,
               bindings.MessageHeader.kMessageIsResponse);
         }
         break;
-      case kProvider_echoMessagePipeHandle_name:
-        var params = ProviderEchoMessagePipeHandleParams.deserialize(
+      case _Provider_echoMessagePipeHandleName:
+        var params = _ProviderEchoMessagePipeHandleParams.deserialize(
             message.payload);
         var response = _impl.echoMessagePipeHandle(params.a,_ProviderEchoMessagePipeHandleResponseParamsFactory);
         if (response is Future) {
@@ -1610,7 +1606,7 @@ class ProviderStub extends bindings.Stub {
             if (response != null) {
               return buildResponseWithId(
                   response,
-                  kProvider_echoMessagePipeHandle_name,
+                  _Provider_echoMessagePipeHandleName,
                   message.header.requestId,
                   bindings.MessageHeader.kMessageIsResponse);
             }
@@ -1618,13 +1614,13 @@ class ProviderStub extends bindings.Stub {
         } else if (response != null) {
           return buildResponseWithId(
               response,
-              kProvider_echoMessagePipeHandle_name,
+              _Provider_echoMessagePipeHandleName,
               message.header.requestId,
               bindings.MessageHeader.kMessageIsResponse);
         }
         break;
-      case kProvider_echoEnum_name:
-        var params = ProviderEchoEnumParams.deserialize(
+      case _Provider_echoEnumName:
+        var params = _ProviderEchoEnumParams.deserialize(
             message.payload);
         var response = _impl.echoEnum(params.a,_ProviderEchoEnumResponseParamsFactory);
         if (response is Future) {
@@ -1632,7 +1628,7 @@ class ProviderStub extends bindings.Stub {
             if (response != null) {
               return buildResponseWithId(
                   response,
-                  kProvider_echoEnum_name,
+                  _Provider_echoEnumName,
                   message.header.requestId,
                   bindings.MessageHeader.kMessageIsResponse);
             }
@@ -1640,13 +1636,13 @@ class ProviderStub extends bindings.Stub {
         } else if (response != null) {
           return buildResponseWithId(
               response,
-              kProvider_echoEnum_name,
+              _Provider_echoEnumName,
               message.header.requestId,
               bindings.MessageHeader.kMessageIsResponse);
         }
         break;
-      case kProvider_echoInt_name:
-        var params = ProviderEchoIntParams.deserialize(
+      case _Provider_echoIntName:
+        var params = _ProviderEchoIntParams.deserialize(
             message.payload);
         var response = _impl.echoInt(params.a,_ProviderEchoIntResponseParamsFactory);
         if (response is Future) {
@@ -1654,7 +1650,7 @@ class ProviderStub extends bindings.Stub {
             if (response != null) {
               return buildResponseWithId(
                   response,
-                  kProvider_echoInt_name,
+                  _Provider_echoIntName,
                   message.header.requestId,
                   bindings.MessageHeader.kMessageIsResponse);
             }
@@ -1662,7 +1658,7 @@ class ProviderStub extends bindings.Stub {
         } else if (response != null) {
           return buildResponseWithId(
               response,
-              kProvider_echoInt_name,
+              _Provider_echoIntName,
               message.header.requestId,
               bindings.MessageHeader.kMessageIsResponse);
         }
@@ -1688,37 +1684,34 @@ class ProviderStub extends bindings.Stub {
   int get version => 0;
 }
 
-const int kIntegerAccessor_getInteger_name = 0;
-const int kIntegerAccessor_setInteger_name = 1;
-const String IntegerAccessorName = null;
+const int _IntegerAccessor_getIntegerName = 0;
+const int _IntegerAccessor_setIntegerName = 1;
 
 abstract class IntegerAccessor {
+  static const String serviceName = null;
   dynamic getInteger([Function responseFactory = null]);
   void setInteger(int data, Enum type);
-
 }
 
 
-class IntegerAccessorProxyImpl extends bindings.Proxy {
-  IntegerAccessorProxyImpl.fromEndpoint(
+class _IntegerAccessorProxyImpl extends bindings.Proxy {
+  _IntegerAccessorProxyImpl.fromEndpoint(
       core.MojoMessagePipeEndpoint endpoint) : super.fromEndpoint(endpoint);
 
-  IntegerAccessorProxyImpl.fromHandle(core.MojoHandle handle) :
+  _IntegerAccessorProxyImpl.fromHandle(core.MojoHandle handle) :
       super.fromHandle(handle);
 
-  IntegerAccessorProxyImpl.unbound() : super.unbound();
+  _IntegerAccessorProxyImpl.unbound() : super.unbound();
 
-  static IntegerAccessorProxyImpl newFromEndpoint(
+  static _IntegerAccessorProxyImpl newFromEndpoint(
       core.MojoMessagePipeEndpoint endpoint) {
-    assert(endpoint.setDescription("For IntegerAccessorProxyImpl"));
-    return new IntegerAccessorProxyImpl.fromEndpoint(endpoint);
+    assert(endpoint.setDescription("For _IntegerAccessorProxyImpl"));
+    return new _IntegerAccessorProxyImpl.fromEndpoint(endpoint);
   }
-
-  String get name => IntegerAccessorName;
 
   void handleResponse(bindings.ServiceMessage message) {
     switch (message.header.type) {
-      case kIntegerAccessor_getInteger_name:
+      case _IntegerAccessor_getIntegerName:
         var r = IntegerAccessorGetIntegerResponseParams.deserialize(
             message.payload);
         if (!message.header.hasRequestId) {
@@ -1747,20 +1740,20 @@ class IntegerAccessorProxyImpl extends bindings.Proxy {
 
   String toString() {
     var superString = super.toString();
-    return "IntegerAccessorProxyImpl($superString)";
+    return "_IntegerAccessorProxyImpl($superString)";
   }
 }
 
 
 class _IntegerAccessorProxyCalls implements IntegerAccessor {
-  IntegerAccessorProxyImpl _proxyImpl;
+  _IntegerAccessorProxyImpl _proxyImpl;
 
   _IntegerAccessorProxyCalls(this._proxyImpl);
     dynamic getInteger([Function responseFactory = null]) {
-      var params = new IntegerAccessorGetIntegerParams();
+      var params = new _IntegerAccessorGetIntegerParams();
       return _proxyImpl.sendMessageWithRequestId(
           params,
-          kIntegerAccessor_getInteger_name,
+          _IntegerAccessor_getIntegerName,
           -1,
           bindings.MessageHeader.kMessageExpectsResponse);
     }
@@ -1769,37 +1762,35 @@ class _IntegerAccessorProxyCalls implements IntegerAccessor {
         _proxyImpl.proxyError("The Proxy is closed.");
         return;
       }
-      var params = new IntegerAccessorSetIntegerParams();
+      var params = new _IntegerAccessorSetIntegerParams();
       params.data = data;
       params.type = type;
-      _proxyImpl.sendMessage(params, kIntegerAccessor_setInteger_name);
+      _proxyImpl.sendMessage(params, _IntegerAccessor_setIntegerName);
     }
-  
 }
 
 
 class IntegerAccessorProxy implements bindings.ProxyBase {
   final bindings.Proxy impl;
   IntegerAccessor ptr;
-  final String name = IntegerAccessorName;
 
-  IntegerAccessorProxy(IntegerAccessorProxyImpl proxyImpl) :
+  IntegerAccessorProxy(_IntegerAccessorProxyImpl proxyImpl) :
       impl = proxyImpl,
       ptr = new _IntegerAccessorProxyCalls(proxyImpl);
 
   IntegerAccessorProxy.fromEndpoint(
       core.MojoMessagePipeEndpoint endpoint) :
-      impl = new IntegerAccessorProxyImpl.fromEndpoint(endpoint) {
+      impl = new _IntegerAccessorProxyImpl.fromEndpoint(endpoint) {
     ptr = new _IntegerAccessorProxyCalls(impl);
   }
 
   IntegerAccessorProxy.fromHandle(core.MojoHandle handle) :
-      impl = new IntegerAccessorProxyImpl.fromHandle(handle) {
+      impl = new _IntegerAccessorProxyImpl.fromHandle(handle) {
     ptr = new _IntegerAccessorProxyCalls(impl);
   }
 
   IntegerAccessorProxy.unbound() :
-      impl = new IntegerAccessorProxyImpl.unbound() {
+      impl = new _IntegerAccessorProxyImpl.unbound() {
     ptr = new _IntegerAccessorProxyCalls(impl);
   }
 
@@ -1815,6 +1806,8 @@ class IntegerAccessorProxy implements bindings.ProxyBase {
     assert(endpoint.setDescription("For IntegerAccessorProxy"));
     return new IntegerAccessorProxy.fromEndpoint(endpoint);
   }
+
+  String get serviceName => IntegerAccessor.serviceName;
 
   Future close({bool immediate: false}) => impl.close(immediate: immediate);
 
@@ -1854,8 +1847,6 @@ class IntegerAccessorStub extends bindings.Stub {
     return new IntegerAccessorStub.fromEndpoint(endpoint);
   }
 
-  static const String name = IntegerAccessorName;
-
 
   IntegerAccessorGetIntegerResponseParams _IntegerAccessorGetIntegerResponseParamsFactory(int data, Enum type) {
     var mojo_factory_result = new IntegerAccessorGetIntegerResponseParams();
@@ -1872,8 +1863,8 @@ class IntegerAccessorStub extends bindings.Stub {
     }
     assert(_impl != null);
     switch (message.header.type) {
-      case kIntegerAccessor_getInteger_name:
-        var params = IntegerAccessorGetIntegerParams.deserialize(
+      case _IntegerAccessor_getIntegerName:
+        var params = _IntegerAccessorGetIntegerParams.deserialize(
             message.payload);
         var response = _impl.getInteger(_IntegerAccessorGetIntegerResponseParamsFactory);
         if (response is Future) {
@@ -1881,7 +1872,7 @@ class IntegerAccessorStub extends bindings.Stub {
             if (response != null) {
               return buildResponseWithId(
                   response,
-                  kIntegerAccessor_getInteger_name,
+                  _IntegerAccessor_getIntegerName,
                   message.header.requestId,
                   bindings.MessageHeader.kMessageIsResponse);
             }
@@ -1889,13 +1880,13 @@ class IntegerAccessorStub extends bindings.Stub {
         } else if (response != null) {
           return buildResponseWithId(
               response,
-              kIntegerAccessor_getInteger_name,
+              _IntegerAccessor_getIntegerName,
               message.header.requestId,
               bindings.MessageHeader.kMessageIsResponse);
         }
         break;
-      case kIntegerAccessor_setInteger_name:
-        var params = IntegerAccessorSetIntegerParams.deserialize(
+      case _IntegerAccessor_setIntegerName:
+        var params = _IntegerAccessorSetIntegerParams.deserialize(
             message.payload);
         _impl.setInteger(params.data, params.type);
         break;
@@ -1920,39 +1911,36 @@ class IntegerAccessorStub extends bindings.Stub {
   int get version => 3;
 }
 
-const int kSampleInterface_sampleMethod1_name = 1;
-const int kSampleInterface_sampleMethod0_name = 0;
-const int kSampleInterface_sampleMethod2_name = 2;
-const String SampleInterfaceName = null;
+const int _SampleInterface_sampleMethod1Name = 1;
+const int _SampleInterface_sampleMethod0Name = 0;
+const int _SampleInterface_sampleMethod2Name = 2;
 
 abstract class SampleInterface {
+  static const String serviceName = null;
   dynamic sampleMethod1(int in1,String in2,[Function responseFactory = null]);
   void sampleMethod0();
   void sampleMethod2();
-
 }
 
 
-class SampleInterfaceProxyImpl extends bindings.Proxy {
-  SampleInterfaceProxyImpl.fromEndpoint(
+class _SampleInterfaceProxyImpl extends bindings.Proxy {
+  _SampleInterfaceProxyImpl.fromEndpoint(
       core.MojoMessagePipeEndpoint endpoint) : super.fromEndpoint(endpoint);
 
-  SampleInterfaceProxyImpl.fromHandle(core.MojoHandle handle) :
+  _SampleInterfaceProxyImpl.fromHandle(core.MojoHandle handle) :
       super.fromHandle(handle);
 
-  SampleInterfaceProxyImpl.unbound() : super.unbound();
+  _SampleInterfaceProxyImpl.unbound() : super.unbound();
 
-  static SampleInterfaceProxyImpl newFromEndpoint(
+  static _SampleInterfaceProxyImpl newFromEndpoint(
       core.MojoMessagePipeEndpoint endpoint) {
-    assert(endpoint.setDescription("For SampleInterfaceProxyImpl"));
-    return new SampleInterfaceProxyImpl.fromEndpoint(endpoint);
+    assert(endpoint.setDescription("For _SampleInterfaceProxyImpl"));
+    return new _SampleInterfaceProxyImpl.fromEndpoint(endpoint);
   }
-
-  String get name => SampleInterfaceName;
 
   void handleResponse(bindings.ServiceMessage message) {
     switch (message.header.type) {
-      case kSampleInterface_sampleMethod1_name:
+      case _SampleInterface_sampleMethod1Name:
         var r = SampleInterfaceSampleMethod1ResponseParams.deserialize(
             message.payload);
         if (!message.header.hasRequestId) {
@@ -1981,22 +1969,22 @@ class SampleInterfaceProxyImpl extends bindings.Proxy {
 
   String toString() {
     var superString = super.toString();
-    return "SampleInterfaceProxyImpl($superString)";
+    return "_SampleInterfaceProxyImpl($superString)";
   }
 }
 
 
 class _SampleInterfaceProxyCalls implements SampleInterface {
-  SampleInterfaceProxyImpl _proxyImpl;
+  _SampleInterfaceProxyImpl _proxyImpl;
 
   _SampleInterfaceProxyCalls(this._proxyImpl);
     dynamic sampleMethod1(int in1,String in2,[Function responseFactory = null]) {
-      var params = new SampleInterfaceSampleMethod1Params();
+      var params = new _SampleInterfaceSampleMethod1Params();
       params.in1 = in1;
       params.in2 = in2;
       return _proxyImpl.sendMessageWithRequestId(
           params,
-          kSampleInterface_sampleMethod1_name,
+          _SampleInterface_sampleMethod1Name,
           -1,
           bindings.MessageHeader.kMessageExpectsResponse);
     }
@@ -2005,44 +1993,41 @@ class _SampleInterfaceProxyCalls implements SampleInterface {
         _proxyImpl.proxyError("The Proxy is closed.");
         return;
       }
-      var params = new SampleInterfaceSampleMethod0Params();
-      _proxyImpl.sendMessage(params, kSampleInterface_sampleMethod0_name);
+      var params = new _SampleInterfaceSampleMethod0Params();
+      _proxyImpl.sendMessage(params, _SampleInterface_sampleMethod0Name);
     }
-  
     void sampleMethod2() {
       if (!_proxyImpl.isBound) {
         _proxyImpl.proxyError("The Proxy is closed.");
         return;
       }
-      var params = new SampleInterfaceSampleMethod2Params();
-      _proxyImpl.sendMessage(params, kSampleInterface_sampleMethod2_name);
+      var params = new _SampleInterfaceSampleMethod2Params();
+      _proxyImpl.sendMessage(params, _SampleInterface_sampleMethod2Name);
     }
-  
 }
 
 
 class SampleInterfaceProxy implements bindings.ProxyBase {
   final bindings.Proxy impl;
   SampleInterface ptr;
-  final String name = SampleInterfaceName;
 
-  SampleInterfaceProxy(SampleInterfaceProxyImpl proxyImpl) :
+  SampleInterfaceProxy(_SampleInterfaceProxyImpl proxyImpl) :
       impl = proxyImpl,
       ptr = new _SampleInterfaceProxyCalls(proxyImpl);
 
   SampleInterfaceProxy.fromEndpoint(
       core.MojoMessagePipeEndpoint endpoint) :
-      impl = new SampleInterfaceProxyImpl.fromEndpoint(endpoint) {
+      impl = new _SampleInterfaceProxyImpl.fromEndpoint(endpoint) {
     ptr = new _SampleInterfaceProxyCalls(impl);
   }
 
   SampleInterfaceProxy.fromHandle(core.MojoHandle handle) :
-      impl = new SampleInterfaceProxyImpl.fromHandle(handle) {
+      impl = new _SampleInterfaceProxyImpl.fromHandle(handle) {
     ptr = new _SampleInterfaceProxyCalls(impl);
   }
 
   SampleInterfaceProxy.unbound() :
-      impl = new SampleInterfaceProxyImpl.unbound() {
+      impl = new _SampleInterfaceProxyImpl.unbound() {
     ptr = new _SampleInterfaceProxyCalls(impl);
   }
 
@@ -2058,6 +2043,8 @@ class SampleInterfaceProxy implements bindings.ProxyBase {
     assert(endpoint.setDescription("For SampleInterfaceProxy"));
     return new SampleInterfaceProxy.fromEndpoint(endpoint);
   }
+
+  String get serviceName => SampleInterface.serviceName;
 
   Future close({bool immediate: false}) => impl.close(immediate: immediate);
 
@@ -2097,8 +2084,6 @@ class SampleInterfaceStub extends bindings.Stub {
     return new SampleInterfaceStub.fromEndpoint(endpoint);
   }
 
-  static const String name = SampleInterfaceName;
-
 
   SampleInterfaceSampleMethod1ResponseParams _SampleInterfaceSampleMethod1ResponseParamsFactory(String out1, Enum out2) {
     var mojo_factory_result = new SampleInterfaceSampleMethod1ResponseParams();
@@ -2115,8 +2100,8 @@ class SampleInterfaceStub extends bindings.Stub {
     }
     assert(_impl != null);
     switch (message.header.type) {
-      case kSampleInterface_sampleMethod1_name:
-        var params = SampleInterfaceSampleMethod1Params.deserialize(
+      case _SampleInterface_sampleMethod1Name:
+        var params = _SampleInterfaceSampleMethod1Params.deserialize(
             message.payload);
         var response = _impl.sampleMethod1(params.in1,params.in2,_SampleInterfaceSampleMethod1ResponseParamsFactory);
         if (response is Future) {
@@ -2124,7 +2109,7 @@ class SampleInterfaceStub extends bindings.Stub {
             if (response != null) {
               return buildResponseWithId(
                   response,
-                  kSampleInterface_sampleMethod1_name,
+                  _SampleInterface_sampleMethod1Name,
                   message.header.requestId,
                   bindings.MessageHeader.kMessageIsResponse);
             }
@@ -2132,18 +2117,18 @@ class SampleInterfaceStub extends bindings.Stub {
         } else if (response != null) {
           return buildResponseWithId(
               response,
-              kSampleInterface_sampleMethod1_name,
+              _SampleInterface_sampleMethod1Name,
               message.header.requestId,
               bindings.MessageHeader.kMessageIsResponse);
         }
         break;
-      case kSampleInterface_sampleMethod0_name:
-        var params = SampleInterfaceSampleMethod0Params.deserialize(
+      case _SampleInterface_sampleMethod0Name:
+        var params = _SampleInterfaceSampleMethod0Params.deserialize(
             message.payload);
         _impl.sampleMethod0();
         break;
-      case kSampleInterface_sampleMethod2_name:
-        var params = SampleInterfaceSampleMethod2Params.deserialize(
+      case _SampleInterface_sampleMethod2Name:
+        var params = _SampleInterfaceSampleMethod2Params.deserialize(
             message.payload);
         _impl.sampleMethod2();
         break;

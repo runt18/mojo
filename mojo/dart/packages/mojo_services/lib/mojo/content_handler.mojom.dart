@@ -13,16 +13,16 @@ import 'package:mojo/mojo/url_response.mojom.dart' as url_response_mojom;
 
 
 
-class ContentHandlerStartApplicationParams extends bindings.Struct {
+class _ContentHandlerStartApplicationParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(24, 0)
   ];
   Object application = null;
   url_response_mojom.UrlResponse response = null;
 
-  ContentHandlerStartApplicationParams() : super(kVersions.last.size);
+  _ContentHandlerStartApplicationParams() : super(kVersions.last.size);
 
-  static ContentHandlerStartApplicationParams deserialize(bindings.Message message) {
+  static _ContentHandlerStartApplicationParams deserialize(bindings.Message message) {
     var decoder = new bindings.Decoder(message);
     var result = decode(decoder);
     if (decoder.excessHandles != null) {
@@ -31,11 +31,11 @@ class ContentHandlerStartApplicationParams extends bindings.Struct {
     return result;
   }
 
-  static ContentHandlerStartApplicationParams decode(bindings.Decoder decoder0) {
+  static _ContentHandlerStartApplicationParams decode(bindings.Decoder decoder0) {
     if (decoder0 == null) {
       return null;
     }
-    ContentHandlerStartApplicationParams result = new ContentHandlerStartApplicationParams();
+    _ContentHandlerStartApplicationParams result = new _ContentHandlerStartApplicationParams();
 
     var mainDataHeader = decoder0.decodeStructDataHeader();
     if (mainDataHeader.version <= kVersions.last.version) {
@@ -76,7 +76,7 @@ class ContentHandlerStartApplicationParams extends bindings.Struct {
   }
 
   String toString() {
-    return "ContentHandlerStartApplicationParams("
+    return "_ContentHandlerStartApplicationParams("
            "application: $application" ", "
            "response: $response" ")";
   }
@@ -87,31 +87,28 @@ class ContentHandlerStartApplicationParams extends bindings.Struct {
   }
 }
 
-const int kContentHandler_startApplication_name = 0;
-const String ContentHandlerName = "mojo::ContentHandler";
+const int _ContentHandler_startApplicationName = 0;
 
 abstract class ContentHandler {
+  static const String serviceName = "mojo::ContentHandler";
   void startApplication(Object application, url_response_mojom.UrlResponse response);
-
 }
 
 
-class ContentHandlerProxyImpl extends bindings.Proxy {
-  ContentHandlerProxyImpl.fromEndpoint(
+class _ContentHandlerProxyImpl extends bindings.Proxy {
+  _ContentHandlerProxyImpl.fromEndpoint(
       core.MojoMessagePipeEndpoint endpoint) : super.fromEndpoint(endpoint);
 
-  ContentHandlerProxyImpl.fromHandle(core.MojoHandle handle) :
+  _ContentHandlerProxyImpl.fromHandle(core.MojoHandle handle) :
       super.fromHandle(handle);
 
-  ContentHandlerProxyImpl.unbound() : super.unbound();
+  _ContentHandlerProxyImpl.unbound() : super.unbound();
 
-  static ContentHandlerProxyImpl newFromEndpoint(
+  static _ContentHandlerProxyImpl newFromEndpoint(
       core.MojoMessagePipeEndpoint endpoint) {
-    assert(endpoint.setDescription("For ContentHandlerProxyImpl"));
-    return new ContentHandlerProxyImpl.fromEndpoint(endpoint);
+    assert(endpoint.setDescription("For _ContentHandlerProxyImpl"));
+    return new _ContentHandlerProxyImpl.fromEndpoint(endpoint);
   }
-
-  String get name => ContentHandlerName;
 
   void handleResponse(bindings.ServiceMessage message) {
     switch (message.header.type) {
@@ -124,13 +121,13 @@ class ContentHandlerProxyImpl extends bindings.Proxy {
 
   String toString() {
     var superString = super.toString();
-    return "ContentHandlerProxyImpl($superString)";
+    return "_ContentHandlerProxyImpl($superString)";
   }
 }
 
 
 class _ContentHandlerProxyCalls implements ContentHandler {
-  ContentHandlerProxyImpl _proxyImpl;
+  _ContentHandlerProxyImpl _proxyImpl;
 
   _ContentHandlerProxyCalls(this._proxyImpl);
     void startApplication(Object application, url_response_mojom.UrlResponse response) {
@@ -138,37 +135,35 @@ class _ContentHandlerProxyCalls implements ContentHandler {
         _proxyImpl.proxyError("The Proxy is closed.");
         return;
       }
-      var params = new ContentHandlerStartApplicationParams();
+      var params = new _ContentHandlerStartApplicationParams();
       params.application = application;
       params.response = response;
-      _proxyImpl.sendMessage(params, kContentHandler_startApplication_name);
+      _proxyImpl.sendMessage(params, _ContentHandler_startApplicationName);
     }
-  
 }
 
 
 class ContentHandlerProxy implements bindings.ProxyBase {
   final bindings.Proxy impl;
   ContentHandler ptr;
-  final String name = ContentHandlerName;
 
-  ContentHandlerProxy(ContentHandlerProxyImpl proxyImpl) :
+  ContentHandlerProxy(_ContentHandlerProxyImpl proxyImpl) :
       impl = proxyImpl,
       ptr = new _ContentHandlerProxyCalls(proxyImpl);
 
   ContentHandlerProxy.fromEndpoint(
       core.MojoMessagePipeEndpoint endpoint) :
-      impl = new ContentHandlerProxyImpl.fromEndpoint(endpoint) {
+      impl = new _ContentHandlerProxyImpl.fromEndpoint(endpoint) {
     ptr = new _ContentHandlerProxyCalls(impl);
   }
 
   ContentHandlerProxy.fromHandle(core.MojoHandle handle) :
-      impl = new ContentHandlerProxyImpl.fromHandle(handle) {
+      impl = new _ContentHandlerProxyImpl.fromHandle(handle) {
     ptr = new _ContentHandlerProxyCalls(impl);
   }
 
   ContentHandlerProxy.unbound() :
-      impl = new ContentHandlerProxyImpl.unbound() {
+      impl = new _ContentHandlerProxyImpl.unbound() {
     ptr = new _ContentHandlerProxyCalls(impl);
   }
 
@@ -184,6 +179,8 @@ class ContentHandlerProxy implements bindings.ProxyBase {
     assert(endpoint.setDescription("For ContentHandlerProxy"));
     return new ContentHandlerProxy.fromEndpoint(endpoint);
   }
+
+  String get serviceName => ContentHandler.serviceName;
 
   Future close({bool immediate: false}) => impl.close(immediate: immediate);
 
@@ -223,8 +220,6 @@ class ContentHandlerStub extends bindings.Stub {
     return new ContentHandlerStub.fromEndpoint(endpoint);
   }
 
-  static const String name = ContentHandlerName;
-
 
 
   dynamic handleMessage(bindings.ServiceMessage message) {
@@ -235,8 +230,8 @@ class ContentHandlerStub extends bindings.Stub {
     }
     assert(_impl != null);
     switch (message.header.type) {
-      case kContentHandler_startApplication_name:
-        var params = ContentHandlerStartApplicationParams.deserialize(
+      case _ContentHandler_startApplicationName:
+        var params = _ContentHandlerStartApplicationParams.deserialize(
             message.payload);
         _impl.startApplication(params.application, params.response);
         break;

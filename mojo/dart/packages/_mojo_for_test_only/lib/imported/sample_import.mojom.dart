@@ -265,14 +265,14 @@ class Point extends bindings.Struct {
 }
 
 
-class ImportedInterfaceDoSomethingParams extends bindings.Struct {
+class _ImportedInterfaceDoSomethingParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(8, 0)
   ];
 
-  ImportedInterfaceDoSomethingParams() : super(kVersions.last.size);
+  _ImportedInterfaceDoSomethingParams() : super(kVersions.last.size);
 
-  static ImportedInterfaceDoSomethingParams deserialize(bindings.Message message) {
+  static _ImportedInterfaceDoSomethingParams deserialize(bindings.Message message) {
     var decoder = new bindings.Decoder(message);
     var result = decode(decoder);
     if (decoder.excessHandles != null) {
@@ -281,11 +281,11 @@ class ImportedInterfaceDoSomethingParams extends bindings.Struct {
     return result;
   }
 
-  static ImportedInterfaceDoSomethingParams decode(bindings.Decoder decoder0) {
+  static _ImportedInterfaceDoSomethingParams decode(bindings.Decoder decoder0) {
     if (decoder0 == null) {
       return null;
     }
-    ImportedInterfaceDoSomethingParams result = new ImportedInterfaceDoSomethingParams();
+    _ImportedInterfaceDoSomethingParams result = new _ImportedInterfaceDoSomethingParams();
 
     var mainDataHeader = decoder0.decodeStructDataHeader();
     if (mainDataHeader.version <= kVersions.last.version) {
@@ -313,7 +313,7 @@ class ImportedInterfaceDoSomethingParams extends bindings.Struct {
   }
 
   String toString() {
-    return "ImportedInterfaceDoSomethingParams("")";
+    return "_ImportedInterfaceDoSomethingParams("")";
   }
 
   Map toJson() {
@@ -322,31 +322,28 @@ class ImportedInterfaceDoSomethingParams extends bindings.Struct {
   }
 }
 
-const int kImportedInterface_doSomething_name = 0;
-const String ImportedInterfaceName = null;
+const int _ImportedInterface_doSomethingName = 0;
 
 abstract class ImportedInterface {
+  static const String serviceName = null;
   void doSomething();
-
 }
 
 
-class ImportedInterfaceProxyImpl extends bindings.Proxy {
-  ImportedInterfaceProxyImpl.fromEndpoint(
+class _ImportedInterfaceProxyImpl extends bindings.Proxy {
+  _ImportedInterfaceProxyImpl.fromEndpoint(
       core.MojoMessagePipeEndpoint endpoint) : super.fromEndpoint(endpoint);
 
-  ImportedInterfaceProxyImpl.fromHandle(core.MojoHandle handle) :
+  _ImportedInterfaceProxyImpl.fromHandle(core.MojoHandle handle) :
       super.fromHandle(handle);
 
-  ImportedInterfaceProxyImpl.unbound() : super.unbound();
+  _ImportedInterfaceProxyImpl.unbound() : super.unbound();
 
-  static ImportedInterfaceProxyImpl newFromEndpoint(
+  static _ImportedInterfaceProxyImpl newFromEndpoint(
       core.MojoMessagePipeEndpoint endpoint) {
-    assert(endpoint.setDescription("For ImportedInterfaceProxyImpl"));
-    return new ImportedInterfaceProxyImpl.fromEndpoint(endpoint);
+    assert(endpoint.setDescription("For _ImportedInterfaceProxyImpl"));
+    return new _ImportedInterfaceProxyImpl.fromEndpoint(endpoint);
   }
-
-  String get name => ImportedInterfaceName;
 
   void handleResponse(bindings.ServiceMessage message) {
     switch (message.header.type) {
@@ -359,13 +356,13 @@ class ImportedInterfaceProxyImpl extends bindings.Proxy {
 
   String toString() {
     var superString = super.toString();
-    return "ImportedInterfaceProxyImpl($superString)";
+    return "_ImportedInterfaceProxyImpl($superString)";
   }
 }
 
 
 class _ImportedInterfaceProxyCalls implements ImportedInterface {
-  ImportedInterfaceProxyImpl _proxyImpl;
+  _ImportedInterfaceProxyImpl _proxyImpl;
 
   _ImportedInterfaceProxyCalls(this._proxyImpl);
     void doSomething() {
@@ -373,35 +370,33 @@ class _ImportedInterfaceProxyCalls implements ImportedInterface {
         _proxyImpl.proxyError("The Proxy is closed.");
         return;
       }
-      var params = new ImportedInterfaceDoSomethingParams();
-      _proxyImpl.sendMessage(params, kImportedInterface_doSomething_name);
+      var params = new _ImportedInterfaceDoSomethingParams();
+      _proxyImpl.sendMessage(params, _ImportedInterface_doSomethingName);
     }
-  
 }
 
 
 class ImportedInterfaceProxy implements bindings.ProxyBase {
   final bindings.Proxy impl;
   ImportedInterface ptr;
-  final String name = ImportedInterfaceName;
 
-  ImportedInterfaceProxy(ImportedInterfaceProxyImpl proxyImpl) :
+  ImportedInterfaceProxy(_ImportedInterfaceProxyImpl proxyImpl) :
       impl = proxyImpl,
       ptr = new _ImportedInterfaceProxyCalls(proxyImpl);
 
   ImportedInterfaceProxy.fromEndpoint(
       core.MojoMessagePipeEndpoint endpoint) :
-      impl = new ImportedInterfaceProxyImpl.fromEndpoint(endpoint) {
+      impl = new _ImportedInterfaceProxyImpl.fromEndpoint(endpoint) {
     ptr = new _ImportedInterfaceProxyCalls(impl);
   }
 
   ImportedInterfaceProxy.fromHandle(core.MojoHandle handle) :
-      impl = new ImportedInterfaceProxyImpl.fromHandle(handle) {
+      impl = new _ImportedInterfaceProxyImpl.fromHandle(handle) {
     ptr = new _ImportedInterfaceProxyCalls(impl);
   }
 
   ImportedInterfaceProxy.unbound() :
-      impl = new ImportedInterfaceProxyImpl.unbound() {
+      impl = new _ImportedInterfaceProxyImpl.unbound() {
     ptr = new _ImportedInterfaceProxyCalls(impl);
   }
 
@@ -417,6 +412,8 @@ class ImportedInterfaceProxy implements bindings.ProxyBase {
     assert(endpoint.setDescription("For ImportedInterfaceProxy"));
     return new ImportedInterfaceProxy.fromEndpoint(endpoint);
   }
+
+  String get serviceName => ImportedInterface.serviceName;
 
   Future close({bool immediate: false}) => impl.close(immediate: immediate);
 
@@ -456,8 +453,6 @@ class ImportedInterfaceStub extends bindings.Stub {
     return new ImportedInterfaceStub.fromEndpoint(endpoint);
   }
 
-  static const String name = ImportedInterfaceName;
-
 
 
   dynamic handleMessage(bindings.ServiceMessage message) {
@@ -468,8 +463,8 @@ class ImportedInterfaceStub extends bindings.Stub {
     }
     assert(_impl != null);
     switch (message.header.type) {
-      case kImportedInterface_doSomething_name:
-        var params = ImportedInterfaceDoSomethingParams.deserialize(
+      case _ImportedInterface_doSomethingName:
+        var params = _ImportedInterfaceDoSomethingParams.deserialize(
             message.payload);
         _impl.doSomething();
         break;

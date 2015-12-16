@@ -17,14 +17,14 @@ class EchoServiceImpl implements EchoService {
     _stub = new EchoServiceStub.fromEndpoint(endpoint, this);
   }
 
-  Future echoString(String value, [Function responseFactory]) {
+  dynamic echoString(String value, [Function responseFactory]) {
     if (value == "quit") {
       _stub.close();
     }
-    return new Future.value(responseFactory(value));
+    return responseFactory(value);
   }
 
-  Future delayedEchoString(String value, int millis,
+  dynamic delayedEchoString(String value, int millis,
       [Function responseFactory]) {
     if (value == "quit") {
       _stub.close();
@@ -41,7 +41,7 @@ class EchoApplication extends Application {
   void acceptConnection(String requestorUrl, String resolvedUrl,
       ApplicationConnection connection) {
     connection.provideService(
-        EchoServiceName, (endpoint) => new EchoServiceImpl(this, endpoint));
+        EchoService.serviceName, (endpoint) => new EchoServiceImpl(this, endpoint));
   }
 }
 

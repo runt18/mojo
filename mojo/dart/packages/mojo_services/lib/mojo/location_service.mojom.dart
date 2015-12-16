@@ -12,15 +12,15 @@ import 'package:mojo_services/mojo/location.mojom.dart' as location_mojom;
 
 
 
-class LocationServiceGetNextLocationParams extends bindings.Struct {
+class _LocationServiceGetNextLocationParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(16, 0)
   ];
   LocationServiceUpdatePriority priority = null;
 
-  LocationServiceGetNextLocationParams() : super(kVersions.last.size);
+  _LocationServiceGetNextLocationParams() : super(kVersions.last.size);
 
-  static LocationServiceGetNextLocationParams deserialize(bindings.Message message) {
+  static _LocationServiceGetNextLocationParams deserialize(bindings.Message message) {
     var decoder = new bindings.Decoder(message);
     var result = decode(decoder);
     if (decoder.excessHandles != null) {
@@ -29,11 +29,11 @@ class LocationServiceGetNextLocationParams extends bindings.Struct {
     return result;
   }
 
-  static LocationServiceGetNextLocationParams decode(bindings.Decoder decoder0) {
+  static _LocationServiceGetNextLocationParams decode(bindings.Decoder decoder0) {
     if (decoder0 == null) {
       return null;
     }
-    LocationServiceGetNextLocationParams result = new LocationServiceGetNextLocationParams();
+    _LocationServiceGetNextLocationParams result = new _LocationServiceGetNextLocationParams();
 
     var mainDataHeader = decoder0.decodeStructDataHeader();
     if (mainDataHeader.version <= kVersions.last.version) {
@@ -71,7 +71,7 @@ class LocationServiceGetNextLocationParams extends bindings.Struct {
   }
 
   String toString() {
-    return "LocationServiceGetNextLocationParams("
+    return "_LocationServiceGetNextLocationParams("
            "priority: $priority" ")";
   }
 
@@ -150,8 +150,7 @@ class LocationServiceGetNextLocationResponseParams extends bindings.Struct {
   }
 }
 
-const int kLocationService_getNextLocation_name = 0;
-const String LocationServiceName = "mojo::LocationService";
+const int _LocationService_getNextLocationName = 0;
   
 class LocationServiceUpdatePriority extends bindings.MojoEnum {
   static const LocationServiceUpdatePriority priorityBalancedPowerAccuracy = const LocationServiceUpdatePriority._(0);
@@ -218,31 +217,29 @@ class LocationServiceUpdatePriority extends bindings.MojoEnum {
 }
 
 abstract class LocationService {
+  static const String serviceName = "mojo::LocationService";
   dynamic getNextLocation(LocationServiceUpdatePriority priority,[Function responseFactory = null]);
-
 }
 
 
-class LocationServiceProxyImpl extends bindings.Proxy {
-  LocationServiceProxyImpl.fromEndpoint(
+class _LocationServiceProxyImpl extends bindings.Proxy {
+  _LocationServiceProxyImpl.fromEndpoint(
       core.MojoMessagePipeEndpoint endpoint) : super.fromEndpoint(endpoint);
 
-  LocationServiceProxyImpl.fromHandle(core.MojoHandle handle) :
+  _LocationServiceProxyImpl.fromHandle(core.MojoHandle handle) :
       super.fromHandle(handle);
 
-  LocationServiceProxyImpl.unbound() : super.unbound();
+  _LocationServiceProxyImpl.unbound() : super.unbound();
 
-  static LocationServiceProxyImpl newFromEndpoint(
+  static _LocationServiceProxyImpl newFromEndpoint(
       core.MojoMessagePipeEndpoint endpoint) {
-    assert(endpoint.setDescription("For LocationServiceProxyImpl"));
-    return new LocationServiceProxyImpl.fromEndpoint(endpoint);
+    assert(endpoint.setDescription("For _LocationServiceProxyImpl"));
+    return new _LocationServiceProxyImpl.fromEndpoint(endpoint);
   }
-
-  String get name => LocationServiceName;
 
   void handleResponse(bindings.ServiceMessage message) {
     switch (message.header.type) {
-      case kLocationService_getNextLocation_name:
+      case _LocationService_getNextLocationName:
         var r = LocationServiceGetNextLocationResponseParams.deserialize(
             message.payload);
         if (!message.header.hasRequestId) {
@@ -271,21 +268,21 @@ class LocationServiceProxyImpl extends bindings.Proxy {
 
   String toString() {
     var superString = super.toString();
-    return "LocationServiceProxyImpl($superString)";
+    return "_LocationServiceProxyImpl($superString)";
   }
 }
 
 
 class _LocationServiceProxyCalls implements LocationService {
-  LocationServiceProxyImpl _proxyImpl;
+  _LocationServiceProxyImpl _proxyImpl;
 
   _LocationServiceProxyCalls(this._proxyImpl);
     dynamic getNextLocation(LocationServiceUpdatePriority priority,[Function responseFactory = null]) {
-      var params = new LocationServiceGetNextLocationParams();
+      var params = new _LocationServiceGetNextLocationParams();
       params.priority = priority;
       return _proxyImpl.sendMessageWithRequestId(
           params,
-          kLocationService_getNextLocation_name,
+          _LocationService_getNextLocationName,
           -1,
           bindings.MessageHeader.kMessageExpectsResponse);
     }
@@ -295,25 +292,24 @@ class _LocationServiceProxyCalls implements LocationService {
 class LocationServiceProxy implements bindings.ProxyBase {
   final bindings.Proxy impl;
   LocationService ptr;
-  final String name = LocationServiceName;
 
-  LocationServiceProxy(LocationServiceProxyImpl proxyImpl) :
+  LocationServiceProxy(_LocationServiceProxyImpl proxyImpl) :
       impl = proxyImpl,
       ptr = new _LocationServiceProxyCalls(proxyImpl);
 
   LocationServiceProxy.fromEndpoint(
       core.MojoMessagePipeEndpoint endpoint) :
-      impl = new LocationServiceProxyImpl.fromEndpoint(endpoint) {
+      impl = new _LocationServiceProxyImpl.fromEndpoint(endpoint) {
     ptr = new _LocationServiceProxyCalls(impl);
   }
 
   LocationServiceProxy.fromHandle(core.MojoHandle handle) :
-      impl = new LocationServiceProxyImpl.fromHandle(handle) {
+      impl = new _LocationServiceProxyImpl.fromHandle(handle) {
     ptr = new _LocationServiceProxyCalls(impl);
   }
 
   LocationServiceProxy.unbound() :
-      impl = new LocationServiceProxyImpl.unbound() {
+      impl = new _LocationServiceProxyImpl.unbound() {
     ptr = new _LocationServiceProxyCalls(impl);
   }
 
@@ -329,6 +325,8 @@ class LocationServiceProxy implements bindings.ProxyBase {
     assert(endpoint.setDescription("For LocationServiceProxy"));
     return new LocationServiceProxy.fromEndpoint(endpoint);
   }
+
+  String get serviceName => LocationService.serviceName;
 
   Future close({bool immediate: false}) => impl.close(immediate: immediate);
 
@@ -368,8 +366,6 @@ class LocationServiceStub extends bindings.Stub {
     return new LocationServiceStub.fromEndpoint(endpoint);
   }
 
-  static const String name = LocationServiceName;
-
 
   LocationServiceGetNextLocationResponseParams _LocationServiceGetNextLocationResponseParamsFactory(location_mojom.Location location) {
     var mojo_factory_result = new LocationServiceGetNextLocationResponseParams();
@@ -385,8 +381,8 @@ class LocationServiceStub extends bindings.Stub {
     }
     assert(_impl != null);
     switch (message.header.type) {
-      case kLocationService_getNextLocation_name:
-        var params = LocationServiceGetNextLocationParams.deserialize(
+      case _LocationService_getNextLocationName:
+        var params = _LocationServiceGetNextLocationParams.deserialize(
             message.payload);
         var response = _impl.getNextLocation(params.priority,_LocationServiceGetNextLocationResponseParamsFactory);
         if (response is Future) {
@@ -394,7 +390,7 @@ class LocationServiceStub extends bindings.Stub {
             if (response != null) {
               return buildResponseWithId(
                   response,
-                  kLocationService_getNextLocation_name,
+                  _LocationService_getNextLocationName,
                   message.header.requestId,
                   bindings.MessageHeader.kMessageIsResponse);
             }
@@ -402,7 +398,7 @@ class LocationServiceStub extends bindings.Stub {
         } else if (response != null) {
           return buildResponseWithId(
               response,
-              kLocationService_getNextLocation_name,
+              _LocationService_getNextLocationName,
               message.header.requestId,
               bindings.MessageHeader.kMessageIsResponse);
         }

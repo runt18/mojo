@@ -614,16 +614,16 @@ class Status extends bindings.Struct {
 }
 
 
-class GeocoderAddressToLocationParams extends bindings.Struct {
+class _GeocoderAddressToLocationParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(24, 0)
   ];
   String address = null;
   Options options = null;
 
-  GeocoderAddressToLocationParams() : super(kVersions.last.size);
+  _GeocoderAddressToLocationParams() : super(kVersions.last.size);
 
-  static GeocoderAddressToLocationParams deserialize(bindings.Message message) {
+  static _GeocoderAddressToLocationParams deserialize(bindings.Message message) {
     var decoder = new bindings.Decoder(message);
     var result = decode(decoder);
     if (decoder.excessHandles != null) {
@@ -632,11 +632,11 @@ class GeocoderAddressToLocationParams extends bindings.Struct {
     return result;
   }
 
-  static GeocoderAddressToLocationParams decode(bindings.Decoder decoder0) {
+  static _GeocoderAddressToLocationParams decode(bindings.Decoder decoder0) {
     if (decoder0 == null) {
       return null;
     }
-    GeocoderAddressToLocationParams result = new GeocoderAddressToLocationParams();
+    _GeocoderAddressToLocationParams result = new _GeocoderAddressToLocationParams();
 
     var mainDataHeader = decoder0.decodeStructDataHeader();
     if (mainDataHeader.version <= kVersions.last.version) {
@@ -677,7 +677,7 @@ class GeocoderAddressToLocationParams extends bindings.Struct {
   }
 
   String toString() {
-    return "GeocoderAddressToLocationParams("
+    return "_GeocoderAddressToLocationParams("
            "address: $address" ", "
            "options: $options" ")";
   }
@@ -786,16 +786,16 @@ class GeocoderAddressToLocationResponseParams extends bindings.Struct {
 }
 
 
-class GeocoderLocationToAddressParams extends bindings.Struct {
+class _GeocoderLocationToAddressParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(24, 0)
   ];
   location_mojom.Location location = null;
   Options options = null;
 
-  GeocoderLocationToAddressParams() : super(kVersions.last.size);
+  _GeocoderLocationToAddressParams() : super(kVersions.last.size);
 
-  static GeocoderLocationToAddressParams deserialize(bindings.Message message) {
+  static _GeocoderLocationToAddressParams deserialize(bindings.Message message) {
     var decoder = new bindings.Decoder(message);
     var result = decode(decoder);
     if (decoder.excessHandles != null) {
@@ -804,11 +804,11 @@ class GeocoderLocationToAddressParams extends bindings.Struct {
     return result;
   }
 
-  static GeocoderLocationToAddressParams decode(bindings.Decoder decoder0) {
+  static _GeocoderLocationToAddressParams decode(bindings.Decoder decoder0) {
     if (decoder0 == null) {
       return null;
     }
-    GeocoderLocationToAddressParams result = new GeocoderLocationToAddressParams();
+    _GeocoderLocationToAddressParams result = new _GeocoderLocationToAddressParams();
 
     var mainDataHeader = decoder0.decodeStructDataHeader();
     if (mainDataHeader.version <= kVersions.last.version) {
@@ -850,7 +850,7 @@ class GeocoderLocationToAddressParams extends bindings.Struct {
   }
 
   String toString() {
-    return "GeocoderLocationToAddressParams("
+    return "_GeocoderLocationToAddressParams("
            "location: $location" ", "
            "options: $options" ")";
   }
@@ -958,37 +958,34 @@ class GeocoderLocationToAddressResponseParams extends bindings.Struct {
   }
 }
 
-const int kGeocoder_addressToLocation_name = 0;
-const int kGeocoder_locationToAddress_name = 1;
-const String GeocoderName = null;
+const int _Geocoder_addressToLocationName = 0;
+const int _Geocoder_locationToAddressName = 1;
 
 abstract class Geocoder {
+  static const String serviceName = null;
   dynamic addressToLocation(String address,Options options,[Function responseFactory = null]);
   dynamic locationToAddress(location_mojom.Location location,Options options,[Function responseFactory = null]);
-
 }
 
 
-class GeocoderProxyImpl extends bindings.Proxy {
-  GeocoderProxyImpl.fromEndpoint(
+class _GeocoderProxyImpl extends bindings.Proxy {
+  _GeocoderProxyImpl.fromEndpoint(
       core.MojoMessagePipeEndpoint endpoint) : super.fromEndpoint(endpoint);
 
-  GeocoderProxyImpl.fromHandle(core.MojoHandle handle) :
+  _GeocoderProxyImpl.fromHandle(core.MojoHandle handle) :
       super.fromHandle(handle);
 
-  GeocoderProxyImpl.unbound() : super.unbound();
+  _GeocoderProxyImpl.unbound() : super.unbound();
 
-  static GeocoderProxyImpl newFromEndpoint(
+  static _GeocoderProxyImpl newFromEndpoint(
       core.MojoMessagePipeEndpoint endpoint) {
-    assert(endpoint.setDescription("For GeocoderProxyImpl"));
-    return new GeocoderProxyImpl.fromEndpoint(endpoint);
+    assert(endpoint.setDescription("For _GeocoderProxyImpl"));
+    return new _GeocoderProxyImpl.fromEndpoint(endpoint);
   }
-
-  String get name => GeocoderName;
 
   void handleResponse(bindings.ServiceMessage message) {
     switch (message.header.type) {
-      case kGeocoder_addressToLocation_name:
+      case _Geocoder_addressToLocationName:
         var r = GeocoderAddressToLocationResponseParams.deserialize(
             message.payload);
         if (!message.header.hasRequestId) {
@@ -1008,7 +1005,7 @@ class GeocoderProxyImpl extends bindings.Proxy {
         }
         c.complete(r);
         break;
-      case kGeocoder_locationToAddress_name:
+      case _Geocoder_locationToAddressName:
         var r = GeocoderLocationToAddressResponseParams.deserialize(
             message.payload);
         if (!message.header.hasRequestId) {
@@ -1037,32 +1034,32 @@ class GeocoderProxyImpl extends bindings.Proxy {
 
   String toString() {
     var superString = super.toString();
-    return "GeocoderProxyImpl($superString)";
+    return "_GeocoderProxyImpl($superString)";
   }
 }
 
 
 class _GeocoderProxyCalls implements Geocoder {
-  GeocoderProxyImpl _proxyImpl;
+  _GeocoderProxyImpl _proxyImpl;
 
   _GeocoderProxyCalls(this._proxyImpl);
     dynamic addressToLocation(String address,Options options,[Function responseFactory = null]) {
-      var params = new GeocoderAddressToLocationParams();
+      var params = new _GeocoderAddressToLocationParams();
       params.address = address;
       params.options = options;
       return _proxyImpl.sendMessageWithRequestId(
           params,
-          kGeocoder_addressToLocation_name,
+          _Geocoder_addressToLocationName,
           -1,
           bindings.MessageHeader.kMessageExpectsResponse);
     }
     dynamic locationToAddress(location_mojom.Location location,Options options,[Function responseFactory = null]) {
-      var params = new GeocoderLocationToAddressParams();
+      var params = new _GeocoderLocationToAddressParams();
       params.location = location;
       params.options = options;
       return _proxyImpl.sendMessageWithRequestId(
           params,
-          kGeocoder_locationToAddress_name,
+          _Geocoder_locationToAddressName,
           -1,
           bindings.MessageHeader.kMessageExpectsResponse);
     }
@@ -1072,25 +1069,24 @@ class _GeocoderProxyCalls implements Geocoder {
 class GeocoderProxy implements bindings.ProxyBase {
   final bindings.Proxy impl;
   Geocoder ptr;
-  final String name = GeocoderName;
 
-  GeocoderProxy(GeocoderProxyImpl proxyImpl) :
+  GeocoderProxy(_GeocoderProxyImpl proxyImpl) :
       impl = proxyImpl,
       ptr = new _GeocoderProxyCalls(proxyImpl);
 
   GeocoderProxy.fromEndpoint(
       core.MojoMessagePipeEndpoint endpoint) :
-      impl = new GeocoderProxyImpl.fromEndpoint(endpoint) {
+      impl = new _GeocoderProxyImpl.fromEndpoint(endpoint) {
     ptr = new _GeocoderProxyCalls(impl);
   }
 
   GeocoderProxy.fromHandle(core.MojoHandle handle) :
-      impl = new GeocoderProxyImpl.fromHandle(handle) {
+      impl = new _GeocoderProxyImpl.fromHandle(handle) {
     ptr = new _GeocoderProxyCalls(impl);
   }
 
   GeocoderProxy.unbound() :
-      impl = new GeocoderProxyImpl.unbound() {
+      impl = new _GeocoderProxyImpl.unbound() {
     ptr = new _GeocoderProxyCalls(impl);
   }
 
@@ -1106,6 +1102,8 @@ class GeocoderProxy implements bindings.ProxyBase {
     assert(endpoint.setDescription("For GeocoderProxy"));
     return new GeocoderProxy.fromEndpoint(endpoint);
   }
+
+  String get serviceName => Geocoder.serviceName;
 
   Future close({bool immediate: false}) => impl.close(immediate: immediate);
 
@@ -1145,8 +1143,6 @@ class GeocoderStub extends bindings.Stub {
     return new GeocoderStub.fromEndpoint(endpoint);
   }
 
-  static const String name = GeocoderName;
-
 
   GeocoderAddressToLocationResponseParams _GeocoderAddressToLocationResponseParamsFactory(String status, List<Result> results) {
     var mojo_factory_result = new GeocoderAddressToLocationResponseParams();
@@ -1169,8 +1165,8 @@ class GeocoderStub extends bindings.Stub {
     }
     assert(_impl != null);
     switch (message.header.type) {
-      case kGeocoder_addressToLocation_name:
-        var params = GeocoderAddressToLocationParams.deserialize(
+      case _Geocoder_addressToLocationName:
+        var params = _GeocoderAddressToLocationParams.deserialize(
             message.payload);
         var response = _impl.addressToLocation(params.address,params.options,_GeocoderAddressToLocationResponseParamsFactory);
         if (response is Future) {
@@ -1178,7 +1174,7 @@ class GeocoderStub extends bindings.Stub {
             if (response != null) {
               return buildResponseWithId(
                   response,
-                  kGeocoder_addressToLocation_name,
+                  _Geocoder_addressToLocationName,
                   message.header.requestId,
                   bindings.MessageHeader.kMessageIsResponse);
             }
@@ -1186,13 +1182,13 @@ class GeocoderStub extends bindings.Stub {
         } else if (response != null) {
           return buildResponseWithId(
               response,
-              kGeocoder_addressToLocation_name,
+              _Geocoder_addressToLocationName,
               message.header.requestId,
               bindings.MessageHeader.kMessageIsResponse);
         }
         break;
-      case kGeocoder_locationToAddress_name:
-        var params = GeocoderLocationToAddressParams.deserialize(
+      case _Geocoder_locationToAddressName:
+        var params = _GeocoderLocationToAddressParams.deserialize(
             message.payload);
         var response = _impl.locationToAddress(params.location,params.options,_GeocoderLocationToAddressResponseParamsFactory);
         if (response is Future) {
@@ -1200,7 +1196,7 @@ class GeocoderStub extends bindings.Stub {
             if (response != null) {
               return buildResponseWithId(
                   response,
-                  kGeocoder_locationToAddress_name,
+                  _Geocoder_locationToAddressName,
                   message.header.requestId,
                   bindings.MessageHeader.kMessageIsResponse);
             }
@@ -1208,7 +1204,7 @@ class GeocoderStub extends bindings.Stub {
         } else if (response != null) {
           return buildResponseWithId(
               response,
-              kGeocoder_locationToAddress_name,
+              _Geocoder_locationToAddressName,
               message.header.requestId,
               bindings.MessageHeader.kMessageIsResponse);
         }

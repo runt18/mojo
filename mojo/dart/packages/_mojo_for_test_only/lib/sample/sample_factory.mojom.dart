@@ -176,15 +176,15 @@ class Response extends bindings.Struct {
 }
 
 
-class NamedObjectSetNameParams extends bindings.Struct {
+class _NamedObjectSetNameParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(16, 0)
   ];
   String name = null;
 
-  NamedObjectSetNameParams() : super(kVersions.last.size);
+  _NamedObjectSetNameParams() : super(kVersions.last.size);
 
-  static NamedObjectSetNameParams deserialize(bindings.Message message) {
+  static _NamedObjectSetNameParams deserialize(bindings.Message message) {
     var decoder = new bindings.Decoder(message);
     var result = decode(decoder);
     if (decoder.excessHandles != null) {
@@ -193,11 +193,11 @@ class NamedObjectSetNameParams extends bindings.Struct {
     return result;
   }
 
-  static NamedObjectSetNameParams decode(bindings.Decoder decoder0) {
+  static _NamedObjectSetNameParams decode(bindings.Decoder decoder0) {
     if (decoder0 == null) {
       return null;
     }
-    NamedObjectSetNameParams result = new NamedObjectSetNameParams();
+    _NamedObjectSetNameParams result = new _NamedObjectSetNameParams();
 
     var mainDataHeader = decoder0.decodeStructDataHeader();
     if (mainDataHeader.version <= kVersions.last.version) {
@@ -231,7 +231,7 @@ class NamedObjectSetNameParams extends bindings.Struct {
   }
 
   String toString() {
-    return "NamedObjectSetNameParams("
+    return "_NamedObjectSetNameParams("
            "name: $name" ")";
   }
 
@@ -243,14 +243,14 @@ class NamedObjectSetNameParams extends bindings.Struct {
 }
 
 
-class NamedObjectGetNameParams extends bindings.Struct {
+class _NamedObjectGetNameParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(8, 0)
   ];
 
-  NamedObjectGetNameParams() : super(kVersions.last.size);
+  _NamedObjectGetNameParams() : super(kVersions.last.size);
 
-  static NamedObjectGetNameParams deserialize(bindings.Message message) {
+  static _NamedObjectGetNameParams deserialize(bindings.Message message) {
     var decoder = new bindings.Decoder(message);
     var result = decode(decoder);
     if (decoder.excessHandles != null) {
@@ -259,11 +259,11 @@ class NamedObjectGetNameParams extends bindings.Struct {
     return result;
   }
 
-  static NamedObjectGetNameParams decode(bindings.Decoder decoder0) {
+  static _NamedObjectGetNameParams decode(bindings.Decoder decoder0) {
     if (decoder0 == null) {
       return null;
     }
-    NamedObjectGetNameParams result = new NamedObjectGetNameParams();
+    _NamedObjectGetNameParams result = new _NamedObjectGetNameParams();
 
     var mainDataHeader = decoder0.decodeStructDataHeader();
     if (mainDataHeader.version <= kVersions.last.version) {
@@ -291,7 +291,7 @@ class NamedObjectGetNameParams extends bindings.Struct {
   }
 
   String toString() {
-    return "NamedObjectGetNameParams("")";
+    return "_NamedObjectGetNameParams("")";
   }
 
   Map toJson() {
@@ -368,16 +368,16 @@ class NamedObjectGetNameResponseParams extends bindings.Struct {
 }
 
 
-class FactoryDoStuffParams extends bindings.Struct {
+class _FactoryDoStuffParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(24, 0)
   ];
   Request request = null;
   core.MojoMessagePipeEndpoint pipe = null;
 
-  FactoryDoStuffParams() : super(kVersions.last.size);
+  _FactoryDoStuffParams() : super(kVersions.last.size);
 
-  static FactoryDoStuffParams deserialize(bindings.Message message) {
+  static _FactoryDoStuffParams deserialize(bindings.Message message) {
     var decoder = new bindings.Decoder(message);
     var result = decode(decoder);
     if (decoder.excessHandles != null) {
@@ -386,11 +386,11 @@ class FactoryDoStuffParams extends bindings.Struct {
     return result;
   }
 
-  static FactoryDoStuffParams decode(bindings.Decoder decoder0) {
+  static _FactoryDoStuffParams decode(bindings.Decoder decoder0) {
     if (decoder0 == null) {
       return null;
     }
-    FactoryDoStuffParams result = new FactoryDoStuffParams();
+    _FactoryDoStuffParams result = new _FactoryDoStuffParams();
 
     var mainDataHeader = decoder0.decodeStructDataHeader();
     if (mainDataHeader.version <= kVersions.last.version) {
@@ -431,7 +431,7 @@ class FactoryDoStuffParams extends bindings.Struct {
   }
 
   String toString() {
-    return "FactoryDoStuffParams("
+    return "_FactoryDoStuffParams("
            "request: $request" ", "
            "pipe: $pipe" ")";
   }
@@ -518,15 +518,15 @@ class FactoryDoStuffResponseParams extends bindings.Struct {
 }
 
 
-class FactoryDoStuff2Params extends bindings.Struct {
+class _FactoryDoStuff2Params extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(16, 0)
   ];
   core.MojoDataPipeConsumer pipe = null;
 
-  FactoryDoStuff2Params() : super(kVersions.last.size);
+  _FactoryDoStuff2Params() : super(kVersions.last.size);
 
-  static FactoryDoStuff2Params deserialize(bindings.Message message) {
+  static _FactoryDoStuff2Params deserialize(bindings.Message message) {
     var decoder = new bindings.Decoder(message);
     var result = decode(decoder);
     if (decoder.excessHandles != null) {
@@ -535,11 +535,11 @@ class FactoryDoStuff2Params extends bindings.Struct {
     return result;
   }
 
-  static FactoryDoStuff2Params decode(bindings.Decoder decoder0) {
+  static _FactoryDoStuff2Params decode(bindings.Decoder decoder0) {
     if (decoder0 == null) {
       return null;
     }
-    FactoryDoStuff2Params result = new FactoryDoStuff2Params();
+    _FactoryDoStuff2Params result = new _FactoryDoStuff2Params();
 
     var mainDataHeader = decoder0.decodeStructDataHeader();
     if (mainDataHeader.version <= kVersions.last.version) {
@@ -573,7 +573,7 @@ class FactoryDoStuff2Params extends bindings.Struct {
   }
 
   String toString() {
-    return "FactoryDoStuff2Params("
+    return "_FactoryDoStuff2Params("
            "pipe: $pipe" ")";
   }
 
@@ -651,15 +651,15 @@ class FactoryDoStuff2ResponseParams extends bindings.Struct {
 }
 
 
-class FactoryCreateNamedObjectParams extends bindings.Struct {
+class _FactoryCreateNamedObjectParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(16, 0)
   ];
   Object obj = null;
 
-  FactoryCreateNamedObjectParams() : super(kVersions.last.size);
+  _FactoryCreateNamedObjectParams() : super(kVersions.last.size);
 
-  static FactoryCreateNamedObjectParams deserialize(bindings.Message message) {
+  static _FactoryCreateNamedObjectParams deserialize(bindings.Message message) {
     var decoder = new bindings.Decoder(message);
     var result = decode(decoder);
     if (decoder.excessHandles != null) {
@@ -668,11 +668,11 @@ class FactoryCreateNamedObjectParams extends bindings.Struct {
     return result;
   }
 
-  static FactoryCreateNamedObjectParams decode(bindings.Decoder decoder0) {
+  static _FactoryCreateNamedObjectParams decode(bindings.Decoder decoder0) {
     if (decoder0 == null) {
       return null;
     }
-    FactoryCreateNamedObjectParams result = new FactoryCreateNamedObjectParams();
+    _FactoryCreateNamedObjectParams result = new _FactoryCreateNamedObjectParams();
 
     var mainDataHeader = decoder0.decodeStructDataHeader();
     if (mainDataHeader.version <= kVersions.last.version) {
@@ -706,7 +706,7 @@ class FactoryCreateNamedObjectParams extends bindings.Struct {
   }
 
   String toString() {
-    return "FactoryCreateNamedObjectParams("
+    return "_FactoryCreateNamedObjectParams("
            "obj: $obj" ")";
   }
 
@@ -717,15 +717,15 @@ class FactoryCreateNamedObjectParams extends bindings.Struct {
 }
 
 
-class FactoryRequestImportedInterfaceParams extends bindings.Struct {
+class _FactoryRequestImportedInterfaceParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(16, 0)
   ];
   Object obj = null;
 
-  FactoryRequestImportedInterfaceParams() : super(kVersions.last.size);
+  _FactoryRequestImportedInterfaceParams() : super(kVersions.last.size);
 
-  static FactoryRequestImportedInterfaceParams deserialize(bindings.Message message) {
+  static _FactoryRequestImportedInterfaceParams deserialize(bindings.Message message) {
     var decoder = new bindings.Decoder(message);
     var result = decode(decoder);
     if (decoder.excessHandles != null) {
@@ -734,11 +734,11 @@ class FactoryRequestImportedInterfaceParams extends bindings.Struct {
     return result;
   }
 
-  static FactoryRequestImportedInterfaceParams decode(bindings.Decoder decoder0) {
+  static _FactoryRequestImportedInterfaceParams decode(bindings.Decoder decoder0) {
     if (decoder0 == null) {
       return null;
     }
-    FactoryRequestImportedInterfaceParams result = new FactoryRequestImportedInterfaceParams();
+    _FactoryRequestImportedInterfaceParams result = new _FactoryRequestImportedInterfaceParams();
 
     var mainDataHeader = decoder0.decodeStructDataHeader();
     if (mainDataHeader.version <= kVersions.last.version) {
@@ -772,7 +772,7 @@ class FactoryRequestImportedInterfaceParams extends bindings.Struct {
   }
 
   String toString() {
-    return "FactoryRequestImportedInterfaceParams("
+    return "_FactoryRequestImportedInterfaceParams("
            "obj: $obj" ")";
   }
 
@@ -849,15 +849,15 @@ class FactoryRequestImportedInterfaceResponseParams extends bindings.Struct {
 }
 
 
-class FactoryTakeImportedInterfaceParams extends bindings.Struct {
+class _FactoryTakeImportedInterfaceParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(16, 0)
   ];
   Object obj = null;
 
-  FactoryTakeImportedInterfaceParams() : super(kVersions.last.size);
+  _FactoryTakeImportedInterfaceParams() : super(kVersions.last.size);
 
-  static FactoryTakeImportedInterfaceParams deserialize(bindings.Message message) {
+  static _FactoryTakeImportedInterfaceParams deserialize(bindings.Message message) {
     var decoder = new bindings.Decoder(message);
     var result = decode(decoder);
     if (decoder.excessHandles != null) {
@@ -866,11 +866,11 @@ class FactoryTakeImportedInterfaceParams extends bindings.Struct {
     return result;
   }
 
-  static FactoryTakeImportedInterfaceParams decode(bindings.Decoder decoder0) {
+  static _FactoryTakeImportedInterfaceParams decode(bindings.Decoder decoder0) {
     if (decoder0 == null) {
       return null;
     }
-    FactoryTakeImportedInterfaceParams result = new FactoryTakeImportedInterfaceParams();
+    _FactoryTakeImportedInterfaceParams result = new _FactoryTakeImportedInterfaceParams();
 
     var mainDataHeader = decoder0.decodeStructDataHeader();
     if (mainDataHeader.version <= kVersions.last.version) {
@@ -904,7 +904,7 @@ class FactoryTakeImportedInterfaceParams extends bindings.Struct {
   }
 
   String toString() {
-    return "FactoryTakeImportedInterfaceParams("
+    return "_FactoryTakeImportedInterfaceParams("
            "obj: $obj" ")";
   }
 
@@ -980,37 +980,34 @@ class FactoryTakeImportedInterfaceResponseParams extends bindings.Struct {
   }
 }
 
-const int kNamedObject_setName_name = 0;
-const int kNamedObject_getName_name = 1;
-const String NamedObjectName = "sample::NamedObject";
+const int _NamedObject_setNameName = 0;
+const int _NamedObject_getNameName = 1;
 
 abstract class NamedObject {
+  static const String serviceName = "sample::NamedObject";
   void setName(String name);
   dynamic getName([Function responseFactory = null]);
-
 }
 
 
-class NamedObjectProxyImpl extends bindings.Proxy {
-  NamedObjectProxyImpl.fromEndpoint(
+class _NamedObjectProxyImpl extends bindings.Proxy {
+  _NamedObjectProxyImpl.fromEndpoint(
       core.MojoMessagePipeEndpoint endpoint) : super.fromEndpoint(endpoint);
 
-  NamedObjectProxyImpl.fromHandle(core.MojoHandle handle) :
+  _NamedObjectProxyImpl.fromHandle(core.MojoHandle handle) :
       super.fromHandle(handle);
 
-  NamedObjectProxyImpl.unbound() : super.unbound();
+  _NamedObjectProxyImpl.unbound() : super.unbound();
 
-  static NamedObjectProxyImpl newFromEndpoint(
+  static _NamedObjectProxyImpl newFromEndpoint(
       core.MojoMessagePipeEndpoint endpoint) {
-    assert(endpoint.setDescription("For NamedObjectProxyImpl"));
-    return new NamedObjectProxyImpl.fromEndpoint(endpoint);
+    assert(endpoint.setDescription("For _NamedObjectProxyImpl"));
+    return new _NamedObjectProxyImpl.fromEndpoint(endpoint);
   }
-
-  String get name => NamedObjectName;
 
   void handleResponse(bindings.ServiceMessage message) {
     switch (message.header.type) {
-      case kNamedObject_getName_name:
+      case _NamedObject_getNameName:
         var r = NamedObjectGetNameResponseParams.deserialize(
             message.payload);
         if (!message.header.hasRequestId) {
@@ -1039,13 +1036,13 @@ class NamedObjectProxyImpl extends bindings.Proxy {
 
   String toString() {
     var superString = super.toString();
-    return "NamedObjectProxyImpl($superString)";
+    return "_NamedObjectProxyImpl($superString)";
   }
 }
 
 
 class _NamedObjectProxyCalls implements NamedObject {
-  NamedObjectProxyImpl _proxyImpl;
+  _NamedObjectProxyImpl _proxyImpl;
 
   _NamedObjectProxyCalls(this._proxyImpl);
     void setName(String name) {
@@ -1053,16 +1050,15 @@ class _NamedObjectProxyCalls implements NamedObject {
         _proxyImpl.proxyError("The Proxy is closed.");
         return;
       }
-      var params = new NamedObjectSetNameParams();
+      var params = new _NamedObjectSetNameParams();
       params.name = name;
-      _proxyImpl.sendMessage(params, kNamedObject_setName_name);
+      _proxyImpl.sendMessage(params, _NamedObject_setNameName);
     }
-  
     dynamic getName([Function responseFactory = null]) {
-      var params = new NamedObjectGetNameParams();
+      var params = new _NamedObjectGetNameParams();
       return _proxyImpl.sendMessageWithRequestId(
           params,
-          kNamedObject_getName_name,
+          _NamedObject_getNameName,
           -1,
           bindings.MessageHeader.kMessageExpectsResponse);
     }
@@ -1072,25 +1068,24 @@ class _NamedObjectProxyCalls implements NamedObject {
 class NamedObjectProxy implements bindings.ProxyBase {
   final bindings.Proxy impl;
   NamedObject ptr;
-  final String name = NamedObjectName;
 
-  NamedObjectProxy(NamedObjectProxyImpl proxyImpl) :
+  NamedObjectProxy(_NamedObjectProxyImpl proxyImpl) :
       impl = proxyImpl,
       ptr = new _NamedObjectProxyCalls(proxyImpl);
 
   NamedObjectProxy.fromEndpoint(
       core.MojoMessagePipeEndpoint endpoint) :
-      impl = new NamedObjectProxyImpl.fromEndpoint(endpoint) {
+      impl = new _NamedObjectProxyImpl.fromEndpoint(endpoint) {
     ptr = new _NamedObjectProxyCalls(impl);
   }
 
   NamedObjectProxy.fromHandle(core.MojoHandle handle) :
-      impl = new NamedObjectProxyImpl.fromHandle(handle) {
+      impl = new _NamedObjectProxyImpl.fromHandle(handle) {
     ptr = new _NamedObjectProxyCalls(impl);
   }
 
   NamedObjectProxy.unbound() :
-      impl = new NamedObjectProxyImpl.unbound() {
+      impl = new _NamedObjectProxyImpl.unbound() {
     ptr = new _NamedObjectProxyCalls(impl);
   }
 
@@ -1106,6 +1101,8 @@ class NamedObjectProxy implements bindings.ProxyBase {
     assert(endpoint.setDescription("For NamedObjectProxy"));
     return new NamedObjectProxy.fromEndpoint(endpoint);
   }
+
+  String get serviceName => NamedObject.serviceName;
 
   Future close({bool immediate: false}) => impl.close(immediate: immediate);
 
@@ -1145,8 +1142,6 @@ class NamedObjectStub extends bindings.Stub {
     return new NamedObjectStub.fromEndpoint(endpoint);
   }
 
-  static const String name = NamedObjectName;
-
 
   NamedObjectGetNameResponseParams _NamedObjectGetNameResponseParamsFactory(String name) {
     var mojo_factory_result = new NamedObjectGetNameResponseParams();
@@ -1162,13 +1157,13 @@ class NamedObjectStub extends bindings.Stub {
     }
     assert(_impl != null);
     switch (message.header.type) {
-      case kNamedObject_setName_name:
-        var params = NamedObjectSetNameParams.deserialize(
+      case _NamedObject_setNameName:
+        var params = _NamedObjectSetNameParams.deserialize(
             message.payload);
         _impl.setName(params.name);
         break;
-      case kNamedObject_getName_name:
-        var params = NamedObjectGetNameParams.deserialize(
+      case _NamedObject_getNameName:
+        var params = _NamedObjectGetNameParams.deserialize(
             message.payload);
         var response = _impl.getName(_NamedObjectGetNameResponseParamsFactory);
         if (response is Future) {
@@ -1176,7 +1171,7 @@ class NamedObjectStub extends bindings.Stub {
             if (response != null) {
               return buildResponseWithId(
                   response,
-                  kNamedObject_getName_name,
+                  _NamedObject_getNameName,
                   message.header.requestId,
                   bindings.MessageHeader.kMessageIsResponse);
             }
@@ -1184,7 +1179,7 @@ class NamedObjectStub extends bindings.Stub {
         } else if (response != null) {
           return buildResponseWithId(
               response,
-              kNamedObject_getName_name,
+              _NamedObject_getNameName,
               message.header.requestId,
               bindings.MessageHeader.kMessageIsResponse);
         }
@@ -1210,43 +1205,40 @@ class NamedObjectStub extends bindings.Stub {
   int get version => 0;
 }
 
-const int kFactory_doStuff_name = 0;
-const int kFactory_doStuff2_name = 1;
-const int kFactory_createNamedObject_name = 2;
-const int kFactory_requestImportedInterface_name = 3;
-const int kFactory_takeImportedInterface_name = 4;
-const String FactoryName = null;
+const int _Factory_doStuffName = 0;
+const int _Factory_doStuff2Name = 1;
+const int _Factory_createNamedObjectName = 2;
+const int _Factory_requestImportedInterfaceName = 3;
+const int _Factory_takeImportedInterfaceName = 4;
 
 abstract class Factory {
+  static const String serviceName = null;
   dynamic doStuff(Request request,core.MojoMessagePipeEndpoint pipe,[Function responseFactory = null]);
   dynamic doStuff2(core.MojoDataPipeConsumer pipe,[Function responseFactory = null]);
   void createNamedObject(Object obj);
   dynamic requestImportedInterface(Object obj,[Function responseFactory = null]);
   dynamic takeImportedInterface(Object obj,[Function responseFactory = null]);
-
 }
 
 
-class FactoryProxyImpl extends bindings.Proxy {
-  FactoryProxyImpl.fromEndpoint(
+class _FactoryProxyImpl extends bindings.Proxy {
+  _FactoryProxyImpl.fromEndpoint(
       core.MojoMessagePipeEndpoint endpoint) : super.fromEndpoint(endpoint);
 
-  FactoryProxyImpl.fromHandle(core.MojoHandle handle) :
+  _FactoryProxyImpl.fromHandle(core.MojoHandle handle) :
       super.fromHandle(handle);
 
-  FactoryProxyImpl.unbound() : super.unbound();
+  _FactoryProxyImpl.unbound() : super.unbound();
 
-  static FactoryProxyImpl newFromEndpoint(
+  static _FactoryProxyImpl newFromEndpoint(
       core.MojoMessagePipeEndpoint endpoint) {
-    assert(endpoint.setDescription("For FactoryProxyImpl"));
-    return new FactoryProxyImpl.fromEndpoint(endpoint);
+    assert(endpoint.setDescription("For _FactoryProxyImpl"));
+    return new _FactoryProxyImpl.fromEndpoint(endpoint);
   }
-
-  String get name => FactoryName;
 
   void handleResponse(bindings.ServiceMessage message) {
     switch (message.header.type) {
-      case kFactory_doStuff_name:
+      case _Factory_doStuffName:
         var r = FactoryDoStuffResponseParams.deserialize(
             message.payload);
         if (!message.header.hasRequestId) {
@@ -1266,7 +1258,7 @@ class FactoryProxyImpl extends bindings.Proxy {
         }
         c.complete(r);
         break;
-      case kFactory_doStuff2_name:
+      case _Factory_doStuff2Name:
         var r = FactoryDoStuff2ResponseParams.deserialize(
             message.payload);
         if (!message.header.hasRequestId) {
@@ -1286,7 +1278,7 @@ class FactoryProxyImpl extends bindings.Proxy {
         }
         c.complete(r);
         break;
-      case kFactory_requestImportedInterface_name:
+      case _Factory_requestImportedInterfaceName:
         var r = FactoryRequestImportedInterfaceResponseParams.deserialize(
             message.payload);
         if (!message.header.hasRequestId) {
@@ -1306,7 +1298,7 @@ class FactoryProxyImpl extends bindings.Proxy {
         }
         c.complete(r);
         break;
-      case kFactory_takeImportedInterface_name:
+      case _Factory_takeImportedInterfaceName:
         var r = FactoryTakeImportedInterfaceResponseParams.deserialize(
             message.payload);
         if (!message.header.hasRequestId) {
@@ -1335,31 +1327,31 @@ class FactoryProxyImpl extends bindings.Proxy {
 
   String toString() {
     var superString = super.toString();
-    return "FactoryProxyImpl($superString)";
+    return "_FactoryProxyImpl($superString)";
   }
 }
 
 
 class _FactoryProxyCalls implements Factory {
-  FactoryProxyImpl _proxyImpl;
+  _FactoryProxyImpl _proxyImpl;
 
   _FactoryProxyCalls(this._proxyImpl);
     dynamic doStuff(Request request,core.MojoMessagePipeEndpoint pipe,[Function responseFactory = null]) {
-      var params = new FactoryDoStuffParams();
+      var params = new _FactoryDoStuffParams();
       params.request = request;
       params.pipe = pipe;
       return _proxyImpl.sendMessageWithRequestId(
           params,
-          kFactory_doStuff_name,
+          _Factory_doStuffName,
           -1,
           bindings.MessageHeader.kMessageExpectsResponse);
     }
     dynamic doStuff2(core.MojoDataPipeConsumer pipe,[Function responseFactory = null]) {
-      var params = new FactoryDoStuff2Params();
+      var params = new _FactoryDoStuff2Params();
       params.pipe = pipe;
       return _proxyImpl.sendMessageWithRequestId(
           params,
-          kFactory_doStuff2_name,
+          _Factory_doStuff2Name,
           -1,
           bindings.MessageHeader.kMessageExpectsResponse);
     }
@@ -1368,26 +1360,25 @@ class _FactoryProxyCalls implements Factory {
         _proxyImpl.proxyError("The Proxy is closed.");
         return;
       }
-      var params = new FactoryCreateNamedObjectParams();
+      var params = new _FactoryCreateNamedObjectParams();
       params.obj = obj;
-      _proxyImpl.sendMessage(params, kFactory_createNamedObject_name);
+      _proxyImpl.sendMessage(params, _Factory_createNamedObjectName);
     }
-  
     dynamic requestImportedInterface(Object obj,[Function responseFactory = null]) {
-      var params = new FactoryRequestImportedInterfaceParams();
+      var params = new _FactoryRequestImportedInterfaceParams();
       params.obj = obj;
       return _proxyImpl.sendMessageWithRequestId(
           params,
-          kFactory_requestImportedInterface_name,
+          _Factory_requestImportedInterfaceName,
           -1,
           bindings.MessageHeader.kMessageExpectsResponse);
     }
     dynamic takeImportedInterface(Object obj,[Function responseFactory = null]) {
-      var params = new FactoryTakeImportedInterfaceParams();
+      var params = new _FactoryTakeImportedInterfaceParams();
       params.obj = obj;
       return _proxyImpl.sendMessageWithRequestId(
           params,
-          kFactory_takeImportedInterface_name,
+          _Factory_takeImportedInterfaceName,
           -1,
           bindings.MessageHeader.kMessageExpectsResponse);
     }
@@ -1397,25 +1388,24 @@ class _FactoryProxyCalls implements Factory {
 class FactoryProxy implements bindings.ProxyBase {
   final bindings.Proxy impl;
   Factory ptr;
-  final String name = FactoryName;
 
-  FactoryProxy(FactoryProxyImpl proxyImpl) :
+  FactoryProxy(_FactoryProxyImpl proxyImpl) :
       impl = proxyImpl,
       ptr = new _FactoryProxyCalls(proxyImpl);
 
   FactoryProxy.fromEndpoint(
       core.MojoMessagePipeEndpoint endpoint) :
-      impl = new FactoryProxyImpl.fromEndpoint(endpoint) {
+      impl = new _FactoryProxyImpl.fromEndpoint(endpoint) {
     ptr = new _FactoryProxyCalls(impl);
   }
 
   FactoryProxy.fromHandle(core.MojoHandle handle) :
-      impl = new FactoryProxyImpl.fromHandle(handle) {
+      impl = new _FactoryProxyImpl.fromHandle(handle) {
     ptr = new _FactoryProxyCalls(impl);
   }
 
   FactoryProxy.unbound() :
-      impl = new FactoryProxyImpl.unbound() {
+      impl = new _FactoryProxyImpl.unbound() {
     ptr = new _FactoryProxyCalls(impl);
   }
 
@@ -1431,6 +1421,8 @@ class FactoryProxy implements bindings.ProxyBase {
     assert(endpoint.setDescription("For FactoryProxy"));
     return new FactoryProxy.fromEndpoint(endpoint);
   }
+
+  String get serviceName => Factory.serviceName;
 
   Future close({bool immediate: false}) => impl.close(immediate: immediate);
 
@@ -1470,8 +1462,6 @@ class FactoryStub extends bindings.Stub {
     return new FactoryStub.fromEndpoint(endpoint);
   }
 
-  static const String name = FactoryName;
-
 
   FactoryDoStuffResponseParams _FactoryDoStuffResponseParamsFactory(Response response, String text) {
     var mojo_factory_result = new FactoryDoStuffResponseParams();
@@ -1503,8 +1493,8 @@ class FactoryStub extends bindings.Stub {
     }
     assert(_impl != null);
     switch (message.header.type) {
-      case kFactory_doStuff_name:
-        var params = FactoryDoStuffParams.deserialize(
+      case _Factory_doStuffName:
+        var params = _FactoryDoStuffParams.deserialize(
             message.payload);
         var response = _impl.doStuff(params.request,params.pipe,_FactoryDoStuffResponseParamsFactory);
         if (response is Future) {
@@ -1512,7 +1502,7 @@ class FactoryStub extends bindings.Stub {
             if (response != null) {
               return buildResponseWithId(
                   response,
-                  kFactory_doStuff_name,
+                  _Factory_doStuffName,
                   message.header.requestId,
                   bindings.MessageHeader.kMessageIsResponse);
             }
@@ -1520,13 +1510,13 @@ class FactoryStub extends bindings.Stub {
         } else if (response != null) {
           return buildResponseWithId(
               response,
-              kFactory_doStuff_name,
+              _Factory_doStuffName,
               message.header.requestId,
               bindings.MessageHeader.kMessageIsResponse);
         }
         break;
-      case kFactory_doStuff2_name:
-        var params = FactoryDoStuff2Params.deserialize(
+      case _Factory_doStuff2Name:
+        var params = _FactoryDoStuff2Params.deserialize(
             message.payload);
         var response = _impl.doStuff2(params.pipe,_FactoryDoStuff2ResponseParamsFactory);
         if (response is Future) {
@@ -1534,7 +1524,7 @@ class FactoryStub extends bindings.Stub {
             if (response != null) {
               return buildResponseWithId(
                   response,
-                  kFactory_doStuff2_name,
+                  _Factory_doStuff2Name,
                   message.header.requestId,
                   bindings.MessageHeader.kMessageIsResponse);
             }
@@ -1542,18 +1532,18 @@ class FactoryStub extends bindings.Stub {
         } else if (response != null) {
           return buildResponseWithId(
               response,
-              kFactory_doStuff2_name,
+              _Factory_doStuff2Name,
               message.header.requestId,
               bindings.MessageHeader.kMessageIsResponse);
         }
         break;
-      case kFactory_createNamedObject_name:
-        var params = FactoryCreateNamedObjectParams.deserialize(
+      case _Factory_createNamedObjectName:
+        var params = _FactoryCreateNamedObjectParams.deserialize(
             message.payload);
         _impl.createNamedObject(params.obj);
         break;
-      case kFactory_requestImportedInterface_name:
-        var params = FactoryRequestImportedInterfaceParams.deserialize(
+      case _Factory_requestImportedInterfaceName:
+        var params = _FactoryRequestImportedInterfaceParams.deserialize(
             message.payload);
         var response = _impl.requestImportedInterface(params.obj,_FactoryRequestImportedInterfaceResponseParamsFactory);
         if (response is Future) {
@@ -1561,7 +1551,7 @@ class FactoryStub extends bindings.Stub {
             if (response != null) {
               return buildResponseWithId(
                   response,
-                  kFactory_requestImportedInterface_name,
+                  _Factory_requestImportedInterfaceName,
                   message.header.requestId,
                   bindings.MessageHeader.kMessageIsResponse);
             }
@@ -1569,13 +1559,13 @@ class FactoryStub extends bindings.Stub {
         } else if (response != null) {
           return buildResponseWithId(
               response,
-              kFactory_requestImportedInterface_name,
+              _Factory_requestImportedInterfaceName,
               message.header.requestId,
               bindings.MessageHeader.kMessageIsResponse);
         }
         break;
-      case kFactory_takeImportedInterface_name:
-        var params = FactoryTakeImportedInterfaceParams.deserialize(
+      case _Factory_takeImportedInterfaceName:
+        var params = _FactoryTakeImportedInterfaceParams.deserialize(
             message.payload);
         var response = _impl.takeImportedInterface(params.obj,_FactoryTakeImportedInterfaceResponseParamsFactory);
         if (response is Future) {
@@ -1583,7 +1573,7 @@ class FactoryStub extends bindings.Stub {
             if (response != null) {
               return buildResponseWithId(
                   response,
-                  kFactory_takeImportedInterface_name,
+                  _Factory_takeImportedInterfaceName,
                   message.header.requestId,
                   bindings.MessageHeader.kMessageIsResponse);
             }
@@ -1591,7 +1581,7 @@ class FactoryStub extends bindings.Stub {
         } else if (response != null) {
           return buildResponseWithId(
               response,
-              kFactory_takeImportedInterface_name,
+              _Factory_takeImportedInterfaceName,
               message.header.requestId,
               bindings.MessageHeader.kMessageIsResponse);
         }

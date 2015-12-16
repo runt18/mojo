@@ -22,15 +22,15 @@ import 'package:mojo_services/mojo/web_socket.mojom.dart' as web_socket_mojom;
 
 
 
-class NetworkServiceCreateUrlLoaderParams extends bindings.Struct {
+class _NetworkServiceCreateUrlLoaderParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(16, 0)
   ];
   Object loader = null;
 
-  NetworkServiceCreateUrlLoaderParams() : super(kVersions.last.size);
+  _NetworkServiceCreateUrlLoaderParams() : super(kVersions.last.size);
 
-  static NetworkServiceCreateUrlLoaderParams deserialize(bindings.Message message) {
+  static _NetworkServiceCreateUrlLoaderParams deserialize(bindings.Message message) {
     var decoder = new bindings.Decoder(message);
     var result = decode(decoder);
     if (decoder.excessHandles != null) {
@@ -39,11 +39,11 @@ class NetworkServiceCreateUrlLoaderParams extends bindings.Struct {
     return result;
   }
 
-  static NetworkServiceCreateUrlLoaderParams decode(bindings.Decoder decoder0) {
+  static _NetworkServiceCreateUrlLoaderParams decode(bindings.Decoder decoder0) {
     if (decoder0 == null) {
       return null;
     }
-    NetworkServiceCreateUrlLoaderParams result = new NetworkServiceCreateUrlLoaderParams();
+    _NetworkServiceCreateUrlLoaderParams result = new _NetworkServiceCreateUrlLoaderParams();
 
     var mainDataHeader = decoder0.decodeStructDataHeader();
     if (mainDataHeader.version <= kVersions.last.version) {
@@ -77,7 +77,7 @@ class NetworkServiceCreateUrlLoaderParams extends bindings.Struct {
   }
 
   String toString() {
-    return "NetworkServiceCreateUrlLoaderParams("
+    return "_NetworkServiceCreateUrlLoaderParams("
            "loader: $loader" ")";
   }
 
@@ -88,15 +88,15 @@ class NetworkServiceCreateUrlLoaderParams extends bindings.Struct {
 }
 
 
-class NetworkServiceGetCookieStoreParams extends bindings.Struct {
+class _NetworkServiceGetCookieStoreParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(16, 0)
   ];
   Object cookieStore = null;
 
-  NetworkServiceGetCookieStoreParams() : super(kVersions.last.size);
+  _NetworkServiceGetCookieStoreParams() : super(kVersions.last.size);
 
-  static NetworkServiceGetCookieStoreParams deserialize(bindings.Message message) {
+  static _NetworkServiceGetCookieStoreParams deserialize(bindings.Message message) {
     var decoder = new bindings.Decoder(message);
     var result = decode(decoder);
     if (decoder.excessHandles != null) {
@@ -105,11 +105,11 @@ class NetworkServiceGetCookieStoreParams extends bindings.Struct {
     return result;
   }
 
-  static NetworkServiceGetCookieStoreParams decode(bindings.Decoder decoder0) {
+  static _NetworkServiceGetCookieStoreParams decode(bindings.Decoder decoder0) {
     if (decoder0 == null) {
       return null;
     }
-    NetworkServiceGetCookieStoreParams result = new NetworkServiceGetCookieStoreParams();
+    _NetworkServiceGetCookieStoreParams result = new _NetworkServiceGetCookieStoreParams();
 
     var mainDataHeader = decoder0.decodeStructDataHeader();
     if (mainDataHeader.version <= kVersions.last.version) {
@@ -143,7 +143,7 @@ class NetworkServiceGetCookieStoreParams extends bindings.Struct {
   }
 
   String toString() {
-    return "NetworkServiceGetCookieStoreParams("
+    return "_NetworkServiceGetCookieStoreParams("
            "cookieStore: $cookieStore" ")";
   }
 
@@ -154,15 +154,15 @@ class NetworkServiceGetCookieStoreParams extends bindings.Struct {
 }
 
 
-class NetworkServiceCreateWebSocketParams extends bindings.Struct {
+class _NetworkServiceCreateWebSocketParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(16, 0)
   ];
   Object socket = null;
 
-  NetworkServiceCreateWebSocketParams() : super(kVersions.last.size);
+  _NetworkServiceCreateWebSocketParams() : super(kVersions.last.size);
 
-  static NetworkServiceCreateWebSocketParams deserialize(bindings.Message message) {
+  static _NetworkServiceCreateWebSocketParams deserialize(bindings.Message message) {
     var decoder = new bindings.Decoder(message);
     var result = decode(decoder);
     if (decoder.excessHandles != null) {
@@ -171,11 +171,11 @@ class NetworkServiceCreateWebSocketParams extends bindings.Struct {
     return result;
   }
 
-  static NetworkServiceCreateWebSocketParams decode(bindings.Decoder decoder0) {
+  static _NetworkServiceCreateWebSocketParams decode(bindings.Decoder decoder0) {
     if (decoder0 == null) {
       return null;
     }
-    NetworkServiceCreateWebSocketParams result = new NetworkServiceCreateWebSocketParams();
+    _NetworkServiceCreateWebSocketParams result = new _NetworkServiceCreateWebSocketParams();
 
     var mainDataHeader = decoder0.decodeStructDataHeader();
     if (mainDataHeader.version <= kVersions.last.version) {
@@ -209,7 +209,7 @@ class NetworkServiceCreateWebSocketParams extends bindings.Struct {
   }
 
   String toString() {
-    return "NetworkServiceCreateWebSocketParams("
+    return "_NetworkServiceCreateWebSocketParams("
            "socket: $socket" ")";
   }
 
@@ -220,16 +220,16 @@ class NetworkServiceCreateWebSocketParams extends bindings.Struct {
 }
 
 
-class NetworkServiceCreateTcpBoundSocketParams extends bindings.Struct {
+class _NetworkServiceCreateTcpBoundSocketParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(24, 0)
   ];
   net_address_mojom.NetAddress localAddress = null;
   Object boundSocket = null;
 
-  NetworkServiceCreateTcpBoundSocketParams() : super(kVersions.last.size);
+  _NetworkServiceCreateTcpBoundSocketParams() : super(kVersions.last.size);
 
-  static NetworkServiceCreateTcpBoundSocketParams deserialize(bindings.Message message) {
+  static _NetworkServiceCreateTcpBoundSocketParams deserialize(bindings.Message message) {
     var decoder = new bindings.Decoder(message);
     var result = decode(decoder);
     if (decoder.excessHandles != null) {
@@ -238,11 +238,11 @@ class NetworkServiceCreateTcpBoundSocketParams extends bindings.Struct {
     return result;
   }
 
-  static NetworkServiceCreateTcpBoundSocketParams decode(bindings.Decoder decoder0) {
+  static _NetworkServiceCreateTcpBoundSocketParams decode(bindings.Decoder decoder0) {
     if (decoder0 == null) {
       return null;
     }
-    NetworkServiceCreateTcpBoundSocketParams result = new NetworkServiceCreateTcpBoundSocketParams();
+    _NetworkServiceCreateTcpBoundSocketParams result = new _NetworkServiceCreateTcpBoundSocketParams();
 
     var mainDataHeader = decoder0.decodeStructDataHeader();
     if (mainDataHeader.version <= kVersions.last.version) {
@@ -283,7 +283,7 @@ class NetworkServiceCreateTcpBoundSocketParams extends bindings.Struct {
   }
 
   String toString() {
-    return "NetworkServiceCreateTcpBoundSocketParams("
+    return "_NetworkServiceCreateTcpBoundSocketParams("
            "localAddress: $localAddress" ", "
            "boundSocket: $boundSocket" ")";
   }
@@ -373,7 +373,7 @@ class NetworkServiceCreateTcpBoundSocketResponseParams extends bindings.Struct {
 }
 
 
-class NetworkServiceCreateTcpConnectedSocketParams extends bindings.Struct {
+class _NetworkServiceCreateTcpConnectedSocketParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(32, 0)
   ];
@@ -382,9 +382,9 @@ class NetworkServiceCreateTcpConnectedSocketParams extends bindings.Struct {
   core.MojoDataPipeProducer receiveStream = null;
   Object clientSocket = null;
 
-  NetworkServiceCreateTcpConnectedSocketParams() : super(kVersions.last.size);
+  _NetworkServiceCreateTcpConnectedSocketParams() : super(kVersions.last.size);
 
-  static NetworkServiceCreateTcpConnectedSocketParams deserialize(bindings.Message message) {
+  static _NetworkServiceCreateTcpConnectedSocketParams deserialize(bindings.Message message) {
     var decoder = new bindings.Decoder(message);
     var result = decode(decoder);
     if (decoder.excessHandles != null) {
@@ -393,11 +393,11 @@ class NetworkServiceCreateTcpConnectedSocketParams extends bindings.Struct {
     return result;
   }
 
-  static NetworkServiceCreateTcpConnectedSocketParams decode(bindings.Decoder decoder0) {
+  static _NetworkServiceCreateTcpConnectedSocketParams decode(bindings.Decoder decoder0) {
     if (decoder0 == null) {
       return null;
     }
-    NetworkServiceCreateTcpConnectedSocketParams result = new NetworkServiceCreateTcpConnectedSocketParams();
+    _NetworkServiceCreateTcpConnectedSocketParams result = new _NetworkServiceCreateTcpConnectedSocketParams();
 
     var mainDataHeader = decoder0.decodeStructDataHeader();
     if (mainDataHeader.version <= kVersions.last.version) {
@@ -450,7 +450,7 @@ class NetworkServiceCreateTcpConnectedSocketParams extends bindings.Struct {
   }
 
   String toString() {
-    return "NetworkServiceCreateTcpConnectedSocketParams("
+    return "_NetworkServiceCreateTcpConnectedSocketParams("
            "remoteAddress: $remoteAddress" ", "
            "sendStream: $sendStream" ", "
            "receiveStream: $receiveStream" ", "
@@ -542,15 +542,15 @@ class NetworkServiceCreateTcpConnectedSocketResponseParams extends bindings.Stru
 }
 
 
-class NetworkServiceCreateUdpSocketParams extends bindings.Struct {
+class _NetworkServiceCreateUdpSocketParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(16, 0)
   ];
   Object socket = null;
 
-  NetworkServiceCreateUdpSocketParams() : super(kVersions.last.size);
+  _NetworkServiceCreateUdpSocketParams() : super(kVersions.last.size);
 
-  static NetworkServiceCreateUdpSocketParams deserialize(bindings.Message message) {
+  static _NetworkServiceCreateUdpSocketParams deserialize(bindings.Message message) {
     var decoder = new bindings.Decoder(message);
     var result = decode(decoder);
     if (decoder.excessHandles != null) {
@@ -559,11 +559,11 @@ class NetworkServiceCreateUdpSocketParams extends bindings.Struct {
     return result;
   }
 
-  static NetworkServiceCreateUdpSocketParams decode(bindings.Decoder decoder0) {
+  static _NetworkServiceCreateUdpSocketParams decode(bindings.Decoder decoder0) {
     if (decoder0 == null) {
       return null;
     }
-    NetworkServiceCreateUdpSocketParams result = new NetworkServiceCreateUdpSocketParams();
+    _NetworkServiceCreateUdpSocketParams result = new _NetworkServiceCreateUdpSocketParams();
 
     var mainDataHeader = decoder0.decodeStructDataHeader();
     if (mainDataHeader.version <= kVersions.last.version) {
@@ -597,7 +597,7 @@ class NetworkServiceCreateUdpSocketParams extends bindings.Struct {
   }
 
   String toString() {
-    return "NetworkServiceCreateUdpSocketParams("
+    return "_NetworkServiceCreateUdpSocketParams("
            "socket: $socket" ")";
   }
 
@@ -608,16 +608,16 @@ class NetworkServiceCreateUdpSocketParams extends bindings.Struct {
 }
 
 
-class NetworkServiceCreateHttpServerParams extends bindings.Struct {
+class _NetworkServiceCreateHttpServerParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(24, 0)
   ];
   net_address_mojom.NetAddress localAddress = null;
   Object delegate = null;
 
-  NetworkServiceCreateHttpServerParams() : super(kVersions.last.size);
+  _NetworkServiceCreateHttpServerParams() : super(kVersions.last.size);
 
-  static NetworkServiceCreateHttpServerParams deserialize(bindings.Message message) {
+  static _NetworkServiceCreateHttpServerParams deserialize(bindings.Message message) {
     var decoder = new bindings.Decoder(message);
     var result = decode(decoder);
     if (decoder.excessHandles != null) {
@@ -626,11 +626,11 @@ class NetworkServiceCreateHttpServerParams extends bindings.Struct {
     return result;
   }
 
-  static NetworkServiceCreateHttpServerParams decode(bindings.Decoder decoder0) {
+  static _NetworkServiceCreateHttpServerParams decode(bindings.Decoder decoder0) {
     if (decoder0 == null) {
       return null;
     }
-    NetworkServiceCreateHttpServerParams result = new NetworkServiceCreateHttpServerParams();
+    _NetworkServiceCreateHttpServerParams result = new _NetworkServiceCreateHttpServerParams();
 
     var mainDataHeader = decoder0.decodeStructDataHeader();
     if (mainDataHeader.version <= kVersions.last.version) {
@@ -671,7 +671,7 @@ class NetworkServiceCreateHttpServerParams extends bindings.Struct {
   }
 
   String toString() {
-    return "NetworkServiceCreateHttpServerParams("
+    return "_NetworkServiceCreateHttpServerParams("
            "localAddress: $localAddress" ", "
            "delegate: $delegate" ")";
   }
@@ -761,15 +761,15 @@ class NetworkServiceCreateHttpServerResponseParams extends bindings.Struct {
 }
 
 
-class NetworkServiceRegisterUrlLoaderInterceptorParams extends bindings.Struct {
+class _NetworkServiceRegisterUrlLoaderInterceptorParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(16, 0)
   ];
   Object factory = null;
 
-  NetworkServiceRegisterUrlLoaderInterceptorParams() : super(kVersions.last.size);
+  _NetworkServiceRegisterUrlLoaderInterceptorParams() : super(kVersions.last.size);
 
-  static NetworkServiceRegisterUrlLoaderInterceptorParams deserialize(bindings.Message message) {
+  static _NetworkServiceRegisterUrlLoaderInterceptorParams deserialize(bindings.Message message) {
     var decoder = new bindings.Decoder(message);
     var result = decode(decoder);
     if (decoder.excessHandles != null) {
@@ -778,11 +778,11 @@ class NetworkServiceRegisterUrlLoaderInterceptorParams extends bindings.Struct {
     return result;
   }
 
-  static NetworkServiceRegisterUrlLoaderInterceptorParams decode(bindings.Decoder decoder0) {
+  static _NetworkServiceRegisterUrlLoaderInterceptorParams decode(bindings.Decoder decoder0) {
     if (decoder0 == null) {
       return null;
     }
-    NetworkServiceRegisterUrlLoaderInterceptorParams result = new NetworkServiceRegisterUrlLoaderInterceptorParams();
+    _NetworkServiceRegisterUrlLoaderInterceptorParams result = new _NetworkServiceRegisterUrlLoaderInterceptorParams();
 
     var mainDataHeader = decoder0.decodeStructDataHeader();
     if (mainDataHeader.version <= kVersions.last.version) {
@@ -816,7 +816,7 @@ class NetworkServiceRegisterUrlLoaderInterceptorParams extends bindings.Struct {
   }
 
   String toString() {
-    return "NetworkServiceRegisterUrlLoaderInterceptorParams("
+    return "_NetworkServiceRegisterUrlLoaderInterceptorParams("
            "factory: $factory" ")";
   }
 
@@ -827,15 +827,15 @@ class NetworkServiceRegisterUrlLoaderInterceptorParams extends bindings.Struct {
 }
 
 
-class NetworkServiceCreateHostResolverParams extends bindings.Struct {
+class _NetworkServiceCreateHostResolverParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(16, 0)
   ];
   Object hostResolver = null;
 
-  NetworkServiceCreateHostResolverParams() : super(kVersions.last.size);
+  _NetworkServiceCreateHostResolverParams() : super(kVersions.last.size);
 
-  static NetworkServiceCreateHostResolverParams deserialize(bindings.Message message) {
+  static _NetworkServiceCreateHostResolverParams deserialize(bindings.Message message) {
     var decoder = new bindings.Decoder(message);
     var result = decode(decoder);
     if (decoder.excessHandles != null) {
@@ -844,11 +844,11 @@ class NetworkServiceCreateHostResolverParams extends bindings.Struct {
     return result;
   }
 
-  static NetworkServiceCreateHostResolverParams decode(bindings.Decoder decoder0) {
+  static _NetworkServiceCreateHostResolverParams decode(bindings.Decoder decoder0) {
     if (decoder0 == null) {
       return null;
     }
-    NetworkServiceCreateHostResolverParams result = new NetworkServiceCreateHostResolverParams();
+    _NetworkServiceCreateHostResolverParams result = new _NetworkServiceCreateHostResolverParams();
 
     var mainDataHeader = decoder0.decodeStructDataHeader();
     if (mainDataHeader.version <= kVersions.last.version) {
@@ -882,7 +882,7 @@ class NetworkServiceCreateHostResolverParams extends bindings.Struct {
   }
 
   String toString() {
-    return "NetworkServiceCreateHostResolverParams("
+    return "_NetworkServiceCreateHostResolverParams("
            "hostResolver: $hostResolver" ")";
   }
 
@@ -892,18 +892,18 @@ class NetworkServiceCreateHostResolverParams extends bindings.Struct {
   }
 }
 
-const int kNetworkService_createUrlLoader_name = 0;
-const int kNetworkService_getCookieStore_name = 1;
-const int kNetworkService_createWebSocket_name = 2;
-const int kNetworkService_createTcpBoundSocket_name = 3;
-const int kNetworkService_createTcpConnectedSocket_name = 4;
-const int kNetworkService_createUdpSocket_name = 5;
-const int kNetworkService_createHttpServer_name = 6;
-const int kNetworkService_registerUrlLoaderInterceptor_name = 7;
-const int kNetworkService_createHostResolver_name = 8;
-const String NetworkServiceName = "mojo::NetworkService";
+const int _NetworkService_createUrlLoaderName = 0;
+const int _NetworkService_getCookieStoreName = 1;
+const int _NetworkService_createWebSocketName = 2;
+const int _NetworkService_createTcpBoundSocketName = 3;
+const int _NetworkService_createTcpConnectedSocketName = 4;
+const int _NetworkService_createUdpSocketName = 5;
+const int _NetworkService_createHttpServerName = 6;
+const int _NetworkService_registerUrlLoaderInterceptorName = 7;
+const int _NetworkService_createHostResolverName = 8;
 
 abstract class NetworkService {
+  static const String serviceName = "mojo::NetworkService";
   void createUrlLoader(Object loader);
   void getCookieStore(Object cookieStore);
   void createWebSocket(Object socket);
@@ -913,30 +913,27 @@ abstract class NetworkService {
   dynamic createHttpServer(net_address_mojom.NetAddress localAddress,Object delegate,[Function responseFactory = null]);
   void registerUrlLoaderInterceptor(Object factory);
   void createHostResolver(Object hostResolver);
-
 }
 
 
-class NetworkServiceProxyImpl extends bindings.Proxy {
-  NetworkServiceProxyImpl.fromEndpoint(
+class _NetworkServiceProxyImpl extends bindings.Proxy {
+  _NetworkServiceProxyImpl.fromEndpoint(
       core.MojoMessagePipeEndpoint endpoint) : super.fromEndpoint(endpoint);
 
-  NetworkServiceProxyImpl.fromHandle(core.MojoHandle handle) :
+  _NetworkServiceProxyImpl.fromHandle(core.MojoHandle handle) :
       super.fromHandle(handle);
 
-  NetworkServiceProxyImpl.unbound() : super.unbound();
+  _NetworkServiceProxyImpl.unbound() : super.unbound();
 
-  static NetworkServiceProxyImpl newFromEndpoint(
+  static _NetworkServiceProxyImpl newFromEndpoint(
       core.MojoMessagePipeEndpoint endpoint) {
-    assert(endpoint.setDescription("For NetworkServiceProxyImpl"));
-    return new NetworkServiceProxyImpl.fromEndpoint(endpoint);
+    assert(endpoint.setDescription("For _NetworkServiceProxyImpl"));
+    return new _NetworkServiceProxyImpl.fromEndpoint(endpoint);
   }
-
-  String get name => NetworkServiceName;
 
   void handleResponse(bindings.ServiceMessage message) {
     switch (message.header.type) {
-      case kNetworkService_createTcpBoundSocket_name:
+      case _NetworkService_createTcpBoundSocketName:
         var r = NetworkServiceCreateTcpBoundSocketResponseParams.deserialize(
             message.payload);
         if (!message.header.hasRequestId) {
@@ -956,7 +953,7 @@ class NetworkServiceProxyImpl extends bindings.Proxy {
         }
         c.complete(r);
         break;
-      case kNetworkService_createTcpConnectedSocket_name:
+      case _NetworkService_createTcpConnectedSocketName:
         var r = NetworkServiceCreateTcpConnectedSocketResponseParams.deserialize(
             message.payload);
         if (!message.header.hasRequestId) {
@@ -976,7 +973,7 @@ class NetworkServiceProxyImpl extends bindings.Proxy {
         }
         c.complete(r);
         break;
-      case kNetworkService_createHttpServer_name:
+      case _NetworkService_createHttpServerName:
         var r = NetworkServiceCreateHttpServerResponseParams.deserialize(
             message.payload);
         if (!message.header.hasRequestId) {
@@ -1005,13 +1002,13 @@ class NetworkServiceProxyImpl extends bindings.Proxy {
 
   String toString() {
     var superString = super.toString();
-    return "NetworkServiceProxyImpl($superString)";
+    return "_NetworkServiceProxyImpl($superString)";
   }
 }
 
 
 class _NetworkServiceProxyCalls implements NetworkService {
-  NetworkServiceProxyImpl _proxyImpl;
+  _NetworkServiceProxyImpl _proxyImpl;
 
   _NetworkServiceProxyCalls(this._proxyImpl);
     void createUrlLoader(Object loader) {
@@ -1019,50 +1016,47 @@ class _NetworkServiceProxyCalls implements NetworkService {
         _proxyImpl.proxyError("The Proxy is closed.");
         return;
       }
-      var params = new NetworkServiceCreateUrlLoaderParams();
+      var params = new _NetworkServiceCreateUrlLoaderParams();
       params.loader = loader;
-      _proxyImpl.sendMessage(params, kNetworkService_createUrlLoader_name);
+      _proxyImpl.sendMessage(params, _NetworkService_createUrlLoaderName);
     }
-  
     void getCookieStore(Object cookieStore) {
       if (!_proxyImpl.isBound) {
         _proxyImpl.proxyError("The Proxy is closed.");
         return;
       }
-      var params = new NetworkServiceGetCookieStoreParams();
+      var params = new _NetworkServiceGetCookieStoreParams();
       params.cookieStore = cookieStore;
-      _proxyImpl.sendMessage(params, kNetworkService_getCookieStore_name);
+      _proxyImpl.sendMessage(params, _NetworkService_getCookieStoreName);
     }
-  
     void createWebSocket(Object socket) {
       if (!_proxyImpl.isBound) {
         _proxyImpl.proxyError("The Proxy is closed.");
         return;
       }
-      var params = new NetworkServiceCreateWebSocketParams();
+      var params = new _NetworkServiceCreateWebSocketParams();
       params.socket = socket;
-      _proxyImpl.sendMessage(params, kNetworkService_createWebSocket_name);
+      _proxyImpl.sendMessage(params, _NetworkService_createWebSocketName);
     }
-  
     dynamic createTcpBoundSocket(net_address_mojom.NetAddress localAddress,Object boundSocket,[Function responseFactory = null]) {
-      var params = new NetworkServiceCreateTcpBoundSocketParams();
+      var params = new _NetworkServiceCreateTcpBoundSocketParams();
       params.localAddress = localAddress;
       params.boundSocket = boundSocket;
       return _proxyImpl.sendMessageWithRequestId(
           params,
-          kNetworkService_createTcpBoundSocket_name,
+          _NetworkService_createTcpBoundSocketName,
           -1,
           bindings.MessageHeader.kMessageExpectsResponse);
     }
     dynamic createTcpConnectedSocket(net_address_mojom.NetAddress remoteAddress,core.MojoDataPipeConsumer sendStream,core.MojoDataPipeProducer receiveStream,Object clientSocket,[Function responseFactory = null]) {
-      var params = new NetworkServiceCreateTcpConnectedSocketParams();
+      var params = new _NetworkServiceCreateTcpConnectedSocketParams();
       params.remoteAddress = remoteAddress;
       params.sendStream = sendStream;
       params.receiveStream = receiveStream;
       params.clientSocket = clientSocket;
       return _proxyImpl.sendMessageWithRequestId(
           params,
-          kNetworkService_createTcpConnectedSocket_name,
+          _NetworkService_createTcpConnectedSocketName,
           -1,
           bindings.MessageHeader.kMessageExpectsResponse);
     }
@@ -1071,18 +1065,17 @@ class _NetworkServiceProxyCalls implements NetworkService {
         _proxyImpl.proxyError("The Proxy is closed.");
         return;
       }
-      var params = new NetworkServiceCreateUdpSocketParams();
+      var params = new _NetworkServiceCreateUdpSocketParams();
       params.socket = socket;
-      _proxyImpl.sendMessage(params, kNetworkService_createUdpSocket_name);
+      _proxyImpl.sendMessage(params, _NetworkService_createUdpSocketName);
     }
-  
     dynamic createHttpServer(net_address_mojom.NetAddress localAddress,Object delegate,[Function responseFactory = null]) {
-      var params = new NetworkServiceCreateHttpServerParams();
+      var params = new _NetworkServiceCreateHttpServerParams();
       params.localAddress = localAddress;
       params.delegate = delegate;
       return _proxyImpl.sendMessageWithRequestId(
           params,
-          kNetworkService_createHttpServer_name,
+          _NetworkService_createHttpServerName,
           -1,
           bindings.MessageHeader.kMessageExpectsResponse);
     }
@@ -1091,46 +1084,43 @@ class _NetworkServiceProxyCalls implements NetworkService {
         _proxyImpl.proxyError("The Proxy is closed.");
         return;
       }
-      var params = new NetworkServiceRegisterUrlLoaderInterceptorParams();
+      var params = new _NetworkServiceRegisterUrlLoaderInterceptorParams();
       params.factory = factory;
-      _proxyImpl.sendMessage(params, kNetworkService_registerUrlLoaderInterceptor_name);
+      _proxyImpl.sendMessage(params, _NetworkService_registerUrlLoaderInterceptorName);
     }
-  
     void createHostResolver(Object hostResolver) {
       if (!_proxyImpl.isBound) {
         _proxyImpl.proxyError("The Proxy is closed.");
         return;
       }
-      var params = new NetworkServiceCreateHostResolverParams();
+      var params = new _NetworkServiceCreateHostResolverParams();
       params.hostResolver = hostResolver;
-      _proxyImpl.sendMessage(params, kNetworkService_createHostResolver_name);
+      _proxyImpl.sendMessage(params, _NetworkService_createHostResolverName);
     }
-  
 }
 
 
 class NetworkServiceProxy implements bindings.ProxyBase {
   final bindings.Proxy impl;
   NetworkService ptr;
-  final String name = NetworkServiceName;
 
-  NetworkServiceProxy(NetworkServiceProxyImpl proxyImpl) :
+  NetworkServiceProxy(_NetworkServiceProxyImpl proxyImpl) :
       impl = proxyImpl,
       ptr = new _NetworkServiceProxyCalls(proxyImpl);
 
   NetworkServiceProxy.fromEndpoint(
       core.MojoMessagePipeEndpoint endpoint) :
-      impl = new NetworkServiceProxyImpl.fromEndpoint(endpoint) {
+      impl = new _NetworkServiceProxyImpl.fromEndpoint(endpoint) {
     ptr = new _NetworkServiceProxyCalls(impl);
   }
 
   NetworkServiceProxy.fromHandle(core.MojoHandle handle) :
-      impl = new NetworkServiceProxyImpl.fromHandle(handle) {
+      impl = new _NetworkServiceProxyImpl.fromHandle(handle) {
     ptr = new _NetworkServiceProxyCalls(impl);
   }
 
   NetworkServiceProxy.unbound() :
-      impl = new NetworkServiceProxyImpl.unbound() {
+      impl = new _NetworkServiceProxyImpl.unbound() {
     ptr = new _NetworkServiceProxyCalls(impl);
   }
 
@@ -1146,6 +1136,8 @@ class NetworkServiceProxy implements bindings.ProxyBase {
     assert(endpoint.setDescription("For NetworkServiceProxy"));
     return new NetworkServiceProxy.fromEndpoint(endpoint);
   }
+
+  String get serviceName => NetworkService.serviceName;
 
   Future close({bool immediate: false}) => impl.close(immediate: immediate);
 
@@ -1185,8 +1177,6 @@ class NetworkServiceStub extends bindings.Stub {
     return new NetworkServiceStub.fromEndpoint(endpoint);
   }
 
-  static const String name = NetworkServiceName;
-
 
   NetworkServiceCreateTcpBoundSocketResponseParams _NetworkServiceCreateTcpBoundSocketResponseParamsFactory(network_error_mojom.NetworkError result, net_address_mojom.NetAddress boundTo) {
     var mojo_factory_result = new NetworkServiceCreateTcpBoundSocketResponseParams();
@@ -1215,23 +1205,23 @@ class NetworkServiceStub extends bindings.Stub {
     }
     assert(_impl != null);
     switch (message.header.type) {
-      case kNetworkService_createUrlLoader_name:
-        var params = NetworkServiceCreateUrlLoaderParams.deserialize(
+      case _NetworkService_createUrlLoaderName:
+        var params = _NetworkServiceCreateUrlLoaderParams.deserialize(
             message.payload);
         _impl.createUrlLoader(params.loader);
         break;
-      case kNetworkService_getCookieStore_name:
-        var params = NetworkServiceGetCookieStoreParams.deserialize(
+      case _NetworkService_getCookieStoreName:
+        var params = _NetworkServiceGetCookieStoreParams.deserialize(
             message.payload);
         _impl.getCookieStore(params.cookieStore);
         break;
-      case kNetworkService_createWebSocket_name:
-        var params = NetworkServiceCreateWebSocketParams.deserialize(
+      case _NetworkService_createWebSocketName:
+        var params = _NetworkServiceCreateWebSocketParams.deserialize(
             message.payload);
         _impl.createWebSocket(params.socket);
         break;
-      case kNetworkService_createTcpBoundSocket_name:
-        var params = NetworkServiceCreateTcpBoundSocketParams.deserialize(
+      case _NetworkService_createTcpBoundSocketName:
+        var params = _NetworkServiceCreateTcpBoundSocketParams.deserialize(
             message.payload);
         var response = _impl.createTcpBoundSocket(params.localAddress,params.boundSocket,_NetworkServiceCreateTcpBoundSocketResponseParamsFactory);
         if (response is Future) {
@@ -1239,7 +1229,7 @@ class NetworkServiceStub extends bindings.Stub {
             if (response != null) {
               return buildResponseWithId(
                   response,
-                  kNetworkService_createTcpBoundSocket_name,
+                  _NetworkService_createTcpBoundSocketName,
                   message.header.requestId,
                   bindings.MessageHeader.kMessageIsResponse);
             }
@@ -1247,13 +1237,13 @@ class NetworkServiceStub extends bindings.Stub {
         } else if (response != null) {
           return buildResponseWithId(
               response,
-              kNetworkService_createTcpBoundSocket_name,
+              _NetworkService_createTcpBoundSocketName,
               message.header.requestId,
               bindings.MessageHeader.kMessageIsResponse);
         }
         break;
-      case kNetworkService_createTcpConnectedSocket_name:
-        var params = NetworkServiceCreateTcpConnectedSocketParams.deserialize(
+      case _NetworkService_createTcpConnectedSocketName:
+        var params = _NetworkServiceCreateTcpConnectedSocketParams.deserialize(
             message.payload);
         var response = _impl.createTcpConnectedSocket(params.remoteAddress,params.sendStream,params.receiveStream,params.clientSocket,_NetworkServiceCreateTcpConnectedSocketResponseParamsFactory);
         if (response is Future) {
@@ -1261,7 +1251,7 @@ class NetworkServiceStub extends bindings.Stub {
             if (response != null) {
               return buildResponseWithId(
                   response,
-                  kNetworkService_createTcpConnectedSocket_name,
+                  _NetworkService_createTcpConnectedSocketName,
                   message.header.requestId,
                   bindings.MessageHeader.kMessageIsResponse);
             }
@@ -1269,18 +1259,18 @@ class NetworkServiceStub extends bindings.Stub {
         } else if (response != null) {
           return buildResponseWithId(
               response,
-              kNetworkService_createTcpConnectedSocket_name,
+              _NetworkService_createTcpConnectedSocketName,
               message.header.requestId,
               bindings.MessageHeader.kMessageIsResponse);
         }
         break;
-      case kNetworkService_createUdpSocket_name:
-        var params = NetworkServiceCreateUdpSocketParams.deserialize(
+      case _NetworkService_createUdpSocketName:
+        var params = _NetworkServiceCreateUdpSocketParams.deserialize(
             message.payload);
         _impl.createUdpSocket(params.socket);
         break;
-      case kNetworkService_createHttpServer_name:
-        var params = NetworkServiceCreateHttpServerParams.deserialize(
+      case _NetworkService_createHttpServerName:
+        var params = _NetworkServiceCreateHttpServerParams.deserialize(
             message.payload);
         var response = _impl.createHttpServer(params.localAddress,params.delegate,_NetworkServiceCreateHttpServerResponseParamsFactory);
         if (response is Future) {
@@ -1288,7 +1278,7 @@ class NetworkServiceStub extends bindings.Stub {
             if (response != null) {
               return buildResponseWithId(
                   response,
-                  kNetworkService_createHttpServer_name,
+                  _NetworkService_createHttpServerName,
                   message.header.requestId,
                   bindings.MessageHeader.kMessageIsResponse);
             }
@@ -1296,18 +1286,18 @@ class NetworkServiceStub extends bindings.Stub {
         } else if (response != null) {
           return buildResponseWithId(
               response,
-              kNetworkService_createHttpServer_name,
+              _NetworkService_createHttpServerName,
               message.header.requestId,
               bindings.MessageHeader.kMessageIsResponse);
         }
         break;
-      case kNetworkService_registerUrlLoaderInterceptor_name:
-        var params = NetworkServiceRegisterUrlLoaderInterceptorParams.deserialize(
+      case _NetworkService_registerUrlLoaderInterceptorName:
+        var params = _NetworkServiceRegisterUrlLoaderInterceptorParams.deserialize(
             message.payload);
         _impl.registerUrlLoaderInterceptor(params.factory);
         break;
-      case kNetworkService_createHostResolver_name:
-        var params = NetworkServiceCreateHostResolverParams.deserialize(
+      case _NetworkService_createHostResolverName:
+        var params = _NetworkServiceCreateHostResolverParams.deserialize(
             message.payload);
         _impl.createHostResolver(params.hostResolver);
         break;

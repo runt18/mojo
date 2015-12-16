@@ -13,7 +13,7 @@ import 'package:mojo_services/mojo/files/types.mojom.dart' as types_mojom;
 
 
 
-class ProcessSpawnParams extends bindings.Struct {
+class _ProcessSpawnParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(64, 0)
   ];
@@ -25,9 +25,9 @@ class ProcessSpawnParams extends bindings.Struct {
   Object stderrFile = null;
   Object processController = null;
 
-  ProcessSpawnParams() : super(kVersions.last.size);
+  _ProcessSpawnParams() : super(kVersions.last.size);
 
-  static ProcessSpawnParams deserialize(bindings.Message message) {
+  static _ProcessSpawnParams deserialize(bindings.Message message) {
     var decoder = new bindings.Decoder(message);
     var result = decode(decoder);
     if (decoder.excessHandles != null) {
@@ -36,11 +36,11 @@ class ProcessSpawnParams extends bindings.Struct {
     return result;
   }
 
-  static ProcessSpawnParams decode(bindings.Decoder decoder0) {
+  static _ProcessSpawnParams decode(bindings.Decoder decoder0) {
     if (decoder0 == null) {
       return null;
     }
-    ProcessSpawnParams result = new ProcessSpawnParams();
+    _ProcessSpawnParams result = new _ProcessSpawnParams();
 
     var mainDataHeader = decoder0.decodeStructDataHeader();
     if (mainDataHeader.version <= kVersions.last.version) {
@@ -146,7 +146,7 @@ class ProcessSpawnParams extends bindings.Struct {
   }
 
   String toString() {
-    return "ProcessSpawnParams("
+    return "_ProcessSpawnParams("
            "path: $path" ", "
            "argv: $argv" ", "
            "envp: $envp" ", "
@@ -234,7 +234,7 @@ class ProcessSpawnResponseParams extends bindings.Struct {
 }
 
 
-class ProcessSpawnWithTerminalParams extends bindings.Struct {
+class _ProcessSpawnWithTerminalParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(48, 0)
   ];
@@ -244,9 +244,9 @@ class ProcessSpawnWithTerminalParams extends bindings.Struct {
   Object terminalFile = null;
   Object processController = null;
 
-  ProcessSpawnWithTerminalParams() : super(kVersions.last.size);
+  _ProcessSpawnWithTerminalParams() : super(kVersions.last.size);
 
-  static ProcessSpawnWithTerminalParams deserialize(bindings.Message message) {
+  static _ProcessSpawnWithTerminalParams deserialize(bindings.Message message) {
     var decoder = new bindings.Decoder(message);
     var result = decode(decoder);
     if (decoder.excessHandles != null) {
@@ -255,11 +255,11 @@ class ProcessSpawnWithTerminalParams extends bindings.Struct {
     return result;
   }
 
-  static ProcessSpawnWithTerminalParams decode(bindings.Decoder decoder0) {
+  static _ProcessSpawnWithTerminalParams decode(bindings.Decoder decoder0) {
     if (decoder0 == null) {
       return null;
     }
-    ProcessSpawnWithTerminalParams result = new ProcessSpawnWithTerminalParams();
+    _ProcessSpawnWithTerminalParams result = new _ProcessSpawnWithTerminalParams();
 
     var mainDataHeader = decoder0.decodeStructDataHeader();
     if (mainDataHeader.version <= kVersions.last.version) {
@@ -353,7 +353,7 @@ class ProcessSpawnWithTerminalParams extends bindings.Struct {
   }
 
   String toString() {
-    return "ProcessSpawnWithTerminalParams("
+    return "_ProcessSpawnWithTerminalParams("
            "path: $path" ", "
            "argv: $argv" ", "
            "envp: $envp" ", "
@@ -439,14 +439,14 @@ class ProcessSpawnWithTerminalResponseParams extends bindings.Struct {
 }
 
 
-class ProcessControllerWaitParams extends bindings.Struct {
+class _ProcessControllerWaitParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(8, 0)
   ];
 
-  ProcessControllerWaitParams() : super(kVersions.last.size);
+  _ProcessControllerWaitParams() : super(kVersions.last.size);
 
-  static ProcessControllerWaitParams deserialize(bindings.Message message) {
+  static _ProcessControllerWaitParams deserialize(bindings.Message message) {
     var decoder = new bindings.Decoder(message);
     var result = decode(decoder);
     if (decoder.excessHandles != null) {
@@ -455,11 +455,11 @@ class ProcessControllerWaitParams extends bindings.Struct {
     return result;
   }
 
-  static ProcessControllerWaitParams decode(bindings.Decoder decoder0) {
+  static _ProcessControllerWaitParams decode(bindings.Decoder decoder0) {
     if (decoder0 == null) {
       return null;
     }
-    ProcessControllerWaitParams result = new ProcessControllerWaitParams();
+    _ProcessControllerWaitParams result = new _ProcessControllerWaitParams();
 
     var mainDataHeader = decoder0.decodeStructDataHeader();
     if (mainDataHeader.version <= kVersions.last.version) {
@@ -487,7 +487,7 @@ class ProcessControllerWaitParams extends bindings.Struct {
   }
 
   String toString() {
-    return "ProcessControllerWaitParams("")";
+    return "_ProcessControllerWaitParams("")";
   }
 
   Map toJson() {
@@ -577,15 +577,15 @@ class ProcessControllerWaitResponseParams extends bindings.Struct {
 }
 
 
-class ProcessControllerKillParams extends bindings.Struct {
+class _ProcessControllerKillParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(16, 0)
   ];
   int signal = 0;
 
-  ProcessControllerKillParams() : super(kVersions.last.size);
+  _ProcessControllerKillParams() : super(kVersions.last.size);
 
-  static ProcessControllerKillParams deserialize(bindings.Message message) {
+  static _ProcessControllerKillParams deserialize(bindings.Message message) {
     var decoder = new bindings.Decoder(message);
     var result = decode(decoder);
     if (decoder.excessHandles != null) {
@@ -594,11 +594,11 @@ class ProcessControllerKillParams extends bindings.Struct {
     return result;
   }
 
-  static ProcessControllerKillParams decode(bindings.Decoder decoder0) {
+  static _ProcessControllerKillParams decode(bindings.Decoder decoder0) {
     if (decoder0 == null) {
       return null;
     }
-    ProcessControllerKillParams result = new ProcessControllerKillParams();
+    _ProcessControllerKillParams result = new _ProcessControllerKillParams();
 
     var mainDataHeader = decoder0.decodeStructDataHeader();
     if (mainDataHeader.version <= kVersions.last.version) {
@@ -632,7 +632,7 @@ class ProcessControllerKillParams extends bindings.Struct {
   }
 
   String toString() {
-    return "ProcessControllerKillParams("
+    return "_ProcessControllerKillParams("
            "signal: $signal" ")";
   }
 
@@ -714,37 +714,34 @@ class ProcessControllerKillResponseParams extends bindings.Struct {
   }
 }
 
-const int kProcess_spawn_name = 0;
-const int kProcess_spawnWithTerminal_name = 1;
-const String ProcessName = "native_support::Process";
+const int _Process_spawnName = 0;
+const int _Process_spawnWithTerminalName = 1;
 
 abstract class Process {
+  static const String serviceName = "native_support::Process";
   dynamic spawn(List<int> path,List<List<int>> argv,List<List<int>> envp,Object stdinFile,Object stdoutFile,Object stderrFile,Object processController,[Function responseFactory = null]);
   dynamic spawnWithTerminal(List<int> path,List<List<int>> argv,List<List<int>> envp,Object terminalFile,Object processController,[Function responseFactory = null]);
-
 }
 
 
-class ProcessProxyImpl extends bindings.Proxy {
-  ProcessProxyImpl.fromEndpoint(
+class _ProcessProxyImpl extends bindings.Proxy {
+  _ProcessProxyImpl.fromEndpoint(
       core.MojoMessagePipeEndpoint endpoint) : super.fromEndpoint(endpoint);
 
-  ProcessProxyImpl.fromHandle(core.MojoHandle handle) :
+  _ProcessProxyImpl.fromHandle(core.MojoHandle handle) :
       super.fromHandle(handle);
 
-  ProcessProxyImpl.unbound() : super.unbound();
+  _ProcessProxyImpl.unbound() : super.unbound();
 
-  static ProcessProxyImpl newFromEndpoint(
+  static _ProcessProxyImpl newFromEndpoint(
       core.MojoMessagePipeEndpoint endpoint) {
-    assert(endpoint.setDescription("For ProcessProxyImpl"));
-    return new ProcessProxyImpl.fromEndpoint(endpoint);
+    assert(endpoint.setDescription("For _ProcessProxyImpl"));
+    return new _ProcessProxyImpl.fromEndpoint(endpoint);
   }
-
-  String get name => ProcessName;
 
   void handleResponse(bindings.ServiceMessage message) {
     switch (message.header.type) {
-      case kProcess_spawn_name:
+      case _Process_spawnName:
         var r = ProcessSpawnResponseParams.deserialize(
             message.payload);
         if (!message.header.hasRequestId) {
@@ -764,7 +761,7 @@ class ProcessProxyImpl extends bindings.Proxy {
         }
         c.complete(r);
         break;
-      case kProcess_spawnWithTerminal_name:
+      case _Process_spawnWithTerminalName:
         var r = ProcessSpawnWithTerminalResponseParams.deserialize(
             message.payload);
         if (!message.header.hasRequestId) {
@@ -793,17 +790,17 @@ class ProcessProxyImpl extends bindings.Proxy {
 
   String toString() {
     var superString = super.toString();
-    return "ProcessProxyImpl($superString)";
+    return "_ProcessProxyImpl($superString)";
   }
 }
 
 
 class _ProcessProxyCalls implements Process {
-  ProcessProxyImpl _proxyImpl;
+  _ProcessProxyImpl _proxyImpl;
 
   _ProcessProxyCalls(this._proxyImpl);
     dynamic spawn(List<int> path,List<List<int>> argv,List<List<int>> envp,Object stdinFile,Object stdoutFile,Object stderrFile,Object processController,[Function responseFactory = null]) {
-      var params = new ProcessSpawnParams();
+      var params = new _ProcessSpawnParams();
       params.path = path;
       params.argv = argv;
       params.envp = envp;
@@ -813,12 +810,12 @@ class _ProcessProxyCalls implements Process {
       params.processController = processController;
       return _proxyImpl.sendMessageWithRequestId(
           params,
-          kProcess_spawn_name,
+          _Process_spawnName,
           -1,
           bindings.MessageHeader.kMessageExpectsResponse);
     }
     dynamic spawnWithTerminal(List<int> path,List<List<int>> argv,List<List<int>> envp,Object terminalFile,Object processController,[Function responseFactory = null]) {
-      var params = new ProcessSpawnWithTerminalParams();
+      var params = new _ProcessSpawnWithTerminalParams();
       params.path = path;
       params.argv = argv;
       params.envp = envp;
@@ -826,7 +823,7 @@ class _ProcessProxyCalls implements Process {
       params.processController = processController;
       return _proxyImpl.sendMessageWithRequestId(
           params,
-          kProcess_spawnWithTerminal_name,
+          _Process_spawnWithTerminalName,
           -1,
           bindings.MessageHeader.kMessageExpectsResponse);
     }
@@ -836,25 +833,24 @@ class _ProcessProxyCalls implements Process {
 class ProcessProxy implements bindings.ProxyBase {
   final bindings.Proxy impl;
   Process ptr;
-  final String name = ProcessName;
 
-  ProcessProxy(ProcessProxyImpl proxyImpl) :
+  ProcessProxy(_ProcessProxyImpl proxyImpl) :
       impl = proxyImpl,
       ptr = new _ProcessProxyCalls(proxyImpl);
 
   ProcessProxy.fromEndpoint(
       core.MojoMessagePipeEndpoint endpoint) :
-      impl = new ProcessProxyImpl.fromEndpoint(endpoint) {
+      impl = new _ProcessProxyImpl.fromEndpoint(endpoint) {
     ptr = new _ProcessProxyCalls(impl);
   }
 
   ProcessProxy.fromHandle(core.MojoHandle handle) :
-      impl = new ProcessProxyImpl.fromHandle(handle) {
+      impl = new _ProcessProxyImpl.fromHandle(handle) {
     ptr = new _ProcessProxyCalls(impl);
   }
 
   ProcessProxy.unbound() :
-      impl = new ProcessProxyImpl.unbound() {
+      impl = new _ProcessProxyImpl.unbound() {
     ptr = new _ProcessProxyCalls(impl);
   }
 
@@ -870,6 +866,8 @@ class ProcessProxy implements bindings.ProxyBase {
     assert(endpoint.setDescription("For ProcessProxy"));
     return new ProcessProxy.fromEndpoint(endpoint);
   }
+
+  String get serviceName => Process.serviceName;
 
   Future close({bool immediate: false}) => impl.close(immediate: immediate);
 
@@ -909,8 +907,6 @@ class ProcessStub extends bindings.Stub {
     return new ProcessStub.fromEndpoint(endpoint);
   }
 
-  static const String name = ProcessName;
-
 
   ProcessSpawnResponseParams _ProcessSpawnResponseParamsFactory(types_mojom.Error error) {
     var mojo_factory_result = new ProcessSpawnResponseParams();
@@ -931,8 +927,8 @@ class ProcessStub extends bindings.Stub {
     }
     assert(_impl != null);
     switch (message.header.type) {
-      case kProcess_spawn_name:
-        var params = ProcessSpawnParams.deserialize(
+      case _Process_spawnName:
+        var params = _ProcessSpawnParams.deserialize(
             message.payload);
         var response = _impl.spawn(params.path,params.argv,params.envp,params.stdinFile,params.stdoutFile,params.stderrFile,params.processController,_ProcessSpawnResponseParamsFactory);
         if (response is Future) {
@@ -940,7 +936,7 @@ class ProcessStub extends bindings.Stub {
             if (response != null) {
               return buildResponseWithId(
                   response,
-                  kProcess_spawn_name,
+                  _Process_spawnName,
                   message.header.requestId,
                   bindings.MessageHeader.kMessageIsResponse);
             }
@@ -948,13 +944,13 @@ class ProcessStub extends bindings.Stub {
         } else if (response != null) {
           return buildResponseWithId(
               response,
-              kProcess_spawn_name,
+              _Process_spawnName,
               message.header.requestId,
               bindings.MessageHeader.kMessageIsResponse);
         }
         break;
-      case kProcess_spawnWithTerminal_name:
-        var params = ProcessSpawnWithTerminalParams.deserialize(
+      case _Process_spawnWithTerminalName:
+        var params = _ProcessSpawnWithTerminalParams.deserialize(
             message.payload);
         var response = _impl.spawnWithTerminal(params.path,params.argv,params.envp,params.terminalFile,params.processController,_ProcessSpawnWithTerminalResponseParamsFactory);
         if (response is Future) {
@@ -962,7 +958,7 @@ class ProcessStub extends bindings.Stub {
             if (response != null) {
               return buildResponseWithId(
                   response,
-                  kProcess_spawnWithTerminal_name,
+                  _Process_spawnWithTerminalName,
                   message.header.requestId,
                   bindings.MessageHeader.kMessageIsResponse);
             }
@@ -970,7 +966,7 @@ class ProcessStub extends bindings.Stub {
         } else if (response != null) {
           return buildResponseWithId(
               response,
-              kProcess_spawnWithTerminal_name,
+              _Process_spawnWithTerminalName,
               message.header.requestId,
               bindings.MessageHeader.kMessageIsResponse);
         }
@@ -996,37 +992,34 @@ class ProcessStub extends bindings.Stub {
   int get version => 0;
 }
 
-const int kProcessController_wait_name = 0;
-const int kProcessController_kill_name = 1;
-const String ProcessControllerName = null;
+const int _ProcessController_waitName = 0;
+const int _ProcessController_killName = 1;
 
 abstract class ProcessController {
+  static const String serviceName = null;
   dynamic wait([Function responseFactory = null]);
   dynamic kill(int signal,[Function responseFactory = null]);
-
 }
 
 
-class ProcessControllerProxyImpl extends bindings.Proxy {
-  ProcessControllerProxyImpl.fromEndpoint(
+class _ProcessControllerProxyImpl extends bindings.Proxy {
+  _ProcessControllerProxyImpl.fromEndpoint(
       core.MojoMessagePipeEndpoint endpoint) : super.fromEndpoint(endpoint);
 
-  ProcessControllerProxyImpl.fromHandle(core.MojoHandle handle) :
+  _ProcessControllerProxyImpl.fromHandle(core.MojoHandle handle) :
       super.fromHandle(handle);
 
-  ProcessControllerProxyImpl.unbound() : super.unbound();
+  _ProcessControllerProxyImpl.unbound() : super.unbound();
 
-  static ProcessControllerProxyImpl newFromEndpoint(
+  static _ProcessControllerProxyImpl newFromEndpoint(
       core.MojoMessagePipeEndpoint endpoint) {
-    assert(endpoint.setDescription("For ProcessControllerProxyImpl"));
-    return new ProcessControllerProxyImpl.fromEndpoint(endpoint);
+    assert(endpoint.setDescription("For _ProcessControllerProxyImpl"));
+    return new _ProcessControllerProxyImpl.fromEndpoint(endpoint);
   }
-
-  String get name => ProcessControllerName;
 
   void handleResponse(bindings.ServiceMessage message) {
     switch (message.header.type) {
-      case kProcessController_wait_name:
+      case _ProcessController_waitName:
         var r = ProcessControllerWaitResponseParams.deserialize(
             message.payload);
         if (!message.header.hasRequestId) {
@@ -1046,7 +1039,7 @@ class ProcessControllerProxyImpl extends bindings.Proxy {
         }
         c.complete(r);
         break;
-      case kProcessController_kill_name:
+      case _ProcessController_killName:
         var r = ProcessControllerKillResponseParams.deserialize(
             message.payload);
         if (!message.header.hasRequestId) {
@@ -1075,29 +1068,29 @@ class ProcessControllerProxyImpl extends bindings.Proxy {
 
   String toString() {
     var superString = super.toString();
-    return "ProcessControllerProxyImpl($superString)";
+    return "_ProcessControllerProxyImpl($superString)";
   }
 }
 
 
 class _ProcessControllerProxyCalls implements ProcessController {
-  ProcessControllerProxyImpl _proxyImpl;
+  _ProcessControllerProxyImpl _proxyImpl;
 
   _ProcessControllerProxyCalls(this._proxyImpl);
     dynamic wait([Function responseFactory = null]) {
-      var params = new ProcessControllerWaitParams();
+      var params = new _ProcessControllerWaitParams();
       return _proxyImpl.sendMessageWithRequestId(
           params,
-          kProcessController_wait_name,
+          _ProcessController_waitName,
           -1,
           bindings.MessageHeader.kMessageExpectsResponse);
     }
     dynamic kill(int signal,[Function responseFactory = null]) {
-      var params = new ProcessControllerKillParams();
+      var params = new _ProcessControllerKillParams();
       params.signal = signal;
       return _proxyImpl.sendMessageWithRequestId(
           params,
-          kProcessController_kill_name,
+          _ProcessController_killName,
           -1,
           bindings.MessageHeader.kMessageExpectsResponse);
     }
@@ -1107,25 +1100,24 @@ class _ProcessControllerProxyCalls implements ProcessController {
 class ProcessControllerProxy implements bindings.ProxyBase {
   final bindings.Proxy impl;
   ProcessController ptr;
-  final String name = ProcessControllerName;
 
-  ProcessControllerProxy(ProcessControllerProxyImpl proxyImpl) :
+  ProcessControllerProxy(_ProcessControllerProxyImpl proxyImpl) :
       impl = proxyImpl,
       ptr = new _ProcessControllerProxyCalls(proxyImpl);
 
   ProcessControllerProxy.fromEndpoint(
       core.MojoMessagePipeEndpoint endpoint) :
-      impl = new ProcessControllerProxyImpl.fromEndpoint(endpoint) {
+      impl = new _ProcessControllerProxyImpl.fromEndpoint(endpoint) {
     ptr = new _ProcessControllerProxyCalls(impl);
   }
 
   ProcessControllerProxy.fromHandle(core.MojoHandle handle) :
-      impl = new ProcessControllerProxyImpl.fromHandle(handle) {
+      impl = new _ProcessControllerProxyImpl.fromHandle(handle) {
     ptr = new _ProcessControllerProxyCalls(impl);
   }
 
   ProcessControllerProxy.unbound() :
-      impl = new ProcessControllerProxyImpl.unbound() {
+      impl = new _ProcessControllerProxyImpl.unbound() {
     ptr = new _ProcessControllerProxyCalls(impl);
   }
 
@@ -1141,6 +1133,8 @@ class ProcessControllerProxy implements bindings.ProxyBase {
     assert(endpoint.setDescription("For ProcessControllerProxy"));
     return new ProcessControllerProxy.fromEndpoint(endpoint);
   }
+
+  String get serviceName => ProcessController.serviceName;
 
   Future close({bool immediate: false}) => impl.close(immediate: immediate);
 
@@ -1180,8 +1174,6 @@ class ProcessControllerStub extends bindings.Stub {
     return new ProcessControllerStub.fromEndpoint(endpoint);
   }
 
-  static const String name = ProcessControllerName;
-
 
   ProcessControllerWaitResponseParams _ProcessControllerWaitResponseParamsFactory(types_mojom.Error error, int exitStatus) {
     var mojo_factory_result = new ProcessControllerWaitResponseParams();
@@ -1203,8 +1195,8 @@ class ProcessControllerStub extends bindings.Stub {
     }
     assert(_impl != null);
     switch (message.header.type) {
-      case kProcessController_wait_name:
-        var params = ProcessControllerWaitParams.deserialize(
+      case _ProcessController_waitName:
+        var params = _ProcessControllerWaitParams.deserialize(
             message.payload);
         var response = _impl.wait(_ProcessControllerWaitResponseParamsFactory);
         if (response is Future) {
@@ -1212,7 +1204,7 @@ class ProcessControllerStub extends bindings.Stub {
             if (response != null) {
               return buildResponseWithId(
                   response,
-                  kProcessController_wait_name,
+                  _ProcessController_waitName,
                   message.header.requestId,
                   bindings.MessageHeader.kMessageIsResponse);
             }
@@ -1220,13 +1212,13 @@ class ProcessControllerStub extends bindings.Stub {
         } else if (response != null) {
           return buildResponseWithId(
               response,
-              kProcessController_wait_name,
+              _ProcessController_waitName,
               message.header.requestId,
               bindings.MessageHeader.kMessageIsResponse);
         }
         break;
-      case kProcessController_kill_name:
-        var params = ProcessControllerKillParams.deserialize(
+      case _ProcessController_killName:
+        var params = _ProcessControllerKillParams.deserialize(
             message.payload);
         var response = _impl.kill(params.signal,_ProcessControllerKillResponseParamsFactory);
         if (response is Future) {
@@ -1234,7 +1226,7 @@ class ProcessControllerStub extends bindings.Stub {
             if (response != null) {
               return buildResponseWithId(
                   response,
-                  kProcessController_kill_name,
+                  _ProcessController_killName,
                   message.header.requestId,
                   bindings.MessageHeader.kMessageIsResponse);
             }
@@ -1242,7 +1234,7 @@ class ProcessControllerStub extends bindings.Stub {
         } else if (response != null) {
           return buildResponseWithId(
               response,
-              kProcessController_kill_name,
+              _ProcessController_killName,
               message.header.requestId,
               bindings.MessageHeader.kMessageIsResponse);
         }

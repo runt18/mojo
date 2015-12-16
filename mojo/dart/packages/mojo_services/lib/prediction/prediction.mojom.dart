@@ -180,15 +180,15 @@ class PredictionInfo extends bindings.Struct {
 }
 
 
-class PredictionServiceGetPredictionListParams extends bindings.Struct {
+class _PredictionServiceGetPredictionListParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(16, 0)
   ];
   PredictionInfo predictionInfo = null;
 
-  PredictionServiceGetPredictionListParams() : super(kVersions.last.size);
+  _PredictionServiceGetPredictionListParams() : super(kVersions.last.size);
 
-  static PredictionServiceGetPredictionListParams deserialize(bindings.Message message) {
+  static _PredictionServiceGetPredictionListParams deserialize(bindings.Message message) {
     var decoder = new bindings.Decoder(message);
     var result = decode(decoder);
     if (decoder.excessHandles != null) {
@@ -197,11 +197,11 @@ class PredictionServiceGetPredictionListParams extends bindings.Struct {
     return result;
   }
 
-  static PredictionServiceGetPredictionListParams decode(bindings.Decoder decoder0) {
+  static _PredictionServiceGetPredictionListParams decode(bindings.Decoder decoder0) {
     if (decoder0 == null) {
       return null;
     }
-    PredictionServiceGetPredictionListParams result = new PredictionServiceGetPredictionListParams();
+    _PredictionServiceGetPredictionListParams result = new _PredictionServiceGetPredictionListParams();
 
     var mainDataHeader = decoder0.decodeStructDataHeader();
     if (mainDataHeader.version <= kVersions.last.version) {
@@ -236,7 +236,7 @@ class PredictionServiceGetPredictionListParams extends bindings.Struct {
   }
 
   String toString() {
-    return "PredictionServiceGetPredictionListParams("
+    return "_PredictionServiceGetPredictionListParams("
            "predictionInfo: $predictionInfo" ")";
   }
 
@@ -332,35 +332,32 @@ class PredictionServiceGetPredictionListResponseParams extends bindings.Struct {
   }
 }
 
-const int kPredictionService_getPredictionList_name = 0;
-const String PredictionServiceName = "prediction::PredictionService";
+const int _PredictionService_getPredictionListName = 0;
 
 abstract class PredictionService {
+  static const String serviceName = "prediction::PredictionService";
   dynamic getPredictionList(PredictionInfo predictionInfo,[Function responseFactory = null]);
-
 }
 
 
-class PredictionServiceProxyImpl extends bindings.Proxy {
-  PredictionServiceProxyImpl.fromEndpoint(
+class _PredictionServiceProxyImpl extends bindings.Proxy {
+  _PredictionServiceProxyImpl.fromEndpoint(
       core.MojoMessagePipeEndpoint endpoint) : super.fromEndpoint(endpoint);
 
-  PredictionServiceProxyImpl.fromHandle(core.MojoHandle handle) :
+  _PredictionServiceProxyImpl.fromHandle(core.MojoHandle handle) :
       super.fromHandle(handle);
 
-  PredictionServiceProxyImpl.unbound() : super.unbound();
+  _PredictionServiceProxyImpl.unbound() : super.unbound();
 
-  static PredictionServiceProxyImpl newFromEndpoint(
+  static _PredictionServiceProxyImpl newFromEndpoint(
       core.MojoMessagePipeEndpoint endpoint) {
-    assert(endpoint.setDescription("For PredictionServiceProxyImpl"));
-    return new PredictionServiceProxyImpl.fromEndpoint(endpoint);
+    assert(endpoint.setDescription("For _PredictionServiceProxyImpl"));
+    return new _PredictionServiceProxyImpl.fromEndpoint(endpoint);
   }
-
-  String get name => PredictionServiceName;
 
   void handleResponse(bindings.ServiceMessage message) {
     switch (message.header.type) {
-      case kPredictionService_getPredictionList_name:
+      case _PredictionService_getPredictionListName:
         var r = PredictionServiceGetPredictionListResponseParams.deserialize(
             message.payload);
         if (!message.header.hasRequestId) {
@@ -389,21 +386,21 @@ class PredictionServiceProxyImpl extends bindings.Proxy {
 
   String toString() {
     var superString = super.toString();
-    return "PredictionServiceProxyImpl($superString)";
+    return "_PredictionServiceProxyImpl($superString)";
   }
 }
 
 
 class _PredictionServiceProxyCalls implements PredictionService {
-  PredictionServiceProxyImpl _proxyImpl;
+  _PredictionServiceProxyImpl _proxyImpl;
 
   _PredictionServiceProxyCalls(this._proxyImpl);
     dynamic getPredictionList(PredictionInfo predictionInfo,[Function responseFactory = null]) {
-      var params = new PredictionServiceGetPredictionListParams();
+      var params = new _PredictionServiceGetPredictionListParams();
       params.predictionInfo = predictionInfo;
       return _proxyImpl.sendMessageWithRequestId(
           params,
-          kPredictionService_getPredictionList_name,
+          _PredictionService_getPredictionListName,
           -1,
           bindings.MessageHeader.kMessageExpectsResponse);
     }
@@ -413,25 +410,24 @@ class _PredictionServiceProxyCalls implements PredictionService {
 class PredictionServiceProxy implements bindings.ProxyBase {
   final bindings.Proxy impl;
   PredictionService ptr;
-  final String name = PredictionServiceName;
 
-  PredictionServiceProxy(PredictionServiceProxyImpl proxyImpl) :
+  PredictionServiceProxy(_PredictionServiceProxyImpl proxyImpl) :
       impl = proxyImpl,
       ptr = new _PredictionServiceProxyCalls(proxyImpl);
 
   PredictionServiceProxy.fromEndpoint(
       core.MojoMessagePipeEndpoint endpoint) :
-      impl = new PredictionServiceProxyImpl.fromEndpoint(endpoint) {
+      impl = new _PredictionServiceProxyImpl.fromEndpoint(endpoint) {
     ptr = new _PredictionServiceProxyCalls(impl);
   }
 
   PredictionServiceProxy.fromHandle(core.MojoHandle handle) :
-      impl = new PredictionServiceProxyImpl.fromHandle(handle) {
+      impl = new _PredictionServiceProxyImpl.fromHandle(handle) {
     ptr = new _PredictionServiceProxyCalls(impl);
   }
 
   PredictionServiceProxy.unbound() :
-      impl = new PredictionServiceProxyImpl.unbound() {
+      impl = new _PredictionServiceProxyImpl.unbound() {
     ptr = new _PredictionServiceProxyCalls(impl);
   }
 
@@ -447,6 +443,8 @@ class PredictionServiceProxy implements bindings.ProxyBase {
     assert(endpoint.setDescription("For PredictionServiceProxy"));
     return new PredictionServiceProxy.fromEndpoint(endpoint);
   }
+
+  String get serviceName => PredictionService.serviceName;
 
   Future close({bool immediate: false}) => impl.close(immediate: immediate);
 
@@ -486,8 +484,6 @@ class PredictionServiceStub extends bindings.Stub {
     return new PredictionServiceStub.fromEndpoint(endpoint);
   }
 
-  static const String name = PredictionServiceName;
-
 
   PredictionServiceGetPredictionListResponseParams _PredictionServiceGetPredictionListResponseParamsFactory(List<String> predictionList) {
     var mojo_factory_result = new PredictionServiceGetPredictionListResponseParams();
@@ -503,8 +499,8 @@ class PredictionServiceStub extends bindings.Stub {
     }
     assert(_impl != null);
     switch (message.header.type) {
-      case kPredictionService_getPredictionList_name:
-        var params = PredictionServiceGetPredictionListParams.deserialize(
+      case _PredictionService_getPredictionListName:
+        var params = _PredictionServiceGetPredictionListParams.deserialize(
             message.payload);
         var response = _impl.getPredictionList(params.predictionInfo,_PredictionServiceGetPredictionListResponseParamsFactory);
         if (response is Future) {
@@ -512,7 +508,7 @@ class PredictionServiceStub extends bindings.Stub {
             if (response != null) {
               return buildResponseWithId(
                   response,
-                  kPredictionService_getPredictionList_name,
+                  _PredictionService_getPredictionListName,
                   message.header.requestId,
                   bindings.MessageHeader.kMessageIsResponse);
             }
@@ -520,7 +516,7 @@ class PredictionServiceStub extends bindings.Stub {
         } else if (response != null) {
           return buildResponseWithId(
               response,
-              kPredictionService_getPredictionList_name,
+              _PredictionService_getPredictionListName,
               message.header.requestId,
               bindings.MessageHeader.kMessageIsResponse);
         }

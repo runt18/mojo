@@ -12,16 +12,16 @@ import 'package:mojo_services/mojo/http_connection.mojom.dart' as http_connectio
 
 
 
-class HttpServerDelegateOnConnectedParams extends bindings.Struct {
+class _HttpServerDelegateOnConnectedParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(24, 0)
   ];
   Object connection = null;
   Object delegate = null;
 
-  HttpServerDelegateOnConnectedParams() : super(kVersions.last.size);
+  _HttpServerDelegateOnConnectedParams() : super(kVersions.last.size);
 
-  static HttpServerDelegateOnConnectedParams deserialize(bindings.Message message) {
+  static _HttpServerDelegateOnConnectedParams deserialize(bindings.Message message) {
     var decoder = new bindings.Decoder(message);
     var result = decode(decoder);
     if (decoder.excessHandles != null) {
@@ -30,11 +30,11 @@ class HttpServerDelegateOnConnectedParams extends bindings.Struct {
     return result;
   }
 
-  static HttpServerDelegateOnConnectedParams decode(bindings.Decoder decoder0) {
+  static _HttpServerDelegateOnConnectedParams decode(bindings.Decoder decoder0) {
     if (decoder0 == null) {
       return null;
     }
-    HttpServerDelegateOnConnectedParams result = new HttpServerDelegateOnConnectedParams();
+    _HttpServerDelegateOnConnectedParams result = new _HttpServerDelegateOnConnectedParams();
 
     var mainDataHeader = decoder0.decodeStructDataHeader();
     if (mainDataHeader.version <= kVersions.last.version) {
@@ -74,7 +74,7 @@ class HttpServerDelegateOnConnectedParams extends bindings.Struct {
   }
 
   String toString() {
-    return "HttpServerDelegateOnConnectedParams("
+    return "_HttpServerDelegateOnConnectedParams("
            "connection: $connection" ", "
            "delegate: $delegate" ")";
   }
@@ -85,31 +85,28 @@ class HttpServerDelegateOnConnectedParams extends bindings.Struct {
   }
 }
 
-const int kHttpServerDelegate_onConnected_name = 0;
-const String HttpServerDelegateName = null;
+const int _HttpServerDelegate_onConnectedName = 0;
 
 abstract class HttpServerDelegate {
+  static const String serviceName = null;
   void onConnected(Object connection, Object delegate);
-
 }
 
 
-class HttpServerDelegateProxyImpl extends bindings.Proxy {
-  HttpServerDelegateProxyImpl.fromEndpoint(
+class _HttpServerDelegateProxyImpl extends bindings.Proxy {
+  _HttpServerDelegateProxyImpl.fromEndpoint(
       core.MojoMessagePipeEndpoint endpoint) : super.fromEndpoint(endpoint);
 
-  HttpServerDelegateProxyImpl.fromHandle(core.MojoHandle handle) :
+  _HttpServerDelegateProxyImpl.fromHandle(core.MojoHandle handle) :
       super.fromHandle(handle);
 
-  HttpServerDelegateProxyImpl.unbound() : super.unbound();
+  _HttpServerDelegateProxyImpl.unbound() : super.unbound();
 
-  static HttpServerDelegateProxyImpl newFromEndpoint(
+  static _HttpServerDelegateProxyImpl newFromEndpoint(
       core.MojoMessagePipeEndpoint endpoint) {
-    assert(endpoint.setDescription("For HttpServerDelegateProxyImpl"));
-    return new HttpServerDelegateProxyImpl.fromEndpoint(endpoint);
+    assert(endpoint.setDescription("For _HttpServerDelegateProxyImpl"));
+    return new _HttpServerDelegateProxyImpl.fromEndpoint(endpoint);
   }
-
-  String get name => HttpServerDelegateName;
 
   void handleResponse(bindings.ServiceMessage message) {
     switch (message.header.type) {
@@ -122,13 +119,13 @@ class HttpServerDelegateProxyImpl extends bindings.Proxy {
 
   String toString() {
     var superString = super.toString();
-    return "HttpServerDelegateProxyImpl($superString)";
+    return "_HttpServerDelegateProxyImpl($superString)";
   }
 }
 
 
 class _HttpServerDelegateProxyCalls implements HttpServerDelegate {
-  HttpServerDelegateProxyImpl _proxyImpl;
+  _HttpServerDelegateProxyImpl _proxyImpl;
 
   _HttpServerDelegateProxyCalls(this._proxyImpl);
     void onConnected(Object connection, Object delegate) {
@@ -136,37 +133,35 @@ class _HttpServerDelegateProxyCalls implements HttpServerDelegate {
         _proxyImpl.proxyError("The Proxy is closed.");
         return;
       }
-      var params = new HttpServerDelegateOnConnectedParams();
+      var params = new _HttpServerDelegateOnConnectedParams();
       params.connection = connection;
       params.delegate = delegate;
-      _proxyImpl.sendMessage(params, kHttpServerDelegate_onConnected_name);
+      _proxyImpl.sendMessage(params, _HttpServerDelegate_onConnectedName);
     }
-  
 }
 
 
 class HttpServerDelegateProxy implements bindings.ProxyBase {
   final bindings.Proxy impl;
   HttpServerDelegate ptr;
-  final String name = HttpServerDelegateName;
 
-  HttpServerDelegateProxy(HttpServerDelegateProxyImpl proxyImpl) :
+  HttpServerDelegateProxy(_HttpServerDelegateProxyImpl proxyImpl) :
       impl = proxyImpl,
       ptr = new _HttpServerDelegateProxyCalls(proxyImpl);
 
   HttpServerDelegateProxy.fromEndpoint(
       core.MojoMessagePipeEndpoint endpoint) :
-      impl = new HttpServerDelegateProxyImpl.fromEndpoint(endpoint) {
+      impl = new _HttpServerDelegateProxyImpl.fromEndpoint(endpoint) {
     ptr = new _HttpServerDelegateProxyCalls(impl);
   }
 
   HttpServerDelegateProxy.fromHandle(core.MojoHandle handle) :
-      impl = new HttpServerDelegateProxyImpl.fromHandle(handle) {
+      impl = new _HttpServerDelegateProxyImpl.fromHandle(handle) {
     ptr = new _HttpServerDelegateProxyCalls(impl);
   }
 
   HttpServerDelegateProxy.unbound() :
-      impl = new HttpServerDelegateProxyImpl.unbound() {
+      impl = new _HttpServerDelegateProxyImpl.unbound() {
     ptr = new _HttpServerDelegateProxyCalls(impl);
   }
 
@@ -182,6 +177,8 @@ class HttpServerDelegateProxy implements bindings.ProxyBase {
     assert(endpoint.setDescription("For HttpServerDelegateProxy"));
     return new HttpServerDelegateProxy.fromEndpoint(endpoint);
   }
+
+  String get serviceName => HttpServerDelegate.serviceName;
 
   Future close({bool immediate: false}) => impl.close(immediate: immediate);
 
@@ -221,8 +218,6 @@ class HttpServerDelegateStub extends bindings.Stub {
     return new HttpServerDelegateStub.fromEndpoint(endpoint);
   }
 
-  static const String name = HttpServerDelegateName;
-
 
 
   dynamic handleMessage(bindings.ServiceMessage message) {
@@ -233,8 +228,8 @@ class HttpServerDelegateStub extends bindings.Stub {
     }
     assert(_impl != null);
     switch (message.header.type) {
-      case kHttpServerDelegate_onConnected_name:
-        var params = HttpServerDelegateOnConnectedParams.deserialize(
+      case _HttpServerDelegate_onConnectedName:
+        var params = _HttpServerDelegateOnConnectedParams.deserialize(
             message.payload);
         _impl.onConnected(params.connection, params.delegate);
         break;

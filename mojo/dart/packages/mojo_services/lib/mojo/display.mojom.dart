@@ -14,15 +14,15 @@ import 'package:mojo_services/mojo/surfaces.mojom.dart' as surfaces_mojom;
 
 
 
-class DisplaySubmitFrameParams extends bindings.Struct {
+class _DisplaySubmitFrameParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(16, 0)
   ];
   surfaces_mojom.Frame frame = null;
 
-  DisplaySubmitFrameParams() : super(kVersions.last.size);
+  _DisplaySubmitFrameParams() : super(kVersions.last.size);
 
-  static DisplaySubmitFrameParams deserialize(bindings.Message message) {
+  static _DisplaySubmitFrameParams deserialize(bindings.Message message) {
     var decoder = new bindings.Decoder(message);
     var result = decode(decoder);
     if (decoder.excessHandles != null) {
@@ -31,11 +31,11 @@ class DisplaySubmitFrameParams extends bindings.Struct {
     return result;
   }
 
-  static DisplaySubmitFrameParams decode(bindings.Decoder decoder0) {
+  static _DisplaySubmitFrameParams decode(bindings.Decoder decoder0) {
     if (decoder0 == null) {
       return null;
     }
-    DisplaySubmitFrameParams result = new DisplaySubmitFrameParams();
+    _DisplaySubmitFrameParams result = new _DisplaySubmitFrameParams();
 
     var mainDataHeader = decoder0.decodeStructDataHeader();
     if (mainDataHeader.version <= kVersions.last.version) {
@@ -70,7 +70,7 @@ class DisplaySubmitFrameParams extends bindings.Struct {
   }
 
   String toString() {
-    return "DisplaySubmitFrameParams("
+    return "_DisplaySubmitFrameParams("
            "frame: $frame" ")";
   }
 
@@ -140,7 +140,7 @@ class DisplaySubmitFrameResponseParams extends bindings.Struct {
 }
 
 
-class DisplayFactoryCreateParams extends bindings.Struct {
+class _DisplayFactoryCreateParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(32, 0)
   ];
@@ -148,9 +148,9 @@ class DisplayFactoryCreateParams extends bindings.Struct {
   Object returner = null;
   Object displayRequest = null;
 
-  DisplayFactoryCreateParams() : super(kVersions.last.size);
+  _DisplayFactoryCreateParams() : super(kVersions.last.size);
 
-  static DisplayFactoryCreateParams deserialize(bindings.Message message) {
+  static _DisplayFactoryCreateParams deserialize(bindings.Message message) {
     var decoder = new bindings.Decoder(message);
     var result = decode(decoder);
     if (decoder.excessHandles != null) {
@@ -159,11 +159,11 @@ class DisplayFactoryCreateParams extends bindings.Struct {
     return result;
   }
 
-  static DisplayFactoryCreateParams decode(bindings.Decoder decoder0) {
+  static _DisplayFactoryCreateParams decode(bindings.Decoder decoder0) {
     if (decoder0 == null) {
       return null;
     }
-    DisplayFactoryCreateParams result = new DisplayFactoryCreateParams();
+    _DisplayFactoryCreateParams result = new _DisplayFactoryCreateParams();
 
     var mainDataHeader = decoder0.decodeStructDataHeader();
     if (mainDataHeader.version <= kVersions.last.version) {
@@ -209,7 +209,7 @@ class DisplayFactoryCreateParams extends bindings.Struct {
   }
 
   String toString() {
-    return "DisplayFactoryCreateParams("
+    return "_DisplayFactoryCreateParams("
            "contextProvider: $contextProvider" ", "
            "returner: $returner" ", "
            "displayRequest: $displayRequest" ")";
@@ -221,35 +221,32 @@ class DisplayFactoryCreateParams extends bindings.Struct {
   }
 }
 
-const int kDisplay_submitFrame_name = 0;
-const String DisplayName = null;
+const int _Display_submitFrameName = 0;
 
 abstract class Display {
+  static const String serviceName = null;
   dynamic submitFrame(surfaces_mojom.Frame frame,[Function responseFactory = null]);
-
 }
 
 
-class DisplayProxyImpl extends bindings.Proxy {
-  DisplayProxyImpl.fromEndpoint(
+class _DisplayProxyImpl extends bindings.Proxy {
+  _DisplayProxyImpl.fromEndpoint(
       core.MojoMessagePipeEndpoint endpoint) : super.fromEndpoint(endpoint);
 
-  DisplayProxyImpl.fromHandle(core.MojoHandle handle) :
+  _DisplayProxyImpl.fromHandle(core.MojoHandle handle) :
       super.fromHandle(handle);
 
-  DisplayProxyImpl.unbound() : super.unbound();
+  _DisplayProxyImpl.unbound() : super.unbound();
 
-  static DisplayProxyImpl newFromEndpoint(
+  static _DisplayProxyImpl newFromEndpoint(
       core.MojoMessagePipeEndpoint endpoint) {
-    assert(endpoint.setDescription("For DisplayProxyImpl"));
-    return new DisplayProxyImpl.fromEndpoint(endpoint);
+    assert(endpoint.setDescription("For _DisplayProxyImpl"));
+    return new _DisplayProxyImpl.fromEndpoint(endpoint);
   }
-
-  String get name => DisplayName;
 
   void handleResponse(bindings.ServiceMessage message) {
     switch (message.header.type) {
-      case kDisplay_submitFrame_name:
+      case _Display_submitFrameName:
         var r = DisplaySubmitFrameResponseParams.deserialize(
             message.payload);
         if (!message.header.hasRequestId) {
@@ -278,21 +275,21 @@ class DisplayProxyImpl extends bindings.Proxy {
 
   String toString() {
     var superString = super.toString();
-    return "DisplayProxyImpl($superString)";
+    return "_DisplayProxyImpl($superString)";
   }
 }
 
 
 class _DisplayProxyCalls implements Display {
-  DisplayProxyImpl _proxyImpl;
+  _DisplayProxyImpl _proxyImpl;
 
   _DisplayProxyCalls(this._proxyImpl);
     dynamic submitFrame(surfaces_mojom.Frame frame,[Function responseFactory = null]) {
-      var params = new DisplaySubmitFrameParams();
+      var params = new _DisplaySubmitFrameParams();
       params.frame = frame;
       return _proxyImpl.sendMessageWithRequestId(
           params,
-          kDisplay_submitFrame_name,
+          _Display_submitFrameName,
           -1,
           bindings.MessageHeader.kMessageExpectsResponse);
     }
@@ -302,25 +299,24 @@ class _DisplayProxyCalls implements Display {
 class DisplayProxy implements bindings.ProxyBase {
   final bindings.Proxy impl;
   Display ptr;
-  final String name = DisplayName;
 
-  DisplayProxy(DisplayProxyImpl proxyImpl) :
+  DisplayProxy(_DisplayProxyImpl proxyImpl) :
       impl = proxyImpl,
       ptr = new _DisplayProxyCalls(proxyImpl);
 
   DisplayProxy.fromEndpoint(
       core.MojoMessagePipeEndpoint endpoint) :
-      impl = new DisplayProxyImpl.fromEndpoint(endpoint) {
+      impl = new _DisplayProxyImpl.fromEndpoint(endpoint) {
     ptr = new _DisplayProxyCalls(impl);
   }
 
   DisplayProxy.fromHandle(core.MojoHandle handle) :
-      impl = new DisplayProxyImpl.fromHandle(handle) {
+      impl = new _DisplayProxyImpl.fromHandle(handle) {
     ptr = new _DisplayProxyCalls(impl);
   }
 
   DisplayProxy.unbound() :
-      impl = new DisplayProxyImpl.unbound() {
+      impl = new _DisplayProxyImpl.unbound() {
     ptr = new _DisplayProxyCalls(impl);
   }
 
@@ -336,6 +332,8 @@ class DisplayProxy implements bindings.ProxyBase {
     assert(endpoint.setDescription("For DisplayProxy"));
     return new DisplayProxy.fromEndpoint(endpoint);
   }
+
+  String get serviceName => Display.serviceName;
 
   Future close({bool immediate: false}) => impl.close(immediate: immediate);
 
@@ -375,8 +373,6 @@ class DisplayStub extends bindings.Stub {
     return new DisplayStub.fromEndpoint(endpoint);
   }
 
-  static const String name = DisplayName;
-
 
   DisplaySubmitFrameResponseParams _DisplaySubmitFrameResponseParamsFactory() {
     var mojo_factory_result = new DisplaySubmitFrameResponseParams();
@@ -391,8 +387,8 @@ class DisplayStub extends bindings.Stub {
     }
     assert(_impl != null);
     switch (message.header.type) {
-      case kDisplay_submitFrame_name:
-        var params = DisplaySubmitFrameParams.deserialize(
+      case _Display_submitFrameName:
+        var params = _DisplaySubmitFrameParams.deserialize(
             message.payload);
         var response = _impl.submitFrame(params.frame,_DisplaySubmitFrameResponseParamsFactory);
         if (response is Future) {
@@ -400,7 +396,7 @@ class DisplayStub extends bindings.Stub {
             if (response != null) {
               return buildResponseWithId(
                   response,
-                  kDisplay_submitFrame_name,
+                  _Display_submitFrameName,
                   message.header.requestId,
                   bindings.MessageHeader.kMessageIsResponse);
             }
@@ -408,7 +404,7 @@ class DisplayStub extends bindings.Stub {
         } else if (response != null) {
           return buildResponseWithId(
               response,
-              kDisplay_submitFrame_name,
+              _Display_submitFrameName,
               message.header.requestId,
               bindings.MessageHeader.kMessageIsResponse);
         }
@@ -434,31 +430,28 @@ class DisplayStub extends bindings.Stub {
   int get version => 0;
 }
 
-const int kDisplayFactory_create_name = 0;
-const String DisplayFactoryName = "mojo::DisplayFactory";
+const int _DisplayFactory_createName = 0;
 
 abstract class DisplayFactory {
+  static const String serviceName = "mojo::DisplayFactory";
   void create(Object contextProvider, Object returner, Object displayRequest);
-
 }
 
 
-class DisplayFactoryProxyImpl extends bindings.Proxy {
-  DisplayFactoryProxyImpl.fromEndpoint(
+class _DisplayFactoryProxyImpl extends bindings.Proxy {
+  _DisplayFactoryProxyImpl.fromEndpoint(
       core.MojoMessagePipeEndpoint endpoint) : super.fromEndpoint(endpoint);
 
-  DisplayFactoryProxyImpl.fromHandle(core.MojoHandle handle) :
+  _DisplayFactoryProxyImpl.fromHandle(core.MojoHandle handle) :
       super.fromHandle(handle);
 
-  DisplayFactoryProxyImpl.unbound() : super.unbound();
+  _DisplayFactoryProxyImpl.unbound() : super.unbound();
 
-  static DisplayFactoryProxyImpl newFromEndpoint(
+  static _DisplayFactoryProxyImpl newFromEndpoint(
       core.MojoMessagePipeEndpoint endpoint) {
-    assert(endpoint.setDescription("For DisplayFactoryProxyImpl"));
-    return new DisplayFactoryProxyImpl.fromEndpoint(endpoint);
+    assert(endpoint.setDescription("For _DisplayFactoryProxyImpl"));
+    return new _DisplayFactoryProxyImpl.fromEndpoint(endpoint);
   }
-
-  String get name => DisplayFactoryName;
 
   void handleResponse(bindings.ServiceMessage message) {
     switch (message.header.type) {
@@ -471,13 +464,13 @@ class DisplayFactoryProxyImpl extends bindings.Proxy {
 
   String toString() {
     var superString = super.toString();
-    return "DisplayFactoryProxyImpl($superString)";
+    return "_DisplayFactoryProxyImpl($superString)";
   }
 }
 
 
 class _DisplayFactoryProxyCalls implements DisplayFactory {
-  DisplayFactoryProxyImpl _proxyImpl;
+  _DisplayFactoryProxyImpl _proxyImpl;
 
   _DisplayFactoryProxyCalls(this._proxyImpl);
     void create(Object contextProvider, Object returner, Object displayRequest) {
@@ -485,38 +478,36 @@ class _DisplayFactoryProxyCalls implements DisplayFactory {
         _proxyImpl.proxyError("The Proxy is closed.");
         return;
       }
-      var params = new DisplayFactoryCreateParams();
+      var params = new _DisplayFactoryCreateParams();
       params.contextProvider = contextProvider;
       params.returner = returner;
       params.displayRequest = displayRequest;
-      _proxyImpl.sendMessage(params, kDisplayFactory_create_name);
+      _proxyImpl.sendMessage(params, _DisplayFactory_createName);
     }
-  
 }
 
 
 class DisplayFactoryProxy implements bindings.ProxyBase {
   final bindings.Proxy impl;
   DisplayFactory ptr;
-  final String name = DisplayFactoryName;
 
-  DisplayFactoryProxy(DisplayFactoryProxyImpl proxyImpl) :
+  DisplayFactoryProxy(_DisplayFactoryProxyImpl proxyImpl) :
       impl = proxyImpl,
       ptr = new _DisplayFactoryProxyCalls(proxyImpl);
 
   DisplayFactoryProxy.fromEndpoint(
       core.MojoMessagePipeEndpoint endpoint) :
-      impl = new DisplayFactoryProxyImpl.fromEndpoint(endpoint) {
+      impl = new _DisplayFactoryProxyImpl.fromEndpoint(endpoint) {
     ptr = new _DisplayFactoryProxyCalls(impl);
   }
 
   DisplayFactoryProxy.fromHandle(core.MojoHandle handle) :
-      impl = new DisplayFactoryProxyImpl.fromHandle(handle) {
+      impl = new _DisplayFactoryProxyImpl.fromHandle(handle) {
     ptr = new _DisplayFactoryProxyCalls(impl);
   }
 
   DisplayFactoryProxy.unbound() :
-      impl = new DisplayFactoryProxyImpl.unbound() {
+      impl = new _DisplayFactoryProxyImpl.unbound() {
     ptr = new _DisplayFactoryProxyCalls(impl);
   }
 
@@ -532,6 +523,8 @@ class DisplayFactoryProxy implements bindings.ProxyBase {
     assert(endpoint.setDescription("For DisplayFactoryProxy"));
     return new DisplayFactoryProxy.fromEndpoint(endpoint);
   }
+
+  String get serviceName => DisplayFactory.serviceName;
 
   Future close({bool immediate: false}) => impl.close(immediate: immediate);
 
@@ -571,8 +564,6 @@ class DisplayFactoryStub extends bindings.Stub {
     return new DisplayFactoryStub.fromEndpoint(endpoint);
   }
 
-  static const String name = DisplayFactoryName;
-
 
 
   dynamic handleMessage(bindings.ServiceMessage message) {
@@ -583,8 +574,8 @@ class DisplayFactoryStub extends bindings.Stub {
     }
     assert(_impl != null);
     switch (message.header.type) {
-      case kDisplayFactory_create_name:
-        var params = DisplayFactoryCreateParams.deserialize(
+      case _DisplayFactory_createName:
+        var params = _DisplayFactoryCreateParams.deserialize(
             message.payload);
         _impl.create(params.contextProvider, params.returner, params.displayRequest);
         break;

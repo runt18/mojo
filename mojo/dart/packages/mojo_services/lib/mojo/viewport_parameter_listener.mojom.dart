@@ -11,16 +11,16 @@ import 'package:mojo/core.dart' as core;
 
 
 
-class ViewportParameterListenerOnVSyncParametersUpdatedParams extends bindings.Struct {
+class _ViewportParameterListenerOnVSyncParametersUpdatedParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(24, 0)
   ];
   int timebase = 0;
   int interval = 0;
 
-  ViewportParameterListenerOnVSyncParametersUpdatedParams() : super(kVersions.last.size);
+  _ViewportParameterListenerOnVSyncParametersUpdatedParams() : super(kVersions.last.size);
 
-  static ViewportParameterListenerOnVSyncParametersUpdatedParams deserialize(bindings.Message message) {
+  static _ViewportParameterListenerOnVSyncParametersUpdatedParams deserialize(bindings.Message message) {
     var decoder = new bindings.Decoder(message);
     var result = decode(decoder);
     if (decoder.excessHandles != null) {
@@ -29,11 +29,11 @@ class ViewportParameterListenerOnVSyncParametersUpdatedParams extends bindings.S
     return result;
   }
 
-  static ViewportParameterListenerOnVSyncParametersUpdatedParams decode(bindings.Decoder decoder0) {
+  static _ViewportParameterListenerOnVSyncParametersUpdatedParams decode(bindings.Decoder decoder0) {
     if (decoder0 == null) {
       return null;
     }
-    ViewportParameterListenerOnVSyncParametersUpdatedParams result = new ViewportParameterListenerOnVSyncParametersUpdatedParams();
+    _ViewportParameterListenerOnVSyncParametersUpdatedParams result = new _ViewportParameterListenerOnVSyncParametersUpdatedParams();
 
     var mainDataHeader = decoder0.decodeStructDataHeader();
     if (mainDataHeader.version <= kVersions.last.version) {
@@ -73,7 +73,7 @@ class ViewportParameterListenerOnVSyncParametersUpdatedParams extends bindings.S
   }
 
   String toString() {
-    return "ViewportParameterListenerOnVSyncParametersUpdatedParams("
+    return "_ViewportParameterListenerOnVSyncParametersUpdatedParams("
            "timebase: $timebase" ", "
            "interval: $interval" ")";
   }
@@ -86,31 +86,28 @@ class ViewportParameterListenerOnVSyncParametersUpdatedParams extends bindings.S
   }
 }
 
-const int kViewportParameterListener_onVSyncParametersUpdated_name = 0;
-const String ViewportParameterListenerName = null;
+const int _ViewportParameterListener_onVSyncParametersUpdatedName = 0;
 
 abstract class ViewportParameterListener {
+  static const String serviceName = null;
   void onVSyncParametersUpdated(int timebase, int interval);
-
 }
 
 
-class ViewportParameterListenerProxyImpl extends bindings.Proxy {
-  ViewportParameterListenerProxyImpl.fromEndpoint(
+class _ViewportParameterListenerProxyImpl extends bindings.Proxy {
+  _ViewportParameterListenerProxyImpl.fromEndpoint(
       core.MojoMessagePipeEndpoint endpoint) : super.fromEndpoint(endpoint);
 
-  ViewportParameterListenerProxyImpl.fromHandle(core.MojoHandle handle) :
+  _ViewportParameterListenerProxyImpl.fromHandle(core.MojoHandle handle) :
       super.fromHandle(handle);
 
-  ViewportParameterListenerProxyImpl.unbound() : super.unbound();
+  _ViewportParameterListenerProxyImpl.unbound() : super.unbound();
 
-  static ViewportParameterListenerProxyImpl newFromEndpoint(
+  static _ViewportParameterListenerProxyImpl newFromEndpoint(
       core.MojoMessagePipeEndpoint endpoint) {
-    assert(endpoint.setDescription("For ViewportParameterListenerProxyImpl"));
-    return new ViewportParameterListenerProxyImpl.fromEndpoint(endpoint);
+    assert(endpoint.setDescription("For _ViewportParameterListenerProxyImpl"));
+    return new _ViewportParameterListenerProxyImpl.fromEndpoint(endpoint);
   }
-
-  String get name => ViewportParameterListenerName;
 
   void handleResponse(bindings.ServiceMessage message) {
     switch (message.header.type) {
@@ -123,13 +120,13 @@ class ViewportParameterListenerProxyImpl extends bindings.Proxy {
 
   String toString() {
     var superString = super.toString();
-    return "ViewportParameterListenerProxyImpl($superString)";
+    return "_ViewportParameterListenerProxyImpl($superString)";
   }
 }
 
 
 class _ViewportParameterListenerProxyCalls implements ViewportParameterListener {
-  ViewportParameterListenerProxyImpl _proxyImpl;
+  _ViewportParameterListenerProxyImpl _proxyImpl;
 
   _ViewportParameterListenerProxyCalls(this._proxyImpl);
     void onVSyncParametersUpdated(int timebase, int interval) {
@@ -137,37 +134,35 @@ class _ViewportParameterListenerProxyCalls implements ViewportParameterListener 
         _proxyImpl.proxyError("The Proxy is closed.");
         return;
       }
-      var params = new ViewportParameterListenerOnVSyncParametersUpdatedParams();
+      var params = new _ViewportParameterListenerOnVSyncParametersUpdatedParams();
       params.timebase = timebase;
       params.interval = interval;
-      _proxyImpl.sendMessage(params, kViewportParameterListener_onVSyncParametersUpdated_name);
+      _proxyImpl.sendMessage(params, _ViewportParameterListener_onVSyncParametersUpdatedName);
     }
-  
 }
 
 
 class ViewportParameterListenerProxy implements bindings.ProxyBase {
   final bindings.Proxy impl;
   ViewportParameterListener ptr;
-  final String name = ViewportParameterListenerName;
 
-  ViewportParameterListenerProxy(ViewportParameterListenerProxyImpl proxyImpl) :
+  ViewportParameterListenerProxy(_ViewportParameterListenerProxyImpl proxyImpl) :
       impl = proxyImpl,
       ptr = new _ViewportParameterListenerProxyCalls(proxyImpl);
 
   ViewportParameterListenerProxy.fromEndpoint(
       core.MojoMessagePipeEndpoint endpoint) :
-      impl = new ViewportParameterListenerProxyImpl.fromEndpoint(endpoint) {
+      impl = new _ViewportParameterListenerProxyImpl.fromEndpoint(endpoint) {
     ptr = new _ViewportParameterListenerProxyCalls(impl);
   }
 
   ViewportParameterListenerProxy.fromHandle(core.MojoHandle handle) :
-      impl = new ViewportParameterListenerProxyImpl.fromHandle(handle) {
+      impl = new _ViewportParameterListenerProxyImpl.fromHandle(handle) {
     ptr = new _ViewportParameterListenerProxyCalls(impl);
   }
 
   ViewportParameterListenerProxy.unbound() :
-      impl = new ViewportParameterListenerProxyImpl.unbound() {
+      impl = new _ViewportParameterListenerProxyImpl.unbound() {
     ptr = new _ViewportParameterListenerProxyCalls(impl);
   }
 
@@ -183,6 +178,8 @@ class ViewportParameterListenerProxy implements bindings.ProxyBase {
     assert(endpoint.setDescription("For ViewportParameterListenerProxy"));
     return new ViewportParameterListenerProxy.fromEndpoint(endpoint);
   }
+
+  String get serviceName => ViewportParameterListener.serviceName;
 
   Future close({bool immediate: false}) => impl.close(immediate: immediate);
 
@@ -222,8 +219,6 @@ class ViewportParameterListenerStub extends bindings.Stub {
     return new ViewportParameterListenerStub.fromEndpoint(endpoint);
   }
 
-  static const String name = ViewportParameterListenerName;
-
 
 
   dynamic handleMessage(bindings.ServiceMessage message) {
@@ -234,8 +229,8 @@ class ViewportParameterListenerStub extends bindings.Stub {
     }
     assert(_impl != null);
     switch (message.header.type) {
-      case kViewportParameterListener_onVSyncParametersUpdated_name:
-        var params = ViewportParameterListenerOnVSyncParametersUpdatedParams.deserialize(
+      case _ViewportParameterListener_onVSyncParametersUpdatedName:
+        var params = _ViewportParameterListenerOnVSyncParametersUpdatedParams.deserialize(
             message.payload);
         _impl.onVSyncParametersUpdated(params.timebase, params.interval);
         break;

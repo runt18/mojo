@@ -298,15 +298,15 @@ class CorrectionData extends bindings.Struct {
 }
 
 
-class KeyboardClientCommitCompletionParams extends bindings.Struct {
+class _KeyboardClientCommitCompletionParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(16, 0)
   ];
   CompletionData completion = null;
 
-  KeyboardClientCommitCompletionParams() : super(kVersions.last.size);
+  _KeyboardClientCommitCompletionParams() : super(kVersions.last.size);
 
-  static KeyboardClientCommitCompletionParams deserialize(bindings.Message message) {
+  static _KeyboardClientCommitCompletionParams deserialize(bindings.Message message) {
     var decoder = new bindings.Decoder(message);
     var result = decode(decoder);
     if (decoder.excessHandles != null) {
@@ -315,11 +315,11 @@ class KeyboardClientCommitCompletionParams extends bindings.Struct {
     return result;
   }
 
-  static KeyboardClientCommitCompletionParams decode(bindings.Decoder decoder0) {
+  static _KeyboardClientCommitCompletionParams decode(bindings.Decoder decoder0) {
     if (decoder0 == null) {
       return null;
     }
-    KeyboardClientCommitCompletionParams result = new KeyboardClientCommitCompletionParams();
+    _KeyboardClientCommitCompletionParams result = new _KeyboardClientCommitCompletionParams();
 
     var mainDataHeader = decoder0.decodeStructDataHeader();
     if (mainDataHeader.version <= kVersions.last.version) {
@@ -354,7 +354,7 @@ class KeyboardClientCommitCompletionParams extends bindings.Struct {
   }
 
   String toString() {
-    return "KeyboardClientCommitCompletionParams("
+    return "_KeyboardClientCommitCompletionParams("
            "completion: $completion" ")";
   }
 
@@ -366,15 +366,15 @@ class KeyboardClientCommitCompletionParams extends bindings.Struct {
 }
 
 
-class KeyboardClientCommitCorrectionParams extends bindings.Struct {
+class _KeyboardClientCommitCorrectionParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(16, 0)
   ];
   CorrectionData correction = null;
 
-  KeyboardClientCommitCorrectionParams() : super(kVersions.last.size);
+  _KeyboardClientCommitCorrectionParams() : super(kVersions.last.size);
 
-  static KeyboardClientCommitCorrectionParams deserialize(bindings.Message message) {
+  static _KeyboardClientCommitCorrectionParams deserialize(bindings.Message message) {
     var decoder = new bindings.Decoder(message);
     var result = decode(decoder);
     if (decoder.excessHandles != null) {
@@ -383,11 +383,11 @@ class KeyboardClientCommitCorrectionParams extends bindings.Struct {
     return result;
   }
 
-  static KeyboardClientCommitCorrectionParams decode(bindings.Decoder decoder0) {
+  static _KeyboardClientCommitCorrectionParams decode(bindings.Decoder decoder0) {
     if (decoder0 == null) {
       return null;
     }
-    KeyboardClientCommitCorrectionParams result = new KeyboardClientCommitCorrectionParams();
+    _KeyboardClientCommitCorrectionParams result = new _KeyboardClientCommitCorrectionParams();
 
     var mainDataHeader = decoder0.decodeStructDataHeader();
     if (mainDataHeader.version <= kVersions.last.version) {
@@ -422,7 +422,7 @@ class KeyboardClientCommitCorrectionParams extends bindings.Struct {
   }
 
   String toString() {
-    return "KeyboardClientCommitCorrectionParams("
+    return "_KeyboardClientCommitCorrectionParams("
            "correction: $correction" ")";
   }
 
@@ -434,16 +434,16 @@ class KeyboardClientCommitCorrectionParams extends bindings.Struct {
 }
 
 
-class KeyboardClientCommitTextParams extends bindings.Struct {
+class _KeyboardClientCommitTextParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(24, 0)
   ];
   String text = null;
   int newCursorPosition = 0;
 
-  KeyboardClientCommitTextParams() : super(kVersions.last.size);
+  _KeyboardClientCommitTextParams() : super(kVersions.last.size);
 
-  static KeyboardClientCommitTextParams deserialize(bindings.Message message) {
+  static _KeyboardClientCommitTextParams deserialize(bindings.Message message) {
     var decoder = new bindings.Decoder(message);
     var result = decode(decoder);
     if (decoder.excessHandles != null) {
@@ -452,11 +452,11 @@ class KeyboardClientCommitTextParams extends bindings.Struct {
     return result;
   }
 
-  static KeyboardClientCommitTextParams decode(bindings.Decoder decoder0) {
+  static _KeyboardClientCommitTextParams decode(bindings.Decoder decoder0) {
     if (decoder0 == null) {
       return null;
     }
-    KeyboardClientCommitTextParams result = new KeyboardClientCommitTextParams();
+    _KeyboardClientCommitTextParams result = new _KeyboardClientCommitTextParams();
 
     var mainDataHeader = decoder0.decodeStructDataHeader();
     if (mainDataHeader.version <= kVersions.last.version) {
@@ -496,7 +496,7 @@ class KeyboardClientCommitTextParams extends bindings.Struct {
   }
 
   String toString() {
-    return "KeyboardClientCommitTextParams("
+    return "_KeyboardClientCommitTextParams("
            "text: $text" ", "
            "newCursorPosition: $newCursorPosition" ")";
   }
@@ -510,16 +510,16 @@ class KeyboardClientCommitTextParams extends bindings.Struct {
 }
 
 
-class KeyboardClientDeleteSurroundingTextParams extends bindings.Struct {
+class _KeyboardClientDeleteSurroundingTextParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(16, 0)
   ];
   int beforeLength = 0;
   int afterLength = 0;
 
-  KeyboardClientDeleteSurroundingTextParams() : super(kVersions.last.size);
+  _KeyboardClientDeleteSurroundingTextParams() : super(kVersions.last.size);
 
-  static KeyboardClientDeleteSurroundingTextParams deserialize(bindings.Message message) {
+  static _KeyboardClientDeleteSurroundingTextParams deserialize(bindings.Message message) {
     var decoder = new bindings.Decoder(message);
     var result = decode(decoder);
     if (decoder.excessHandles != null) {
@@ -528,11 +528,11 @@ class KeyboardClientDeleteSurroundingTextParams extends bindings.Struct {
     return result;
   }
 
-  static KeyboardClientDeleteSurroundingTextParams decode(bindings.Decoder decoder0) {
+  static _KeyboardClientDeleteSurroundingTextParams decode(bindings.Decoder decoder0) {
     if (decoder0 == null) {
       return null;
     }
-    KeyboardClientDeleteSurroundingTextParams result = new KeyboardClientDeleteSurroundingTextParams();
+    _KeyboardClientDeleteSurroundingTextParams result = new _KeyboardClientDeleteSurroundingTextParams();
 
     var mainDataHeader = decoder0.decodeStructDataHeader();
     if (mainDataHeader.version <= kVersions.last.version) {
@@ -572,7 +572,7 @@ class KeyboardClientDeleteSurroundingTextParams extends bindings.Struct {
   }
 
   String toString() {
-    return "KeyboardClientDeleteSurroundingTextParams("
+    return "_KeyboardClientDeleteSurroundingTextParams("
            "beforeLength: $beforeLength" ", "
            "afterLength: $afterLength" ")";
   }
@@ -586,16 +586,16 @@ class KeyboardClientDeleteSurroundingTextParams extends bindings.Struct {
 }
 
 
-class KeyboardClientSetComposingRegionParams extends bindings.Struct {
+class _KeyboardClientSetComposingRegionParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(16, 0)
   ];
   int start = 0;
   int end = 0;
 
-  KeyboardClientSetComposingRegionParams() : super(kVersions.last.size);
+  _KeyboardClientSetComposingRegionParams() : super(kVersions.last.size);
 
-  static KeyboardClientSetComposingRegionParams deserialize(bindings.Message message) {
+  static _KeyboardClientSetComposingRegionParams deserialize(bindings.Message message) {
     var decoder = new bindings.Decoder(message);
     var result = decode(decoder);
     if (decoder.excessHandles != null) {
@@ -604,11 +604,11 @@ class KeyboardClientSetComposingRegionParams extends bindings.Struct {
     return result;
   }
 
-  static KeyboardClientSetComposingRegionParams decode(bindings.Decoder decoder0) {
+  static _KeyboardClientSetComposingRegionParams decode(bindings.Decoder decoder0) {
     if (decoder0 == null) {
       return null;
     }
-    KeyboardClientSetComposingRegionParams result = new KeyboardClientSetComposingRegionParams();
+    _KeyboardClientSetComposingRegionParams result = new _KeyboardClientSetComposingRegionParams();
 
     var mainDataHeader = decoder0.decodeStructDataHeader();
     if (mainDataHeader.version <= kVersions.last.version) {
@@ -648,7 +648,7 @@ class KeyboardClientSetComposingRegionParams extends bindings.Struct {
   }
 
   String toString() {
-    return "KeyboardClientSetComposingRegionParams("
+    return "_KeyboardClientSetComposingRegionParams("
            "start: $start" ", "
            "end: $end" ")";
   }
@@ -662,16 +662,16 @@ class KeyboardClientSetComposingRegionParams extends bindings.Struct {
 }
 
 
-class KeyboardClientSetComposingTextParams extends bindings.Struct {
+class _KeyboardClientSetComposingTextParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(24, 0)
   ];
   String text = null;
   int newCursorPosition = 0;
 
-  KeyboardClientSetComposingTextParams() : super(kVersions.last.size);
+  _KeyboardClientSetComposingTextParams() : super(kVersions.last.size);
 
-  static KeyboardClientSetComposingTextParams deserialize(bindings.Message message) {
+  static _KeyboardClientSetComposingTextParams deserialize(bindings.Message message) {
     var decoder = new bindings.Decoder(message);
     var result = decode(decoder);
     if (decoder.excessHandles != null) {
@@ -680,11 +680,11 @@ class KeyboardClientSetComposingTextParams extends bindings.Struct {
     return result;
   }
 
-  static KeyboardClientSetComposingTextParams decode(bindings.Decoder decoder0) {
+  static _KeyboardClientSetComposingTextParams decode(bindings.Decoder decoder0) {
     if (decoder0 == null) {
       return null;
     }
-    KeyboardClientSetComposingTextParams result = new KeyboardClientSetComposingTextParams();
+    _KeyboardClientSetComposingTextParams result = new _KeyboardClientSetComposingTextParams();
 
     var mainDataHeader = decoder0.decodeStructDataHeader();
     if (mainDataHeader.version <= kVersions.last.version) {
@@ -724,7 +724,7 @@ class KeyboardClientSetComposingTextParams extends bindings.Struct {
   }
 
   String toString() {
-    return "KeyboardClientSetComposingTextParams("
+    return "_KeyboardClientSetComposingTextParams("
            "text: $text" ", "
            "newCursorPosition: $newCursorPosition" ")";
   }
@@ -738,16 +738,16 @@ class KeyboardClientSetComposingTextParams extends bindings.Struct {
 }
 
 
-class KeyboardClientSetSelectionParams extends bindings.Struct {
+class _KeyboardClientSetSelectionParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(16, 0)
   ];
   int start = 0;
   int end = 0;
 
-  KeyboardClientSetSelectionParams() : super(kVersions.last.size);
+  _KeyboardClientSetSelectionParams() : super(kVersions.last.size);
 
-  static KeyboardClientSetSelectionParams deserialize(bindings.Message message) {
+  static _KeyboardClientSetSelectionParams deserialize(bindings.Message message) {
     var decoder = new bindings.Decoder(message);
     var result = decode(decoder);
     if (decoder.excessHandles != null) {
@@ -756,11 +756,11 @@ class KeyboardClientSetSelectionParams extends bindings.Struct {
     return result;
   }
 
-  static KeyboardClientSetSelectionParams decode(bindings.Decoder decoder0) {
+  static _KeyboardClientSetSelectionParams decode(bindings.Decoder decoder0) {
     if (decoder0 == null) {
       return null;
     }
-    KeyboardClientSetSelectionParams result = new KeyboardClientSetSelectionParams();
+    _KeyboardClientSetSelectionParams result = new _KeyboardClientSetSelectionParams();
 
     var mainDataHeader = decoder0.decodeStructDataHeader();
     if (mainDataHeader.version <= kVersions.last.version) {
@@ -800,7 +800,7 @@ class KeyboardClientSetSelectionParams extends bindings.Struct {
   }
 
   String toString() {
-    return "KeyboardClientSetSelectionParams("
+    return "_KeyboardClientSetSelectionParams("
            "start: $start" ", "
            "end: $end" ")";
   }
@@ -814,15 +814,15 @@ class KeyboardClientSetSelectionParams extends bindings.Struct {
 }
 
 
-class KeyboardClientSubmitParams extends bindings.Struct {
+class _KeyboardClientSubmitParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(16, 0)
   ];
   SubmitAction action = null;
 
-  KeyboardClientSubmitParams() : super(kVersions.last.size);
+  _KeyboardClientSubmitParams() : super(kVersions.last.size);
 
-  static KeyboardClientSubmitParams deserialize(bindings.Message message) {
+  static _KeyboardClientSubmitParams deserialize(bindings.Message message) {
     var decoder = new bindings.Decoder(message);
     var result = decode(decoder);
     if (decoder.excessHandles != null) {
@@ -831,11 +831,11 @@ class KeyboardClientSubmitParams extends bindings.Struct {
     return result;
   }
 
-  static KeyboardClientSubmitParams decode(bindings.Decoder decoder0) {
+  static _KeyboardClientSubmitParams decode(bindings.Decoder decoder0) {
     if (decoder0 == null) {
       return null;
     }
-    KeyboardClientSubmitParams result = new KeyboardClientSubmitParams();
+    _KeyboardClientSubmitParams result = new _KeyboardClientSubmitParams();
 
     var mainDataHeader = decoder0.decodeStructDataHeader();
     if (mainDataHeader.version <= kVersions.last.version) {
@@ -873,7 +873,7 @@ class KeyboardClientSubmitParams extends bindings.Struct {
   }
 
   String toString() {
-    return "KeyboardClientSubmitParams("
+    return "_KeyboardClientSubmitParams("
            "action: $action" ")";
   }
 
@@ -885,16 +885,16 @@ class KeyboardClientSubmitParams extends bindings.Struct {
 }
 
 
-class KeyboardServiceShowParams extends bindings.Struct {
+class _KeyboardServiceShowParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(24, 0)
   ];
   Object client = null;
   KeyboardType type = null;
 
-  KeyboardServiceShowParams() : super(kVersions.last.size);
+  _KeyboardServiceShowParams() : super(kVersions.last.size);
 
-  static KeyboardServiceShowParams deserialize(bindings.Message message) {
+  static _KeyboardServiceShowParams deserialize(bindings.Message message) {
     var decoder = new bindings.Decoder(message);
     var result = decode(decoder);
     if (decoder.excessHandles != null) {
@@ -903,11 +903,11 @@ class KeyboardServiceShowParams extends bindings.Struct {
     return result;
   }
 
-  static KeyboardServiceShowParams decode(bindings.Decoder decoder0) {
+  static _KeyboardServiceShowParams decode(bindings.Decoder decoder0) {
     if (decoder0 == null) {
       return null;
     }
-    KeyboardServiceShowParams result = new KeyboardServiceShowParams();
+    _KeyboardServiceShowParams result = new _KeyboardServiceShowParams();
 
     var mainDataHeader = decoder0.decodeStructDataHeader();
     if (mainDataHeader.version <= kVersions.last.version) {
@@ -951,7 +951,7 @@ class KeyboardServiceShowParams extends bindings.Struct {
   }
 
   String toString() {
-    return "KeyboardServiceShowParams("
+    return "_KeyboardServiceShowParams("
            "client: $client" ", "
            "type: $type" ")";
   }
@@ -963,14 +963,14 @@ class KeyboardServiceShowParams extends bindings.Struct {
 }
 
 
-class KeyboardServiceShowByRequestParams extends bindings.Struct {
+class _KeyboardServiceShowByRequestParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(8, 0)
   ];
 
-  KeyboardServiceShowByRequestParams() : super(kVersions.last.size);
+  _KeyboardServiceShowByRequestParams() : super(kVersions.last.size);
 
-  static KeyboardServiceShowByRequestParams deserialize(bindings.Message message) {
+  static _KeyboardServiceShowByRequestParams deserialize(bindings.Message message) {
     var decoder = new bindings.Decoder(message);
     var result = decode(decoder);
     if (decoder.excessHandles != null) {
@@ -979,11 +979,11 @@ class KeyboardServiceShowByRequestParams extends bindings.Struct {
     return result;
   }
 
-  static KeyboardServiceShowByRequestParams decode(bindings.Decoder decoder0) {
+  static _KeyboardServiceShowByRequestParams decode(bindings.Decoder decoder0) {
     if (decoder0 == null) {
       return null;
     }
-    KeyboardServiceShowByRequestParams result = new KeyboardServiceShowByRequestParams();
+    _KeyboardServiceShowByRequestParams result = new _KeyboardServiceShowByRequestParams();
 
     var mainDataHeader = decoder0.decodeStructDataHeader();
     if (mainDataHeader.version <= kVersions.last.version) {
@@ -1011,7 +1011,7 @@ class KeyboardServiceShowByRequestParams extends bindings.Struct {
   }
 
   String toString() {
-    return "KeyboardServiceShowByRequestParams("")";
+    return "_KeyboardServiceShowByRequestParams("")";
   }
 
   Map toJson() {
@@ -1021,14 +1021,14 @@ class KeyboardServiceShowByRequestParams extends bindings.Struct {
 }
 
 
-class KeyboardServiceHideParams extends bindings.Struct {
+class _KeyboardServiceHideParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(8, 0)
   ];
 
-  KeyboardServiceHideParams() : super(kVersions.last.size);
+  _KeyboardServiceHideParams() : super(kVersions.last.size);
 
-  static KeyboardServiceHideParams deserialize(bindings.Message message) {
+  static _KeyboardServiceHideParams deserialize(bindings.Message message) {
     var decoder = new bindings.Decoder(message);
     var result = decode(decoder);
     if (decoder.excessHandles != null) {
@@ -1037,11 +1037,11 @@ class KeyboardServiceHideParams extends bindings.Struct {
     return result;
   }
 
-  static KeyboardServiceHideParams decode(bindings.Decoder decoder0) {
+  static _KeyboardServiceHideParams decode(bindings.Decoder decoder0) {
     if (decoder0 == null) {
       return null;
     }
-    KeyboardServiceHideParams result = new KeyboardServiceHideParams();
+    _KeyboardServiceHideParams result = new _KeyboardServiceHideParams();
 
     var mainDataHeader = decoder0.decodeStructDataHeader();
     if (mainDataHeader.version <= kVersions.last.version) {
@@ -1069,7 +1069,7 @@ class KeyboardServiceHideParams extends bindings.Struct {
   }
 
   String toString() {
-    return "KeyboardServiceHideParams("")";
+    return "_KeyboardServiceHideParams("")";
   }
 
   Map toJson() {
@@ -1079,15 +1079,15 @@ class KeyboardServiceHideParams extends bindings.Struct {
 }
 
 
-class KeyboardServiceSetTextParams extends bindings.Struct {
+class _KeyboardServiceSetTextParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(16, 0)
   ];
   String text = null;
 
-  KeyboardServiceSetTextParams() : super(kVersions.last.size);
+  _KeyboardServiceSetTextParams() : super(kVersions.last.size);
 
-  static KeyboardServiceSetTextParams deserialize(bindings.Message message) {
+  static _KeyboardServiceSetTextParams deserialize(bindings.Message message) {
     var decoder = new bindings.Decoder(message);
     var result = decode(decoder);
     if (decoder.excessHandles != null) {
@@ -1096,11 +1096,11 @@ class KeyboardServiceSetTextParams extends bindings.Struct {
     return result;
   }
 
-  static KeyboardServiceSetTextParams decode(bindings.Decoder decoder0) {
+  static _KeyboardServiceSetTextParams decode(bindings.Decoder decoder0) {
     if (decoder0 == null) {
       return null;
     }
-    KeyboardServiceSetTextParams result = new KeyboardServiceSetTextParams();
+    _KeyboardServiceSetTextParams result = new _KeyboardServiceSetTextParams();
 
     var mainDataHeader = decoder0.decodeStructDataHeader();
     if (mainDataHeader.version <= kVersions.last.version) {
@@ -1134,7 +1134,7 @@ class KeyboardServiceSetTextParams extends bindings.Struct {
   }
 
   String toString() {
-    return "KeyboardServiceSetTextParams("
+    return "_KeyboardServiceSetTextParams("
            "text: $text" ")";
   }
 
@@ -1146,16 +1146,16 @@ class KeyboardServiceSetTextParams extends bindings.Struct {
 }
 
 
-class KeyboardServiceSetSelectionParams extends bindings.Struct {
+class _KeyboardServiceSetSelectionParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(16, 0)
   ];
   int start = 0;
   int end = 0;
 
-  KeyboardServiceSetSelectionParams() : super(kVersions.last.size);
+  _KeyboardServiceSetSelectionParams() : super(kVersions.last.size);
 
-  static KeyboardServiceSetSelectionParams deserialize(bindings.Message message) {
+  static _KeyboardServiceSetSelectionParams deserialize(bindings.Message message) {
     var decoder = new bindings.Decoder(message);
     var result = decode(decoder);
     if (decoder.excessHandles != null) {
@@ -1164,11 +1164,11 @@ class KeyboardServiceSetSelectionParams extends bindings.Struct {
     return result;
   }
 
-  static KeyboardServiceSetSelectionParams decode(bindings.Decoder decoder0) {
+  static _KeyboardServiceSetSelectionParams decode(bindings.Decoder decoder0) {
     if (decoder0 == null) {
       return null;
     }
-    KeyboardServiceSetSelectionParams result = new KeyboardServiceSetSelectionParams();
+    _KeyboardServiceSetSelectionParams result = new _KeyboardServiceSetSelectionParams();
 
     var mainDataHeader = decoder0.decodeStructDataHeader();
     if (mainDataHeader.version <= kVersions.last.version) {
@@ -1208,7 +1208,7 @@ class KeyboardServiceSetSelectionParams extends bindings.Struct {
   }
 
   String toString() {
-    return "KeyboardServiceSetSelectionParams("
+    return "_KeyboardServiceSetSelectionParams("
            "start: $start" ", "
            "end: $end" ")";
   }
@@ -1222,16 +1222,16 @@ class KeyboardServiceSetSelectionParams extends bindings.Struct {
 }
 
 
-class KeyboardServiceFactoryCreateKeyboardServiceParams extends bindings.Struct {
+class _KeyboardServiceFactoryCreateKeyboardServiceParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(16, 0)
   ];
   Object keyEventDispatcher = null;
   Object serviceRequest = null;
 
-  KeyboardServiceFactoryCreateKeyboardServiceParams() : super(kVersions.last.size);
+  _KeyboardServiceFactoryCreateKeyboardServiceParams() : super(kVersions.last.size);
 
-  static KeyboardServiceFactoryCreateKeyboardServiceParams deserialize(bindings.Message message) {
+  static _KeyboardServiceFactoryCreateKeyboardServiceParams deserialize(bindings.Message message) {
     var decoder = new bindings.Decoder(message);
     var result = decode(decoder);
     if (decoder.excessHandles != null) {
@@ -1240,11 +1240,11 @@ class KeyboardServiceFactoryCreateKeyboardServiceParams extends bindings.Struct 
     return result;
   }
 
-  static KeyboardServiceFactoryCreateKeyboardServiceParams decode(bindings.Decoder decoder0) {
+  static _KeyboardServiceFactoryCreateKeyboardServiceParams decode(bindings.Decoder decoder0) {
     if (decoder0 == null) {
       return null;
     }
-    KeyboardServiceFactoryCreateKeyboardServiceParams result = new KeyboardServiceFactoryCreateKeyboardServiceParams();
+    _KeyboardServiceFactoryCreateKeyboardServiceParams result = new _KeyboardServiceFactoryCreateKeyboardServiceParams();
 
     var mainDataHeader = decoder0.decodeStructDataHeader();
     if (mainDataHeader.version <= kVersions.last.version) {
@@ -1284,7 +1284,7 @@ class KeyboardServiceFactoryCreateKeyboardServiceParams extends bindings.Struct 
   }
 
   String toString() {
-    return "KeyboardServiceFactoryCreateKeyboardServiceParams("
+    return "_KeyboardServiceFactoryCreateKeyboardServiceParams("
            "keyEventDispatcher: $keyEventDispatcher" ", "
            "serviceRequest: $serviceRequest" ")";
   }
@@ -1295,17 +1295,17 @@ class KeyboardServiceFactoryCreateKeyboardServiceParams extends bindings.Struct 
   }
 }
 
-const int kKeyboardClient_commitCompletion_name = 0;
-const int kKeyboardClient_commitCorrection_name = 1;
-const int kKeyboardClient_commitText_name = 2;
-const int kKeyboardClient_deleteSurroundingText_name = 3;
-const int kKeyboardClient_setComposingRegion_name = 4;
-const int kKeyboardClient_setComposingText_name = 5;
-const int kKeyboardClient_setSelection_name = 6;
-const int kKeyboardClient_submit_name = 7;
-const String KeyboardClientName = null;
+const int _KeyboardClient_commitCompletionName = 0;
+const int _KeyboardClient_commitCorrectionName = 1;
+const int _KeyboardClient_commitTextName = 2;
+const int _KeyboardClient_deleteSurroundingTextName = 3;
+const int _KeyboardClient_setComposingRegionName = 4;
+const int _KeyboardClient_setComposingTextName = 5;
+const int _KeyboardClient_setSelectionName = 6;
+const int _KeyboardClient_submitName = 7;
 
 abstract class KeyboardClient {
+  static const String serviceName = null;
   void commitCompletion(CompletionData completion);
   void commitCorrection(CorrectionData correction);
   void commitText(String text, int newCursorPosition);
@@ -1314,26 +1314,23 @@ abstract class KeyboardClient {
   void setComposingText(String text, int newCursorPosition);
   void setSelection(int start, int end);
   void submit(SubmitAction action);
-
 }
 
 
-class KeyboardClientProxyImpl extends bindings.Proxy {
-  KeyboardClientProxyImpl.fromEndpoint(
+class _KeyboardClientProxyImpl extends bindings.Proxy {
+  _KeyboardClientProxyImpl.fromEndpoint(
       core.MojoMessagePipeEndpoint endpoint) : super.fromEndpoint(endpoint);
 
-  KeyboardClientProxyImpl.fromHandle(core.MojoHandle handle) :
+  _KeyboardClientProxyImpl.fromHandle(core.MojoHandle handle) :
       super.fromHandle(handle);
 
-  KeyboardClientProxyImpl.unbound() : super.unbound();
+  _KeyboardClientProxyImpl.unbound() : super.unbound();
 
-  static KeyboardClientProxyImpl newFromEndpoint(
+  static _KeyboardClientProxyImpl newFromEndpoint(
       core.MojoMessagePipeEndpoint endpoint) {
-    assert(endpoint.setDescription("For KeyboardClientProxyImpl"));
-    return new KeyboardClientProxyImpl.fromEndpoint(endpoint);
+    assert(endpoint.setDescription("For _KeyboardClientProxyImpl"));
+    return new _KeyboardClientProxyImpl.fromEndpoint(endpoint);
   }
-
-  String get name => KeyboardClientName;
 
   void handleResponse(bindings.ServiceMessage message) {
     switch (message.header.type) {
@@ -1346,13 +1343,13 @@ class KeyboardClientProxyImpl extends bindings.Proxy {
 
   String toString() {
     var superString = super.toString();
-    return "KeyboardClientProxyImpl($superString)";
+    return "_KeyboardClientProxyImpl($superString)";
   }
 }
 
 
 class _KeyboardClientProxyCalls implements KeyboardClient {
-  KeyboardClientProxyImpl _proxyImpl;
+  _KeyboardClientProxyImpl _proxyImpl;
 
   _KeyboardClientProxyCalls(this._proxyImpl);
     void commitCompletion(CompletionData completion) {
@@ -1360,111 +1357,102 @@ class _KeyboardClientProxyCalls implements KeyboardClient {
         _proxyImpl.proxyError("The Proxy is closed.");
         return;
       }
-      var params = new KeyboardClientCommitCompletionParams();
+      var params = new _KeyboardClientCommitCompletionParams();
       params.completion = completion;
-      _proxyImpl.sendMessage(params, kKeyboardClient_commitCompletion_name);
+      _proxyImpl.sendMessage(params, _KeyboardClient_commitCompletionName);
     }
-  
     void commitCorrection(CorrectionData correction) {
       if (!_proxyImpl.isBound) {
         _proxyImpl.proxyError("The Proxy is closed.");
         return;
       }
-      var params = new KeyboardClientCommitCorrectionParams();
+      var params = new _KeyboardClientCommitCorrectionParams();
       params.correction = correction;
-      _proxyImpl.sendMessage(params, kKeyboardClient_commitCorrection_name);
+      _proxyImpl.sendMessage(params, _KeyboardClient_commitCorrectionName);
     }
-  
     void commitText(String text, int newCursorPosition) {
       if (!_proxyImpl.isBound) {
         _proxyImpl.proxyError("The Proxy is closed.");
         return;
       }
-      var params = new KeyboardClientCommitTextParams();
+      var params = new _KeyboardClientCommitTextParams();
       params.text = text;
       params.newCursorPosition = newCursorPosition;
-      _proxyImpl.sendMessage(params, kKeyboardClient_commitText_name);
+      _proxyImpl.sendMessage(params, _KeyboardClient_commitTextName);
     }
-  
     void deleteSurroundingText(int beforeLength, int afterLength) {
       if (!_proxyImpl.isBound) {
         _proxyImpl.proxyError("The Proxy is closed.");
         return;
       }
-      var params = new KeyboardClientDeleteSurroundingTextParams();
+      var params = new _KeyboardClientDeleteSurroundingTextParams();
       params.beforeLength = beforeLength;
       params.afterLength = afterLength;
-      _proxyImpl.sendMessage(params, kKeyboardClient_deleteSurroundingText_name);
+      _proxyImpl.sendMessage(params, _KeyboardClient_deleteSurroundingTextName);
     }
-  
     void setComposingRegion(int start, int end) {
       if (!_proxyImpl.isBound) {
         _proxyImpl.proxyError("The Proxy is closed.");
         return;
       }
-      var params = new KeyboardClientSetComposingRegionParams();
+      var params = new _KeyboardClientSetComposingRegionParams();
       params.start = start;
       params.end = end;
-      _proxyImpl.sendMessage(params, kKeyboardClient_setComposingRegion_name);
+      _proxyImpl.sendMessage(params, _KeyboardClient_setComposingRegionName);
     }
-  
     void setComposingText(String text, int newCursorPosition) {
       if (!_proxyImpl.isBound) {
         _proxyImpl.proxyError("The Proxy is closed.");
         return;
       }
-      var params = new KeyboardClientSetComposingTextParams();
+      var params = new _KeyboardClientSetComposingTextParams();
       params.text = text;
       params.newCursorPosition = newCursorPosition;
-      _proxyImpl.sendMessage(params, kKeyboardClient_setComposingText_name);
+      _proxyImpl.sendMessage(params, _KeyboardClient_setComposingTextName);
     }
-  
     void setSelection(int start, int end) {
       if (!_proxyImpl.isBound) {
         _proxyImpl.proxyError("The Proxy is closed.");
         return;
       }
-      var params = new KeyboardClientSetSelectionParams();
+      var params = new _KeyboardClientSetSelectionParams();
       params.start = start;
       params.end = end;
-      _proxyImpl.sendMessage(params, kKeyboardClient_setSelection_name);
+      _proxyImpl.sendMessage(params, _KeyboardClient_setSelectionName);
     }
-  
     void submit(SubmitAction action) {
       if (!_proxyImpl.isBound) {
         _proxyImpl.proxyError("The Proxy is closed.");
         return;
       }
-      var params = new KeyboardClientSubmitParams();
+      var params = new _KeyboardClientSubmitParams();
       params.action = action;
-      _proxyImpl.sendMessage(params, kKeyboardClient_submit_name);
+      _proxyImpl.sendMessage(params, _KeyboardClient_submitName);
     }
-  
 }
 
 
 class KeyboardClientProxy implements bindings.ProxyBase {
   final bindings.Proxy impl;
   KeyboardClient ptr;
-  final String name = KeyboardClientName;
 
-  KeyboardClientProxy(KeyboardClientProxyImpl proxyImpl) :
+  KeyboardClientProxy(_KeyboardClientProxyImpl proxyImpl) :
       impl = proxyImpl,
       ptr = new _KeyboardClientProxyCalls(proxyImpl);
 
   KeyboardClientProxy.fromEndpoint(
       core.MojoMessagePipeEndpoint endpoint) :
-      impl = new KeyboardClientProxyImpl.fromEndpoint(endpoint) {
+      impl = new _KeyboardClientProxyImpl.fromEndpoint(endpoint) {
     ptr = new _KeyboardClientProxyCalls(impl);
   }
 
   KeyboardClientProxy.fromHandle(core.MojoHandle handle) :
-      impl = new KeyboardClientProxyImpl.fromHandle(handle) {
+      impl = new _KeyboardClientProxyImpl.fromHandle(handle) {
     ptr = new _KeyboardClientProxyCalls(impl);
   }
 
   KeyboardClientProxy.unbound() :
-      impl = new KeyboardClientProxyImpl.unbound() {
+      impl = new _KeyboardClientProxyImpl.unbound() {
     ptr = new _KeyboardClientProxyCalls(impl);
   }
 
@@ -1480,6 +1468,8 @@ class KeyboardClientProxy implements bindings.ProxyBase {
     assert(endpoint.setDescription("For KeyboardClientProxy"));
     return new KeyboardClientProxy.fromEndpoint(endpoint);
   }
+
+  String get serviceName => KeyboardClient.serviceName;
 
   Future close({bool immediate: false}) => impl.close(immediate: immediate);
 
@@ -1519,8 +1509,6 @@ class KeyboardClientStub extends bindings.Stub {
     return new KeyboardClientStub.fromEndpoint(endpoint);
   }
 
-  static const String name = KeyboardClientName;
-
 
 
   dynamic handleMessage(bindings.ServiceMessage message) {
@@ -1531,43 +1519,43 @@ class KeyboardClientStub extends bindings.Stub {
     }
     assert(_impl != null);
     switch (message.header.type) {
-      case kKeyboardClient_commitCompletion_name:
-        var params = KeyboardClientCommitCompletionParams.deserialize(
+      case _KeyboardClient_commitCompletionName:
+        var params = _KeyboardClientCommitCompletionParams.deserialize(
             message.payload);
         _impl.commitCompletion(params.completion);
         break;
-      case kKeyboardClient_commitCorrection_name:
-        var params = KeyboardClientCommitCorrectionParams.deserialize(
+      case _KeyboardClient_commitCorrectionName:
+        var params = _KeyboardClientCommitCorrectionParams.deserialize(
             message.payload);
         _impl.commitCorrection(params.correction);
         break;
-      case kKeyboardClient_commitText_name:
-        var params = KeyboardClientCommitTextParams.deserialize(
+      case _KeyboardClient_commitTextName:
+        var params = _KeyboardClientCommitTextParams.deserialize(
             message.payload);
         _impl.commitText(params.text, params.newCursorPosition);
         break;
-      case kKeyboardClient_deleteSurroundingText_name:
-        var params = KeyboardClientDeleteSurroundingTextParams.deserialize(
+      case _KeyboardClient_deleteSurroundingTextName:
+        var params = _KeyboardClientDeleteSurroundingTextParams.deserialize(
             message.payload);
         _impl.deleteSurroundingText(params.beforeLength, params.afterLength);
         break;
-      case kKeyboardClient_setComposingRegion_name:
-        var params = KeyboardClientSetComposingRegionParams.deserialize(
+      case _KeyboardClient_setComposingRegionName:
+        var params = _KeyboardClientSetComposingRegionParams.deserialize(
             message.payload);
         _impl.setComposingRegion(params.start, params.end);
         break;
-      case kKeyboardClient_setComposingText_name:
-        var params = KeyboardClientSetComposingTextParams.deserialize(
+      case _KeyboardClient_setComposingTextName:
+        var params = _KeyboardClientSetComposingTextParams.deserialize(
             message.payload);
         _impl.setComposingText(params.text, params.newCursorPosition);
         break;
-      case kKeyboardClient_setSelection_name:
-        var params = KeyboardClientSetSelectionParams.deserialize(
+      case _KeyboardClient_setSelectionName:
+        var params = _KeyboardClientSetSelectionParams.deserialize(
             message.payload);
         _impl.setSelection(params.start, params.end);
         break;
-      case kKeyboardClient_submit_name:
-        var params = KeyboardClientSubmitParams.deserialize(
+      case _KeyboardClient_submitName:
+        var params = _KeyboardClientSubmitParams.deserialize(
             message.payload);
         _impl.submit(params.action);
         break;
@@ -1592,39 +1580,36 @@ class KeyboardClientStub extends bindings.Stub {
   int get version => 0;
 }
 
-const int kKeyboardService_show_name = 0;
-const int kKeyboardService_showByRequest_name = 1;
-const int kKeyboardService_hide_name = 2;
-const int kKeyboardService_setText_name = 3;
-const int kKeyboardService_setSelection_name = 4;
-const String KeyboardServiceName = "keyboard::KeyboardService";
+const int _KeyboardService_showName = 0;
+const int _KeyboardService_showByRequestName = 1;
+const int _KeyboardService_hideName = 2;
+const int _KeyboardService_setTextName = 3;
+const int _KeyboardService_setSelectionName = 4;
 
 abstract class KeyboardService {
+  static const String serviceName = "keyboard::KeyboardService";
   void show(Object client, KeyboardType type);
   void showByRequest();
   void hide();
   void setText(String text);
   void setSelection(int start, int end);
-
 }
 
 
-class KeyboardServiceProxyImpl extends bindings.Proxy {
-  KeyboardServiceProxyImpl.fromEndpoint(
+class _KeyboardServiceProxyImpl extends bindings.Proxy {
+  _KeyboardServiceProxyImpl.fromEndpoint(
       core.MojoMessagePipeEndpoint endpoint) : super.fromEndpoint(endpoint);
 
-  KeyboardServiceProxyImpl.fromHandle(core.MojoHandle handle) :
+  _KeyboardServiceProxyImpl.fromHandle(core.MojoHandle handle) :
       super.fromHandle(handle);
 
-  KeyboardServiceProxyImpl.unbound() : super.unbound();
+  _KeyboardServiceProxyImpl.unbound() : super.unbound();
 
-  static KeyboardServiceProxyImpl newFromEndpoint(
+  static _KeyboardServiceProxyImpl newFromEndpoint(
       core.MojoMessagePipeEndpoint endpoint) {
-    assert(endpoint.setDescription("For KeyboardServiceProxyImpl"));
-    return new KeyboardServiceProxyImpl.fromEndpoint(endpoint);
+    assert(endpoint.setDescription("For _KeyboardServiceProxyImpl"));
+    return new _KeyboardServiceProxyImpl.fromEndpoint(endpoint);
   }
-
-  String get name => KeyboardServiceName;
 
   void handleResponse(bindings.ServiceMessage message) {
     switch (message.header.type) {
@@ -1637,13 +1622,13 @@ class KeyboardServiceProxyImpl extends bindings.Proxy {
 
   String toString() {
     var superString = super.toString();
-    return "KeyboardServiceProxyImpl($superString)";
+    return "_KeyboardServiceProxyImpl($superString)";
   }
 }
 
 
 class _KeyboardServiceProxyCalls implements KeyboardService {
-  KeyboardServiceProxyImpl _proxyImpl;
+  _KeyboardServiceProxyImpl _proxyImpl;
 
   _KeyboardServiceProxyCalls(this._proxyImpl);
     void show(Object client, KeyboardType type) {
@@ -1651,76 +1636,70 @@ class _KeyboardServiceProxyCalls implements KeyboardService {
         _proxyImpl.proxyError("The Proxy is closed.");
         return;
       }
-      var params = new KeyboardServiceShowParams();
+      var params = new _KeyboardServiceShowParams();
       params.client = client;
       params.type = type;
-      _proxyImpl.sendMessage(params, kKeyboardService_show_name);
+      _proxyImpl.sendMessage(params, _KeyboardService_showName);
     }
-  
     void showByRequest() {
       if (!_proxyImpl.isBound) {
         _proxyImpl.proxyError("The Proxy is closed.");
         return;
       }
-      var params = new KeyboardServiceShowByRequestParams();
-      _proxyImpl.sendMessage(params, kKeyboardService_showByRequest_name);
+      var params = new _KeyboardServiceShowByRequestParams();
+      _proxyImpl.sendMessage(params, _KeyboardService_showByRequestName);
     }
-  
     void hide() {
       if (!_proxyImpl.isBound) {
         _proxyImpl.proxyError("The Proxy is closed.");
         return;
       }
-      var params = new KeyboardServiceHideParams();
-      _proxyImpl.sendMessage(params, kKeyboardService_hide_name);
+      var params = new _KeyboardServiceHideParams();
+      _proxyImpl.sendMessage(params, _KeyboardService_hideName);
     }
-  
     void setText(String text) {
       if (!_proxyImpl.isBound) {
         _proxyImpl.proxyError("The Proxy is closed.");
         return;
       }
-      var params = new KeyboardServiceSetTextParams();
+      var params = new _KeyboardServiceSetTextParams();
       params.text = text;
-      _proxyImpl.sendMessage(params, kKeyboardService_setText_name);
+      _proxyImpl.sendMessage(params, _KeyboardService_setTextName);
     }
-  
     void setSelection(int start, int end) {
       if (!_proxyImpl.isBound) {
         _proxyImpl.proxyError("The Proxy is closed.");
         return;
       }
-      var params = new KeyboardServiceSetSelectionParams();
+      var params = new _KeyboardServiceSetSelectionParams();
       params.start = start;
       params.end = end;
-      _proxyImpl.sendMessage(params, kKeyboardService_setSelection_name);
+      _proxyImpl.sendMessage(params, _KeyboardService_setSelectionName);
     }
-  
 }
 
 
 class KeyboardServiceProxy implements bindings.ProxyBase {
   final bindings.Proxy impl;
   KeyboardService ptr;
-  final String name = KeyboardServiceName;
 
-  KeyboardServiceProxy(KeyboardServiceProxyImpl proxyImpl) :
+  KeyboardServiceProxy(_KeyboardServiceProxyImpl proxyImpl) :
       impl = proxyImpl,
       ptr = new _KeyboardServiceProxyCalls(proxyImpl);
 
   KeyboardServiceProxy.fromEndpoint(
       core.MojoMessagePipeEndpoint endpoint) :
-      impl = new KeyboardServiceProxyImpl.fromEndpoint(endpoint) {
+      impl = new _KeyboardServiceProxyImpl.fromEndpoint(endpoint) {
     ptr = new _KeyboardServiceProxyCalls(impl);
   }
 
   KeyboardServiceProxy.fromHandle(core.MojoHandle handle) :
-      impl = new KeyboardServiceProxyImpl.fromHandle(handle) {
+      impl = new _KeyboardServiceProxyImpl.fromHandle(handle) {
     ptr = new _KeyboardServiceProxyCalls(impl);
   }
 
   KeyboardServiceProxy.unbound() :
-      impl = new KeyboardServiceProxyImpl.unbound() {
+      impl = new _KeyboardServiceProxyImpl.unbound() {
     ptr = new _KeyboardServiceProxyCalls(impl);
   }
 
@@ -1736,6 +1715,8 @@ class KeyboardServiceProxy implements bindings.ProxyBase {
     assert(endpoint.setDescription("For KeyboardServiceProxy"));
     return new KeyboardServiceProxy.fromEndpoint(endpoint);
   }
+
+  String get serviceName => KeyboardService.serviceName;
 
   Future close({bool immediate: false}) => impl.close(immediate: immediate);
 
@@ -1775,8 +1756,6 @@ class KeyboardServiceStub extends bindings.Stub {
     return new KeyboardServiceStub.fromEndpoint(endpoint);
   }
 
-  static const String name = KeyboardServiceName;
-
 
 
   dynamic handleMessage(bindings.ServiceMessage message) {
@@ -1787,28 +1766,28 @@ class KeyboardServiceStub extends bindings.Stub {
     }
     assert(_impl != null);
     switch (message.header.type) {
-      case kKeyboardService_show_name:
-        var params = KeyboardServiceShowParams.deserialize(
+      case _KeyboardService_showName:
+        var params = _KeyboardServiceShowParams.deserialize(
             message.payload);
         _impl.show(params.client, params.type);
         break;
-      case kKeyboardService_showByRequest_name:
-        var params = KeyboardServiceShowByRequestParams.deserialize(
+      case _KeyboardService_showByRequestName:
+        var params = _KeyboardServiceShowByRequestParams.deserialize(
             message.payload);
         _impl.showByRequest();
         break;
-      case kKeyboardService_hide_name:
-        var params = KeyboardServiceHideParams.deserialize(
+      case _KeyboardService_hideName:
+        var params = _KeyboardServiceHideParams.deserialize(
             message.payload);
         _impl.hide();
         break;
-      case kKeyboardService_setText_name:
-        var params = KeyboardServiceSetTextParams.deserialize(
+      case _KeyboardService_setTextName:
+        var params = _KeyboardServiceSetTextParams.deserialize(
             message.payload);
         _impl.setText(params.text);
         break;
-      case kKeyboardService_setSelection_name:
-        var params = KeyboardServiceSetSelectionParams.deserialize(
+      case _KeyboardService_setSelectionName:
+        var params = _KeyboardServiceSetSelectionParams.deserialize(
             message.payload);
         _impl.setSelection(params.start, params.end);
         break;
@@ -1833,31 +1812,28 @@ class KeyboardServiceStub extends bindings.Stub {
   int get version => 0;
 }
 
-const int kKeyboardServiceFactory_createKeyboardService_name = 0;
-const String KeyboardServiceFactoryName = "keyboard::KeyboardServiceFactory";
+const int _KeyboardServiceFactory_createKeyboardServiceName = 0;
 
 abstract class KeyboardServiceFactory {
+  static const String serviceName = "keyboard::KeyboardServiceFactory";
   void createKeyboardService(Object keyEventDispatcher, Object serviceRequest);
-
 }
 
 
-class KeyboardServiceFactoryProxyImpl extends bindings.Proxy {
-  KeyboardServiceFactoryProxyImpl.fromEndpoint(
+class _KeyboardServiceFactoryProxyImpl extends bindings.Proxy {
+  _KeyboardServiceFactoryProxyImpl.fromEndpoint(
       core.MojoMessagePipeEndpoint endpoint) : super.fromEndpoint(endpoint);
 
-  KeyboardServiceFactoryProxyImpl.fromHandle(core.MojoHandle handle) :
+  _KeyboardServiceFactoryProxyImpl.fromHandle(core.MojoHandle handle) :
       super.fromHandle(handle);
 
-  KeyboardServiceFactoryProxyImpl.unbound() : super.unbound();
+  _KeyboardServiceFactoryProxyImpl.unbound() : super.unbound();
 
-  static KeyboardServiceFactoryProxyImpl newFromEndpoint(
+  static _KeyboardServiceFactoryProxyImpl newFromEndpoint(
       core.MojoMessagePipeEndpoint endpoint) {
-    assert(endpoint.setDescription("For KeyboardServiceFactoryProxyImpl"));
-    return new KeyboardServiceFactoryProxyImpl.fromEndpoint(endpoint);
+    assert(endpoint.setDescription("For _KeyboardServiceFactoryProxyImpl"));
+    return new _KeyboardServiceFactoryProxyImpl.fromEndpoint(endpoint);
   }
-
-  String get name => KeyboardServiceFactoryName;
 
   void handleResponse(bindings.ServiceMessage message) {
     switch (message.header.type) {
@@ -1870,13 +1846,13 @@ class KeyboardServiceFactoryProxyImpl extends bindings.Proxy {
 
   String toString() {
     var superString = super.toString();
-    return "KeyboardServiceFactoryProxyImpl($superString)";
+    return "_KeyboardServiceFactoryProxyImpl($superString)";
   }
 }
 
 
 class _KeyboardServiceFactoryProxyCalls implements KeyboardServiceFactory {
-  KeyboardServiceFactoryProxyImpl _proxyImpl;
+  _KeyboardServiceFactoryProxyImpl _proxyImpl;
 
   _KeyboardServiceFactoryProxyCalls(this._proxyImpl);
     void createKeyboardService(Object keyEventDispatcher, Object serviceRequest) {
@@ -1884,37 +1860,35 @@ class _KeyboardServiceFactoryProxyCalls implements KeyboardServiceFactory {
         _proxyImpl.proxyError("The Proxy is closed.");
         return;
       }
-      var params = new KeyboardServiceFactoryCreateKeyboardServiceParams();
+      var params = new _KeyboardServiceFactoryCreateKeyboardServiceParams();
       params.keyEventDispatcher = keyEventDispatcher;
       params.serviceRequest = serviceRequest;
-      _proxyImpl.sendMessage(params, kKeyboardServiceFactory_createKeyboardService_name);
+      _proxyImpl.sendMessage(params, _KeyboardServiceFactory_createKeyboardServiceName);
     }
-  
 }
 
 
 class KeyboardServiceFactoryProxy implements bindings.ProxyBase {
   final bindings.Proxy impl;
   KeyboardServiceFactory ptr;
-  final String name = KeyboardServiceFactoryName;
 
-  KeyboardServiceFactoryProxy(KeyboardServiceFactoryProxyImpl proxyImpl) :
+  KeyboardServiceFactoryProxy(_KeyboardServiceFactoryProxyImpl proxyImpl) :
       impl = proxyImpl,
       ptr = new _KeyboardServiceFactoryProxyCalls(proxyImpl);
 
   KeyboardServiceFactoryProxy.fromEndpoint(
       core.MojoMessagePipeEndpoint endpoint) :
-      impl = new KeyboardServiceFactoryProxyImpl.fromEndpoint(endpoint) {
+      impl = new _KeyboardServiceFactoryProxyImpl.fromEndpoint(endpoint) {
     ptr = new _KeyboardServiceFactoryProxyCalls(impl);
   }
 
   KeyboardServiceFactoryProxy.fromHandle(core.MojoHandle handle) :
-      impl = new KeyboardServiceFactoryProxyImpl.fromHandle(handle) {
+      impl = new _KeyboardServiceFactoryProxyImpl.fromHandle(handle) {
     ptr = new _KeyboardServiceFactoryProxyCalls(impl);
   }
 
   KeyboardServiceFactoryProxy.unbound() :
-      impl = new KeyboardServiceFactoryProxyImpl.unbound() {
+      impl = new _KeyboardServiceFactoryProxyImpl.unbound() {
     ptr = new _KeyboardServiceFactoryProxyCalls(impl);
   }
 
@@ -1930,6 +1904,8 @@ class KeyboardServiceFactoryProxy implements bindings.ProxyBase {
     assert(endpoint.setDescription("For KeyboardServiceFactoryProxy"));
     return new KeyboardServiceFactoryProxy.fromEndpoint(endpoint);
   }
+
+  String get serviceName => KeyboardServiceFactory.serviceName;
 
   Future close({bool immediate: false}) => impl.close(immediate: immediate);
 
@@ -1969,8 +1945,6 @@ class KeyboardServiceFactoryStub extends bindings.Stub {
     return new KeyboardServiceFactoryStub.fromEndpoint(endpoint);
   }
 
-  static const String name = KeyboardServiceFactoryName;
-
 
 
   dynamic handleMessage(bindings.ServiceMessage message) {
@@ -1981,8 +1955,8 @@ class KeyboardServiceFactoryStub extends bindings.Stub {
     }
     assert(_impl != null);
     switch (message.header.type) {
-      case kKeyboardServiceFactory_createKeyboardService_name:
-        var params = KeyboardServiceFactoryCreateKeyboardServiceParams.deserialize(
+      case _KeyboardServiceFactory_createKeyboardServiceName:
+        var params = _KeyboardServiceFactoryCreateKeyboardServiceParams.deserialize(
             message.payload);
         _impl.createKeyboardService(params.keyEventDispatcher, params.serviceRequest);
         break;

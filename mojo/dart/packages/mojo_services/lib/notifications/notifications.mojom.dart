@@ -114,14 +114,14 @@ class NotificationData extends bindings.Struct {
 }
 
 
-class NotificationClientOnSelectedParams extends bindings.Struct {
+class _NotificationClientOnSelectedParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(8, 0)
   ];
 
-  NotificationClientOnSelectedParams() : super(kVersions.last.size);
+  _NotificationClientOnSelectedParams() : super(kVersions.last.size);
 
-  static NotificationClientOnSelectedParams deserialize(bindings.Message message) {
+  static _NotificationClientOnSelectedParams deserialize(bindings.Message message) {
     var decoder = new bindings.Decoder(message);
     var result = decode(decoder);
     if (decoder.excessHandles != null) {
@@ -130,11 +130,11 @@ class NotificationClientOnSelectedParams extends bindings.Struct {
     return result;
   }
 
-  static NotificationClientOnSelectedParams decode(bindings.Decoder decoder0) {
+  static _NotificationClientOnSelectedParams decode(bindings.Decoder decoder0) {
     if (decoder0 == null) {
       return null;
     }
-    NotificationClientOnSelectedParams result = new NotificationClientOnSelectedParams();
+    _NotificationClientOnSelectedParams result = new _NotificationClientOnSelectedParams();
 
     var mainDataHeader = decoder0.decodeStructDataHeader();
     if (mainDataHeader.version <= kVersions.last.version) {
@@ -162,7 +162,7 @@ class NotificationClientOnSelectedParams extends bindings.Struct {
   }
 
   String toString() {
-    return "NotificationClientOnSelectedParams("")";
+    return "_NotificationClientOnSelectedParams("")";
   }
 
   Map toJson() {
@@ -172,14 +172,14 @@ class NotificationClientOnSelectedParams extends bindings.Struct {
 }
 
 
-class NotificationClientOnDismissedParams extends bindings.Struct {
+class _NotificationClientOnDismissedParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(8, 0)
   ];
 
-  NotificationClientOnDismissedParams() : super(kVersions.last.size);
+  _NotificationClientOnDismissedParams() : super(kVersions.last.size);
 
-  static NotificationClientOnDismissedParams deserialize(bindings.Message message) {
+  static _NotificationClientOnDismissedParams deserialize(bindings.Message message) {
     var decoder = new bindings.Decoder(message);
     var result = decode(decoder);
     if (decoder.excessHandles != null) {
@@ -188,11 +188,11 @@ class NotificationClientOnDismissedParams extends bindings.Struct {
     return result;
   }
 
-  static NotificationClientOnDismissedParams decode(bindings.Decoder decoder0) {
+  static _NotificationClientOnDismissedParams decode(bindings.Decoder decoder0) {
     if (decoder0 == null) {
       return null;
     }
-    NotificationClientOnDismissedParams result = new NotificationClientOnDismissedParams();
+    _NotificationClientOnDismissedParams result = new _NotificationClientOnDismissedParams();
 
     var mainDataHeader = decoder0.decodeStructDataHeader();
     if (mainDataHeader.version <= kVersions.last.version) {
@@ -220,7 +220,7 @@ class NotificationClientOnDismissedParams extends bindings.Struct {
   }
 
   String toString() {
-    return "NotificationClientOnDismissedParams("")";
+    return "_NotificationClientOnDismissedParams("")";
   }
 
   Map toJson() {
@@ -230,15 +230,15 @@ class NotificationClientOnDismissedParams extends bindings.Struct {
 }
 
 
-class NotificationUpdateParams extends bindings.Struct {
+class _NotificationUpdateParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(16, 0)
   ];
   NotificationData notificationData = null;
 
-  NotificationUpdateParams() : super(kVersions.last.size);
+  _NotificationUpdateParams() : super(kVersions.last.size);
 
-  static NotificationUpdateParams deserialize(bindings.Message message) {
+  static _NotificationUpdateParams deserialize(bindings.Message message) {
     var decoder = new bindings.Decoder(message);
     var result = decode(decoder);
     if (decoder.excessHandles != null) {
@@ -247,11 +247,11 @@ class NotificationUpdateParams extends bindings.Struct {
     return result;
   }
 
-  static NotificationUpdateParams decode(bindings.Decoder decoder0) {
+  static _NotificationUpdateParams decode(bindings.Decoder decoder0) {
     if (decoder0 == null) {
       return null;
     }
-    NotificationUpdateParams result = new NotificationUpdateParams();
+    _NotificationUpdateParams result = new _NotificationUpdateParams();
 
     var mainDataHeader = decoder0.decodeStructDataHeader();
     if (mainDataHeader.version <= kVersions.last.version) {
@@ -286,7 +286,7 @@ class NotificationUpdateParams extends bindings.Struct {
   }
 
   String toString() {
-    return "NotificationUpdateParams("
+    return "_NotificationUpdateParams("
            "notificationData: $notificationData" ")";
   }
 
@@ -298,14 +298,14 @@ class NotificationUpdateParams extends bindings.Struct {
 }
 
 
-class NotificationCancelParams extends bindings.Struct {
+class _NotificationCancelParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(8, 0)
   ];
 
-  NotificationCancelParams() : super(kVersions.last.size);
+  _NotificationCancelParams() : super(kVersions.last.size);
 
-  static NotificationCancelParams deserialize(bindings.Message message) {
+  static _NotificationCancelParams deserialize(bindings.Message message) {
     var decoder = new bindings.Decoder(message);
     var result = decode(decoder);
     if (decoder.excessHandles != null) {
@@ -314,11 +314,11 @@ class NotificationCancelParams extends bindings.Struct {
     return result;
   }
 
-  static NotificationCancelParams decode(bindings.Decoder decoder0) {
+  static _NotificationCancelParams decode(bindings.Decoder decoder0) {
     if (decoder0 == null) {
       return null;
     }
-    NotificationCancelParams result = new NotificationCancelParams();
+    _NotificationCancelParams result = new _NotificationCancelParams();
 
     var mainDataHeader = decoder0.decodeStructDataHeader();
     if (mainDataHeader.version <= kVersions.last.version) {
@@ -346,7 +346,7 @@ class NotificationCancelParams extends bindings.Struct {
   }
 
   String toString() {
-    return "NotificationCancelParams("")";
+    return "_NotificationCancelParams("")";
   }
 
   Map toJson() {
@@ -356,7 +356,7 @@ class NotificationCancelParams extends bindings.Struct {
 }
 
 
-class NotificationServicePostParams extends bindings.Struct {
+class _NotificationServicePostParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(32, 0)
   ];
@@ -364,9 +364,9 @@ class NotificationServicePostParams extends bindings.Struct {
   Object client = null;
   Object notification = null;
 
-  NotificationServicePostParams() : super(kVersions.last.size);
+  _NotificationServicePostParams() : super(kVersions.last.size);
 
-  static NotificationServicePostParams deserialize(bindings.Message message) {
+  static _NotificationServicePostParams deserialize(bindings.Message message) {
     var decoder = new bindings.Decoder(message);
     var result = decode(decoder);
     if (decoder.excessHandles != null) {
@@ -375,11 +375,11 @@ class NotificationServicePostParams extends bindings.Struct {
     return result;
   }
 
-  static NotificationServicePostParams decode(bindings.Decoder decoder0) {
+  static _NotificationServicePostParams decode(bindings.Decoder decoder0) {
     if (decoder0 == null) {
       return null;
     }
-    NotificationServicePostParams result = new NotificationServicePostParams();
+    _NotificationServicePostParams result = new _NotificationServicePostParams();
 
     var mainDataHeader = decoder0.decodeStructDataHeader();
     if (mainDataHeader.version <= kVersions.last.version) {
@@ -426,7 +426,7 @@ class NotificationServicePostParams extends bindings.Struct {
   }
 
   String toString() {
-    return "NotificationServicePostParams("
+    return "_NotificationServicePostParams("
            "notificationData: $notificationData" ", "
            "client: $client" ", "
            "notification: $notification" ")";
@@ -438,33 +438,30 @@ class NotificationServicePostParams extends bindings.Struct {
   }
 }
 
-const int kNotificationClient_onSelected_name = 0;
-const int kNotificationClient_onDismissed_name = 1;
-const String NotificationClientName = null;
+const int _NotificationClient_onSelectedName = 0;
+const int _NotificationClient_onDismissedName = 1;
 
 abstract class NotificationClient {
+  static const String serviceName = null;
   void onSelected();
   void onDismissed();
-
 }
 
 
-class NotificationClientProxyImpl extends bindings.Proxy {
-  NotificationClientProxyImpl.fromEndpoint(
+class _NotificationClientProxyImpl extends bindings.Proxy {
+  _NotificationClientProxyImpl.fromEndpoint(
       core.MojoMessagePipeEndpoint endpoint) : super.fromEndpoint(endpoint);
 
-  NotificationClientProxyImpl.fromHandle(core.MojoHandle handle) :
+  _NotificationClientProxyImpl.fromHandle(core.MojoHandle handle) :
       super.fromHandle(handle);
 
-  NotificationClientProxyImpl.unbound() : super.unbound();
+  _NotificationClientProxyImpl.unbound() : super.unbound();
 
-  static NotificationClientProxyImpl newFromEndpoint(
+  static _NotificationClientProxyImpl newFromEndpoint(
       core.MojoMessagePipeEndpoint endpoint) {
-    assert(endpoint.setDescription("For NotificationClientProxyImpl"));
-    return new NotificationClientProxyImpl.fromEndpoint(endpoint);
+    assert(endpoint.setDescription("For _NotificationClientProxyImpl"));
+    return new _NotificationClientProxyImpl.fromEndpoint(endpoint);
   }
-
-  String get name => NotificationClientName;
 
   void handleResponse(bindings.ServiceMessage message) {
     switch (message.header.type) {
@@ -477,13 +474,13 @@ class NotificationClientProxyImpl extends bindings.Proxy {
 
   String toString() {
     var superString = super.toString();
-    return "NotificationClientProxyImpl($superString)";
+    return "_NotificationClientProxyImpl($superString)";
   }
 }
 
 
 class _NotificationClientProxyCalls implements NotificationClient {
-  NotificationClientProxyImpl _proxyImpl;
+  _NotificationClientProxyImpl _proxyImpl;
 
   _NotificationClientProxyCalls(this._proxyImpl);
     void onSelected() {
@@ -491,44 +488,41 @@ class _NotificationClientProxyCalls implements NotificationClient {
         _proxyImpl.proxyError("The Proxy is closed.");
         return;
       }
-      var params = new NotificationClientOnSelectedParams();
-      _proxyImpl.sendMessage(params, kNotificationClient_onSelected_name);
+      var params = new _NotificationClientOnSelectedParams();
+      _proxyImpl.sendMessage(params, _NotificationClient_onSelectedName);
     }
-  
     void onDismissed() {
       if (!_proxyImpl.isBound) {
         _proxyImpl.proxyError("The Proxy is closed.");
         return;
       }
-      var params = new NotificationClientOnDismissedParams();
-      _proxyImpl.sendMessage(params, kNotificationClient_onDismissed_name);
+      var params = new _NotificationClientOnDismissedParams();
+      _proxyImpl.sendMessage(params, _NotificationClient_onDismissedName);
     }
-  
 }
 
 
 class NotificationClientProxy implements bindings.ProxyBase {
   final bindings.Proxy impl;
   NotificationClient ptr;
-  final String name = NotificationClientName;
 
-  NotificationClientProxy(NotificationClientProxyImpl proxyImpl) :
+  NotificationClientProxy(_NotificationClientProxyImpl proxyImpl) :
       impl = proxyImpl,
       ptr = new _NotificationClientProxyCalls(proxyImpl);
 
   NotificationClientProxy.fromEndpoint(
       core.MojoMessagePipeEndpoint endpoint) :
-      impl = new NotificationClientProxyImpl.fromEndpoint(endpoint) {
+      impl = new _NotificationClientProxyImpl.fromEndpoint(endpoint) {
     ptr = new _NotificationClientProxyCalls(impl);
   }
 
   NotificationClientProxy.fromHandle(core.MojoHandle handle) :
-      impl = new NotificationClientProxyImpl.fromHandle(handle) {
+      impl = new _NotificationClientProxyImpl.fromHandle(handle) {
     ptr = new _NotificationClientProxyCalls(impl);
   }
 
   NotificationClientProxy.unbound() :
-      impl = new NotificationClientProxyImpl.unbound() {
+      impl = new _NotificationClientProxyImpl.unbound() {
     ptr = new _NotificationClientProxyCalls(impl);
   }
 
@@ -544,6 +538,8 @@ class NotificationClientProxy implements bindings.ProxyBase {
     assert(endpoint.setDescription("For NotificationClientProxy"));
     return new NotificationClientProxy.fromEndpoint(endpoint);
   }
+
+  String get serviceName => NotificationClient.serviceName;
 
   Future close({bool immediate: false}) => impl.close(immediate: immediate);
 
@@ -583,8 +579,6 @@ class NotificationClientStub extends bindings.Stub {
     return new NotificationClientStub.fromEndpoint(endpoint);
   }
 
-  static const String name = NotificationClientName;
-
 
 
   dynamic handleMessage(bindings.ServiceMessage message) {
@@ -595,13 +589,13 @@ class NotificationClientStub extends bindings.Stub {
     }
     assert(_impl != null);
     switch (message.header.type) {
-      case kNotificationClient_onSelected_name:
-        var params = NotificationClientOnSelectedParams.deserialize(
+      case _NotificationClient_onSelectedName:
+        var params = _NotificationClientOnSelectedParams.deserialize(
             message.payload);
         _impl.onSelected();
         break;
-      case kNotificationClient_onDismissed_name:
-        var params = NotificationClientOnDismissedParams.deserialize(
+      case _NotificationClient_onDismissedName:
+        var params = _NotificationClientOnDismissedParams.deserialize(
             message.payload);
         _impl.onDismissed();
         break;
@@ -626,33 +620,30 @@ class NotificationClientStub extends bindings.Stub {
   int get version => 0;
 }
 
-const int kNotification_update_name = 0;
-const int kNotification_cancel_name = 1;
-const String NotificationName = null;
+const int _Notification_updateName = 0;
+const int _Notification_cancelName = 1;
 
 abstract class Notification {
+  static const String serviceName = null;
   void update(NotificationData notificationData);
   void cancel();
-
 }
 
 
-class NotificationProxyImpl extends bindings.Proxy {
-  NotificationProxyImpl.fromEndpoint(
+class _NotificationProxyImpl extends bindings.Proxy {
+  _NotificationProxyImpl.fromEndpoint(
       core.MojoMessagePipeEndpoint endpoint) : super.fromEndpoint(endpoint);
 
-  NotificationProxyImpl.fromHandle(core.MojoHandle handle) :
+  _NotificationProxyImpl.fromHandle(core.MojoHandle handle) :
       super.fromHandle(handle);
 
-  NotificationProxyImpl.unbound() : super.unbound();
+  _NotificationProxyImpl.unbound() : super.unbound();
 
-  static NotificationProxyImpl newFromEndpoint(
+  static _NotificationProxyImpl newFromEndpoint(
       core.MojoMessagePipeEndpoint endpoint) {
-    assert(endpoint.setDescription("For NotificationProxyImpl"));
-    return new NotificationProxyImpl.fromEndpoint(endpoint);
+    assert(endpoint.setDescription("For _NotificationProxyImpl"));
+    return new _NotificationProxyImpl.fromEndpoint(endpoint);
   }
-
-  String get name => NotificationName;
 
   void handleResponse(bindings.ServiceMessage message) {
     switch (message.header.type) {
@@ -665,13 +656,13 @@ class NotificationProxyImpl extends bindings.Proxy {
 
   String toString() {
     var superString = super.toString();
-    return "NotificationProxyImpl($superString)";
+    return "_NotificationProxyImpl($superString)";
   }
 }
 
 
 class _NotificationProxyCalls implements Notification {
-  NotificationProxyImpl _proxyImpl;
+  _NotificationProxyImpl _proxyImpl;
 
   _NotificationProxyCalls(this._proxyImpl);
     void update(NotificationData notificationData) {
@@ -679,45 +670,42 @@ class _NotificationProxyCalls implements Notification {
         _proxyImpl.proxyError("The Proxy is closed.");
         return;
       }
-      var params = new NotificationUpdateParams();
+      var params = new _NotificationUpdateParams();
       params.notificationData = notificationData;
-      _proxyImpl.sendMessage(params, kNotification_update_name);
+      _proxyImpl.sendMessage(params, _Notification_updateName);
     }
-  
     void cancel() {
       if (!_proxyImpl.isBound) {
         _proxyImpl.proxyError("The Proxy is closed.");
         return;
       }
-      var params = new NotificationCancelParams();
-      _proxyImpl.sendMessage(params, kNotification_cancel_name);
+      var params = new _NotificationCancelParams();
+      _proxyImpl.sendMessage(params, _Notification_cancelName);
     }
-  
 }
 
 
 class NotificationProxy implements bindings.ProxyBase {
   final bindings.Proxy impl;
   Notification ptr;
-  final String name = NotificationName;
 
-  NotificationProxy(NotificationProxyImpl proxyImpl) :
+  NotificationProxy(_NotificationProxyImpl proxyImpl) :
       impl = proxyImpl,
       ptr = new _NotificationProxyCalls(proxyImpl);
 
   NotificationProxy.fromEndpoint(
       core.MojoMessagePipeEndpoint endpoint) :
-      impl = new NotificationProxyImpl.fromEndpoint(endpoint) {
+      impl = new _NotificationProxyImpl.fromEndpoint(endpoint) {
     ptr = new _NotificationProxyCalls(impl);
   }
 
   NotificationProxy.fromHandle(core.MojoHandle handle) :
-      impl = new NotificationProxyImpl.fromHandle(handle) {
+      impl = new _NotificationProxyImpl.fromHandle(handle) {
     ptr = new _NotificationProxyCalls(impl);
   }
 
   NotificationProxy.unbound() :
-      impl = new NotificationProxyImpl.unbound() {
+      impl = new _NotificationProxyImpl.unbound() {
     ptr = new _NotificationProxyCalls(impl);
   }
 
@@ -733,6 +721,8 @@ class NotificationProxy implements bindings.ProxyBase {
     assert(endpoint.setDescription("For NotificationProxy"));
     return new NotificationProxy.fromEndpoint(endpoint);
   }
+
+  String get serviceName => Notification.serviceName;
 
   Future close({bool immediate: false}) => impl.close(immediate: immediate);
 
@@ -772,8 +762,6 @@ class NotificationStub extends bindings.Stub {
     return new NotificationStub.fromEndpoint(endpoint);
   }
 
-  static const String name = NotificationName;
-
 
 
   dynamic handleMessage(bindings.ServiceMessage message) {
@@ -784,13 +772,13 @@ class NotificationStub extends bindings.Stub {
     }
     assert(_impl != null);
     switch (message.header.type) {
-      case kNotification_update_name:
-        var params = NotificationUpdateParams.deserialize(
+      case _Notification_updateName:
+        var params = _NotificationUpdateParams.deserialize(
             message.payload);
         _impl.update(params.notificationData);
         break;
-      case kNotification_cancel_name:
-        var params = NotificationCancelParams.deserialize(
+      case _Notification_cancelName:
+        var params = _NotificationCancelParams.deserialize(
             message.payload);
         _impl.cancel();
         break;
@@ -815,31 +803,28 @@ class NotificationStub extends bindings.Stub {
   int get version => 0;
 }
 
-const int kNotificationService_post_name = 0;
-const String NotificationServiceName = "notifications::NotificationService";
+const int _NotificationService_postName = 0;
 
 abstract class NotificationService {
+  static const String serviceName = "notifications::NotificationService";
   void post(NotificationData notificationData, Object client, Object notification);
-
 }
 
 
-class NotificationServiceProxyImpl extends bindings.Proxy {
-  NotificationServiceProxyImpl.fromEndpoint(
+class _NotificationServiceProxyImpl extends bindings.Proxy {
+  _NotificationServiceProxyImpl.fromEndpoint(
       core.MojoMessagePipeEndpoint endpoint) : super.fromEndpoint(endpoint);
 
-  NotificationServiceProxyImpl.fromHandle(core.MojoHandle handle) :
+  _NotificationServiceProxyImpl.fromHandle(core.MojoHandle handle) :
       super.fromHandle(handle);
 
-  NotificationServiceProxyImpl.unbound() : super.unbound();
+  _NotificationServiceProxyImpl.unbound() : super.unbound();
 
-  static NotificationServiceProxyImpl newFromEndpoint(
+  static _NotificationServiceProxyImpl newFromEndpoint(
       core.MojoMessagePipeEndpoint endpoint) {
-    assert(endpoint.setDescription("For NotificationServiceProxyImpl"));
-    return new NotificationServiceProxyImpl.fromEndpoint(endpoint);
+    assert(endpoint.setDescription("For _NotificationServiceProxyImpl"));
+    return new _NotificationServiceProxyImpl.fromEndpoint(endpoint);
   }
-
-  String get name => NotificationServiceName;
 
   void handleResponse(bindings.ServiceMessage message) {
     switch (message.header.type) {
@@ -852,13 +837,13 @@ class NotificationServiceProxyImpl extends bindings.Proxy {
 
   String toString() {
     var superString = super.toString();
-    return "NotificationServiceProxyImpl($superString)";
+    return "_NotificationServiceProxyImpl($superString)";
   }
 }
 
 
 class _NotificationServiceProxyCalls implements NotificationService {
-  NotificationServiceProxyImpl _proxyImpl;
+  _NotificationServiceProxyImpl _proxyImpl;
 
   _NotificationServiceProxyCalls(this._proxyImpl);
     void post(NotificationData notificationData, Object client, Object notification) {
@@ -866,38 +851,36 @@ class _NotificationServiceProxyCalls implements NotificationService {
         _proxyImpl.proxyError("The Proxy is closed.");
         return;
       }
-      var params = new NotificationServicePostParams();
+      var params = new _NotificationServicePostParams();
       params.notificationData = notificationData;
       params.client = client;
       params.notification = notification;
-      _proxyImpl.sendMessage(params, kNotificationService_post_name);
+      _proxyImpl.sendMessage(params, _NotificationService_postName);
     }
-  
 }
 
 
 class NotificationServiceProxy implements bindings.ProxyBase {
   final bindings.Proxy impl;
   NotificationService ptr;
-  final String name = NotificationServiceName;
 
-  NotificationServiceProxy(NotificationServiceProxyImpl proxyImpl) :
+  NotificationServiceProxy(_NotificationServiceProxyImpl proxyImpl) :
       impl = proxyImpl,
       ptr = new _NotificationServiceProxyCalls(proxyImpl);
 
   NotificationServiceProxy.fromEndpoint(
       core.MojoMessagePipeEndpoint endpoint) :
-      impl = new NotificationServiceProxyImpl.fromEndpoint(endpoint) {
+      impl = new _NotificationServiceProxyImpl.fromEndpoint(endpoint) {
     ptr = new _NotificationServiceProxyCalls(impl);
   }
 
   NotificationServiceProxy.fromHandle(core.MojoHandle handle) :
-      impl = new NotificationServiceProxyImpl.fromHandle(handle) {
+      impl = new _NotificationServiceProxyImpl.fromHandle(handle) {
     ptr = new _NotificationServiceProxyCalls(impl);
   }
 
   NotificationServiceProxy.unbound() :
-      impl = new NotificationServiceProxyImpl.unbound() {
+      impl = new _NotificationServiceProxyImpl.unbound() {
     ptr = new _NotificationServiceProxyCalls(impl);
   }
 
@@ -913,6 +896,8 @@ class NotificationServiceProxy implements bindings.ProxyBase {
     assert(endpoint.setDescription("For NotificationServiceProxy"));
     return new NotificationServiceProxy.fromEndpoint(endpoint);
   }
+
+  String get serviceName => NotificationService.serviceName;
 
   Future close({bool immediate: false}) => impl.close(immediate: immediate);
 
@@ -952,8 +937,6 @@ class NotificationServiceStub extends bindings.Stub {
     return new NotificationServiceStub.fromEndpoint(endpoint);
   }
 
-  static const String name = NotificationServiceName;
-
 
 
   dynamic handleMessage(bindings.ServiceMessage message) {
@@ -964,8 +947,8 @@ class NotificationServiceStub extends bindings.Stub {
     }
     assert(_impl != null);
     switch (message.header.type) {
-      case kNotificationService_post_name:
-        var params = NotificationServicePostParams.deserialize(
+      case _NotificationService_postName:
+        var params = _NotificationServicePostParams.deserialize(
             message.payload);
         _impl.post(params.notificationData, params.client, params.notification);
         break;

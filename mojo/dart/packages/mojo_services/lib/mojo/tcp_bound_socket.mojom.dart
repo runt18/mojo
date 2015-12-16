@@ -15,15 +15,15 @@ import 'package:mojo_services/mojo/tcp_server_socket.mojom.dart' as tcp_server_s
 
 
 
-class TcpBoundSocketStartListeningParams extends bindings.Struct {
+class _TcpBoundSocketStartListeningParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(16, 0)
   ];
   Object server = null;
 
-  TcpBoundSocketStartListeningParams() : super(kVersions.last.size);
+  _TcpBoundSocketStartListeningParams() : super(kVersions.last.size);
 
-  static TcpBoundSocketStartListeningParams deserialize(bindings.Message message) {
+  static _TcpBoundSocketStartListeningParams deserialize(bindings.Message message) {
     var decoder = new bindings.Decoder(message);
     var result = decode(decoder);
     if (decoder.excessHandles != null) {
@@ -32,11 +32,11 @@ class TcpBoundSocketStartListeningParams extends bindings.Struct {
     return result;
   }
 
-  static TcpBoundSocketStartListeningParams decode(bindings.Decoder decoder0) {
+  static _TcpBoundSocketStartListeningParams decode(bindings.Decoder decoder0) {
     if (decoder0 == null) {
       return null;
     }
-    TcpBoundSocketStartListeningParams result = new TcpBoundSocketStartListeningParams();
+    _TcpBoundSocketStartListeningParams result = new _TcpBoundSocketStartListeningParams();
 
     var mainDataHeader = decoder0.decodeStructDataHeader();
     if (mainDataHeader.version <= kVersions.last.version) {
@@ -70,7 +70,7 @@ class TcpBoundSocketStartListeningParams extends bindings.Struct {
   }
 
   String toString() {
-    return "TcpBoundSocketStartListeningParams("
+    return "_TcpBoundSocketStartListeningParams("
            "server: $server" ")";
   }
 
@@ -149,7 +149,7 @@ class TcpBoundSocketStartListeningResponseParams extends bindings.Struct {
 }
 
 
-class TcpBoundSocketConnectParams extends bindings.Struct {
+class _TcpBoundSocketConnectParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(32, 0)
   ];
@@ -158,9 +158,9 @@ class TcpBoundSocketConnectParams extends bindings.Struct {
   core.MojoDataPipeProducer receiveStream = null;
   Object clientSocket = null;
 
-  TcpBoundSocketConnectParams() : super(kVersions.last.size);
+  _TcpBoundSocketConnectParams() : super(kVersions.last.size);
 
-  static TcpBoundSocketConnectParams deserialize(bindings.Message message) {
+  static _TcpBoundSocketConnectParams deserialize(bindings.Message message) {
     var decoder = new bindings.Decoder(message);
     var result = decode(decoder);
     if (decoder.excessHandles != null) {
@@ -169,11 +169,11 @@ class TcpBoundSocketConnectParams extends bindings.Struct {
     return result;
   }
 
-  static TcpBoundSocketConnectParams decode(bindings.Decoder decoder0) {
+  static _TcpBoundSocketConnectParams decode(bindings.Decoder decoder0) {
     if (decoder0 == null) {
       return null;
     }
-    TcpBoundSocketConnectParams result = new TcpBoundSocketConnectParams();
+    _TcpBoundSocketConnectParams result = new _TcpBoundSocketConnectParams();
 
     var mainDataHeader = decoder0.decodeStructDataHeader();
     if (mainDataHeader.version <= kVersions.last.version) {
@@ -226,7 +226,7 @@ class TcpBoundSocketConnectParams extends bindings.Struct {
   }
 
   String toString() {
-    return "TcpBoundSocketConnectParams("
+    return "_TcpBoundSocketConnectParams("
            "remoteAddress: $remoteAddress" ", "
            "sendStream: $sendStream" ", "
            "receiveStream: $receiveStream" ", "
@@ -307,37 +307,34 @@ class TcpBoundSocketConnectResponseParams extends bindings.Struct {
   }
 }
 
-const int kTcpBoundSocket_startListening_name = 0;
-const int kTcpBoundSocket_connect_name = 1;
-const String TcpBoundSocketName = null;
+const int _TcpBoundSocket_startListeningName = 0;
+const int _TcpBoundSocket_connectName = 1;
 
 abstract class TcpBoundSocket {
+  static const String serviceName = null;
   dynamic startListening(Object server,[Function responseFactory = null]);
   dynamic connect(net_address_mojom.NetAddress remoteAddress,core.MojoDataPipeConsumer sendStream,core.MojoDataPipeProducer receiveStream,Object clientSocket,[Function responseFactory = null]);
-
 }
 
 
-class TcpBoundSocketProxyImpl extends bindings.Proxy {
-  TcpBoundSocketProxyImpl.fromEndpoint(
+class _TcpBoundSocketProxyImpl extends bindings.Proxy {
+  _TcpBoundSocketProxyImpl.fromEndpoint(
       core.MojoMessagePipeEndpoint endpoint) : super.fromEndpoint(endpoint);
 
-  TcpBoundSocketProxyImpl.fromHandle(core.MojoHandle handle) :
+  _TcpBoundSocketProxyImpl.fromHandle(core.MojoHandle handle) :
       super.fromHandle(handle);
 
-  TcpBoundSocketProxyImpl.unbound() : super.unbound();
+  _TcpBoundSocketProxyImpl.unbound() : super.unbound();
 
-  static TcpBoundSocketProxyImpl newFromEndpoint(
+  static _TcpBoundSocketProxyImpl newFromEndpoint(
       core.MojoMessagePipeEndpoint endpoint) {
-    assert(endpoint.setDescription("For TcpBoundSocketProxyImpl"));
-    return new TcpBoundSocketProxyImpl.fromEndpoint(endpoint);
+    assert(endpoint.setDescription("For _TcpBoundSocketProxyImpl"));
+    return new _TcpBoundSocketProxyImpl.fromEndpoint(endpoint);
   }
-
-  String get name => TcpBoundSocketName;
 
   void handleResponse(bindings.ServiceMessage message) {
     switch (message.header.type) {
-      case kTcpBoundSocket_startListening_name:
+      case _TcpBoundSocket_startListeningName:
         var r = TcpBoundSocketStartListeningResponseParams.deserialize(
             message.payload);
         if (!message.header.hasRequestId) {
@@ -357,7 +354,7 @@ class TcpBoundSocketProxyImpl extends bindings.Proxy {
         }
         c.complete(r);
         break;
-      case kTcpBoundSocket_connect_name:
+      case _TcpBoundSocket_connectName:
         var r = TcpBoundSocketConnectResponseParams.deserialize(
             message.payload);
         if (!message.header.hasRequestId) {
@@ -386,33 +383,33 @@ class TcpBoundSocketProxyImpl extends bindings.Proxy {
 
   String toString() {
     var superString = super.toString();
-    return "TcpBoundSocketProxyImpl($superString)";
+    return "_TcpBoundSocketProxyImpl($superString)";
   }
 }
 
 
 class _TcpBoundSocketProxyCalls implements TcpBoundSocket {
-  TcpBoundSocketProxyImpl _proxyImpl;
+  _TcpBoundSocketProxyImpl _proxyImpl;
 
   _TcpBoundSocketProxyCalls(this._proxyImpl);
     dynamic startListening(Object server,[Function responseFactory = null]) {
-      var params = new TcpBoundSocketStartListeningParams();
+      var params = new _TcpBoundSocketStartListeningParams();
       params.server = server;
       return _proxyImpl.sendMessageWithRequestId(
           params,
-          kTcpBoundSocket_startListening_name,
+          _TcpBoundSocket_startListeningName,
           -1,
           bindings.MessageHeader.kMessageExpectsResponse);
     }
     dynamic connect(net_address_mojom.NetAddress remoteAddress,core.MojoDataPipeConsumer sendStream,core.MojoDataPipeProducer receiveStream,Object clientSocket,[Function responseFactory = null]) {
-      var params = new TcpBoundSocketConnectParams();
+      var params = new _TcpBoundSocketConnectParams();
       params.remoteAddress = remoteAddress;
       params.sendStream = sendStream;
       params.receiveStream = receiveStream;
       params.clientSocket = clientSocket;
       return _proxyImpl.sendMessageWithRequestId(
           params,
-          kTcpBoundSocket_connect_name,
+          _TcpBoundSocket_connectName,
           -1,
           bindings.MessageHeader.kMessageExpectsResponse);
     }
@@ -422,25 +419,24 @@ class _TcpBoundSocketProxyCalls implements TcpBoundSocket {
 class TcpBoundSocketProxy implements bindings.ProxyBase {
   final bindings.Proxy impl;
   TcpBoundSocket ptr;
-  final String name = TcpBoundSocketName;
 
-  TcpBoundSocketProxy(TcpBoundSocketProxyImpl proxyImpl) :
+  TcpBoundSocketProxy(_TcpBoundSocketProxyImpl proxyImpl) :
       impl = proxyImpl,
       ptr = new _TcpBoundSocketProxyCalls(proxyImpl);
 
   TcpBoundSocketProxy.fromEndpoint(
       core.MojoMessagePipeEndpoint endpoint) :
-      impl = new TcpBoundSocketProxyImpl.fromEndpoint(endpoint) {
+      impl = new _TcpBoundSocketProxyImpl.fromEndpoint(endpoint) {
     ptr = new _TcpBoundSocketProxyCalls(impl);
   }
 
   TcpBoundSocketProxy.fromHandle(core.MojoHandle handle) :
-      impl = new TcpBoundSocketProxyImpl.fromHandle(handle) {
+      impl = new _TcpBoundSocketProxyImpl.fromHandle(handle) {
     ptr = new _TcpBoundSocketProxyCalls(impl);
   }
 
   TcpBoundSocketProxy.unbound() :
-      impl = new TcpBoundSocketProxyImpl.unbound() {
+      impl = new _TcpBoundSocketProxyImpl.unbound() {
     ptr = new _TcpBoundSocketProxyCalls(impl);
   }
 
@@ -456,6 +452,8 @@ class TcpBoundSocketProxy implements bindings.ProxyBase {
     assert(endpoint.setDescription("For TcpBoundSocketProxy"));
     return new TcpBoundSocketProxy.fromEndpoint(endpoint);
   }
+
+  String get serviceName => TcpBoundSocket.serviceName;
 
   Future close({bool immediate: false}) => impl.close(immediate: immediate);
 
@@ -495,8 +493,6 @@ class TcpBoundSocketStub extends bindings.Stub {
     return new TcpBoundSocketStub.fromEndpoint(endpoint);
   }
 
-  static const String name = TcpBoundSocketName;
-
 
   TcpBoundSocketStartListeningResponseParams _TcpBoundSocketStartListeningResponseParamsFactory(network_error_mojom.NetworkError result) {
     var mojo_factory_result = new TcpBoundSocketStartListeningResponseParams();
@@ -517,8 +513,8 @@ class TcpBoundSocketStub extends bindings.Stub {
     }
     assert(_impl != null);
     switch (message.header.type) {
-      case kTcpBoundSocket_startListening_name:
-        var params = TcpBoundSocketStartListeningParams.deserialize(
+      case _TcpBoundSocket_startListeningName:
+        var params = _TcpBoundSocketStartListeningParams.deserialize(
             message.payload);
         var response = _impl.startListening(params.server,_TcpBoundSocketStartListeningResponseParamsFactory);
         if (response is Future) {
@@ -526,7 +522,7 @@ class TcpBoundSocketStub extends bindings.Stub {
             if (response != null) {
               return buildResponseWithId(
                   response,
-                  kTcpBoundSocket_startListening_name,
+                  _TcpBoundSocket_startListeningName,
                   message.header.requestId,
                   bindings.MessageHeader.kMessageIsResponse);
             }
@@ -534,13 +530,13 @@ class TcpBoundSocketStub extends bindings.Stub {
         } else if (response != null) {
           return buildResponseWithId(
               response,
-              kTcpBoundSocket_startListening_name,
+              _TcpBoundSocket_startListeningName,
               message.header.requestId,
               bindings.MessageHeader.kMessageIsResponse);
         }
         break;
-      case kTcpBoundSocket_connect_name:
-        var params = TcpBoundSocketConnectParams.deserialize(
+      case _TcpBoundSocket_connectName:
+        var params = _TcpBoundSocketConnectParams.deserialize(
             message.payload);
         var response = _impl.connect(params.remoteAddress,params.sendStream,params.receiveStream,params.clientSocket,_TcpBoundSocketConnectResponseParamsFactory);
         if (response is Future) {
@@ -548,7 +544,7 @@ class TcpBoundSocketStub extends bindings.Stub {
             if (response != null) {
               return buildResponseWithId(
                   response,
-                  kTcpBoundSocket_connect_name,
+                  _TcpBoundSocket_connectName,
                   message.header.requestId,
                   bindings.MessageHeader.kMessageIsResponse);
             }
@@ -556,7 +552,7 @@ class TcpBoundSocketStub extends bindings.Stub {
         } else if (response != null) {
           return buildResponseWithId(
               response,
-              kTcpBoundSocket_connect_name,
+              _TcpBoundSocket_connectName,
               message.header.requestId,
               bindings.MessageHeader.kMessageIsResponse);
         }

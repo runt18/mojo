@@ -1105,15 +1105,15 @@ class IncludingStruct extends bindings.Struct {
 }
 
 
-class SmallCacheSetIntValueParams extends bindings.Struct {
+class _SmallCacheSetIntValueParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(16, 0)
   ];
   int intValue = 0;
 
-  SmallCacheSetIntValueParams() : super(kVersions.last.size);
+  _SmallCacheSetIntValueParams() : super(kVersions.last.size);
 
-  static SmallCacheSetIntValueParams deserialize(bindings.Message message) {
+  static _SmallCacheSetIntValueParams deserialize(bindings.Message message) {
     var decoder = new bindings.Decoder(message);
     var result = decode(decoder);
     if (decoder.excessHandles != null) {
@@ -1122,11 +1122,11 @@ class SmallCacheSetIntValueParams extends bindings.Struct {
     return result;
   }
 
-  static SmallCacheSetIntValueParams decode(bindings.Decoder decoder0) {
+  static _SmallCacheSetIntValueParams decode(bindings.Decoder decoder0) {
     if (decoder0 == null) {
       return null;
     }
-    SmallCacheSetIntValueParams result = new SmallCacheSetIntValueParams();
+    _SmallCacheSetIntValueParams result = new _SmallCacheSetIntValueParams();
 
     var mainDataHeader = decoder0.decodeStructDataHeader();
     if (mainDataHeader.version <= kVersions.last.version) {
@@ -1160,7 +1160,7 @@ class SmallCacheSetIntValueParams extends bindings.Struct {
   }
 
   String toString() {
-    return "SmallCacheSetIntValueParams("
+    return "_SmallCacheSetIntValueParams("
            "intValue: $intValue" ")";
   }
 
@@ -1172,14 +1172,14 @@ class SmallCacheSetIntValueParams extends bindings.Struct {
 }
 
 
-class SmallCacheGetIntValueParams extends bindings.Struct {
+class _SmallCacheGetIntValueParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(8, 0)
   ];
 
-  SmallCacheGetIntValueParams() : super(kVersions.last.size);
+  _SmallCacheGetIntValueParams() : super(kVersions.last.size);
 
-  static SmallCacheGetIntValueParams deserialize(bindings.Message message) {
+  static _SmallCacheGetIntValueParams deserialize(bindings.Message message) {
     var decoder = new bindings.Decoder(message);
     var result = decode(decoder);
     if (decoder.excessHandles != null) {
@@ -1188,11 +1188,11 @@ class SmallCacheGetIntValueParams extends bindings.Struct {
     return result;
   }
 
-  static SmallCacheGetIntValueParams decode(bindings.Decoder decoder0) {
+  static _SmallCacheGetIntValueParams decode(bindings.Decoder decoder0) {
     if (decoder0 == null) {
       return null;
     }
-    SmallCacheGetIntValueParams result = new SmallCacheGetIntValueParams();
+    _SmallCacheGetIntValueParams result = new _SmallCacheGetIntValueParams();
 
     var mainDataHeader = decoder0.decodeStructDataHeader();
     if (mainDataHeader.version <= kVersions.last.version) {
@@ -1220,7 +1220,7 @@ class SmallCacheGetIntValueParams extends bindings.Struct {
   }
 
   String toString() {
-    return "SmallCacheGetIntValueParams("")";
+    return "_SmallCacheGetIntValueParams("")";
   }
 
   Map toJson() {
@@ -1297,15 +1297,15 @@ class SmallCacheGetIntValueResponseParams extends bindings.Struct {
 }
 
 
-class UnionInterfaceEchoParams extends bindings.Struct {
+class _UnionInterfaceEchoParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(24, 0)
   ];
   PodUnion inVal = null;
 
-  UnionInterfaceEchoParams() : super(kVersions.last.size);
+  _UnionInterfaceEchoParams() : super(kVersions.last.size);
 
-  static UnionInterfaceEchoParams deserialize(bindings.Message message) {
+  static _UnionInterfaceEchoParams deserialize(bindings.Message message) {
     var decoder = new bindings.Decoder(message);
     var result = decode(decoder);
     if (decoder.excessHandles != null) {
@@ -1314,11 +1314,11 @@ class UnionInterfaceEchoParams extends bindings.Struct {
     return result;
   }
 
-  static UnionInterfaceEchoParams decode(bindings.Decoder decoder0) {
+  static _UnionInterfaceEchoParams decode(bindings.Decoder decoder0) {
     if (decoder0 == null) {
       return null;
     }
-    UnionInterfaceEchoParams result = new UnionInterfaceEchoParams();
+    _UnionInterfaceEchoParams result = new _UnionInterfaceEchoParams();
 
     var mainDataHeader = decoder0.decodeStructDataHeader();
     if (mainDataHeader.version <= kVersions.last.version) {
@@ -1356,7 +1356,7 @@ class UnionInterfaceEchoParams extends bindings.Struct {
   }
 
   String toString() {
-    return "UnionInterfaceEchoParams("
+    return "_UnionInterfaceEchoParams("
            "inVal: $inVal" ")";
   }
 
@@ -2871,37 +2871,34 @@ class NewUnion extends bindings.Union {
     return result;
   }
 }
-const int kSmallCache_setIntValue_name = 0;
-const int kSmallCache_getIntValue_name = 1;
-const String SmallCacheName = null;
+const int _SmallCache_setIntValueName = 0;
+const int _SmallCache_getIntValueName = 1;
 
 abstract class SmallCache {
+  static const String serviceName = null;
   void setIntValue(int intValue);
   dynamic getIntValue([Function responseFactory = null]);
-
 }
 
 
-class SmallCacheProxyImpl extends bindings.Proxy {
-  SmallCacheProxyImpl.fromEndpoint(
+class _SmallCacheProxyImpl extends bindings.Proxy {
+  _SmallCacheProxyImpl.fromEndpoint(
       core.MojoMessagePipeEndpoint endpoint) : super.fromEndpoint(endpoint);
 
-  SmallCacheProxyImpl.fromHandle(core.MojoHandle handle) :
+  _SmallCacheProxyImpl.fromHandle(core.MojoHandle handle) :
       super.fromHandle(handle);
 
-  SmallCacheProxyImpl.unbound() : super.unbound();
+  _SmallCacheProxyImpl.unbound() : super.unbound();
 
-  static SmallCacheProxyImpl newFromEndpoint(
+  static _SmallCacheProxyImpl newFromEndpoint(
       core.MojoMessagePipeEndpoint endpoint) {
-    assert(endpoint.setDescription("For SmallCacheProxyImpl"));
-    return new SmallCacheProxyImpl.fromEndpoint(endpoint);
+    assert(endpoint.setDescription("For _SmallCacheProxyImpl"));
+    return new _SmallCacheProxyImpl.fromEndpoint(endpoint);
   }
-
-  String get name => SmallCacheName;
 
   void handleResponse(bindings.ServiceMessage message) {
     switch (message.header.type) {
-      case kSmallCache_getIntValue_name:
+      case _SmallCache_getIntValueName:
         var r = SmallCacheGetIntValueResponseParams.deserialize(
             message.payload);
         if (!message.header.hasRequestId) {
@@ -2930,13 +2927,13 @@ class SmallCacheProxyImpl extends bindings.Proxy {
 
   String toString() {
     var superString = super.toString();
-    return "SmallCacheProxyImpl($superString)";
+    return "_SmallCacheProxyImpl($superString)";
   }
 }
 
 
 class _SmallCacheProxyCalls implements SmallCache {
-  SmallCacheProxyImpl _proxyImpl;
+  _SmallCacheProxyImpl _proxyImpl;
 
   _SmallCacheProxyCalls(this._proxyImpl);
     void setIntValue(int intValue) {
@@ -2944,16 +2941,15 @@ class _SmallCacheProxyCalls implements SmallCache {
         _proxyImpl.proxyError("The Proxy is closed.");
         return;
       }
-      var params = new SmallCacheSetIntValueParams();
+      var params = new _SmallCacheSetIntValueParams();
       params.intValue = intValue;
-      _proxyImpl.sendMessage(params, kSmallCache_setIntValue_name);
+      _proxyImpl.sendMessage(params, _SmallCache_setIntValueName);
     }
-  
     dynamic getIntValue([Function responseFactory = null]) {
-      var params = new SmallCacheGetIntValueParams();
+      var params = new _SmallCacheGetIntValueParams();
       return _proxyImpl.sendMessageWithRequestId(
           params,
-          kSmallCache_getIntValue_name,
+          _SmallCache_getIntValueName,
           -1,
           bindings.MessageHeader.kMessageExpectsResponse);
     }
@@ -2963,25 +2959,24 @@ class _SmallCacheProxyCalls implements SmallCache {
 class SmallCacheProxy implements bindings.ProxyBase {
   final bindings.Proxy impl;
   SmallCache ptr;
-  final String name = SmallCacheName;
 
-  SmallCacheProxy(SmallCacheProxyImpl proxyImpl) :
+  SmallCacheProxy(_SmallCacheProxyImpl proxyImpl) :
       impl = proxyImpl,
       ptr = new _SmallCacheProxyCalls(proxyImpl);
 
   SmallCacheProxy.fromEndpoint(
       core.MojoMessagePipeEndpoint endpoint) :
-      impl = new SmallCacheProxyImpl.fromEndpoint(endpoint) {
+      impl = new _SmallCacheProxyImpl.fromEndpoint(endpoint) {
     ptr = new _SmallCacheProxyCalls(impl);
   }
 
   SmallCacheProxy.fromHandle(core.MojoHandle handle) :
-      impl = new SmallCacheProxyImpl.fromHandle(handle) {
+      impl = new _SmallCacheProxyImpl.fromHandle(handle) {
     ptr = new _SmallCacheProxyCalls(impl);
   }
 
   SmallCacheProxy.unbound() :
-      impl = new SmallCacheProxyImpl.unbound() {
+      impl = new _SmallCacheProxyImpl.unbound() {
     ptr = new _SmallCacheProxyCalls(impl);
   }
 
@@ -2997,6 +2992,8 @@ class SmallCacheProxy implements bindings.ProxyBase {
     assert(endpoint.setDescription("For SmallCacheProxy"));
     return new SmallCacheProxy.fromEndpoint(endpoint);
   }
+
+  String get serviceName => SmallCache.serviceName;
 
   Future close({bool immediate: false}) => impl.close(immediate: immediate);
 
@@ -3036,8 +3033,6 @@ class SmallCacheStub extends bindings.Stub {
     return new SmallCacheStub.fromEndpoint(endpoint);
   }
 
-  static const String name = SmallCacheName;
-
 
   SmallCacheGetIntValueResponseParams _SmallCacheGetIntValueResponseParamsFactory(int intValue) {
     var mojo_factory_result = new SmallCacheGetIntValueResponseParams();
@@ -3053,13 +3048,13 @@ class SmallCacheStub extends bindings.Stub {
     }
     assert(_impl != null);
     switch (message.header.type) {
-      case kSmallCache_setIntValue_name:
-        var params = SmallCacheSetIntValueParams.deserialize(
+      case _SmallCache_setIntValueName:
+        var params = _SmallCacheSetIntValueParams.deserialize(
             message.payload);
         _impl.setIntValue(params.intValue);
         break;
-      case kSmallCache_getIntValue_name:
-        var params = SmallCacheGetIntValueParams.deserialize(
+      case _SmallCache_getIntValueName:
+        var params = _SmallCacheGetIntValueParams.deserialize(
             message.payload);
         var response = _impl.getIntValue(_SmallCacheGetIntValueResponseParamsFactory);
         if (response is Future) {
@@ -3067,7 +3062,7 @@ class SmallCacheStub extends bindings.Stub {
             if (response != null) {
               return buildResponseWithId(
                   response,
-                  kSmallCache_getIntValue_name,
+                  _SmallCache_getIntValueName,
                   message.header.requestId,
                   bindings.MessageHeader.kMessageIsResponse);
             }
@@ -3075,7 +3070,7 @@ class SmallCacheStub extends bindings.Stub {
         } else if (response != null) {
           return buildResponseWithId(
               response,
-              kSmallCache_getIntValue_name,
+              _SmallCache_getIntValueName,
               message.header.requestId,
               bindings.MessageHeader.kMessageIsResponse);
         }
@@ -3101,35 +3096,32 @@ class SmallCacheStub extends bindings.Stub {
   int get version => 0;
 }
 
-const int kUnionInterface_echo_name = 0;
-const String UnionInterfaceName = null;
+const int _UnionInterface_echoName = 0;
 
 abstract class UnionInterface {
+  static const String serviceName = null;
   dynamic echo(PodUnion inVal,[Function responseFactory = null]);
-
 }
 
 
-class UnionInterfaceProxyImpl extends bindings.Proxy {
-  UnionInterfaceProxyImpl.fromEndpoint(
+class _UnionInterfaceProxyImpl extends bindings.Proxy {
+  _UnionInterfaceProxyImpl.fromEndpoint(
       core.MojoMessagePipeEndpoint endpoint) : super.fromEndpoint(endpoint);
 
-  UnionInterfaceProxyImpl.fromHandle(core.MojoHandle handle) :
+  _UnionInterfaceProxyImpl.fromHandle(core.MojoHandle handle) :
       super.fromHandle(handle);
 
-  UnionInterfaceProxyImpl.unbound() : super.unbound();
+  _UnionInterfaceProxyImpl.unbound() : super.unbound();
 
-  static UnionInterfaceProxyImpl newFromEndpoint(
+  static _UnionInterfaceProxyImpl newFromEndpoint(
       core.MojoMessagePipeEndpoint endpoint) {
-    assert(endpoint.setDescription("For UnionInterfaceProxyImpl"));
-    return new UnionInterfaceProxyImpl.fromEndpoint(endpoint);
+    assert(endpoint.setDescription("For _UnionInterfaceProxyImpl"));
+    return new _UnionInterfaceProxyImpl.fromEndpoint(endpoint);
   }
-
-  String get name => UnionInterfaceName;
 
   void handleResponse(bindings.ServiceMessage message) {
     switch (message.header.type) {
-      case kUnionInterface_echo_name:
+      case _UnionInterface_echoName:
         var r = UnionInterfaceEchoResponseParams.deserialize(
             message.payload);
         if (!message.header.hasRequestId) {
@@ -3158,21 +3150,21 @@ class UnionInterfaceProxyImpl extends bindings.Proxy {
 
   String toString() {
     var superString = super.toString();
-    return "UnionInterfaceProxyImpl($superString)";
+    return "_UnionInterfaceProxyImpl($superString)";
   }
 }
 
 
 class _UnionInterfaceProxyCalls implements UnionInterface {
-  UnionInterfaceProxyImpl _proxyImpl;
+  _UnionInterfaceProxyImpl _proxyImpl;
 
   _UnionInterfaceProxyCalls(this._proxyImpl);
     dynamic echo(PodUnion inVal,[Function responseFactory = null]) {
-      var params = new UnionInterfaceEchoParams();
+      var params = new _UnionInterfaceEchoParams();
       params.inVal = inVal;
       return _proxyImpl.sendMessageWithRequestId(
           params,
-          kUnionInterface_echo_name,
+          _UnionInterface_echoName,
           -1,
           bindings.MessageHeader.kMessageExpectsResponse);
     }
@@ -3182,25 +3174,24 @@ class _UnionInterfaceProxyCalls implements UnionInterface {
 class UnionInterfaceProxy implements bindings.ProxyBase {
   final bindings.Proxy impl;
   UnionInterface ptr;
-  final String name = UnionInterfaceName;
 
-  UnionInterfaceProxy(UnionInterfaceProxyImpl proxyImpl) :
+  UnionInterfaceProxy(_UnionInterfaceProxyImpl proxyImpl) :
       impl = proxyImpl,
       ptr = new _UnionInterfaceProxyCalls(proxyImpl);
 
   UnionInterfaceProxy.fromEndpoint(
       core.MojoMessagePipeEndpoint endpoint) :
-      impl = new UnionInterfaceProxyImpl.fromEndpoint(endpoint) {
+      impl = new _UnionInterfaceProxyImpl.fromEndpoint(endpoint) {
     ptr = new _UnionInterfaceProxyCalls(impl);
   }
 
   UnionInterfaceProxy.fromHandle(core.MojoHandle handle) :
-      impl = new UnionInterfaceProxyImpl.fromHandle(handle) {
+      impl = new _UnionInterfaceProxyImpl.fromHandle(handle) {
     ptr = new _UnionInterfaceProxyCalls(impl);
   }
 
   UnionInterfaceProxy.unbound() :
-      impl = new UnionInterfaceProxyImpl.unbound() {
+      impl = new _UnionInterfaceProxyImpl.unbound() {
     ptr = new _UnionInterfaceProxyCalls(impl);
   }
 
@@ -3216,6 +3207,8 @@ class UnionInterfaceProxy implements bindings.ProxyBase {
     assert(endpoint.setDescription("For UnionInterfaceProxy"));
     return new UnionInterfaceProxy.fromEndpoint(endpoint);
   }
+
+  String get serviceName => UnionInterface.serviceName;
 
   Future close({bool immediate: false}) => impl.close(immediate: immediate);
 
@@ -3255,8 +3248,6 @@ class UnionInterfaceStub extends bindings.Stub {
     return new UnionInterfaceStub.fromEndpoint(endpoint);
   }
 
-  static const String name = UnionInterfaceName;
-
 
   UnionInterfaceEchoResponseParams _UnionInterfaceEchoResponseParamsFactory(PodUnion outVal) {
     var mojo_factory_result = new UnionInterfaceEchoResponseParams();
@@ -3272,8 +3263,8 @@ class UnionInterfaceStub extends bindings.Stub {
     }
     assert(_impl != null);
     switch (message.header.type) {
-      case kUnionInterface_echo_name:
-        var params = UnionInterfaceEchoParams.deserialize(
+      case _UnionInterface_echoName:
+        var params = _UnionInterfaceEchoParams.deserialize(
             message.payload);
         var response = _impl.echo(params.inVal,_UnionInterfaceEchoResponseParamsFactory);
         if (response is Future) {
@@ -3281,7 +3272,7 @@ class UnionInterfaceStub extends bindings.Stub {
             if (response != null) {
               return buildResponseWithId(
                   response,
-                  kUnionInterface_echo_name,
+                  _UnionInterface_echoName,
                   message.header.requestId,
                   bindings.MessageHeader.kMessageIsResponse);
             }
@@ -3289,7 +3280,7 @@ class UnionInterfaceStub extends bindings.Stub {
         } else if (response != null) {
           return buildResponseWithId(
               response,
-              kUnionInterface_echo_name,
+              _UnionInterface_echoName,
               message.header.requestId,
               bindings.MessageHeader.kMessageIsResponse);
         }

@@ -13,14 +13,14 @@ import 'package:mojo_services/mojo/ui/views.mojom.dart' as views_mojom;
 
 
 
-class ViewTreeOnLayoutParams extends bindings.Struct {
+class _ViewTreeOnLayoutParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(8, 0)
   ];
 
-  ViewTreeOnLayoutParams() : super(kVersions.last.size);
+  _ViewTreeOnLayoutParams() : super(kVersions.last.size);
 
-  static ViewTreeOnLayoutParams deserialize(bindings.Message message) {
+  static _ViewTreeOnLayoutParams deserialize(bindings.Message message) {
     var decoder = new bindings.Decoder(message);
     var result = decode(decoder);
     if (decoder.excessHandles != null) {
@@ -29,11 +29,11 @@ class ViewTreeOnLayoutParams extends bindings.Struct {
     return result;
   }
 
-  static ViewTreeOnLayoutParams decode(bindings.Decoder decoder0) {
+  static _ViewTreeOnLayoutParams decode(bindings.Decoder decoder0) {
     if (decoder0 == null) {
       return null;
     }
-    ViewTreeOnLayoutParams result = new ViewTreeOnLayoutParams();
+    _ViewTreeOnLayoutParams result = new _ViewTreeOnLayoutParams();
 
     var mainDataHeader = decoder0.decodeStructDataHeader();
     if (mainDataHeader.version <= kVersions.last.version) {
@@ -61,7 +61,7 @@ class ViewTreeOnLayoutParams extends bindings.Struct {
   }
 
   String toString() {
-    return "ViewTreeOnLayoutParams("")";
+    return "_ViewTreeOnLayoutParams("")";
   }
 
   Map toJson() {
@@ -129,15 +129,15 @@ class ViewTreeOnLayoutResponseParams extends bindings.Struct {
 }
 
 
-class ViewTreeOnRootUnavailableParams extends bindings.Struct {
+class _ViewTreeOnRootUnavailableParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(16, 0)
   ];
   int rootKey = 0;
 
-  ViewTreeOnRootUnavailableParams() : super(kVersions.last.size);
+  _ViewTreeOnRootUnavailableParams() : super(kVersions.last.size);
 
-  static ViewTreeOnRootUnavailableParams deserialize(bindings.Message message) {
+  static _ViewTreeOnRootUnavailableParams deserialize(bindings.Message message) {
     var decoder = new bindings.Decoder(message);
     var result = decode(decoder);
     if (decoder.excessHandles != null) {
@@ -146,11 +146,11 @@ class ViewTreeOnRootUnavailableParams extends bindings.Struct {
     return result;
   }
 
-  static ViewTreeOnRootUnavailableParams decode(bindings.Decoder decoder0) {
+  static _ViewTreeOnRootUnavailableParams decode(bindings.Decoder decoder0) {
     if (decoder0 == null) {
       return null;
     }
-    ViewTreeOnRootUnavailableParams result = new ViewTreeOnRootUnavailableParams();
+    _ViewTreeOnRootUnavailableParams result = new _ViewTreeOnRootUnavailableParams();
 
     var mainDataHeader = decoder0.decodeStructDataHeader();
     if (mainDataHeader.version <= kVersions.last.version) {
@@ -184,7 +184,7 @@ class ViewTreeOnRootUnavailableParams extends bindings.Struct {
   }
 
   String toString() {
-    return "ViewTreeOnRootUnavailableParams("
+    return "_ViewTreeOnRootUnavailableParams("
            "rootKey: $rootKey" ")";
   }
 
@@ -254,14 +254,14 @@ class ViewTreeOnRootUnavailableResponseParams extends bindings.Struct {
 }
 
 
-class ViewTreeHostRequestLayoutParams extends bindings.Struct {
+class _ViewTreeHostRequestLayoutParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(8, 0)
   ];
 
-  ViewTreeHostRequestLayoutParams() : super(kVersions.last.size);
+  _ViewTreeHostRequestLayoutParams() : super(kVersions.last.size);
 
-  static ViewTreeHostRequestLayoutParams deserialize(bindings.Message message) {
+  static _ViewTreeHostRequestLayoutParams deserialize(bindings.Message message) {
     var decoder = new bindings.Decoder(message);
     var result = decode(decoder);
     if (decoder.excessHandles != null) {
@@ -270,11 +270,11 @@ class ViewTreeHostRequestLayoutParams extends bindings.Struct {
     return result;
   }
 
-  static ViewTreeHostRequestLayoutParams decode(bindings.Decoder decoder0) {
+  static _ViewTreeHostRequestLayoutParams decode(bindings.Decoder decoder0) {
     if (decoder0 == null) {
       return null;
     }
-    ViewTreeHostRequestLayoutParams result = new ViewTreeHostRequestLayoutParams();
+    _ViewTreeHostRequestLayoutParams result = new _ViewTreeHostRequestLayoutParams();
 
     var mainDataHeader = decoder0.decodeStructDataHeader();
     if (mainDataHeader.version <= kVersions.last.version) {
@@ -302,7 +302,7 @@ class ViewTreeHostRequestLayoutParams extends bindings.Struct {
   }
 
   String toString() {
-    return "ViewTreeHostRequestLayoutParams("")";
+    return "_ViewTreeHostRequestLayoutParams("")";
   }
 
   Map toJson() {
@@ -312,16 +312,16 @@ class ViewTreeHostRequestLayoutParams extends bindings.Struct {
 }
 
 
-class ViewTreeHostSetRootParams extends bindings.Struct {
+class _ViewTreeHostSetRootParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(24, 0)
   ];
   int rootKey = 0;
   views_mojom.ViewToken rootViewToken = null;
 
-  ViewTreeHostSetRootParams() : super(kVersions.last.size);
+  _ViewTreeHostSetRootParams() : super(kVersions.last.size);
 
-  static ViewTreeHostSetRootParams deserialize(bindings.Message message) {
+  static _ViewTreeHostSetRootParams deserialize(bindings.Message message) {
     var decoder = new bindings.Decoder(message);
     var result = decode(decoder);
     if (decoder.excessHandles != null) {
@@ -330,11 +330,11 @@ class ViewTreeHostSetRootParams extends bindings.Struct {
     return result;
   }
 
-  static ViewTreeHostSetRootParams decode(bindings.Decoder decoder0) {
+  static _ViewTreeHostSetRootParams decode(bindings.Decoder decoder0) {
     if (decoder0 == null) {
       return null;
     }
-    ViewTreeHostSetRootParams result = new ViewTreeHostSetRootParams();
+    _ViewTreeHostSetRootParams result = new _ViewTreeHostSetRootParams();
 
     var mainDataHeader = decoder0.decodeStructDataHeader();
     if (mainDataHeader.version <= kVersions.last.version) {
@@ -375,7 +375,7 @@ class ViewTreeHostSetRootParams extends bindings.Struct {
   }
 
   String toString() {
-    return "ViewTreeHostSetRootParams("
+    return "_ViewTreeHostSetRootParams("
            "rootKey: $rootKey" ", "
            "rootViewToken: $rootViewToken" ")";
   }
@@ -389,14 +389,14 @@ class ViewTreeHostSetRootParams extends bindings.Struct {
 }
 
 
-class ViewTreeHostResetRootParams extends bindings.Struct {
+class _ViewTreeHostResetRootParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(8, 0)
   ];
 
-  ViewTreeHostResetRootParams() : super(kVersions.last.size);
+  _ViewTreeHostResetRootParams() : super(kVersions.last.size);
 
-  static ViewTreeHostResetRootParams deserialize(bindings.Message message) {
+  static _ViewTreeHostResetRootParams deserialize(bindings.Message message) {
     var decoder = new bindings.Decoder(message);
     var result = decode(decoder);
     if (decoder.excessHandles != null) {
@@ -405,11 +405,11 @@ class ViewTreeHostResetRootParams extends bindings.Struct {
     return result;
   }
 
-  static ViewTreeHostResetRootParams decode(bindings.Decoder decoder0) {
+  static _ViewTreeHostResetRootParams decode(bindings.Decoder decoder0) {
     if (decoder0 == null) {
       return null;
     }
-    ViewTreeHostResetRootParams result = new ViewTreeHostResetRootParams();
+    _ViewTreeHostResetRootParams result = new _ViewTreeHostResetRootParams();
 
     var mainDataHeader = decoder0.decodeStructDataHeader();
     if (mainDataHeader.version <= kVersions.last.version) {
@@ -437,7 +437,7 @@ class ViewTreeHostResetRootParams extends bindings.Struct {
   }
 
   String toString() {
-    return "ViewTreeHostResetRootParams("")";
+    return "_ViewTreeHostResetRootParams("")";
   }
 
   Map toJson() {
@@ -447,15 +447,15 @@ class ViewTreeHostResetRootParams extends bindings.Struct {
 }
 
 
-class ViewTreeHostLayoutRootParams extends bindings.Struct {
+class _ViewTreeHostLayoutRootParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(16, 0)
   ];
   layouts_mojom.ViewLayoutParams rootLayoutParams = null;
 
-  ViewTreeHostLayoutRootParams() : super(kVersions.last.size);
+  _ViewTreeHostLayoutRootParams() : super(kVersions.last.size);
 
-  static ViewTreeHostLayoutRootParams deserialize(bindings.Message message) {
+  static _ViewTreeHostLayoutRootParams deserialize(bindings.Message message) {
     var decoder = new bindings.Decoder(message);
     var result = decode(decoder);
     if (decoder.excessHandles != null) {
@@ -464,11 +464,11 @@ class ViewTreeHostLayoutRootParams extends bindings.Struct {
     return result;
   }
 
-  static ViewTreeHostLayoutRootParams decode(bindings.Decoder decoder0) {
+  static _ViewTreeHostLayoutRootParams decode(bindings.Decoder decoder0) {
     if (decoder0 == null) {
       return null;
     }
-    ViewTreeHostLayoutRootParams result = new ViewTreeHostLayoutRootParams();
+    _ViewTreeHostLayoutRootParams result = new _ViewTreeHostLayoutRootParams();
 
     var mainDataHeader = decoder0.decodeStructDataHeader();
     if (mainDataHeader.version <= kVersions.last.version) {
@@ -503,7 +503,7 @@ class ViewTreeHostLayoutRootParams extends bindings.Struct {
   }
 
   String toString() {
-    return "ViewTreeHostLayoutRootParams("
+    return "_ViewTreeHostLayoutRootParams("
            "rootLayoutParams: $rootLayoutParams" ")";
   }
 
@@ -582,37 +582,34 @@ class ViewTreeHostLayoutRootResponseParams extends bindings.Struct {
   }
 }
 
-const int kViewTree_onLayout_name = 0;
-const int kViewTree_onRootUnavailable_name = 1;
-const String ViewTreeName = null;
+const int _ViewTree_onLayoutName = 0;
+const int _ViewTree_onRootUnavailableName = 1;
 
 abstract class ViewTree {
+  static const String serviceName = null;
   dynamic onLayout([Function responseFactory = null]);
   dynamic onRootUnavailable(int rootKey,[Function responseFactory = null]);
-
 }
 
 
-class ViewTreeProxyImpl extends bindings.Proxy {
-  ViewTreeProxyImpl.fromEndpoint(
+class _ViewTreeProxyImpl extends bindings.Proxy {
+  _ViewTreeProxyImpl.fromEndpoint(
       core.MojoMessagePipeEndpoint endpoint) : super.fromEndpoint(endpoint);
 
-  ViewTreeProxyImpl.fromHandle(core.MojoHandle handle) :
+  _ViewTreeProxyImpl.fromHandle(core.MojoHandle handle) :
       super.fromHandle(handle);
 
-  ViewTreeProxyImpl.unbound() : super.unbound();
+  _ViewTreeProxyImpl.unbound() : super.unbound();
 
-  static ViewTreeProxyImpl newFromEndpoint(
+  static _ViewTreeProxyImpl newFromEndpoint(
       core.MojoMessagePipeEndpoint endpoint) {
-    assert(endpoint.setDescription("For ViewTreeProxyImpl"));
-    return new ViewTreeProxyImpl.fromEndpoint(endpoint);
+    assert(endpoint.setDescription("For _ViewTreeProxyImpl"));
+    return new _ViewTreeProxyImpl.fromEndpoint(endpoint);
   }
-
-  String get name => ViewTreeName;
 
   void handleResponse(bindings.ServiceMessage message) {
     switch (message.header.type) {
-      case kViewTree_onLayout_name:
+      case _ViewTree_onLayoutName:
         var r = ViewTreeOnLayoutResponseParams.deserialize(
             message.payload);
         if (!message.header.hasRequestId) {
@@ -632,7 +629,7 @@ class ViewTreeProxyImpl extends bindings.Proxy {
         }
         c.complete(r);
         break;
-      case kViewTree_onRootUnavailable_name:
+      case _ViewTree_onRootUnavailableName:
         var r = ViewTreeOnRootUnavailableResponseParams.deserialize(
             message.payload);
         if (!message.header.hasRequestId) {
@@ -661,29 +658,29 @@ class ViewTreeProxyImpl extends bindings.Proxy {
 
   String toString() {
     var superString = super.toString();
-    return "ViewTreeProxyImpl($superString)";
+    return "_ViewTreeProxyImpl($superString)";
   }
 }
 
 
 class _ViewTreeProxyCalls implements ViewTree {
-  ViewTreeProxyImpl _proxyImpl;
+  _ViewTreeProxyImpl _proxyImpl;
 
   _ViewTreeProxyCalls(this._proxyImpl);
     dynamic onLayout([Function responseFactory = null]) {
-      var params = new ViewTreeOnLayoutParams();
+      var params = new _ViewTreeOnLayoutParams();
       return _proxyImpl.sendMessageWithRequestId(
           params,
-          kViewTree_onLayout_name,
+          _ViewTree_onLayoutName,
           -1,
           bindings.MessageHeader.kMessageExpectsResponse);
     }
     dynamic onRootUnavailable(int rootKey,[Function responseFactory = null]) {
-      var params = new ViewTreeOnRootUnavailableParams();
+      var params = new _ViewTreeOnRootUnavailableParams();
       params.rootKey = rootKey;
       return _proxyImpl.sendMessageWithRequestId(
           params,
-          kViewTree_onRootUnavailable_name,
+          _ViewTree_onRootUnavailableName,
           -1,
           bindings.MessageHeader.kMessageExpectsResponse);
     }
@@ -693,25 +690,24 @@ class _ViewTreeProxyCalls implements ViewTree {
 class ViewTreeProxy implements bindings.ProxyBase {
   final bindings.Proxy impl;
   ViewTree ptr;
-  final String name = ViewTreeName;
 
-  ViewTreeProxy(ViewTreeProxyImpl proxyImpl) :
+  ViewTreeProxy(_ViewTreeProxyImpl proxyImpl) :
       impl = proxyImpl,
       ptr = new _ViewTreeProxyCalls(proxyImpl);
 
   ViewTreeProxy.fromEndpoint(
       core.MojoMessagePipeEndpoint endpoint) :
-      impl = new ViewTreeProxyImpl.fromEndpoint(endpoint) {
+      impl = new _ViewTreeProxyImpl.fromEndpoint(endpoint) {
     ptr = new _ViewTreeProxyCalls(impl);
   }
 
   ViewTreeProxy.fromHandle(core.MojoHandle handle) :
-      impl = new ViewTreeProxyImpl.fromHandle(handle) {
+      impl = new _ViewTreeProxyImpl.fromHandle(handle) {
     ptr = new _ViewTreeProxyCalls(impl);
   }
 
   ViewTreeProxy.unbound() :
-      impl = new ViewTreeProxyImpl.unbound() {
+      impl = new _ViewTreeProxyImpl.unbound() {
     ptr = new _ViewTreeProxyCalls(impl);
   }
 
@@ -727,6 +723,8 @@ class ViewTreeProxy implements bindings.ProxyBase {
     assert(endpoint.setDescription("For ViewTreeProxy"));
     return new ViewTreeProxy.fromEndpoint(endpoint);
   }
+
+  String get serviceName => ViewTree.serviceName;
 
   Future close({bool immediate: false}) => impl.close(immediate: immediate);
 
@@ -766,8 +764,6 @@ class ViewTreeStub extends bindings.Stub {
     return new ViewTreeStub.fromEndpoint(endpoint);
   }
 
-  static const String name = ViewTreeName;
-
 
   ViewTreeOnLayoutResponseParams _ViewTreeOnLayoutResponseParamsFactory() {
     var mojo_factory_result = new ViewTreeOnLayoutResponseParams();
@@ -786,8 +782,8 @@ class ViewTreeStub extends bindings.Stub {
     }
     assert(_impl != null);
     switch (message.header.type) {
-      case kViewTree_onLayout_name:
-        var params = ViewTreeOnLayoutParams.deserialize(
+      case _ViewTree_onLayoutName:
+        var params = _ViewTreeOnLayoutParams.deserialize(
             message.payload);
         var response = _impl.onLayout(_ViewTreeOnLayoutResponseParamsFactory);
         if (response is Future) {
@@ -795,7 +791,7 @@ class ViewTreeStub extends bindings.Stub {
             if (response != null) {
               return buildResponseWithId(
                   response,
-                  kViewTree_onLayout_name,
+                  _ViewTree_onLayoutName,
                   message.header.requestId,
                   bindings.MessageHeader.kMessageIsResponse);
             }
@@ -803,13 +799,13 @@ class ViewTreeStub extends bindings.Stub {
         } else if (response != null) {
           return buildResponseWithId(
               response,
-              kViewTree_onLayout_name,
+              _ViewTree_onLayoutName,
               message.header.requestId,
               bindings.MessageHeader.kMessageIsResponse);
         }
         break;
-      case kViewTree_onRootUnavailable_name:
-        var params = ViewTreeOnRootUnavailableParams.deserialize(
+      case _ViewTree_onRootUnavailableName:
+        var params = _ViewTreeOnRootUnavailableParams.deserialize(
             message.payload);
         var response = _impl.onRootUnavailable(params.rootKey,_ViewTreeOnRootUnavailableResponseParamsFactory);
         if (response is Future) {
@@ -817,7 +813,7 @@ class ViewTreeStub extends bindings.Stub {
             if (response != null) {
               return buildResponseWithId(
                   response,
-                  kViewTree_onRootUnavailable_name,
+                  _ViewTree_onRootUnavailableName,
                   message.header.requestId,
                   bindings.MessageHeader.kMessageIsResponse);
             }
@@ -825,7 +821,7 @@ class ViewTreeStub extends bindings.Stub {
         } else if (response != null) {
           return buildResponseWithId(
               response,
-              kViewTree_onRootUnavailable_name,
+              _ViewTree_onRootUnavailableName,
               message.header.requestId,
               bindings.MessageHeader.kMessageIsResponse);
         }
@@ -851,41 +847,38 @@ class ViewTreeStub extends bindings.Stub {
   int get version => 0;
 }
 
-const int kViewTreeHost_requestLayout_name = 0;
-const int kViewTreeHost_setRoot_name = 1;
-const int kViewTreeHost_resetRoot_name = 2;
-const int kViewTreeHost_layoutRoot_name = 3;
-const String ViewTreeHostName = null;
+const int _ViewTreeHost_requestLayoutName = 0;
+const int _ViewTreeHost_setRootName = 1;
+const int _ViewTreeHost_resetRootName = 2;
+const int _ViewTreeHost_layoutRootName = 3;
 
 abstract class ViewTreeHost {
+  static const String serviceName = null;
   void requestLayout();
   void setRoot(int rootKey, views_mojom.ViewToken rootViewToken);
   void resetRoot();
   dynamic layoutRoot(layouts_mojom.ViewLayoutParams rootLayoutParams,[Function responseFactory = null]);
-
 }
 
 
-class ViewTreeHostProxyImpl extends bindings.Proxy {
-  ViewTreeHostProxyImpl.fromEndpoint(
+class _ViewTreeHostProxyImpl extends bindings.Proxy {
+  _ViewTreeHostProxyImpl.fromEndpoint(
       core.MojoMessagePipeEndpoint endpoint) : super.fromEndpoint(endpoint);
 
-  ViewTreeHostProxyImpl.fromHandle(core.MojoHandle handle) :
+  _ViewTreeHostProxyImpl.fromHandle(core.MojoHandle handle) :
       super.fromHandle(handle);
 
-  ViewTreeHostProxyImpl.unbound() : super.unbound();
+  _ViewTreeHostProxyImpl.unbound() : super.unbound();
 
-  static ViewTreeHostProxyImpl newFromEndpoint(
+  static _ViewTreeHostProxyImpl newFromEndpoint(
       core.MojoMessagePipeEndpoint endpoint) {
-    assert(endpoint.setDescription("For ViewTreeHostProxyImpl"));
-    return new ViewTreeHostProxyImpl.fromEndpoint(endpoint);
+    assert(endpoint.setDescription("For _ViewTreeHostProxyImpl"));
+    return new _ViewTreeHostProxyImpl.fromEndpoint(endpoint);
   }
-
-  String get name => ViewTreeHostName;
 
   void handleResponse(bindings.ServiceMessage message) {
     switch (message.header.type) {
-      case kViewTreeHost_layoutRoot_name:
+      case _ViewTreeHost_layoutRootName:
         var r = ViewTreeHostLayoutRootResponseParams.deserialize(
             message.payload);
         if (!message.header.hasRequestId) {
@@ -914,13 +907,13 @@ class ViewTreeHostProxyImpl extends bindings.Proxy {
 
   String toString() {
     var superString = super.toString();
-    return "ViewTreeHostProxyImpl($superString)";
+    return "_ViewTreeHostProxyImpl($superString)";
   }
 }
 
 
 class _ViewTreeHostProxyCalls implements ViewTreeHost {
-  ViewTreeHostProxyImpl _proxyImpl;
+  _ViewTreeHostProxyImpl _proxyImpl;
 
   _ViewTreeHostProxyCalls(this._proxyImpl);
     void requestLayout() {
@@ -928,36 +921,33 @@ class _ViewTreeHostProxyCalls implements ViewTreeHost {
         _proxyImpl.proxyError("The Proxy is closed.");
         return;
       }
-      var params = new ViewTreeHostRequestLayoutParams();
-      _proxyImpl.sendMessage(params, kViewTreeHost_requestLayout_name);
+      var params = new _ViewTreeHostRequestLayoutParams();
+      _proxyImpl.sendMessage(params, _ViewTreeHost_requestLayoutName);
     }
-  
     void setRoot(int rootKey, views_mojom.ViewToken rootViewToken) {
       if (!_proxyImpl.isBound) {
         _proxyImpl.proxyError("The Proxy is closed.");
         return;
       }
-      var params = new ViewTreeHostSetRootParams();
+      var params = new _ViewTreeHostSetRootParams();
       params.rootKey = rootKey;
       params.rootViewToken = rootViewToken;
-      _proxyImpl.sendMessage(params, kViewTreeHost_setRoot_name);
+      _proxyImpl.sendMessage(params, _ViewTreeHost_setRootName);
     }
-  
     void resetRoot() {
       if (!_proxyImpl.isBound) {
         _proxyImpl.proxyError("The Proxy is closed.");
         return;
       }
-      var params = new ViewTreeHostResetRootParams();
-      _proxyImpl.sendMessage(params, kViewTreeHost_resetRoot_name);
+      var params = new _ViewTreeHostResetRootParams();
+      _proxyImpl.sendMessage(params, _ViewTreeHost_resetRootName);
     }
-  
     dynamic layoutRoot(layouts_mojom.ViewLayoutParams rootLayoutParams,[Function responseFactory = null]) {
-      var params = new ViewTreeHostLayoutRootParams();
+      var params = new _ViewTreeHostLayoutRootParams();
       params.rootLayoutParams = rootLayoutParams;
       return _proxyImpl.sendMessageWithRequestId(
           params,
-          kViewTreeHost_layoutRoot_name,
+          _ViewTreeHost_layoutRootName,
           -1,
           bindings.MessageHeader.kMessageExpectsResponse);
     }
@@ -967,25 +957,24 @@ class _ViewTreeHostProxyCalls implements ViewTreeHost {
 class ViewTreeHostProxy implements bindings.ProxyBase {
   final bindings.Proxy impl;
   ViewTreeHost ptr;
-  final String name = ViewTreeHostName;
 
-  ViewTreeHostProxy(ViewTreeHostProxyImpl proxyImpl) :
+  ViewTreeHostProxy(_ViewTreeHostProxyImpl proxyImpl) :
       impl = proxyImpl,
       ptr = new _ViewTreeHostProxyCalls(proxyImpl);
 
   ViewTreeHostProxy.fromEndpoint(
       core.MojoMessagePipeEndpoint endpoint) :
-      impl = new ViewTreeHostProxyImpl.fromEndpoint(endpoint) {
+      impl = new _ViewTreeHostProxyImpl.fromEndpoint(endpoint) {
     ptr = new _ViewTreeHostProxyCalls(impl);
   }
 
   ViewTreeHostProxy.fromHandle(core.MojoHandle handle) :
-      impl = new ViewTreeHostProxyImpl.fromHandle(handle) {
+      impl = new _ViewTreeHostProxyImpl.fromHandle(handle) {
     ptr = new _ViewTreeHostProxyCalls(impl);
   }
 
   ViewTreeHostProxy.unbound() :
-      impl = new ViewTreeHostProxyImpl.unbound() {
+      impl = new _ViewTreeHostProxyImpl.unbound() {
     ptr = new _ViewTreeHostProxyCalls(impl);
   }
 
@@ -1001,6 +990,8 @@ class ViewTreeHostProxy implements bindings.ProxyBase {
     assert(endpoint.setDescription("For ViewTreeHostProxy"));
     return new ViewTreeHostProxy.fromEndpoint(endpoint);
   }
+
+  String get serviceName => ViewTreeHost.serviceName;
 
   Future close({bool immediate: false}) => impl.close(immediate: immediate);
 
@@ -1040,8 +1031,6 @@ class ViewTreeHostStub extends bindings.Stub {
     return new ViewTreeHostStub.fromEndpoint(endpoint);
   }
 
-  static const String name = ViewTreeHostName;
-
 
   ViewTreeHostLayoutRootResponseParams _ViewTreeHostLayoutRootResponseParamsFactory(layouts_mojom.ViewLayoutInfo info) {
     var mojo_factory_result = new ViewTreeHostLayoutRootResponseParams();
@@ -1057,23 +1046,23 @@ class ViewTreeHostStub extends bindings.Stub {
     }
     assert(_impl != null);
     switch (message.header.type) {
-      case kViewTreeHost_requestLayout_name:
-        var params = ViewTreeHostRequestLayoutParams.deserialize(
+      case _ViewTreeHost_requestLayoutName:
+        var params = _ViewTreeHostRequestLayoutParams.deserialize(
             message.payload);
         _impl.requestLayout();
         break;
-      case kViewTreeHost_setRoot_name:
-        var params = ViewTreeHostSetRootParams.deserialize(
+      case _ViewTreeHost_setRootName:
+        var params = _ViewTreeHostSetRootParams.deserialize(
             message.payload);
         _impl.setRoot(params.rootKey, params.rootViewToken);
         break;
-      case kViewTreeHost_resetRoot_name:
-        var params = ViewTreeHostResetRootParams.deserialize(
+      case _ViewTreeHost_resetRootName:
+        var params = _ViewTreeHostResetRootParams.deserialize(
             message.payload);
         _impl.resetRoot();
         break;
-      case kViewTreeHost_layoutRoot_name:
-        var params = ViewTreeHostLayoutRootParams.deserialize(
+      case _ViewTreeHost_layoutRootName:
+        var params = _ViewTreeHostLayoutRootParams.deserialize(
             message.payload);
         var response = _impl.layoutRoot(params.rootLayoutParams,_ViewTreeHostLayoutRootResponseParamsFactory);
         if (response is Future) {
@@ -1081,7 +1070,7 @@ class ViewTreeHostStub extends bindings.Stub {
             if (response != null) {
               return buildResponseWithId(
                   response,
-                  kViewTreeHost_layoutRoot_name,
+                  _ViewTreeHost_layoutRootName,
                   message.header.requestId,
                   bindings.MessageHeader.kMessageIsResponse);
             }
@@ -1089,7 +1078,7 @@ class ViewTreeHostStub extends bindings.Stub {
         } else if (response != null) {
           return buildResponseWithId(
               response,
-              kViewTreeHost_layoutRoot_name,
+              _ViewTreeHost_layoutRootName,
               message.header.requestId,
               bindings.MessageHeader.kMessageIsResponse);
         }

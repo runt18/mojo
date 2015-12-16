@@ -13,16 +13,16 @@ import 'package:mojo_services/mojo/ui/view_trees.mojom.dart' as view_trees_mojom
 
 
 
-class ViewManagerRegisterViewParams extends bindings.Struct {
+class _ViewManagerRegisterViewParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(24, 0)
   ];
   Object view = null;
   Object viewHost = null;
 
-  ViewManagerRegisterViewParams() : super(kVersions.last.size);
+  _ViewManagerRegisterViewParams() : super(kVersions.last.size);
 
-  static ViewManagerRegisterViewParams deserialize(bindings.Message message) {
+  static _ViewManagerRegisterViewParams deserialize(bindings.Message message) {
     var decoder = new bindings.Decoder(message);
     var result = decode(decoder);
     if (decoder.excessHandles != null) {
@@ -31,11 +31,11 @@ class ViewManagerRegisterViewParams extends bindings.Struct {
     return result;
   }
 
-  static ViewManagerRegisterViewParams decode(bindings.Decoder decoder0) {
+  static _ViewManagerRegisterViewParams decode(bindings.Decoder decoder0) {
     if (decoder0 == null) {
       return null;
     }
-    ViewManagerRegisterViewParams result = new ViewManagerRegisterViewParams();
+    _ViewManagerRegisterViewParams result = new _ViewManagerRegisterViewParams();
 
     var mainDataHeader = decoder0.decodeStructDataHeader();
     if (mainDataHeader.version <= kVersions.last.version) {
@@ -75,7 +75,7 @@ class ViewManagerRegisterViewParams extends bindings.Struct {
   }
 
   String toString() {
-    return "ViewManagerRegisterViewParams("
+    return "_ViewManagerRegisterViewParams("
            "view: $view" ", "
            "viewHost: $viewHost" ")";
   }
@@ -155,16 +155,16 @@ class ViewManagerRegisterViewResponseParams extends bindings.Struct {
 }
 
 
-class ViewManagerRegisterViewTreeParams extends bindings.Struct {
+class _ViewManagerRegisterViewTreeParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(24, 0)
   ];
   Object viewTree = null;
   Object viewTreeHost = null;
 
-  ViewManagerRegisterViewTreeParams() : super(kVersions.last.size);
+  _ViewManagerRegisterViewTreeParams() : super(kVersions.last.size);
 
-  static ViewManagerRegisterViewTreeParams deserialize(bindings.Message message) {
+  static _ViewManagerRegisterViewTreeParams deserialize(bindings.Message message) {
     var decoder = new bindings.Decoder(message);
     var result = decode(decoder);
     if (decoder.excessHandles != null) {
@@ -173,11 +173,11 @@ class ViewManagerRegisterViewTreeParams extends bindings.Struct {
     return result;
   }
 
-  static ViewManagerRegisterViewTreeParams decode(bindings.Decoder decoder0) {
+  static _ViewManagerRegisterViewTreeParams decode(bindings.Decoder decoder0) {
     if (decoder0 == null) {
       return null;
     }
-    ViewManagerRegisterViewTreeParams result = new ViewManagerRegisterViewTreeParams();
+    _ViewManagerRegisterViewTreeParams result = new _ViewManagerRegisterViewTreeParams();
 
     var mainDataHeader = decoder0.decodeStructDataHeader();
     if (mainDataHeader.version <= kVersions.last.version) {
@@ -217,7 +217,7 @@ class ViewManagerRegisterViewTreeParams extends bindings.Struct {
   }
 
   String toString() {
-    return "ViewManagerRegisterViewTreeParams("
+    return "_ViewManagerRegisterViewTreeParams("
            "viewTree: $viewTree" ", "
            "viewTreeHost: $viewTreeHost" ")";
   }
@@ -286,37 +286,34 @@ class ViewManagerRegisterViewTreeResponseParams extends bindings.Struct {
   }
 }
 
-const int kViewManager_registerView_name = 0;
-const int kViewManager_registerViewTree_name = 1;
-const String ViewManagerName = "mojo::ui::ViewManager";
+const int _ViewManager_registerViewName = 0;
+const int _ViewManager_registerViewTreeName = 1;
 
 abstract class ViewManager {
+  static const String serviceName = "mojo::ui::ViewManager";
   dynamic registerView(Object view,Object viewHost,[Function responseFactory = null]);
   dynamic registerViewTree(Object viewTree,Object viewTreeHost,[Function responseFactory = null]);
-
 }
 
 
-class ViewManagerProxyImpl extends bindings.Proxy {
-  ViewManagerProxyImpl.fromEndpoint(
+class _ViewManagerProxyImpl extends bindings.Proxy {
+  _ViewManagerProxyImpl.fromEndpoint(
       core.MojoMessagePipeEndpoint endpoint) : super.fromEndpoint(endpoint);
 
-  ViewManagerProxyImpl.fromHandle(core.MojoHandle handle) :
+  _ViewManagerProxyImpl.fromHandle(core.MojoHandle handle) :
       super.fromHandle(handle);
 
-  ViewManagerProxyImpl.unbound() : super.unbound();
+  _ViewManagerProxyImpl.unbound() : super.unbound();
 
-  static ViewManagerProxyImpl newFromEndpoint(
+  static _ViewManagerProxyImpl newFromEndpoint(
       core.MojoMessagePipeEndpoint endpoint) {
-    assert(endpoint.setDescription("For ViewManagerProxyImpl"));
-    return new ViewManagerProxyImpl.fromEndpoint(endpoint);
+    assert(endpoint.setDescription("For _ViewManagerProxyImpl"));
+    return new _ViewManagerProxyImpl.fromEndpoint(endpoint);
   }
-
-  String get name => ViewManagerName;
 
   void handleResponse(bindings.ServiceMessage message) {
     switch (message.header.type) {
-      case kViewManager_registerView_name:
+      case _ViewManager_registerViewName:
         var r = ViewManagerRegisterViewResponseParams.deserialize(
             message.payload);
         if (!message.header.hasRequestId) {
@@ -336,7 +333,7 @@ class ViewManagerProxyImpl extends bindings.Proxy {
         }
         c.complete(r);
         break;
-      case kViewManager_registerViewTree_name:
+      case _ViewManager_registerViewTreeName:
         var r = ViewManagerRegisterViewTreeResponseParams.deserialize(
             message.payload);
         if (!message.header.hasRequestId) {
@@ -365,32 +362,32 @@ class ViewManagerProxyImpl extends bindings.Proxy {
 
   String toString() {
     var superString = super.toString();
-    return "ViewManagerProxyImpl($superString)";
+    return "_ViewManagerProxyImpl($superString)";
   }
 }
 
 
 class _ViewManagerProxyCalls implements ViewManager {
-  ViewManagerProxyImpl _proxyImpl;
+  _ViewManagerProxyImpl _proxyImpl;
 
   _ViewManagerProxyCalls(this._proxyImpl);
     dynamic registerView(Object view,Object viewHost,[Function responseFactory = null]) {
-      var params = new ViewManagerRegisterViewParams();
+      var params = new _ViewManagerRegisterViewParams();
       params.view = view;
       params.viewHost = viewHost;
       return _proxyImpl.sendMessageWithRequestId(
           params,
-          kViewManager_registerView_name,
+          _ViewManager_registerViewName,
           -1,
           bindings.MessageHeader.kMessageExpectsResponse);
     }
     dynamic registerViewTree(Object viewTree,Object viewTreeHost,[Function responseFactory = null]) {
-      var params = new ViewManagerRegisterViewTreeParams();
+      var params = new _ViewManagerRegisterViewTreeParams();
       params.viewTree = viewTree;
       params.viewTreeHost = viewTreeHost;
       return _proxyImpl.sendMessageWithRequestId(
           params,
-          kViewManager_registerViewTree_name,
+          _ViewManager_registerViewTreeName,
           -1,
           bindings.MessageHeader.kMessageExpectsResponse);
     }
@@ -400,25 +397,24 @@ class _ViewManagerProxyCalls implements ViewManager {
 class ViewManagerProxy implements bindings.ProxyBase {
   final bindings.Proxy impl;
   ViewManager ptr;
-  final String name = ViewManagerName;
 
-  ViewManagerProxy(ViewManagerProxyImpl proxyImpl) :
+  ViewManagerProxy(_ViewManagerProxyImpl proxyImpl) :
       impl = proxyImpl,
       ptr = new _ViewManagerProxyCalls(proxyImpl);
 
   ViewManagerProxy.fromEndpoint(
       core.MojoMessagePipeEndpoint endpoint) :
-      impl = new ViewManagerProxyImpl.fromEndpoint(endpoint) {
+      impl = new _ViewManagerProxyImpl.fromEndpoint(endpoint) {
     ptr = new _ViewManagerProxyCalls(impl);
   }
 
   ViewManagerProxy.fromHandle(core.MojoHandle handle) :
-      impl = new ViewManagerProxyImpl.fromHandle(handle) {
+      impl = new _ViewManagerProxyImpl.fromHandle(handle) {
     ptr = new _ViewManagerProxyCalls(impl);
   }
 
   ViewManagerProxy.unbound() :
-      impl = new ViewManagerProxyImpl.unbound() {
+      impl = new _ViewManagerProxyImpl.unbound() {
     ptr = new _ViewManagerProxyCalls(impl);
   }
 
@@ -434,6 +430,8 @@ class ViewManagerProxy implements bindings.ProxyBase {
     assert(endpoint.setDescription("For ViewManagerProxy"));
     return new ViewManagerProxy.fromEndpoint(endpoint);
   }
+
+  String get serviceName => ViewManager.serviceName;
 
   Future close({bool immediate: false}) => impl.close(immediate: immediate);
 
@@ -473,8 +471,6 @@ class ViewManagerStub extends bindings.Stub {
     return new ViewManagerStub.fromEndpoint(endpoint);
   }
 
-  static const String name = ViewManagerName;
-
 
   ViewManagerRegisterViewResponseParams _ViewManagerRegisterViewResponseParamsFactory(views_mojom.ViewToken viewToken) {
     var mojo_factory_result = new ViewManagerRegisterViewResponseParams();
@@ -494,8 +490,8 @@ class ViewManagerStub extends bindings.Stub {
     }
     assert(_impl != null);
     switch (message.header.type) {
-      case kViewManager_registerView_name:
-        var params = ViewManagerRegisterViewParams.deserialize(
+      case _ViewManager_registerViewName:
+        var params = _ViewManagerRegisterViewParams.deserialize(
             message.payload);
         var response = _impl.registerView(params.view,params.viewHost,_ViewManagerRegisterViewResponseParamsFactory);
         if (response is Future) {
@@ -503,7 +499,7 @@ class ViewManagerStub extends bindings.Stub {
             if (response != null) {
               return buildResponseWithId(
                   response,
-                  kViewManager_registerView_name,
+                  _ViewManager_registerViewName,
                   message.header.requestId,
                   bindings.MessageHeader.kMessageIsResponse);
             }
@@ -511,13 +507,13 @@ class ViewManagerStub extends bindings.Stub {
         } else if (response != null) {
           return buildResponseWithId(
               response,
-              kViewManager_registerView_name,
+              _ViewManager_registerViewName,
               message.header.requestId,
               bindings.MessageHeader.kMessageIsResponse);
         }
         break;
-      case kViewManager_registerViewTree_name:
-        var params = ViewManagerRegisterViewTreeParams.deserialize(
+      case _ViewManager_registerViewTreeName:
+        var params = _ViewManagerRegisterViewTreeParams.deserialize(
             message.payload);
         var response = _impl.registerViewTree(params.viewTree,params.viewTreeHost,_ViewManagerRegisterViewTreeResponseParamsFactory);
         if (response is Future) {
@@ -525,7 +521,7 @@ class ViewManagerStub extends bindings.Stub {
             if (response != null) {
               return buildResponseWithId(
                   response,
-                  kViewManager_registerViewTree_name,
+                  _ViewManager_registerViewTreeName,
                   message.header.requestId,
                   bindings.MessageHeader.kMessageIsResponse);
             }
@@ -533,7 +529,7 @@ class ViewManagerStub extends bindings.Stub {
         } else if (response != null) {
           return buildResponseWithId(
               response,
-              kViewManager_registerViewTree_name,
+              _ViewManager_registerViewTreeName,
               message.header.requestId,
               bindings.MessageHeader.kMessageIsResponse);
         }

@@ -150,15 +150,15 @@ class Employee extends bindings.Struct {
 }
 
 
-class HumanResourceDatabaseAddEmployeeParams extends bindings.Struct {
+class _HumanResourceDatabaseAddEmployeeParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(16, 0)
   ];
   Employee employee = null;
 
-  HumanResourceDatabaseAddEmployeeParams() : super(kVersions.last.size);
+  _HumanResourceDatabaseAddEmployeeParams() : super(kVersions.last.size);
 
-  static HumanResourceDatabaseAddEmployeeParams deserialize(bindings.Message message) {
+  static _HumanResourceDatabaseAddEmployeeParams deserialize(bindings.Message message) {
     var decoder = new bindings.Decoder(message);
     var result = decode(decoder);
     if (decoder.excessHandles != null) {
@@ -167,11 +167,11 @@ class HumanResourceDatabaseAddEmployeeParams extends bindings.Struct {
     return result;
   }
 
-  static HumanResourceDatabaseAddEmployeeParams decode(bindings.Decoder decoder0) {
+  static _HumanResourceDatabaseAddEmployeeParams decode(bindings.Decoder decoder0) {
     if (decoder0 == null) {
       return null;
     }
-    HumanResourceDatabaseAddEmployeeParams result = new HumanResourceDatabaseAddEmployeeParams();
+    _HumanResourceDatabaseAddEmployeeParams result = new _HumanResourceDatabaseAddEmployeeParams();
 
     var mainDataHeader = decoder0.decodeStructDataHeader();
     if (mainDataHeader.version <= kVersions.last.version) {
@@ -206,7 +206,7 @@ class HumanResourceDatabaseAddEmployeeParams extends bindings.Struct {
   }
 
   String toString() {
-    return "HumanResourceDatabaseAddEmployeeParams("
+    return "_HumanResourceDatabaseAddEmployeeParams("
            "employee: $employee" ")";
   }
 
@@ -285,7 +285,7 @@ class HumanResourceDatabaseAddEmployeeResponseParams extends bindings.Struct {
 }
 
 
-class HumanResourceDatabaseQueryEmployeeParams extends bindings.Struct {
+class _HumanResourceDatabaseQueryEmployeeParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(16, 0),
     const bindings.StructDataHeader(24, 1)
@@ -293,9 +293,9 @@ class HumanResourceDatabaseQueryEmployeeParams extends bindings.Struct {
   int id = 0;
   bool retrieveFingerPrint = false;
 
-  HumanResourceDatabaseQueryEmployeeParams() : super(kVersions.last.size);
+  _HumanResourceDatabaseQueryEmployeeParams() : super(kVersions.last.size);
 
-  static HumanResourceDatabaseQueryEmployeeParams deserialize(bindings.Message message) {
+  static _HumanResourceDatabaseQueryEmployeeParams deserialize(bindings.Message message) {
     var decoder = new bindings.Decoder(message);
     var result = decode(decoder);
     if (decoder.excessHandles != null) {
@@ -304,11 +304,11 @@ class HumanResourceDatabaseQueryEmployeeParams extends bindings.Struct {
     return result;
   }
 
-  static HumanResourceDatabaseQueryEmployeeParams decode(bindings.Decoder decoder0) {
+  static _HumanResourceDatabaseQueryEmployeeParams decode(bindings.Decoder decoder0) {
     if (decoder0 == null) {
       return null;
     }
-    HumanResourceDatabaseQueryEmployeeParams result = new HumanResourceDatabaseQueryEmployeeParams();
+    _HumanResourceDatabaseQueryEmployeeParams result = new _HumanResourceDatabaseQueryEmployeeParams();
 
     var mainDataHeader = decoder0.decodeStructDataHeader();
     if (mainDataHeader.version <= kVersions.last.version) {
@@ -348,7 +348,7 @@ class HumanResourceDatabaseQueryEmployeeParams extends bindings.Struct {
   }
 
   String toString() {
-    return "HumanResourceDatabaseQueryEmployeeParams("
+    return "_HumanResourceDatabaseQueryEmployeeParams("
            "id: $id" ", "
            "retrieveFingerPrint: $retrieveFingerPrint" ")";
   }
@@ -440,16 +440,16 @@ class HumanResourceDatabaseQueryEmployeeResponseParams extends bindings.Struct {
 }
 
 
-class HumanResourceDatabaseAttachFingerPrintParams extends bindings.Struct {
+class _HumanResourceDatabaseAttachFingerPrintParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(24, 0)
   ];
   int id = 0;
   List<int> fingerPrint = null;
 
-  HumanResourceDatabaseAttachFingerPrintParams() : super(kVersions.last.size);
+  _HumanResourceDatabaseAttachFingerPrintParams() : super(kVersions.last.size);
 
-  static HumanResourceDatabaseAttachFingerPrintParams deserialize(bindings.Message message) {
+  static _HumanResourceDatabaseAttachFingerPrintParams deserialize(bindings.Message message) {
     var decoder = new bindings.Decoder(message);
     var result = decode(decoder);
     if (decoder.excessHandles != null) {
@@ -458,11 +458,11 @@ class HumanResourceDatabaseAttachFingerPrintParams extends bindings.Struct {
     return result;
   }
 
-  static HumanResourceDatabaseAttachFingerPrintParams decode(bindings.Decoder decoder0) {
+  static _HumanResourceDatabaseAttachFingerPrintParams decode(bindings.Decoder decoder0) {
     if (decoder0 == null) {
       return null;
     }
-    HumanResourceDatabaseAttachFingerPrintParams result = new HumanResourceDatabaseAttachFingerPrintParams();
+    _HumanResourceDatabaseAttachFingerPrintParams result = new _HumanResourceDatabaseAttachFingerPrintParams();
 
     var mainDataHeader = decoder0.decodeStructDataHeader();
     if (mainDataHeader.version <= kVersions.last.version) {
@@ -502,7 +502,7 @@ class HumanResourceDatabaseAttachFingerPrintParams extends bindings.Struct {
   }
 
   String toString() {
-    return "HumanResourceDatabaseAttachFingerPrintParams("
+    return "_HumanResourceDatabaseAttachFingerPrintParams("
            "id: $id" ", "
            "fingerPrint: $fingerPrint" ")";
   }
@@ -583,14 +583,14 @@ class HumanResourceDatabaseAttachFingerPrintResponseParams extends bindings.Stru
 }
 
 
-class HumanResourceDatabaseListEmployeeIdsParams extends bindings.Struct {
+class _HumanResourceDatabaseListEmployeeIdsParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(8, 0)
   ];
 
-  HumanResourceDatabaseListEmployeeIdsParams() : super(kVersions.last.size);
+  _HumanResourceDatabaseListEmployeeIdsParams() : super(kVersions.last.size);
 
-  static HumanResourceDatabaseListEmployeeIdsParams deserialize(bindings.Message message) {
+  static _HumanResourceDatabaseListEmployeeIdsParams deserialize(bindings.Message message) {
     var decoder = new bindings.Decoder(message);
     var result = decode(decoder);
     if (decoder.excessHandles != null) {
@@ -599,11 +599,11 @@ class HumanResourceDatabaseListEmployeeIdsParams extends bindings.Struct {
     return result;
   }
 
-  static HumanResourceDatabaseListEmployeeIdsParams decode(bindings.Decoder decoder0) {
+  static _HumanResourceDatabaseListEmployeeIdsParams decode(bindings.Decoder decoder0) {
     if (decoder0 == null) {
       return null;
     }
-    HumanResourceDatabaseListEmployeeIdsParams result = new HumanResourceDatabaseListEmployeeIdsParams();
+    _HumanResourceDatabaseListEmployeeIdsParams result = new _HumanResourceDatabaseListEmployeeIdsParams();
 
     var mainDataHeader = decoder0.decodeStructDataHeader();
     if (mainDataHeader.version <= kVersions.last.version) {
@@ -631,7 +631,7 @@ class HumanResourceDatabaseListEmployeeIdsParams extends bindings.Struct {
   }
 
   String toString() {
-    return "HumanResourceDatabaseListEmployeeIdsParams("")";
+    return "_HumanResourceDatabaseListEmployeeIdsParams("")";
   }
 
   Map toJson() {
@@ -707,41 +707,38 @@ class HumanResourceDatabaseListEmployeeIdsResponseParams extends bindings.Struct
   }
 }
 
-const int kHumanResourceDatabase_addEmployee_name = 0;
-const int kHumanResourceDatabase_queryEmployee_name = 1;
-const int kHumanResourceDatabase_attachFingerPrint_name = 2;
-const int kHumanResourceDatabase_listEmployeeIds_name = 3;
-const String HumanResourceDatabaseName = "mojo::test::versioning::HumanResourceDatabase";
+const int _HumanResourceDatabase_addEmployeeName = 0;
+const int _HumanResourceDatabase_queryEmployeeName = 1;
+const int _HumanResourceDatabase_attachFingerPrintName = 2;
+const int _HumanResourceDatabase_listEmployeeIdsName = 3;
 
 abstract class HumanResourceDatabase {
+  static const String serviceName = "mojo::test::versioning::HumanResourceDatabase";
   dynamic addEmployee(Employee employee,[Function responseFactory = null]);
   dynamic queryEmployee(int id,bool retrieveFingerPrint,[Function responseFactory = null]);
   dynamic attachFingerPrint(int id,List<int> fingerPrint,[Function responseFactory = null]);
   dynamic listEmployeeIds([Function responseFactory = null]);
-
 }
 
 
-class HumanResourceDatabaseProxyImpl extends bindings.Proxy {
-  HumanResourceDatabaseProxyImpl.fromEndpoint(
+class _HumanResourceDatabaseProxyImpl extends bindings.Proxy {
+  _HumanResourceDatabaseProxyImpl.fromEndpoint(
       core.MojoMessagePipeEndpoint endpoint) : super.fromEndpoint(endpoint);
 
-  HumanResourceDatabaseProxyImpl.fromHandle(core.MojoHandle handle) :
+  _HumanResourceDatabaseProxyImpl.fromHandle(core.MojoHandle handle) :
       super.fromHandle(handle);
 
-  HumanResourceDatabaseProxyImpl.unbound() : super.unbound();
+  _HumanResourceDatabaseProxyImpl.unbound() : super.unbound();
 
-  static HumanResourceDatabaseProxyImpl newFromEndpoint(
+  static _HumanResourceDatabaseProxyImpl newFromEndpoint(
       core.MojoMessagePipeEndpoint endpoint) {
-    assert(endpoint.setDescription("For HumanResourceDatabaseProxyImpl"));
-    return new HumanResourceDatabaseProxyImpl.fromEndpoint(endpoint);
+    assert(endpoint.setDescription("For _HumanResourceDatabaseProxyImpl"));
+    return new _HumanResourceDatabaseProxyImpl.fromEndpoint(endpoint);
   }
-
-  String get name => HumanResourceDatabaseName;
 
   void handleResponse(bindings.ServiceMessage message) {
     switch (message.header.type) {
-      case kHumanResourceDatabase_addEmployee_name:
+      case _HumanResourceDatabase_addEmployeeName:
         var r = HumanResourceDatabaseAddEmployeeResponseParams.deserialize(
             message.payload);
         if (!message.header.hasRequestId) {
@@ -761,7 +758,7 @@ class HumanResourceDatabaseProxyImpl extends bindings.Proxy {
         }
         c.complete(r);
         break;
-      case kHumanResourceDatabase_queryEmployee_name:
+      case _HumanResourceDatabase_queryEmployeeName:
         var r = HumanResourceDatabaseQueryEmployeeResponseParams.deserialize(
             message.payload);
         if (!message.header.hasRequestId) {
@@ -781,7 +778,7 @@ class HumanResourceDatabaseProxyImpl extends bindings.Proxy {
         }
         c.complete(r);
         break;
-      case kHumanResourceDatabase_attachFingerPrint_name:
+      case _HumanResourceDatabase_attachFingerPrintName:
         var r = HumanResourceDatabaseAttachFingerPrintResponseParams.deserialize(
             message.payload);
         if (!message.header.hasRequestId) {
@@ -801,7 +798,7 @@ class HumanResourceDatabaseProxyImpl extends bindings.Proxy {
         }
         c.complete(r);
         break;
-      case kHumanResourceDatabase_listEmployeeIds_name:
+      case _HumanResourceDatabase_listEmployeeIdsName:
         var r = HumanResourceDatabaseListEmployeeIdsResponseParams.deserialize(
             message.payload);
         if (!message.header.hasRequestId) {
@@ -830,49 +827,49 @@ class HumanResourceDatabaseProxyImpl extends bindings.Proxy {
 
   String toString() {
     var superString = super.toString();
-    return "HumanResourceDatabaseProxyImpl($superString)";
+    return "_HumanResourceDatabaseProxyImpl($superString)";
   }
 }
 
 
 class _HumanResourceDatabaseProxyCalls implements HumanResourceDatabase {
-  HumanResourceDatabaseProxyImpl _proxyImpl;
+  _HumanResourceDatabaseProxyImpl _proxyImpl;
 
   _HumanResourceDatabaseProxyCalls(this._proxyImpl);
     dynamic addEmployee(Employee employee,[Function responseFactory = null]) {
-      var params = new HumanResourceDatabaseAddEmployeeParams();
+      var params = new _HumanResourceDatabaseAddEmployeeParams();
       params.employee = employee;
       return _proxyImpl.sendMessageWithRequestId(
           params,
-          kHumanResourceDatabase_addEmployee_name,
+          _HumanResourceDatabase_addEmployeeName,
           -1,
           bindings.MessageHeader.kMessageExpectsResponse);
     }
     dynamic queryEmployee(int id,bool retrieveFingerPrint,[Function responseFactory = null]) {
-      var params = new HumanResourceDatabaseQueryEmployeeParams();
+      var params = new _HumanResourceDatabaseQueryEmployeeParams();
       params.id = id;
       params.retrieveFingerPrint = retrieveFingerPrint;
       return _proxyImpl.sendMessageWithRequestId(
           params,
-          kHumanResourceDatabase_queryEmployee_name,
+          _HumanResourceDatabase_queryEmployeeName,
           -1,
           bindings.MessageHeader.kMessageExpectsResponse);
     }
     dynamic attachFingerPrint(int id,List<int> fingerPrint,[Function responseFactory = null]) {
-      var params = new HumanResourceDatabaseAttachFingerPrintParams();
+      var params = new _HumanResourceDatabaseAttachFingerPrintParams();
       params.id = id;
       params.fingerPrint = fingerPrint;
       return _proxyImpl.sendMessageWithRequestId(
           params,
-          kHumanResourceDatabase_attachFingerPrint_name,
+          _HumanResourceDatabase_attachFingerPrintName,
           -1,
           bindings.MessageHeader.kMessageExpectsResponse);
     }
     dynamic listEmployeeIds([Function responseFactory = null]) {
-      var params = new HumanResourceDatabaseListEmployeeIdsParams();
+      var params = new _HumanResourceDatabaseListEmployeeIdsParams();
       return _proxyImpl.sendMessageWithRequestId(
           params,
-          kHumanResourceDatabase_listEmployeeIds_name,
+          _HumanResourceDatabase_listEmployeeIdsName,
           -1,
           bindings.MessageHeader.kMessageExpectsResponse);
     }
@@ -882,25 +879,24 @@ class _HumanResourceDatabaseProxyCalls implements HumanResourceDatabase {
 class HumanResourceDatabaseProxy implements bindings.ProxyBase {
   final bindings.Proxy impl;
   HumanResourceDatabase ptr;
-  final String name = HumanResourceDatabaseName;
 
-  HumanResourceDatabaseProxy(HumanResourceDatabaseProxyImpl proxyImpl) :
+  HumanResourceDatabaseProxy(_HumanResourceDatabaseProxyImpl proxyImpl) :
       impl = proxyImpl,
       ptr = new _HumanResourceDatabaseProxyCalls(proxyImpl);
 
   HumanResourceDatabaseProxy.fromEndpoint(
       core.MojoMessagePipeEndpoint endpoint) :
-      impl = new HumanResourceDatabaseProxyImpl.fromEndpoint(endpoint) {
+      impl = new _HumanResourceDatabaseProxyImpl.fromEndpoint(endpoint) {
     ptr = new _HumanResourceDatabaseProxyCalls(impl);
   }
 
   HumanResourceDatabaseProxy.fromHandle(core.MojoHandle handle) :
-      impl = new HumanResourceDatabaseProxyImpl.fromHandle(handle) {
+      impl = new _HumanResourceDatabaseProxyImpl.fromHandle(handle) {
     ptr = new _HumanResourceDatabaseProxyCalls(impl);
   }
 
   HumanResourceDatabaseProxy.unbound() :
-      impl = new HumanResourceDatabaseProxyImpl.unbound() {
+      impl = new _HumanResourceDatabaseProxyImpl.unbound() {
     ptr = new _HumanResourceDatabaseProxyCalls(impl);
   }
 
@@ -916,6 +912,8 @@ class HumanResourceDatabaseProxy implements bindings.ProxyBase {
     assert(endpoint.setDescription("For HumanResourceDatabaseProxy"));
     return new HumanResourceDatabaseProxy.fromEndpoint(endpoint);
   }
+
+  String get serviceName => HumanResourceDatabase.serviceName;
 
   Future close({bool immediate: false}) => impl.close(immediate: immediate);
 
@@ -955,8 +953,6 @@ class HumanResourceDatabaseStub extends bindings.Stub {
     return new HumanResourceDatabaseStub.fromEndpoint(endpoint);
   }
 
-  static const String name = HumanResourceDatabaseName;
-
 
   HumanResourceDatabaseAddEmployeeResponseParams _HumanResourceDatabaseAddEmployeeResponseParamsFactory(bool success) {
     var mojo_factory_result = new HumanResourceDatabaseAddEmployeeResponseParams();
@@ -988,8 +984,8 @@ class HumanResourceDatabaseStub extends bindings.Stub {
     }
     assert(_impl != null);
     switch (message.header.type) {
-      case kHumanResourceDatabase_addEmployee_name:
-        var params = HumanResourceDatabaseAddEmployeeParams.deserialize(
+      case _HumanResourceDatabase_addEmployeeName:
+        var params = _HumanResourceDatabaseAddEmployeeParams.deserialize(
             message.payload);
         var response = _impl.addEmployee(params.employee,_HumanResourceDatabaseAddEmployeeResponseParamsFactory);
         if (response is Future) {
@@ -997,7 +993,7 @@ class HumanResourceDatabaseStub extends bindings.Stub {
             if (response != null) {
               return buildResponseWithId(
                   response,
-                  kHumanResourceDatabase_addEmployee_name,
+                  _HumanResourceDatabase_addEmployeeName,
                   message.header.requestId,
                   bindings.MessageHeader.kMessageIsResponse);
             }
@@ -1005,13 +1001,13 @@ class HumanResourceDatabaseStub extends bindings.Stub {
         } else if (response != null) {
           return buildResponseWithId(
               response,
-              kHumanResourceDatabase_addEmployee_name,
+              _HumanResourceDatabase_addEmployeeName,
               message.header.requestId,
               bindings.MessageHeader.kMessageIsResponse);
         }
         break;
-      case kHumanResourceDatabase_queryEmployee_name:
-        var params = HumanResourceDatabaseQueryEmployeeParams.deserialize(
+      case _HumanResourceDatabase_queryEmployeeName:
+        var params = _HumanResourceDatabaseQueryEmployeeParams.deserialize(
             message.payload);
         var response = _impl.queryEmployee(params.id,params.retrieveFingerPrint,_HumanResourceDatabaseQueryEmployeeResponseParamsFactory);
         if (response is Future) {
@@ -1019,7 +1015,7 @@ class HumanResourceDatabaseStub extends bindings.Stub {
             if (response != null) {
               return buildResponseWithId(
                   response,
-                  kHumanResourceDatabase_queryEmployee_name,
+                  _HumanResourceDatabase_queryEmployeeName,
                   message.header.requestId,
                   bindings.MessageHeader.kMessageIsResponse);
             }
@@ -1027,13 +1023,13 @@ class HumanResourceDatabaseStub extends bindings.Stub {
         } else if (response != null) {
           return buildResponseWithId(
               response,
-              kHumanResourceDatabase_queryEmployee_name,
+              _HumanResourceDatabase_queryEmployeeName,
               message.header.requestId,
               bindings.MessageHeader.kMessageIsResponse);
         }
         break;
-      case kHumanResourceDatabase_attachFingerPrint_name:
-        var params = HumanResourceDatabaseAttachFingerPrintParams.deserialize(
+      case _HumanResourceDatabase_attachFingerPrintName:
+        var params = _HumanResourceDatabaseAttachFingerPrintParams.deserialize(
             message.payload);
         var response = _impl.attachFingerPrint(params.id,params.fingerPrint,_HumanResourceDatabaseAttachFingerPrintResponseParamsFactory);
         if (response is Future) {
@@ -1041,7 +1037,7 @@ class HumanResourceDatabaseStub extends bindings.Stub {
             if (response != null) {
               return buildResponseWithId(
                   response,
-                  kHumanResourceDatabase_attachFingerPrint_name,
+                  _HumanResourceDatabase_attachFingerPrintName,
                   message.header.requestId,
                   bindings.MessageHeader.kMessageIsResponse);
             }
@@ -1049,13 +1045,13 @@ class HumanResourceDatabaseStub extends bindings.Stub {
         } else if (response != null) {
           return buildResponseWithId(
               response,
-              kHumanResourceDatabase_attachFingerPrint_name,
+              _HumanResourceDatabase_attachFingerPrintName,
               message.header.requestId,
               bindings.MessageHeader.kMessageIsResponse);
         }
         break;
-      case kHumanResourceDatabase_listEmployeeIds_name:
-        var params = HumanResourceDatabaseListEmployeeIdsParams.deserialize(
+      case _HumanResourceDatabase_listEmployeeIdsName:
+        var params = _HumanResourceDatabaseListEmployeeIdsParams.deserialize(
             message.payload);
         var response = _impl.listEmployeeIds(_HumanResourceDatabaseListEmployeeIdsResponseParamsFactory);
         if (response is Future) {
@@ -1063,7 +1059,7 @@ class HumanResourceDatabaseStub extends bindings.Stub {
             if (response != null) {
               return buildResponseWithId(
                   response,
-                  kHumanResourceDatabase_listEmployeeIds_name,
+                  _HumanResourceDatabase_listEmployeeIdsName,
                   message.header.requestId,
                   bindings.MessageHeader.kMessageIsResponse);
             }
@@ -1071,7 +1067,7 @@ class HumanResourceDatabaseStub extends bindings.Stub {
         } else if (response != null) {
           return buildResponseWithId(
               response,
-              kHumanResourceDatabase_listEmployeeIds_name,
+              _HumanResourceDatabase_listEmployeeIdsName,
               message.header.requestId,
               bindings.MessageHeader.kMessageIsResponse);
         }

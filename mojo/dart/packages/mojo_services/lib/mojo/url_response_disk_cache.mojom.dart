@@ -12,15 +12,15 @@ import 'package:mojo/mojo/url_response.mojom.dart' as url_response_mojom;
 
 
 
-class UrlResponseDiskCacheGetParams extends bindings.Struct {
+class _UrlResponseDiskCacheGetParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(16, 0)
   ];
   String url = null;
 
-  UrlResponseDiskCacheGetParams() : super(kVersions.last.size);
+  _UrlResponseDiskCacheGetParams() : super(kVersions.last.size);
 
-  static UrlResponseDiskCacheGetParams deserialize(bindings.Message message) {
+  static _UrlResponseDiskCacheGetParams deserialize(bindings.Message message) {
     var decoder = new bindings.Decoder(message);
     var result = decode(decoder);
     if (decoder.excessHandles != null) {
@@ -29,11 +29,11 @@ class UrlResponseDiskCacheGetParams extends bindings.Struct {
     return result;
   }
 
-  static UrlResponseDiskCacheGetParams decode(bindings.Decoder decoder0) {
+  static _UrlResponseDiskCacheGetParams decode(bindings.Decoder decoder0) {
     if (decoder0 == null) {
       return null;
     }
-    UrlResponseDiskCacheGetParams result = new UrlResponseDiskCacheGetParams();
+    _UrlResponseDiskCacheGetParams result = new _UrlResponseDiskCacheGetParams();
 
     var mainDataHeader = decoder0.decodeStructDataHeader();
     if (mainDataHeader.version <= kVersions.last.version) {
@@ -67,7 +67,7 @@ class UrlResponseDiskCacheGetParams extends bindings.Struct {
   }
 
   String toString() {
-    return "UrlResponseDiskCacheGetParams("
+    return "_UrlResponseDiskCacheGetParams("
            "url: $url" ")";
   }
 
@@ -162,15 +162,15 @@ class UrlResponseDiskCacheGetResponseParams extends bindings.Struct {
 }
 
 
-class UrlResponseDiskCacheValidateParams extends bindings.Struct {
+class _UrlResponseDiskCacheValidateParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(16, 0)
   ];
   String url = null;
 
-  UrlResponseDiskCacheValidateParams() : super(kVersions.last.size);
+  _UrlResponseDiskCacheValidateParams() : super(kVersions.last.size);
 
-  static UrlResponseDiskCacheValidateParams deserialize(bindings.Message message) {
+  static _UrlResponseDiskCacheValidateParams deserialize(bindings.Message message) {
     var decoder = new bindings.Decoder(message);
     var result = decode(decoder);
     if (decoder.excessHandles != null) {
@@ -179,11 +179,11 @@ class UrlResponseDiskCacheValidateParams extends bindings.Struct {
     return result;
   }
 
-  static UrlResponseDiskCacheValidateParams decode(bindings.Decoder decoder0) {
+  static _UrlResponseDiskCacheValidateParams decode(bindings.Decoder decoder0) {
     if (decoder0 == null) {
       return null;
     }
-    UrlResponseDiskCacheValidateParams result = new UrlResponseDiskCacheValidateParams();
+    _UrlResponseDiskCacheValidateParams result = new _UrlResponseDiskCacheValidateParams();
 
     var mainDataHeader = decoder0.decodeStructDataHeader();
     if (mainDataHeader.version <= kVersions.last.version) {
@@ -217,7 +217,7 @@ class UrlResponseDiskCacheValidateParams extends bindings.Struct {
   }
 
   String toString() {
-    return "UrlResponseDiskCacheValidateParams("
+    return "_UrlResponseDiskCacheValidateParams("
            "url: $url" ")";
   }
 
@@ -229,15 +229,15 @@ class UrlResponseDiskCacheValidateParams extends bindings.Struct {
 }
 
 
-class UrlResponseDiskCacheUpdateParams extends bindings.Struct {
+class _UrlResponseDiskCacheUpdateParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(16, 0)
   ];
   url_response_mojom.UrlResponse response = null;
 
-  UrlResponseDiskCacheUpdateParams() : super(kVersions.last.size);
+  _UrlResponseDiskCacheUpdateParams() : super(kVersions.last.size);
 
-  static UrlResponseDiskCacheUpdateParams deserialize(bindings.Message message) {
+  static _UrlResponseDiskCacheUpdateParams deserialize(bindings.Message message) {
     var decoder = new bindings.Decoder(message);
     var result = decode(decoder);
     if (decoder.excessHandles != null) {
@@ -246,11 +246,11 @@ class UrlResponseDiskCacheUpdateParams extends bindings.Struct {
     return result;
   }
 
-  static UrlResponseDiskCacheUpdateParams decode(bindings.Decoder decoder0) {
+  static _UrlResponseDiskCacheUpdateParams decode(bindings.Decoder decoder0) {
     if (decoder0 == null) {
       return null;
     }
-    UrlResponseDiskCacheUpdateParams result = new UrlResponseDiskCacheUpdateParams();
+    _UrlResponseDiskCacheUpdateParams result = new _UrlResponseDiskCacheUpdateParams();
 
     var mainDataHeader = decoder0.decodeStructDataHeader();
     if (mainDataHeader.version <= kVersions.last.version) {
@@ -285,7 +285,7 @@ class UrlResponseDiskCacheUpdateParams extends bindings.Struct {
   }
 
   String toString() {
-    return "UrlResponseDiskCacheUpdateParams("
+    return "_UrlResponseDiskCacheUpdateParams("
            "response: $response" ")";
   }
 
@@ -296,15 +296,15 @@ class UrlResponseDiskCacheUpdateParams extends bindings.Struct {
 }
 
 
-class UrlResponseDiskCacheUpdateAndGetParams extends bindings.Struct {
+class _UrlResponseDiskCacheUpdateAndGetParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(16, 0)
   ];
   url_response_mojom.UrlResponse response = null;
 
-  UrlResponseDiskCacheUpdateAndGetParams() : super(kVersions.last.size);
+  _UrlResponseDiskCacheUpdateAndGetParams() : super(kVersions.last.size);
 
-  static UrlResponseDiskCacheUpdateAndGetParams deserialize(bindings.Message message) {
+  static _UrlResponseDiskCacheUpdateAndGetParams deserialize(bindings.Message message) {
     var decoder = new bindings.Decoder(message);
     var result = decode(decoder);
     if (decoder.excessHandles != null) {
@@ -313,11 +313,11 @@ class UrlResponseDiskCacheUpdateAndGetParams extends bindings.Struct {
     return result;
   }
 
-  static UrlResponseDiskCacheUpdateAndGetParams decode(bindings.Decoder decoder0) {
+  static _UrlResponseDiskCacheUpdateAndGetParams decode(bindings.Decoder decoder0) {
     if (decoder0 == null) {
       return null;
     }
-    UrlResponseDiskCacheUpdateAndGetParams result = new UrlResponseDiskCacheUpdateAndGetParams();
+    _UrlResponseDiskCacheUpdateAndGetParams result = new _UrlResponseDiskCacheUpdateAndGetParams();
 
     var mainDataHeader = decoder0.decodeStructDataHeader();
     if (mainDataHeader.version <= kVersions.last.version) {
@@ -352,7 +352,7 @@ class UrlResponseDiskCacheUpdateAndGetParams extends bindings.Struct {
   }
 
   String toString() {
-    return "UrlResponseDiskCacheUpdateAndGetParams("
+    return "_UrlResponseDiskCacheUpdateAndGetParams("
            "response: $response" ")";
   }
 
@@ -439,15 +439,15 @@ class UrlResponseDiskCacheUpdateAndGetResponseParams extends bindings.Struct {
 }
 
 
-class UrlResponseDiskCacheUpdateAndGetExtractedParams extends bindings.Struct {
+class _UrlResponseDiskCacheUpdateAndGetExtractedParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(16, 0)
   ];
   url_response_mojom.UrlResponse response = null;
 
-  UrlResponseDiskCacheUpdateAndGetExtractedParams() : super(kVersions.last.size);
+  _UrlResponseDiskCacheUpdateAndGetExtractedParams() : super(kVersions.last.size);
 
-  static UrlResponseDiskCacheUpdateAndGetExtractedParams deserialize(bindings.Message message) {
+  static _UrlResponseDiskCacheUpdateAndGetExtractedParams deserialize(bindings.Message message) {
     var decoder = new bindings.Decoder(message);
     var result = decode(decoder);
     if (decoder.excessHandles != null) {
@@ -456,11 +456,11 @@ class UrlResponseDiskCacheUpdateAndGetExtractedParams extends bindings.Struct {
     return result;
   }
 
-  static UrlResponseDiskCacheUpdateAndGetExtractedParams decode(bindings.Decoder decoder0) {
+  static _UrlResponseDiskCacheUpdateAndGetExtractedParams decode(bindings.Decoder decoder0) {
     if (decoder0 == null) {
       return null;
     }
-    UrlResponseDiskCacheUpdateAndGetExtractedParams result = new UrlResponseDiskCacheUpdateAndGetExtractedParams();
+    _UrlResponseDiskCacheUpdateAndGetExtractedParams result = new _UrlResponseDiskCacheUpdateAndGetExtractedParams();
 
     var mainDataHeader = decoder0.decodeStructDataHeader();
     if (mainDataHeader.version <= kVersions.last.version) {
@@ -495,7 +495,7 @@ class UrlResponseDiskCacheUpdateAndGetExtractedParams extends bindings.Struct {
   }
 
   String toString() {
-    return "UrlResponseDiskCacheUpdateAndGetExtractedParams("
+    return "_UrlResponseDiskCacheUpdateAndGetExtractedParams("
            "response: $response" ")";
   }
 
@@ -581,43 +581,40 @@ class UrlResponseDiskCacheUpdateAndGetExtractedResponseParams extends bindings.S
   }
 }
 
-const int kUrlResponseDiskCache_get_name = 0;
-const int kUrlResponseDiskCache_validate_name = 1;
-const int kUrlResponseDiskCache_update_name = 2;
-const int kUrlResponseDiskCache_updateAndGet_name = 3;
-const int kUrlResponseDiskCache_updateAndGetExtracted_name = 4;
-const String UrlResponseDiskCacheName = "mojo::URLResponseDiskCache";
+const int _UrlResponseDiskCache_getName = 0;
+const int _UrlResponseDiskCache_validateName = 1;
+const int _UrlResponseDiskCache_updateName = 2;
+const int _UrlResponseDiskCache_updateAndGetName = 3;
+const int _UrlResponseDiskCache_updateAndGetExtractedName = 4;
 
 abstract class UrlResponseDiskCache {
+  static const String serviceName = "mojo::URLResponseDiskCache";
   dynamic get(String url,[Function responseFactory = null]);
   void validate(String url);
   void update(url_response_mojom.UrlResponse response);
   dynamic updateAndGet(url_response_mojom.UrlResponse response,[Function responseFactory = null]);
   dynamic updateAndGetExtracted(url_response_mojom.UrlResponse response,[Function responseFactory = null]);
-
 }
 
 
-class UrlResponseDiskCacheProxyImpl extends bindings.Proxy {
-  UrlResponseDiskCacheProxyImpl.fromEndpoint(
+class _UrlResponseDiskCacheProxyImpl extends bindings.Proxy {
+  _UrlResponseDiskCacheProxyImpl.fromEndpoint(
       core.MojoMessagePipeEndpoint endpoint) : super.fromEndpoint(endpoint);
 
-  UrlResponseDiskCacheProxyImpl.fromHandle(core.MojoHandle handle) :
+  _UrlResponseDiskCacheProxyImpl.fromHandle(core.MojoHandle handle) :
       super.fromHandle(handle);
 
-  UrlResponseDiskCacheProxyImpl.unbound() : super.unbound();
+  _UrlResponseDiskCacheProxyImpl.unbound() : super.unbound();
 
-  static UrlResponseDiskCacheProxyImpl newFromEndpoint(
+  static _UrlResponseDiskCacheProxyImpl newFromEndpoint(
       core.MojoMessagePipeEndpoint endpoint) {
-    assert(endpoint.setDescription("For UrlResponseDiskCacheProxyImpl"));
-    return new UrlResponseDiskCacheProxyImpl.fromEndpoint(endpoint);
+    assert(endpoint.setDescription("For _UrlResponseDiskCacheProxyImpl"));
+    return new _UrlResponseDiskCacheProxyImpl.fromEndpoint(endpoint);
   }
-
-  String get name => UrlResponseDiskCacheName;
 
   void handleResponse(bindings.ServiceMessage message) {
     switch (message.header.type) {
-      case kUrlResponseDiskCache_get_name:
+      case _UrlResponseDiskCache_getName:
         var r = UrlResponseDiskCacheGetResponseParams.deserialize(
             message.payload);
         if (!message.header.hasRequestId) {
@@ -637,7 +634,7 @@ class UrlResponseDiskCacheProxyImpl extends bindings.Proxy {
         }
         c.complete(r);
         break;
-      case kUrlResponseDiskCache_updateAndGet_name:
+      case _UrlResponseDiskCache_updateAndGetName:
         var r = UrlResponseDiskCacheUpdateAndGetResponseParams.deserialize(
             message.payload);
         if (!message.header.hasRequestId) {
@@ -657,7 +654,7 @@ class UrlResponseDiskCacheProxyImpl extends bindings.Proxy {
         }
         c.complete(r);
         break;
-      case kUrlResponseDiskCache_updateAndGetExtracted_name:
+      case _UrlResponseDiskCache_updateAndGetExtractedName:
         var r = UrlResponseDiskCacheUpdateAndGetExtractedResponseParams.deserialize(
             message.payload);
         if (!message.header.hasRequestId) {
@@ -686,21 +683,21 @@ class UrlResponseDiskCacheProxyImpl extends bindings.Proxy {
 
   String toString() {
     var superString = super.toString();
-    return "UrlResponseDiskCacheProxyImpl($superString)";
+    return "_UrlResponseDiskCacheProxyImpl($superString)";
   }
 }
 
 
 class _UrlResponseDiskCacheProxyCalls implements UrlResponseDiskCache {
-  UrlResponseDiskCacheProxyImpl _proxyImpl;
+  _UrlResponseDiskCacheProxyImpl _proxyImpl;
 
   _UrlResponseDiskCacheProxyCalls(this._proxyImpl);
     dynamic get(String url,[Function responseFactory = null]) {
-      var params = new UrlResponseDiskCacheGetParams();
+      var params = new _UrlResponseDiskCacheGetParams();
       params.url = url;
       return _proxyImpl.sendMessageWithRequestId(
           params,
-          kUrlResponseDiskCache_get_name,
+          _UrlResponseDiskCache_getName,
           -1,
           bindings.MessageHeader.kMessageExpectsResponse);
     }
@@ -709,36 +706,34 @@ class _UrlResponseDiskCacheProxyCalls implements UrlResponseDiskCache {
         _proxyImpl.proxyError("The Proxy is closed.");
         return;
       }
-      var params = new UrlResponseDiskCacheValidateParams();
+      var params = new _UrlResponseDiskCacheValidateParams();
       params.url = url;
-      _proxyImpl.sendMessage(params, kUrlResponseDiskCache_validate_name);
+      _proxyImpl.sendMessage(params, _UrlResponseDiskCache_validateName);
     }
-  
     void update(url_response_mojom.UrlResponse response) {
       if (!_proxyImpl.isBound) {
         _proxyImpl.proxyError("The Proxy is closed.");
         return;
       }
-      var params = new UrlResponseDiskCacheUpdateParams();
+      var params = new _UrlResponseDiskCacheUpdateParams();
       params.response = response;
-      _proxyImpl.sendMessage(params, kUrlResponseDiskCache_update_name);
+      _proxyImpl.sendMessage(params, _UrlResponseDiskCache_updateName);
     }
-  
     dynamic updateAndGet(url_response_mojom.UrlResponse response,[Function responseFactory = null]) {
-      var params = new UrlResponseDiskCacheUpdateAndGetParams();
+      var params = new _UrlResponseDiskCacheUpdateAndGetParams();
       params.response = response;
       return _proxyImpl.sendMessageWithRequestId(
           params,
-          kUrlResponseDiskCache_updateAndGet_name,
+          _UrlResponseDiskCache_updateAndGetName,
           -1,
           bindings.MessageHeader.kMessageExpectsResponse);
     }
     dynamic updateAndGetExtracted(url_response_mojom.UrlResponse response,[Function responseFactory = null]) {
-      var params = new UrlResponseDiskCacheUpdateAndGetExtractedParams();
+      var params = new _UrlResponseDiskCacheUpdateAndGetExtractedParams();
       params.response = response;
       return _proxyImpl.sendMessageWithRequestId(
           params,
-          kUrlResponseDiskCache_updateAndGetExtracted_name,
+          _UrlResponseDiskCache_updateAndGetExtractedName,
           -1,
           bindings.MessageHeader.kMessageExpectsResponse);
     }
@@ -748,25 +743,24 @@ class _UrlResponseDiskCacheProxyCalls implements UrlResponseDiskCache {
 class UrlResponseDiskCacheProxy implements bindings.ProxyBase {
   final bindings.Proxy impl;
   UrlResponseDiskCache ptr;
-  final String name = UrlResponseDiskCacheName;
 
-  UrlResponseDiskCacheProxy(UrlResponseDiskCacheProxyImpl proxyImpl) :
+  UrlResponseDiskCacheProxy(_UrlResponseDiskCacheProxyImpl proxyImpl) :
       impl = proxyImpl,
       ptr = new _UrlResponseDiskCacheProxyCalls(proxyImpl);
 
   UrlResponseDiskCacheProxy.fromEndpoint(
       core.MojoMessagePipeEndpoint endpoint) :
-      impl = new UrlResponseDiskCacheProxyImpl.fromEndpoint(endpoint) {
+      impl = new _UrlResponseDiskCacheProxyImpl.fromEndpoint(endpoint) {
     ptr = new _UrlResponseDiskCacheProxyCalls(impl);
   }
 
   UrlResponseDiskCacheProxy.fromHandle(core.MojoHandle handle) :
-      impl = new UrlResponseDiskCacheProxyImpl.fromHandle(handle) {
+      impl = new _UrlResponseDiskCacheProxyImpl.fromHandle(handle) {
     ptr = new _UrlResponseDiskCacheProxyCalls(impl);
   }
 
   UrlResponseDiskCacheProxy.unbound() :
-      impl = new UrlResponseDiskCacheProxyImpl.unbound() {
+      impl = new _UrlResponseDiskCacheProxyImpl.unbound() {
     ptr = new _UrlResponseDiskCacheProxyCalls(impl);
   }
 
@@ -782,6 +776,8 @@ class UrlResponseDiskCacheProxy implements bindings.ProxyBase {
     assert(endpoint.setDescription("For UrlResponseDiskCacheProxy"));
     return new UrlResponseDiskCacheProxy.fromEndpoint(endpoint);
   }
+
+  String get serviceName => UrlResponseDiskCache.serviceName;
 
   Future close({bool immediate: false}) => impl.close(immediate: immediate);
 
@@ -821,8 +817,6 @@ class UrlResponseDiskCacheStub extends bindings.Stub {
     return new UrlResponseDiskCacheStub.fromEndpoint(endpoint);
   }
 
-  static const String name = UrlResponseDiskCacheName;
-
 
   UrlResponseDiskCacheGetResponseParams _UrlResponseDiskCacheGetResponseParamsFactory(url_response_mojom.UrlResponse response, List<int> filePath, List<int> cacheDirPath) {
     var mojo_factory_result = new UrlResponseDiskCacheGetResponseParams();
@@ -852,8 +846,8 @@ class UrlResponseDiskCacheStub extends bindings.Stub {
     }
     assert(_impl != null);
     switch (message.header.type) {
-      case kUrlResponseDiskCache_get_name:
-        var params = UrlResponseDiskCacheGetParams.deserialize(
+      case _UrlResponseDiskCache_getName:
+        var params = _UrlResponseDiskCacheGetParams.deserialize(
             message.payload);
         var response = _impl.get(params.url,_UrlResponseDiskCacheGetResponseParamsFactory);
         if (response is Future) {
@@ -861,7 +855,7 @@ class UrlResponseDiskCacheStub extends bindings.Stub {
             if (response != null) {
               return buildResponseWithId(
                   response,
-                  kUrlResponseDiskCache_get_name,
+                  _UrlResponseDiskCache_getName,
                   message.header.requestId,
                   bindings.MessageHeader.kMessageIsResponse);
             }
@@ -869,23 +863,23 @@ class UrlResponseDiskCacheStub extends bindings.Stub {
         } else if (response != null) {
           return buildResponseWithId(
               response,
-              kUrlResponseDiskCache_get_name,
+              _UrlResponseDiskCache_getName,
               message.header.requestId,
               bindings.MessageHeader.kMessageIsResponse);
         }
         break;
-      case kUrlResponseDiskCache_validate_name:
-        var params = UrlResponseDiskCacheValidateParams.deserialize(
+      case _UrlResponseDiskCache_validateName:
+        var params = _UrlResponseDiskCacheValidateParams.deserialize(
             message.payload);
         _impl.validate(params.url);
         break;
-      case kUrlResponseDiskCache_update_name:
-        var params = UrlResponseDiskCacheUpdateParams.deserialize(
+      case _UrlResponseDiskCache_updateName:
+        var params = _UrlResponseDiskCacheUpdateParams.deserialize(
             message.payload);
         _impl.update(params.response);
         break;
-      case kUrlResponseDiskCache_updateAndGet_name:
-        var params = UrlResponseDiskCacheUpdateAndGetParams.deserialize(
+      case _UrlResponseDiskCache_updateAndGetName:
+        var params = _UrlResponseDiskCacheUpdateAndGetParams.deserialize(
             message.payload);
         var response = _impl.updateAndGet(params.response,_UrlResponseDiskCacheUpdateAndGetResponseParamsFactory);
         if (response is Future) {
@@ -893,7 +887,7 @@ class UrlResponseDiskCacheStub extends bindings.Stub {
             if (response != null) {
               return buildResponseWithId(
                   response,
-                  kUrlResponseDiskCache_updateAndGet_name,
+                  _UrlResponseDiskCache_updateAndGetName,
                   message.header.requestId,
                   bindings.MessageHeader.kMessageIsResponse);
             }
@@ -901,13 +895,13 @@ class UrlResponseDiskCacheStub extends bindings.Stub {
         } else if (response != null) {
           return buildResponseWithId(
               response,
-              kUrlResponseDiskCache_updateAndGet_name,
+              _UrlResponseDiskCache_updateAndGetName,
               message.header.requestId,
               bindings.MessageHeader.kMessageIsResponse);
         }
         break;
-      case kUrlResponseDiskCache_updateAndGetExtracted_name:
-        var params = UrlResponseDiskCacheUpdateAndGetExtractedParams.deserialize(
+      case _UrlResponseDiskCache_updateAndGetExtractedName:
+        var params = _UrlResponseDiskCacheUpdateAndGetExtractedParams.deserialize(
             message.payload);
         var response = _impl.updateAndGetExtracted(params.response,_UrlResponseDiskCacheUpdateAndGetExtractedResponseParamsFactory);
         if (response is Future) {
@@ -915,7 +909,7 @@ class UrlResponseDiskCacheStub extends bindings.Stub {
             if (response != null) {
               return buildResponseWithId(
                   response,
-                  kUrlResponseDiskCache_updateAndGetExtracted_name,
+                  _UrlResponseDiskCache_updateAndGetExtractedName,
                   message.header.requestId,
                   bindings.MessageHeader.kMessageIsResponse);
             }
@@ -923,7 +917,7 @@ class UrlResponseDiskCacheStub extends bindings.Stub {
         } else if (response != null) {
           return buildResponseWithId(
               response,
-              kUrlResponseDiskCache_updateAndGetExtracted_name,
+              _UrlResponseDiskCache_updateAndGetExtractedName,
               message.header.requestId,
               bindings.MessageHeader.kMessageIsResponse);
         }

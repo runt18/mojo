@@ -949,15 +949,15 @@ class StructWithEnum extends bindings.Struct {
 }
 
 
-class BoundsCheckTestInterfaceMethod0Params extends bindings.Struct {
+class _BoundsCheckTestInterfaceMethod0Params extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(16, 0)
   ];
   int param0 = 0;
 
-  BoundsCheckTestInterfaceMethod0Params() : super(kVersions.last.size);
+  _BoundsCheckTestInterfaceMethod0Params() : super(kVersions.last.size);
 
-  static BoundsCheckTestInterfaceMethod0Params deserialize(bindings.Message message) {
+  static _BoundsCheckTestInterfaceMethod0Params deserialize(bindings.Message message) {
     var decoder = new bindings.Decoder(message);
     var result = decode(decoder);
     if (decoder.excessHandles != null) {
@@ -966,11 +966,11 @@ class BoundsCheckTestInterfaceMethod0Params extends bindings.Struct {
     return result;
   }
 
-  static BoundsCheckTestInterfaceMethod0Params decode(bindings.Decoder decoder0) {
+  static _BoundsCheckTestInterfaceMethod0Params decode(bindings.Decoder decoder0) {
     if (decoder0 == null) {
       return null;
     }
-    BoundsCheckTestInterfaceMethod0Params result = new BoundsCheckTestInterfaceMethod0Params();
+    _BoundsCheckTestInterfaceMethod0Params result = new _BoundsCheckTestInterfaceMethod0Params();
 
     var mainDataHeader = decoder0.decodeStructDataHeader();
     if (mainDataHeader.version <= kVersions.last.version) {
@@ -1004,7 +1004,7 @@ class BoundsCheckTestInterfaceMethod0Params extends bindings.Struct {
   }
 
   String toString() {
-    return "BoundsCheckTestInterfaceMethod0Params("
+    return "_BoundsCheckTestInterfaceMethod0Params("
            "param0: $param0" ")";
   }
 
@@ -1083,15 +1083,15 @@ class BoundsCheckTestInterfaceMethod0ResponseParams extends bindings.Struct {
 }
 
 
-class BoundsCheckTestInterfaceMethod1Params extends bindings.Struct {
+class _BoundsCheckTestInterfaceMethod1Params extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(16, 0)
   ];
   int param0 = 0;
 
-  BoundsCheckTestInterfaceMethod1Params() : super(kVersions.last.size);
+  _BoundsCheckTestInterfaceMethod1Params() : super(kVersions.last.size);
 
-  static BoundsCheckTestInterfaceMethod1Params deserialize(bindings.Message message) {
+  static _BoundsCheckTestInterfaceMethod1Params deserialize(bindings.Message message) {
     var decoder = new bindings.Decoder(message);
     var result = decode(decoder);
     if (decoder.excessHandles != null) {
@@ -1100,11 +1100,11 @@ class BoundsCheckTestInterfaceMethod1Params extends bindings.Struct {
     return result;
   }
 
-  static BoundsCheckTestInterfaceMethod1Params decode(bindings.Decoder decoder0) {
+  static _BoundsCheckTestInterfaceMethod1Params decode(bindings.Decoder decoder0) {
     if (decoder0 == null) {
       return null;
     }
-    BoundsCheckTestInterfaceMethod1Params result = new BoundsCheckTestInterfaceMethod1Params();
+    _BoundsCheckTestInterfaceMethod1Params result = new _BoundsCheckTestInterfaceMethod1Params();
 
     var mainDataHeader = decoder0.decodeStructDataHeader();
     if (mainDataHeader.version <= kVersions.last.version) {
@@ -1138,7 +1138,7 @@ class BoundsCheckTestInterfaceMethod1Params extends bindings.Struct {
   }
 
   String toString() {
-    return "BoundsCheckTestInterfaceMethod1Params("
+    return "_BoundsCheckTestInterfaceMethod1Params("
            "param0: $param0" ")";
   }
 
@@ -1150,15 +1150,15 @@ class BoundsCheckTestInterfaceMethod1Params extends bindings.Struct {
 }
 
 
-class ConformanceTestInterfaceMethod0Params extends bindings.Struct {
+class _ConformanceTestInterfaceMethod0Params extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(16, 0)
   ];
   double param0 = 0.0;
 
-  ConformanceTestInterfaceMethod0Params() : super(kVersions.last.size);
+  _ConformanceTestInterfaceMethod0Params() : super(kVersions.last.size);
 
-  static ConformanceTestInterfaceMethod0Params deserialize(bindings.Message message) {
+  static _ConformanceTestInterfaceMethod0Params deserialize(bindings.Message message) {
     var decoder = new bindings.Decoder(message);
     var result = decode(decoder);
     if (decoder.excessHandles != null) {
@@ -1167,11 +1167,11 @@ class ConformanceTestInterfaceMethod0Params extends bindings.Struct {
     return result;
   }
 
-  static ConformanceTestInterfaceMethod0Params decode(bindings.Decoder decoder0) {
+  static _ConformanceTestInterfaceMethod0Params decode(bindings.Decoder decoder0) {
     if (decoder0 == null) {
       return null;
     }
-    ConformanceTestInterfaceMethod0Params result = new ConformanceTestInterfaceMethod0Params();
+    _ConformanceTestInterfaceMethod0Params result = new _ConformanceTestInterfaceMethod0Params();
 
     var mainDataHeader = decoder0.decodeStructDataHeader();
     if (mainDataHeader.version <= kVersions.last.version) {
@@ -1205,7 +1205,7 @@ class ConformanceTestInterfaceMethod0Params extends bindings.Struct {
   }
 
   String toString() {
-    return "ConformanceTestInterfaceMethod0Params("
+    return "_ConformanceTestInterfaceMethod0Params("
            "param0: $param0" ")";
   }
 
@@ -1217,15 +1217,15 @@ class ConformanceTestInterfaceMethod0Params extends bindings.Struct {
 }
 
 
-class ConformanceTestInterfaceMethod1Params extends bindings.Struct {
+class _ConformanceTestInterfaceMethod1Params extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(16, 0)
   ];
   StructA param0 = null;
 
-  ConformanceTestInterfaceMethod1Params() : super(kVersions.last.size);
+  _ConformanceTestInterfaceMethod1Params() : super(kVersions.last.size);
 
-  static ConformanceTestInterfaceMethod1Params deserialize(bindings.Message message) {
+  static _ConformanceTestInterfaceMethod1Params deserialize(bindings.Message message) {
     var decoder = new bindings.Decoder(message);
     var result = decode(decoder);
     if (decoder.excessHandles != null) {
@@ -1234,11 +1234,11 @@ class ConformanceTestInterfaceMethod1Params extends bindings.Struct {
     return result;
   }
 
-  static ConformanceTestInterfaceMethod1Params decode(bindings.Decoder decoder0) {
+  static _ConformanceTestInterfaceMethod1Params decode(bindings.Decoder decoder0) {
     if (decoder0 == null) {
       return null;
     }
-    ConformanceTestInterfaceMethod1Params result = new ConformanceTestInterfaceMethod1Params();
+    _ConformanceTestInterfaceMethod1Params result = new _ConformanceTestInterfaceMethod1Params();
 
     var mainDataHeader = decoder0.decodeStructDataHeader();
     if (mainDataHeader.version <= kVersions.last.version) {
@@ -1273,7 +1273,7 @@ class ConformanceTestInterfaceMethod1Params extends bindings.Struct {
   }
 
   String toString() {
-    return "ConformanceTestInterfaceMethod1Params("
+    return "_ConformanceTestInterfaceMethod1Params("
            "param0: $param0" ")";
   }
 
@@ -1285,16 +1285,16 @@ class ConformanceTestInterfaceMethod1Params extends bindings.Struct {
 }
 
 
-class ConformanceTestInterfaceMethod2Params extends bindings.Struct {
+class _ConformanceTestInterfaceMethod2Params extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(24, 0)
   ];
   StructB param0 = null;
   StructA param1 = null;
 
-  ConformanceTestInterfaceMethod2Params() : super(kVersions.last.size);
+  _ConformanceTestInterfaceMethod2Params() : super(kVersions.last.size);
 
-  static ConformanceTestInterfaceMethod2Params deserialize(bindings.Message message) {
+  static _ConformanceTestInterfaceMethod2Params deserialize(bindings.Message message) {
     var decoder = new bindings.Decoder(message);
     var result = decode(decoder);
     if (decoder.excessHandles != null) {
@@ -1303,11 +1303,11 @@ class ConformanceTestInterfaceMethod2Params extends bindings.Struct {
     return result;
   }
 
-  static ConformanceTestInterfaceMethod2Params decode(bindings.Decoder decoder0) {
+  static _ConformanceTestInterfaceMethod2Params decode(bindings.Decoder decoder0) {
     if (decoder0 == null) {
       return null;
     }
-    ConformanceTestInterfaceMethod2Params result = new ConformanceTestInterfaceMethod2Params();
+    _ConformanceTestInterfaceMethod2Params result = new _ConformanceTestInterfaceMethod2Params();
 
     var mainDataHeader = decoder0.decodeStructDataHeader();
     if (mainDataHeader.version <= kVersions.last.version) {
@@ -1349,7 +1349,7 @@ class ConformanceTestInterfaceMethod2Params extends bindings.Struct {
   }
 
   String toString() {
-    return "ConformanceTestInterfaceMethod2Params("
+    return "_ConformanceTestInterfaceMethod2Params("
            "param0: $param0" ", "
            "param1: $param1" ")";
   }
@@ -1363,15 +1363,15 @@ class ConformanceTestInterfaceMethod2Params extends bindings.Struct {
 }
 
 
-class ConformanceTestInterfaceMethod3Params extends bindings.Struct {
+class _ConformanceTestInterfaceMethod3Params extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(16, 0)
   ];
   List<bool> param0 = null;
 
-  ConformanceTestInterfaceMethod3Params() : super(kVersions.last.size);
+  _ConformanceTestInterfaceMethod3Params() : super(kVersions.last.size);
 
-  static ConformanceTestInterfaceMethod3Params deserialize(bindings.Message message) {
+  static _ConformanceTestInterfaceMethod3Params deserialize(bindings.Message message) {
     var decoder = new bindings.Decoder(message);
     var result = decode(decoder);
     if (decoder.excessHandles != null) {
@@ -1380,11 +1380,11 @@ class ConformanceTestInterfaceMethod3Params extends bindings.Struct {
     return result;
   }
 
-  static ConformanceTestInterfaceMethod3Params decode(bindings.Decoder decoder0) {
+  static _ConformanceTestInterfaceMethod3Params decode(bindings.Decoder decoder0) {
     if (decoder0 == null) {
       return null;
     }
-    ConformanceTestInterfaceMethod3Params result = new ConformanceTestInterfaceMethod3Params();
+    _ConformanceTestInterfaceMethod3Params result = new _ConformanceTestInterfaceMethod3Params();
 
     var mainDataHeader = decoder0.decodeStructDataHeader();
     if (mainDataHeader.version <= kVersions.last.version) {
@@ -1418,7 +1418,7 @@ class ConformanceTestInterfaceMethod3Params extends bindings.Struct {
   }
 
   String toString() {
-    return "ConformanceTestInterfaceMethod3Params("
+    return "_ConformanceTestInterfaceMethod3Params("
            "param0: $param0" ")";
   }
 
@@ -1430,16 +1430,16 @@ class ConformanceTestInterfaceMethod3Params extends bindings.Struct {
 }
 
 
-class ConformanceTestInterfaceMethod4Params extends bindings.Struct {
+class _ConformanceTestInterfaceMethod4Params extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(24, 0)
   ];
   StructC param0 = null;
   List<int> param1 = null;
 
-  ConformanceTestInterfaceMethod4Params() : super(kVersions.last.size);
+  _ConformanceTestInterfaceMethod4Params() : super(kVersions.last.size);
 
-  static ConformanceTestInterfaceMethod4Params deserialize(bindings.Message message) {
+  static _ConformanceTestInterfaceMethod4Params deserialize(bindings.Message message) {
     var decoder = new bindings.Decoder(message);
     var result = decode(decoder);
     if (decoder.excessHandles != null) {
@@ -1448,11 +1448,11 @@ class ConformanceTestInterfaceMethod4Params extends bindings.Struct {
     return result;
   }
 
-  static ConformanceTestInterfaceMethod4Params decode(bindings.Decoder decoder0) {
+  static _ConformanceTestInterfaceMethod4Params decode(bindings.Decoder decoder0) {
     if (decoder0 == null) {
       return null;
     }
-    ConformanceTestInterfaceMethod4Params result = new ConformanceTestInterfaceMethod4Params();
+    _ConformanceTestInterfaceMethod4Params result = new _ConformanceTestInterfaceMethod4Params();
 
     var mainDataHeader = decoder0.decodeStructDataHeader();
     if (mainDataHeader.version <= kVersions.last.version) {
@@ -1493,7 +1493,7 @@ class ConformanceTestInterfaceMethod4Params extends bindings.Struct {
   }
 
   String toString() {
-    return "ConformanceTestInterfaceMethod4Params("
+    return "_ConformanceTestInterfaceMethod4Params("
            "param0: $param0" ", "
            "param1: $param1" ")";
   }
@@ -1507,16 +1507,16 @@ class ConformanceTestInterfaceMethod4Params extends bindings.Struct {
 }
 
 
-class ConformanceTestInterfaceMethod5Params extends bindings.Struct {
+class _ConformanceTestInterfaceMethod5Params extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(24, 0)
   ];
   StructE param0 = null;
   core.MojoDataPipeProducer param1 = null;
 
-  ConformanceTestInterfaceMethod5Params() : super(kVersions.last.size);
+  _ConformanceTestInterfaceMethod5Params() : super(kVersions.last.size);
 
-  static ConformanceTestInterfaceMethod5Params deserialize(bindings.Message message) {
+  static _ConformanceTestInterfaceMethod5Params deserialize(bindings.Message message) {
     var decoder = new bindings.Decoder(message);
     var result = decode(decoder);
     if (decoder.excessHandles != null) {
@@ -1525,11 +1525,11 @@ class ConformanceTestInterfaceMethod5Params extends bindings.Struct {
     return result;
   }
 
-  static ConformanceTestInterfaceMethod5Params decode(bindings.Decoder decoder0) {
+  static _ConformanceTestInterfaceMethod5Params decode(bindings.Decoder decoder0) {
     if (decoder0 == null) {
       return null;
     }
-    ConformanceTestInterfaceMethod5Params result = new ConformanceTestInterfaceMethod5Params();
+    _ConformanceTestInterfaceMethod5Params result = new _ConformanceTestInterfaceMethod5Params();
 
     var mainDataHeader = decoder0.decodeStructDataHeader();
     if (mainDataHeader.version <= kVersions.last.version) {
@@ -1570,7 +1570,7 @@ class ConformanceTestInterfaceMethod5Params extends bindings.Struct {
   }
 
   String toString() {
-    return "ConformanceTestInterfaceMethod5Params("
+    return "_ConformanceTestInterfaceMethod5Params("
            "param0: $param0" ", "
            "param1: $param1" ")";
   }
@@ -1582,15 +1582,15 @@ class ConformanceTestInterfaceMethod5Params extends bindings.Struct {
 }
 
 
-class ConformanceTestInterfaceMethod6Params extends bindings.Struct {
+class _ConformanceTestInterfaceMethod6Params extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(16, 0)
   ];
   List<List<int>> param0 = null;
 
-  ConformanceTestInterfaceMethod6Params() : super(kVersions.last.size);
+  _ConformanceTestInterfaceMethod6Params() : super(kVersions.last.size);
 
-  static ConformanceTestInterfaceMethod6Params deserialize(bindings.Message message) {
+  static _ConformanceTestInterfaceMethod6Params deserialize(bindings.Message message) {
     var decoder = new bindings.Decoder(message);
     var result = decode(decoder);
     if (decoder.excessHandles != null) {
@@ -1599,11 +1599,11 @@ class ConformanceTestInterfaceMethod6Params extends bindings.Struct {
     return result;
   }
 
-  static ConformanceTestInterfaceMethod6Params decode(bindings.Decoder decoder0) {
+  static _ConformanceTestInterfaceMethod6Params decode(bindings.Decoder decoder0) {
     if (decoder0 == null) {
       return null;
     }
-    ConformanceTestInterfaceMethod6Params result = new ConformanceTestInterfaceMethod6Params();
+    _ConformanceTestInterfaceMethod6Params result = new _ConformanceTestInterfaceMethod6Params();
 
     var mainDataHeader = decoder0.decodeStructDataHeader();
     if (mainDataHeader.version <= kVersions.last.version) {
@@ -1653,7 +1653,7 @@ class ConformanceTestInterfaceMethod6Params extends bindings.Struct {
   }
 
   String toString() {
-    return "ConformanceTestInterfaceMethod6Params("
+    return "_ConformanceTestInterfaceMethod6Params("
            "param0: $param0" ")";
   }
 
@@ -1665,16 +1665,16 @@ class ConformanceTestInterfaceMethod6Params extends bindings.Struct {
 }
 
 
-class ConformanceTestInterfaceMethod7Params extends bindings.Struct {
+class _ConformanceTestInterfaceMethod7Params extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(24, 0)
   ];
   StructF param0 = null;
   List<List<int>> param1 = null;
 
-  ConformanceTestInterfaceMethod7Params() : super(kVersions.last.size);
+  _ConformanceTestInterfaceMethod7Params() : super(kVersions.last.size);
 
-  static ConformanceTestInterfaceMethod7Params deserialize(bindings.Message message) {
+  static _ConformanceTestInterfaceMethod7Params deserialize(bindings.Message message) {
     var decoder = new bindings.Decoder(message);
     var result = decode(decoder);
     if (decoder.excessHandles != null) {
@@ -1683,11 +1683,11 @@ class ConformanceTestInterfaceMethod7Params extends bindings.Struct {
     return result;
   }
 
-  static ConformanceTestInterfaceMethod7Params decode(bindings.Decoder decoder0) {
+  static _ConformanceTestInterfaceMethod7Params decode(bindings.Decoder decoder0) {
     if (decoder0 == null) {
       return null;
     }
-    ConformanceTestInterfaceMethod7Params result = new ConformanceTestInterfaceMethod7Params();
+    _ConformanceTestInterfaceMethod7Params result = new _ConformanceTestInterfaceMethod7Params();
 
     var mainDataHeader = decoder0.decodeStructDataHeader();
     if (mainDataHeader.version <= kVersions.last.version) {
@@ -1744,7 +1744,7 @@ class ConformanceTestInterfaceMethod7Params extends bindings.Struct {
   }
 
   String toString() {
-    return "ConformanceTestInterfaceMethod7Params("
+    return "_ConformanceTestInterfaceMethod7Params("
            "param0: $param0" ", "
            "param1: $param1" ")";
   }
@@ -1758,15 +1758,15 @@ class ConformanceTestInterfaceMethod7Params extends bindings.Struct {
 }
 
 
-class ConformanceTestInterfaceMethod8Params extends bindings.Struct {
+class _ConformanceTestInterfaceMethod8Params extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(16, 0)
   ];
   List<List<String>> param0 = null;
 
-  ConformanceTestInterfaceMethod8Params() : super(kVersions.last.size);
+  _ConformanceTestInterfaceMethod8Params() : super(kVersions.last.size);
 
-  static ConformanceTestInterfaceMethod8Params deserialize(bindings.Message message) {
+  static _ConformanceTestInterfaceMethod8Params deserialize(bindings.Message message) {
     var decoder = new bindings.Decoder(message);
     var result = decode(decoder);
     if (decoder.excessHandles != null) {
@@ -1775,11 +1775,11 @@ class ConformanceTestInterfaceMethod8Params extends bindings.Struct {
     return result;
   }
 
-  static ConformanceTestInterfaceMethod8Params decode(bindings.Decoder decoder0) {
+  static _ConformanceTestInterfaceMethod8Params decode(bindings.Decoder decoder0) {
     if (decoder0 == null) {
       return null;
     }
-    ConformanceTestInterfaceMethod8Params result = new ConformanceTestInterfaceMethod8Params();
+    _ConformanceTestInterfaceMethod8Params result = new _ConformanceTestInterfaceMethod8Params();
 
     var mainDataHeader = decoder0.decodeStructDataHeader();
     if (mainDataHeader.version <= kVersions.last.version) {
@@ -1847,7 +1847,7 @@ class ConformanceTestInterfaceMethod8Params extends bindings.Struct {
   }
 
   String toString() {
-    return "ConformanceTestInterfaceMethod8Params("
+    return "_ConformanceTestInterfaceMethod8Params("
            "param0: $param0" ")";
   }
 
@@ -1859,15 +1859,15 @@ class ConformanceTestInterfaceMethod8Params extends bindings.Struct {
 }
 
 
-class ConformanceTestInterfaceMethod9Params extends bindings.Struct {
+class _ConformanceTestInterfaceMethod9Params extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(16, 0)
   ];
   List<List<core.MojoHandle>> param0 = null;
 
-  ConformanceTestInterfaceMethod9Params() : super(kVersions.last.size);
+  _ConformanceTestInterfaceMethod9Params() : super(kVersions.last.size);
 
-  static ConformanceTestInterfaceMethod9Params deserialize(bindings.Message message) {
+  static _ConformanceTestInterfaceMethod9Params deserialize(bindings.Message message) {
     var decoder = new bindings.Decoder(message);
     var result = decode(decoder);
     if (decoder.excessHandles != null) {
@@ -1876,11 +1876,11 @@ class ConformanceTestInterfaceMethod9Params extends bindings.Struct {
     return result;
   }
 
-  static ConformanceTestInterfaceMethod9Params decode(bindings.Decoder decoder0) {
+  static _ConformanceTestInterfaceMethod9Params decode(bindings.Decoder decoder0) {
     if (decoder0 == null) {
       return null;
     }
-    ConformanceTestInterfaceMethod9Params result = new ConformanceTestInterfaceMethod9Params();
+    _ConformanceTestInterfaceMethod9Params result = new _ConformanceTestInterfaceMethod9Params();
 
     var mainDataHeader = decoder0.decodeStructDataHeader();
     if (mainDataHeader.version <= kVersions.last.version) {
@@ -1932,7 +1932,7 @@ class ConformanceTestInterfaceMethod9Params extends bindings.Struct {
   }
 
   String toString() {
-    return "ConformanceTestInterfaceMethod9Params("
+    return "_ConformanceTestInterfaceMethod9Params("
            "param0: $param0" ")";
   }
 
@@ -1943,15 +1943,15 @@ class ConformanceTestInterfaceMethod9Params extends bindings.Struct {
 }
 
 
-class ConformanceTestInterfaceMethod10Params extends bindings.Struct {
+class _ConformanceTestInterfaceMethod10Params extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(16, 0)
   ];
   Map<String, int> param0 = null;
 
-  ConformanceTestInterfaceMethod10Params() : super(kVersions.last.size);
+  _ConformanceTestInterfaceMethod10Params() : super(kVersions.last.size);
 
-  static ConformanceTestInterfaceMethod10Params deserialize(bindings.Message message) {
+  static _ConformanceTestInterfaceMethod10Params deserialize(bindings.Message message) {
     var decoder = new bindings.Decoder(message);
     var result = decode(decoder);
     if (decoder.excessHandles != null) {
@@ -1960,11 +1960,11 @@ class ConformanceTestInterfaceMethod10Params extends bindings.Struct {
     return result;
   }
 
-  static ConformanceTestInterfaceMethod10Params decode(bindings.Decoder decoder0) {
+  static _ConformanceTestInterfaceMethod10Params decode(bindings.Decoder decoder0) {
     if (decoder0 == null) {
       return null;
     }
-    ConformanceTestInterfaceMethod10Params result = new ConformanceTestInterfaceMethod10Params();
+    _ConformanceTestInterfaceMethod10Params result = new _ConformanceTestInterfaceMethod10Params();
 
     var mainDataHeader = decoder0.decodeStructDataHeader();
     if (mainDataHeader.version <= kVersions.last.version) {
@@ -2038,7 +2038,7 @@ class ConformanceTestInterfaceMethod10Params extends bindings.Struct {
   }
 
   String toString() {
-    return "ConformanceTestInterfaceMethod10Params("
+    return "_ConformanceTestInterfaceMethod10Params("
            "param0: $param0" ")";
   }
 
@@ -2050,15 +2050,15 @@ class ConformanceTestInterfaceMethod10Params extends bindings.Struct {
 }
 
 
-class ConformanceTestInterfaceMethod11Params extends bindings.Struct {
+class _ConformanceTestInterfaceMethod11Params extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(16, 0)
   ];
   StructG param0 = null;
 
-  ConformanceTestInterfaceMethod11Params() : super(kVersions.last.size);
+  _ConformanceTestInterfaceMethod11Params() : super(kVersions.last.size);
 
-  static ConformanceTestInterfaceMethod11Params deserialize(bindings.Message message) {
+  static _ConformanceTestInterfaceMethod11Params deserialize(bindings.Message message) {
     var decoder = new bindings.Decoder(message);
     var result = decode(decoder);
     if (decoder.excessHandles != null) {
@@ -2067,11 +2067,11 @@ class ConformanceTestInterfaceMethod11Params extends bindings.Struct {
     return result;
   }
 
-  static ConformanceTestInterfaceMethod11Params decode(bindings.Decoder decoder0) {
+  static _ConformanceTestInterfaceMethod11Params decode(bindings.Decoder decoder0) {
     if (decoder0 == null) {
       return null;
     }
-    ConformanceTestInterfaceMethod11Params result = new ConformanceTestInterfaceMethod11Params();
+    _ConformanceTestInterfaceMethod11Params result = new _ConformanceTestInterfaceMethod11Params();
 
     var mainDataHeader = decoder0.decodeStructDataHeader();
     if (mainDataHeader.version <= kVersions.last.version) {
@@ -2106,7 +2106,7 @@ class ConformanceTestInterfaceMethod11Params extends bindings.Struct {
   }
 
   String toString() {
-    return "ConformanceTestInterfaceMethod11Params("
+    return "_ConformanceTestInterfaceMethod11Params("
            "param0: $param0" ")";
   }
 
@@ -2118,15 +2118,15 @@ class ConformanceTestInterfaceMethod11Params extends bindings.Struct {
 }
 
 
-class ConformanceTestInterfaceMethod12Params extends bindings.Struct {
+class _ConformanceTestInterfaceMethod12Params extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(16, 0)
   ];
   double param0 = 0.0;
 
-  ConformanceTestInterfaceMethod12Params() : super(kVersions.last.size);
+  _ConformanceTestInterfaceMethod12Params() : super(kVersions.last.size);
 
-  static ConformanceTestInterfaceMethod12Params deserialize(bindings.Message message) {
+  static _ConformanceTestInterfaceMethod12Params deserialize(bindings.Message message) {
     var decoder = new bindings.Decoder(message);
     var result = decode(decoder);
     if (decoder.excessHandles != null) {
@@ -2135,11 +2135,11 @@ class ConformanceTestInterfaceMethod12Params extends bindings.Struct {
     return result;
   }
 
-  static ConformanceTestInterfaceMethod12Params decode(bindings.Decoder decoder0) {
+  static _ConformanceTestInterfaceMethod12Params decode(bindings.Decoder decoder0) {
     if (decoder0 == null) {
       return null;
     }
-    ConformanceTestInterfaceMethod12Params result = new ConformanceTestInterfaceMethod12Params();
+    _ConformanceTestInterfaceMethod12Params result = new _ConformanceTestInterfaceMethod12Params();
 
     var mainDataHeader = decoder0.decodeStructDataHeader();
     if (mainDataHeader.version <= kVersions.last.version) {
@@ -2173,7 +2173,7 @@ class ConformanceTestInterfaceMethod12Params extends bindings.Struct {
   }
 
   String toString() {
-    return "ConformanceTestInterfaceMethod12Params("
+    return "_ConformanceTestInterfaceMethod12Params("
            "param0: $param0" ")";
   }
 
@@ -2252,7 +2252,7 @@ class ConformanceTestInterfaceMethod12ResponseParams extends bindings.Struct {
 }
 
 
-class ConformanceTestInterfaceMethod13Params extends bindings.Struct {
+class _ConformanceTestInterfaceMethod13Params extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(32, 0)
   ];
@@ -2260,9 +2260,9 @@ class ConformanceTestInterfaceMethod13Params extends bindings.Struct {
   int param1 = 0;
   Object param2 = null;
 
-  ConformanceTestInterfaceMethod13Params() : super(kVersions.last.size);
+  _ConformanceTestInterfaceMethod13Params() : super(kVersions.last.size);
 
-  static ConformanceTestInterfaceMethod13Params deserialize(bindings.Message message) {
+  static _ConformanceTestInterfaceMethod13Params deserialize(bindings.Message message) {
     var decoder = new bindings.Decoder(message);
     var result = decode(decoder);
     if (decoder.excessHandles != null) {
@@ -2271,11 +2271,11 @@ class ConformanceTestInterfaceMethod13Params extends bindings.Struct {
     return result;
   }
 
-  static ConformanceTestInterfaceMethod13Params decode(bindings.Decoder decoder0) {
+  static _ConformanceTestInterfaceMethod13Params decode(bindings.Decoder decoder0) {
     if (decoder0 == null) {
       return null;
     }
-    ConformanceTestInterfaceMethod13Params result = new ConformanceTestInterfaceMethod13Params();
+    _ConformanceTestInterfaceMethod13Params result = new _ConformanceTestInterfaceMethod13Params();
 
     var mainDataHeader = decoder0.decodeStructDataHeader();
     if (mainDataHeader.version <= kVersions.last.version) {
@@ -2321,7 +2321,7 @@ class ConformanceTestInterfaceMethod13Params extends bindings.Struct {
   }
 
   String toString() {
-    return "ConformanceTestInterfaceMethod13Params("
+    return "_ConformanceTestInterfaceMethod13Params("
            "param0: $param0" ", "
            "param1: $param1" ", "
            "param2: $param2" ")";
@@ -2334,15 +2334,15 @@ class ConformanceTestInterfaceMethod13Params extends bindings.Struct {
 }
 
 
-class ConformanceTestInterfaceMethod14Params extends bindings.Struct {
+class _ConformanceTestInterfaceMethod14Params extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(24, 0)
   ];
   UnionA param0 = null;
 
-  ConformanceTestInterfaceMethod14Params() : super(kVersions.last.size);
+  _ConformanceTestInterfaceMethod14Params() : super(kVersions.last.size);
 
-  static ConformanceTestInterfaceMethod14Params deserialize(bindings.Message message) {
+  static _ConformanceTestInterfaceMethod14Params deserialize(bindings.Message message) {
     var decoder = new bindings.Decoder(message);
     var result = decode(decoder);
     if (decoder.excessHandles != null) {
@@ -2351,11 +2351,11 @@ class ConformanceTestInterfaceMethod14Params extends bindings.Struct {
     return result;
   }
 
-  static ConformanceTestInterfaceMethod14Params decode(bindings.Decoder decoder0) {
+  static _ConformanceTestInterfaceMethod14Params decode(bindings.Decoder decoder0) {
     if (decoder0 == null) {
       return null;
     }
-    ConformanceTestInterfaceMethod14Params result = new ConformanceTestInterfaceMethod14Params();
+    _ConformanceTestInterfaceMethod14Params result = new _ConformanceTestInterfaceMethod14Params();
 
     var mainDataHeader = decoder0.decodeStructDataHeader();
     if (mainDataHeader.version <= kVersions.last.version) {
@@ -2393,7 +2393,7 @@ class ConformanceTestInterfaceMethod14Params extends bindings.Struct {
   }
 
   String toString() {
-    return "ConformanceTestInterfaceMethod14Params("
+    return "_ConformanceTestInterfaceMethod14Params("
            "param0: $param0" ")";
   }
 
@@ -2405,15 +2405,15 @@ class ConformanceTestInterfaceMethod14Params extends bindings.Struct {
 }
 
 
-class ConformanceTestInterfaceMethod15Params extends bindings.Struct {
+class _ConformanceTestInterfaceMethod15Params extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(16, 0)
   ];
   StructH param0 = null;
 
-  ConformanceTestInterfaceMethod15Params() : super(kVersions.last.size);
+  _ConformanceTestInterfaceMethod15Params() : super(kVersions.last.size);
 
-  static ConformanceTestInterfaceMethod15Params deserialize(bindings.Message message) {
+  static _ConformanceTestInterfaceMethod15Params deserialize(bindings.Message message) {
     var decoder = new bindings.Decoder(message);
     var result = decode(decoder);
     if (decoder.excessHandles != null) {
@@ -2422,11 +2422,11 @@ class ConformanceTestInterfaceMethod15Params extends bindings.Struct {
     return result;
   }
 
-  static ConformanceTestInterfaceMethod15Params decode(bindings.Decoder decoder0) {
+  static _ConformanceTestInterfaceMethod15Params decode(bindings.Decoder decoder0) {
     if (decoder0 == null) {
       return null;
     }
-    ConformanceTestInterfaceMethod15Params result = new ConformanceTestInterfaceMethod15Params();
+    _ConformanceTestInterfaceMethod15Params result = new _ConformanceTestInterfaceMethod15Params();
 
     var mainDataHeader = decoder0.decodeStructDataHeader();
     if (mainDataHeader.version <= kVersions.last.version) {
@@ -2461,7 +2461,7 @@ class ConformanceTestInterfaceMethod15Params extends bindings.Struct {
   }
 
   String toString() {
-    return "ConformanceTestInterfaceMethod15Params("
+    return "_ConformanceTestInterfaceMethod15Params("
            "param0: $param0" ")";
   }
 
@@ -2473,15 +2473,15 @@ class ConformanceTestInterfaceMethod15Params extends bindings.Struct {
 }
 
 
-class IntegrationTestInterfaceMethod0Params extends bindings.Struct {
+class _IntegrationTestInterfaceMethod0Params extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(16, 0)
   ];
   BasicStruct param0 = null;
 
-  IntegrationTestInterfaceMethod0Params() : super(kVersions.last.size);
+  _IntegrationTestInterfaceMethod0Params() : super(kVersions.last.size);
 
-  static IntegrationTestInterfaceMethod0Params deserialize(bindings.Message message) {
+  static _IntegrationTestInterfaceMethod0Params deserialize(bindings.Message message) {
     var decoder = new bindings.Decoder(message);
     var result = decode(decoder);
     if (decoder.excessHandles != null) {
@@ -2490,11 +2490,11 @@ class IntegrationTestInterfaceMethod0Params extends bindings.Struct {
     return result;
   }
 
-  static IntegrationTestInterfaceMethod0Params decode(bindings.Decoder decoder0) {
+  static _IntegrationTestInterfaceMethod0Params decode(bindings.Decoder decoder0) {
     if (decoder0 == null) {
       return null;
     }
-    IntegrationTestInterfaceMethod0Params result = new IntegrationTestInterfaceMethod0Params();
+    _IntegrationTestInterfaceMethod0Params result = new _IntegrationTestInterfaceMethod0Params();
 
     var mainDataHeader = decoder0.decodeStructDataHeader();
     if (mainDataHeader.version <= kVersions.last.version) {
@@ -2529,7 +2529,7 @@ class IntegrationTestInterfaceMethod0Params extends bindings.Struct {
   }
 
   String toString() {
-    return "IntegrationTestInterfaceMethod0Params("
+    return "_IntegrationTestInterfaceMethod0Params("
            "param0: $param0" ")";
   }
 
@@ -3149,29 +3149,26 @@ class UnionB extends bindings.Union {
     return result;
   }
 }
-const String InterfaceAName = null;
 
 abstract class InterfaceA {
-
+  static const String serviceName = null;
 }
 
 
-class InterfaceAProxyImpl extends bindings.Proxy {
-  InterfaceAProxyImpl.fromEndpoint(
+class _InterfaceAProxyImpl extends bindings.Proxy {
+  _InterfaceAProxyImpl.fromEndpoint(
       core.MojoMessagePipeEndpoint endpoint) : super.fromEndpoint(endpoint);
 
-  InterfaceAProxyImpl.fromHandle(core.MojoHandle handle) :
+  _InterfaceAProxyImpl.fromHandle(core.MojoHandle handle) :
       super.fromHandle(handle);
 
-  InterfaceAProxyImpl.unbound() : super.unbound();
+  _InterfaceAProxyImpl.unbound() : super.unbound();
 
-  static InterfaceAProxyImpl newFromEndpoint(
+  static _InterfaceAProxyImpl newFromEndpoint(
       core.MojoMessagePipeEndpoint endpoint) {
-    assert(endpoint.setDescription("For InterfaceAProxyImpl"));
-    return new InterfaceAProxyImpl.fromEndpoint(endpoint);
+    assert(endpoint.setDescription("For _InterfaceAProxyImpl"));
+    return new _InterfaceAProxyImpl.fromEndpoint(endpoint);
   }
-
-  String get name => InterfaceAName;
 
   void handleResponse(bindings.ServiceMessage message) {
     switch (message.header.type) {
@@ -3184,13 +3181,13 @@ class InterfaceAProxyImpl extends bindings.Proxy {
 
   String toString() {
     var superString = super.toString();
-    return "InterfaceAProxyImpl($superString)";
+    return "_InterfaceAProxyImpl($superString)";
   }
 }
 
 
 class _InterfaceAProxyCalls implements InterfaceA {
-  InterfaceAProxyImpl _proxyImpl;
+  _InterfaceAProxyImpl _proxyImpl;
 
   _InterfaceAProxyCalls(this._proxyImpl);
 }
@@ -3199,25 +3196,24 @@ class _InterfaceAProxyCalls implements InterfaceA {
 class InterfaceAProxy implements bindings.ProxyBase {
   final bindings.Proxy impl;
   InterfaceA ptr;
-  final String name = InterfaceAName;
 
-  InterfaceAProxy(InterfaceAProxyImpl proxyImpl) :
+  InterfaceAProxy(_InterfaceAProxyImpl proxyImpl) :
       impl = proxyImpl,
       ptr = new _InterfaceAProxyCalls(proxyImpl);
 
   InterfaceAProxy.fromEndpoint(
       core.MojoMessagePipeEndpoint endpoint) :
-      impl = new InterfaceAProxyImpl.fromEndpoint(endpoint) {
+      impl = new _InterfaceAProxyImpl.fromEndpoint(endpoint) {
     ptr = new _InterfaceAProxyCalls(impl);
   }
 
   InterfaceAProxy.fromHandle(core.MojoHandle handle) :
-      impl = new InterfaceAProxyImpl.fromHandle(handle) {
+      impl = new _InterfaceAProxyImpl.fromHandle(handle) {
     ptr = new _InterfaceAProxyCalls(impl);
   }
 
   InterfaceAProxy.unbound() :
-      impl = new InterfaceAProxyImpl.unbound() {
+      impl = new _InterfaceAProxyImpl.unbound() {
     ptr = new _InterfaceAProxyCalls(impl);
   }
 
@@ -3233,6 +3229,8 @@ class InterfaceAProxy implements bindings.ProxyBase {
     assert(endpoint.setDescription("For InterfaceAProxy"));
     return new InterfaceAProxy.fromEndpoint(endpoint);
   }
+
+  String get serviceName => InterfaceA.serviceName;
 
   Future close({bool immediate: false}) => impl.close(immediate: immediate);
 
@@ -3272,8 +3270,6 @@ class InterfaceAStub extends bindings.Stub {
     return new InterfaceAStub.fromEndpoint(endpoint);
   }
 
-  static const String name = InterfaceAName;
-
 
 
   dynamic handleMessage(bindings.ServiceMessage message) {
@@ -3305,37 +3301,34 @@ class InterfaceAStub extends bindings.Stub {
   int get version => 0;
 }
 
-const int kBoundsCheckTestInterface_method0_name = 0;
-const int kBoundsCheckTestInterface_method1_name = 1;
-const String BoundsCheckTestInterfaceName = null;
+const int _BoundsCheckTestInterface_method0Name = 0;
+const int _BoundsCheckTestInterface_method1Name = 1;
 
 abstract class BoundsCheckTestInterface {
+  static const String serviceName = null;
   dynamic method0(int param0,[Function responseFactory = null]);
   void method1(int param0);
-
 }
 
 
-class BoundsCheckTestInterfaceProxyImpl extends bindings.Proxy {
-  BoundsCheckTestInterfaceProxyImpl.fromEndpoint(
+class _BoundsCheckTestInterfaceProxyImpl extends bindings.Proxy {
+  _BoundsCheckTestInterfaceProxyImpl.fromEndpoint(
       core.MojoMessagePipeEndpoint endpoint) : super.fromEndpoint(endpoint);
 
-  BoundsCheckTestInterfaceProxyImpl.fromHandle(core.MojoHandle handle) :
+  _BoundsCheckTestInterfaceProxyImpl.fromHandle(core.MojoHandle handle) :
       super.fromHandle(handle);
 
-  BoundsCheckTestInterfaceProxyImpl.unbound() : super.unbound();
+  _BoundsCheckTestInterfaceProxyImpl.unbound() : super.unbound();
 
-  static BoundsCheckTestInterfaceProxyImpl newFromEndpoint(
+  static _BoundsCheckTestInterfaceProxyImpl newFromEndpoint(
       core.MojoMessagePipeEndpoint endpoint) {
-    assert(endpoint.setDescription("For BoundsCheckTestInterfaceProxyImpl"));
-    return new BoundsCheckTestInterfaceProxyImpl.fromEndpoint(endpoint);
+    assert(endpoint.setDescription("For _BoundsCheckTestInterfaceProxyImpl"));
+    return new _BoundsCheckTestInterfaceProxyImpl.fromEndpoint(endpoint);
   }
-
-  String get name => BoundsCheckTestInterfaceName;
 
   void handleResponse(bindings.ServiceMessage message) {
     switch (message.header.type) {
-      case kBoundsCheckTestInterface_method0_name:
+      case _BoundsCheckTestInterface_method0Name:
         var r = BoundsCheckTestInterfaceMethod0ResponseParams.deserialize(
             message.payload);
         if (!message.header.hasRequestId) {
@@ -3364,21 +3357,21 @@ class BoundsCheckTestInterfaceProxyImpl extends bindings.Proxy {
 
   String toString() {
     var superString = super.toString();
-    return "BoundsCheckTestInterfaceProxyImpl($superString)";
+    return "_BoundsCheckTestInterfaceProxyImpl($superString)";
   }
 }
 
 
 class _BoundsCheckTestInterfaceProxyCalls implements BoundsCheckTestInterface {
-  BoundsCheckTestInterfaceProxyImpl _proxyImpl;
+  _BoundsCheckTestInterfaceProxyImpl _proxyImpl;
 
   _BoundsCheckTestInterfaceProxyCalls(this._proxyImpl);
     dynamic method0(int param0,[Function responseFactory = null]) {
-      var params = new BoundsCheckTestInterfaceMethod0Params();
+      var params = new _BoundsCheckTestInterfaceMethod0Params();
       params.param0 = param0;
       return _proxyImpl.sendMessageWithRequestId(
           params,
-          kBoundsCheckTestInterface_method0_name,
+          _BoundsCheckTestInterface_method0Name,
           -1,
           bindings.MessageHeader.kMessageExpectsResponse);
     }
@@ -3387,36 +3380,34 @@ class _BoundsCheckTestInterfaceProxyCalls implements BoundsCheckTestInterface {
         _proxyImpl.proxyError("The Proxy is closed.");
         return;
       }
-      var params = new BoundsCheckTestInterfaceMethod1Params();
+      var params = new _BoundsCheckTestInterfaceMethod1Params();
       params.param0 = param0;
-      _proxyImpl.sendMessage(params, kBoundsCheckTestInterface_method1_name);
+      _proxyImpl.sendMessage(params, _BoundsCheckTestInterface_method1Name);
     }
-  
 }
 
 
 class BoundsCheckTestInterfaceProxy implements bindings.ProxyBase {
   final bindings.Proxy impl;
   BoundsCheckTestInterface ptr;
-  final String name = BoundsCheckTestInterfaceName;
 
-  BoundsCheckTestInterfaceProxy(BoundsCheckTestInterfaceProxyImpl proxyImpl) :
+  BoundsCheckTestInterfaceProxy(_BoundsCheckTestInterfaceProxyImpl proxyImpl) :
       impl = proxyImpl,
       ptr = new _BoundsCheckTestInterfaceProxyCalls(proxyImpl);
 
   BoundsCheckTestInterfaceProxy.fromEndpoint(
       core.MojoMessagePipeEndpoint endpoint) :
-      impl = new BoundsCheckTestInterfaceProxyImpl.fromEndpoint(endpoint) {
+      impl = new _BoundsCheckTestInterfaceProxyImpl.fromEndpoint(endpoint) {
     ptr = new _BoundsCheckTestInterfaceProxyCalls(impl);
   }
 
   BoundsCheckTestInterfaceProxy.fromHandle(core.MojoHandle handle) :
-      impl = new BoundsCheckTestInterfaceProxyImpl.fromHandle(handle) {
+      impl = new _BoundsCheckTestInterfaceProxyImpl.fromHandle(handle) {
     ptr = new _BoundsCheckTestInterfaceProxyCalls(impl);
   }
 
   BoundsCheckTestInterfaceProxy.unbound() :
-      impl = new BoundsCheckTestInterfaceProxyImpl.unbound() {
+      impl = new _BoundsCheckTestInterfaceProxyImpl.unbound() {
     ptr = new _BoundsCheckTestInterfaceProxyCalls(impl);
   }
 
@@ -3432,6 +3423,8 @@ class BoundsCheckTestInterfaceProxy implements bindings.ProxyBase {
     assert(endpoint.setDescription("For BoundsCheckTestInterfaceProxy"));
     return new BoundsCheckTestInterfaceProxy.fromEndpoint(endpoint);
   }
+
+  String get serviceName => BoundsCheckTestInterface.serviceName;
 
   Future close({bool immediate: false}) => impl.close(immediate: immediate);
 
@@ -3471,8 +3464,6 @@ class BoundsCheckTestInterfaceStub extends bindings.Stub {
     return new BoundsCheckTestInterfaceStub.fromEndpoint(endpoint);
   }
 
-  static const String name = BoundsCheckTestInterfaceName;
-
 
   BoundsCheckTestInterfaceMethod0ResponseParams _BoundsCheckTestInterfaceMethod0ResponseParamsFactory(int param0) {
     var mojo_factory_result = new BoundsCheckTestInterfaceMethod0ResponseParams();
@@ -3488,8 +3479,8 @@ class BoundsCheckTestInterfaceStub extends bindings.Stub {
     }
     assert(_impl != null);
     switch (message.header.type) {
-      case kBoundsCheckTestInterface_method0_name:
-        var params = BoundsCheckTestInterfaceMethod0Params.deserialize(
+      case _BoundsCheckTestInterface_method0Name:
+        var params = _BoundsCheckTestInterfaceMethod0Params.deserialize(
             message.payload);
         var response = _impl.method0(params.param0,_BoundsCheckTestInterfaceMethod0ResponseParamsFactory);
         if (response is Future) {
@@ -3497,7 +3488,7 @@ class BoundsCheckTestInterfaceStub extends bindings.Stub {
             if (response != null) {
               return buildResponseWithId(
                   response,
-                  kBoundsCheckTestInterface_method0_name,
+                  _BoundsCheckTestInterface_method0Name,
                   message.header.requestId,
                   bindings.MessageHeader.kMessageIsResponse);
             }
@@ -3505,13 +3496,13 @@ class BoundsCheckTestInterfaceStub extends bindings.Stub {
         } else if (response != null) {
           return buildResponseWithId(
               response,
-              kBoundsCheckTestInterface_method0_name,
+              _BoundsCheckTestInterface_method0Name,
               message.header.requestId,
               bindings.MessageHeader.kMessageIsResponse);
         }
         break;
-      case kBoundsCheckTestInterface_method1_name:
-        var params = BoundsCheckTestInterfaceMethod1Params.deserialize(
+      case _BoundsCheckTestInterface_method1Name:
+        var params = _BoundsCheckTestInterfaceMethod1Params.deserialize(
             message.payload);
         _impl.method1(params.param0);
         break;
@@ -3536,25 +3527,25 @@ class BoundsCheckTestInterfaceStub extends bindings.Stub {
   int get version => 0;
 }
 
-const int kConformanceTestInterface_method0_name = 0;
-const int kConformanceTestInterface_method1_name = 1;
-const int kConformanceTestInterface_method2_name = 2;
-const int kConformanceTestInterface_method3_name = 3;
-const int kConformanceTestInterface_method4_name = 4;
-const int kConformanceTestInterface_method5_name = 5;
-const int kConformanceTestInterface_method6_name = 6;
-const int kConformanceTestInterface_method7_name = 7;
-const int kConformanceTestInterface_method8_name = 8;
-const int kConformanceTestInterface_method9_name = 9;
-const int kConformanceTestInterface_method10_name = 10;
-const int kConformanceTestInterface_method11_name = 11;
-const int kConformanceTestInterface_method12_name = 12;
-const int kConformanceTestInterface_method13_name = 13;
-const int kConformanceTestInterface_method14_name = 14;
-const int kConformanceTestInterface_method15_name = 15;
-const String ConformanceTestInterfaceName = null;
+const int _ConformanceTestInterface_method0Name = 0;
+const int _ConformanceTestInterface_method1Name = 1;
+const int _ConformanceTestInterface_method2Name = 2;
+const int _ConformanceTestInterface_method3Name = 3;
+const int _ConformanceTestInterface_method4Name = 4;
+const int _ConformanceTestInterface_method5Name = 5;
+const int _ConformanceTestInterface_method6Name = 6;
+const int _ConformanceTestInterface_method7Name = 7;
+const int _ConformanceTestInterface_method8Name = 8;
+const int _ConformanceTestInterface_method9Name = 9;
+const int _ConformanceTestInterface_method10Name = 10;
+const int _ConformanceTestInterface_method11Name = 11;
+const int _ConformanceTestInterface_method12Name = 12;
+const int _ConformanceTestInterface_method13Name = 13;
+const int _ConformanceTestInterface_method14Name = 14;
+const int _ConformanceTestInterface_method15Name = 15;
 
 abstract class ConformanceTestInterface {
+  static const String serviceName = null;
   void method0(double param0);
   void method1(StructA param0);
   void method2(StructB param0, StructA param1);
@@ -3571,30 +3562,27 @@ abstract class ConformanceTestInterface {
   void method13(Object param0, int param1, Object param2);
   void method14(UnionA param0);
   void method15(StructH param0);
-
 }
 
 
-class ConformanceTestInterfaceProxyImpl extends bindings.Proxy {
-  ConformanceTestInterfaceProxyImpl.fromEndpoint(
+class _ConformanceTestInterfaceProxyImpl extends bindings.Proxy {
+  _ConformanceTestInterfaceProxyImpl.fromEndpoint(
       core.MojoMessagePipeEndpoint endpoint) : super.fromEndpoint(endpoint);
 
-  ConformanceTestInterfaceProxyImpl.fromHandle(core.MojoHandle handle) :
+  _ConformanceTestInterfaceProxyImpl.fromHandle(core.MojoHandle handle) :
       super.fromHandle(handle);
 
-  ConformanceTestInterfaceProxyImpl.unbound() : super.unbound();
+  _ConformanceTestInterfaceProxyImpl.unbound() : super.unbound();
 
-  static ConformanceTestInterfaceProxyImpl newFromEndpoint(
+  static _ConformanceTestInterfaceProxyImpl newFromEndpoint(
       core.MojoMessagePipeEndpoint endpoint) {
-    assert(endpoint.setDescription("For ConformanceTestInterfaceProxyImpl"));
-    return new ConformanceTestInterfaceProxyImpl.fromEndpoint(endpoint);
+    assert(endpoint.setDescription("For _ConformanceTestInterfaceProxyImpl"));
+    return new _ConformanceTestInterfaceProxyImpl.fromEndpoint(endpoint);
   }
-
-  String get name => ConformanceTestInterfaceName;
 
   void handleResponse(bindings.ServiceMessage message) {
     switch (message.header.type) {
-      case kConformanceTestInterface_method12_name:
+      case _ConformanceTestInterface_method12Name:
         var r = ConformanceTestInterfaceMethod12ResponseParams.deserialize(
             message.payload);
         if (!message.header.hasRequestId) {
@@ -3623,13 +3611,13 @@ class ConformanceTestInterfaceProxyImpl extends bindings.Proxy {
 
   String toString() {
     var superString = super.toString();
-    return "ConformanceTestInterfaceProxyImpl($superString)";
+    return "_ConformanceTestInterfaceProxyImpl($superString)";
   }
 }
 
 
 class _ConformanceTestInterfaceProxyCalls implements ConformanceTestInterface {
-  ConformanceTestInterfaceProxyImpl _proxyImpl;
+  _ConformanceTestInterfaceProxyImpl _proxyImpl;
 
   _ConformanceTestInterfaceProxyCalls(this._proxyImpl);
     void method0(double param0) {
@@ -3637,131 +3625,119 @@ class _ConformanceTestInterfaceProxyCalls implements ConformanceTestInterface {
         _proxyImpl.proxyError("The Proxy is closed.");
         return;
       }
-      var params = new ConformanceTestInterfaceMethod0Params();
+      var params = new _ConformanceTestInterfaceMethod0Params();
       params.param0 = param0;
-      _proxyImpl.sendMessage(params, kConformanceTestInterface_method0_name);
+      _proxyImpl.sendMessage(params, _ConformanceTestInterface_method0Name);
     }
-  
     void method1(StructA param0) {
       if (!_proxyImpl.isBound) {
         _proxyImpl.proxyError("The Proxy is closed.");
         return;
       }
-      var params = new ConformanceTestInterfaceMethod1Params();
+      var params = new _ConformanceTestInterfaceMethod1Params();
       params.param0 = param0;
-      _proxyImpl.sendMessage(params, kConformanceTestInterface_method1_name);
+      _proxyImpl.sendMessage(params, _ConformanceTestInterface_method1Name);
     }
-  
     void method2(StructB param0, StructA param1) {
       if (!_proxyImpl.isBound) {
         _proxyImpl.proxyError("The Proxy is closed.");
         return;
       }
-      var params = new ConformanceTestInterfaceMethod2Params();
+      var params = new _ConformanceTestInterfaceMethod2Params();
       params.param0 = param0;
       params.param1 = param1;
-      _proxyImpl.sendMessage(params, kConformanceTestInterface_method2_name);
+      _proxyImpl.sendMessage(params, _ConformanceTestInterface_method2Name);
     }
-  
     void method3(List<bool> param0) {
       if (!_proxyImpl.isBound) {
         _proxyImpl.proxyError("The Proxy is closed.");
         return;
       }
-      var params = new ConformanceTestInterfaceMethod3Params();
+      var params = new _ConformanceTestInterfaceMethod3Params();
       params.param0 = param0;
-      _proxyImpl.sendMessage(params, kConformanceTestInterface_method3_name);
+      _proxyImpl.sendMessage(params, _ConformanceTestInterface_method3Name);
     }
-  
     void method4(StructC param0, List<int> param1) {
       if (!_proxyImpl.isBound) {
         _proxyImpl.proxyError("The Proxy is closed.");
         return;
       }
-      var params = new ConformanceTestInterfaceMethod4Params();
+      var params = new _ConformanceTestInterfaceMethod4Params();
       params.param0 = param0;
       params.param1 = param1;
-      _proxyImpl.sendMessage(params, kConformanceTestInterface_method4_name);
+      _proxyImpl.sendMessage(params, _ConformanceTestInterface_method4Name);
     }
-  
     void method5(StructE param0, core.MojoDataPipeProducer param1) {
       if (!_proxyImpl.isBound) {
         _proxyImpl.proxyError("The Proxy is closed.");
         return;
       }
-      var params = new ConformanceTestInterfaceMethod5Params();
+      var params = new _ConformanceTestInterfaceMethod5Params();
       params.param0 = param0;
       params.param1 = param1;
-      _proxyImpl.sendMessage(params, kConformanceTestInterface_method5_name);
+      _proxyImpl.sendMessage(params, _ConformanceTestInterface_method5Name);
     }
-  
     void method6(List<List<int>> param0) {
       if (!_proxyImpl.isBound) {
         _proxyImpl.proxyError("The Proxy is closed.");
         return;
       }
-      var params = new ConformanceTestInterfaceMethod6Params();
+      var params = new _ConformanceTestInterfaceMethod6Params();
       params.param0 = param0;
-      _proxyImpl.sendMessage(params, kConformanceTestInterface_method6_name);
+      _proxyImpl.sendMessage(params, _ConformanceTestInterface_method6Name);
     }
-  
     void method7(StructF param0, List<List<int>> param1) {
       if (!_proxyImpl.isBound) {
         _proxyImpl.proxyError("The Proxy is closed.");
         return;
       }
-      var params = new ConformanceTestInterfaceMethod7Params();
+      var params = new _ConformanceTestInterfaceMethod7Params();
       params.param0 = param0;
       params.param1 = param1;
-      _proxyImpl.sendMessage(params, kConformanceTestInterface_method7_name);
+      _proxyImpl.sendMessage(params, _ConformanceTestInterface_method7Name);
     }
-  
     void method8(List<List<String>> param0) {
       if (!_proxyImpl.isBound) {
         _proxyImpl.proxyError("The Proxy is closed.");
         return;
       }
-      var params = new ConformanceTestInterfaceMethod8Params();
+      var params = new _ConformanceTestInterfaceMethod8Params();
       params.param0 = param0;
-      _proxyImpl.sendMessage(params, kConformanceTestInterface_method8_name);
+      _proxyImpl.sendMessage(params, _ConformanceTestInterface_method8Name);
     }
-  
     void method9(List<List<core.MojoHandle>> param0) {
       if (!_proxyImpl.isBound) {
         _proxyImpl.proxyError("The Proxy is closed.");
         return;
       }
-      var params = new ConformanceTestInterfaceMethod9Params();
+      var params = new _ConformanceTestInterfaceMethod9Params();
       params.param0 = param0;
-      _proxyImpl.sendMessage(params, kConformanceTestInterface_method9_name);
+      _proxyImpl.sendMessage(params, _ConformanceTestInterface_method9Name);
     }
-  
     void method10(Map<String, int> param0) {
       if (!_proxyImpl.isBound) {
         _proxyImpl.proxyError("The Proxy is closed.");
         return;
       }
-      var params = new ConformanceTestInterfaceMethod10Params();
+      var params = new _ConformanceTestInterfaceMethod10Params();
       params.param0 = param0;
-      _proxyImpl.sendMessage(params, kConformanceTestInterface_method10_name);
+      _proxyImpl.sendMessage(params, _ConformanceTestInterface_method10Name);
     }
-  
     void method11(StructG param0) {
       if (!_proxyImpl.isBound) {
         _proxyImpl.proxyError("The Proxy is closed.");
         return;
       }
-      var params = new ConformanceTestInterfaceMethod11Params();
+      var params = new _ConformanceTestInterfaceMethod11Params();
       params.param0 = param0;
-      _proxyImpl.sendMessage(params, kConformanceTestInterface_method11_name);
+      _proxyImpl.sendMessage(params, _ConformanceTestInterface_method11Name);
     }
-  
     dynamic method12(double param0,[Function responseFactory = null]) {
-      var params = new ConformanceTestInterfaceMethod12Params();
+      var params = new _ConformanceTestInterfaceMethod12Params();
       params.param0 = param0;
       return _proxyImpl.sendMessageWithRequestId(
           params,
-          kConformanceTestInterface_method12_name,
+          _ConformanceTestInterface_method12Name,
           -1,
           bindings.MessageHeader.kMessageExpectsResponse);
     }
@@ -3770,58 +3746,54 @@ class _ConformanceTestInterfaceProxyCalls implements ConformanceTestInterface {
         _proxyImpl.proxyError("The Proxy is closed.");
         return;
       }
-      var params = new ConformanceTestInterfaceMethod13Params();
+      var params = new _ConformanceTestInterfaceMethod13Params();
       params.param0 = param0;
       params.param1 = param1;
       params.param2 = param2;
-      _proxyImpl.sendMessage(params, kConformanceTestInterface_method13_name);
+      _proxyImpl.sendMessage(params, _ConformanceTestInterface_method13Name);
     }
-  
     void method14(UnionA param0) {
       if (!_proxyImpl.isBound) {
         _proxyImpl.proxyError("The Proxy is closed.");
         return;
       }
-      var params = new ConformanceTestInterfaceMethod14Params();
+      var params = new _ConformanceTestInterfaceMethod14Params();
       params.param0 = param0;
-      _proxyImpl.sendMessage(params, kConformanceTestInterface_method14_name);
+      _proxyImpl.sendMessage(params, _ConformanceTestInterface_method14Name);
     }
-  
     void method15(StructH param0) {
       if (!_proxyImpl.isBound) {
         _proxyImpl.proxyError("The Proxy is closed.");
         return;
       }
-      var params = new ConformanceTestInterfaceMethod15Params();
+      var params = new _ConformanceTestInterfaceMethod15Params();
       params.param0 = param0;
-      _proxyImpl.sendMessage(params, kConformanceTestInterface_method15_name);
+      _proxyImpl.sendMessage(params, _ConformanceTestInterface_method15Name);
     }
-  
 }
 
 
 class ConformanceTestInterfaceProxy implements bindings.ProxyBase {
   final bindings.Proxy impl;
   ConformanceTestInterface ptr;
-  final String name = ConformanceTestInterfaceName;
 
-  ConformanceTestInterfaceProxy(ConformanceTestInterfaceProxyImpl proxyImpl) :
+  ConformanceTestInterfaceProxy(_ConformanceTestInterfaceProxyImpl proxyImpl) :
       impl = proxyImpl,
       ptr = new _ConformanceTestInterfaceProxyCalls(proxyImpl);
 
   ConformanceTestInterfaceProxy.fromEndpoint(
       core.MojoMessagePipeEndpoint endpoint) :
-      impl = new ConformanceTestInterfaceProxyImpl.fromEndpoint(endpoint) {
+      impl = new _ConformanceTestInterfaceProxyImpl.fromEndpoint(endpoint) {
     ptr = new _ConformanceTestInterfaceProxyCalls(impl);
   }
 
   ConformanceTestInterfaceProxy.fromHandle(core.MojoHandle handle) :
-      impl = new ConformanceTestInterfaceProxyImpl.fromHandle(handle) {
+      impl = new _ConformanceTestInterfaceProxyImpl.fromHandle(handle) {
     ptr = new _ConformanceTestInterfaceProxyCalls(impl);
   }
 
   ConformanceTestInterfaceProxy.unbound() :
-      impl = new ConformanceTestInterfaceProxyImpl.unbound() {
+      impl = new _ConformanceTestInterfaceProxyImpl.unbound() {
     ptr = new _ConformanceTestInterfaceProxyCalls(impl);
   }
 
@@ -3837,6 +3809,8 @@ class ConformanceTestInterfaceProxy implements bindings.ProxyBase {
     assert(endpoint.setDescription("For ConformanceTestInterfaceProxy"));
     return new ConformanceTestInterfaceProxy.fromEndpoint(endpoint);
   }
+
+  String get serviceName => ConformanceTestInterface.serviceName;
 
   Future close({bool immediate: false}) => impl.close(immediate: immediate);
 
@@ -3876,8 +3850,6 @@ class ConformanceTestInterfaceStub extends bindings.Stub {
     return new ConformanceTestInterfaceStub.fromEndpoint(endpoint);
   }
 
-  static const String name = ConformanceTestInterfaceName;
-
 
   ConformanceTestInterfaceMethod12ResponseParams _ConformanceTestInterfaceMethod12ResponseParamsFactory(double param0) {
     var mojo_factory_result = new ConformanceTestInterfaceMethod12ResponseParams();
@@ -3893,68 +3865,68 @@ class ConformanceTestInterfaceStub extends bindings.Stub {
     }
     assert(_impl != null);
     switch (message.header.type) {
-      case kConformanceTestInterface_method0_name:
-        var params = ConformanceTestInterfaceMethod0Params.deserialize(
+      case _ConformanceTestInterface_method0Name:
+        var params = _ConformanceTestInterfaceMethod0Params.deserialize(
             message.payload);
         _impl.method0(params.param0);
         break;
-      case kConformanceTestInterface_method1_name:
-        var params = ConformanceTestInterfaceMethod1Params.deserialize(
+      case _ConformanceTestInterface_method1Name:
+        var params = _ConformanceTestInterfaceMethod1Params.deserialize(
             message.payload);
         _impl.method1(params.param0);
         break;
-      case kConformanceTestInterface_method2_name:
-        var params = ConformanceTestInterfaceMethod2Params.deserialize(
+      case _ConformanceTestInterface_method2Name:
+        var params = _ConformanceTestInterfaceMethod2Params.deserialize(
             message.payload);
         _impl.method2(params.param0, params.param1);
         break;
-      case kConformanceTestInterface_method3_name:
-        var params = ConformanceTestInterfaceMethod3Params.deserialize(
+      case _ConformanceTestInterface_method3Name:
+        var params = _ConformanceTestInterfaceMethod3Params.deserialize(
             message.payload);
         _impl.method3(params.param0);
         break;
-      case kConformanceTestInterface_method4_name:
-        var params = ConformanceTestInterfaceMethod4Params.deserialize(
+      case _ConformanceTestInterface_method4Name:
+        var params = _ConformanceTestInterfaceMethod4Params.deserialize(
             message.payload);
         _impl.method4(params.param0, params.param1);
         break;
-      case kConformanceTestInterface_method5_name:
-        var params = ConformanceTestInterfaceMethod5Params.deserialize(
+      case _ConformanceTestInterface_method5Name:
+        var params = _ConformanceTestInterfaceMethod5Params.deserialize(
             message.payload);
         _impl.method5(params.param0, params.param1);
         break;
-      case kConformanceTestInterface_method6_name:
-        var params = ConformanceTestInterfaceMethod6Params.deserialize(
+      case _ConformanceTestInterface_method6Name:
+        var params = _ConformanceTestInterfaceMethod6Params.deserialize(
             message.payload);
         _impl.method6(params.param0);
         break;
-      case kConformanceTestInterface_method7_name:
-        var params = ConformanceTestInterfaceMethod7Params.deserialize(
+      case _ConformanceTestInterface_method7Name:
+        var params = _ConformanceTestInterfaceMethod7Params.deserialize(
             message.payload);
         _impl.method7(params.param0, params.param1);
         break;
-      case kConformanceTestInterface_method8_name:
-        var params = ConformanceTestInterfaceMethod8Params.deserialize(
+      case _ConformanceTestInterface_method8Name:
+        var params = _ConformanceTestInterfaceMethod8Params.deserialize(
             message.payload);
         _impl.method8(params.param0);
         break;
-      case kConformanceTestInterface_method9_name:
-        var params = ConformanceTestInterfaceMethod9Params.deserialize(
+      case _ConformanceTestInterface_method9Name:
+        var params = _ConformanceTestInterfaceMethod9Params.deserialize(
             message.payload);
         _impl.method9(params.param0);
         break;
-      case kConformanceTestInterface_method10_name:
-        var params = ConformanceTestInterfaceMethod10Params.deserialize(
+      case _ConformanceTestInterface_method10Name:
+        var params = _ConformanceTestInterfaceMethod10Params.deserialize(
             message.payload);
         _impl.method10(params.param0);
         break;
-      case kConformanceTestInterface_method11_name:
-        var params = ConformanceTestInterfaceMethod11Params.deserialize(
+      case _ConformanceTestInterface_method11Name:
+        var params = _ConformanceTestInterfaceMethod11Params.deserialize(
             message.payload);
         _impl.method11(params.param0);
         break;
-      case kConformanceTestInterface_method12_name:
-        var params = ConformanceTestInterfaceMethod12Params.deserialize(
+      case _ConformanceTestInterface_method12Name:
+        var params = _ConformanceTestInterfaceMethod12Params.deserialize(
             message.payload);
         var response = _impl.method12(params.param0,_ConformanceTestInterfaceMethod12ResponseParamsFactory);
         if (response is Future) {
@@ -3962,7 +3934,7 @@ class ConformanceTestInterfaceStub extends bindings.Stub {
             if (response != null) {
               return buildResponseWithId(
                   response,
-                  kConformanceTestInterface_method12_name,
+                  _ConformanceTestInterface_method12Name,
                   message.header.requestId,
                   bindings.MessageHeader.kMessageIsResponse);
             }
@@ -3970,23 +3942,23 @@ class ConformanceTestInterfaceStub extends bindings.Stub {
         } else if (response != null) {
           return buildResponseWithId(
               response,
-              kConformanceTestInterface_method12_name,
+              _ConformanceTestInterface_method12Name,
               message.header.requestId,
               bindings.MessageHeader.kMessageIsResponse);
         }
         break;
-      case kConformanceTestInterface_method13_name:
-        var params = ConformanceTestInterfaceMethod13Params.deserialize(
+      case _ConformanceTestInterface_method13Name:
+        var params = _ConformanceTestInterfaceMethod13Params.deserialize(
             message.payload);
         _impl.method13(params.param0, params.param1, params.param2);
         break;
-      case kConformanceTestInterface_method14_name:
-        var params = ConformanceTestInterfaceMethod14Params.deserialize(
+      case _ConformanceTestInterface_method14Name:
+        var params = _ConformanceTestInterfaceMethod14Params.deserialize(
             message.payload);
         _impl.method14(params.param0);
         break;
-      case kConformanceTestInterface_method15_name:
-        var params = ConformanceTestInterfaceMethod15Params.deserialize(
+      case _ConformanceTestInterface_method15Name:
+        var params = _ConformanceTestInterfaceMethod15Params.deserialize(
             message.payload);
         _impl.method15(params.param0);
         break;
@@ -4011,35 +3983,32 @@ class ConformanceTestInterfaceStub extends bindings.Stub {
   int get version => 0;
 }
 
-const int kIntegrationTestInterface_method0_name = 0;
-const String IntegrationTestInterfaceName = null;
+const int _IntegrationTestInterface_method0Name = 0;
 
 abstract class IntegrationTestInterface {
+  static const String serviceName = null;
   dynamic method0(BasicStruct param0,[Function responseFactory = null]);
-
 }
 
 
-class IntegrationTestInterfaceProxyImpl extends bindings.Proxy {
-  IntegrationTestInterfaceProxyImpl.fromEndpoint(
+class _IntegrationTestInterfaceProxyImpl extends bindings.Proxy {
+  _IntegrationTestInterfaceProxyImpl.fromEndpoint(
       core.MojoMessagePipeEndpoint endpoint) : super.fromEndpoint(endpoint);
 
-  IntegrationTestInterfaceProxyImpl.fromHandle(core.MojoHandle handle) :
+  _IntegrationTestInterfaceProxyImpl.fromHandle(core.MojoHandle handle) :
       super.fromHandle(handle);
 
-  IntegrationTestInterfaceProxyImpl.unbound() : super.unbound();
+  _IntegrationTestInterfaceProxyImpl.unbound() : super.unbound();
 
-  static IntegrationTestInterfaceProxyImpl newFromEndpoint(
+  static _IntegrationTestInterfaceProxyImpl newFromEndpoint(
       core.MojoMessagePipeEndpoint endpoint) {
-    assert(endpoint.setDescription("For IntegrationTestInterfaceProxyImpl"));
-    return new IntegrationTestInterfaceProxyImpl.fromEndpoint(endpoint);
+    assert(endpoint.setDescription("For _IntegrationTestInterfaceProxyImpl"));
+    return new _IntegrationTestInterfaceProxyImpl.fromEndpoint(endpoint);
   }
-
-  String get name => IntegrationTestInterfaceName;
 
   void handleResponse(bindings.ServiceMessage message) {
     switch (message.header.type) {
-      case kIntegrationTestInterface_method0_name:
+      case _IntegrationTestInterface_method0Name:
         var r = IntegrationTestInterfaceMethod0ResponseParams.deserialize(
             message.payload);
         if (!message.header.hasRequestId) {
@@ -4068,21 +4037,21 @@ class IntegrationTestInterfaceProxyImpl extends bindings.Proxy {
 
   String toString() {
     var superString = super.toString();
-    return "IntegrationTestInterfaceProxyImpl($superString)";
+    return "_IntegrationTestInterfaceProxyImpl($superString)";
   }
 }
 
 
 class _IntegrationTestInterfaceProxyCalls implements IntegrationTestInterface {
-  IntegrationTestInterfaceProxyImpl _proxyImpl;
+  _IntegrationTestInterfaceProxyImpl _proxyImpl;
 
   _IntegrationTestInterfaceProxyCalls(this._proxyImpl);
     dynamic method0(BasicStruct param0,[Function responseFactory = null]) {
-      var params = new IntegrationTestInterfaceMethod0Params();
+      var params = new _IntegrationTestInterfaceMethod0Params();
       params.param0 = param0;
       return _proxyImpl.sendMessageWithRequestId(
           params,
-          kIntegrationTestInterface_method0_name,
+          _IntegrationTestInterface_method0Name,
           -1,
           bindings.MessageHeader.kMessageExpectsResponse);
     }
@@ -4092,25 +4061,24 @@ class _IntegrationTestInterfaceProxyCalls implements IntegrationTestInterface {
 class IntegrationTestInterfaceProxy implements bindings.ProxyBase {
   final bindings.Proxy impl;
   IntegrationTestInterface ptr;
-  final String name = IntegrationTestInterfaceName;
 
-  IntegrationTestInterfaceProxy(IntegrationTestInterfaceProxyImpl proxyImpl) :
+  IntegrationTestInterfaceProxy(_IntegrationTestInterfaceProxyImpl proxyImpl) :
       impl = proxyImpl,
       ptr = new _IntegrationTestInterfaceProxyCalls(proxyImpl);
 
   IntegrationTestInterfaceProxy.fromEndpoint(
       core.MojoMessagePipeEndpoint endpoint) :
-      impl = new IntegrationTestInterfaceProxyImpl.fromEndpoint(endpoint) {
+      impl = new _IntegrationTestInterfaceProxyImpl.fromEndpoint(endpoint) {
     ptr = new _IntegrationTestInterfaceProxyCalls(impl);
   }
 
   IntegrationTestInterfaceProxy.fromHandle(core.MojoHandle handle) :
-      impl = new IntegrationTestInterfaceProxyImpl.fromHandle(handle) {
+      impl = new _IntegrationTestInterfaceProxyImpl.fromHandle(handle) {
     ptr = new _IntegrationTestInterfaceProxyCalls(impl);
   }
 
   IntegrationTestInterfaceProxy.unbound() :
-      impl = new IntegrationTestInterfaceProxyImpl.unbound() {
+      impl = new _IntegrationTestInterfaceProxyImpl.unbound() {
     ptr = new _IntegrationTestInterfaceProxyCalls(impl);
   }
 
@@ -4126,6 +4094,8 @@ class IntegrationTestInterfaceProxy implements bindings.ProxyBase {
     assert(endpoint.setDescription("For IntegrationTestInterfaceProxy"));
     return new IntegrationTestInterfaceProxy.fromEndpoint(endpoint);
   }
+
+  String get serviceName => IntegrationTestInterface.serviceName;
 
   Future close({bool immediate: false}) => impl.close(immediate: immediate);
 
@@ -4165,8 +4135,6 @@ class IntegrationTestInterfaceStub extends bindings.Stub {
     return new IntegrationTestInterfaceStub.fromEndpoint(endpoint);
   }
 
-  static const String name = IntegrationTestInterfaceName;
-
 
   IntegrationTestInterfaceMethod0ResponseParams _IntegrationTestInterfaceMethod0ResponseParamsFactory(List<int> param0) {
     var mojo_factory_result = new IntegrationTestInterfaceMethod0ResponseParams();
@@ -4182,8 +4150,8 @@ class IntegrationTestInterfaceStub extends bindings.Stub {
     }
     assert(_impl != null);
     switch (message.header.type) {
-      case kIntegrationTestInterface_method0_name:
-        var params = IntegrationTestInterfaceMethod0Params.deserialize(
+      case _IntegrationTestInterface_method0Name:
+        var params = _IntegrationTestInterfaceMethod0Params.deserialize(
             message.payload);
         var response = _impl.method0(params.param0,_IntegrationTestInterfaceMethod0ResponseParamsFactory);
         if (response is Future) {
@@ -4191,7 +4159,7 @@ class IntegrationTestInterfaceStub extends bindings.Stub {
             if (response != null) {
               return buildResponseWithId(
                   response,
-                  kIntegrationTestInterface_method0_name,
+                  _IntegrationTestInterface_method0Name,
                   message.header.requestId,
                   bindings.MessageHeader.kMessageIsResponse);
             }
@@ -4199,7 +4167,7 @@ class IntegrationTestInterfaceStub extends bindings.Stub {
         } else if (response != null) {
           return buildResponseWithId(
               response,
-              kIntegrationTestInterface_method0_name,
+              _IntegrationTestInterface_method0Name,
               message.header.requestId,
               bindings.MessageHeader.kMessageIsResponse);
         }

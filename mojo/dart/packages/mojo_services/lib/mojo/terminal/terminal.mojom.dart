@@ -14,16 +14,16 @@ import 'package:mojo_services/mojo/terminal/terminal_client.mojom.dart' as termi
 
 
 
-class TerminalConnectParams extends bindings.Struct {
+class _TerminalConnectParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(16, 0)
   ];
   Object terminalFile = null;
   bool force = false;
 
-  TerminalConnectParams() : super(kVersions.last.size);
+  _TerminalConnectParams() : super(kVersions.last.size);
 
-  static TerminalConnectParams deserialize(bindings.Message message) {
+  static _TerminalConnectParams deserialize(bindings.Message message) {
     var decoder = new bindings.Decoder(message);
     var result = decode(decoder);
     if (decoder.excessHandles != null) {
@@ -32,11 +32,11 @@ class TerminalConnectParams extends bindings.Struct {
     return result;
   }
 
-  static TerminalConnectParams decode(bindings.Decoder decoder0) {
+  static _TerminalConnectParams decode(bindings.Decoder decoder0) {
     if (decoder0 == null) {
       return null;
     }
-    TerminalConnectParams result = new TerminalConnectParams();
+    _TerminalConnectParams result = new _TerminalConnectParams();
 
     var mainDataHeader = decoder0.decodeStructDataHeader();
     if (mainDataHeader.version <= kVersions.last.version) {
@@ -76,7 +76,7 @@ class TerminalConnectParams extends bindings.Struct {
   }
 
   String toString() {
-    return "TerminalConnectParams("
+    return "_TerminalConnectParams("
            "terminalFile: $terminalFile" ", "
            "force: $force" ")";
   }
@@ -159,16 +159,16 @@ class TerminalConnectResponseParams extends bindings.Struct {
 }
 
 
-class TerminalConnectToClientParams extends bindings.Struct {
+class _TerminalConnectToClientParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(24, 0)
   ];
   Object terminalClient = null;
   bool force = false;
 
-  TerminalConnectToClientParams() : super(kVersions.last.size);
+  _TerminalConnectToClientParams() : super(kVersions.last.size);
 
-  static TerminalConnectToClientParams deserialize(bindings.Message message) {
+  static _TerminalConnectToClientParams deserialize(bindings.Message message) {
     var decoder = new bindings.Decoder(message);
     var result = decode(decoder);
     if (decoder.excessHandles != null) {
@@ -177,11 +177,11 @@ class TerminalConnectToClientParams extends bindings.Struct {
     return result;
   }
 
-  static TerminalConnectToClientParams decode(bindings.Decoder decoder0) {
+  static _TerminalConnectToClientParams decode(bindings.Decoder decoder0) {
     if (decoder0 == null) {
       return null;
     }
-    TerminalConnectToClientParams result = new TerminalConnectToClientParams();
+    _TerminalConnectToClientParams result = new _TerminalConnectToClientParams();
 
     var mainDataHeader = decoder0.decodeStructDataHeader();
     if (mainDataHeader.version <= kVersions.last.version) {
@@ -221,7 +221,7 @@ class TerminalConnectToClientParams extends bindings.Struct {
   }
 
   String toString() {
-    return "TerminalConnectToClientParams("
+    return "_TerminalConnectToClientParams("
            "terminalClient: $terminalClient" ", "
            "force: $force" ")";
   }
@@ -304,14 +304,14 @@ class TerminalConnectToClientResponseParams extends bindings.Struct {
 }
 
 
-class TerminalGetSizeParams extends bindings.Struct {
+class _TerminalGetSizeParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(8, 0)
   ];
 
-  TerminalGetSizeParams() : super(kVersions.last.size);
+  _TerminalGetSizeParams() : super(kVersions.last.size);
 
-  static TerminalGetSizeParams deserialize(bindings.Message message) {
+  static _TerminalGetSizeParams deserialize(bindings.Message message) {
     var decoder = new bindings.Decoder(message);
     var result = decode(decoder);
     if (decoder.excessHandles != null) {
@@ -320,11 +320,11 @@ class TerminalGetSizeParams extends bindings.Struct {
     return result;
   }
 
-  static TerminalGetSizeParams decode(bindings.Decoder decoder0) {
+  static _TerminalGetSizeParams decode(bindings.Decoder decoder0) {
     if (decoder0 == null) {
       return null;
     }
-    TerminalGetSizeParams result = new TerminalGetSizeParams();
+    _TerminalGetSizeParams result = new _TerminalGetSizeParams();
 
     var mainDataHeader = decoder0.decodeStructDataHeader();
     if (mainDataHeader.version <= kVersions.last.version) {
@@ -352,7 +352,7 @@ class TerminalGetSizeParams extends bindings.Struct {
   }
 
   String toString() {
-    return "TerminalGetSizeParams("")";
+    return "_TerminalGetSizeParams("")";
   }
 
   Map toJson() {
@@ -451,7 +451,7 @@ class TerminalGetSizeResponseParams extends bindings.Struct {
 }
 
 
-class TerminalSetSizeParams extends bindings.Struct {
+class _TerminalSetSizeParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(24, 0)
   ];
@@ -459,9 +459,9 @@ class TerminalSetSizeParams extends bindings.Struct {
   int columns = 0;
   bool reset = false;
 
-  TerminalSetSizeParams() : super(kVersions.last.size);
+  _TerminalSetSizeParams() : super(kVersions.last.size);
 
-  static TerminalSetSizeParams deserialize(bindings.Message message) {
+  static _TerminalSetSizeParams deserialize(bindings.Message message) {
     var decoder = new bindings.Decoder(message);
     var result = decode(decoder);
     if (decoder.excessHandles != null) {
@@ -470,11 +470,11 @@ class TerminalSetSizeParams extends bindings.Struct {
     return result;
   }
 
-  static TerminalSetSizeParams decode(bindings.Decoder decoder0) {
+  static _TerminalSetSizeParams decode(bindings.Decoder decoder0) {
     if (decoder0 == null) {
       return null;
     }
-    TerminalSetSizeParams result = new TerminalSetSizeParams();
+    _TerminalSetSizeParams result = new _TerminalSetSizeParams();
 
     var mainDataHeader = decoder0.decodeStructDataHeader();
     if (mainDataHeader.version <= kVersions.last.version) {
@@ -520,7 +520,7 @@ class TerminalSetSizeParams extends bindings.Struct {
   }
 
   String toString() {
-    return "TerminalSetSizeParams("
+    return "_TerminalSetSizeParams("
            "rows: $rows" ", "
            "columns: $columns" ", "
            "reset: $reset" ")";
@@ -624,41 +624,38 @@ class TerminalSetSizeResponseParams extends bindings.Struct {
   }
 }
 
-const int kTerminal_connect_name = 0;
-const int kTerminal_connectToClient_name = 1;
-const int kTerminal_getSize_name = 2;
-const int kTerminal_setSize_name = 3;
-const String TerminalName = "mojo::terminal::Terminal";
+const int _Terminal_connectName = 0;
+const int _Terminal_connectToClientName = 1;
+const int _Terminal_getSizeName = 2;
+const int _Terminal_setSizeName = 3;
 
 abstract class Terminal {
+  static const String serviceName = "mojo::terminal::Terminal";
   dynamic connect(Object terminalFile,bool force,[Function responseFactory = null]);
   dynamic connectToClient(Object terminalClient,bool force,[Function responseFactory = null]);
   dynamic getSize([Function responseFactory = null]);
   dynamic setSize(int rows,int columns,bool reset,[Function responseFactory = null]);
-
 }
 
 
-class TerminalProxyImpl extends bindings.Proxy {
-  TerminalProxyImpl.fromEndpoint(
+class _TerminalProxyImpl extends bindings.Proxy {
+  _TerminalProxyImpl.fromEndpoint(
       core.MojoMessagePipeEndpoint endpoint) : super.fromEndpoint(endpoint);
 
-  TerminalProxyImpl.fromHandle(core.MojoHandle handle) :
+  _TerminalProxyImpl.fromHandle(core.MojoHandle handle) :
       super.fromHandle(handle);
 
-  TerminalProxyImpl.unbound() : super.unbound();
+  _TerminalProxyImpl.unbound() : super.unbound();
 
-  static TerminalProxyImpl newFromEndpoint(
+  static _TerminalProxyImpl newFromEndpoint(
       core.MojoMessagePipeEndpoint endpoint) {
-    assert(endpoint.setDescription("For TerminalProxyImpl"));
-    return new TerminalProxyImpl.fromEndpoint(endpoint);
+    assert(endpoint.setDescription("For _TerminalProxyImpl"));
+    return new _TerminalProxyImpl.fromEndpoint(endpoint);
   }
-
-  String get name => TerminalName;
 
   void handleResponse(bindings.ServiceMessage message) {
     switch (message.header.type) {
-      case kTerminal_connect_name:
+      case _Terminal_connectName:
         var r = TerminalConnectResponseParams.deserialize(
             message.payload);
         if (!message.header.hasRequestId) {
@@ -678,7 +675,7 @@ class TerminalProxyImpl extends bindings.Proxy {
         }
         c.complete(r);
         break;
-      case kTerminal_connectToClient_name:
+      case _Terminal_connectToClientName:
         var r = TerminalConnectToClientResponseParams.deserialize(
             message.payload);
         if (!message.header.hasRequestId) {
@@ -698,7 +695,7 @@ class TerminalProxyImpl extends bindings.Proxy {
         }
         c.complete(r);
         break;
-      case kTerminal_getSize_name:
+      case _Terminal_getSizeName:
         var r = TerminalGetSizeResponseParams.deserialize(
             message.payload);
         if (!message.header.hasRequestId) {
@@ -718,7 +715,7 @@ class TerminalProxyImpl extends bindings.Proxy {
         }
         c.complete(r);
         break;
-      case kTerminal_setSize_name:
+      case _Terminal_setSizeName:
         var r = TerminalSetSizeResponseParams.deserialize(
             message.payload);
         if (!message.header.hasRequestId) {
@@ -747,51 +744,51 @@ class TerminalProxyImpl extends bindings.Proxy {
 
   String toString() {
     var superString = super.toString();
-    return "TerminalProxyImpl($superString)";
+    return "_TerminalProxyImpl($superString)";
   }
 }
 
 
 class _TerminalProxyCalls implements Terminal {
-  TerminalProxyImpl _proxyImpl;
+  _TerminalProxyImpl _proxyImpl;
 
   _TerminalProxyCalls(this._proxyImpl);
     dynamic connect(Object terminalFile,bool force,[Function responseFactory = null]) {
-      var params = new TerminalConnectParams();
+      var params = new _TerminalConnectParams();
       params.terminalFile = terminalFile;
       params.force = force;
       return _proxyImpl.sendMessageWithRequestId(
           params,
-          kTerminal_connect_name,
+          _Terminal_connectName,
           -1,
           bindings.MessageHeader.kMessageExpectsResponse);
     }
     dynamic connectToClient(Object terminalClient,bool force,[Function responseFactory = null]) {
-      var params = new TerminalConnectToClientParams();
+      var params = new _TerminalConnectToClientParams();
       params.terminalClient = terminalClient;
       params.force = force;
       return _proxyImpl.sendMessageWithRequestId(
           params,
-          kTerminal_connectToClient_name,
+          _Terminal_connectToClientName,
           -1,
           bindings.MessageHeader.kMessageExpectsResponse);
     }
     dynamic getSize([Function responseFactory = null]) {
-      var params = new TerminalGetSizeParams();
+      var params = new _TerminalGetSizeParams();
       return _proxyImpl.sendMessageWithRequestId(
           params,
-          kTerminal_getSize_name,
+          _Terminal_getSizeName,
           -1,
           bindings.MessageHeader.kMessageExpectsResponse);
     }
     dynamic setSize(int rows,int columns,bool reset,[Function responseFactory = null]) {
-      var params = new TerminalSetSizeParams();
+      var params = new _TerminalSetSizeParams();
       params.rows = rows;
       params.columns = columns;
       params.reset = reset;
       return _proxyImpl.sendMessageWithRequestId(
           params,
-          kTerminal_setSize_name,
+          _Terminal_setSizeName,
           -1,
           bindings.MessageHeader.kMessageExpectsResponse);
     }
@@ -801,25 +798,24 @@ class _TerminalProxyCalls implements Terminal {
 class TerminalProxy implements bindings.ProxyBase {
   final bindings.Proxy impl;
   Terminal ptr;
-  final String name = TerminalName;
 
-  TerminalProxy(TerminalProxyImpl proxyImpl) :
+  TerminalProxy(_TerminalProxyImpl proxyImpl) :
       impl = proxyImpl,
       ptr = new _TerminalProxyCalls(proxyImpl);
 
   TerminalProxy.fromEndpoint(
       core.MojoMessagePipeEndpoint endpoint) :
-      impl = new TerminalProxyImpl.fromEndpoint(endpoint) {
+      impl = new _TerminalProxyImpl.fromEndpoint(endpoint) {
     ptr = new _TerminalProxyCalls(impl);
   }
 
   TerminalProxy.fromHandle(core.MojoHandle handle) :
-      impl = new TerminalProxyImpl.fromHandle(handle) {
+      impl = new _TerminalProxyImpl.fromHandle(handle) {
     ptr = new _TerminalProxyCalls(impl);
   }
 
   TerminalProxy.unbound() :
-      impl = new TerminalProxyImpl.unbound() {
+      impl = new _TerminalProxyImpl.unbound() {
     ptr = new _TerminalProxyCalls(impl);
   }
 
@@ -835,6 +831,8 @@ class TerminalProxy implements bindings.ProxyBase {
     assert(endpoint.setDescription("For TerminalProxy"));
     return new TerminalProxy.fromEndpoint(endpoint);
   }
+
+  String get serviceName => Terminal.serviceName;
 
   Future close({bool immediate: false}) => impl.close(immediate: immediate);
 
@@ -874,8 +872,6 @@ class TerminalStub extends bindings.Stub {
     return new TerminalStub.fromEndpoint(endpoint);
   }
 
-  static const String name = TerminalName;
-
 
   TerminalConnectResponseParams _TerminalConnectResponseParamsFactory(types_mojom.Error error) {
     var mojo_factory_result = new TerminalConnectResponseParams();
@@ -910,8 +906,8 @@ class TerminalStub extends bindings.Stub {
     }
     assert(_impl != null);
     switch (message.header.type) {
-      case kTerminal_connect_name:
-        var params = TerminalConnectParams.deserialize(
+      case _Terminal_connectName:
+        var params = _TerminalConnectParams.deserialize(
             message.payload);
         var response = _impl.connect(params.terminalFile,params.force,_TerminalConnectResponseParamsFactory);
         if (response is Future) {
@@ -919,7 +915,7 @@ class TerminalStub extends bindings.Stub {
             if (response != null) {
               return buildResponseWithId(
                   response,
-                  kTerminal_connect_name,
+                  _Terminal_connectName,
                   message.header.requestId,
                   bindings.MessageHeader.kMessageIsResponse);
             }
@@ -927,13 +923,13 @@ class TerminalStub extends bindings.Stub {
         } else if (response != null) {
           return buildResponseWithId(
               response,
-              kTerminal_connect_name,
+              _Terminal_connectName,
               message.header.requestId,
               bindings.MessageHeader.kMessageIsResponse);
         }
         break;
-      case kTerminal_connectToClient_name:
-        var params = TerminalConnectToClientParams.deserialize(
+      case _Terminal_connectToClientName:
+        var params = _TerminalConnectToClientParams.deserialize(
             message.payload);
         var response = _impl.connectToClient(params.terminalClient,params.force,_TerminalConnectToClientResponseParamsFactory);
         if (response is Future) {
@@ -941,7 +937,7 @@ class TerminalStub extends bindings.Stub {
             if (response != null) {
               return buildResponseWithId(
                   response,
-                  kTerminal_connectToClient_name,
+                  _Terminal_connectToClientName,
                   message.header.requestId,
                   bindings.MessageHeader.kMessageIsResponse);
             }
@@ -949,13 +945,13 @@ class TerminalStub extends bindings.Stub {
         } else if (response != null) {
           return buildResponseWithId(
               response,
-              kTerminal_connectToClient_name,
+              _Terminal_connectToClientName,
               message.header.requestId,
               bindings.MessageHeader.kMessageIsResponse);
         }
         break;
-      case kTerminal_getSize_name:
-        var params = TerminalGetSizeParams.deserialize(
+      case _Terminal_getSizeName:
+        var params = _TerminalGetSizeParams.deserialize(
             message.payload);
         var response = _impl.getSize(_TerminalGetSizeResponseParamsFactory);
         if (response is Future) {
@@ -963,7 +959,7 @@ class TerminalStub extends bindings.Stub {
             if (response != null) {
               return buildResponseWithId(
                   response,
-                  kTerminal_getSize_name,
+                  _Terminal_getSizeName,
                   message.header.requestId,
                   bindings.MessageHeader.kMessageIsResponse);
             }
@@ -971,13 +967,13 @@ class TerminalStub extends bindings.Stub {
         } else if (response != null) {
           return buildResponseWithId(
               response,
-              kTerminal_getSize_name,
+              _Terminal_getSizeName,
               message.header.requestId,
               bindings.MessageHeader.kMessageIsResponse);
         }
         break;
-      case kTerminal_setSize_name:
-        var params = TerminalSetSizeParams.deserialize(
+      case _Terminal_setSizeName:
+        var params = _TerminalSetSizeParams.deserialize(
             message.payload);
         var response = _impl.setSize(params.rows,params.columns,params.reset,_TerminalSetSizeResponseParamsFactory);
         if (response is Future) {
@@ -985,7 +981,7 @@ class TerminalStub extends bindings.Stub {
             if (response != null) {
               return buildResponseWithId(
                   response,
-                  kTerminal_setSize_name,
+                  _Terminal_setSizeName,
                   message.header.requestId,
                   bindings.MessageHeader.kMessageIsResponse);
             }
@@ -993,7 +989,7 @@ class TerminalStub extends bindings.Stub {
         } else if (response != null) {
           return buildResponseWithId(
               response,
-              kTerminal_setSize_name,
+              _Terminal_setSizeName,
               message.header.requestId,
               bindings.MessageHeader.kMessageIsResponse);
         }

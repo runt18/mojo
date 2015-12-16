@@ -583,15 +583,15 @@ class Frame extends bindings.Struct {
 }
 
 
-class ResourceReturnerReturnResourcesParams extends bindings.Struct {
+class _ResourceReturnerReturnResourcesParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(16, 0)
   ];
   List<ReturnedResource> resources = null;
 
-  ResourceReturnerReturnResourcesParams() : super(kVersions.last.size);
+  _ResourceReturnerReturnResourcesParams() : super(kVersions.last.size);
 
-  static ResourceReturnerReturnResourcesParams deserialize(bindings.Message message) {
+  static _ResourceReturnerReturnResourcesParams deserialize(bindings.Message message) {
     var decoder = new bindings.Decoder(message);
     var result = decode(decoder);
     if (decoder.excessHandles != null) {
@@ -600,11 +600,11 @@ class ResourceReturnerReturnResourcesParams extends bindings.Struct {
     return result;
   }
 
-  static ResourceReturnerReturnResourcesParams decode(bindings.Decoder decoder0) {
+  static _ResourceReturnerReturnResourcesParams decode(bindings.Decoder decoder0) {
     if (decoder0 == null) {
       return null;
     }
-    ResourceReturnerReturnResourcesParams result = new ResourceReturnerReturnResourcesParams();
+    _ResourceReturnerReturnResourcesParams result = new _ResourceReturnerReturnResourcesParams();
 
     var mainDataHeader = decoder0.decodeStructDataHeader();
     if (mainDataHeader.version <= kVersions.last.version) {
@@ -655,7 +655,7 @@ class ResourceReturnerReturnResourcesParams extends bindings.Struct {
   }
 
   String toString() {
-    return "ResourceReturnerReturnResourcesParams("
+    return "_ResourceReturnerReturnResourcesParams("
            "resources: $resources" ")";
   }
 
@@ -667,14 +667,14 @@ class ResourceReturnerReturnResourcesParams extends bindings.Struct {
 }
 
 
-class SurfaceGetIdNamespaceParams extends bindings.Struct {
+class _SurfaceGetIdNamespaceParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(8, 0)
   ];
 
-  SurfaceGetIdNamespaceParams() : super(kVersions.last.size);
+  _SurfaceGetIdNamespaceParams() : super(kVersions.last.size);
 
-  static SurfaceGetIdNamespaceParams deserialize(bindings.Message message) {
+  static _SurfaceGetIdNamespaceParams deserialize(bindings.Message message) {
     var decoder = new bindings.Decoder(message);
     var result = decode(decoder);
     if (decoder.excessHandles != null) {
@@ -683,11 +683,11 @@ class SurfaceGetIdNamespaceParams extends bindings.Struct {
     return result;
   }
 
-  static SurfaceGetIdNamespaceParams decode(bindings.Decoder decoder0) {
+  static _SurfaceGetIdNamespaceParams decode(bindings.Decoder decoder0) {
     if (decoder0 == null) {
       return null;
     }
-    SurfaceGetIdNamespaceParams result = new SurfaceGetIdNamespaceParams();
+    _SurfaceGetIdNamespaceParams result = new _SurfaceGetIdNamespaceParams();
 
     var mainDataHeader = decoder0.decodeStructDataHeader();
     if (mainDataHeader.version <= kVersions.last.version) {
@@ -715,7 +715,7 @@ class SurfaceGetIdNamespaceParams extends bindings.Struct {
   }
 
   String toString() {
-    return "SurfaceGetIdNamespaceParams("")";
+    return "_SurfaceGetIdNamespaceParams("")";
   }
 
   Map toJson() {
@@ -792,15 +792,15 @@ class SurfaceGetIdNamespaceResponseParams extends bindings.Struct {
 }
 
 
-class SurfaceSetResourceReturnerParams extends bindings.Struct {
+class _SurfaceSetResourceReturnerParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(16, 0)
   ];
   Object returner = null;
 
-  SurfaceSetResourceReturnerParams() : super(kVersions.last.size);
+  _SurfaceSetResourceReturnerParams() : super(kVersions.last.size);
 
-  static SurfaceSetResourceReturnerParams deserialize(bindings.Message message) {
+  static _SurfaceSetResourceReturnerParams deserialize(bindings.Message message) {
     var decoder = new bindings.Decoder(message);
     var result = decode(decoder);
     if (decoder.excessHandles != null) {
@@ -809,11 +809,11 @@ class SurfaceSetResourceReturnerParams extends bindings.Struct {
     return result;
   }
 
-  static SurfaceSetResourceReturnerParams decode(bindings.Decoder decoder0) {
+  static _SurfaceSetResourceReturnerParams decode(bindings.Decoder decoder0) {
     if (decoder0 == null) {
       return null;
     }
-    SurfaceSetResourceReturnerParams result = new SurfaceSetResourceReturnerParams();
+    _SurfaceSetResourceReturnerParams result = new _SurfaceSetResourceReturnerParams();
 
     var mainDataHeader = decoder0.decodeStructDataHeader();
     if (mainDataHeader.version <= kVersions.last.version) {
@@ -847,7 +847,7 @@ class SurfaceSetResourceReturnerParams extends bindings.Struct {
   }
 
   String toString() {
-    return "SurfaceSetResourceReturnerParams("
+    return "_SurfaceSetResourceReturnerParams("
            "returner: $returner" ")";
   }
 
@@ -858,15 +858,15 @@ class SurfaceSetResourceReturnerParams extends bindings.Struct {
 }
 
 
-class SurfaceCreateSurfaceParams extends bindings.Struct {
+class _SurfaceCreateSurfaceParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(16, 0)
   ];
   int idLocal = 0;
 
-  SurfaceCreateSurfaceParams() : super(kVersions.last.size);
+  _SurfaceCreateSurfaceParams() : super(kVersions.last.size);
 
-  static SurfaceCreateSurfaceParams deserialize(bindings.Message message) {
+  static _SurfaceCreateSurfaceParams deserialize(bindings.Message message) {
     var decoder = new bindings.Decoder(message);
     var result = decode(decoder);
     if (decoder.excessHandles != null) {
@@ -875,11 +875,11 @@ class SurfaceCreateSurfaceParams extends bindings.Struct {
     return result;
   }
 
-  static SurfaceCreateSurfaceParams decode(bindings.Decoder decoder0) {
+  static _SurfaceCreateSurfaceParams decode(bindings.Decoder decoder0) {
     if (decoder0 == null) {
       return null;
     }
-    SurfaceCreateSurfaceParams result = new SurfaceCreateSurfaceParams();
+    _SurfaceCreateSurfaceParams result = new _SurfaceCreateSurfaceParams();
 
     var mainDataHeader = decoder0.decodeStructDataHeader();
     if (mainDataHeader.version <= kVersions.last.version) {
@@ -913,7 +913,7 @@ class SurfaceCreateSurfaceParams extends bindings.Struct {
   }
 
   String toString() {
-    return "SurfaceCreateSurfaceParams("
+    return "_SurfaceCreateSurfaceParams("
            "idLocal: $idLocal" ")";
   }
 
@@ -925,16 +925,16 @@ class SurfaceCreateSurfaceParams extends bindings.Struct {
 }
 
 
-class SurfaceSubmitFrameParams extends bindings.Struct {
+class _SurfaceSubmitFrameParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(24, 0)
   ];
   int idLocal = 0;
   Frame frame = null;
 
-  SurfaceSubmitFrameParams() : super(kVersions.last.size);
+  _SurfaceSubmitFrameParams() : super(kVersions.last.size);
 
-  static SurfaceSubmitFrameParams deserialize(bindings.Message message) {
+  static _SurfaceSubmitFrameParams deserialize(bindings.Message message) {
     var decoder = new bindings.Decoder(message);
     var result = decode(decoder);
     if (decoder.excessHandles != null) {
@@ -943,11 +943,11 @@ class SurfaceSubmitFrameParams extends bindings.Struct {
     return result;
   }
 
-  static SurfaceSubmitFrameParams decode(bindings.Decoder decoder0) {
+  static _SurfaceSubmitFrameParams decode(bindings.Decoder decoder0) {
     if (decoder0 == null) {
       return null;
     }
-    SurfaceSubmitFrameParams result = new SurfaceSubmitFrameParams();
+    _SurfaceSubmitFrameParams result = new _SurfaceSubmitFrameParams();
 
     var mainDataHeader = decoder0.decodeStructDataHeader();
     if (mainDataHeader.version <= kVersions.last.version) {
@@ -988,7 +988,7 @@ class SurfaceSubmitFrameParams extends bindings.Struct {
   }
 
   String toString() {
-    return "SurfaceSubmitFrameParams("
+    return "_SurfaceSubmitFrameParams("
            "idLocal: $idLocal" ", "
            "frame: $frame" ")";
   }
@@ -1060,15 +1060,15 @@ class SurfaceSubmitFrameResponseParams extends bindings.Struct {
 }
 
 
-class SurfaceDestroySurfaceParams extends bindings.Struct {
+class _SurfaceDestroySurfaceParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(16, 0)
   ];
   int idLocal = 0;
 
-  SurfaceDestroySurfaceParams() : super(kVersions.last.size);
+  _SurfaceDestroySurfaceParams() : super(kVersions.last.size);
 
-  static SurfaceDestroySurfaceParams deserialize(bindings.Message message) {
+  static _SurfaceDestroySurfaceParams deserialize(bindings.Message message) {
     var decoder = new bindings.Decoder(message);
     var result = decode(decoder);
     if (decoder.excessHandles != null) {
@@ -1077,11 +1077,11 @@ class SurfaceDestroySurfaceParams extends bindings.Struct {
     return result;
   }
 
-  static SurfaceDestroySurfaceParams decode(bindings.Decoder decoder0) {
+  static _SurfaceDestroySurfaceParams decode(bindings.Decoder decoder0) {
     if (decoder0 == null) {
       return null;
     }
-    SurfaceDestroySurfaceParams result = new SurfaceDestroySurfaceParams();
+    _SurfaceDestroySurfaceParams result = new _SurfaceDestroySurfaceParams();
 
     var mainDataHeader = decoder0.decodeStructDataHeader();
     if (mainDataHeader.version <= kVersions.last.version) {
@@ -1115,7 +1115,7 @@ class SurfaceDestroySurfaceParams extends bindings.Struct {
   }
 
   String toString() {
-    return "SurfaceDestroySurfaceParams("
+    return "_SurfaceDestroySurfaceParams("
            "idLocal: $idLocal" ")";
   }
 
@@ -1126,31 +1126,28 @@ class SurfaceDestroySurfaceParams extends bindings.Struct {
   }
 }
 
-const int kResourceReturner_returnResources_name = 0;
-const String ResourceReturnerName = null;
+const int _ResourceReturner_returnResourcesName = 0;
 
 abstract class ResourceReturner {
+  static const String serviceName = null;
   void returnResources(List<ReturnedResource> resources);
-
 }
 
 
-class ResourceReturnerProxyImpl extends bindings.Proxy {
-  ResourceReturnerProxyImpl.fromEndpoint(
+class _ResourceReturnerProxyImpl extends bindings.Proxy {
+  _ResourceReturnerProxyImpl.fromEndpoint(
       core.MojoMessagePipeEndpoint endpoint) : super.fromEndpoint(endpoint);
 
-  ResourceReturnerProxyImpl.fromHandle(core.MojoHandle handle) :
+  _ResourceReturnerProxyImpl.fromHandle(core.MojoHandle handle) :
       super.fromHandle(handle);
 
-  ResourceReturnerProxyImpl.unbound() : super.unbound();
+  _ResourceReturnerProxyImpl.unbound() : super.unbound();
 
-  static ResourceReturnerProxyImpl newFromEndpoint(
+  static _ResourceReturnerProxyImpl newFromEndpoint(
       core.MojoMessagePipeEndpoint endpoint) {
-    assert(endpoint.setDescription("For ResourceReturnerProxyImpl"));
-    return new ResourceReturnerProxyImpl.fromEndpoint(endpoint);
+    assert(endpoint.setDescription("For _ResourceReturnerProxyImpl"));
+    return new _ResourceReturnerProxyImpl.fromEndpoint(endpoint);
   }
-
-  String get name => ResourceReturnerName;
 
   void handleResponse(bindings.ServiceMessage message) {
     switch (message.header.type) {
@@ -1163,13 +1160,13 @@ class ResourceReturnerProxyImpl extends bindings.Proxy {
 
   String toString() {
     var superString = super.toString();
-    return "ResourceReturnerProxyImpl($superString)";
+    return "_ResourceReturnerProxyImpl($superString)";
   }
 }
 
 
 class _ResourceReturnerProxyCalls implements ResourceReturner {
-  ResourceReturnerProxyImpl _proxyImpl;
+  _ResourceReturnerProxyImpl _proxyImpl;
 
   _ResourceReturnerProxyCalls(this._proxyImpl);
     void returnResources(List<ReturnedResource> resources) {
@@ -1177,36 +1174,34 @@ class _ResourceReturnerProxyCalls implements ResourceReturner {
         _proxyImpl.proxyError("The Proxy is closed.");
         return;
       }
-      var params = new ResourceReturnerReturnResourcesParams();
+      var params = new _ResourceReturnerReturnResourcesParams();
       params.resources = resources;
-      _proxyImpl.sendMessage(params, kResourceReturner_returnResources_name);
+      _proxyImpl.sendMessage(params, _ResourceReturner_returnResourcesName);
     }
-  
 }
 
 
 class ResourceReturnerProxy implements bindings.ProxyBase {
   final bindings.Proxy impl;
   ResourceReturner ptr;
-  final String name = ResourceReturnerName;
 
-  ResourceReturnerProxy(ResourceReturnerProxyImpl proxyImpl) :
+  ResourceReturnerProxy(_ResourceReturnerProxyImpl proxyImpl) :
       impl = proxyImpl,
       ptr = new _ResourceReturnerProxyCalls(proxyImpl);
 
   ResourceReturnerProxy.fromEndpoint(
       core.MojoMessagePipeEndpoint endpoint) :
-      impl = new ResourceReturnerProxyImpl.fromEndpoint(endpoint) {
+      impl = new _ResourceReturnerProxyImpl.fromEndpoint(endpoint) {
     ptr = new _ResourceReturnerProxyCalls(impl);
   }
 
   ResourceReturnerProxy.fromHandle(core.MojoHandle handle) :
-      impl = new ResourceReturnerProxyImpl.fromHandle(handle) {
+      impl = new _ResourceReturnerProxyImpl.fromHandle(handle) {
     ptr = new _ResourceReturnerProxyCalls(impl);
   }
 
   ResourceReturnerProxy.unbound() :
-      impl = new ResourceReturnerProxyImpl.unbound() {
+      impl = new _ResourceReturnerProxyImpl.unbound() {
     ptr = new _ResourceReturnerProxyCalls(impl);
   }
 
@@ -1222,6 +1217,8 @@ class ResourceReturnerProxy implements bindings.ProxyBase {
     assert(endpoint.setDescription("For ResourceReturnerProxy"));
     return new ResourceReturnerProxy.fromEndpoint(endpoint);
   }
+
+  String get serviceName => ResourceReturner.serviceName;
 
   Future close({bool immediate: false}) => impl.close(immediate: immediate);
 
@@ -1261,8 +1258,6 @@ class ResourceReturnerStub extends bindings.Stub {
     return new ResourceReturnerStub.fromEndpoint(endpoint);
   }
 
-  static const String name = ResourceReturnerName;
-
 
 
   dynamic handleMessage(bindings.ServiceMessage message) {
@@ -1273,8 +1268,8 @@ class ResourceReturnerStub extends bindings.Stub {
     }
     assert(_impl != null);
     switch (message.header.type) {
-      case kResourceReturner_returnResources_name:
-        var params = ResourceReturnerReturnResourcesParams.deserialize(
+      case _ResourceReturner_returnResourcesName:
+        var params = _ResourceReturnerReturnResourcesParams.deserialize(
             message.payload);
         _impl.returnResources(params.resources);
         break;
@@ -1299,43 +1294,40 @@ class ResourceReturnerStub extends bindings.Stub {
   int get version => 0;
 }
 
-const int kSurface_getIdNamespace_name = 0;
-const int kSurface_setResourceReturner_name = 1;
-const int kSurface_createSurface_name = 2;
-const int kSurface_submitFrame_name = 3;
-const int kSurface_destroySurface_name = 4;
-const String SurfaceName = "mojo::Surface";
+const int _Surface_getIdNamespaceName = 0;
+const int _Surface_setResourceReturnerName = 1;
+const int _Surface_createSurfaceName = 2;
+const int _Surface_submitFrameName = 3;
+const int _Surface_destroySurfaceName = 4;
 
 abstract class Surface {
+  static const String serviceName = "mojo::Surface";
   dynamic getIdNamespace([Function responseFactory = null]);
   void setResourceReturner(Object returner);
   void createSurface(int idLocal);
   dynamic submitFrame(int idLocal,Frame frame,[Function responseFactory = null]);
   void destroySurface(int idLocal);
-
 }
 
 
-class SurfaceProxyImpl extends bindings.Proxy {
-  SurfaceProxyImpl.fromEndpoint(
+class _SurfaceProxyImpl extends bindings.Proxy {
+  _SurfaceProxyImpl.fromEndpoint(
       core.MojoMessagePipeEndpoint endpoint) : super.fromEndpoint(endpoint);
 
-  SurfaceProxyImpl.fromHandle(core.MojoHandle handle) :
+  _SurfaceProxyImpl.fromHandle(core.MojoHandle handle) :
       super.fromHandle(handle);
 
-  SurfaceProxyImpl.unbound() : super.unbound();
+  _SurfaceProxyImpl.unbound() : super.unbound();
 
-  static SurfaceProxyImpl newFromEndpoint(
+  static _SurfaceProxyImpl newFromEndpoint(
       core.MojoMessagePipeEndpoint endpoint) {
-    assert(endpoint.setDescription("For SurfaceProxyImpl"));
-    return new SurfaceProxyImpl.fromEndpoint(endpoint);
+    assert(endpoint.setDescription("For _SurfaceProxyImpl"));
+    return new _SurfaceProxyImpl.fromEndpoint(endpoint);
   }
-
-  String get name => SurfaceName;
 
   void handleResponse(bindings.ServiceMessage message) {
     switch (message.header.type) {
-      case kSurface_getIdNamespace_name:
+      case _Surface_getIdNamespaceName:
         var r = SurfaceGetIdNamespaceResponseParams.deserialize(
             message.payload);
         if (!message.header.hasRequestId) {
@@ -1355,7 +1347,7 @@ class SurfaceProxyImpl extends bindings.Proxy {
         }
         c.complete(r);
         break;
-      case kSurface_submitFrame_name:
+      case _Surface_submitFrameName:
         var r = SurfaceSubmitFrameResponseParams.deserialize(
             message.payload);
         if (!message.header.hasRequestId) {
@@ -1384,20 +1376,20 @@ class SurfaceProxyImpl extends bindings.Proxy {
 
   String toString() {
     var superString = super.toString();
-    return "SurfaceProxyImpl($superString)";
+    return "_SurfaceProxyImpl($superString)";
   }
 }
 
 
 class _SurfaceProxyCalls implements Surface {
-  SurfaceProxyImpl _proxyImpl;
+  _SurfaceProxyImpl _proxyImpl;
 
   _SurfaceProxyCalls(this._proxyImpl);
     dynamic getIdNamespace([Function responseFactory = null]) {
-      var params = new SurfaceGetIdNamespaceParams();
+      var params = new _SurfaceGetIdNamespaceParams();
       return _proxyImpl.sendMessageWithRequestId(
           params,
-          kSurface_getIdNamespace_name,
+          _Surface_getIdNamespaceName,
           -1,
           bindings.MessageHeader.kMessageExpectsResponse);
     }
@@ -1406,28 +1398,26 @@ class _SurfaceProxyCalls implements Surface {
         _proxyImpl.proxyError("The Proxy is closed.");
         return;
       }
-      var params = new SurfaceSetResourceReturnerParams();
+      var params = new _SurfaceSetResourceReturnerParams();
       params.returner = returner;
-      _proxyImpl.sendMessage(params, kSurface_setResourceReturner_name);
+      _proxyImpl.sendMessage(params, _Surface_setResourceReturnerName);
     }
-  
     void createSurface(int idLocal) {
       if (!_proxyImpl.isBound) {
         _proxyImpl.proxyError("The Proxy is closed.");
         return;
       }
-      var params = new SurfaceCreateSurfaceParams();
+      var params = new _SurfaceCreateSurfaceParams();
       params.idLocal = idLocal;
-      _proxyImpl.sendMessage(params, kSurface_createSurface_name);
+      _proxyImpl.sendMessage(params, _Surface_createSurfaceName);
     }
-  
     dynamic submitFrame(int idLocal,Frame frame,[Function responseFactory = null]) {
-      var params = new SurfaceSubmitFrameParams();
+      var params = new _SurfaceSubmitFrameParams();
       params.idLocal = idLocal;
       params.frame = frame;
       return _proxyImpl.sendMessageWithRequestId(
           params,
-          kSurface_submitFrame_name,
+          _Surface_submitFrameName,
           -1,
           bindings.MessageHeader.kMessageExpectsResponse);
     }
@@ -1436,36 +1426,34 @@ class _SurfaceProxyCalls implements Surface {
         _proxyImpl.proxyError("The Proxy is closed.");
         return;
       }
-      var params = new SurfaceDestroySurfaceParams();
+      var params = new _SurfaceDestroySurfaceParams();
       params.idLocal = idLocal;
-      _proxyImpl.sendMessage(params, kSurface_destroySurface_name);
+      _proxyImpl.sendMessage(params, _Surface_destroySurfaceName);
     }
-  
 }
 
 
 class SurfaceProxy implements bindings.ProxyBase {
   final bindings.Proxy impl;
   Surface ptr;
-  final String name = SurfaceName;
 
-  SurfaceProxy(SurfaceProxyImpl proxyImpl) :
+  SurfaceProxy(_SurfaceProxyImpl proxyImpl) :
       impl = proxyImpl,
       ptr = new _SurfaceProxyCalls(proxyImpl);
 
   SurfaceProxy.fromEndpoint(
       core.MojoMessagePipeEndpoint endpoint) :
-      impl = new SurfaceProxyImpl.fromEndpoint(endpoint) {
+      impl = new _SurfaceProxyImpl.fromEndpoint(endpoint) {
     ptr = new _SurfaceProxyCalls(impl);
   }
 
   SurfaceProxy.fromHandle(core.MojoHandle handle) :
-      impl = new SurfaceProxyImpl.fromHandle(handle) {
+      impl = new _SurfaceProxyImpl.fromHandle(handle) {
     ptr = new _SurfaceProxyCalls(impl);
   }
 
   SurfaceProxy.unbound() :
-      impl = new SurfaceProxyImpl.unbound() {
+      impl = new _SurfaceProxyImpl.unbound() {
     ptr = new _SurfaceProxyCalls(impl);
   }
 
@@ -1481,6 +1469,8 @@ class SurfaceProxy implements bindings.ProxyBase {
     assert(endpoint.setDescription("For SurfaceProxy"));
     return new SurfaceProxy.fromEndpoint(endpoint);
   }
+
+  String get serviceName => Surface.serviceName;
 
   Future close({bool immediate: false}) => impl.close(immediate: immediate);
 
@@ -1520,8 +1510,6 @@ class SurfaceStub extends bindings.Stub {
     return new SurfaceStub.fromEndpoint(endpoint);
   }
 
-  static const String name = SurfaceName;
-
 
   SurfaceGetIdNamespaceResponseParams _SurfaceGetIdNamespaceResponseParamsFactory(int idNamespace) {
     var mojo_factory_result = new SurfaceGetIdNamespaceResponseParams();
@@ -1541,8 +1529,8 @@ class SurfaceStub extends bindings.Stub {
     }
     assert(_impl != null);
     switch (message.header.type) {
-      case kSurface_getIdNamespace_name:
-        var params = SurfaceGetIdNamespaceParams.deserialize(
+      case _Surface_getIdNamespaceName:
+        var params = _SurfaceGetIdNamespaceParams.deserialize(
             message.payload);
         var response = _impl.getIdNamespace(_SurfaceGetIdNamespaceResponseParamsFactory);
         if (response is Future) {
@@ -1550,7 +1538,7 @@ class SurfaceStub extends bindings.Stub {
             if (response != null) {
               return buildResponseWithId(
                   response,
-                  kSurface_getIdNamespace_name,
+                  _Surface_getIdNamespaceName,
                   message.header.requestId,
                   bindings.MessageHeader.kMessageIsResponse);
             }
@@ -1558,23 +1546,23 @@ class SurfaceStub extends bindings.Stub {
         } else if (response != null) {
           return buildResponseWithId(
               response,
-              kSurface_getIdNamespace_name,
+              _Surface_getIdNamespaceName,
               message.header.requestId,
               bindings.MessageHeader.kMessageIsResponse);
         }
         break;
-      case kSurface_setResourceReturner_name:
-        var params = SurfaceSetResourceReturnerParams.deserialize(
+      case _Surface_setResourceReturnerName:
+        var params = _SurfaceSetResourceReturnerParams.deserialize(
             message.payload);
         _impl.setResourceReturner(params.returner);
         break;
-      case kSurface_createSurface_name:
-        var params = SurfaceCreateSurfaceParams.deserialize(
+      case _Surface_createSurfaceName:
+        var params = _SurfaceCreateSurfaceParams.deserialize(
             message.payload);
         _impl.createSurface(params.idLocal);
         break;
-      case kSurface_submitFrame_name:
-        var params = SurfaceSubmitFrameParams.deserialize(
+      case _Surface_submitFrameName:
+        var params = _SurfaceSubmitFrameParams.deserialize(
             message.payload);
         var response = _impl.submitFrame(params.idLocal,params.frame,_SurfaceSubmitFrameResponseParamsFactory);
         if (response is Future) {
@@ -1582,7 +1570,7 @@ class SurfaceStub extends bindings.Stub {
             if (response != null) {
               return buildResponseWithId(
                   response,
-                  kSurface_submitFrame_name,
+                  _Surface_submitFrameName,
                   message.header.requestId,
                   bindings.MessageHeader.kMessageIsResponse);
             }
@@ -1590,13 +1578,13 @@ class SurfaceStub extends bindings.Stub {
         } else if (response != null) {
           return buildResponseWithId(
               response,
-              kSurface_submitFrame_name,
+              _Surface_submitFrameName,
               message.header.requestId,
               bindings.MessageHeader.kMessageIsResponse);
         }
         break;
-      case kSurface_destroySurface_name:
-        var params = SurfaceDestroySurfaceParams.deserialize(
+      case _Surface_destroySurfaceName:
+        var params = _SurfaceDestroySurfaceParams.deserialize(
             message.payload);
         _impl.destroySurface(params.idLocal);
         break;

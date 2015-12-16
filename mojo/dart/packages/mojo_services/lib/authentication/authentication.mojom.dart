@@ -11,15 +11,15 @@ import 'package:mojo/core.dart' as core;
 
 
 
-class AuthenticationServiceSelectAccountParams extends bindings.Struct {
+class _AuthenticationServiceSelectAccountParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(16, 0)
   ];
   bool returnLastSelected = false;
 
-  AuthenticationServiceSelectAccountParams() : super(kVersions.last.size);
+  _AuthenticationServiceSelectAccountParams() : super(kVersions.last.size);
 
-  static AuthenticationServiceSelectAccountParams deserialize(bindings.Message message) {
+  static _AuthenticationServiceSelectAccountParams deserialize(bindings.Message message) {
     var decoder = new bindings.Decoder(message);
     var result = decode(decoder);
     if (decoder.excessHandles != null) {
@@ -28,11 +28,11 @@ class AuthenticationServiceSelectAccountParams extends bindings.Struct {
     return result;
   }
 
-  static AuthenticationServiceSelectAccountParams decode(bindings.Decoder decoder0) {
+  static _AuthenticationServiceSelectAccountParams decode(bindings.Decoder decoder0) {
     if (decoder0 == null) {
       return null;
     }
-    AuthenticationServiceSelectAccountParams result = new AuthenticationServiceSelectAccountParams();
+    _AuthenticationServiceSelectAccountParams result = new _AuthenticationServiceSelectAccountParams();
 
     var mainDataHeader = decoder0.decodeStructDataHeader();
     if (mainDataHeader.version <= kVersions.last.version) {
@@ -66,7 +66,7 @@ class AuthenticationServiceSelectAccountParams extends bindings.Struct {
   }
 
   String toString() {
-    return "AuthenticationServiceSelectAccountParams("
+    return "_AuthenticationServiceSelectAccountParams("
            "returnLastSelected: $returnLastSelected" ")";
   }
 
@@ -154,16 +154,16 @@ class AuthenticationServiceSelectAccountResponseParams extends bindings.Struct {
 }
 
 
-class AuthenticationServiceGetOAuth2TokenParams extends bindings.Struct {
+class _AuthenticationServiceGetOAuth2TokenParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(24, 0)
   ];
   String username = null;
   List<String> scopes = null;
 
-  AuthenticationServiceGetOAuth2TokenParams() : super(kVersions.last.size);
+  _AuthenticationServiceGetOAuth2TokenParams() : super(kVersions.last.size);
 
-  static AuthenticationServiceGetOAuth2TokenParams deserialize(bindings.Message message) {
+  static _AuthenticationServiceGetOAuth2TokenParams deserialize(bindings.Message message) {
     var decoder = new bindings.Decoder(message);
     var result = decode(decoder);
     if (decoder.excessHandles != null) {
@@ -172,11 +172,11 @@ class AuthenticationServiceGetOAuth2TokenParams extends bindings.Struct {
     return result;
   }
 
-  static AuthenticationServiceGetOAuth2TokenParams decode(bindings.Decoder decoder0) {
+  static _AuthenticationServiceGetOAuth2TokenParams decode(bindings.Decoder decoder0) {
     if (decoder0 == null) {
       return null;
     }
-    AuthenticationServiceGetOAuth2TokenParams result = new AuthenticationServiceGetOAuth2TokenParams();
+    _AuthenticationServiceGetOAuth2TokenParams result = new _AuthenticationServiceGetOAuth2TokenParams();
 
     var mainDataHeader = decoder0.decodeStructDataHeader();
     if (mainDataHeader.version <= kVersions.last.version) {
@@ -232,7 +232,7 @@ class AuthenticationServiceGetOAuth2TokenParams extends bindings.Struct {
   }
 
   String toString() {
-    return "AuthenticationServiceGetOAuth2TokenParams("
+    return "_AuthenticationServiceGetOAuth2TokenParams("
            "username: $username" ", "
            "scopes: $scopes" ")";
   }
@@ -322,15 +322,15 @@ class AuthenticationServiceGetOAuth2TokenResponseParams extends bindings.Struct 
 }
 
 
-class AuthenticationServiceClearOAuth2TokenParams extends bindings.Struct {
+class _AuthenticationServiceClearOAuth2TokenParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(16, 0)
   ];
   String token = null;
 
-  AuthenticationServiceClearOAuth2TokenParams() : super(kVersions.last.size);
+  _AuthenticationServiceClearOAuth2TokenParams() : super(kVersions.last.size);
 
-  static AuthenticationServiceClearOAuth2TokenParams deserialize(bindings.Message message) {
+  static _AuthenticationServiceClearOAuth2TokenParams deserialize(bindings.Message message) {
     var decoder = new bindings.Decoder(message);
     var result = decode(decoder);
     if (decoder.excessHandles != null) {
@@ -339,11 +339,11 @@ class AuthenticationServiceClearOAuth2TokenParams extends bindings.Struct {
     return result;
   }
 
-  static AuthenticationServiceClearOAuth2TokenParams decode(bindings.Decoder decoder0) {
+  static _AuthenticationServiceClearOAuth2TokenParams decode(bindings.Decoder decoder0) {
     if (decoder0 == null) {
       return null;
     }
-    AuthenticationServiceClearOAuth2TokenParams result = new AuthenticationServiceClearOAuth2TokenParams();
+    _AuthenticationServiceClearOAuth2TokenParams result = new _AuthenticationServiceClearOAuth2TokenParams();
 
     var mainDataHeader = decoder0.decodeStructDataHeader();
     if (mainDataHeader.version <= kVersions.last.version) {
@@ -377,7 +377,7 @@ class AuthenticationServiceClearOAuth2TokenParams extends bindings.Struct {
   }
 
   String toString() {
-    return "AuthenticationServiceClearOAuth2TokenParams("
+    return "_AuthenticationServiceClearOAuth2TokenParams("
            "token: $token" ")";
   }
 
@@ -388,39 +388,36 @@ class AuthenticationServiceClearOAuth2TokenParams extends bindings.Struct {
   }
 }
 
-const int kAuthenticationService_selectAccount_name = 0;
-const int kAuthenticationService_getOAuth2Token_name = 1;
-const int kAuthenticationService_clearOAuth2Token_name = 2;
-const String AuthenticationServiceName = "authentication::AuthenticationService";
+const int _AuthenticationService_selectAccountName = 0;
+const int _AuthenticationService_getOAuth2TokenName = 1;
+const int _AuthenticationService_clearOAuth2TokenName = 2;
 
 abstract class AuthenticationService {
+  static const String serviceName = "authentication::AuthenticationService";
   dynamic selectAccount(bool returnLastSelected,[Function responseFactory = null]);
   dynamic getOAuth2Token(String username,List<String> scopes,[Function responseFactory = null]);
   void clearOAuth2Token(String token);
-
 }
 
 
-class AuthenticationServiceProxyImpl extends bindings.Proxy {
-  AuthenticationServiceProxyImpl.fromEndpoint(
+class _AuthenticationServiceProxyImpl extends bindings.Proxy {
+  _AuthenticationServiceProxyImpl.fromEndpoint(
       core.MojoMessagePipeEndpoint endpoint) : super.fromEndpoint(endpoint);
 
-  AuthenticationServiceProxyImpl.fromHandle(core.MojoHandle handle) :
+  _AuthenticationServiceProxyImpl.fromHandle(core.MojoHandle handle) :
       super.fromHandle(handle);
 
-  AuthenticationServiceProxyImpl.unbound() : super.unbound();
+  _AuthenticationServiceProxyImpl.unbound() : super.unbound();
 
-  static AuthenticationServiceProxyImpl newFromEndpoint(
+  static _AuthenticationServiceProxyImpl newFromEndpoint(
       core.MojoMessagePipeEndpoint endpoint) {
-    assert(endpoint.setDescription("For AuthenticationServiceProxyImpl"));
-    return new AuthenticationServiceProxyImpl.fromEndpoint(endpoint);
+    assert(endpoint.setDescription("For _AuthenticationServiceProxyImpl"));
+    return new _AuthenticationServiceProxyImpl.fromEndpoint(endpoint);
   }
-
-  String get name => AuthenticationServiceName;
 
   void handleResponse(bindings.ServiceMessage message) {
     switch (message.header.type) {
-      case kAuthenticationService_selectAccount_name:
+      case _AuthenticationService_selectAccountName:
         var r = AuthenticationServiceSelectAccountResponseParams.deserialize(
             message.payload);
         if (!message.header.hasRequestId) {
@@ -440,7 +437,7 @@ class AuthenticationServiceProxyImpl extends bindings.Proxy {
         }
         c.complete(r);
         break;
-      case kAuthenticationService_getOAuth2Token_name:
+      case _AuthenticationService_getOAuth2TokenName:
         var r = AuthenticationServiceGetOAuth2TokenResponseParams.deserialize(
             message.payload);
         if (!message.header.hasRequestId) {
@@ -469,31 +466,31 @@ class AuthenticationServiceProxyImpl extends bindings.Proxy {
 
   String toString() {
     var superString = super.toString();
-    return "AuthenticationServiceProxyImpl($superString)";
+    return "_AuthenticationServiceProxyImpl($superString)";
   }
 }
 
 
 class _AuthenticationServiceProxyCalls implements AuthenticationService {
-  AuthenticationServiceProxyImpl _proxyImpl;
+  _AuthenticationServiceProxyImpl _proxyImpl;
 
   _AuthenticationServiceProxyCalls(this._proxyImpl);
     dynamic selectAccount(bool returnLastSelected,[Function responseFactory = null]) {
-      var params = new AuthenticationServiceSelectAccountParams();
+      var params = new _AuthenticationServiceSelectAccountParams();
       params.returnLastSelected = returnLastSelected;
       return _proxyImpl.sendMessageWithRequestId(
           params,
-          kAuthenticationService_selectAccount_name,
+          _AuthenticationService_selectAccountName,
           -1,
           bindings.MessageHeader.kMessageExpectsResponse);
     }
     dynamic getOAuth2Token(String username,List<String> scopes,[Function responseFactory = null]) {
-      var params = new AuthenticationServiceGetOAuth2TokenParams();
+      var params = new _AuthenticationServiceGetOAuth2TokenParams();
       params.username = username;
       params.scopes = scopes;
       return _proxyImpl.sendMessageWithRequestId(
           params,
-          kAuthenticationService_getOAuth2Token_name,
+          _AuthenticationService_getOAuth2TokenName,
           -1,
           bindings.MessageHeader.kMessageExpectsResponse);
     }
@@ -502,36 +499,34 @@ class _AuthenticationServiceProxyCalls implements AuthenticationService {
         _proxyImpl.proxyError("The Proxy is closed.");
         return;
       }
-      var params = new AuthenticationServiceClearOAuth2TokenParams();
+      var params = new _AuthenticationServiceClearOAuth2TokenParams();
       params.token = token;
-      _proxyImpl.sendMessage(params, kAuthenticationService_clearOAuth2Token_name);
+      _proxyImpl.sendMessage(params, _AuthenticationService_clearOAuth2TokenName);
     }
-  
 }
 
 
 class AuthenticationServiceProxy implements bindings.ProxyBase {
   final bindings.Proxy impl;
   AuthenticationService ptr;
-  final String name = AuthenticationServiceName;
 
-  AuthenticationServiceProxy(AuthenticationServiceProxyImpl proxyImpl) :
+  AuthenticationServiceProxy(_AuthenticationServiceProxyImpl proxyImpl) :
       impl = proxyImpl,
       ptr = new _AuthenticationServiceProxyCalls(proxyImpl);
 
   AuthenticationServiceProxy.fromEndpoint(
       core.MojoMessagePipeEndpoint endpoint) :
-      impl = new AuthenticationServiceProxyImpl.fromEndpoint(endpoint) {
+      impl = new _AuthenticationServiceProxyImpl.fromEndpoint(endpoint) {
     ptr = new _AuthenticationServiceProxyCalls(impl);
   }
 
   AuthenticationServiceProxy.fromHandle(core.MojoHandle handle) :
-      impl = new AuthenticationServiceProxyImpl.fromHandle(handle) {
+      impl = new _AuthenticationServiceProxyImpl.fromHandle(handle) {
     ptr = new _AuthenticationServiceProxyCalls(impl);
   }
 
   AuthenticationServiceProxy.unbound() :
-      impl = new AuthenticationServiceProxyImpl.unbound() {
+      impl = new _AuthenticationServiceProxyImpl.unbound() {
     ptr = new _AuthenticationServiceProxyCalls(impl);
   }
 
@@ -547,6 +542,8 @@ class AuthenticationServiceProxy implements bindings.ProxyBase {
     assert(endpoint.setDescription("For AuthenticationServiceProxy"));
     return new AuthenticationServiceProxy.fromEndpoint(endpoint);
   }
+
+  String get serviceName => AuthenticationService.serviceName;
 
   Future close({bool immediate: false}) => impl.close(immediate: immediate);
 
@@ -586,8 +583,6 @@ class AuthenticationServiceStub extends bindings.Stub {
     return new AuthenticationServiceStub.fromEndpoint(endpoint);
   }
 
-  static const String name = AuthenticationServiceName;
-
 
   AuthenticationServiceSelectAccountResponseParams _AuthenticationServiceSelectAccountResponseParamsFactory(String username, String error) {
     var mojo_factory_result = new AuthenticationServiceSelectAccountResponseParams();
@@ -610,8 +605,8 @@ class AuthenticationServiceStub extends bindings.Stub {
     }
     assert(_impl != null);
     switch (message.header.type) {
-      case kAuthenticationService_selectAccount_name:
-        var params = AuthenticationServiceSelectAccountParams.deserialize(
+      case _AuthenticationService_selectAccountName:
+        var params = _AuthenticationServiceSelectAccountParams.deserialize(
             message.payload);
         var response = _impl.selectAccount(params.returnLastSelected,_AuthenticationServiceSelectAccountResponseParamsFactory);
         if (response is Future) {
@@ -619,7 +614,7 @@ class AuthenticationServiceStub extends bindings.Stub {
             if (response != null) {
               return buildResponseWithId(
                   response,
-                  kAuthenticationService_selectAccount_name,
+                  _AuthenticationService_selectAccountName,
                   message.header.requestId,
                   bindings.MessageHeader.kMessageIsResponse);
             }
@@ -627,13 +622,13 @@ class AuthenticationServiceStub extends bindings.Stub {
         } else if (response != null) {
           return buildResponseWithId(
               response,
-              kAuthenticationService_selectAccount_name,
+              _AuthenticationService_selectAccountName,
               message.header.requestId,
               bindings.MessageHeader.kMessageIsResponse);
         }
         break;
-      case kAuthenticationService_getOAuth2Token_name:
-        var params = AuthenticationServiceGetOAuth2TokenParams.deserialize(
+      case _AuthenticationService_getOAuth2TokenName:
+        var params = _AuthenticationServiceGetOAuth2TokenParams.deserialize(
             message.payload);
         var response = _impl.getOAuth2Token(params.username,params.scopes,_AuthenticationServiceGetOAuth2TokenResponseParamsFactory);
         if (response is Future) {
@@ -641,7 +636,7 @@ class AuthenticationServiceStub extends bindings.Stub {
             if (response != null) {
               return buildResponseWithId(
                   response,
-                  kAuthenticationService_getOAuth2Token_name,
+                  _AuthenticationService_getOAuth2TokenName,
                   message.header.requestId,
                   bindings.MessageHeader.kMessageIsResponse);
             }
@@ -649,13 +644,13 @@ class AuthenticationServiceStub extends bindings.Stub {
         } else if (response != null) {
           return buildResponseWithId(
               response,
-              kAuthenticationService_getOAuth2Token_name,
+              _AuthenticationService_getOAuth2TokenName,
               message.header.requestId,
               bindings.MessageHeader.kMessageIsResponse);
         }
         break;
-      case kAuthenticationService_clearOAuth2Token_name:
-        var params = AuthenticationServiceClearOAuth2TokenParams.deserialize(
+      case _AuthenticationService_clearOAuth2TokenName:
+        var params = _AuthenticationServiceClearOAuth2TokenParams.deserialize(
             message.payload);
         _impl.clearOAuth2Token(params.token);
         break;
