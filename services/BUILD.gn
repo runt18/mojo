@@ -52,13 +52,10 @@ group("services") {
     deps += [
       "//services/device_info",
       "//services/files",
-      "//services/kiosk_wm",
       "//services/ui",
       "//services/native_viewport",
       "//services/surfaces",
       "//services/url_response_disk_cache",
-      "//services/view_manager",
-      "//services/window_manager",
     ]
   }
 
@@ -93,13 +90,6 @@ group("tests") {
     deps += [ "//services/notifications:apptests" ]
   }
 
-  if (is_linux || is_android) {
-    deps += [
-      "//services/window_manager:window_manager_apptests",
-      "//services/window_manager:window_manager_unittests",
-    ]
-  }
-
   # TODO(jamesr): We only support building V8 snapshot data on a linux host since it
   # needs a 32 bit toolchain and we don't have one configured for mac hosts.
   # TODO(cstout): javascript/v8 build support for fnl/musl
@@ -111,9 +101,6 @@ group("tests") {
     deps += [
       "//services/files:apptests",
       "//services/url_response_disk_cache:tests",
-      "//services/view_manager:mojo_view_manager_client_apptests",
-      "//services/view_manager:view_manager_service_apptests",
-      "//services/view_manager:view_manager_service_unittests",
     ]
   }
 }
