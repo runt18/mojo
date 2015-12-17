@@ -42,6 +42,7 @@ const char* Builtin::mojo_core_patch_resource_names_[] = {
 };
 
 const char* Builtin::mojo_io_patch_resource_names_[] = {
+    "/io/file_patch.dart",
     "/io/internet_address_patch.dart",
     "/io/mojo_patch.dart",
     "/io/platform_patch.dart",

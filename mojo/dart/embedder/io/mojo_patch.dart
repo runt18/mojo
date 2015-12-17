@@ -12,16 +12,28 @@ import 'dart:_mojo_services/mojo/network_service.mojom.dart';
 import 'dart:_mojo_services/mojo/tcp_bound_socket.mojom.dart';
 import 'dart:_mojo_services/mojo/tcp_connected_socket.mojom.dart';
 import 'dart:_mojo_services/mojo/tcp_server_socket.mojom.dart';
+import 'dart:_mojo_services/mojo/files/file.mojom.dart';
+import 'dart:_mojo_services/mojo/files/files.mojom.dart';
+import 'dart:_mojo_services/mojo/files/directory.mojom.dart';
+import 'dart:_mojo_services/mojo/files/ioctl.mojom.dart';
+import 'dart:_mojo_services/mojo/files/types.mojom.dart';
 
 //
 // Mojo objects and helper functions used by the 'dart:io' library.
 //
 int _networkServiceHandle;
+int _filesServiceHandle;
 NetworkServiceProxy _networkService;
 HostResolverProxy _hostResolver;
+FilesProxy _files;
 
-void _initialize(int h) {
-  _networkServiceHandle = h;
+void _initialize(int networkServiceHandle, int filesServiceHandle) {
+  if (networkServiceHandle != MojoHandle.INVALID) {
+    _networkServiceHandle = networkServiceHandle;
+  }
+  if (filesServiceHandle != MojoHandle.INVALID) {
+    _filesServiceHandle = filesServiceHandle;
+  }
 }
 
 void _shutdown() {
@@ -31,7 +43,12 @@ void _shutdown() {
     var handle = new MojoHandle(_networkServiceHandle);
     _networkServiceHandle = null;
     handle.close();
-    return;
+  }
+  if (_filesServiceHandle != null) {
+    // File system proxies were never initialized. Create a handle and close it.
+    var handle = new MojoHandle(_filesServiceHandle);
+    _filesServiceHandle = null;
+    handle.close();
   }
   _closeProxies();
 }
@@ -45,6 +62,10 @@ _closeProxies() {
   if (_hostResolver != null) {
     _hostResolver.close(immediate: true);
     _hostResolver = null;
+  }
+  if (_files != null) {
+    _files.close(immediate: true);
+    _files = null;
   }
 }
 
@@ -74,6 +95,17 @@ HostResolverProxy _getHostResolver() {
   // under application control and does not affect isolate shutdown.
   _hostResolver.impl.endpoint.handle.pass();
   return _hostResolver;
+}
+
+/// Get the singleton FilesProxy.
+FilesProxy _getFiles() {
+  if (_files != null) {
+    return _files;
+  }
+  _files = new FilesProxy.fromHandle(
+      new MojoHandle(_filesServiceHandle).pass());
+  _filesServiceHandle = null;
+  return _files;
 }
 
 /// Static utility methods for converting between 'dart:io' and

@@ -6,6 +6,7 @@
 
 #include "base/location.h"
 #include "mojo/public/cpp/bindings/interface_request.h"
+#include "mojo/services/files/interfaces/files.mojom.h"
 #include "mojo/services/network/interfaces/network_service.mojom.h"
 
 namespace dart {
@@ -53,6 +54,17 @@ MojoHandle ContentHandlerAppServiceConnector::ConnectToService(
           application_name,
           base::Passed(GetProxy(&interface_ptr))));
       // Return proxy end of pipe to caller.
+      return interface_ptr.PassInterface().PassHandle().release().value();
+    }
+    case mojo::dart::DartControllerServiceConnector::kFilesServiceId: {
+      std::string application_name = "mojo:files";
+      // Construct proxy.
+      mojo::files::FilesPtr interface_ptr;
+      runner_->PostTask(FROM_HERE, base::Bind(
+          &ContentHandlerAppServiceConnector::Connect<mojo::files::Files>,
+          weak_ptr_factory_.GetWeakPtr(),
+          application_name,
+          base::Passed(GetProxy(&interface_ptr))));
       return interface_ptr.PassInterface().PassHandle().release().value();
     }
     break;

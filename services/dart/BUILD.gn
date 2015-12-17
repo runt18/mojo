@@ -48,6 +48,7 @@ mojo_native_application("dart_content_handler") {
     "//mojo/public/cpp/utility",
     "//mojo/public/interfaces/application",
     "//mojo/services/content_handler/interfaces",
+    "//mojo/services/files/interfaces",
     "//mojo/services/network/interfaces",
     "//mojo/services/tracing/interfaces",
     "//mojo/services/url_response_disk_cache/interfaces",

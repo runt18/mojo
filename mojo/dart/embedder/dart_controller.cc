@@ -503,15 +503,21 @@ void DartController::InitializeDartMojoIo() {
     return;
   }
   CHECK(service_connector_ != nullptr);
+  // Get handles to the network and files services.
   MojoHandle network_service_mojo_handle = MOJO_HANDLE_INVALID;
   network_service_mojo_handle =
         service_connector_->ConnectToService(
             DartControllerServiceConnector::kNetworkServiceId);
-  if (network_service_mojo_handle == MOJO_HANDLE_INVALID) {
+  MojoHandle files_service_mojo_handle = MOJO_HANDLE_INVALID;
+  files_service_mojo_handle =
+      service_connector_->ConnectToService(
+          DartControllerServiceConnector::kFilesServiceId);
+  if ((network_service_mojo_handle == MOJO_HANDLE_INVALID) &&
+      (files_service_mojo_handle == MOJO_HANDLE_INVALID)) {
     // Not supported.
     return;
   }
-  // Pass handle into 'dart:io' library.
+  // Pass handles into 'dart:io' library.
   Dart_Handle mojo_io_library =
       Builtin::GetLibrary(Builtin::kDartMojoIoLibrary);
   CHECK(!Dart_IsError(mojo_io_library));
@@ -520,10 +526,17 @@ void DartController::InitializeDartMojoIo() {
   Dart_Handle network_service_handle =
       Dart_NewInteger(network_service_mojo_handle);
   CHECK(!Dart_IsError(network_service_handle));
+  Dart_Handle files_service_handle =
+      Dart_NewInteger(files_service_mojo_handle);
+  CHECK(!Dart_IsError(files_service_handle));
+  Dart_Handle arguments[] = {
+    network_service_handle,
+    files_service_handle,
+  };
   Dart_Handle result = Dart_Invoke(mojo_io_library,
                                    method_name,
-                                   1,
-                                   &network_service_handle);
+                                   2,
+                                   &arguments[0]);
   CHECK(!Dart_IsError(result));
 }
 

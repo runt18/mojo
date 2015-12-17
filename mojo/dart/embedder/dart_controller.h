@@ -73,6 +73,7 @@ class DartControllerServiceConnector {
   // List of services that are supported.
   enum ServiceId {
     kNetworkServiceId,
+    kFilesServiceId,
     kNumServiceIds,
   };
 

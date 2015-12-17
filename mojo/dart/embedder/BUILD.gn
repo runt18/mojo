@@ -41,6 +41,7 @@ source_set("dart_controller_no_snapshot") {
     "//mojo/public/cpp/environment",
     "//mojo/public/cpp/system",
     "//mojo/public/platform/dart:mojo_internal_impl",
+    "//mojo/services/files/interfaces",
     "//mojo/services/network/interfaces",
     "//tonic",
   ]
@@ -56,6 +57,7 @@ source_set("dart_controller_no_snapshot") {
 dart_embedder_resources("generate_dart_embedder_patch_resources_cc") {
   inputs = [
     "//mojo/dart/embedder/core/natives_patch.dart",
+    "//mojo/dart/embedder/io/file_patch.dart",
     "//mojo/dart/embedder/io/internet_address_patch.dart",
     "//mojo/dart/embedder/io/mojo_patch.dart",
     "//mojo/dart/embedder/io/platform_patch.dart",
