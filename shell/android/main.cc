@@ -28,6 +28,7 @@
 #include "mojo/common/binding_set.h"
 #include "mojo/message_pump/message_pump_mojo.h"
 #include "mojo/services/network/interfaces/network_service.mojom.h"
+#include "mojo/services/window_manager/interfaces/window_manager.mojom.h"
 #include "shell/android/android_handler_loader.h"
 #include "shell/android/java_application_loader.h"
 #include "shell/android/native_viewport_application_loader.h"

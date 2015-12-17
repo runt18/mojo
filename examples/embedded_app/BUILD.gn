@@ -1,0 +1,24 @@
+# Copyright 2014 The Chromium Authors. All rights reserved.
+# Use of this source code is governed by a BSD-style license that can be
+# found in the LICENSE file.
+
+import("//mojo/public/mojo_application.gni")
+
+mojo_native_application("embedded_app") {
+  sources = [
+    "embedded_app.cc",
+  ]
+
+  deps = [
+    "//base",
+    "//examples/bitmap_uploader",
+    "//mojo/application",
+    "//mojo/public/cpp/bindings",
+    "//mojo/public/cpp/utility",
+    "//mojo/services/geometry/interfaces",
+    "//mojo/services/navigation/interfaces",
+    "//mojo/services/view_manager/cpp",
+    "//skia:skia",
+    "//url",
+  ]
+}

@@ -31,6 +31,9 @@ if (is_nacl) {
       "//services/files:apptests",
       "//services/http_server",
       "//services/http_server:apptests",
+      "//services/view_manager:mojo_view_manager_client_apptests",
+      "//services/view_manager:view_manager_service_apptests",
+      "//services/window_manager:window_manager_apptests",
       "//shell:apptests",
     ]
   }
