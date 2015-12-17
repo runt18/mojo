@@ -1,0 +1,142 @@
+# Copyright 2014 The Chromium Authors. All rights reserved.
+# Use of this source code is governed by a BSD-style license that can be
+# found in the LICENSE file.
+
+import("//mojo/public/mojo_application.gni")
+import("//mojo/public/tools/bindings/mojom.gni")
+
+group("surfaces_app") {
+  deps = [
+    ":child_app",
+    ":child_gl_app",
+    ":parent_app",
+  ]
+}
+
+mojo_native_application("parent_app") {
+  output_name = "surfaces_app"
+
+  deps = [
+    ":bindings",
+    ":util",
+    "//base",
+    "//cc",
+    "//cc/surfaces",
+    "//cc/surfaces:surface_id",
+    "//skia",
+    "//ui/gfx",
+    "//ui/gfx/geometry",
+    "//mojo/application",
+    "//mojo/common",
+    "//mojo/converters/geometry",
+    "//mojo/converters/surfaces",
+    "//mojo/environment:chromium",
+    "//mojo/public/cpp/system",
+    "//mojo/services/geometry/interfaces",
+    "//mojo/services/gpu/interfaces",
+    "//mojo/services/native_viewport/interfaces",
+    "//mojo/services/surfaces/interfaces",
+  ]
+
+  sources = [
+    "embedder.cc",
+    "embedder.h",
+    "surfaces_app.cc",
+  ]
+}
+
+mojo_native_application("child_app") {
+  output_name = "surfaces_child_app"
+
+  deps = [
+    ":bindings",
+    ":util",
+    "//base",
+    "//cc",
+    "//cc/surfaces",
+    "//cc/surfaces:surface_id",
+    "//mojo/application",
+    "//mojo/common",
+    "//mojo/converters/geometry",
+    "//mojo/converters/surfaces",
+    "//mojo/environment:chromium",
+    "//mojo/public/cpp/bindings",
+    "//mojo/services/geometry/interfaces",
+    "//mojo/services/surfaces/interfaces",
+    "//mojo/services/surfaces/interfaces:surface_id",
+    "//skia",
+    "//ui/gfx",
+    "//ui/gfx/geometry",
+  ]
+
+  sources = [
+    "child_app.cc",
+    "child_impl.cc",
+    "child_impl.h",
+  ]
+}
+
+mojo_native_application("child_gl_app") {
+  output_name = "surfaces_child_gl_app"
+
+  deps = [
+    ":bindings",
+    ":util",
+    "//base",
+    "//cc",
+    "//cc/surfaces",
+    "//cc/surfaces:surface_id",
+    "//examples/spinning_cube:lib",
+    "//gpu/command_buffer/common",
+    "//mojo/application",
+    "//mojo/common",
+    "//mojo/converters/geometry",
+    "//mojo/converters/surfaces",
+    "//mojo/environment:chromium",
+    "//mojo/public/c/gpu",
+    "//mojo/public/cpp/bindings",
+    "//mojo/public/cpp/environment",
+    "//mojo/public/cpp/system",
+    "//mojo/services/geometry/interfaces",
+    "//mojo/services/gpu/interfaces",
+    "//mojo/services/surfaces/interfaces",
+    "//mojo/services/surfaces/interfaces:surface_id",
+    "//skia",
+    "//ui/gfx",
+    "//ui/gfx/geometry",
+  ]
+
+  sources = [
+    "child_gl_app.cc",
+    "child_gl_impl.cc",
+    "child_gl_impl.h",
+  ]
+}
+
+source_set("util") {
+  deps = [
+    "//cc",
+    "//skia",
+    "//ui/gfx",
+    "//ui/gfx/geometry",
+  ]
+
+  sources = [
+    "surfaces_util.cc",
+    "surfaces_util.h",
+  ]
+}
+
+mojom("bindings") {
+  deps = [
+    "//mojo/services/geometry/interfaces",
+    "//mojo/services/surfaces/interfaces",
+    "//mojo/services/surfaces/interfaces:surface_id",
+  ]
+
+  import_dirs = [ get_path_info("../../mojo/services", "abspath") ]
+
+  sources = [
+    "child.mojom",
+  ]
+}
