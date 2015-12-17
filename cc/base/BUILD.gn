@@ -1,0 +1,35 @@
+# Copyright 2015 The Chromium Authors. All rights reserved.
+# Use of this source code is governed by a BSD-style license that can be
+# found in the LICENSE file.
+
+source_set("base") {
+  visibility = [ "//cc" ]
+
+  sources = [
+    "blocking_task_runner.cc",
+    "blocking_task_runner.h",
+    "completion_event.h",
+    "math_util.cc",
+    "math_util.h",
+    "scoped_ptr_deque.h",
+    "scoped_ptr_vector.h",
+    "switches.cc",
+    "switches.h",
+    "util.h",
+  ]
+
+  deps = [
+    "//base",
+    "//base/third_party/dynamic_annotations",
+    "//skia",
+    "//ui/gfx",
+    "//ui/gfx/geometry",
+  ]
+
+  defines = [ "CC_IMPLEMENTATION=1" ]
+
+  if (!is_debug && (is_win || is_android)) {
+    configs -= [ "//build/config/compiler:optimize" ]
+    configs += [ "//build/config/compiler:optimize_max" ]
+  }
+}
