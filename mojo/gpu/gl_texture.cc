@@ -17,7 +17,6 @@ GLTexture::GLTexture(base::WeakPtr<GLContext> context, mojo::Size size)
   glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, size_.width, size_.height, 0, GL_RGBA,
                GL_UNSIGNED_BYTE, 0);
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-  glBindTexture(GL_TEXTURE_2D, 0);
 }
 
 GLTexture::~GLTexture() {

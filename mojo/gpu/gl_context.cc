@@ -4,7 +4,7 @@
 
 #include "mojo/gpu/gl_context.h"
 #include "mojo/public/cpp/application/connect.h"
-#include "mojo/public/interfaces/application/application_connector.mojom.h"
+#include "mojo/public/interfaces/application/shell.mojom.h"
 #include "mojo/services/gpu/interfaces/gpu.mojom.h"
 
 namespace mojo {
@@ -24,11 +24,10 @@ GLContext::~GLContext() {
   MGLDestroyContext(context_);
 }
 
-base::WeakPtr<GLContext> GLContext::CreateOffscreen(
-    ApplicationConnector* connector) {
+base::WeakPtr<GLContext> GLContext::Create(Shell* shell) {
   ServiceProviderPtr native_viewport;
-  connector->ConnectToApplication("mojo:native_viewport_service",
-                                  GetProxy(&native_viewport), nullptr);
+  shell->ConnectToApplication("mojo:native_viewport_service",
+                              GetProxy(&native_viewport), nullptr);
   GpuPtr gpu_service;
   ConnectToService(native_viewport.get(), &gpu_service);
   CommandBufferPtr command_buffer;

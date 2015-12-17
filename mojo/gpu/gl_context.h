@@ -12,7 +12,6 @@
 #include "mojo/public/cpp/bindings/interface_ptr.h"
 
 namespace mojo {
-class ApplicationConnector;
 class CommandBuffer;
 using CommandBufferPtr = InterfacePtr<CommandBuffer>;
 class Shell;
@@ -27,11 +26,7 @@ class GLContext {
     virtual ~Observer();
   };
 
-  // Creates an offscreen GL context.
-  static base::WeakPtr<GLContext> CreateOffscreen(
-      ApplicationConnector* connector);
-
-  // Creates a GL context from a command buffer.
+  static base::WeakPtr<GLContext> Create(Shell* shell);
   static base::WeakPtr<GLContext> CreateFromCommandBuffer(
       CommandBufferPtr command_buffer);
 
