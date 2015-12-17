@@ -52,10 +52,7 @@ component("base") {
   }
 
   if (is_android) {
-    deps += [
-      ":ui_base_jni_headers",
-      "//cc",
-    ]
+    deps += [ ":ui_base_jni_headers" ]
 
     libs += [ "jnigraphics" ]
   }
