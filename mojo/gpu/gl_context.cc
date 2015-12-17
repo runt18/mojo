@@ -3,6 +3,8 @@
 // found in the LICENSE file.
 
 #include "mojo/gpu/gl_context.h"
+
+#include "mojo/gpu/mojo_gles2_impl_autogen.h"
 #include "mojo/public/cpp/application/connect.h"
 #include "mojo/public/interfaces/application/shell.mojom.h"
 #include "mojo/services/gpu/interfaces/gpu.mojom.h"
@@ -17,7 +19,7 @@ GLContext::GLContext(CommandBufferPtr command_buffer) : weak_factory_(this) {
       command_buffer.PassInterface().PassHandle().release().value(),
       MGL_NO_CONTEXT, &ContextLostThunk, this,
       Environment::GetDefaultAsyncWaiter());
-  DCHECK(context_ != MGL_NO_CONTEXT);
+  gl_impl_.reset(new MojoGLES2Impl(context_));
 }
 
 GLContext::~GLContext() {
@@ -44,12 +46,12 @@ void GLContext::MakeCurrent() {
   MGLMakeCurrent(context_);
 }
 
-bool GLContext::IsCurrent() {
-  return context_ == MGLGetCurrentContext();
-}
-
 void GLContext::Destroy() {
   delete this;
+}
+
+gpu::gles2::GLES2Interface* GLContext::gl() const {
+  return gl_impl_.get();
 }
 
 void GLContext::AddObserver(Observer* observer) {

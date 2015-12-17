@@ -2,22 +2,24 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-#include "mojo/skia/gl_bindings_skia.h"
+#include "gpu/skia_bindings/gl_bindings_skia_cmd_buffer.h"
 
 #ifndef GL_GLEXT_PROTOTYPES
 #define GL_GLEXT_PROTOTYPES
 #endif
-#include "mojo/public/c/gpu/GLES2/gl2.h"
-#include "mojo/public/c/gpu/GLES2/gl2ext.h"
-#include "mojo/public/c/gpu/GLES2/gl2extmojo.h"
+#include "gpu/GLES2/gl2extchromium.h"
+#include "third_party/khronos/GLES2/gl2.h"
+#include "third_party/khronos/GLES2/gl2ext.h"
 #include "third_party/skia/include/gpu/gl/GrGLInterface.h"
 
 namespace skia_bindings {
 
-GrGLInterface* CreateMojoSkiaGLBinding() {
+GrGLInterface* CreateCommandBufferSkiaGLBinding() {
   GrGLInterface* interface = new GrGLInterface;
   interface->fStandard = kGLES_GrGLStandard;
-  interface->fExtensions.init(kGLES_GrGLStandard, glGetString, nullptr,
+  interface->fExtensions.init(kGLES_GrGLStandard,
+                              glGetString,
+                              NULL,
                               glGetIntegerv);
 
   GrGLInterface::Functions* functions = &interface->fFunctions;
@@ -130,21 +132,22 @@ GrGLInterface* CreateMojoSkiaGLBinding() {
   functions->fFramebufferRenderbuffer = glFramebufferRenderbuffer;
   functions->fFramebufferTexture2D = glFramebufferTexture2D;
   functions->fFramebufferTexture2DMultisample =
-      glFramebufferTexture2DMultisampleEXT;
+    glFramebufferTexture2DMultisampleEXT;
   functions->fGenFramebuffers = glGenFramebuffers;
   functions->fGenRenderbuffers = glGenRenderbuffers;
   functions->fGetFramebufferAttachmentParameteriv =
-      glGetFramebufferAttachmentParameteriv;
+    glGetFramebufferAttachmentParameteriv;
   functions->fGetRenderbufferParameteriv = glGetRenderbufferParameteriv;
   functions->fRenderbufferStorage = glRenderbufferStorage;
-  functions->fRenderbufferStorageMultisample = nullptr;  // TODO: Implement.
+  functions->fRenderbufferStorageMultisample =
+    glRenderbufferStorageMultisampleCHROMIUM;
   functions->fRenderbufferStorageMultisampleES2EXT =
-      glRenderbufferStorageMultisampleEXT;
+    glRenderbufferStorageMultisampleEXT;
   functions->fBindUniformLocation = glBindUniformLocationCHROMIUM;
-  functions->fBlitFramebuffer = nullptr;  // TODO: Implement.
+  functions->fBlitFramebuffer = glBlitFramebufferCHROMIUM;
   functions->fGenerateMipmap = glGenerateMipmap;
-  functions->fMatrixLoadf = nullptr;         // TODO: Implement.
-  functions->fMatrixLoadIdentity = nullptr;  // TODO: Implement.
+  functions->fMatrixLoadf = glMatrixLoadfCHROMIUM;
+  functions->fMatrixLoadIdentity = glMatrixLoadIdentityCHROMIUM;
 
   return interface;
 }

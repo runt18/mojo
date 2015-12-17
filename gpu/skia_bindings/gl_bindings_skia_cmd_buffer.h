@@ -2,8 +2,8 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-#ifndef MOJO_SKIA_GL_BINDINGS_SKIA_H_
-#define MOJO_SKIA_GL_BINDINGS_SKIA_H_
+#ifndef GPU_SKIA_BINDINGS_GL_BINDINGS_SKIA_CMD_BUFFER_H_
+#define GPU_SKIA_BINDINGS_GL_BINDINGS_SKIA_CMD_BUFFER_H_
 
 #include "third_party/skia/include/core/SkTypes.h"
 
@@ -12,9 +12,9 @@ struct GrGLInterface;
 namespace skia_bindings {
 
 // The GPU back-end for skia requires pointers to GL functions. This function
-// returns a binding for skia-gpu to the Mojo C GL entry points.
-GrGLInterface* CreateMojoSkiaGLBinding();
+// returns a binding for skia-gpu to the cmd buffers GL.
+GrGLInterface* CreateCommandBufferSkiaGLBinding();
 
-}  // namespace skia_bindings
+}  // namespace skia
 
-#endif  // MOJO_SKIA_GL_BINDINGS_SKIA_H_
+#endif  // GPU_SKIA_BINDINGS_GL_BINDINGS_SKIA_CMD_BUFFER_H_

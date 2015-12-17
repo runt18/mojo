@@ -12,6 +12,10 @@ source_set("gpu") {
     "gl_context_owner.h",
     "gl_texture.cc",
     "gl_texture.h",
+    "mojo_context_support.cc",
+    "mojo_context_support.h",
+    "mojo_gles2_impl_autogen.cc",
+    "mojo_gles2_impl_autogen.h",
   ]
 
   public_deps = [
@@ -20,8 +24,9 @@ source_set("gpu") {
 
   deps = [
     "//base",
+    "//gpu/command_buffer/client:gles2_interface",
+    "//gpu/command_buffer/common",
     "//mojo/environment:chromium",
-    "//mojo/public/c/gpu",
     "//mojo/public/c/gpu:gpu_onscreen",
     "//mojo/public/c/system",
     "//mojo/public/cpp/application",
