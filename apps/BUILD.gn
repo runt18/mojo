@@ -8,7 +8,11 @@ import("//build/config/nacl/config.gni")
 group("portable_apps") {
   testonly = true
 
-  deps = []
+  deps = [
+    "//apps/moterm",
+    "//apps/moterm:apptests",
+    "//apps/moterm:gl_helper_test_app",
+  ]
 }
 
 group("apps") {
