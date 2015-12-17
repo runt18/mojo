@@ -16,6 +16,10 @@ source_set("gpu") {
     "mojo_context_support.h",
     "mojo_gles2_impl_autogen.cc",
     "mojo_gles2_impl_autogen.h",
+    "texture_cache.cc",
+    "texture_cache.h",
+    "texture_uploader.cc",
+    "texture_uploader.h",
   ]
 
   public_deps = [
@@ -38,5 +42,30 @@ source_set("gpu") {
     "//mojo/services/geometry/cpp",
     "//mojo/services/geometry/interfaces",
     "//mojo/services/gpu/interfaces",
+    "//mojo/services/surfaces/cpp",
+    "//mojo/services/surfaces/interfaces",
+    "//mojo/services/surfaces/interfaces:surface_id",
+  ]
+}
+
+mojo_native_application("apptests") {
+  output_name = "texture_apptests"
+
+  testonly = true
+
+  sources = [
+    "texture_cache_unittest.cc",
+    "texture_uploader_unittest.cc",
+  ]
+
+  deps = [
+    ":gpu",
+    "//base",
+    "//mojo/application",
+    "//mojo/application:test_support",
+    "//mojo/public/cpp/bindings:callback",
+    "//mojo/services/geometry/interfaces",
+    "//mojo/services/surfaces/interfaces:surface_id",
+    "//testing/gtest",
   ]
 }

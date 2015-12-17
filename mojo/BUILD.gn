@@ -66,6 +66,7 @@ group("tests") {
     "//mojo/edk:tests",
     "//mojo/file_utils:file_utils_apptests",
     "//mojo/gles2:mgl_unittests",
+    "//mojo/gpu:apptests",
     "//mojo/public/cpp/bindings/tests:versioning_apptests",
     "//mojo/services/files/c:apptests",
     "//mojo/services/files/cpp:files_impl_apptests",
