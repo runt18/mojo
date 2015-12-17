@@ -22,7 +22,6 @@ group("portable_examples") {
     "//examples/ganesh_app",
     "//examples/http_handler",
     "//examples/indirect_service",
-    "//examples/moterm_example_app",
     "//examples/native_run_app",
     "//examples/notification_generator",
     "//examples/recursive_content_handler",
@@ -41,24 +40,11 @@ group("examples") {
     ":portable_examples",
   ]
 
-  # TODO(cstout) - javascript/v8 build support for fnl/musl
-  if (!is_android && !is_fnl) {
-    deps += [ "//examples/pdf_viewer" ]
-  }
-
   if (is_android) {
     deps += [
       "//examples/device_name",
       "//examples/java_android/example_service",
       "//examples/java_android/echo",
-    ]
-  }
-
-  if (is_linux || is_android) {
-    deps += [
-      "//examples/ui/spinning_cube",
-      "//examples/ui/tile",
-      "//examples/surfaces_app",
     ]
   }
 
