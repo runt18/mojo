@@ -428,7 +428,6 @@ if (is_android) {
         "$root_out_dir/device_info.mojo",
         "$root_out_dir/icu_data.mojo",
         "$root_out_dir/java_handler.mojo",
-        "$root_out_dir/surfaces_service.mojo",
         "$root_out_dir/tracing.mojo",
       ]
 
@@ -438,7 +437,6 @@ if (is_android) {
         "//services/dart:dart_content_handler",
         "//services/device_info",
         "//services/icu_data",
-        "//services/surfaces",
         "//services/tracing",
       ]
     }

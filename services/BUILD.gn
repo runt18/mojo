@@ -12,7 +12,6 @@ group("services") {
     "//services/authentication",
     "//services/clipboard",
     "//services/dart",
-    "//services/fake_surfaces",
     "//services/gles2:lib",
     "//services/http_server",
     "//services/icu_data",
@@ -54,7 +53,6 @@ group("services") {
       "//services/files",
       "//services/ui",
       "//services/native_viewport",
-      "//services/surfaces",
       "//services/url_response_disk_cache",
     ]
   }
