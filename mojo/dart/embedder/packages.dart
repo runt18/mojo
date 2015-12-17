@@ -15,9 +15,11 @@ library dart_embedder_packages;
 
 // DO NOT export anything from this library.
 
+// Core packages.
 import 'dart:_mojo/application.dart';
 import 'dart:_mojo/bindings.dart';
 import 'dart:_mojo/core.dart';
+// Network.
 import 'dart:_mojo/mojo/network_error.mojom.dart';
 import 'dart:_mojo_services/mojo/host_resolver.mojom.dart';
 import 'dart:_mojo_services/mojo/net_address.mojom.dart';
@@ -25,3 +27,9 @@ import 'dart:_mojo_services/mojo/network_service.mojom.dart';
 import 'dart:_mojo_services/mojo/tcp_bound_socket.mojom.dart';
 import 'dart:_mojo_services/mojo/tcp_connected_socket.mojom.dart';
 import 'dart:_mojo_services/mojo/tcp_server_socket.mojom.dart';
+// File system.
+import 'dart:_mojo_services/mojo/files/file.mojom.dart';
+import 'dart:_mojo_services/mojo/files/files.mojom.dart';
+import 'dart:_mojo_services/mojo/files/directory.mojom.dart';
+import 'dart:_mojo_services/mojo/files/ioctl.mojom.dart';
+import 'dart:_mojo_services/mojo/files/types.mojom.dart';
