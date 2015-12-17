@@ -8,9 +8,8 @@
 
 namespace mojo {
 
-GLContextOwner::GLContextOwner(mojo::Shell* shell)
-    : context_(mojo::GLContext::Create(shell)) {
-}
+GLContextOwner::GLContextOwner(mojo::ApplicationConnector* connector)
+    : context_(mojo::GLContext::CreateOffscreen(connector)) {}
 
 GLContextOwner::~GLContextOwner() {
   context_->Destroy();
