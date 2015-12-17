@@ -19,7 +19,7 @@ class ResourceFormat extends bindings.MojoEnum {
   static const ResourceFormat alpha8 = const ResourceFormat._(3);
   static const ResourceFormat luminance8 = const ResourceFormat._(4);
   static const ResourceFormat rgb565 = const ResourceFormat._(5);
-  static const ResourceFormat etC1 = const ResourceFormat._(6);
+  static const ResourceFormat etc1 = const ResourceFormat._(6);
 
   const ResourceFormat._(int v) : super(v);
 
@@ -30,7 +30,7 @@ class ResourceFormat extends bindings.MojoEnum {
     "alpha8": alpha8,
     "luminance8": luminance8,
     "rgb565": rgb565,
-    "etC1": etC1,
+    "etc1": etc1,
   };
   static const List<ResourceFormat> values = const [
     rgba8888,
@@ -39,7 +39,7 @@ class ResourceFormat extends bindings.MojoEnum {
     alpha8,
     luminance8,
     rgb565,
-    etC1,
+    etc1,
   ];
 
   static ResourceFormat valueOf(String name) => valuesMap[name];
@@ -59,7 +59,7 @@ class ResourceFormat extends bindings.MojoEnum {
       case 5:
         return rgb565;
       case 6:
-        return etC1;
+        return etc1;
       default:
         return null;
     }
@@ -89,8 +89,8 @@ class ResourceFormat extends bindings.MojoEnum {
         return 'ResourceFormat.luminance8';
       case rgb565:
         return 'ResourceFormat.rgb565';
-      case etC1:
-        return 'ResourceFormat.etC1';
+      case etc1:
+        return 'ResourceFormat.etc1';
     }
   }
 

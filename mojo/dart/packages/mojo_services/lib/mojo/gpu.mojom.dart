@@ -12,15 +12,15 @@ import 'package:mojo_services/mojo/command_buffer.mojom.dart' as command_buffer_
 
 
 
-class _GpuCreateOffscreenGleS2ContextParams extends bindings.Struct {
+class _GpuCreateOffscreenGles2ContextParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(16, 0)
   ];
   Object gles2Client = null;
 
-  _GpuCreateOffscreenGleS2ContextParams() : super(kVersions.last.size);
+  _GpuCreateOffscreenGles2ContextParams() : super(kVersions.last.size);
 
-  static _GpuCreateOffscreenGleS2ContextParams deserialize(bindings.Message message) {
+  static _GpuCreateOffscreenGles2ContextParams deserialize(bindings.Message message) {
     var decoder = new bindings.Decoder(message);
     var result = decode(decoder);
     if (decoder.excessHandles != null) {
@@ -29,11 +29,11 @@ class _GpuCreateOffscreenGleS2ContextParams extends bindings.Struct {
     return result;
   }
 
-  static _GpuCreateOffscreenGleS2ContextParams decode(bindings.Decoder decoder0) {
+  static _GpuCreateOffscreenGles2ContextParams decode(bindings.Decoder decoder0) {
     if (decoder0 == null) {
       return null;
     }
-    _GpuCreateOffscreenGleS2ContextParams result = new _GpuCreateOffscreenGleS2ContextParams();
+    _GpuCreateOffscreenGles2ContextParams result = new _GpuCreateOffscreenGles2ContextParams();
 
     var mainDataHeader = decoder0.decodeStructDataHeader();
     if (mainDataHeader.version <= kVersions.last.version) {
@@ -67,7 +67,7 @@ class _GpuCreateOffscreenGleS2ContextParams extends bindings.Struct {
   }
 
   String toString() {
-    return "_GpuCreateOffscreenGleS2ContextParams("
+    return "_GpuCreateOffscreenGles2ContextParams("
            "gles2Client: $gles2Client" ")";
   }
 
@@ -77,11 +77,11 @@ class _GpuCreateOffscreenGleS2ContextParams extends bindings.Struct {
   }
 }
 
-const int _Gpu_createOffscreenGleS2ContextName = 0;
+const int _Gpu_createOffscreenGles2ContextName = 0;
 
 abstract class Gpu {
   static const String serviceName = "mojo::Gpu";
-  void createOffscreenGleS2Context(Object gles2Client);
+  void createOffscreenGles2Context(Object gles2Client);
 }
 
 
@@ -120,14 +120,14 @@ class _GpuProxyCalls implements Gpu {
   _GpuProxyImpl _proxyImpl;
 
   _GpuProxyCalls(this._proxyImpl);
-    void createOffscreenGleS2Context(Object gles2Client) {
+    void createOffscreenGles2Context(Object gles2Client) {
       if (!_proxyImpl.isBound) {
         _proxyImpl.proxyError("The Proxy is closed.");
         return;
       }
-      var params = new _GpuCreateOffscreenGleS2ContextParams();
+      var params = new _GpuCreateOffscreenGles2ContextParams();
       params.gles2Client = gles2Client;
-      _proxyImpl.sendMessage(params, _Gpu_createOffscreenGleS2ContextName);
+      _proxyImpl.sendMessage(params, _Gpu_createOffscreenGles2ContextName);
     }
 }
 
@@ -219,10 +219,10 @@ class GpuStub extends bindings.Stub {
     }
     assert(_impl != null);
     switch (message.header.type) {
-      case _Gpu_createOffscreenGleS2ContextName:
-        var params = _GpuCreateOffscreenGleS2ContextParams.deserialize(
+      case _Gpu_createOffscreenGles2ContextName:
+        var params = _GpuCreateOffscreenGles2ContextParams.deserialize(
             message.payload);
-        _impl.createOffscreenGleS2Context(params.gles2Client);
+        _impl.createOffscreenGles2Context(params.gles2Client);
         break;
       default:
         throw new bindings.MojoCodecError("Unexpected message name");

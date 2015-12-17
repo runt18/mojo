@@ -7,17 +7,20 @@ import 'dart:isolate';
 import 'dart:typed_data';
 import 'dart:convert';
 
-import 'package:_mojo_for_test_only/expect.dart';
 import 'package:mojo/bindings.dart' as bindings;
 import 'package:mojo/core.dart' as core;
-import 'package:_mojo_for_test_only/sample/sample_interfaces.mojom.dart' as sample;
-import 'package:_mojo_for_test_only/mojo/test/test_structs.mojom.dart' as structs;
-import 'package:_mojo_for_test_only/mojo/test/test_unions.mojom.dart' as unions;
+import 'package:_mojo_for_test_only/expect.dart';
 import 'package:_mojo_for_test_only/mojo/test/rect.mojom.dart' as rect;
 import 'package:_mojo_for_test_only/mojo/test/serialization_test_structs.mojom.dart'
     as serialization;
+import 'package:_mojo_for_test_only/mojo/test/test_structs.mojom.dart'
+    as structs;
+import 'package:_mojo_for_test_only/mojo/test/test_unions.mojom.dart'
+    as unions;
 import 'package:_mojo_for_test_only/regression_tests/regression_tests.mojom.dart'
     as regression;
+import 'package:_mojo_for_test_only/sample/sample_interfaces.mojom.dart'
+    as sample;
 
 class ProviderImpl implements sample.Provider {
   sample.ProviderStub _stub;
@@ -371,6 +374,22 @@ Future<bool> testServiceName() {
   return c.future;
 }
 
+
+testCamelCase() {
+  var e = CamelCaseTestEnum.boolThing;
+  e = CamelCaseTestEnum.doubleThing;
+  e = CamelCaseTestEnum.floatThing;
+  e = CamelCaseTestEnum.int8Thing;
+  e = CamelCaseTestEnum.int16Thing;
+  e = CamelCaseTestEnum.int32Th1Ng;
+  e = CamelCaseTestEnum.int64Th1ng;
+  e = CamelCaseTestEnum.uint8TH1ng;
+  e = CamelCaseTestEnum.uint16tH1Ng;
+  e = CamelCaseTestEnum.uint32Th1ng;
+  e = CamelCaseTestEnum.uint64Th1Ng;
+}
+
+
 main() async {
   testSerializeStructs();
   testUnions();
@@ -380,4 +399,5 @@ main() async {
   await runOnClosedTest();
   await testRegression551();
   await testServiceName();
+  testCamelCase();
 }

@@ -188,9 +188,9 @@ NetAddressFamily _internetAddressTypeToAddressFamily(InternetAddressType type) {
     return NetAddressFamily.unspecified;
   }
   if (type == InternetAddressType.IP_V4) {
-    return NetAddressFamily.ipV4;
+    return NetAddressFamily.ipv4;
   } else if (type == InternetAddressType.IP_V6) {
-    return NetAddressFamily.ipV6;
+    return NetAddressFamily.ipv6;
   }
   return NetAddressFamily.unspecified;
 }

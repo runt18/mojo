@@ -302,6 +302,119 @@ class NormalEnum extends bindings.MojoEnum {
   int toJson() => mojoEnumValue;
 }
 
+class CamelCaseTestEnum extends bindings.MojoEnum {
+  static const CamelCaseTestEnum boolThing = const CamelCaseTestEnum._(0);
+  static const CamelCaseTestEnum doubleThing = const CamelCaseTestEnum._(1);
+  static const CamelCaseTestEnum floatThing = const CamelCaseTestEnum._(2);
+  static const CamelCaseTestEnum int8Thing = const CamelCaseTestEnum._(3);
+  static const CamelCaseTestEnum int16Thing = const CamelCaseTestEnum._(4);
+  static const CamelCaseTestEnum int32Th1Ng = const CamelCaseTestEnum._(5);
+  static const CamelCaseTestEnum int64Th1ng = const CamelCaseTestEnum._(6);
+  static const CamelCaseTestEnum uint8TH1ng = const CamelCaseTestEnum._(7);
+  static const CamelCaseTestEnum uint16tH1Ng = const CamelCaseTestEnum._(8);
+  static const CamelCaseTestEnum uint32Th1ng = const CamelCaseTestEnum._(9);
+  static const CamelCaseTestEnum uint64Th1Ng = const CamelCaseTestEnum._(10);
+
+  const CamelCaseTestEnum._(int v) : super(v);
+
+  static const Map<String, CamelCaseTestEnum> valuesMap = const {
+    "boolThing": boolThing,
+    "doubleThing": doubleThing,
+    "floatThing": floatThing,
+    "int8Thing": int8Thing,
+    "int16Thing": int16Thing,
+    "int32Th1Ng": int32Th1Ng,
+    "int64Th1ng": int64Th1ng,
+    "uint8TH1ng": uint8TH1ng,
+    "uint16tH1Ng": uint16tH1Ng,
+    "uint32Th1ng": uint32Th1ng,
+    "uint64Th1Ng": uint64Th1Ng,
+  };
+  static const List<CamelCaseTestEnum> values = const [
+    boolThing,
+    doubleThing,
+    floatThing,
+    int8Thing,
+    int16Thing,
+    int32Th1Ng,
+    int64Th1ng,
+    uint8TH1ng,
+    uint16tH1Ng,
+    uint32Th1ng,
+    uint64Th1Ng,
+  ];
+
+  static CamelCaseTestEnum valueOf(String name) => valuesMap[name];
+
+  factory CamelCaseTestEnum(int v) {
+    switch (v) {
+      case 0:
+        return boolThing;
+      case 1:
+        return doubleThing;
+      case 2:
+        return floatThing;
+      case 3:
+        return int8Thing;
+      case 4:
+        return int16Thing;
+      case 5:
+        return int32Th1Ng;
+      case 6:
+        return int64Th1ng;
+      case 7:
+        return uint8TH1ng;
+      case 8:
+        return uint16tH1Ng;
+      case 9:
+        return uint32Th1ng;
+      case 10:
+        return uint64Th1Ng;
+      default:
+        return null;
+    }
+  }
+
+  static CamelCaseTestEnum decode(bindings.Decoder decoder0, int offset) {
+    int v = decoder0.decodeUint32(offset);
+    CamelCaseTestEnum result = new CamelCaseTestEnum(v);
+    if (result == null) {
+      throw new bindings.MojoCodecError(
+          'Bad value $v for enum CamelCaseTestEnum.');
+    }
+    return result;
+  }
+
+  String toString() {
+    switch(this) {
+      case boolThing:
+        return 'CamelCaseTestEnum.boolThing';
+      case doubleThing:
+        return 'CamelCaseTestEnum.doubleThing';
+      case floatThing:
+        return 'CamelCaseTestEnum.floatThing';
+      case int8Thing:
+        return 'CamelCaseTestEnum.int8Thing';
+      case int16Thing:
+        return 'CamelCaseTestEnum.int16Thing';
+      case int32Th1Ng:
+        return 'CamelCaseTestEnum.int32Th1Ng';
+      case int64Th1ng:
+        return 'CamelCaseTestEnum.int64Th1ng';
+      case uint8TH1ng:
+        return 'CamelCaseTestEnum.uint8TH1ng';
+      case uint16tH1Ng:
+        return 'CamelCaseTestEnum.uint16tH1Ng';
+      case uint32Th1ng:
+        return 'CamelCaseTestEnum.uint32Th1ng';
+      case uint64Th1Ng:
+        return 'CamelCaseTestEnum.uint64Th1Ng';
+    }
+  }
+
+  int toJson() => mojoEnumValue;
+}
+
 
 
 class Edge extends bindings.Struct {

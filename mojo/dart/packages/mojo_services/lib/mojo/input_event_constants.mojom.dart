@@ -107,7 +107,7 @@ class EventFlags extends bindings.MojoEnum {
   static const EventFlags extended = const EventFlags._(256);
   static const EventFlags isSynthesized = const EventFlags._(512);
   static const EventFlags altgrDown = const EventFlags._(1024);
-  static const EventFlags moD3Down = const EventFlags._(2048);
+  static const EventFlags mod3Down = const EventFlags._(2048);
 
   const EventFlags._(int v) : super(v);
 
@@ -124,7 +124,7 @@ class EventFlags extends bindings.MojoEnum {
     "extended": extended,
     "isSynthesized": isSynthesized,
     "altgrDown": altgrDown,
-    "moD3Down": moD3Down,
+    "mod3Down": mod3Down,
   };
   static const List<EventFlags> values = const [
     none,
@@ -139,7 +139,7 @@ class EventFlags extends bindings.MojoEnum {
     extended,
     isSynthesized,
     altgrDown,
-    moD3Down,
+    mod3Down,
   ];
 
   static EventFlags valueOf(String name) => valuesMap[name];
@@ -171,7 +171,7 @@ class EventFlags extends bindings.MojoEnum {
       case 1024:
         return altgrDown;
       case 2048:
-        return moD3Down;
+        return mod3Down;
       default:
         return null;
     }
@@ -213,8 +213,8 @@ class EventFlags extends bindings.MojoEnum {
         return 'EventFlags.isSynthesized';
       case altgrDown:
         return 'EventFlags.altgrDown';
-      case moD3Down:
-        return 'EventFlags.moD3Down';
+      case mod3Down:
+        return 'EventFlags.mod3Down';
     }
   }
 

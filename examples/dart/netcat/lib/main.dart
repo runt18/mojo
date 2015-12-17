@@ -25,7 +25,7 @@ void ignoreFuture(Future f) {
 
 NetAddress makeIPv4NetAddress(List<int> addr, int port) {
   var rv = new NetAddress();
-  rv.family = NetAddressFamily.ipV4;
+  rv.family = NetAddressFamily.ipv4;
   rv.ipv4 = new NetAddressIPv4();
   rv.ipv4.addr = new List<int>.from(addr);
   rv.ipv4.port = port;

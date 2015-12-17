@@ -88,15 +88,15 @@ class KeyboardCode extends bindings.MojoEnum {
   static const KeyboardCode apps = const KeyboardCode._(93);
   static const KeyboardCode sleep = const KeyboardCode._(95);
   static const KeyboardCode numpaD0 = const KeyboardCode._(96);
-  static const KeyboardCode numpaD1 = const KeyboardCode._(97);
-  static const KeyboardCode numpaD2 = const KeyboardCode._(98);
-  static const KeyboardCode numpaD3 = const KeyboardCode._(99);
-  static const KeyboardCode numpaD4 = const KeyboardCode._(100);
-  static const KeyboardCode numpaD5 = const KeyboardCode._(101);
-  static const KeyboardCode numpaD6 = const KeyboardCode._(102);
-  static const KeyboardCode numpaD7 = const KeyboardCode._(103);
-  static const KeyboardCode numpaD8 = const KeyboardCode._(104);
-  static const KeyboardCode numpaD9 = const KeyboardCode._(105);
+  static const KeyboardCode numpad1 = const KeyboardCode._(97);
+  static const KeyboardCode numpad2 = const KeyboardCode._(98);
+  static const KeyboardCode numpad3 = const KeyboardCode._(99);
+  static const KeyboardCode numpad4 = const KeyboardCode._(100);
+  static const KeyboardCode numpad5 = const KeyboardCode._(101);
+  static const KeyboardCode numpad6 = const KeyboardCode._(102);
+  static const KeyboardCode numpad7 = const KeyboardCode._(103);
+  static const KeyboardCode numpad8 = const KeyboardCode._(104);
+  static const KeyboardCode numpad9 = const KeyboardCode._(105);
   static const KeyboardCode multiply = const KeyboardCode._(106);
   static const KeyboardCode add = const KeyboardCode._(107);
   static const KeyboardCode separator = const KeyboardCode._(108);
@@ -151,8 +151,8 @@ class KeyboardCode extends bindings.MojoEnum {
   static const KeyboardCode mediaPlayPause = const KeyboardCode._(179);
   static const KeyboardCode mediaLaunchMail = const KeyboardCode._(180);
   static const KeyboardCode mediaLaunchMediaSelect = const KeyboardCode._(181);
-  static const KeyboardCode mediaLaunchApP1 = const KeyboardCode._(182);
-  static const KeyboardCode mediaLaunchApP2 = const KeyboardCode._(183);
+  static const KeyboardCode mediaLaunchApp1 = const KeyboardCode._(182);
+  static const KeyboardCode mediaLaunchApp2 = const KeyboardCode._(183);
   static const KeyboardCode oem1 = const KeyboardCode._(186);
   static const KeyboardCode oemPlus = const KeyboardCode._(187);
   static const KeyboardCode oemComma = const KeyboardCode._(188);
@@ -177,7 +177,7 @@ class KeyboardCode extends bindings.MojoEnum {
   static const KeyboardCode play = const KeyboardCode._(250);
   static const KeyboardCode zoom = const KeyboardCode._(251);
   static const KeyboardCode noname = const KeyboardCode._(252);
-  static const KeyboardCode pA1 = const KeyboardCode._(253);
+  static const KeyboardCode pa1 = const KeyboardCode._(253);
   static const KeyboardCode oemClear = const KeyboardCode._(254);
   static const KeyboardCode unknown = const KeyboardCode._(0);
   static const KeyboardCode altgr = const KeyboardCode._(225);
@@ -263,15 +263,15 @@ class KeyboardCode extends bindings.MojoEnum {
     "apps": apps,
     "sleep": sleep,
     "numpaD0": numpaD0,
-    "numpaD1": numpaD1,
-    "numpaD2": numpaD2,
-    "numpaD3": numpaD3,
-    "numpaD4": numpaD4,
-    "numpaD5": numpaD5,
-    "numpaD6": numpaD6,
-    "numpaD7": numpaD7,
-    "numpaD8": numpaD8,
-    "numpaD9": numpaD9,
+    "numpad1": numpad1,
+    "numpad2": numpad2,
+    "numpad3": numpad3,
+    "numpad4": numpad4,
+    "numpad5": numpad5,
+    "numpad6": numpad6,
+    "numpad7": numpad7,
+    "numpad8": numpad8,
+    "numpad9": numpad9,
     "multiply": multiply,
     "add": add,
     "separator": separator,
@@ -326,8 +326,8 @@ class KeyboardCode extends bindings.MojoEnum {
     "mediaPlayPause": mediaPlayPause,
     "mediaLaunchMail": mediaLaunchMail,
     "mediaLaunchMediaSelect": mediaLaunchMediaSelect,
-    "mediaLaunchApP1": mediaLaunchApP1,
-    "mediaLaunchApP2": mediaLaunchApP2,
+    "mediaLaunchApp1": mediaLaunchApp1,
+    "mediaLaunchApp2": mediaLaunchApp2,
     "oem1": oem1,
     "oemPlus": oemPlus,
     "oemComma": oemComma,
@@ -352,7 +352,7 @@ class KeyboardCode extends bindings.MojoEnum {
     "play": play,
     "zoom": zoom,
     "noname": noname,
-    "pA1": pA1,
+    "pa1": pa1,
     "oemClear": oemClear,
     "unknown": unknown,
     "altgr": altgr,
@@ -436,15 +436,15 @@ class KeyboardCode extends bindings.MojoEnum {
     apps,
     sleep,
     numpaD0,
-    numpaD1,
-    numpaD2,
-    numpaD3,
-    numpaD4,
-    numpaD5,
-    numpaD6,
-    numpaD7,
-    numpaD8,
-    numpaD9,
+    numpad1,
+    numpad2,
+    numpad3,
+    numpad4,
+    numpad5,
+    numpad6,
+    numpad7,
+    numpad8,
+    numpad9,
     multiply,
     add,
     separator,
@@ -499,8 +499,8 @@ class KeyboardCode extends bindings.MojoEnum {
     mediaPlayPause,
     mediaLaunchMail,
     mediaLaunchMediaSelect,
-    mediaLaunchApP1,
-    mediaLaunchApP2,
+    mediaLaunchApp1,
+    mediaLaunchApp2,
     oem1,
     oemPlus,
     oemComma,
@@ -525,7 +525,7 @@ class KeyboardCode extends bindings.MojoEnum {
     play,
     zoom,
     noname,
-    pA1,
+    pa1,
     oemClear,
     unknown,
     altgr,
@@ -692,23 +692,23 @@ class KeyboardCode extends bindings.MojoEnum {
       case 96:
         return numpaD0;
       case 97:
-        return numpaD1;
+        return numpad1;
       case 98:
-        return numpaD2;
+        return numpad2;
       case 99:
-        return numpaD3;
+        return numpad3;
       case 100:
-        return numpaD4;
+        return numpad4;
       case 101:
-        return numpaD5;
+        return numpad5;
       case 102:
-        return numpaD6;
+        return numpad6;
       case 103:
-        return numpaD7;
+        return numpad7;
       case 104:
-        return numpaD8;
+        return numpad8;
       case 105:
-        return numpaD9;
+        return numpad9;
       case 106:
         return multiply;
       case 107:
@@ -818,9 +818,9 @@ class KeyboardCode extends bindings.MojoEnum {
       case 181:
         return mediaLaunchMediaSelect;
       case 182:
-        return mediaLaunchApP1;
+        return mediaLaunchApp1;
       case 183:
-        return mediaLaunchApP2;
+        return mediaLaunchApp2;
       case 186:
         return oem1;
       case 187:
@@ -870,7 +870,7 @@ class KeyboardCode extends bindings.MojoEnum {
       case 252:
         return noname;
       case 253:
-        return pA1;
+        return pa1;
       case 254:
         return oemClear;
       case 0:
@@ -1050,24 +1050,24 @@ class KeyboardCode extends bindings.MojoEnum {
         return 'KeyboardCode.sleep';
       case numpaD0:
         return 'KeyboardCode.numpaD0';
-      case numpaD1:
-        return 'KeyboardCode.numpaD1';
-      case numpaD2:
-        return 'KeyboardCode.numpaD2';
-      case numpaD3:
-        return 'KeyboardCode.numpaD3';
-      case numpaD4:
-        return 'KeyboardCode.numpaD4';
-      case numpaD5:
-        return 'KeyboardCode.numpaD5';
-      case numpaD6:
-        return 'KeyboardCode.numpaD6';
-      case numpaD7:
-        return 'KeyboardCode.numpaD7';
-      case numpaD8:
-        return 'KeyboardCode.numpaD8';
-      case numpaD9:
-        return 'KeyboardCode.numpaD9';
+      case numpad1:
+        return 'KeyboardCode.numpad1';
+      case numpad2:
+        return 'KeyboardCode.numpad2';
+      case numpad3:
+        return 'KeyboardCode.numpad3';
+      case numpad4:
+        return 'KeyboardCode.numpad4';
+      case numpad5:
+        return 'KeyboardCode.numpad5';
+      case numpad6:
+        return 'KeyboardCode.numpad6';
+      case numpad7:
+        return 'KeyboardCode.numpad7';
+      case numpad8:
+        return 'KeyboardCode.numpad8';
+      case numpad9:
+        return 'KeyboardCode.numpad9';
       case multiply:
         return 'KeyboardCode.multiply';
       case add:
@@ -1176,10 +1176,10 @@ class KeyboardCode extends bindings.MojoEnum {
         return 'KeyboardCode.mediaLaunchMail';
       case mediaLaunchMediaSelect:
         return 'KeyboardCode.mediaLaunchMediaSelect';
-      case mediaLaunchApP1:
-        return 'KeyboardCode.mediaLaunchApP1';
-      case mediaLaunchApP2:
-        return 'KeyboardCode.mediaLaunchApP2';
+      case mediaLaunchApp1:
+        return 'KeyboardCode.mediaLaunchApp1';
+      case mediaLaunchApp2:
+        return 'KeyboardCode.mediaLaunchApp2';
       case oem1:
         return 'KeyboardCode.oem1';
       case oemPlus:
@@ -1228,8 +1228,8 @@ class KeyboardCode extends bindings.MojoEnum {
         return 'KeyboardCode.zoom';
       case noname:
         return 'KeyboardCode.noname';
-      case pA1:
-        return 'KeyboardCode.pA1';
+      case pa1:
+        return 'KeyboardCode.pa1';
       case oemClear:
         return 'KeyboardCode.oemClear';
       case unknown:
