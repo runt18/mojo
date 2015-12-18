@@ -16,7 +16,16 @@ import 'dart:_mojo_services/mojo/files/file.mojom.dart';
 import 'dart:_mojo_services/mojo/files/files.mojom.dart';
 import 'dart:_mojo_services/mojo/files/directory.mojom.dart';
 import 'dart:_mojo_services/mojo/files/ioctl.mojom.dart';
-import 'dart:_mojo_services/mojo/files/types.mojom.dart';
+import 'dart:_mojo_services/mojo/files/types.mojom.dart' as types;
+
+// When developing, set fileSystemDeveloper to true and the file system will
+// persist under ~/MojoAppPersistentCaches/.
+const bool fileSystemDeveloper = false;
+const String fileSystemName =
+    fileSystemDeveloper ? 'app_persistent_cache' : null;
+
+// System temp path relative to the root directory.
+const String systemTempPath = 'tmp';
 
 //
 // Mojo objects and helper functions used by the 'dart:io' library.
@@ -26,6 +35,8 @@ int _filesServiceHandle;
 NetworkServiceProxy _networkService;
 HostResolverProxy _hostResolver;
 FilesProxy _files;
+DirectoryProxy _rootDirectory;
+DirectoryProxy _systemTempDirectory;
 
 void _initialize(int networkServiceHandle, int filesServiceHandle) {
   if (networkServiceHandle != MojoHandle.INVALID) {
@@ -67,6 +78,14 @@ _closeProxies() {
     _files.close(immediate: true);
     _files = null;
   }
+  if (_rootDirectory != null) {
+    _rootDirectory.close(immediate: true);
+    _rootDirectory = null;
+  }
+  if (_systemTempDirectory != null) {
+    _systemTempDirectory.close(immediate: true);
+    _systemTempDirectory = null;
+  }
 }
 
 /// Get the singleton NetworkServiceProxy.
@@ -106,6 +125,47 @@ FilesProxy _getFiles() {
       new MojoHandle(_filesServiceHandle).pass());
   _filesServiceHandle = null;
   return _files;
+}
+
+/// Get the singleton DirectoryProxy for the root directory.
+Future<DirectoryProxy> _getRootDirectory() async {
+  if (_rootDirectory != null) {
+    return _rootDirectory;
+  }
+  FilesProxy files = _getFiles();
+  assert(files != null);
+  _rootDirectory = new DirectoryProxy.unbound();
+  var response =
+      await files.ptr.openFileSystem(fileSystemName, _rootDirectory);
+  // Remove the root directory's handle from the open set because it is not
+  // under application control and does not affect isolate shutdown.
+  _rootDirectory.impl.endpoint.handle.pass();
+
+  // Ensure system temporary directory exists before returning the root
+  // directory.
+  await _getSystemTempDirectory();
+  return _rootDirectory;
+}
+
+/// Get the singleton DirectoryProxy for the system temp directory.
+Future<DirectoryProxy> _getSystemTempDirectory() async {
+  if (_systemTempDirectory != null) {
+    return _systempTempDirectory;
+  }
+  DirectoryProxy rootDirectory = await _getRootDirectory();
+  int flags = types.kOpenFlagRead |
+              types.kOpenFlagWrite |
+              types.kOpenFlagCreate;
+  _systemTempDirectory = new DirectoryProxy.unbound();
+  var response =
+      await rootDirectory.ptr.openDirectory(systemTempPath,
+                                            _systemTempDirectory,
+                                            flags);
+  assert(response.error == types.Error.ok);
+  // Remove the system temp directory's handle from the open set because it
+  // is not under application control and does not affect isolate shutdown.
+  _systemTempDirectory.impl.endpoint.handle.pass();
+  return _systemTempDirectory;
 }
 
 /// Static utility methods for converting between 'dart:io' and

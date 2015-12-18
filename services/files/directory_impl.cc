@@ -262,7 +262,7 @@ void DirectoryImpl::OpenDirectory(const String& path,
       // Allow |EEXIST| if |kOpenFlagExclusive| is not set. Note, however, that
       // it does not guarantee that |path| is a directory.
       // TODO(vtl): Hrm, ponder if we should check that |path| is a directory.
-      if (errno != EEXIST || !(open_flags & kOpenFlagExclusive)) {
+      if ((errno != EEXIST) || (open_flags & kOpenFlagExclusive)) {
         callback.Run(ErrnoToError(errno));
         return;
       }

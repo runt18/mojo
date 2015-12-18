@@ -12,6 +12,7 @@ dart_pkg("dart_apptests") {
   sources = [
     "lib/src/connect_to_loader_apptests.dart",
     "lib/src/echo_apptests.dart",
+    "lib/src/file_apptests.dart",
     "lib/src/io_http_apptests.dart",
     "lib/src/io_internet_address_apptests.dart",
     "lib/src/pingpong_apptests.dart",
