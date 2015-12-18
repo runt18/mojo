@@ -39,6 +39,12 @@ tests = [
     "test": "mojo:http_server_apptests",
   },
   {
+    "test": "mojo:log_client_apptests"
+  },
+  {
+    "test": "mojo:log_impl_apptests"
+  },
+  {
     "test": "mojo:mojio_apptests",
   },
   {

@@ -644,6 +644,7 @@ def _CheckSpamLogging(input_api, output_api):
                  r"^examples/.*$",
                  r"^mojo/edk/util/logging_internal\.cc$",
                  r"^mojo/nacl/sfi/nacl_bindings/mojo_syscall\.cc$",
+                 r"^services/log/log_impl\.cc$",
                  r"^shell/application_manager/network_fetcher\.cc$",
                  r"^shell/tracer\.cc$",
                  r"^sandbox/linux/.*",

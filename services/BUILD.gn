@@ -17,6 +17,7 @@ group("services") {
     "//services/gles2:lib",
     "//services/http_server",
     "//services/icu_data",
+    "//services/log",
     "//services/media",
     "//services/native_support",
     "//services/prediction",
@@ -111,6 +112,7 @@ group("tests") {
   if (is_android || is_linux) {
     deps += [
       "//services/files:apptests",
+      "//services/log:apptests",
       "//services/url_response_disk_cache:tests",
       "//services/view_manager:mojo_view_manager_client_apptests",
       "//services/view_manager:view_manager_service_apptests",
