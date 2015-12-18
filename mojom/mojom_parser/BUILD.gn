@@ -4,40 +4,10 @@
 
 import("//mojo/go/rules.gni")
 
-go_binary("mojom_parser") {
-  sources = [
-    "parser_main.go",
-  ]
-  inputs = [
-    "generated/mojom_files/mojom_files.mojom.go",
-    "generated/mojom_types/mojom_types.mojom.go",
-    "lexer/lexer.go",
-    "lexer/token_stream.go",
-    "lexer/tokens.go",
-    "mojom/computed_data.go",
-    "mojom/mojom_descriptor.go",
-    "mojom/scopes.go",
-    "mojom/types.go",
-    "mojom/user_defined_types.go",
-    "mojom/utils.go",
-    "parser/parse_driver.go",
-    "parser/parser.go",
-    "parser/parsing.go",
-    "serialization/serialization.go",
-  ]
-
-  # Ninja gets confused if the output_binary_name is the same
-  # as the target name.
-  output_binary_name = "moparse"
-}
-
-# TODO(azani): Rename to mojom_parser and remove the mojom_parser target when
-# the upload script has been updated.
-
 # The purpose of this target is to ensure the parser remains buildable on all
 # platforms. The output files are not consumed by anything. The parser is built
 # and uploaded to GCS by manually running build_mojom_parser.py.
-action("mojom_parser_build_all") {
+action("mojom_parser") {
   script = "tools/build_mojom_parser.py"
 
   inputs = [
