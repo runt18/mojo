@@ -23,13 +23,13 @@ static void ExceptionCallback(bool* exception,
   *closed_handles = count;
 }
 
-TEST(DartTest, handle_finalizer_test) {
+static void RunTest(const std::string& test) {
   base::FilePath path;
   PathService::Get(base::DIR_SOURCE_ROOT, &path);
   path = path.AppendASCII("mojo")
              .AppendASCII("dart")
              .AppendASCII("test")
-             .AppendASCII("handle_finalizer_test.dart");
+             .AppendASCII(test);
 
   // Setup the package root.
   base::FilePath package_root;
@@ -62,6 +62,14 @@ TEST(DartTest, handle_finalizer_test) {
   EXPECT_TRUE(success) << error;
   EXPECT_FALSE(unhandled_exception);
   EXPECT_EQ(0, closed_handles);
+}
+
+TEST(DartTest, handle_finalizer_test) {
+  RunTest("handle_finalizer_test.dart");
+}
+
+TEST(DartTest, shared_buffer_finalizer_test) {
+  RunTest("shared_buffer_finalizer_test.dart");
 }
 
 }  // namespace

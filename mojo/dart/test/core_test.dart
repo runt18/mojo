@@ -72,8 +72,9 @@ invalidHandleTest() {
   sharedBuffer = new MojoSharedBuffer.create(10);
   Expect.isNotNull(sharedBuffer);
   sharedBuffer.close();
-  result = sharedBuffer.map(0, 10);
-  Expect.isTrue(result == MojoResult.kInvalidArgument);
+  ByteData data = sharedBuffer.map(0, 10);
+  Expect.isTrue(sharedBuffer.status == MojoResult.kInvalidArgument);
+  Expect.isNull(data);
 }
 
 basicMessagePipeTest() {
@@ -236,7 +237,7 @@ basicDataPipeTest() {
 
 basicSharedBufferTest() {
   MojoSharedBuffer mojoBuffer =
-      new MojoSharedBuffer.create(100, MojoSharedBuffer.CREATE_FLAG_NONE);
+      new MojoSharedBuffer.create(100, MojoSharedBuffer.createFlagNone);
   Expect.isNotNull(mojoBuffer);
   Expect.isNotNull(mojoBuffer.status);
   Expect.isTrue(mojoBuffer.status == MojoResult.kOk);
@@ -244,50 +245,40 @@ basicSharedBufferTest() {
   Expect.isTrue(mojoBuffer.handle is MojoHandle);
   Expect.isTrue(mojoBuffer.handle.isValid);
 
-  mojoBuffer.map(0, 100, MojoSharedBuffer.MAP_FLAG_NONE);
+  var mapping = mojoBuffer.map(0, 100, MojoSharedBuffer.mapFlagNone);
   Expect.isNotNull(mojoBuffer.status);
   Expect.isTrue(mojoBuffer.status == MojoResult.kOk);
-  Expect.isNotNull(mojoBuffer.mapping);
-  Expect.isTrue(mojoBuffer.mapping is ByteData);
+  Expect.isNotNull(mapping);
+  Expect.isTrue(mapping is ByteData);
 
-  mojoBuffer.mapping.setInt8(50, 42);
+  mapping.setInt8(50, 42);
 
   MojoSharedBuffer duplicate = new MojoSharedBuffer.duplicate(
-      mojoBuffer, MojoSharedBuffer.DUPLICATE_FLAG_NONE);
+      mojoBuffer, MojoSharedBuffer.duplicateFlagNone);
   Expect.isNotNull(duplicate);
   Expect.isNotNull(duplicate.status);
   Expect.isTrue(duplicate.status == MojoResult.kOk);
   Expect.isTrue(duplicate.handle is MojoHandle);
   Expect.isTrue(duplicate.handle.isValid);
 
-  duplicate.map(0, 100, MojoSharedBuffer.MAP_FLAG_NONE);
+  mapping = duplicate.map(0, 100, MojoSharedBuffer.mapFlagNone);
   Expect.isTrue(duplicate.status == MojoResult.kOk);
-  Expect.isNotNull(duplicate.mapping);
-  Expect.isTrue(duplicate.mapping is ByteData);
+  Expect.isNotNull(mapping);
+  Expect.isTrue(mapping is ByteData);
 
   mojoBuffer.close();
   mojoBuffer = null;
 
-  duplicate.mapping.setInt8(51, 43);
+  mapping.setInt8(51, 43);
 
-  duplicate.unmap();
+  mapping = duplicate.map(50, 50, MojoSharedBuffer.mapFlagNone);
   Expect.isNotNull(duplicate.status);
   Expect.isTrue(duplicate.status == MojoResult.kOk);
-  Expect.isNull(duplicate.mapping);
+  Expect.isNotNull(mapping);
+  Expect.isTrue(mapping is ByteData);
 
-  duplicate.map(50, 50, MojoSharedBuffer.MAP_FLAG_NONE);
-  Expect.isNotNull(duplicate.status);
-  Expect.isTrue(duplicate.status == MojoResult.kOk);
-  Expect.isNotNull(duplicate.mapping);
-  Expect.isTrue(duplicate.mapping is ByteData);
-
-  Expect.equals(duplicate.mapping.getInt8(0), 42);
-  Expect.equals(duplicate.mapping.getInt8(1), 43);
-
-  duplicate.unmap();
-  Expect.isNotNull(duplicate.status);
-  Expect.isTrue(duplicate.status == MojoResult.kOk);
-  Expect.isNull(duplicate.mapping);
+  Expect.equals(mapping.getInt8(0), 42);
+  Expect.equals(mapping.getInt8(1), 43);
 
   duplicate.close();
   duplicate = null;
