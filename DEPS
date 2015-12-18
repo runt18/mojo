@@ -387,7 +387,7 @@ hooks = [
                 '-d', 'src/services/prediction/res',
     ],
   },
-  # Pull the mojom parser binary using checked-in hashes.
+  # Pull the mojom parser binaries using checked-in hashes.
   {
     'name': 'mojom_parser',
     'pattern': '',
@@ -398,6 +398,18 @@ hooks = [
                 '--no_auth',
                 '--bucket', 'mojo/mojom_parser/linux64',
                 '-s', 'src/mojo/public/tools/bindings/mojom_parser/bin/linux64/mojom_parser.sha1',
+    ],
+  },
+  {
+    'name': 'mojom_parser',
+    'pattern': '',
+    'action': [ 'src/tools/download_from_google_storage.py',
+                '--no_resume',
+                '--quiet',
+                '--platform=darwin',
+                '--no_auth',
+                '--bucket', 'mojo/mojom_parser/mac64',
+                '-s', 'src/mojo/public/tools/bindings/mojom_parser/bin/mac64/mojom_parser.sha1',
     ],
   },
 ]
