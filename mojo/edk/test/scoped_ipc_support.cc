@@ -6,7 +6,7 @@
 
 #include <utility>
 
-#include "mojo/edk/embedder/embedder.h"
+#include "mojo/edk/embedder/multiprocess_embedder.h"
 
 using mojo::platform::PlatformHandleWatcher;
 using mojo::platform::ScopedPlatformHandle;

@@ -25,6 +25,7 @@
 #include "mojo/edk/base_edk/platform_handle_watcher_impl.h"
 #include "mojo/edk/base_edk/platform_task_runner_impl.h"
 #include "mojo/edk/embedder/embedder.h"
+#include "mojo/edk/embedder/multiprocess_embedder.h"
 #include "mojo/edk/embedder/platform_channel_pair.h"
 #include "mojo/edk/embedder/simple_platform_support.h"
 #include "mojo/edk/embedder/slave_process_delegate.h"

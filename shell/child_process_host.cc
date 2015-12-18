@@ -18,7 +18,7 @@
 #include "base/thread_task_runner_handle.h"
 #include "build/build_config.h"
 #include "mojo/edk/base_edk/platform_task_runner_impl.h"
-#include "mojo/edk/embedder/embedder.h"
+#include "mojo/edk/embedder/multiprocess_embedder.h"
 #include "mojo/edk/embedder/platform_channel_pair.h"
 #include "mojo/edk/util/ref_ptr.h"
 #include "mojo/public/cpp/system/message_pipe.h"
