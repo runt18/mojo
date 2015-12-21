@@ -7,6 +7,7 @@
 #include "base/path_service.h"
 #include "base/rand_util.h"
 #include "mojo/dart/embedder/dart_controller.h"
+#include "mojo/dart/embedder/test/dart_test.h"
 #include "mojo/public/c/system/types.h"
 #include "mojo/public/cpp/environment/environment.h"
 #include "testing/gtest/include/gtest/gtest.h"
@@ -15,131 +16,99 @@ namespace mojo {
 namespace dart {
 namespace {
 
-static bool generateEntropy(uint8_t* buffer, intptr_t length) {
-  base::RandBytes(static_cast<void*>(buffer), length);
-  return true;
-}
+class DartUnitTest : public DartTest {
+ public:
+  DartUnitTest() {}
 
-static void ExceptionCallback(bool* exception,
-                              int64_t* closed_handles,
-                              Dart_Handle error,
-                              int64_t count) {
-  EXPECT_TRUE(Dart_IsError(error));
-  *exception = true;
-  *closed_handles = count;
-}
+  void RunTest(const std::string& test,
+               bool compile_all,
+               bool expect_unhandled_exception,
+               int expected_unclosed_handles) {
+    base::FilePath path;
+    PathService::Get(base::DIR_SOURCE_ROOT, &path);
+    path = path.AppendASCII("mojo")
+               .AppendASCII("dart")
+               .AppendASCII("test")
+               .AppendASCII(test);
+    std::vector<std::string> script_arguments;
 
-static void RunTest(const std::string& test,
-                    bool compile_all,
-                    bool expect_unhandled_exception,
-                    int expected_unclosed_handles) {
-  base::FilePath path;
-  PathService::Get(base::DIR_SOURCE_ROOT, &path);
-  path = path.AppendASCII("mojo")
-             .AppendASCII("dart")
-             .AppendASCII("test")
-             .AppendASCII(test);
-
-  // Setup the package root.
-  base::FilePath package_root;
-  PathService::Get(base::DIR_EXE, &package_root);
-  package_root = package_root.AppendASCII("gen")
-                             .AppendASCII("dart-pkg")
-                             .AppendASCII("packages");
-
-  char* error = nullptr;
-  bool unhandled_exception = false;
-  int64_t closed_handles = 0;
-  DartControllerConfig config;
-  // Run with strict compilation even in Release mode so that ASAN testing gets
-  // coverage of Dart asserts, type-checking, etc.
-  config.strict_compilation = true;
-  config.compile_all = compile_all;
-  config.script_uri = path.AsUTF8Unsafe();
-  config.package_root = package_root.AsUTF8Unsafe();
-  config.callbacks.exception =
-      base::Bind(&ExceptionCallback, &unhandled_exception, &closed_handles);
-  config.entropy = generateEntropy;
-  config.error = &error;
-
-  bool success = DartController::RunSingleDartScript(config);
-  EXPECT_TRUE(success) << error;
-  EXPECT_EQ(expect_unhandled_exception, unhandled_exception);
-  EXPECT_EQ(expected_unclosed_handles, closed_handles);
-}
+    RunDartTest(path, script_arguments, compile_all,
+                expect_unhandled_exception, expected_unclosed_handles);
+  }
+};
 
 // TODO(zra): instead of listing all these tests, search //mojo/dart/test for
 // _test.dart files.
 
-TEST(DartTest, async_await_test) {
+TEST_F(DartUnitTest, async_await_test) {
   RunTest("async_await_test.dart", false, false, 0);
 }
 
-TEST(DartTest, async_test) {
+TEST_F(DartUnitTest, async_test) {
   RunTest("async_test.dart", false, false, 0);
 }
 
-TEST(DartTest, bindings_generation_test) {
+TEST_F(DartUnitTest, bindings_generation_test) {
   RunTest("bindings_generation_test.dart", false, false, 0);
 }
 
-TEST(DartTest, codec_test) {
+TEST_F(DartUnitTest, codec_test) {
   RunTest("codec_test.dart", false, false, 0);
 }
 
-TEST(DartTest, compile_all_interfaces_test) {
+TEST_F(DartUnitTest, compile_all_interfaces_test) {
   RunTest("compile_all_interfaces_test.dart", true, false, 0);
 }
 
-TEST(DartTest, control_messages_test) {
+TEST_F(DartUnitTest, control_messages_test) {
   RunTest("control_messages_test.dart", false, false, 0);
 }
 
-TEST(DartTest, core_test) {
+TEST_F(DartUnitTest, core_test) {
   RunTest("core_test.dart", false, false, 0);
 }
 
-TEST(DartTest, core_types_test) {
+TEST_F(DartUnitTest, core_types_test) {
   RunTest("core_types_test.dart", false, false, 0);
 }
 
-TEST(DartTest, exception_test) {
+TEST_F(DartUnitTest, exception_test) {
   RunTest("exception_test.dart", false, false, 0);
 }
 
-TEST(DartTest, handle_finalizer_test) {
+TEST_F(DartUnitTest, handle_finalizer_test) {
   RunTest("handle_finalizer_test.dart", false, true, 1);
 }
 
-TEST(DartTest, hello_mojo) {
+TEST_F(DartUnitTest, hello_mojo) {
   RunTest("hello_mojo.dart", false, false, 0);
 }
 
-TEST(DartTest, isolate_test) {
+TEST_F(DartUnitTest, isolate_test) {
   RunTest("isolate_test.dart", false, false, 0);
 }
 
-TEST(DartTest, import_mojo) {
+TEST_F(DartUnitTest, import_mojo) {
   RunTest("import_mojo.dart", false, false, 0);
 }
 
-TEST(DartTest, ping_pong_test) {
+TEST_F(DartUnitTest, ping_pong_test) {
   RunTest("ping_pong_test.dart", false, false, 0);
 }
 
-TEST(DartTest, simple_handle_watcher_test) {
+TEST_F(DartUnitTest, simple_handle_watcher_test) {
   RunTest("simple_handle_watcher_test.dart", false, false, 0);
 }
 
-TEST(DartTest, timer_test) {
+TEST_F(DartUnitTest, timer_test) {
   RunTest("timer_test.dart", false, false, 0);
 }
 
-TEST(DartTest, unhandled_exception_test) {
+TEST_F(DartUnitTest, unhandled_exception_test) {
   RunTest("unhandled_exception_test.dart", false, true, 2);
 }
 
-TEST(DartTest, uri_base_test) {
+TEST_F(DartUnitTest, uri_base_test) {
   RunTest("uri_base_test.dart", false, false, 0);
 }
 

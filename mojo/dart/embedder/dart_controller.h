@@ -87,12 +87,6 @@ class DartControllerServiceConnector {
 
 class DartController {
  public:
-  // Initializes the VM, starts up Dart's handle watcher, and runs the script
-  // config.script to completion. This function returns when the script exits
-  // and the handle watcher is shutdown. If you need to run multiple Dart
-  // scripts in the same VM, use the calls below.
-  static bool RunSingleDartScript(const DartControllerConfig& config);
-
   // Initializes the Dart VM, and starts up Dart's handle watcher.
   // If strict_compilation is true, the VM runs scripts with assertions and
   // type checking enabled.

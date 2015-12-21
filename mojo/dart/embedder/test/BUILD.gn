@@ -9,7 +9,9 @@ group("test") {
   testonly = true
   deps = [
     ":dart_finalizer_unittests",
+    ":dart_to_cpp_unittests",
     ":dart_unittests",
+    ":dart_validation_unittests",
   ]
 }
 
@@ -24,37 +26,10 @@ source_set("dart_controller_for_test") {
   ]
 }
 
-mojom("dart_to_cpp_bindings") {
-  sources = [
-    "dart_to_cpp.mojom",
-  ]
-}
-
-source_set("dart_to_cpp_unittests") {
+group("dart_test_deps") {
   testonly = true
-  sources = [
-    "dart_to_cpp_tests.cc",
-  ]
-  deps = [
+  public_deps = [
     ":dart_controller_for_test",
-    ":dart_to_cpp_bindings",
-    "//base",
-    "//mojo/dart/embedder:dart_controller_no_snapshot",
-    "//mojo/public/cpp/bindings",
-    "//mojo/public/cpp/system",
-    "//mojo/public/interfaces/bindings/tests:test_interfaces",
-    "//testing/gtest",
-  ]
-}
-
-test("dart_unittests") {
-  sources = [
-    "run_dart_tests.cc",
-    "validation_unittest.cc",
-  ]
-  deps = [
-    ":dart_controller_for_test",
-    ":dart_to_cpp_unittests",
     "//base",
     "//mojo/dart/packages",
     "//mojo/dart/embedder:dart_controller_no_snapshot",
@@ -65,6 +40,34 @@ test("dart_unittests") {
     "//mojo/public/dart",
     "//mojo/environment:chromium",
     "//testing/gtest",
+  ]
+}
+
+source_set("dart_test") {
+  testonly = true
+  sources = [
+    "dart_test.cc",
+    "dart_test.h",
+  ]
+  deps = [
+    ":dart_test_deps",
+  ]
+}
+
+mojom("dart_to_cpp_bindings") {
+  sources = [
+    "dart_to_cpp.mojom",
+  ]
+}
+
+test("dart_to_cpp_unittests") {
+  sources = [
+    "dart_to_cpp_tests.cc",
+  ]
+  deps = [
+    ":dart_test",
+    ":dart_to_cpp_bindings",
+    ":dart_test_deps",
   ]
 }
 
@@ -73,16 +76,27 @@ test("dart_finalizer_unittests") {
     "dart_finalizer_test.cc",
   ]
   deps = [
-    ":dart_controller_for_test",
-    "//base",
-    "//mojo/dart/packages",
-    "//mojo/dart/embedder:dart_controller_no_snapshot",
-    "//mojo/edk/test:run_all_unittests",
-    "//mojo/public/cpp/environment",
-    "//mojo/public/cpp/system",
-    "//mojo/public/cpp/utility",
-    "//mojo/public/dart",
-    "//mojo/environment:chromium",
-    "//testing/gtest",
+    ":dart_test",
+    ":dart_test_deps",
+  ]
+}
+
+test("dart_unittests") {
+  sources = [
+    "run_dart_tests.cc",
+  ]
+  deps = [
+    ":dart_test",
+    ":dart_test_deps",
+  ]
+}
+
+test("dart_validation_unittests") {
+  sources = [
+    "validation_unittest.cc",
+  ]
+  deps = [
+    ":dart_test",
+    ":dart_test_deps",
   ]
 }

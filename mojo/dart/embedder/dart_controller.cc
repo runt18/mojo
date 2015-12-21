@@ -662,32 +662,7 @@ void DartController::BlockForServiceIsolateLocked() {
   service_isolate_running_ = true;
 }
 
-bool DartController::RunSingleDartScript(const DartControllerConfig& config) {
-  InitVmIfNeeded(config.entropy,
-                 config.vm_flags,
-                 config.vm_flags_count);
-  BlockForServiceIsolate();
-  Dart_Isolate isolate = CreateIsolateHelper(config.application_data,
-                                             config.strict_compilation,
-                                             config.callbacks,
-                                             config.script_uri,
-                                             config.package_root,
-                                             config.error,
-                                             config.use_network_loader);
-  if (isolate == nullptr) {
-    return false;
-  }
-
-  RunIsolate(isolate, config);
-
-  // Cleanup.
-  Dart_EnterIsolate(isolate);
-  Dart_ShutdownIsolate();
-  Dart_Cleanup();
-  return true;
-}
-
-static bool generateEntropy(uint8_t* buffer, intptr_t length) {
+static bool GenerateEntropy(uint8_t* buffer, intptr_t length) {
   base::RandBytes(reinterpret_cast<void*>(buffer), length);
   return true;
 }
@@ -701,7 +676,7 @@ bool DartController::Initialize(
   service_connector_ = service_connector;
   observatory_enabled_ = observatory_enabled;
   strict_compilation_ = strict_compilation;
-  InitVmIfNeeded(generateEntropy, extra_args, extra_args_count);
+  InitVmIfNeeded(GenerateEntropy, extra_args, extra_args_count);
   return true;
 }
 

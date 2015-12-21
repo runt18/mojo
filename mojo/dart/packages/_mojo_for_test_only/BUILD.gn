@@ -15,6 +15,7 @@ bindings_sources = [
   "lib/mojo/test/rect.mojom.dart",
   "lib/mojo/test/test_structs.mojom.dart",
   "lib/mojo/test/versioning/versioning_test_client.mojom.dart",
+  "lib/mojo/test/test_included_unions.mojom.dart",
   "lib/dart_to_cpp/dart_to_cpp.mojom.dart",
   "lib/test/pingpong_service.mojom.dart",
   "lib/test/echo_service.mojom.dart",

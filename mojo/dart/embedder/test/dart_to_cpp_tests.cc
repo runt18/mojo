@@ -13,6 +13,7 @@
 #include "base/run_loop.h"
 #include "base/threading/thread.h"
 #include "mojo/dart/embedder/dart_controller.h"
+#include "mojo/dart/embedder/test/dart_test.h"
 #include "mojo/dart/embedder/test/dart_to_cpp.mojom.h"
 #include "mojo/public/cpp/bindings/strong_binding.h"
 #include "mojo/public/cpp/system/core.h"
@@ -248,7 +249,7 @@ class EchoCppSideConnection : public CppSideConnection {
 
 }  // namespace
 
-class DartToCppTest : public testing::Test {
+class DartToCppTest : public DartTest {
  public:
   DartToCppTest() {}
 
@@ -270,24 +271,9 @@ class DartToCppTest : public testing::Test {
   base::MessageLoop loop;
   base::RunLoop run_loop_;
 
-  static void UnhandledExceptionCallback(bool* exception,
-                                         int64_t* closed_handles,
-                                         Dart_Handle error,
-                                         int64_t count) {
-    *exception = true;
-    *closed_handles = count;
-  }
-
-  static bool GenerateEntropy(uint8_t* buffer, intptr_t length) {
-    base::RandBytes(static_cast<void*>(buffer), length);
-    return true;
-  }
-
   static void InitializeDartConfig(DartControllerConfig* config,
                                    const std::string& test,
                                    MojoHandle handle,
-                                   const char** arguments,
-                                   int arguments_count,
                                    bool* unhandled_exception,
                                    int64_t* closed_handles,
                                    char** error) {
@@ -311,15 +297,14 @@ class DartToCppTest : public testing::Test {
     config->script_uri = path.AsUTF8Unsafe();
     config->package_root = package_root.AsUTF8Unsafe();
     config->callbacks.exception = base::Bind(
-        &UnhandledExceptionCallback, unhandled_exception, closed_handles);
+        &ExceptionCallback, unhandled_exception, closed_handles);
     config->entropy = GenerateEntropy;
     config->handle = handle;
-    config->SetVmFlags(arguments, arguments_count);
     config->error = error;
   }
 
   static void RunDartSide(const DartControllerConfig& config) {
-    DartController::RunSingleDartScript(config);
+    DartController::RunDartScript(config);
   }
 
   bool RunWithDartOnThread(base::Thread* dart_thread,
@@ -342,7 +327,7 @@ class DartToCppTest : public testing::Test {
     int64_t closed_handles;
     InitializeDartConfig(
         &config, test, dart_side_request.PassMessagePipe().release().value(),
-        nullptr, 0, &unhandled_exception, &closed_handles, &error);
+        &unhandled_exception, &closed_handles, &error);
 
     dart_thread->Start();
     dart_thread->message_loop()->PostTask(FROM_HERE,
