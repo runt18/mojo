@@ -29,7 +29,7 @@ class Hello extends Application {
     c.onError = closeApplication;
   }
 
-  Future closeApplication() async {
+  Future closeApplication(e) async {
     await close();
     MojoHandle.reportLeakedHandles();
   }
