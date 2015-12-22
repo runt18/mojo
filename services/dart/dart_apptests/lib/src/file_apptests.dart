@@ -139,5 +139,51 @@ tests(Application application, String url) {
       expect(await newChildFile.exists(), isTrue);
       expect(await childFile.exists(), isFalse);
     });
+    test('File delete', () async {
+      // Setup state.
+      Directory directory = await Directory.systemTemp.createTemp('fdel');
+      File childFile = new File('${directory.path}/child.txt');
+      expect(await childFile.exists(), isFalse);
+      await childFile.create();
+      expect(await childFile.exists(), isTrue);
+      await childFile.delete();
+      expect(await childFile.exists(), isFalse);
+    });
+    test('Directory delete', () async {
+      // Setup state.
+      Directory directory = await Directory.systemTemp.createTemp('ddel');
+      Directory child = new Directory('${directory.path}/child');
+      expect(await child.exists(), isFalse);
+      await child.create();
+      expect(await child.exists(), isTrue);
+      await child.delete();
+      expect(await child.exists(), isFalse);
+    });
+    test('Directory recursive delete', () async {
+      // NOTE: Recursive deletion is not yet implemented by mojo:files.
+      Directory directory =
+          await Directory.systemTemp.createTemp('recursive_del');
+      expect(await directory.exists(), isTrue);
+      Directory childDirectory = new Directory('${directory.path}/child');
+      await childDirectory.create();
+      expect(await childDirectory.exists(), isTrue);
+      File newChildFile = new File('${childDirectory.path}/child.txt');
+      await newChildFile.create();
+      expect(await newChildFile.exists(), isTrue);
+      // Delete the directory recursively.
+      bool exceptionCaught = false;
+      try {
+        await directory.delete(recursive: true);
+        fail("Recursive deletion has now been implemented by mojo:files.");
+      } catch (e) {
+        exceptionCaught = true;
+      }
+      expect(exceptionCaught, isTrue);
+      // Verify that everything has been deleted.
+      // TODO(johnmccutchan): Uncomment once recursive deletion is implemented.
+      // expect(await directory.exists(), isFalse);
+      // expect(await newChildFile.exists(), isFalse);
+      // expect(await childDirectory.exists(), isFalse);
+    });
   });
 }

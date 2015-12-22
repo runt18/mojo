@@ -488,6 +488,21 @@ patch class FileSystemEntity {
     return _onSyncOperation();
   }
 
+  /* patch */ Future<FileSystemEntity> delete({bool recursive: false}) async {
+    DirectoryProxy rootDirectory = await _getRootDirectory();
+    int flags = recursive ? types.kDeleteFlagRecursive : 0;
+    var response = await rootDirectory.responseOrError(
+        rootDirectory.ptr.delete(_ensurePathIsRelative(path), flags));
+    if (response.error != types.Error.ok) {
+      throw _OSErrorFromError(response.error);
+    }
+    return this;
+  }
+
+  /* patch */ void deleteSync({bool recursive: false}) {
+    _onSyncOperation();
+  }
+
   /* patch */ Stream<FileSystemEvent> watch({int events: FileSystemEvent.ALL,
                                              bool recursive: false}) {
     throw new UnsupportedError(
