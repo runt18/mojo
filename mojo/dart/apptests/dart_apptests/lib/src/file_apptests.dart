@@ -185,5 +185,153 @@ tests(Application application, String url) {
       // expect(await newChildFile.exists(), isFalse);
       // expect(await childDirectory.exists(), isFalse);
     });
+    test('RandomAccessFile Open', () async {
+      Directory directory =
+          await Directory.systemTemp.createTemp('raf0');
+      File file = new File('${directory.path}/file.txt');
+      expect(await file.exists(), isFalse);
+
+      // Attempt to open for reading. This will fail.
+      bool exceptionCaught = false;
+      try {
+        await file.open();
+        fail("Opened a file that doesn't exist!");
+      } catch (e) {
+        exceptionCaught = true;
+      }
+      expect(exceptionCaught, isTrue);
+
+      // Attempt to open for writing. This will succeed.
+      RandomAccessFile raf = await file.open(mode: FileMode.WRITE);
+      // Close it.
+      await raf.close();
+      // Verify that it now exists.
+      expect(await file.exists(), isTrue);
+
+      // Attempt to open for reading. This will now succeed.
+      raf = await file.open();
+      // Close it.
+      await raf.close();
+    });
+    test('RandomAccessFile Write Byte', () async {
+      Directory directory =
+          await Directory.systemTemp.createTemp('raf1');
+      File file = new File('${directory.path}/file.txt');
+      expect(await file.exists(), isFalse);
+      // Attempt to open for writing. This will succeed.
+      RandomAccessFile raf = await file.open(mode: FileMode.WRITE);
+
+      expect(await raf.position(), 0);
+      await raf.writeByte(54);
+      expect(await raf.position(), 1);
+      await raf.writeByte(54);
+      expect(await raf.position(), 2);
+      await raf.writeByte(54);
+      expect(await raf.position(), 3);
+
+      await raf.close();
+    });
+    test('RandomAccessFile WriteFrom', () async {
+      Directory directory =
+          await Directory.systemTemp.createTemp('raf2');
+      File file = new File('${directory.path}/file.txt');
+      expect(await file.exists(), isFalse);
+      // Attempt to open for writing. This will succeed.
+      RandomAccessFile raf = await file.open(mode: FileMode.WRITE);
+
+      expect(await raf.position(), 0);
+      await raf.writeFrom([50, 51, 52, 53, 54, 55]);
+      expect(await raf.position(), 6);
+
+      await raf.close();
+    });
+    test('RandomAccessFile Write Seek Read', () async {
+      Directory directory =
+          await Directory.systemTemp.createTemp('raf3');
+      File file = new File('${directory.path}/file.txt');
+      expect(await file.exists(), isFalse);
+      // Attempt to open for writing. This will succeed.
+      RandomAccessFile raf = await file.open(mode: FileMode.WRITE);
+
+      expect(await raf.position(), 0);
+
+      // Write payload into file.
+      const String payload = 'Hello Mojo';
+      final List<int> payloadBytes = payload.codeUnits;
+      await raf.writeString(payload);
+      expect(await raf.position(), payload.length);
+
+      // Seek to beginning.
+      await raf.setPosition(0);
+      expect(await raf.position(), 0);
+
+      // Read back the payload.
+      var readBackData = await raf.read(payload.length);
+      expect(readBackData.length, payload.length);
+      for (int i = 0; i < payload.length; i++) {
+        expect(readBackData[i], payloadBytes[i]);
+      }
+      await raf.close();
+    });
+    test('RandomAccessFile Write Length Truncate Length', () async {
+      Directory directory =
+          await Directory.systemTemp.createTemp('raf4');
+      File file = new File('${directory.path}/file.txt');
+      expect(await file.exists(), isFalse);
+      // Attempt to open for writing. This will succeed.
+      RandomAccessFile raf = await file.open(mode: FileMode.WRITE);
+
+      expect(await raf.position(), 0);
+
+      // Write payload into file.
+      const String payload = 'Hello Mojo';
+      final List<int> payloadBytes = payload.codeUnits;
+      await raf.writeString(payload);
+      expect(await raf.position(), payload.length);
+      expect(await raf.length(), payload.length);
+      // Truncate file to 3 bytes.
+      await raf.truncate(3);
+      // Verify that length is at 3.
+      expect(await raf.length(), 3);
+      await raf.close();
+    });
+    test('RandomAccessFile WriteFrom with offset', () async {
+      Directory directory =
+          await Directory.systemTemp.createTemp('raf5');
+      File file = new File('${directory.path}/file.txt');
+      expect(await file.exists(), isFalse);
+      // Attempt to open for writing. This will succeed.
+      RandomAccessFile raf = await file.open(mode: FileMode.WRITE);
+
+      expect(await raf.position(), 0);
+
+      // Write with an offset.
+      final List<int> payloadBytes = [1, 2, 3, 4, 54, 54, 54, 5, 6, 7];
+      raf.writeFrom(payloadBytes, 4, 7);
+
+      // Verify position and length.
+      expect(await raf.position(), 3);
+      expect(await raf.length(), 3);
+
+      // Seek to the beginning of the file.
+      await raf.setPosition(0);
+      expect(await raf.position(), 0);
+
+      expect(await raf.readByte(), equals(54));
+      expect(await raf.readByte(), equals(54));
+      expect(await raf.readByte(), equals(54));
+
+      // Try to read beyond the end of file.
+      bool exceptionCaught = false;
+      try {
+        await raf.readByte();
+        fail("Should not be able to read anymore bytes.");
+      } on FileSystemException catch (e) {
+        exceptionCaught = true;
+      }
+      expect(exceptionCaught, true);
+
+      await raf.close();
+    });
   });
 }

@@ -55,6 +55,41 @@ FileSystemEntityType _fileSystemEntityTypeFromFileType(types.FileType ft) {
   return FileSystemEntityType.NOT_FOUND;
 }
 
+// Convert from dart:io FileMode to open flags.
+int _openFlagsFromFileMode(FileMode fileMode) {
+  int flags = 0;
+  switch (fileMode) {
+    case FileMode.READ:
+      flags = types.kOpenFlagRead;
+      break;
+    case FileMode.WRITE:
+      flags = types.kOpenFlagRead |
+              types.kOpenFlagWrite |
+              types.kOpenFlagTruncate |
+              types.kOpenFlagCreate;
+      break;
+    case FileMode.APPEND:
+      flags = types.kOpenFlagRead |
+              types.kOpenFlagWrite |
+              types.kOpenFlagAppend |
+              types.kOpenFlagCreate;
+      break;
+    case FileMode.WRITE_ONLY:
+      flags = types.kOpenFlagWrite |
+              types.kOpenFlagTruncate |
+              types.kOpenFlagCreate;
+      break;
+    case FileMode.WRITE_ONLY_APPEND:
+      flags = types.kOpenFlagWrite |
+              types.kOpenFlagAppend |
+              types.kOpenFlagCreate;
+      break;
+    default:
+      throw new UnimplementedError();
+  }
+  return flags;
+}
+
 patch class _Directory {
   // We start at the root of the file system.
   static String _currentDirectoryPath = '/';
@@ -307,21 +342,36 @@ patch class _File {
 
   /* patch */ File copySync(String newPath) => _onSyncOperation();
 
-  /* patch */ Future<RandomAccessFile> open({FileMode mode: FileMode.READ}) {
-    // TODO(johnmccutchan)
-    throw new UnimplementedError();
+  /* patch */ Future<RandomAccessFile> open(
+      {FileMode mode: FileMode.READ}) async {
+    DirectoryProxy rootDirectory = await _getRootDirectory();
+    FileProxy file = new FileProxy.unbound();
+    var response = await rootDirectory.responseOrError(
+        rootDirectory.ptr.openFile(_ensurePathIsRelative(path),
+                                   file,
+                                   _openFlagsFromFileMode(mode)));
+    if (response.error != types.Error.ok) {
+      throw _OSErrorFromError(response.error);
+    }
+    // We use the raw mojo handle as our fd.
+    final int fd = file.impl.endpoint.handle.h;
+    // Construct the RandomAccessFile using the original constructor.
+    _RandomAccessFile raf = new _RandomAccessFile(fd, path);
+    // Hook up our proxy.
+    raf._proxy = file;
+    return raf;
   }
 
-  /* patch */ Future<int> length() {
-    // TODO(johnmccutchan)
-    throw new UnimplementedError();
+  /* patch */ Future<int> length() async {
+    FileStat fileStat = await FileStat.stat(path);
+    return fileStat.size;
   }
 
   /* patch */ int lengthSync() => _onSyncOperation();
 
-  /* patch */ Future<DateTime> lastModified() {
-    // TODO(johnmccutchan)
-    throw new UnimplementedError();
+  /* patch */ Future<DateTime> lastModified() async {
+    FileStat fileStat = await FileStat.stat(path);
+    return fileStat.modified;
   }
 
   /* patch */ DateTime lastModifiedSync() => _onSyncOperation();
@@ -545,6 +595,230 @@ patch class _Link {
 
 
 patch class _RandomAccessFile {
+  FileProxy _proxy;
+
+  void _ensureProxy() {
+    if (_proxy == null) {
+      throw new StateError("_RandomAccessFile has a null proxy.");
+    }
+  }
+
+  void _handleError(dynamic response) {
+    if (response.error != types.Error.ok) {
+      throw _OSErrorFromError(response.error);
+    }
+  }
+
+  /* patch */ Future<RandomAccessFile> close() async {
+    _ensureProxy();
+    await _proxy.responseOrError(_proxy.ptr.close());
+    await _proxy.close(immediate: true);
+    _proxy = null;
+    _id = 0;
+    _maybePerformCleanup();
+    return this;
+  }
+
+  /* patch */ void closeSync() {
+    _onSyncOperation();
+  }
+
+  /* patch */ Future<int> readByte() async {
+    _ensureProxy();
+    var response = await _proxy.responseOrError(
+        _proxy.ptr.read(1, 0, types.Whence.fromCurrent));
+    _handleError(response);
+    _resourceInfo.addRead(response.bytesRead.length);
+    if (response.bytesRead.length == 0) {
+      throw new FileSystemException("readByte failed.");
+    }
+    return response.bytesRead[0];
+  }
+
+  /* patch */ int readByteSync() {
+    return _onSyncOperation();
+  }
+
+  /* patch */ Future<List<int>> read(int bytes) async {
+    if (bytes is !int) {
+      throw new ArgumentError(bytes);
+    }
+    _ensureProxy();
+    var response = await _proxy.responseOrError(
+        _proxy.ptr.read(bytes, 0, types.Whence.fromCurrent));
+    _handleError(response);
+    _resourceInfo.addRead(response.bytesRead.length);
+    return response.bytesRead;
+  }
+
+  /* patch */ List<int> readSync(int bytes) {
+    return _onSyncOperation();
+  }
+
+  /* patch */ Future<int> readInto(List<int> buffer,
+                                   [int start = 0, int end]) async {
+    if (buffer is !List ||
+        (start != null && start is !int) ||
+        (end != null && end is !int)) {
+      throw new ArgumentError();
+    }
+    end = RangeError.checkValidRange(start, end, buffer.length);
+    _ensureProxy();
+    if (end == start) {
+      return 0;
+    }
+    int length = end - start;
+    var response = await _proxy.responseOrError(
+        _proxy.ptr.read(length, 0, types.Whence.fromCurrent));
+    _handleError(response);
+    int read = response.bytesRead.length;
+    _resourceInfo.addRead(read);
+    buffer.setRange(start, start + read, response.bytesRead);
+    return read;
+  }
+
+  /* patch */ int readIntoSync(List<int> buffer, [int start = 0, int end]) {
+    return _onSyncOperation();
+  }
+
+  /* patch */ Future<RandomAccessFile> writeByte(int value) async {
+    if (value is !int) {
+      throw new ArgumentError(value);
+    }
+    _ensureProxy();
+    var response = await _proxy.responseOrError(
+        _proxy.ptr.write([value], 0, types.Whence.fromCurrent));
+    _handleError(response);
+    assert(response.numBytesWritten == 1);
+    _resourceInfo.addWrite(response.numBytesWritten);
+    return this;
+  }
+
+  /* patch */ int writeByteSync(int value) {
+    return _onSyncOperation();
+  }
+
+  /* patch */ Future<RandomAccessFile> writeFrom(
+      List<int> buffer, [int start = 0, int end]) async {
+    if ((buffer is !List) ||
+        (start != null && start is !int) ||
+        (end != null && end is !int)) {
+      throw new ArgumentError("Invalid arguments to writeFrom");
+    }
+    end = RangeError.checkValidRange(start, end, buffer.length);
+    _ensureProxy();
+    if (end == start) {
+      return this;
+    }
+    _BufferAndStart result;
+    final int length = end - start;
+    result = _ensureFastAndSerializableByteData(buffer, start, end);
+    if (result.start != 0) {
+      // Slow path where we copy the contents of buffer into a new buffer
+      // so that the data we want to write starts at the beginning of the
+      // buffer.
+      final buffer = new Uint8List(length);
+      buffer.setRange(0, length, result.buffer, start);
+      // Replace the buffer in result.
+      result.buffer = buffer;
+      result.start = 0;
+    }
+    assert(result.start == 0);
+    var response = await _proxy.responseOrError(
+        _proxy.ptr.write(result.buffer, 0, types.Whence.fromCurrent));
+    _handleError(response);
+    _resourceInfo.addWrite(response.numBytesWritten);
+    return this;
+  }
+
+  /* patch */ void writeFromSync(List<int> buffer, [int start = 0, int end]) {
+    _onSyncOperation();
+  }
+
+  /* patch */ void writeStringSync(String string, {Encoding encoding: UTF8}) {
+    _onSyncOperation();
+  }
+
+  /* patch */ Future<int> position() async {
+    _ensureProxy();
+    var response = await _proxy.responseOrError(_proxy.ptr.tell());
+    _handleError(response);
+    return response.position;
+  }
+
+  /* patch */ int positionSync() {
+    _onSyncOperation();
+  }
+
+  /* patch */ Future<RandomAccessFile> setPosition(int position) async {
+    if (position is !int) {
+      throw new ArgumentError(position);
+    }
+    _ensureProxy();
+    var response = await _proxy.responseOrError(
+        _proxy.ptr.seek(position, types.Whence.fromStart));
+    _handleError(response);
+    return this;
+  }
+
+  /* patch */ void setPositionSync(int position) {
+    _onSyncOperation();
+  }
+
+  /* patch */ Future<RandomAccessFile> truncate(int length) async {
+    if (length is !int) {
+      throw new ArgumentError(length);
+    }
+    _ensureProxy();
+    var response = await _proxy.responseOrError(_proxy.ptr.truncate(length));
+    _handleError(response);
+  }
+
+  /* patch */ void truncateSync(int length) {
+    _onSyncOperation();
+  }
+
+  /* patch */ Future<int> length() async {
+    _ensureProxy();
+    var response = await _proxy.responseOrError(_proxy.ptr.stat());
+    _handleError(response);
+    return response.fileInformation.size;
+  }
+
+  /* patch */ int lengthSync() {
+    _onSyncOperation();
+  }
+
+  /* patch */ Future<RandomAccessFile> flush() {
+    return this;
+  }
+
+  /* patch */ void flushSync() {
+    _onSyncOperation();
+  }
+
+  /* patch */ Future<RandomAccessFile> lock(
+      [FileLock mode = FileLock.EXCLUSIVE, int start = 0, int end]) {
+    throw new UnsupportedError(
+        "File locking is not supported by this embedder");
+  }
+
+  /* patch */ Future<RandomAccessFile> unlock([int start = 0, int end]) {
+    throw new UnsupportedError(
+        "File locking is not supported by this embedder");
+  }
+
+  /* patch */ void lockSync(
+      [FileLock mode = FileLock.EXCLUSIVE, int start = 0, int end]) {
+    _onSyncOperation();
+  }
+
+  /* patch */ void unlockSync([int start = 0, int end]) {
+    _onSyncOperation();
+  }
+
+  /* patch */ bool get closed => _id == 0;
+
   /* patch */ static int _close(int id) {
     throw new UnimplementedError();
   }
