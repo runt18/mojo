@@ -62,7 +62,7 @@ group("tests") {
     ":public_tests",
     "//mojo/common:mojo_common_unittests",
     "//mojo/converters:mojo_converters_unittests",
-    "//mojo/dart/embedder/test",
+    "//mojo/dart:tests",
     "//mojo/edk:tests",
     "//mojo/file_utils:file_utils_apptests",
     "//mojo/gles2:mgl_unittests",

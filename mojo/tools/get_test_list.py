@@ -166,12 +166,14 @@ def GetTestList(config, verbose_count=0):
   if target_os == Config.OS_LINUX and ShouldRunTest(Config.TEST_TYPE_DEFAULT):
     AddEntry("Dart Observatory tests",
              ["python",
-              os.path.join("mojo", "dart", "observatory_tester", "runner.py"),
+              os.path.join("mojo", "dart", "unittests", "observatory_tester",
+                           "runner.py"),
               "--build-dir=" + build_dir,
               "--dart-exe=third_party/dart-sdk/dart-sdk/bin/dart"])
     AddEntry("Dart HTTP Load test",
            ["python",
-            os.path.join("mojo", "dart", "http_load_test", "runner.py"),
+            os.path.join("mojo", "dart", "unittests", "http_load_test",
+                         "runner.py"),
             "--build-dir=" + build_dir,
             "--dart-exe=third_party/dart-sdk/dart-sdk/bin/dart"])
 
@@ -187,7 +189,7 @@ def GetTestList(config, verbose_count=0):
   if target_os == Config.OS_LINUX and ShouldRunTest(Config.TEST_TYPE_DEFAULT):
     AddEntry("Dart snapshotter test",
         ["python",
-         os.path.join("mojo", "dart", "dart_snapshotter", "test",
+         os.path.join("mojo", "dart", "embedder", "snapshotter", "test",
                       "dart_snapshotter_test.py"),
          "--build-dir=" + build_dir])
 

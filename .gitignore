@@ -68,39 +68,21 @@ v8.log
 /v8/
 
 # dart packages directories and related.
-/benchmarks/mojo_rtt_benchmark/.packages
-/benchmarks/mojo_rtt_benchmark/packages
+/benchmarks/**/.packages
+/benchmarks/**/packages
+/benchmarks/**/pubspec.lock
 /examples/dart/**/.packages
 /examples/dart/**/packages
-/mojo/common/dart/.packages
-/mojo/common/dart/packages
-/mojo/dart/apptest/.packages
-/mojo/dart/apptest/packages
-/mojo/dart/apptest/pubspec.lock
-/mojo/dart/packages/mojo_apptest/.packages
-/mojo/dart/packages/mojo_apptest/packages
-/mojo/dart/packages/mojo_apptest/pubspec.lock
-/mojo/dart/http_load_test/.packages
-/mojo/dart/http_load_test/bin/packages
-/mojo/dart/http_load_test/packages
-/mojo/dart/mojo_services/.packages
-/mojo/dart/mojo_services/packages
-/mojo/dart/mojo_services/pubspec.lock
-/mojo/dart/mojom/.packages
-/mojo/dart/mojom/bin/packages
-/mojo/dart/mojom/packages
-/mojo/dart/mojom/test/packages
-/mojo/dart/observatory_test/.packages
-/mojo/dart/testing/.packages
-/services/dart/test/echo/.packages
-/services/dart/test/echo/packages
-/services/dart/test/pingpong/.packages
-/services/dart/test/pingpong/packages
-/services/dart/test/pingpong_target/.packages
-/services/dart/test/pingpong_target/packages
-/services/dart/test/dart/service_test_interfaces/.packages
-/services/dart/test/dart/service_test_interfaces/packages
-/services/dart/test/dart/service_test_interfaces/pubspec.lock
+/examples/dart/**/pubspec.lock
+/mojo/dart/apptests/**/.packages
+/mojo/dart/apptests/**/packages
+/mojo/dart/apptests/**/pubspec.lock
+/mojo/dart/packages/**/.packages
+/mojo/dart/packages/**/packages
+/mojo/dart/packages/**/pubspec.lock
+/mojo/dart/unittests/**/.packages
+/mojo/dart/unittests/**/packages
+/mojo/dart/unittests/**/pubspec.lock
 
 # downloaded keyboard_native resources.
 /services/keyboard_native/res/*.png

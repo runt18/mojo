@@ -322,6 +322,7 @@ def presubmit_check(packages, affected_files):
       mojom = _load_mojom(mojom_file)
     except Exception:
       # Could not load .mojom file
+      print("Could not load mojom file: %s" % mojom_file)
       return True
 
     package = _mojom_package(mojom)

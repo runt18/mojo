@@ -80,7 +80,6 @@ group("tests") {
     "//services/asset_bundle:apptests",
     "//services/authenticating_url_loader_interceptor:apptests",
     "//services/clipboard:apptests",
-    "//services/dart/dart_apptests",
     "//services/http_server:apptests",
     "//services/native_support:apptests",
     "//services/prediction:apptests",

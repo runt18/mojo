@@ -7,6 +7,14 @@ import("embedder.gni")
 import("//mojo/dart/packages/mojo/sources.gni")
 import("//mojo/dart/packages/mojo/sdk_ext_sources.gni")
 
+group("embedder") {
+  deps = [
+    ":dart_controller_no_snapshot",
+    ":generate_snapshot_file",
+    "//mojo/dart/embedder/snapshotter",
+  ]
+}
+
 source_set("dart_controller_no_snapshot") {
   sources = [
     "$target_gen_dir/dart_embedder_patch_resources.cc",
