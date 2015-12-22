@@ -144,8 +144,15 @@ patch class _Directory {
 
   /* patch */ FileStat statSync() => _onSyncOperation();
 
-  /* patch */ Future<Directory> rename(String newPath) {
-    throw new UnimplementedError();
+  /* patch */ Future<Directory> rename(String newPath) async {
+    DirectoryProxy rootDirectory = await _getRootDirectory();
+    var response = await rootDirectory.responseOrError(
+        rootDirectory.ptr.rename(_ensurePathIsRelative(path),
+                                 _ensurePathIsRelative(newPath)));
+    if (response.error != types.Error.ok) {
+      throw _OSErrorFromError(response.error);
+    }
+    return new Directory(newPath);
   }
 
   /* patch */ Directory renameSync(String newPath) => _onSyncOperation();
@@ -256,7 +263,11 @@ patch class _File {
     return response.error == types.Error.ok;
   }
 
-  Future<File> create({bool recursive: false}) async {
+  /* patch */ bool existsSync() => _onSyncOperation();
+
+  /* patch */ FileStat statSync() => _onSyncOperation();
+
+  /* patch */ Future<File> create({bool recursive: false}) async {
     if (recursive) {
       // Create any parent directories.
       await parent.create(recursive: true);
@@ -272,6 +283,102 @@ patch class _File {
       throw _OSErrorFromError(response.error);
     }
     return this;
+  }
+
+  /* patch */ void createSync({bool recursive: false}) => _onSyncOperation();
+
+  /* patch */ Future<File> rename(String newPath) async {
+    DirectoryProxy rootDirectory = await _getRootDirectory();
+    var response = await rootDirectory.responseOrError(
+        rootDirectory.ptr.rename(_ensurePathIsRelative(path),
+                                 _ensurePathIsRelative(newPath)));
+    if (response.error != types.Error.ok) {
+      throw _OSErrorFromError(response.error);
+    }
+    return new File(newPath);
+  }
+
+  /* patch */ File renameSync(String newPath) => _onSyncOperation();
+
+  /* patch */ Future<File> copy(String newPath) {
+    // TODO(johnmccutchan)
+    throw new UnimplementedError();
+  }
+
+  /* patch */ File copySync(String newPath) => _onSyncOperation();
+
+  /* patch */ Future<RandomAccessFile> open({FileMode mode: FileMode.READ}) {
+    // TODO(johnmccutchan)
+    throw new UnimplementedError();
+  }
+
+  /* patch */ Future<int> length() {
+    // TODO(johnmccutchan)
+    throw new UnimplementedError();
+  }
+
+  /* patch */ int lengthSync() => _onSyncOperation();
+
+  /* patch */ Future<DateTime> lastModified() {
+    // TODO(johnmccutchan)
+    throw new UnimplementedError();
+  }
+
+  /* patch */ DateTime lastModifiedSync() => _onSyncOperation();
+
+  /* patch */ RandomAccessFile openSync({FileMode mode: FileMode.READ}) {
+    return _onSyncOperation();
+  }
+
+  /* patch */ Stream<List<int>> openRead([int start, int end]) {
+    // TODO(johnmccutchan)
+    throw new UnimplementedError();
+  }
+
+  /* patch */ IOSink openWrite({FileMode mode: FileMode.WRITE,
+                                Encoding encoding: UTF8}) {
+    // TODO(johnmccutchan)
+    throw new UnimplementedError();
+  }
+
+  /* patch */ Future<List<int>> readAsBytes() {
+    // TODO(johnmccutchan)
+    throw new UnimplementedError();
+  }
+
+  /* patch */ List<int> readAsBytesSync() => _onSyncOperation();
+
+  /* patch */ Future<String> readAsString({Encoding encoding: UTF8}) {
+    // TODO(johnmccutchan)
+    throw new UnimplementedError();
+  }
+
+  /* patch */ String readAsStringSync({Encoding encoding: UTF8}) {
+    return _onSyncOperation();
+  }
+
+  /* patch */ List<String> readAsLinesSync({Encoding encoding: UTF8}) {
+    return _onSyncOperation();
+  }
+
+  /* patch */ Future<File> writeAsBytes(List<int> bytes,
+                                        {FileMode mode: FileMode.WRITE,
+                                         bool flush: false}) {
+    // TODO(johnmccutchan)
+    throw new UnimplementedError();
+  }
+
+  /* patch */ void writeAsBytesSync(List<int> bytes,
+                                    {FileMode mode: FileMode.WRITE,
+                                     bool flush: false}) {
+    _onSyncOperation();
+  }
+
+  /* patch */ void writeAsStringSync(String contents,
+                                     {FileMode mode: FileMode.WRITE,
+                                      Encoding encoding: UTF8,
+                                      bool flush: false}) {
+    _onSyncOperation();
   }
 
   /* patch */ static _exists(String path) {

@@ -117,5 +117,27 @@ tests(Application application, String url) {
       expect(paths[7].endsWith('/child_dir/deeper_child_dir/..'), isTrue);
       expect(paths[8].endsWith('/child_file.txt'), isTrue);
     });
+    test('Directory rename', () async {
+      // Setup state.
+      Directory directory = await Directory.systemTemp.createTemp('rename_dir');
+      Directory childDirectory = new Directory('${directory.path}/child');
+      await childDirectory.create();
+      expect(await childDirectory.exists(), isTrue);
+      Directory newChildDirectory =
+          await childDirectory.rename('${directory.path}/new_child');
+      expect(await newChildDirectory.exists(), isTrue);
+      expect(await childDirectory.exists(), isFalse);
+    });
+    test('File rename', () async {
+      // Setup state.
+      Directory directory = await Directory.systemTemp.createTemp('rename');
+      File childFile = new File('${directory.path}/child.txt');
+      await childFile.create();
+      expect(await childFile.exists(), isTrue);
+      File newChildFile =
+          await childFile.rename('${directory.path}/new_child.txt');
+      expect(await newChildFile.exists(), isTrue);
+      expect(await childFile.exists(), isFalse);
+    });
   });
 }
