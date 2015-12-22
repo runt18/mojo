@@ -45,7 +45,9 @@ class EchoClientDelegate : public ApplicationDelegate {
       : warmup_(true),
         num_clients_(1),
         num_active_clients_(1),
-        use_dart_server_(false) {}
+        use_dart_server_(false),
+        ending_(false),
+        benchmark_duration_(base::TimeDelta::FromSeconds(10)) {}
 
   void Initialize(ApplicationImpl* app) override {
     tracing_.Initialize(app);
@@ -69,6 +71,7 @@ class EchoClientDelegate : public ApplicationDelegate {
   }
 
   void BeginEcho(int idx) {
+    if (ending_) return;
     if (idx == num_active_clients_) {
       idx = 0;
     }
@@ -76,6 +79,10 @@ class EchoClientDelegate : public ApplicationDelegate {
         FROM_HERE,
         base::Bind(&EchoClientDelegate::Run, base::Unretained(this), idx),
         kDelayTime);
+    base::MessageLoop::current()->PostDelayedTask(
+        FROM_HERE,
+        base::Bind(&EchoClientDelegate::EndRun, base::Unretained(this)),
+        benchmark_duration_);
   }
 
   void EndEcho(int idx, bool traced) {
@@ -86,6 +93,7 @@ class EchoClientDelegate : public ApplicationDelegate {
 
  private:
   void Run(int idx) {
+    if (ending_) return;
     if (warmup_) {
       echoClients_[idx]->EchoString("ping", EchoResponse(this, idx, false));
     } else {
@@ -121,6 +129,7 @@ class EchoClientDelegate : public ApplicationDelegate {
   }
 
   void ParseArguments(ApplicationImpl* app) {
+    int benchmark_duration_seconds = 0;
     for (size_t i = 0; i < app->args().size(); i++) {
       const std::string& argument = app->args()[i];
       if (GetBoolArgument(argument, "--dart-server", &use_dart_server_)) {
@@ -133,8 +142,16 @@ class EchoClientDelegate : public ApplicationDelegate {
                              &num_active_clients_)) {
         continue;
       }
+      if (GetIntegerArgument(argument, "--benchmark-duration",
+                             &benchmark_duration_seconds)) {
+        benchmark_duration_ =
+            base::TimeDelta::FromSeconds(benchmark_duration_seconds);
+        continue;
+      }
     }
   }
+
+  void EndRun() { ending_ = true; }
 
   void EndWarmup() { warmup_ = false; }
 
@@ -142,6 +159,8 @@ class EchoClientDelegate : public ApplicationDelegate {
   int num_clients_;
   int num_active_clients_;
   bool use_dart_server_;
+  bool ending_;
+  base::TimeDelta benchmark_duration_;
   std::vector<EchoPtr> echoClients_;
   mojo::TracingImpl tracing_;
 };
