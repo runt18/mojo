@@ -335,9 +335,15 @@ patch class _File {
 
   /* patch */ File renameSync(String newPath) => _onSyncOperation();
 
-  /* patch */ Future<File> copy(String newPath) {
-    // TODO(johnmccutchan)
-    throw new UnimplementedError();
+  /* patch */ Future<File> copy(String newPath) async {
+    File copyFile = new File(newPath);
+    Stream<List<int>> input = openRead();
+    IOSink output = copyFile.openWrite();
+    // Copy contents.
+    await output.addStream(input);
+    // Close.
+    await output.close();
+    return copyFile;
   }
 
   /* patch */ File copySync(String newPath) => _onSyncOperation();
@@ -381,27 +387,30 @@ patch class _File {
   }
 
   /* patch */ Stream<List<int>> openRead([int start, int end]) {
-    // TODO(johnmccutchan)
-    throw new UnimplementedError();
+    return new _FileStream(path, start, end);
   }
 
   /* patch */ IOSink openWrite({FileMode mode: FileMode.WRITE,
                                 Encoding encoding: UTF8}) {
-    // TODO(johnmccutchan)
-    throw new UnimplementedError();
+    if (mode != FileMode.WRITE &&
+        mode != FileMode.APPEND &&
+        mode != FileMode.WRITE_ONLY &&
+        mode != FileMode.WRITE_ONLY_APPEND) {
+      throw new ArgumentError('Invalid file mode for this operation');
+    }
+    var consumer = new _FileStreamConsumer(this, mode);
+    return new IOSink(consumer, encoding: encoding);
   }
 
-  /* patch */ Future<List<int>> readAsBytes() {
-    // TODO(johnmccutchan)
-    throw new UnimplementedError();
+  /* patch */ Future<List<int>> readAsBytes() async {
+    RandomAccessFile raf = await open();
+    int length = await raf.length();
+    var bytes = await raf.read(length);
+    await raf.close();
+    return bytes;
   }
 
   /* patch */ List<int> readAsBytesSync() => _onSyncOperation();
-
-  /* patch */ Future<String> readAsString({Encoding encoding: UTF8}) {
-    // TODO(johnmccutchan)
-    throw new UnimplementedError();
-  }
 
   /* patch */ String readAsStringSync({Encoding encoding: UTF8}) {
     return _onSyncOperation();
@@ -413,9 +422,11 @@ patch class _File {
 
   /* patch */ Future<File> writeAsBytes(List<int> bytes,
                                         {FileMode mode: FileMode.WRITE,
-                                         bool flush: false}) {
-    // TODO(johnmccutchan)
-    throw new UnimplementedError();
+                                         bool flush: false}) async {
+    RandomAccessFile raf = await open(mode: mode);
+    await raf.writeFrom(bytes, 0, bytes.length);
+    await raf.close();
+    return this;
   }
 
   /* patch */ void writeAsBytesSync(List<int> bytes,

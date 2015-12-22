@@ -333,5 +333,59 @@ tests(Application application, String url) {
 
       await raf.close();
     });
+    test('File WriteAsString ReadAsString', () async {
+      Directory directory =
+          await Directory.systemTemp.createTemp('raf6');
+      File file = new File('${directory.path}/file.txt');
+      expect(await file.exists(), isFalse);
+      String payload = 'HELLO WORLD';
+      await file.writeAsString(payload);
+      expect(await file.exists(), isTrue);
+      String readBack = await file.readAsString();
+      expect(readBack, payload);
+    });
+    test('File WriteAsString ReadAsLines', () async {
+      Directory directory =
+          await Directory.systemTemp.createTemp('raf7');
+      File file = new File('${directory.path}/file.txt');
+      expect(await file.exists(), isFalse);
+      String payload = 'HELLO\nWORLD';
+      await file.writeAsString(payload);
+      expect(await file.exists(), isTrue);
+      List<String> readBack = await file.readAsLines();
+      expect(readBack.length, 2);
+      expect(readBack[0], 'HELLO');
+      expect(readBack[1], 'WORLD');
+    });
+    test('RandomAccessFile Append', () async {
+      Directory directory =
+          await Directory.systemTemp.createTemp('raf8');
+      File file = new File('${directory.path}/file.txt');
+      expect(await file.exists(), isFalse);
+      String payload = 'HELLO ';
+      await file.writeAsString(payload);
+      expect(await file.exists(), isTrue);
+      RandomAccessFile raf = await file.open(mode: FileMode.WRITE_ONLY_APPEND);
+      await raf.writeFrom([69, 65, 82, 84, 72]);
+      await raf.close();
+      String readBack = await file.readAsString();
+      expect(readBack, 'HELLO EARTH');
+    });
+    test('File Copy', () async {
+      Directory directory =
+          await Directory.systemTemp.createTemp('raf9');
+      File file = new File('${directory.path}/file.txt');
+      File copy = new File('${directory.path}/copy.txt');
+      expect(await file.exists(), isFalse);
+      String payload = 'HELLO WORLD';
+      await file.writeAsString(payload);
+      expect(await file.exists(), isTrue);
+      expect(await copy.exists(), isFalse);
+      await file.copy(copy.path);
+      expect(await file.exists(), isTrue);
+      expect(await copy.exists(), isTrue);
+      String readBack = await copy.readAsString();
+      expect(readBack, payload);
+    });
   });
 }
