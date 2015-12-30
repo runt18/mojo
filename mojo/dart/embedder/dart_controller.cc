@@ -149,21 +149,6 @@ static Dart_Handle PrepareBuiltinLibraries(const std::string& package_root,
   DART_CHECK_VALID(uri);
   result = ResolveScriptUri(builtin_lib, uri);
 
-  // Set up package root.
-  result = Dart_NewStringFromUTF8(
-      reinterpret_cast<const uint8_t*>(package_root.c_str()),
-      package_root.length());
-  DART_CHECK_VALID(result);
-
-  const int kNumArgs = 1;
-  Dart_Handle dart_args[kNumArgs];
-  dart_args[0] = result;
-  result = Dart_Invoke(builtin_lib,
-                     Dart_NewStringFromCString("_setPackageRoot"),
-                     kNumArgs,
-                     dart_args);
-  DART_CHECK_VALID(result);
-
   // Setup the uriBase with the base uri of the mojo app.
   Dart_Handle uri_base = Dart_Invoke(
       builtin_lib,

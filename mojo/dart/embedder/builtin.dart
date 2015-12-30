@@ -27,8 +27,6 @@ class _Logger {
 
 _getPrintClosure() => _print;
 
-
-
 Uri _uriBase() {
   return _entryPointScript.resolve('.');
 }
@@ -78,27 +76,6 @@ Uri get _entryPointScript {
   return _cachedEntryPointScript;
 }
 
-String _rawPackageRoot;
-Uri _cachedPackageRoot;
-Uri get _packageRoot {
-  if (_cachedPackageRoot != null) {
-    return _cachedPackageRoot;
-  }
-  String packageRoot = _enforceTrailingSlash(_rawPackageRoot);
-  if (packageRoot.startsWith('file:') ||
-      packageRoot.startsWith('http:') ||
-      packageRoot.startsWith('https:')) {
-    _cachedPackageRoot = _workingDirectory.resolve(packageRoot);
-  } else {
-    _cachedPackageRoot =
-        _workingDirectory.resolveUri(new Uri.file(packageRoot));
-  }
-  if (_logBuiltin) {
-    _print('# Package root: $_rawPackageRoot -> $_cachedPackageRoot');
-  }
-  return _cachedPackageRoot;
-}
-
 _enforceTrailingSlash(String uri) {
   // Ensure we have a trailing slash character.
   if (!uri.endsWith('/')) {
@@ -109,10 +86,6 @@ _enforceTrailingSlash(String uri) {
 
 _setWorkingDirectory(String cwd) {
   _rawCwd = cwd;
-}
-
-_setPackageRoot(String packageRoot) {
-  _rawPackageRoot = packageRoot;
 }
 
 _resolveScriptUri(String scriptName) {
