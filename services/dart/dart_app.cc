@@ -25,12 +25,14 @@ namespace dart {
 DartApp::DartApp(mojo::InterfaceRequest<Application> application_request,
                  const std::string& base_uri,
                  const base::FilePath& application_dir,
-                 bool strict)
+                 bool strict,
+                 bool run_on_message_loop)
     : application_request_(application_request.Pass()),
       application_dir_(application_dir),
       main_isolate_(nullptr) {
   base::FilePath snapshot_path = application_dir_.Append("snapshot_blob.bin");
   config_.base_uri = base_uri;
+  config_.use_dart_run_loop = !run_on_message_loop;
   // Look for snapshot_blob.bin. If exists, then load from snapshot.
   if (base::PathExists(snapshot_path)) {
     config_.script_uri = snapshot_path.AsUTF8Unsafe();
@@ -83,12 +85,14 @@ static bool IsFileScheme(std::string url) {
 
 DartApp::DartApp(mojo::InterfaceRequest<Application> application_request,
                  const std::string& url,
-                 bool strict)
+                 bool strict,
+                 bool run_on_message_loop)
     : application_request_(application_request.Pass()),
       main_isolate_(nullptr) {
   config_.application_data = reinterpret_cast<void*>(this);
   config_.strict_compilation = strict;
   config_.base_uri = url;
+  config_.use_dart_run_loop = !run_on_message_loop;
   if (IsFileScheme(url)) {
     // Strip file:// and use the path directly.
     config_.script_uri = ExtractPath(url);

@@ -47,6 +47,24 @@ benchmarks = [
     ]
   },
   {
+    'name': 'dart init run (message loop)',
+    'app': 'https://core.mojoapps.io/dart_startup.mojo',
+    'duration': 10,
+    'measurements': [
+      {
+        'name': 'initialize',
+        'spec': 'time_until/Dart/initialized'
+      },
+      {
+        'name': 'accept connection',
+        'spec': 'time_between/Dart/initialized/Dart/connected',
+      }
+    ],
+    'shell-args': [
+      '--args-for=mojo:dart_content_handler --run-on-message-loop',
+    ]
+  },
+  {
     'name': 'cpp init',
     'app': 'https://core.mojoapps.io/trace_me.mojo',
     'duration': 10,

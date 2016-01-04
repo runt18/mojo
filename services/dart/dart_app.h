@@ -26,11 +26,13 @@ class DartApp : public mojo::ContentHandlerFactory::HandledApplicationHolder {
   DartApp(mojo::InterfaceRequest<mojo::Application> application_request,
           const std::string& base_uri,
           const base::FilePath& application_dir,
-          bool strict);
+          bool strict,
+          bool run_on_message_loop);
   // When running from a dart file.
   DartApp(mojo::InterfaceRequest<mojo::Application> application_request,
           const std::string& url,
-          bool strict);
+          bool strict,
+          bool run_on_message_loop);
   virtual ~DartApp();
 
  private:

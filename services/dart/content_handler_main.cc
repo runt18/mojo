@@ -31,6 +31,7 @@ const char kCompleteTimeline[] = "--complete-timeline";
 const char kEnableStrictMode[] = "--enable-strict-mode";
 const char kDisableObservatory[] = "--disable-observatory";
 const char kTraceStartup[] = "--trace-startup";
+const char kRunOnMessageLoop[] = "--run-on-message-loop";
 
 static bool IsDartZip(std::string url) {
   // If the url doesn't end with ".dart" we assume it is a zipped up
@@ -73,7 +74,8 @@ class DartContentHandlerApp : public mojo::ApplicationDelegate {
         content_handler_factory_(&content_handler_),
         strict_content_handler_factory_(&strict_content_handler_),
         service_connector_(nullptr),
-        default_strict_(false) {}
+        default_strict_(false),
+        run_on_message_loop_(false) {}
 
   ~DartContentHandlerApp() override {}
 
@@ -93,6 +95,10 @@ class DartContentHandlerApp : public mojo::ApplicationDelegate {
           }
           callback.Run();
         });
+  }
+
+  bool run_on_message_loop() const {
+    return run_on_message_loop_;
   }
 
  private:
@@ -117,6 +123,10 @@ class DartContentHandlerApp : public mojo::ApplicationDelegate {
                           &url_response_disk_cache_);
     service_connector_ = new ContentHandlerAppServiceConnector(app);
 
+    if (app->HasArg(kRunOnMessageLoop)) {
+      run_on_message_loop_ = true;
+    }
+
     const char* timeline_arg = nullptr;
     int timeline_arg_count = 0;
     if (app->HasArg(kCompleteTimeline)) {
@@ -128,6 +138,7 @@ class DartContentHandlerApp : public mojo::ApplicationDelegate {
     if (app->HasArg(kDisableObservatory)) {
       observatory_enabled = false;
     }
+
     bool success = mojo::dart::DartController::Initialize(
         service_connector_,
         default_strict_,
@@ -184,6 +195,7 @@ class DartContentHandlerApp : public mojo::ApplicationDelegate {
   ContentHandlerAppServiceConnector* service_connector_;
   DartTracingImpl dart_tracing_;
   bool default_strict_;
+  bool run_on_message_loop_;
 
   DISALLOW_COPY_AND_ASSIGN(DartContentHandlerApp);
 };
@@ -198,6 +210,7 @@ DartContentHandler::CreateApplication(
   TRACE_EVENT1("dart_content_handler", "DartContentHandler::CreateApplication",
                "url", response->url.get());
 
+  const bool run_on_message_loop = app_->run_on_message_loop();
   base::FilePath application_dir;
   std::string url = response->url.get();
   if (IsDartZip(response->url.get())) {
@@ -215,11 +228,18 @@ DartContentHandler::CreateApplication(
                 base::MessageLoop::QuitWhenIdleClosure())));
     base::RunLoop().Run();
     return make_scoped_ptr(
-        new DartApp(application_request.Pass(), url, application_dir, strict_));
+        new DartApp(application_request.Pass(),
+                    url,
+                    application_dir,
+                    strict_,
+                    run_on_message_loop));
   } else {
     // Loading a raw .dart file pointed at by |url|.
     return make_scoped_ptr(
-        new DartApp(application_request.Pass(), url, strict_));
+        new DartApp(application_request.Pass(),
+                    url,
+                    strict_,
+                    run_on_message_loop));
   }
 }
 
