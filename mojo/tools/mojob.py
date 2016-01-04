@@ -284,7 +284,7 @@ def main():
 
   parent_parser.add_argument('--target-cpu',
                              help='CPU architecture to build for.',
-                             choices=['x64', 'x86', 'arm'])
+                             choices=['x64', 'x86', 'arm', 'arm64'])
 
   parent_parser.add_argument('--target-sysroot',
                              help='Location of sysroot for target',

@@ -27,6 +27,7 @@ class Config(object):
   ARCH_X86 = "x86"
   ARCH_X64 = "x64"
   ARCH_ARM = "arm"
+  ARCH_ARM64 = "arm64"
 
   # Valid values for sanitizer (None is also valid):
   SANITIZER_ASAN = "asan"
@@ -48,7 +49,7 @@ class Config(object):
                          Config.OS_IOS, Config.OS_LINUX,
                          Config.OS_MAC, Config.OS_WINDOWS)
     assert target_cpu in (None, Config.ARCH_X86, Config.ARCH_X64,
-                           Config.ARCH_ARM)
+                           Config.ARCH_ARM, Config.ARCH_ARM64)
     assert isinstance(is_debug, bool)
     assert isinstance(is_official_build, bool)
     assert is_clang is None or isinstance(is_clang, bool)
