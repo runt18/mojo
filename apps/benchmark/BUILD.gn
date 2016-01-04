@@ -51,6 +51,7 @@ mojo_native_application("apptests") {
 
   deps = [
     ":lib",
+    "//base",
     "//mojo/application",
     "//mojo/application:test_support",
     "//mojo/public/cpp/bindings:callback",
