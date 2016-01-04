@@ -56,8 +56,10 @@ void DartTest::RunDartTest(const base::FilePath& path,
                           script_arguments_c_str.size());
   }
 
-  bool success = DartController::RunDartScript(config);
-  EXPECT_TRUE(success) << error;
+  Dart_Isolate isolate = DartController::StartupIsolate(config);
+  EXPECT_TRUE(isolate != nullptr) << error;
+  DartController::RunToCompletion(isolate);
+  DartController::ShutdownIsolate(isolate);
   EXPECT_EQ(expect_unhandled_exception, unhandled_exception);
   EXPECT_EQ(expected_unclosed_handles, closed_handles);
 }

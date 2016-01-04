@@ -304,7 +304,9 @@ class DartToCppTest : public DartTest {
   }
 
   static void RunDartSide(const DartControllerConfig& config) {
-    DartController::RunDartScript(config);
+    Dart_Isolate isolate = DartController::StartupIsolate(config);
+    DartController::RunToCompletion(isolate);
+    DartController::ShutdownIsolate(isolate);
   }
 
   bool RunWithDartOnThread(base::Thread* dart_thread,

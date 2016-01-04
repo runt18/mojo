@@ -21,9 +21,13 @@ namespace mojo {
 namespace dart {
 
 struct DartControllerConfig {
+  static const bool kDefaultUseNetworkLoader = false;
+  static const bool kDefaultUseDartRunLoop = true;
+  static const bool kDefaultStrictCompilation = false;
+
   DartControllerConfig()
       : application_data(nullptr),
-        strict_compilation(false),
+        strict_compilation(kDefaultStrictCompilation),
         entropy(nullptr),
         vm_flags(nullptr),
         vm_flags_count(0),
@@ -32,7 +36,8 @@ struct DartControllerConfig {
         handle(MOJO_HANDLE_INVALID),
         compile_all(false),
         error(nullptr),
-        use_network_loader(false) {
+        use_network_loader(kDefaultUseNetworkLoader),
+        use_dart_run_loop(kDefaultUseDartRunLoop) {
   }
 
   void SetVmFlags(const char** vm_flags, intptr_t vm_flags_count) {
@@ -60,6 +65,7 @@ struct DartControllerConfig {
   bool compile_all;
   char** error;
   bool use_network_loader;
+  bool use_dart_run_loop;
 };
 
 // The DartController may need to request for services to be connected
@@ -97,9 +103,15 @@ class DartController {
                          const char** extra_args,
                          int extra_args_count);
 
-  // Assumes Initialize has been called. Runs the main function using the
-  // script, arguments, and package_root given by 'config'.
-  static bool RunDartScript(const DartControllerConfig& config);
+  // Setup an isolate to run the program specified in |config|. Invokes
+  // the main function and then exits.
+  static Dart_Isolate StartupIsolate(const DartControllerConfig& config);
+
+  // Cleanup |isolate|.
+  static void ShutdownIsolate(Dart_Isolate isolate);
+
+  // Runs |isolate| to completion. Returns false if isolate exited with error.
+  static bool RunToCompletion(Dart_Isolate isolate);
 
   // Waits for the handle watcher isolate to finish and shuts down the VM.
   static void Shutdown();
@@ -116,6 +128,8 @@ class DartController {
                                        Dart_Handle url);
 
  private:
+  static void MessageNotifyCallback(Dart_Isolate dest_isolate);
+
   // Set the control handle in the isolate.
   static Dart_Handle SetHandleWatcherControlHandle();
 
@@ -137,7 +151,8 @@ class DartController {
                                           std::string base_uri,
                                           const std::string& package_root,
                                           char** error,
-                                          bool use_network_loader);
+                                          bool use_network_loader,
+                                          bool use_dart_run_loop);
 
   static void InitVmIfNeeded(Dart_EntropySource entropy,
                              const char** arguments,

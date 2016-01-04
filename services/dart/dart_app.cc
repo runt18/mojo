@@ -27,7 +27,8 @@ DartApp::DartApp(mojo::InterfaceRequest<Application> application_request,
                  const base::FilePath& application_dir,
                  bool strict)
     : application_request_(application_request.Pass()),
-      application_dir_(application_dir) {
+      application_dir_(application_dir),
+      main_isolate_(nullptr) {
   base::FilePath snapshot_path = application_dir_.Append("snapshot_blob.bin");
   config_.base_uri = base_uri;
   // Look for snapshot_blob.bin. If exists, then load from snapshot.
@@ -83,7 +84,8 @@ static bool IsFileScheme(std::string url) {
 DartApp::DartApp(mojo::InterfaceRequest<Application> application_request,
                  const std::string& url,
                  bool strict)
-    : application_request_(application_request.Pass()) {
+    : application_request_(application_request.Pass()),
+      main_isolate_(nullptr) {
   config_.application_data = reinterpret_cast<void*>(this);
   config_.strict_compilation = strict;
   config_.base_uri = url;
@@ -105,21 +107,28 @@ DartApp::DartApp(mojo::InterfaceRequest<Application> application_request,
 }
 
 DartApp::~DartApp() {
+  if (main_isolate_ != nullptr) {
+    mojo::dart::DartController::ShutdownIsolate(main_isolate_);
+    main_isolate_ = nullptr;
+  }
 }
 
 void DartApp::OnAppLoaded() {
-  // RunDartScript blocks the message loop.
-  base::trace_event::TraceLog::GetInstance()
-      ->SetCurrentThreadBlocksMessageLoop();
   char* error = nullptr;
   config_.handle = application_request_.PassMessagePipe().release().value();
   config_.error = &error;
-  bool success = mojo::dart::DartController::RunDartScript(config_);
-  if (!success) {
+  main_isolate_ = mojo::dart::DartController::StartupIsolate(config_);
+  if (!main_isolate_) {
     LOG(ERROR) << error;
     free(error);
   }
-  base::MessageLoop::current()->QuitWhenIdle();
+  if (config_.use_dart_run_loop) {
+    // let TraceLog know about that RunToCompletion blocks the message loop.
+    auto trace_log = base::trace_event::TraceLog::GetInstance();
+    trace_log->SetCurrentThreadBlocksMessageLoop();
+    mojo::dart::DartController::RunToCompletion(main_isolate_);
+    base::MessageLoop::current()->QuitWhenIdle();
+  }
 }
 
 }  // namespace dart

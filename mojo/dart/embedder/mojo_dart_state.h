@@ -9,6 +9,7 @@
 #include <string>
 
 #include "base/callback.h"
+#include "base/message_loop/message_loop.h"
 #include "mojo/public/c/system/types.h"
 #include "mojo/public/cpp/system/message_pipe.h"
 #include "mojo/services/network/interfaces/network_service.mojom.h"
@@ -30,14 +31,19 @@ class MojoDartState : public tonic::DartState {
                 IsolateCallbacks callbacks,
                 std::string script_uri,
                 std::string base_uri,
-                std::string package_root)
+                std::string package_root,
+                bool use_network_loader,
+                bool use_dart_run_loop)
       : application_data_(application_data),
         strict_compilation_(strict_compilation),
         callbacks_(callbacks),
         script_uri_(script_uri),
         base_uri_(base_uri),
         package_root_(package_root),
-        library_provider_(nullptr) {
+        library_provider_(nullptr),
+        use_network_loader_(use_network_loader),
+        use_dart_run_loop_(use_dart_run_loop),
+        task_runner_(nullptr) {
   }
 
   void* application_data() const { return application_data_; }
@@ -46,6 +52,9 @@ class MojoDartState : public tonic::DartState {
   const std::string& script_uri() const { return script_uri_; }
   const std::string& base_uri() const { return base_uri_; }
   const std::string& package_root() const { return package_root_; }
+
+  bool use_network_loader() const { return use_network_loader_; }
+  bool use_dart_run_loop() const { return use_dart_run_loop_; }
 
   void set_library_provider(tonic::DartLibraryProvider* library_provider) {
     library_provider_.reset(library_provider);
@@ -76,6 +85,15 @@ class MojoDartState : public tonic::DartState {
     return library_provider_.get();
   }
 
+  scoped_refptr<base::SingleThreadTaskRunner> task_runner() const {
+    return task_runner_;
+  }
+
+  void set_task_runner(
+      const scoped_refptr<base::SingleThreadTaskRunner>& runner) {
+    task_runner_ = runner;
+  }
+
   static MojoDartState* From(Dart_Isolate isolate) {
     return reinterpret_cast<MojoDartState*>(DartState::From(isolate));
   }
@@ -97,6 +115,9 @@ class MojoDartState : public tonic::DartState {
   std::string package_root_;
   std::unique_ptr<tonic::DartLibraryProvider> library_provider_;
   mojo::NetworkServicePtr network_service_;
+  bool use_network_loader_;
+  bool use_dart_run_loop_;
+  scoped_refptr<base::SingleThreadTaskRunner> task_runner_;
 };
 
 }  // namespace dart

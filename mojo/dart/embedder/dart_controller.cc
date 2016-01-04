@@ -192,8 +192,8 @@ static void CloseHandlesOnError(Dart_Handle error) {
   }
 }
 
-static void RunIsolate(Dart_Isolate isolate,
-                       const DartControllerConfig& config) {
+static void SetupIsolate(Dart_Isolate isolate,
+                         const DartControllerConfig& config) {
   tonic::DartIsolateScope isolate_scope(isolate);
   tonic::DartApiScope api_scope;
 
@@ -231,15 +231,20 @@ static void RunIsolate(Dart_Isolate isolate,
                        kStartIsolateArgumentsLength,
                        start_isolate_args);
   DART_CHECK_VALID(result);
+}
 
-  result = Dart_RunLoop();
+static bool RunIsolate(Dart_Isolate isolate) {
+  tonic::DartIsolateScope isolate_scope(isolate);
+  tonic::DartApiScope api_scope;
+
+  Dart_Handle result = Dart_RunLoop();
   CloseHandlesOnError(result);
 
   // Here we log the error, but we don't do DART_CHECK_VALID because we don't
   // want to bring the whole process down due to an error in application code,
   // whereas above we do want to bring the whole process down for a bug in
   // library or generated code.
-  tonic::LogIfError(result);
+  return tonic::LogIfError(result);
 }
 
 Dart_Handle DartController::LibraryTagHandler(Dart_LibraryTag tag,
@@ -261,13 +266,16 @@ Dart_Isolate DartController::CreateIsolateHelper(
     std::string base_uri,
     const std::string& package_root,
     char** error,
-    bool use_network_loader) {
+    bool use_network_loader,
+    bool use_dart_run_loop) {
   auto isolate_data = new MojoDartState(dart_app,
                                         strict_compilation,
                                         callbacks,
                                         script_uri,
                                         base_uri,
-                                        package_root);
+                                        package_root,
+                                        use_network_loader,
+                                        use_dart_run_loop);
   CHECK(isolate_snapshot_buffer != nullptr);
   Dart_Isolate isolate =
       Dart_CreateIsolate(base_uri.c_str(), "main", isolate_snapshot_buffer,
@@ -320,6 +328,17 @@ Dart_Isolate DartController::CreateIsolateHelper(
     result = SetHandleWatcherControlHandle();
     DART_CHECK_VALID(result);
 
+    if (!use_dart_run_loop) {
+      // Verify that we are being created on a thread with a message loop.
+      DCHECK(base::MessageLoop::current());
+      // Set the task runner.
+      isolate_data->set_task_runner(
+          base::MessageLoop::current()->task_runner());
+      // Install message notify callback.
+      Dart_SetMessageNotifyCallback(MessageNotifyCallback);
+      isolate_data->set_message_notify_callback(MessageNotifyCallback);
+    }
+
     // The VM is creating the service isolate.
     if (Dart_IsServiceIsolate(isolate)) {
       service_isolate_spawned_ = true;
@@ -358,6 +377,34 @@ Dart_Isolate DartController::CreateIsolateHelper(
   DCHECK(Dart_CurrentIsolate() == nullptr);
 
   return isolate;
+}
+
+static void CallHandleMessage(base::WeakPtr<tonic::DartState> dart_state) {
+  if (!dart_state)
+    return;
+
+  tonic::DartIsolateScope scope(dart_state->isolate());
+  tonic::DartApiScope dart_api_scope;
+  tonic::LogIfError(Dart_HandleMessage());
+  if (!Dart_HasLivePorts()) {
+    base::MessageLoop::current()->QuitWhenIdle();
+  }
+}
+
+void DartController::MessageNotifyCallback(Dart_Isolate dest_isolate) {
+  // Grab the destination isolate's state.
+  auto dest_isolate_state = MojoDartState::From(dest_isolate);
+  CHECK(dest_isolate_state);
+
+  // Grab the task runner.
+  scoped_refptr<base::SingleThreadTaskRunner> task_runner =
+      dest_isolate_state->task_runner();
+  DCHECK(task_runner);
+
+  // Schedule a task to run on the message loop thread.
+  task_runner->PostTask(
+      FROM_HERE,
+      base::Bind(&CallHandleMessage, dest_isolate_state->GetWeakPtr()));
 }
 
 Dart_Handle DartController::SetHandleWatcherControlHandle() {
@@ -415,13 +462,15 @@ Dart_Isolate DartController::IsolateCreateCallback(const char* script_uri,
   }
   // Inherit parameters from parent isolate (if any).
   void* dart_app = nullptr;
-  bool strict_compilation = false;
-  // TODO(johnmccutchan): Use parent's setting?
-  bool use_network_loader = false;
+  bool strict_compilation = DartControllerConfig::kDefaultStrictCompilation;
+  bool use_network_loader = DartControllerConfig::kDefaultUseNetworkLoader;
+  // Currently, all spawned isolates run on the Dart thread pool.
+  bool use_dart_run_loop = true;
   IsolateCallbacks callbacks;
   if (parent_isolate_data != nullptr) {
     dart_app = parent_isolate_data->application_data();
     strict_compilation = parent_isolate_data->strict_compilation();
+    use_network_loader = parent_isolate_data->use_network_loader();
     callbacks = parent_isolate_data->callbacks();
   }
   return CreateIsolateHelper(dart_app,
@@ -431,7 +480,8 @@ Dart_Isolate DartController::IsolateCreateCallback(const char* script_uri,
                              base_uri_string,
                              package_root_string,
                              error,
-                             use_network_loader);
+                             use_network_loader,
+                             use_dart_run_loop);
 }
 
 void DartController::IsolateShutdownCallback(void* callback_data) {
@@ -645,7 +695,12 @@ bool DartController::Initialize(
   return true;
 }
 
-bool DartController::RunDartScript(const DartControllerConfig& config) {
+bool DartController::RunToCompletion(Dart_Isolate isolate) {
+  return !RunIsolate(isolate);
+}
+
+Dart_Isolate DartController::StartupIsolate(
+    const DartControllerConfig& config) {
   const bool strict = strict_compilation_ || config.strict_compilation;
   Dart_Isolate isolate = CreateIsolateHelper(config.application_data,
                                              strict,
@@ -654,18 +709,20 @@ bool DartController::RunDartScript(const DartControllerConfig& config) {
                                              config.base_uri,
                                              config.package_root,
                                              config.error,
-                                             config.use_network_loader);
+                                             config.use_network_loader,
+                                             config.use_dart_run_loop);
   if (isolate == nullptr) {
-    return false;
+    return isolate;
   }
 
-  RunIsolate(isolate, config);
+  SetupIsolate(isolate, config);
 
-  // Cleanup.
+  return isolate;
+}
+
+void DartController::ShutdownIsolate(Dart_Isolate isolate) {
   Dart_EnterIsolate(isolate);
   Dart_ShutdownIsolate();
-
-  return true;
 }
 
 void DartController::Shutdown() {

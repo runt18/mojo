@@ -19,7 +19,7 @@ DartState::Scope::~Scope() {
 }
 
 DartState::DartState()
-    : isolate_(NULL),
+    : isolate_(nullptr),
       class_library_(std::unique_ptr<DartClassLibrary>(new DartClassLibrary)),
       exception_factory_(std::unique_ptr<DartExceptionFactory>(
           new DartExceptionFactory(this))),
@@ -27,6 +27,7 @@ DartState::DartState()
           new DartLibraryLoader(this))),
       timer_heap_(std::unique_ptr<DartTimerHeap>(
           new DartTimerHeap())),
+      message_notify_callback_(nullptr),
       weak_factory_(this) {
 }
 

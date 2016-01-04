@@ -39,6 +39,7 @@ class DartApp : public mojo::ContentHandlerFactory::HandledApplicationHolder {
   mojo::InterfaceRequest<mojo::Application> application_request_;
   mojo::dart::DartControllerConfig config_;
   base::FilePath application_dir_;
+  Dart_Isolate main_isolate_;
 
   DISALLOW_COPY_AND_ASSIGN(DartApp);
 };

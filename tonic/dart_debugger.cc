@@ -7,7 +7,7 @@
 #include "dart/runtime/include/dart_api.h"
 #include "dart/runtime/include/dart_native_api.h"
 #include "dart/runtime/include/dart_tools_api.h"
-
+#include "tonic/dart_state.h"
 
 namespace tonic {
 
@@ -17,6 +17,8 @@ MonitorLocker::~MonitorLocker() {
 
 void DartDebuggerIsolate::MessageLoop() {
   MonitorLocker ml(&monitor_);
+  Dart_MessageNotifyCallback saved_message_notify_callback =
+      DartState::Current()->message_notify_callback();
   // Request notification on isolate messages.  This allows us to
   // respond to vm service messages while at breakpoint.
   Dart_SetMessageNotifyCallback(DartDebugger::NotifyIsolate);
@@ -34,7 +36,8 @@ void DartDebuggerIsolate::MessageLoop() {
     }
     ml.Wait();
   }
-  Dart_SetMessageNotifyCallback(nullptr);
+  // Restore the embedder's message notify callback.
+  Dart_SetMessageNotifyCallback(saved_message_notify_callback);
 }
 
 void DartDebugger::BptResolvedHandler(Dart_IsolateId isolate_id,
