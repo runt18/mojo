@@ -11,6 +11,7 @@ import 'src/file_apptests.dart' as file;
 import 'src/pingpong_apptests.dart' as pingpong;
 import 'src/io_http_apptests.dart' as io_http;
 import 'src/io_internet_address_apptests.dart' as io_internet_address;
+import 'src/uri_apptests.dart' as uri;
 import 'src/versioning_apptests.dart' as versioning;
 
 main(List args) {
@@ -21,6 +22,7 @@ main(List args) {
     io_internet_address.tests,
     io_http.tests,
     pingpong.pingpongApptests,
+    uri.tests,
     versioning.tests
   ];
   runAppTests(args[0], tests);

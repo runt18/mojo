@@ -49,6 +49,7 @@ struct DartControllerConfig {
   bool strict_compilation;
   std::string script_uri;
   std::string package_root;
+  std::string base_uri;
   IsolateCallbacks callbacks;
   Dart_EntropySource entropy;
   const char** vm_flags;
@@ -133,6 +134,7 @@ class DartController {
                                           bool strict_compilation,
                                           IsolateCallbacks callbacks,
                                           std::string script_uri,
+                                          std::string base_uri,
                                           const std::string& package_root,
                                           char** error,
                                           bool use_network_loader);

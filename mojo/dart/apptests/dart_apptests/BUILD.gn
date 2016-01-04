@@ -16,6 +16,7 @@ dart_pkg("dart_apptests") {
     "lib/src/io_http_apptests.dart",
     "lib/src/io_internet_address_apptests.dart",
     "lib/src/pingpong_apptests.dart",
+    "lib/src/uri_apptests.dart",
     "lib/src/versioning_apptests.dart",
     "pubspec.yaml",
   ]

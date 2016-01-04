@@ -23,12 +23,13 @@ using mojo::Application;
 namespace dart {
 
 DartApp::DartApp(mojo::InterfaceRequest<Application> application_request,
+                 const std::string& base_uri,
                  const base::FilePath& application_dir,
                  bool strict)
     : application_request_(application_request.Pass()),
       application_dir_(application_dir) {
   base::FilePath snapshot_path = application_dir_.Append("snapshot_blob.bin");
-
+  config_.base_uri = base_uri;
   // Look for snapshot_blob.bin. If exists, then load from snapshot.
   if (base::PathExists(snapshot_path)) {
     config_.script_uri = snapshot_path.AsUTF8Unsafe();
@@ -85,6 +86,7 @@ DartApp::DartApp(mojo::InterfaceRequest<Application> application_request,
     : application_request_(application_request.Pass()) {
   config_.application_data = reinterpret_cast<void*>(this);
   config_.strict_compilation = strict;
+  config_.base_uri = url;
   if (IsFileScheme(url)) {
     // Strip file:// and use the path directly.
     config_.script_uri = ExtractPath(url);

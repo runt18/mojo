@@ -29,11 +29,13 @@ class MojoDartState : public tonic::DartState {
                 bool strict_compilation,
                 IsolateCallbacks callbacks,
                 std::string script_uri,
+                std::string base_uri,
                 std::string package_root)
       : application_data_(application_data),
         strict_compilation_(strict_compilation),
         callbacks_(callbacks),
         script_uri_(script_uri),
+        base_uri_(base_uri),
         package_root_(package_root),
         library_provider_(nullptr) {
   }
@@ -42,6 +44,7 @@ class MojoDartState : public tonic::DartState {
   bool strict_compilation() const { return strict_compilation_; }
   const IsolateCallbacks& callbacks() const { return callbacks_; }
   const std::string& script_uri() const { return script_uri_; }
+  const std::string& base_uri() const { return base_uri_; }
   const std::string& package_root() const { return package_root_; }
 
   void set_library_provider(tonic::DartLibraryProvider* library_provider) {
@@ -90,6 +93,7 @@ class MojoDartState : public tonic::DartState {
   bool strict_compilation_;
   IsolateCallbacks callbacks_;
   std::string script_uri_;
+  std::string base_uri_;
   std::string package_root_;
   std::unique_ptr<tonic::DartLibraryProvider> library_provider_;
   mojo::NetworkServicePtr network_service_;

@@ -24,6 +24,7 @@ class DartApp : public mojo::ContentHandlerFactory::HandledApplicationHolder {
  public:
   // When running from an extracted zip file.
   DartApp(mojo::InterfaceRequest<mojo::Application> application_request,
+          const std::string& base_uri,
           const base::FilePath& application_dir,
           bool strict);
   // When running from a dart file.

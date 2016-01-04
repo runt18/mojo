@@ -44,34 +44,8 @@ static const char* kCoreLibURL = "dart:core";
 
 static uint8_t snapshot_magic_number[] = { 0xf5, 0xf5, 0xdc, 0xdc };
 
-static Dart_Handle SetWorkingDirectory(Dart_Handle builtin_lib) {
-  base::FilePath current_dir;
-  PathService::Get(base::DIR_CURRENT, &current_dir);
-
-  const int kNumArgs = 1;
-  Dart_Handle dart_args[kNumArgs];
-  std::string current_dir_string = current_dir.AsUTF8Unsafe();
-  dart_args[0] = Dart_NewStringFromUTF8(
-      reinterpret_cast<const uint8_t*>(current_dir_string.data()),
-      current_dir_string.length());
-  return Dart_Invoke(builtin_lib,
-                     Dart_NewStringFromCString("_setWorkingDirectory"),
-                     kNumArgs,
-                     dart_args);
-}
-
-static Dart_Handle ResolveScriptUri(Dart_Handle builtin_lib, Dart_Handle uri) {
-  const int kNumArgs = 1;
-  Dart_Handle dart_args[kNumArgs];
-  dart_args[0] = uri;
-  return Dart_Invoke(builtin_lib,
-                     Dart_NewStringFromCString("_resolveScriptUri"),
-                     kNumArgs,
-                     dart_args);
-}
-
 static Dart_Handle PrepareBuiltinLibraries(const std::string& package_root,
-                                           const std::string& script_uri) {
+                                           const std::string& base_uri) {
   // First ensure all required libraries are available.
   Dart_Handle builtin_lib = Builtin::PrepareLibrary(Builtin::kBuiltinLibrary);
   Builtin::PrepareLibrary(Builtin::kMojoInternalLibrary);
@@ -136,18 +110,15 @@ static Dart_Handle PrepareBuiltinLibraries(const std::string& package_root,
       schedule_args);
   DART_CHECK_VALID(result);
 
-  // Set current working directory.
-  result = SetWorkingDirectory(builtin_lib);
-  if (Dart_IsError(result)) {
-    return result;
-  }
-
-  // Set script entry uri.
+  // Set the base URI.
   Dart_Handle uri = Dart_NewStringFromUTF8(
-      reinterpret_cast<const uint8_t*>(script_uri.c_str()),
-      script_uri.length());
+      reinterpret_cast<const uint8_t*>(base_uri.c_str()),
+      base_uri.length());
   DART_CHECK_VALID(uri);
-  result = ResolveScriptUri(builtin_lib, uri);
+  result = Dart_SetField(builtin_lib,
+                         Dart_NewStringFromCString("_rawUriBase"),
+                         uri);
+  DART_CHECK_VALID(result);
 
   // Setup the uriBase with the base uri of the mojo app.
   Dart_Handle uri_base = Dart_Invoke(
@@ -180,11 +151,11 @@ static void SetupStartIsolateArguments(
   DART_CHECK_VALID(start_isolate_args[0]);
   start_isolate_args[1] = Dart_NewList(3);  // args
   DART_CHECK_VALID(start_isolate_args[1]);
-  Dart_Handle script_uri = Dart_NewStringFromUTF8(
-      reinterpret_cast<const uint8_t*>(config.script_uri.data()),
-      config.script_uri.length());
+  Dart_Handle base_uri = Dart_NewStringFromUTF8(
+      reinterpret_cast<const uint8_t*>(config.base_uri.data()),
+      config.base_uri.length());
   Dart_ListSetAt(start_isolate_args[1], 0, Dart_NewInteger(config.handle));
-  Dart_ListSetAt(start_isolate_args[1], 1, script_uri);
+  Dart_ListSetAt(start_isolate_args[1], 1, base_uri);
   Dart_Handle script_args = Dart_NewList(config.script_flags_count);
   DART_CHECK_VALID(script_args);
   Dart_ListSetAt(start_isolate_args[1], 2, script_args);
@@ -287,6 +258,7 @@ Dart_Isolate DartController::CreateIsolateHelper(
     bool strict_compilation,
     IsolateCallbacks callbacks,
     std::string script_uri,
+    std::string base_uri,
     const std::string& package_root,
     char** error,
     bool use_network_loader) {
@@ -294,10 +266,11 @@ Dart_Isolate DartController::CreateIsolateHelper(
                                         strict_compilation,
                                         callbacks,
                                         script_uri,
+                                        base_uri,
                                         package_root);
   CHECK(isolate_snapshot_buffer != nullptr);
   Dart_Isolate isolate =
-      Dart_CreateIsolate(script_uri.c_str(), "main", isolate_snapshot_buffer,
+      Dart_CreateIsolate(base_uri.c_str(), "main", isolate_snapshot_buffer,
                          nullptr, isolate_data, error);
   if (isolate == nullptr) {
     delete isolate_data;
@@ -340,7 +313,7 @@ Dart_Isolate DartController::CreateIsolateHelper(
     // Toggle checked mode.
     Dart_IsolateSetStrictCompilation(strict_compilation);
     // Prepare builtin and its dependent libraries.
-    result = PrepareBuiltinLibraries(package_root, script_uri);
+    result = PrepareBuiltinLibraries(package_root, base_uri);
     DART_CHECK_VALID(result);
 
     // Set the handle watcher's control handle in the spawning isolate.
@@ -417,16 +390,22 @@ Dart_Isolate DartController::IsolateCreateCallback(const char* script_uri,
   auto parent_isolate_data = MojoDartState::Cast(callback_data);
   std::string script_uri_string;
   std::string package_root_string;
+  std::string base_uri_string;
 
   if (script_uri == nullptr) {
+    // We are spawning a function, use the parent isolate's base URI.
     if (callback_data == nullptr) {
       *error = strdup("Invalid 'callback_data' - Unable to spawn new isolate");
       return nullptr;
     }
     script_uri_string = parent_isolate_data->script_uri();
+    base_uri_string = parent_isolate_data->base_uri();
   } else {
+    // If we are spawning a URI directly, use the URI as the base URI.
     script_uri_string = std::string(script_uri);
+    base_uri_string = script_uri_string;
   }
+
   if (package_root == nullptr) {
     if (parent_isolate_data != nullptr) {
       package_root_string = parent_isolate_data->package_root();
@@ -449,6 +428,7 @@ Dart_Isolate DartController::IsolateCreateCallback(const char* script_uri,
                              strict_compilation,
                              callbacks,
                              script_uri_string,
+                             base_uri_string,
                              package_root_string,
                              error,
                              use_network_loader);
@@ -671,6 +651,7 @@ bool DartController::RunDartScript(const DartControllerConfig& config) {
                                              strict,
                                              config.callbacks,
                                              config.script_uri,
+                                             config.base_uri,
                                              config.package_root,
                                              config.error,
                                              config.use_network_loader);

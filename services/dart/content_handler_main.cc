@@ -215,7 +215,7 @@ DartContentHandler::CreateApplication(
                 base::MessageLoop::QuitWhenIdleClosure())));
     base::RunLoop().Run();
     return make_scoped_ptr(
-        new DartApp(application_request.Pass(), application_dir, strict_));
+        new DartApp(application_request.Pass(), url, application_dir, strict_));
   } else {
     // Loading a raw .dart file pointed at by |url|.
     return make_scoped_ptr(

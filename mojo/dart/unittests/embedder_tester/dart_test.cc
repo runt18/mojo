@@ -44,6 +44,7 @@ void DartTest::RunDartTest(const base::FilePath& path,
   config.strict_compilation = true;
   config.compile_all = compile_all;
   config.script_uri = path.AsUTF8Unsafe();
+  config.base_uri = path.AsUTF8Unsafe();
   config.package_root = package_root.AsUTF8Unsafe();
   config.callbacks.exception =
       base::Bind(&ExceptionCallback, &unhandled_exception, &closed_handles);
