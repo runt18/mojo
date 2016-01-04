@@ -231,7 +231,7 @@ def main():
                       help="root URL of the server to upload binaries to")
   args = parser.parse_args()
   is_official_build = args.official
-  target_os = Config.OS_LINUX
+  target_os = None
   if args.android:
     target_os = Config.OS_ANDROID
   elif is_official_build:
@@ -243,6 +243,13 @@ def main():
                   upload_location=args.upload_location,
                   use_default_path_for_gsutil=args.use_default_path_for_gsutil,
                   verbose=args.verbose)
+
+  if not is_official_build:
+    upload_dart_snapshotter(config, args.dry_run, args.verbose)
+
+  if config.target_os == Config.OS_MAC:
+    print "Skipping uploading apps and shell (mac build)."
+    return 0
 
   upload_shell(config, args.dry_run, args.verbose)
 
@@ -257,8 +264,6 @@ def main():
 
   upload_symbols(config, build_directory,
                  args.symbols_upload_url, args.dry_run)
-
-  upload_dart_snapshotter(config, args.dry_run, args.verbose)
 
   upload_system_thunks_lib(config, args.dry_run)
 
