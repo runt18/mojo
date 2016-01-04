@@ -36,5 +36,7 @@ action("mojom_parser") {
   args = [
     "--src-root",
     rebase_path("//", root_build_dir),
+    "--out-dir",
+    rebase_path(target_out_dir, root_build_dir),
   ]
 }
