@@ -85,7 +85,7 @@ Future runTest(
   conformanceImpl =
       new ConformanceTestInterfaceImpl(completer, pipe.endpoints[0]);
   conformanceImpl.onError = ((e) {
-    assert(e is MojoCodecError);
+    assert(e.error is MojoCodecError);
     // TODO(zra): Make the error messages conform?
     // assert(e == expected);
     conformanceImpl.close();
