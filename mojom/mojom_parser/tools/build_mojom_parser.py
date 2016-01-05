@@ -41,7 +41,8 @@ class ParserBuilder(object):
       go_tool=None,
       go_root=None,
       out_dir=None,
-      upload=False):
+      upload=False,
+      quiet=False):
     """Builds a parser building function.
 
     Args:
@@ -55,6 +56,7 @@ class ParserBuilder(object):
           (If None, uses the current working directory.)
       upload: If True, get the path to the depot tools as those are needed to
           upload only. If False, the upload method will fail.
+      quiet: If True, do not print any messages on success.
     """
     if src_root:
       self._src_root = os.path.abspath(src_root)
@@ -84,6 +86,7 @@ class ParserBuilder(object):
     if upload:
       self._depot_tools_path = self._get_depot_tools_path(self._src_root)
 
+    self._quiet = quiet
 
   def upload(self, target_os, target_arch):
     """Uploads the mojom parser that was just created for the given target.
@@ -109,7 +112,8 @@ class ParserBuilder(object):
     stamp_file = os.path.join(self._src_root, 'mojo', 'public', 'tools',
         'bindings', 'mojom_parser', 'bin', target_dir, 'mojom_parser.sha1')
     shutil.move(sha1_file, stamp_file)
-    print "Wrote stamp file %s. You probably want to commit this." % stamp_file
+    self._info_print(
+        "Wrote stamp file %s. You probably want to commit this." % stamp_file)
 
     return 0
 
@@ -134,13 +138,15 @@ class ParserBuilder(object):
 
     save_cwd = os.getcwd()
     os.chdir(os.path.join(self._src_root, 'mojom', 'mojom_parser'))
-    print "Building the Mojom parser for %s %s..." % (target_os, target_arch)
+    self._info_print(
+        "Building the Mojom parser for %s %s..." % (target_os, target_arch))
     result = subprocess.call(
         [self._go_tool, 'build', '-o', out_path] , env=environ)
     if result == 0:
-      print "Success! Built %s" % out_path
+      self._info_print("Success! Built %s" % out_path)
     else:
-      print "Failure!"
+      print >> sys.stderr, "Failure building Mojom parser for %s %s!" % (
+          target_os, target_arch)
 
     os.chdir(save_cwd)
 
@@ -166,8 +172,12 @@ class ParserBuilder(object):
 
     upload_cmd = ['python', upload_script, out_path, '-b', cloud_path]
 
-    print "Uploading mojom_parser (%s,%s) to GCS..." % (target_os, target_arch)
-    return subprocess.call(upload_cmd)
+    stdout = None
+    if self._quiet:
+      stdout = open(os.devnull, 'w')
+    self._info_print(
+        "Uploading mojom_parser (%s,%s) to GCS..." % (target_os, target_arch))
+    return subprocess.call(upload_cmd, stdout=stdout)
 
   def _get_dir_name_for_arch(self, target_os, target_arch):
     dir_names = {
@@ -185,6 +195,11 @@ class ParserBuilder(object):
     find_depot_tools = imp.load_source(name,
         os.path.join(src_root, 'tools', name + '.py'))
     return find_depot_tools.add_depot_tools_to_path()
+
+  def _info_print(self, message):
+    if self._quiet:
+      return
+    print message
 
 
 def main():
@@ -208,13 +223,17 @@ def main():
                       default=False,
                       help='Instead of stopping when encountering a failure '
                            'move on to the next step.')
+  parser.add_argument('--quiet', dest='quiet', action='store_true',
+                      default=False,
+                      help='Do not output anything on success.')
   args = parser.parse_args()
   parser_builder = ParserBuilder(
       src_root=args.src_root,
       go_tool=args.go_tool,
       go_root=args.go_root,
       out_dir=args.out_dir,
-      upload=args.upload)
+      upload=args.upload,
+      quiet=args.quiet)
 
   targets = [
       ('darwin', 'amd64'),

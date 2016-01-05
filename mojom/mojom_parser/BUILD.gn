@@ -38,5 +38,6 @@ action("mojom_parser") {
     rebase_path("//", root_build_dir),
     "--out-dir",
     rebase_path(target_out_dir, root_build_dir),
+    "--quiet",
   ]
 }
