@@ -101,6 +101,8 @@ void MediaPipeBase::SendPacket(MediaPacketPtr packet,
   // of the shared buffer.  If any does not, this send operation is not valid.
   const MediaPacketRegionPtr* r = &packet->payload;
   size_t i = 0;
+  size_t extra_payload_size =
+      packet->extra_payload.is_null() ? 0 : packet->extra_payload.size();
   while (true) {
     if ((*r).is_null()) {
       cbk.Run(MediaResult::INVALID_ARGUMENT);
@@ -114,10 +116,11 @@ void MediaPipeBase::SendPacket(MediaPacketPtr packet,
       return;
     }
 
-    if (i >= packet->extra_payload.size()) {
+    if (i >= extra_payload_size) {
       break;
     }
 
+    DCHECK(packet->extra_payload);
     r = &packet->extra_payload[i++];
   }
 
@@ -156,7 +159,6 @@ MediaPipeBase::MediaPacketState::MediaPacketState(
   , result_(MediaResult::OK) {
   DCHECK(packet_);
   DCHECK(packet_->payload);
-  DCHECK(packet_->extra_payload);
 }
 
 MediaPipeBase::MediaPacketState::~MediaPacketState() {

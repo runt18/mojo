@@ -7,13 +7,9 @@ import("$mojo_sdk_root/mojo/public/tools/bindings/mojom.gni")
 
 mojom("interfaces") {
   sources = [
-    "media_clock.mojom",
-    "media_common.mojom",
-    "media_metadata.mojom",
-    "media_pipe.mojom",
-    "media_state.mojom",
-    "media_transport.mojom",
-    "media_types.mojom",
-    "rate_control.mojom",
+    "media_factory.mojom",
+    "media_player.mojom",
+    "media_sink.mojom",
+    "media_source.mojom",
   ]
 }

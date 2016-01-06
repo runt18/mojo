@@ -5,9 +5,20 @@
 [DartPackage="mojo_services"]
 module mojo.media;
 
-import "mojo/services/media/audio/interfaces/audio_track.mojom";
+// Describes media.
+struct MediaMetadata {
+  // Duration in nanoseconds.
+  uint64 duration;
 
-[ServiceName="mojo::media::AudioServer"]
-interface AudioServer {
-  CreateTrack(AudioTrack& track);
+  string? title;
+
+  string? artist;
+
+  string? album;
+
+  string? publisher;
+
+  string? genre;
+
+  string? composer;
 };

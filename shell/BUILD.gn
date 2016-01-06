@@ -17,9 +17,9 @@ group("shell") {
   testonly = true
 
   deps = [
+    ":copy_symbols",
     ":mojo_shell",
     ":tests",
-    ":copy_symbols",
   ]
 
   if (is_android) {
@@ -200,8 +200,8 @@ source_set("parent_lib") {
   deps = [
     ":child_controller_bindings",
     "//base",
-    "//base/third_party/dynamic_annotations",
     "//base:base_static",
+    "//base/third_party/dynamic_annotations",
     "//mojo/application",
     "//mojo/common",
     "//mojo/common:tracing_impl",
@@ -210,6 +210,9 @@ source_set("parent_lib") {
     "//mojo/edk/system",
     "//mojo/public/cpp/bindings",
     "//mojo/public/interfaces/application",
+    "//mojo/services/media/audio/interfaces",
+    "//mojo/services/media/common/interfaces",
+    "//mojo/services/media/control/interfaces",
     "//mojo/services/network/interfaces",
     "//mojo/services/tracing/interfaces",
     "//services/url_response_disk_cache",
@@ -416,9 +419,9 @@ if (is_android) {
       "$root_out_dir/obj/shell/bootstrap_java.dex.jar",
     ]
     deps = [
-      ":mojo_shell_child",
       ":bootstrap",
       ":bootstrap_java",
+      ":mojo_shell_child",
       "//mojo/public/tools:copy_network_service",
     ]
 
@@ -437,10 +440,10 @@ if (is_android) {
 
       deps += [
         "//services/authenticating_url_loader_interceptor",
-        "//services/java_handler",
         "//services/dart:dart_content_handler",
         "//services/device_info",
         "//services/icu_data",
+        "//services/java_handler",
         "//services/kiosk_wm",
         "//services/surfaces",
         "//services/tracing",
@@ -589,8 +592,8 @@ test("mojo_shell_tests") {
   deps = [
     ":parent_lib",
     "//base",
-    "//base/test:test_support",
     "//base:i18n",
+    "//base/test:test_support",
     "//mojo/common",
     "//mojo/edk/system",
     "//mojo/environment:chromium",
@@ -655,6 +658,7 @@ mojo_native_application("apptests") {
   ]
 
   deps = [
+    ":embed_pingable",
     "//base",
     "//mojo/application",
     "//mojo/application:test_support",
@@ -667,7 +671,6 @@ mojo_native_application("apptests") {
     "//mojo/services/http_server/interfaces",
     "//mojo/services/network/interfaces",
     "//shell/test:bindings",
-    ":embed_pingable",
   ]
 
   data_deps = [

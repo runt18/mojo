@@ -22,8 +22,8 @@ constexpr size_t AudioTrackImpl::PTS_FRACTIONAL_BITS;
 // initialization using mojom generated structs, we should switch to it.
 static const struct {
   LpcmSampleFormat sample_format;
-  uint8_t min_channels;
-  uint8_t max_channels;
+  uint32_t min_channels;
+  uint32_t max_channels;
   uint32_t min_frames_per_second;
   uint32_t max_frames_per_second;
 } kSupportedLpcmTypeSets[] = {
@@ -90,7 +90,7 @@ void AudioTrackImpl::Describe(const DescribeCallback& cbk) {
     const auto& s = kSupportedLpcmTypeSets[i];
     LpcmMediaTypeSetDetailsPtr lpcm_detail = LpcmMediaTypeSetDetails::New();
 
-    lpcm_detail->sample_format         = s.sample_format;
+    lpcm_detail->sample_format = s.sample_format;
     lpcm_detail->min_channels = s.min_channels;
     lpcm_detail->max_channels = s.max_channels;
     lpcm_detail->min_frames_per_second = s.min_frames_per_second;
