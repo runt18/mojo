@@ -8,9 +8,9 @@
 This script is used to build a new version of the mojom_parser binary for both
 mac and linux and optionally upload them to Google Cloud Storage based on their
 SHA1 digest. It operates in 2 steps:
-  1) Use the optionally specified go tool to build the mojom parser for all
+  1) Invokes the Go compiler to build the mojom parser for all
   target os and architectures.
-  2) For each of the binaries built:
+  2) If the --upload flag is specified, for each of the binaries built:
     i) Computes the sha1 digest of the binary file.
     ii) Uploads the file to Google Cloud Storage using the sha1 as the filename.
     iii) Updates a local file named "mojom_parser.sha1" to contain the sha1
@@ -21,6 +21,14 @@ In order to use this script to upload a new version of the parser, you need:
 - depot_tools in your path
 - WRITE access to the bucket at
   https://console.developers.google.com/storage/browser/mojo/mojom_parser/.
+
+If you want to hack on the parser and use your locally-built version, from the
+Mojo source root directory do:
+1) Run this script: mojom/mojom_parser/tools/build_mojom_parser.py
+2) Copy the architecture-specific binary to the architecture-specific location:
+For example for linux do:
+cp mojom_parser_linux_amd64  \
+mojo/public/tools/bindings/mojom_parser/bin/linux64/mojom_parser
 
 This script will build for all architectures before it attempts to upload any
 binary. If any of the builds fail, the whole script will abort and nothing will
@@ -210,7 +218,7 @@ def main():
                       help='Path to the go tool. (optional)')
   parser.add_argument('--go-root', dest='go_root', action='store',
                       help='Path to the root of the go installation. '
-                           '(optional')
+                           '(optional)')
   parser.add_argument('--out-dir', dest='out_dir', action='store',
                       help='Directory in which to place the built parser. '
                            'Defaults to the current working directory. '
