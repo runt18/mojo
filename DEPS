@@ -22,7 +22,7 @@ vars = {
   'skia_revision': 'db284c52e62e8d16708e2065495a3b693b238771',
   'v8_revision': '3f036fc0ba4ca4483fe77822f8605c277d37ee24',
   'angle_revision': 'bdd419f9f5b006e913606e7363125942c8ae06bc',
-  'buildtools_revision': 'ef7f1f539cff0441c4401d8c052e54cfd01bff07',
+  'buildtools_revision': '6d0c448437825a1af0ad2ea28128dda474403cd7',
   'dart_revision': 'c580f7f393743761a9c9fdb65426e0b1b29fecf2',
   'dart_root_certificates_revision': 'c3a41df63afacec62fcb8135196177e35fe72f71',
   'dart_observatory_packages_revision': 'cf90eb9077177d3d6b3fd5e8289477c2385c026a',
