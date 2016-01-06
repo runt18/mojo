@@ -4,8 +4,6 @@
 
 #include "mojo/converters/input_events/input_events_type_converters.h"
 
-#include <climits>
-
 #if defined(USE_X11)
 #include <X11/extensions/XInput2.h>
 #include <X11/Xlib.h>
