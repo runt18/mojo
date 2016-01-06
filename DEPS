@@ -29,7 +29,7 @@ vars = {
   'pdfium_revision': 'ae4256f45df69bbfdf722a6ec17e1e851911ae4e',
   'boringssl_revision': '642f1498d056dbba3e50ed5a232ab2f482626dec',
   'lss_revision': '6f97298fe3794e92c8c896a6bc06e0b36e4c3de3',
-  'nacl_revision': '1946a478cab0c564d050631adbd7956d89527081',
+  'nacl_revision': '14a9e722935e1431b2359d943a988f5f43a2e2f3',
 }
 
 # Only these hosts are allowed for dependencies in this DEPS file.
