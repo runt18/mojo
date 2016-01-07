@@ -170,7 +170,8 @@ class MojomGenerator {
         '-I',
         sdkInc,
         '-I',
-        importDir.path
+        importDir.path,
+        '--no-gen-imports'
       ];
       if (servicesPath != null) {
         arguments.add('-I');
