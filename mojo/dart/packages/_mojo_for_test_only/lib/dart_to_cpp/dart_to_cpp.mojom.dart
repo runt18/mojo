@@ -307,122 +307,6 @@ class EchoArgsList extends bindings.Struct {
 }
 
 
-class _CppSideStartTestParams extends bindings.Struct {
-  static const List<bindings.StructDataHeader> kVersions = const [
-    const bindings.StructDataHeader(8, 0)
-  ];
-
-  _CppSideStartTestParams() : super(kVersions.last.size);
-
-  static _CppSideStartTestParams deserialize(bindings.Message message) {
-    var decoder = new bindings.Decoder(message);
-    var result = decode(decoder);
-    if (decoder.excessHandles != null) {
-      decoder.excessHandles.forEach((h) => h.close());
-    }
-    return result;
-  }
-
-  static _CppSideStartTestParams decode(bindings.Decoder decoder0) {
-    if (decoder0 == null) {
-      return null;
-    }
-    _CppSideStartTestParams result = new _CppSideStartTestParams();
-
-    var mainDataHeader = decoder0.decodeStructDataHeader();
-    if (mainDataHeader.version <= kVersions.last.version) {
-      // Scan in reverse order to optimize for more recent versions.
-      for (int i = kVersions.length - 1; i >= 0; --i) {
-        if (mainDataHeader.version >= kVersions[i].version) {
-          if (mainDataHeader.size == kVersions[i].size) {
-            // Found a match.
-            break;
-          }
-          throw new bindings.MojoCodecError(
-              'Header size doesn\'t correspond to known version size.');
-        }
-      }
-    } else if (mainDataHeader.size < kVersions.last.size) {
-      throw new bindings.MojoCodecError(
-        'Message newer than the last known version cannot be shorter than '
-        'required by the last known version.');
-    }
-    return result;
-  }
-
-  void encode(bindings.Encoder encoder) {
-    encoder.getStructEncoderAtOffset(kVersions.last);
-  }
-
-  String toString() {
-    return "_CppSideStartTestParams("")";
-  }
-
-  Map toJson() {
-    Map map = new Map();
-    return map;
-  }
-}
-
-
-class _CppSideTestFinishedParams extends bindings.Struct {
-  static const List<bindings.StructDataHeader> kVersions = const [
-    const bindings.StructDataHeader(8, 0)
-  ];
-
-  _CppSideTestFinishedParams() : super(kVersions.last.size);
-
-  static _CppSideTestFinishedParams deserialize(bindings.Message message) {
-    var decoder = new bindings.Decoder(message);
-    var result = decode(decoder);
-    if (decoder.excessHandles != null) {
-      decoder.excessHandles.forEach((h) => h.close());
-    }
-    return result;
-  }
-
-  static _CppSideTestFinishedParams decode(bindings.Decoder decoder0) {
-    if (decoder0 == null) {
-      return null;
-    }
-    _CppSideTestFinishedParams result = new _CppSideTestFinishedParams();
-
-    var mainDataHeader = decoder0.decodeStructDataHeader();
-    if (mainDataHeader.version <= kVersions.last.version) {
-      // Scan in reverse order to optimize for more recent versions.
-      for (int i = kVersions.length - 1; i >= 0; --i) {
-        if (mainDataHeader.version >= kVersions[i].version) {
-          if (mainDataHeader.size == kVersions[i].size) {
-            // Found a match.
-            break;
-          }
-          throw new bindings.MojoCodecError(
-              'Header size doesn\'t correspond to known version size.');
-        }
-      }
-    } else if (mainDataHeader.size < kVersions.last.size) {
-      throw new bindings.MojoCodecError(
-        'Message newer than the last known version cannot be shorter than '
-        'required by the last known version.');
-    }
-    return result;
-  }
-
-  void encode(bindings.Encoder encoder) {
-    encoder.getStructEncoderAtOffset(kVersions.last);
-  }
-
-  String toString() {
-    return "_CppSideTestFinishedParams("")";
-  }
-
-  Map toJson() {
-    Map map = new Map();
-    return map;
-  }
-}
-
-
 class _CppSidePingResponseParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(8, 0)
@@ -544,6 +428,122 @@ class _CppSideEchoResponseParams extends bindings.Struct {
   Map toJson() {
     throw new bindings.MojoCodecError(
         'Object containing handles cannot be encoded to JSON.');
+  }
+}
+
+
+class _CppSideStartTestParams extends bindings.Struct {
+  static const List<bindings.StructDataHeader> kVersions = const [
+    const bindings.StructDataHeader(8, 0)
+  ];
+
+  _CppSideStartTestParams() : super(kVersions.last.size);
+
+  static _CppSideStartTestParams deserialize(bindings.Message message) {
+    var decoder = new bindings.Decoder(message);
+    var result = decode(decoder);
+    if (decoder.excessHandles != null) {
+      decoder.excessHandles.forEach((h) => h.close());
+    }
+    return result;
+  }
+
+  static _CppSideStartTestParams decode(bindings.Decoder decoder0) {
+    if (decoder0 == null) {
+      return null;
+    }
+    _CppSideStartTestParams result = new _CppSideStartTestParams();
+
+    var mainDataHeader = decoder0.decodeStructDataHeader();
+    if (mainDataHeader.version <= kVersions.last.version) {
+      // Scan in reverse order to optimize for more recent versions.
+      for (int i = kVersions.length - 1; i >= 0; --i) {
+        if (mainDataHeader.version >= kVersions[i].version) {
+          if (mainDataHeader.size == kVersions[i].size) {
+            // Found a match.
+            break;
+          }
+          throw new bindings.MojoCodecError(
+              'Header size doesn\'t correspond to known version size.');
+        }
+      }
+    } else if (mainDataHeader.size < kVersions.last.size) {
+      throw new bindings.MojoCodecError(
+        'Message newer than the last known version cannot be shorter than '
+        'required by the last known version.');
+    }
+    return result;
+  }
+
+  void encode(bindings.Encoder encoder) {
+    encoder.getStructEncoderAtOffset(kVersions.last);
+  }
+
+  String toString() {
+    return "_CppSideStartTestParams("")";
+  }
+
+  Map toJson() {
+    Map map = new Map();
+    return map;
+  }
+}
+
+
+class _CppSideTestFinishedParams extends bindings.Struct {
+  static const List<bindings.StructDataHeader> kVersions = const [
+    const bindings.StructDataHeader(8, 0)
+  ];
+
+  _CppSideTestFinishedParams() : super(kVersions.last.size);
+
+  static _CppSideTestFinishedParams deserialize(bindings.Message message) {
+    var decoder = new bindings.Decoder(message);
+    var result = decode(decoder);
+    if (decoder.excessHandles != null) {
+      decoder.excessHandles.forEach((h) => h.close());
+    }
+    return result;
+  }
+
+  static _CppSideTestFinishedParams decode(bindings.Decoder decoder0) {
+    if (decoder0 == null) {
+      return null;
+    }
+    _CppSideTestFinishedParams result = new _CppSideTestFinishedParams();
+
+    var mainDataHeader = decoder0.decodeStructDataHeader();
+    if (mainDataHeader.version <= kVersions.last.version) {
+      // Scan in reverse order to optimize for more recent versions.
+      for (int i = kVersions.length - 1; i >= 0; --i) {
+        if (mainDataHeader.version >= kVersions[i].version) {
+          if (mainDataHeader.size == kVersions[i].size) {
+            // Found a match.
+            break;
+          }
+          throw new bindings.MojoCodecError(
+              'Header size doesn\'t correspond to known version size.');
+        }
+      }
+    } else if (mainDataHeader.size < kVersions.last.size) {
+      throw new bindings.MojoCodecError(
+        'Message newer than the last known version cannot be shorter than '
+        'required by the last known version.');
+    }
+    return result;
+  }
+
+  void encode(bindings.Encoder encoder) {
+    encoder.getStructEncoderAtOffset(kVersions.last);
+  }
+
+  String toString() {
+    return "_CppSideTestFinishedParams("")";
+  }
+
+  Map toJson() {
+    Map map = new Map();
+    return map;
   }
 }
 
@@ -746,17 +746,17 @@ class _DartSideEchoParams extends bindings.Struct {
   }
 }
 
-const int _CppSide_startTestName = 88888888;
-const int _CppSide_testFinishedName = 99999999;
 const int _CppSide_pingResponseName = 100000000;
 const int _CppSide_echoResponseName = 100000001;
+const int _CppSide_startTestName = 88888888;
+const int _CppSide_testFinishedName = 99999999;
 
 abstract class CppSide {
   static const String serviceName = null;
-  void startTest();
-  void testFinished();
   void pingResponse();
   void echoResponse(EchoArgsList list);
+  void startTest();
+  void testFinished();
 }
 
 
@@ -795,22 +795,6 @@ class _CppSideProxyCalls implements CppSide {
   _CppSideProxyImpl _proxyImpl;
 
   _CppSideProxyCalls(this._proxyImpl);
-    void startTest() {
-      if (!_proxyImpl.isBound) {
-        _proxyImpl.proxyError("The Proxy is closed.");
-        return;
-      }
-      var params = new _CppSideStartTestParams();
-      _proxyImpl.sendMessage(params, _CppSide_startTestName);
-    }
-    void testFinished() {
-      if (!_proxyImpl.isBound) {
-        _proxyImpl.proxyError("The Proxy is closed.");
-        return;
-      }
-      var params = new _CppSideTestFinishedParams();
-      _proxyImpl.sendMessage(params, _CppSide_testFinishedName);
-    }
     void pingResponse() {
       if (!_proxyImpl.isBound) {
         _proxyImpl.proxyError("The Proxy is closed.");
@@ -827,6 +811,22 @@ class _CppSideProxyCalls implements CppSide {
       var params = new _CppSideEchoResponseParams();
       params.list = list;
       _proxyImpl.sendMessage(params, _CppSide_echoResponseName);
+    }
+    void startTest() {
+      if (!_proxyImpl.isBound) {
+        _proxyImpl.proxyError("The Proxy is closed.");
+        return;
+      }
+      var params = new _CppSideStartTestParams();
+      _proxyImpl.sendMessage(params, _CppSide_startTestName);
+    }
+    void testFinished() {
+      if (!_proxyImpl.isBound) {
+        _proxyImpl.proxyError("The Proxy is closed.");
+        return;
+      }
+      var params = new _CppSideTestFinishedParams();
+      _proxyImpl.sendMessage(params, _CppSide_testFinishedName);
     }
 }
 
@@ -918,16 +918,6 @@ class CppSideStub extends bindings.Stub {
     }
     assert(_impl != null);
     switch (message.header.type) {
-      case _CppSide_startTestName:
-        var params = _CppSideStartTestParams.deserialize(
-            message.payload);
-        _impl.startTest();
-        break;
-      case _CppSide_testFinishedName:
-        var params = _CppSideTestFinishedParams.deserialize(
-            message.payload);
-        _impl.testFinished();
-        break;
       case _CppSide_pingResponseName:
         var params = _CppSidePingResponseParams.deserialize(
             message.payload);
@@ -937,6 +927,16 @@ class CppSideStub extends bindings.Stub {
         var params = _CppSideEchoResponseParams.deserialize(
             message.payload);
         _impl.echoResponse(params.list);
+        break;
+      case _CppSide_startTestName:
+        var params = _CppSideStartTestParams.deserialize(
+            message.payload);
+        _impl.startTest();
+        break;
+      case _CppSide_testFinishedName:
+        var params = _CppSideTestFinishedParams.deserialize(
+            message.payload);
+        _impl.testFinished();
         break;
       default:
         throw new bindings.MojoCodecError("Unexpected message name");

@@ -979,7 +979,7 @@ class HumanResourceDatabaseStub extends bindings.Stub {
   dynamic handleMessage(bindings.ServiceMessage message) {
     if (bindings.ControlMessageHandler.isControlMessage(message)) {
       return bindings.ControlMessageHandler.handleMessage(this,
-                                                          2,
+                                                          1,
                                                           message);
     }
     assert(_impl != null);
@@ -1090,7 +1090,7 @@ class HumanResourceDatabaseStub extends bindings.Stub {
     return "HumanResourceDatabaseStub($superString)";
   }
 
-  int get version => 2;
+  int get version => 1;
 }
 
 

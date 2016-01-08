@@ -82,7 +82,7 @@ class Bar extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(16, 0)
   ];
-  int alpha = 0xff;
+  int alpha = 255;
   int beta = 0;
   int gamma = 0;
   BarType type = new BarType(1);
@@ -457,23 +457,23 @@ class DefaultsTest extends bindings.Struct {
   int a5 = 3456789012;
   int a6 = -111111111111;
   int a7 = 9999999999999999999;
-  int a8 = 0x12345;
-  int a9 = -0x12345;
+  int a8 = 74565;
+  int a9 = -74565;
   int a10 = 1234;
   double a13 = 123.25;
   double a14 = 1234567890.123;
-  double a15 = 1E10;
-  double a16 = -1.2E+20;
-  double a17 = 1.23E-20;
+  double a15 = 10000000000.0;
+  double a16 = -1.2e+20;
+  double a17 = 1.23e-20;
   List<int> a18 = null;
   String a19 = null;
   BarType a20 = new BarType(3);
   double a29 = double.INFINITY;
   sample_import_mojom.Point a21 = null;
   sample_import2_mojom.Thing a22 = new sample_import2_mojom.Thing();
-  int a23 = 0xFFFFFFFFFFFFFFFF;
-  int a24 = 0x123456789;
-  int a25 = -0x123456789;
+  int a23 = 18446744073709551615;
+  int a24 = 4886718345;
+  int a25 = -4886718345;
   double a26 = double.INFINITY;
   double a27 = double.NEGATIVE_INFINITY;
   double a28 = double.NAN;

@@ -92,8 +92,8 @@ class MediaPacket extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(48, 0)
   ];
-  static const int kNoTimestamp = 0x7fffffffffffffff;
-  int pts = 0x7fffffffffffffff;
+  static const int kNoTimestamp = 9223372036854775807;
+  int pts = 9223372036854775807;
   int duration = 0;
   bool endOfStream = false;
   MediaPacketRegion payload = null;
@@ -216,7 +216,7 @@ class MediaPipeState extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(24, 0)
   ];
-  static const int kMaxPayloadLen = 0x3FFFFFFFFFFFFFFF;
+  static const int kMaxPayloadLen = 4611686018427387903;
   core.MojoSharedBuffer payloadBuffer = null;
   int payloadBufferLen = 0;
 

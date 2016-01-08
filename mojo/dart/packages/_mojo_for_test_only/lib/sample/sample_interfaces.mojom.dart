@@ -969,6 +969,64 @@ class _IntegerAccessorSetIntegerParams extends bindings.Struct {
 }
 
 
+class _SampleInterfaceSampleMethod0Params extends bindings.Struct {
+  static const List<bindings.StructDataHeader> kVersions = const [
+    const bindings.StructDataHeader(8, 0)
+  ];
+
+  _SampleInterfaceSampleMethod0Params() : super(kVersions.last.size);
+
+  static _SampleInterfaceSampleMethod0Params deserialize(bindings.Message message) {
+    var decoder = new bindings.Decoder(message);
+    var result = decode(decoder);
+    if (decoder.excessHandles != null) {
+      decoder.excessHandles.forEach((h) => h.close());
+    }
+    return result;
+  }
+
+  static _SampleInterfaceSampleMethod0Params decode(bindings.Decoder decoder0) {
+    if (decoder0 == null) {
+      return null;
+    }
+    _SampleInterfaceSampleMethod0Params result = new _SampleInterfaceSampleMethod0Params();
+
+    var mainDataHeader = decoder0.decodeStructDataHeader();
+    if (mainDataHeader.version <= kVersions.last.version) {
+      // Scan in reverse order to optimize for more recent versions.
+      for (int i = kVersions.length - 1; i >= 0; --i) {
+        if (mainDataHeader.version >= kVersions[i].version) {
+          if (mainDataHeader.size == kVersions[i].size) {
+            // Found a match.
+            break;
+          }
+          throw new bindings.MojoCodecError(
+              'Header size doesn\'t correspond to known version size.');
+        }
+      }
+    } else if (mainDataHeader.size < kVersions.last.size) {
+      throw new bindings.MojoCodecError(
+        'Message newer than the last known version cannot be shorter than '
+        'required by the last known version.');
+    }
+    return result;
+  }
+
+  void encode(bindings.Encoder encoder) {
+    encoder.getStructEncoderAtOffset(kVersions.last);
+  }
+
+  String toString() {
+    return "_SampleInterfaceSampleMethod0Params("")";
+  }
+
+  Map toJson() {
+    Map map = new Map();
+    return map;
+  }
+}
+
+
 class _SampleInterfaceSampleMethod1Params extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(24, 0)
@@ -1120,64 +1178,6 @@ class SampleInterfaceSampleMethod1ResponseParams extends bindings.Struct {
     Map map = new Map();
     map["out1"] = out1;
     map["out2"] = out2;
-    return map;
-  }
-}
-
-
-class _SampleInterfaceSampleMethod0Params extends bindings.Struct {
-  static const List<bindings.StructDataHeader> kVersions = const [
-    const bindings.StructDataHeader(8, 0)
-  ];
-
-  _SampleInterfaceSampleMethod0Params() : super(kVersions.last.size);
-
-  static _SampleInterfaceSampleMethod0Params deserialize(bindings.Message message) {
-    var decoder = new bindings.Decoder(message);
-    var result = decode(decoder);
-    if (decoder.excessHandles != null) {
-      decoder.excessHandles.forEach((h) => h.close());
-    }
-    return result;
-  }
-
-  static _SampleInterfaceSampleMethod0Params decode(bindings.Decoder decoder0) {
-    if (decoder0 == null) {
-      return null;
-    }
-    _SampleInterfaceSampleMethod0Params result = new _SampleInterfaceSampleMethod0Params();
-
-    var mainDataHeader = decoder0.decodeStructDataHeader();
-    if (mainDataHeader.version <= kVersions.last.version) {
-      // Scan in reverse order to optimize for more recent versions.
-      for (int i = kVersions.length - 1; i >= 0; --i) {
-        if (mainDataHeader.version >= kVersions[i].version) {
-          if (mainDataHeader.size == kVersions[i].size) {
-            // Found a match.
-            break;
-          }
-          throw new bindings.MojoCodecError(
-              'Header size doesn\'t correspond to known version size.');
-        }
-      }
-    } else if (mainDataHeader.size < kVersions.last.size) {
-      throw new bindings.MojoCodecError(
-        'Message newer than the last known version cannot be shorter than '
-        'required by the last known version.');
-    }
-    return result;
-  }
-
-  void encode(bindings.Encoder encoder) {
-    encoder.getStructEncoderAtOffset(kVersions.last);
-  }
-
-  String toString() {
-    return "_SampleInterfaceSampleMethod0Params("")";
-  }
-
-  Map toJson() {
-    Map map = new Map();
     return map;
   }
 }
@@ -1911,14 +1911,14 @@ class IntegerAccessorStub extends bindings.Stub {
   int get version => 3;
 }
 
-const int _SampleInterface_sampleMethod1Name = 1;
 const int _SampleInterface_sampleMethod0Name = 0;
+const int _SampleInterface_sampleMethod1Name = 1;
 const int _SampleInterface_sampleMethod2Name = 2;
 
 abstract class SampleInterface {
   static const String serviceName = null;
-  dynamic sampleMethod1(int in1,String in2,[Function responseFactory = null]);
   void sampleMethod0();
+  dynamic sampleMethod1(int in1,String in2,[Function responseFactory = null]);
   void sampleMethod2();
 }
 
@@ -1978,6 +1978,14 @@ class _SampleInterfaceProxyCalls implements SampleInterface {
   _SampleInterfaceProxyImpl _proxyImpl;
 
   _SampleInterfaceProxyCalls(this._proxyImpl);
+    void sampleMethod0() {
+      if (!_proxyImpl.isBound) {
+        _proxyImpl.proxyError("The Proxy is closed.");
+        return;
+      }
+      var params = new _SampleInterfaceSampleMethod0Params();
+      _proxyImpl.sendMessage(params, _SampleInterface_sampleMethod0Name);
+    }
     dynamic sampleMethod1(int in1,String in2,[Function responseFactory = null]) {
       var params = new _SampleInterfaceSampleMethod1Params();
       params.in1 = in1;
@@ -1987,14 +1995,6 @@ class _SampleInterfaceProxyCalls implements SampleInterface {
           _SampleInterface_sampleMethod1Name,
           -1,
           bindings.MessageHeader.kMessageExpectsResponse);
-    }
-    void sampleMethod0() {
-      if (!_proxyImpl.isBound) {
-        _proxyImpl.proxyError("The Proxy is closed.");
-        return;
-      }
-      var params = new _SampleInterfaceSampleMethod0Params();
-      _proxyImpl.sendMessage(params, _SampleInterface_sampleMethod0Name);
     }
     void sampleMethod2() {
       if (!_proxyImpl.isBound) {
@@ -2100,6 +2100,11 @@ class SampleInterfaceStub extends bindings.Stub {
     }
     assert(_impl != null);
     switch (message.header.type) {
+      case _SampleInterface_sampleMethod0Name:
+        var params = _SampleInterfaceSampleMethod0Params.deserialize(
+            message.payload);
+        _impl.sampleMethod0();
+        break;
       case _SampleInterface_sampleMethod1Name:
         var params = _SampleInterfaceSampleMethod1Params.deserialize(
             message.payload);
@@ -2121,11 +2126,6 @@ class SampleInterfaceStub extends bindings.Stub {
               message.header.requestId,
               bindings.MessageHeader.kMessageIsResponse);
         }
-        break;
-      case _SampleInterface_sampleMethod0Name:
-        var params = _SampleInterfaceSampleMethod0Params.deserialize(
-            message.payload);
-        _impl.sampleMethod0();
         break;
       case _SampleInterface_sampleMethod2Name:
         var params = _SampleInterfaceSampleMethod2Params.deserialize(

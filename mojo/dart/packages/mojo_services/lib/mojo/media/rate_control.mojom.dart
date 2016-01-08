@@ -109,11 +109,11 @@ class TimelineTransform extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(24, 0)
   ];
-  static const int kLocalTimeId = 0xFFFFFFFF;
-  static const int kContextual = 0xFFFFFFFE;
+  static const int kLocalTimeId = 4294967295;
+  static const int kContextual = 4294967294;
   TimelineQuad quad = null;
-  int referenceTimelineId = 0xFFFFFFFE;
-  int targetTimelineId = 0xFFFFFFFF;
+  int referenceTimelineId = 4294967294;
+  int targetTimelineId = 4294967295;
 
   TimelineTransform() : super(kVersions.last.size);
 

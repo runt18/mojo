@@ -8,15 +8,15 @@ import 'dart:async';
 
 import 'package:mojo/bindings.dart' as bindings;
 import 'package:mojo/core.dart' as core;
-const int kOpenFlagRead = 0x1;
-const int kOpenFlagWrite = 0x2;
-const int kOpenFlagCreate = 0x4;
-const int kOpenFlagExclusive = 0x8;
-const int kOpenFlagAppend = 0x10;
-const int kOpenFlagTruncate = 0x20;
-const int kDeleteFlagFileOnly = 0x1;
-const int kDeleteFlagDirectoryOnly = 0x2;
-const int kDeleteFlagRecursive = 0x4;
+const int kOpenFlagRead = 1;
+const int kOpenFlagWrite = 2;
+const int kOpenFlagCreate = 4;
+const int kOpenFlagExclusive = 8;
+const int kOpenFlagAppend = 16;
+const int kOpenFlagTruncate = 32;
+const int kDeleteFlagFileOnly = 1;
+const int kDeleteFlagDirectoryOnly = 2;
+const int kDeleteFlagRecursive = 4;
 
 class Error extends bindings.MojoEnum {
   static const Error ok = const Error._(0);
