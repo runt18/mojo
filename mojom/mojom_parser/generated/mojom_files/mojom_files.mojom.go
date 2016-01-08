@@ -11,14 +11,40 @@
 package mojom_files
 
 import (
-	"fmt"
-	"mojo/public/go/bindings"
-	"mojom/mojom_parser/generated/mojom_types"
-	"sort"
+	fmt "fmt"
+	bindings "mojo/public/go/bindings"
+	mojom_types "mojom/mojom_parser/generated/mojom_types"
+	sort "sort"
 )
+
+// These IDs are the Mojom Identifiers / Type Keys.
+// Mojom libraries importing this one will use these identifiers when building
+// TypeReference objects.
+var ID_mojom_files_MojomFile__ string = "mojom_files_MojomFile__"
+var ID_mojom_files_MojomFileGraph__ string = "mojom_files_MojomFileGraph__"
+var ID_mojom_files_KeysByType__ string = "mojom_files_KeysByType__"
+
+var mojom_filesDesc__ = make(map[string]mojom_types.UserDefinedType)
+
+func init() {
+	mojom_filesDesc__["mojom_files_MojomFile__"] = &mojom_types.UserDefinedTypeStructType{
+		Value: mojom_files_MojomFile__(),
+	}
+	mojom_filesDesc__["mojom_files_MojomFileGraph__"] = &mojom_types.UserDefinedTypeStructType{
+		Value: mojom_files_MojomFileGraph__(),
+	}
+	mojom_filesDesc__["mojom_files_KeysByType__"] = &mojom_types.UserDefinedTypeStructType{
+		Value: mojom_files_KeysByType__(),
+	}
+
+}
+func GetAllMojomTypeDefinitions() map[string]mojom_types.UserDefinedType {
+	return mojom_filesDesc__
+}
 
 type MojomFile struct {
 	FileName             string
+	SpecifiedFileName    *string
 	ModuleNamespace      *string
 	Attributes           *[]mojom_types.Attribute
 	Imports              *[]string
@@ -26,12 +52,22 @@ type MojomFile struct {
 }
 
 func (s *MojomFile) Encode(encoder *bindings.Encoder) error {
-	encoder.StartStruct(40, 0)
+	encoder.StartStruct(48, 0)
 	if err := encoder.WritePointer(); err != nil {
 		return err
 	}
 	if err := encoder.WriteString(s.FileName); err != nil {
 		return err
+	}
+	if s.SpecifiedFileName == nil {
+		encoder.WriteNullPointer()
+	} else {
+		if err := encoder.WritePointer(); err != nil {
+			return err
+		}
+		if err := encoder.WriteString((*s.SpecifiedFileName)); err != nil {
+			return err
+		}
 	}
 	if s.ModuleNamespace == nil {
 		encoder.WriteNullPointer()
@@ -94,7 +130,7 @@ func (s *MojomFile) Encode(encoder *bindings.Encoder) error {
 }
 
 var mojomFile_Versions []bindings.DataHeader = []bindings.DataHeader{
-	bindings.DataHeader{48, 0},
+	bindings.DataHeader{56, 0},
 }
 
 func (s *MojomFile) Decode(decoder *bindings.Decoder) error {
@@ -129,6 +165,22 @@ func (s *MojomFile) Decode(decoder *bindings.Decoder) error {
 				return err
 			}
 			s.FileName = value0
+		}
+	}
+	if header.ElementsOrVersion >= 0 {
+		pointer0, err := decoder.ReadPointer()
+		if err != nil {
+			return err
+		}
+		if pointer0 == 0 {
+			s.SpecifiedFileName = nil
+		} else {
+			s.SpecifiedFileName = new(string)
+			value0, err := decoder.ReadString()
+			if err != nil {
+				return err
+			}
+			(*s.SpecifiedFileName) = value0
 		}
 	}
 	if header.ElementsOrVersion >= 0 {
@@ -230,6 +282,68 @@ func (s *MojomFile) Decode(decoder *bindings.Decoder) error {
 		return err
 	}
 	return nil
+}
+
+// String names and labels used by the MojomStruct types.
+var (
+	structName_MojomFile                           = "MojomFile"
+	structFullIdentifier_MojomFile                 = "mojo.bindings.types.MojomFile"
+	structFieldName_MojomFile_FileName             = "FileName"
+	structFieldName_MojomFile_SpecifiedFileName    = "SpecifiedFileName"
+	structFieldName_MojomFile_ModuleNamespace      = "ModuleNamespace"
+	structFieldName_MojomFile_Attributes           = "Attributes"
+	structFieldName_MojomFile_Imports              = "Imports"
+	structFieldName_MojomFile_DeclaredMojomObjects = "DeclaredMojomObjects"
+)
+
+func mojom_files_MojomFile__() mojom_types.MojomStruct {
+	return mojom_types.MojomStruct{
+		DeclData: &mojom_types.DeclarationData{
+			ShortName:      &structName_MojomFile,
+			FullIdentifier: &structFullIdentifier_MojomFile,
+		}, Fields: []mojom_types.StructField{mojom_types.StructField{
+			DeclData: &mojom_types.DeclarationData{
+				ShortName: &structFieldName_MojomFile_FileName,
+			},
+			Type: &mojom_types.TypeStringType{mojom_types.StringType{false}},
+		}, mojom_types.StructField{
+			DeclData: &mojom_types.DeclarationData{
+				ShortName: &structFieldName_MojomFile_SpecifiedFileName,
+			},
+			Type: &mojom_types.TypeStringType{mojom_types.StringType{true}},
+		}, mojom_types.StructField{
+			DeclData: &mojom_types.DeclarationData{
+				ShortName: &structFieldName_MojomFile_ModuleNamespace,
+			},
+			Type: &mojom_types.TypeStringType{mojom_types.StringType{true}},
+		}, mojom_types.StructField{
+			DeclData: &mojom_types.DeclarationData{
+				ShortName: &structFieldName_MojomFile_Attributes,
+			},
+			Type: &mojom_types.TypeArrayType{
+				Value: mojom_types.ArrayType{Nullable: true, ElementType: &mojom_types.TypeTypeReference{
+					Value: mojom_types.TypeReference{Identifier: &mojom_types.ID_mojom_types_Attribute__,
+						TypeKey: &mojom_types.ID_mojom_types_Attribute__},
+				},
+				},
+			},
+		}, mojom_types.StructField{
+			DeclData: &mojom_types.DeclarationData{
+				ShortName: &structFieldName_MojomFile_Imports,
+			},
+			Type: &mojom_types.TypeArrayType{
+				Value: mojom_types.ArrayType{Nullable: true, ElementType: &mojom_types.TypeStringType{mojom_types.StringType{false}}},
+			},
+		}, mojom_types.StructField{
+			DeclData: &mojom_types.DeclarationData{
+				ShortName: &structFieldName_MojomFile_DeclaredMojomObjects,
+			},
+			Type: &mojom_types.TypeTypeReference{
+				Value: mojom_types.TypeReference{Identifier: &ID_mojom_files_KeysByType__,
+					TypeKey: &ID_mojom_files_KeysByType__},
+			},
+		}},
+	}
 }
 
 type MojomFileGraph struct {
@@ -683,6 +797,60 @@ func (s *MojomFileGraph) Decode(decoder *bindings.Decoder) error {
 	return nil
 }
 
+// String names and labels used by the MojomStruct types.
+var (
+	structName_MojomFileGraph                     = "MojomFileGraph"
+	structFullIdentifier_MojomFileGraph           = "mojo.bindings.types.MojomFileGraph"
+	structFieldName_MojomFileGraph_Files          = "Files"
+	structFieldName_MojomFileGraph_ResolvedTypes  = "ResolvedTypes"
+	structFieldName_MojomFileGraph_ResolvedValues = "ResolvedValues"
+)
+
+func mojom_files_MojomFileGraph__() mojom_types.MojomStruct {
+	return mojom_types.MojomStruct{
+		DeclData: &mojom_types.DeclarationData{
+			ShortName:      &structName_MojomFileGraph,
+			FullIdentifier: &structFullIdentifier_MojomFileGraph,
+		}, Fields: []mojom_types.StructField{mojom_types.StructField{
+			DeclData: &mojom_types.DeclarationData{
+				ShortName: &structFieldName_MojomFileGraph_Files,
+			},
+			Type: &mojom_types.TypeMapType{
+				Value: mojom_types.MapType{KeyType: &mojom_types.TypeStringType{mojom_types.StringType{false}},
+					ValueType: &mojom_types.TypeTypeReference{
+						Value: mojom_types.TypeReference{Identifier: &ID_mojom_files_MojomFile__,
+							TypeKey: &ID_mojom_files_MojomFile__},
+					},
+				},
+			},
+		}, mojom_types.StructField{
+			DeclData: &mojom_types.DeclarationData{
+				ShortName: &structFieldName_MojomFileGraph_ResolvedTypes,
+			},
+			Type: &mojom_types.TypeMapType{
+				Value: mojom_types.MapType{KeyType: &mojom_types.TypeStringType{mojom_types.StringType{false}},
+					ValueType: &mojom_types.TypeTypeReference{
+						Value: mojom_types.TypeReference{Identifier: &mojom_types.ID_mojom_types_UserDefinedType__,
+							TypeKey: &mojom_types.ID_mojom_types_UserDefinedType__},
+					},
+				},
+			},
+		}, mojom_types.StructField{
+			DeclData: &mojom_types.DeclarationData{
+				ShortName: &structFieldName_MojomFileGraph_ResolvedValues,
+			},
+			Type: &mojom_types.TypeMapType{
+				Value: mojom_types.MapType{KeyType: &mojom_types.TypeStringType{mojom_types.StringType{false}},
+					ValueType: &mojom_types.TypeTypeReference{
+						Value: mojom_types.TypeReference{Identifier: &mojom_types.ID_mojom_types_UserDefinedValue__,
+							TypeKey: &mojom_types.ID_mojom_types_UserDefinedValue__},
+					},
+				},
+			},
+		}},
+	}
+}
+
 type KeysByType struct {
 	Interfaces        *[]string
 	Structs           *[]string
@@ -1099,4 +1267,75 @@ func (s *KeysByType) Decode(decoder *bindings.Decoder) error {
 		return err
 	}
 	return nil
+}
+
+// String names and labels used by the MojomStruct types.
+var (
+	structName_KeysByType                        = "KeysByType"
+	structFullIdentifier_KeysByType              = "mojo.bindings.types.KeysByType"
+	structFieldName_KeysByType_Interfaces        = "Interfaces"
+	structFieldName_KeysByType_Structs           = "Structs"
+	structFieldName_KeysByType_Unions            = "Unions"
+	structFieldName_KeysByType_TopLevelEnums     = "TopLevelEnums"
+	structFieldName_KeysByType_EmbeddedEnums     = "EmbeddedEnums"
+	structFieldName_KeysByType_TopLevelConstants = "TopLevelConstants"
+	structFieldName_KeysByType_EmbeddedConstants = "EmbeddedConstants"
+)
+
+func mojom_files_KeysByType__() mojom_types.MojomStruct {
+	return mojom_types.MojomStruct{
+		DeclData: &mojom_types.DeclarationData{
+			ShortName:      &structName_KeysByType,
+			FullIdentifier: &structFullIdentifier_KeysByType,
+		}, Fields: []mojom_types.StructField{mojom_types.StructField{
+			DeclData: &mojom_types.DeclarationData{
+				ShortName: &structFieldName_KeysByType_Interfaces,
+			},
+			Type: &mojom_types.TypeArrayType{
+				Value: mojom_types.ArrayType{Nullable: true, ElementType: &mojom_types.TypeStringType{mojom_types.StringType{false}}},
+			},
+		}, mojom_types.StructField{
+			DeclData: &mojom_types.DeclarationData{
+				ShortName: &structFieldName_KeysByType_Structs,
+			},
+			Type: &mojom_types.TypeArrayType{
+				Value: mojom_types.ArrayType{Nullable: true, ElementType: &mojom_types.TypeStringType{mojom_types.StringType{false}}},
+			},
+		}, mojom_types.StructField{
+			DeclData: &mojom_types.DeclarationData{
+				ShortName: &structFieldName_KeysByType_Unions,
+			},
+			Type: &mojom_types.TypeArrayType{
+				Value: mojom_types.ArrayType{Nullable: true, ElementType: &mojom_types.TypeStringType{mojom_types.StringType{false}}},
+			},
+		}, mojom_types.StructField{
+			DeclData: &mojom_types.DeclarationData{
+				ShortName: &structFieldName_KeysByType_TopLevelEnums,
+			},
+			Type: &mojom_types.TypeArrayType{
+				Value: mojom_types.ArrayType{Nullable: true, ElementType: &mojom_types.TypeStringType{mojom_types.StringType{false}}},
+			},
+		}, mojom_types.StructField{
+			DeclData: &mojom_types.DeclarationData{
+				ShortName: &structFieldName_KeysByType_EmbeddedEnums,
+			},
+			Type: &mojom_types.TypeArrayType{
+				Value: mojom_types.ArrayType{Nullable: true, ElementType: &mojom_types.TypeStringType{mojom_types.StringType{false}}},
+			},
+		}, mojom_types.StructField{
+			DeclData: &mojom_types.DeclarationData{
+				ShortName: &structFieldName_KeysByType_TopLevelConstants,
+			},
+			Type: &mojom_types.TypeArrayType{
+				Value: mojom_types.ArrayType{Nullable: true, ElementType: &mojom_types.TypeStringType{mojom_types.StringType{false}}},
+			},
+		}, mojom_types.StructField{
+			DeclData: &mojom_types.DeclarationData{
+				ShortName: &structFieldName_KeysByType_EmbeddedConstants,
+			},
+			Type: &mojom_types.TypeArrayType{
+				Value: mojom_types.ArrayType{Nullable: true, ElementType: &mojom_types.TypeStringType{mojom_types.StringType{false}}},
+			},
+		}},
+	}
 }
