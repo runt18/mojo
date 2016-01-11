@@ -12,7 +12,15 @@ _logging = logging.getLogger()
 
 from devtoolslib.apptest import run_apptest
 
-SUCCESS_PATTERN = re.compile('^.+ .+: All tests passed!', re.MULTILINE)
+# The apptest framework guarantees that tearDownAll() is the last thing to be
+# called before the shell is terminated. Note that the shell may be terminated
+# before the "All tests passed!" string.
+#
+# So we pass on messages like:
+#   00:01 +3: (tearDownAll)
+# And fail on messages like:
+#   00:01 +2 -1: (tearDownAll)
+SUCCESS_PATTERN = re.compile(r'^\S+ \S+: \(tearDownAll\)', re.MULTILINE)
 
 
 def _dart_apptest_output_test(output):
