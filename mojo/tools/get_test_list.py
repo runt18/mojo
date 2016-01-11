@@ -177,21 +177,30 @@ def GetTestList(config, verbose_count=0):
             "--build-dir=" + build_dir,
             "--dart-exe=third_party/dart-sdk/dart-sdk/bin/dart"])
 
-  # Dart mojom package generate.dart script tests:
-  if target_os == Config.OS_LINUX and ShouldRunTest(Config.TEST_TYPE_DEFAULT):
-    AddEntry("Dart mojom package generate tests",
-        [os.path.join("third_party", "dart-sdk", "dart-sdk", "bin", "dart"),
-         "--checked",
-         "-p", os.path.join(build_dir, "gen", "dart-pkg", "packages"),
-         os.path.join(
-           "mojo", "dart", "packages", "mojom", "test", "generate_test.dart")])
+  if target_os == Config.OS_LINUX:
+    # Dart mojom package generate.dart script tests:
+    if ShouldRunTest(Config.TEST_TYPE_DEFAULT):
+      AddEntry("Dart mojom package generate tests",
+          [os.path.join("third_party", "dart-sdk", "dart-sdk", "bin", "dart"),
+           "--checked",
+           "-p", os.path.join(build_dir, "gen", "dart-pkg", "packages"),
+           os.path.join(
+             "mojo", "dart", "packages", "mojom", "test",
+             "generate_test.dart")])
 
-  if target_os == Config.OS_LINUX and ShouldRunTest(Config.TEST_TYPE_DEFAULT):
-    AddEntry("Dart snapshotter test",
-        ["python",
-         os.path.join("mojo", "dart", "embedder", "snapshotter", "test",
-                      "dart_snapshotter_test.py"),
-         "--build-dir=" + build_dir])
+    # Tests of Dart examples.
+    if ShouldRunTest(Config.TEST_TYPE_DEFAULT):
+      AddEntry("Dart examples tests",
+          ["python", os.path.join("examples", "dart", "example_tests.py"),
+           "--build-dir", build_dir])
+
+    # Test of Dart's snapshotter.
+    if ShouldRunTest(Config.TEST_TYPE_DEFAULT):
+      AddEntry("Dart snapshotter test",
+          ["python",
+           os.path.join("mojo", "dart", "embedder", "snapshotter", "test",
+                        "dart_snapshotter_test.py"),
+           "--build-dir=" + build_dir])
 
   # Dart analyzer test
   if ShouldRunTest(Config.TEST_TYPE_DEFAULT, "analyze-dart"):
