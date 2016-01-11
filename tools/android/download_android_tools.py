@@ -9,6 +9,7 @@ them to INSTALL_DIR, updating INSTALL_DIR/VERSION_* stamp files with current
 version. Does nothing if INSTALL_DIR/VERSION_* are already up to date.
 """
 
+import multiprocessing
 import os
 import shutil
 import subprocess
@@ -84,17 +85,20 @@ def UpdateTools(tools_name):
     print ('WARNING: Failed to download Android tools.')
     return
 
-  print "Extracting Android tools (" + tools_name + ")"
-  with tarfile.open(archive_path) as arch:
-    arch.extractall(INSTALL_DIR)
-  os.remove(archive_path)
-  # Write version as the last step.
-  with open(os.path.join(INSTALL_DIR, version_stamp), 'w+') as f:
-    f.write('%s\n' % version)
+  def Extract():
+    print "Extracting Android tools (" + tools_name + ")..."
+    with tarfile.open(archive_path) as arch:
+      arch.extractall(INSTALL_DIR)
+    os.remove(archive_path)
+    # Write version as the last step.
+    with open(os.path.join(INSTALL_DIR, version_stamp), 'w+') as f:
+      f.write('%s\n' % version)
+    print "Finished extracting Android tools (" + tools_name + ")"
+  multiprocessing.Process(target=Extract).start()
 
 def main():
-  UpdateTools('sdk')
   UpdateTools('ndk')
+  UpdateTools('sdk')
 
 if __name__ == '__main__':
   sys.exit(main())
