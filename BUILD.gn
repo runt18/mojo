@@ -20,6 +20,10 @@ group("default") {
     "//shell",
   ]
 
+  if (is_linux) {
+    deps += [ "//fusl" ]
+  }
+
   # TODO(cstout): fix sandbox build for fnl/musl
   if (is_linux && !is_fnl) {
     deps += [
@@ -39,9 +43,7 @@ group("default") {
   }
 
   if (use_ozone) {
-    deps += [
-      "//ui/ozone",
-    ]
+    deps += [ "//ui/ozone" ]
   }
 }
 
@@ -58,8 +60,8 @@ if (use_ozone) {
   group("ozone_tests") {
     testonly = true
     deps = [
-      "//ui/ozone/demo",
       "//ui/ozone:ozone_unittests",
+      "//ui/ozone/demo",
     ]
   }
 }
