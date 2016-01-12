@@ -62,8 +62,8 @@ import (
 // ATTR_STRUCT_ELEMENT  -> [ATTRIBUTES] STRUCT_ELEMENT
 // STRUCT_ELEMENT       -> STRUCT_FIELD | ENUM_DECL | CONSTANT_DECL
 // STRUCT_FIELD         -> TYPE name [ordinal] [equals DEFAULT_VALUE] semi
-// DEFAULT_VALUE        -> APPROPRIATE_VAL_SPEC | default
-// APPROPRIATE_VAL_SPEC -> VALUE_REF {{that resolves to a type that is assignment compatible to the type of the assignee}}
+// DEFAULT_VALUE        -> COMPATIBLE_VALUE_REF | default
+// COMPATIBLE_VALUE_REF -> VALUE_REF {{that resolves to a value whose type is assignment compatible to the type of the assignee}}
 
 // UNION_DECL           -> union name lbrace UNION_BODY rbrace semi
 // UNION_BODY           -> {UNION_FIELD_DECL}
@@ -72,26 +72,30 @@ import (
 // ENUM_DECL            -> enum name lbrace ENUM_BODY rbrace semi
 // ENUM_BODY            -> [ ENUN_VALUE {, ENUM_VALUE} [,] ]
 // ENUM_VALUE           -> [ATTRIBUTES] name [equals ENUM_VAL_INITIALIZER]
-// ENUM_VAL_INITIALIZER -> INTEGER_LITERAL | ENUM_VALUE_REF
-// ENUM_VALUE_REF       -> IDENTIFIER {{that resolves to a declared enum value}}
+// ENUM_VAL_INITIALIZER -> INT32_VAL | APPROPRIATE_ENUM_VALUE_REF
+// INT32_VAL            -> VALUE_REF {{that resolves to a value of integer type that may be assigned to an int32.}}
+// APPROPRIATE_ENUM_VALUE_REF
+//                      -> USER_VALUE_REF {{that resolves to an enum value of the same enum type as the initializee
+//                                          and which occurs earlier in declaration order than the initializee.}}
 
-// CONSTANT_DECL        -> const CONST_OK_TYPE name equals CONST_VALUE_REF semi
-// CONST_OK_TYPE        -> SIMPLE_TYPE | string
-// CONST_VALUE_REF      -> LITERAL_VALUE | CONST_VAL_REF
-// CONST_VALUE_REF      -> IDENTIFIER {{that resolves to a declared constant}}
+// CONSTANT_DECL        -> const CONST_OK_TYPE name equals COMPATIBLE_VALUE_REF semi
+// CONST_OK_TYPE        -> SIMPLE_TYPE | string | ENUM_TYPE {{See https://github.com/domokit/mojo/issues/607}}
 
-// VALUE_REF            -> USER_VALUE_REF | LITERAL_VALUE
-// USER_VALUE_REF       -> CONST_VALUE_REF | ENUM_VALUE_REF
+// VALUE_REF            -> USER_VALUE_REF | LITERAL_VALUE | BUILT_IN_FLOAT_CONST
+// USER_VALUE_REF       -> IDENTIFIER {{that resolves to a user-declared constant or enum value}}
+// BUILT_IN_FLOAT_CONST -> IDENTIFIER {{that does not resolve to a user-declared constant or enum value
+//                         and that is equal to one of the following strings:
+//                         "float.INFINITY", "float.NEGATIVE_INFINITY", "float.NAN",
+//                         "double.INFINITY", "double.NEGATIVE_INFINITY","double.NAN"}
 // LITERAL_VALUE        -> BOOL_LITERAL | string_literal | NUMBER_LITERAL
 // BOOL_LITERAL         -> true | false
 // NUMBER_LITERAL       -> [plus | minus] POS_NUM_LITERAL
-// NUMBER_LITERAL       -> FLOAT_SPECIAL_IDENTIFIER
 // INTEGER_LITERAL      -> [plus | minus] POS_INT_LITERAL
 // POS_NUM_LITERAL      -> POS_INT_LITERAL | POS_FLOAT_LITERAL
 // POS_INT_LITERAL      -> int_const_dec | int_const_hex
 // POS_FLOAT_LITERAL    -> float_const
 
-// TYPE                 -> BUILT_IN_TYPE | ARRAY_TYPE | MAP_TYPE | TYPE_REFERENCE
+// TYPE                 -> BUILT_IN_TYPE | ARRAY_TYPE | MAP_TYPE | USER_TYPE_REF
 // BUILT_IN_TYPE        -> SIMPLE_TYPE | STRING_TYPE | HANDLE_TYPE
 // SIMPLE_TYPE          -> bool | FLOAT_TYPE | INTEGER_TYPE
 // FLOAT_TYPE           -> float | double
@@ -102,11 +106,11 @@ import (
 // ARRAY_TYPE           -> array langle TYPE [comma int_const_dec] rangle [qstn]
 // MAP_TYPE             -> map langle MAP_KEY_TYPE comma TYPE rangle [qstn]
 // MAP_KEY_TYPE         -> SIMPLE_TYPE | string | ENUM_TYPE
-// TYPE_REFERENCE       -> INTERFACE_TYPE | STRUCT_TYPE | UNION_TYPE | ENUM_TYPE
+// USER_TYPE_REF        -> INTERFACE_TYPE | STRUCT_TYPE | UNION_TYPE | ENUM_TYPE
 // INTERFACE_TYPE       -> IDENTIFIER [amp] [qstn] {{where IDENTIFIER resolves to an interface}}
 // STRUCT_TYPE          -> IDENTIFIER [qstn] {{where IDENTIFIER resolves to a struct}}
 // UNION_TYPE           -> IDENTIFIER [qstn] {{where IDENTIFIER resolves to a union}}
-// ENUM_TYPE            -> IDENTIFIER [qstn] {{where IDENTIFIER resolves to an interface}}
+// ENUM_TYPE            -> IDENTIFIER  {{where IDENTIFIER resolves to an enum}}
 
 // IDENTIFIER           -> name {dot name}
 
@@ -733,8 +737,7 @@ func (p *Parser) parseStructBody(mojomStruct *mojom.MojomStruct) bool {
 }
 
 // STRUCT_FIELD         -> TYPE name [ordinal] [equals DEFAULT_VALUE] semi
-// DEFAULT_VALUE        -> APPROPRIATE_VAL_SPEC | default
-// APPROPRIATE_VAL_SPEC -> VALUE_REF {{that resolves to a type that is assignment compatible to the type of the assignee}}
+// DEFAULT_VALUE        -> COMPATIBLE_VALUE_REF | default
 func (p *Parser) parseStructField(attributes *mojom.Attributes) *mojom.StructField {
 	if !p.OK() {
 		return nil
@@ -988,8 +991,7 @@ func (p *Parser) parseEnumBody(mojomEnum *mojom.MojomEnum) bool {
 	return p.OK()
 }
 
-// ENUM_VAL_INITIALIZER -> INTEGER_LITERAL | ENUM_VALUE_REF
-// ENUM_VALUE_REF       -> IDENTIFIER {{that resolves to a declared enum value}}
+// ENUM_VAL_INITIALIZER -> INT32_VAL | APPROPRIATE_ENUM_VALUE_REF
 func (p *Parser) parseEnumValueInitializer(mojoEnum *mojom.MojomEnum, valueName string) mojom.ValueRef {
 	if !p.OK() {
 		return nil
@@ -1019,10 +1021,8 @@ func (p *Parser) parseEnumValueInitializer(mojoEnum *mojom.MojomEnum, valueName 
 	return valueRef
 }
 
-// CONSTANT_DECL     -> const CONST_OK_TYPE name equals CONST_VALUE_REF semi
-// CONST_OK_TYPE     -> SIMPLE_TYPE | string
-// CONST_VALUE_REF  -> LITERAL_VALUE | CONST_VAL_REF
-// CONST_VALUE_REF   -> IDENTIFIER {{that resolves to a declared constant}}
+// CONSTANT_DECL -> const CONST_OK_TYPE name equals COMPATIBLE_VALUE_REF semi
+// CONST_OK_TYPE -> SIMPLE_TYPE | string | ENUM_TYPE
 func (p *Parser) parseConstDecl(attributes *mojom.Attributes) (constant *mojom.UserDefinedConstant) {
 	if !p.OK() {
 		return
@@ -1077,7 +1077,7 @@ func (p *Parser) parseConstDecl(attributes *mojom.Attributes) (constant *mojom.U
 	return
 }
 
-// VALUE_REF -> USER_VALUE_REF | LITERAL_VALUE
+// VALUE_REF -> USER_VALUE_REF | LITERAL_VALUE | BUILT_IN_FLOAT_CONST
 func (p *Parser) parseValue(assigneeSpec mojom.AssigneeSpec) mojom.ValueRef {
 	if !p.OK() {
 		return nil
@@ -1088,6 +1088,10 @@ func (p *Parser) parseValue(assigneeSpec mojom.AssigneeSpec) mojom.ValueRef {
 	nextToken := p.peekNextToken("I was parsing a value.")
 	p.attachToken()
 	if nextToken.Kind == lexer.Name {
+		// Note that we do not distinguish between a USER_VALUE_REF and a
+		// BUILT_IN_FLOAT_CONST at parsing time. At this stage we consider both
+		// to be a UserValueRef. Only at resolution time do we decide if it
+		// turns out to be a BUILT_IN_FLOAT_CONST.
 		return p.parseUserValueRef(assigneeSpec)
 	}
 	literalValue := p.parseLiteral()
@@ -1223,7 +1227,7 @@ func (p *Parser) parseIdentifier() (identifier string, firstToken lexer.Token) {
 	return
 }
 
-// TYPE -> BUILT_IN_TYPE | ARRAY_TYPE | MAP_TYPE | TYPE_REFERENCE
+// TYPE -> BUILT_IN_TYPE | ARRAY_TYPE | MAP_TYPE | USER_TYPE_REF
 func (p *Parser) parseType() mojom.TypeRef {
 	if !p.OK() {
 		return nil
@@ -1379,7 +1383,7 @@ func (p *Parser) tryParseMapType() mojom.TypeRef {
 	return mojom.NewMapTypeRef(keyType, valueType, nullable)
 }
 
-// TYPE_REFERENCE   -> INTERFACE_TYPE | STRUCT_TYPE | UNION_TYPE | ENUM_TYPE
+// USER_TYPE_REF    -> INTERFACE_TYPE | STRUCT_TYPE | UNION_TYPE | ENUM_TYPE
 // INTERFACE_TYPE   -> IDENTIFIER [amp] [qstn] {{where IDENTIFIER resolves to an interface}}
 // STRUCT_TYPE      -> IDENTIFIER [qstn] {{where IDENTIFIER resolves to a struct}}
 // UNION_TYPE       -> IDENTIFIER [qstn] {{where IDENTIFIER resolves to a union}}
