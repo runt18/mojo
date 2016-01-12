@@ -28,7 +28,6 @@ static_library("fusl") {
     # Flags we add to get build working
     "-Wno-bitwise-op-parentheses",
     "-Wno-logical-op-parentheses",
-    "-Wno-shift-op-parentheses",
 
     # Silent builds.
     "-Wno-ignored-attributes",
