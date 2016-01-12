@@ -29,6 +29,13 @@ static_library("fusl") {
     "-Wno-bitwise-op-parentheses",
     "-Wno-logical-op-parentheses",
     "-Wno-shift-op-parentheses",
+
+    # Silent builds.
+    "-Wno-dangling-else",
+    "-Wno-ignored-attributes",
+    "-Wno-string-plus-int",
+    "-Wno-tautological-compare",
+    "-Wno-unknown-pragmas",
   ]
 
   # Arch specific includes.
