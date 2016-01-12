@@ -34,7 +34,7 @@ void main(List<String> args) {
   });
 
   test("Wget .mojo", () async {
-    final String mojoUrl = 'http://core.mojoapps.io/dart_wget.mojo';
+    final String mojoUrl = 'mojo:dart_wget';
     final List<String> args = new List.from(devtoolsFlags)..add(mojoUrl);
     args.add('--args-for=$mojoUrl $testServerUrl');
 

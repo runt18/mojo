@@ -260,7 +260,7 @@ Dart_Handle DartController::LibraryTagHandler(Dart_LibraryTag tag,
 
 Dart_Isolate DartController::CreateIsolateHelper(
     void* dart_app,
-    bool strict_compilation,
+    Dart_IsolateFlags* flags,
     IsolateCallbacks callbacks,
     std::string script_uri,
     std::string base_uri,
@@ -269,7 +269,6 @@ Dart_Isolate DartController::CreateIsolateHelper(
     bool use_network_loader,
     bool use_dart_run_loop) {
   auto isolate_data = new MojoDartState(dart_app,
-                                        strict_compilation,
                                         callbacks,
                                         script_uri,
                                         base_uri,
@@ -279,7 +278,7 @@ Dart_Isolate DartController::CreateIsolateHelper(
   CHECK(isolate_snapshot_buffer != nullptr);
   Dart_Isolate isolate =
       Dart_CreateIsolate(base_uri.c_str(), "main", isolate_snapshot_buffer,
-                         nullptr, isolate_data, error);
+                         flags, isolate_data, error);
   if (isolate == nullptr) {
     delete isolate_data;
     return nullptr;
@@ -318,8 +317,6 @@ Dart_Isolate DartController::CreateIsolateHelper(
     }
     Dart_Handle result = Dart_SetLibraryTagHandler(LibraryTagHandler);
     DART_CHECK_VALID(result);
-    // Toggle checked mode.
-    Dart_IsolateSetStrictCompilation(strict_compilation);
     // Prepare builtin and its dependent libraries.
     result = PrepareBuiltinLibraries(package_root, base_uri);
     DART_CHECK_VALID(result);
@@ -462,19 +459,17 @@ Dart_Isolate DartController::IsolateCreateCallback(const char* script_uri,
   }
   // Inherit parameters from parent isolate (if any).
   void* dart_app = nullptr;
-  bool strict_compilation = DartControllerConfig::kDefaultStrictCompilation;
   bool use_network_loader = DartControllerConfig::kDefaultUseNetworkLoader;
   // Currently, all spawned isolates run on the Dart thread pool.
   bool use_dart_run_loop = true;
   IsolateCallbacks callbacks;
   if (parent_isolate_data != nullptr) {
     dart_app = parent_isolate_data->application_data();
-    strict_compilation = parent_isolate_data->strict_compilation();
     use_network_loader = parent_isolate_data->use_network_loader();
     callbacks = parent_isolate_data->callbacks();
   }
   return CreateIsolateHelper(dart_app,
-                             strict_compilation,
+                             flags,
                              callbacks,
                              script_uri_string,
                              base_uri_string,
@@ -699,11 +694,24 @@ bool DartController::RunToCompletion(Dart_Isolate isolate) {
   return !RunIsolate(isolate);
 }
 
+void DartController::SetIsolateFlags(Dart_IsolateFlags* flags,
+                                     bool strict_compilation) {
+  flags->version = DART_FLAGS_CURRENT_VERSION;
+  flags->enable_type_checks = strict_compilation;
+  flags->enable_asserts = strict_compilation;
+  flags->enable_error_on_bad_type = strict_compilation;
+  flags->enable_error_on_bad_override = strict_compilation;
+}
+
 Dart_Isolate DartController::StartupIsolate(
     const DartControllerConfig& config) {
   const bool strict = strict_compilation_ || config.strict_compilation;
+
+  Dart_IsolateFlags flags;
+  SetIsolateFlags(&flags, strict);
+
   Dart_Isolate isolate = CreateIsolateHelper(config.application_data,
-                                             strict,
+                                             &flags,
                                              config.callbacks,
                                              config.script_uri,
                                              config.base_uri,

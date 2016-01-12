@@ -19,7 +19,7 @@ void main(List<String> args) {
   final List<String> devtoolsFlags = results.rest;
 
   test("Hello, .mojo!", () async {
-    final String mojoUrl = 'http://core.mojoapps.io/dart_hello.mojo';
+    final String mojoUrl = 'mojo:dart_hello';
     final List<String> args = new List.from(devtoolsFlags)..add(mojoUrl);
     final ProcessResult result = await Process.run(shellPath, args);
     expect(result.exitCode, equals(0));

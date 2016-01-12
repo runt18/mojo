@@ -143,9 +143,13 @@ class DartController {
                                             char** error);
   static void IsolateShutdownCallback(void* callback_data);
 
+  // Initialize per-isolate flags.
+  static void SetIsolateFlags(Dart_IsolateFlags* flags,
+                              bool strict_compilation);
+
   // Dart API callback helper(s).
   static Dart_Isolate CreateIsolateHelper(void* dart_app,
-                                          bool strict_compilation,
+                                          Dart_IsolateFlags* flags,
                                           IsolateCallbacks callbacks,
                                           std::string script_uri,
                                           std::string base_uri,

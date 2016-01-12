@@ -27,7 +27,6 @@ struct IsolateCallbacks {
 class MojoDartState : public tonic::DartState {
  public:
   MojoDartState(void* application_data,
-                bool strict_compilation,
                 IsolateCallbacks callbacks,
                 std::string script_uri,
                 std::string base_uri,
@@ -35,7 +34,6 @@ class MojoDartState : public tonic::DartState {
                 bool use_network_loader,
                 bool use_dart_run_loop)
       : application_data_(application_data),
-        strict_compilation_(strict_compilation),
         callbacks_(callbacks),
         script_uri_(script_uri),
         base_uri_(base_uri),
@@ -47,7 +45,6 @@ class MojoDartState : public tonic::DartState {
   }
 
   void* application_data() const { return application_data_; }
-  bool strict_compilation() const { return strict_compilation_; }
   const IsolateCallbacks& callbacks() const { return callbacks_; }
   const std::string& script_uri() const { return script_uri_; }
   const std::string& base_uri() const { return base_uri_; }
@@ -108,7 +105,6 @@ class MojoDartState : public tonic::DartState {
 
  private:
   void* application_data_;
-  bool strict_compilation_;
   IsolateCallbacks callbacks_;
   std::string script_uri_;
   std::string base_uri_;
