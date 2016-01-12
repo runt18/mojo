@@ -365,8 +365,8 @@ size_t iconv(iconv_t cd0, char **restrict in, size_t *restrict inb, char **restr
 		default:
 			if (c < 128+type) break;
 			c -= 128+type;
-			c = legacy_chars[ map[c*5/4]>>2*c%8 |
-				map[c*5/4+1]<<(8-2*c%8) & 1023 ];
+			c = legacy_chars[ (map[c*5/4]>>(2*c%8)) |
+				((map[c*5/4+1]<<(8-2*c%8)) & 1023) ];
 			if (!c) c = *(unsigned char *)*in;
 			if (c==1) goto ilseq;
 		}
@@ -400,8 +400,8 @@ size_t iconv(iconv_t cd0, char **restrict in, size_t *restrict inb, char **restr
 			}
 			d = c;
 			for (c=0; c<128-totype; c++) {
-				if (d == legacy_chars[ tomap[c*5/4]>>2*c%8 |
-					tomap[c*5/4+1]<<(8-2*c%8) & 1023 ]) {
+				if (d == legacy_chars[ (tomap[c*5/4]>>(2*c%8)) |
+					((tomap[c*5/4+1]<<(8-2*c%8)) & 1023) ]) {
 					c += 128;
 					goto revout;
 				}

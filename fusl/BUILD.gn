@@ -25,9 +25,6 @@ static_library("fusl") {
     "-Werror=pointer-sign",
     "-Werror=pointer-arith",
 
-    # Flags we add to get build working
-    "-Wno-bitwise-op-parentheses",
-
     # Silent builds.
     "-Wno-ignored-attributes",
     "-Wno-string-plus-int",
