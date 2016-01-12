@@ -621,6 +621,8 @@ void DartController::InitVmIfNeeded(Dart_EntropySource entropy,
     "--worker-timeout-millis=0",
     // Disable access dart:mirrors library.
     "--enable_mirrors=false",
+    // Force await and async to be keywords even outside of an async function.
+    "--await_is_keyword",
   };
 
   // Number of flags the controller sets.
