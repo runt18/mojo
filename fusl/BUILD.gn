@@ -31,7 +31,6 @@ static_library("fusl") {
     "-Wno-shift-op-parentheses",
 
     # Silent builds.
-    "-Wno-dangling-else",
     "-Wno-ignored-attributes",
     "-Wno-string-plus-int",
     "-Wno-tautological-compare",
