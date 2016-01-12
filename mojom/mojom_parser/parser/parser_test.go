@@ -28,7 +28,7 @@ func TestSuccessfulParsing(t *testing.T) {
 	startTestCase := func(moduleNameSpace string) {
 		descriptor := mojom.NewMojomDescriptor()
 		fileName := fmt.Sprintf("file%d", testCaseNum)
-		expectedFile = descriptor.AddMojomFile(fileName, nil, "")
+		expectedFile = descriptor.AddMojomFile(fileName, fileName, nil, "")
 		expectedFile.InitializeFileScope(moduleNameSpace)
 		cases = append(cases, testCase{fileName, "", expectedFile})
 	}
@@ -401,7 +401,7 @@ func TestSuccessfulParsing(t *testing.T) {
 	////////////////////////////////////////////////////////////
 	for _, c := range cases {
 		descriptor := mojom.NewMojomDescriptor()
-		parser := MakeParser(c.fileName, c.mojomContents, descriptor, nil)
+		parser := MakeParser(c.fileName, c.fileName, c.mojomContents, descriptor, nil)
 		parser.Parse()
 		if !parser.OK() {
 			t.Errorf("Parsing error for %s: %s", c.fileName, parser.GetError().Error())
@@ -625,7 +625,7 @@ func TestErrorParsing(t *testing.T) {
 	////////////////////////////////////////////////////////////
 	for i, c := range cases {
 		descriptor := mojom.NewMojomDescriptor()
-		parser := MakeParser(c.fileName, c.mojomContents, descriptor, nil)
+		parser := MakeParser(c.fileName, c.fileName, c.mojomContents, descriptor, nil)
 		parser.Parse()
 		if parser.OK() {
 			t.Errorf("Parsing was supposed to fail but did not for test case %d", i)
@@ -817,7 +817,7 @@ func TestInvalidAssignmentDuringParsing(t *testing.T) {
 	////////////////////////////////////////////////////////////
 	for i, c := range cases {
 		descriptor := mojom.NewMojomDescriptor()
-		parser := MakeParser(c.fileName, c.mojomContents, descriptor, nil)
+		parser := MakeParser(c.fileName, c.fileName, c.mojomContents, descriptor, nil)
 		parser.Parse()
 		if parser.OK() {
 			t.Errorf("Parsing was supposed to fail but did not for test case %d", i)
@@ -999,7 +999,7 @@ func TestLexerErrors(t *testing.T) {
 	////////////////////////////////////////////////////////////
 	for i, c := range cases {
 		descriptor := mojom.NewMojomDescriptor()
-		parser := MakeParser(c.fileName, c.mojomContents, descriptor, nil)
+		parser := MakeParser(c.fileName, c.fileName, c.mojomContents, descriptor, nil)
 		parser.Parse()
 		if parser.OK() {
 			t.Errorf("Parsing was supposed to fail but did not for test case %d", i)
@@ -1188,7 +1188,7 @@ func TestDuplicateNameErrorsSingleFile(t *testing.T) {
 	////////////////////////////////////////////////////////////
 	for i, c := range cases {
 		descriptor := mojom.NewMojomDescriptor()
-		parser := MakeParser(c.fileName, c.mojomContents, descriptor, nil)
+		parser := MakeParser(c.fileName, c.fileName, c.mojomContents, descriptor, nil)
 		parser.Parse()
 		if parser.OK() {
 			t.Errorf("Parsing was supposed to fail but did not for test case %d", i)
@@ -1348,12 +1348,12 @@ func TestDuplicateNameErrorsTwoFiles(t *testing.T) {
 	////////////////////////////////////////////////////////////
 	for i, c := range cases {
 		descriptor := mojom.NewMojomDescriptor()
-		parser := MakeParser(c.file1.fileName, c.file1.mojomContents, descriptor, nil)
+		parser := MakeParser(c.file1.fileName, c.file1.fileName, c.file1.mojomContents, descriptor, nil)
 		parser.Parse()
 		if !parser.OK() {
 			t.Errorf("Parsing was supposed to succeed for file1 but did not for test case %d: %s", i, parser.GetError().Error())
 		}
-		parser = MakeParser(c.file2.fileName, c.file2.mojomContents, descriptor, nil)
+		parser = MakeParser(c.file2.fileName, c.file2.fileName, c.file2.mojomContents, descriptor, nil)
 		parser.Parse()
 		if parser.OK() {
 			t.Errorf("Parsing was supposed to fail for file2 but did not for test case %d", i)

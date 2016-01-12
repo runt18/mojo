@@ -56,6 +56,7 @@ func (test *singleFileTest) addTestCase(moduleNameSpace, contents string) {
 		new(mojom_files.MojomFile), new(mojom_files.MojomFileGraph)})
 
 	test.expectedFile().FileName = fileName
+	test.expectedFile().SpecifiedFileName = stringPointer(fileName)
 	test.expectedFile().ModuleNamespace = &moduleNameSpace
 
 	test.expectedGraph().ResolvedTypes = make(map[string]mojom_types.UserDefinedType)
@@ -89,6 +90,28 @@ func (test *singleFileTest) newContainedDeclData(shortName, fullIdentifier strin
 // newContainedDeclDataA constructs a new DeclarationData with the given data, including attributes.
 func (test *singleFileTest) newContainedDeclDataA(shortName, fullIdentifier string,
 	containerTypeKey *string, attributes *[]mojom_types.Attribute) *mojom_types.DeclarationData {
+	return newContainedDeclDataA(test.fileName(), shortName, fullIdentifier, containerTypeKey, attributes)
+}
+
+// newDeclData constructs a new DeclarationData with the given data.
+func newDeclData(fileName, shortName, fullIdentifier string) *mojom_types.DeclarationData {
+	return newContainedDeclData(fileName, shortName, fullIdentifier, nil)
+}
+
+// newDeclDataA constructs a new DeclarationData with the given data, including attributes.
+func newDeclDataA(fileName, shortName, fullIdentifier string,
+	attributes *[]mojom_types.Attribute) *mojom_types.DeclarationData {
+	return newContainedDeclDataA(fileName, shortName, fullIdentifier, nil, attributes)
+}
+
+// newContainedDeclData constructs a new DeclarationData with the given data.
+func newContainedDeclData(fileName, shortName, fullIdentifier string, containerTypeKey *string) *mojom_types.DeclarationData {
+	return newContainedDeclDataA(fileName, shortName, fullIdentifier, containerTypeKey, nil)
+}
+
+// newContainedDeclDataA constructs a new DeclarationData with the given data, including attributes.
+func newContainedDeclDataA(fileName, shortName, fullIdentifier string,
+	containerTypeKey *string, attributes *[]mojom_types.Attribute) *mojom_types.DeclarationData {
 	return &mojom_types.DeclarationData{
 		Attributes:       attributes,
 		ShortName:        &shortName,
@@ -97,9 +120,8 @@ func (test *singleFileTest) newContainedDeclDataA(shortName, fullIdentifier stri
 		DeclarationOrder: -1,
 		ContainerTypeKey: containerTypeKey,
 		SourceFileInfo: &mojom_types.SourceFileInfo{
-			FileName: test.fileName(),
+			FileName: fileName,
 		}}
-
 }
 
 // TestSingleFileSerialization uses a series of test cases in which the text of a .mojom
@@ -579,7 +601,7 @@ func TestSingleFileSerialization(t *testing.T) {
 	for _, c := range test.cases {
 		// Parse and resolve the mojom input.
 		descriptor := mojom.NewMojomDescriptor()
-		parser := parser.MakeParser(c.fileName, c.mojomContents, descriptor, nil)
+		parser := parser.MakeParser(c.fileName, c.fileName, c.mojomContents, descriptor, nil)
 		parser.Parse()
 		if !parser.OK() {
 			t.Errorf("Parsing error for %s: %s", c.fileName, parser.GetError().Error())
@@ -623,6 +645,286 @@ func TestSingleFileSerialization(t *testing.T) {
 		// Compare
 		if err := compareFileGraphs(c.expectedGraph, &fileGraph); err != nil {
 			t.Errorf("%s:\n%s", c.fileName, err.Error())
+			continue
+		}
+	}
+}
+
+////////////////////////////////////////////
+/// Two-File Tests
+///////////////////////////////////////////
+
+// twoFileTestCase stores the data for one serialization test case
+// in which two files are added to the file graph.
+type twoFileTestCase struct {
+	// Is file B a top-level file?
+	topLevel bool
+	// If file A imports file B then this is the expected string that should
+	// have been parsed from the import statement. Otherwise this is empty.
+	importingName string
+	// The contents of the two files
+	mojomContentsA string
+	mojomContentsB string
+
+	lineAndcolumnNumbers         bool
+	expectedFileA, expectedFileB *mojom_files.MojomFile
+	expectedGraph                *mojom_files.MojomFileGraph
+}
+
+// twoFileTest contains a series of twoFileTestCases and a current
+// testCaseNum.
+type twoFileTest struct {
+	cases       []twoFileTestCase
+	testCaseNum int
+}
+
+// expectedFileA() returns the expectedFileA of the current test case.
+func (t *twoFileTest) expectedFileA() *mojom_files.MojomFile {
+	return t.cases[t.testCaseNum].expectedFileA
+}
+
+// expectedFileB() returns the expectedFileB of the current test case.
+func (t *twoFileTest) expectedFileB() *mojom_files.MojomFile {
+	return t.cases[t.testCaseNum].expectedFileB
+}
+
+// expectedGraph() returns the expectedGraph of the current test case.
+func (t *twoFileTest) expectedGraph() *mojom_files.MojomFileGraph {
+	return t.cases[t.testCaseNum].expectedGraph
+}
+
+func canonicalFileName(name string) string {
+	return fmt.Sprintf("/my/file/system/%s", name)
+}
+
+// addTestCase() should be invoked at the start of a case in
+// TestSingleFileSerialization.
+// moduleNameSpace: The expected module namespace for the two parsed files.
+// contentsA, contentsB: The .mojom file contents of the two files.
+// topLevel: Are we simulating File B being a top-level file (as opposed to
+//           one found only because it is imported from file A.)
+// importingName: If non-empty, the string expected to be parsed from the
+//                import statement in File A.
+func (test *twoFileTest) addTestCase(moduleNameSpace, contentsA, contentsB string,
+	topLevel bool, importingName string) {
+	fileNameA := fmt.Sprintf("file%dA", test.testCaseNum)
+	fileNameB := fmt.Sprintf("file%dB", test.testCaseNum)
+	test.cases = append(test.cases, twoFileTestCase{topLevel, importingName, contentsA, contentsB, false,
+		new(mojom_files.MojomFile), new(mojom_files.MojomFile), new(mojom_files.MojomFileGraph)})
+	test.expectedFileA().FileName = canonicalFileName(fileNameA)
+	test.expectedFileB().FileName = canonicalFileName(fileNameB)
+	test.expectedFileA().SpecifiedFileName = stringPointer(fileNameA)
+	specifiedNameB := ""
+	if topLevel {
+		// File B should have a non-empty |specified_file_name| just in case it is a top-level file.
+		specifiedNameB = fileNameB
+	}
+	test.expectedFileB().SpecifiedFileName = stringPointer(specifiedNameB)
+	test.expectedFileA().ModuleNamespace = &moduleNameSpace
+	test.expectedFileB().ModuleNamespace = &moduleNameSpace
+
+	if importingName != "" {
+		// Add and import to expected File A.
+		test.expectedFileA().Imports = new([]string)
+		*test.expectedFileA().Imports = append(*test.expectedFileA().Imports, test.expectedFileB().FileName)
+	}
+
+	test.expectedGraph().ResolvedTypes = make(map[string]mojom_types.UserDefinedType)
+	test.expectedGraph().ResolvedValues = make(map[string]mojom_types.UserDefinedValue)
+}
+
+// endTestCase() should be invoked at the end of a case in
+// TestSingleFileSerialization.
+func (test *twoFileTest) endTestCase() {
+	test.expectedGraph().Files = make(map[string]mojom_files.MojomFile)
+	test.expectedGraph().Files[test.expectedFileA().FileName] = *test.expectedFileA()
+	test.expectedGraph().Files[test.expectedFileB().FileName] = *test.expectedFileB()
+	test.testCaseNum += 1
+}
+
+// TestTwoFileSerialization uses a series of test cases in which the text of two .mojom
+// files is specified and the expected MojomFileGraph is specified using Go struct literals.
+func TestTwoFileSerialization(t *testing.T) {
+	test := twoFileTest{}
+
+	/////////////////////////////////////////////////////////////
+	// Test Case: Two top-level files with no import relationship
+	/////////////////////////////////////////////////////////////
+	{
+
+		contentsA := `
+	module a.b.c;
+	struct FooA{
+	};`
+
+		contentsB := `
+	module a.b.c;
+	struct FooB{
+	};`
+
+		importingName := "" // File A is not importing file B.
+		topLevel := true    // Simulate that File B is a top-level file.
+		test.addTestCase("a.b.c", contentsA, contentsB, topLevel, importingName)
+
+		// DeclaredMojomObjects
+		test.expectedFileA().DeclaredMojomObjects.Structs = &[]string{"TYPE_KEY:a.b.c.FooA"}
+		test.expectedFileB().DeclaredMojomObjects.Structs = &[]string{"TYPE_KEY:a.b.c.FooB"}
+
+		// struct FooA
+		test.expectedGraph().ResolvedTypes["TYPE_KEY:a.b.c.FooA"] = &mojom_types.UserDefinedTypeStructType{mojom_types.MojomStruct{
+			DeclData: newDeclData(test.expectedFileA().FileName, "FooA", "a.b.c.FooA"),
+			Fields:   []mojom_types.StructField{}}}
+
+		// struct FooB
+		test.expectedGraph().ResolvedTypes["TYPE_KEY:a.b.c.FooB"] = &mojom_types.UserDefinedTypeStructType{mojom_types.MojomStruct{
+			DeclData: newDeclData(test.expectedFileB().FileName, "FooB", "a.b.c.FooB"),
+			Fields:   []mojom_types.StructField{}}}
+
+		test.endTestCase()
+	}
+
+	/////////////////////////////////////////////////////////////
+	// Test Case: Two top-level files where the first imports the second.
+	/////////////////////////////////////////////////////////////
+	{
+
+		contentsA := `
+	module a.b.c;
+	import "myLittleFriend";
+	struct FooA{
+	};`
+
+		contentsB := `
+	module a.b.c;
+	struct FooB{
+	};`
+
+		importingName := "myLittleFriend" // File A is importing File B using this name.
+		topLevel := true                  // Simulate the File B is a top-level file.
+		test.addTestCase("a.b.c", contentsA, contentsB, topLevel, importingName)
+
+		// DeclaredMojomObjects
+		test.expectedFileA().DeclaredMojomObjects.Structs = &[]string{"TYPE_KEY:a.b.c.FooA"}
+		test.expectedFileB().DeclaredMojomObjects.Structs = &[]string{"TYPE_KEY:a.b.c.FooB"}
+
+		// struct FooA
+		test.expectedGraph().ResolvedTypes["TYPE_KEY:a.b.c.FooA"] = &mojom_types.UserDefinedTypeStructType{mojom_types.MojomStruct{
+			DeclData: newDeclData(test.expectedFileA().FileName, "FooA", "a.b.c.FooA"),
+			Fields:   []mojom_types.StructField{}}}
+
+		// struct FooB
+		test.expectedGraph().ResolvedTypes["TYPE_KEY:a.b.c.FooB"] = &mojom_types.UserDefinedTypeStructType{mojom_types.MojomStruct{
+			DeclData: newDeclData(test.expectedFileB().FileName, "FooB", "a.b.c.FooB"),
+			Fields:   []mojom_types.StructField{}}}
+
+		test.endTestCase()
+	}
+
+	/////////////////////////////////////////////////////////////
+	// Test Case: A top-level file that imports a non-top-level file.
+	/////////////////////////////////////////////////////////////
+	{
+
+		contentsA := `
+	module a.b.c;
+	import "myLittleFriend";
+	struct FooA{
+	};`
+
+		contentsB := `
+	module a.b.c;
+	struct FooB{
+	};`
+
+		importingName := "myLittleFriend" // File A is importing File B using this name.
+		topLevel := false                 // Simulate the File B is not a top-level file.
+		test.addTestCase("a.b.c", contentsA, contentsB, topLevel, importingName)
+
+		// DeclaredMojomObjects
+		test.expectedFileA().DeclaredMojomObjects.Structs = &[]string{"TYPE_KEY:a.b.c.FooA"}
+		test.expectedFileB().DeclaredMojomObjects.Structs = &[]string{"TYPE_KEY:a.b.c.FooB"}
+
+		// struct FooA
+		test.expectedGraph().ResolvedTypes["TYPE_KEY:a.b.c.FooA"] = &mojom_types.UserDefinedTypeStructType{mojom_types.MojomStruct{
+			DeclData: newDeclData(test.expectedFileA().FileName, "FooA", "a.b.c.FooA"),
+			Fields:   []mojom_types.StructField{}}}
+
+		// struct FooB
+		test.expectedGraph().ResolvedTypes["TYPE_KEY:a.b.c.FooB"] = &mojom_types.UserDefinedTypeStructType{mojom_types.MojomStruct{
+			DeclData: newDeclData(test.expectedFileB().FileName, "FooB", "a.b.c.FooB"),
+			Fields:   []mojom_types.StructField{}}}
+
+		test.endTestCase()
+	}
+
+	////////////////////////////////////////////////////////////
+	// Execute all of the test cases.
+	////////////////////////////////////////////////////////////
+	for i, c := range test.cases {
+		descriptor := mojom.NewMojomDescriptor()
+
+		// Parse file A.
+		parserA := parser.MakeParser(c.expectedFileA.FileName, *c.expectedFileA.SpecifiedFileName, c.mojomContentsA, descriptor, nil)
+		parserA.Parse()
+		if !parserA.OK() {
+			t.Errorf("Parsing error for %s: %s", c.expectedFileA.FileName, parserA.GetError().Error())
+			continue
+		}
+		mojomFileA := parserA.GetMojomFile()
+
+		// Parse file B.
+		var importedFrom *mojom.MojomFile
+		if !c.topLevel {
+			// If file B is not a top-level file then when the parser for it is constructed we give it a non-nil |importedFrom|.
+			importedFrom = mojomFileA
+		}
+		parserB := parser.MakeParser(c.expectedFileB.FileName, *c.expectedFileB.SpecifiedFileName, c.mojomContentsB, descriptor, importedFrom)
+		parserB.Parse()
+		if !parserB.OK() {
+			t.Errorf("Parsing error for %s: %s", c.expectedFileB.FileName, parserB.GetError().Error())
+			continue
+		}
+		mojomFileB := parserB.GetMojomFile()
+
+		// Set the canonical file name for the imported files. In real operation
+		// this step is done in parser_driver.go when each of the imported files are parsed.
+		if c.importingName != "" {
+			// The call to SetCanonicalImportName does a lookup in a map for a key corresponding to the
+			// first argument. Thus here we are also testing that |importingName| is in fact string
+			// that was parsed from the .mojom file.
+			mojomFileA.SetCanonicalImportName(c.importingName, mojomFileB.CanonicalFileName)
+		}
+
+		// Resolve
+		if err := descriptor.Resolve(); err != nil {
+			t.Errorf("Resolve error for case %d: %s", i, err.Error())
+			continue
+		}
+		if err := descriptor.ComputeEnumValueIntegers(); err != nil {
+			t.Errorf("ComputeEnumValueIntegers error for case %d: %s", i, err.Error())
+			continue
+		}
+		if err := descriptor.ComputeDataForGenerators(); err != nil {
+			t.Errorf("ComputeDataForGenerators error for case %d: %s", i, err.Error())
+			continue
+		}
+
+		// Serialize
+		EmitLineAndColumnNumbers = c.lineAndcolumnNumbers
+		bytes, _, err := Serialize(descriptor, false)
+		if err != nil {
+			t.Errorf("Serialization error for case %d: %s", i, err.Error())
+			continue
+		}
+
+		// Deserialize
+		decoder := bindings.NewDecoder(bytes, nil)
+		fileGraph := mojom_files.MojomFileGraph{}
+		fileGraph.Decode(decoder)
+
+		// Compare
+		if err := compareFileGraphs(c.expectedGraph, &fileGraph); err != nil {
+			t.Errorf("case %d:\n%s", i, err.Error())
 			continue
 		}
 	}

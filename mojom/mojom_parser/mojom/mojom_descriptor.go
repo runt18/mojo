@@ -26,6 +26,14 @@ type MojomFile struct {
 	// within the |MojomFilesByName| field of |Descriptor|
 	CanonicalFileName string
 
+	// The |SpecifiedFileName| will be empty if and only if |ImportedFrom|
+	// is not nil. This indicates that this file is included in the graph not
+	// because it was explicitly requested, but rather because it is imported
+	// from a different file in the graph. If |SpecifiedFileName| is not empty
+	// it indicates that this file was explicitly requested using the name
+	// in  this field.
+	SpecifiedFileName string
+
 	// The module namespace is the identifier declared via the "module"
 	// declaration in the .mojom file.
 	ModuleNamespace string
@@ -45,7 +53,7 @@ type MojomFile struct {
 	// and this file was not a top-level file then this field will contain a
 	// pointer to one of the importing files. Thus this field is a partial
 	// inverse to |Imports|. The value of this field is dependent on the order
-	// in which the files in the import graph were traversed.
+	// in which the files in the import graph were traversed. See also |SpecifiedFileName|.
 	ImportedFrom *MojomFile
 
 	// The lexical scope corresponding to this file.
@@ -83,7 +91,7 @@ func (f *ImportedFile) String() string {
 	return fmt.Sprintf("%q, ", f.SpecifiedName)
 }
 
-func newMojomFile(fileName string, descriptor *MojomDescriptor,
+func newMojomFile(fileName, specifiedName string, descriptor *MojomDescriptor,
 	importedFrom *MojomFile, fileContents string) *MojomFile {
 	mojomFile := new(MojomFile)
 	mojomFile.CanonicalFileName = fileName
@@ -93,7 +101,16 @@ func newMojomFile(fileName string, descriptor *MojomDescriptor,
 		if importedFrom.Descriptor != descriptor {
 			panic("A MojomFile may only be imported from another MojomFile with the same MojomDescriptor.")
 		}
+		if specifiedName != "" {
+			panic(fmt.Sprintf("A MojomFile may not have both a non-empty specfiedName and a non-nil "+
+				"|importedFrom|. specifiedName: %q, importedFrom: %q", specifiedName, importedFrom.CanonicalFileName))
+		}
+	} else {
+		if specifiedName == "" {
+			panic("A MojomFile must have either a non-empty specfiedName or a non-nil |importedFrom|.")
+		}
 	}
+	mojomFile.SpecifiedFileName = specifiedName
 	mojomFile.ModuleNamespace = ""
 	mojomFile.Imports = make([]*ImportedFile, 0)
 	mojomFile.importsBySpecifiedName = make(map[string]*ImportedFile)
@@ -283,8 +300,8 @@ func (d *MojomDescriptor) getGlobalScobe() *Scope {
 	return d.abstractScopesByName[""]
 }
 
-func (d *MojomDescriptor) AddMojomFile(fileName string, importedFrom *MojomFile, fileContents string) *MojomFile {
-	mojomFile := newMojomFile(fileName, d, importedFrom, fileContents)
+func (d *MojomDescriptor) AddMojomFile(fileName, specifiedName string, importedFrom *MojomFile, fileContents string) *MojomFile {
+	mojomFile := newMojomFile(fileName, specifiedName, d, importedFrom, fileContents)
 	mojomFile.Descriptor = d
 	d.mojomFiles = append(d.mojomFiles, mojomFile)
 	if _, ok := d.MojomFilesByName[mojomFile.CanonicalFileName]; ok {

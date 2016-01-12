@@ -71,6 +71,9 @@ func translateMojomFile(f *mojom.MojomFile) (file mojom_files.MojomFile) {
 	// file_name field
 	file.FileName = f.CanonicalFileName
 
+	// specified_file_name_field
+	file.SpecifiedFileName = &f.SpecifiedFileName
+
 	// module_namespace field
 	file.ModuleNamespace = &f.ModuleNamespace
 

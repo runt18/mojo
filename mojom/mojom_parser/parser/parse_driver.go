@@ -115,7 +115,13 @@ func (d *ParseDriver) ParseFiles(fileNames []string) (descriptor *mojom.MojomDes
 				err = fileReadError
 				return
 			}
-			parser := MakeParser(currentFile.absolutePath, contents, descriptor, importedFrom)
+			// topLevelFileName should be non-empty if and only if the current file is a top-level file.
+			topLevelFileName := ""
+			if importedFrom == nil {
+				topLevelFileName = currentFile.specifiedPath
+			}
+			parser := MakeParser(currentFile.absolutePath, topLevelFileName,
+				contents, descriptor, importedFrom)
 			parser.SetDebugMode(d.debugMode)
 			// Invoke parser.Parse() (but skip doing so in tests sometimes.)
 			d.parseInvoker.invokeParse(&parser)

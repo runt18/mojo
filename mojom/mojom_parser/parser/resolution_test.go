@@ -111,7 +111,11 @@ func TestSingleFileResolutionnErrors(t *testing.T) {
 	for i, c := range test.cases {
 		// Parse and resolve the mojom input.
 		descriptor := mojom.NewMojomDescriptor()
-		parser := MakeParser(c.fileName, c.mojomContents, descriptor, c.importedFrom)
+		specifiedName := ""
+		if c.importedFrom == nil {
+			specifiedName = c.fileName
+		}
+		parser := MakeParser(c.fileName, specifiedName, c.mojomContents, descriptor, c.importedFrom)
 		parser.Parse()
 		if !parser.OK() {
 			t.Errorf("Parsing error for %s: %s", c.fileName, parser.GetError().Error())
@@ -704,7 +708,11 @@ func TestSingleFileValueValidationErrors(t *testing.T) {
 	for i, c := range test.cases {
 		// Parse and resolve the mojom input.
 		descriptor := mojom.NewMojomDescriptor()
-		parser := MakeParser(c.fileName, c.mojomContents, descriptor, c.importedFrom)
+		specifiedName := ""
+		if c.importedFrom == nil {
+			specifiedName = c.fileName
+		}
+		parser := MakeParser(c.fileName, specifiedName, c.mojomContents, descriptor, c.importedFrom)
 		parser.Parse()
 		if !parser.OK() {
 			t.Errorf("Parsing error for %s: %s", c.fileName, parser.GetError().Error())
@@ -892,7 +900,11 @@ func TestSingleFileTypeValidationErrors(t *testing.T) {
 	for i, c := range test.cases {
 		// Parse and resolve the mojom input.
 		descriptor := mojom.NewMojomDescriptor()
-		parser := MakeParser(c.fileName, c.mojomContents, descriptor, c.importedFrom)
+		specifiedName := ""
+		if c.importedFrom == nil {
+			specifiedName = c.fileName
+		}
+		parser := MakeParser(c.fileName, specifiedName, c.mojomContents, descriptor, c.importedFrom)
 		parser.Parse()
 		if !parser.OK() {
 			t.Errorf("Parsing error for %s: %s", c.fileName, parser.GetError().Error())

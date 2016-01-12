@@ -9,7 +9,7 @@ import (
 )
 
 func NewTestFileScope(scopeName string) *Scope {
-	return NewMojomDescriptor().AddMojomFile("test.mojom", nil, "").InitializeFileScope(scopeName)
+	return NewMojomDescriptor().AddMojomFile("test.mojom", "test.mojom", nil, "").InitializeFileScope(scopeName)
 }
 
 func NewInterfaceScope(fileScope *Scope) *Scope {
