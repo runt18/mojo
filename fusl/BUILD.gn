@@ -2,9 +2,7 @@
 # Use of this source code is governed by a BSD-style license that can be
 # found in the LICENSE file.
 
-static_library("fusl") {
-  configs = []
-
+config("fusl_config") {
   cflags = [
     # Flags from musl
     "-std=c99",
@@ -34,9 +32,164 @@ static_library("fusl") {
   }
 
   # General includes, these need to come after the arch specific includes.
+  # src/internal must come before include.
   include_dirs += [
     "src/internal",
     "include",
+  ]
+}
+
+if (current_cpu != "x64") {
+  source_set("fusl_arch_generic_no_stack_protector") {
+    cflags = []
+
+    configs = []
+    configs += [ ":fusl_config" ]
+
+    cflags += [ "-fno-stack-protector" ]
+
+    sources = [
+      "src/string/memcpy.c",
+      "src/string/memset.c",
+      "src/thread/__set_thread_area.c",
+    ]
+  }
+
+  source_set("fusl_arch_generic") {
+    configs = []
+    configs += [ ":fusl_config" ]
+
+    sources = [
+      "src/fenv/fenv.c",
+      "src/internal/syscall.c",
+      "src/ldso/dlsym.c",
+      "src/ldso/tlsdesc.c",
+      "src/math/__invtrigl.c",
+      "src/math/acosl.c",
+      "src/math/asinl.c",
+      "src/math/atan2l.c",
+      "src/math/atanl.c",
+      "src/math/ceill.c",
+      "src/math/exp2l.c",
+      "src/math/expl.c",
+      "src/math/expm1l.c",
+      "src/math/fabs.c",
+      "src/math/fabsf.c",
+      "src/math/fabsl.c",
+      "src/math/floorl.c",
+      "src/math/fmodl.c",
+      "src/math/llrint.c",
+      "src/math/llrintf.c",
+      "src/math/llrintl.c",
+      "src/math/log10l.c",
+      "src/math/log1pl.c",
+      "src/math/log2l.c",
+      "src/math/logl.c",
+      "src/math/lrint.c",
+      "src/math/lrintf.c",
+      "src/math/lrintl.c",
+      "src/math/remainderl.c",
+      "src/math/rintl.c",
+      "src/math/sqrt.c",
+      "src/math/sqrtf.c",
+      "src/math/sqrtl.c",
+      "src/math/truncl.c",
+      "src/process/vfork.c",
+      "src/setjmp/longjmp.c",
+      "src/setjmp/setjmp.c",
+      "src/signal/restore.c",
+      "src/signal/sigsetjmp.c",
+      "src/string/memmove.c",
+      "src/thread/__unmapself.c",
+      "src/thread/clone.c",
+      "src/thread/syscall_cp.c",
+    ]
+
+    deps = [
+      ":fusl_arch_generic_no_stack_protector",
+    ]
+  }
+}
+
+if (current_cpu == "x64") {
+  source_set("fusl_arch_x64") {
+    configs = []
+    configs += [ ":fusl_config" ]
+
+    sources = [
+      "src/fenv/x86_64/fenv.s",
+      "src/internal/x86_64/syscall.s",
+      "src/ldso/x86_64/dlsym.s",
+      "src/ldso/x86_64/tlsdesc.s",
+      "src/math/x86_64/__invtrigl.s",
+      "src/math/x86_64/acosl.s",
+      "src/math/x86_64/asinl.s",
+      "src/math/x86_64/atan2l.s",
+      "src/math/x86_64/atanl.s",
+      "src/math/x86_64/ceill.s",
+      "src/math/x86_64/exp2l.s",
+      "src/math/x86_64/expl.s",
+      "src/math/x86_64/expm1l.s",
+      "src/math/x86_64/fabs.s",
+      "src/math/x86_64/fabsf.s",
+      "src/math/x86_64/fabsl.s",
+      "src/math/x86_64/floorl.s",
+      "src/math/x86_64/fmodl.s",
+      "src/math/x86_64/llrint.s",
+      "src/math/x86_64/llrintf.s",
+      "src/math/x86_64/llrintl.s",
+      "src/math/x86_64/log10l.s",
+      "src/math/x86_64/log1pl.s",
+      "src/math/x86_64/log2l.s",
+      "src/math/x86_64/logl.s",
+      "src/math/x86_64/lrint.s",
+      "src/math/x86_64/lrintf.s",
+      "src/math/x86_64/lrintl.s",
+      "src/math/x86_64/remainderl.s",
+      "src/math/x86_64/rintl.s",
+      "src/math/x86_64/sqrt.s",
+      "src/math/x86_64/sqrtf.s",
+      "src/math/x86_64/sqrtl.s",
+      "src/math/x86_64/truncl.s",
+      "src/process/x86_64/vfork.s",
+      "src/setjmp/x86_64/longjmp.s",
+      "src/setjmp/x86_64/setjmp.s",
+      "src/signal/x86_64/restore.s",
+      "src/signal/x86_64/sigsetjmp.s",
+      "src/string/x86_64/memcpy.s",
+      "src/string/x86_64/memmove.s",
+      "src/string/x86_64/memset.s",
+      "src/thread/x86_64/__set_thread_area.s",
+      "src/thread/x86_64/__unmapself.s",
+      "src/thread/x86_64/clone.s",
+      "src/thread/x86_64/syscall_cp.s",
+    ]
+  }
+}
+
+source_set("fusl_no_stack_protector") {
+  cflags = []
+
+  configs = []
+  configs += [ ":fusl_config" ]
+
+  cflags += [ "-fno-stack-protector" ]
+
+  sources = [
+    "src/env/__init_tls.c",
+    "src/env/__libc_start_main.c",
+    "src/env/__stack_chk_fail.c",
+    "src/ldso/dlstart.c",
+    "src/ldso/dynlink.c",
+  ]
+}
+
+static_library("fusl") {
+  configs = []
+  configs += [ ":fusl_config" ]
+
+  deps = [
+    ":fusl_no_stack_protector",
   ]
 
   # General sources.
@@ -176,10 +329,7 @@ static_library("fusl") {
     "src/dirent/telldir.c",
     "src/dirent/versionsort.c",
     "src/env/__environ.c",
-    "src/env/__init_tls.c",
-    "src/env/__libc_start_main.c",
     "src/env/__reset_tls.c",
-    "src/env/__stack_chk_fail.c",
     "src/env/clearenv.c",
     "src/env/getenv.c",
     "src/env/putenv.c",
@@ -230,8 +380,6 @@ static_library("fusl") {
     "src/ldso/dl_iterate_phdr.c",
     "src/ldso/dladdr.c",
     "src/ldso/dlinfo.c",
-    "src/ldso/dlstart.c",
-    "src/ldso/dynlink.c",
     "src/legacy/cuserid.c",
     "src/legacy/daemon.c",
     "src/legacy/err.c",
@@ -1284,103 +1432,5 @@ static_library("fusl") {
   ]
 
   # Arch specific sources.
-  if (current_cpu == "x64") {
-    sources += [
-      "src/fenv/x86_64/fenv.s",
-      "src/internal/x86_64/syscall.s",
-      "src/ldso/x86_64/dlsym.s",
-      "src/ldso/x86_64/tlsdesc.s",
-      "src/math/x86_64/__invtrigl.s",
-      "src/math/x86_64/acosl.s",
-      "src/math/x86_64/asinl.s",
-      "src/math/x86_64/atan2l.s",
-      "src/math/x86_64/atanl.s",
-      "src/math/x86_64/ceill.s",
-      "src/math/x86_64/exp2l.s",
-      "src/math/x86_64/expl.s",
-      "src/math/x86_64/expm1l.s",
-      "src/math/x86_64/fabs.s",
-      "src/math/x86_64/fabsf.s",
-      "src/math/x86_64/fabsl.s",
-      "src/math/x86_64/floorl.s",
-      "src/math/x86_64/fmodl.s",
-      "src/math/x86_64/llrint.s",
-      "src/math/x86_64/llrintf.s",
-      "src/math/x86_64/llrintl.s",
-      "src/math/x86_64/log10l.s",
-      "src/math/x86_64/log1pl.s",
-      "src/math/x86_64/log2l.s",
-      "src/math/x86_64/logl.s",
-      "src/math/x86_64/lrint.s",
-      "src/math/x86_64/lrintf.s",
-      "src/math/x86_64/lrintl.s",
-      "src/math/x86_64/remainderl.s",
-      "src/math/x86_64/rintl.s",
-      "src/math/x86_64/sqrt.s",
-      "src/math/x86_64/sqrtf.s",
-      "src/math/x86_64/sqrtl.s",
-      "src/math/x86_64/truncl.s",
-      "src/process/x86_64/vfork.s",
-      "src/setjmp/x86_64/longjmp.s",
-      "src/setjmp/x86_64/setjmp.s",
-      "src/signal/x86_64/restore.s",
-      "src/signal/x86_64/sigsetjmp.s",
-      "src/string/x86_64/memcpy.s",
-      "src/string/x86_64/memmove.s",
-      "src/string/x86_64/memset.s",
-      "src/thread/x86_64/__set_thread_area.s",
-      "src/thread/x86_64/__unmapself.s",
-      "src/thread/x86_64/clone.s",
-      "src/thread/x86_64/syscall_cp.s",
-    ]
-  } else {
-    sources += [
-      "src/fenv/fenv.c",
-      "src/internal/syscall.c",
-      "src/ldso/dlsym.c",
-      "src/ldso/tlsdesc.c",
-      "src/math/__invtrigl.c",
-      "src/math/acosl.c",
-      "src/math/asinl.c",
-      "src/math/atan2l.c",
-      "src/math/atanl.c",
-      "src/math/ceill.c",
-      "src/math/exp2l.c",
-      "src/math/expl.c",
-      "src/math/expm1l.c",
-      "src/math/fabs.c",
-      "src/math/fabsf.c",
-      "src/math/fabsl.c",
-      "src/math/floorl.c",
-      "src/math/fmodl.c",
-      "src/math/llrint.c",
-      "src/math/llrintf.c",
-      "src/math/llrintl.c",
-      "src/math/log10l.c",
-      "src/math/log1pl.c",
-      "src/math/log2l.c",
-      "src/math/logl.c",
-      "src/math/lrint.c",
-      "src/math/lrintf.c",
-      "src/math/lrintl.c",
-      "src/math/remainderl.c",
-      "src/math/rintl.c",
-      "src/math/sqrt.c",
-      "src/math/sqrtf.c",
-      "src/math/sqrtl.c",
-      "src/math/truncl.c",
-      "src/process/vfork.c",
-      "src/setjmp/longjmp.c",
-      "src/setjmp/setjmp.c",
-      "src/signal/restore.c",
-      "src/signal/sigsetjmp.c",
-      "src/string/memcpy.c",
-      "src/string/memmove.c",
-      "src/string/memset.c",
-      "src/thread/__set_thread_area.c",
-      "src/thread/__unmapself.c",
-      "src/thread/clone.c",
-      "src/thread/syscall_cp.c",
-    ]
-  }
+  deps += [ ":fusl_arch_${current_cpu}" ]
 }
