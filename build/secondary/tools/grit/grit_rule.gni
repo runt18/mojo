@@ -107,15 +107,6 @@ if (is_chrome_branded) {
   ]
 }
 
-if (is_chromeos) {
-  grit_defines += [
-    "-D",
-    "chromeos",
-    "-D",
-    "scale_factors=2x",
-  ]
-}
-
 if (is_desktop_linux) {
   grit_defines += [
     "-D",

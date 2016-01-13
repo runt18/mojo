@@ -663,7 +663,7 @@ component("base") {
 
   # Allow more direct string conversions on platforms with native utf8
   # strings
-  if (is_mac || is_ios || is_chromeos) {
+  if (is_mac || is_ios) {
     defines = [ "SYSTEM_NATIVE_UTF8" ]
   }
 
@@ -681,16 +681,12 @@ component("base") {
 
     deps += [
       ":base_jni_headers",
-      "//third_party/ashmem",
       "//third_party/android_tools:cpu_features",
+      "//third_party/ashmem",
     ]
 
     # logging.cc uses the Android logging library.
     libs = [ "log" ]
-  }
-
-  if (is_chromeos) {
-    sources -= [ "power_monitor/power_monitor_device_source_posix.cc" ]
   }
 
   if (is_nacl) {
@@ -896,7 +892,7 @@ component("i18n") {
   configs += [ "//build/config/compiler:no_size_t_to_int_warning" ]
 }
 
-if (is_win || (is_linux && !is_chromeos)) {
+if (is_win || is_linux) {
   # TODO(GYP): Figure out which of these work and are needed on other platforms.
   test("base_perftests") {
     sources = [
@@ -909,8 +905,8 @@ if (is_win || (is_linux && !is_chromeos)) {
       ":base",
       "//base/test:test_support",
       "//base/test:test_support_perf",
-      "//testing/perf",
       "//testing/gtest",
+      "//testing/perf",
     ]
 
     if (is_android) {
@@ -1319,7 +1315,7 @@ test("base_unittests") {
 
   # Allow more direct string conversions on platforms with native utf8
   # strings
-  if (is_mac || is_ios || is_chromeos) {
+  if (is_mac || is_ios) {
     defines = [ "SYSTEM_NATIVE_UTF8" ]
   }
 

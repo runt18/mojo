@@ -94,12 +94,11 @@ declare_args() {
   is_debug = true
 
   # Whether we're a traditional desktop unix.
-  is_desktop_linux = current_os == "linux" && current_os != "chromeos"
+  is_desktop_linux = current_os == "linux"
 
   # Set to true when compiling with the Clang compiler. Typically this is used
   # to configure warnings.
-  is_clang = current_os == "mac" || current_os == "ios" ||
-             current_os == "linux" || current_os == "chromeos"
+  is_clang = current_os == "mac" || current_os == "ios" || current_os == "linux"
 
   # By default, assume a non-PNaCl toolchain.
   is_pnacl = false
@@ -128,13 +127,6 @@ declare_args() {
   # Compile for Thread Sanitizer to find threading bugs.
   is_tsan = false
 
-  if (current_os == "chromeos") {
-    # Allows the target toolchain to be injected as arguments. This is needed
-    # to support the CrOS build system which supports per-build-configuration
-    # toolchains.
-    cros_use_custom_toolchain = false
-  }
-
   # DON'T ADD MORE FLAGS HERE. Read the comment above.
 }
 
@@ -145,11 +137,11 @@ declare_args() {
 # We set these various is_FOO booleans for convenience in writing OS-based
 # conditions.
 #
-# - is_android, is_chromeos, is_ios, and is_win should be obvious.
+# - is_android, is_ios, and is_win should be obvious.
 # - is_mac is set only for desktop Mac. It is not set on iOS.
 # - is_posix is true for mac and any Unix-like system (basically everything
 #   except Windows).
-# - is_linux is true for desktop Linux and ChromeOS, but not Android (which is
+# - is_linux is true for desktop Linux, but not Android (which is
 #   generally too different despite being based on the Linux kernel).
 #
 # Do not add more is_* variants here for random lesser-used Unix systems like
@@ -172,16 +164,6 @@ if (current_os == "mac") {
   is_fnl = false
   is_ios = false
   is_linux = false
-  is_mac = false
-  is_nacl = false
-  is_posix = true
-  is_win = false
-} else if (current_os == "chromeos") {
-  is_android = false
-  is_chromeos = true
-  is_fnl = false
-  is_ios = false
-  is_linux = true
   is_mac = false
   is_nacl = false
   is_posix = true
@@ -556,9 +538,6 @@ if (is_android) {
   } else {
     host_toolchain = "//build/toolchain/linux:$host_cpu"
     set_default_toolchain("//build/toolchain/linux:$current_cpu")
-  }
-  if (is_chromeos && cros_use_custom_toolchain) {
-    set_default_toolchain("//build/toolchain/cros:target")
   }
   if (is_fnl) {
     set_default_toolchain("//build/toolchain/fnl:target")

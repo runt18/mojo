@@ -104,8 +104,7 @@ config("compiler") {
   }
 
   # Linker warnings.
-  if (!(is_chromeos && current_cpu == "arm") && !is_mac && !is_ios) {
-    # TODO(jochen): Enable this on chromeos on arm. http://crbug.com/356580
+  if (!is_mac && !is_ios) {
     ldflags += [ "-Wl,--fatal-warnings" ]
   }
 
@@ -426,13 +425,6 @@ config("compiler") {
         ldflags += [ "-Wl,--icf=all" ]
       }
     }
-
-    # TODO(thestig): Make this flag work with GN.
-    #if (!is_official_build && !is_chromeos && !(is_asan || is_lsan || is_tsan || is_msan)) {
-    #  ldflags += [
-    #    "-Wl,--detect-odr-violations",
-    #  ]
-    #}
   }
 
   if (linux_use_bundled_binutils) {

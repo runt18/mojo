@@ -358,9 +358,9 @@ if (is_mac) {
     include_dirs = [ "src/client/apple/Framework" ]
 
     deps = [
-      ":utilities",
       ":crash_inspector",
       ":crash_report_sender",
+      ":utilities",
     ]
   }
 
@@ -515,12 +515,6 @@ if (is_linux || is_android) {
     configs += [ "//build/config/compiler:no_chromium_code" ]
     public_configs = [ ":client_config" ]
 
-    if (current_cpu == "arm" && is_chromeos) {
-      # Avoid running out of registers in
-      # linux_syscall_support.h:sys_clone()'s inline assembly.
-      cflags = [ "-marm" ]
-    }
-
     if (is_android) {
       sources += [ "src/common/android/breakpad_getcontext.S" ]
     }
@@ -594,11 +588,11 @@ if (is_linux) {
 
     deps = [
       ":client",
-      ":processor_support",
       ":linux_dumper_unittest_helper",
+      ":processor_support",
+      "//testing/gmock",
       "//testing/gtest",
       "//testing/gtest:gtest_main",
-      "//testing/gmock",
     ]
 
     include_dirs = [
