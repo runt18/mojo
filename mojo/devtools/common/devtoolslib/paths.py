@@ -37,7 +37,7 @@ def find_within_ancestors(target_relpath, start_path=None):
   return os.path.join(ancestor, target_relpath)
 
 
-def infer_paths(is_android, is_debug, target_cpu):
+def infer_params(is_android, is_debug, target_cpu):
   """Infers the locations of select build output artifacts in a regular
   Chromium-like checkout. This should grow thinner or disappear as we introduce
   per-repo config files, see https://github.com/domokit/devtools/issues/28.
@@ -51,19 +51,24 @@ def infer_paths(is_android, is_debug, target_cpu):
   out_build_dir = os.path.join('out', build_dir)
 
   root_path = find_ancestor_with(out_build_dir)
-  paths = collections.defaultdict(lambda: None)
+  params = collections.defaultdict(lambda: None)
   if not root_path:
-    return paths
+    return params
 
   build_dir_path = os.path.join(root_path, out_build_dir)
-  paths['build_dir_path'] = build_dir_path
+  params['build_dir_path'] = build_dir_path
   if is_android:
-    paths['shell_path'] = os.path.join(build_dir_path, 'apks', 'MojoShell.apk')
-    paths['adb_path'] = os.path.join(root_path, 'third_party', 'android_tools',
+    params['shell_path'] = os.path.join(build_dir_path, 'apks', 'MojoShell.apk')
+    params['adb_path'] = os.path.join(root_path, 'third_party', 'android_tools',
                                 'sdk', 'platform-tools', 'adb')
   else:
-    paths['shell_path'] = os.path.join(build_dir_path, 'mojo_shell')
-  return paths
+    params['shell_path'] = os.path.join(build_dir_path, 'mojo_shell')
+
+  mojo_version_file = find_within_ancestors('MOJO_VERSION')
+  if mojo_version_file:
+    with open(mojo_version_file) as f:
+      params['mojo_version'] = f.read().strip()
+  return params
 
 
 # Based on Chromium //tools/find_depot_tools.py.

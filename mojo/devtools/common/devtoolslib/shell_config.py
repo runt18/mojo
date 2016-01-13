@@ -61,7 +61,10 @@ def add_shell_arguments(parser):
                       action='store_true')
   parser.add_argument('--shell-path', help='Path of the Mojo shell binary.')
   parser.add_argument('--origin', help='Origin for mojo: URLs. This can be a '
-                      'web url or a local directory path.')
+                      'web url or a local directory path. If MOJO_VERSION file '
+                      'is among ancestors of this file, by default the origin '
+                      'will point to mojo services prebuilt at the '
+                      'specified version in Google Storage')
   parser.add_argument('--map-url', action='append',
                       help='Define a mapping for a url in the format '
                       '<url>=<url-or-local-file-path>')
@@ -143,22 +146,34 @@ def get_shell_config(script_args):
   """
   # Infer paths based on the Chromium configuration options
   # (--debug/--release, etc.), if running within a Chromium-like checkout.
-  inferred_paths = paths.infer_paths(script_args.android, script_args.debug,
-                                     script_args.target_cpu)
-  shell_config = ShellConfig()
+  inferred_params = paths.infer_params(script_args.android, script_args.debug,
+                                       script_args.target_cpu)
+  inferred_origin = None
+  if inferred_params['mojo_version']:
+    inferred_origin = "https://storage.googleapis.com/mojo/services"
+    if script_args.android:
+      inferred_origin += "/android-arm"
+    else:
+      inferred_origin += "/linux-x64"
+    # Get the versions that were built against Modular's version of the SDK.
+    inferred_origin += "/%s" % inferred_params['mojo_version']
+    if script_args.verbose:
+      print('Inferring origin from `MOJO_VERSION` as: ' +
+            inferred_origin)
 
+  shell_config = ShellConfig()
   shell_config.android = script_args.android
   shell_config.shell_path = (script_args.shell_path or
-                             inferred_paths['shell_path'])
-  shell_config.origin = script_args.origin
+                             inferred_params['shell_path'])
+  shell_config.origin = script_args.origin or inferred_origin
   shell_config.map_url_list = script_args.map_url
   shell_config.map_origin_list = script_args.map_origin
   shell_config.reuse_servers = script_args.reuse_servers
   shell_config.verbose = script_args.verbose
 
   # Android-only.
-  shell_config.adb_path = (script_args.adb_path or inferred_paths['adb_path'] or
-                           'adb')
+  shell_config.adb_path = (script_args.adb_path or inferred_params['adb_path']
+                           or 'adb')
   shell_config.target_device = script_args.target_device
   shell_config.logcat_tags = script_args.logcat_tags
 
@@ -166,8 +181,8 @@ def get_shell_config(script_args):
   shell_config.use_osmesa = script_args.use_osmesa
 
   if (shell_config.android and not shell_config.origin and
-      inferred_paths['build_dir_path']):
-    shell_config.origin = inferred_paths['build_dir_path']
+      inferred_params['build_dir_path']):
+    shell_config.origin = inferred_params['build_dir_path']
 
   # Read the mojoconfig file.
   config_file = script_args.config_file
@@ -182,9 +197,9 @@ def get_shell_config(script_args):
           alias_from, alias_to = alias_spec.split('=')
           config_file_aliases.append(('@{%s}' % alias_from, alias_to))
 
-      if inferred_paths['build_dir_path']:
+      if inferred_params['build_dir_path']:
         config_file_aliases.append(('@{BUILD_DIR}',
-                                    inferred_paths['build_dir_path']))
+                                    inferred_params['build_dir_path']))
 
       config = None
       try:

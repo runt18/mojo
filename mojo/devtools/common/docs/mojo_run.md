@@ -69,3 +69,12 @@ and the following in another:
 mkdir ~/another_home
 HOME=~/another_home mojo_run APP_URL --reuse-servers
 ```
+
+## Setting default mojo origin
+
+When run outside of the `domokit/mojo` repository, `mojo_run` needs `--origin`
+parameter to indicate where binaries of the core mojo services come from. If a
+`MOJO_VERSION` file is present among ancestors of `mojo_run` and `--origin`
+parameter is not set, origin will point to Google Storage location storing
+binaries of core mojo services built at the git revision indicated in
+`MOJO_VERSION`.
