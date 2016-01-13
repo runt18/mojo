@@ -46,7 +46,7 @@ import (
 // MOJOM_DECL           -> INTRFC_DECL | STRUCT_DECL | UNION_DECL | ENUM_DECL | CONSTANT_DECL
 
 // ATTRIBUTES           -> lbracket ATTR_ASSIGNMENT { comma, ATTR_ASSIGNMENT}
-// ATTR_ASSIGNMENT      -> name equals name | name equals literal
+// ATTR_ASSIGNMENT      -> name equals name | name equals LITERAL_VALUE
 
 // INTRFC_DECL          -> interface name lbrace INTRFC_BODY rbrace semi
 // INTRFC_BODY          -> {ATTR_INTRFC_ELEMENT}
@@ -54,7 +54,7 @@ import (
 // INTRFC_ELEMENT       -> METHOD_DECL | ENUM_DECL | CONSTANT_DECL
 
 // METHOD_DECL          -> name [ordinal] lparen [PARAM_LIST] rparen [response lparen [PARAM_LIST] rparen] semi
-// PARAM_LIST           -> PARAM_DECL {, PARAM_DECL}
+// PARAM_LIST           -> PARAM_DECL {comma, PARAM_DECL}
 // PARAM_DECL           -> [ATTRIBUTES] TYPE NAME [ordinal]
 
 // STRUCT_DECL          -> struct name lbrace STRUCT_BODY rbrace semi
@@ -63,7 +63,7 @@ import (
 // STRUCT_ELEMENT       -> STRUCT_FIELD | ENUM_DECL | CONSTANT_DECL
 // STRUCT_FIELD         -> TYPE name [ordinal] [equals DEFAULT_VALUE] semi
 // DEFAULT_VALUE        -> COMPATIBLE_VALUE_REF | default
-// COMPATIBLE_VALUE_REF -> VALUE_REF {{that resolves to a value whose type is assignment compatible to the type of the assignee}}
+// COMPATIBLE_VALUE_REF -> VALUE_REF {{that resolves to a concrete value whose type is assignment compatible with the type of the assignee}}
 
 // UNION_DECL           -> union name lbrace UNION_BODY rbrace semi
 // UNION_BODY           -> {UNION_FIELD_DECL}
@@ -73,7 +73,7 @@ import (
 // ENUM_BODY            -> [ ENUN_VALUE {, ENUM_VALUE} [,] ]
 // ENUM_VALUE           -> [ATTRIBUTES] name [equals ENUM_VAL_INITIALIZER]
 // ENUM_VAL_INITIALIZER -> INT32_VAL | APPROPRIATE_ENUM_VALUE_REF
-// INT32_VAL            -> VALUE_REF {{that resolves to a value of integer type that may be assigned to an int32.}}
+// INT32_VAL            -> VALUE_REF {{that resolves to a concrete value of integer type that may be assigned to an int32.}}
 // APPROPRIATE_ENUM_VALUE_REF
 //                      -> USER_VALUE_REF {{that resolves to an enum value of the same enum type as the initializee
 //                                          and which occurs earlier in declaration order than the initializee.}}
@@ -82,8 +82,8 @@ import (
 // CONST_OK_TYPE        -> SIMPLE_TYPE | string | ENUM_TYPE {{See https://github.com/domokit/mojo/issues/607}}
 
 // VALUE_REF            -> USER_VALUE_REF | LITERAL_VALUE | BUILT_IN_FLOAT_CONST
-// USER_VALUE_REF       -> IDENTIFIER {{that resolves to a user-declared constant or enum value}}
-// BUILT_IN_FLOAT_CONST -> IDENTIFIER {{that does not resolve to a user-declared constant or enum value
+// USER_VALUE_REF       -> IDENTIFIER {{that resolves to a user-defined constant or enum value}}
+// BUILT_IN_FLOAT_CONST -> IDENTIFIER {{that does not resolve to a user-defined constant or enum value
 //                         and that is equal to one of the following strings:
 //                         "float.INFINITY", "float.NEGATIVE_INFINITY", "float.NAN",
 //                         "double.INFINITY", "double.NEGATIVE_INFINITY","double.NAN"}
