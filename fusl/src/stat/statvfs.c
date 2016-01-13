@@ -59,6 +59,6 @@ int fstatvfs(int fd, struct statvfs *buf)
 }
 
 LFS64(statvfs);
-LFS64(statfs);
+weak_alias(__statfs, statfs64);
 LFS64(fstatvfs);
-LFS64(fstatfs);
+weak_alias(__fstatfs, fstatfs64);

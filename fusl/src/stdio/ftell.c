@@ -34,4 +34,4 @@ long ftell(FILE *f)
 
 weak_alias(__ftello, ftello);
 
-LFS64(ftello);
+weak_alias(__ftello, ftello64);

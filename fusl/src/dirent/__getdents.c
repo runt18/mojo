@@ -9,4 +9,4 @@ int __getdents(int fd, struct dirent *buf, size_t len)
 
 weak_alias(__getdents, getdents);
 
-LFS64(getdents);
+weak_alias(__getdents, getdents64);
