@@ -1,10 +1,11 @@
 #include <fenv.h>
 #include <math.h>
+#include "libm.h"
 
 float nearbyintf(float x)
 {
 #ifdef FE_INEXACT
-	#pragma STDC FENV_ACCESS ON
+	PRAGMA_STDC_FENV_ACCESS_ON
 	int e;
 
 	e = fetestexcept(FE_INEXACT);

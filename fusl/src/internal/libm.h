@@ -19,6 +19,16 @@
 #include <complex.h>
 #include <endian.h>
 
+/* Clang does not support the C99 rounding mode pragma. Support seems
+ * unlikely to be coming soon, but for reference the clang/llvm bug
+ * tracking this fact may be found at:
+ * https://llvm.org/bugs/show_bug.cgi?id=8100 */
+#ifdef __clang__
+#define PRAGMA_STDC_FENV_ACCESS_ON
+#else
+#define PRAGMA_STDC_FENV_ACCESS_ON _Pragma("STDC FENV_ACCESS ON")
+#endif
+
 #if LDBL_MANT_DIG == 53 && LDBL_MAX_EXP == 1024
 #elif LDBL_MANT_DIG == 64 && LDBL_MAX_EXP == 16384 && __BYTE_ORDER == __LITTLE_ENDIAN
 union ldshape {

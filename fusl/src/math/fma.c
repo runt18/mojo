@@ -79,7 +79,7 @@ static int getexp(long double x)
 
 double fma(double x, double y, double z)
 {
-	#pragma STDC FENV_ACCESS ON
+	PRAGMA_STDC_FENV_ACCESS_ON
 	long double hi, lo1, lo2, xy;
 	int round, ez, exy;
 

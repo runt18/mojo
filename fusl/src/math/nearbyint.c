@@ -1,12 +1,13 @@
 #include <fenv.h>
 #include <math.h>
+#include "libm.h"
 
 /* nearbyint is the same as rint, but it must not raise the inexact exception */
 
 double nearbyint(double x)
 {
 #ifdef FE_INEXACT
-	#pragma STDC FENV_ACCESS ON
+	PRAGMA_STDC_FENV_ACCESS_ON
 	int e;
 
 	e = fetestexcept(FE_INEXACT);

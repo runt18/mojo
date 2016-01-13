@@ -9,7 +9,7 @@ int ilogbl(long double x)
 #elif LDBL_MANT_DIG == 64 && LDBL_MAX_EXP == 16384
 int ilogbl(long double x)
 {
-	#pragma STDC FENV_ACCESS ON
+	PRAGMA_STDC_FENV_ACCESS_ON
 	union ldshape u = {x};
 	uint64_t m = u.i.m;
 	int e = u.i.se & 0x7fff;

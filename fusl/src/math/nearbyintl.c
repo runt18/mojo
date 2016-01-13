@@ -1,5 +1,6 @@
 #include <math.h>
 #include <float.h>
+#include "libm.h"
 
 #if LDBL_MANT_DIG == 53 && LDBL_MAX_EXP == 1024
 long double nearbyintl(long double x)
@@ -11,7 +12,7 @@ long double nearbyintl(long double x)
 long double nearbyintl(long double x)
 {
 #ifdef FE_INEXACT
-	#pragma STDC FENV_ACCESS ON
+	PRAGMA_STDC_FENV_ACCESS_ON
 	int e;
 
 	e = fetestexcept(FE_INEXACT);

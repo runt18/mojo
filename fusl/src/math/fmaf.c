@@ -28,6 +28,7 @@
 #include <fenv.h>
 #include <math.h>
 #include <stdint.h>
+#include "libm.h"
 
 /*
  * Fused multiply-add: Compute x * y + z with a single rounding error.
@@ -38,7 +39,7 @@
  */
 float fmaf(float x, float y, float z)
 {
-	#pragma STDC FENV_ACCESS ON
+	PRAGMA_STDC_FENV_ACCESS_ON
 	double xy, result;
 	union {double f; uint64_t i;} u;
 	int e;

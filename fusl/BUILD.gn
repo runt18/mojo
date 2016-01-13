@@ -29,7 +29,6 @@ static_library("fusl") {
     "-Wno-ignored-attributes",
     "-Wno-string-plus-int",
     "-Wno-tautological-compare",
-    "-Wno-unknown-pragmas",
   ]
 
   # Arch specific includes.
