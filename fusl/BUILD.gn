@@ -27,7 +27,6 @@ static_library("fusl") {
 
     # Silent builds.
     "-Wno-string-plus-int",
-    "-Wno-tautological-compare",
   ]
 
   # Arch specific includes.

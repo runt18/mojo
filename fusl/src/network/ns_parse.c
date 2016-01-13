@@ -105,7 +105,7 @@ int ns_parserr(ns_msg *handle, ns_sect section, int rrnum, ns_rr *rr)
 {
 	int r;
 
-	if (section < 0 || section >= ns_s_max) goto bad;
+	if ((int)section < 0 || section >= ns_s_max) goto bad;
 	if (section != handle->_sect) {
 		handle->_sect = section;
 		handle->_rrnum = 0;
@@ -168,4 +168,3 @@ int ns_name_uncompress(const unsigned char *msg, const unsigned char *eom,
 	if (r < 0) errno = EMSGSIZE;
 	return r;
 }
-

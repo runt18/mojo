@@ -55,7 +55,7 @@ int __getpw_a(const char *name, uid_t uid, struct passwd *pw, char **buf, size_t
 			 * happens to be a larger type (this is not true as of
 			 * now)
 			 */
-			if(uid < 0 || uid > UINT32_MAX) {
+			if(uid > UINT32_MAX) {
 				rv = 0;
 				goto done;
 			}

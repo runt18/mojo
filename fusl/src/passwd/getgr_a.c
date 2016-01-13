@@ -54,7 +54,7 @@ int __getgr_a(const char *name, gid_t gid, struct group *gr, char **buf, size_t 
 		if (name) {
 			key = name;
 		} else {
-			if (gid < 0 || gid > UINT32_MAX) {
+			if (gid > UINT32_MAX) {
 				rv = 0;
 				goto done;
 			}
