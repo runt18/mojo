@@ -24,9 +24,6 @@ static_library("fusl") {
     "-Werror=implicit-int",
     "-Werror=pointer-sign",
     "-Werror=pointer-arith",
-
-    # Silent builds.
-    "-Wno-string-plus-int",
   ]
 
   include_dirs = []
