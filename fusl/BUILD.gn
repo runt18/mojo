@@ -39,8 +39,38 @@ config("fusl_config") {
   ]
 }
 
+source_set("crt") {
+  cflags = []
+
+  configs = []
+  configs += [ ":fusl_config" ]
+
+  cflags += [
+    "-DCRT",
+    "-fno-stack-protector",
+  ]
+
+  sources = [
+    "crt/Scrt1.c",
+    "crt/crt1.c",
+    "crt/rcrt1.c",
+  ]
+
+  if (target_cpu == "x64") {
+    sources += [
+      "crt/x86_64/crti.s",
+      "crt/x86_64/crtn.s",
+    ]
+  } else {
+    sources += [
+      "crt/crti.c",
+      "crt/crtn.c",
+    ]
+  }
+}
+
 if (current_cpu != "x64") {
-  source_set("fusl_arch_generic_no_stack_protector") {
+  source_set("libc_generic_no_stack_protector") {
     cflags = []
 
     configs = []
@@ -55,7 +85,7 @@ if (current_cpu != "x64") {
     ]
   }
 
-  source_set("fusl_arch_generic") {
+  source_set("libc_generic") {
     configs = []
     configs += [ ":fusl_config" ]
 
@@ -106,13 +136,13 @@ if (current_cpu != "x64") {
     ]
 
     deps = [
-      ":fusl_arch_generic_no_stack_protector",
+      ":libc_generic_no_stack_protector",
     ]
   }
 }
 
 if (current_cpu == "x64") {
-  source_set("fusl_arch_x64") {
+  source_set("libc_x64") {
     configs = []
     configs += [ ":fusl_config" ]
 
@@ -167,7 +197,7 @@ if (current_cpu == "x64") {
   }
 }
 
-source_set("fusl_no_stack_protector") {
+source_set("libc_no_stack_protector") {
   cflags = []
 
   configs = []
@@ -184,12 +214,12 @@ source_set("fusl_no_stack_protector") {
   ]
 }
 
-static_library("fusl") {
+static_library("libc") {
   configs = []
   configs += [ ":fusl_config" ]
 
   deps = [
-    ":fusl_no_stack_protector",
+    ":libc_no_stack_protector",
   ]
 
   # General sources.
@@ -1432,5 +1462,12 @@ static_library("fusl") {
   ]
 
   # Arch specific sources.
-  deps += [ ":fusl_arch_${current_cpu}" ]
+  deps += [ ":libc_${current_cpu}" ]
+}
+
+group("fusl") {
+  deps = [
+    ":crt",
+    ":libc",
+  ]
 }
