@@ -31,9 +31,9 @@ def count_commits(start, end):
         'git', 'rev-list', '%s...%s' % (start, end)]).count('\n')
 
 
-def last_commit_to(file_path):
+def last_commit_to(file_path, fmt='%h'):
     return subprocess.check_output([
-        'git', 'log', '-1', '--format=%h', file_path]).strip()
+        'git', 'log', '-1', '--format=' + fmt, file_path]).strip()
 
 
 def update_pubspec(pubspec):
@@ -52,13 +52,16 @@ def update_pubspec(pubspec):
 def update_changelog(changelog, pubspec, version):
     old = last_commit_to(pubspec)
     new = last_commit_to('.')
+    long_new = last_commit_to('.', '%H')
     url = "https://github.com/domokit/mojo/compare/%s...%s" % (old, new)
     count = count_commits(old, new)
     message = """## %s
 
   - %s changes: %s
 
-""" % (version, count, url)
+  MOJO_SDK: %s
+
+""" % (version, count, url, long_new)
     prepend_to_file(message, changelog)
 
 
