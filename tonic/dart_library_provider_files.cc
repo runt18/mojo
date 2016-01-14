@@ -6,8 +6,8 @@
 
 #include "base/bind.h"
 #include "base/files/file_util.h"
+#include "base/run_loop.h"
 #include "base/strings/string_util.h"
-#include "base/threading/worker_pool.h"
 #include "mojo/data_pipe_utils/data_pipe_utils.h"
 #include "tonic/dart_converter.h"
 
@@ -55,8 +55,8 @@ void DartLibraryProviderFiles::GetLibraryAsStream(
   callback.Run(pipe.consumer_handle.Pass());
 
   base::FilePath source(name);
-  scoped_refptr<base::TaskRunner> runner =
-      base::WorkerPool::GetTaskRunner(true);
+  scoped_refptr<base::SingleThreadTaskRunner> runner =
+      base::MessageLoop::current()->task_runner();
   mojo::common::CopyFromFile(source, pipe.producer_handle.Pass(), 0,
                              runner.get(), base::Bind(&CopyComplete, source));
 }
