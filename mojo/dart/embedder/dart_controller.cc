@@ -741,6 +741,7 @@ void DartController::Shutdown() {
     return;
   }
   BlockForServiceIsolateLocked();
+  HandleWatcher::StopAll();
   Dart_Cleanup();
   service_isolate_running_ = false;
   initialized_ = false;
