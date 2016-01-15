@@ -28,6 +28,7 @@ source_set("common") {
     "mailbox_holder.h",
     "thread_local.h",
     "time.h",
+    "trace_event.h",
     "value_state.cc",
     "value_state.h",
   ]

@@ -26,20 +26,16 @@ source_set("client") {
   all_dependent_configs = [ "//third_party/khronos:khronos_headers" ]
 
   deps = [
+    "//base",
     "//gpu/command_buffer/common",
+    "//gpu/command_buffer/common:gles2_utils",
   ]
 }
 
 group("gles2_cmd_helper") {
-  if (is_component_build) {
-    deps = [
-      "//gpu",
-    ]
-  } else {
-    deps = [
-      ":gles2_cmd_helper_sources",
-    ]
-  }
+  public_deps = [
+    ":gles2_cmd_helper_sources",
+  ]
 }
 
 source_set("gles2_cmd_helper_sources") {
@@ -62,6 +58,7 @@ source_set("gles2_cmd_helper_sources") {
 
   deps = [
     ":client",
+    "//gpu/command_buffer/common",
   ]
 }
 
@@ -122,6 +119,7 @@ source_set("gpu_memory_buffer_manager") {
   configs += [ "//gpu:gpu_implementation" ]
   deps = [
     "//ui/gfx",
+    "//ui/gfx/geometry",
   ]
 }
 
@@ -136,10 +134,12 @@ component("gles2_implementation") {
   all_dependent_configs = [ "//third_party/khronos:khronos_headers" ]
 
   deps = [
+    ":client",
     ":gles2_cmd_helper",
     ":gles2_interface",
     "//base",
     "//gpu/command_buffer/common",
+    "//gpu/command_buffer/common:gles2_utils",
     "//ui/gfx/geometry",
   ]
 }
@@ -157,8 +157,11 @@ component("gles2_implementation_no_check") {
   ]
 
   deps = [
+    ":client",
     ":gles2_cmd_helper",
+    ":gles2_interface",
     "//base",
+    "//gpu/command_buffer/common",
     "//gpu/command_buffer/common:gles2_utils",
     "//ui/gfx",
     "//ui/gfx/geometry",
@@ -177,10 +180,10 @@ component("gl_in_process_context") {
   deps = [
     ":gles2_implementation",
     ":gpu_memory_buffer_manager",
-    "//gpu",
-    "//gpu/command_buffer/common:gles2_utils",
     "//base",
     "//base/third_party/dynamic_annotations",
+    "//gpu",
+    "//gpu/command_buffer/common:gles2_utils",
     "//ui/gfx/geometry",
     "//ui/gl",
   ]

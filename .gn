@@ -1,5 +1,9 @@
-# This file is used by the experimental meta-buildsystem in src/tools/gn to
-# find the root of the source tree and to set startup options.
+# Copyright 2013 The Chromium Authors. All rights reserved.
+# Use of this source code is governed by a BSD-style license that can be
+# found in the LICENSE file.
+
+# This file is used by the gn meta-buildsystem find the root of the source tree
+# and to set startup options.
 
 # The location of the build configuration file.
 buildconfig = "//build/config/BUILDCONFIG.gn"
@@ -22,7 +26,9 @@ check_targets = [
   "//dart/*",
   "//device/*",
   "//examples/*",
+  "//fusl/*",
   "//gin/*",
+  "//gpu/*",
   "//mojo/*",
   "//mojom/*",
   "//native_client/*",

@@ -127,12 +127,15 @@ source_set("service") {
 
   public_deps = [
     "//gpu/command_buffer/common",
+    "//gpu/command_buffer/common:gles2_utils",
   ]
   deps = [
     ":disk_cache_proto",
     "//base",
     "//base/third_party/dynamic_annotations",
     "//crypto",
+    "//gpu/command_buffer/client",
+    "//gpu/command_buffer/client:gpu_memory_buffer_manager",
     "//gpu/config",
     "//third_party/angle:translator",
     "//third_party/protobuf:protobuf_lite",
