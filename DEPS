@@ -123,8 +123,11 @@ deps = {
   'src/third_party/ffmpeg':
      Var('chromium_git') + '/chromium/third_party/ffmpeg.git' + '@' + '6f7f37e8c16db3bad5624c7504e710c54bdb7bf5',
 
-  'src/third_party/libcxx':
+  'src/third_party/libcxx/libcxx':
      Var('chromium_git') + '/chromium/llvm-project/libcxx.git' + '@' + '2dcc9a932e33ac4228eedcb6e026ac480daa8e45',
+
+  'src/third_party/libcxx/libcxxabi':
+     Var('chromium_git') + '/chromium/llvm-project/libcxxabi.git' + '@' + '3a1fd0deeabcefb42463eb0ac9a570140679e605',
 }
 
 deps_os = {

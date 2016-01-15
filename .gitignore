@@ -47,6 +47,8 @@ v8.log
 /third_party/leveldatabase/
 /third_party/libc++/trunk/
 /third_party/libc++abi/trunk/
+/third_party/libcxx/libcxx
+/third_party/libcxx/libcxxabi
 /third_party/libjpeg_turbo/
 /third_party/llvm/
 /third_party/llvm-build/
