@@ -218,6 +218,8 @@ static_library("libc") {
   configs = []
   configs += [ ":fusl_config" ]
 
+  complete_static_lib = true
+
   deps = [
     ":libc_no_stack_protector",
   ]
@@ -1465,9 +1467,103 @@ static_library("libc") {
   deps += [ ":libc_${current_cpu}" ]
 }
 
+# Build a sysroot.
+sysroot = "${target_out_dir}/sysroot/"
+sysroot_lib_dir = "${sysroot}/usr/lib"
+sysroot_include_dir = "${sysroot}/usr/include"
+
+action("copy_crt_objects") {
+  deps = [
+    ":crt",
+  ]
+  script = "tools/copy_crt.py"
+
+  args = [
+    "--source",
+    rebase_path("${target_out_dir}/crt", root_build_dir),
+
+    "--target",
+    rebase_path("${sysroot_lib_dir}", root_build_dir),
+
+    # GN mangling prefix. It corresponds to e.g. the first few
+    # characters of "crt.Scrt1.o". This is included to catch some of
+    # the brittleness in this script, which depends on where exactly
+    # GN places and names things. If this changes, this and the
+    # following path names must also change.
+    "--gn-prefix",
+    "crt.",
+
+    # Object files.
+    "crt.Scrt1.o",
+    "crt.crt1.o",
+    "crt.rcrt1.o",
+  ]
+
+  # Arch-specific object files.
+  if (current_cpu == "x64") {
+    args += [
+      "x86_64/crt.crti.o",
+      "x86_64/crt.crtn.o",
+    ]
+  }
+
+  outputs = [
+    "${sysroot_lib_dir}/Scrt1.o",
+    "${sysroot_lib_dir}/crt1.o",
+    "${sysroot_lib_dir}/crti.o",
+    "${sysroot_lib_dir}/crtn.o",
+    "${sysroot_lib_dir}/rcrt1.o",
+  ]
+}
+
+copy("copy_include") {
+  sources = [
+    "include",
+  ]
+  outputs = [
+    "${sysroot_include_dir}",
+  ]
+}
+
+copy("copy_include_bits") {
+  deps = [
+    ":copy_include",
+  ]
+  if (current_cpu == "x64") {
+    sources = [
+      "arch/x86_64/bits",
+    ]
+  }
+  outputs = [
+    "${sysroot_include_dir}/{{source_name_part}}",
+  ]
+}
+
+copy("copy_libc") {
+  deps = [
+    ":libc",
+  ]
+  sources = [
+    "${target_out_dir}/libc.a",
+  ]
+  outputs = [
+    "${sysroot_lib_dir}/libc.a",
+  ]
+}
+
+group("sysroot") {
+  deps = [
+    ":copy_crt_objects",
+    ":copy_include",
+    ":copy_include_bits",
+    ":copy_libc",
+  ]
+}
+
 group("fusl") {
   deps = [
     ":crt",
     ":libc",
+    ":sysroot",
   ]
 }
