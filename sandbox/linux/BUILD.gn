@@ -66,6 +66,7 @@ source_set("sandbox_linux_test_utils") {
   ]
 
   deps = [
+    "//base/third_party/dynamic_annotations",
     "//testing/gtest",
   ]
 
@@ -110,6 +111,7 @@ source_set("sandbox_linux_unittests_sources") {
     ":sandbox",
     ":sandbox_linux_test_utils",
     "//base",
+    "//base/third_party/dynamic_annotations",
     "//testing/gtest",
   ]
 
@@ -128,6 +130,7 @@ source_set("sandbox_linux_unittests_sources") {
       "suid/client/setuid_sandbox_client_unittest.cc",
       "suid/client/setuid_sandbox_host_unittest.cc",
     ]
+    deps += [ ":suid_sandbox_client" ]
   }
   if (use_seccomp_bpf) {
     sources += [
@@ -151,7 +154,12 @@ source_set("sandbox_linux_unittests_sources") {
       "seccomp-bpf/syscall_unittest.cc",
       "seccomp-bpf/trap_unittest.cc",
     ]
-    deps += [ ":bpf_dsl_golden" ]
+    deps += [
+      ":bpf_dsl_golden",
+      ":sandbox_services_headers",
+      ":seccomp_bpf",
+      ":seccomp_bpf_helpers",
+    ]
   }
   if (compile_credentials) {
     sources += [
@@ -159,6 +167,7 @@ source_set("sandbox_linux_unittests_sources") {
       "services/credentials_unittest.cc",
       "services/namespace_utils_unittest.cc",
     ]
+    deps += [ ":sandbox_services" ]
 
     if (use_base_test_suite) {
       # Tests that use advanced features not available in stock GTest.
@@ -250,6 +259,7 @@ component("seccomp_bpf") {
     ":sandbox_services",
     ":sandbox_services_headers",
     "//base",
+    "//base/third_party/dynamic_annotations",
   ]
 
   if (is_nacl_nonsfi) {
@@ -281,6 +291,7 @@ component("seccomp_bpf_helpers") {
 
   deps = [
     ":sandbox_services",
+    ":sandbox_services_headers",
     ":seccomp_bpf",
     "//base",
   ]
@@ -357,6 +368,7 @@ component("sandbox_services") {
 
   deps = [
     "//base",
+    "//base/third_party/dynamic_annotations",
   ]
 
   if (compile_credentials || is_nacl_nonsfi) {
