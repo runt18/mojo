@@ -611,14 +611,6 @@ void DartController::InitVmIfNeeded(Dart_EntropySource entropy,
   handle_watcher_producer_handle_ = HandleWatcher::Start();
 
   const char* kControllerFlags[] = {
-    // TODO(zra): Fix Dart VM Shutdown race.
-    // There is a bug in Dart VM shutdown which causes its thread pool threads
-    // to potentially fail to exit when the rest of the VM is going down. This
-    // results in a segfault if they begin running again after the Dart
-    // embedder has been unloaded. Setting this flag to 0 ensures that these
-    // threads sleep forever instead of waking up and trying to run code
-    // that isn't there anymore.
-    "--worker-timeout-millis=0",
     // Disable access dart:mirrors library.
     "--enable_mirrors=false",
     // Force await and async to be keywords even outside of an async function.

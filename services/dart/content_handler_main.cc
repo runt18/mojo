@@ -247,8 +247,5 @@ DartContentHandler::CreateApplication(
 
 MojoResult MojoMain(MojoHandle application_request) {
   mojo::ApplicationRunnerChromium runner(new dart::DartContentHandlerApp);
-  MojoResult r = runner.Run(application_request);
-  // TODO(johnmccutchan): Remove this once the Dart VM shuts down threads.
-  base::PlatformThread::Sleep(base::TimeDelta::FromMilliseconds(100));
-  return r;
+  return runner.Run(application_request);
 }
