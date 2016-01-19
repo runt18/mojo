@@ -219,4 +219,8 @@ source_set("suggest") {
   ]
   configs -= [ "//build/config/compiler:chromium_code" ]
   configs += [ "//build/config/compiler:no_chromium_code" ]
+
+  # TODO(vtl): https://github.com/domokit/mojo/issues/627 -- defines.h has a bad
+  # include of //base/macros.h.
+  check_includes = false
 }

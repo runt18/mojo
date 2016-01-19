@@ -17,6 +17,7 @@
 #ifndef LATINIME_DEFINES_H
 #define LATINIME_DEFINES_H
 
+// TODO(vtl): https://github.com/domokit/mojo/issues/627 -- Remove this include.
 #include "base/macros.h"
 
 #ifdef __GNUC__
