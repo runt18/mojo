@@ -37,6 +37,7 @@ check_targets = [
   "//shell/*",
   "//skia/*",
   "//testing/*",
+  "//tonic/*",
   "//tools/*",
   "//ui/*",
   "//url/*",
