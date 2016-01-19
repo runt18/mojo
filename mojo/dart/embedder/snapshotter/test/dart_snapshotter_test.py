@@ -50,6 +50,8 @@ def main():
                       required=True,
                       help="The directory containing the Mojo build.")
   args = parser.parse_args()
+  dep_file = tempfile.mktemp()
+  build_output = 'foobar'
   dart_snapshotter = os.path.join(args.build_dir, 'dart_snapshotter')
   package_root = os.path.join(args.build_dir, 'gen', 'dart-pkg', 'packages')
   main_dart = os.path.join(
@@ -59,12 +61,15 @@ def main():
   if not os.path.isfile(dart_snapshotter):
     print "file not found: " + dart_snapshotter
     return 1
-  subprocess.check_call([
+  command_line = [
     dart_snapshotter,
     main_dart,
     '--package-root=%s' % package_root,
     '--snapshot=%s' % snapshot,
-  ])
+    '--depfile=%s' % dep_file,
+    '--build-output=%s' % build_output
+  ]
+  subprocess.check_call(command_line)
   if not os.path.isfile(snapshot):
     return 1
 
@@ -77,6 +82,13 @@ def main():
     print ('wrong hash: actual = %s, expected = %s'
            % (actual_hash, expected_hash))
     return 1
+
+  with open(dep_file) as dep_file:
+    deps = dep_file.read()
+    if build_output != deps.split(':')[0]:
+      print('Depfile did not contain build output name.')
+      return 1
+
   return 0
 
 if __name__ == '__main__':

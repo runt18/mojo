@@ -25,12 +25,38 @@
 const char kHelp[] = "help";
 const char kPackageRoot[] = "package-root";
 const char kSnapshot[] = "snapshot";
+const char kDepfile[] = "depfile";
+const char kBuildOutput[] = "build-output";
+
+// Dependency tracking library provider.
+class DepTrackingDartLibraryProviderFiles :
+    public tonic::DartLibraryProviderFiles {
+ public:
+  explicit DepTrackingDartLibraryProviderFiles(
+      const base::FilePath& package_root)
+          : tonic::DartLibraryProviderFiles(package_root) {
+  }
+
+  void GetLibraryAsStream(const std::string& name,
+                          tonic::DataPipeConsumerCallback callback) override {
+    tonic::DartLibraryProviderFiles::GetLibraryAsStream(name, callback);
+    deps_.insert(name);
+  }
+
+  const std::set<std::string>& deps() const {
+    return deps_;
+  }
+
+ private:
+  std::set<std::string> deps_;
+};
 
 const uint8_t magic_number[] = { 0xf5, 0xf5, 0xdc, 0xdc };
 
 void Usage() {
   std::cerr << "Usage: dart_snapshotter"
-            << " --" << kPackageRoot << " --" << kSnapshot
+            << " --" << kPackageRoot << " --" << kSnapshot << " --" << kDepfile
+            << " --" << kBuildOutput
             << " <dart-app>" << std::endl;
 }
 
@@ -45,6 +71,21 @@ void WriteSnapshot(base::FilePath path) {
       magic_number_len);
   CHECK(base::AppendToFile(
       path, reinterpret_cast<const char*>(buffer), size));
+}
+
+void WriteDepfile(base::FilePath path,
+                  const std::string& build_output,
+                  const std::set<std::string>& deps) {
+  base::FilePath current_directory;
+  CHECK(base::GetCurrentDirectory(&current_directory));
+  std::string output = build_output + ":";
+  for (const auto& i : deps) {
+    output += " ";
+    output += current_directory.Append(i).MaybeAsASCII();
+  }
+  const char* data = output.c_str();
+  const intptr_t data_length = output.size();
+  CHECK_EQ(base::WriteFile(path, data, data_length), data_length);
 }
 
 int main(int argc, const char* argv[]) {
@@ -85,10 +126,10 @@ int main(int argc, const char* argv[]) {
   CHECK(!tonic::LogIfError(Dart_SetLibraryTagHandler(
             tonic::DartLibraryLoader::HandleLibraryTag)));
 
-  // Use tonic's file system library provider.
-  isolate_data->set_library_provider(
-      new tonic::DartLibraryProviderFiles(
-          command_line.GetSwitchValuePath(kPackageRoot)));
+  auto library_provider =
+      new DepTrackingDartLibraryProviderFiles(
+          command_line.GetSwitchValuePath(kPackageRoot));
+  isolate_data->set_library_provider(library_provider);
 
   // Load script.
   tonic::DartScriptLoaderSync::LoadScript(args[0],
@@ -96,6 +137,15 @@ int main(int argc, const char* argv[]) {
 
   // Write snapshot.
   WriteSnapshot(command_line.GetSwitchValuePath(kSnapshot));
+
+  if (command_line.HasSwitch(kDepfile)) {
+    CHECK(command_line.HasSwitch(kBuildOutput)) <<
+        "Need --build-output with --depfile";
+    // Write depfile.
+    WriteDepfile(command_line.GetSwitchValuePath(kDepfile),
+                 command_line.GetSwitchValueASCII(kBuildOutput),
+                 library_provider->deps());
+  }
 
   return 0;
 }
