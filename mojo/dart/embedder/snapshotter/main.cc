@@ -81,7 +81,16 @@ void WriteDepfile(base::FilePath path,
   std::string output = build_output + ":";
   for (const auto& i : deps) {
     output += " ";
-    output += current_directory.Append(i).MaybeAsASCII();
+    base::FilePath file = base::FilePath(i);
+    if (!file.IsAbsolute()) {
+      file = current_directory.Append(i);
+    }
+    base::FilePath resolved_file;
+    if (!ReadSymbolicLink(file, &resolved_file)) {
+      // Not a symbolic link.
+      resolved_file = file;
+    }
+    output += resolved_file.MaybeAsASCII();
   }
   const char* data = output.c_str();
   const intptr_t data_length = output.size();
