@@ -42,8 +42,8 @@ source_set("dart_controller_no_snapshot") {
     "//base",
     "//base:i18n",
     "//dart/runtime:libdart",
-    "//dart/runtime/observatory:embedded_observatory_archive",
     "//dart/runtime/bin:libdart_embedder_noio",
+    "//dart/runtime/observatory:embedded_observatory_archive",
     "//mojo/message_pump",
     "//mojo/public/c/system",
     "//mojo/public/cpp/environment",
@@ -80,12 +80,12 @@ dart_embedder_resources("generate_dart_embedder_patch_resources_cc") {
 
 group("dart_embedder_packages") {
   deps = [
-    ":dart_embedder_package_sdk",
     ":dart_embedder_package_application",
     ":dart_embedder_package_bindings",
+    ":dart_embedder_package_files_service",
     ":dart_embedder_package_network",
     ":dart_embedder_package_network_service",
-    ":dart_embedder_package_files_service",
+    ":dart_embedder_package_sdk",
   ]
 }
 
@@ -143,8 +143,8 @@ dart_embedder_resources("generate_dart_embedder_service_isolate_resources_cc") {
 
 action("generate_snapshot_bin") {
   deps = [
-    "//dart/runtime/bin:gen_snapshot($host_toolchain)",
     ":dart_embedder_packages",
+    "//dart/runtime/bin:gen_snapshot($host_toolchain)",
   ]
   inputs = [
     "snapshot.dart",
