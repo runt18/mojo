@@ -67,6 +67,10 @@ const (
 	FloatConst
 	Ordinal
 	StringLiteral
+
+	// Comments
+	SingleLineComment
+	MultiLineComment
 )
 
 // This method is used to generate user-facing strings in compilation error
@@ -161,6 +165,11 @@ func (tokenKind TokenKind) String() string {
 		return "an ordinal"
 	case StringLiteral:
 		return "a string literal"
+
+	case SingleLineComment:
+		return "single line comment"
+	case MultiLineComment:
+		return "multi line comment"
 
 	default:
 		// Note(rudominer) It is important to use %d below so as to avoid

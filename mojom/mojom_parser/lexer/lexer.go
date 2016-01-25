@@ -26,8 +26,18 @@ import (
 )
 
 // Tokenize accepts a source string and parses it into a stream of tokens which
-// can be read from the returned TokenStream.
+// can be read from the returned TokenStream. Comment tokens are ommitted from
+// the returned stream.
 func Tokenize(source string) TokenStream {
+	return NewFilteredTokenStream(
+		tokenizeUnfiltered(source),
+		[]TokenKind{SingleLineComment, MultiLineComment})
+}
+
+// tokenizeUnfiltered returns a TokenStream which does not filter out any of the
+// tokens in the channel. It is used for testing and by Tokenize which adds a
+// filter on top of the stream returned by tokenizeUnfiltered.
+func tokenizeUnfiltered(source string) TokenStream {
 	tokens := make(chan Token)
 	l := lexer{source: source, tokens: tokens}
 	go l.run()
@@ -509,7 +519,7 @@ func lexSingleLineComment(l *lexer) stateFn {
 		l.Consume()
 	}
 
-	l.beginToken()
+	l.emitToken(SingleLineComment)
 	return lexRoot
 }
 
@@ -542,7 +552,7 @@ func lexPossibleEndOfComment(l *lexer) stateFn {
 
 	if l.Peek() == '/' {
 		l.Consume()
-		l.beginToken()
+		l.emitToken(MultiLineComment)
 		return lexRoot
 	}
 

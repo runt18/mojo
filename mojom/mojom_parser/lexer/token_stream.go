@@ -49,3 +49,54 @@ func (s *TokenChan) ConsumeNext() {
 		s.nextToken = eofToken
 	}
 }
+
+// *FilteredTokenStream implements TokenStream
+// This implementation uses an underlying implementation of TokenStream, but
+// it implements a TokenKind filter. All tokens of the filtered TokenKinds
+// will be silently dropped.
+type FilteredTokenStream struct {
+	// tokenStream is the underlying TokenStream that is the data source.
+	tokenStream TokenStream
+	// filter contains the TokenKinds that should be skipped in the source
+	// TokenStream.
+	filter map[TokenKind]bool
+}
+
+// See TokenStream.
+func (s *FilteredTokenStream) PeekNext() (token Token) {
+	s.skipBlacklisted()
+	return s.tokenStream.PeekNext()
+}
+
+// See TokenStream.
+func (s *FilteredTokenStream) ConsumeNext() {
+	s.skipBlacklisted()
+	s.tokenStream.ConsumeNext()
+	s.skipBlacklisted()
+}
+
+func (s *FilteredTokenStream) skipBlacklisted() {
+	t := s.tokenStream.PeekNext()
+	for s.isBlacklisted(t) {
+		s.tokenStream.ConsumeNext()
+		t = s.tokenStream.PeekNext()
+	}
+}
+
+// isBlacklisted checks if a Token is of a filtered TokenKind.
+func (s *FilteredTokenStream) isBlacklisted(token Token) (ok bool) {
+	_, ok = s.filter[token.Kind]
+	return
+}
+
+func NewFilteredTokenStream(ts TokenStream, filter []TokenKind) (filteredTS *FilteredTokenStream) {
+	filteredTS = &FilteredTokenStream{ts, map[TokenKind]bool{}}
+	for _, tk := range filter {
+		if tk == EOF {
+			// We don't allow filtering EOF since that would cause an infinite loop.
+			panic("If the EOF token is filtered, there is no way to find the end of the stream.")
+		}
+		filteredTS.filter[tk] = true
+	}
+	return
+}

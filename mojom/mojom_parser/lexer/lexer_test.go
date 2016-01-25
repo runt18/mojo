@@ -80,6 +80,8 @@ func TestAllSingleTokens(t *testing.T) {
 		{"3.14e-55", FloatConst},
 		{"\"hello world\"", StringLiteral},
 		{"\"hello \\\"real\\\" world\"", StringLiteral},
+		{"// hello comment world", SingleLineComment},
+		{"/* hello \n comment */", MultiLineComment},
 	}
 
 	for i := range testData {
@@ -186,6 +188,28 @@ func TestUnterminatedStringLiteralEol(t *testing.T) {
 	checkEq(t, ErrorUnterminatedStringLiteral, ts.PeekNext().Kind)
 }
 
+// TestSingleLineCommentNoSkip tests that single line comments are correctly lexed.
+func TestSingleLineCommentNoSkip(t *testing.T) {
+	ts := tokenizeUnfiltered("( // some stuff\n)")
+	checkEq(t, LParen, ts.PeekNext().Kind)
+	ts.ConsumeNext()
+	checkEq(t, SingleLineComment, ts.PeekNext().Kind)
+	checkEq(t, "// some stuff", ts.PeekNext().Text)
+	ts.ConsumeNext()
+	checkEq(t, RParen, ts.PeekNext().Kind)
+}
+
+// TestMultiLineCommentNoSkip tests that multi line comments are correctly lexed.
+func TestMultiLineCommentNoSkip(t *testing.T) {
+	ts := tokenizeUnfiltered("( /* hello world/  * *\n */)")
+	checkEq(t, LParen, ts.PeekNext().Kind)
+	ts.ConsumeNext()
+	checkEq(t, MultiLineComment, ts.PeekNext().Kind)
+	checkEq(t, "/* hello world/  * *\n */", ts.PeekNext().Text)
+	ts.ConsumeNext()
+	checkEq(t, RParen, ts.PeekNext().Kind)
+}
+
 // TestSingleLineComment tests that single line comments are correctly skipped.
 func TestSingleLineComment(t *testing.T) {
 	ts := Tokenize("( // some stuff\n)")
@@ -200,6 +224,20 @@ func TestMultiLineComment(t *testing.T) {
 	checkEq(t, LParen, ts.PeekNext().Kind)
 	ts.ConsumeNext()
 	checkEq(t, RParen, ts.PeekNext().Kind)
+}
+
+// TestConsumeUnfilteredOnly tests that ConsumeNext consumes only unfiltered tokens.
+func TestConsumeUnfilteredOnly(t *testing.T) {
+	ts := Tokenize(" /* hello world*/  ( )")
+	// ConsumeNext should consume the left parenthesis, not the filtered comment.
+	ts.ConsumeNext()
+	checkEq(t, RParen, ts.PeekNext().Kind)
+}
+
+// TestCommentsOnly tests that source made only of comments is correctly processed.
+func TestCommentsOnly(t *testing.T) {
+	ts := Tokenize("/* hello world */\n  // hello world")
+	checkEq(t, EOF, ts.PeekNext().Kind)
 }
 
 // TestUnterminatedMultiLineComment tests that unterminated multiline comments
