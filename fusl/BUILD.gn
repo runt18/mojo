@@ -1472,48 +1472,57 @@ sysroot = "${target_out_dir}/sysroot/"
 sysroot_lib_dir = "${sysroot}/usr/lib"
 sysroot_include_dir = "${sysroot}/usr/include"
 
-action("copy_crt_objects") {
-  deps = [
-    ":crt",
-  ]
-  script = "tools/copy_crt.py"
-
-  args = [
-    "--source",
-    rebase_path("${target_out_dir}/crt", root_build_dir),
-
-    "--target",
-    rebase_path("${sysroot_lib_dir}", root_build_dir),
-
-    # GN mangling prefix. It corresponds to e.g. the first few
-    # characters of "crt.Scrt1.o". This is included to catch some of
-    # the brittleness in this script, which depends on where exactly
-    # GN places and names things. If this changes, this and the
-    # following path names must also change.
-    "--gn-prefix",
-    "crt.",
-
-    # Object files.
-    "crt.Scrt1.o",
-    "crt.crt1.o",
-    "crt.rcrt1.o",
-  ]
-
-  # Arch-specific object files.
-  if (current_cpu == "x64") {
-    args += [
-      "x86_64/crt.crti.o",
-      "x86_64/crt.crtn.o",
-    ]
+template("copy_objects") {
+  assert(defined(invoker.input_dir), "input_dir must be defined")
+  assert(defined(invoker.output_dir), "output_dir must be defined")
+  object_prefix = ""
+  if (defined(invoker.object_prefix)) {
+    object_prefix = invoker.object_prefix
   }
+  foreach(file, invoker.sources) {
+    copy("copy_${file}") {
+      sources = [
+        rebase_path("${invoker.input_dir}/${object_prefix}${file}",
+                    "",
+                    target_out_dir),
+      ]
+      outputs = [
+        "${invoker.output_dir}/${file}",
+      ]
+      deps = [
+        ":crt",
+      ]
+    }
+  }
+  group(target_name) {
+    deps = [
+      ":crt",
+    ]
+    foreach(file, invoker.sources) {
+      deps += [ ":copy_$file" ]
+    }
+  }
+}
 
-  outputs = [
-    "${sysroot_lib_dir}/Scrt1.o",
-    "${sysroot_lib_dir}/crt1.o",
-    "${sysroot_lib_dir}/crti.o",
-    "${sysroot_lib_dir}/crtn.o",
-    "${sysroot_lib_dir}/rcrt1.o",
+copy_objects("copy_crt_objects") {
+  sources = [
+    "Scrt1.o",
+    "crt1.o",
+    "rcrt1.o",
   ]
+  object_prefix = "crt."
+  input_dir = "crt"
+  output_dir = "${sysroot_lib_dir}"
+}
+
+copy_objects("copy_crt_x64_objects") {
+  sources = [
+    "crti.o",
+    "crtn.o",
+  ]
+  object_prefix = "crt."
+  input_dir = "crt/x86_64"
+  output_dir = "${sysroot_lib_dir}"
 }
 
 copy("copy_include") {
@@ -1558,6 +1567,9 @@ group("sysroot") {
     ":copy_include_bits",
     ":copy_libc",
   ]
+  if (current_cpu == "x64") {
+    deps += [ ":copy_crt_x64_objects" ]
+  }
 }
 
 group("fusl") {
