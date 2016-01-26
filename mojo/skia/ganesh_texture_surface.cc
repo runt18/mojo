@@ -2,34 +2,39 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-#include "base/logging.h"
 #include "mojo/skia/ganesh_texture_surface.h"
 
-namespace mojo {
+#include <GLES2/gl2.h>
 
-GaneshTextureSurface::GaneshTextureSurface(GaneshContext* context,
+#include "base/logging.h"
+#include "mojo/gpu/gl_texture.h"
+#include "third_party/skia/include/gpu/gl/GrGLTypes.h"
+
+namespace mojo {
+namespace skia {
+
+GaneshTextureSurface::GaneshTextureSurface(const GaneshContext::Scope& scope,
                                            std::unique_ptr<GLTexture> texture)
     : texture_(std::move(texture)) {
-  DCHECK(context);
   DCHECK(texture_);
   DCHECK(texture_->texture_id());
   DCHECK(texture_->size().width > 0);
   DCHECK(texture_->size().height > 0);
+  GrGLTextureInfo info;
+  info.fTarget = GL_TEXTURE_2D;
+  info.fID = texture_->texture_id();
 
   GrBackendTextureDesc desc;
   desc.fFlags = kRenderTarget_GrBackendTextureFlag;
+  desc.fOrigin = kTopLeft_GrSurfaceOrigin;
   desc.fWidth = texture_->size().width;
   desc.fHeight = texture_->size().height;
   desc.fConfig = kSkia8888_GrPixelConfig;
-  desc.fOrigin = kTopLeft_GrSurfaceOrigin;
-  desc.fTextureHandle = texture_->texture_id();
+  desc.fSampleCnt = 0;
+  desc.fTextureHandle = reinterpret_cast<GrBackendObject>(&info);
 
-  skia::RefPtr<GrTexture> gr_texture = skia::AdoptRef(
-      context->gr()->textureProvider()->wrapBackendTexture(desc));
-  DCHECK(gr_texture);
-
-  surface_ = skia::AdoptRef(
-      SkSurface::NewRenderTargetDirect(gr_texture->asRenderTarget()));
+  surface_ = ::skia::AdoptRef(
+      SkSurface::NewFromBackendTexture(scope.gr_context(), desc, nullptr));
   DCHECK(surface_);
 }
 
@@ -40,4 +45,5 @@ std::unique_ptr<GLTexture> GaneshTextureSurface::TakeTexture() {
   return std::move(texture_);
 }
 
+}  // namespace skia
 }  // namespace mojo

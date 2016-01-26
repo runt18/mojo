@@ -12,7 +12,8 @@
 #include "mojo/public/c/gpu/GLES2/gl2extmojo.h"
 #include "third_party/skia/include/gpu/gl/GrGLInterface.h"
 
-namespace skia_bindings {
+namespace mojo {
+namespace skia {
 
 GrGLInterface* CreateMojoSkiaGLBinding() {
   GrGLInterface* interface = new GrGLInterface;
@@ -150,3 +151,4 @@ GrGLInterface* CreateMojoSkiaGLBinding() {
 }
 
 }  // namespace skia
+}  // namespace mojo

@@ -8,8 +8,12 @@ source_set("skia") {
     "ganesh_context.h",
     "ganesh_framebuffer_surface.cc",
     "ganesh_framebuffer_surface.h",
+    "ganesh_image_factory.cc",
+    "ganesh_image_factory.h",
     "ganesh_texture_surface.cc",
     "ganesh_texture_surface.h",
+    "type_converters.cc",
+    "type_converters.h",
   ]
 
   deps = [
@@ -18,6 +22,7 @@ source_set("skia") {
     "//mojo/gpu",
     "//mojo/public/c/gpu",
     "//mojo/public/c/gpu:MGL",
+    "//mojo/services/geometry/interfaces",
     "//skia",
   ]
 }

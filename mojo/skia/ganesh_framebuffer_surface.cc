@@ -2,17 +2,17 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
+#include "mojo/skia/ganesh_framebuffer_surface.h"
+
 #include <GLES2/gl2.h>
 
 #include "base/logging.h"
-#include "mojo/skia/ganesh_framebuffer_surface.h"
 
 namespace mojo {
+namespace skia {
 
-GaneshFramebufferSurface::GaneshFramebufferSurface(GaneshContext* context) {
-  DCHECK(context);
-  GaneshContext::Scope scope(context);
-
+GaneshFramebufferSurface::GaneshFramebufferSurface(
+    const GaneshContext::Scope& scope) {
   GLint samples = 0;
   glGetIntegerv(GL_SAMPLES, &samples);
   GLint stencil_bits = 0;
@@ -32,14 +32,13 @@ GaneshFramebufferSurface::GaneshFramebufferSurface(GaneshContext* context) {
   desc.fSampleCnt = samples;
   desc.fStencilBits = stencil_bits;
   desc.fRenderTargetHandle = framebuffer_binding;
-  GrRenderTarget* render_target =
-      context->gr()->textureProvider()->wrapBackendRenderTarget(desc);
-  DCHECK(render_target);
 
-  surface_ = skia::AdoptRef(SkSurface::NewRenderTargetDirect(render_target));
+  surface_ = ::skia::AdoptRef(
+      SkSurface::NewFromBackendRenderTarget(scope.gr_context(), desc, nullptr));
   DCHECK(surface_);
 }
 
 GaneshFramebufferSurface::~GaneshFramebufferSurface() {}
 
+}  // namespace skia
 }  // namespace mojo

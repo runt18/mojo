@@ -7,12 +7,15 @@
 
 #include <memory>
 
-#include "mojo/gpu/gl_texture.h"
+#include "base/macros.h"
 #include "mojo/skia/ganesh_context.h"
 #include "skia/ext/refptr.h"
 #include "third_party/skia/include/core/SkSurface.h"
 
 namespace mojo {
+class GLTexture;
+
+namespace skia {
 
 // This class represents an SkSurface backed by a GL texture, which is
 // appropriate for use with Ganesh.  This is useful for rendering Skia
@@ -20,7 +23,7 @@ namespace mojo {
 class GaneshTextureSurface {
  public:
   // Creates a surface that wraps the specified GL texture.
-  GaneshTextureSurface(GaneshContext* context,
+  GaneshTextureSurface(const GaneshContext::Scope& scope,
                        std::unique_ptr<GLTexture> texture);
   ~GaneshTextureSurface();
 
@@ -32,11 +35,12 @@ class GaneshTextureSurface {
 
  private:
   std::unique_ptr<GLTexture> texture_;
-  skia::RefPtr<SkSurface> surface_;
+  ::skia::RefPtr<SkSurface> surface_;
 
   DISALLOW_COPY_AND_ASSIGN(GaneshTextureSurface);
 };
 
+}  // namespace skia
 }  // namespace mojo
 
 #endif  // MOJO_SKIA_GANESH_TEXTURE_SURFACE_H_
