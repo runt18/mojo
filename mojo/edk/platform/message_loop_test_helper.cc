@@ -2,7 +2,7 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-#include "mojo/edk/base_edk/message_loop_test_helper.h"
+#include "mojo/edk/platform/message_loop_test_helper.h"
 
 #include <thread>
 #include <vector>
@@ -12,11 +12,10 @@
 #include "mojo/edk/util/ref_ptr.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
-using mojo::platform::MessageLoop;
-using mojo::platform::TaskRunner;
 using mojo::util::RefPtr;
 
-namespace base_edk {
+namespace mojo {
+namespace platform {
 namespace test {
 
 void MessageLoopTestHelper(MessageLoop* message_loop) {
@@ -96,4 +95,5 @@ void MessageLoopTestHelper(MessageLoop* message_loop) {
 }
 
 }  // namespace test
-}  // namespace base_edk
+}  // namespace platform
+}  // namespace mojo

@@ -2,8 +2,6 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-// TODO(vtl): Maybe this test should actually be in //mojo/edk/platform?
-
 #include "mojo/edk/platform/io_thread.h"
 
 #include <memory>

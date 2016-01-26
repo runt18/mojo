@@ -2,23 +2,28 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-#include "mojo/edk/base_edk/platform_handle_watcher_test_helper.h"
+#include "mojo/edk/platform/platform_handle_watcher_test_helper.h"
 
 #include <unistd.h>
 
-#include "base/posix/eintr_wrapper.h"
 #include "mojo/edk/platform/message_loop.h"
 #include "mojo/edk/platform/platform_handle.h"
 #include "mojo/edk/platform/platform_handle_watcher.h"
 #include "mojo/edk/platform/scoped_platform_handle.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
-using mojo::platform::MessageLoop;
-using mojo::platform::PlatformHandle;
-using mojo::platform::PlatformHandleWatcher;
-using mojo::platform::ScopedPlatformHandle;
+// A poor man's copy of the one from //base/posix/eintr_wrapper.h (avoiding the
+// //base dependency).
+#define HANDLE_EINTR(x) ({ \
+  decltype(x) eintr_wrapper_result; \
+  do { \
+    eintr_wrapper_result = (x); \
+  } while (eintr_wrapper_result == -1 && errno == EINTR); \
+  eintr_wrapper_result; \
+})
 
-namespace base_edk {
+namespace mojo {
+namespace platform {
 namespace test {
 
 void PlatformHandleWatcherTestHelper(
@@ -62,4 +67,5 @@ void PlatformHandleWatcherTestHelper(
 }
 
 }  // namespace test
-}  // namespace base_edk
+}  // namespace platform
+}  // namespace mojo
