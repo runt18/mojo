@@ -10,11 +10,9 @@
 
 namespace tracing {
 
-TracingApp::TracingApp() : collector_binding_(this), tracing_active_(false) {
-}
+TracingApp::TracingApp() : collector_binding_(this), tracing_active_(false) {}
 
-TracingApp::~TracingApp() {
-}
+TracingApp::~TracingApp() {}
 
 bool TracingApp::ConfigureIncomingConnection(
     mojo::ApplicationConnection* connection) {
@@ -40,6 +38,11 @@ bool TracingApp::ConfigureIncomingConnection(
 // mojo::InterfaceFactory<TraceCollector> implementation.
 void TracingApp::Create(mojo::ApplicationConnection* connection,
                         mojo::InterfaceRequest<TraceCollector> request) {
+  if (collector_binding_.is_bound()) {
+    LOG(ERROR) << "Another application is already connected to tracing.";
+    return;
+  }
+
   collector_binding_.Bind(request.Pass());
 }
 

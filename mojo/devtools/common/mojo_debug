@@ -109,27 +109,6 @@ def _add_tracing_command(subparsers):
   stop_tracing_parser.set_defaults(func=_tracing_stop)
 
 
-def _wm_load(args):
-  """Loads (embeds) the given url in the window manager."""
-  if not _send_request('load', args.url):
-    return 1
-  return 0
-
-
-def _add_wm_command(subparsers):
-  """Sets up the parser for the 'wm' command."""
-  wm_parser = subparsers.add_parser('wm', help='window manager (requires '
-                                    'debugger.mojo)')
-  wm_subparser = wm_parser.add_subparsers(
-      help='the command to run')
-
-  wm_load_parser = wm_subparser.add_parser('load',
-      help='load (embed) the given url')
-  wm_load_parser.add_argument('url', type=str,
-      help='the url to load')
-  wm_load_parser.set_defaults(func=_wm_load)
-
-
 def _device_stack(args):
   """Runs the device logcat through android_stack_parser."""
   adb_path = args.adb_path if args.adb_path else 'adb'
@@ -325,7 +304,6 @@ def main():
   subparsers = parser.add_subparsers(help='the tool to run')
   _add_device_command(subparsers)
   _add_tracing_command(subparsers)
-  _add_wm_command(subparsers)
   _add_gdb_command(subparsers)
 
   args = parser.parse_args()

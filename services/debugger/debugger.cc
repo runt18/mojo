@@ -19,7 +19,6 @@
 #include "mojo/services/http_server/interfaces/http_server_factory.mojom.h"
 #include "mojo/services/network/interfaces/net_address.mojom.h"
 #include "mojo/services/tracing/interfaces/tracing.mojom.h"
-#include "mojo/services/window_manager/interfaces/window_manager.mojom.h"
 #include "services/debugger/trace_collector.h"
 
 // Debugger is a Mojo application that exposes an http server and talks to other
@@ -30,7 +29,7 @@
 namespace debugger {
 
 class Debugger : public mojo::ApplicationDelegate,
-                    public http_server::HttpHandler {
+                 public http_server::HttpHandler {
  public:
   Debugger() : is_tracing_(false), app_(nullptr), handler_binding_(this) {}
   ~Debugger() override {}
@@ -45,11 +44,6 @@ class Debugger : public mojo::ApplicationDelegate,
       LOG(ERROR) << "--args-for required to specify command_port";
       mojo::ApplicationImpl::Terminate();
       return;
-    }
-    if (app->args().size() == 3 && app->args()[2] == "--wm") {
-      // Connect to window manager only if requested, as the user might want to
-      // run the debugger without spawning one.
-      app_->ConnectToService("mojo:window_manager", &window_manager_);
     }
     base::StringToUint(app->args()[1], &command_port_);
     http_server::HttpServerFactoryPtr http_server_factory;
@@ -83,18 +77,8 @@ class Debugger : public mojo::ApplicationDelegate,
                      const HandleRequestCallback& callback) override {
     // FIXME: We should use use a fancier lookup system more like what
     // services/http_server/http_server.cc does with AddHandler.
-    if (request->relative_url == "/reload") {
-      Load(callback, url_);
-    } else if (request->relative_url == "/quit") {
+    if (request->relative_url == "/quit") {
       Exit();
-    } else if (request->relative_url == "/load") {
-      std::string url;
-      mojo::common::BlockingCopyToString(request->body.Pass(), &url);
-      Load(callback, url);
-    } else if (request->relative_url == "/start_profiling") {
-      StartProfiling(callback);
-    } else if (request->relative_url == "/stop_profiling") {
-      StopProfiling(callback);
     } else if (request->relative_url == "/start_tracing") {
       StartTracing(callback);
     } else if (request->relative_url == "/stop_tracing") {
@@ -114,33 +98,15 @@ class Debugger : public mojo::ApplicationDelegate,
 
   void Help(const HandleRequestCallback& callback, std::string path) {
     std::string help = base::StringPrintf(
-        "Sky Debugger running on port %d\n"
+        "Debugger running on port %d\n"
         "Supported URLs:\n"
-        "/reload           -- Reload the current page\n"
         "/quit             -- Quit\n"
-        "/load             -- Load a new URL, url in POST body.\n",
+        "/start_tracing    -- Start Tracing\n"
+        "/stop_tracing     -- Stop Tracing\n",
         command_port_);
     if (path != "/")
       help = "Unknown path: " + path + "\n\n" + help;
     Respond(callback, help);
-  }
-
-  void Load(const HandleRequestCallback& callback, std::string url) {
-    url_ = url;
-    Reload();
-    std::string response = std::string("Loaded ") + url + "\n";
-    Respond(callback, response);
-  }
-
-  void Reload() {
-    if (!window_manager_) {
-      // If window_manager_ was not connected to eagerly on startup, we do that
-      // on the first demand.
-      app_->ConnectToService("mojo:window_manager", &window_manager_);
-    }
-
-    // SimpleWindowManager will wire up necessary services on our behalf.
-    window_manager_->Embed(url_, nullptr, nullptr);
   }
 
   void Exit() {
@@ -180,31 +146,9 @@ class Debugger : public mojo::ApplicationDelegate,
     Respond(callback, trace);
   }
 
-  void StartProfiling(const HandleRequestCallback& callback) {
-#if !defined(NDEBUG) || !defined(ENABLE_PROFILING)
-    Error(callback,
-          "Profiling requires is_debug=false and enable_profiling=true");
-    return;
-#else
-    base::debug::StartProfiling("sky_viewer.pprof");
-    Respond(callback, "Starting profiling (stop with 'stop_profiling')");
-#endif
-  }
-
-  void StopProfiling(const HandleRequestCallback& callback) {
-    if (!base::debug::BeingProfiled()) {
-      Error(callback, "Profiling not started");
-      return;
-    }
-    base::debug::StopProfiling();
-    Respond(callback, "Stopped profiling");
-  }
-
   bool is_tracing_;
   mojo::ApplicationImpl* app_;
-  mojo::WindowManagerPtr window_manager_;
   tracing::TraceCollectorPtr tracing_;
-  std::string url_;
   uint32_t command_port_;
 
   http_server::HttpServerPtr http_server_;
