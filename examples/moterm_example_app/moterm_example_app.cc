@@ -15,23 +15,23 @@
 #include "base/strings/string_util.h"
 #include "base/strings/stringprintf.h"
 #include "mojo/application/application_runner_chromium.h"
+#include "mojo/common/binding_set.h"
 #include "mojo/public/c/system/main.h"
 #include "mojo/public/cpp/application/application_connection.h"
 #include "mojo/public/cpp/application/application_delegate.h"
 #include "mojo/public/cpp/application/application_impl.h"
 #include "mojo/public/cpp/application/connect.h"
 #include "mojo/public/cpp/bindings/array.h"
+#include "mojo/public/cpp/bindings/strong_binding.h"
 #include "mojo/public/interfaces/application/service_provider.mojom.h"
 #include "mojo/public/interfaces/application/shell.mojom.h"
 #include "mojo/services/files/interfaces/file.mojom.h"
 #include "mojo/services/files/interfaces/types.mojom.h"
 #include "mojo/services/terminal/interfaces/terminal.mojom.h"
 #include "mojo/services/terminal/interfaces/terminal_client.mojom.h"
-#include "mojo/services/view_manager/cpp/view.h"
-#include "mojo/services/view_manager/cpp/view_manager.h"
-#include "mojo/services/view_manager/cpp/view_manager_client_factory.h"
-#include "mojo/services/view_manager/cpp/view_manager_delegate.h"
-#include "mojo/services/view_manager/cpp/view_observer.h"
+#include "mojo/services/ui/views/interfaces/view_manager.mojom.h"
+#include "mojo/services/ui/views/interfaces/view_provider.mojom.h"
+#include "mojo/services/ui/views/interfaces/views.mojom.h"
 
 // Kind of like |fputs()| (doesn't wait for result).
 void Fputs(mojo::files::File* file, const char* s) {
@@ -43,25 +43,32 @@ void Fputs(mojo::files::File* file, const char* s) {
               mojo::files::File::WriteCallback());
 }
 
-class MotermExampleAppView : public mojo::ViewObserver {
+class MotermExampleAppView {
  public:
-  explicit MotermExampleAppView(mojo::Shell* shell, mojo::View* view)
-      : shell_(shell), view_(view), moterm_view_(), weak_factory_(this) {
-    view_->AddObserver(this);
+  MotermExampleAppView(
+      mojo::Shell* shell,
+      const mojo::ui::ViewProvider::CreateViewCallback& callback)
+      : shell_(shell), weak_factory_(this) {
+    // Connect to the moterm app.
+    LOG(INFO) << "Connecting to moterm";
+    mojo::ServiceProviderPtr moterm_app;
+    shell->ConnectToApplication("mojo:moterm", GetProxy(&moterm_app), nullptr);
 
-    moterm_view_ = view_->view_manager()->CreateView();
-    view_->AddChild(moterm_view_);
-    moterm_view_->SetBounds(view_->bounds());
-    moterm_view_->SetVisible(true);
-    mojo::ServiceProviderPtr moterm_sp;
-    moterm_view_->Embed("mojo:moterm", GetProxy(&moterm_sp), nullptr);
-    moterm_sp->ConnectToService(mojo::terminal::Terminal::Name_,
-                                GetProxy(&moterm_terminal_).PassMessagePipe());
-    Resize();
+    // Create the moterm view and pass it back to the client directly.
+    mojo::ConnectToService(moterm_app.get(), &moterm_view_provider_);
+    mojo::ServiceProviderPtr moterm_service_provider;
+    moterm_view_provider_->CreateView(GetProxy(&moterm_service_provider),
+                                      nullptr, callback);
+
+    // Connect to the moterm terminal service associated with the view
+    // we just created.
+    mojo::ConnectToService(moterm_service_provider.get(), &moterm_terminal_);
+
+    // Start running.
     StartPrompt(true);
   }
 
-  ~MotermExampleAppView() override {}
+  ~MotermExampleAppView() {}
 
  private:
   void Resize() {
@@ -135,24 +142,9 @@ class MotermExampleAppView : public mojo::ViewObserver {
     StartPrompt(false);
   }
 
-  // |ViewObserver|:
-  void OnViewDestroyed(mojo::View* view) override {
-    DCHECK(view == view_);
-    delete this;
-  }
-
-  void OnViewBoundsChanged(mojo::View* view,
-                           const mojo::Rect& old_bounds,
-                           const mojo::Rect& new_bounds) override {
-    DCHECK_EQ(view, view_);
-    moterm_view_->SetBounds(view_->bounds());
-    Resize();
-  }
-
   mojo::Shell* const shell_;
-  mojo::View* const view_;
+  mojo::ui::ViewProviderPtr moterm_view_provider_;
 
-  mojo::View* moterm_view_;
   mojo::terminal::TerminalPtr moterm_terminal_;
   // Valid while prompting.
   mojo::files::FilePtr moterm_file_;
@@ -163,7 +155,8 @@ class MotermExampleAppView : public mojo::ViewObserver {
 };
 
 class MotermExampleApp : public mojo::ApplicationDelegate,
-                         public mojo::ViewManagerDelegate {
+                         public mojo::InterfaceFactory<mojo::ui::ViewProvider>,
+                         public mojo::ui::ViewProvider {
  public:
   MotermExampleApp() : application_impl_() {}
   ~MotermExampleApp() override {}
@@ -173,27 +166,29 @@ class MotermExampleApp : public mojo::ApplicationDelegate,
   void Initialize(mojo::ApplicationImpl* application_impl) override {
     DCHECK(!application_impl_);
     application_impl_ = application_impl;
-    view_manager_client_factory_.reset(
-        new mojo::ViewManagerClientFactory(application_impl_->shell(), this));
   }
 
   bool ConfigureIncomingConnection(
       mojo::ApplicationConnection* connection) override {
-    connection->AddService(view_manager_client_factory_.get());
+    connection->AddService<mojo::ui::ViewProvider>(this);
     return true;
   }
 
-  // |mojo::ViewManagerDelegate|:
-  void OnEmbed(mojo::View* root,
-               mojo::InterfaceRequest<mojo::ServiceProvider> services,
-               mojo::ServiceProviderPtr exposed_services) override {
-    new MotermExampleAppView(application_impl_->shell(), root);
+  // |InterfaceFactory<mojo::ui::ViewProvider>|:
+  void Create(mojo::ApplicationConnection* connection,
+              mojo::InterfaceRequest<mojo::ui::ViewProvider> request) override {
+    bindings_.AddBinding(this, request.Pass());
   }
 
-  void OnViewManagerDisconnected(mojo::ViewManager* view_manager) override {}
+  // |ViewProvider|:
+  void CreateView(mojo::InterfaceRequest<mojo::ServiceProvider> services,
+                  mojo::ServiceProviderPtr exposed_services,
+                  const CreateViewCallback& callback) override {
+    new MotermExampleAppView(application_impl_->shell(), callback);
+  }
 
   mojo::ApplicationImpl* application_impl_;
-  scoped_ptr<mojo::ViewManagerClientFactory> view_manager_client_factory_;
+  mojo::BindingSet<mojo::ui::ViewProvider> bindings_;
 
   DISALLOW_COPY_AND_ASSIGN(MotermExampleApp);
 };

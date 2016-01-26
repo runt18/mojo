@@ -5,7 +5,8 @@
 #ifndef APPS_MOTERM_MOTERM_VIEW_H_
 #define APPS_MOTERM_MOTERM_VIEW_H_
 
-#include "apps/moterm/gl_helper.h"
+#include <memory>
+
 #include "apps/moterm/moterm_driver.h"
 #include "apps/moterm/moterm_model.h"
 #include "base/macros.h"
@@ -15,42 +16,41 @@
 #include "mojo/public/cpp/application/service_provider_impl.h"
 #include "mojo/public/cpp/bindings/callback.h"
 #include "mojo/public/cpp/bindings/interface_request.h"
-#include "mojo/services/surfaces/interfaces/surface_id.mojom.h"
+#include "mojo/services/input_events/interfaces/input_event_constants.mojom.h"
+#include "mojo/services/input_events/interfaces/input_events.mojom.h"
 #include "mojo/services/terminal/interfaces/terminal.mojom.h"
-#include "mojo/services/view_manager/cpp/view_observer.h"
-#include "skia/ext/refptr.h"
+#include "mojo/ui/choreographer.h"
+#include "mojo/ui/ganesh_view.h"
+#include "mojo/ui/input_handler.h"
 #include "third_party/skia/include/core/SkBitmapDevice.h"
 #include "third_party/skia/include/core/SkTypeface.h"
 
-namespace mojo {
-class Shell;
-}
-
-class MotermView : public mojo::ViewObserver,
-                   public GlHelper::Client,
+class MotermView : public mojo::ui::GaneshView,
+                   public mojo::ui::ChoreographerDelegate,
+                   public mojo::ui::InputListener,
                    public MotermModel::Delegate,
                    public MotermDriver::Client,
                    public mojo::InterfaceFactory<mojo::terminal::Terminal>,
                    public mojo::terminal::Terminal {
  public:
   MotermView(
-      mojo::Shell* shell,
-      mojo::View* view,
-      mojo::InterfaceRequest<mojo::ServiceProvider> service_provider_request);
+      mojo::ApplicationImpl* app_impl,
+      mojo::InterfaceRequest<mojo::ServiceProvider> service_provider_request,
+      const mojo::ui::ViewProvider::CreateViewCallback& create_view_callback);
   ~MotermView() override;
 
  private:
-  // |mojo::ViewObserver|:
-  void OnViewDestroyed(mojo::View* view) override;
-  void OnViewBoundsChanged(mojo::View* view,
-                           const mojo::Rect& old_bounds,
-                           const mojo::Rect& new_bounds) override;
-  void OnViewInputEvent(mojo::View* view, const mojo::EventPtr& event) override;
+  // |mojo::ui::GaneshView|:
+  void OnLayout(mojo::ui::ViewLayoutParamsPtr layout_params,
+                mojo::Array<uint32_t> children_needing_layout,
+                const OnLayoutCallback& callback) override;
 
-  // |GlHelper::Client|:
-  void OnSurfaceIdChanged(mojo::SurfaceIdPtr surface_id) override;
-  void OnContextLost() override;
-  void OnFrameDisplayed(uint32_t frame_id) override;
+  // |mojo::ui::ChoreographerDelegate|:
+  void OnDraw(const mojo::gfx::composition::FrameInfo& frame_info,
+              const base::TimeDelta& time_delta) override;
+
+  // |mojo::ui::InputListener|:
+  void OnEvent(mojo::EventPtr event, const OnEventCallback& callback) override;
 
   // |MotermModel::Delegate|:
   void OnResponse(const void* buf, size_t size) override;
@@ -81,12 +81,14 @@ class MotermView : public mojo::ViewObserver,
 
   // If |force| is true, it will draw everything. Otherwise it will draw only if
   // |model_state_changes_| is dirty.
-  void Draw(bool force);
+  void ScheduleDraw(bool force);
+  void DrawContent(SkCanvas* canvas);
 
-  void OnKeyPressed(const mojo::EventPtr& key_event);
+  void OnKeyPressed(mojo::EventPtr key_event);
 
-  mojo::View* const view_;
-  GlHelper gl_helper_;
+  mojo::Size view_size_;
+  mojo::ui::Choreographer choreographer_;
+  mojo::ui::InputHandler input_handler_;
 
   // TODO(vtl): Consider the structure of this app. Do we really want the "view"
   // owning the model?
@@ -102,12 +104,6 @@ class MotermView : public mojo::ViewObserver,
   mojo::ServiceProviderImpl service_provider_impl_;
   mojo::BindingSet<mojo::terminal::Terminal> terminal_bindings_;
 
-  // TODO(vtl): For some reason, drawing while a frame is already pending (i.e.,
-  // we've submitted it but haven't gotten a callback) interacts badly with
-  // resizing -- sometimes this results in us losing all future
-  // |OnViewBoundsChanged()| messages. So, for now, don't submit frames in that
-  // case.
-  bool frame_pending_;
   // If we skip drawing despite being forced to, we should force the next draw.
   bool force_next_draw_;
 
@@ -116,8 +112,6 @@ class MotermView : public mojo::ViewObserver,
   int ascent_;
   int line_height_;
   int advance_width_;
-
-  skia::RefPtr<SkBitmapDevice> bitmap_device_;
 
   // Keyboard state.
   bool keypad_application_mode_;

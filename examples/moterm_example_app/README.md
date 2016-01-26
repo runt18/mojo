@@ -9,7 +9,8 @@ connected to other applications (which should provide the
 
 On Linux, run it in the usual way, e.g.:
 
-    $ mojo/devtools/common/mojo_run --enable-multiprocess "mojo:window_manager mojo:moterm_example_app"
+    $ mojo/devtools/common/mojo_run --enable-multiprocess \
+        "mojo:launcher mojo:moterm_example_app"
 
 You'll probably need to click on the window to give it keyboard focus. You may
 also want to resize the window (especially horizontally) to make it bigger.

@@ -15,14 +15,14 @@
 #include <string>
 
 #include "apps/moterm/key_util.h"
+#include "base/bind.h"
 #include "base/logging.h"
+#include "mojo/public/cpp/application/connect.h"
 #include "mojo/public/cpp/bindings/interface_request.h"
 #include "mojo/services/files/interfaces/file.mojom.h"
 #include "mojo/services/files/interfaces/types.mojom.h"
-#include "mojo/services/input_events/interfaces/input_event_constants.mojom.h"
-#include "mojo/services/input_events/interfaces/input_events.mojom.h"
 #include "mojo/services/terminal/interfaces/terminal_client.mojom.h"
-#include "skia/ext/refptr.h"
+#include "mojo/skia/ganesh_texture_surface.h"
 #include "third_party/dejavu-fonts-ttf-2.34/kDejaVuSansMonoRegular.h"
 #include "third_party/skia/include/core/SkBitmap.h"
 #include "third_party/skia/include/core/SkCanvas.h"
@@ -33,32 +33,17 @@
 #include "third_party/skia/include/core/SkStream.h"
 #include "third_party/skia/include/core/SkXfermode.h"
 
-namespace {
-
-const GLint kTextureFormat =
-    (kN32_SkColorType == kRGBA_8888_SkColorType) ? GL_RGBA : GL_BGRA_EXT;
-
-mojo::Size RectToSize(const mojo::Rect& rect) {
-  mojo::Size size;
-  size.width = rect.width;
-  size.height = rect.height;
-  return size;
-}
-
-}  // namespace
+constexpr uint32_t kMotermImageResourceId = 1;
+constexpr uint32_t kRootNodeId = mojo::gfx::composition::kSceneRootNodeId;
 
 MotermView::MotermView(
-    mojo::Shell* shell,
-    mojo::View* view,
-    mojo::InterfaceRequest<mojo::ServiceProvider> service_provider_request)
-    : view_(view),
-      gl_helper_(this,
-                 shell,
-                 kTextureFormat,
-                 false,
-                 RectToSize(view->bounds())),
+    mojo::ApplicationImpl* app_impl,
+    mojo::InterfaceRequest<mojo::ServiceProvider> service_provider_request,
+    const mojo::ui::ViewProvider::CreateViewCallback& create_view_callback)
+    : GaneshView(app_impl, "Moterm", create_view_callback),
+      choreographer_(scene(), this),
+      input_handler_(view_service_provider(), this),
       model_(MotermModel::Size(240, 160), MotermModel::Size(24, 80), this),
-      frame_pending_(false),
       force_next_draw_(false),
       ascent_(0),
       line_height_(0),
@@ -89,11 +74,6 @@ MotermView::MotermView(
   // monospace.
   advance_width_ = static_cast<int>(ceilf(fg_paint.measureText("X", 1)));
   DCHECK_GT(advance_width_, 0);
-
-  view_->AddObserver(this);
-
-  // Force an initial draw.
-  Draw(true);
 }
 
 MotermView::~MotermView() {
@@ -101,39 +81,27 @@ MotermView::~MotermView() {
     driver_->Detach();
 }
 
-void MotermView::OnViewDestroyed(mojo::View* view) {
-  DCHECK_EQ(view, view_);
-  view_->RemoveObserver(this);
-  delete this;
+void MotermView::OnLayout(mojo::ui::ViewLayoutParamsPtr layout_params,
+                          mojo::Array<uint32_t> children_needing_layout,
+                          const OnLayoutCallback& callback) {
+  view_size_.width = layout_params->constraints->max_width;
+  view_size_.height = layout_params->constraints->max_height;
+
+  ScheduleDraw(true);
+
+  auto info = mojo::ui::ViewLayoutResult::New();
+  info->size = view_size_.Clone();
+  callback.Run(info.Pass());
 }
 
-void MotermView::OnViewBoundsChanged(mojo::View* view,
-                                     const mojo::Rect& old_bounds,
-                                     const mojo::Rect& new_bounds) {
-  DCHECK_EQ(view, view_);
-  gl_helper_.SetSurfaceSize(RectToSize(view_->bounds()));
-  bitmap_device_.clear();
-  Draw(true);
-}
-
-void MotermView::OnViewInputEvent(mojo::View* view,
-                                  const mojo::EventPtr& event) {
-  if (event->action == mojo::EventType::KEY_PRESSED)
-    OnKeyPressed(event);
-}
-
-void MotermView::OnSurfaceIdChanged(mojo::SurfaceIdPtr surface_id) {
-  view_->SetSurfaceId(surface_id.Pass());
-}
-
-void MotermView::OnContextLost() {
-  // TODO(vtl): We'll need to force a draw when we regain a context.
-}
-
-void MotermView::OnFrameDisplayed(uint32_t frame_id) {
-  DCHECK(frame_pending_);
-  frame_pending_ = false;
-  Draw(false);
+void MotermView::OnEvent(mojo::EventPtr event,
+                         const OnEventCallback& callback) {
+  if (event->action == mojo::EventType::KEY_PRESSED) {
+    OnKeyPressed(event.Pass());
+    callback.Run(true);
+  } else {
+    callback.Run(false);
+  }
 }
 
 void MotermView::OnResponse(const void* buf, size_t size) {
@@ -147,7 +115,7 @@ void MotermView::OnSetKeypadMode(bool application_mode) {
 
 void MotermView::OnDataReceived(const void* bytes, size_t num_bytes) {
   model_.ProcessInput(bytes, num_bytes, &model_state_changes_);
-  Draw(false);
+  ScheduleDraw(false);
 }
 
 void MotermView::OnClosed() {
@@ -225,51 +193,65 @@ void MotermView::SetSize(uint32_t rows,
                          bool reset,
                          const SetSizeCallback& callback) {
   if (!rows) {
-    rows = std::max(1u, std::min(MotermModel::kMaxRows,
-                                 static_cast<uint32_t>(view_->bounds().height) /
-                                     line_height_));
+    rows = std::max(
+        1u, std::min(MotermModel::kMaxRows,
+                     static_cast<uint32_t>(view_size_.height) / line_height_));
   }
   if (!columns) {
-    columns =
-        std::max(1u, std::min(MotermModel::kMaxColumns,
-                              static_cast<uint32_t>(view_->bounds().width) /
-                                  advance_width_));
+    columns = std::max(
+        1u, std::min(MotermModel::kMaxColumns,
+                     static_cast<uint32_t>(view_size_.width) / advance_width_));
   }
 
   model_.SetSize(MotermModel::Size(rows, columns), reset);
   callback.Run(mojo::files::Error::OK, rows, columns);
 
-  Draw(false);
+  ScheduleDraw(false);
 }
 
-void MotermView::Draw(bool force) {
-  // TODO(vtl): See TODO above |frame_pending_| in the class declaration.
-  if (frame_pending_) {
+void MotermView::ScheduleDraw(bool force) {
+  if (view_size_.width == 0 || view_size_.height == 0 ||
+      (!model_state_changes_.IsDirty() && !force && !force_next_draw_)) {
     force_next_draw_ |= force;
     return;
   }
-
-  force |= force_next_draw_;
   force_next_draw_ = false;
+  choreographer_.ScheduleDraw();
+}
 
-  if (!force && !model_state_changes_.IsDirty())
-    return;
-
-  // TODO(vtl): If |!force|, draw only the dirty region(s)?
+void MotermView::OnDraw(const mojo::gfx::composition::FrameInfo& frame_info,
+                        const base::TimeDelta& time_delta) {
+  // TODO(vtl): Draw only the dirty region(s)?
   model_state_changes_.Reset();
 
-  int32_t width = view_->bounds().width;
-  int32_t height = view_->bounds().height;
-  DCHECK_GT(width, 0);
-  DCHECK_GT(height, 0);
+  mojo::Rect bounds;
+  bounds.width = view_size_.width;
+  bounds.height = view_size_.height;
 
-  if (!bitmap_device_) {
-    bitmap_device_ = skia::AdoptRef(SkBitmapDevice::Create(SkImageInfo::Make(
-        width, height, kN32_SkColorType, kOpaque_SkAlphaType)));
-  }
+  auto update = mojo::gfx::composition::SceneUpdate::New();
+  mojo::gfx::composition::ResourcePtr moterm_resource =
+      ganesh_renderer()->DrawCanvas(
+          view_size_,
+          base::Bind(&MotermView::DrawContent, base::Unretained(this)));
+  DCHECK(moterm_resource);
+  update->resources.insert(kMotermImageResourceId, moterm_resource.Pass());
 
-  SkCanvas canvas(bitmap_device_.get());
-  canvas.clear(SK_ColorBLACK);
+  auto root_node = mojo::gfx::composition::Node::New();
+  root_node->op = mojo::gfx::composition::NodeOp::New();
+  root_node->op->set_image(mojo::gfx::composition::ImageNodeOp::New());
+  root_node->op->get_image()->content_rect = bounds.Clone();
+  root_node->op->get_image()->image_resource_id = kMotermImageResourceId;
+  update->nodes.insert(kRootNodeId, root_node.Pass());
+
+  auto metadata = mojo::gfx::composition::SceneMetadata::New();
+  metadata->presentation_time = frame_info.presentation_time;
+
+  scene()->Update(update.Pass());
+  scene()->Publish(metadata.Pass());
+}
+
+void MotermView::DrawContent(SkCanvas* canvas) {
+  canvas->clear(SK_ColorBLACK);
 
   SkPaint bg_paint;
   bg_paint.setStyle(SkPaint::kFill_Style);
@@ -291,8 +273,8 @@ void MotermView::Draw(bool force) {
       bg_paint.setColor(SkColorSetRGB(ch.background_color.red,
                                       ch.background_color.green,
                                       ch.background_color.blue));
-      canvas.drawRect(SkRect::MakeXYWH(x, y, advance_width_, line_height_),
-                      bg_paint);
+      canvas->drawRect(SkRect::MakeXYWH(x, y, advance_width_, line_height_),
+                       bg_paint);
 
       // Paint the foreground.
       if (ch.code_point) {
@@ -308,8 +290,8 @@ void MotermView::Draw(bool force) {
                                         ch.foreground_color.green,
                                         ch.foreground_color.blue));
 
-        canvas.drawText(&ch.code_point, sizeof(ch.code_point), x, y + ascent_,
-                        fg_paint);
+        canvas->drawText(&ch.code_point, sizeof(ch.code_point), x, y + ascent_,
+                         fg_paint);
       }
     }
   }
@@ -324,27 +306,15 @@ void MotermView::Draw(bool force) {
     // focused and/or active.
     bg_paint.setColor(SK_ColorWHITE);
     bg_paint.setXfermodeMode(SkXfermode::kDifference_Mode);
-    canvas.drawRect(SkRect::MakeXYWH(cursor_pos.column * advance_width_,
-                                     cursor_pos.row * line_height_,
-                                     advance_width_, line_height_),
-                    bg_paint);
+    canvas->drawRect(SkRect::MakeXYWH(cursor_pos.column * advance_width_,
+                                      cursor_pos.row * line_height_,
+                                      advance_width_, line_height_),
+                     bg_paint);
   }
-
-  canvas.flush();
-
-  const SkBitmap& bitmap(bitmap_device_->accessBitmap(false));
-  // TODO(vtl): Do we need really need to lock/unlock pixels?
-  SkAutoLockPixels pixel_locker(bitmap);
-
-  gl_helper_.StartFrame();
-  // (The texture is already bound.)
-  glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, width, height, kTextureFormat,
-                  GL_UNSIGNED_BYTE, bitmap.getPixels());
-  gl_helper_.EndFrame();
-  frame_pending_ = true;
+  canvas->flush();
 }
 
-void MotermView::OnKeyPressed(const mojo::EventPtr& key_event) {
+void MotermView::OnKeyPressed(mojo::EventPtr key_event) {
   std::string input_sequence =
       GetInputSequenceForKeyPressedEvent(*key_event, keypad_application_mode_);
   if (input_sequence.empty())
