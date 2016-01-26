@@ -453,9 +453,9 @@ component("skia") {
     sources += [ "ext/platform_device_linux.cc" ]
     set_sources_assignment_filter(sources_assignment_filter)
     deps += [
+      "//third_party/android_tools:cpu_features",
       "//third_party/expat",
       "//third_party/freetype-android:freetype",
-      "//third_party/android_tools:cpu_features",
     ]
   }
 
@@ -544,7 +544,6 @@ test("skia_unittests") {
     ":skia",
     "//base",
     "//base/test:run_all_unittests",
-    "//cc:test_support",  # TODO: Fix this test to not depend on cc.
     "//testing/gtest",
     "//ui/gfx",
     "//ui/gfx/geometry",
