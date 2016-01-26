@@ -70,7 +70,6 @@ group("tests") {
     "//mojo/services/files/c:apptests",
     "//mojo/services/files/cpp:files_impl_apptests",
     "//mojo/services/log/cpp:log_client_apptests",
-    "//mojo/services/view_manager/cpp/tests:mojo_view_manager_lib_unittests",
     "//mojo/tools:message_generator",
   ]
 
