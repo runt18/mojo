@@ -4,7 +4,6 @@
 
 #include "mojo/gpu/gl_context.h"
 
-#include "mojo/gpu/mojo_gles2_impl_autogen.h"
 #include "mojo/public/cpp/application/connect.h"
 #include "mojo/public/interfaces/application/shell.mojom.h"
 #include "mojo/services/gpu/interfaces/gpu.mojom.h"
@@ -19,7 +18,7 @@ GLContext::GLContext(CommandBufferPtr command_buffer) : weak_factory_(this) {
       command_buffer.PassInterface().PassHandle().release().value(),
       MGL_NO_CONTEXT, &ContextLostThunk, this,
       Environment::GetDefaultAsyncWaiter());
-  gl_impl_.reset(new MojoGLES2Impl(context_));
+  DCHECK(context_ != MGL_NO_CONTEXT);
 }
 
 GLContext::~GLContext() {
@@ -46,12 +45,12 @@ void GLContext::MakeCurrent() {
   MGLMakeCurrent(context_);
 }
 
-void GLContext::Destroy() {
-  delete this;
+bool GLContext::IsCurrent() {
+  return context_ == MGLGetCurrentContext();
 }
 
-gpu::gles2::GLES2Interface* GLContext::gl() const {
-  return gl_impl_.get();
+void GLContext::Destroy() {
+  delete this;
 }
 
 void GLContext::AddObserver(Observer* observer) {
