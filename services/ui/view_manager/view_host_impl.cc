@@ -2,9 +2,10 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
+#include "services/ui/view_manager/view_host_impl.h"
+
 #include "base/bind.h"
 #include "base/bind_helpers.h"
-#include "services/ui/view_manager/view_host_impl.h"
 
 namespace view_manager {
 
@@ -19,8 +20,13 @@ ViewHostImpl::ViewHostImpl(
 ViewHostImpl::~ViewHostImpl() {}
 
 void ViewHostImpl::GetServiceProvider(
-    mojo::InterfaceRequest<mojo::ServiceProvider> service_provider) {
-  state_->GetServiceProvider(service_provider.Pass());
+    mojo::InterfaceRequest<mojo::ServiceProvider> service_provider_request) {
+  service_provider_bindings_.AddBinding(this, service_provider_request.Pass());
+}
+
+void ViewHostImpl::CreateScene(
+    mojo::InterfaceRequest<mojo::gfx::composition::Scene> scene) {
+  registry_->CreateScene(state_, scene.Pass());
 }
 
 void ViewHostImpl::RequestLayout() {
@@ -48,6 +54,12 @@ void ViewHostImpl::LayoutChild(
     const LayoutChildCallback& callback) {
   registry_->LayoutChild(state_, child_key, child_layout_params.Pass(),
                          base::Bind(&RunLayoutChildCallback, callback));
+}
+
+void ViewHostImpl::ConnectToService(
+    const mojo::String& service_name,
+    mojo::ScopedMessagePipeHandle client_handle) {
+  registry_->ConnectToViewService(state_, service_name, client_handle.Pass());
 }
 
 }  // namespace view_manager

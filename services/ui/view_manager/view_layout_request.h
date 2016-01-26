@@ -27,7 +27,9 @@ class ViewLayoutRequest {
 
   // Gets the layout parameters for this request.
   // Does not confer ownership.
-  mojo::ui::ViewLayoutParams* layout_params() { return layout_params_.get(); }
+  const mojo::ui::ViewLayoutParams* layout_params() const {
+    return layout_params_.get();
+  }
 
   // Gets the layout parameters for this request and takes ownership.
   mojo::ui::ViewLayoutParamsPtr TakeLayoutParams() {
@@ -44,7 +46,7 @@ class ViewLayoutRequest {
   // Sends the layout information to each client.
   // Must be invoked exactly once before destroying the request to prevent
   // dangling callbacks.
-  void DispatchLayoutInfo(mojo::ui::ViewLayoutInfo* info);
+  void DispatchLayoutInfo(mojo::ui::ViewLayoutInfoPtr info);
 
   // True if the request has been issued to the view.
   // False if it is still pending in the queue.

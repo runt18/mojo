@@ -8,9 +8,77 @@ import 'dart:async';
 
 import 'package:mojo/bindings.dart' as bindings;
 import 'package:mojo/core.dart' as core;
+import 'package:mojo/mojo/service_provider.mojom.dart' as service_provider_mojom;
 import 'package:mojo_services/mojo/ui/layouts.mojom.dart' as layouts_mojom;
 import 'package:mojo_services/mojo/ui/views.mojom.dart' as views_mojom;
 
+
+
+class ViewTreeToken extends bindings.Struct {
+  static const List<bindings.StructDataHeader> kVersions = const [
+    const bindings.StructDataHeader(16, 0)
+  ];
+  int value = 0;
+
+  ViewTreeToken() : super(kVersions.last.size);
+
+  static ViewTreeToken deserialize(bindings.Message message) {
+    var decoder = new bindings.Decoder(message);
+    var result = decode(decoder);
+    if (decoder.excessHandles != null) {
+      decoder.excessHandles.forEach((h) => h.close());
+    }
+    return result;
+  }
+
+  static ViewTreeToken decode(bindings.Decoder decoder0) {
+    if (decoder0 == null) {
+      return null;
+    }
+    ViewTreeToken result = new ViewTreeToken();
+
+    var mainDataHeader = decoder0.decodeStructDataHeader();
+    if (mainDataHeader.version <= kVersions.last.version) {
+      // Scan in reverse order to optimize for more recent versions.
+      for (int i = kVersions.length - 1; i >= 0; --i) {
+        if (mainDataHeader.version >= kVersions[i].version) {
+          if (mainDataHeader.size == kVersions[i].size) {
+            // Found a match.
+            break;
+          }
+          throw new bindings.MojoCodecError(
+              'Header size doesn\'t correspond to known version size.');
+        }
+      }
+    } else if (mainDataHeader.size < kVersions.last.size) {
+      throw new bindings.MojoCodecError(
+        'Message newer than the last known version cannot be shorter than '
+        'required by the last known version.');
+    }
+    if (mainDataHeader.version >= 0) {
+      
+      result.value = decoder0.decodeUint32(8);
+    }
+    return result;
+  }
+
+  void encode(bindings.Encoder encoder) {
+    var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
+    
+    encoder0.encodeUint32(value, 8);
+  }
+
+  String toString() {
+    return "ViewTreeToken("
+           "value: $value" ")";
+  }
+
+  Map toJson() {
+    Map map = new Map();
+    map["value"] = value;
+    return map;
+  }
+}
 
 
 class _ViewTreeOnLayoutParams extends bindings.Struct {
@@ -250,6 +318,72 @@ class ViewTreeOnRootUnavailableResponseParams extends bindings.Struct {
   Map toJson() {
     Map map = new Map();
     return map;
+  }
+}
+
+
+class _ViewTreeHostGetServiceProviderParams extends bindings.Struct {
+  static const List<bindings.StructDataHeader> kVersions = const [
+    const bindings.StructDataHeader(16, 0)
+  ];
+  Object serviceProvider = null;
+
+  _ViewTreeHostGetServiceProviderParams() : super(kVersions.last.size);
+
+  static _ViewTreeHostGetServiceProviderParams deserialize(bindings.Message message) {
+    var decoder = new bindings.Decoder(message);
+    var result = decode(decoder);
+    if (decoder.excessHandles != null) {
+      decoder.excessHandles.forEach((h) => h.close());
+    }
+    return result;
+  }
+
+  static _ViewTreeHostGetServiceProviderParams decode(bindings.Decoder decoder0) {
+    if (decoder0 == null) {
+      return null;
+    }
+    _ViewTreeHostGetServiceProviderParams result = new _ViewTreeHostGetServiceProviderParams();
+
+    var mainDataHeader = decoder0.decodeStructDataHeader();
+    if (mainDataHeader.version <= kVersions.last.version) {
+      // Scan in reverse order to optimize for more recent versions.
+      for (int i = kVersions.length - 1; i >= 0; --i) {
+        if (mainDataHeader.version >= kVersions[i].version) {
+          if (mainDataHeader.size == kVersions[i].size) {
+            // Found a match.
+            break;
+          }
+          throw new bindings.MojoCodecError(
+              'Header size doesn\'t correspond to known version size.');
+        }
+      }
+    } else if (mainDataHeader.size < kVersions.last.size) {
+      throw new bindings.MojoCodecError(
+        'Message newer than the last known version cannot be shorter than '
+        'required by the last known version.');
+    }
+    if (mainDataHeader.version >= 0) {
+      
+      result.serviceProvider = decoder0.decodeInterfaceRequest(8, false, service_provider_mojom.ServiceProviderStub.newFromEndpoint);
+    }
+    return result;
+  }
+
+  void encode(bindings.Encoder encoder) {
+    var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
+    
+    encoder0.encodeInterfaceRequest(serviceProvider, 8, false);
+  }
+
+  String toString() {
+    return "_ViewTreeHostGetServiceProviderParams("
+           "serviceProvider: $serviceProvider" ")";
+  }
+
+  Map toJson() {
+    throw new bindings.MojoCodecError(
+        'Object containing handles cannot be encoded to JSON.');
   }
 }
 
@@ -847,13 +981,15 @@ class ViewTreeStub extends bindings.Stub {
   int get version => 0;
 }
 
-const int _ViewTreeHost_requestLayoutName = 0;
-const int _ViewTreeHost_setRootName = 1;
-const int _ViewTreeHost_resetRootName = 2;
-const int _ViewTreeHost_layoutRootName = 3;
+const int _ViewTreeHost_getServiceProviderName = 0;
+const int _ViewTreeHost_requestLayoutName = 1;
+const int _ViewTreeHost_setRootName = 2;
+const int _ViewTreeHost_resetRootName = 3;
+const int _ViewTreeHost_layoutRootName = 4;
 
 abstract class ViewTreeHost {
   static const String serviceName = null;
+  void getServiceProvider(Object serviceProvider);
   void requestLayout();
   void setRoot(int rootKey, views_mojom.ViewToken rootViewToken);
   void resetRoot();
@@ -916,6 +1052,15 @@ class _ViewTreeHostProxyCalls implements ViewTreeHost {
   _ViewTreeHostProxyImpl _proxyImpl;
 
   _ViewTreeHostProxyCalls(this._proxyImpl);
+    void getServiceProvider(Object serviceProvider) {
+      if (!_proxyImpl.isBound) {
+        _proxyImpl.proxyError("The Proxy is closed.");
+        return;
+      }
+      var params = new _ViewTreeHostGetServiceProviderParams();
+      params.serviceProvider = serviceProvider;
+      _proxyImpl.sendMessage(params, _ViewTreeHost_getServiceProviderName);
+    }
     void requestLayout() {
       if (!_proxyImpl.isBound) {
         _proxyImpl.proxyError("The Proxy is closed.");
@@ -1046,6 +1191,11 @@ class ViewTreeHostStub extends bindings.Stub {
     }
     assert(_impl != null);
     switch (message.header.type) {
+      case _ViewTreeHost_getServiceProviderName:
+        var params = _ViewTreeHostGetServiceProviderParams.deserialize(
+            message.payload);
+        _impl.getServiceProvider(params.serviceProvider);
+        break;
       case _ViewTreeHost_requestLayoutName:
         var params = _ViewTreeHostRequestLayoutParams.deserialize(
             message.payload);

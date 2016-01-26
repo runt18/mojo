@@ -6,6 +6,7 @@
 #define SERVICES_UI_VIEW_MANAGER_VIEW_TREE_HOST_IMPL_H_
 
 #include "base/macros.h"
+#include "mojo/common/binding_set.h"
 #include "mojo/public/cpp/bindings/binding.h"
 #include "mojo/services/ui/views/interfaces/view_trees.mojom.h"
 #include "services/ui/view_manager/view_registry.h"
@@ -15,7 +16,8 @@ namespace view_manager {
 
 // ViewTreeHost interface implementation.
 // This object is owned by its associated ViewTreeState.
-class ViewTreeHostImpl : public mojo::ui::ViewTreeHost {
+class ViewTreeHostImpl : public mojo::ui::ViewTreeHost,
+                         public mojo::ServiceProvider {
  public:
   ViewTreeHostImpl(
       ViewRegistry* registry,
@@ -30,6 +32,8 @@ class ViewTreeHostImpl : public mojo::ui::ViewTreeHost {
 
  private:
   // |ViewTreeHost|:
+  void GetServiceProvider(
+      mojo::InterfaceRequest<mojo::ServiceProvider> service_provider) override;
   void RequestLayout() override;
   void SetRoot(uint32_t root_key,
                mojo::ui::ViewTokenPtr root_view_token) override;
@@ -37,9 +41,14 @@ class ViewTreeHostImpl : public mojo::ui::ViewTreeHost {
   void LayoutRoot(mojo::ui::ViewLayoutParamsPtr root_layout_params,
                   const LayoutRootCallback& callback) override;
 
+  // |ServiceProvider|:
+  void ConnectToService(const mojo::String& service_name,
+                        mojo::ScopedMessagePipeHandle client_handle) override;
+
   ViewRegistry* const registry_;
   ViewTreeState* const state_;
   mojo::Binding<mojo::ui::ViewTreeHost> binding_;
+  mojo::BindingSet<mojo::ServiceProvider> service_provider_bindings_;
 
   DISALLOW_COPY_AND_ASSIGN(ViewTreeHostImpl);
 };

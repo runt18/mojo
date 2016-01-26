@@ -6,6 +6,7 @@
 #define SERVICES_UI_VIEW_MANAGER_VIEW_HOST_IMPL_H_
 
 #include "base/macros.h"
+#include "mojo/common/binding_set.h"
 #include "mojo/public/cpp/bindings/binding.h"
 #include "mojo/services/ui/views/interfaces/views.mojom.h"
 #include "services/ui/view_manager/view_registry.h"
@@ -15,7 +16,7 @@ namespace view_manager {
 
 // ViewHost interface implementation.
 // This object is owned by its associated ViewState.
-class ViewHostImpl : public mojo::ui::ViewHost {
+class ViewHostImpl : public mojo::ui::ViewHost, public mojo::ServiceProvider {
  public:
   ViewHostImpl(ViewRegistry* registry,
                ViewState* state,
@@ -28,8 +29,10 @@ class ViewHostImpl : public mojo::ui::ViewHost {
 
  private:
   // |ViewHost|:
-  void GetServiceProvider(
-      mojo::InterfaceRequest<mojo::ServiceProvider> service_provider) override;
+  void GetServiceProvider(mojo::InterfaceRequest<mojo::ServiceProvider>
+                              service_provider_request) override;
+  void CreateScene(
+      mojo::InterfaceRequest<mojo::gfx::composition::Scene> scene) override;
   void RequestLayout() override;
   void AddChild(uint32_t child_key,
                 mojo::ui::ViewTokenPtr child_view_token) override;
@@ -38,9 +41,14 @@ class ViewHostImpl : public mojo::ui::ViewHost {
                    mojo::ui::ViewLayoutParamsPtr child_layout_params,
                    const LayoutChildCallback& callback) override;
 
+  // |ServiceProvider|:
+  void ConnectToService(const mojo::String& service_name,
+                        mojo::ScopedMessagePipeHandle client_handle) override;
+
   ViewRegistry* const registry_;
   ViewState* const state_;
   mojo::Binding<mojo::ui::ViewHost> binding_;
+  mojo::BindingSet<mojo::ServiceProvider> service_provider_bindings_;
 
   DISALLOW_COPY_AND_ASSIGN(ViewHostImpl);
 };

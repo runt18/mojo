@@ -2,14 +2,15 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
+#include "services/ui/view_manager/view_registry.h"
+
 #include <algorithm>
 #include <utility>
 
 #include "base/bind.h"
 #include "base/bind_helpers.h"
-#include "services/ui/view_manager/surface_manager.h"
+#include "mojo/services/ui/views/cpp/formatting.h"
 #include "services/ui/view_manager/view_host_impl.h"
-#include "services/ui/view_manager/view_registry.h"
 #include "services/ui/view_manager/view_tree_host_impl.h"
 
 namespace view_manager {
@@ -22,72 +23,35 @@ static bool AreViewLayoutParamsValid(const mojo::ui::ViewLayoutParams* params) {
          params->device_pixel_ratio > 0;
 }
 
-static std::ostream& operator<<(std::ostream& os, const mojo::Size* size) {
-  return size
-             ? os << "{width=" << size->width << ", height=" << size->height
-                  << "}"
-             : os << "{null}";
-}
-
-static std::ostream& operator<<(std::ostream& os,
-                                const mojo::SurfaceId* surface_id) {
-  return surface_id
-             ? os << "{id_namespace=" << surface_id->id_namespace
-                  << ", local=" << surface_id->local << "}"
-             : os << "{null}";
-}
-
-static std::ostream& operator<<(std::ostream& os,
-                                const mojo::ui::ViewToken* token) {
-  return token ? os << "{token=" << token->value << "}" : os << "{null}";
-}
-
-static std::ostream& operator<<(std::ostream& os, const ViewState* view_state) {
-  return view_state ? os << "{token=" << view_state->view_token_value() << "}"
-                    : os << "{null}";
-}
-
-static std::ostream& operator<<(std::ostream& os,
-                                const mojo::ui::BoxConstraints* constraints) {
-  return constraints
-             ? os << "{min_width=" << constraints->min_width
-                  << ", max_width=" << constraints->max_width
-                  << ", min_height=" << constraints->min_height
-                  << ", max_height=" << constraints->max_height << "}"
-             : os << "{null}";
-};
-
-static std::ostream& operator<<(std::ostream& os,
-                                const mojo::ui::ViewLayoutParams* params) {
-  return params
-             ? os << "{constraints=" << params->constraints.get()
-                  << ", device_pixel_ratio=" << params->device_pixel_ratio
-                  << "}"
-             : os << "{null}";
-}
-
-static std::ostream& operator<<(std::ostream& os,
-                                const mojo::ui::ViewLayoutInfo* info) {
-  return info
-             ? os << "{size=" << info->size.get()
-                  << ", surface_id=" << info->surface_id.get() << "}"
-             : os << "{null}";
-}
-
-ViewRegistry::ViewRegistry(SurfaceManager* surface_manager)
-    : surface_manager_(surface_manager), next_view_token_value_(1u) {}
+ViewRegistry::ViewRegistry(mojo::gfx::composition::CompositorPtr compositor)
+    : compositor_(compositor.Pass()) {}
 
 ViewRegistry::~ViewRegistry() {}
 
+void ViewRegistry::ConnectAssociates(
+    mojo::ApplicationImpl* app_impl,
+    const std::vector<std::string>& urls,
+    const AssociateConnectionErrorCallback& connection_error_callback) {
+  associate_table_.ConnectAssociates(app_impl, this, urls,
+                                     connection_error_callback);
+}
+
 mojo::ui::ViewTokenPtr ViewRegistry::RegisterView(
     mojo::ui::ViewPtr view,
-    mojo::InterfaceRequest<mojo::ui::ViewHost> view_host_request) {
+    mojo::InterfaceRequest<mojo::ui::ViewHost> view_host_request,
+    const mojo::String& label) {
   DCHECK(view);
-  uint32_t view_token_value = next_view_token_value_++;
-  DCHECK(!FindView(view_token_value));
+
+  auto view_token = mojo::ui::ViewToken::New();
+  view_token->value = next_view_token_value_++;
+  CHECK(view_token->value);
+  CHECK(!FindView(view_token->value));
 
   // Create the state and bind host to it.
-  ViewState* view_state = new ViewState(view.Pass(), view_token_value);
+  std::string sanitized_label =
+      label.get().substr(0, mojo::ui::kLabelMaxLength);
+  ViewState* view_state =
+      new ViewState(view.Pass(), view_token.Pass(), sanitized_label);
   ViewHostImpl* view_host =
       new ViewHostImpl(this, view_state, view_host_request.Pass());
   view_state->set_view_host(view_host);
@@ -99,11 +63,9 @@ mojo::ui::ViewTokenPtr ViewRegistry::RegisterView(
                  view_state));
 
   // Add to registry and return token.
-  views_by_token_.insert({view_token_value, view_state});
-  mojo::ui::ViewTokenPtr token = mojo::ui::ViewToken::New();
-  token->value = view_state->view_token_value();
+  views_by_token_.insert({view_state->view_token()->value, view_state});
   DVLOG(1) << "RegisterView: view=" << view_state;
-  return token;
+  return view_state->view_token()->Clone();
 }
 
 void ViewRegistry::OnViewConnectionError(ViewState* view_state) {
@@ -121,17 +83,26 @@ void ViewRegistry::UnregisterView(ViewState* view_state) {
   HijackView(view_state);
 
   // Remove from registry.
-  views_by_token_.erase(view_state->view_token_value());
+  views_by_token_.erase(view_state->view_token()->value);
   delete view_state;
 }
 
-void ViewRegistry::RegisterViewTree(
+mojo::ui::ViewTreeTokenPtr ViewRegistry::RegisterViewTree(
     mojo::ui::ViewTreePtr view_tree,
-    mojo::InterfaceRequest<mojo::ui::ViewTreeHost> view_tree_host_request) {
+    mojo::InterfaceRequest<mojo::ui::ViewTreeHost> view_tree_host_request,
+    const mojo::String& label) {
   DCHECK(view_tree);
 
+  auto view_tree_token = mojo::ui::ViewTreeToken::New();
+  view_tree_token->value = next_view_tree_token_value_++;
+  CHECK(view_tree_token->value);
+  CHECK(!FindViewTree(view_tree_token->value));
+
   // Create the state and bind host to it.
-  ViewTreeState* tree_state = new ViewTreeState(view_tree.Pass());
+  std::string sanitized_label =
+      label.get().substr(0, mojo::ui::kLabelMaxLength);
+  ViewTreeState* tree_state = new ViewTreeState(
+      view_tree.Pass(), view_tree_token.Pass(), sanitized_label);
   ViewTreeHostImpl* tree_host =
       new ViewTreeHostImpl(this, tree_state, view_tree_host_request.Pass());
   tree_state->set_view_tree_host(tree_host);
@@ -143,8 +114,10 @@ void ViewRegistry::RegisterViewTree(
                  base::Unretained(this), tree_state));
 
   // Add to registry.
-  view_trees_.push_back(tree_state);
+  view_trees_by_token_.insert(
+      {tree_state->view_tree_token()->value, tree_state});
   DVLOG(1) << "RegisterViewTree: tree=" << tree_state;
+  return tree_state->view_tree_token()->Clone();
 }
 
 void ViewRegistry::OnViewTreeConnectionError(ViewTreeState* tree_state) {
@@ -163,10 +136,34 @@ void ViewRegistry::UnregisterViewTree(ViewTreeState* tree_state) {
     UnlinkRoot(tree_state);
 
   // Remove from registry.
-  view_trees_.erase(std::find_if(
-      view_trees_.begin(), view_trees_.end(),
-      [tree_state](ViewTreeState* other) { return tree_state == other; }));
+  view_trees_by_token_.erase(tree_state->view_tree_token()->value);
   delete tree_state;
+}
+
+void ViewRegistry::CreateScene(
+    ViewState* view_state,
+    mojo::InterfaceRequest<mojo::gfx::composition::Scene> scene) {
+  DCHECK(IsViewStateRegisteredDebug(view_state));
+  DVLOG(1) << "CreateScene: view=" << view_state;
+
+  compositor_->CreateScene(
+      scene.Pass(), view_state->label(),
+      base::Bind(&ViewRegistry::OnSceneCreated, base::Unretained(this),
+                 view_state->GetWeakPtr()));
+}
+
+void ViewRegistry::OnSceneCreated(
+    base::WeakPtr<ViewState> view_state_weak,
+    mojo::gfx::composition::SceneTokenPtr scene_token) {
+  DCHECK(scene_token);
+  ViewState* view_state = view_state_weak.get();
+  if (view_state) {
+    DVLOG(1) << "OnSceneCreated: scene_token=" << scene_token;
+
+    view_state->set_scene_token(scene_token.Pass());
+    view_state->set_scene_changed_since_last_report(true);
+    InvalidateLayout(view_state);
+  }
 }
 
 void ViewRegistry::RequestLayout(ViewState* view_state) {
@@ -182,14 +179,14 @@ void ViewRegistry::AddChild(ViewState* parent_state,
   DCHECK(IsViewStateRegisteredDebug(parent_state));
   DCHECK(child_view_token);
   DVLOG(1) << "AddChild: parent=" << parent_state << ", child_key=" << child_key
-           << ", child=" << child_view_token.get();
+           << ", child=" << child_view_token;
 
   // Check for duplicate children.
   if (parent_state->children().find(child_key) !=
       parent_state->children().end()) {
     LOG(ERROR) << "View attempted to add a child with a duplicate key: "
                << "parent=" << parent_state << ", child_key=" << child_key
-               << ", child=" << child_view_token.get();
+               << ", child=" << child_view_token;
     UnregisterView(parent_state);
     return;
   }
@@ -240,13 +237,13 @@ void ViewRegistry::LayoutChild(
   DCHECK(child_layout_params->constraints);
   DVLOG(1) << "LayoutChild: parent=" << parent_state
            << ", child_key=" << child_key
-           << ", child_layout_params=" << child_layout_params.get();
+           << ", child_layout_params=" << child_layout_params;
 
   // Check whether the layout parameters are well-formed.
   if (!AreViewLayoutParamsValid(child_layout_params.get())) {
     LOG(ERROR) << "View provided invalid child layout parameters: "
                << "parent=" << parent_state << ", child_key=" << child_key
-               << ", child_layout_params=" << child_layout_params.get();
+               << ", child_layout_params=" << child_layout_params;
     UnregisterView(parent_state);
     callback.Run(nullptr);
     return;
@@ -257,13 +254,23 @@ void ViewRegistry::LayoutChild(
   if (child_it == parent_state->children().end()) {
     LOG(ERROR) << "View attempted to layout a child with an invalid key: "
                << "parent=" << parent_state << ", child_key=" << child_key
-               << ", child_layout_params=" << child_layout_params.get();
+               << ", child_layout_params=" << child_layout_params;
     UnregisterView(parent_state);
     callback.Run(nullptr);
     return;
   }
 
   SetLayout(child_it->second, child_layout_params.Pass(), callback);
+}
+
+void ViewRegistry::ConnectToViewService(
+    ViewState* view_state,
+    const mojo::String& service_name,
+    mojo::ScopedMessagePipeHandle client_handle) {
+  DCHECK(IsViewStateRegisteredDebug(view_state));
+
+  associate_table_.ConnectToViewService(view_state->view_token()->Clone(),
+                                        service_name, client_handle.Pass());
 }
 
 void ViewRegistry::RequestLayout(ViewTreeState* tree_state) {
@@ -279,7 +286,7 @@ void ViewRegistry::SetRoot(ViewTreeState* tree_state,
   DCHECK(IsViewTreeStateRegisteredDebug(tree_state));
   DCHECK(root_view_token);
   DVLOG(1) << "SetRoot: tree=" << tree_state << ", root_key=" << root_key
-           << ", root=" << root_view_token.get();
+           << ", root=" << root_view_token;
 
   // Check whether the desired root view still exists.
   // Using a non-existent root view still succeeds but the view manager will
@@ -310,13 +317,13 @@ void ViewRegistry::LayoutRoot(ViewTreeState* tree_state,
   DCHECK(root_layout_params);
   DCHECK(root_layout_params->constraints);
   DVLOG(1) << "LayoutRoot: tree=" << tree_state
-           << ", root_layout_params=" << root_layout_params.get();
+           << ", root_layout_params=" << root_layout_params;
 
   // Check whether the layout parameters are well-formed.
   if (!AreViewLayoutParamsValid(root_layout_params.get())) {
     LOG(ERROR) << "View tree provided invalid root layout parameters: "
                << "tree=" << tree_state
-               << ", root_layout_params=" << root_layout_params.get();
+               << ", root_layout_params=" << root_layout_params;
     UnregisterViewTree(tree_state);
     callback.Run(nullptr);
     return;
@@ -327,8 +334,7 @@ void ViewRegistry::LayoutRoot(ViewTreeState* tree_state,
   if (!tree_state->explicit_root()) {
     LOG(ERROR) << "View tree attempted to layout the rout without having "
                   "set one first: tree="
-               << tree_state
-               << ", root_layout_params=" << root_layout_params.get();
+               << tree_state << ", root_layout_params=" << root_layout_params;
     UnregisterViewTree(tree_state);
     callback.Run(nullptr);
     return;
@@ -344,8 +350,19 @@ void ViewRegistry::LayoutRoot(ViewTreeState* tree_state,
   SetLayout(tree_state->root(), root_layout_params.Pass(), callback);
 }
 
-ViewState* ViewRegistry::FindView(uint32_t view_token) {
-  auto it = views_by_token_.find(view_token);
+void ViewRegistry::ConnectToViewTreeService(
+    ViewTreeState* tree_state,
+    const mojo::String& service_name,
+    mojo::ScopedMessagePipeHandle client_handle) {
+  DCHECK(IsViewTreeStateRegisteredDebug(tree_state));
+
+  associate_table_.ConnectToViewTreeService(
+      tree_state->view_tree_token()->Clone(), service_name,
+      client_handle.Pass());
+}
+
+ViewState* ViewRegistry::FindView(uint32_t view_token_value) {
+  auto it = views_by_token_.find(view_token_value);
   return it != views_by_token_.end() ? it->second : nullptr;
 }
 
@@ -357,9 +374,8 @@ void ViewRegistry::LinkChild(ViewState* parent_state,
          parent_state->children().end());
   DCHECK(IsViewStateRegisteredDebug(child_state));
 
-  DVLOG(2) << "Added child " << child_key << " {"
-           << child_state->view_token_value() << "} to parent {"
-           << parent_state->view_token_value() << "}";
+  DVLOG(2) << "Added child " << child_key << " {" << child_state->label()
+           << "} to parent {" << parent_state->label() << "}";
 
   parent_state->children().insert({child_key, child_state});
   child_state->SetParent(parent_state, child_key);
@@ -377,7 +393,7 @@ void ViewRegistry::LinkChildAsUnavailable(ViewState* parent_state,
          parent_state->children().end());
 
   DVLOG(2) << "Added unavailable child " << child_key << " to parent {"
-           << parent_state->view_token_value() << "}";
+           << parent_state->label() << "}";
 
   parent_state->children().insert({child_key, nullptr});
   SendChildUnavailable(parent_state, child_key);
@@ -394,8 +410,8 @@ void ViewRegistry::MarkChildAsUnavailable(ViewState* parent_state,
   DCHECK(child_it->second);
 
   DVLOG(2) << "Marked unavailable child " << child_key << " {"
-           << child_it->second->view_token_value() << "} from parent {"
-           << parent_state->view_token_value() << "}";
+           << child_it->second->label() << "} from parent {"
+           << parent_state->label() << "}";
 
   ResetStateWhenUnlinking(child_it->second);
   child_it->second->ResetContainer();
@@ -416,13 +432,13 @@ void ViewRegistry::UnlinkChild(ViewState* parent_state,
   ViewState* child_state = child_it->second;
   if (child_state) {
     DVLOG(2) << "Removed child " << child_state->key() << " {"
-             << child_state->view_token_value() << "} from parent {"
-             << parent_state->view_token_value() << "}";
+             << child_state->label() << "} from parent {"
+             << parent_state->label() << "}";
     ResetStateWhenUnlinking(child_it->second);
     child_state->ResetContainer();
   } else {
     DVLOG(2) << "Removed unavailable child " << child_it->first
-             << "} from parent {" << parent_state->view_token_value() << "}";
+             << "} from parent {" << parent_state->label() << "}";
   }
   parent_state->children().erase(child_it);
 
@@ -430,6 +446,11 @@ void ViewRegistry::UnlinkChild(ViewState* parent_state,
   // We don't need to schedule layout for the child itself since it will
   // retain its old layout parameters.
   InvalidateLayout(parent_state);
+}
+
+ViewTreeState* ViewRegistry::FindViewTree(uint32_t view_tree_token_value) {
+  auto it = view_trees_by_token_.find(view_tree_token_value);
+  return it != view_trees_by_token_.end() ? it->second : nullptr;
 }
 
 void ViewRegistry::LinkRoot(ViewTreeState* tree_state,
@@ -441,7 +462,7 @@ void ViewRegistry::LinkRoot(ViewTreeState* tree_state,
   DCHECK(!root_state->parent());
 
   DVLOG(2) << "Linked view tree root " << root_key << " {"
-           << root_state->view_token_value() << "}";
+           << root_state->label() << "}";
 
   tree_state->SetRoot(root_state, root_key);
 
@@ -456,7 +477,7 @@ void ViewRegistry::UnlinkRoot(ViewTreeState* tree_state) {
   DCHECK(tree_state->root());
 
   DVLOG(2) << "Unlinked view tree root " << tree_state->root()->key() << " {"
-           << tree_state->root()->view_token_value() << "}";
+           << tree_state->root()->label() << "}";
 
   ResetStateWhenUnlinking(tree_state->root());
   tree_state->ResetRoot();
@@ -486,7 +507,7 @@ void ViewRegistry::InvalidateLayout(ViewState* view_state) {
   if (view_state->layout_params() &&
       (view_state->pending_layout_requests().empty() ||
        view_state->pending_layout_requests().back()->issued())) {
-    EnqueueLayoutRequest(view_state, view_state->layout_params().Clone());
+    EnqueueLayoutRequest(view_state, view_state->layout_params()->Clone());
     IssueNextViewLayoutRequest(view_state);
   }
 }
@@ -519,11 +540,15 @@ void ViewRegistry::SetLayout(ViewState* view_state,
   // Check whether the currently cached layout parameters are the same
   // and we already have a result and we have no pending layout requests.
   if (view_state->pending_layout_requests().empty() &&
-      view_state->layout_params() && view_state->layout_info() &&
+      view_state->layout_params() &&
       view_state->layout_params()->Equals(*layout_params)) {
-    DVLOG(2) << "Layout cache hit";
-    callback.Run(view_state->layout_info().Clone());
-    return;
+    mojo::ui::ViewLayoutInfoPtr info = view_state->CreateLayoutInfo();
+    if (info) {
+      DVLOG(2) << "Layout cache hit";
+      view_state->set_scene_changed_since_last_report(false);
+      callback.Run(info.Pass());
+      return;
+    }
   }
 
   // Check whether the layout parameters are different from the most
@@ -584,11 +609,6 @@ void ViewRegistry::ResetStateWhenUnlinking(ViewState* view_state) {
   if (view_state->parent()) {
     view_state->parent()->children_needing_layout().erase(view_state->key());
   }
-
-  // Clean up child's recorded state for the parent or tree.
-  if (view_state->wrapped_surface()) {
-    surface_manager_->DestroySurface(view_state->wrapped_surface().Pass());
-  }
 }
 
 void ViewRegistry::SendChildUnavailable(ViewState* parent_state,
@@ -617,8 +637,7 @@ void ViewRegistry::SendViewLayoutRequest(ViewState* view_state) {
   DCHECK(view_state->pending_layout_requests().front()->issued());
 
   // TODO: Detect ANRs
-  DVLOG(1) << "SendViewLayoutRequest: view.token="
-           << view_state->view_token_value();
+  DVLOG(1) << "SendViewLayoutRequest: view.token=" << view_state->label();
   view_state->view()->OnLayout(
       view_state->pending_layout_requests().front()->layout_params()->Clone(),
       mojo::Array<uint32_t>::From(view_state->children_needing_layout()),
@@ -647,9 +666,8 @@ static bool IsSizeInBounds(mojo::ui::BoxConstraints* constraints,
 }
 
 void ViewRegistry::OnViewLayoutResult(base::WeakPtr<ViewState> view_state_weak,
-                                      mojo::ui::ViewLayoutInfoPtr info) {
-  DCHECK(info);
-  DCHECK(info->surface_id);  // checked by mojom
+                                      mojo::ui::ViewLayoutResultPtr result) {
+  DCHECK(result);
 
   ViewState* view_state = view_state_weak.get();
   if (!view_state)
@@ -664,16 +682,15 @@ void ViewRegistry::OnViewLayoutResult(base::WeakPtr<ViewState> view_state_weak,
       view_state->pending_layout_requests().begin());
 
   DVLOG(1) << "OnViewLayoutResult: view=" << view_state
-           << ", params=" << request->layout_params()
-           << ", info=" << info.get();
+           << ", params=" << request->layout_params() << ", result=" << result;
 
   // Validate the layout info.
   if (!IsSizeInBounds(request->layout_params()->constraints.get(),
-                      info->size.get())) {
+                      result->size.get())) {
     LOG(ERROR) << "View returned invalid size in its layout info: "
                << "view=" << view_state
                << ", params=" << request->layout_params()
-               << ", info=" << info.get();
+               << ", result=" << result;
     UnregisterView(view_state);
     return;
   }
@@ -681,25 +698,20 @@ void ViewRegistry::OnViewLayoutResult(base::WeakPtr<ViewState> view_state_weak,
   // Assume the parent or root will not see the new layout information if
   // there are no callbacks so we need to inform it when things change.
   const bool size_changed =
-      !view_state->layout_info() ||
-      !view_state->layout_info()->size->Equals(*info->size);
-  const bool surface_changed =
-      !view_state->layout_info() ||
-      !view_state->layout_info()->surface_id->Equals(*info->surface_id);
+      !view_state->layout_result() ||
+      !view_state->layout_result()->size->Equals(*result->size);
   const bool recurse =
-      !request->has_callbacks() && (surface_changed || size_changed);
+      !request->has_callbacks() &&
+      (size_changed || view_state->scene_changed_since_last_report());
 
-  view_state->layout_params() = request->TakeLayoutParams().Pass();
-  view_state->layout_info() = info.Pass();
+  view_state->set_layout_params(request->TakeLayoutParams().Pass());
+  view_state->set_layout_result(result.Pass());
 
-  if (surface_changed) {
-    if (view_state->wrapped_surface())
-      surface_manager_->DestroySurface(view_state->wrapped_surface().Pass());
-    view_state->wrapped_surface() = surface_manager_->CreateWrappedSurface(
-        view_state->layout_info()->surface_id.get());
+  mojo::ui::ViewLayoutInfoPtr info = view_state->CreateLayoutInfo();
+  if (info) {
+    view_state->set_scene_changed_since_last_report(false);
+    request->DispatchLayoutInfo(info.Pass());
   }
-
-  request->DispatchLayoutInfo(view_state->layout_info().get());
 
   if (recurse) {
     if (view_state->parent()) {

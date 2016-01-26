@@ -2,8 +2,9 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-#include "base/logging.h"
 #include "services/ui/view_manager/view_layout_request.h"
+
+#include "base/logging.h"
 
 namespace view_manager {
 
@@ -23,11 +24,11 @@ void ViewLayoutRequest::AddCallback(const ViewLayoutCallback& callback) {
   callbacks_.emplace_back(callback);
 }
 
-void ViewLayoutRequest::DispatchLayoutInfo(mojo::ui::ViewLayoutInfo* info) {
+void ViewLayoutRequest::DispatchLayoutInfo(mojo::ui::ViewLayoutInfoPtr info) {
   DCHECK(!was_dispatched_);
   was_dispatched_ = true;
   for (const auto& callback : callbacks_)
-    callback.Run(info ? info->Clone() : nullptr);
+    callback.Run(info ? info.Clone() : nullptr);
 }
 
 }  // namespace view_manager

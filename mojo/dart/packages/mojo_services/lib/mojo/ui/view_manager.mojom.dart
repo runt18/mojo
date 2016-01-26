@@ -9,16 +9,19 @@ import 'dart:async';
 import 'package:mojo/bindings.dart' as bindings;
 import 'package:mojo/core.dart' as core;
 import 'package:mojo_services/mojo/ui/views.mojom.dart' as views_mojom;
+import 'package:mojo_services/mojo/ui/view_associates.mojom.dart' as view_associates_mojom;
 import 'package:mojo_services/mojo/ui/view_trees.mojom.dart' as view_trees_mojom;
+const int kLabelMaxLength = 32;
 
 
 
 class _ViewManagerRegisterViewParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
-    const bindings.StructDataHeader(24, 0)
+    const bindings.StructDataHeader(32, 0)
   ];
   Object view = null;
   Object viewHost = null;
+  String label = null;
 
   _ViewManagerRegisterViewParams() : super(kVersions.last.size);
 
@@ -63,6 +66,10 @@ class _ViewManagerRegisterViewParams extends bindings.Struct {
       
       result.viewHost = decoder0.decodeInterfaceRequest(16, false, views_mojom.ViewHostStub.newFromEndpoint);
     }
+    if (mainDataHeader.version >= 0) {
+      
+      result.label = decoder0.decodeString(24, true);
+    }
     return result;
   }
 
@@ -72,12 +79,15 @@ class _ViewManagerRegisterViewParams extends bindings.Struct {
     encoder0.encodeInterface(view, 8, false);
     
     encoder0.encodeInterfaceRequest(viewHost, 16, false);
+    
+    encoder0.encodeString(label, 24, true);
   }
 
   String toString() {
     return "_ViewManagerRegisterViewParams("
            "view: $view" ", "
-           "viewHost: $viewHost" ")";
+           "viewHost: $viewHost" ", "
+           "label: $label" ")";
   }
 
   Map toJson() {
@@ -157,10 +167,11 @@ class ViewManagerRegisterViewResponseParams extends bindings.Struct {
 
 class _ViewManagerRegisterViewTreeParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
-    const bindings.StructDataHeader(24, 0)
+    const bindings.StructDataHeader(32, 0)
   ];
   Object viewTree = null;
   Object viewTreeHost = null;
+  String label = null;
 
   _ViewManagerRegisterViewTreeParams() : super(kVersions.last.size);
 
@@ -205,6 +216,10 @@ class _ViewManagerRegisterViewTreeParams extends bindings.Struct {
       
       result.viewTreeHost = decoder0.decodeInterfaceRequest(16, false, view_trees_mojom.ViewTreeHostStub.newFromEndpoint);
     }
+    if (mainDataHeader.version >= 0) {
+      
+      result.label = decoder0.decodeString(24, true);
+    }
     return result;
   }
 
@@ -214,12 +229,15 @@ class _ViewManagerRegisterViewTreeParams extends bindings.Struct {
     encoder0.encodeInterface(viewTree, 8, false);
     
     encoder0.encodeInterfaceRequest(viewTreeHost, 16, false);
+    
+    encoder0.encodeString(label, 24, true);
   }
 
   String toString() {
     return "_ViewManagerRegisterViewTreeParams("
            "viewTree: $viewTree" ", "
-           "viewTreeHost: $viewTreeHost" ")";
+           "viewTreeHost: $viewTreeHost" ", "
+           "label: $label" ")";
   }
 
   Map toJson() {
@@ -231,8 +249,9 @@ class _ViewManagerRegisterViewTreeParams extends bindings.Struct {
 
 class ViewManagerRegisterViewTreeResponseParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
-    const bindings.StructDataHeader(8, 0)
+    const bindings.StructDataHeader(16, 0)
   ];
+  view_trees_mojom.ViewTreeToken viewTreeToken = null;
 
   ViewManagerRegisterViewTreeResponseParams() : super(kVersions.last.size);
 
@@ -269,19 +288,28 @@ class ViewManagerRegisterViewTreeResponseParams extends bindings.Struct {
         'Message newer than the last known version cannot be shorter than '
         'required by the last known version.');
     }
+    if (mainDataHeader.version >= 0) {
+      
+      var decoder1 = decoder0.decodePointer(8, false);
+      result.viewTreeToken = view_trees_mojom.ViewTreeToken.decode(decoder1);
+    }
     return result;
   }
 
   void encode(bindings.Encoder encoder) {
-    encoder.getStructEncoderAtOffset(kVersions.last);
+    var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
+    
+    encoder0.encodeStruct(viewTreeToken, 8, false);
   }
 
   String toString() {
-    return "ViewManagerRegisterViewTreeResponseParams("")";
+    return "ViewManagerRegisterViewTreeResponseParams("
+           "viewTreeToken: $viewTreeToken" ")";
   }
 
   Map toJson() {
     Map map = new Map();
+    map["viewTreeToken"] = viewTreeToken;
     return map;
   }
 }
@@ -291,8 +319,8 @@ const int _ViewManager_registerViewTreeName = 1;
 
 abstract class ViewManager {
   static const String serviceName = "mojo::ui::ViewManager";
-  dynamic registerView(Object view,Object viewHost,[Function responseFactory = null]);
-  dynamic registerViewTree(Object viewTree,Object viewTreeHost,[Function responseFactory = null]);
+  dynamic registerView(Object view,Object viewHost,String label,[Function responseFactory = null]);
+  dynamic registerViewTree(Object viewTree,Object viewTreeHost,String label,[Function responseFactory = null]);
 }
 
 
@@ -371,20 +399,22 @@ class _ViewManagerProxyCalls implements ViewManager {
   _ViewManagerProxyImpl _proxyImpl;
 
   _ViewManagerProxyCalls(this._proxyImpl);
-    dynamic registerView(Object view,Object viewHost,[Function responseFactory = null]) {
+    dynamic registerView(Object view,Object viewHost,String label,[Function responseFactory = null]) {
       var params = new _ViewManagerRegisterViewParams();
       params.view = view;
       params.viewHost = viewHost;
+      params.label = label;
       return _proxyImpl.sendMessageWithRequestId(
           params,
           _ViewManager_registerViewName,
           -1,
           bindings.MessageHeader.kMessageExpectsResponse);
     }
-    dynamic registerViewTree(Object viewTree,Object viewTreeHost,[Function responseFactory = null]) {
+    dynamic registerViewTree(Object viewTree,Object viewTreeHost,String label,[Function responseFactory = null]) {
       var params = new _ViewManagerRegisterViewTreeParams();
       params.viewTree = viewTree;
       params.viewTreeHost = viewTreeHost;
+      params.label = label;
       return _proxyImpl.sendMessageWithRequestId(
           params,
           _ViewManager_registerViewTreeName,
@@ -477,8 +507,9 @@ class ViewManagerStub extends bindings.Stub {
     mojo_factory_result.viewToken = viewToken;
     return mojo_factory_result;
   }
-  ViewManagerRegisterViewTreeResponseParams _ViewManagerRegisterViewTreeResponseParamsFactory() {
+  ViewManagerRegisterViewTreeResponseParams _ViewManagerRegisterViewTreeResponseParamsFactory(view_trees_mojom.ViewTreeToken viewTreeToken) {
     var mojo_factory_result = new ViewManagerRegisterViewTreeResponseParams();
+    mojo_factory_result.viewTreeToken = viewTreeToken;
     return mojo_factory_result;
   }
 
@@ -493,7 +524,7 @@ class ViewManagerStub extends bindings.Stub {
       case _ViewManager_registerViewName:
         var params = _ViewManagerRegisterViewParams.deserialize(
             message.payload);
-        var response = _impl.registerView(params.view,params.viewHost,_ViewManagerRegisterViewResponseParamsFactory);
+        var response = _impl.registerView(params.view,params.viewHost,params.label,_ViewManagerRegisterViewResponseParamsFactory);
         if (response is Future) {
           return response.then((response) {
             if (response != null) {
@@ -515,7 +546,7 @@ class ViewManagerStub extends bindings.Stub {
       case _ViewManager_registerViewTreeName:
         var params = _ViewManagerRegisterViewTreeParams.deserialize(
             message.payload);
-        var response = _impl.registerViewTree(params.viewTree,params.viewTreeHost,_ViewManagerRegisterViewTreeResponseParamsFactory);
+        var response = _impl.registerViewTree(params.viewTree,params.viewTreeHost,params.label,_ViewManagerRegisterViewTreeResponseParamsFactory);
         if (response is Future) {
           return response.then((response) {
             if (response != null) {

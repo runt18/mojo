@@ -7,11 +7,13 @@
 
 #include <memory>
 #include <set>
+#include <string>
 #include <unordered_map>
 
 #include "base/callback.h"
 #include "base/macros.h"
 #include "base/memory/weak_ptr.h"
+#include "mojo/services/ui/views/cpp/formatting.h"
 #include "mojo/services/ui/views/interfaces/views.mojom.h"
 #include "services/ui/view_manager/view_layout_request.h"
 
@@ -25,7 +27,9 @@ class ViewState {
  public:
   using ChildrenMap = std::unordered_map<uint32_t, ViewState*>;
 
-  ViewState(mojo::ui::ViewPtr view, uint32_t view_token_value);
+  ViewState(mojo::ui::ViewPtr view,
+            mojo::ui::ViewTokenPtr view_token,
+            const std::string& label);
   ~ViewState();
 
   base::WeakPtr<ViewState> GetWeakPtr() { return weak_factory_.GetWeakPtr(); }
@@ -34,8 +38,9 @@ class ViewState {
   // Caller does not obtain ownership of the view.
   mojo::ui::View* view() const { return view_.get(); }
 
-  // Gets the view token value used to refer to this view globally.
-  uint32_t view_token_value() const { return view_token_value_; }
+  // Gets the token used to refer to this view globally.
+  // Caller does not obtain ownership of the token.
+  mojo::ui::ViewToken* view_token() const { return view_token_.get(); }
 
   // Sets the associated host implementation and takes ownership of it.
   void set_view_host(mojo::ui::ViewHost* host) { view_host_.reset(host); }
@@ -66,10 +71,6 @@ class ViewState {
   // Resets the parent view state and tree pointers to null.
   void ResetContainer();
 
-  // Gets the view's service provider.
-  void GetServiceProvider(
-      mojo::InterfaceRequest<mojo::ServiceProvider> service_provider);
-
   // The map of children, indexed by child key.
   // Child view state may be null if the child with the given key has
   // become unavailable but not yet removed.
@@ -88,40 +89,69 @@ class ViewState {
 
   // The layout parameters most recently processed by the view,
   // or null if none.  These parameters are preserved across reparenting.
-  mojo::ui::ViewLayoutParamsPtr& layout_params() { return layout_params_; }
+  mojo::ui::ViewLayoutParams* layout_params() { return layout_params_.get(); }
+  void set_layout_params(mojo::ui::ViewLayoutParamsPtr layout_params) {
+    layout_params_ = layout_params.Pass();
+  }
 
-  // The layout information most recently provided by the view in
+  // The layout result most recently provided by the view in
   // response to the value of |layout_params|, or null if none.  These
   // results are preserved across reparenting.
-  mojo::ui::ViewLayoutInfoPtr& layout_info() { return layout_info_; }
+  mojo::ui::ViewLayoutResult* layout_result() { return layout_result_.get(); }
+  void set_layout_result(mojo::ui::ViewLayoutResultPtr layout_result) {
+    layout_result_ = layout_result.Pass();
+  }
 
-  // The id of the Surface which the view manager itself created to wrap the
-  // view's own Surface, or null if none.  The wrapped Surface is destroyed
-  // when the view is reparented so that the old parent can no longer embed
-  // the view's actual content.
-  mojo::SurfaceIdPtr& wrapped_surface() { return wrapped_surface_; }
+  // The current scene token, or null if none.
+  mojo::gfx::composition::SceneToken* scene_token() {
+    return scene_token_.get();
+  }
+  void set_scene_token(mojo::gfx::composition::SceneTokenPtr scene_token) {
+    scene_token_ = scene_token.Pass();
+  }
+
+  // True if the scene changed since the last time the layout was reported
+  // to the parent or tree.
+  bool scene_changed_since_last_report() {
+    return scene_changed_since_last_report_;
+  }
+  void set_scene_changed_since_last_report(bool value) {
+    scene_changed_since_last_report_ = value;
+  }
+
+  // Creates layout information to return to the parent or tree.
+  // Returns null if unavailable.
+  mojo::ui::ViewLayoutInfoPtr CreateLayoutInfo();
+
+  const std::string& label() { return label_; }
+  const std::string& FormattedLabel();
 
  private:
   void SetTreeUnchecked(ViewTreeState* tree);
 
   mojo::ui::ViewPtr view_;
-  const uint32_t view_token_value_;
+  mojo::ui::ViewTokenPtr view_token_;
+  const std::string label_;
+  std::string formatted_label_cache_;
 
   std::unique_ptr<mojo::ui::ViewHost> view_host_;
-  ViewTreeState* tree_;
-  ViewState* parent_;
-  uint32_t key_;
+  ViewTreeState* tree_ = nullptr;
+  ViewState* parent_ = nullptr;
+  uint32_t key_ = 0u;
   ChildrenMap children_;
   std::set<uint32_t> children_needing_layout_;
   std::vector<std::unique_ptr<ViewLayoutRequest>> pending_layout_requests_;
   mojo::ui::ViewLayoutParamsPtr layout_params_;
-  mojo::ui::ViewLayoutInfoPtr layout_info_;
-  mojo::SurfaceIdPtr wrapped_surface_;
+  mojo::ui::ViewLayoutResultPtr layout_result_;
+  mojo::gfx::composition::SceneTokenPtr scene_token_;
+  bool scene_changed_since_last_report_ = false;
 
   base::WeakPtrFactory<ViewState> weak_factory_;  // must be last
 
   DISALLOW_COPY_AND_ASSIGN(ViewState);
 };
+
+std::ostream& operator<<(std::ostream& os, ViewState* view_state);
 
 }  // namespace view_manager
 

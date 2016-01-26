@@ -2,20 +2,23 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-#include "base/logging.h"
 #include "services/ui/view_manager/view_state.h"
+
+#include "base/logging.h"
+#include "base/strings/stringprintf.h"
 #include "services/ui/view_manager/view_tree_state.h"
 
 namespace view_manager {
 
-ViewState::ViewState(mojo::ui::ViewPtr view, uint32_t view_token_value)
+ViewState::ViewState(mojo::ui::ViewPtr view,
+                     mojo::ui::ViewTokenPtr view_token,
+                     const std::string& label)
     : view_(view.Pass()),
-      view_token_value_(view_token_value),
-      tree_(nullptr),
-      parent_(nullptr),
-      key_(0),
+      view_token_(view_token.Pass()),
+      label_(label),
       weak_factory_(this) {
   DCHECK(view_);
+  DCHECK(view_token_);
 }
 
 ViewState::~ViewState() {}
@@ -49,7 +52,30 @@ void ViewState::ResetContainer() {
   SetTreeUnchecked(nullptr);
 }
 
-void ViewState::GetServiceProvider(
-    mojo::InterfaceRequest<mojo::ServiceProvider> service_provider) {}
+mojo::ui::ViewLayoutInfoPtr ViewState::CreateLayoutInfo() {
+  if (!layout_result_ || !scene_token_)
+    return nullptr;
+
+  auto info = mojo::ui::ViewLayoutInfo::New();
+  info->size = layout_result_->size.Clone();
+  info->scene_token = scene_token_.Clone();
+  return info;
+}
+
+const std::string& ViewState::FormattedLabel() {
+  if (formatted_label_cache_.empty()) {
+    formatted_label_cache_ =
+        label_.empty()
+            ? base::StringPrintf("<%d>", view_token_->value)
+            : base::StringPrintf("<%d:%s>", view_token_->value, label_.c_str());
+  }
+  return formatted_label_cache_;
+}
+
+std::ostream& operator<<(std::ostream& os, ViewState* view_state) {
+  if (!view_state)
+    return os << "null";
+  return os << view_state->FormattedLabel();
+}
 
 }  // namespace view_manager

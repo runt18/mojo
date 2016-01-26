@@ -2,15 +2,16 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
+#include "services/ui/launcher/launcher_app.h"
+
+#include "base/command_line.h"
+#include "base/logging.h"
 #include "base/trace_event/trace_event.h"
 #include "mojo/application/application_runner_chromium.h"
 #include "mojo/common/tracing_impl.h"
 #include "mojo/public/c/system/main.h"
 #include "mojo/public/cpp/application/application_connection.h"
 #include "mojo/public/cpp/application/application_impl.h"
-#include "mojo/services/surfaces/cpp/surfaces_utils.h"
-#include "mojo/services/surfaces/interfaces/quads.mojom.h"
-#include "services/ui/launcher/launcher_app.h"
 #include "services/ui/launcher/launcher_view_tree.h"
 
 namespace launcher {
@@ -20,31 +21,55 @@ LauncherApp::LauncherApp()
 
 LauncherApp::~LauncherApp() {}
 
-void LauncherApp::Initialize(mojo::ApplicationImpl* app) {
-  app_impl_ = app;
-  tracing_.Initialize(app);
+void LauncherApp::Initialize(mojo::ApplicationImpl* app_impl) {
+  app_impl_ = app_impl;
+
+  auto command_line = base::CommandLine::ForCurrentProcess();
+  command_line->InitFromArgv(app_impl_->args());
+  logging::LoggingSettings settings;
+  settings.logging_dest = logging::LOG_TO_SYSTEM_DEBUG_LOG;
+  logging::InitLogging(settings);
+
+  tracing_.Initialize(app_impl_);
   TRACE_EVENT0("launcher", __func__);
 
-  if (app->args().size() != 2) {
+  if (command_line->GetArgs().size() != 1) {
     LOG(ERROR) << "Invalid arguments.\n\n"
                   "Usage: mojo_shell \"mojo:launcher <app url>\"";
-    app->Terminate();
+    app_impl_->Terminate();
     return;
   }
 
+  app_impl_->ConnectToService("mojo:compositor_service", &compositor_);
+  compositor_.set_connection_error_handler(base::Bind(
+      &LauncherApp::OnCompositorConnectionError, base::Unretained(this)));
+
+  app_impl_->ConnectToService("mojo:view_manager_service", &view_manager_);
+  view_manager_.set_connection_error_handler(base::Bind(
+      &LauncherApp::OnViewManagerConnectionError, base::Unretained(this)));
+
   InitViewport();
-  LaunchClient(app->args()[1]);
+  LaunchClient(command_line->GetArgs()[0]);
+}
+
+void LauncherApp::OnCompositorConnectionError() {
+  LOG(ERROR) << "Exiting due to compositor connection error.";
+  Shutdown();
+}
+
+void LauncherApp::OnViewManagerConnectionError() {
+  LOG(ERROR) << "Exiting due to view manager connection error.";
+  Shutdown();
 }
 
 void LauncherApp::InitViewport() {
-  app_impl_->ConnectToService("mojo:native_viewport_service",
-                              &viewport_service_);
-  viewport_service_.set_connection_error_handler(base::Bind(
+  app_impl_->ConnectToService("mojo:native_viewport_service", &viewport_);
+  viewport_.set_connection_error_handler(base::Bind(
       &LauncherApp::OnViewportConnectionError, base::Unretained(this)));
 
   mojo::NativeViewportEventDispatcherPtr dispatcher;
   viewport_event_dispatcher_binding_.Bind(GetProxy(&dispatcher));
-  viewport_service_->SetEventDispatcher(dispatcher.Pass());
+  viewport_->SetEventDispatcher(dispatcher.Pass());
 
   // Match the Nexus 5 aspect ratio initially.
   auto size = mojo::Size::New();
@@ -52,29 +77,26 @@ void LauncherApp::InitViewport() {
   size->height = 640;
 
   auto requested_configuration = mojo::SurfaceConfiguration::New();
-  viewport_service_->Create(
+  viewport_->Create(
       size.Clone(), requested_configuration.Pass(),
       base::Bind(&LauncherApp::OnViewportCreated, base::Unretained(this)));
 }
 
 void LauncherApp::OnViewportConnectionError() {
   LOG(ERROR) << "Exiting due to viewport connection error.";
-  app_impl_->Terminate();
+  Shutdown();
 }
 
 void LauncherApp::OnViewportCreated(mojo::ViewportMetricsPtr metrics) {
-  viewport_service_->Show();
+  viewport_->Show();
+
   mojo::ContextProviderPtr context_provider;
-  viewport_service_->GetContextProvider(GetProxy(&context_provider));
+  viewport_->GetContextProvider(GetProxy(&context_provider));
 
-  mojo::DisplayFactoryPtr display_factory;
-  app_impl_->ConnectToService("mojo:surfaces_service", &display_factory);
-
-  mojo::DisplayPtr display;
-  display_factory->Create(context_provider.Pass(), nullptr, GetProxy(&display));
-
-  view_tree_.reset(
-      new LauncherViewTree(app_impl_, display.Pass(), metrics.Pass()));
+  view_tree_.reset(new LauncherViewTree(
+      compositor_.get(), view_manager_.get(), context_provider.Pass(),
+      metrics.Pass(),
+      base::Bind(&LauncherApp::Shutdown, base::Unretained(this))));
   UpdateClientView();
   RequestUpdatedViewportMetrics();
 }
@@ -87,8 +109,8 @@ void LauncherApp::OnViewportMetricsChanged(mojo::ViewportMetricsPtr metrics) {
 }
 
 void LauncherApp::RequestUpdatedViewportMetrics() {
-  viewport_service_->RequestMetrics(base::Bind(
-      &LauncherApp::OnViewportMetricsChanged, base::Unretained(this)));
+  viewport_->RequestMetrics(base::Bind(&LauncherApp::OnViewportMetricsChanged,
+                                       base::Unretained(this)));
 }
 
 void LauncherApp::OnEvent(mojo::EventPtr event,
@@ -112,7 +134,7 @@ void LauncherApp::LaunchClient(std::string app_url) {
 
 void LauncherApp::OnClientConnectionError() {
   LOG(ERROR) << "Exiting due to client application connection error.";
-  app_impl_->Terminate();
+  Shutdown();
 }
 
 void LauncherApp::OnClientViewCreated(mojo::ui::ViewTokenPtr view_token) {
@@ -123,6 +145,10 @@ void LauncherApp::OnClientViewCreated(mojo::ui::ViewTokenPtr view_token) {
 void LauncherApp::UpdateClientView() {
   if (view_tree_)
     view_tree_->SetRoot(client_view_token_.Clone());
+}
+
+void LauncherApp::Shutdown() {
+  app_impl_->Terminate();
 }
 
 }  // namespace launcher

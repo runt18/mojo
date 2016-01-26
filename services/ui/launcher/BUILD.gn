@@ -20,9 +20,11 @@ mojo_native_application("launcher") {
     "//mojo/common:tracing_impl",
     "//mojo/environment:chromium",
     "//mojo/public/cpp/bindings:bindings",
+    "//mojo/services/gfx/composition/cpp",
+    "//mojo/services/gfx/composition/interfaces",
     "//mojo/services/native_viewport/interfaces",
-    "//mojo/services/surfaces/cpp",
-    "//mojo/services/surfaces/interfaces",
+    "//mojo/services/ui/input/interfaces",
+    "//mojo/services/ui/views/cpp",
     "//mojo/services/ui/views/interfaces",
   ]
 }

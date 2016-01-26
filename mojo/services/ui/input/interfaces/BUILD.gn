@@ -7,18 +7,13 @@ import("$mojo_sdk_root/mojo/public/tools/bindings/mojom.gni")
 
 mojom("interfaces") {
   sources = [
-    "layouts.mojom",
-    "view_associates.mojom",
-    "view_manager.mojom",
-    "view_provider.mojom",
-    "view_trees.mojom",
-    "views.mojom",
+    "input_connection.mojom",
+    "input_dispatcher.mojom",
   ]
 
-  mojo_sdk_deps = [ "mojo/public/interfaces/application" ]
+  import_dirs = [ get_path_info("../../../", "abspath") ]
 
   deps = [
-    "../../../geometry/interfaces",
-    "../../../gfx/composition/interfaces",
+    "../../../input_events/interfaces",
   ]
 }

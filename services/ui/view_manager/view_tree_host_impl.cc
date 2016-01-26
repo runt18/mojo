@@ -2,9 +2,10 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
+#include "services/ui/view_manager/view_tree_host_impl.h"
+
 #include "base/bind.h"
 #include "base/bind_helpers.h"
-#include "services/ui/view_manager/view_tree_host_impl.h"
 
 namespace view_manager {
 
@@ -17,6 +18,11 @@ ViewTreeHostImpl::ViewTreeHostImpl(
       binding_(this, view_tree_host_request.Pass()) {}
 
 ViewTreeHostImpl::~ViewTreeHostImpl() {}
+
+void ViewTreeHostImpl::GetServiceProvider(
+    mojo::InterfaceRequest<mojo::ServiceProvider> service_provider) {
+  service_provider_bindings_.AddBinding(this, service_provider.Pass());
+}
 
 void ViewTreeHostImpl::RequestLayout() {
   registry_->RequestLayout(state_);
@@ -42,6 +48,13 @@ void ViewTreeHostImpl::LayoutRoot(
     const LayoutRootCallback& callback) {
   registry_->LayoutRoot(state_, root_layout_params.Pass(),
                         base::Bind(&RunLayoutRootCallback, callback));
+}
+
+void ViewTreeHostImpl::ConnectToService(
+    const mojo::String& service_name,
+    mojo::ScopedMessagePipeHandle client_handle) {
+  registry_->ConnectToViewTreeService(state_, service_name,
+                                      client_handle.Pass());
 }
 
 }  // namespace view_manager

@@ -9,6 +9,7 @@ import 'dart:async';
 import 'package:mojo/bindings.dart' as bindings;
 import 'package:mojo/core.dart' as core;
 import 'package:mojo/mojo/service_provider.mojom.dart' as service_provider_mojom;
+import 'package:mojo_services/mojo/gfx/composition/scenes.mojom.dart' as scenes_mojom;
 import 'package:mojo_services/mojo/ui/layouts.mojom.dart' as layouts_mojom;
 
 
@@ -161,7 +162,7 @@ class ViewOnLayoutResponseParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(16, 0)
   ];
-  layouts_mojom.ViewLayoutInfo info = null;
+  layouts_mojom.ViewLayoutResult result = null;
 
   ViewOnLayoutResponseParams() : super(kVersions.last.size);
 
@@ -201,7 +202,7 @@ class ViewOnLayoutResponseParams extends bindings.Struct {
     if (mainDataHeader.version >= 0) {
       
       var decoder1 = decoder0.decodePointer(8, false);
-      result.info = layouts_mojom.ViewLayoutInfo.decode(decoder1);
+      result.result = layouts_mojom.ViewLayoutResult.decode(decoder1);
     }
     return result;
   }
@@ -209,17 +210,17 @@ class ViewOnLayoutResponseParams extends bindings.Struct {
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
     
-    encoder0.encodeStruct(info, 8, false);
+    encoder0.encodeStruct(result, 8, false);
   }
 
   String toString() {
     return "ViewOnLayoutResponseParams("
-           "info: $info" ")";
+           "result: $result" ")";
   }
 
   Map toJson() {
     Map map = new Map();
-    map["info"] = info;
+    map["result"] = result;
     return map;
   }
 }
@@ -407,6 +408,72 @@ class _ViewHostGetServiceProviderParams extends bindings.Struct {
   String toString() {
     return "_ViewHostGetServiceProviderParams("
            "serviceProvider: $serviceProvider" ")";
+  }
+
+  Map toJson() {
+    throw new bindings.MojoCodecError(
+        'Object containing handles cannot be encoded to JSON.');
+  }
+}
+
+
+class _ViewHostCreateSceneParams extends bindings.Struct {
+  static const List<bindings.StructDataHeader> kVersions = const [
+    const bindings.StructDataHeader(16, 0)
+  ];
+  Object scene = null;
+
+  _ViewHostCreateSceneParams() : super(kVersions.last.size);
+
+  static _ViewHostCreateSceneParams deserialize(bindings.Message message) {
+    var decoder = new bindings.Decoder(message);
+    var result = decode(decoder);
+    if (decoder.excessHandles != null) {
+      decoder.excessHandles.forEach((h) => h.close());
+    }
+    return result;
+  }
+
+  static _ViewHostCreateSceneParams decode(bindings.Decoder decoder0) {
+    if (decoder0 == null) {
+      return null;
+    }
+    _ViewHostCreateSceneParams result = new _ViewHostCreateSceneParams();
+
+    var mainDataHeader = decoder0.decodeStructDataHeader();
+    if (mainDataHeader.version <= kVersions.last.version) {
+      // Scan in reverse order to optimize for more recent versions.
+      for (int i = kVersions.length - 1; i >= 0; --i) {
+        if (mainDataHeader.version >= kVersions[i].version) {
+          if (mainDataHeader.size == kVersions[i].size) {
+            // Found a match.
+            break;
+          }
+          throw new bindings.MojoCodecError(
+              'Header size doesn\'t correspond to known version size.');
+        }
+      }
+    } else if (mainDataHeader.size < kVersions.last.size) {
+      throw new bindings.MojoCodecError(
+        'Message newer than the last known version cannot be shorter than '
+        'required by the last known version.');
+    }
+    if (mainDataHeader.version >= 0) {
+      
+      result.scene = decoder0.decodeInterfaceRequest(8, false, scenes_mojom.SceneStub.newFromEndpoint);
+    }
+    return result;
+  }
+
+  void encode(bindings.Encoder encoder) {
+    var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
+    
+    encoder0.encodeInterfaceRequest(scene, 8, false);
+  }
+
+  String toString() {
+    return "_ViewHostCreateSceneParams("
+           "scene: $scene" ")";
   }
 
   Map toJson() {
@@ -947,9 +1014,9 @@ class ViewStub extends bindings.Stub {
   }
 
 
-  ViewOnLayoutResponseParams _ViewOnLayoutResponseParamsFactory(layouts_mojom.ViewLayoutInfo info) {
+  ViewOnLayoutResponseParams _ViewOnLayoutResponseParamsFactory(layouts_mojom.ViewLayoutResult result) {
     var mojo_factory_result = new ViewOnLayoutResponseParams();
-    mojo_factory_result.info = info;
+    mojo_factory_result.result = result;
     return mojo_factory_result;
   }
   ViewOnChildUnavailableResponseParams _ViewOnChildUnavailableResponseParamsFactory() {
@@ -1031,14 +1098,16 @@ class ViewStub extends bindings.Stub {
 }
 
 const int _ViewHost_getServiceProviderName = 0;
-const int _ViewHost_requestLayoutName = 1;
-const int _ViewHost_addChildName = 2;
-const int _ViewHost_removeChildName = 3;
-const int _ViewHost_layoutChildName = 4;
+const int _ViewHost_createSceneName = 1;
+const int _ViewHost_requestLayoutName = 2;
+const int _ViewHost_addChildName = 3;
+const int _ViewHost_removeChildName = 4;
+const int _ViewHost_layoutChildName = 5;
 
 abstract class ViewHost {
   static const String serviceName = null;
   void getServiceProvider(Object serviceProvider);
+  void createScene(Object scene);
   void requestLayout();
   void addChild(int childKey, ViewToken childViewToken);
   void removeChild(int childKey);
@@ -1109,6 +1178,15 @@ class _ViewHostProxyCalls implements ViewHost {
       var params = new _ViewHostGetServiceProviderParams();
       params.serviceProvider = serviceProvider;
       _proxyImpl.sendMessage(params, _ViewHost_getServiceProviderName);
+    }
+    void createScene(Object scene) {
+      if (!_proxyImpl.isBound) {
+        _proxyImpl.proxyError("The Proxy is closed.");
+        return;
+      }
+      var params = new _ViewHostCreateSceneParams();
+      params.scene = scene;
+      _proxyImpl.sendMessage(params, _ViewHost_createSceneName);
     }
     void requestLayout() {
       if (!_proxyImpl.isBound) {
@@ -1246,6 +1324,11 @@ class ViewHostStub extends bindings.Stub {
         var params = _ViewHostGetServiceProviderParams.deserialize(
             message.payload);
         _impl.getServiceProvider(params.serviceProvider);
+        break;
+      case _ViewHost_createSceneName:
+        var params = _ViewHostCreateSceneParams.deserialize(
+            message.payload);
+        _impl.createScene(params.scene);
         break;
       case _ViewHost_requestLayoutName:
         var params = _ViewHostRequestLayoutParams.deserialize(

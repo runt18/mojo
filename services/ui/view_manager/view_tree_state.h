@@ -7,12 +7,15 @@
 
 #include <memory>
 #include <set>
+#include <string>
 #include <unordered_map>
 
 #include "base/callback.h"
 #include "base/macros.h"
 #include "base/memory/weak_ptr.h"
+#include "mojo/common/binding_set.h"
 #include "mojo/public/cpp/bindings/binding.h"
+#include "mojo/services/ui/views/cpp/formatting.h"
 #include "mojo/services/ui/views/interfaces/view_trees.mojom.h"
 #include "services/ui/view_manager/view_state.h"
 
@@ -22,7 +25,9 @@ namespace view_manager {
 // This object is owned by the ViewRegistry that created it.
 class ViewTreeState {
  public:
-  explicit ViewTreeState(mojo::ui::ViewTreePtr view_tree);
+  explicit ViewTreeState(mojo::ui::ViewTreePtr view_tree,
+                         mojo::ui::ViewTreeTokenPtr view_tree_token,
+                         const std::string& label);
   ~ViewTreeState();
 
   base::WeakPtr<ViewTreeState> GetWeakPtr() {
@@ -32,6 +37,12 @@ class ViewTreeState {
   // Gets the view tree interface, never null.
   // Caller does not obtain ownership of the view.
   mojo::ui::ViewTree* view_tree() const { return view_tree_.get(); }
+
+  // Gets the token used to refer to this view tree globally.
+  // Caller does not obtain ownership of the token.
+  mojo::ui::ViewTreeToken* view_tree_token() const {
+    return view_tree_token_.get();
+  }
 
   // Sets the associated host implementation and takes ownership of it.
   void set_view_tree_host(mojo::ui::ViewTreeHost* host) {
@@ -68,19 +79,27 @@ class ViewTreeState {
   bool layout_request_issued() const { return layout_request_issued_; }
   void set_layout_request_issued(bool value) { layout_request_issued_ = value; }
 
+  const std::string& label() { return label_; }
+  const std::string& FormattedLabel();
+
  private:
   mojo::ui::ViewTreePtr view_tree_;
+  mojo::ui::ViewTreeTokenPtr view_tree_token_;
+  const std::string label_;
+  std::string formatted_label_cache_;
 
   std::unique_ptr<mojo::ui::ViewTreeHost> view_tree_host_;
-  ViewState* root_;
-  bool explicit_root_;
-  bool layout_request_pending_;
-  bool layout_request_issued_;
+  ViewState* root_ = nullptr;
+  bool explicit_root_ = false;
+  bool layout_request_pending_ = false;
+  bool layout_request_issued_ = false;
 
   base::WeakPtrFactory<ViewTreeState> weak_factory_;  // must be last
 
   DISALLOW_COPY_AND_ASSIGN(ViewTreeState);
 };
+
+std::ostream& operator<<(std::ostream& os, ViewTreeState* view_tree_state);
 
 }  // namespace view_manager
 

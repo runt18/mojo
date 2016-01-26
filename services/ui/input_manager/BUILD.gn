@@ -5,29 +5,15 @@
 import("//mojo/public/mojo_application.gni")
 import("//testing/test.gni")
 
-mojo_native_application("view_manager") {
-  output_name = "view_manager_service"
+mojo_native_application("input_manager") {
+  output_name = "input_manager_service"
 
   sources = [
+    "input_associate.cc",
+    "input_associate.h",
+    "input_manager_app.cc",
+    "input_manager_app.h",
     "main.cc",
-    "view_associate_table.cc",
-    "view_associate_table.h",
-    "view_host_impl.cc",
-    "view_host_impl.h",
-    "view_layout_request.cc",
-    "view_layout_request.h",
-    "view_manager_app.cc",
-    "view_manager_app.h",
-    "view_manager_impl.cc",
-    "view_manager_impl.h",
-    "view_registry.cc",
-    "view_registry.h",
-    "view_state.cc",
-    "view_state.h",
-    "view_tree_host_impl.cc",
-    "view_tree_host_impl.h",
-    "view_tree_state.cc",
-    "view_tree_state.h",
   ]
 
   deps = [
@@ -41,6 +27,7 @@ mojo_native_application("view_manager") {
     "//mojo/services/geometry/cpp",
     "//mojo/services/gfx/composition/cpp",
     "//mojo/services/gfx/composition/interfaces",
+    "//mojo/services/ui/input/interfaces",
     "//mojo/services/ui/views/cpp",
     "//mojo/services/ui/views/interfaces",
   ]
