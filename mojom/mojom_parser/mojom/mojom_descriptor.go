@@ -7,6 +7,7 @@ package mojom
 import (
 	"bytes"
 	"fmt"
+	"strings"
 )
 
 // This file contains the types MojomFile and MojomDescriptor. These are the
@@ -398,9 +399,14 @@ func (d *MojomDescriptor) resolveTypeReferences() (unresolvedReferences []*UserT
 	numUnresolved := 0
 	for _, ref := range d.unresolvedTypeReferences {
 		if ref != nil {
-			if !d.resolveTypeRef(ref) {
-				unresolvedReferences[numUnresolved] = ref
-				numUnresolved++
+			if err := d.resolveTypeRef(ref); err != nil {
+				if err.notResolved {
+					unresolvedReferences[numUnresolved] = ref
+					numUnresolved++
+				} else {
+					postResolutionValidationError = err
+					return
+				}
 			} else {
 				if postResolutionValidationError = ref.validateAfterResolution(); postResolutionValidationError != nil {
 					break
@@ -417,9 +423,14 @@ func (d *MojomDescriptor) resolveValueReferences() (unresolvedReferences []*User
 	numUnresolved := 0
 	for _, ref := range d.unresolvedValueReferences {
 		if ref != nil {
-			if !d.resolveValueRef(ref) {
-				unresolvedReferences[numUnresolved] = ref
-				numUnresolved++
+			if err := d.resolveValueRef(ref); err != nil {
+				if err.notResolved {
+					unresolvedReferences[numUnresolved] = ref
+					numUnresolved++
+				} else {
+					postResolutionValidationError = err
+					return
+				}
 			} else {
 				if postResolutionValidationError = ref.validateAfterResolution(); postResolutionValidationError != nil {
 					break
@@ -431,26 +442,98 @@ func (d *MojomDescriptor) resolveValueReferences() (unresolvedReferences []*User
 	return
 }
 
-func (d *MojomDescriptor) resolveTypeRef(ref *UserTypeRef) (success bool) {
-	ref.resolvedType = ref.scope.LookupType(ref.identifier)
-	return ref.resolvedType != nil
+// resolveReferenceError is a type of error returned by resolveTypeRef()
+// and resolveValueRef() when either the given reference could not be resolved
+// or else it is resolved but to an object of the wrong kind.
+type resolveReferenceError struct {
+	// Is the problem that the identifier could not be resolved?
+	notResolved bool
+	// This will contain a user-facing error message if and only if
+	// notResolved is false. This means that the identifier did resolve to
+	// some object but it was not of the expected kind.
+	message string
 }
 
-// There are two steps to resolving a value. First resolve the identifier to
-// to a target declaration, then resolve the target declaration to a
-// concrte value.
-func (d *MojomDescriptor) resolveValueRef(ref *UserValueRef) (resolved bool) {
+func (e *resolveReferenceError) Error() string {
+	return e.message
+}
+
+// resolveTypeRef attempts to resolve the given UserTypeRef. Returns nil on success and in
+// that case the |resolvedType| field of |ref| has been set. Otherwise
+// returns a |resolvedReferenceError| indicating either that the name could
+// not be resolved at all, or else containing a user-facing error message
+// explaining that the name resolved to something other than a type.
+func (d *MojomDescriptor) resolveTypeRef(ref *UserTypeRef) *resolveReferenceError {
+	// Our lookup algorithm is: Search for any declared object regardless of kind
+	// and emit an error if the kind of object found is not a type.
+	lookupResult := ref.scope.LookupObject(ref.identifier, LookupAcceptAll)
+	if lookupResult == nil {
+		// The name could not be resolved at all.
+		return &resolveReferenceError{notResolved: true}
+	}
+	switch lookupResult := lookupResult.(type) {
+	case UserDefinedType:
+		ref.resolvedType = lookupResult
+		// The name resolved to a type. Success!
+		return nil
+	}
+	// The name resolved to something other than a type.
+	message := fmt.Sprintf("%q does not refer to a type. It refers to the %s %s at %s.",
+		ref.identifier, lookupResult.KindString(), lookupResult.FullyQualifiedName(),
+		FullLocationString(lookupResult))
+	message = UserErrorMessage(ref.scope.file, ref.token, message)
+	return &resolveReferenceError{message: message}
+}
+
+// resolveValueRef attempts to resolve the given UserValueRef. Returns nil on success and in
+// that case the |resolvedDeclaredValue| and |resolvedConcreteValue| fields of
+// |ref| have been set. Otherwise returns a |resolvedReferenceError| indicating
+// either that the reference could not be fully resolved to a concrete value,
+// or else containing a user-facing error message explaining that the name
+// resolved to something other than a value.
+//
+// There are two steps to fully resolving a value. First resolve the identifier
+// to to a target declaration, then resolve the target declaration to a
+// concrte value. If either of these steps fail then a resolvedReferenceError
+// with |notResolved| = true will be returned.
+func (d *MojomDescriptor) resolveValueRef(ref *UserValueRef) *resolveReferenceError {
 	// Step 1: Find resolvedDeclaredValue
 	if ref.resolvedDeclaredValue == nil {
-		userDefinedValue := ref.scope.LookupValue(ref.identifier, ref.assigneeSpec.Type)
-		if userDefinedValue == nil {
-			lookupValue, ok := LookupBuiltInConstantValue(ref.identifier)
-			if !ok {
-				return false
+
+		// Our lookup algorithm is: Search for any declared object regardless of kind
+		// and emit an error if the kind of object found is not a value.
+		if lookupResult := ref.scope.LookupObject(ref.identifier, LookupAcceptAll); lookupResult != nil {
+			switch lookupResult := lookupResult.(type) {
+			case UserDefinedValue:
+				ref.resolvedDeclaredValue = lookupResult
+			default:
+				// The name resolved to something other than a value.
+				message := fmt.Sprintf("%q does not refer to a value. It refers to the %s %s at %s.",
+					ref.identifier, lookupResult.KindString(), lookupResult.FullyQualifiedName(),
+					FullLocationString(lookupResult))
+				message = UserErrorMessage(ref.scope.file, ref.token, message)
+				return &resolveReferenceError{message: message}
 			}
-			userDefinedValue = lookupValue
 		}
-		ref.resolvedDeclaredValue = userDefinedValue
+
+		// If we have not resolved the identifier yet, maybe it uses a special
+		// convention for referring to an enum value.
+		if ref.resolvedDeclaredValue == nil && resolveSpecialEnumValueAssignment(ref) {
+			return nil
+		}
+
+		// If we have not resolved the identifier yet, maybe it refers to a built-in constant.
+		if ref.resolvedDeclaredValue == nil {
+			builtInValue, ok := LookupBuiltInConstantValue(ref.identifier)
+			if ok {
+				ref.resolvedDeclaredValue = builtInValue
+			}
+		}
+
+		// If we have not resolved the identifier yet, return an error.
+		if ref.resolvedDeclaredValue == nil {
+			return &resolveReferenceError{notResolved: true}
+		}
 	}
 
 	// Step 2: Find resolvedConcreteValue.
@@ -474,7 +557,79 @@ func (d *MojomDescriptor) resolveValueRef(ref *UserValueRef) (resolved bool) {
 			"nor a BuiltInConstantValue: %T", ref.resolvedDeclaredValue))
 	}
 
-	return ref.resolvedConcreteValue != nil
+	// If we have still not resolved the concrete value, return an error indicating so.
+	// We may try again in a later pass.
+	if ref.resolvedConcreteValue == nil {
+		return &resolveReferenceError{notResolved: true}
+	}
+
+	// success!
+	return nil
+}
+
+// resolveSpecialEnumValueAssignment handles a special case of value lookup:
+// There is an assignment being made where the variable on the left-hand-side
+// is of an enum type and the identifier on the right-hand-side is a simple name.
+//
+// enum Color {
+//	RED, BLUE
+// };
+// const Color my_favorite_color = BLUE;
+//
+// In the above example the simple name "BLUE" is being assigned to a variable
+// of enum type Color. In this case our lookup procedure includes a
+// step in which we search for a value named "BLUE" in the enum type
+// Color.
+func resolveSpecialEnumValueAssignment(ref *UserValueRef) bool {
+	// If the reference is not a simple name, return false.
+	name := ref.identifier
+	if strings.ContainsRune(name, '.') {
+		return false
+	}
+
+	// If the assignee type is not some user-defined type, return false.
+	assigneeType := ref.assigneeSpec.Type
+	if assigneeType == nil || assigneeType.TypeRefKind() != TypeKindUserDefined {
+		return false
+	}
+
+	// If the assignee type is not an enum type, return false.
+	userTypeRef, ok := assigneeType.(*UserTypeRef)
+	if !ok {
+		panic(fmt.Sprintf("Type of assigneeType is %T", assigneeType))
+	}
+	if userTypeRef.ResolvedType() == nil || userTypeRef.ResolvedType().Kind() != UserDefinedTypeKindEnum {
+		return false
+	}
+	assigneeEnumType := userTypeRef.ResolvedType()
+
+	// Attempt to lookup a value using the fully qualified name formed by concatenating the
+	// fully-qualified name of the enum type with the simple name.
+	name = userTypeRef.ResolvedType().FullyQualifiedName() + "." + name
+	lookupResult := ref.scope.LookupObject(name, LookupAcceptValue)
+	if lookupResult == nil {
+		// That name could not be resolved at all.
+		return false
+	}
+
+	// The lookupResult must be a UserDefinedValue because we passed the
+	// flag LookupAcceptValue.
+	userDefinedValue, ok := lookupResult.(UserDefinedValue)
+	if !ok {
+		panic(fmt.Sprintf("lookupResult is not a UserDefinedValue: %v", lookupResult))
+	}
+
+	switch enumValue := userDefinedValue.(type) {
+	case *EnumValue:
+		if enumValue.EnumType() == assigneeEnumType {
+			// The name we manufactured corresponds to an enum value from the right enum. Success!
+			ref.resolvedDeclaredValue = userDefinedValue
+			ref.resolvedConcreteValue = enumValue
+			return true
+		}
+	default:
+	}
+	return false
 }
 
 //////////////////////////////////////

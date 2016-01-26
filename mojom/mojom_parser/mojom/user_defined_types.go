@@ -45,7 +45,8 @@ func (k UserDefinedTypeKind) String() string {
 	}
 }
 
-// A DeclaredObject is either a UserDefinedType or a UserDefinedValue.
+// A DeclaredObject is anything that can be registered in a scope:
+// A UserDefinedType, a UserDefinedValue, a method or a struct field.
 type DeclaredObject interface {
 	SimpleName() string
 	NameToken() lexer.Token
@@ -53,6 +54,11 @@ type DeclaredObject interface {
 	KindString() string
 	Scope() *Scope
 	RegisterInScope(scope *Scope) DuplicateNameError
+}
+
+func FullLocationString(o DeclaredObject) string {
+	return fmt.Sprintf("%s:%s", o.Scope().file.CanonicalFileName,
+		o.NameToken().ShortLocationString())
 }
 
 /////////////////////////////////////////////////////////////
@@ -79,6 +85,7 @@ type UserDefinedTypeBase struct {
 func (b *UserDefinedTypeBase) Init(declData DeclarationData, thisType UserDefinedType) {
 	b.thisType = thisType
 	b.DeclarationData = declData
+	b.DeclarationData.declaredObject = thisType
 }
 
 func (b *UserDefinedTypeBase) TypeKind() TypeKind {
@@ -145,6 +152,9 @@ func (c *DeclarationContainer) AddEnum(mojomEnum *MojomEnum) DuplicateNameError 
 // Adds a declared constant to this type, which must be an interface or struct.
 func (c *DeclarationContainer) AddConstant(declaredConst *UserDefinedConstant) DuplicateNameError {
 	c.Constants = append(c.Constants, declaredConst)
+	if declaredConst == nil {
+		panic("declaredConst is nil")
+	}
 	return declaredConst.RegisterInScope(c.containedScope)
 }
 
@@ -175,6 +185,9 @@ type MojomStruct struct {
 
 	fieldsByName map[string]*StructField
 	Fields       []*StructField
+
+	// Used to form an error message in case of a duplicate field name.
+	userFacingName string
 }
 
 func NewMojomStruct(declData DeclarationData) *MojomStruct {
@@ -182,18 +195,24 @@ func NewMojomStruct(declData DeclarationData) *MojomStruct {
 	mojomStruct.fieldsByName = make(map[string]*StructField)
 	mojomStruct.Fields = make([]*StructField, 0)
 	mojomStruct.Init(declData, mojomStruct)
+	mojomStruct.userFacingName = mojomStruct.simpleName
 	return mojomStruct
 }
 
-func NewSyntheticRequestStruct(declData DeclarationData) *MojomStruct {
-	mojomStruct := NewMojomStruct(declData)
+const requestSuffix = "-request"
+const responseSuffix = "-response"
+
+func NewSyntheticRequestStruct(methodName string, nameToken lexer.Token, owningFile *MojomFile) *MojomStruct {
+	mojomStruct := NewMojomStruct(DeclData(methodName+requestSuffix, owningFile, nameToken, nil))
 	mojomStruct.structType = StructTypeSyntheticRequest
+	mojomStruct.userFacingName = methodName
 	return mojomStruct
 }
 
-func NewSyntheticResponseStruct(declData DeclarationData) *MojomStruct {
-	mojomStruct := NewMojomStruct(declData)
+func NewSyntheticResponseStruct(methodName string, nameToken lexer.Token, owningFile *MojomFile) *MojomStruct {
+	mojomStruct := NewMojomStruct(DeclData(methodName+responseSuffix, owningFile, nameToken, nil))
 	mojomStruct.structType = StructTypeSyntheticResponse
+	mojomStruct.userFacingName = methodName
 	return mojomStruct
 }
 
@@ -233,15 +252,25 @@ func (s *MojomStruct) AddField(field *StructField) DuplicateNameError {
 		}
 		return &DuplicateMemberNameError{
 			DuplicateNameErrorBase{nameToken: field.NameToken(), owningFile: field.OwningFile()},
-			duplicateObjectType, containerType, s.simpleName}
+			duplicateObjectType, containerType, s.userFacingName}
+	}
+	if s.structType == StructTypeRegular {
+		// Only a regular struct has a contained scope.
+		if err := field.RegisterInScope(s.containedScope); err != nil {
+			return err
+		}
 	}
 	s.fieldsByName[field.simpleName] = field
 	s.Fields = append(s.Fields, field)
 	return nil
 }
 
-func (MojomStruct) Kind() UserDefinedTypeKind {
+func (*MojomStruct) Kind() UserDefinedTypeKind {
 	return UserDefinedTypeKindStruct
+}
+
+func (s *MojomStruct) StructType() StructType {
+	return s.structType
 }
 
 func (MojomStruct) IsAssignmentCompatibleWith(value LiteralValue) bool {
@@ -308,6 +337,7 @@ type StructField struct {
 
 func NewStructField(declData DeclarationData, fieldType TypeRef, defaultValue ValueRef) *StructField {
 	field := StructField{FieldType: fieldType, DefaultValue: defaultValue}
+	declData.declaredObject = &field
 	field.DeclarationData = declData
 	return &field
 }
@@ -326,6 +356,32 @@ func (f *StructField) ValidateDefaultValue() (ok bool) {
 		return f.FieldType.MarkTypeCompatible(assignment)
 	}
 	return true
+}
+
+func (f *StructField) RegisterInScope(scope *Scope) DuplicateNameError {
+	// Set the scope on f before invoking RegisterValue().
+	f.scope = scope
+	if err := scope.RegisterStructField(f); err != nil {
+		return err
+	}
+
+	if scope.kind != ScopeStruct {
+		panic("A struct field  may only be registered within the scope of a struct.")
+	}
+	// Note that we give a struct field a fully-qualified name only for the purpose
+	// of being able to refer to it in error messages. A struct field is not
+	// a stand-alone entity: It may not be referred to in a .mojom file and it is
+	// not given a type key.
+	f.fullyQualifiedName = buildDottedName(scope.fullyQualifiedName, f.simpleName)
+	return nil
+}
+
+func (f *StructField) Scope() *Scope {
+	return f.scope
+}
+
+func (f *StructField) KindString() string {
+	return "field"
 }
 
 func (f StructField) String() string {
@@ -374,10 +430,8 @@ func (i *MojomInterface) InitAsScope(parentScope *Scope) *Scope {
 }
 
 func (i *MojomInterface) AddMethod(method *MojomMethod) DuplicateNameError {
-	if _, ok := i.methodsByName[method.simpleName]; ok {
-		return &DuplicateMemberNameError{
-			DuplicateNameErrorBase{nameToken: method.NameToken(), owningFile: method.OwningFile()},
-			"method", "interface", i.simpleName}
+	if err := method.RegisterInScope(i.containedScope); err != nil {
+		return err
 	}
 	i.methodsByName[method.simpleName] = method
 	i.methodsByLexicalOrder = append(i.methodsByLexicalOrder, method)
@@ -476,6 +530,7 @@ type MojomMethod struct {
 
 func NewMojomMethod(declData DeclarationData, params, responseParams *MojomStruct) *MojomMethod {
 	mojomMethod := new(MojomMethod)
+	declData.declaredObject = mojomMethod
 	mojomMethod.DeclarationData = declData
 	mojomMethod.Parameters = params
 	mojomMethod.ResponseParameters = responseParams
@@ -489,6 +544,28 @@ func (m *MojomMethod) String() string {
 		responseString = fmt.Sprintf(" => (%s)", m.ResponseParameters.ParameterString())
 	}
 	return fmt.Sprintf("%s(%s)%s", m.simpleName, parameterString, responseString)
+}
+
+func (m *MojomMethod) RegisterInScope(scope *Scope) DuplicateNameError {
+	// Set the scope on m before invoking RegisterValue().
+	m.scope = scope
+	if err := scope.RegisterMethod(m); err != nil {
+		return err
+	}
+
+	if scope.kind != ScopeInterface {
+		panic("A method  may only be registered within the scope of an interface.")
+	}
+	m.fullyQualifiedName = buildDottedName(scope.fullyQualifiedName, m.simpleName)
+	return nil
+}
+
+func (m *MojomMethod) Scope() *Scope {
+	return m.scope
+}
+
+func (m *MojomMethod) KindString() string {
+	return "method"
 }
 
 /////////////////////////////////////////////////////////////
@@ -512,6 +589,7 @@ func NewMojomUnion(declData DeclarationData) *MojomUnion {
 // Adds a UnionField to this Union
 func (u *MojomUnion) AddField(declData DeclarationData, FieldType TypeRef) DuplicateNameError {
 	field := UnionField{FieldType: FieldType}
+	declData.declaredObject = &field
 	field.DeclarationData = declData
 	if _, ok := u.fieldsByName[field.simpleName]; ok {
 		return &DuplicateMemberNameError{
@@ -542,6 +620,19 @@ type UnionField struct {
 
 	FieldType TypeRef
 	Tag       uint32
+}
+
+func (f *UnionField) RegisterInScope(scope *Scope) DuplicateNameError {
+	// We currently have not reason to register a UnionField in a scope.
+	panic("Not implemented.")
+}
+
+func (f *UnionField) Scope() *Scope {
+	return f.scope
+}
+
+func (f *UnionField) KindString() string {
+	return "union field"
 }
 
 /////////////////////////////////////////////////////////////
@@ -685,10 +776,11 @@ type UserDefinedValueBase struct {
 	valueRef ValueRef
 }
 
-// This method is invoked from the constructors for the containing types:
-// NewMojomInterface, NewMojomStruct, NewMojomEnum, NewMojomUnion
+// This method is invoked from the constructors for the containing values:
+// NewUserDefinedConstant and AddEnumValue
 func (b *UserDefinedValueBase) Init(declData DeclarationData, kind UserDefinedValueKind,
 	thisValue UserDefinedValue, valueRef ValueRef) {
+	declData.declaredObject = thisValue
 	b.DeclarationData = declData
 	b.thisValue = thisValue
 	b.kind = kind
@@ -706,15 +798,6 @@ func (v *UserDefinedValueBase) RegisterInScope(scope *Scope) DuplicateNameError 
 		if scope.kind != ScopeEnum {
 			panic("An enum value may only be registered within the scope of an enum.")
 		}
-		// We register an enum value twice: Once within it's enum as a scope
-		// and once within its enum's scope directly. In this way the enum
-		// value may be reference either with or without the name of the
-		// enum as a prefix.
-		// NOTE(rudominer) This behavior was changed in light of
-		// https://codereview.chromium.org/1375313006
-		//if err := scope.Parent().RegisterValue(v.thisValue); err != nil {
-		//	return err
-		//}
 	}
 
 	v.fullyQualifiedName = buildDottedName(scope.fullyQualifiedName, v.simpleName)
@@ -920,6 +1003,9 @@ func (b BuiltInConstantValue) RegisterInScope(scope *Scope) DuplicateNameError {
 // This struct is embedded in UserDefinedTypeBase, UserDefinedValueBase,
 // StructField, UnionField and MojomMethod.
 type DeclarationData struct {
+	// A pointer to the DeclaredObject to which this DeclarationData belongs.
+	declaredObject DeclaredObject
+
 	attributes         *Attributes
 	simpleName         string
 	fullyQualifiedName string
@@ -984,6 +1070,10 @@ func (d *DeclarationData) ContainingType() UserDefinedType {
 		return nil
 	}
 	return d.scope.containingType
+}
+
+func (d *DeclarationData) DeclaredObject() DeclaredObject {
+	return d.declaredObject
 }
 
 type Attributes struct {

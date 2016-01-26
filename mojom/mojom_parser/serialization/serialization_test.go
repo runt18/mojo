@@ -71,6 +71,13 @@ func (test *singleFileTest) endTestCase() {
 	test.testCaseNum += 1
 }
 
+// newShortDeclData constructs a new DeclarationData with the given data.
+func (test *singleFileTest) newShortDeclData(shortName string) *mojom_types.DeclarationData {
+	declData := test.newContainedDeclData(shortName, "", nil)
+	declData.FullIdentifier = nil
+	return declData
+}
+
 // newDeclData constructs a new DeclarationData with the given data.
 func (test *singleFileTest) newDeclData(shortName, fullIdentifier string) *mojom_types.DeclarationData {
 	return test.newContainedDeclData(shortName, fullIdentifier, nil)
@@ -80,6 +87,14 @@ func (test *singleFileTest) newDeclData(shortName, fullIdentifier string) *mojom
 func (test *singleFileTest) newDeclDataA(shortName, fullIdentifier string,
 	attributes *[]mojom_types.Attribute) *mojom_types.DeclarationData {
 	return test.newContainedDeclDataA(shortName, fullIdentifier, nil, attributes)
+}
+
+// newShortDeclDataA constructs a new DeclarationData with the given data, including attributes.
+func (test *singleFileTest) newShortDeclDataA(shortName string,
+	attributes *[]mojom_types.Attribute) *mojom_types.DeclarationData {
+	declData := test.newContainedDeclDataA(shortName, "", nil, attributes)
+	declData.FullIdentifier = nil
+	return declData
 }
 
 // newContainedDeclData constructs a new DeclarationData with the given data.
@@ -112,10 +127,14 @@ func newContainedDeclData(fileName, shortName, fullIdentifier string, containerT
 // newContainedDeclDataA constructs a new DeclarationData with the given data, including attributes.
 func newContainedDeclDataA(fileName, shortName, fullIdentifier string,
 	containerTypeKey *string, attributes *[]mojom_types.Attribute) *mojom_types.DeclarationData {
+	var fullyQualifiedName *string
+	if fullIdentifier != "" {
+		fullyQualifiedName = &fullIdentifier
+	}
 	return &mojom_types.DeclarationData{
 		Attributes:       attributes,
 		ShortName:        &shortName,
-		FullIdentifier:   &fullIdentifier,
+		FullIdentifier:   fullyQualifiedName,
 		DeclaredOrdinal:  -1,
 		DeclarationOrder: -1,
 		ContainerTypeKey: containerTypeKey,
@@ -155,25 +174,25 @@ func TestSingleFileSerialization(t *testing.T) {
 			Fields: []mojom_types.StructField{
 				// field bar1 is not nullable and not fixed length
 				{
-					DeclData: test.newDeclData("bar1", ""),
+					DeclData: test.newShortDeclData("bar1"),
 					Type: &mojom_types.TypeArrayType{mojom_types.ArrayType{
 						false, -1, &mojom_types.TypeSimpleType{mojom_types.SimpleType_InT32}}},
 				},
 				// field bar2 is not nullable and fixed length of 7
 				{
-					DeclData: test.newDeclData("bar2", ""),
+					DeclData: test.newShortDeclData("bar2"),
 					Type: &mojom_types.TypeArrayType{mojom_types.ArrayType{
 						false, 7, &mojom_types.TypeSimpleType{mojom_types.SimpleType_InT32}}},
 				},
 				// field bar3 is nullable and not fixed length
 				{
-					DeclData: test.newDeclData("bar3", ""),
+					DeclData: test.newShortDeclData("bar3"),
 					Type: &mojom_types.TypeArrayType{mojom_types.ArrayType{
 						true, -1, &mojom_types.TypeSimpleType{mojom_types.SimpleType_InT32}}},
 				},
 				// field bar4 is nullable and fixed length of 8
 				{
-					DeclData: test.newDeclData("bar4", ""),
+					DeclData: test.newShortDeclData("bar4"),
 					Type: &mojom_types.TypeArrayType{mojom_types.ArrayType{
 						true, 8, &mojom_types.TypeSimpleType{mojom_types.SimpleType_InT32}}},
 				},
@@ -209,7 +228,7 @@ func TestSingleFileSerialization(t *testing.T) {
 			Fields: []mojom_types.StructField{
 				// field bar1 is non-nullable with a non-nullable key.
 				{
-					DeclData: test.newDeclData("bar1", ""),
+					DeclData: test.newShortDeclData("bar1"),
 					Type: &mojom_types.TypeMapType{mojom_types.MapType{
 						false,
 						&mojom_types.TypeStringType{mojom_types.StringType{false}},
@@ -217,7 +236,7 @@ func TestSingleFileSerialization(t *testing.T) {
 				},
 				// field bar2 is non-nullable with a nullable key.
 				{
-					DeclData: test.newDeclData("bar2", ""),
+					DeclData: test.newShortDeclData("bar2"),
 					Type: &mojom_types.TypeMapType{mojom_types.MapType{
 						false,
 						&mojom_types.TypeStringType{mojom_types.StringType{true}},
@@ -225,7 +244,7 @@ func TestSingleFileSerialization(t *testing.T) {
 				},
 				// field bar3 is nullable with a non-nullable key.
 				{
-					DeclData: test.newDeclData("bar3", ""),
+					DeclData: test.newShortDeclData("bar3"),
 					Type: &mojom_types.TypeMapType{mojom_types.MapType{
 						true,
 						&mojom_types.TypeStringType{mojom_types.StringType{false}},
@@ -233,7 +252,7 @@ func TestSingleFileSerialization(t *testing.T) {
 				},
 				// field bar4 is nullable with a nullable key.
 				{
-					DeclData: test.newDeclData("bar4", ""),
+					DeclData: test.newShortDeclData("bar4"),
 					Type: &mojom_types.TypeMapType{mojom_types.MapType{
 						true,
 						&mojom_types.TypeStringType{mojom_types.StringType{true}},
@@ -304,6 +323,178 @@ func TestSingleFileSerialization(t *testing.T) {
 				test.expectedGraph().ResolvedValues["TYPE_KEY:Foo.X1"].(*mojom_types.UserDefinedValueEnumValue).Value,
 				// value X2
 				test.expectedGraph().ResolvedValues["TYPE_KEY:Foo.X2"].(*mojom_types.UserDefinedValueEnumValue).Value,
+			},
+		}}
+
+		test.endTestCase()
+	}
+
+	////////////////////////////////////////////////////////////
+	// Test Case: enum value name is shadowed by local constant declaration.
+	////////////////////////////////////////////////////////////
+	{
+
+		contents := `
+	enum Color{
+	  RED, BLUE
+	};
+
+	struct MyStruct {
+		const Color RED = BLUE;
+
+        Color a_color = RED; // This should resolve to the local constant RED.
+	};`
+
+		test.addTestCase("", contents)
+
+		// DeclaredMojomObjects
+		test.expectedFile().DeclaredMojomObjects.TopLevelEnums = &[]string{"TYPE_KEY:Color"}
+		test.expectedFile().DeclaredMojomObjects.Structs = &[]string{"TYPE_KEY:MyStruct"}
+
+		// Resolved Values
+
+		// Color.RED
+		test.expectedGraph().ResolvedValues["TYPE_KEY:Color.RED"] = &mojom_types.UserDefinedValueEnumValue{mojom_types.EnumValue{
+			DeclData:    test.newDeclData("RED", "Color.RED"),
+			EnumTypeKey: "TYPE_KEY:Color",
+			IntValue:    0,
+		}}
+
+		// Color.BLUE
+		test.expectedGraph().ResolvedValues["TYPE_KEY:Color.BLUE"] = &mojom_types.UserDefinedValueEnumValue{mojom_types.EnumValue{
+			DeclData:    test.newDeclData("BLUE", "Color.BLUE"),
+			EnumTypeKey: "TYPE_KEY:Color",
+			IntValue:    1,
+		}}
+
+		// MyStruct.RED
+		test.expectedGraph().ResolvedValues["TYPE_KEY:MyStruct.RED"] = &mojom_types.UserDefinedValueDeclaredConstant{mojom_types.DeclaredConstant{
+			DeclData: *test.newContainedDeclData("RED", "MyStruct.RED", stringPointer("TYPE_KEY:MyStruct")),
+			Type: &mojom_types.TypeTypeReference{mojom_types.TypeReference{
+				false, false, stringPointer("Color"), stringPointer("TYPE_KEY:Color")}},
+			Value: &mojom_types.ValueUserValueReference{
+				mojom_types.UserValueReference{
+					Identifier: "BLUE",
+					ValueKey:   stringPointer("TYPE_KEY:Color.BLUE")}},
+		}}
+
+		// ResolvedTypes
+
+		// enum Color
+		test.expectedGraph().ResolvedTypes["TYPE_KEY:Color"] = &mojom_types.UserDefinedTypeEnumType{mojom_types.MojomEnum{
+			DeclData: test.newDeclData("Color", "Color"),
+			Values: []mojom_types.EnumValue{
+				// Note(rudominer) It is a bug that we need to copy the enum values here.
+				// See https://github.com/domokit/mojo/issues/513.
+				// value RED
+				test.expectedGraph().ResolvedValues["TYPE_KEY:Color.RED"].(*mojom_types.UserDefinedValueEnumValue).Value,
+				// value BLUE
+				test.expectedGraph().ResolvedValues["TYPE_KEY:Color.BLUE"].(*mojom_types.UserDefinedValueEnumValue).Value,
+			},
+		}}
+
+		// struct MyStruct
+		test.expectedGraph().ResolvedTypes["TYPE_KEY:MyStruct"] = &mojom_types.UserDefinedTypeStructType{mojom_types.MojomStruct{
+			DeclData: &mojom_types.DeclarationData{
+				ShortName:        stringPointer("MyStruct"),
+				FullIdentifier:   stringPointer("MyStruct"),
+				DeclaredOrdinal:  -1,
+				DeclarationOrder: -1,
+				SourceFileInfo: &mojom_types.SourceFileInfo{
+					FileName: test.fileName(),
+				},
+				ContainedDeclarations: &mojom_types.ContainedDeclarations{
+					Constants: &[]string{"TYPE_KEY:MyStruct.RED"}},
+			},
+			Fields: []mojom_types.StructField{
+				// field a_color
+				{
+					DeclData: test.newShortDeclData("a_color"),
+					Type: &mojom_types.TypeTypeReference{mojom_types.TypeReference{
+						false, false, stringPointer("Color"), stringPointer("TYPE_KEY:Color")}},
+					DefaultValue: &mojom_types.DefaultFieldValueValue{&mojom_types.ValueUserValueReference{
+						mojom_types.UserValueReference{
+							Identifier: "RED",
+							ValueKey:   stringPointer("TYPE_KEY:MyStruct.RED")}}}, // Note this refers to MyStruct.RED and not Color.RED.
+				},
+			},
+		}}
+
+		test.endTestCase()
+	}
+
+	////////////////////////////////////////////////////////////
+	// Test Case: In-Out method parameters with the same name.
+	////////////////////////////////////////////////////////////
+	{
+
+		contents := `
+	module test;
+
+	interface EchoService {
+      EchoString(string? value) => (string? value);
+      DelayedEchoString(string? value, int32 millis) => (string? value);
+    };`
+
+		test.addTestCase("test", contents)
+
+		// DeclaredMojomObjects
+		test.expectedFile().DeclaredMojomObjects.Interfaces = &[]string{"TYPE_KEY:test.EchoService"}
+
+		// ResolvedTypes
+
+		// interface EchoService
+		test.expectedGraph().ResolvedTypes["TYPE_KEY:test.EchoService"] = &mojom_types.UserDefinedTypeInterfaceType{mojom_types.MojomInterface{
+			DeclData:      test.newDeclData("EchoService", "test.EchoService"),
+			InterfaceName: "EchoService",
+			Methods: map[uint32]mojom_types.MojomMethod{
+				0: mojom_types.MojomMethod{
+					DeclData: test.newDeclData("EchoString", ""),
+					Parameters: mojom_types.MojomStruct{
+						DeclData: test.newDeclData("EchoString-request", ""),
+						Fields: []mojom_types.StructField{
+							mojom_types.StructField{
+								DeclData: test.newDeclData("value", ""),
+								Type:     &mojom_types.TypeStringType{mojom_types.StringType{true}},
+							},
+						},
+					},
+					ResponseParams: &mojom_types.MojomStruct{
+						DeclData: test.newDeclData("EchoString-response", ""),
+						Fields: []mojom_types.StructField{
+							mojom_types.StructField{
+								DeclData: test.newDeclData("value", ""),
+								Type:     &mojom_types.TypeStringType{mojom_types.StringType{true}},
+							},
+						},
+					},
+				},
+				1: mojom_types.MojomMethod{
+					DeclData: test.newDeclData("DelayedEchoString", ""),
+					Parameters: mojom_types.MojomStruct{
+						DeclData: test.newDeclData("DelayedEchoString-request", ""),
+						Fields: []mojom_types.StructField{
+							mojom_types.StructField{
+								DeclData: test.newDeclData("value", ""),
+								Type:     &mojom_types.TypeStringType{mojom_types.StringType{true}},
+							},
+							mojom_types.StructField{
+								DeclData: test.newDeclData("millis", ""),
+								Type:     &mojom_types.TypeSimpleType{mojom_types.SimpleType_InT32},
+							},
+						},
+					},
+					ResponseParams: &mojom_types.MojomStruct{
+						DeclData: test.newDeclData("DelayedEchoString-response", ""),
+						Fields: []mojom_types.StructField{
+							mojom_types.StructField{
+								DeclData: test.newDeclData("value", ""),
+								Type:     &mojom_types.TypeStringType{mojom_types.StringType{true}},
+							},
+						},
+					},
+					Ordinal: 1,
+				},
 			},
 		}}
 
@@ -560,18 +751,18 @@ func TestSingleFileSerialization(t *testing.T) {
 			Fields: []mojom_types.StructField{
 				// field x
 				{
-					DeclData: test.newDeclData("x", ""),
+					DeclData: test.newShortDeclData("x"),
 					Type:     &mojom_types.TypeSimpleType{mojom_types.SimpleType_InT32},
 				},
 				// field y
 				{
-					DeclData:     test.newDeclDataA("y", "", &[]mojom_types.Attribute{{"min_version", &mojom_types.LiteralValueInt8Value{2}}}),
+					DeclData:     test.newShortDeclDataA("y", &[]mojom_types.Attribute{{"min_version", &mojom_types.LiteralValueInt8Value{2}}}),
 					Type:         &mojom_types.TypeStringType{mojom_types.StringType{false}},
 					DefaultValue: &mojom_types.DefaultFieldValueValue{&mojom_types.ValueLiteralValue{&mojom_types.LiteralValueStringValue{"hello"}}},
 				},
 				// field z
 				{
-					DeclData: test.newDeclData("z", ""),
+					DeclData: test.newShortDeclData("z"),
 					Type:     &mojom_types.TypeStringType{mojom_types.StringType{true}},
 				},
 			},
@@ -940,15 +1131,8 @@ func compareFileGraphs(expected *mojom_files.MojomFileGraph, actual *mojom_files
 		// that does a deep printing that follows pointers for up to 50 levels.
 		// Thus expectedString and actualString should contain enough information to
 		// precisely capture the structure of expected and actual.
-		expectedString := myfmt.Sprintf("%+v", expected)
-		actualString := myfmt.Sprintf("%+v", actual)
-		if expectedString == actualString {
-			// The "#v" format is Go-syntax representation of the value and
-			// uses the type names. We may need this extra detail to discern
-			// the difference between expected and actual.
-			expectedString = myfmt.Sprintf("%#v", expected)
-			actualString = myfmt.Sprintf("%#v", actual)
-		}
+		expectedString := myfmt.Sprintf("%#v", expected)
+		actualString := myfmt.Sprintf("%#v", actual)
 		if expectedString != actualString {
 			diffPos := -1
 			for i := 0; i < len(expectedString) && i < len(actualString); i++ {
@@ -964,7 +1148,7 @@ func compareFileGraphs(expected *mojom_files.MojomFileGraph, actual *mojom_files
 				mismatchActual = actualString[diffPos:]
 			}
 			return fmt.Errorf("*****\nexpected=\n*****\n%q\n*****\nactual=\n*****\n%q\n*****\n"+
-				"match failed at position %d: expected=\n*****\n%s\n******\nactual=\n*****\n%s\n******\n",
+				"match failed at position %d: expected=\n*****\n%q\n******\nactual=\n*****\n%q\n******\n",
 				expectedString, actualString, diffPos, mismatchExpected, mismatchActual)
 		} else {
 			return fmt.Errorf("expected != actual but the two printed equal.")

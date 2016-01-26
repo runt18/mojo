@@ -93,7 +93,12 @@ func TestLookupType(t *testing.T) {
 		{"blah.foo.bar.MyInterface.MyEnum", rootScope, false},
 	}
 	for _, c := range cases {
-		if got := c.scope.LookupType(c.lookupName); (got == mojomEnum) != c.expectSuccess {
+		lookupObject := c.scope.LookupObject(c.lookupName, LookupAcceptType)
+		var got UserDefinedType
+		if lookupObject != nil {
+			got = lookupObject.(UserDefinedType)
+		}
+		if (got == mojomEnum) != c.expectSuccess {
 			t.Errorf("c={%q, %s, %v}, got=%v", c.lookupName, c.scope.fullyQualifiedName, c.expectSuccess, got)
 		}
 	}
@@ -188,8 +193,21 @@ func TestLookupValue(t *testing.T) {
 		{"blah.foo.bar.MyInterface.MyEnum.TheValue", rootScope, enumTypeRef, false},
 	}
 	for _, c := range cases {
-		if got := c.scope.LookupValue(c.lookupName, c.assigneeType); (got == enumValue) != c.expectSuccess {
-			t.Errorf("c={%q, %s, %v}, got=%v", c.lookupName, c.scope.fullyQualifiedName, c.expectSuccess, got)
+		lookupObject := c.scope.LookupObject(c.lookupName, LookupAcceptValue)
+		if lookupObject == nil {
+			ref := NewUserValueRef(AssigneeSpec{Type: c.assigneeType},
+				c.lookupName, c.scope, lexer.Token{})
+			if resolveSpecialEnumValueAssignment(ref) {
+				lookupObject = ref.resolvedDeclaredValue
+			}
+		}
+		var got *EnumValue
+		if lookupObject != nil {
+			got = lookupObject.(*EnumValue)
+		}
+		if (got == enumValue) != c.expectSuccess {
+			t.Errorf("c={lookupName=%q, scopeName=%s, assigneType=%v, expectSuccess=%v}, got=%v",
+				c.lookupName, c.scope.fullyQualifiedName, c.assigneeType.TypeName(), c.expectSuccess, got)
 		}
 	}
 }

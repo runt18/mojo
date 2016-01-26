@@ -136,6 +136,7 @@ func TestStructFieldValidateDefaultValue(t *testing.T) {
 
 func TestInterfaceComputeMethodOridnals(t *testing.T) {
 	myInterface := NewTestInterface("MyInterface")
+	myInterface.InitAsScope(NewTestFileScope("test.scope"))
 	cases := []struct {
 		assignedOrdinal int64
 		expectedOrdinal uint32

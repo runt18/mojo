@@ -181,6 +181,7 @@ func TestSuccessfulParsing(t *testing.T) {
 	};`
 	{
 		structFoo := mojom.NewMojomStruct(mojom.DeclTestData("Foo"))
+		structFoo.InitAsScope(mojom.NewTestFileScope("test.scope"))
 		structFoo.AddField(mojom.NewStructField(mojom.DeclTestData("x"), mojom.SimpleTypeInt32, nil))
 		expectedFile.AddStruct(structFoo)
 	}
@@ -204,6 +205,7 @@ func TestSuccessfulParsing(t *testing.T) {
 		expectedFile.AddImport("and.another.file")
 
 		structFoo := mojom.NewMojomStruct(mojom.DeclTestData("Foo"))
+		structFoo.InitAsScope(mojom.NewTestFileScope("test.scope"))
 		attributes := mojom.NewAttributes()
 		attributes.List = append(attributes.List, mojom.MojomAttribute{"happy", mojom.MakeBoolLiteralValue(true)})
 		structFoo.AddField(mojom.NewStructField(mojom.DeclTestDataAWithOrdinal("x", attributes, 4), mojom.SimpleTypeInt32, nil))
@@ -232,6 +234,7 @@ func TestSuccessfulParsing(t *testing.T) {
 		expectedFile.AddImport("and.another.file")
 
 		structFoo := mojom.NewMojomStruct(mojom.DeclTestData("Foo"))
+		structFoo.InitAsScope(mojom.NewTestFileScope("test.scope"))
 		structFoo.AddField(mojom.NewStructField(mojom.DeclTestDataWithOrdinal("x", 4), mojom.SimpleTypeInt32, mojom.MakeInt8LiteralValue(42)))
 		attributes := mojom.NewAttributes()
 		attributes.List = append(attributes.List, mojom.MojomAttribute{"age", mojom.MakeInt8LiteralValue(7)})
@@ -269,12 +272,14 @@ func TestSuccessfulParsing(t *testing.T) {
 		expectedFile.AddImport("and.another.file")
 
 		structFoo := mojom.NewMojomStruct(mojom.DeclTestData("Foo"))
+		structFoo.InitAsScope(mojom.NewTestFileScope("test.scope"))
 		structFoo.AddField(mojom.NewStructField(mojom.DeclTestData("x"), mojom.SimpleTypeInt32, nil))
 		structFoo.AddField(mojom.NewStructField(mojom.DeclTestData("y"), mojom.BuiltInType("string"), nil))
 		structFoo.AddField(mojom.NewStructField(mojom.DeclTestData("z"), mojom.BuiltInType("string?"), nil))
 		expectedFile.AddStruct(structFoo)
 
 		interfaceDoer := mojom.NewMojomInterface(mojom.DeclTestData("Doer"))
+		interfaceDoer.InitAsScope(mojom.NewTestFileScope("test.scope"))
 
 		// The first reference to Foo inside of interface Doer
 		fooRef1 := mojom.NewUserTypeRef("Foo", false, false, interfaceDoer.Scope(), lexer.Token{})
@@ -283,9 +288,11 @@ func TestSuccessfulParsing(t *testing.T) {
 		fooRef2 := mojom.NewUserTypeRef("Foo", true, false, interfaceDoer.Scope(), lexer.Token{})
 
 		params := mojom.NewMojomStruct(mojom.DeclTestData("dummy"))
+		params.InitAsScope(mojom.NewTestFileScope("test.scope"))
 		params.AddField(mojom.NewStructField(mojom.DeclTestData("lemon"), mojom.SimpleTypeInt8, nil))
 		params.AddField(mojom.NewStructField(mojom.DeclTestData("pipe"), mojom.BuiltInType("handle<message_pipe>"), nil))
 		responseParams := mojom.NewMojomStruct(mojom.DeclTestData("dummy"))
+		responseParams.InitAsScope(mojom.NewTestFileScope("test.scope"))
 		responseParams.AddField(mojom.NewStructField(mojom.DeclTestData("someFoos"), mojom.NewArrayTypeRef(fooRef1, -1, false), nil))
 		responseParams.AddField(mojom.NewStructField(mojom.DeclTestData("anotherFoo"), fooRef2, nil))
 
@@ -371,12 +378,14 @@ func TestSuccessfulParsing(t *testing.T) {
 		expectedFile.AddEnum(errorCodeEnum)
 
 		structFoo := mojom.NewMojomStruct(mojom.DeclTestData("Foo"))
+		structFoo.InitAsScope(mojom.NewTestFileScope("test.scope"))
 		structFoo.AddField(mojom.NewStructField(mojom.DeclTestData("x"), mojom.SimpleTypeInt32, nil))
 		structFoo.AddField(mojom.NewStructField(mojom.DeclTestData("y"), mojom.BuiltInType("string"), nil))
 		structFoo.AddField(mojom.NewStructField(mojom.DeclTestData("z"), mojom.BuiltInType("string?"), nil))
 		expectedFile.AddStruct(structFoo)
 
 		interfaceDoer := mojom.NewMojomInterface(mojom.DeclTestData("Doer"))
+		interfaceDoer.InitAsScope(mojom.NewTestFileScope("test.scope"))
 
 		// The first reference to Foo inside of interface Doer
 		fooRef1 := mojom.NewUserTypeRef("Foo", false, false, interfaceDoer.Scope(), lexer.Token{})
@@ -385,9 +394,11 @@ func TestSuccessfulParsing(t *testing.T) {
 		fooRef2 := mojom.NewUserTypeRef("Foo", true, false, interfaceDoer.Scope(), lexer.Token{})
 
 		params := mojom.NewMojomStruct(mojom.DeclTestData("dummy"))
+		params.InitAsScope(mojom.NewTestFileScope("test.scope"))
 		params.AddField(mojom.NewStructField(mojom.DeclTestData("lemon"), mojom.SimpleTypeInt8, nil))
 		params.AddField(mojom.NewStructField(mojom.DeclTestData("pipe"), mojom.BuiltInType("handle<message_pipe>"), nil))
 		responseParams := mojom.NewMojomStruct(mojom.DeclTestData("dummy"))
+		responseParams.InitAsScope(mojom.NewTestFileScope("test.scope"))
 		responseParams.AddField(mojom.NewStructField(mojom.DeclTestData("someFoos"), mojom.NewArrayTypeRef(fooRef1, -1, false), nil))
 		responseParams.AddField(mojom.NewStructField(mojom.DeclTestData("anotherFoo"), fooRef2, nil))
 
@@ -1112,9 +1123,105 @@ func TestDuplicateNameErrorsSingleFile(t *testing.T) {
 		MethodB();
 		MethodD();
 	};
-
 	`
-	expectError("Duplicate definition of 'MethodB'. There is already a method with that name in interface MyInterface.")
+	expectError("Duplicate definition for \"MethodB\". Previous definition with the same fully-qualified name:")
+	expectError("method MyInterface.MethodB at " + fileName())
+	endTestCase()
+
+	////////////////////////////////////////////////////////////
+	// Test Case (A method and an enum with the same name)
+	////////////////////////////////////////////////////////////
+	startTestCase("")
+	cases[testCaseNum].mojomContents = `
+	interface MyInterface {
+		Foo();
+		Bar();
+		enum Foo{
+			PLAID = 1,
+			CHECKERED = 2
+		};
+	};
+	`
+	expectError("Duplicate definition for \"Foo\". Previous definition with the same fully-qualified name:")
+	expectError("method MyInterface.Foo at " + fileName())
+	endTestCase()
+
+	////////////////////////////////////////////////////////////
+	// Test Case (An enum and a method with the same name)
+	////////////////////////////////////////////////////////////
+	startTestCase("")
+	cases[testCaseNum].mojomContents = `
+	interface MyInterface {
+		Bar();
+		enum Foo{
+			PLAID = 1,
+			CHECKERED = 2
+		};
+		Foo();
+	};
+	`
+	expectError("Duplicate definition for \"Foo\". Previous definition with the same fully-qualified name:")
+	expectError("enum MyInterface.Foo at " + fileName())
+	endTestCase()
+
+	////////////////////////////////////////////////////////////
+	// Test Case (A method and a constant with the same name)
+	////////////////////////////////////////////////////////////
+	startTestCase("")
+	cases[testCaseNum].mojomContents = `
+	interface MyInterface {
+		Foo();
+		Bar();
+		const int32 Foo = 7;
+	};
+	`
+	expectError("Duplicate definition for \"Foo\". Previous definition with the same fully-qualified name:")
+	expectError("method MyInterface.Foo at " + fileName())
+	endTestCase()
+
+	////////////////////////////////////////////////////////////
+	// Test Case (A constant and a method with the same name)
+	////////////////////////////////////////////////////////////
+	startTestCase("")
+	cases[testCaseNum].mojomContents = `
+	interface MyInterface {
+		const int32 Foo = 7;
+		Foo();
+		Bar();
+	};
+	`
+	expectError("Duplicate definition for \"Foo\". Previous definition with the same fully-qualified name:")
+	expectError("const MyInterface.Foo at " + fileName())
+	endTestCase()
+
+	////////////////////////////////////////////////////////////
+	// Test Case (A constant and a field with the same name)
+	////////////////////////////////////////////////////////////
+	startTestCase("")
+	cases[testCaseNum].mojomContents = `
+	struct MyStruct {
+		const int32 Bar = 7;
+		string Foo;
+		int32 Bar;
+	};
+	`
+	expectError("Duplicate definition for \"Bar\". Previous definition with the same fully-qualified name:")
+	expectError("const MyStruct.Bar at " + fileName())
+	endTestCase()
+
+	////////////////////////////////////////////////////////////
+	// Test Case (A field and a constant with the same name)
+	////////////////////////////////////////////////////////////
+	startTestCase("")
+	cases[testCaseNum].mojomContents = `
+	struct MyStruct {
+		string Foo;
+		int32 Bar;
+		const int32 Bar = 7;
+	};
+	`
+	expectError("Duplicate definition for \"Bar\". Previous definition with the same fully-qualified name:")
+	expectError("field MyStruct.Bar at " + fileName())
 	endTestCase()
 
 	////////////////////////////////////////////////////////////
@@ -1341,6 +1448,27 @@ func TestDuplicateNameErrorsTwoFiles(t *testing.T) {
 	`
 	expectError("Duplicate definition for \"COWBOY\". Previous definition with the same fully-qualified name:")
 	expectError("enum value a.b.c.Hats.COWBOY at " + fileName1())
+	endTestCase()
+
+	////////////////////////////////////////////////////////////
+	// Test Case (a value with the same name as a method in a different scope)
+	////////////////////////////////////////////////////////////
+	startTestCase()
+	cases[testCaseNum].file1.mojomContents = `
+	module a.b;
+
+	interface Big {
+		Run();
+	};
+	`
+
+	cases[testCaseNum].file2.mojomContents = `
+	module a.b.Big;
+
+	const int32 Run = 0;
+	`
+	expectError("Duplicate definition for \"Run\". Previous definition with the same fully-qualified name:")
+	expectError("method a.b.Big.Run at " + fileName1())
 	endTestCase()
 
 	////////////////////////////////////////////////////////////

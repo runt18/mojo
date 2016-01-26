@@ -500,7 +500,19 @@ func translateDeclarationData(d *mojom.DeclarationData) *mojom_types.Declaration
 	declData.ShortName = stringPointer(d.SimpleName())
 
 	// full_identifier field
-	declData.FullIdentifier = stringPointer(d.FullyQualifiedName())
+	switch declaredObject := d.DeclaredObject().(type) {
+	// We do not serialize the fully-qualified-name for objects that only exist
+	// as children of their container objects and are not independently
+	// referenceable.
+	case *mojom.StructField, *mojom.MojomMethod:
+	case *mojom.MojomStruct:
+		switch declaredObject.StructType() {
+		case mojom.StructTypeRegular:
+			declData.FullIdentifier = stringPointer(d.FullyQualifiedName())
+		}
+	default:
+		declData.FullIdentifier = stringPointer(d.FullyQualifiedName())
+	}
 
 	// declared_ordinal field
 	if d.DeclaredOrdinal() < 0 {
@@ -516,12 +528,15 @@ func translateDeclarationData(d *mojom.DeclarationData) *mojom_types.Declaration
 	// container_type_key
 	containingType := d.ContainingType()
 	if containingType != nil {
-		switch containingType.(type) {
-		case *mojom.MojomEnum:
-			// We do not write the |container_type_key| field for an EnumValue
+		switch d.DeclaredObject().(type) {
+		// We do not serialize the |container_type_key| field for objects that only exist
+		// as children of their container objects and are not independently
+		// referenceable.
+		case *mojom.StructField, *mojom.MojomMethod:
+			// We do not serialize the |container_type_key| field for an EnumValue
 			// because the EnumValue already has the type_key of the Enum
 			// in a different field.
-			break
+		case *mojom.EnumValue:
 		default:
 			declData.ContainerTypeKey = stringPointer(containingType.TypeKey())
 		}

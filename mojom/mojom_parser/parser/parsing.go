@@ -491,8 +491,9 @@ func (p *Parser) parseInterfaceBody(mojomInterface *mojom.MojomInterface) bool {
 				duplicateNameError = mojomInterface.AddEnum(mojomEnum)
 			}
 		case lexer.Const:
-			constant := p.parseConstDecl(attributes)
-			duplicateNameError = mojomInterface.AddConstant(constant)
+			if constant := p.parseConstDecl(attributes); constant != nil {
+				duplicateNameError = mojomInterface.AddConstant(constant)
+			}
 		case lexer.RBrace:
 			rbraceFound = true
 			if attributes != nil {
@@ -592,9 +593,9 @@ func (p *Parser) parseParamList(methodName string, isRequest bool) (paramStruct 
 	defer p.popNode()
 
 	if isRequest {
-		paramStruct = mojom.NewSyntheticRequestStruct(p.DeclData(methodName, lexer.Token{}, nil))
+		paramStruct = mojom.NewSyntheticRequestStruct(methodName, lexer.Token{}, p.mojomFile)
 	} else {
-		paramStruct = mojom.NewSyntheticResponseStruct(p.DeclData(methodName, lexer.Token{}, nil))
+		paramStruct = mojom.NewSyntheticResponseStruct(methodName, lexer.Token{}, p.mojomFile)
 	}
 	nextToken := p.peekNextToken("I was parsing method parameters.")
 	for nextToken.Kind != lexer.RParen {

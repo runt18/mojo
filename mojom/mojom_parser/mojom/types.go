@@ -1095,7 +1095,7 @@ func NewUserValueRef(assigneeSpec AssigneeSpec, identifier string, scope *Scope,
 // Concrete Values
 /////////////////////////////////////////////////////////////
 
-// A ConcreteValue is a LiteralValue or an EnumValue or a BuiltInConstantValue.
+// A ConcreteValue is a LiteralValue, a *EnumValue, or a BuiltInConstantValue.
 type ConcreteValue interface {
 	ValueType() ConcreteType
 	Value() interface{}

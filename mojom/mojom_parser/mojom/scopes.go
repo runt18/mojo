@@ -18,8 +18,8 @@ corresponding to a name is looked up during the resolution phase of the parser.
 The collection of all scopes form a tree in which each scope other than the
 root scope is contained in a parent scope. Scopes are named using dotted
 identifiers (like foo.bar.baz) and the name of a parent scope is always equal
-to the name of the child scope minus the initial element. So the parent of
-a scope named foo.bar.baz must be named bar.baz.
+to the name of the child scope minus the final element. So the parent of
+a scope named "foo.bar.baz" must be named "foo.bar".
 
 The lookup procedure for a name starts with a scope associated with the use of
 the name and proceeds by searching up through the chain of parents until a
@@ -45,30 +45,39 @@ if a .mojom file declares a module namespace of "foo.bar" this implicitly
 creates three abstract module scopes named "foo.bar", "bar" and "". Abstract
 module scopes are uniquely identified within a MojomDescriptor by their names.
 The abstract module scope named "" is the unique root scope.
+
+We also register some named objects into a scope even though these objects
+will never be looked up because they are non-referents, meaning they cannot
+be referred to. For example we register methods within an interface
+scope even though we will never need to lookup of the method by name because
+it is not possible to refer to a method from within a .mojom file. The reason
+we do this is that it *is* possible to refer to a method in the generated
+code. Thus it is important to disallow, for example, a method and an enum
+in the same interface to have the same name.
 */
 
 type ScopeKind int
 
 const (
 	ScopeAbstractModule ScopeKind = iota
-	ScopeEnum
 	ScopeFileModule
 	ScopeInterface
 	ScopeStruct
+	ScopeEnum
 )
 
 func (k ScopeKind) String() string {
 	switch k {
 	case ScopeAbstractModule:
 		return "abstract module"
-	case ScopeEnum:
-		return "enum"
 	case ScopeFileModule:
 		return "file module"
 	case ScopeInterface:
 		return "interface"
 	case ScopeStruct:
 		return "struct"
+	case ScopeEnum:
+		return "enum"
 	default:
 		panic(fmt.Sprintf("Unrecognized ScopeKind %d", k))
 	}
@@ -79,12 +88,11 @@ type Scope struct {
 	shortName          string
 	fullyQualifiedName string
 	parentScope        *Scope
-	typesByName        map[string]UserDefinedType
-	valuesByName       map[string]UserDefinedValue
+	declaredObjects    map[string]DeclaredObject
 	// file is nil for abstract module scopes
 	file *MojomFile
-	// If this is an Interface or Struct scope then |containingType|
-	// is the corresponding Interface or Struct.
+	// If this is an Interface, Struct or Enum scope then |containingType|
+	// is the corresponding Interface, Struct or Enum.
 	containingType UserDefinedType
 	descriptor     *MojomDescriptor
 }
@@ -103,22 +111,21 @@ func (scope *Scope) init(kind ScopeKind, shortName string,
 	scope.shortName = shortName
 	scope.fullyQualifiedName = fullyQualifiedName
 	scope.parentScope = parentScope
-	scope.typesByName = make(map[string]UserDefinedType)
-	scope.valuesByName = make(map[string]UserDefinedValue)
+	scope.declaredObjects = make(map[string]DeclaredObject)
 	scope.containingType = containingType
 	scope.descriptor = descriptor
 }
 
 // NewLexicalScope creates a new LexicalScope. The scopeKind must be
-// one of the lexical kinds, not ScopeAbstractMoudle. The file must not be nil
+// one of the lexical kinds, not ScopeAbstractModule. The file must not be nil
 // and it must not have a nil descriptor because the new scope will be
 // embedded into the tree of scopes for that descriptor.
 // The parent scope must be appropriate for the type of scope being created.
 // When creating a ScopeFileModule parentScope should be nil: The
 // parent scope will be set to an abstract module scope automatically.
 //
-// |containingType| must be non-nil just in case an Interface or Struct scope
-// is being created and in that case it should be the Interface or Struct.
+// |containingType| must be non-nil just in case an Interface, Struct  or Enum scope
+// is being created and in that case it should be the Interface, Struct or Enum.
 func NewLexicalScope(kind ScopeKind, parentScope *Scope, shortName string,
 	file *MojomFile, containingType UserDefinedType) *Scope {
 	scope := new(Scope)
@@ -138,13 +145,30 @@ func NewLexicalScope(kind ScopeKind, parentScope *Scope, shortName string,
 		}
 		fullyQualifiedName = file.ModuleNamespace
 		parentScope = file.Descriptor.getAbstractModuleScope(fullyQualifiedName)
-	case ScopeInterface, ScopeStruct:
+	case ScopeInterface:
 		if parentScope == nil || parentScope.kind != ScopeFileModule {
-			panic("An interface or struct lexical scope must have a parent lexical scope of type FILE_MODULE.")
+			panic("An interface lexical scope must have a parent lexical scope of type FILE_MODULE.")
 		}
 		if containingType == nil {
-			panic("An interface or struct scope must have a containing type.")
+			panic("An interface scope must have a containing type.")
 		}
+		fullyQualifiedName = buildDottedName(parentScope.fullyQualifiedName, shortName)
+	case ScopeStruct:
+		if containingType == nil {
+			panic("A struct scope must have a containing type.")
+		}
+		containingStruct := containingType.(*MojomStruct)
+		switch containingStruct.structType {
+		case StructTypeRegular:
+			if parentScope == nil || parentScope.kind != ScopeFileModule {
+				panic("A struct lexical scope must have a parent lexical scope of type FILE_MODULE.")
+			}
+		default:
+			if parentScope == nil || parentScope.kind != ScopeInterface {
+				panic("A synthetic parameter struct lexical scope must have a parent lexical scope of type INTERFACE.")
+			}
+		}
+
 		fullyQualifiedName = buildDottedName(parentScope.fullyQualifiedName, shortName)
 	case ScopeEnum:
 		if parentScope == nil || parentScope.kind == ScopeAbstractModule {
@@ -230,11 +254,10 @@ type DuplicateDeclaredNameError struct {
 }
 
 func (e *DuplicateDeclaredNameError) Error() string {
-	existingLocation := fmt.Sprintf("%s:%s", e.existingObject.Scope().file.CanonicalFileName,
-		e.existingObject.NameToken().ShortLocationString())
 	message := fmt.Sprintf("Duplicate definition for %q. "+
 		"Previous definition with the same fully-qualified name: %s %s at %s.",
-		e.nameToken.Text, e.existingObject.KindString(), e.existingObject.FullyQualifiedName(), existingLocation)
+		e.nameToken.Text, e.existingObject.KindString(), e.existingObject.FullyQualifiedName(),
+		FullLocationString(e.existingObject))
 	return UserErrorMessage(e.owningFile, e.nameToken, message)
 }
 
@@ -244,25 +267,23 @@ func newDuplicateDeclaredNameError(duplicateObject, existingObject DeclaredObjec
 		existingObject}
 }
 
-// registerTypeWithNamePrefix is a recursive helper method used by RegisterType.
-func (scope *Scope) registerTypeWithNamePrefix(userDefinedType UserDefinedType, namePrefix string) DuplicateNameError {
+// registerObjectWithNamePrefix is a recursive helper method used by RegisterType, RegisterValue,
+// RegisterMethod, and RegisterStructField
+func (scope *Scope) registerObjectWithNamePrefix(declaredObject DeclaredObject, namePrefix string) DuplicateNameError {
 	if scope == nil {
 		panic("scope is nil")
 	}
-	if userDefinedType.Scope() == nil {
-		panic(fmt.Sprintf("scope is nil for %s", userDefinedType))
+	if declaredObject.Scope() == nil {
+		panic(fmt.Sprintf("scope is nil for %s", declaredObject))
 	}
-	if scope.typesByName == nil {
+	if scope.declaredObjects == nil {
 		panic("Init() must be called for this Scope before this method may be invoked.")
 	}
-	registrationName := namePrefix + userDefinedType.SimpleName()
-	if existingType := scope.typesByName[registrationName]; existingType != nil {
-		return newDuplicateDeclaredNameError(userDefinedType, existingType)
+	registrationName := namePrefix + declaredObject.SimpleName()
+	if existingObject := scope.declaredObjects[registrationName]; existingObject != nil {
+		return newDuplicateDeclaredNameError(declaredObject, existingObject)
 	}
-	if existingVal := scope.valuesByName[registrationName]; existingVal != nil {
-		return newDuplicateDeclaredNameError(userDefinedType, existingVal)
-	}
-	scope.typesByName[registrationName] = userDefinedType
+	scope.declaredObjects[registrationName] = declaredObject
 	if scope.parentScope != nil {
 		if scope.kind == ScopeFileModule {
 			if scope.parentScope.kind != ScopeAbstractModule {
@@ -277,40 +298,8 @@ func (scope *Scope) registerTypeWithNamePrefix(userDefinedType UserDefinedType, 
 			// scope with the same name.
 			namePrefix = buildDottedName(scope.shortName, namePrefix)
 		}
-		if err := scope.parentScope.registerTypeWithNamePrefix(userDefinedType,
+		if err := scope.parentScope.registerObjectWithNamePrefix(declaredObject,
 			namePrefix); err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
-// registerValueWithNamePrefix is a recursive helper method used by RegisterValue.
-func (scope *Scope) registerValueWithNamePrefix(value UserDefinedValue, namePrefix string) DuplicateNameError {
-	registrationName := namePrefix + value.SimpleName()
-	if existingType := scope.typesByName[registrationName]; existingType != nil {
-		return newDuplicateDeclaredNameError(value, existingType)
-	}
-	if existingVal := scope.valuesByName[registrationName]; existingVal != nil {
-		return newDuplicateDeclaredNameError(value, existingVal)
-	}
-	scope.valuesByName[registrationName] = value
-	if scope.parentScope != nil {
-		if scope.kind == ScopeFileModule {
-			if scope.parentScope.kind != ScopeAbstractModule {
-				panic("The parent scope of a file module should always be an abstract module.")
-			}
-
-		} else {
-			// We extend the name prefix by prepending the name of the current
-			// scope. But notice that we do not do this in the special case that
-			// the current scope is a ScopeFileModule. This is becuase the
-			// parent scope of a file module scope is an abstract module
-			// scope with the same name.
-			namePrefix = buildDottedName(scope.shortName, namePrefix)
-		}
-		if err := scope.parentScope.registerValueWithNamePrefix(
-			value, namePrefix); err != nil {
 			return err
 		}
 	}
@@ -332,17 +321,11 @@ func (scope *Scope) registerValueWithNamePrefix(value UserDefinedValue, namePref
 //
 // root scope:              ""             registration name: foo.bar.Baz.Joe
 // abstract module scope:   "foo"          registration name: bar.Baz.Joe
-// abstract module scope:   "foo.bar"      registration name: Bazz.Joe
-// file lexical scope:      "foo.bar"      registration name: Bazz.Joe
+// abstract module scope:   "foo.bar"      registration name: Baz.Joe
+// file lexical scope:      "foo.bar"      registration name: Baz.Joe
 // interface lexical scope: "foo.bar.Baz"  registration name: Joe
 func (scope *Scope) RegisterType(userDefinedType UserDefinedType) DuplicateNameError {
-	if scope == nil {
-		panic("scope is nil")
-	}
-	if userDefinedType.Scope() != scope {
-		panic("RegisterType() should be invoked only on the type's scope.")
-	}
-	return scope.registerTypeWithNamePrefix(userDefinedType, "")
+	return scope.registerObjectWithNamePrefix(userDefinedType, "")
 }
 
 // RegisterValue registers a UserDefinedValue in this scope and the chain of
@@ -360,73 +343,106 @@ func (scope *Scope) RegisterType(userDefinedType UserDefinedType) DuplicateNameE
 //
 // root scope:              ""                 registration name: foo.bar.Baz.Joe.FROG
 // abstract module scope:   "foo"              registration name: bar.Baz.Joe.FROG
-// abstract module scope:   "foo.bar"          registration name: Bazz.Joe.FROG
-// file lexical scope:      "foo.bar"          registration name: Bazz.Joe.FROG
+// abstract module scope:   "foo.bar"          registration name: Baz.Joe.FROG
+// file lexical scope:      "foo.bar"          registration name: Baz.Joe.FROG
 // interface lexical scope: "foo.bar.Baz"      registration name: Joe.FROG
 // enum lexical scope:      "foo.bar.Baz.Joe"  registration name: FROG
 func (scope *Scope) RegisterValue(value UserDefinedValue) DuplicateNameError {
-	if scope == nil {
-		panic("scope is nil")
-	}
-	if value.Scope() != scope {
-		panic("RegisterValue() should be invoked only on the values's scope.")
-	}
-	return scope.registerValueWithNamePrefix(value, "")
+	return scope.registerObjectWithNamePrefix(value, "")
 }
 
-// LookupType searches for a UserDefinedType registered in this scope with the
-// given name and then succesively in the chain of the ancestor scopes of this
-// scope until a UserDefinedType registered with the given name is found.
-// Returns nil if the lookp fails.
-func (scope *Scope) LookupType(name string) UserDefinedType {
-	if userDefinedType, ok := scope.typesByName[name]; ok {
-		return userDefinedType
-	}
-	if scope.parentScope == nil {
-		return nil
-	}
-	return scope.parentScope.LookupType(name)
+func (scope *Scope) RegisterMethod(method *MojomMethod) DuplicateNameError {
+	return scope.registerObjectWithNamePrefix(method, "")
 }
 
-// LookupValue searches for a UserDefinedValue registered in this scope  with the
-// given name and then succesively in the chain of the ancestor scopes of this
-// scope until a UserDefinedValue registered with the given name is found.
-//
-// If the lookup described above does not succeed and it is possible that the
-// lookup is attempting to lookup an enum value then a second attempt is made
-// to find the enum value using a fully qualified name. More precisely, if
-// the given name is a simple name and the given assigneeType has resolved
-// to an EnumType then LookupValue is invoked again using the name formed
-// by concatenating the fully-qualified name of the EnumType with the given
-// simple name. This procedure allows an enum value to be referenced using
-// only its simple name when it is clear from context to which enum the value
-// belongs.
-//
-// Returns nil if the lookp fails.
-func (scope *Scope) LookupValue(name string, assigneeType TypeRef) UserDefinedValue {
-	if userDefinedValue, ok := scope.valuesByName[name]; ok {
+func (scope *Scope) RegisterStructField(field *StructField) DuplicateNameError {
+	return scope.registerObjectWithNamePrefix(field, "")
+}
 
-		return userDefinedValue
-	}
-	if scope.parentScope == nil {
-		return nil
-	}
-	resolvedValue := scope.parentScope.LookupValue(name, nil)
+// LookupAccept is a datatype that is used as a bitmask of options for the kind of
+// objects to be accepted during a name lookup.
+type LookupAccept uint32
 
-	// If we have been unable to resolve a value reference we try a different strategy.
-	// If the assigneeType is an enum and the name is a simple name then we will try to
-	// interpret the name as the name of an enum value from the assigneeType enum.
-	if resolvedValue == nil && assigneeType != nil && assigneeType.TypeRefKind() == TypeKindUserDefined {
-		userTypeRef, ok := assigneeType.(*UserTypeRef)
-		if !ok {
-			panic(fmt.Sprintf("Type of assigneeType is %T", assigneeType))
+// The various kinds of LookupAccepts correspond to the Go types that implement
+// |DeclaredObject|.
+const (
+	LookupAcceptType LookupAccept = 2 << iota
+	LookupAcceptValue
+	LookupAcceptMethod
+	LookupAcceptField
+)
+
+const LookupAcceptAll LookupAccept = LookupAcceptType | LookupAcceptValue | LookupAcceptMethod | LookupAcceptField
+const LookupAcceptNone LookupAccept = 0
+
+func acceptType(acceptFilter LookupAccept) bool {
+	return acceptFilter&LookupAcceptType != 0
+}
+
+func acceptValue(acceptFilter LookupAccept) bool {
+	return acceptFilter&LookupAcceptValue != 0
+}
+
+func acceptMethod(acceptFilter LookupAccept) bool {
+	return acceptFilter&LookupAcceptMethod != 0
+}
+
+func acceptField(acceptFilter LookupAccept) bool {
+	return acceptFilter&LookupAcceptField != 0
+}
+
+// LookupObject searches for a DeclaredObject registered in this scope with the
+// given |name| and then if one is not found, searches recursively in the
+// parent scope. Returns nil if the lookp fails.
+//
+// |acceptFilter| is a filter that modifies the lookup procedure by specifying the
+// kinds of objects being looked up. If acceptFilter = |LookupAcceptAll| then all
+// kinds of DeclaredObjects are accepted and the first object with a matching name
+// will be returned. But if, for example, acceptType(acceptFilter) is true but
+// acceptValue(acceptFilter) is false then, if a value with a matching name is
+// found the lookup procedure will not return that value but rather will continue
+// looking for a matching type.
+//
+// The purpose of the |acceptFilter| argument is to allow different lookup
+// algorithms to be implemented. For example when looking for a type named
+// "Foo", suppose there is a value named "Foo" in the local scope. The question
+// is: should we say that the name "Foo" refers to the value Foo and then emit
+// a compilation error because a type was expected? Or should we instead ignore
+// the value Foo because we know a type is expected and keep looking in the parent
+// scope for a type Foo. This layer does not make that decision and instead
+// offers the flexibility of the |acceptFilter| argument. It is the caller
+// of this method that must make that decision.
+func (scope *Scope) LookupObject(name string, acceptFilter LookupAccept) DeclaredObject {
+	if acceptFilter == LookupAcceptNone {
+		panic("acceptFilter may not be zero.")
+	}
+	if declaredObject, ok := scope.declaredObjects[name]; ok {
+		if acceptFilter == LookupAcceptAll {
+			return declaredObject
 		}
-		if userTypeRef.ResolvedType() != nil && userTypeRef.ResolvedType().Kind() == UserDefinedTypeKindEnum {
-			if !strings.ContainsRune(name, '.') {
-				name = userTypeRef.ResolvedType().FullyQualifiedName() + "." + name
-				return scope.LookupValue(name, nil)
+		switch declaredObject := declaredObject.(type) {
+		case UserDefinedType:
+			if acceptType(acceptFilter) {
+				return declaredObject
 			}
+		case UserDefinedValue:
+			if acceptValue(acceptFilter) {
+				return declaredObject
+			}
+		case *MojomMethod:
+			if acceptMethod(acceptFilter) {
+				return declaredObject
+			}
+		case *StructField:
+			if acceptField(acceptFilter) {
+				return declaredObject
+			}
+		default:
+			panic(fmt.Sprintf("Unexpected type of declared object %T", declaredObject))
 		}
 	}
-	return resolvedValue
+	if scope.parentScope == nil {
+		return nil
+	}
+	return scope.parentScope.LookupObject(name, acceptFilter)
 }

@@ -30,9 +30,9 @@ func (test *singleFileTest) addTestCase(contents string, expectedErrors []string
 	test.testCaseNum += 1
 }
 
-// TestSingleFileResolutionnErrors() tests that appropriate error messages are generated
+// TestSingleFileResolutionErrors() tests that appropriate error messages are generated
 // when a .mojom file contains unresolved references.
-func TestSingleFileResolutionnErrors(t *testing.T) {
+func TestSingleFileResolutionErrors(t *testing.T) {
 	test := singleFileTest{}
 
 	////////////////////////////////////////////////////////////
@@ -678,8 +678,7 @@ func TestSingleFileValueValidationErrors(t *testing.T) {
 
 		test.addTestCase(contents, []string{
 			"Illegal assignment",
-			"Bar cannot be used as an enum value initializer because its value, \"fly\", is not a signed 32-bit integer",
-			""})
+			"Bar cannot be used as an enum value initializer because its value, \"fly\", is not a signed 32-bit integer"})
 	}
 
 	////////////////////////////////////////////////////////////
@@ -698,8 +697,80 @@ func TestSingleFileValueValidationErrors(t *testing.T) {
 
 		test.addTestCase(contents, []string{
 			"Illegal assignment",
-			"double.NAN cannot be used as an enum value initializer",
-			""})
+			"double.NAN cannot be used as an enum value initializer"})
+	}
+
+	////////////////////////////////////////////////////////////
+	// Group 5: Non-referent shadows referent
+	////////////////////////////////////////////////////////////
+
+	////////////////////////////////////////////////////////////
+	// Test Case: Field name shadows constant name
+	////////////////////////////////////////////////////////////
+	{
+		contents := `
+	const int32 foo = 42;
+
+    struct MyStruct {
+      string foo = "hello";
+      int32 bar = foo;
+    };`
+
+		test.addTestCase(contents, []string{
+			"Error",
+			"\"foo\" does not refer to a value. It refers to the field MyStruct.foo at"})
+	}
+
+	////////////////////////////////////////////////////////////
+	// Test Case: Method name shadows constant name
+	////////////////////////////////////////////////////////////
+	{
+		contents := `
+	const int32 foo = 42;
+
+    interface MyInterface {
+      foo();
+      const int32 bar = foo;
+    };`
+
+		test.addTestCase(contents, []string{
+			"Error",
+			"\"foo\" does not refer to a value. It refers to the method MyInterface.foo at"})
+	}
+
+	////////////////////////////////////////////////////////////
+	// Test Case: Field name shadows type name
+	////////////////////////////////////////////////////////////
+	{
+		contents := `
+	struct SomethingGood{};
+
+    struct MySecondStruct {
+      int32 SomethingGood = 7;
+      SomethingGood x = default;
+    };`
+
+		test.addTestCase(contents, []string{
+			"Error",
+			"\"SomethingGood\" does not refer to a type. It refers to the field MySecondStruct.SomethingGood at"})
+	}
+
+	////////////////////////////////////////////////////////////
+	// Test Case: Method name shadows type name
+	////////////////////////////////////////////////////////////
+	{
+		contents := `
+	struct SomethingGood{};
+
+    interface MyInterface {
+      SomethingGood();
+
+      DoIt(SomethingGood x);
+    };`
+
+		test.addTestCase(contents, []string{
+			"Error",
+			"\"SomethingGood\" does not refer to a type. It refers to the method MyInterface.SomethingGood at"})
 	}
 
 	////////////////////////////////////////////////////////////
@@ -922,5 +993,93 @@ func TestSingleFileTypeValidationErrors(t *testing.T) {
 			}
 		}
 
+	}
+}
+
+////////////////////////////////////////////////
+/// Resolution Success Tests
+////////////////////////////////////////////////
+
+// testFuncType is a callback used to specify how to test each case.
+type testFuncType func(*mojom.MojomDescriptor) error
+
+// singleFileSuccessTestCase stores the data for one test case.
+type singleFileSuccessTestCase struct {
+	mojomContents string
+	testFunc      testFuncType
+}
+
+// singleFileSuccessTest contains a series of test cases.
+type singleFileSuccessTest struct {
+	cases []singleFileSuccessTestCase
+}
+
+// addTestCase() should be invoked at the start of a case in
+// TestSingleFileResolutionSuccess.
+func (test *singleFileSuccessTest) addTestCase(moduleNameSpace, contents string, testFunc testFuncType) {
+	test.cases = append(test.cases, singleFileSuccessTestCase{contents, testFunc})
+}
+
+// TestSingleFileResolutionSuccess() iterates through a series of test cases.
+// For each case we expect for parsing and resolution to succeed. Then we
+// execute a given callback test function to test that resolution produced
+// the desired result.
+func TestSingleFileResolutionSuccess(t *testing.T) {
+	test := singleFileSuccessTest{}
+
+	////////////////////////////////////////////////////////////
+	// Test Case: A local constant name shadows an enum name.
+	////////////////////////////////////////////////////////////
+	{
+		contents := `
+	enum Color{
+	  RED, BLUE
+	};
+
+	struct MyStruct {
+		const Color RED = BLUE;
+
+        Color a_color = RED; // This should resolve to the local constant RED,
+                             // and therefore the concrete value should be BLUE.
+	};`
+
+		testFunc := func(descriptor *mojom.MojomDescriptor) error {
+			myStructType := descriptor.TypesByKey["TYPE_KEY:MyStruct"].(*mojom.MojomStruct)
+			aColorField := myStructType.Fields[0]
+			concreteValue := aColorField.DefaultValue.ResolvedConcreteValue().(*mojom.EnumValue)
+			key := concreteValue.ValueKey()
+			if key != "TYPE_KEY:Color.BLUE" {
+				return fmt.Errorf("%s != TYPE_KEY:Color.BLUE", key)
+			}
+			return nil
+		}
+		test.addTestCase("", contents, testFunc)
+	}
+
+	////////////////////////////////////////////////////////////
+	// Execute all of the test cases.
+	////////////////////////////////////////////////////////////
+	for i, c := range test.cases {
+		// Parse and resolve the mojom input.
+		descriptor := mojom.NewMojomDescriptor()
+		fileName := fmt.Sprintf("file%d", i)
+		parser := MakeParser(fileName, fileName, c.mojomContents, descriptor, nil)
+		parser.Parse()
+		if !parser.OK() {
+			t.Errorf("Parsing error for %s: %s", fileName, parser.GetError().Error())
+			continue
+		}
+		err := descriptor.Resolve()
+		if err != nil {
+			t.Errorf("Resolution failed for test case %d: %s", i, err.Error())
+			continue
+		}
+
+		if c.testFunc != nil {
+			if err := c.testFunc(descriptor); err != nil {
+				t.Errorf("%s:\n%s", fileName, err.Error())
+				continue
+			}
+		}
 	}
 }
