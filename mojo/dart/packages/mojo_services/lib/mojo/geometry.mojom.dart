@@ -9,6 +9,8 @@ import 'dart:async';
 import 'package:mojo/bindings.dart' as bindings;
 import 'package:mojo/core.dart' as core;
 
+
+
 class Point extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(16, 0)
@@ -48,13 +50,15 @@ class Point extends bindings.Struct {
       }
     } else if (mainDataHeader.size < kVersions.last.size) {
       throw new bindings.MojoCodecError(
-          'Message newer than the last known version cannot be shorter than '
-          'required by the last known version.');
+        'Message newer than the last known version cannot be shorter than '
+        'required by the last known version.');
     }
     if (mainDataHeader.version >= 0) {
+      
       result.x = decoder0.decodeInt32(8);
     }
     if (mainDataHeader.version >= 0) {
+      
       result.y = decoder0.decodeInt32(12);
     }
     return result;
@@ -62,18 +66,16 @@ class Point extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-
+    
     encoder0.encodeInt32(x, 8);
-
+    
     encoder0.encodeInt32(y, 12);
   }
 
   String toString() {
     return "Point("
-        "x: $x"
-        ", "
-        "y: $y"
-        ")";
+           "x: $x" ", "
+           "y: $y" ")";
   }
 
   Map toJson() {
@@ -83,6 +85,7 @@ class Point extends bindings.Struct {
     return map;
   }
 }
+
 
 class PointF extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
@@ -123,13 +126,15 @@ class PointF extends bindings.Struct {
       }
     } else if (mainDataHeader.size < kVersions.last.size) {
       throw new bindings.MojoCodecError(
-          'Message newer than the last known version cannot be shorter than '
-          'required by the last known version.');
+        'Message newer than the last known version cannot be shorter than '
+        'required by the last known version.');
     }
     if (mainDataHeader.version >= 0) {
+      
       result.x = decoder0.decodeFloat(8);
     }
     if (mainDataHeader.version >= 0) {
+      
       result.y = decoder0.decodeFloat(12);
     }
     return result;
@@ -137,18 +142,16 @@ class PointF extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-
+    
     encoder0.encodeFloat(x, 8);
-
+    
     encoder0.encodeFloat(y, 12);
   }
 
   String toString() {
     return "PointF("
-        "x: $x"
-        ", "
-        "y: $y"
-        ")";
+           "x: $x" ", "
+           "y: $y" ")";
   }
 
   Map toJson() {
@@ -158,6 +161,7 @@ class PointF extends bindings.Struct {
     return map;
   }
 }
+
 
 class Size extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
@@ -198,13 +202,15 @@ class Size extends bindings.Struct {
       }
     } else if (mainDataHeader.size < kVersions.last.size) {
       throw new bindings.MojoCodecError(
-          'Message newer than the last known version cannot be shorter than '
-          'required by the last known version.');
+        'Message newer than the last known version cannot be shorter than '
+        'required by the last known version.');
     }
     if (mainDataHeader.version >= 0) {
+      
       result.width = decoder0.decodeInt32(8);
     }
     if (mainDataHeader.version >= 0) {
+      
       result.height = decoder0.decodeInt32(12);
     }
     return result;
@@ -212,18 +218,16 @@ class Size extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-
+    
     encoder0.encodeInt32(width, 8);
-
+    
     encoder0.encodeInt32(height, 12);
   }
 
   String toString() {
     return "Size("
-        "width: $width"
-        ", "
-        "height: $height"
-        ")";
+           "width: $width" ", "
+           "height: $height" ")";
   }
 
   Map toJson() {
@@ -233,6 +237,7 @@ class Size extends bindings.Struct {
     return map;
   }
 }
+
 
 class Rect extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
@@ -275,19 +280,23 @@ class Rect extends bindings.Struct {
       }
     } else if (mainDataHeader.size < kVersions.last.size) {
       throw new bindings.MojoCodecError(
-          'Message newer than the last known version cannot be shorter than '
-          'required by the last known version.');
+        'Message newer than the last known version cannot be shorter than '
+        'required by the last known version.');
     }
     if (mainDataHeader.version >= 0) {
+      
       result.x = decoder0.decodeInt32(8);
     }
     if (mainDataHeader.version >= 0) {
+      
       result.y = decoder0.decodeInt32(12);
     }
     if (mainDataHeader.version >= 0) {
+      
       result.width = decoder0.decodeInt32(16);
     }
     if (mainDataHeader.version >= 0) {
+      
       result.height = decoder0.decodeInt32(20);
     }
     return result;
@@ -295,26 +304,22 @@ class Rect extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-
+    
     encoder0.encodeInt32(x, 8);
-
+    
     encoder0.encodeInt32(y, 12);
-
+    
     encoder0.encodeInt32(width, 16);
-
+    
     encoder0.encodeInt32(height, 20);
   }
 
   String toString() {
     return "Rect("
-        "x: $x"
-        ", "
-        "y: $y"
-        ", "
-        "width: $width"
-        ", "
-        "height: $height"
-        ")";
+           "x: $x" ", "
+           "y: $y" ", "
+           "width: $width" ", "
+           "height: $height" ")";
   }
 
   Map toJson() {
@@ -326,6 +331,7 @@ class Rect extends bindings.Struct {
     return map;
   }
 }
+
 
 class RectF extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
@@ -368,19 +374,23 @@ class RectF extends bindings.Struct {
       }
     } else if (mainDataHeader.size < kVersions.last.size) {
       throw new bindings.MojoCodecError(
-          'Message newer than the last known version cannot be shorter than '
-          'required by the last known version.');
+        'Message newer than the last known version cannot be shorter than '
+        'required by the last known version.');
     }
     if (mainDataHeader.version >= 0) {
+      
       result.x = decoder0.decodeFloat(8);
     }
     if (mainDataHeader.version >= 0) {
+      
       result.y = decoder0.decodeFloat(12);
     }
     if (mainDataHeader.version >= 0) {
+      
       result.width = decoder0.decodeFloat(16);
     }
     if (mainDataHeader.version >= 0) {
+      
       result.height = decoder0.decodeFloat(20);
     }
     return result;
@@ -388,26 +398,22 @@ class RectF extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-
+    
     encoder0.encodeFloat(x, 8);
-
+    
     encoder0.encodeFloat(y, 12);
-
+    
     encoder0.encodeFloat(width, 16);
-
+    
     encoder0.encodeFloat(height, 20);
   }
 
   String toString() {
     return "RectF("
-        "x: $x"
-        ", "
-        "y: $y"
-        ", "
-        "width: $width"
-        ", "
-        "height: $height"
-        ")";
+           "x: $x" ", "
+           "y: $y" ", "
+           "width: $width" ", "
+           "height: $height" ")";
   }
 
   Map toJson() {
@@ -419,6 +425,7 @@ class RectF extends bindings.Struct {
     return map;
   }
 }
+
 
 class RRect extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
@@ -469,43 +476,55 @@ class RRect extends bindings.Struct {
       }
     } else if (mainDataHeader.size < kVersions.last.size) {
       throw new bindings.MojoCodecError(
-          'Message newer than the last known version cannot be shorter than '
-          'required by the last known version.');
+        'Message newer than the last known version cannot be shorter than '
+        'required by the last known version.');
     }
     if (mainDataHeader.version >= 0) {
+      
       result.x = decoder0.decodeInt32(8);
     }
     if (mainDataHeader.version >= 0) {
+      
       result.y = decoder0.decodeInt32(12);
     }
     if (mainDataHeader.version >= 0) {
+      
       result.width = decoder0.decodeInt32(16);
     }
     if (mainDataHeader.version >= 0) {
+      
       result.height = decoder0.decodeInt32(20);
     }
     if (mainDataHeader.version >= 0) {
+      
       result.topLeftRadiusX = decoder0.decodeInt32(24);
     }
     if (mainDataHeader.version >= 0) {
+      
       result.topLeftRadiusY = decoder0.decodeInt32(28);
     }
     if (mainDataHeader.version >= 0) {
+      
       result.topRightRadiusX = decoder0.decodeInt32(32);
     }
     if (mainDataHeader.version >= 0) {
+      
       result.topRightRadiusY = decoder0.decodeInt32(36);
     }
     if (mainDataHeader.version >= 0) {
+      
       result.bottomLeftRadiusX = decoder0.decodeInt32(40);
     }
     if (mainDataHeader.version >= 0) {
+      
       result.bottomLeftRadiusY = decoder0.decodeInt32(44);
     }
     if (mainDataHeader.version >= 0) {
+      
       result.bottomRightRadiusX = decoder0.decodeInt32(48);
     }
     if (mainDataHeader.version >= 0) {
+      
       result.bottomRightRadiusY = decoder0.decodeInt32(52);
     }
     return result;
@@ -513,58 +532,46 @@ class RRect extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-
+    
     encoder0.encodeInt32(x, 8);
-
+    
     encoder0.encodeInt32(y, 12);
-
+    
     encoder0.encodeInt32(width, 16);
-
+    
     encoder0.encodeInt32(height, 20);
-
+    
     encoder0.encodeInt32(topLeftRadiusX, 24);
-
+    
     encoder0.encodeInt32(topLeftRadiusY, 28);
-
+    
     encoder0.encodeInt32(topRightRadiusX, 32);
-
+    
     encoder0.encodeInt32(topRightRadiusY, 36);
-
+    
     encoder0.encodeInt32(bottomLeftRadiusX, 40);
-
+    
     encoder0.encodeInt32(bottomLeftRadiusY, 44);
-
+    
     encoder0.encodeInt32(bottomRightRadiusX, 48);
-
+    
     encoder0.encodeInt32(bottomRightRadiusY, 52);
   }
 
   String toString() {
     return "RRect("
-        "x: $x"
-        ", "
-        "y: $y"
-        ", "
-        "width: $width"
-        ", "
-        "height: $height"
-        ", "
-        "topLeftRadiusX: $topLeftRadiusX"
-        ", "
-        "topLeftRadiusY: $topLeftRadiusY"
-        ", "
-        "topRightRadiusX: $topRightRadiusX"
-        ", "
-        "topRightRadiusY: $topRightRadiusY"
-        ", "
-        "bottomLeftRadiusX: $bottomLeftRadiusX"
-        ", "
-        "bottomLeftRadiusY: $bottomLeftRadiusY"
-        ", "
-        "bottomRightRadiusX: $bottomRightRadiusX"
-        ", "
-        "bottomRightRadiusY: $bottomRightRadiusY"
-        ")";
+           "x: $x" ", "
+           "y: $y" ", "
+           "width: $width" ", "
+           "height: $height" ", "
+           "topLeftRadiusX: $topLeftRadiusX" ", "
+           "topLeftRadiusY: $topLeftRadiusY" ", "
+           "topRightRadiusX: $topRightRadiusX" ", "
+           "topRightRadiusY: $topRightRadiusY" ", "
+           "bottomLeftRadiusX: $bottomLeftRadiusX" ", "
+           "bottomLeftRadiusY: $bottomLeftRadiusY" ", "
+           "bottomRightRadiusX: $bottomRightRadiusX" ", "
+           "bottomRightRadiusY: $bottomRightRadiusY" ")";
   }
 
   Map toJson() {
@@ -584,6 +591,7 @@ class RRect extends bindings.Struct {
     return map;
   }
 }
+
 
 class Transform extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
@@ -623,26 +631,25 @@ class Transform extends bindings.Struct {
       }
     } else if (mainDataHeader.size < kVersions.last.size) {
       throw new bindings.MojoCodecError(
-          'Message newer than the last known version cannot be shorter than '
-          'required by the last known version.');
+        'Message newer than the last known version cannot be shorter than '
+        'required by the last known version.');
     }
     if (mainDataHeader.version >= 0) {
-      result.matrix =
-          decoder0.decodeFloatArray(8, bindings.kNothingNullable, 16);
+      
+      result.matrix = decoder0.decodeFloatArray(8, bindings.kNothingNullable, 16);
     }
     return result;
   }
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-
+    
     encoder0.encodeFloatArray(matrix, 8, bindings.kNothingNullable, 16);
   }
 
   String toString() {
     return "Transform("
-        "matrix: $matrix"
-        ")";
+           "matrix: $matrix" ")";
   }
 
   Map toJson() {
@@ -651,3 +658,5 @@ class Transform extends bindings.Struct {
     return map;
   }
 }
+
+

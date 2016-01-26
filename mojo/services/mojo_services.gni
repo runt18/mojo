@@ -19,6 +19,7 @@ mojo_services = [
   "//mojo/services/device_info/interfaces",
   "//mojo/services/files/interfaces",
   "//mojo/services/geometry/interfaces",
+  "//mojo/services/gfx/composition/interfaces",
   "//mojo/services/gpu/interfaces",
   "//mojo/services/http_server/interfaces",
   "//mojo/services/icu_data/interfaces",

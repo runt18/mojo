@@ -1,0 +1,32 @@
+// Copyright 2015 The Chromium Authors. All rights reserved.
+// Use of this source code is governed by a BSD-style license that can be
+// found in the LICENSE file.
+
+#include "services/gfx/compositor/compositor_impl.h"
+
+#include "services/gfx/compositor/scene_impl.h"
+
+namespace compositor {
+
+CompositorImpl::CompositorImpl(CompositorEngine* engine) : engine_(engine) {}
+
+CompositorImpl::~CompositorImpl() {}
+
+void CompositorImpl::CreateScene(
+    mojo::InterfaceRequest<mojo::gfx::composition::Scene> scene_request,
+    const mojo::String& label,
+    const CreateSceneCallback& callback) {
+  mojo::gfx::composition::SceneTokenPtr scene_token =
+      engine_->CreateScene(scene_request.Pass(), label);
+  callback.Run(scene_token.Pass());
+}
+
+void CompositorImpl::CreateRenderer(
+    mojo::ContextProviderPtr context_provider,
+    mojo::InterfaceRequest<mojo::gfx::composition::Renderer> renderer_request,
+    const mojo::String& label) {
+  engine_->CreateRenderer(context_provider.Pass(), renderer_request.Pass(),
+                          label);
+}
+
+}  // namespace compositor

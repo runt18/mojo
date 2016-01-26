@@ -53,6 +53,7 @@ group("services") {
     deps += [
       "//services/device_info",
       "//services/files",
+      "//services/gfx",
       "//services/native_viewport",
       "//services/ui",
       "//services/url_response_disk_cache",
@@ -75,6 +76,7 @@ group("tests") {
     "//services/asset_bundle:apptests",
     "//services/authenticating_url_loader_interceptor:apptests",
     "//services/clipboard:apptests",
+    "//services/gfx/compositor:apptests",
     "//services/http_server:apptests",
     "//services/native_support:apptests",
     "//services/prediction:apptests",
