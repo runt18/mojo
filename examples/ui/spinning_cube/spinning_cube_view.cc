@@ -2,161 +2,191 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
+#include "examples/ui/spinning_cube/spinning_cube_view.h"
+
+#ifndef GL_GLEXT_PROTOTYPES
+#define GL_GLEXT_PROTOTYPES
+#endif
+
 #include <GLES2/gl2.h>
 #include <GLES2/gl2extmojo.h>
-#include <MGL/mgl.h>
 
-#include "base/message_loop/message_loop.h"
-#include "examples/ui/spinning_cube/spinning_cube_view.h"
+#include <cmath>
+
+#include "base/bind.h"
+#include "mojo/services/geometry/cpp/geometry_util.h"
 
 namespace examples {
 
+namespace {
+constexpr uint32_t kCubeImageResourceId = 1;
+constexpr uint32_t kRootNodeId = mojo::gfx::composition::kSceneRootNodeId;
+
+// TODO(johngro) : investigate extending mojom with a formal flags type which it
+// generates good bindings for, so we don't need to resort to this.
+constexpr bool operator&(const mojo::EventFlags& f1,
+                         const mojo::EventFlags& f2) {
+  return ((static_cast<uint32_t>(f1) & static_cast<uint32_t>(f2)) != 0);
+}
+
+float CalculateDragDistance(const mojo::PointF& start,
+                            const mojo::PointF& end) {
+  return std::hypot(start.x - end.x, start.y - end.y);
+}
+
+float GetRandomColor() {
+  return static_cast<float>(rand()) / static_cast<float>(RAND_MAX);
+}
+
+// Return a direction multiplier to apply to drag distances:
+// 1 for natural (positive) motion, -1 for reverse (negative) motion
+int GetEventDirection(const mojo::PointF& current,
+                      const mojo::PointF& initial,
+                      const mojo::PointF& last) {
+  // Axis of motion is determined by coarse alignment of overall movement
+  bool use_x =
+      std::abs(current.y - initial.y) < std::abs(current.x - initial.x);
+  // Current direction is determined by comparison with previous point
+  float delta = use_x ? (current.x - last.x) : (current.y - last.y);
+  return delta > 0 ? -1 : 1;
+}
+}  // namespace
+
 SpinningCubeView::SpinningCubeView(
-    mojo::ApplicationImpl* app,
-    const mojo::ui::ViewProvider::CreateViewCallback& callback)
-    : callback_(callback),
-      binding_(this),
-      context_owner_(app->shell()),
-      texture_cache_(context_owner_.context(), &resource_returner_),
-      surface_id_namespace_(0),
-      draw_scheduled_(false),
+    mojo::ApplicationImpl* app_impl,
+    const mojo::ui::ViewProvider::CreateViewCallback& create_view_callback)
+    : GLView(app_impl, "SpinningCube", create_view_callback),
+      choreographer_(scene(), this),
+      input_handler_(view_service_provider(), this),
       weak_ptr_factory_(this) {
-  app->ConnectToService("mojo:surfaces_service", &surfaces_);
-  app->ConnectToService("mojo:view_manager_service", &view_manager_);
-
-  surfaces_->SetResourceReturner(resource_returner_.Pass());
-  surfaces_->GetIdNamespace(
-      base::Bind(&SpinningCubeView::OnSurfaceIdNamespaceAvailable,
-                 base::Unretained(this)));
-
-  InitCube();
+  gl_renderer()->gl_context()->MakeCurrent();
+  cube_.Init();
 }
 
 SpinningCubeView::~SpinningCubeView() {}
 
-void SpinningCubeView::OnSurfaceIdNamespaceAvailable(uint32_t id_namespace) {
-  surface_id_namespace_ = id_namespace;
-  InitView();
-}
-
-void SpinningCubeView::InitView() {
-  mojo::ui::ViewPtr view;
-  binding_.Bind(mojo::GetProxy(&view));
-  view_manager_->RegisterView(view.Pass(), mojo::GetProxy(&view_host_),
-                              callback_);
-
-  view_host_->GetServiceProvider(mojo::GetProxy(&view_service_provider_));
-}
-
 void SpinningCubeView::OnLayout(mojo::ui::ViewLayoutParamsPtr layout_params,
                                 mojo::Array<uint32_t> children_needing_layout,
                                 const OnLayoutCallback& callback) {
-  // Create a new surface the first time or if the size has changed.
-  mojo::Size new_size;
-  new_size.width = layout_params->constraints->max_width;
-  new_size.height = layout_params->constraints->max_height;
-  if (!surface_id_ || !size_.Equals(new_size)) {
-    if (!surface_id_) {
-      surface_id_ = mojo::SurfaceId::New();
-      surface_id_->id_namespace = surface_id_namespace_;
-    } else {
-      surfaces_->DestroySurface(surface_id_->local);
-    }
-    surface_id_->local++;
-    size_ = new_size;
-    surfaces_->CreateSurface(surface_id_->local);
-  }
+  size_.width = layout_params->constraints->max_width;
+  size_.height = layout_params->constraints->max_height;
 
   // Submit the new layout information.
-  auto info = mojo::ui::ViewLayoutInfo::New();
+  auto info = mojo::ui::ViewLayoutResult::New();
   info->size = size_.Clone();
-  info->surface_id = surface_id_->Clone();
   callback.Run(info.Pass());
 
   // Draw!
-  ScheduleDraw();
+  choreographer_.ScheduleDraw();
 }
 
-void SpinningCubeView::OnChildUnavailable(
-    uint32_t child_key,
-    const OnChildUnavailableCallback& callback) {
-  callback.Run();
-}
-
-void SpinningCubeView::InitCube() {
-  context_owner_.context()->MakeCurrent();
-  cube_.Init();
-  last_draw_ = mojo::GetTimeTicksNow();
-}
-
-void SpinningCubeView::DrawCube() {
-  draw_scheduled_ = false;
-
-  scoped_ptr<mojo::TextureCache::TextureInfo> texture_info =
-      texture_cache_.GetTexture(size_);
-  if (!texture_info) {
-    LOG(ERROR) << "Could not allocate texture of size " << size_.width << "x"
-               << size_.height;
+void SpinningCubeView::OnEvent(mojo::EventPtr event,
+                               const OnEventCallback& callback) {
+  if (!event->pointer_data) {
+    callback.Run(false);
     return;
   }
 
-  context_owner_.context()->MakeCurrent();
-  scoped_ptr<mojo::GLTexture> texture = texture_info->TakeTexture();
+  switch (event->action) {
+    case mojo::EventType::POINTER_DOWN:
+      if (event->flags & mojo::EventFlags::RIGHT_MOUSE_BUTTON)
+        break;
+      capture_point_.x = event->pointer_data->x;
+      capture_point_.y = event->pointer_data->y;
+      last_drag_point_ = capture_point_;
+      drag_start_time_ = mojo::GetTimeTicksNow();
+      cube_.SetFlingMultiplier(0.0f, 1.0f);
+      break;
 
-  GLuint fbo = 0u;
-  glGenFramebuffers(1, &fbo);
-  glBindFramebuffer(GL_FRAMEBUFFER, fbo);
-  GLuint depth_buffer = 0u;
-  glGenRenderbuffers(1, &depth_buffer);
-  glBindRenderbuffer(GL_RENDERBUFFER, depth_buffer);
-  glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT16, size_.width,
-                        size_.height);
-  glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D,
-                         texture->texture_id(), 0);
-  glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT,
-                            GL_RENDERBUFFER, depth_buffer);
-  DCHECK_EQ(static_cast<GLenum>(GL_FRAMEBUFFER_COMPLETE),
-            glCheckFramebufferStatus(GL_FRAMEBUFFER));
-  glClearColor(1, 0, 0, 0.5);
+    case mojo::EventType::POINTER_MOVE: {
+      if (!(event->flags & mojo::EventFlags::LEFT_MOUSE_BUTTON) &&
+          event->pointer_data->kind == mojo::PointerKind::MOUSE) {
+        break;
+      }
+      mojo::PointF event_location;
+      event_location.x = event->pointer_data->x;
+      event_location.y = event->pointer_data->y;
+      int direction =
+          GetEventDirection(event_location, capture_point_, last_drag_point_);
+      cube_.UpdateForDragDistance(
+          direction * CalculateDragDistance(last_drag_point_, event_location));
+      last_drag_point_ = event_location;
+      break;
+    }
 
-  cube_.set_size(size_.width, size_.height);
+    case mojo::EventType::POINTER_UP: {
+      if (event->flags & mojo::EventFlags::RIGHT_MOUSE_BUTTON) {
+        cube_.set_color(GetRandomColor(), GetRandomColor(), GetRandomColor());
+        break;
+      }
+      mojo::PointF event_location;
+      event_location.x = event->pointer_data->x;
+      event_location.y = event->pointer_data->y;
+      MojoTimeTicks offset = mojo::GetTimeTicksNow() - drag_start_time_;
+      float delta = static_cast<float>(offset) / 1000000.f;
+      // Last drag point is the same as current point here; use initial capture
+      // point instead
+      int direction =
+          GetEventDirection(event_location, capture_point_, capture_point_);
+      cube_.SetFlingMultiplier(
+          direction * CalculateDragDistance(capture_point_, event_location),
+          delta);
+      capture_point_ = last_drag_point_ = mojo::PointF();
+      break;
+    }
 
-  MojoTimeTicks now = mojo::GetTimeTicksNow();
-  MojoTimeTicks offset = now - last_draw_;
-  cube_.UpdateForTimeDelta(offset * 0.000001f);
-  last_draw_ = now;
-
-  cube_.Draw();
-
-  glDeleteFramebuffers(1, &fbo);
-  glDeleteRenderbuffers(1, &depth_buffer);
-
-  mojo::FramePtr frame = mojo::TextureUploader::GetUploadFrame(
-      context_owner_.context(), texture_info->resource_id(), texture);
-  surfaces_->SubmitFrame(surface_id_->local, frame.Pass(),
-                         base::Bind(&SpinningCubeView::OnSurfaceSubmitted,
-                                    base::Unretained(this)));
-
-  texture_cache_.NotifyPendingResourceReturn(texture_info->resource_id(),
-                                             texture.Pass());
-}
-
-void SpinningCubeView::OnSurfaceSubmitted() {
-  ScheduleDraw();
-}
-
-void SpinningCubeView::ScheduleDraw() {
-  if (!draw_scheduled_) {
-    draw_scheduled_ = true;
-
-    // TODO(jeffbrown): For now, we need to throttle this down because
-    // drawing as fast as we can appears to cause starvation of the
-    // Mojo message loop and makes X11 unhappy.
-    base::MessageLoop::current()->PostDelayedTask(
-        FROM_HERE,
-        base::Bind(&SpinningCubeView::DrawCube, weak_ptr_factory_.GetWeakPtr()),
-        base::TimeDelta::FromMilliseconds(30));
+    default:
+      break;
   }
+
+  callback.Run(true);
+}
+
+void SpinningCubeView::OnDraw(
+    const mojo::gfx::composition::FrameInfo& frame_info,
+    const base::TimeDelta& time_delta) {
+  // Update the state of the cube.
+  cube_.UpdateForTimeDelta(time_delta.InSecondsF());
+
+  // Update the contents of the scene.
+  mojo::Rect bounds;
+  bounds.width = size_.width;
+  bounds.height = size_.height;
+
+  auto update = mojo::gfx::composition::SceneUpdate::New();
+  mojo::gfx::composition::ResourcePtr cube_resource = gl_renderer()->DrawGL(
+      size_, true,
+      base::Bind(&SpinningCubeView::DrawCubeWithGL, base::Unretained(this)));
+  DCHECK(cube_resource);
+  update->resources.insert(kCubeImageResourceId, cube_resource.Pass());
+
+  auto root_node = mojo::gfx::composition::Node::New();
+  root_node->content_transform = mojo::Transform::New();
+  mojo::SetIdentityTransform(root_node->content_transform.get());
+  // TODO(jeffbrown): Figure out why spinning cube is drawing upside down.
+  // Other GL based programs don't seem to have this problem.
+  root_node->content_transform->matrix[5] = -1;  // flip image vertically
+  root_node->content_transform->matrix[7] = size_.height;
+  root_node->op = mojo::gfx::composition::NodeOp::New();
+  root_node->op->set_image(mojo::gfx::composition::ImageNodeOp::New());
+  root_node->op->get_image()->content_rect = bounds.Clone();
+  root_node->op->get_image()->image_resource_id = kCubeImageResourceId;
+  update->nodes.insert(kRootNodeId, root_node.Pass());
+
+  auto metadata = mojo::gfx::composition::SceneMetadata::New();
+  metadata->presentation_time = frame_info.presentation_time;
+
+  // Publish the scene.
+  scene()->Update(update.Pass());
+  scene()->Publish(metadata.Pass());
+
+  // Loop!
+  choreographer_.ScheduleDraw();
+}
+
+void SpinningCubeView::DrawCubeWithGL() {
+  cube_.set_size(size_.width, size_.height);
+  cube_.Draw();
 }
 
 }  // namespace examples

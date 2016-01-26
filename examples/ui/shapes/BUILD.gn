@@ -4,15 +4,15 @@
 
 import("//mojo/public/mojo_application.gni")
 
-mojo_native_application("tile") {
-  output_name = "tile_view"
+mojo_native_application("shapes") {
+  output_name = "shapes_view"
 
   sources = [
     "main.cc",
-    "tile_app.cc",
-    "tile_app.h",
-    "tile_view.cc",
-    "tile_view.h",
+    "shapes_app.cc",
+    "shapes_app.h",
+    "shapes_view.cc",
+    "shapes_view.h",
   ]
 
   deps = [
@@ -25,14 +25,13 @@ mojo_native_application("tile") {
     "//mojo/public/cpp/bindings",
     "//mojo/public/cpp/environment",
     "//mojo/public/cpp/system",
-    "//mojo/services/geometry/cpp",
     "//mojo/services/geometry/interfaces",
     "//mojo/services/gfx/composition/interfaces",
-    "//mojo/services/input_events/interfaces",
     "//mojo/services/ui/views/interfaces",
+    "//mojo/skia",
     "//mojo/ui",
     "//mojo/ui:ganesh",
     "//mojo/ui:gl",
-    "//url",
+    "//skia",
   ]
 }

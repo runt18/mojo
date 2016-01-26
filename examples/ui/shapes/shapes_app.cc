@@ -2,22 +2,22 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-#include "examples/ui/spinning_cube/spinning_cube_app.h"
+#include "examples/ui/shapes/shapes_app.h"
 
-#include "examples/ui/spinning_cube/spinning_cube_view.h"
+#include "examples/ui/shapes/shapes_view.h"
 
 namespace examples {
 
-SpinningCubeApp::SpinningCubeApp() {}
+ShapesApp::ShapesApp() {}
 
-SpinningCubeApp::~SpinningCubeApp() {}
+ShapesApp::~ShapesApp() {}
 
-bool SpinningCubeApp::CreateView(
+bool ShapesApp::CreateView(
     const std::string& connection_url,
     mojo::InterfaceRequest<mojo::ServiceProvider> services,
     mojo::ServiceProviderPtr exposed_services,
     const mojo::ui::ViewProvider::CreateViewCallback& callback) {
-  new SpinningCubeView(app_impl(), callback);
+  new ShapesView(app_impl(), callback);
   return true;
 }
 

@@ -8,22 +8,11 @@
 #include <map>
 #include <memory>
 
-#include "base/bind.h"
-#include "base/memory/weak_ptr.h"
-#include "mojo/public/cpp/application/application_impl.h"
-#include "mojo/public/cpp/bindings/strong_binding.h"
-#include "mojo/public/cpp/environment/environment.h"
-#include "mojo/public/cpp/system/core.h"
-#include "mojo/public/cpp/system/macros.h"
-#include "mojo/services/geometry/interfaces/geometry.mojom.h"
-#include "mojo/services/surfaces/interfaces/surfaces.mojom.h"
-#include "mojo/services/ui/views/interfaces/view_manager.mojom.h"
-#include "mojo/services/ui/views/interfaces/view_provider.mojom.h"
-#include "mojo/services/ui/views/interfaces/views.mojom.h"
+#include "mojo/ui/base_view.h"
 
 namespace examples {
 
-class TileView : public mojo::ui::View {
+class TileView : public mojo::ui::BaseView {
  public:
   TileView(mojo::ApplicationImpl* app_impl_,
            const std::vector<std::string>& view_urls,
@@ -33,10 +22,11 @@ class TileView : public mojo::ui::View {
 
  private:
   struct ViewData {
-    explicit ViewData(const std::string& url);
+    explicit ViewData(const std::string& url, uint32_t key);
     ~ViewData();
 
     const std::string url;
+    const uint32_t key;
 
     bool layout_pending;
     mojo::ui::ViewLayoutParamsPtr layout_params;
@@ -44,16 +34,14 @@ class TileView : public mojo::ui::View {
     mojo::Rect layout_bounds;
   };
 
-  // |View|:
+  // |BaseView|:
   void OnLayout(mojo::ui::ViewLayoutParamsPtr layout_params,
                 mojo::Array<uint32_t> children_needing_layout,
                 const OnLayoutCallback& callback) override;
   void OnChildUnavailable(uint32_t child_key,
                           const OnChildUnavailableCallback& callback) override;
 
-  void OnSurfaceIdNamespaceAvailable(uint32_t id_namespace);
-
-  void InitView();
+  void ConnectViews();
   void OnChildConnectionError(uint32_t child_key, const std::string& url);
   void OnChildCreated(uint32_t child_key,
                       const std::string& url,
@@ -65,26 +53,12 @@ class TileView : public mojo::ui::View {
 
   void OnFrameSubmitted();
 
-  mojo::ApplicationImpl* app_impl_;
   std::vector<std::string> view_urls_;
-  mojo::ui::ViewProvider::CreateViewCallback callback_;
-  mojo::StrongBinding<mojo::ui::View> binding_;
-
-  mojo::SurfacePtr surfaces_;
-  mojo::SurfaceIdPtr surface_id_;
-  uint32_t surface_id_namespace_;
-
-  mojo::ui::ViewManagerPtr view_manager_;
-  mojo::ui::ViewHostPtr view_host_;
-
   std::map<uint32_t, std::unique_ptr<ViewData>> views_;
 
   mojo::Size size_;
   OnLayoutCallback pending_layout_callback_;
-  uint32_t pending_child_layout_count_;
-  bool frame_pending_;
-
-  base::WeakPtrFactory<TileView> weak_ptr_factory_;
+  uint32_t pending_child_layout_count_ = 0u;
 
   DISALLOW_COPY_AND_ASSIGN(TileView);
 };

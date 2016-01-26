@@ -36,7 +36,16 @@ group("examples") {
 
   deps = [
     ":portable_examples",
+    "//examples/ui/png_viewer",
+    "//examples/ui/shapes",
+    "//examples/ui/spinning_cube",
+    "//examples/ui/tile",
   ]
+
+  # TODO(cstout) - javascript/v8 build support for fnl/musl
+  if (!is_android && !is_fnl) {
+    deps += [ "//examples/ui/pdf_viewer" ]
+  }
 
   if (is_android) {
     deps += [

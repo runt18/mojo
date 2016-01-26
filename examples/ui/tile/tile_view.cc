@@ -2,50 +2,38 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
+#include "base/bind.h"
 #include "examples/ui/tile/tile_view.h"
-#include "mojo/services/surfaces/cpp/surfaces_utils.h"
-#include "mojo/services/surfaces/interfaces/quads.mojom.h"
+#include "mojo/services/geometry/cpp/geometry_util.h"
 
 namespace examples {
+
+namespace {
+constexpr uint32_t kViewResourceIdBase = 100;
+constexpr uint32_t kViewResourceIdSpacing = 100;
+
+constexpr uint32_t kRootNodeId = mojo::gfx::composition::kSceneRootNodeId;
+constexpr uint32_t kViewNodeIdBase = 100;
+constexpr uint32_t kViewNodeIdSpacing = 100;
+constexpr uint32_t kViewSceneNodeIdOffset = 1;
+constexpr uint32_t kViewFallbackNodeIdOffset = 2;
+}  // namespace
 
 TileView::TileView(mojo::ApplicationImpl* app_impl,
                    const std::vector<std::string>& view_urls,
                    const mojo::ui::ViewProvider::CreateViewCallback& callback)
-    : app_impl_(app_impl),
-      view_urls_(view_urls),
-      callback_(callback),
-      binding_(this),
-      surface_id_namespace_(0),
-      pending_child_layout_count_(0),
-      frame_pending_(false),
-      weak_ptr_factory_(this) {
-  app_impl_->ConnectToService("mojo:surfaces_service", &surfaces_);
-  app_impl_->ConnectToService("mojo:view_manager_service", &view_manager_);
-
-  surfaces_->GetIdNamespace(base::Bind(&TileView::OnSurfaceIdNamespaceAvailable,
-                                       base::Unretained(this)));
+    : BaseView(app_impl, "Tile", callback), view_urls_(view_urls) {
+  ConnectViews();
 }
 
 TileView::~TileView() {}
 
-void TileView::OnSurfaceIdNamespaceAvailable(uint32_t id_namespace) {
-  surface_id_namespace_ = id_namespace;
-  InitView();
-}
-
-void TileView::InitView() {
-  // Register the view.
-  mojo::ui::ViewPtr view;
-  binding_.Bind(mojo::GetProxy(&view));
-  view_manager_->RegisterView(view.Pass(), mojo::GetProxy(&view_host_),
-                              callback_);
-
-  // Connect to all child views.
+void TileView::ConnectViews() {
   uint32_t child_key = 0;
   for (const auto& url : view_urls_) {
     // Start connecting to the view provider.
     mojo::ui::ViewProviderPtr provider;
-    app_impl_->ConnectToService(url, &provider);
+    app_impl()->ConnectToService(url, &provider);
     provider.set_connection_error_handler(
         base::Bind(&TileView::OnChildConnectionError, base::Unretained(this),
                    child_key, url));
@@ -76,9 +64,9 @@ void TileView::OnChildCreated(uint32_t child_key,
   DCHECK(views_.find(child_key) == views_.end());
   LOG(INFO) << "View created: child_key=" << child_key << ", url=" << url;
 
-  view_host_->AddChild(child_key, token.Pass());
-  views_.emplace(
-      std::make_pair(child_key, std::unique_ptr<ViewData>(new ViewData(url))));
+  view_host()->AddChild(child_key, token.Pass());
+  views_.emplace(std::make_pair(
+      child_key, std::unique_ptr<ViewData>(new ViewData(url, child_key))));
 
   // Note that the view provider will be destroyed once this function
   // returns which is fine now that we are done creating the view.
@@ -94,7 +82,7 @@ void TileView::OnChildUnavailable(uint32_t child_key,
   std::unique_ptr<ViewData> view_data = std::move(it->second);
   views_.erase(it);
 
-  view_host_->RemoveChild(child_key);
+  view_host()->RemoveChild(child_key);
 
   if (view_data->layout_pending) {
     DCHECK(pending_child_layout_count_);
@@ -108,21 +96,8 @@ void TileView::OnChildUnavailable(uint32_t child_key,
 void TileView::OnLayout(mojo::ui::ViewLayoutParamsPtr layout_params,
                         mojo::Array<uint32_t> children_needing_layout,
                         const OnLayoutCallback& callback) {
-  // Create a new surface the first time or if the size has changed.
-  mojo::Size new_size;
-  new_size.width = layout_params->constraints->max_width;
-  new_size.height = layout_params->constraints->max_height;
-  if (!surface_id_ || !size_.Equals(new_size)) {
-    if (!surface_id_) {
-      surface_id_ = mojo::SurfaceId::New();
-      surface_id_->id_namespace = surface_id_namespace_;
-    } else {
-      surfaces_->DestroySurface(surface_id_->local);
-    }
-    surface_id_->local++;
-    size_ = new_size;
-    surfaces_->CreateSurface(surface_id_->local);
-  }
+  size_.width = layout_params->constraints->max_width;
+  size_.height = layout_params->constraints->max_height;
 
   // Wipe out cached layout information for children needing layout.
   for (uint32_t child_key : children_needing_layout) {
@@ -134,8 +109,8 @@ void TileView::OnLayout(mojo::ui::ViewLayoutParamsPtr layout_params,
   // Layout all children in a row.
   if (!views_.empty()) {
     uint32_t index = 0;
-    uint32_t base_width = new_size.width / views_.size();
-    uint32_t excess_width = new_size.width % views_.size();
+    uint32_t base_width = size_.width / views_.size();
+    uint32_t excess_width = size_.width % views_.size();
     uint32_t x = 0;
     for (auto it = views_.begin(); it != views_.end(); ++it, ++index) {
       ViewData* view_data = it->second.get();
@@ -147,7 +122,7 @@ void TileView::OnLayout(mojo::ui::ViewLayoutParamsPtr layout_params,
         child_width++;
         excess_width--;
       }
-      uint32_t child_height = new_size.height;
+      uint32_t child_height = size_.height;
       uint32_t child_x = x;
       x += child_width;
 
@@ -172,9 +147,9 @@ void TileView::OnLayout(mojo::ui::ViewLayoutParamsPtr layout_params,
       view_data->layout_params = params.Clone();
       view_data->layout_info.reset();
 
-      view_host_->LayoutChild(it->first, params.Pass(),
-                              base::Bind(&TileView::OnChildLayoutFinished,
-                                         base::Unretained(this), it->first));
+      view_host()->LayoutChild(it->first, params.Pass(),
+                               base::Bind(&TileView::OnChildLayoutFinished,
+                                          base::Unretained(this), it->first));
     }
   }
 
@@ -199,7 +174,7 @@ void TileView::OnChildLayoutFinished(
 }
 
 void TileView::FinishLayout() {
-  if (frame_pending_ || pending_layout_callback_.is_null())
+  if (pending_layout_callback_.is_null())
     return;
 
   // Wait until all children have laid out.
@@ -207,76 +182,91 @@ void TileView::FinishLayout() {
   if (pending_child_layout_count_)
     return;
 
-  // Produce a new frame.
-  mojo::FramePtr frame = mojo::Frame::New();
-  frame->resources.resize(0u);
+  // Update the scene.
+  // TODO: only send the resources once, be more incremental
+  auto update = mojo::gfx::composition::SceneUpdate::New();
 
-  mojo::Rect bounds;
-  bounds.width = size_.width;
-  bounds.height = size_.height;
-  mojo::PassPtr pass = mojo::CreateDefaultPass(1, bounds);
-  pass->shared_quad_states.resize(0u);
-  pass->quads.resize(0u);
+  // Create the root node.
+  auto root_node = mojo::gfx::composition::Node::New();
 
+  // Add the children.
   for (auto it = views_.cbegin(); it != views_.cend(); it++) {
     const ViewData& view_data = *(it->second.get());
+    const uint32_t scene_resource_id =
+        kViewResourceIdBase + view_data.key * kViewResourceIdSpacing;
+    const uint32_t container_node_id =
+        kViewNodeIdBase + view_data.key * kViewNodeIdSpacing;
+    const uint32_t scene_node_id = container_node_id + kViewSceneNodeIdOffset;
+    const uint32_t fallback_node_id =
+        container_node_id + kViewFallbackNodeIdOffset;
 
-    mojo::QuadPtr quad = mojo::Quad::New();
-    quad->rect = view_data.layout_bounds.Clone();
-    quad->rect->x = 0;
-    quad->rect->y = 0;
-    quad->opaque_rect = quad->rect.Clone();
-    quad->visible_rect = quad->rect.Clone();
-    quad->shared_quad_state_index = pass->shared_quad_states.size();
+    mojo::Rect extent;
+    extent.width = view_data.layout_bounds.width;
+    extent.height = view_data.layout_bounds.height;
 
-    mojo::Size size;
-    size.width = view_data.layout_bounds.width;
-    size.height = view_data.layout_bounds.height;
+    // Create a container to represent the place where the child view
+    // will be presented.  The children of the container provide
+    // fallback behavior in case the view is not available.
+    auto container_node = mojo::gfx::composition::Node::New();
+    container_node->content_clip = extent.Clone();
+    container_node->content_transform = mojo::Transform::New();
+    SetTranslationTransform(container_node->content_transform.get(),
+                            view_data.layout_bounds.x,
+                            view_data.layout_bounds.y, 0.f);
+    container_node->combinator =
+        mojo::gfx::composition::Node::Combinator::FALLBACK;
 
-    mojo::SharedQuadStatePtr quad_state = mojo::CreateDefaultSQS(size);
-    quad_state->content_to_target_transform->matrix[3] =
-        view_data.layout_bounds.x;
-    pass->shared_quad_states.push_back(quad_state.Pass());
+    // If we have the view, add it to the scene.
+    if (view_data.layout_info) {
+      auto scene_resource = mojo::gfx::composition::Resource::New();
+      scene_resource->set_scene(mojo::gfx::composition::SceneResource::New());
+      scene_resource->get_scene()->scene_token =
+          view_data.layout_info->scene_token.Clone();
+      update->resources.insert(scene_resource_id, scene_resource.Pass());
 
-    if (it->second->layout_info) {
-      quad->material = mojo::Material::SURFACE_CONTENT;
-      quad->surface_quad_state = mojo::SurfaceQuadState::New();
-      quad->surface_quad_state->surface =
-          view_data.layout_info->surface_id.Clone();
+      auto scene_node = mojo::gfx::composition::Node::New();
+      scene_node->op = mojo::gfx::composition::NodeOp::New();
+      scene_node->op->set_scene(mojo::gfx::composition::SceneNodeOp::New());
+      scene_node->op->get_scene()->scene_resource_id = scene_resource_id;
+      update->nodes.insert(scene_node_id, scene_node.Pass());
+      container_node->child_node_ids.push_back(scene_node_id);
     } else {
-      quad->material = mojo::Material::SOLID_COLOR;
-      quad->solid_color_quad_state = mojo::SolidColorQuadState::New();
-      quad->solid_color_quad_state->color = mojo::Color::New();
-      quad->solid_color_quad_state->color->rgba = 0xffff00ff;
+      update->resources.insert(fallback_node_id, nullptr);
+      update->nodes.insert(scene_node_id, nullptr);
     }
 
-    pass->quads.push_back(quad.Pass());
+    // Add the fallback content.
+    auto fallback_node = mojo::gfx::composition::Node::New();
+    fallback_node->op = mojo::gfx::composition::NodeOp::New();
+    fallback_node->op->set_rect(mojo::gfx::composition::RectNodeOp::New());
+    fallback_node->op->get_rect()->content_rect = extent.Clone();
+    fallback_node->op->get_rect()->color = mojo::gfx::composition::Color::New();
+    fallback_node->op->get_rect()->color->red = 255;
+    fallback_node->op->get_rect()->color->alpha = 255;
+    update->nodes.insert(fallback_node_id, fallback_node.Pass());
+    container_node->child_node_ids.push_back(fallback_node_id);
+
+    // Add the container.
+    update->nodes.insert(container_node_id, container_node.Pass());
+    root_node->child_node_ids.push_back(container_node_id);
   }
 
-  frame->passes.push_back(pass.Pass());
+  // Add the root node.
+  update->nodes.insert(kRootNodeId, root_node.Pass());
 
-  frame_pending_ = true;
-  surfaces_->SubmitFrame(
-      surface_id_->local, frame.Pass(),
-      base::Bind(&TileView::OnFrameSubmitted, base::Unretained(this)));
+  // Publish the scene.
+  scene()->Update(update.Pass());
+  scene()->Publish(nullptr);
 
   // Submit the new layout information.
-  mojo::ui::ViewLayoutInfoPtr info = mojo::ui::ViewLayoutInfo::New();
+  auto info = mojo::ui::ViewLayoutResult::New();
   info->size = size_.Clone();
-  info->surface_id = surface_id_->Clone();
   pending_layout_callback_.Run(info.Pass());
   pending_layout_callback_.reset();
 }
 
-void TileView::OnFrameSubmitted() {
-  DCHECK(frame_pending_);
-
-  frame_pending_ = false;
-  FinishLayout();
-}
-
-TileView::ViewData::ViewData(const std::string& url)
-    : url(url), layout_pending(false) {}
+TileView::ViewData::ViewData(const std::string& url, uint32_t key)
+    : url(url), key(key), layout_pending(false) {}
 
 TileView::ViewData::~ViewData() {}
 
