@@ -17,6 +17,7 @@ mojo_edk_source_set("base_edk") {
     "platform_message_loop_impl.h",
     "platform_task_runner_impl.cc",
     "platform_task_runner_impl.h",
+    "thread_utils.cc",
   ]
 
   deps = [

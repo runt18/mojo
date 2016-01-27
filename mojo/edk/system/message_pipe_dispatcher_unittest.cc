@@ -16,10 +16,10 @@
 #include <utility>
 #include <vector>
 
+#include "mojo/edk/platform/thread_utils.h"
 #include "mojo/edk/system/message_pipe.h"
 #include "mojo/edk/system/test/random.h"
 #include "mojo/edk/system/test/simple_test_thread.h"
-#include "mojo/edk/system/test/sleep.h"
 #include "mojo/edk/system/test/stopwatch.h"
 #include "mojo/edk/system/test/timeouts.h"
 #include "mojo/edk/system/waiter.h"
@@ -29,6 +29,7 @@
 #include "mojo/public/cpp/system/macros.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
+using mojo::platform::ThreadSleep;
 using mojo::util::MakeUnique;
 using mojo::util::RefPtr;
 
@@ -377,7 +378,7 @@ TEST(MessagePipeDispatcherTest, BasicThreaded) {
                                 &context, &hss);
       stopwatch.Start();
       thread.Start();
-      test::Sleep(2 * test::EpsilonTimeout());
+      ThreadSleep(2 * test::EpsilonTimeout());
       // Wake it up by writing to |d0|.
       buffer[0] = 123456789;
       EXPECT_EQ(MOJO_RESULT_OK,
@@ -427,7 +428,7 @@ TEST(MessagePipeDispatcherTest, BasicThreaded) {
                                 &context, &hss);
       stopwatch.Start();
       thread.Start();
-      test::Sleep(2 * test::EpsilonTimeout());
+      ThreadSleep(2 * test::EpsilonTimeout());
       EXPECT_EQ(MOJO_RESULT_OK, d0->Close());
     }  // Joins the thread.
     elapsed = stopwatch.Elapsed();
@@ -461,7 +462,7 @@ TEST(MessagePipeDispatcherTest, BasicThreaded) {
                                 &context, &hss);
       stopwatch.Start();
       thread.Start();
-      test::Sleep(2 * test::EpsilonTimeout());
+      ThreadSleep(2 * test::EpsilonTimeout());
       EXPECT_EQ(MOJO_RESULT_OK, d1->Close());
     }  // Joins the thread.
     elapsed = stopwatch.Elapsed();

@@ -16,8 +16,6 @@ mojo_edk_source_set("test") {
     "scoped_test_dir.h",
     "simple_test_thread.cc",
     "simple_test_thread.h",
-    "sleep.cc",
-    "sleep.h",
     "stopwatch.cc",
     "stopwatch.h",
     "test_command_line.cc",
@@ -95,7 +93,6 @@ mojo_edk_source_set("run_all_perftests") {
 mojo_edk_unittests("mojo_edk_system_test_unittests") {
   sources = [
     "random_unittest.cc",
-    "sleep_unittest.cc",
   ]
 
   deps = [

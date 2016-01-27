@@ -18,6 +18,7 @@ mojo_edk_source_set("platform") {
     "scoped_platform_handle.h",
     "task_runner.h",
     "thread.h",
+    "thread_utils.h",
   ]
 
   mojo_sdk_public_deps = [ "mojo/public/cpp/system" ]
@@ -59,6 +60,7 @@ mojo_edk_source_set("unittests") {
     "aligned_alloc_unittest.cc",
     "io_thread_unittest.cc",
     "test_message_loops_unittest.cc",
+    "thread_utils_unittest.cc",
   ]
 
   deps = [
@@ -66,6 +68,11 @@ mojo_edk_source_set("unittests") {
     ":test_platform",
     "//testing/gtest",
   ]
+
+  # TODO(vtl): This is a suboptimal dependency. Probably "Stopwatch" should be
+  # moved to :test_platform (which we can do after we add a clock/time function
+  # to :platform).
+  mojo_edk_deps = [ "mojo/edk/system/test" ]
 
   mojo_sdk_deps = [ "mojo/public/cpp/system" ]
 }

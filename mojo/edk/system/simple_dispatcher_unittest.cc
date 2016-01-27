@@ -13,7 +13,7 @@
 #include <vector>
 
 #include "base/logging.h"
-#include "mojo/edk/system/test/sleep.h"
+#include "mojo/edk/platform/thread_utils.h"
 #include "mojo/edk/system/test/stopwatch.h"
 #include "mojo/edk/system/test/timeouts.h"
 #include "mojo/edk/system/waiter.h"
@@ -24,6 +24,7 @@
 #include "mojo/public/cpp/system/macros.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
+using mojo::platform::ThreadSleep;
 using mojo::util::MakeRefCounted;
 using mojo::util::MakeUnique;
 using mojo::util::MutexLocker;
@@ -364,7 +365,7 @@ TEST(SimpleDispatcherTest, BasicThreaded) {
                                 &context, &hss);
       stopwatch.Start();
       thread.Start();
-      test::Sleep(2 * test::EpsilonTimeout());
+      ThreadSleep(2 * test::EpsilonTimeout());
       d->SetSatisfiedSignals(MOJO_HANDLE_SIGNAL_READABLE);
     }  // Joins the thread.
     EXPECT_EQ(MOJO_RESULT_OK, d->Close());
@@ -388,7 +389,7 @@ TEST(SimpleDispatcherTest, BasicThreaded) {
                                 &context, &hss);
       stopwatch.Start();
       thread.Start();
-      test::Sleep(2 * test::EpsilonTimeout());
+      ThreadSleep(2 * test::EpsilonTimeout());
       d->SetSatisfiableSignals(MOJO_HANDLE_SIGNAL_NONE);
     }  // Joins the thread.
     EXPECT_EQ(MOJO_RESULT_OK, d->Close());
@@ -410,7 +411,7 @@ TEST(SimpleDispatcherTest, BasicThreaded) {
                               &context, &hss);
     stopwatch.Start();
     thread.Start();
-    test::Sleep(2 * test::EpsilonTimeout());
+    ThreadSleep(2 * test::EpsilonTimeout());
     EXPECT_EQ(MOJO_RESULT_OK, d->Close());
   }  // Joins the thread.
   elapsed = stopwatch.Elapsed();
@@ -431,7 +432,7 @@ TEST(SimpleDispatcherTest, BasicThreaded) {
                                 &result, &context, &hss);
       stopwatch.Start();
       thread.Start();
-      test::Sleep(1 * test::EpsilonTimeout());
+      ThreadSleep(1 * test::EpsilonTimeout());
       // Not what we're waiting for.
       d->SetSatisfiedSignals(MOJO_HANDLE_SIGNAL_WRITABLE);
     }  // Joins the thread (after its wait times out).
@@ -466,7 +467,7 @@ TEST(SimpleDispatcherTest, MultipleWaiters) {
           &did_wait[i], &result[i], &context[i], &hss[i]));
       threads.back()->Start();
     }
-    test::Sleep(2 * test::EpsilonTimeout());
+    ThreadSleep(2 * test::EpsilonTimeout());
     d->SetSatisfiedSignals(MOJO_HANDLE_SIGNAL_READABLE);
     EXPECT_EQ(MOJO_RESULT_OK, d->Close());
   }  // Joins the threads.
@@ -495,7 +496,7 @@ TEST(SimpleDispatcherTest, MultipleWaiters) {
           &did_wait[i], &result[i], &context[i], &hss[i]));
       threads.back()->Start();
     }
-    test::Sleep(2 * test::EpsilonTimeout());
+    ThreadSleep(2 * test::EpsilonTimeout());
     d->SetSatisfiedSignals(MOJO_HANDLE_SIGNAL_READABLE);
     // This will wake up the ones waiting to write.
     EXPECT_EQ(MOJO_RESULT_OK, d->Close());
@@ -532,9 +533,9 @@ TEST(SimpleDispatcherTest, MultipleWaiters) {
           &did_wait[i], &result[i], &context[i], &hss[i]));
       threads.back()->Start();
     }
-    test::Sleep(1 * test::EpsilonTimeout());
+    ThreadSleep(1 * test::EpsilonTimeout());
     d->SetSatisfiableSignals(MOJO_HANDLE_SIGNAL_READABLE);
-    test::Sleep(1 * test::EpsilonTimeout());
+    ThreadSleep(1 * test::EpsilonTimeout());
     d->SetSatisfiedSignals(MOJO_HANDLE_SIGNAL_READABLE);
     EXPECT_EQ(MOJO_RESULT_OK, d->Close());
   }  // Joins the threads.
@@ -570,7 +571,7 @@ TEST(SimpleDispatcherTest, MultipleWaiters) {
           &did_wait[i], &result[i], &context[i], &hss[i]));
       threads.back()->Start();
     }
-    test::Sleep(2 * test::EpsilonTimeout());
+    ThreadSleep(2 * test::EpsilonTimeout());
     d->SetSatisfiedSignals(MOJO_HANDLE_SIGNAL_READABLE);
     // All those waiting for writable should have timed out.
     EXPECT_EQ(MOJO_RESULT_OK, d->Close());
