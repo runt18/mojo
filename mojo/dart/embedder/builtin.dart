@@ -27,9 +27,25 @@ Uri _uriBase() {
   return _cachedUriBase;
 }
 
+String _rawScript;
+Uri _scriptUri() {
+  if (_rawScript.startsWith('http:') ||
+      _rawScript.startsWith('https:') ||
+      _rawScript.startsWith('file:')) {
+    return Uri.parse(_rawScript);
+  } else {
+    return Uri.base.resolveUri(new Uri.file(_rawScript));
+  }
+}
+
 _setupHooks() {
   VMLibraryHooks.eventHandlerSendData = MojoHandleWatcher.timer;
   VMLibraryHooks.timerMillisecondClock = MojoCoreNatives.timerMillisecondClock;
+
+  // TODO(zra): When the Dart issue here:
+  // https://github.com/dart-lang/sdk/issues/25603
+  // is resolved, there will be no need to eagerly compute the script URI.
+  VMLibraryHooks.platformScript = _scriptUri();
 }
 
 _getUriBaseClosure() => _uriBase;

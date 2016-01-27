@@ -45,7 +45,8 @@ static const char* kCoreLibURL = "dart:core";
 static uint8_t snapshot_magic_number[] = { 0xf5, 0xf5, 0xdc, 0xdc };
 
 static Dart_Handle PrepareBuiltinLibraries(const std::string& package_root,
-                                           const std::string& base_uri) {
+                                           const std::string& base_uri,
+                                           const std::string& script_uri) {
   // First ensure all required libraries are available.
   Dart_Handle builtin_lib = Builtin::PrepareLibrary(Builtin::kBuiltinLibrary);
   Builtin::PrepareLibrary(Builtin::kMojoInternalLibrary);
@@ -90,11 +91,6 @@ static Dart_Handle PrepareBuiltinLibraries(const std::string& package_root,
                          print);
   DART_CHECK_VALID(result);
 
-  DART_CHECK_VALID(Dart_Invoke(
-      builtin_lib, Dart_NewStringFromCString("_setupHooks"), 0, nullptr));
-  DART_CHECK_VALID(Dart_Invoke(
-      isolate_lib, Dart_NewStringFromCString("_setupHooks"), 0, nullptr));
-
   // Setup the 'scheduleImmediate' closure.
   Dart_Handle schedule_immediate_closure = Dart_Invoke(
       isolate_lib,
@@ -110,8 +106,18 @@ static Dart_Handle PrepareBuiltinLibraries(const std::string& package_root,
       schedule_args);
   DART_CHECK_VALID(result);
 
-  // Set the base URI.
+  // Set the script location.
   Dart_Handle uri = Dart_NewStringFromUTF8(
+      reinterpret_cast<const uint8_t*>(script_uri.c_str()),
+      script_uri.length());
+  DART_CHECK_VALID(uri);
+  result = Dart_SetField(builtin_lib,
+                         Dart_NewStringFromCString("_rawScript"),
+                         uri);
+  DART_CHECK_VALID(result);
+
+  // Set the base URI.
+  uri = Dart_NewStringFromUTF8(
       reinterpret_cast<const uint8_t*>(base_uri.c_str()),
       base_uri.length());
   DART_CHECK_VALID(uri);
@@ -131,6 +137,12 @@ static Dart_Handle PrepareBuiltinLibraries(const std::string& package_root,
                          Dart_NewStringFromCString("_uriBaseClosure"),
                          uri_base);
   DART_CHECK_VALID(result);
+
+  DART_CHECK_VALID(Dart_Invoke(
+      builtin_lib, Dart_NewStringFromCString("_setupHooks"), 0, nullptr));
+  DART_CHECK_VALID(Dart_Invoke(
+      isolate_lib, Dart_NewStringFromCString("_setupHooks"), 0, nullptr));
+
   return result;
 }
 
@@ -318,7 +330,7 @@ Dart_Isolate DartController::CreateIsolateHelper(
     Dart_Handle result = Dart_SetLibraryTagHandler(LibraryTagHandler);
     DART_CHECK_VALID(result);
     // Prepare builtin and its dependent libraries.
-    result = PrepareBuiltinLibraries(package_root, base_uri);
+    result = PrepareBuiltinLibraries(package_root, base_uri, script_uri);
     DART_CHECK_VALID(result);
 
     // Set the handle watcher's control handle in the spawning isolate.
@@ -427,27 +439,29 @@ Dart_Handle DartController::SetHandleWatcherControlHandle() {
 Dart_Isolate DartController::IsolateCreateCallback(const char* script_uri,
                                                    const char* main,
                                                    const char* package_root,
-                                                   const char** package_map,
+                                                   const char* package_config,
                                                    Dart_IsolateFlags* flags,
                                                    void* callback_data,
                                                    char** error) {
+  DCHECK(script_uri != nullptr);
   auto parent_isolate_data = MojoDartState::Cast(callback_data);
-  std::string script_uri_string;
+  std::string script_uri_string(script_uri);
   std::string package_root_string;
   std::string base_uri_string;
 
-  if (script_uri == nullptr) {
+  // If it's a file URI, strip the scheme.
+  const char* file_scheme = "file://";
+  if (StartsWithASCII(script_uri_string, file_scheme, true)) {
+    script_uri_string = script_uri_string.substr(strlen(file_scheme));
+  }
+
+  if ((parent_isolate_data != nullptr) &&
+      (parent_isolate_data->script_uri() == script_uri_string)) {
     // We are spawning a function, use the parent isolate's base URI.
-    if (callback_data == nullptr) {
-      *error = strdup("Invalid 'callback_data' - Unable to spawn new isolate");
-      return nullptr;
-    }
-    script_uri_string = parent_isolate_data->script_uri();
     base_uri_string = parent_isolate_data->base_uri();
   } else {
     // If we are spawning a URI directly, use the URI as the base URI.
-    script_uri_string = std::string(script_uri);
-    base_uri_string = script_uri_string;
+    base_uri_string = std::string(script_uri);
   }
 
   if (package_root == nullptr) {
