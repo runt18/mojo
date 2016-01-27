@@ -18,6 +18,7 @@ mojo_edk_source_set("base_edk") {
     "platform_task_runner_impl.cc",
     "platform_task_runner_impl.h",
     "thread_utils.cc",
+    "time_ticks.cc",
   ]
 
   deps = [

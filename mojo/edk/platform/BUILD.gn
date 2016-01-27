@@ -19,6 +19,7 @@ mojo_edk_source_set("platform") {
     "task_runner.h",
     "thread.h",
     "thread_utils.h",
+    "time_ticks.h",
   ]
 
   mojo_sdk_public_deps = [ "mojo/public/cpp/system" ]
@@ -61,6 +62,7 @@ mojo_edk_source_set("unittests") {
     "io_thread_unittest.cc",
     "test_message_loops_unittest.cc",
     "thread_utils_unittest.cc",
+    "time_ticks_unittest.cc",
   ]
 
   deps = [
