@@ -13,8 +13,8 @@
 #include <vector>
 
 #include "base/logging.h"
+#include "mojo/edk/platform/test_stopwatch.h"
 #include "mojo/edk/platform/thread_utils.h"
-#include "mojo/edk/system/test/stopwatch.h"
 #include "mojo/edk/system/test/timeouts.h"
 #include "mojo/edk/system/waiter.h"
 #include "mojo/edk/system/waiter_test_utils.h"
@@ -24,6 +24,7 @@
 #include "mojo/public/cpp/system/macros.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
+using mojo::platform::test::Stopwatch;
 using mojo::platform::ThreadSleep;
 using mojo::util::MakeRefCounted;
 using mojo::util::MakeUnique;
@@ -96,7 +97,7 @@ class MockSimpleDispatcher final : public SimpleDispatcher {
 };
 
 TEST(SimpleDispatcherTest, Basic) {
-  test::Stopwatch stopwatch;
+  Stopwatch stopwatch;
 
   auto d = MakeRefCounted<MockSimpleDispatcher>();
   Waiter w;
@@ -198,7 +199,7 @@ TEST(SimpleDispatcherTest, Basic) {
 }
 
 TEST(SimpleDispatcherTest, BasicUnsatisfiable) {
-  test::Stopwatch stopwatch;
+  Stopwatch stopwatch;
 
   auto d = MakeRefCounted<MockSimpleDispatcher>();
   Waiter w;
@@ -271,7 +272,7 @@ TEST(SimpleDispatcherTest, BasicUnsatisfiable) {
 }
 
 TEST(SimpleDispatcherTest, BasicClosed) {
-  test::Stopwatch stopwatch;
+  Stopwatch stopwatch;
 
   RefPtr<MockSimpleDispatcher> d;
   Waiter w;
@@ -329,7 +330,7 @@ TEST(SimpleDispatcherTest, BasicClosed) {
 }
 
 TEST(SimpleDispatcherTest, BasicThreaded) {
-  test::Stopwatch stopwatch;
+  Stopwatch stopwatch;
   bool did_wait;
   MojoResult result;
   uint32_t context;

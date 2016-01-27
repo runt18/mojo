@@ -11,14 +11,15 @@
 
 #include <stdint.h>
 
+#include "mojo/edk/platform/test_stopwatch.h"
 #include "mojo/edk/platform/thread_utils.h"
 #include "mojo/edk/system/test/simple_test_thread.h"
-#include "mojo/edk/system/test/stopwatch.h"
 #include "mojo/edk/system/test/timeouts.h"
 #include "mojo/edk/util/mutex.h"
 #include "mojo/public/cpp/system/macros.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
+using mojo::platform::test::Stopwatch;
 using mojo::platform::ThreadSleep;
 using mojo::util::Mutex;
 using mojo::util::MutexLocker;
@@ -63,7 +64,7 @@ class WaitingThread : public test::SimpleTestThread {
 
  private:
   void Run() override {
-    test::Stopwatch stopwatch;
+    Stopwatch stopwatch;
     MojoResult result;
     uint32_t context = static_cast<uint32_t>(-1);
     MojoDeadline elapsed;
@@ -211,7 +212,7 @@ TEST(WaiterTest, Basic) {
 }
 
 TEST(WaiterTest, TimeOut) {
-  test::Stopwatch stopwatch;
+  Stopwatch stopwatch;
   MojoDeadline elapsed;
 
   Waiter waiter;

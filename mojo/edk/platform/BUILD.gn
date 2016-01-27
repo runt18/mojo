@@ -38,6 +38,8 @@ mojo_edk_source_set("test_platform") {
     "platform_handle_watcher_test_helper.cc",
     "platform_handle_watcher_test_helper.h",
     "test_message_loops.h",
+    "test_stopwatch.cc",
+    "test_stopwatch.h",
   ]
 
   public_deps = [
@@ -61,6 +63,7 @@ mojo_edk_source_set("unittests") {
     "aligned_alloc_unittest.cc",
     "io_thread_unittest.cc",
     "test_message_loops_unittest.cc",
+    "test_stopwatch_unittest.cc",
     "thread_utils_unittest.cc",
     "time_ticks_unittest.cc",
   ]
@@ -71,9 +74,8 @@ mojo_edk_source_set("unittests") {
     "//testing/gtest",
   ]
 
-  # TODO(vtl): This is a suboptimal dependency. Probably "Stopwatch" should be
-  # moved to :test_platform (which we can do after we add a clock/time function
-  # to :platform).
+  # TODO(vtl): This is a suboptimal dependency, but we have to get timeouts from
+  # somewhere.
   mojo_edk_deps = [ "mojo/edk/system/test" ]
 
   mojo_sdk_deps = [ "mojo/public/cpp/system" ]

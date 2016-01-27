@@ -16,8 +16,6 @@ mojo_edk_source_set("test") {
     "scoped_test_dir.h",
     "simple_test_thread.cc",
     "simple_test_thread.h",
-    "stopwatch.cc",
-    "stopwatch.h",
     "test_command_line.cc",
     "test_command_line.h",
     "test_io_thread.cc",
@@ -39,7 +37,6 @@ mojo_edk_source_set("test") {
 
   mojo_edk_deps = [
     "mojo/edk/base_edk",
-    "mojo/edk/embedder:platform",
     "mojo/edk/util",
   ]
 }

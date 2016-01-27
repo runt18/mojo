@@ -65,6 +65,7 @@ mojo_edk_source_set("unittests") {
 
   mojo_edk_deps = [
     "mojo/edk/platform",
+    "mojo/edk/platform:test_platform",
     "mojo/edk/system/test",
   ]
 }
@@ -93,6 +94,7 @@ mojo_edk_source_set("perftests") {
   ]
 
   mojo_edk_deps = [
+    "mojo/edk/platform:test_platform",
     "mojo/edk/system/test",
     "mojo/edk/system/test:perf",
   ]

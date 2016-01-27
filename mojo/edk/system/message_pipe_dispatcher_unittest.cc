@@ -16,11 +16,11 @@
 #include <utility>
 #include <vector>
 
+#include "mojo/edk/platform/test_stopwatch.h"
 #include "mojo/edk/platform/thread_utils.h"
 #include "mojo/edk/system/message_pipe.h"
 #include "mojo/edk/system/test/random.h"
 #include "mojo/edk/system/test/simple_test_thread.h"
-#include "mojo/edk/system/test/stopwatch.h"
 #include "mojo/edk/system/test/timeouts.h"
 #include "mojo/edk/system/waiter.h"
 #include "mojo/edk/system/waiter_test_utils.h"
@@ -29,6 +29,7 @@
 #include "mojo/public/cpp/system/macros.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
+using mojo::platform::test::Stopwatch;
 using mojo::platform::ThreadSleep;
 using mojo::util::MakeUnique;
 using mojo::util::RefPtr;
@@ -42,7 +43,7 @@ const MojoHandleSignals kAllSignals = MOJO_HANDLE_SIGNAL_READABLE |
                                       MOJO_HANDLE_SIGNAL_PEER_CLOSED;
 
 TEST(MessagePipeDispatcherTest, Basic) {
-  test::Stopwatch stopwatch;
+  Stopwatch stopwatch;
   int32_t buffer[1];
   const uint32_t kBufferSize = static_cast<uint32_t>(sizeof(buffer));
   uint32_t buffer_size;
@@ -349,7 +350,7 @@ TEST(MessagePipeDispatcherTest, BasicClosed) {
 }
 
 TEST(MessagePipeDispatcherTest, BasicThreaded) {
-  test::Stopwatch stopwatch;
+  Stopwatch stopwatch;
   int32_t buffer[1];
   const uint32_t kBufferSize = static_cast<uint32_t>(sizeof(buffer));
   uint32_t buffer_size;

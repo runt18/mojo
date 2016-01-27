@@ -4,26 +4,25 @@
 
 #include "mojo/edk/platform/thread_utils.h"
 
-#include "mojo/edk/system/test/stopwatch.h"
+#include "mojo/edk/platform/test_stopwatch.h"
 #include "mojo/edk/system/test/timeouts.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 using mojo::system::test::EpsilonTimeout;
-using mojo::system::test::Stopwatch;
 
 namespace mojo {
 namespace platform {
 namespace {
 
-TEST(ThreadUtils, ThreadYield) {
+TEST(ThreadUtilsTest, ThreadYield) {
   // It's pretty hard to test yield, other than maybe statistically (but tough
   // even then, since it'd be dependent on the number of cores). So just check
   // that it doesn't crash.
   ThreadYield();
 }
 
-TEST(ThreadUtils, ThreadSleep) {
-  Stopwatch stopwatch;
+TEST(ThreadUtilsTest, ThreadSleep) {
+  test::Stopwatch stopwatch;
 
   stopwatch.Start();
   ThreadSleep(0ULL);

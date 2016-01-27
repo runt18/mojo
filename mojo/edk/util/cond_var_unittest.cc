@@ -11,17 +11,17 @@
 #include <type_traits>
 #include <vector>
 
+#include "mojo/edk/platform/test_stopwatch.h"
 #include "mojo/edk/platform/thread_utils.h"
-#include "mojo/edk/system/test/stopwatch.h"
 #include "mojo/edk/system/test/timeouts.h"
 #include "mojo/edk/util/mutex.h"
 #include "mojo/public/cpp/system/macros.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
+using mojo::platform::test::Stopwatch;
 using mojo::platform::ThreadSleep;
 using mojo::system::test::DeadlineFromMilliseconds;
 using mojo::system::test::EpsilonTimeout;
-using mojo::system::test::Stopwatch;
 using mojo::system::test::TinyTimeout;
 
 namespace mojo {
