@@ -140,17 +140,23 @@ type DeclarationContainer struct {
 	containedScope *Scope
 	Enums          []*MojomEnum
 	Constants      []*UserDefinedConstant
+	// DeclaredObjects lists the objects in this container in lexical order.
+	// It includes all declared objects (for example methods and fields) not just
+	// enums and constants.
+	DeclaredObjects []DeclaredObject
 }
 
 // Adds an enum to the type associated with this DeclarationContainer,
 // which must be an interface or struct.
 func (c *DeclarationContainer) AddEnum(mojomEnum *MojomEnum) DuplicateNameError {
+	c.DeclaredObjects = append(c.DeclaredObjects, mojomEnum)
 	c.Enums = append(c.Enums, mojomEnum)
 	return mojomEnum.RegisterInScope(c.containedScope)
 }
 
 // Adds a declared constant to this type, which must be an interface or struct.
 func (c *DeclarationContainer) AddConstant(declaredConst *UserDefinedConstant) DuplicateNameError {
+	c.DeclaredObjects = append(c.DeclaredObjects, declaredConst)
 	c.Constants = append(c.Constants, declaredConst)
 	if declaredConst == nil {
 		panic("declaredConst is nil")
@@ -262,6 +268,7 @@ func (s *MojomStruct) AddField(field *StructField) DuplicateNameError {
 	}
 	s.fieldsByName[field.simpleName] = field
 	s.Fields = append(s.Fields, field)
+	s.DeclaredObjects = append(s.DeclaredObjects, field)
 	return nil
 }
 
@@ -435,6 +442,7 @@ func (i *MojomInterface) AddMethod(method *MojomMethod) DuplicateNameError {
 	}
 	i.methodsByName[method.simpleName] = method
 	i.methodsByLexicalOrder = append(i.methodsByLexicalOrder, method)
+	i.DeclaredObjects = append(i.DeclaredObjects, method)
 	return nil
 }
 
@@ -576,6 +584,8 @@ type MojomUnion struct {
 
 	fieldsByName map[string]*UnionField
 	Fields       []*UnionField
+	// DeclaredObjects is the list of union fields maintained in lexical order.
+	DeclaredObjects []DeclaredObject
 }
 
 func NewMojomUnion(declData DeclarationData) *MojomUnion {
@@ -598,6 +608,7 @@ func (u *MojomUnion) AddField(declData DeclarationData, FieldType TypeRef) Dupli
 	}
 	u.fieldsByName[field.simpleName] = &field
 	u.Fields = append(u.Fields, &field)
+	u.DeclaredObjects = append(u.DeclaredObjects, &field)
 	return nil
 }
 
@@ -641,8 +652,10 @@ func (f *UnionField) KindString() string {
 type MojomEnum struct {
 	UserDefinedTypeBase
 
-	Values         []*EnumValue
-	scopeForValues *Scope
+	Values []*EnumValue
+	// DeclaredObjects is the list of enum values in lexical order.
+	DeclaredObjects []DeclaredObject
+	scopeForValues  *Scope
 }
 
 func NewMojomEnum(declData DeclarationData) *MojomEnum {
@@ -676,6 +689,7 @@ func (e *MojomEnum) AddEnumValue(declData DeclarationData, valueRef ValueRef) Du
 	enumValue := new(EnumValue)
 	enumValue.Init(declData, UserDefinedValueKindEnum, enumValue, valueRef)
 	e.Values = append(e.Values, enumValue)
+	e.DeclaredObjects = append(e.DeclaredObjects, enumValue)
 	enumValue.enumType = e
 	if e.scopeForValues == nil {
 		return nil

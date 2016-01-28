@@ -72,6 +72,10 @@ type MojomFile struct {
 
 	// The contents of the .mojom file.
 	fileContents string
+
+	// DeclaredObjects is a list of all user declared objects in lexical order.
+	// It is the union of Interfaces, Structs, Unions, Enums and Constants.
+	DeclaredObjects []DeclaredObject
 }
 
 // An ImportedFile represents an element of the "import" list of a .mojom file.
@@ -191,30 +195,35 @@ func (f *MojomFile) SetCanonicalImportName(specifiedName, canoncialName string) 
 }
 
 func (f *MojomFile) AddInterface(mojomInterface *MojomInterface) DuplicateNameError {
+	f.DeclaredObjects = append(f.DeclaredObjects, mojomInterface)
 	f.Interfaces = append(f.Interfaces, mojomInterface)
 	f.checkInit()
 	return mojomInterface.RegisterInScope(f.FileScope)
 }
 
 func (f *MojomFile) AddStruct(mojomStruct *MojomStruct) DuplicateNameError {
+	f.DeclaredObjects = append(f.DeclaredObjects, mojomStruct)
 	f.Structs = append(f.Structs, mojomStruct)
 	f.checkInit()
 	return mojomStruct.RegisterInScope(f.FileScope)
 }
 
 func (f *MojomFile) AddEnum(mojomEnum *MojomEnum) DuplicateNameError {
+	f.DeclaredObjects = append(f.DeclaredObjects, mojomEnum)
 	f.Enums = append(f.Enums, mojomEnum)
 	f.checkInit()
 	return mojomEnum.RegisterInScope(f.FileScope)
 }
 
 func (f *MojomFile) AddUnion(mojomUnion *MojomUnion) DuplicateNameError {
+	f.DeclaredObjects = append(f.DeclaredObjects, mojomUnion)
 	f.Unions = append(f.Unions, mojomUnion)
 	f.checkInit()
 	return mojomUnion.RegisterInScope(f.FileScope)
 }
 
 func (f *MojomFile) AddConstant(declaredConst *UserDefinedConstant) DuplicateNameError {
+	f.DeclaredObjects = append(f.DeclaredObjects, declaredConst)
 	f.Constants = append(f.Constants, declaredConst)
 	f.checkInit()
 	return declaredConst.RegisterInScope(f.FileScope)

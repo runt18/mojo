@@ -1495,3 +1495,80 @@ func TestDuplicateNameErrorsTwoFiles(t *testing.T) {
 		}
 	}
 }
+
+// TestLexicalOrdering tests that the DeclaredObjects fields of the
+// components of the mojom file are in lexical order.
+func TestLexicalOrdering(t *testing.T) {
+	source := `
+	interface InterfaceFoo {
+		Method1();
+		enum InnerEnum { };
+		Method2();
+		const int8 inner_const = 10;
+		Method3();
+	};
+
+	struct StructFoo {
+		int8 field1;
+		enum InnerEnum { };
+		int8 field2;
+		const int8 inner_const = 10;
+		int8 field3;
+	};
+
+	union UnionFoo {
+		int8 field1;
+		int8 field2;
+	};
+
+	enum EnumFoo {
+		VALUE1,
+		VALUE2,
+	};
+
+	const int8 const_foo = 10;
+	`
+
+	descriptor := mojom.NewMojomDescriptor()
+	parser := MakeParser("filename", "filename", source, descriptor, nil)
+	parser.Parse()
+
+	if !parser.OK() {
+		t.Errorf("Parser was not supposed to fail: %v", parser.GetError().Error())
+	}
+
+	checkEq := func(expected, actual interface{}) {
+		if expected != actual {
+			t.Fatalf("Failed check: Expected (%v), Actual (%v)", expected, actual)
+		}
+	}
+
+	mojomFile := parser.GetMojomFile()
+	mojomInterface := mojomFile.DeclaredObjects[0].(*mojom.MojomInterface)
+	checkEq("InterfaceFoo", mojomInterface.SimpleName())
+	checkEq("Method1", mojomInterface.DeclaredObjects[0].(*mojom.MojomMethod).SimpleName())
+	checkEq("InnerEnum", mojomInterface.DeclaredObjects[1].(*mojom.MojomEnum).SimpleName())
+	checkEq("Method2", mojomInterface.DeclaredObjects[2].(*mojom.MojomMethod).SimpleName())
+	checkEq("inner_const", mojomInterface.DeclaredObjects[3].(*mojom.UserDefinedConstant).SimpleName())
+	checkEq("Method3", mojomInterface.DeclaredObjects[4].(*mojom.MojomMethod).SimpleName())
+
+	mojomStruct := mojomFile.DeclaredObjects[1].(*mojom.MojomStruct)
+	checkEq("StructFoo", mojomStruct.SimpleName())
+	checkEq("field1", mojomStruct.DeclaredObjects[0].(*mojom.StructField).SimpleName())
+	checkEq("InnerEnum", mojomStruct.DeclaredObjects[1].(*mojom.MojomEnum).SimpleName())
+	checkEq("field2", mojomStruct.DeclaredObjects[2].(*mojom.StructField).SimpleName())
+	checkEq("inner_const", mojomStruct.DeclaredObjects[3].(*mojom.UserDefinedConstant).SimpleName())
+	checkEq("field3", mojomStruct.DeclaredObjects[4].(*mojom.StructField).SimpleName())
+
+	mojomUnion := mojomFile.DeclaredObjects[2].(*mojom.MojomUnion)
+	checkEq("UnionFoo", mojomUnion.SimpleName())
+	checkEq("field1", mojomUnion.DeclaredObjects[0].(*mojom.UnionField).SimpleName())
+	checkEq("field2", mojomUnion.DeclaredObjects[1].(*mojom.UnionField).SimpleName())
+
+	mojomEnum := mojomFile.DeclaredObjects[3].(*mojom.MojomEnum)
+	checkEq("EnumFoo", mojomEnum.SimpleName())
+	checkEq("VALUE1", mojomEnum.DeclaredObjects[0].(*mojom.EnumValue).SimpleName())
+	checkEq("VALUE2", mojomEnum.DeclaredObjects[1].(*mojom.EnumValue).SimpleName())
+
+	checkEq("const_foo", mojomFile.DeclaredObjects[4].(*mojom.UserDefinedConstant).SimpleName())
+}
