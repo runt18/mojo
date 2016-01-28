@@ -9,7 +9,6 @@
 
 #include "mojo/edk/platform/scoped_platform_handle.h"
 #include "mojo/edk/util/ref_ptr.h"
-#include "mojo/public/c/system/types.h"
 #include "mojo/public/cpp/system/macros.h"
 
 namespace mojo {
@@ -23,22 +22,6 @@ class PlatformSharedBuffer;
 class PlatformSupport {
  public:
   virtual ~PlatformSupport() {}
-
-  // Gets a "time-ticks" value:
-  //   - The value should be nondecreasing with respect to time/causality.
-  //   - The value should be in microseconds (i.e., if a caller runs
-  //     continuously, getting the value twice, their difference should be
-  //     approximately the real time elapsed between the samples, in
-  //     microseconds).
-  //   - The value should be nonnegative.
-  //   - The behaviour of the value if execution is suspended (i.e., the
-  //     computer "sleeps") is undefined (i.e., this is not a real-time clock),
-  //     except that it must remain monotonic.
-  //   - As observable, monotonicity should hold across threads.
-  // If multiple |PlatformSupport| implementations/instances are used in a
-  // single system, all implementations must agree (i.e., respect the above as
-  // if there were only a single |PlatformSupport|).
-  virtual MojoTimeTicks GetTimeTicksNow() = 0;
 
   // Gets cryptographically-secure (pseudo)random bytes.
   virtual void GetCryptoRandomBytes(void* bytes, size_t num_bytes) = 0;

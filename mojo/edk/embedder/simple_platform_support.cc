@@ -7,7 +7,6 @@
 #include <utility>
 
 #include "base/rand_util.h"
-#include "base/time/time.h"
 #include "mojo/edk/embedder/simple_platform_shared_buffer.h"
 
 using mojo::platform::ScopedPlatformHandle;
@@ -15,10 +14,6 @@ using mojo::util::RefPtr;
 
 namespace mojo {
 namespace embedder {
-
-MojoTimeTicks SimplePlatformSupport::GetTimeTicksNow() {
-  return base::TimeTicks::Now().ToInternalValue();
-}
 
 void SimplePlatformSupport::GetCryptoRandomBytes(void* bytes,
                                                  size_t num_bytes) {
