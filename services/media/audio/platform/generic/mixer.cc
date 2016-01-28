@@ -25,13 +25,16 @@ Mixer::Mixer(uint32_t pos_filter_width,
 }
 
 MixerPtr Mixer::Select(const LpcmMediaTypeDetailsPtr& src_format,
-                       const LpcmMediaTypeDetailsPtr& dst_format) {
+                       const LpcmMediaTypeDetailsPtr* optional_dst_format) {
   // We should always have a source format.
   DCHECK(src_format);
 
   // If we don't have a destination format, just stick with no-op.  This is
   // probably the ThrottleOutput we are picking a mixer for.
-  if (!dst_format) { return MixerPtr(new mixers::NoOp()); }
+  if (!optional_dst_format) { return MixerPtr(new mixers::NoOp()); }
+
+  const LpcmMediaTypeDetailsPtr& dst_format = *optional_dst_format;
+  DCHECK(dst_format);
 
   // If the source sample rate is an integer multiple of the destination sample
   // rate, just use the point sampler.  Otherwise, use the linear re-sampler.

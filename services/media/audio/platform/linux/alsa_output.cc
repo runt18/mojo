@@ -75,20 +75,18 @@ AudioOutputPtr AlsaOutput::New(AudioOutputManager* manager) {
 
 MediaResult AlsaOutput::Configure(LpcmMediaTypeDetailsPtr config) {
   if (!config) { return MediaResult::INVALID_ARGUMENT; }
-  if (output_format_) { return MediaResult::BAD_STATE; }
+  if (output_formatter_) { return MediaResult::BAD_STATE; }
 
-  uint32_t bytes_per_sample;
+  output_formatter_ = OutputFormatter::Select(config);
+  if (!output_formatter_) { return MediaResult::UNSUPPORTED_CONFIG; }
+
   switch (config->sample_format) {
   case LpcmSampleFormat::UNSIGNED_8:
     alsa_format_ = SND_PCM_FORMAT_U8;
-    silence_byte_ = 0x80;
-    bytes_per_sample = 1;
     break;
 
   case LpcmSampleFormat::SIGNED_16:
     alsa_format_ = SND_PCM_FORMAT_S16;
-    silence_byte_ = 0x00;
-    bytes_per_sample = 2;
     break;
 
   case LpcmSampleFormat::SIGNED_24_IN_32:
@@ -115,18 +113,14 @@ MediaResult AlsaOutput::Configure(LpcmMediaTypeDetailsPtr config) {
                                                     &frames_per_tick_);
   DCHECK(is_precise);
 
-  // Figure out how many bytes there are per frame.
-  output_bytes_per_frame_ = bytes_per_sample * config->channels;
-
   // Success
-  output_format_ = config.Pass();
   return MediaResult::OK;
 }
 
 MediaResult AlsaOutput::Init() {
   static const char* kAlsaDevice = "default";
 
-  if (!output_format_) { return MediaResult::BAD_STATE; }
+  if (!output_formatter_) { return MediaResult::BAD_STATE; }
   if (alsa_device_) { return MediaResult::BAD_STATE; }
 
   snd_pcm_sframes_t res;
@@ -142,17 +136,17 @@ MediaResult AlsaOutput::Init() {
   res = snd_pcm_set_params(alsa_device_,
                            alsa_format_,
                            SND_PCM_ACCESS_RW_INTERLEAVED,
-                           output_format_->channels,
-                           output_format_->frames_per_second,
+                           output_formatter_->format()->channels,
+                           output_formatter_->format()->frames_per_second,
                            0,   // do not allow ALSA resample
                            local_time::to_usec<unsigned int>(TARGET_LATENCY));
   if (res) {
     LOG(ERROR) << "Failed to configure ALSA device \"" << kAlsaDevice << "\" "
                << "(res = " << res << ")";
     LOG(ERROR) << "Requested channels         : "
-               << output_format_->channels;
+               << output_formatter_->format()->channels;
     LOG(ERROR) << "Requested frames per second: "
-               << output_format_->frames_per_second;
+               << output_formatter_->format()->frames_per_second;
     LOG(ERROR) << "Requested ALSA format      : " << alsa_format_;
     Cleanup();
     return MediaResult::INTERNAL_ERROR;
@@ -168,8 +162,13 @@ MediaResult AlsaOutput::Init() {
     return MediaResult::INTERNAL_ERROR;
   }
 
+  size_t buffer_size;
   mix_buf_frames_ = res;
-  mix_buf_.reset(new uint8_t[mix_buf_frames_ * output_bytes_per_frame_]);
+  buffer_size = mix_buf_frames_ * output_formatter_->bytes_per_frame();
+  mix_buf_.reset(new uint8_t[buffer_size]);
+
+  // Set up the intermediate buffer at the StandardOutputBase level
+  SetupMixBuffer(mix_buf_frames_);
 
   return MediaResult::OK;
 }
@@ -279,11 +278,6 @@ bool AlsaOutput::StartMixJob(MixJob* job, const LocalTime& process_start) {
     job->local_to_output = &local_to_output_;
     job->local_to_output_gen = local_to_output_gen_;
 
-    // TODO(johngro): optimize this if we can.  The first buffer we mix can just
-    // put its samples directly into the output buffer, and does not need to
-    // accumulate and clip.  In theory, we only need to put silence in the
-    // places where our outputs are not going to already overwrite.
-    FillMixBufWithSilence(job->buf_frames);
     return true;
   }
 
@@ -308,16 +302,6 @@ bool AlsaOutput::FinishMixJob(const MixJob& job) {
   return true;
 }
 
-void AlsaOutput::FillMixBufWithSilence(uint32_t frames) {
-  DCHECK(mix_buf_);
-  DCHECK(frames <= mix_buf_frames_);
-
-  // TODO(johngro): someday, this may not be this simple.  Filling unsigned
-  // multibyte sample formats, or floating point formats, will require something
-  // more sophisticated than filling with a single byte pattern.
-  ::memset(mix_buf_.get(), silence_byte_, frames * output_bytes_per_frame_);
-}
-
 void AlsaOutput::HandleAsUnderflow() {
   snd_pcm_sframes_t res;
 
@@ -339,7 +323,7 @@ void AlsaOutput::HandleAsUnderflow() {
   // silence.  When we have better control of our thread priorities, prime this
   // with the minimimum amt we can get away with and still be able to start
   // mixing without underflowing.
-  FillMixBufWithSilence(mix_buf_frames_);
+  output_formatter_->FillWithSilence(mix_buf_.get(), mix_buf_frames_);
   res = snd_pcm_writei(alsa_device_, mix_buf_.get(), mix_buf_frames_);
 
   if (res < 0) {

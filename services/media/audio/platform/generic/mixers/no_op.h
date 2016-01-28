@@ -16,7 +16,7 @@ class NoOp : public Mixer {
  public:
   NoOp() : Mixer(0, 0) {}
 
-  bool Mix(void*       dst,
+  bool Mix(int32_t*    dst,
            uint32_t    dst_frames,
            uint32_t*   dst_offset,
            const void* src,

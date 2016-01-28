@@ -19,7 +19,8 @@ namespace utils {
 // order to produce efficient inner mixing loops for all of the different
 // variations of source/destination sample type/channel counts.
 
-// Template to read samples and normalize them into signed 32 bit integers.
+// Template to read samples and normalize them into signed 16 bit integers
+// stored in 32 bit integers.
 template <typename SType, typename Enable = void> class SampleNormalizer;
 
 template <typename SType>
@@ -84,67 +85,31 @@ class SrcReader<SType, SChCount, DChCount,
   }
 };
 
-// Template to produce destination samples from normalized samples.
-template <typename DType, typename Enable = void> class DstConverter;
-
-template <typename DType>
-class DstConverter<DType,
-      typename std::enable_if<
-        std::is_same<DType, int16_t>::value,
-      void>::type> {
- public:
-  static inline DType Convert(int32_t sample) {
-    return static_cast<DType>(sample);
-  }
-};
-
-template <typename DType>
-class DstConverter<DType,
-      typename std::enable_if<
-        std::is_same<DType, uint8_t>::value,
-      void>::type> {
- public:
-  static inline DType Convert(int32_t sample) {
-    return static_cast<DType>((sample >> 8) + 0x80);
-  }
-};
-
-// Template to mix destination samples with normalized source samples based on
-// accumulation policy.
-template <typename DType,
-          bool     DoAccumulate,
+// Template to mix normalized destination samples with normalized source samples
+// based on accumulation policy.
+template <bool     DoAccumulate,
           typename Enable = void>
 class DstMixer;
 
-template <typename DType,
-          bool     DoAccumulate>
-class DstMixer<DType, DoAccumulate,
+template <bool DoAccumulate>
+class DstMixer<DoAccumulate,
       typename std::enable_if<
         DoAccumulate == false,
       void>::type> {
  public:
-  static inline int32_t Mix(const DType* dst, uint32_t sample) {
-    return DstConverter<DType>::Convert(sample);
+  static inline constexpr int32_t Mix(int32_t dst, int32_t sample) {
+    return sample;
   }
 };
 
-template <typename DType,
-          bool     DoAccumulate>
-class DstMixer<DType, DoAccumulate,
+template <bool DoAccumulate>
+class DstMixer<DoAccumulate,
       typename std::enable_if<
         DoAccumulate == true,
       void>::type> {
  public:
-  static inline int32_t Mix(const DType* dst, int32_t sample) {
-    sample += SampleNormalizer<DType>::Read(dst);
-
-    if (sample > std::numeric_limits<int16_t>::max()) {
-      return DstConverter<DType>::Convert(std::numeric_limits<int16_t>::max());
-    } else if (sample < std::numeric_limits<int16_t>::min()) {
-      return DstConverter<DType>::Convert(std::numeric_limits<int16_t>::min());
-    } else {
-      return DstConverter<DType>::Convert(sample);
-    }
+  static inline constexpr int32_t Mix(int32_t dst, int32_t sample) {
+    return sample + dst;
   }
 };
 

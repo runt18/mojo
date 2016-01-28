@@ -13,6 +13,7 @@
 #include "services/media/audio/audio_output.h"
 #include "services/media/audio/audio_track_to_output_link.h"
 #include "services/media/audio/platform/generic/mixer.h"
+#include "services/media/audio/platform/generic/output_formatter.h"
 
 namespace mojo {
 namespace media {
@@ -71,9 +72,10 @@ class StandardOutputBase : public AudioOutput {
   virtual bool StartMixJob(MixJob* job, const LocalTime& process_start) = 0;
   virtual bool FinishMixJob(const MixJob& job) = 0;
   virtual TrackBookkeeping* AllocBookkeeping();
+  void SetupMixBuffer(uint32_t max_mix_frames);
 
-  LpcmMediaTypeDetailsPtr output_format_;
-  uint32_t output_bytes_per_frame_;
+  // Details about the final output format
+  OutputFormatterPtr output_formatter_;
 
  private:
   using TrackSetupTask = std::function<bool(const AudioTrackImplPtr& track,
@@ -98,6 +100,21 @@ class StandardOutputBase : public AudioOutput {
 
   LocalTime next_sched_time_;
   bool next_sched_time_known_;
+
+  // State for the internal buffer which holds intermediate mix results.
+  //
+  // TODO(johngro): Right now, the cannonical intermediate format is signed 32
+  // bit ints.  As time goes on, we may need to reconsider this.  This will
+  // become more important when...
+  //
+  // 1) We support 24 bit audio.  Right now, with a 16 bit max, we can
+  //    accumulate for up to a maximum of 2^16-1 tracks without needing to do
+  //    anything special about about clipping.  With 24 bit audio, this number
+  //    will drop to only 255 simultanious tracks.  It is unclear if this is a
+  //    reasonable system-wide limitation or not.
+  // 2) We support floating point audio.
+  std::unique_ptr<int32_t> mix_buf_;
+  uint32_t mix_buf_frames_ = 0;
 
   // State used by the mix task.
   TrackSetupTask setup_mix_;

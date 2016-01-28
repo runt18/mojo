@@ -35,7 +35,7 @@ class Mixer {
   // interpolation sampler, the user may actually prefer cubic interpolation, or
   // perhaps just a point sampler.
   static MixerPtr Select(const LpcmMediaTypeDetailsPtr& src_format,
-                         const LpcmMediaTypeDetailsPtr& dst_format);
+                         const LpcmMediaTypeDetailsPtr* dst_format);
 
   // Mix
   //
@@ -88,7 +88,7 @@ class Mixer {
   // @return True if the mixer is finished with this source data and will not
   // need it in the future.  False if the mixer has not consumed the entire
   // source buffer and will need more of it in the future.
-  virtual bool Mix(void*       dst,
+  virtual bool Mix(int32_t*    dst,
                    uint32_t    dst_frames,
                    uint32_t*   dst_offset,
                    const void* src,

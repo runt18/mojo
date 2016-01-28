@@ -36,7 +36,6 @@ class AlsaOutput : public StandardOutputBase {
   bool FinishMixJob(const MixJob& job) override;
 
  private:
-  void FillMixBufWithSilence(uint32_t frames);
   void HandleAlsaError(snd_pcm_sframes_t code);
   void HandleAsError(snd_pcm_sframes_t code);
   void HandleAsUnderflow();
@@ -45,7 +44,6 @@ class AlsaOutput : public StandardOutputBase {
   snd_pcm_format_t alsa_format_;
 
   LinearTransform::Ratio frames_per_tick_;
-  uint8_t silence_byte_;
 
   std::unique_ptr<uint8_t> mix_buf_;
   uint32_t mix_buf_frames_;

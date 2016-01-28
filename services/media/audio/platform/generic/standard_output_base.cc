@@ -78,7 +78,26 @@ void StandardOutputBase::Process() {
         break;
       }
 
+      // If we have a mix job, then we must have an output formatter, and an
+      // intermediate buffer allocated, and it must be large enough for the mix
+      // job we were given.
+      DCHECK(mix_buf_);
+      DCHECK(output_formatter_);
+      DCHECK_LE(cur_mix_job_.buf_frames, mix_buf_frames_);
+
+      // Fill the intermediate buffer with silence.
+      size_t bytes_to_zero = sizeof(*mix_buf_)
+                           * cur_mix_job_.buf_frames
+                           * output_formatter_->channels();
+      ::memset(mix_buf_.get(), 0, bytes_to_zero);
+
+      // Mix each track into the intermediate buffer, then clip/format into the
+      // final buffer.
       ForeachTrack(setup_mix_, process_mix_);
+      output_formatter_->ProduceOutput(mix_buf_.get(),
+                                       cur_mix_job_.buf,
+                                       cur_mix_job_.buf_frames);
+
       mixed = true;
     } while (FinishMixJob(cur_mix_job_));
   }
@@ -119,7 +138,9 @@ MediaResult StandardOutputBase::InitializeLink(
   if (!track) { return MediaResult::INVALID_ARGUMENT; }
 
   // Pick a mixer based on the input and output formats.
-  bk->mixer = Mixer::Select(track->Format(), output_format_);
+  bk->mixer = Mixer::Select(track->Format(), output_formatter_
+                                           ? &output_formatter_->format()
+                                           : nullptr);
   if (bk->mixer == nullptr) { return MediaResult::UNSUPPORTED_CONFIG; }
 
   // Looks like things went well.  Stash a reference to our bookkeeping and get
@@ -130,6 +151,16 @@ MediaResult StandardOutputBase::InitializeLink(
 
 StandardOutputBase::TrackBookkeeping* StandardOutputBase::AllocBookkeeping() {
   return new TrackBookkeeping();
+}
+
+void StandardOutputBase::SetupMixBuffer(uint32_t max_mix_frames) {
+  DCHECK_GT(output_formatter_->channels(), 0u);
+  DCHECK_GT(max_mix_frames, 0u);
+  DCHECK_LE(max_mix_frames, std::numeric_limits<uint32_t>::max() /
+                            output_formatter_->channels());
+
+  mix_buf_frames_ = max_mix_frames;
+  mix_buf_.reset(new int32_t[mix_buf_frames_ * output_formatter_->channels()]);
 }
 
 void StandardOutputBase::ForeachTrack(const TrackSetupTask& setup,
@@ -218,7 +249,6 @@ bool StandardOutputBase::ProcessMix(
   DCHECK(packet);
 
   // We had better have a valid job, or why are we here?
-  DCHECK(cur_mix_job_.buf);
   DCHECK(cur_mix_job_.buf_frames);
   DCHECK(cur_mix_job_.frames_produced <= cur_mix_job_.buf_frames);
 
@@ -241,8 +271,8 @@ bool StandardOutputBase::ProcessMix(
   }
 
   uint32_t frames_left = cur_mix_job_.buf_frames - cur_mix_job_.frames_produced;
-  void* buf = static_cast<uint8_t*>(cur_mix_job_.buf)
-            + (cur_mix_job_.frames_produced * output_bytes_per_frame_);
+  int32_t* buf = mix_buf_.get()
+               + (cur_mix_job_.frames_produced * output_formatter_->channels());
 
   // Figure out where the first and last sampling points of this job are,
   // expressed in fractional track frames.

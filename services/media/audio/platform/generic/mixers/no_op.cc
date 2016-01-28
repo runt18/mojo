@@ -11,7 +11,7 @@ namespace media {
 namespace audio {
 namespace mixers {
 
-bool NoOp::Mix(void*       dst,
+bool NoOp::Mix(int32_t*    dst,
                uint32_t    dst_frames,
                uint32_t*   dst_offset,
                const void* src,
