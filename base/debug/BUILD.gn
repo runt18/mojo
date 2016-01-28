@@ -2,6 +2,10 @@
 # Use of this source code is governed by a BSD-style license that can be
 # found in the LICENSE file.
 
+if (is_android) {
+  import("//build/config/android/rules.gni")
+}
+
 source_set("debug") {
   sources = [
     "alias.cc",
@@ -44,6 +48,8 @@ source_set("debug") {
     set_sources_assignment_filter(sources_assignment_filter)
 
     sources -= [ "stack_trace_posix.cc" ]
+
+    defines = [ "ANDROID_LOG_TAG=$android_log_tag" ]
   }
 
   if (is_nacl) {

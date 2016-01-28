@@ -11,6 +11,11 @@ if (is_android) {
 
 config("base_implementation") {
   defines = [ "BASE_IMPLEMENTATION" ]
+
+  if (is_ios) {
+    # base uses routines deprecated in iOS 8
+    cflags = [ "-Wno-deprecated-declarations" ]
+  }
 }
 
 if (is_win) {
@@ -687,6 +692,8 @@ component("base") {
       "//third_party/android_tools:cpu_features",
       "//third_party/ashmem",
     ]
+
+    defines = [ "ANDROID_LOG_TAG=$android_log_tag" ]
 
     # logging.cc uses the Android logging library.
     libs = [ "log" ]
