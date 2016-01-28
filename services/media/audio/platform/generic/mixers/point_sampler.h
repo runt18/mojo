@@ -17,6 +17,10 @@ class PointSampler : public Mixer {
  public:
   static MixerPtr Select(const LpcmMediaTypeDetailsPtr& src_format,
                          const LpcmMediaTypeDetailsPtr& dst_format);
+
+ protected:
+  PointSampler(uint32_t pos_filter_width, uint32_t neg_filter_width)
+    : Mixer(pos_filter_width, neg_filter_width) {}
 };
 
 }  // namespace mixers

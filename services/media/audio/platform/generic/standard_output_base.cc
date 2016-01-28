@@ -212,15 +212,27 @@ bool StandardOutputBase::SetupMix(const AudioTrackImplPtr& track,
 bool StandardOutputBase::ProcessMix(
     const AudioTrackImplPtr& track,
     TrackBookkeeping* info,
-    const AudioPipe::AudioPacketRefPtr& pkt_ref) {
+    const AudioPipe::AudioPacketRefPtr& packet) {
   // Sanity check our parameters.
   DCHECK(info);
-  DCHECK(pkt_ref);
+  DCHECK(packet);
 
   // We had better have a valid job, or why are we here?
   DCHECK(cur_mix_job_.buf);
   DCHECK(cur_mix_job_.buf_frames);
   DCHECK(cur_mix_job_.frames_produced <= cur_mix_job_.buf_frames);
+
+  // We also must have selected a mixer, or we are in trouble.
+  DCHECK(info->mixer);
+  Mixer& mixer = *(info->mixer);
+
+  // If this track is currently paused (or being sampled extremely slowly), our
+  // step size will be zero.  We know that this packet will be relevant at some
+  // point in the future, but right now it contributes nothing.  Tell the
+  // ForeachTrack loop that we are done and to hold onto this packet for now.
+  if (!info->step_size) {
+    return false;
+  }
 
   // Have we produced all that we are supposed to?  If so, hold the current
   // packet and move on to the next track.
@@ -232,72 +244,75 @@ bool StandardOutputBase::ProcessMix(
   void* buf = static_cast<uint8_t*>(cur_mix_job_.buf)
             + (cur_mix_job_.frames_produced * output_bytes_per_frame_);
 
-  // Figure out where this job starts, expressed in fractional input frames.
-  int64_t start_pts_ftf;
+  // Figure out where the first and last sampling points of this job are,
+  // expressed in fractional track frames.
+  int64_t first_sample_ftf;
   bool good = info->out_frames_to_track_frames.DoForwardTransform(
       cur_mix_job_.start_pts_of + cur_mix_job_.frames_produced,
-      &start_pts_ftf);
+      &first_sample_ftf);
   DCHECK(good);
 
-  // If the start of this mix job is past the end of this packet presentation,
-  // do no mixing.  Let the ForeachTrack loop know that we are done with the
-  // packet and it can be released.
-  if (start_pts_ftf >= pkt_ref->end_pts()) {
+  DCHECK(frames_left);
+  int64_t final_sample_ftf = first_sample_ftf +
+    ((frames_left - 1) * static_cast<int64_t>(info->step_size));
+
+  // Figure out the PTS of the final frame of audio in our input packet.
+  DCHECK((packet->end_pts() - packet->start_pts()) >= Mixer::FRAC_ONE);
+  int64_t final_pts = packet->end_pts() - Mixer::FRAC_ONE;
+
+  // If the PTS of the final frame of audio in our input is before the negative
+  // window edge of our filter centered at our first sampling point, then this
+  // packet is entirely in the past and may be skipped.
+  if (final_pts < (first_sample_ftf - mixer.neg_filter_width())) {
     return true;
   }
 
-  // If this track is currently paused (or being sampled extremely slowly), our
-  // step size will be zero.  We know that this packet will be relevant at some
-  // point in the future, but right now it contributes nothing.  Tell the
-  // ForeachTrack loop that we are done and to hold onto this packet for now.
-  if (!info->step_size) {
+  // If the PTS of the first frame of audio in our input is after the positive
+  // window edge of our filter centered at our final sampling point, then this
+  // packet is entirely in the future and should be held.
+  if (packet->start_pts() > (final_sample_ftf + mixer.pos_filter_width())) {
     return false;
   }
 
-  // Figure out how many output samples into the current job this packet starts.
-  int64_t delta;
-  int64_t output_offset_64;
-  if (pkt_ref->start_pts() > start_pts_ftf) {
-    delta             = pkt_ref->start_pts() - start_pts_ftf;
-    output_offset_64  = delta + info->step_size - 1;
-    output_offset_64 /= info->step_size;
-  } else {
-    output_offset_64 = 0;
+  // Looks like the contents of this input packet intersect our mixer's filter.
+  // Compute where in the output buffer the first sample will be produced, as
+  // well as where, relative to the start of the input packet, this sample will
+  // be taken from.
+  int64_t input_offset_64 = first_sample_ftf - packet->start_pts();
+  int64_t output_offset_64 = 0;
+  int64_t first_sample_pos_window_edge = first_sample_ftf
+                                       + mixer.pos_filter_width();
+
+  // If the first frame in this packet comes after the positive edge of the
+  // filter window, then we need to skip some number of output frames before
+  // starting to produce data.
+  if (packet->start_pts() > first_sample_pos_window_edge) {
+    output_offset_64 = (packet->start_pts()
+                     - first_sample_pos_window_edge
+                     + info->step_size - 1) / info->step_size;
+    input_offset_64 += output_offset_64 * info->step_size;
   }
+
   DCHECK_GE(output_offset_64, 0);
-
-  // If this packet starts after the end of this job (entirely in the future),
-  // then we are done for now.
-  if (output_offset_64 >= frames_left) {
-    return false;
-  }
-
-  // Figure out the offset (in fractional frames) into this packet where we want
-  // to start sampling.
-  int64_t  input_offset_64;
-  if (output_offset_64) {
-    input_offset_64  = output_offset_64 * info->step_size;
-    input_offset_64 -= delta;
-    DCHECK_LT(input_offset_64, info->step_size);
-  } else {
-    input_offset_64 = start_pts_ftf - pkt_ref->start_pts();
-  }
-  DCHECK_GE(input_offset_64, 0);
+  DCHECK_LT(output_offset_64, static_cast<int64_t>(frames_left));
   DCHECK_LE(input_offset_64, std::numeric_limits<int32_t>::max());
-  DCHECK_LT(input_offset_64, pkt_ref->end_pts() - pkt_ref->start_pts());
+  DCHECK_GE(input_offset_64, std::numeric_limits<int32_t>::min());
 
-  uint32_t input_offset  = static_cast<uint32_t>(input_offset_64);
   uint32_t output_offset = static_cast<uint32_t>(output_offset_64);
-  const auto& regions = pkt_ref->regions();
-  DCHECK(info->mixer != nullptr);
+  int32_t  frac_input_offset = static_cast<int32_t>(input_offset_64);
 
-  for (size_t i = 0;
-      (i < regions.size()) && (output_offset < frames_left);
-      ++i) {
+  // Looks like we are ready to go.  Iterate over the regions of this input
+  // packet, mixing data as we go.
+  size_t i;
+  const auto& regions = packet->regions();
+  for (i = 0; i < regions.size(); ++i) {
     const auto& region = regions[i];
 
-    if (input_offset >= region.frac_frame_len) {
-      input_offset -= region.frac_frame_len;
+    DCHECK_LE(region.frac_frame_len,
+              static_cast<uint32_t>(std::numeric_limits<int32_t>::max()));
+
+    if (frac_input_offset >= static_cast<int32_t>(region.frac_frame_len)) {
+      frac_input_offset -= region.frac_frame_len;
       continue;
     }
 
@@ -306,7 +321,7 @@ bool StandardOutputBase::ProcessMix(
                                             &output_offset,
                                             region.base,
                                             region.frac_frame_len,
-                                            &input_offset,
+                                            &frac_input_offset,
                                             info->step_size,
                                             cur_mix_job_.accumulate);
     DCHECK_LE(output_offset, frames_left);
@@ -318,11 +333,12 @@ bool StandardOutputBase::ProcessMix(
       return false;
     }
 
-    input_offset -= region.frac_frame_len;
+    frac_input_offset -= region.frac_frame_len;
   }
 
   cur_mix_job_.frames_produced += output_offset;
-  DCHECK(cur_mix_job_.frames_produced <= cur_mix_job_.buf_frames);
+  DCHECK_LE(cur_mix_job_.frames_produced, cur_mix_job_.buf_frames);
+  DCHECK_EQ(i, regions.size());
   return true;
 }
 

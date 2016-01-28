@@ -8,6 +8,8 @@
 #include <memory>
 
 #include "mojo/services/media/common/interfaces/media_types.mojom.h"
+#include "services/media/audio/audio_pipe.h"
+#include "services/media/audio/audio_track_impl.h"
 
 namespace mojo {
 namespace media {
@@ -18,6 +20,9 @@ using MixerPtr = std::unique_ptr<Mixer>;
 
 class Mixer {
  public:
+  static constexpr uint32_t FRAC_ONE =
+    1u << AudioTrackImpl::PTS_FRACTIONAL_BITS;
+  static constexpr uint32_t FRAC_MASK = FRAC_ONE - 1u;
   virtual ~Mixer();
 
   // Select
@@ -88,7 +93,7 @@ class Mixer {
                    uint32_t*   dst_offset,
                    const void* src,
                    uint32_t    frac_src_frames,
-                   uint32_t*   frac_src_offset,
+                   int32_t*    frac_src_offset,
                    uint32_t    frac_step_size,
                    bool        accumulate) = 0;
 
@@ -99,8 +104,27 @@ class Mixer {
   // anything related to their internal filter state.
   virtual void Reset() {}
 
+  // The positive and negative widths of the filter for this mixer, expressed in
+  // fractional input track units.  To be clear...
+  //
+  // Let:
+  // P = pos_filter_width()
+  // N = neg_filter_width()
+  // S = A point at which the input will be sampled.
+  // X = The PTS of an input frame.
+  //
+  // If (X >= (S - N)) && (X <= (S + P))
+  // Then X is within the filter and contributes to mix operation.
+  //
+  inline uint32_t pos_filter_width() const { return pos_filter_width_; }
+  inline uint32_t neg_filter_width() const { return neg_filter_width_; }
+
  protected:
-  Mixer();
+  Mixer(uint32_t pos_filter_width, uint32_t neg_filter_width);
+
+ private:
+  uint32_t pos_filter_width_;
+  uint32_t neg_filter_width_;
 };
 
 }  // namespace audio

@@ -11,8 +11,16 @@ namespace mojo {
 namespace media {
 namespace audio {
 
-Mixer::Mixer() {}
+constexpr uint32_t Mixer::FRAC_ONE;
+constexpr uint32_t Mixer::FRAC_MASK;
+
 Mixer::~Mixer() {}
+
+Mixer::Mixer(uint32_t pos_filter_width,
+             uint32_t neg_filter_width)
+  : pos_filter_width_(pos_filter_width),
+    neg_filter_width_(neg_filter_width) {
+}
 
 MixerPtr Mixer::Select(const LpcmMediaTypeDetailsPtr& src_format,
                        const LpcmMediaTypeDetailsPtr& dst_format) {

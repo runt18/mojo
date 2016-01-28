@@ -2,6 +2,8 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
+#include <limits>
+
 #include "base/logging.h"
 #include "services/media/audio/audio_track_impl.h"
 #include "services/media/audio/platform/generic/mixers/mixer_utils.h"
@@ -19,14 +21,14 @@ template <typename DType,
           size_t   SChCount>
 class PointSamplerImpl : public PointSampler {
  public:
-  PointSamplerImpl() {}
+  PointSamplerImpl() : PointSampler(0, FRAC_ONE - 1) {}
 
   bool Mix(void*       dst,
            uint32_t    dst_frames,
            uint32_t*   dst_offset,
            const void* src,
            uint32_t    frac_src_frames,
-           uint32_t*   frac_src_offset,
+           int32_t*    frac_src_offset,
            uint32_t    frac_step_size,
            bool        accumulate) override;
 
@@ -37,7 +39,7 @@ class PointSamplerImpl : public PointSampler {
                          uint32_t*   dst_offset,
                          const void* src,
                          uint32_t    frac_src_frames,
-                         uint32_t*   frac_src_offset,
+                         int32_t*    frac_src_offset,
                          uint32_t    frac_step_size);
 };
 
@@ -52,7 +54,7 @@ inline bool PointSamplerImpl<DType, DChCount, SType, SChCount>::Mix(
     uint32_t*   dst_offset,
     const void* src_void,
     uint32_t    frac_src_frames,
-    uint32_t*   frac_src_offset,
+    int32_t*    frac_src_offset,
     uint32_t    frac_step_size) {
   using SR = utils::SrcReader<SType, SChCount, DChCount>;
   using DM = utils::DstMixer<DType, DoAccumulate>;
@@ -60,12 +62,15 @@ inline bool PointSamplerImpl<DType, DChCount, SType, SChCount>::Mix(
   const SType* src  = static_cast<const SType*>(src_void);
   DType*       dst  = static_cast<DType*>(dst_void);
   uint32_t     doff = *dst_offset;
-  uint32_t     soff = *frac_src_offset;
+  int32_t      soff = *frac_src_offset;
 
-  DCHECK_LT(doff, dst_frames);
-  DCHECK_LT(soff, frac_src_frames);
+  DCHECK_LE(frac_src_frames,
+            static_cast<uint32_t>(std::numeric_limits<int32_t>::max()));
+  DCHECK_LT(soff, static_cast<int32_t>(frac_src_frames));
+  DCHECK_GE(soff, 0);
 
-  while ((doff < dst_frames) && (soff < frac_src_frames)) {
+  while ((doff < dst_frames) &&
+         (soff < static_cast<int32_t>(frac_src_frames))) {
     uint32_t src_iter;
     DType*   out;
 
@@ -84,7 +89,7 @@ inline bool PointSamplerImpl<DType, DChCount, SType, SChCount>::Mix(
   *dst_offset = doff;
   *frac_src_offset = soff;
 
-  return (soff >= frac_src_frames);
+  return (soff >= static_cast<int32_t>(frac_src_frames));
 }
 
 template <typename DType,
@@ -97,7 +102,7 @@ bool PointSamplerImpl<DType, DChCount, SType, SChCount>::Mix(
     uint32_t*   dst_offset,
     const void* src,
     uint32_t    frac_src_frames,
-    uint32_t*   frac_src_offset,
+    int32_t*    frac_src_offset,
     uint32_t    frac_step_size,
     bool        accumulate) {
   return accumulate ? Mix<true>(dst, dst_frames, dst_offset,

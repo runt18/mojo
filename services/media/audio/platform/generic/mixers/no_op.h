@@ -14,12 +14,14 @@ namespace mixers {
 
 class NoOp : public Mixer {
  public:
+  NoOp() : Mixer(0, 0) {}
+
   bool Mix(void*       dst,
            uint32_t    dst_frames,
            uint32_t*   dst_offset,
            const void* src,
            uint32_t    frac_src_frames,
-           uint32_t*   frac_src_offset,
+           int32_t*    frac_src_offset,
            uint32_t    frac_step_size,
            bool        accumulate) override;
 };
