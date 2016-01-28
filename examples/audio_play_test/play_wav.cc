@@ -100,10 +100,11 @@ class PlayWAVApp : public ApplicationDelegate {
   bool ReadAndValidateWAVHeader();
   bool ReadAndValidateDATAHeader();
 
-  bool OnNeedsData(MediaResult res);
+  void OnNeedsData(MediaResult res);
   void OnPlayoutComplete(MediaPipe::SendResult res);
   void OnConnectionError(const std::string& connection_name);
-  void BeginShutdown();
+  void PostShutdown();
+  void Shutdown();
 
   uint32_t USecToFrames(uint32_t usec) {
     uint64_t ret = (static_cast<uint64_t>(usec) * wav_info_.frame_rate)
@@ -227,7 +228,7 @@ void PlayWAVApp::ProcessHTTPResponse(URLResponsePtr resp) {
     MOJO_LOG(ERROR) << "Bad MimeType \""
                     << (resp->mime_type.is_null() ? "<null>" : resp->mime_type)
                     << "\"";
-    BeginShutdown();
+    Shutdown();
     return;
   }
 
@@ -236,7 +237,7 @@ void PlayWAVApp::ProcessHTTPResponse(URLResponsePtr resp) {
   if (!ReadAndValidateRIFFHeader() ||
       !ReadAndValidateWAVHeader() ||
       !ReadAndValidateDATAHeader()) {
-    BeginShutdown();
+    Shutdown();
     return;
   }
 
@@ -286,13 +287,6 @@ void PlayWAVApp::ProcessHTTPResponse(URLResponsePtr resp) {
   MediaPipePtr media_pipe;
   audio_track_->Configure(cfg.Pass(), GetProxy(&media_pipe));
 
-  // TODO(johngro): Once the media pipe adapter (audio_pipe) has been changed to
-  // be the owner of the connection error handler on the media_pipe object,
-  // remove this.  Use the error handler in the adapter instead.
-  media_pipe.set_connection_error_handler([this]() {
-    OnConnectionError("media_pipe");
-  });
-
   // Grab the rate control interface for our audio renderer.
   audio_track_->GetRateControl(GetProxy(&rate_control_));
   rate_control_.set_connection_error_handler([this]() {
@@ -305,9 +299,9 @@ void PlayWAVApp::ProcessHTTPResponse(URLResponsePtr resp) {
   audio_pipe_->SetWatermarks(USecToBytes(BUF_HI_WATER_USEC),
                              USecToBytes(BUF_LO_WATER_USEC));
   audio_pipe_->SetSignalCallback(
-      [this](MediaResult res) -> bool {
-        return OnNeedsData(res);
-      });
+  [this](MediaResult res) -> void {
+    OnNeedsData(res);
+  });
 }
 
 bool PlayWAVApp::ReadAndValidateRIFFHeader() {
@@ -441,11 +435,17 @@ bool PlayWAVApp::ReadAndValidateDATAHeader() {
   return true;
 }
 
-bool PlayWAVApp::OnNeedsData(MediaResult res) {
+void PlayWAVApp::OnNeedsData(MediaResult res) {
   if (res != MediaResult::OK) {
     MOJO_LOG(ERROR) << "Error during playback!  (res = " << res << ")";
-    BeginShutdown();
-    return false;
+    PostShutdown();
+    return;
+  }
+
+  if (!payload_len_) {
+    // If we are just waiting for playout to finish, keep receiving callbacks so
+    // we know if something went fatally wrong.
+    return;
   }
 
   uint64_t bytes = USecToBytes(CHUNK_SIZE_USEC);
@@ -457,8 +457,8 @@ bool PlayWAVApp::OnNeedsData(MediaResult res) {
   if (res != MediaResult::OK) {
     MOJO_LOG(ERROR) << "Failed to create " << bytes << " byte media packet!  "
                     << "(res = " << res << ")";
-    BeginShutdown();
-    return false;
+    PostShutdown();
+    return;
   }
 
   if (!sent_first_packet_) {
@@ -475,8 +475,8 @@ bool PlayWAVApp::OnNeedsData(MediaResult res) {
       if (!BlockingRead(audio_packet_.data(i),
                         audio_packet_.length(i))) {
         MOJO_LOG(ERROR) << "Failed to read source, shutting down...";
-        BeginShutdown();
-        return false;
+        PostShutdown();
+        return;
       }
 
       payload_len_ -= audio_packet_.length(i);
@@ -492,8 +492,8 @@ bool PlayWAVApp::OnNeedsData(MediaResult res) {
   if (res != MediaResult::OK) {
     MOJO_LOG(ERROR) << "Failed to send media packet!  "
                     << "(res = " << res << ")";
-    BeginShutdown();
-    return false;
+    PostShutdown();
+    return;
   }
 
   if (!clock_started_ && (audio_pipe_->AboveHiWater() || !payload_len_)) {
@@ -501,20 +501,29 @@ bool PlayWAVApp::OnNeedsData(MediaResult res) {
     rate_control_->SetRateAtTargetTime(1, 1, sched.time_since_epoch().count());
     clock_started_ = true;
   }
-
-  return (payload_len_ != 0);
 }
 
 void PlayWAVApp::OnPlayoutComplete(MediaPipe::SendResult res) {
   MOJO_DCHECK(!audio_pipe_->GetPending());
-  BeginShutdown();
+  audio_pipe_ = nullptr;
+  PostShutdown();
 }
 
 void PlayWAVApp::OnConnectionError(const std::string& connection_name) {
   if (!shutting_down_) {
     MOJO_LOG(ERROR) << connection_name << " connection closed unexpectedly!";
-    BeginShutdown();
+    PostShutdown();
   }
+}
+
+void PlayWAVApp::PostShutdown() {
+  if (audio_pipe_) {
+    audio_pipe_->ResetSignalCallback();
+  }
+
+  mojo::RunLoop::current()->PostDelayedTask([this]() -> void {
+    Shutdown();
+  }, 0);
 }
 
 // TODO(johngro): remove this when we can.  Right now, the proper way to cleanly
@@ -531,11 +540,9 @@ void PlayWAVApp::OnConnectionError(const std::string& connection_name) {
 // message which show up after shutdown has been triggered.  When the proper
 // pattern for shutting down an app has been established, come back here and
 // remove all this junk.
-void PlayWAVApp::BeginShutdown() {
-  if (!shutting_down_) {
-    shutting_down_ = true;
-    RunLoop::current()->Quit();
-  }
+void PlayWAVApp::Shutdown() {
+  Quit();
+  RunLoop::current()->Quit();
 }
 
 }  // namespace examples

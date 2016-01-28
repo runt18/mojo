@@ -26,6 +26,7 @@ class MediaResult extends bindings.MojoEnum {
   static const MediaResult alreadyExists = const MediaResult._(-13);
   static const MediaResult notFound = const MediaResult._(-14);
   static const MediaResult shuttingDown = const MediaResult._(-15);
+  static const MediaResult connectionLost = const MediaResult._(-16);
 
   const MediaResult._(int v) : super(v);
 
@@ -46,6 +47,7 @@ class MediaResult extends bindings.MojoEnum {
     "alreadyExists": alreadyExists,
     "notFound": notFound,
     "shuttingDown": shuttingDown,
+    "connectionLost": connectionLost,
   };
   static const List<MediaResult> values = const [
     ok,
@@ -64,6 +66,7 @@ class MediaResult extends bindings.MojoEnum {
     alreadyExists,
     notFound,
     shuttingDown,
+    connectionLost,
   ];
 
   static MediaResult valueOf(String name) => valuesMap[name];
@@ -102,6 +105,8 @@ class MediaResult extends bindings.MojoEnum {
         return notFound;
       case -15:
         return shuttingDown;
+      case -16:
+        return connectionLost;
       default:
         return null;
     }
@@ -151,6 +156,8 @@ class MediaResult extends bindings.MojoEnum {
         return 'MediaResult.notFound';
       case shuttingDown:
         return 'MediaResult.shuttingDown';
+      case connectionLost:
+        return 'MediaResult.connectionLost';
     }
   }
 
