@@ -30,6 +30,7 @@ mojo_native_application("audio_server") {
     "audio_track_impl.cc",
     "audio_track_to_output_link.cc",
     "platform/generic/mixer.cc",
+    "platform/generic/mixers/linear_sampler.cc",
     "platform/generic/mixers/no_op.cc",
     "platform/generic/mixers/point_sampler.cc",
     "platform/generic/standard_output_base.cc",

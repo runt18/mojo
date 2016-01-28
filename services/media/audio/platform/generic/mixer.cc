@@ -3,7 +3,9 @@
 // found in the LICENSE file.
 
 #include "base/logging.h"
+#include "mojo/services/media/common/cpp/linear_transform.h"
 #include "services/media/audio/platform/generic/mixer.h"
+#include "services/media/audio/platform/generic/mixers/linear_sampler.h"
 #include "services/media/audio/platform/generic/mixers/no_op.h"
 #include "services/media/audio/platform/generic/mixers/point_sampler.h"
 
@@ -31,7 +33,15 @@ MixerPtr Mixer::Select(const LpcmMediaTypeDetailsPtr& src_format,
   // probably the ThrottleOutput we are picking a mixer for.
   if (!dst_format) { return MixerPtr(new mixers::NoOp()); }
 
-  return mixers::PointSampler::Select(src_format, dst_format);
+  // If the source sample rate is an integer multiple of the destination sample
+  // rate, just use the point sampler.  Otherwise, use the linear re-sampler.
+  LinearTransform::Ratio src_to_dst(src_format->frames_per_second,
+                                    dst_format->frames_per_second);
+  if (src_to_dst.numerator == 1) {
+    return mixers::PointSampler::Select(src_format, dst_format);
+  } else {
+    return mixers::LinearSampler::Select(src_format, dst_format);
+  }
 }
 
 }  // namespace audio
