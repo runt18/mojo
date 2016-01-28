@@ -94,7 +94,7 @@ TEST(GetEventsTest, DurationEventsSameThread) {
       "event\"}";
   event_specs[5] = "{\"tid\":1,\"ts\":6,\"ph\":\"E\"}";
 
-  std::string trace_json = "[" + JoinString(event_specs, ',') + "]";
+  std::string trace_json = "[" + base::JoinString(event_specs, ",") + "]";
   std::vector<Event> events;
   ASSERT_TRUE(GetEvents(trace_json, &events));
   ASSERT_EQ(3u, events.size());
@@ -127,7 +127,7 @@ TEST(GetEventsTest, DurationEventsTwoThreads) {
   event_specs[2] = "{\"tid\":1,\"ts\":3,\"ph\":\"E\"}";
   event_specs[3] = "{\"tid\":2,\"ts\":4,\"ph\":\"E\"}";
 
-  std::string trace_json = "[" + JoinString(event_specs, ',') + "]";
+  std::string trace_json = "[" + base::JoinString(event_specs, ",") + "]";
   std::vector<Event> events;
   ASSERT_TRUE(GetEvents(trace_json, &events));
   ASSERT_EQ(2u, events.size());
@@ -152,7 +152,7 @@ TEST(GetEventsTest, DurationEventsTidIsString) {
       "\"name\":\"t1 event\"}";
   event_specs[1] = "{\"tid\":\"1\",\"ts\":3,\"ph\":\"E\"}";
 
-  std::string trace_json = "[" + JoinString(event_specs, ',') + "]";
+  std::string trace_json = "[" + base::JoinString(event_specs, ",") + "]";
   std::vector<Event> events;
   ASSERT_TRUE(GetEvents(trace_json, &events));
   ASSERT_EQ(1u, events.size());
@@ -179,7 +179,7 @@ TEST(GetEventsTest, AsyncEvents) {
       "{\"tid\":1004,\"id\":2,\"ts\":4,\"ph\":\"F\",\"cat\":\"cc\",\"name\":"
       "\"t2 event\"}";
 
-  std::string trace_json = "[" + JoinString(event_specs, ',') + "]";
+  std::string trace_json = "[" + base::JoinString(event_specs, ",") + "]";
   std::vector<Event> events;
   ASSERT_TRUE(GetEvents(trace_json, &events));
   ASSERT_EQ(2u, events.size());
@@ -206,7 +206,7 @@ TEST(GetEventsTest, AsyncEventIdIsString) {
       "{\"tid\":1003,\"id\":\"a\",\"ts\":3,\"ph\":\"F\",\"cat\":\"cc\","
       "\"name\":\"t1 event\"}";
 
-  std::string trace_json = "[" + JoinString(event_specs, ',') + "]";
+  std::string trace_json = "[" + base::JoinString(event_specs, ",") + "]";
   std::vector<Event> events;
   ASSERT_TRUE(GetEvents(trace_json, &events));
   ASSERT_EQ(1u, events.size());

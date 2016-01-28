@@ -11,7 +11,6 @@
 #include "base/callback_helpers.h"
 #include "base/logging.h"
 #include "base/memory/scoped_ptr.h"
-#include "base/message_loop/message_loop_proxy.h"
 #include "base/single_thread_task_runner.h"
 #include "tools/android/forwarder2/command.h"
 #include "tools/android/forwarder2/device_listener.h"
@@ -49,16 +48,15 @@ DeviceController::DeviceController(scoped_ptr<Socket> host_socket,
                                    int exit_notifier_fd)
     : host_socket_(host_socket.Pass()),
       exit_notifier_fd_(exit_notifier_fd),
-      construction_task_runner_(base::MessageLoopProxy::current()),
+      construction_task_runner_(base::MessageLoop::current()->task_runner()),
       weak_ptr_factory_(this) {
   host_socket_->AddEventFd(exit_notifier_fd);
 }
 
 void DeviceController::AcceptHostCommandSoon() {
-  base::MessageLoopProxy::current()->PostTask(
-      FROM_HERE,
-      base::Bind(&DeviceController::AcceptHostCommandInternal,
-                 base::Unretained(this)));
+  base::MessageLoop::current()->PostTask(
+      FROM_HERE, base::Bind(&DeviceController::AcceptHostCommandInternal,
+                            base::Unretained(this)));
 }
 
 void DeviceController::AcceptHostCommandInternal() {

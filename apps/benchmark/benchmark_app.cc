@@ -78,7 +78,7 @@ class BenchmarkApp : public mojo::ApplicationDelegate,
     }
     std::vector<std::string> unique_categories(category_set.begin(),
                                                category_set.end());
-    return JoinString(unique_categories, ',');
+    return base::JoinString(unique_categories, ",");
   }
 
   void StartTracedApplication(mojo::ApplicationImpl* app) {

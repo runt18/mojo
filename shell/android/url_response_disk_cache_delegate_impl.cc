@@ -83,7 +83,8 @@ void URLResponseDiskCacheDelegateImpl::PopulateAssetsIfNeeded() {
         base::Bind(&AAssetDir_close, base::Unretained(dir)));
     while (const char* filename = AAssetDir_getNextFileName(dir)) {
       std::string file_name_string = filename;
-      if (EndsWith(file_name_string, kMojoApplicationSuffix, true)) {
+      if (base::EndsWith(file_name_string, kMojoApplicationSuffix,
+                         base::CompareCase::SENSITIVE)) {
         std::string base_name = file_name_string.substr(
             0,
             file_name_string.size() - (arraysize(kMojoApplicationSuffix) - 1));

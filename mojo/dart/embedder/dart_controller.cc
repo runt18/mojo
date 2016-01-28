@@ -264,7 +264,7 @@ Dart_Handle DartController::LibraryTagHandler(Dart_LibraryTag tag,
                                               Dart_Handle url) {
   if (tag == Dart_kCanonicalizeUrl) {
     std::string string = tonic::StdStringFromDart(url);
-    if (StartsWithASCII(string, "dart:", true))
+    if (base::StartsWith(string, "dart:", base::CompareCase::SENSITIVE))
       return url;
   }
   return tonic::DartLibraryLoader::HandleLibraryTag(tag, library, url);
@@ -451,7 +451,8 @@ Dart_Isolate DartController::IsolateCreateCallback(const char* script_uri,
 
   // If it's a file URI, strip the scheme.
   const char* file_scheme = "file://";
-  if (StartsWithASCII(script_uri_string, file_scheme, true)) {
+  if (base::StartsWith(script_uri_string, file_scheme,
+                       base::CompareCase::SENSITIVE)) {
     script_uri_string = script_uri_string.substr(strlen(file_scheme));
   }
 

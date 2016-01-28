@@ -22,6 +22,13 @@
 #include <sys/mman.h>
 #include <unistd.h>
 
+// See commentary in crazy_linker_elf_loader.cpp for the effect of setting
+// this.  If changing there, change here also.
+//
+// For more, see:
+//   https://crbug.com/504410
+#define RESERVE_BREAKPAD_GUARD_REGION 1
+
 // Set this to 1 to enable debug traces to the Android log.
 // Note that LOG() from "base/logging.h" cannot be used, since it is
 // in base/ which hasn't been loaded yet.
@@ -104,8 +111,8 @@ bool InitFieldId(JNIEnv* env,
     LOG_ERROR("Could not find ID for field '%s'", field_name);
     return false;
   }
-  LOG_INFO(
-      "%s: Found ID %p for field '%s'", __FUNCTION__, *field_id, field_name);
+  LOG_INFO("%s: Found ID %p for field '%s'", __FUNCTION__, *field_id,
+           field_name);
   return true;
 }
 
@@ -123,8 +130,8 @@ bool InitStaticMethodId(JNIEnv* env,
     LOG_ERROR("Could not find ID for static method '%s'", method_name);
     return false;
   }
-  LOG_INFO("%s: Found ID %p for static method '%s'",
-           __FUNCTION__, *method_id, method_name);
+  LOG_INFO("%s: Found ID %p for static method '%s'", __FUNCTION__, *method_id,
+           method_name);
   return true;
 }
 
@@ -142,9 +149,8 @@ bool InitStaticFieldId(JNIEnv* env,
     LOG_ERROR("Could not find ID for static field '%s'", field_name);
     return false;
   }
-  LOG_INFO(
-      "%s: Found ID %p for static field '%s'",
-      __FUNCTION__, *field_id, field_name);
+  LOG_INFO("%s: Found ID %p for static field '%s'", __FUNCTION__, *field_id,
+           field_name);
   return true;
 }
 
@@ -165,9 +171,8 @@ bool InitStaticInt(JNIEnv* env,
     return false;
 
   *value = env->GetStaticIntField(clazz, field_id);
-  LOG_INFO(
-      "%s: Found value %d for class '%s', static field '%s'",
-      __FUNCTION__, *value, class_name, field_name);
+  LOG_INFO("%s: Found value %d for class '%s', static field '%s'", __FUNCTION__,
+           *value, class_name, field_name);
 
   return true;
 }
@@ -186,7 +191,7 @@ struct LibInfo_class {
   bool Init(JNIEnv* env) {
     jclass clazz;
     if (!InitClassReference(
-             env, "org/chromium/base/library_loader/Linker$LibInfo", &clazz)) {
+            env, "org/chromium/base/library_loader/Linker$LibInfo", &clazz)) {
       return false;
     }
 
@@ -245,8 +250,8 @@ bool InitSDKVersionInfo(JNIEnv* env) {
     return false;
 
   crazy_set_sdk_build_version(static_cast<int>(value));
-  LOG_INFO("%s: Set SDK build version to %d",
-           __FUNCTION__, static_cast<int>(value));
+  LOG_INFO("%s: Set SDK build version to %d", __FUNCTION__,
+           static_cast<int>(value));
 
   return true;
 }
@@ -298,10 +303,11 @@ class ScopedLibrary {
 namespace {
 
 template <class LibraryOpener>
-bool GenericLoadLibrary(
-    JNIEnv* env,
-    const char* library_name, jlong load_address, jobject lib_info_obj,
-    const LibraryOpener& opener) {
+bool GenericLoadLibrary(JNIEnv* env,
+                        const char* library_name,
+                        jlong load_address,
+                        jobject lib_info_obj,
+                        const LibraryOpener& opener) {
   crazy_context_t* context = GetCrazyContext();
 
   if (!IsValidAddress(load_address)) {
@@ -319,18 +325,16 @@ bool GenericLoadLibrary(
 
   crazy_library_info_t info;
   if (!crazy_library_get_info(library.Get(), context, &info)) {
-    LOG_ERROR("%s: Could not get library information for %s: %s",
-              __FUNCTION__,
-              library_name,
-              crazy_context_get_error(context));
+    LOG_ERROR("%s: Could not get library information for %s: %s", __FUNCTION__,
+              library_name, crazy_context_get_error(context));
     return false;
   }
 
   // Release library object to keep it alive after the function returns.
   library.Release();
 
-  s_lib_info_fields.SetLoadInfo(
-      env, lib_info_obj, info.load_address, info.load_size);
+  s_lib_info_fields.SetLoadInfo(env, lib_info_obj, info.load_address,
+                                info.load_size);
   LOG_INFO("%s: Success loading library %s", __FUNCTION__, library_name);
   return true;
 }
@@ -338,20 +342,16 @@ bool GenericLoadLibrary(
 // Used for opening the library in a regular file.
 class FileLibraryOpener {
  public:
-  bool Open(
-      crazy_library_t** library,
-      const char* library_name,
-      crazy_context_t* context) const;
+  bool Open(crazy_library_t** library,
+            const char* library_name,
+            crazy_context_t* context) const;
 };
 
-bool FileLibraryOpener::Open(
-    crazy_library_t** library,
-    const char* library_name,
-    crazy_context_t* context) const {
+bool FileLibraryOpener::Open(crazy_library_t** library,
+                             const char* library_name,
+                             crazy_context_t* context) const {
   if (!crazy_library_open(library, library_name, context)) {
-    LOG_ERROR("%s: Could not open %s: %s",
-              __FUNCTION__,
-              library_name,
+    LOG_ERROR("%s: Could not open %s: %s", __FUNCTION__, library_name,
               crazy_context_get_error(context));
     return false;
   }
@@ -362,24 +362,22 @@ bool FileLibraryOpener::Open(
 class ZipLibraryOpener {
  public:
   explicit ZipLibraryOpener(const char* zip_file) : zip_file_(zip_file) {}
-  bool Open(
-      crazy_library_t** library,
-      const char* library_name,
-      crazy_context_t* context) const;
+  bool Open(crazy_library_t** library,
+            const char* library_name,
+            crazy_context_t* context) const;
+
  private:
   const char* zip_file_;
 };
 
-bool ZipLibraryOpener::Open(
-    crazy_library_t** library,
-    const char* library_name,
-    crazy_context_t* context) const {
-  if (!crazy_library_open_in_zip_file(
-          library, zip_file_, library_name, context)) {
-     LOG_ERROR("%s: Could not open %s in zip file %s: %s",
-               __FUNCTION__, library_name, zip_file_,
-               crazy_context_get_error(context));
-     return false;
+bool ZipLibraryOpener::Open(crazy_library_t** library,
+                            const char* library_name,
+                            crazy_context_t* context) const {
+  if (!crazy_library_open_in_zip_file(library, zip_file_, library_name,
+                                      context)) {
+    LOG_ERROR("%s: Could not open %s in zip file %s: %s", __FUNCTION__,
+              library_name, zip_file_, crazy_context_get_error(context));
+    return false;
   }
   return true;
 }
@@ -406,9 +404,9 @@ jboolean LoadLibrary(JNIEnv* env,
                      jobject lib_info_obj) {
   String lib_name(env, library_name);
   FileLibraryOpener opener;
-  return GenericLoadLibrary(
-      env, lib_name.c_str(),
-      static_cast<size_t>(load_address), lib_info_obj, opener);
+  return GenericLoadLibrary(env, lib_name.c_str(),
+                            static_cast<size_t>(load_address), lib_info_obj,
+                            opener);
 }
 
 // Load a library from a zipfile with the chromium linker. The
@@ -442,9 +440,9 @@ jboolean LoadLibraryInZipFile(JNIEnv* env,
   String zipfile_name_str(env, zipfile_name);
   String lib_name(env, library_name);
   ZipLibraryOpener opener(zipfile_name_str.c_str());
-  return GenericLoadLibrary(
-      env, lib_name.c_str(),
-      static_cast<size_t>(load_address), lib_info_obj, opener);
+  return GenericLoadLibrary(env, lib_name.c_str(),
+                            static_cast<size_t>(load_address), lib_info_obj,
+                            opener);
 }
 
 // Class holding the Java class and method ID for the Java side Linker
@@ -456,11 +454,8 @@ struct JavaCallbackBindings_class {
   // Initialize an instance.
   bool Init(JNIEnv* env, jclass linker_class) {
     clazz = reinterpret_cast<jclass>(env->NewGlobalRef(linker_class));
-    return InitStaticMethodId(env,
-                              linker_class,
-                              "postCallbackOnMainThread",
-                              "(J)V",
-                              &method_id);
+    return InitStaticMethodId(env, linker_class, "postCallbackOnMainThread",
+                              "(J)V", &method_id);
   }
 };
 
@@ -475,8 +470,8 @@ static JavaCallbackBindings_class s_java_callback_bindings;
 void RunCallbackOnUiThread(JNIEnv* env, jclass clazz, jlong arg) {
   crazy_callback_t* callback = reinterpret_cast<crazy_callback_t*>(arg);
 
-  LOG_INFO("%s: Called back from java with handler %p, opaque %p",
-           __FUNCTION__, callback->handler, callback->opaque);
+  LOG_INFO("%s: Called back from java with handler %p, opaque %p", __FUNCTION__,
+           callback->handler, callback->opaque);
 
   crazy_callback_run(callback);
   delete callback;
@@ -496,14 +491,13 @@ static bool PostForLaterExecution(crazy_callback_t* callback_request,
 
   JavaVM* vm;
   int minimum_jni_version;
-  crazy_context_get_java_vm(context,
-                            reinterpret_cast<void**>(&vm),
+  crazy_context_get_java_vm(context, reinterpret_cast<void**>(&vm),
                             &minimum_jni_version);
 
   // Do not reuse JNIEnv from JNI_OnLoad, but retrieve our own.
   JNIEnv* env;
-  if (JNI_OK != vm->GetEnv(
-      reinterpret_cast<void**>(&env), minimum_jni_version)) {
+  if (JNI_OK !=
+      vm->GetEnv(reinterpret_cast<void**>(&env), minimum_jni_version)) {
     LOG_ERROR("Could not create JNIEnv");
     return false;
   }
@@ -512,13 +506,13 @@ static bool PostForLaterExecution(crazy_callback_t* callback_request,
   crazy_callback_t* callback = new crazy_callback_t();
   *callback = *callback_request;
 
-  LOG_INFO("%s: Calling back to java with handler %p, opaque %p",
-           __FUNCTION__, callback->handler, callback->opaque);
+  LOG_INFO("%s: Calling back to java with handler %p, opaque %p", __FUNCTION__,
+           callback->handler, callback->opaque);
 
   jlong arg = static_cast<jlong>(reinterpret_cast<uintptr_t>(callback));
 
-  env->CallStaticVoidMethod(
-      s_java_callback_bindings.clazz, s_java_callback_bindings.method_id, arg);
+  env->CallStaticVoidMethod(s_java_callback_bindings.clazz,
+                            s_java_callback_bindings.method_id, arg);
 
   // Back out and return false if we encounter a JNI exception.
   if (env->ExceptionCheck() == JNI_TRUE) {
@@ -556,21 +550,16 @@ jboolean CreateSharedRelro(JNIEnv* env,
   size_t relro_size = 0;
   int relro_fd = -1;
 
-  if (!crazy_library_create_shared_relro(library.Get(),
-                                         context,
-                                         static_cast<size_t>(load_address),
-                                         &relro_start,
-                                         &relro_size,
-                                         &relro_fd)) {
+  if (!crazy_library_create_shared_relro(
+          library.Get(), context, static_cast<size_t>(load_address),
+          &relro_start, &relro_size, &relro_fd)) {
     LOG_ERROR("%s: Could not create shared RELRO sharing for %s: %s\n",
-              __FUNCTION__,
-              lib_name.c_str(),
-              crazy_context_get_error(context));
+              __FUNCTION__, lib_name.c_str(), crazy_context_get_error(context));
     return false;
   }
 
-  s_lib_info_fields.SetRelroInfo(
-      env, lib_info_obj, relro_start, relro_size, relro_fd);
+  s_lib_info_fields.SetRelroInfo(env, lib_info_obj, relro_start, relro_size,
+                                 relro_fd);
   return true;
 }
 
@@ -580,9 +569,7 @@ jboolean UseSharedRelro(JNIEnv* env,
                         jobject lib_info_obj) {
   String lib_name(env, library_name);
 
-  LOG_INFO("%s: called for %s, lib_info_ref=%p",
-           __FUNCTION__,
-           lib_name.c_str(),
+  LOG_INFO("%s: called for %s, lib_info_ref=%p", __FUNCTION__, lib_name.c_str(),
            lib_info_obj);
 
   ScopedLibrary library;
@@ -595,27 +582,20 @@ jboolean UseSharedRelro(JNIEnv* env,
   size_t relro_start = 0;
   size_t relro_size = 0;
   int relro_fd = -1;
-  s_lib_info_fields.GetRelroInfo(
-      env, lib_info_obj, &relro_start, &relro_size, &relro_fd);
+  s_lib_info_fields.GetRelroInfo(env, lib_info_obj, &relro_start, &relro_size,
+                                 &relro_fd);
 
-  LOG_INFO("%s: library=%s relro start=%p size=%p fd=%d",
-           __FUNCTION__,
-           lib_name.c_str(),
-           (void*)relro_start,
-           (void*)relro_size,
-           relro_fd);
+  LOG_INFO("%s: library=%s relro start=%p size=%p fd=%d", __FUNCTION__,
+           lib_name.c_str(), (void*)relro_start, (void*)relro_size, relro_fd);
 
-  if (!crazy_library_use_shared_relro(
-           library.Get(), context, relro_start, relro_size, relro_fd)) {
-    LOG_ERROR("%s: Could not use shared RELRO for %s: %s",
-              __FUNCTION__,
-              lib_name.c_str(),
-              crazy_context_get_error(context));
+  if (!crazy_library_use_shared_relro(library.Get(), context, relro_start,
+                                      relro_size, relro_fd)) {
+    LOG_ERROR("%s: Could not use shared RELRO for %s: %s", __FUNCTION__,
+              lib_name.c_str(), crazy_context_get_error(context));
     return false;
   }
 
-  LOG_INFO("%s: Library %s using shared RELRO section!",
-           __FUNCTION__,
+  LOG_INFO("%s: Library %s using shared RELRO section!", __FUNCTION__,
            lib_name.c_str());
 
   return true;
@@ -626,6 +606,13 @@ jboolean CanUseSharedRelro(JNIEnv* env, jclass clazz) {
 }
 
 jlong GetRandomBaseLoadAddress(JNIEnv* env, jclass clazz, jlong bytes) {
+#if RESERVE_BREAKPAD_GUARD_REGION
+  // Add a Breakpad guard region.  16Mb should be comfortably larger than
+  // the largest relocation packer saving we expect to encounter.
+  static const size_t kBreakpadGuardRegionBytes = 16 * 1024 * 1024;
+  bytes += kBreakpadGuardRegionBytes;
+#endif
+
   void* address =
       mmap(NULL, bytes, PROT_NONE, MAP_PRIVATE | MAP_ANONYMOUS, -1, 0);
   if (address == MAP_FAILED) {
@@ -633,54 +620,15 @@ jlong GetRandomBaseLoadAddress(JNIEnv* env, jclass clazz, jlong bytes) {
     return 0;
   }
   munmap(address, bytes);
+
+#if RESERVE_BREAKPAD_GUARD_REGION
+  // Allow for a Breakpad guard region ahead of the returned address.
+  address = reinterpret_cast<void*>(reinterpret_cast<uintptr_t>(address) +
+                                    kBreakpadGuardRegionBytes);
+#endif
+
   LOG_INFO("%s: Random base load address is %p\n", __FUNCTION__, address);
   return static_cast<jlong>(reinterpret_cast<uintptr_t>(address));
-}
-
-// Get the full path of a library in the zip file
-// (lib/<abi>/crazy.<lib_name>).
-//
-// |env| is the current JNI environment handle.
-// |clazz| is the static class handle which is not used here.
-// |lib_name| is the library base name.
-// Returns the full path (or empty string on failure).
-jstring GetLibraryFilePathInZipFile(JNIEnv* env,
-                                    jclass clazz,
-                                    jstring lib_name) {
-  String lib_name_str(env, lib_name);
-  const char* lib_name_c_str = lib_name_str.c_str();
-  char buffer[kMaxFilePathLengthInZip + 1];
-  if (crazy_library_file_path_in_zip_file(
-          lib_name_c_str, buffer, sizeof(buffer)) == CRAZY_STATUS_FAILURE) {
-    LOG_ERROR("%s: Failed to get full filename for library '%s'",
-              __FUNCTION__, lib_name_c_str);
-    buffer[0] = '\0';
-  }
-  return env->NewStringUTF(buffer);
-}
-
-// Check whether a library is page aligned and uncompressed in the APK file.
-//
-// |env| is the current JNI environment handle.
-// |clazz| is the static class handle which is not used here.
-// |apkfile_name| is the filename of the APK.
-// |library_name| is the library base name.
-// Returns true if page aligned and uncompressed.
-jboolean CheckLibraryIsMappableInApk(JNIEnv* env, jclass clazz,
-                                     jstring apkfile_name,
-                                     jstring library_name) {
-  String apkfile_name_str(env, apkfile_name);
-  const char* apkfile_name_c_str = apkfile_name_str.c_str();
-  String library_name_str(env, library_name);
-  const char* library_name_c_str = library_name_str.c_str();
-
-  LOG_INFO("%s: Checking if %s is page-aligned and uncompressed in %s\n",
-           __FUNCTION__, library_name_c_str, apkfile_name_c_str);
-  jboolean mappable = crazy_linker_check_library_is_mappable_in_zip_file(
-      apkfile_name_c_str, library_name_c_str) == CRAZY_STATUS_SUCCESS;
-  LOG_INFO("%s: %s\n", __FUNCTION__, mappable ? "Mappable" : "NOT mappable");
-
-  return mappable;
 }
 
 const JNINativeMethod kNativeMethods[] = {
@@ -733,19 +681,7 @@ const JNINativeMethod kNativeMethods[] = {
      ")"
      "J",
      reinterpret_cast<void*>(&GetRandomBaseLoadAddress)},
-    {"nativeGetLibraryFilePathInZipFile",
-     "("
-     "Ljava/lang/String;"
-     ")"
-     "Ljava/lang/String;",
-     reinterpret_cast<void*>(&GetLibraryFilePathInZipFile)},
-    {"nativeCheckLibraryIsMappableInApk",
-     "("
-     "Ljava/lang/String;"
-     "Ljava/lang/String;"
-     ")"
-     "Z",
-     reinterpret_cast<void*>(&CheckLibraryIsMappableInApk)}, };
+};
 
 }  // namespace
 
@@ -768,14 +704,12 @@ jint JNI_OnLoad(JavaVM* vm, void* reserved) {
 
   // Register native methods.
   jclass linker_class;
-  if (!InitClassReference(env,
-                          "org/chromium/base/library_loader/Linker",
+  if (!InitClassReference(env, "org/chromium/base/library_loader/LegacyLinker",
                           &linker_class))
     return -1;
 
   LOG_INFO("%s: Registering native methods", __FUNCTION__);
-  env->RegisterNatives(linker_class,
-                       kNativeMethods,
+  env->RegisterNatives(linker_class, kNativeMethods,
                        sizeof(kNativeMethods) / sizeof(kNativeMethods[0]));
 
   // Find LibInfo field ids.

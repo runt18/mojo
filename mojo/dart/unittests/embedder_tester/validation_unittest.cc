@@ -79,7 +79,8 @@ class DartValidationTest : public DartTest {
       std::string source;
       bool r;
       std::string filename = base::FilePath(test_name).BaseName().value();
-      if (!StartsWithASCII(filename, "conformance_", true)) {
+      if (!base::StartsWith(filename, "conformance_",
+                            base::CompareCase::SENSITIVE)) {
         // Only include conformance tests.
         continue;
       }

@@ -112,8 +112,8 @@ class NonSfiUnitTestPlatformDelegate : public base::UnitTestPlatformDelegate {
     base::CommandLine cmd_line(test_path_);
     cmd_line.AppendSwitchPath(
         switches::kTestLauncherOutput, output_file);
-    cmd_line.AppendSwitchASCII(
-        base::kGTestFilterFlag, JoinString(test_names, ":"));
+    cmd_line.AppendSwitchASCII(base::kGTestFilterFlag,
+                               base::JoinString(test_names, ":"));
     return cmd_line;
   }
 

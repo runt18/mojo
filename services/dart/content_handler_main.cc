@@ -5,7 +5,7 @@
 #include "base/bind.h"
 #include "base/message_loop/message_loop.h"
 #include "base/run_loop.h"
-#include "base/strings/string_util.h"
+#include "base/strings/string_split.h"
 #include "base/synchronization/waitable_event.h"
 #include "base/threading/platform_thread.h"
 #include "base/trace_event/trace_event.h"
@@ -36,7 +36,7 @@ const char kRunOnMessageLoop[] = "--run-on-message-loop";
 static bool IsDartZip(std::string url) {
   // If the url doesn't end with ".dart" we assume it is a zipped up
   // dart application.
-  return !EndsWith(url, ".dart", false);
+  return !base::EndsWith(url, ".dart", base::CompareCase::INSENSITIVE_ASCII);
 }
 
 class DartContentHandlerApp;
@@ -158,8 +158,8 @@ class DartContentHandlerApp : public mojo::ApplicationDelegate {
     bool strict_compilation = false;
     GURL url(requestedUrl);
     if (url.has_query()) {
-      std::vector<std::string> query_parameters;
-      Tokenize(url.query(), "&", &query_parameters);
+      std::vector<std::string> query_parameters = base::SplitString(
+          url.query(), "&", base::KEEP_WHITESPACE, base::SPLIT_WANT_NONEMPTY);
       strict_compilation =
           std::find(query_parameters.begin(), query_parameters.end(),
                     "strict=true") != query_parameters.end();

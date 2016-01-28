@@ -161,7 +161,7 @@ MinidumpAndBoundary GetMinidumpAndBoundary(const base::FilePath& dumps_path) {
   // Find multipart boundary.
   std::string start_of_file;
   base::ReadFileToString(minidump, &start_of_file, kMaxBoundarySize);
-  if (!StartsWithASCII(start_of_file, "--", true)) {
+  if (!base::StartsWith(start_of_file, "--", base::CompareCase::SENSITIVE)) {
     LOG(WARNING) << "Corrupted minidump: " << minidump.value();
     base::DeleteFile(minidump, false);
     return MinidumpAndBoundary();

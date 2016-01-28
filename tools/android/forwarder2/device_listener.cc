@@ -9,7 +9,6 @@
 #include "base/callback.h"
 #include "base/logging.h"
 #include "base/memory/scoped_ptr.h"
-#include "base/message_loop/message_loop_proxy.h"
 #include "base/single_thread_task_runner.h"
 #include "tools/android/forwarder2/command.h"
 #include "tools/android/forwarder2/forwarder.h"
@@ -51,7 +50,7 @@ void DeviceListener::Start() {
 }
 
 void DeviceListener::SetAdbDataSocket(scoped_ptr<Socket> adb_data_socket) {
-  thread_.message_loop_proxy()->PostTask(
+  thread_.task_runner()->PostTask(
       FROM_HERE,
       base::Bind(&DeviceListener::OnAdbDataSocketReceivedOnInternalThread,
                  base::Unretained(this), base::Passed(&adb_data_socket)));
@@ -65,7 +64,7 @@ DeviceListener::DeviceListener(scoped_ptr<Socket> listener_socket,
       listener_socket_(listener_socket.Pass()),
       host_socket_(host_socket.Pass()),
       listener_port_(port),
-      deletion_task_runner_(base::MessageLoopProxy::current()),
+      deletion_task_runner_(base::MessageLoop::current()->task_runner()),
       thread_("DeviceListener") {
   CHECK(host_socket_.get());
   DCHECK(deletion_task_runner_.get());
@@ -74,10 +73,9 @@ DeviceListener::DeviceListener(scoped_ptr<Socket> listener_socket,
 }
 
 void DeviceListener::AcceptNextClientSoon() {
-  thread_.message_loop_proxy()->PostTask(
-      FROM_HERE,
-      base::Bind(&DeviceListener::AcceptClientOnInternalThread,
-                 base::Unretained(this)));
+  thread_.task_runner()->PostTask(
+      FROM_HERE, base::Bind(&DeviceListener::AcceptClientOnInternalThread,
+                            base::Unretained(this)));
 }
 
 void DeviceListener::AcceptClientOnInternalThread() {

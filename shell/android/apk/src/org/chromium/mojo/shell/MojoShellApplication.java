@@ -40,7 +40,8 @@ public class MojoShellApplication extends BaseChromiumApplication {
      */
     private void initializeNative() {
         try {
-            LibraryLoader.get(LibraryProcessType.PROCESS_BROWSER).ensureInitialized();
+            LibraryLoader.get(LibraryProcessType.PROCESS_BROWSER)
+                    .ensureInitialized(getApplicationContext());
         } catch (ProcessInitException e) {
             Log.e(TAG, "libmojo_shell initialization failed.", e);
             throw new RuntimeException(e);

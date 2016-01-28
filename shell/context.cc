@@ -150,7 +150,7 @@ void InitContentHandlers(ApplicationManager* manager,
   //     (to embed a comma into a string escape it using "\,")
   // Whatever takes 'parameters' and constructs a CommandLine is failing to
   // un-escape the commas, we need to move this fix to that file.
-  ReplaceSubstringsAfterOffset(&handlers_spec, 0, "\\,", ",");
+  base::ReplaceSubstringsAfterOffset(&handlers_spec, 0, "\\,", ",");
 #endif
 
   std::vector<std::string> parts;
@@ -296,7 +296,7 @@ bool Context::InitWithPaths(
   mojo_shell_child_path_ = shell_child_path;
 
   task_runners_.reset(
-      new TaskRunners(base::MessageLoop::current()->message_loop_proxy()));
+      new TaskRunners(base::MessageLoop::current()->task_runner()));
 
 #if !defined(OS_MACOSX)
   application_manager()->SetLoaderForURL(

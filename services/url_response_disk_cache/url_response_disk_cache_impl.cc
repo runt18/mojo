@@ -237,7 +237,8 @@ std::vector<std::string> GetHeaderValues(const std::string& header_name,
 
 // Returns whether the given |entry| is valid.
 bool IsCacheEntryValid(const CacheEntryPtr& entry) {
-  return entry && PathExists(base::FilePath(entry->response_body_path));
+  return entry &&
+         PathExists(base::FilePath::FromUTF8Unsafe(entry->response_body_path));
 }
 
 // Returns whether the given directory |entry| is valid and its content can be
@@ -285,7 +286,8 @@ void PruneCache(scoped_refptr<URLResponseDiskCacheDB> db,
     iterator->GetNext(&key, &entry);
     if (last_key && last_key->request_origin == key->request_origin &&
         last_key->url == key->url) {
-      base::FilePath entry_directory = base::FilePath(entry->entry_directory);
+      base::FilePath entry_directory =
+          base::FilePath::FromUTF8Unsafe(entry->entry_directory);
       if (base::DeleteFile(entry_directory, true))
         db->Delete(key.Clone());
     }
@@ -390,10 +392,11 @@ void URLResponseDiskCacheImpl::Get(const String& url,
     callback.Run(URLResponsePtr(), nullptr, nullptr);
     return;
   }
-  callback.Run(entry->response.Pass(),
-               PathToArray(base::FilePath(entry->response_body_path)),
-               PathToArray(GetConsumerCacheDirectory(
-                   base::FilePath(entry->entry_directory))));
+  callback.Run(
+      entry->response.Pass(),
+      PathToArray(base::FilePath::FromUTF8Unsafe(entry->response_body_path)),
+      PathToArray(GetConsumerCacheDirectory(
+          base::FilePath::FromUTF8Unsafe(entry->entry_directory))));
   UpdateLastInvalidation(db_, key.Pass(), base::Time::Now());
 }
 
@@ -441,9 +444,9 @@ void URLResponseDiskCacheImpl::UpdateAndGetInternal(
   CacheKeyPtr key;
   CacheEntryPtr entry = db_->GetNewest(request_origin_, url, &key);
   if (IsCacheEntryFresh(response, entry)) {
-    callback.Run(
-        base::FilePath(entry->response_body_path),
-        GetConsumerCacheDirectory(base::FilePath(entry->entry_directory)));
+    callback.Run(base::FilePath::FromUTF8Unsafe(entry->response_body_path),
+                 GetConsumerCacheDirectory(
+                     base::FilePath::FromUTF8Unsafe(entry->entry_directory)));
     UpdateLastInvalidation(db_, key.Pass(), base::Time::Max());
     return;
   }

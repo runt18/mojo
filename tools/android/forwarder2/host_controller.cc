@@ -79,15 +79,13 @@ HostController::HostController(
       global_exit_notifier_fd_(exit_notifier_fd),
       adb_control_socket_(adb_control_socket.Pass()),
       delete_controller_notifier_(delete_controller_notifier.Pass()),
-      deletion_task_runner_(base::MessageLoopProxy::current()),
-      thread_("HostControllerThread") {
-}
+      deletion_task_runner_(base::MessageLoop::current()->task_runner()),
+      thread_("HostControllerThread") {}
 
 void HostController::ReadNextCommandSoon() {
-  thread_.message_loop_proxy()->PostTask(
-      FROM_HERE,
-      base::Bind(&HostController::ReadCommandOnInternalThread,
-                 base::Unretained(this)));
+  thread_.task_runner()->PostTask(
+      FROM_HERE, base::Bind(&HostController::ReadCommandOnInternalThread,
+                            base::Unretained(this)));
 }
 
 void HostController::ReadCommandOnInternalThread() {

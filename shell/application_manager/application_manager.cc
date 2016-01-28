@@ -210,9 +210,11 @@ void ApplicationManager::ConnectToApplicationWithParameters(
   // connecting to those apps would result in a recursive loop, so it has to be
   // explicitly avoided here. What this means in practice is that these apps
   // cannot themselves require authentication to obtain.
-  if (EndsWith(resolved_url.path(), "/authentication.mojo", true) ||
-      EndsWith(resolved_url.path(),
-               "/authenticating_url_loader_interceptor.mojo", true)) {
+  if (base::EndsWith(resolved_url.path(), "/authentication.mojo",
+                     base::CompareCase::SENSITIVE) ||
+      base::EndsWith(resolved_url.path(),
+                     "/authenticating_url_loader_interceptor.mojo",
+                     base::CompareCase::SENSITIVE)) {
     network_service = network_service_.get();
   } else if (!initialized_authentication_interceptor_) {
 #ifndef NO_AUTHENTICATION

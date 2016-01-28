@@ -6,6 +6,7 @@
 
 #include <iostream>
 
+#include "base/strings/string_piece.h"
 #include "base/strings/string_util.h"
 #include "gin/arguments.h"
 #include "gin/converter.h"
@@ -25,7 +26,7 @@ void Log(Arguments* args) {
     args->ThrowError();
     return;
   }
-  std::cout << JoinString(messages, ' ') << std::endl;
+  std::cout << base::JoinString(messages, " ") << std::endl;
 }
 
 WrapperInfo g_wrapper_info = { kEmbedderNativeGin };

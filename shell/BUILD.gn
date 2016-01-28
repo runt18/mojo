@@ -655,6 +655,7 @@ mojo_native_application("apptests") {
     "//base",
     "//mojo/application",
     "//mojo/application:test_support",
+    "//mojo/converters/base",
     "//mojo/data_pipe_utils",
     "//mojo/public/cpp/bindings:callback",
     "//mojo/public/cpp/environment",

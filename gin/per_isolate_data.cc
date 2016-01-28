@@ -3,7 +3,8 @@
 // found in the LICENSE file.
 
 #include "base/logging.h"
-#include "base/message_loop/message_loop_proxy.h"
+#include "base/message_loop/message_loop.h"
+#include "base/single_thread_task_runner.h"
 #include "gin/per_isolate_data.h"
 #include "gin/public/gin_embedders.h"
 
@@ -21,7 +22,7 @@ PerIsolateData::PerIsolateData(Isolate* isolate,
                                ArrayBuffer::Allocator* allocator)
     : isolate_(isolate),
       allocator_(allocator),
-      message_loop_proxy_(base::MessageLoopProxy::current()) {
+      task_runner_(base::MessageLoop::current()->task_runner()) {
   isolate_->SetData(kEmbedderNativeGin, this);
 }
 

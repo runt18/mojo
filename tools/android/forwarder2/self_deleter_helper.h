@@ -13,7 +13,6 @@
 #include "base/memory/ref_counted.h"
 #include "base/memory/scoped_ptr.h"
 #include "base/memory/weak_ptr.h"
-#include "base/message_loop/message_loop_proxy.h"
 
 namespace base {
 
@@ -99,11 +98,10 @@ class SelfDeleterHelper {
 
   SelfDeleterHelper(T* self_deleting_object,
                     const DeletionCallback& deletion_callback)
-      : construction_runner_(base::MessageLoopProxy::current()),
+      : construction_runner_(base::MessageLoop::current()->task_runner()),
         self_deleting_object_(self_deleting_object),
         deletion_callback_(deletion_callback),
-        weak_ptr_factory_(this) {
-  }
+        weak_ptr_factory_(this) {}
 
   ~SelfDeleterHelper() {
     DCHECK(construction_runner_->RunsTasksOnCurrentThread());

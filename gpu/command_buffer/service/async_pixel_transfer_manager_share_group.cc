@@ -11,6 +11,7 @@
 #include "base/logging.h"
 #include "base/memory/ref_counted.h"
 #include "base/memory/weak_ptr.h"
+#include "base/single_thread_task_runner.h"
 #include "base/synchronization/cancellation_flag.h"
 #include "base/synchronization/lock.h"
 #include "base/synchronization/waitable_event.h"
@@ -45,10 +46,12 @@ class TransferThread : public base::Thread {
   TransferThread()
       : base::Thread(kAsyncTransferThreadName),
         initialized_(false) {
+    base::Thread::Options options;
     Start();
 #if defined(OS_ANDROID) || defined(OS_LINUX)
-    SetPriority(base::ThreadPriority::BACKGROUND);
+    options.priority = base::ThreadPriority::BACKGROUND;
 #endif
+    StartWithOptions(options);
   }
 
   ~TransferThread() override {
@@ -62,12 +65,11 @@ class TransferThread : public base::Thread {
       return;
 
     base::WaitableEvent wait_for_init(true, false);
-    message_loop_proxy()->PostTask(
-      FROM_HERE,
-      base::Bind(&TransferThread::InitializeOnTransferThread,
-                 base::Unretained(this),
-                 base::Unretained(parent_context),
-                 &wait_for_init));
+    task_runner()->PostTask(
+        FROM_HERE,
+        base::Bind(&TransferThread::InitializeOnTransferThread,
+                   base::Unretained(this), base::Unretained(parent_context),
+                   &wait_for_init));
     wait_for_init.Wait();
   }
 
@@ -124,8 +126,8 @@ class TransferThread : public base::Thread {
 base::LazyInstance<TransferThread>::Leaky
     g_transfer_thread = LAZY_INSTANCE_INITIALIZER;
 
-base::MessageLoopProxy* transfer_message_loop_proxy() {
-  return g_transfer_thread.Pointer()->message_loop_proxy().get();
+base::SingleThreadTaskRunner* transfer_task_runner() {
+  return g_transfer_thread.Pointer()->task_runner().get();
 }
 
 class PendingTask : public base::RefCountedThreadSafe<PendingTask> {
@@ -247,10 +249,9 @@ class TransferStateInternal
         tex_params,
         mem_params,
         texture_upload_stats));
-    transfer_message_loop_proxy()->PostTask(
-        FROM_HERE,
-        base::Bind(
-            &PendingTask::BindAndRun, pending_upload_task_, texture_id_));
+    transfer_task_runner()->PostTask(
+        FROM_HERE, base::Bind(&PendingTask::BindAndRun, pending_upload_task_,
+                              texture_id_));
 
     // Save the late bind callback, so we can notify the client when it is
     // bound.
@@ -268,10 +269,9 @@ class TransferStateInternal
         tex_params,
         mem_params,
         texture_upload_stats));
-    transfer_message_loop_proxy()->PostTask(
-        FROM_HERE,
-        base::Bind(
-            &PendingTask::BindAndRun, pending_upload_task_, texture_id_));
+    transfer_task_runner()->PostTask(
+        FROM_HERE, base::Bind(&PendingTask::BindAndRun, pending_upload_task_,
+                              texture_id_));
   }
 
  private:
@@ -506,11 +506,9 @@ void AsyncPixelTransferManagerShareGroup::AsyncNotifyCompletion(
     AsyncPixelTransferCompletionObserver* observer) {
   // Post a PerformNotifyCompletion task to the upload thread. This task
   // will run after all async transfers are complete.
-  transfer_message_loop_proxy()->PostTask(
-      FROM_HERE,
-      base::Bind(&PerformNotifyCompletion,
-                 mem_params,
-                 make_scoped_refptr(observer)));
+  transfer_task_runner()->PostTask(
+      FROM_HERE, base::Bind(&PerformNotifyCompletion, mem_params,
+                            make_scoped_refptr(observer)));
 }
 
 uint32 AsyncPixelTransferManagerShareGroup::GetTextureUploadCount() {

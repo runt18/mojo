@@ -8,7 +8,7 @@
 #include "base/files/file_path.h"
 #include "base/files/scoped_temp_dir.h"
 #include "base/i18n/icu_util.h"
-#include "base/strings/string_util.h"
+#include "base/strings/string_split.h"
 #include "base/strings/stringprintf.h"
 #include "mojo/application/application_runner_chromium.h"
 #include "mojo/application/content_handler_factory.h"
@@ -224,8 +224,8 @@ class PythonContentHandlerApp : public ApplicationDelegate {
   bool IsDebug(const std::string& requestedUrl) {
     GURL url(requestedUrl);
     if (url.has_query()) {
-      std::vector<std::string> query_parameters;
-      Tokenize(url.query(), "&", &query_parameters);
+      std::vector<std::string> query_parameters = base::SplitString(
+          url.query(), "&", base::KEEP_WHITESPACE, base::SPLIT_WANT_NONEMPTY);
       return std::find(query_parameters.begin(), query_parameters.end(),
                        "debug=true") != query_parameters.end();
     }

@@ -10,6 +10,7 @@
 #include "base/run_loop.h"
 #include "base/strings/string_util.h"
 #include "base/strings/stringprintf.h"
+#include "mojo/converters/base/base_type_converters.h"
 #include "mojo/data_pipe_utils/data_pipe_utils.h"
 #include "mojo/public/cpp/application/application_impl.h"
 #include "mojo/public/cpp/application/application_test_base.h"
@@ -45,7 +46,8 @@ class GetHandler : public http_server::HttpHandler {
                      const mojo::Callback<void(http_server::HttpResponsePtr)>&
                          callback) override {
     http_server::HttpResponsePtr response;
-    if (StartsWithASCII(request->relative_url, "/app", true)) {
+    if (base::StartsWith(request->relative_url.To<base::StringPiece>(), "/app",
+                         base::CompareCase::SENSITIVE)) {
       response = http_server::CreateHttpResponse(
           200, std::string(shell::test::kPingable.data,
                            shell::test::kPingable.size));
@@ -188,7 +190,9 @@ TEST_F(ShellAppTest, MojoURLQueryHandling) {
   application_impl()->ConnectToService("mojo:pingable_app?foo", &pingable);
   auto callback = [](const String& app_url, const String& connection_url,
                      const String& message) {
-    EXPECT_TRUE(EndsWith(app_url, "/pingable_app.mojo", true));
+    EXPECT_TRUE(base::EndsWith(app_url.To<base::StringPiece>(),
+                               "/pingable_app.mojo",
+                               base::CompareCase::SENSITIVE));
     EXPECT_EQ(app_url.To<std::string>() + "?foo", connection_url);
     EXPECT_EQ("hello", message);
     base::MessageLoop::current()->Quit();
@@ -202,7 +206,9 @@ void TestApplicationConnector(mojo::ApplicationConnector* app_connector) {
   ConnectToService(app_connector, "mojo:pingable_app", &pingable);
   auto callback = [](const String& app_url, const String& connection_url,
                      const String& message) {
-    EXPECT_TRUE(EndsWith(app_url, "/pingable_app.mojo", true));
+    EXPECT_TRUE(base::EndsWith(app_url.To<base::StringPiece>(),
+                               "/pingable_app.mojo",
+                               base::CompareCase::SENSITIVE));
     EXPECT_EQ(app_url, connection_url);
     EXPECT_EQ("hello", message);
     base::MessageLoop::current()->Quit();

@@ -7,7 +7,7 @@
 #include "base/atomic_sequence_num.h"
 #include "base/macros.h"
 #include "base/run_loop.h"
-#include "base/strings/string_util.h"
+#include "base/strings/string_split.h"
 #include "base/strings/stringprintf.h"
 #include "mojo/public/cpp/application/application_connection.h"
 #include "mojo/public/cpp/application/application_impl.h"
@@ -206,8 +206,9 @@ class PassThroughIfHasTokenInterceptor : public BaseInterceptor {
       HttpHeaderPtr header = request->headers[0].Pass();
       EXPECT_EQ(kAuthenticationHeaderName, header->name);
 
-      std::vector<std::string> auth_value_components;
-      Tokenize(header->value, " ", &auth_value_components);
+      std::vector<std::string> auth_value_components =
+          base::SplitString(header->value.To<std::string>(), " ",
+                            base::KEEP_WHITESPACE, base::SPLIT_WANT_NONEMPTY);
       EXPECT_EQ(2u, auth_value_components.size());
       if (auth_value_components.size() == 2) {
         EXPECT_EQ(kAuthenticationHeaderValuePrefix, auth_value_components[0]);
