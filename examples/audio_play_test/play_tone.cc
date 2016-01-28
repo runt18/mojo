@@ -37,12 +37,17 @@ static inline constexpr uint32_t USecToBytes(uint64_t usec) {
 
 class PlayToneApp : public ApplicationDelegate {
  public:
+  ~PlayToneApp() override { Quit(); }
+
+  // ApplicationDelegate
   void Initialize(ApplicationImpl* app) override;
+  void Quit() override;
 
  private:
   bool GenerateToneCbk(MediaResult res);
   void PlayTone(double freq_hz, double amplitude, double duration_sec);
-  void Cleanup();
+  void BeginShutdown();
+  void OnConnectionError(const std::string& connection_name);
 
   AudioServerPtr audio_server_;
   AudioTrackPtr  audio_track_;
@@ -53,13 +58,24 @@ class PlayToneApp : public ApplicationDelegate {
   uint64_t media_time_    = 0;
   double   freq_hz_       = 440.0;
   double   amplitude_     = 1.0;
+  bool     shutting_down_ = false;
 };
 
-void PlayToneApp::Initialize(ApplicationImpl* app) {
-  MediaResult result = MediaResult::UNKNOWN_ERROR;
+void PlayToneApp::Quit() {
+  audio_track_.reset();
+  audio_server_.reset();
+}
 
+void PlayToneApp::Initialize(ApplicationImpl* app) {
   app->ConnectToService("mojo:audio_server", &audio_server_);
+  audio_server_.set_connection_error_handler([this]() {
+    OnConnectionError("audio_server");
+  });
+
   audio_server_->CreateTrack(GetProxy(&audio_track_));
+  audio_track_.set_connection_error_handler([this]() {
+    OnConnectionError("audio_track");
+  });
 
   // Query the sink's format capabilities.
   AudioTrackDescriptorPtr sink_desc;
@@ -87,7 +103,7 @@ void PlayToneApp::Initialize(ApplicationImpl* app) {
   if (!audio_track_.WaitForIncomingResponse()) {
     MOJO_LOG(ERROR)
       << "Failed to fetch sync capabilities; no response received.";
-    Cleanup();
+    BeginShutdown();
     return;
   }
 
@@ -95,21 +111,10 @@ void PlayToneApp::Initialize(ApplicationImpl* app) {
   sink_desc.reset();
 
   // Grab the rate control interface for our audio renderer.
-  auto get_rc_cbk = [&result](MediaResult res) { result = res; };
-  audio_track_->GetRateControl(GetProxy(&rate_control_), get_rc_cbk);
-  if (!audio_track_.WaitForIncomingResponse()) {
-    MOJO_LOG(ERROR) <<
-      "Failed to fetch rate control interface; no response received.";
-    Cleanup();
-    return;
-  }
-
-  if (result != MediaResult::OK) {
-    MOJO_LOG(ERROR) << "Failed to get rate control interface.  (res = "
-               << result << ")";
-    Cleanup();
-    return;
-  }
+  audio_track_->GetRateControl(GetProxy(&rate_control_));
+  rate_control_.set_connection_error_handler([this]() {
+    OnConnectionError("rate_control");
+  });
 
   // Configure our sink for 16-bit 48KHz mono.
   AudioTrackConfigurationPtr cfg = AudioTrackConfiguration::New();
@@ -126,29 +131,18 @@ void PlayToneApp::Initialize(ApplicationImpl* app) {
   cfg->media_type->details->set_lpcm(pcm_cfg.Pass());
 
   MediaPipePtr pipe;
-  {
-    auto cbk = [&result](MediaResult res) {
-      result = res;
-    };
-    audio_track_->Configure(cfg.Pass(), GetProxy(&pipe), cbk);
-  }
+  audio_track_->Configure(cfg.Pass(), GetProxy(&pipe));
 
-  if (!audio_track_.WaitForIncomingResponse()) {
-    MOJO_LOG(ERROR) << "Failed to configure sink; no response received.";
-    Cleanup();
-    return;
-  }
+  // TODO(johngro): Once the media pipe adapter (audio_pipe) has been changed to
+  // be the owner of the connection error handler on the media_pipe object,
+  // remove this.  Use the error handler in the adapter instead.
+  pipe.set_connection_error_handler([this]() {
+    OnConnectionError("media_pipe");
+  });
 
-  if (result != MediaResult::OK) {
-    MOJO_LOG(ERROR) << "Failed to configure sink.  (res = "
-                    << result << ")";
-    Cleanup();
-    return;
-  }
-
-  // Now that we are configured and have our media pipe, pass its interface to
-  // our circular buffer helper, set up our high/low water marks, register our
-  // callback, and start to buffer our audio.
+  // Now that the configuration request is in-flight and we our media pipe
+  // proxy, pass its interface to our circular buffer helper, set up our
+  // high/low water marks, register our callback, and start to buffer our audio.
   pipe_.reset(new CircularBufferMediaPipeAdapter(pipe.Pass()));
   pipe_->SetSignalCallback(
     [this](MediaResult res) -> bool {
@@ -168,7 +162,7 @@ bool PlayToneApp::GenerateToneCbk(MediaResult res) {
 
   if (res != MediaResult::OK) {
     MOJO_LOG(ERROR) << "Fatal error in cbuf (" << res << ").";
-    Cleanup();
+    BeginShutdown();
     return false;
   }
 
@@ -179,7 +173,7 @@ bool PlayToneApp::GenerateToneCbk(MediaResult res) {
     if (res != MediaResult::OK) {
       MOJO_LOG(ERROR) << "Unexpected error when creating media packet ("
                  << res << ").";
-      Cleanup();
+      BeginShutdown();
       return false;
     }
 
@@ -205,7 +199,7 @@ bool PlayToneApp::GenerateToneCbk(MediaResult res) {
       MOJO_LOG(ERROR) << "Unexpected error when sending media packet ("
                  << res << ").";
       pipe_->CancelMediaPacket(&mapped_pkt);
-      Cleanup();
+      BeginShutdown();
       return false;
     }
   }
@@ -231,10 +225,32 @@ bool PlayToneApp::GenerateToneCbk(MediaResult res) {
   return true;
 }
 
-void PlayToneApp::Cleanup() {
-  audio_track_.reset();
-  audio_server_.reset();
-  RunLoop::current()->Quit();
+void PlayToneApp::OnConnectionError(const std::string& connection_name) {
+  if (!shutting_down_) {
+    MOJO_LOG(ERROR) << connection_name << " connection closed unexpectedly!";
+    BeginShutdown();
+  }
+}
+
+// TODO(johngro): remove this when we can.  Right now, the proper way to cleanly
+// shut down a running mojo application is a bit unclear to me.  Calling
+// RunLoop::current()->Quit() seems like the best option, but the run loop does
+// not seem to call our application's quit method.  Instead, it starts to close
+// all of our connections (triggering all of our connection error handlers we
+// have registered on interfaces) before finally destroying our application
+// object.
+//
+// The net result is that we end up spurious "connection closed unexpectedly"
+// error messages when we are actually shutting down cleanly.  For now, we
+// suppress this by having a shutting_down_ flag and suppressing the error
+// message which show up after shutdown has been triggered.  When the proper
+// pattern for shutting down an app has been established, come back here and
+// remove all this junk.
+void PlayToneApp::BeginShutdown() {
+  if (!shutting_down_) {
+    shutting_down_ = true;
+    RunLoop::current()->Quit();
+  }
 }
 
 }  // namespace examples

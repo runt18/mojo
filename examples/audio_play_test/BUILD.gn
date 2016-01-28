@@ -6,8 +6,8 @@ import("//mojo/public/mojo_application.gni")
 
 group("audio_play_test") {
   deps = [
-    ":play_wav",
     ":play_tone",
+    ":play_wav",
   ]
 }
 
@@ -20,7 +20,6 @@ mojo_native_application("play_wav") {
     "//mojo/services/media/common/cpp",
     "//mojo/services/media/common/interfaces",
     "//mojo/services/network/interfaces",
-    "//services/media/common",
   ]
 
   sources = [
@@ -35,7 +34,6 @@ mojo_native_application("play_tone") {
     "//mojo/services/media/audio/interfaces",
     "//mojo/services/media/common/cpp",
     "//mojo/services/media/common/interfaces",
-    "//services/media/common",
   ]
 
   sources = [

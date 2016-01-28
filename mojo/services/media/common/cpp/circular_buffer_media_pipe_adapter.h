@@ -220,8 +220,8 @@ class CircularBufferMediaPipeAdapter {
   using PacketStateQueue = std::deque<PacketState>;
 
   void HandleGetState(MediaPipeStatePtr state);
-  void HandleSendPacket(uint32_t seq_num, MediaResult result);
-  void HandleFlush(MediaResult result);
+  void HandleSendPacket(uint32_t seq_num, MediaPipe::SendResult result);
+  void HandleFlush();
   void HandleSignalCallback();
 
   void UpdateSignalledLocked();

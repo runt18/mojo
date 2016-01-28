@@ -31,9 +31,7 @@ class AudioPipe : public MediaPipeBase {
     };
 
     ~AudioPacketRef();
-
-    const MediaPacketPtr& GetPacket() const { return state_->GetPacket(); }
-    void SetResult(MediaResult result) { return state_->SetResult(result); }
+    void SetResult(SendResult result) { return state_->SetResult(result); }
 
     // Accessors for starting and ending presentation time stamps expressed in
     // units of audio frames (note, not media time), as signed 51.12 fixed point
@@ -83,7 +81,7 @@ class AudioPipe : public MediaPipeBase {
 
  protected:
   void OnPacketReceived(MediaPacketStatePtr state) override;
-  void OnFlushRequested(const FlushCallback& cbk) override;
+  bool OnFlushRequested(const FlushCallback& cbk) override;
 
  private:
   AudioTrackImpl* owner_;

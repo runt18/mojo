@@ -29,7 +29,11 @@ class AudioTrackImpl : public AudioTrack {
 
   ~AudioTrackImpl() override;
   static AudioTrackImplPtr Create(InterfaceRequest<AudioTrack> iface,
-                                 AudioServerImpl* owner);
+                                  AudioServerImpl* owner);
+
+  // Shutdown the audio track, unlinking it from all outputs, closing
+  // connections to all clients and removing it from its owner server's list.
+  void Shutdown();
 
   // Methods used by the output manager to link this track to different outputs.
   void AddOutput(AudioTrackToOutputLinkPtr link);
@@ -52,15 +56,13 @@ class AudioTrackImpl : public AudioTrack {
   friend class AudioPipe;
 
   AudioTrackImpl(InterfaceRequest<AudioTrack> track,
-                AudioServerImpl* owner);
+                 AudioServerImpl* owner);
 
   // Implementation of AudioTrack interface.
   void Describe(const DescribeCallback& cbk) override;
   void Configure(AudioTrackConfigurationPtr configuration,
-                 InterfaceRequest<MediaPipe> req,
-                 const ConfigureCallback& cbk) override;
-  void GetRateControl(InterfaceRequest<RateControl> req,
-                      const GetRateControlCallback& cbk) override;
+                 InterfaceRequest<MediaPipe> req) override;
+  void GetRateControl(InterfaceRequest<RateControl> req) override;
 
   // Methods called by our AudioPipe.
   //
@@ -70,7 +72,7 @@ class AudioTrackImpl : public AudioTrack {
   // encapsulation so that AudioPipe does not have to know that we are an
   // AudioTrackImpl (just that we implement its interface).
   void OnPacketReceived(AudioPipe::AudioPacketRefPtr packet);
-  void OnFlushRequested(const MediaPipe::FlushCallback& cbk);
+  bool OnFlushRequested(const MediaPipe::FlushCallback& cbk);
 
   AudioTrackImplWeakPtr     weak_this_;
   AudioServerImpl*          owner_;

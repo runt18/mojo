@@ -43,11 +43,7 @@ CircularBufferMediaPipeAdapter::CircularBufferMediaPipeAdapter(
         HandleGetState(state.Pass());
       });
 
-  pipe_flush_cbk_ = MediaPipe::FlushCallback(
-      [this] (MediaResult result) {
-        HandleFlush(result);
-      });
-
+  pipe_flush_cbk_ = MediaPipe::FlushCallback([this] () { HandleFlush(); });
   handle_signal_cbk_ = Closure([this] () { HandleSignalCallback(); });
 
   // Begin by getting a hold of the shared buffer from our pipe over which we
@@ -248,7 +244,7 @@ MediaResult CircularBufferMediaPipeAdapter::SendMediaPacket(
     // TODO(johngro) : if the pipe is broken, go into a fatal error state
     pipe_->SendPacket(
         packet->packet_.Pass(),
-        [this, seq_num](MediaResult result) {
+        [this, seq_num](MediaPipe::SendResult result) {
           HandleSendPacket(seq_num, result);
         });
 
@@ -362,8 +358,9 @@ void CircularBufferMediaPipeAdapter::HandleGetState(MediaPipeStatePtr state) {
   UpdateSignalledLocked();
 }
 
-void CircularBufferMediaPipeAdapter::HandleSendPacket(uint32_t seq_num,
-                                                      MediaResult result) {
+void CircularBufferMediaPipeAdapter::HandleSendPacket(
+    uint32_t seq_num,
+    MediaPipe::SendResult result) {
   MediaPipe::SendPacketCallback cbk;
 
   do {
@@ -420,7 +417,7 @@ void CircularBufferMediaPipeAdapter::HandleSendPacket(uint32_t seq_num,
   }
 }
 
-void CircularBufferMediaPipeAdapter::HandleFlush(MediaResult result) {
+void CircularBufferMediaPipeAdapter::HandleFlush() {
   std::lock_guard<std::mutex> lock(signal_lock_);
 
   // If we are in a perma-fault state, ignore this callback.
@@ -431,14 +428,6 @@ void CircularBufferMediaPipeAdapter::HandleFlush(MediaResult result) {
     // then something is seriously wrong.  The other end of the pipe should not
     // be sending us flush complete callbacks if there is no flush in progress.
     FaultLocked(MediaResult::PROTOCOL_ERROR);
-    return;
-  }
-
-  if (result != MediaResult::OK) {
-    // There is no reason the flush should ever fail (we block
-    // flushing-in-progress from our side of the interface).  If something does
-    // go wrong, consider it a fault.
-    FaultLocked(result);
     return;
   }
 

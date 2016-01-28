@@ -101,7 +101,7 @@ class PlayWAVApp : public ApplicationDelegate {
   bool ReadAndValidateDATAHeader();
 
   bool OnNeedsData(MediaResult res);
-  void OnPlayoutComplete(MediaResult res);
+  void OnPlayoutComplete(MediaPipe::SendResult res);
   void OnConnectionError(const std::string& connection_name);
   void BeginShutdown();
 
@@ -170,7 +170,7 @@ void PlayWAVApp::Initialize(ApplicationImpl* app) {
     OnConnectionError("url_loader");
   });
 
-  playout_complete_cbk_ = PacketCbk([this](MediaResult res) {
+  playout_complete_cbk_ = PacketCbk([this](MediaPipe::SendResult res) {
                                       this->OnPlayoutComplete(res);
                                     });
 
@@ -250,6 +250,13 @@ void PlayWAVApp::ProcessHTTPResponse(URLResponsePtr resp) {
   // configure it.
   audio_server_->CreateTrack(GetProxy(&audio_track_));
 
+  // TODO(johngro): when there is some better diagnostic information made
+  // available to us, make sure that we log it so we have some way to proceed
+  // with debugging.
+  audio_track_.set_connection_error_handler([this]() {
+    OnConnectionError("audio_track");
+  });
+
   LinearTransform::Ratio audio_rate(wav_info_.frame_rate, 1);
   LinearTransform::Ratio local_rate(LocalDuration::period::num,
                                     LocalDuration::period::den);
@@ -277,35 +284,7 @@ void PlayWAVApp::ProcessHTTPResponse(URLResponsePtr resp) {
 
   // Configure the track based on the WAV header information.
   MediaPipePtr media_pipe;
-  audio_track_->Configure(cfg.Pass(), GetProxy(&media_pipe),
-      [this](MediaResult res) {
-        if (res != MediaResult::OK) {
-          MOJO_LOG(ERROR) << "Failed to configure audio track (res = "
-                          << res << ")";
-          BeginShutdown();
-        }
-      });
-
-  // Grab the rate control interface for our audio renderer.
-  audio_track_->GetRateControl(GetProxy(&rate_control_),
-      [this](MediaResult res) {
-        if (res != MediaResult::OK) {
-          MOJO_LOG(ERROR) << "Failed to fetch rate control interface "
-                          << "(res = " << res << ")";
-          BeginShutdown();
-        }
-      });
-
-  // Set up our connection error handlers for the various interfaces we are
-  // holding on to.  Right now, we make no attempt to recover from a closed
-  // connection.  If one of our connections is closed, its time to shut down.
-  //
-  // TODO(johngro): when there is some better diagnostic information made
-  // available to us, make sure that we log it so we have some way to proceed
-  // with debugging.
-  audio_track_.set_connection_error_handler([this]() {
-    OnConnectionError("audio_track");
-  });
+  audio_track_->Configure(cfg.Pass(), GetProxy(&media_pipe));
 
   // TODO(johngro): Once the media pipe adapter (audio_pipe) has been changed to
   // be the owner of the connection error handler on the media_pipe object,
@@ -314,6 +293,8 @@ void PlayWAVApp::ProcessHTTPResponse(URLResponsePtr resp) {
     OnConnectionError("media_pipe");
   });
 
+  // Grab the rate control interface for our audio renderer.
+  audio_track_->GetRateControl(GetProxy(&rate_control_));
   rate_control_.set_connection_error_handler([this]() {
     OnConnectionError("rate_control");
   });
@@ -510,7 +491,7 @@ bool PlayWAVApp::OnNeedsData(MediaResult res) {
 
   if (res != MediaResult::OK) {
     MOJO_LOG(ERROR) << "Failed to send media packet!  "
-               << "(res = " << res << ")";
+                    << "(res = " << res << ")";
     BeginShutdown();
     return false;
   }
@@ -524,7 +505,7 @@ bool PlayWAVApp::OnNeedsData(MediaResult res) {
   return (payload_len_ != 0);
 }
 
-void PlayWAVApp::OnPlayoutComplete(MediaResult res) {
+void PlayWAVApp::OnPlayoutComplete(MediaPipe::SendResult res) {
   MOJO_DCHECK(!audio_pipe_->GetPending());
   BeginShutdown();
 }
@@ -539,12 +520,12 @@ void PlayWAVApp::OnConnectionError(const std::string& connection_name) {
 // TODO(johngro): remove this when we can.  Right now, the proper way to cleanly
 // shut down a running mojo application is a bit unclear to me.  Calling
 // RunLoop::current()->Quit() seems like the best option, but the run loop does
-// not seep to call our application's quit method.  Instead, it starts to close
+// not seem to call our application's quit method.  Instead, it starts to close
 // all of our connections (triggering all of our connection error handlers we
 // have registered on interfaces) before finally destroying our application
 // object.
 //
-// The net result is that we end up spurrious "connection closed unexpectedly"
+// The net result is that we end up spurious "connection closed unexpectedly"
 // error messages when we are actually shutting down cleanly.  For now, we
 // suppress this by having a shutting_down_ flag and suppressing the error
 // message which show up after shutdown has been triggered.  When the proper

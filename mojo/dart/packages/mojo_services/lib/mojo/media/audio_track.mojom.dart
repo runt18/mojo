@@ -395,77 +395,6 @@ class _AudioTrackConfigureParams extends bindings.Struct {
 }
 
 
-class AudioTrackConfigureResponseParams extends bindings.Struct {
-  static const List<bindings.StructDataHeader> kVersions = const [
-    const bindings.StructDataHeader(16, 0)
-  ];
-  media_common_mojom.MediaResult result = null;
-
-  AudioTrackConfigureResponseParams() : super(kVersions.last.size);
-
-  static AudioTrackConfigureResponseParams deserialize(bindings.Message message) {
-    var decoder = new bindings.Decoder(message);
-    var result = decode(decoder);
-    if (decoder.excessHandles != null) {
-      decoder.excessHandles.forEach((h) => h.close());
-    }
-    return result;
-  }
-
-  static AudioTrackConfigureResponseParams decode(bindings.Decoder decoder0) {
-    if (decoder0 == null) {
-      return null;
-    }
-    AudioTrackConfigureResponseParams result = new AudioTrackConfigureResponseParams();
-
-    var mainDataHeader = decoder0.decodeStructDataHeader();
-    if (mainDataHeader.version <= kVersions.last.version) {
-      // Scan in reverse order to optimize for more recent versions.
-      for (int i = kVersions.length - 1; i >= 0; --i) {
-        if (mainDataHeader.version >= kVersions[i].version) {
-          if (mainDataHeader.size == kVersions[i].size) {
-            // Found a match.
-            break;
-          }
-          throw new bindings.MojoCodecError(
-              'Header size doesn\'t correspond to known version size.');
-        }
-      }
-    } else if (mainDataHeader.size < kVersions.last.size) {
-      throw new bindings.MojoCodecError(
-        'Message newer than the last known version cannot be shorter than '
-        'required by the last known version.');
-    }
-    if (mainDataHeader.version >= 0) {
-      
-        result.result = media_common_mojom.MediaResult.decode(decoder0, 8);
-        if (result.result == null) {
-          throw new bindings.MojoCodecError(
-            'Trying to decode null union for non-nullable media_common_mojom.MediaResult.');
-        }
-    }
-    return result;
-  }
-
-  void encode(bindings.Encoder encoder) {
-    var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeEnum(result, 8);
-  }
-
-  String toString() {
-    return "AudioTrackConfigureResponseParams("
-           "result: $result" ")";
-  }
-
-  Map toJson() {
-    Map map = new Map();
-    map["result"] = result;
-    return map;
-  }
-}
-
-
 class _AudioTrackGetRateControlParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(16, 0)
@@ -531,77 +460,6 @@ class _AudioTrackGetRateControlParams extends bindings.Struct {
   }
 }
 
-
-class AudioTrackGetRateControlResponseParams extends bindings.Struct {
-  static const List<bindings.StructDataHeader> kVersions = const [
-    const bindings.StructDataHeader(16, 0)
-  ];
-  media_common_mojom.MediaResult result = null;
-
-  AudioTrackGetRateControlResponseParams() : super(kVersions.last.size);
-
-  static AudioTrackGetRateControlResponseParams deserialize(bindings.Message message) {
-    var decoder = new bindings.Decoder(message);
-    var result = decode(decoder);
-    if (decoder.excessHandles != null) {
-      decoder.excessHandles.forEach((h) => h.close());
-    }
-    return result;
-  }
-
-  static AudioTrackGetRateControlResponseParams decode(bindings.Decoder decoder0) {
-    if (decoder0 == null) {
-      return null;
-    }
-    AudioTrackGetRateControlResponseParams result = new AudioTrackGetRateControlResponseParams();
-
-    var mainDataHeader = decoder0.decodeStructDataHeader();
-    if (mainDataHeader.version <= kVersions.last.version) {
-      // Scan in reverse order to optimize for more recent versions.
-      for (int i = kVersions.length - 1; i >= 0; --i) {
-        if (mainDataHeader.version >= kVersions[i].version) {
-          if (mainDataHeader.size == kVersions[i].size) {
-            // Found a match.
-            break;
-          }
-          throw new bindings.MojoCodecError(
-              'Header size doesn\'t correspond to known version size.');
-        }
-      }
-    } else if (mainDataHeader.size < kVersions.last.size) {
-      throw new bindings.MojoCodecError(
-        'Message newer than the last known version cannot be shorter than '
-        'required by the last known version.');
-    }
-    if (mainDataHeader.version >= 0) {
-      
-        result.result = media_common_mojom.MediaResult.decode(decoder0, 8);
-        if (result.result == null) {
-          throw new bindings.MojoCodecError(
-            'Trying to decode null union for non-nullable media_common_mojom.MediaResult.');
-        }
-    }
-    return result;
-  }
-
-  void encode(bindings.Encoder encoder) {
-    var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeEnum(result, 8);
-  }
-
-  String toString() {
-    return "AudioTrackGetRateControlResponseParams("
-           "result: $result" ")";
-  }
-
-  Map toJson() {
-    Map map = new Map();
-    map["result"] = result;
-    return map;
-  }
-}
-
 const int _AudioTrack_describeName = 0;
 const int _AudioTrack_configureName = 1;
 const int _AudioTrack_getRateControlName = 2;
@@ -609,8 +467,8 @@ const int _AudioTrack_getRateControlName = 2;
 abstract class AudioTrack {
   static const String serviceName = null;
   dynamic describe([Function responseFactory = null]);
-  dynamic configure(AudioTrackConfiguration configuration,Object pipe,[Function responseFactory = null]);
-  dynamic getRateControl(Object rateControl,[Function responseFactory = null]);
+  void configure(AudioTrackConfiguration configuration, Object pipe);
+  void getRateControl(Object rateControl);
 }
 
 
@@ -633,46 +491,6 @@ class _AudioTrackProxyImpl extends bindings.Proxy {
     switch (message.header.type) {
       case _AudioTrack_describeName:
         var r = AudioTrackDescribeResponseParams.deserialize(
-            message.payload);
-        if (!message.header.hasRequestId) {
-          proxyError("Expected a message with a valid request Id.");
-          return;
-        }
-        Completer c = completerMap[message.header.requestId];
-        if (c == null) {
-          proxyError(
-              "Message had unknown request Id: ${message.header.requestId}");
-          return;
-        }
-        completerMap.remove(message.header.requestId);
-        if (c.isCompleted) {
-          proxyError("Response completer already completed");
-          return;
-        }
-        c.complete(r);
-        break;
-      case _AudioTrack_configureName:
-        var r = AudioTrackConfigureResponseParams.deserialize(
-            message.payload);
-        if (!message.header.hasRequestId) {
-          proxyError("Expected a message with a valid request Id.");
-          return;
-        }
-        Completer c = completerMap[message.header.requestId];
-        if (c == null) {
-          proxyError(
-              "Message had unknown request Id: ${message.header.requestId}");
-          return;
-        }
-        completerMap.remove(message.header.requestId);
-        if (c.isCompleted) {
-          proxyError("Response completer already completed");
-          return;
-        }
-        c.complete(r);
-        break;
-      case _AudioTrack_getRateControlName:
-        var r = AudioTrackGetRateControlResponseParams.deserialize(
             message.payload);
         if (!message.header.hasRequestId) {
           proxyError("Expected a message with a valid request Id.");
@@ -717,24 +535,24 @@ class _AudioTrackProxyCalls implements AudioTrack {
           -1,
           bindings.MessageHeader.kMessageExpectsResponse);
     }
-    dynamic configure(AudioTrackConfiguration configuration,Object pipe,[Function responseFactory = null]) {
+    void configure(AudioTrackConfiguration configuration, Object pipe) {
+      if (!_proxyImpl.isBound) {
+        _proxyImpl.proxyError("The Proxy is closed.");
+        return;
+      }
       var params = new _AudioTrackConfigureParams();
       params.configuration = configuration;
       params.pipe = pipe;
-      return _proxyImpl.sendMessageWithRequestId(
-          params,
-          _AudioTrack_configureName,
-          -1,
-          bindings.MessageHeader.kMessageExpectsResponse);
+      _proxyImpl.sendMessage(params, _AudioTrack_configureName);
     }
-    dynamic getRateControl(Object rateControl,[Function responseFactory = null]) {
+    void getRateControl(Object rateControl) {
+      if (!_proxyImpl.isBound) {
+        _proxyImpl.proxyError("The Proxy is closed.");
+        return;
+      }
       var params = new _AudioTrackGetRateControlParams();
       params.rateControl = rateControl;
-      return _proxyImpl.sendMessageWithRequestId(
-          params,
-          _AudioTrack_getRateControlName,
-          -1,
-          bindings.MessageHeader.kMessageExpectsResponse);
+      _proxyImpl.sendMessage(params, _AudioTrack_getRateControlName);
     }
 }
 
@@ -822,16 +640,6 @@ class AudioTrackStub extends bindings.Stub {
     mojo_factory_result.descriptor = descriptor;
     return mojo_factory_result;
   }
-  AudioTrackConfigureResponseParams _AudioTrackConfigureResponseParamsFactory(media_common_mojom.MediaResult result) {
-    var mojo_factory_result = new AudioTrackConfigureResponseParams();
-    mojo_factory_result.result = result;
-    return mojo_factory_result;
-  }
-  AudioTrackGetRateControlResponseParams _AudioTrackGetRateControlResponseParamsFactory(media_common_mojom.MediaResult result) {
-    var mojo_factory_result = new AudioTrackGetRateControlResponseParams();
-    mojo_factory_result.result = result;
-    return mojo_factory_result;
-  }
 
   dynamic handleMessage(bindings.ServiceMessage message) {
     if (bindings.ControlMessageHandler.isControlMessage(message)) {
@@ -866,46 +674,12 @@ class AudioTrackStub extends bindings.Stub {
       case _AudioTrack_configureName:
         var params = _AudioTrackConfigureParams.deserialize(
             message.payload);
-        var response = _impl.configure(params.configuration,params.pipe,_AudioTrackConfigureResponseParamsFactory);
-        if (response is Future) {
-          return response.then((response) {
-            if (response != null) {
-              return buildResponseWithId(
-                  response,
-                  _AudioTrack_configureName,
-                  message.header.requestId,
-                  bindings.MessageHeader.kMessageIsResponse);
-            }
-          });
-        } else if (response != null) {
-          return buildResponseWithId(
-              response,
-              _AudioTrack_configureName,
-              message.header.requestId,
-              bindings.MessageHeader.kMessageIsResponse);
-        }
+        _impl.configure(params.configuration, params.pipe);
         break;
       case _AudioTrack_getRateControlName:
         var params = _AudioTrackGetRateControlParams.deserialize(
             message.payload);
-        var response = _impl.getRateControl(params.rateControl,_AudioTrackGetRateControlResponseParamsFactory);
-        if (response is Future) {
-          return response.then((response) {
-            if (response != null) {
-              return buildResponseWithId(
-                  response,
-                  _AudioTrack_getRateControlName,
-                  message.header.requestId,
-                  bindings.MessageHeader.kMessageIsResponse);
-            }
-          });
-        } else if (response != null) {
-          return buildResponseWithId(
-              response,
-              _AudioTrack_getRateControlName,
-              message.header.requestId,
-              bindings.MessageHeader.kMessageIsResponse);
-        }
+        _impl.getRateControl(params.rateControl);
         break;
       default:
         throw new bindings.MojoCodecError("Unexpected message name");

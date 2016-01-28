@@ -90,6 +90,13 @@ struct MediaPipeState {
 // the media has been consumed via the SendPacket callback they provide.
 // Finally, the pipeline may be flushed using the Flush method.
 interface MediaPipe {
+  // An enumeration used to indicate the ultimate fate of packets sent across
+  // the pipe using the SendPacket method.
+  enum SendResult {
+    CONSUMED,  // Media was completely consumed.
+    FLUSHED,   // Some or all of the media was flushed before being consumed.
+  };
+
   // Request that a reference to the pipe's state be sent to the caller via
   // callback.
   GetState() => (MediaPipeState state);
@@ -97,34 +104,13 @@ interface MediaPipe {
   // Place a media packet into the pipeline to be consumed.  When the consumer
   // is finished with the packet, it will invoke the supplied callback to
   // indicate that the region of the shared buffer indicated by the MediaPacket
-  // object is now available for new data.  MediaResults in the operation may
-  // include...
-  //
-  // OK:
-  //   Media packet has been consumed without error.
-  // BAD_STATE:
-  //   The media pipe is in a bad state (perhaps uninitialized) and payloads
-  //   cannot be pushed to it.
-  // INVALID_ARGUMENT:
-  //   One or more of the payload regions does not appears to go outside the
-  //   shared buffer bounds.
-  // FLUSHED:
-  //   The packet was flushed at the request of the producer.  It was not
-  //   completely consumed (but may have been partially consumed)
-  SendPacket(MediaPacket packet) => (MediaResult result);
+  // object is now available for new data.  In addition, a SendResult will be
+  // providid indicating whether or not the packet was consumed or flushed.
+  SendPacket(MediaPacket packet) => (SendResult result);
 
   // Flush the pipe, discarding all queued packets in order (from front to back)
   // as we go.  When the flush operation is complete, the provided callback will
   // be invoked to indicate that the consumer end of the pipe has finished
-  // flushing and that the pipeline is now empty.  Possible values for the
-  // MediaResult parameter of the callback include...
-  //
-  // OK:
-  //    Pipeline has been successfully flushed.
-  // BUSY:
-  //    A flush was already in progress, this flush request was ignored.
-  // BAD_STATE:
-  //   The media pipe is in a bad state (perhaps uninitialized) and cannot be
-  //   flushed
-  Flush() => (MediaResult result);
+  // flushing and that the pipeline is now empty.
+  Flush() => ();
 };

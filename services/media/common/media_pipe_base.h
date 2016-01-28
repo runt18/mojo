@@ -19,22 +19,29 @@ namespace mojo {
 namespace media {
 
 class MediaPipeBase : public MediaPipe {
+ protected:
+  class MappedSharedBuffer;
+  using MappedSharedBufferPtr = std::shared_ptr<MappedSharedBuffer>;
+
  public:
   class MediaPacketState {
    public:
     ~MediaPacketState();
 
-    const MediaPacketPtr& GetPacket() const { return packet_; }
-    void SetResult(MediaResult result);
+    const MediaPacketPtr& packet() const { return packet_; }
+    const MappedSharedBufferPtr& buffer() const { return buffer_; }
+    void SetResult(MediaPipe::SendResult result);
 
    private:
     friend class MediaPipeBase;
     MediaPacketState(MediaPacketPtr packet,
+                     const MappedSharedBufferPtr& buffer,
                      const SendPacketCallback& cbk);
 
     MediaPacketPtr packet_;
+    MappedSharedBufferPtr buffer_;
     SendPacketCallback cbk_;
-    std::atomic<MediaResult> result_;
+    std::atomic<MediaPipe::SendResult> result_;
   };
   using MediaPacketStatePtr = std::unique_ptr<MediaPacketState>;
 
@@ -47,28 +54,40 @@ class MediaPipeBase : public MediaPipe {
                   uint64_t shared_buffer_size);
 
   bool IsInitialized() const;
+  void Reset();
 
  protected:
+  class MappedSharedBuffer {
+   public:
+    static MappedSharedBufferPtr Create(size_t size);
+    ~MappedSharedBuffer();
+
+    const ScopedSharedBufferHandle& handle() const { return handle_; }
+    size_t size() const { return size_; }
+    void*  base() const { return base_; }
+
+   private:
+    explicit MappedSharedBuffer(size_t size);
+
+    ScopedSharedBufferHandle handle_;
+    size_t size_;
+    void*  base_ = nullptr;
+  };
+
   // Interface to be implemented by derived classes
   virtual void OnPacketReceived(MediaPacketStatePtr state) = 0;
-  virtual void OnFlushRequested(const FlushCallback& cbk) = 0;
+  virtual bool OnFlushRequested(const FlushCallback& cbk) = 0;
 
-  const size_t buffer_size() const { return buffer_size_; }
-  const void*  buffer() const      { return buffer_; }
+  MappedSharedBufferPtr buffer_;
 
  private:
-  void Cleanup();
+  Binding<MediaPipe> binding_;
 
   // MediaPipe.mojom implementation.
   void GetState(const GetStateCallback& cbk) final;
   void SendPacket(MediaPacketPtr packet,
                   const SendPacketCallback& cbk) final;
   void Flush(const FlushCallback& cbk) final;
-
-  ScopedSharedBufferHandle buffer_handle_;
-  size_t                   buffer_size_;
-  void*                    buffer_ = nullptr;
-  Binding<MediaPipe>       binding_;
 };
 
 }  // namespace media

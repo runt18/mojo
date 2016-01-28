@@ -43,6 +43,17 @@ void AudioServerImpl::Initialize() {
 
 void AudioServerImpl::Shutdown() {
   shutting_down_ = true;
+
+  while (tracks_.size()) {
+    // Tracks remove themselves from the server's set of active tracks as they
+    // shutdown.  Assert that the set's size is shrinking by one each time we
+    // shut down a track so we know that we are making progress.
+    size_t size_before = tracks_.size();
+    (*tracks_.begin())->Shutdown();
+    size_t size_after = tracks_.size();
+    DCHECK_LT(size_after, size_before);
+  }
+
   output_manager_.Shutdown();
   DoPacketCleanup();
 }

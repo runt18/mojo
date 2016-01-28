@@ -44,7 +44,7 @@ AudioPipe::AudioPipe(AudioTrackImpl* owner,
 AudioPipe::~AudioPipe() {}
 
 void AudioPipe::OnPacketReceived(MediaPacketStatePtr state) {
-  const MediaPacketPtr& packet = state->GetPacket();
+  const MediaPacketPtr& packet = state->packet();
   DCHECK(packet);
   DCHECK(packet->payload);
   DCHECK(owner_);
@@ -66,20 +66,30 @@ void AudioPipe::OnPacketReceived(MediaPacketStatePtr state) {
   DCHECK(frame_size);
   while (true) {
     if ((frame_size > 1) && ((*region)->length % frame_size)) {
-      state->SetResult(MediaResult::INVALID_ARGUMENT);
+      LOG(ERROR) << "Region length (" << (*region)->length
+                 << ") is not divisible by by audio frame size ("
+                 << frame_size << ") at index " << ndx
+                 << " during SendPacket on MediaPipe transporting audio data.";
+      Reset();
       return;
     }
 
+    static constexpr uint32_t kMaxFrames = std::numeric_limits<uint32_t>::max()
+                                        >> AudioTrackImpl::PTS_FRACTIONAL_BITS;
     frame_count += ((*region)->length / frame_size);
-    if (frame_count > (std::numeric_limits<uint32_t>::max() >>
-                       AudioTrackImpl::PTS_FRACTIONAL_BITS)) {
-      state->SetResult(MediaResult::INVALID_ARGUMENT);
+    if (frame_count > kMaxFrames) {
+      LOG(ERROR) << "Running total of audio frame count ("
+                 << frame_count << ") exceeds maximum allowed ("
+                 << kMaxFrames  << ") at region index "
+                 << ndx
+                 << " during SendPacket on MediaPipe transporting audio data.";
+      Reset();
       return;
     }
 
-    regions.emplace_back(
-        static_cast<const uint8_t*>(buffer()) + (*region)->offset,
-        frame_count << AudioTrackImpl::PTS_FRACTIONAL_BITS);
+    const uint8_t* base = static_cast<const uint8_t*>(state->buffer()->base());
+    regions.emplace_back(base + (*region)->offset,
+                         frame_count << AudioTrackImpl::PTS_FRACTIONAL_BITS);
 
     if (ndx >= packet->extra_payload.size()) {
       break;
@@ -96,7 +106,10 @@ void AudioPipe::OnPacketReceived(MediaPacketStatePtr state) {
     // units of fractional frames.
     LinearTransform tmp(0, owner_->FractionalFrameToMediaTimeRatio(), 0);
     if (!tmp.DoForwardTransform(packet->pts, &start_pts)) {
-      state->SetResult(MediaResult::INTERNAL_ERROR);
+      LOG(ERROR) << "Overflow while transforming explicitly provided PTS ("
+                 << packet->pts
+                 << ") during SendPacket on MediaPipe transporting audio data.";
+      Reset();
       return;
     }
   } else {
@@ -120,10 +133,10 @@ void AudioPipe::OnPacketReceived(MediaPacketStatePtr state) {
                            next_pts_)));
 }
 
-void AudioPipe::OnFlushRequested(const FlushCallback& cbk) {
+bool AudioPipe::OnFlushRequested(const FlushCallback& cbk) {
   DCHECK(owner_);
-  owner_->OnFlushRequested(cbk);
   next_pts_known_ = false;
+  return owner_->OnFlushRequested(cbk);
 }
 
 }  // namespace audio

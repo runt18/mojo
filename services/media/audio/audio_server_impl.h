@@ -51,6 +51,12 @@ class AudioServerImpl : public AudioServer {
     DCHECK(success);
   }
 
+  // Removes a track from the set of active tracks.
+  void RemoveTrack(AudioTrackImplPtr track) {
+    size_t removed;
+    removed = tracks_.erase(track);
+    DCHECK(removed);
+  }
 
   // Accessor for our encapsulated output manager.
   AudioOutputManager& GetOutputManager() { return output_manager_; }
@@ -70,7 +76,6 @@ class AudioServerImpl : public AudioServer {
   AudioOutputManager output_manager_;
 
   // State for dealing with tracks.
-  base::Lock track_lock_;
   std::set<AudioTrackImplPtr> tracks_;
 
   // State for dealing with cleanup tasks.

@@ -22,7 +22,12 @@ class RateControlBase : public RateControl {
   RateControlBase();
   ~RateControlBase() override;
 
-  MediaResult Bind(InterfaceRequest<RateControl> request);
+  bool Bind(InterfaceRequest<RateControl> request);
+  bool is_bound() const { return binding_.is_bound(); }
+
+  // Close any existing connections to clients, clear any pending rate changes
+  // and set the clock rate to 0/1.
+  void Reset();
 
   // TODO(johngro): snapshotting the current transform requires an evaluation of
   // all the pending timeline transformations.  Currently, we allow users to
@@ -74,6 +79,7 @@ class RateControlBase : public RateControl {
     // bump the generation counter.  Do not use the value 0.
     while (!(++generation_)) {}
   }
+  void OnIllegalRateChange(int32_t numerator, uint32_t denominator);
 
   Binding<RateControl> binding_;
   uint32_t target_timeline_id = TimelineTransform::kLocalTimeID;

@@ -484,7 +484,7 @@ class MediaPipeSendPacketResponseParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(16, 0)
   ];
-  media_common_mojom.MediaResult result = null;
+  MediaPipeSendResult result = null;
 
   MediaPipeSendPacketResponseParams() : super(kVersions.last.size);
 
@@ -523,10 +523,10 @@ class MediaPipeSendPacketResponseParams extends bindings.Struct {
     }
     if (mainDataHeader.version >= 0) {
       
-        result.result = media_common_mojom.MediaResult.decode(decoder0, 8);
+        result.result = MediaPipeSendResult.decode(decoder0, 8);
         if (result.result == null) {
           throw new bindings.MojoCodecError(
-            'Trying to decode null union for non-nullable media_common_mojom.MediaResult.');
+            'Trying to decode null union for non-nullable MediaPipeSendResult.');
         }
     }
     return result;
@@ -611,9 +611,8 @@ class _MediaPipeFlushParams extends bindings.Struct {
 
 class MediaPipeFlushResponseParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
-    const bindings.StructDataHeader(16, 0)
+    const bindings.StructDataHeader(8, 0)
   ];
-  media_common_mojom.MediaResult result = null;
 
   MediaPipeFlushResponseParams() : super(kVersions.last.size);
 
@@ -650,31 +649,19 @@ class MediaPipeFlushResponseParams extends bindings.Struct {
         'Message newer than the last known version cannot be shorter than '
         'required by the last known version.');
     }
-    if (mainDataHeader.version >= 0) {
-      
-        result.result = media_common_mojom.MediaResult.decode(decoder0, 8);
-        if (result.result == null) {
-          throw new bindings.MojoCodecError(
-            'Trying to decode null union for non-nullable media_common_mojom.MediaResult.');
-        }
-    }
     return result;
   }
 
   void encode(bindings.Encoder encoder) {
-    var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeEnum(result, 8);
+    encoder.getStructEncoderAtOffset(kVersions.last);
   }
 
   String toString() {
-    return "MediaPipeFlushResponseParams("
-           "result: $result" ")";
+    return "MediaPipeFlushResponseParams("")";
   }
 
   Map toJson() {
     Map map = new Map();
-    map["result"] = result;
     return map;
   }
 }
@@ -682,6 +669,56 @@ class MediaPipeFlushResponseParams extends bindings.Struct {
 const int _MediaPipe_getStateName = 0;
 const int _MediaPipe_sendPacketName = 1;
 const int _MediaPipe_flushName = 2;
+  
+class MediaPipeSendResult extends bindings.MojoEnum {
+  static const MediaPipeSendResult consumed = const MediaPipeSendResult._(0);
+  static const MediaPipeSendResult flushed = const MediaPipeSendResult._(1);
+
+  const MediaPipeSendResult._(int v) : super(v);
+
+  static const Map<String, MediaPipeSendResult> valuesMap = const {
+    "consumed": consumed,
+    "flushed": flushed,
+  };
+  static const List<MediaPipeSendResult> values = const [
+    consumed,
+    flushed,
+  ];
+
+  static MediaPipeSendResult valueOf(String name) => valuesMap[name];
+
+  factory MediaPipeSendResult(int v) {
+    switch (v) {
+      case 0:
+        return consumed;
+      case 1:
+        return flushed;
+      default:
+        return null;
+    }
+  }
+
+  static MediaPipeSendResult decode(bindings.Decoder decoder0, int offset) {
+    int v = decoder0.decodeUint32(offset);
+    MediaPipeSendResult result = new MediaPipeSendResult(v);
+    if (result == null) {
+      throw new bindings.MojoCodecError(
+          'Bad value $v for enum MediaPipeSendResult.');
+    }
+    return result;
+  }
+
+  String toString() {
+    switch(this) {
+      case consumed:
+        return 'MediaPipeSendResult.consumed';
+      case flushed:
+        return 'MediaPipeSendResult.flushed';
+    }
+  }
+
+  int toJson() => mojoEnumValue;
+}
 
 abstract class MediaPipe {
   static const String serviceName = null;
@@ -897,14 +934,13 @@ class MediaPipeStub extends bindings.Stub {
     mojo_factory_result.state = state;
     return mojo_factory_result;
   }
-  MediaPipeSendPacketResponseParams _MediaPipeSendPacketResponseParamsFactory(media_common_mojom.MediaResult result) {
+  MediaPipeSendPacketResponseParams _MediaPipeSendPacketResponseParamsFactory(MediaPipeSendResult result) {
     var mojo_factory_result = new MediaPipeSendPacketResponseParams();
     mojo_factory_result.result = result;
     return mojo_factory_result;
   }
-  MediaPipeFlushResponseParams _MediaPipeFlushResponseParamsFactory(media_common_mojom.MediaResult result) {
+  MediaPipeFlushResponseParams _MediaPipeFlushResponseParamsFactory() {
     var mojo_factory_result = new MediaPipeFlushResponseParams();
-    mojo_factory_result.result = result;
     return mojo_factory_result;
   }
 

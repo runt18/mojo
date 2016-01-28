@@ -44,22 +44,52 @@ static const struct {
 };
 
 AudioTrackImpl::AudioTrackImpl(InterfaceRequest<AudioTrack> iface,
-                             AudioServerImpl* owner)
+                               AudioServerImpl* owner)
   : owner_(owner),
     binding_(this),
     pipe_(this, owner) {
   CHECK(nullptr != owner_);
   binding_.Bind(iface.Pass());
+  binding_.set_connection_error_handler([this]() -> void {
+    Shutdown();
+  });
 }
 
 AudioTrackImpl::~AudioTrackImpl() {
+  // assert that we have been cleanly shutdown already.
+  MOJO_DCHECK(!binding_.is_bound());
 }
 
 AudioTrackImplPtr AudioTrackImpl::Create(InterfaceRequest<AudioTrack> iface,
-                                       AudioServerImpl* owner) {
+                                         AudioServerImpl* owner) {
   AudioTrackImplPtr ret(new AudioTrackImpl(iface.Pass(), owner));
   ret->weak_this_ = ret;
   return ret;
+}
+
+void AudioTrackImpl::Shutdown() {
+  // If we are unbound, then we have already been shut down and are just waiting
+  // for the service to destroy us.  Run some DCHECK sanity checks and get out.
+  if (!binding_.is_bound()) {
+    DCHECK(!pipe_.IsInitialized());
+    DCHECK(!rate_control_.is_bound());
+    DCHECK(!outputs_.size());
+    return;
+  }
+
+  // Close the connection to our client
+  binding_.set_connection_error_handler(mojo::Closure());
+  binding_.Close();
+
+  // reset all of our internal state and close any other client connections in
+  // the process.
+  pipe_.Reset();
+  rate_control_.Reset();
+  outputs_.clear();
+
+  DCHECK(owner_);
+  AudioTrackImplPtr thiz = weak_this_.lock();
+  owner_->RemoveTrack(thiz);
 }
 
 void AudioTrackImpl::Describe(const DescribeCallback& cbk) {
@@ -102,18 +132,20 @@ void AudioTrackImpl::Describe(const DescribeCallback& cbk) {
 }
 
 void AudioTrackImpl::Configure(AudioTrackConfigurationPtr configuration,
-                              InterfaceRequest<MediaPipe> req,
-                              const ConfigureCallback&    cbk) {
+                               InterfaceRequest<MediaPipe> req) {
   // Are we already configured?
   if (pipe_.IsInitialized()) {
-    cbk.Run(MediaResult::BAD_STATE);
+    LOG(ERROR) << "Attempting to reconfigure a configured audio track.";
+    Shutdown();
     return;
   }
 
   // Check the requested configuration.
   if ((configuration->media_type->scheme != MediaTypeScheme::LPCM) ||
       (!configuration->media_type->details->is_lpcm())) {
-    cbk.Run(MediaResult::UNSUPPORTED_CONFIG);
+    LOG(ERROR) << "Unsupported configuration requested in "
+                  "AudioTrack::Configure.  Media type must be LPCM.";
+    Shutdown();
     return;
   }
 
@@ -134,7 +166,14 @@ void AudioTrackImpl::Configure(AudioTrackConfigurationPtr configuration,
   }
 
   if (i >= arraysize(kSupportedLpcmTypeSets)) {
-    cbk.Run(MediaResult::UNSUPPORTED_CONFIG);
+    LOG(ERROR) << "Unsupported LPCM configuration requested in "
+                  "AudioTrack::Configure.  "
+               << "(format = " << cfg->sample_format
+               << ", channels = "
+               << static_cast<uint32_t>(cfg->channels)
+               << ", frames_per_second = " << cfg->frames_per_second
+               << ")";
+    Shutdown();
     return;
   }
 
@@ -142,7 +181,9 @@ void AudioTrackImpl::Configure(AudioTrackConfigurationPtr configuration,
   int32_t  numerator   = static_cast<int32_t>(configuration->audio_frame_ratio);
   uint32_t denominator = static_cast<int32_t>(configuration->media_time_ratio);
   if ((numerator < 1) || (denominator < 1)) {
-    cbk.Run(MediaResult::INVALID_ARGUMENT);
+    LOG(ERROR) << "Invalid (audio frames:media time ticks) ratio ("
+               << numerator << "/" << denominator << ")";
+    Shutdown();
     return;
   }
 
@@ -156,7 +197,9 @@ void AudioTrackImpl::Configure(AudioTrackConfigurationPtr configuration,
                                                  frame_scale,
                                                  &frame_to_media_ratio_);
   if (!no_loss) {
-    cbk.Run(MediaResult::INVALID_ARGUMENT);
+    LOG(ERROR) << "Invalid (audio frames:media time ticks) ratio ("
+               << numerator << "/" << denominator << ")";
+    Shutdown();
     return;
   }
 
@@ -186,7 +229,9 @@ void AudioTrackImpl::Configure(AudioTrackConfigurationPtr configuration,
   uint64_t requested_frames = configuration->max_frames;
   if (requested_frames >
      (std::numeric_limits<size_t>::max() / bytes_per_frame_)) {
-    cbk.Run(MediaResult::INSUFFICIENT_RESOURCES);
+    LOG(ERROR) << "Insufficient resources to create "
+               << requested_frames << " frame audio buffer.";
+    Shutdown();
     return;
   }
 
@@ -195,7 +240,9 @@ void AudioTrackImpl::Configure(AudioTrackConfigurationPtr configuration,
   // Attempt to initialize our shared buffer and bind it to our interface
   // request.
   if (pipe_.Init(req.Pass(), requested_bytes) != MOJO_RESULT_OK) {
-    cbk.Run(MediaResult::INSUFFICIENT_RESOURCES);
+    LOG(ERROR) << "Insufficient resources to create "
+               << requested_frames << " frame audio buffer.";
+    Shutdown();
     return;
   }
 
@@ -221,14 +268,12 @@ void AudioTrackImpl::Configure(AudioTrackConfigurationPtr configuration,
   DCHECK(strong_this);
   DCHECK(owner_);
   owner_->GetOutputManager().SelectOutputsForTrack(strong_this);
-
-  // Done
-  cbk.Run(MediaResult::OK);
 }
 
-void AudioTrackImpl::GetRateControl(InterfaceRequest<RateControl> req,
-                                   const GetRateControlCallback& cbk) {
-  cbk.Run(rate_control_.Bind(req.Pass()));
+void AudioTrackImpl::GetRateControl(InterfaceRequest<RateControl> req) {
+  if (!rate_control_.Bind(req.Pass())) {
+    Shutdown();
+  }
 }
 
 void AudioTrackImpl::AddOutput(AudioTrackToOutputLinkPtr link) {
@@ -261,12 +306,13 @@ void AudioTrackImpl::OnPacketReceived(AudioPipe::AudioPacketRefPtr packet) {
   }
 }
 
-void AudioTrackImpl::OnFlushRequested(const MediaPipe::FlushCallback& cbk) {
+bool AudioTrackImpl::OnFlushRequested(const MediaPipe::FlushCallback& cbk) {
   for (const auto& output : outputs_) {
     DCHECK(output);
     output->FlushPendingQueue();
   }
-  cbk.Run(MediaResult::OK);
+  cbk.Run();
+  return true;
 }
 
 }  // namespace audio

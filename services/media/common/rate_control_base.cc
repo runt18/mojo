@@ -2,6 +2,7 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
+#include "base/debug/stack_trace.h"
 #include "base/logging.h"
 #include "mojo/services/media/common/cpp/local_time.h"
 #include "services/media/common/rate_control_base.h"
@@ -19,15 +20,18 @@ RateControlBase::RateControlBase()
 }
 
 RateControlBase::~RateControlBase() {
+  Reset();
 }
 
-MediaResult RateControlBase::Bind(InterfaceRequest<RateControl> request) {
-  if (binding_.is_bound()) {
-    return MediaResult::BAD_STATE;
-  }
+bool RateControlBase::Bind(InterfaceRequest<RateControl> request) {
+  Reset();
 
   binding_.Bind(request.Pass());
-  return MediaResult::OK;
+  binding_.set_connection_error_handler([this]() -> void {
+    Reset();
+  });
+
+  return true;
 }
 
 void RateControlBase::SnapshotCurrentTransform(LinearTransform* out,
@@ -62,12 +66,21 @@ void RateControlBase::GetCurrentTransform(
 // clock in the target timeline (or at least, transform local time to the target
 // timeline), we have no way to apply scheduled changes.
 void RateControlBase::SetTargetTimelineID(uint32_t id) {
-  DCHECK(id == TimelineTransform::kLocalTimeID);
+  if (id != TimelineTransform::kLocalTimeID) {
+    LOG(ERROR) << "Unsupported target timeline id ("
+               << id << ") during SetTargetTimelineID";
+    Reset();
+  }
 }
 
 void RateControlBase::SetCurrentQuad(TimelineQuadPtr quad) {
-  // Ignore any request which would set the target delta to zero.
-  if (quad->target_delta) {
+  // A target delta of zero means that the transformation from the target
+  // timeline to the media timeline is singular.  This is not permitted, log an
+  // error and close the connection if someone attempts to do this.
+  if (!quad->target_delta) {
+    OnIllegalRateChange(quad->reference_delta, quad->target_delta);
+    return;
+  } else {
     base::AutoLock lock(transform_lock_);
 
     reference_pending_changes_.clear();
@@ -89,8 +102,12 @@ void RateControlBase::SetCurrentQuad(TimelineQuadPtr quad) {
 }
 
 void RateControlBase::SetRate(int32_t reference_delta, uint32_t target_delta) {
-  // Only rate changes with a non-zero target_delta are permitted.
-  if (target_delta) {
+  // Only rate changes with a non-zero target_delta are permitted.  See comment
+  // in SetCurrentQuad.
+  if (!target_delta) {
+    OnIllegalRateChange(reference_delta, target_delta);
+    return;
+  } else {
     base::AutoLock lock(transform_lock_);
 
     // Make sure we are up to date.
@@ -120,7 +137,12 @@ void RateControlBase::SetRate(int32_t reference_delta, uint32_t target_delta) {
 void RateControlBase::SetRateAtReferenceTime(int32_t  reference_delta,
                                              uint32_t target_delta,
                                              int64_t  reference_time) {
-  if (target_delta) {
+  // Only rate changes with a non-zero target_delta are permitted.  See comment
+  // in SetCurrentQuad.
+  if (!target_delta) {
+    OnIllegalRateChange(reference_delta, target_delta);
+    return;
+  } else {
     base::AutoLock lock(transform_lock_);
 
     // If the user tries to schedule a change which takes place before any
@@ -140,7 +162,12 @@ void RateControlBase::SetRateAtReferenceTime(int32_t  reference_delta,
 void RateControlBase::SetRateAtTargetTime(int32_t  reference_delta,
                                           uint32_t target_delta,
                                           int64_t  target_time) {
-  if (target_delta) {
+  // Only rate changes with a non-zero target_delta are permitted.  See comment
+  // in SetCurrentQuad.
+  if (!target_delta) {
+    OnIllegalRateChange(reference_delta, target_delta);
+    return;
+  } else {
     base::AutoLock lock(transform_lock_);
 
     // If the user tries to schedule a change which takes place before any
@@ -248,6 +275,23 @@ void RateControlBase::ApplyPendingChangesLocked(int64_t target_now) {
   // If we have applied any changes, advance the transformation generation
   if (advance_generation) {
     AdvanceGenerationLocked();
+  }
+}
+
+void RateControlBase::OnIllegalRateChange(int32_t  numerator,
+                                          uint32_t denominator) {
+  LOG(ERROR) << "Illegal rate change requested ("
+             << numerator << "/" << denominator << ")";
+  Reset();
+}
+
+void RateControlBase::Reset() {
+  CancelPendingChanges();
+  SetRate(0, 1);
+
+  if (binding_.is_bound()) {
+    binding_.set_connection_error_handler(mojo::Closure());
+    binding_.Close();
   }
 }
 

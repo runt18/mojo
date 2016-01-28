@@ -13,16 +13,10 @@ MediaPipeBase::MediaPipeBase()
 }
 
 MediaPipeBase::~MediaPipeBase() {
-  Cleanup();
 }
 
 MojoResult MediaPipeBase::Init(InterfaceRequest<MediaPipe> request,
                                uint64_t shared_buffer_size) {
-  static const MojoCreateSharedBufferOptions opt {
-    .struct_size = sizeof(MojoDuplicateBufferHandleOptions),
-    .flags = MOJO_CREATE_SHARED_BUFFER_OPTIONS_FLAG_NONE,
-  };
-
   // Double init?
   if (IsInitialized()) {
     return MOJO_RESULT_ALREADY_EXISTS;
@@ -36,32 +30,30 @@ MojoResult MediaPipeBase::Init(InterfaceRequest<MediaPipe> request,
     return MOJO_RESULT_INVALID_ARGUMENT;
   }
 
-  MojoResult res;
-  res = CreateSharedBuffer(&opt, shared_buffer_size, &buffer_handle_);
-  if (MOJO_RESULT_OK == res) {
-    // TODO(johngro) : We really only need read access to this buffer.  Ideally,
-    // we could request that using flags, but there does not seem to be a way to
-    // do this right now.
-    res = MapBuffer(buffer_handle_.get(),
-                    0u,
-                    shared_buffer_size,
-                    &buffer_,
-                    MOJO_MAP_BUFFER_FLAG_NONE);
+  DCHECK(!buffer_);
+  buffer_ = MappedSharedBuffer::Create(shared_buffer_size);
+  if (buffer_ == nullptr) {
+    return MOJO_RESULT_UNKNOWN;
   }
 
-  if (MOJO_RESULT_OK != res) {
-    Cleanup();
-  } else {
-    buffer_size_ = shared_buffer_size;
-    binding_.Bind(request.Pass());
-  }
-  return res;
+  binding_.Bind(request.Pass());
+  binding_.set_connection_error_handler([this]() -> void {
+    Reset();
+  });
+  return MOJO_RESULT_OK;
 }
 
 bool MediaPipeBase::IsInitialized() const {
   DCHECK((!binding_.is_bound() && (buffer_ == nullptr)) ||
           (binding_.is_bound() && (buffer_ != nullptr)));
   return !!buffer_;
+}
+
+void MediaPipeBase::Reset() {
+  if (binding_.is_bound()) {
+    binding_.Close();
+  }
+  buffer_ = nullptr;
 }
 
 void MediaPipeBase::GetState(const GetStateCallback& cbk) {
@@ -77,10 +69,10 @@ void MediaPipeBase::GetState(const GetStateCallback& cbk) {
   if (!buffer_) {
     state_ptr->payload_buffer_len = 0;
   } else {
-    MojoResult res = DuplicateBuffer(buffer_handle_.get(),
+    MojoResult res = DuplicateBuffer(buffer_->handle().get(),
                                      &options,
                                      &state_ptr->payload_buffer);
-    state_ptr->payload_buffer_len = buffer_size_;
+    state_ptr->payload_buffer_len = buffer_->size();
     DCHECK(MOJO_RESULT_OK == res);
   }
 
@@ -92,10 +84,11 @@ void MediaPipeBase::SendPacket(MediaPacketPtr packet,
   // If we have not been successfully initialized, then we should not be getting
   // packets pushed to us.
   if (!buffer_) {
-    cbk.Run(MediaResult::BAD_STATE);
+    LOG(ERROR) << "SendPacket called with no shared buffer established!";
+    Reset();
     return;
   }
-  DCHECK(buffer_size_);
+  DCHECK(buffer_->size());
 
   // The offset(s) and size(s) of this payload must to reside within the space
   // of the shared buffer.  If any does not, this send operation is not valid.
@@ -105,14 +98,21 @@ void MediaPipeBase::SendPacket(MediaPacketPtr packet,
       packet->extra_payload.is_null() ? 0 : packet->extra_payload.size();
   while (true) {
     if ((*r).is_null()) {
-      cbk.Run(MediaResult::INVALID_ARGUMENT);
+      LOG(ERROR) << "Missing region structure at index " << i
+                 << " during SendPacket";
+      Reset();
       return;
     }
 
     auto offset = (*r)->offset;
     auto length = (*r)->length;
-    if ((offset > buffer_size_) || (length > (buffer_size_ - offset))) {
-      cbk.Run(MediaResult::INVALID_ARGUMENT);
+    if ((offset > buffer_->size()) || (length > (buffer_->size() - offset))) {
+      LOG(ERROR) << "Region [" << offset << "," << (offset + length)
+                 << ") at index " << i
+                 << " is out of range for shared buffer of size "
+                 << buffer_->size()
+                 << " during SendPacket.";
+      Reset();
       return;
     }
 
@@ -125,7 +125,7 @@ void MediaPipeBase::SendPacket(MediaPacketPtr packet,
   }
 
   // Looks good, send this packet up to the implementation layer.
-  MediaPacketStatePtr ptr(new MediaPacketState(packet.Pass(), cbk));
+  MediaPacketStatePtr ptr(new MediaPacketState(packet.Pass(), buffer_, cbk));
   OnPacketReceived(std::move(ptr));
 }
 
@@ -133,30 +133,26 @@ void MediaPipeBase::Flush(const FlushCallback& cbk) {
   // If we have not been successfully initialized, then we should not be getting
   // packets pushed to us.
   if (!buffer_) {
-    cbk.Run(MediaResult::BAD_STATE);
+    LOG(ERROR) << "Flush called with no shared buffer established!";
+    Reset();
     return;
   }
 
-  // Pass the flush request up to the implementation layer
-  OnFlushRequested(cbk);
-}
-
-void MediaPipeBase::Cleanup() {
-  if (nullptr != buffer_) {
-    MojoResult res;
-    res = UnmapBuffer(buffer_);
-    CHECK(res == MOJO_RESULT_OK);
+  // Pass the flush request up to the implementation layer.  If something goes
+  // fatally wrong up there, close the connection.
+  if (!OnFlushRequested(cbk)) {
+    Reset();
   }
-
-  buffer_handle_.reset();
 }
 
 MediaPipeBase::MediaPacketState::MediaPacketState(
     MediaPacketPtr packet,
+    const MappedSharedBufferPtr& buffer,
     const SendPacketCallback& cbk)
-  : packet_(packet.Pass())
-  , cbk_(cbk)
-  , result_(MediaResult::OK) {
+  : packet_(packet.Pass()),
+    buffer_(buffer),
+    cbk_(cbk),
+    result_(MediaPipe::SendResult::CONSUMED) {
   DCHECK(packet_);
   DCHECK(packet_->payload);
 }
@@ -165,9 +161,54 @@ MediaPipeBase::MediaPacketState::~MediaPacketState() {
   cbk_.Run(result_);
 }
 
-void MediaPipeBase::MediaPacketState::SetResult(MediaResult result) {
-  MediaResult tmp = MediaResult::OK;
+void MediaPipeBase::MediaPacketState::SetResult(MediaPipe::SendResult result) {
+  MediaPipe::SendResult tmp = MediaPipe::SendResult::CONSUMED;
   result_.compare_exchange_strong(tmp, result);
+}
+
+MediaPipeBase::MappedSharedBufferPtr MediaPipeBase::MappedSharedBuffer::Create(
+    size_t size) {
+  MappedSharedBufferPtr ret(new MappedSharedBuffer(size));
+  return ret->base() ? ret : nullptr;
+}
+
+MediaPipeBase::MappedSharedBuffer::~MappedSharedBuffer() {
+  if (nullptr != base_) {
+    MojoResult res = UnmapBuffer(base_);
+    CHECK(res == MOJO_RESULT_OK);
+  }
+}
+
+MediaPipeBase::MappedSharedBuffer::MappedSharedBuffer(size_t size)
+  : size_(size) {
+  static const MojoCreateSharedBufferOptions opt {
+    .struct_size = sizeof(MojoDuplicateBufferHandleOptions),
+    .flags = MOJO_CREATE_SHARED_BUFFER_OPTIONS_FLAG_NONE,
+  };
+  MojoResult res;
+
+  res = CreateSharedBuffer(&opt, size_, &handle_);
+  if (MOJO_RESULT_OK == res) {
+    // TODO(johngro) : We really only need read access to this buffer.  Ideally,
+    // we could request that using flags, but there does not seem to be a way to
+    // do this right now.
+    res = MapBuffer(handle_.get(),
+                    0u,
+                    size_,
+                    &base_,
+                    MOJO_MAP_BUFFER_FLAG_NONE);
+
+    if (MOJO_RESULT_OK != res) {
+      LOG(ERROR) << "Failed to map shared buffer of size " << size_
+                 << " (res " << res << ")";
+      DCHECK(base_ == nullptr);
+      handle_.reset();
+    }
+  } else {
+    LOG(ERROR) << "Failed to create shared buffer of size " << size_
+               << " (res " << res << ")";
+    DCHECK(!handle_.is_valid());
+  }
 }
 
 }  // namespace media
