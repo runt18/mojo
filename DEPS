@@ -24,7 +24,7 @@ vars = {
   'base_revision': '6c89618151eb0e23d330778e6d6ea16fc6105010',
   'angle_revision': '46ccef1992a8ede16a596c3dd73cff13c047267d',
   'buildtools_revision': '222bd42ce39d1bd8f08fe089b066f49c469e1cdf',
-  'dart_revision': '109e9e2c2d6ce5da597b670396571300360a3e0f',
+  'dart_revision': 'c4bbf89fe14a234d7e3c958a44915b3c738ac95d',
   'dart_root_certificates_revision': 'c3a41df63afacec62fcb8135196177e35fe72f71',
   'dart_observatory_packages_revision': 'cf90eb9077177d3d6b3fd5e8289477c2385c026a',
   'pdfium_revision': 'ae4256f45df69bbfdf722a6ec17e1e851911ae4e',
