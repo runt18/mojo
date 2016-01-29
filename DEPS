@@ -21,6 +21,7 @@ vars = {
   'chromium_git': 'https://chromium.googlesource.com',
   'skia_revision': 'db284c52e62e8d16708e2065495a3b693b238771',
   'v8_revision': '3f036fc0ba4ca4483fe77822f8605c277d37ee24',
+  'base_revision': '6c89618151eb0e23d330778e6d6ea16fc6105010',
   'angle_revision': '46ccef1992a8ede16a596c3dd73cff13c047267d',
   'buildtools_revision': '222bd42ce39d1bd8f08fe089b066f49c469e1cdf',
   'dart_revision': '109e9e2c2d6ce5da597b670396571300360a3e0f',
@@ -41,6 +42,9 @@ allowed_hosts = [
 ]
 
 deps = {
+  'src/base':
+   Var('chromium_git') + '/external/github.com/domokit/base' + '@' +  Var('base_revision'),
+
   'src/buildtools':
    Var('chromium_git') + '/chromium/buildtools.git' + '@' +  Var('buildtools_revision'),
 
