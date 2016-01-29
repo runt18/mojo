@@ -21,7 +21,12 @@ group("default") {
   ]
 
   if (is_linux) {
-    deps += [ "//fusl" ]
+    deps += [
+      "//fusl",
+
+      # We need this to run tests (especially on bots).
+      "//third_party/mesa:osmesa",
+    ]
   }
 
   # TODO(cstout): fix sandbox build for fnl/musl

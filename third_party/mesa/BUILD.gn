@@ -654,6 +654,9 @@ if (!is_android) {  # TODO(GYP) enable for Android.
   # TODO(GYP) http://crbug.com/380327 need support for loadable_module.
   #loadable_module("osmesa") {
   shared_library("osmesa") {
+    # Make sure this only gets used in tests.
+    testonly = true
+
     sources = [
       "src/src/mesa/drivers/common/driverfuncs.c",
       "src/src/mesa/drivers/common/driverfuncs.h",
@@ -680,8 +683,8 @@ if (!is_android) {  # TODO(GYP) enable for Android.
     }
 
     deps = [
-      ":mesa_headers",
       ":mesa",
+      ":mesa_headers",
       ":mesa_libglslcommon",
     ]
 
