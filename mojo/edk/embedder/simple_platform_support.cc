@@ -6,8 +6,8 @@
 
 #include <utility>
 
-#include "base/rand_util.h"
 #include "mojo/edk/embedder/simple_platform_shared_buffer.h"
+#include "mojo/edk/platform/random.h"
 
 using mojo::platform::PlatformSharedBuffer;
 using mojo::platform::ScopedPlatformHandle;
@@ -18,7 +18,7 @@ namespace embedder {
 
 void SimplePlatformSupport::GetCryptoRandomBytes(void* bytes,
                                                  size_t num_bytes) {
-  base::RandBytes(bytes, num_bytes);
+  platform::GetCryptoRandomBytes(bytes, num_bytes);
 }
 
 RefPtr<PlatformSharedBuffer> SimplePlatformSupport::CreateSharedBuffer(
