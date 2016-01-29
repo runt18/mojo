@@ -220,5 +220,68 @@ echoApptests(Application application, String url) {
 
       return Future.wait([f1, f2]);
     });
+
+    test('Unbind, close', () async {
+      var echoProxy =
+          new EchoServiceProxy.connectToService(application, "mojo:dart_echo");
+
+      var r = await echoProxy.responseOrError(echoProxy.ptr.echoString("foo"));
+      expect(r.value, equals("foo"));
+
+      var endpoint = echoProxy.impl.unbind();
+      await echoProxy.close();
+      endpoint.close();
+    });
+
+    test('Unbind, rebind to same', () async {
+      var echoProxy =
+          new EchoServiceProxy.connectToService(application, "mojo:dart_echo");
+
+      var r = await echoProxy.responseOrError(echoProxy.ptr.echoString("foo"));
+      expect(r.value, equals("foo"));
+
+      var endpoint = echoProxy.impl.unbind();
+      echoProxy.impl.bind(endpoint);
+
+      r = await echoProxy.responseOrError(echoProxy.ptr.echoString("foo"));
+      expect(r.value, equals("foo"));
+
+      await echoProxy.close();
+    });
+
+    test('Unbind, rebind to different', () async {
+      var echoProxy =
+          new EchoServiceProxy.connectToService(application, "mojo:dart_echo");
+
+      var r = await echoProxy.responseOrError(echoProxy.ptr.echoString("foo"));
+      expect(r.value, equals("foo"));
+
+      var endpoint = echoProxy.impl.unbind();
+      var differentEchoProxy = new EchoServiceProxy.fromEndpoint(endpoint);
+
+      r = await differentEchoProxy.responseOrError(
+          differentEchoProxy.ptr.echoString("foo"));
+      expect(r.value, equals("foo"));
+
+      await differentEchoProxy.close();
+    });
+
+    test('Unbind, rebind to different, close original', () async {
+      var echoProxy =
+          new EchoServiceProxy.connectToService(application, "mojo:dart_echo");
+
+      var r = await echoProxy.responseOrError(echoProxy.ptr.echoString("foo"));
+      expect(r.value, equals("foo"));
+
+      var endpoint = echoProxy.impl.unbind();
+      var differentEchoProxy = new EchoServiceProxy.fromEndpoint(endpoint);
+      await echoProxy.close();
+
+      r = await differentEchoProxy.responseOrError(
+          differentEchoProxy.ptr.echoString("foo"));
+      expect(r.value, equals("foo"));
+
+      await differentEchoProxy.close();
+    });
   });
 }
