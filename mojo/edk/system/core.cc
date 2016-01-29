@@ -9,8 +9,8 @@
 #include <vector>
 
 #include "base/logging.h"
-#include "mojo/edk/embedder/platform_shared_buffer.h"
 #include "mojo/edk/embedder/platform_support.h"
+#include "mojo/edk/platform/platform_shared_buffer.h"
 #include "mojo/edk/platform/time_ticks.h"
 #include "mojo/edk/system/async_waiter.h"
 #include "mojo/edk/system/configuration.h"
@@ -28,6 +28,7 @@
 #include "mojo/public/cpp/system/macros.h"
 
 using mojo::platform::GetTimeTicks;
+using mojo::platform::PlatformSharedBufferMapping;
 using mojo::util::MutexLocker;
 using mojo::util::RefPtr;
 
@@ -526,7 +527,7 @@ MojoResult Core::MapBuffer(MojoHandle buffer_handle,
   if (!dispatcher)
     return MOJO_RESULT_INVALID_ARGUMENT;
 
-  std::unique_ptr<embedder::PlatformSharedBufferMapping> mapping;
+  std::unique_ptr<PlatformSharedBufferMapping> mapping;
   MojoResult result = dispatcher->MapBuffer(offset, num_bytes, flags, &mapping);
   if (result != MOJO_RESULT_OK)
     return result;

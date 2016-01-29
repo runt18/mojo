@@ -12,9 +12,12 @@
 #include "mojo/public/cpp/system/macros.h"
 
 namespace mojo {
-namespace embedder {
 
+namespace platform {
 class PlatformSharedBuffer;
+}
+
+namespace embedder {
 
 // This class is provided by the embedder to implement (typically
 // platform-dependent) things needed by the Mojo system implementation.
@@ -26,9 +29,10 @@ class PlatformSupport {
   // Gets cryptographically-secure (pseudo)random bytes.
   virtual void GetCryptoRandomBytes(void* bytes, size_t num_bytes) = 0;
 
-  virtual util::RefPtr<PlatformSharedBuffer> CreateSharedBuffer(
+  virtual util::RefPtr<platform::PlatformSharedBuffer> CreateSharedBuffer(
       size_t num_bytes) = 0;
-  virtual util::RefPtr<PlatformSharedBuffer> CreateSharedBufferFromHandle(
+  virtual util::RefPtr<platform::PlatformSharedBuffer>
+  CreateSharedBufferFromHandle(
       size_t num_bytes,
       platform::ScopedPlatformHandle platform_handle) = 0;
 

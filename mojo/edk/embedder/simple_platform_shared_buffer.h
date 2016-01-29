@@ -7,15 +7,15 @@
 
 #include <stddef.h>
 
-#include "mojo/edk/embedder/platform_shared_buffer.h"
+#include "mojo/edk/platform/platform_shared_buffer.h"
 #include "mojo/edk/util/ref_ptr.h"
 #include "mojo/public/cpp/system/macros.h"
 
 namespace mojo {
 namespace embedder {
 
-// A simple implementation of |PlatformSharedBuffer|.
-class SimplePlatformSharedBuffer final : public PlatformSharedBuffer {
+// A simple implementation of |platform::PlatformSharedBuffer|.
+class SimplePlatformSharedBuffer final : public platform::PlatformSharedBuffer {
  public:
   // Creates a shared buffer of size |num_bytes| bytes (initially zero-filled).
   // |num_bytes| must be nonzero. Returns null on failure.
@@ -25,12 +25,13 @@ class SimplePlatformSharedBuffer final : public PlatformSharedBuffer {
       size_t num_bytes,
       platform::ScopedPlatformHandle platform_handle);
 
-  // |PlatformSharedBuffer| implementation:
+  // |platform::PlatformSharedBuffer| implementation:
   size_t GetNumBytes() const override;
-  std::unique_ptr<PlatformSharedBufferMapping> Map(size_t offset,
-                                                   size_t length) override;
+  std::unique_ptr<platform::PlatformSharedBufferMapping> Map(
+      size_t offset,
+      size_t length) override;
   bool IsValidMap(size_t offset, size_t length) override;
-  std::unique_ptr<PlatformSharedBufferMapping> MapNoCheck(
+  std::unique_ptr<platform::PlatformSharedBufferMapping> MapNoCheck(
       size_t offset,
       size_t length) override;
   platform::ScopedPlatformHandle DuplicatePlatformHandle() override;
@@ -58,10 +59,10 @@ class SimplePlatformSharedBuffer final : public PlatformSharedBuffer {
   MOJO_DISALLOW_COPY_AND_ASSIGN(SimplePlatformSharedBuffer);
 };
 
-// An implementation of |PlatformSharedBufferMapping|, produced by
+// An implementation of |platform::PlatformSharedBufferMapping|, produced by
 // |SimplePlatformSharedBuffer|.
 class SimplePlatformSharedBufferMapping final
-    : public PlatformSharedBufferMapping {
+    : public platform::PlatformSharedBufferMapping {
  public:
   ~SimplePlatformSharedBufferMapping() override;
 

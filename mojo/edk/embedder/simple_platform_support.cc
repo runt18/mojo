@@ -9,6 +9,7 @@
 #include "base/rand_util.h"
 #include "mojo/edk/embedder/simple_platform_shared_buffer.h"
 
+using mojo::platform::PlatformSharedBuffer;
 using mojo::platform::ScopedPlatformHandle;
 using mojo::util::RefPtr;
 

@@ -22,9 +22,9 @@ class SimplePlatformSupport final : public PlatformSupport {
   ~SimplePlatformSupport() override {}
 
   void GetCryptoRandomBytes(void* bytes, size_t num_bytes) override;
-  util::RefPtr<PlatformSharedBuffer> CreateSharedBuffer(
+  util::RefPtr<platform::PlatformSharedBuffer> CreateSharedBuffer(
       size_t num_bytes) override;
-  util::RefPtr<PlatformSharedBuffer> CreateSharedBufferFromHandle(
+  util::RefPtr<platform::PlatformSharedBuffer> CreateSharedBufferFromHandle(
       size_t num_bytes,
       platform::ScopedPlatformHandle platform_handle) override;
 

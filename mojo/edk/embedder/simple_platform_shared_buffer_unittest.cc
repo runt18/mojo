@@ -9,6 +9,8 @@
 #include "mojo/public/cpp/system/macros.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
+using mojo::platform::PlatformSharedBufferMapping;
+
 namespace mojo {
 namespace embedder {
 namespace {

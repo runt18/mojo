@@ -12,8 +12,8 @@
 
 #include "base/logging.h"
 #include "mojo/edk/embedder/platform_channel_pair.h"
-#include "mojo/edk/embedder/platform_shared_buffer.h"
 #include "mojo/edk/embedder/simple_platform_support.h"
+#include "mojo/edk/platform/platform_shared_buffer.h"
 #include "mojo/edk/platform/scoped_platform_handle.h"
 #include "mojo/edk/platform/thread_utils.h"
 #include "mojo/edk/system/channel.h"
@@ -35,6 +35,7 @@
 #include "mojo/public/cpp/system/macros.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
+using mojo::platform::PlatformSharedBufferMapping;
 using mojo::platform::ScopedPlatformHandle;
 using mojo::platform::ThreadSleep;
 using mojo::util::MakeRefCounted;
@@ -912,7 +913,7 @@ TEST_F(RemoteMessagePipeTest, SharedBufferPassing) {
   ASSERT_TRUE(dispatcher);
 
   // Make a mapping.
-  std::unique_ptr<embedder::PlatformSharedBufferMapping> mapping0;
+  std::unique_ptr<PlatformSharedBufferMapping> mapping0;
   EXPECT_EQ(MOJO_RESULT_OK, dispatcher->MapBuffer(
                                 0, 100, MOJO_MAP_BUFFER_FLAG_NONE, &mapping0));
   ASSERT_TRUE(mapping0);
@@ -980,7 +981,7 @@ TEST_F(RemoteMessagePipeTest, SharedBufferPassing) {
       static_cast<SharedBufferDispatcher*>(read_dispatchers[0].get()));
 
   // Make another mapping.
-  std::unique_ptr<embedder::PlatformSharedBufferMapping> mapping1;
+  std::unique_ptr<PlatformSharedBufferMapping> mapping1;
   EXPECT_EQ(MOJO_RESULT_OK, dispatcher->MapBuffer(
                                 0, 100, MOJO_MAP_BUFFER_FLAG_NONE, &mapping1));
   ASSERT_TRUE(mapping1);

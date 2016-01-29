@@ -27,6 +27,7 @@
 #endif  // defined(OS_ANDROID)
 
 using mojo::platform::PlatformHandle;
+using mojo::platform::PlatformSharedBufferMapping;
 using mojo::platform::ScopedPlatformHandle;
 using mojo::util::RefPtr;
 

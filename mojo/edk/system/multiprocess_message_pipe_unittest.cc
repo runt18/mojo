@@ -13,7 +13,7 @@
 
 #include "base/logging.h"
 #include "build/build_config.h"  // TODO(vtl): Remove this.
-#include "mojo/edk/embedder/platform_shared_buffer.h"
+#include "mojo/edk/platform/platform_shared_buffer.h"
 #include "mojo/edk/platform/scoped_platform_handle.h"
 #include "mojo/edk/system/channel.h"
 #include "mojo/edk/system/dispatcher.h"
@@ -28,6 +28,7 @@
 #include "mojo/edk/util/scoped_file.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
+using mojo::platform::PlatformSharedBufferMapping;
 using mojo::platform::ScopedPlatformHandle;
 using mojo::util::RefPtr;
 
@@ -246,7 +247,7 @@ MOJO_MULTIPROCESS_TEST_CHILD_MAIN(CheckSharedBuffer) {
       static_cast<SharedBufferDispatcher*>(dispatchers[0].get()));
 
   // Make a mapping.
-  std::unique_ptr<embedder::PlatformSharedBufferMapping> mapping;
+  std::unique_ptr<PlatformSharedBufferMapping> mapping;
   CHECK_EQ(dispatcher->MapBuffer(0, 100, MOJO_MAP_BUFFER_FLAG_NONE, &mapping),
            MOJO_RESULT_OK);
   CHECK(mapping);
@@ -318,7 +319,7 @@ TEST_F(MultiprocessMessagePipeTest, MAYBE_SharedBufferPassing) {
   ASSERT_TRUE(dispatcher);
 
   // Make a mapping.
-  std::unique_ptr<embedder::PlatformSharedBufferMapping> mapping;
+  std::unique_ptr<PlatformSharedBufferMapping> mapping;
   EXPECT_EQ(MOJO_RESULT_OK,
             dispatcher->MapBuffer(0, 100, MOJO_MAP_BUFFER_FLAG_NONE, &mapping));
   ASSERT_TRUE(mapping);

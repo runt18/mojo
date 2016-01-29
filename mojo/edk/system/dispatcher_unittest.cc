@@ -8,7 +8,7 @@
 #include <vector>
 
 #include "base/logging.h"
-#include "mojo/edk/embedder/platform_shared_buffer.h"
+#include "mojo/edk/platform/platform_shared_buffer.h"
 #include "mojo/edk/system/memory.h"
 #include "mojo/edk/system/test/simple_test_thread.h"
 #include "mojo/edk/system/waiter.h"
@@ -18,6 +18,7 @@
 #include "mojo/public/cpp/system/macros.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
+using mojo::platform::PlatformSharedBufferMapping;
 using mojo::util::MakeRefCounted;
 using mojo::util::MakeUnique;
 using mojo::util::ManualResetWaitableEvent;
@@ -211,7 +212,7 @@ class ThreadSafetyStressThread : public test::SimpleTestThread {
         break;
       }
       case MAP_BUFFER: {
-        std::unique_ptr<embedder::PlatformSharedBufferMapping> unused;
+        std::unique_ptr<PlatformSharedBufferMapping> unused;
         EXPECT_EQ(
             MOJO_RESULT_INVALID_ARGUMENT,
             dispatcher_->MapBuffer(0u, 0u, MOJO_MAP_BUFFER_FLAG_NONE, &unused));
