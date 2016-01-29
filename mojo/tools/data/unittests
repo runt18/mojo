@@ -60,19 +60,7 @@ tests = [
     "test": "mojo_converters_unittests",
   },
   {
-    "test": "mojo_view_manager_lib_unittests",
-  },
-  {
-    "test": "mojo_surfaces_lib_unittests",
-  },
-  {
     "test": "url_response_disk_cache_unittests",
-  },
-  {
-    "test": "view_manager_service_unittests",
-  },
-  {
-    "test": "window_manager_unittests",
   },
 
   # Shell integration tests:
