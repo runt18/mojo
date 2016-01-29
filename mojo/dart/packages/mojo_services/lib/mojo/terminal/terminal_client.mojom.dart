@@ -8,6 +8,8 @@ import 'dart:async';
 
 import 'package:mojo/bindings.dart' as bindings;
 import 'package:mojo/core.dart' as core;
+import 'package:mojo/mojo/bindings/types/mojom_types.mojom.dart' as mojom_types;
+import 'package:mojo/mojo/bindings/types/service_describer.mojom.dart' as service_describer;
 import 'package:mojo_services/mojo/files/file.mojom.dart' as file_mojom;
 
 
@@ -77,7 +79,20 @@ class _TerminalClientConnectToTerminalParams extends bindings.Struct {
   }
 }
 
+
+
+
 const int _TerminalClient_connectToTerminalName = 0;
+
+
+
+class _TerminalClientServiceDescription implements service_describer.ServiceDescription {
+  dynamic getTopLevelInterface([Function responseFactory]) => null;
+
+  dynamic getTypeDefinition(String typeKey, [Function responseFactory]) => null;
+
+  dynamic getAllTypeDefinitions([Function responseFactory]) => null;
+}
 
 abstract class TerminalClient {
   static const String serviceName = "mojo::terminal::TerminalClient";
@@ -99,6 +114,9 @@ class _TerminalClientProxyImpl extends bindings.Proxy {
     assert(endpoint.setDescription("For _TerminalClientProxyImpl"));
     return new _TerminalClientProxyImpl.fromEndpoint(endpoint);
   }
+
+  service_describer.ServiceDescription get serviceDescription =>
+    new _TerminalClientServiceDescription();
 
   void handleResponse(bindings.ServiceMessage message) {
     switch (message.header.type) {
@@ -243,6 +261,10 @@ class TerminalClientStub extends bindings.Stub {
   }
 
   int get version => 0;
+
+  service_describer.ServiceDescription get serviceDescription =>
+    new _TerminalClientServiceDescription();
 }
+
 
 

@@ -8,6 +8,8 @@ import 'dart:async';
 
 import 'package:mojo/bindings.dart' as bindings;
 import 'package:mojo/core.dart' as core;
+import 'package:mojo/mojo/bindings/types/mojom_types.mojom.dart' as mojom_types;
+
 import 'package:mojo_services/mojo/geometry.mojom.dart' as geometry_mojom;
 import 'package:mojo_services/mojo/input_event_constants.mojom.dart' as input_event_constants_mojom;
 import 'package:mojo_services/mojo/input_key_codes.mojom.dart' as input_key_codes_mojom;
@@ -137,6 +139,8 @@ class KeyData extends bindings.Struct {
     return map;
   }
 }
+
+
 
 
 class PointerData extends bindings.Struct {
@@ -309,6 +313,8 @@ class PointerData extends bindings.Struct {
 }
 
 
+
+
 class Event extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(40, 0)
@@ -420,5 +426,9 @@ class Event extends bindings.Struct {
     return map;
   }
 }
+
+
+
+
 
 

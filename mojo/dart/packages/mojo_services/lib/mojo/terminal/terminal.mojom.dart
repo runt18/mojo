@@ -8,6 +8,8 @@ import 'dart:async';
 
 import 'package:mojo/bindings.dart' as bindings;
 import 'package:mojo/core.dart' as core;
+import 'package:mojo/mojo/bindings/types/mojom_types.mojom.dart' as mojom_types;
+import 'package:mojo/mojo/bindings/types/service_describer.mojom.dart' as service_describer;
 import 'package:mojo_services/mojo/files/file.mojom.dart' as file_mojom;
 import 'package:mojo_services/mojo/files/types.mojom.dart' as types_mojom;
 import 'package:mojo_services/mojo/terminal/terminal_client.mojom.dart' as terminal_client_mojom;
@@ -88,6 +90,8 @@ class _TerminalConnectParams extends bindings.Struct {
 }
 
 
+
+
 class TerminalConnectResponseParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(16, 0)
@@ -157,6 +161,8 @@ class TerminalConnectResponseParams extends bindings.Struct {
     return map;
   }
 }
+
+
 
 
 class _TerminalConnectToClientParams extends bindings.Struct {
@@ -233,6 +239,8 @@ class _TerminalConnectToClientParams extends bindings.Struct {
 }
 
 
+
+
 class TerminalConnectToClientResponseParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(16, 0)
@@ -304,6 +312,8 @@ class TerminalConnectToClientResponseParams extends bindings.Struct {
 }
 
 
+
+
 class _TerminalGetSizeParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(8, 0)
@@ -360,6 +370,8 @@ class _TerminalGetSizeParams extends bindings.Struct {
     return map;
   }
 }
+
+
 
 
 class TerminalGetSizeResponseParams extends bindings.Struct {
@@ -451,6 +463,8 @@ class TerminalGetSizeResponseParams extends bindings.Struct {
 }
 
 
+
+
 class _TerminalSetSizeParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(24, 0)
@@ -534,6 +548,8 @@ class _TerminalSetSizeParams extends bindings.Struct {
     return map;
   }
 }
+
+
 
 
 class TerminalSetSizeResponseParams extends bindings.Struct {
@@ -624,10 +640,23 @@ class TerminalSetSizeResponseParams extends bindings.Struct {
   }
 }
 
+
+
+
 const int _Terminal_connectName = 0;
 const int _Terminal_connectToClientName = 1;
 const int _Terminal_getSizeName = 2;
 const int _Terminal_setSizeName = 3;
+
+
+
+class _TerminalServiceDescription implements service_describer.ServiceDescription {
+  dynamic getTopLevelInterface([Function responseFactory]) => null;
+
+  dynamic getTypeDefinition(String typeKey, [Function responseFactory]) => null;
+
+  dynamic getAllTypeDefinitions([Function responseFactory]) => null;
+}
 
 abstract class Terminal {
   static const String serviceName = "mojo::terminal::Terminal";
@@ -652,6 +681,9 @@ class _TerminalProxyImpl extends bindings.Proxy {
     assert(endpoint.setDescription("For _TerminalProxyImpl"));
     return new _TerminalProxyImpl.fromEndpoint(endpoint);
   }
+
+  service_describer.ServiceDescription get serviceDescription =>
+    new _TerminalServiceDescription();
 
   void handleResponse(bindings.ServiceMessage message) {
     switch (message.header.type) {
@@ -1013,6 +1045,10 @@ class TerminalStub extends bindings.Stub {
   }
 
   int get version => 0;
+
+  service_describer.ServiceDescription get serviceDescription =>
+    new _TerminalServiceDescription();
 }
+
 
 

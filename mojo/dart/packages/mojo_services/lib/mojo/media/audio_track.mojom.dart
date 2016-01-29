@@ -8,6 +8,8 @@ import 'dart:async';
 
 import 'package:mojo/bindings.dart' as bindings;
 import 'package:mojo/core.dart' as core;
+import 'package:mojo/mojo/bindings/types/mojom_types.mojom.dart' as mojom_types;
+import 'package:mojo/mojo/bindings/types/service_describer.mojom.dart' as service_describer;
 import 'package:mojo_services/mojo/media/media_common.mojom.dart' as media_common_mojom;
 import 'package:mojo_services/mojo/media/media_pipe.mojom.dart' as media_pipe_mojom;
 import 'package:mojo_services/mojo/media/media_types.mojom.dart' as media_types_mojom;
@@ -97,6 +99,8 @@ class AudioTrackDescriptor extends bindings.Struct {
     return map;
   }
 }
+
+
 
 
 class AudioTrackConfiguration extends bindings.Struct {
@@ -194,6 +198,8 @@ class AudioTrackConfiguration extends bindings.Struct {
 }
 
 
+
+
 class _AudioTrackDescribeParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(8, 0)
@@ -250,6 +256,8 @@ class _AudioTrackDescribeParams extends bindings.Struct {
     return map;
   }
 }
+
+
 
 
 class AudioTrackDescribeResponseParams extends bindings.Struct {
@@ -318,6 +326,8 @@ class AudioTrackDescribeResponseParams extends bindings.Struct {
     return map;
   }
 }
+
+
 
 
 class _AudioTrackConfigureParams extends bindings.Struct {
@@ -395,6 +405,8 @@ class _AudioTrackConfigureParams extends bindings.Struct {
 }
 
 
+
+
 class _AudioTrackGetRateControlParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(16, 0)
@@ -460,9 +472,22 @@ class _AudioTrackGetRateControlParams extends bindings.Struct {
   }
 }
 
+
+
+
 const int _AudioTrack_describeName = 0;
 const int _AudioTrack_configureName = 1;
 const int _AudioTrack_getRateControlName = 2;
+
+
+
+class _AudioTrackServiceDescription implements service_describer.ServiceDescription {
+  dynamic getTopLevelInterface([Function responseFactory]) => null;
+
+  dynamic getTypeDefinition(String typeKey, [Function responseFactory]) => null;
+
+  dynamic getAllTypeDefinitions([Function responseFactory]) => null;
+}
 
 abstract class AudioTrack {
   static const String serviceName = null;
@@ -486,6 +511,9 @@ class _AudioTrackProxyImpl extends bindings.Proxy {
     assert(endpoint.setDescription("For _AudioTrackProxyImpl"));
     return new _AudioTrackProxyImpl.fromEndpoint(endpoint);
   }
+
+  service_describer.ServiceDescription get serviceDescription =>
+    new _AudioTrackServiceDescription();
 
   void handleResponse(bindings.ServiceMessage message) {
     switch (message.header.type) {
@@ -700,6 +728,10 @@ class AudioTrackStub extends bindings.Stub {
   }
 
   int get version => 0;
+
+  service_describer.ServiceDescription get serviceDescription =>
+    new _AudioTrackServiceDescription();
 }
+
 
 

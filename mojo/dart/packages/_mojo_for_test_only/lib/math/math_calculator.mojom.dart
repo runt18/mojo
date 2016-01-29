@@ -5,9 +5,12 @@
 library math_calculator_mojom;
 
 import 'dart:async';
+import 'dart:collection';
 
 import 'package:mojo/bindings.dart' as bindings;
 import 'package:mojo/core.dart' as core;
+import 'package:mojo/mojo/bindings/types/mojom_types.mojom.dart' as mojom_types;
+import 'package:mojo/mojo/bindings/types/service_describer.mojom.dart' as service_describer;
 
 
 
@@ -66,6 +69,14 @@ class _CalculatorClearParams extends bindings.Struct {
     Map map = new Map();
     return map;
   }
+}
+
+mojom_types.MojomStruct _mathCalculatorCalculatorClearParams() {
+  return new mojom_types.MojomStruct()
+    ..declData = (new mojom_types.DeclarationData()
+      ..shortName = 'CalculatorClearParams'
+      ..fullIdentifier = 'math.Calculator_Clear_Params')
+    ..fields = <mojom_types.StructField>[];
 }
 
 
@@ -135,6 +146,19 @@ class CalculatorClearResponseParams extends bindings.Struct {
   }
 }
 
+mojom_types.MojomStruct _mathCalculatorCalculatorClearResponseParams() {
+  return new mojom_types.MojomStruct()
+    ..declData = (new mojom_types.DeclarationData()
+      ..shortName = 'CalculatorClearResponseParams'
+      ..fullIdentifier = 'math.Calculator_Clear_ResponseParams')
+    ..fields = <mojom_types.StructField>[
+      new mojom_types.StructField()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'Value')
+        ..type = (new mojom_types.Type()
+          ..simpleType = mojom_types.SimpleType.double),];
+}
+
 
 class _CalculatorAddParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
@@ -200,6 +224,19 @@ class _CalculatorAddParams extends bindings.Struct {
     map["value"] = value;
     return map;
   }
+}
+
+mojom_types.MojomStruct _mathCalculatorCalculatorAddParams() {
+  return new mojom_types.MojomStruct()
+    ..declData = (new mojom_types.DeclarationData()
+      ..shortName = 'CalculatorAddParams'
+      ..fullIdentifier = 'math.Calculator_Add_Params')
+    ..fields = <mojom_types.StructField>[
+      new mojom_types.StructField()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'Value')
+        ..type = (new mojom_types.Type()
+          ..simpleType = mojom_types.SimpleType.double),];
 }
 
 
@@ -269,6 +306,19 @@ class CalculatorAddResponseParams extends bindings.Struct {
   }
 }
 
+mojom_types.MojomStruct _mathCalculatorCalculatorAddResponseParams() {
+  return new mojom_types.MojomStruct()
+    ..declData = (new mojom_types.DeclarationData()
+      ..shortName = 'CalculatorAddResponseParams'
+      ..fullIdentifier = 'math.Calculator_Add_ResponseParams')
+    ..fields = <mojom_types.StructField>[
+      new mojom_types.StructField()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'Value')
+        ..type = (new mojom_types.Type()
+          ..simpleType = mojom_types.SimpleType.double),];
+}
+
 
 class _CalculatorMultiplyParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
@@ -334,6 +384,19 @@ class _CalculatorMultiplyParams extends bindings.Struct {
     map["value"] = value;
     return map;
   }
+}
+
+mojom_types.MojomStruct _mathCalculatorCalculatorMultiplyParams() {
+  return new mojom_types.MojomStruct()
+    ..declData = (new mojom_types.DeclarationData()
+      ..shortName = 'CalculatorMultiplyParams'
+      ..fullIdentifier = 'math.Calculator_Multiply_Params')
+    ..fields = <mojom_types.StructField>[
+      new mojom_types.StructField()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'Value')
+        ..type = (new mojom_types.Type()
+          ..simpleType = mojom_types.SimpleType.double),];
 }
 
 
@@ -403,9 +466,62 @@ class CalculatorMultiplyResponseParams extends bindings.Struct {
   }
 }
 
+mojom_types.MojomStruct _mathCalculatorCalculatorMultiplyResponseParams() {
+  return new mojom_types.MojomStruct()
+    ..declData = (new mojom_types.DeclarationData()
+      ..shortName = 'CalculatorMultiplyResponseParams'
+      ..fullIdentifier = 'math.Calculator_Multiply_ResponseParams')
+    ..fields = <mojom_types.StructField>[
+      new mojom_types.StructField()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'Value')
+        ..type = (new mojom_types.Type()
+          ..simpleType = mojom_types.SimpleType.double),];
+}
+
+
 const int _Calculator_clearName = 0;
 const int _Calculator_addName = 1;
 const int _Calculator_multiplyName = 2;
+
+mojom_types.MojomInterface _mathCalculatorCalculator() {
+  return new mojom_types.MojomInterface()
+    ..declData = (new mojom_types.DeclarationData()
+      ..shortName = 'Calculator'
+      ..fullIdentifier = 'math.Calculator')
+    ..interfaceName = 'Calculator'
+    ..methods = <int, mojom_types.MojomMethod>{
+      _Calculator_clearName: new mojom_types.MojomMethod()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'Clear')
+        ..ordinal = _Calculator_clearName
+        ..responseParams = _mathCalculatorCalculatorClearResponseParams()
+        ..parameters = _mathCalculatorCalculatorClearParams(),
+      _Calculator_addName: new mojom_types.MojomMethod()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'Add')
+        ..ordinal = _Calculator_addName
+        ..responseParams = _mathCalculatorCalculatorAddResponseParams()
+        ..parameters = _mathCalculatorCalculatorAddParams(),
+      _Calculator_multiplyName: new mojom_types.MojomMethod()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'Multiply')
+        ..ordinal = _Calculator_multiplyName
+        ..responseParams = _mathCalculatorCalculatorMultiplyResponseParams()
+        ..parameters = _mathCalculatorCalculatorMultiplyParams(),
+    };
+}
+
+class _CalculatorServiceDescription implements service_describer.ServiceDescription {
+  dynamic getTopLevelInterface([Function responseFactory]) =>
+      _mathCalculatorCalculator();
+
+  dynamic getTypeDefinition(String typeKey, [Function responseFactory]) =>
+      getAllMojomTypeDefinitions()[typeKey];
+
+  dynamic getAllTypeDefinitions([Function responseFactory]) =>
+      getAllMojomTypeDefinitions();
+}
 
 abstract class Calculator {
   static const String serviceName = null;
@@ -429,6 +545,9 @@ class _CalculatorProxyImpl extends bindings.Proxy {
     assert(endpoint.setDescription("For _CalculatorProxyImpl"));
     return new _CalculatorProxyImpl.fromEndpoint(endpoint);
   }
+
+  service_describer.ServiceDescription get serviceDescription =>
+    new _CalculatorServiceDescription();
 
   void handleResponse(bindings.ServiceMessage message) {
     switch (message.header.type) {
@@ -726,6 +845,43 @@ class CalculatorStub extends bindings.Stub {
   }
 
   int get version => 0;
+
+  service_describer.ServiceDescription get serviceDescription =>
+    new _CalculatorServiceDescription();
 }
 
+
+Map<String, mojom_types.UserDefinedType> _initDescriptions() {
+  var map = new HashMap<String, mojom_types.UserDefinedType>();
+  map["math_calculator_Calculator_Clear_Params__"] =
+    new mojom_types.UserDefinedType()
+      ..structType = _mathCalculatorCalculatorClearParams();
+  map["math_calculator_Calculator_Clear_ResponseParams__"] =
+    new mojom_types.UserDefinedType()
+      ..structType = _mathCalculatorCalculatorClearResponseParams();
+  map["math_calculator_Calculator_Add_Params__"] =
+    new mojom_types.UserDefinedType()
+      ..structType = _mathCalculatorCalculatorAddParams();
+  map["math_calculator_Calculator_Add_ResponseParams__"] =
+    new mojom_types.UserDefinedType()
+      ..structType = _mathCalculatorCalculatorAddResponseParams();
+  map["math_calculator_Calculator_Multiply_Params__"] =
+    new mojom_types.UserDefinedType()
+      ..structType = _mathCalculatorCalculatorMultiplyParams();
+  map["math_calculator_Calculator_Multiply_ResponseParams__"] =
+    new mojom_types.UserDefinedType()
+      ..structType = _mathCalculatorCalculatorMultiplyResponseParams();
+  map["math_calculator_Calculator__"] =
+    new mojom_types.UserDefinedType()
+      ..interfaceType = _mathCalculatorCalculator();
+  return map;
+}
+
+var _mojomDesc;
+Map<String, mojom_types.UserDefinedType> getAllMojomTypeDefinitions() {
+  if (_mojomDesc == null) {
+    _mojomDesc = _initDescriptions();
+  }
+  return _mojomDesc;
+}
 

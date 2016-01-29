@@ -8,6 +8,8 @@ import 'dart:async';
 
 import 'package:mojo/bindings.dart' as bindings;
 import 'package:mojo/core.dart' as core;
+import 'package:mojo/mojo/bindings/types/mojom_types.mojom.dart' as mojom_types;
+import 'package:mojo/mojo/bindings/types/service_describer.mojom.dart' as service_describer;
 import 'package:mojo_services/mojo/input_events.mojom.dart' as input_events_mojom;
 
 
@@ -79,7 +81,20 @@ class _InputDispatcherDispatchEventParams extends bindings.Struct {
   }
 }
 
+
+
+
 const int _InputDispatcher_dispatchEventName = 0;
+
+
+
+class _InputDispatcherServiceDescription implements service_describer.ServiceDescription {
+  dynamic getTopLevelInterface([Function responseFactory]) => null;
+
+  dynamic getTypeDefinition(String typeKey, [Function responseFactory]) => null;
+
+  dynamic getAllTypeDefinitions([Function responseFactory]) => null;
+}
 
 abstract class InputDispatcher {
   static const String serviceName = "mojo::ui::InputDispatcher";
@@ -101,6 +116,9 @@ class _InputDispatcherProxyImpl extends bindings.Proxy {
     assert(endpoint.setDescription("For _InputDispatcherProxyImpl"));
     return new _InputDispatcherProxyImpl.fromEndpoint(endpoint);
   }
+
+  service_describer.ServiceDescription get serviceDescription =>
+    new _InputDispatcherServiceDescription();
 
   void handleResponse(bindings.ServiceMessage message) {
     switch (message.header.type) {
@@ -245,6 +263,10 @@ class InputDispatcherStub extends bindings.Stub {
   }
 
   int get version => 0;
+
+  service_describer.ServiceDescription get serviceDescription =>
+    new _InputDispatcherServiceDescription();
 }
+
 
 

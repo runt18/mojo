@@ -5,9 +5,12 @@
 library dart_to_cpp_mojom;
 
 import 'dart:async';
+import 'dart:collection';
 
 import 'package:mojo/bindings.dart' as bindings;
 import 'package:mojo/core.dart' as core;
+import 'package:mojo/mojo/bindings/types/mojom_types.mojom.dart' as mojom_types;
+import 'package:mojo/mojo/bindings/types/service_describer.mojom.dart' as service_describer;
 
 
 
@@ -230,6 +233,115 @@ class EchoArgs extends bindings.Struct {
   }
 }
 
+mojom_types.MojomStruct _dartToCppEchoArgs() {
+  return new mojom_types.MojomStruct()
+    ..declData = (new mojom_types.DeclarationData()
+      ..shortName = 'EchoArgs'
+      ..fullIdentifier = 'dart_to_cpp.EchoArgs')
+    ..fields = <mojom_types.StructField>[
+      new mojom_types.StructField()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'Si64')
+        ..type = (new mojom_types.Type()
+          ..simpleType = mojom_types.SimpleType.int64),
+      new mojom_types.StructField()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'Si32')
+        ..type = (new mojom_types.Type()
+          ..simpleType = mojom_types.SimpleType.int32),
+      new mojom_types.StructField()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'Si16')
+        ..type = (new mojom_types.Type()
+          ..simpleType = mojom_types.SimpleType.int16),
+      new mojom_types.StructField()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'Si8')
+        ..type = (new mojom_types.Type()
+          ..simpleType = mojom_types.SimpleType.int8),
+      new mojom_types.StructField()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'Ui64')
+        ..type = (new mojom_types.Type()
+          ..simpleType = mojom_types.SimpleType.uint64),
+      new mojom_types.StructField()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'Ui32')
+        ..type = (new mojom_types.Type()
+          ..simpleType = mojom_types.SimpleType.uint32),
+      new mojom_types.StructField()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'Ui16')
+        ..type = (new mojom_types.Type()
+          ..simpleType = mojom_types.SimpleType.uint16),
+      new mojom_types.StructField()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'Ui8')
+        ..type = (new mojom_types.Type()
+          ..simpleType = mojom_types.SimpleType.uint8),
+      new mojom_types.StructField()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'FloatVal')
+        ..type = (new mojom_types.Type()
+          ..simpleType = mojom_types.SimpleType.float),
+      new mojom_types.StructField()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'FloatInf')
+        ..type = (new mojom_types.Type()
+          ..simpleType = mojom_types.SimpleType.float),
+      new mojom_types.StructField()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'FloatNan')
+        ..type = (new mojom_types.Type()
+          ..simpleType = mojom_types.SimpleType.float),
+      new mojom_types.StructField()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'DoubleVal')
+        ..type = (new mojom_types.Type()
+          ..simpleType = mojom_types.SimpleType.double),
+      new mojom_types.StructField()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'DoubleInf')
+        ..type = (new mojom_types.Type()
+          ..simpleType = mojom_types.SimpleType.double),
+      new mojom_types.StructField()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'DoubleNan')
+        ..type = (new mojom_types.Type()
+          ..simpleType = mojom_types.SimpleType.double),
+      new mojom_types.StructField()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'Name')
+        ..type = (new mojom_types.Type()
+          ..stringType = (new mojom_types.StringType()
+            ..nullable = true
+          )),
+      new mojom_types.StructField()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'StringArray')
+        ..type = (new mojom_types.Type()
+          ..arrayType = (new mojom_types.ArrayType()
+            ..nullable = true
+            ..elementType = (new mojom_types.Type()
+                    ..stringType = (new mojom_types.StringType())))),
+      new mojom_types.StructField()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'MessageHandle')
+        ..type = (new mojom_types.Type()
+          ..handleType = (new mojom_types.HandleType()
+            ..kind = mojom_types.HandleTypeKind.messagePipe
+            ..nullable = true
+          )),
+      new mojom_types.StructField()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'DataHandle')
+        ..type = (new mojom_types.Type()
+          ..handleType = (new mojom_types.HandleType()
+            ..kind = mojom_types.HandleTypeKind.dataPipeConsumer
+            ..nullable = true
+          )),];
+}
+
 
 class EchoArgsList extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
@@ -306,6 +418,34 @@ class EchoArgsList extends bindings.Struct {
   }
 }
 
+mojom_types.MojomStruct _dartToCppEchoArgsList() {
+  return new mojom_types.MojomStruct()
+    ..declData = (new mojom_types.DeclarationData()
+      ..shortName = 'EchoArgsList'
+      ..fullIdentifier = 'dart_to_cpp.EchoArgsList')
+    ..fields = <mojom_types.StructField>[
+      new mojom_types.StructField()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'Next')
+        ..type = (new mojom_types.Type()
+          ..typeReference = (new mojom_types.TypeReference()
+          ..nullable = true
+        
+          ..identifier = 'dart_to_cpp_EchoArgsList__'
+          ..typeKey = 'dart_to_cpp_EchoArgsList__'
+        )),
+      new mojom_types.StructField()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'Item')
+        ..type = (new mojom_types.Type()
+          ..typeReference = (new mojom_types.TypeReference()
+          ..nullable = true
+        
+          ..identifier = 'dart_to_cpp_EchoArgs__'
+          ..typeKey = 'dart_to_cpp_EchoArgs__'
+        )),];
+}
+
 
 class _CppSideStartTestParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
@@ -362,6 +502,14 @@ class _CppSideStartTestParams extends bindings.Struct {
     Map map = new Map();
     return map;
   }
+}
+
+mojom_types.MojomStruct _dartToCppCppSideStartTestParams() {
+  return new mojom_types.MojomStruct()
+    ..declData = (new mojom_types.DeclarationData()
+      ..shortName = 'CppSideStartTestParams'
+      ..fullIdentifier = 'dart_to_cpp.CppSide_StartTest_Params')
+    ..fields = <mojom_types.StructField>[];
 }
 
 
@@ -422,6 +570,14 @@ class _CppSideTestFinishedParams extends bindings.Struct {
   }
 }
 
+mojom_types.MojomStruct _dartToCppCppSideTestFinishedParams() {
+  return new mojom_types.MojomStruct()
+    ..declData = (new mojom_types.DeclarationData()
+      ..shortName = 'CppSideTestFinishedParams'
+      ..fullIdentifier = 'dart_to_cpp.CppSide_TestFinished_Params')
+    ..fields = <mojom_types.StructField>[];
+}
+
 
 class _CppSidePingResponseParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
@@ -478,6 +634,14 @@ class _CppSidePingResponseParams extends bindings.Struct {
     Map map = new Map();
     return map;
   }
+}
+
+mojom_types.MojomStruct _dartToCppCppSidePingResponseParams() {
+  return new mojom_types.MojomStruct()
+    ..declData = (new mojom_types.DeclarationData()
+      ..shortName = 'CppSidePingResponseParams'
+      ..fullIdentifier = 'dart_to_cpp.CppSide_PingResponse_Params')
+    ..fields = <mojom_types.StructField>[];
 }
 
 
@@ -547,6 +711,22 @@ class _CppSideEchoResponseParams extends bindings.Struct {
   }
 }
 
+mojom_types.MojomStruct _dartToCppCppSideEchoResponseParams() {
+  return new mojom_types.MojomStruct()
+    ..declData = (new mojom_types.DeclarationData()
+      ..shortName = 'CppSideEchoResponseParams'
+      ..fullIdentifier = 'dart_to_cpp.CppSide_EchoResponse_Params')
+    ..fields = <mojom_types.StructField>[
+      new mojom_types.StructField()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'List')
+        ..type = (new mojom_types.Type()
+          ..typeReference = (new mojom_types.TypeReference()
+          ..identifier = 'dart_to_cpp_EchoArgsList__'
+          ..typeKey = 'dart_to_cpp_EchoArgsList__'
+        )),];
+}
+
 
 class _DartSideSetClientParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
@@ -613,6 +793,22 @@ class _DartSideSetClientParams extends bindings.Struct {
   }
 }
 
+mojom_types.MojomStruct _dartToCppDartSideSetClientParams() {
+  return new mojom_types.MojomStruct()
+    ..declData = (new mojom_types.DeclarationData()
+      ..shortName = 'DartSideSetClientParams'
+      ..fullIdentifier = 'dart_to_cpp.DartSide_SetClient_Params')
+    ..fields = <mojom_types.StructField>[
+      new mojom_types.StructField()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'CppSide')
+        ..type = (new mojom_types.Type()
+          ..typeReference = (new mojom_types.TypeReference()
+          ..identifier = 'dart_to_cpp_CppSide__'
+          ..typeKey = 'dart_to_cpp_CppSide__'
+        )),];
+}
+
 
 class _DartSidePingParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
@@ -669,6 +865,14 @@ class _DartSidePingParams extends bindings.Struct {
     Map map = new Map();
     return map;
   }
+}
+
+mojom_types.MojomStruct _dartToCppDartSidePingParams() {
+  return new mojom_types.MojomStruct()
+    ..declData = (new mojom_types.DeclarationData()
+      ..shortName = 'DartSidePingParams'
+      ..fullIdentifier = 'dart_to_cpp.DartSide_Ping_Params')
+    ..fields = <mojom_types.StructField>[];
 }
 
 
@@ -746,10 +950,73 @@ class _DartSideEchoParams extends bindings.Struct {
   }
 }
 
+mojom_types.MojomStruct _dartToCppDartSideEchoParams() {
+  return new mojom_types.MojomStruct()
+    ..declData = (new mojom_types.DeclarationData()
+      ..shortName = 'DartSideEchoParams'
+      ..fullIdentifier = 'dart_to_cpp.DartSide_Echo_Params')
+    ..fields = <mojom_types.StructField>[
+      new mojom_types.StructField()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'NumIterations')
+        ..type = (new mojom_types.Type()
+          ..simpleType = mojom_types.SimpleType.int32),
+      new mojom_types.StructField()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'Arg')
+        ..type = (new mojom_types.Type()
+          ..typeReference = (new mojom_types.TypeReference()
+          ..identifier = 'dart_to_cpp_EchoArgs__'
+          ..typeKey = 'dart_to_cpp_EchoArgs__'
+        )),];
+}
+
+
 const int _CppSide_startTestName = 88888888;
 const int _CppSide_testFinishedName = 99999999;
 const int _CppSide_pingResponseName = 100000000;
 const int _CppSide_echoResponseName = 100000001;
+
+mojom_types.MojomInterface _dartToCppCppSide() {
+  return new mojom_types.MojomInterface()
+    ..declData = (new mojom_types.DeclarationData()
+      ..shortName = 'CppSide'
+      ..fullIdentifier = 'dart_to_cpp.CppSide')
+    ..interfaceName = 'CppSide'
+    ..methods = <int, mojom_types.MojomMethod>{
+      _CppSide_startTestName: new mojom_types.MojomMethod()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'StartTest')
+        ..ordinal = _CppSide_startTestName
+        ..parameters = _dartToCppCppSideStartTestParams(),
+      _CppSide_testFinishedName: new mojom_types.MojomMethod()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'TestFinished')
+        ..ordinal = _CppSide_testFinishedName
+        ..parameters = _dartToCppCppSideTestFinishedParams(),
+      _CppSide_pingResponseName: new mojom_types.MojomMethod()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'PingResponse')
+        ..ordinal = _CppSide_pingResponseName
+        ..parameters = _dartToCppCppSidePingResponseParams(),
+      _CppSide_echoResponseName: new mojom_types.MojomMethod()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'EchoResponse')
+        ..ordinal = _CppSide_echoResponseName
+        ..parameters = _dartToCppCppSideEchoResponseParams(),
+    };
+}
+
+class _CppSideServiceDescription implements service_describer.ServiceDescription {
+  dynamic getTopLevelInterface([Function responseFactory]) =>
+      _dartToCppCppSide();
+
+  dynamic getTypeDefinition(String typeKey, [Function responseFactory]) =>
+      getAllMojomTypeDefinitions()[typeKey];
+
+  dynamic getAllTypeDefinitions([Function responseFactory]) =>
+      getAllMojomTypeDefinitions();
+}
 
 abstract class CppSide {
   static const String serviceName = null;
@@ -774,6 +1041,9 @@ class _CppSideProxyImpl extends bindings.Proxy {
     assert(endpoint.setDescription("For _CppSideProxyImpl"));
     return new _CppSideProxyImpl.fromEndpoint(endpoint);
   }
+
+  service_describer.ServiceDescription get serviceDescription =>
+    new _CppSideServiceDescription();
 
   void handleResponse(bindings.ServiceMessage message) {
     switch (message.header.type) {
@@ -957,11 +1227,50 @@ class CppSideStub extends bindings.Stub {
   }
 
   int get version => 0;
+
+  service_describer.ServiceDescription get serviceDescription =>
+    new _CppSideServiceDescription();
 }
 
 const int _DartSide_setClientName = 0;
 const int _DartSide_pingName = 1;
 const int _DartSide_echoName = 2;
+
+mojom_types.MojomInterface _dartToCppDartSide() {
+  return new mojom_types.MojomInterface()
+    ..declData = (new mojom_types.DeclarationData()
+      ..shortName = 'DartSide'
+      ..fullIdentifier = 'dart_to_cpp.DartSide')
+    ..interfaceName = 'DartSide'
+    ..methods = <int, mojom_types.MojomMethod>{
+      _DartSide_setClientName: new mojom_types.MojomMethod()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'SetClient')
+        ..ordinal = _DartSide_setClientName
+        ..parameters = _dartToCppDartSideSetClientParams(),
+      _DartSide_pingName: new mojom_types.MojomMethod()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'Ping')
+        ..ordinal = _DartSide_pingName
+        ..parameters = _dartToCppDartSidePingParams(),
+      _DartSide_echoName: new mojom_types.MojomMethod()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'Echo')
+        ..ordinal = _DartSide_echoName
+        ..parameters = _dartToCppDartSideEchoParams(),
+    };
+}
+
+class _DartSideServiceDescription implements service_describer.ServiceDescription {
+  dynamic getTopLevelInterface([Function responseFactory]) =>
+      _dartToCppDartSide();
+
+  dynamic getTypeDefinition(String typeKey, [Function responseFactory]) =>
+      getAllMojomTypeDefinitions()[typeKey];
+
+  dynamic getAllTypeDefinitions([Function responseFactory]) =>
+      getAllMojomTypeDefinitions();
+}
 
 abstract class DartSide {
   static const String serviceName = null;
@@ -985,6 +1294,9 @@ class _DartSideProxyImpl extends bindings.Proxy {
     assert(endpoint.setDescription("For _DartSideProxyImpl"));
     return new _DartSideProxyImpl.fromEndpoint(endpoint);
   }
+
+  service_describer.ServiceDescription get serviceDescription =>
+    new _DartSideServiceDescription();
 
   void handleResponse(bindings.ServiceMessage message) {
     switch (message.header.type) {
@@ -1157,6 +1469,55 @@ class DartSideStub extends bindings.Stub {
   }
 
   int get version => 0;
+
+  service_describer.ServiceDescription get serviceDescription =>
+    new _DartSideServiceDescription();
 }
 
+
+Map<String, mojom_types.UserDefinedType> _initDescriptions() {
+  var map = new HashMap<String, mojom_types.UserDefinedType>();
+  map["dart_to_cpp_EchoArgs__"] =
+    new mojom_types.UserDefinedType()
+      ..structType = _dartToCppEchoArgs();
+  map["dart_to_cpp_EchoArgsList__"] =
+    new mojom_types.UserDefinedType()
+      ..structType = _dartToCppEchoArgsList();
+  map["dart_to_cpp_CppSide_StartTest_Params__"] =
+    new mojom_types.UserDefinedType()
+      ..structType = _dartToCppCppSideStartTestParams();
+  map["dart_to_cpp_CppSide_TestFinished_Params__"] =
+    new mojom_types.UserDefinedType()
+      ..structType = _dartToCppCppSideTestFinishedParams();
+  map["dart_to_cpp_CppSide_PingResponse_Params__"] =
+    new mojom_types.UserDefinedType()
+      ..structType = _dartToCppCppSidePingResponseParams();
+  map["dart_to_cpp_CppSide_EchoResponse_Params__"] =
+    new mojom_types.UserDefinedType()
+      ..structType = _dartToCppCppSideEchoResponseParams();
+  map["dart_to_cpp_DartSide_SetClient_Params__"] =
+    new mojom_types.UserDefinedType()
+      ..structType = _dartToCppDartSideSetClientParams();
+  map["dart_to_cpp_DartSide_Ping_Params__"] =
+    new mojom_types.UserDefinedType()
+      ..structType = _dartToCppDartSidePingParams();
+  map["dart_to_cpp_DartSide_Echo_Params__"] =
+    new mojom_types.UserDefinedType()
+      ..structType = _dartToCppDartSideEchoParams();
+  map["dart_to_cpp_CppSide__"] =
+    new mojom_types.UserDefinedType()
+      ..interfaceType = _dartToCppCppSide();
+  map["dart_to_cpp_DartSide__"] =
+    new mojom_types.UserDefinedType()
+      ..interfaceType = _dartToCppDartSide();
+  return map;
+}
+
+var _mojomDesc;
+Map<String, mojom_types.UserDefinedType> getAllMojomTypeDefinitions() {
+  if (_mojomDesc == null) {
+    _mojomDesc = _initDescriptions();
+  }
+  return _mojomDesc;
+}
 

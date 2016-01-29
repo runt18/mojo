@@ -8,6 +8,8 @@ import 'dart:async';
 
 import 'package:mojo/bindings.dart' as bindings;
 import 'package:mojo/core.dart' as core;
+import 'package:mojo/mojo/bindings/types/mojom_types.mojom.dart' as mojom_types;
+import 'package:mojo/mojo/bindings/types/service_describer.mojom.dart' as service_describer;
 import 'package:mojo_services/mojo/media/media_clock.mojom.dart' as media_clock_mojom;
 import 'package:mojo_services/mojo/media/media_common.mojom.dart' as media_common_mojom;
 import 'package:mojo_services/mojo/media/media_metadata.mojom.dart' as media_metadata_mojom;
@@ -104,6 +106,8 @@ class MediaSourceStreamDescriptor extends bindings.Struct {
 }
 
 
+
+
 class MediaSourceStatus extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(24, 0)
@@ -185,6 +189,8 @@ class MediaSourceStatus extends bindings.Struct {
 }
 
 
+
+
 class _MediaSourceGetStreamsParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(8, 0)
@@ -241,6 +247,8 @@ class _MediaSourceGetStreamsParams extends bindings.Struct {
     return map;
   }
 }
+
+
 
 
 class MediaSourceGetStreamsResponseParams extends bindings.Struct {
@@ -327,6 +335,8 @@ class MediaSourceGetStreamsResponseParams extends bindings.Struct {
 }
 
 
+
+
 class _MediaSourceGetClockDispositionParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(8, 0)
@@ -383,6 +393,8 @@ class _MediaSourceGetClockDispositionParams extends bindings.Struct {
     return map;
   }
 }
+
+
 
 
 class MediaSourceGetClockDispositionResponseParams extends bindings.Struct {
@@ -456,6 +468,8 @@ class MediaSourceGetClockDispositionResponseParams extends bindings.Struct {
 }
 
 
+
+
 class _MediaSourceGetMasterClockParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(16, 0)
@@ -522,6 +536,8 @@ class _MediaSourceGetMasterClockParams extends bindings.Struct {
 }
 
 
+
+
 class _MediaSourceSetMasterClockParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(16, 0)
@@ -586,6 +602,8 @@ class _MediaSourceSetMasterClockParams extends bindings.Struct {
         'Object containing handles cannot be encoded to JSON.');
   }
 }
+
+
 
 
 class _MediaSourceGetProducerParams extends bindings.Struct {
@@ -662,6 +680,8 @@ class _MediaSourceGetProducerParams extends bindings.Struct {
 }
 
 
+
+
 class _MediaSourceGetPullModeProducerParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(16, 0)
@@ -736,6 +756,8 @@ class _MediaSourceGetPullModeProducerParams extends bindings.Struct {
 }
 
 
+
+
 class _MediaSourceGetStatusParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(16, 0)
@@ -801,6 +823,8 @@ class _MediaSourceGetStatusParams extends bindings.Struct {
     return map;
   }
 }
+
+
 
 
 class MediaSourceGetStatusResponseParams extends bindings.Struct {
@@ -880,6 +904,8 @@ class MediaSourceGetStatusResponseParams extends bindings.Struct {
 }
 
 
+
+
 class _MediaSourcePrepareParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(8, 0)
@@ -936,6 +962,8 @@ class _MediaSourcePrepareParams extends bindings.Struct {
     return map;
   }
 }
+
+
 
 
 class MediaSourcePrepareResponseParams extends bindings.Struct {
@@ -995,6 +1023,9 @@ class MediaSourcePrepareResponseParams extends bindings.Struct {
   }
 }
 
+
+
+
 const int _MediaSource_getStreamsName = 0;
 const int _MediaSource_getClockDispositionName = 1;
 const int _MediaSource_getMasterClockName = 2;
@@ -1003,6 +1034,16 @@ const int _MediaSource_getProducerName = 4;
 const int _MediaSource_getPullModeProducerName = 5;
 const int _MediaSource_getStatusName = 6;
 const int _MediaSource_prepareName = 7;
+
+
+
+class _MediaSourceServiceDescription implements service_describer.ServiceDescription {
+  dynamic getTopLevelInterface([Function responseFactory]) => null;
+
+  dynamic getTypeDefinition(String typeKey, [Function responseFactory]) => null;
+
+  dynamic getAllTypeDefinitions([Function responseFactory]) => null;
+}
 
 abstract class MediaSource {
   static const String serviceName = null;
@@ -1031,6 +1072,9 @@ class _MediaSourceProxyImpl extends bindings.Proxy {
     assert(endpoint.setDescription("For _MediaSourceProxyImpl"));
     return new _MediaSourceProxyImpl.fromEndpoint(endpoint);
   }
+
+  service_describer.ServiceDescription get serviceDescription =>
+    new _MediaSourceServiceDescription();
 
   void handleResponse(bindings.ServiceMessage message) {
     switch (message.header.type) {
@@ -1440,6 +1484,10 @@ class MediaSourceStub extends bindings.Stub {
   }
 
   int get version => 0;
+
+  service_describer.ServiceDescription get serviceDescription =>
+    new _MediaSourceServiceDescription();
 }
+
 
 

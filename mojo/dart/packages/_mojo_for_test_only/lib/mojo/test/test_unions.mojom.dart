@@ -5,9 +5,12 @@
 library test_unions_mojom;
 
 import 'dart:async';
+import 'dart:collection';
 
 import 'package:mojo/bindings.dart' as bindings;
 import 'package:mojo/core.dart' as core;
+import 'package:mojo/mojo/bindings/types/mojom_types.mojom.dart' as mojom_types;
+import 'package:mojo/mojo/bindings/types/service_describer.mojom.dart' as service_describer;
 import 'package:_mojo_for_test_only/mojo/test/test_included_unions.mojom.dart' as test_included_unions_mojom;
 
 class AnEnum extends bindings.MojoEnum {
@@ -54,10 +57,30 @@ class AnEnum extends bindings.MojoEnum {
         return 'AnEnum.first';
       case second:
         return 'AnEnum.second';
+      default:
+        return null;
     }
   }
 
   int toJson() => mojoEnumValue;
+}
+
+mojom_types.MojomEnum _testUnionsAnEnum() {
+  return new mojom_types.MojomEnum()
+    ..declData = (new mojom_types.DeclarationData()
+      ..shortName = 'AnEnum'
+      ..fullIdentifier = 'mojo.test.AnEnum')
+    ..values = <mojom_types.EnumValue>[
+      new mojom_types.EnumValue()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'First')
+        ..enumTypeKey = 'test_unions_AnEnum__'
+        ..intValue = 0,
+      new mojom_types.EnumValue()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'Second')
+        ..enumTypeKey = 'test_unions_AnEnum__'
+        ..intValue = 1,];
 }
 
 
@@ -291,6 +314,66 @@ class StructOfUnions extends bindings.Struct {
   }
 }
 
+mojom_types.MojomStruct _testUnionsStructOfUnions() {
+  return new mojom_types.MojomStruct()
+    ..declData = (new mojom_types.DeclarationData()
+      ..shortName = 'StructOfUnions'
+      ..fullIdentifier = 'mojo.test.StructOfUnions')
+    ..fields = <mojom_types.StructField>[
+      new mojom_types.StructField()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'U')
+        ..type = (new mojom_types.Type()
+          ..typeReference = (new mojom_types.TypeReference()
+          ..identifier = 'test_unions_ObjectUnion__'
+          ..typeKey = 'test_unions_ObjectUnion__'
+        )),
+      new mojom_types.StructField()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'AOu')
+        ..type = (new mojom_types.Type()
+          ..arrayType = (new mojom_types.ArrayType()
+            ..elementType = (new mojom_types.Type()
+                    ..typeReference = (new mojom_types.TypeReference()
+                    ..identifier = 'test_unions_ObjectUnion__'
+                    ..typeKey = 'test_unions_ObjectUnion__'
+                  )))),
+      new mojom_types.StructField()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'AHu')
+        ..type = (new mojom_types.Type()
+          ..arrayType = (new mojom_types.ArrayType()
+            ..elementType = (new mojom_types.Type()
+                    ..typeReference = (new mojom_types.TypeReference()
+                    ..identifier = 'test_unions_HandleUnion__'
+                    ..typeKey = 'test_unions_HandleUnion__'
+                  )))),
+      new mojom_types.StructField()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'MOu')
+        ..type = (new mojom_types.Type()
+          ..mapType = (new mojom_types.MapType()
+            ..keyType = (new mojom_types.Type()
+                    ..simpleType = mojom_types.SimpleType.int64)
+            ..valueType = (new mojom_types.Type()
+                    ..typeReference = (new mojom_types.TypeReference()
+                    ..identifier = 'test_unions_ObjectUnion__'
+                    ..typeKey = 'test_unions_ObjectUnion__'
+                  )))),
+      new mojom_types.StructField()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'MHu')
+        ..type = (new mojom_types.Type()
+          ..mapType = (new mojom_types.MapType()
+            ..keyType = (new mojom_types.Type()
+                    ..simpleType = mojom_types.SimpleType.int64)
+            ..valueType = (new mojom_types.Type()
+                    ..typeReference = (new mojom_types.TypeReference()
+                    ..identifier = 'test_unions_HandleUnion__'
+                    ..typeKey = 'test_unions_HandleUnion__'
+                  )))),];
+}
+
 
 class WrapperStruct extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
@@ -373,6 +456,44 @@ class WrapperStruct extends bindings.Struct {
   }
 }
 
+mojom_types.MojomStruct _testUnionsWrapperStruct() {
+  return new mojom_types.MojomStruct()
+    ..declData = (new mojom_types.DeclarationData()
+      ..shortName = 'WrapperStruct'
+      ..fullIdentifier = 'mojo.test.WrapperStruct')
+    ..fields = <mojom_types.StructField>[
+      new mojom_types.StructField()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'ObjectUnion')
+        ..type = (new mojom_types.Type()
+          ..typeReference = (new mojom_types.TypeReference()
+          ..nullable = true
+        
+          ..identifier = 'test_unions_ObjectUnion__'
+          ..typeKey = 'test_unions_ObjectUnion__'
+        )),
+      new mojom_types.StructField()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'PodUnion')
+        ..type = (new mojom_types.Type()
+          ..typeReference = (new mojom_types.TypeReference()
+          ..nullable = true
+        
+          ..identifier = 'test_unions_PodUnion__'
+          ..typeKey = 'test_unions_PodUnion__'
+        )),
+      new mojom_types.StructField()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'HandleUnion')
+        ..type = (new mojom_types.Type()
+          ..typeReference = (new mojom_types.TypeReference()
+          ..nullable = true
+        
+          ..identifier = 'test_unions_HandleUnion__'
+          ..typeKey = 'test_unions_HandleUnion__'
+        )),];
+}
+
 
 class DummyStruct extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
@@ -438,6 +559,19 @@ class DummyStruct extends bindings.Struct {
     map["fInt8"] = fInt8;
     return map;
   }
+}
+
+mojom_types.MojomStruct _testUnionsDummyStruct() {
+  return new mojom_types.MojomStruct()
+    ..declData = (new mojom_types.DeclarationData()
+      ..shortName = 'DummyStruct'
+      ..fullIdentifier = 'mojo.test.DummyStruct')
+    ..fields = <mojom_types.StructField>[
+      new mojom_types.StructField()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'FInt8')
+        ..type = (new mojom_types.Type()
+          ..simpleType = mojom_types.SimpleType.int8),];
 }
 
 
@@ -737,6 +871,99 @@ class SmallStruct extends bindings.Struct {
   }
 }
 
+mojom_types.MojomStruct _testUnionsSmallStruct() {
+  return new mojom_types.MojomStruct()
+    ..declData = (new mojom_types.DeclarationData()
+      ..shortName = 'SmallStruct'
+      ..fullIdentifier = 'mojo.test.SmallStruct')
+    ..fields = <mojom_types.StructField>[
+      new mojom_types.StructField()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'DummyStruct')
+        ..type = (new mojom_types.Type()
+          ..typeReference = (new mojom_types.TypeReference()
+          ..nullable = true
+        
+          ..identifier = 'test_unions_DummyStruct__'
+          ..typeKey = 'test_unions_DummyStruct__'
+        )),
+      new mojom_types.StructField()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'PodUnion')
+        ..type = (new mojom_types.Type()
+          ..typeReference = (new mojom_types.TypeReference()
+          ..nullable = true
+        
+          ..identifier = 'test_unions_PodUnion__'
+          ..typeKey = 'test_unions_PodUnion__'
+        )),
+      new mojom_types.StructField()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'PodUnionArray')
+        ..type = (new mojom_types.Type()
+          ..arrayType = (new mojom_types.ArrayType()
+            ..nullable = true
+            ..elementType = (new mojom_types.Type()
+                    ..typeReference = (new mojom_types.TypeReference()
+                    ..identifier = 'test_unions_PodUnion__'
+                    ..typeKey = 'test_unions_PodUnion__'
+                  )))),
+      new mojom_types.StructField()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'NullablePodUnionArray')
+        ..type = (new mojom_types.Type()
+          ..arrayType = (new mojom_types.ArrayType()
+            ..nullable = true
+            ..elementType = (new mojom_types.Type()
+                    ..typeReference = (new mojom_types.TypeReference()
+                    ..nullable = true
+                  
+                    ..identifier = 'test_unions_PodUnion__'
+                    ..typeKey = 'test_unions_PodUnion__'
+                  )))),
+      new mojom_types.StructField()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'SArray')
+        ..type = (new mojom_types.Type()
+          ..arrayType = (new mojom_types.ArrayType()
+            ..nullable = true
+            ..elementType = (new mojom_types.Type()
+                    ..typeReference = (new mojom_types.TypeReference()
+                    ..identifier = 'test_unions_DummyStruct__'
+                    ..typeKey = 'test_unions_DummyStruct__'
+                  )))),
+      new mojom_types.StructField()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'PodUnionMap')
+        ..type = (new mojom_types.Type()
+          ..mapType = (new mojom_types.MapType()
+            ..nullable = true
+          
+            ..keyType = (new mojom_types.Type()
+                    ..stringType = (new mojom_types.StringType()))
+            ..valueType = (new mojom_types.Type()
+                    ..typeReference = (new mojom_types.TypeReference()
+                    ..identifier = 'test_unions_PodUnion__'
+                    ..typeKey = 'test_unions_PodUnion__'
+                  )))),
+      new mojom_types.StructField()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'NullablePodUnionMap')
+        ..type = (new mojom_types.Type()
+          ..mapType = (new mojom_types.MapType()
+            ..nullable = true
+          
+            ..keyType = (new mojom_types.Type()
+                    ..stringType = (new mojom_types.StringType()))
+            ..valueType = (new mojom_types.Type()
+                    ..typeReference = (new mojom_types.TypeReference()
+                    ..nullable = true
+                  
+                    ..identifier = 'test_unions_PodUnion__'
+                    ..typeKey = 'test_unions_PodUnion__'
+                  )))),];
+}
+
 
 class SmallStructNonNullableUnion extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
@@ -808,6 +1035,22 @@ class SmallStructNonNullableUnion extends bindings.Struct {
   }
 }
 
+mojom_types.MojomStruct _testUnionsSmallStructNonNullableUnion() {
+  return new mojom_types.MojomStruct()
+    ..declData = (new mojom_types.DeclarationData()
+      ..shortName = 'SmallStructNonNullableUnion'
+      ..fullIdentifier = 'mojo.test.SmallStructNonNullableUnion')
+    ..fields = <mojom_types.StructField>[
+      new mojom_types.StructField()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'PodUnion')
+        ..type = (new mojom_types.Type()
+          ..typeReference = (new mojom_types.TypeReference()
+          ..identifier = 'test_unions_PodUnion__'
+          ..typeKey = 'test_unions_PodUnion__'
+        )),];
+}
+
 
 class StructNullObjectUnion extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
@@ -873,6 +1116,24 @@ class StructNullObjectUnion extends bindings.Struct {
     map["objUnion"] = objUnion;
     return map;
   }
+}
+
+mojom_types.MojomStruct _testUnionsStructNullObjectUnion() {
+  return new mojom_types.MojomStruct()
+    ..declData = (new mojom_types.DeclarationData()
+      ..shortName = 'StructNullObjectUnion'
+      ..fullIdentifier = 'mojo.test.StructNullObjectUnion')
+    ..fields = <mojom_types.StructField>[
+      new mojom_types.StructField()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'ObjUnion')
+        ..type = (new mojom_types.Type()
+          ..typeReference = (new mojom_types.TypeReference()
+          ..nullable = true
+        
+          ..identifier = 'test_unions_ObjectOnlyUnion__'
+          ..typeKey = 'test_unions_ObjectOnlyUnion__'
+        )),];
 }
 
 
@@ -955,6 +1216,27 @@ class SmallObjStruct extends bindings.Struct {
   }
 }
 
+mojom_types.MojomStruct _testUnionsSmallObjStruct() {
+  return new mojom_types.MojomStruct()
+    ..declData = (new mojom_types.DeclarationData()
+      ..shortName = 'SmallObjStruct'
+      ..fullIdentifier = 'mojo.test.SmallObjStruct')
+    ..fields = <mojom_types.StructField>[
+      new mojom_types.StructField()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'ObjUnion')
+        ..type = (new mojom_types.Type()
+          ..typeReference = (new mojom_types.TypeReference()
+          ..identifier = 'test_unions_ObjectUnion__'
+          ..typeKey = 'test_unions_ObjectUnion__'
+        )),
+      new mojom_types.StructField()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'FInt8')
+        ..type = (new mojom_types.Type()
+          ..simpleType = mojom_types.SimpleType.int8),];
+}
+
 
 class TryNonNullStruct extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
@@ -1033,6 +1315,32 @@ class TryNonNullStruct extends bindings.Struct {
   }
 }
 
+mojom_types.MojomStruct _testUnionsTryNonNullStruct() {
+  return new mojom_types.MojomStruct()
+    ..declData = (new mojom_types.DeclarationData()
+      ..shortName = 'TryNonNullStruct'
+      ..fullIdentifier = 'mojo.test.TryNonNullStruct')
+    ..fields = <mojom_types.StructField>[
+      new mojom_types.StructField()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'Nullable')
+        ..type = (new mojom_types.Type()
+          ..typeReference = (new mojom_types.TypeReference()
+          ..nullable = true
+        
+          ..identifier = 'test_unions_DummyStruct__'
+          ..typeKey = 'test_unions_DummyStruct__'
+        )),
+      new mojom_types.StructField()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'NonNullable')
+        ..type = (new mojom_types.Type()
+          ..typeReference = (new mojom_types.TypeReference()
+          ..identifier = 'test_unions_DummyStruct__'
+          ..typeKey = 'test_unions_DummyStruct__'
+        )),];
+}
+
 
 class IncludingStruct extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
@@ -1104,6 +1412,22 @@ class IncludingStruct extends bindings.Struct {
   }
 }
 
+mojom_types.MojomStruct _testUnionsIncludingStruct() {
+  return new mojom_types.MojomStruct()
+    ..declData = (new mojom_types.DeclarationData()
+      ..shortName = 'IncludingStruct'
+      ..fullIdentifier = 'mojo.test.IncludingStruct')
+    ..fields = <mojom_types.StructField>[
+      new mojom_types.StructField()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'A')
+        ..type = (new mojom_types.Type()
+          ..typeReference = (new mojom_types.TypeReference()
+          ..identifier = 'test_included_unions_IncludedUnion__'
+          ..typeKey = 'test_included_unions_IncludedUnion__'
+        )),];
+}
+
 
 class _SmallCacheSetIntValueParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
@@ -1171,6 +1495,19 @@ class _SmallCacheSetIntValueParams extends bindings.Struct {
   }
 }
 
+mojom_types.MojomStruct _testUnionsSmallCacheSetIntValueParams() {
+  return new mojom_types.MojomStruct()
+    ..declData = (new mojom_types.DeclarationData()
+      ..shortName = 'SmallCacheSetIntValueParams'
+      ..fullIdentifier = 'mojo.test.SmallCache_SetIntValue_Params')
+    ..fields = <mojom_types.StructField>[
+      new mojom_types.StructField()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'IntValue')
+        ..type = (new mojom_types.Type()
+          ..simpleType = mojom_types.SimpleType.int64),];
+}
+
 
 class _SmallCacheGetIntValueParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
@@ -1227,6 +1564,14 @@ class _SmallCacheGetIntValueParams extends bindings.Struct {
     Map map = new Map();
     return map;
   }
+}
+
+mojom_types.MojomStruct _testUnionsSmallCacheGetIntValueParams() {
+  return new mojom_types.MojomStruct()
+    ..declData = (new mojom_types.DeclarationData()
+      ..shortName = 'SmallCacheGetIntValueParams'
+      ..fullIdentifier = 'mojo.test.SmallCache_GetIntValue_Params')
+    ..fields = <mojom_types.StructField>[];
 }
 
 
@@ -1294,6 +1639,19 @@ class SmallCacheGetIntValueResponseParams extends bindings.Struct {
     map["intValue"] = intValue;
     return map;
   }
+}
+
+mojom_types.MojomStruct _testUnionsSmallCacheGetIntValueResponseParams() {
+  return new mojom_types.MojomStruct()
+    ..declData = (new mojom_types.DeclarationData()
+      ..shortName = 'SmallCacheGetIntValueResponseParams'
+      ..fullIdentifier = 'mojo.test.SmallCache_GetIntValue_ResponseParams')
+    ..fields = <mojom_types.StructField>[
+      new mojom_types.StructField()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'IntValue')
+        ..type = (new mojom_types.Type()
+          ..simpleType = mojom_types.SimpleType.int64),];
 }
 
 
@@ -1367,6 +1725,22 @@ class _UnionInterfaceEchoParams extends bindings.Struct {
   }
 }
 
+mojom_types.MojomStruct _testUnionsUnionInterfaceEchoParams() {
+  return new mojom_types.MojomStruct()
+    ..declData = (new mojom_types.DeclarationData()
+      ..shortName = 'UnionInterfaceEchoParams'
+      ..fullIdentifier = 'mojo.test.UnionInterface_Echo_Params')
+    ..fields = <mojom_types.StructField>[
+      new mojom_types.StructField()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'InVal')
+        ..type = (new mojom_types.Type()
+          ..typeReference = (new mojom_types.TypeReference()
+          ..identifier = 'test_unions_PodUnion__'
+          ..typeKey = 'test_unions_PodUnion__'
+        )),];
+}
+
 
 class UnionInterfaceEchoResponseParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
@@ -1436,6 +1810,22 @@ class UnionInterfaceEchoResponseParams extends bindings.Struct {
     map["outVal"] = outVal;
     return map;
   }
+}
+
+mojom_types.MojomStruct _testUnionsUnionInterfaceEchoResponseParams() {
+  return new mojom_types.MojomStruct()
+    ..declData = (new mojom_types.DeclarationData()
+      ..shortName = 'UnionInterfaceEchoResponseParams'
+      ..fullIdentifier = 'mojo.test.UnionInterface_Echo_ResponseParams')
+    ..fields = <mojom_types.StructField>[
+      new mojom_types.StructField()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'OutVal')
+        ..type = (new mojom_types.Type()
+          ..typeReference = (new mojom_types.TypeReference()
+          ..identifier = 'test_unions_PodUnion__'
+          ..typeKey = 'test_unions_PodUnion__'
+        )),];
 }
 
 
@@ -1823,6 +2213,95 @@ class PodUnion extends bindings.Union {
   }
 }
 
+mojom_types.MojomUnion _testUnionsPodUnion() {
+  return new mojom_types.MojomUnion()
+    ..declData = (new mojom_types.DeclarationData()
+      ..shortName = 'PodUnion'
+      ..fullIdentifier = 'mojo.test.PodUnion')
+    ..fields = <mojom_types.UnionField>[
+      new mojom_types.UnionField()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'FInt8')
+        ..type = (new mojom_types.Type()
+          ..simpleType = mojom_types.SimpleType.int8)
+        ..tag = 0,
+      new mojom_types.UnionField()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'FInt8Other')
+        ..type = (new mojom_types.Type()
+          ..simpleType = mojom_types.SimpleType.int8)
+        ..tag = 1,
+      new mojom_types.UnionField()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'FUint8')
+        ..type = (new mojom_types.Type()
+          ..simpleType = mojom_types.SimpleType.uint8)
+        ..tag = 2,
+      new mojom_types.UnionField()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'FInt16')
+        ..type = (new mojom_types.Type()
+          ..simpleType = mojom_types.SimpleType.int16)
+        ..tag = 3,
+      new mojom_types.UnionField()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'FUint16')
+        ..type = (new mojom_types.Type()
+          ..simpleType = mojom_types.SimpleType.uint16)
+        ..tag = 4,
+      new mojom_types.UnionField()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'FInt32')
+        ..type = (new mojom_types.Type()
+          ..simpleType = mojom_types.SimpleType.int32)
+        ..tag = 5,
+      new mojom_types.UnionField()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'FUint32')
+        ..type = (new mojom_types.Type()
+          ..simpleType = mojom_types.SimpleType.uint32)
+        ..tag = 6,
+      new mojom_types.UnionField()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'FInt64')
+        ..type = (new mojom_types.Type()
+          ..simpleType = mojom_types.SimpleType.int64)
+        ..tag = 7,
+      new mojom_types.UnionField()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'FUint64')
+        ..type = (new mojom_types.Type()
+          ..simpleType = mojom_types.SimpleType.uint64)
+        ..tag = 8,
+      new mojom_types.UnionField()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'FFloat')
+        ..type = (new mojom_types.Type()
+          ..simpleType = mojom_types.SimpleType.float)
+        ..tag = 9,
+      new mojom_types.UnionField()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'FDouble')
+        ..type = (new mojom_types.Type()
+          ..simpleType = mojom_types.SimpleType.double)
+        ..tag = 10,
+      new mojom_types.UnionField()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'FBool')
+        ..type = (new mojom_types.Type()
+          ..simpleType = mojom_types.SimpleType.bool)
+        ..tag = 11,
+      new mojom_types.UnionField()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'FEnum')
+        ..type = (new mojom_types.Type()
+          ..typeReference = (new mojom_types.TypeReference()
+          ..identifier = 'test_unions_AnEnum__'
+          ..typeKey = 'test_unions_AnEnum__'
+        ))
+        ..tag = 12,];
+}
+
 
 enum UnionOfUnionsTag {
   u,
@@ -2130,6 +2609,71 @@ class UnionOfUnions extends bindings.Union {
   }
 }
 
+mojom_types.MojomUnion _testUnionsUnionOfUnions() {
+  return new mojom_types.MojomUnion()
+    ..declData = (new mojom_types.DeclarationData()
+      ..shortName = 'UnionOfUnions'
+      ..fullIdentifier = 'mojo.test.UnionOfUnions')
+    ..fields = <mojom_types.UnionField>[
+      new mojom_types.UnionField()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'U')
+        ..type = (new mojom_types.Type()
+          ..typeReference = (new mojom_types.TypeReference()
+          ..identifier = 'test_unions_ObjectUnion__'
+          ..typeKey = 'test_unions_ObjectUnion__'
+        ))
+        ..tag = 0,
+      new mojom_types.UnionField()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'AOu')
+        ..type = (new mojom_types.Type()
+          ..arrayType = (new mojom_types.ArrayType()
+            ..elementType = (new mojom_types.Type()
+                    ..typeReference = (new mojom_types.TypeReference()
+                    ..identifier = 'test_unions_ObjectUnion__'
+                    ..typeKey = 'test_unions_ObjectUnion__'
+                  ))))
+        ..tag = 1,
+      new mojom_types.UnionField()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'AHu')
+        ..type = (new mojom_types.Type()
+          ..arrayType = (new mojom_types.ArrayType()
+            ..elementType = (new mojom_types.Type()
+                    ..typeReference = (new mojom_types.TypeReference()
+                    ..identifier = 'test_unions_HandleUnion__'
+                    ..typeKey = 'test_unions_HandleUnion__'
+                  ))))
+        ..tag = 2,
+      new mojom_types.UnionField()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'MOu')
+        ..type = (new mojom_types.Type()
+          ..mapType = (new mojom_types.MapType()
+            ..keyType = (new mojom_types.Type()
+                    ..simpleType = mojom_types.SimpleType.int64)
+            ..valueType = (new mojom_types.Type()
+                    ..typeReference = (new mojom_types.TypeReference()
+                    ..identifier = 'test_unions_ObjectUnion__'
+                    ..typeKey = 'test_unions_ObjectUnion__'
+                  ))))
+        ..tag = 3,
+      new mojom_types.UnionField()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'MHu')
+        ..type = (new mojom_types.Type()
+          ..mapType = (new mojom_types.MapType()
+            ..keyType = (new mojom_types.Type()
+                    ..simpleType = mojom_types.SimpleType.int64)
+            ..valueType = (new mojom_types.Type()
+                    ..typeReference = (new mojom_types.TypeReference()
+                    ..identifier = 'test_unions_HandleUnion__'
+                    ..typeKey = 'test_unions_HandleUnion__'
+                  ))))
+        ..tag = 4,];
+}
+
 
 enum ObjectUnionTag {
   fInt8,
@@ -2401,6 +2945,73 @@ class ObjectUnion extends bindings.Union {
   }
 }
 
+mojom_types.MojomUnion _testUnionsObjectUnion() {
+  return new mojom_types.MojomUnion()
+    ..declData = (new mojom_types.DeclarationData()
+      ..shortName = 'ObjectUnion'
+      ..fullIdentifier = 'mojo.test.ObjectUnion')
+    ..fields = <mojom_types.UnionField>[
+      new mojom_types.UnionField()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'FInt8')
+        ..type = (new mojom_types.Type()
+          ..simpleType = mojom_types.SimpleType.int8)
+        ..tag = 0,
+      new mojom_types.UnionField()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'FString')
+        ..type = (new mojom_types.Type()
+          ..stringType = (new mojom_types.StringType()))
+        ..tag = 1,
+      new mojom_types.UnionField()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'FDummy')
+        ..type = (new mojom_types.Type()
+          ..typeReference = (new mojom_types.TypeReference()
+          ..identifier = 'test_unions_DummyStruct__'
+          ..typeKey = 'test_unions_DummyStruct__'
+        ))
+        ..tag = 2,
+      new mojom_types.UnionField()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'FNullable')
+        ..type = (new mojom_types.Type()
+          ..typeReference = (new mojom_types.TypeReference()
+          ..nullable = true
+        
+          ..identifier = 'test_unions_DummyStruct__'
+          ..typeKey = 'test_unions_DummyStruct__'
+        ))
+        ..tag = 3,
+      new mojom_types.UnionField()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'FArrayInt8')
+        ..type = (new mojom_types.Type()
+          ..arrayType = (new mojom_types.ArrayType()
+            ..elementType = (new mojom_types.Type()
+                    ..simpleType = mojom_types.SimpleType.int8)))
+        ..tag = 4,
+      new mojom_types.UnionField()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'FMapInt8')
+        ..type = (new mojom_types.Type()
+          ..mapType = (new mojom_types.MapType()
+            ..keyType = (new mojom_types.Type()
+                    ..stringType = (new mojom_types.StringType()))
+            ..valueType = (new mojom_types.Type()
+                    ..simpleType = mojom_types.SimpleType.int8)))
+        ..tag = 5,
+      new mojom_types.UnionField()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'FPodUnion')
+        ..type = (new mojom_types.Type()
+          ..typeReference = (new mojom_types.TypeReference()
+          ..identifier = 'test_unions_PodUnion__'
+          ..typeKey = 'test_unions_PodUnion__'
+        ))
+        ..tag = 6,];
+}
+
 
 enum HandleUnionTag {
   fHandle,
@@ -2606,6 +3217,58 @@ class HandleUnion extends bindings.Union {
   }
 }
 
+mojom_types.MojomUnion _testUnionsHandleUnion() {
+  return new mojom_types.MojomUnion()
+    ..declData = (new mojom_types.DeclarationData()
+      ..shortName = 'HandleUnion'
+      ..fullIdentifier = 'mojo.test.HandleUnion')
+    ..fields = <mojom_types.UnionField>[
+      new mojom_types.UnionField()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'FHandle')
+        ..type = (new mojom_types.Type()
+          ..handleType = (new mojom_types.HandleType()
+            ..kind = mojom_types.HandleTypeKind.unspecified))
+        ..tag = 0,
+      new mojom_types.UnionField()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'FMessagePipe')
+        ..type = (new mojom_types.Type()
+          ..handleType = (new mojom_types.HandleType()
+            ..kind = mojom_types.HandleTypeKind.messagePipe))
+        ..tag = 1,
+      new mojom_types.UnionField()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'FDataPipeConsumer')
+        ..type = (new mojom_types.Type()
+          ..handleType = (new mojom_types.HandleType()
+            ..kind = mojom_types.HandleTypeKind.dataPipeConsumer))
+        ..tag = 2,
+      new mojom_types.UnionField()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'FDataPipeProducer')
+        ..type = (new mojom_types.Type()
+          ..handleType = (new mojom_types.HandleType()
+            ..kind = mojom_types.HandleTypeKind.dataPipeProducer))
+        ..tag = 3,
+      new mojom_types.UnionField()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'FSharedBuffer')
+        ..type = (new mojom_types.Type()
+          ..handleType = (new mojom_types.HandleType()
+            ..kind = mojom_types.HandleTypeKind.sharedBuffer))
+        ..tag = 4,
+      new mojom_types.UnionField()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'FSmallCache')
+        ..type = (new mojom_types.Type()
+          ..typeReference = (new mojom_types.TypeReference()
+          ..identifier = 'test_unions_SmallCache__'
+          ..typeKey = 'test_unions_SmallCache__'
+        ))
+        ..tag = 5,];
+}
+
 
 enum ObjectOnlyUnionTag {
   dummy1,
@@ -2687,6 +3350,23 @@ class ObjectOnlyUnion extends bindings.Union {
   }
 }
 
+mojom_types.MojomUnion _testUnionsObjectOnlyUnion() {
+  return new mojom_types.MojomUnion()
+    ..declData = (new mojom_types.DeclarationData()
+      ..shortName = 'ObjectOnlyUnion'
+      ..fullIdentifier = 'mojo.test.ObjectOnlyUnion')
+    ..fields = <mojom_types.UnionField>[
+      new mojom_types.UnionField()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'Dummy1')
+        ..type = (new mojom_types.Type()
+          ..typeReference = (new mojom_types.TypeReference()
+          ..identifier = 'test_unions_DummyStruct__'
+          ..typeKey = 'test_unions_DummyStruct__'
+        ))
+        ..tag = 0,];
+}
+
 
 enum OldUnionTag {
   fInt8,
@@ -2765,6 +3445,20 @@ class OldUnion extends bindings.Union {
     result += ": $_data)";
     return result;
   }
+}
+
+mojom_types.MojomUnion _testUnionsOldUnion() {
+  return new mojom_types.MojomUnion()
+    ..declData = (new mojom_types.DeclarationData()
+      ..shortName = 'OldUnion'
+      ..fullIdentifier = 'mojo.test.OldUnion')
+    ..fields = <mojom_types.UnionField>[
+      new mojom_types.UnionField()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'FInt8')
+        ..type = (new mojom_types.Type()
+          ..simpleType = mojom_types.SimpleType.int8)
+        ..tag = 0,];
 }
 
 
@@ -2871,8 +3565,61 @@ class NewUnion extends bindings.Union {
     return result;
   }
 }
+
+mojom_types.MojomUnion _testUnionsNewUnion() {
+  return new mojom_types.MojomUnion()
+    ..declData = (new mojom_types.DeclarationData()
+      ..shortName = 'NewUnion'
+      ..fullIdentifier = 'mojo.test.NewUnion')
+    ..fields = <mojom_types.UnionField>[
+      new mojom_types.UnionField()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'FInt8')
+        ..type = (new mojom_types.Type()
+          ..simpleType = mojom_types.SimpleType.int8)
+        ..tag = 0,
+      new mojom_types.UnionField()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'FInt16')
+        ..type = (new mojom_types.Type()
+          ..simpleType = mojom_types.SimpleType.int16)
+        ..tag = 1,];
+}
+
 const int _SmallCache_setIntValueName = 0;
 const int _SmallCache_getIntValueName = 1;
+
+mojom_types.MojomInterface _testUnionsSmallCache() {
+  return new mojom_types.MojomInterface()
+    ..declData = (new mojom_types.DeclarationData()
+      ..shortName = 'SmallCache'
+      ..fullIdentifier = 'mojo.test.SmallCache')
+    ..interfaceName = 'SmallCache'
+    ..methods = <int, mojom_types.MojomMethod>{
+      _SmallCache_setIntValueName: new mojom_types.MojomMethod()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'SetIntValue')
+        ..ordinal = _SmallCache_setIntValueName
+        ..parameters = _testUnionsSmallCacheSetIntValueParams(),
+      _SmallCache_getIntValueName: new mojom_types.MojomMethod()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'GetIntValue')
+        ..ordinal = _SmallCache_getIntValueName
+        ..responseParams = _testUnionsSmallCacheGetIntValueResponseParams()
+        ..parameters = _testUnionsSmallCacheGetIntValueParams(),
+    };
+}
+
+class _SmallCacheServiceDescription implements service_describer.ServiceDescription {
+  dynamic getTopLevelInterface([Function responseFactory]) =>
+      _testUnionsSmallCache();
+
+  dynamic getTypeDefinition(String typeKey, [Function responseFactory]) =>
+      getAllMojomTypeDefinitions()[typeKey];
+
+  dynamic getAllTypeDefinitions([Function responseFactory]) =>
+      getAllMojomTypeDefinitions();
+}
 
 abstract class SmallCache {
   static const String serviceName = null;
@@ -2895,6 +3642,9 @@ class _SmallCacheProxyImpl extends bindings.Proxy {
     assert(endpoint.setDescription("For _SmallCacheProxyImpl"));
     return new _SmallCacheProxyImpl.fromEndpoint(endpoint);
   }
+
+  service_describer.ServiceDescription get serviceDescription =>
+    new _SmallCacheServiceDescription();
 
   void handleResponse(bindings.ServiceMessage message) {
     switch (message.header.type) {
@@ -3094,9 +3844,39 @@ class SmallCacheStub extends bindings.Stub {
   }
 
   int get version => 0;
+
+  service_describer.ServiceDescription get serviceDescription =>
+    new _SmallCacheServiceDescription();
 }
 
 const int _UnionInterface_echoName = 0;
+
+mojom_types.MojomInterface _testUnionsUnionInterface() {
+  return new mojom_types.MojomInterface()
+    ..declData = (new mojom_types.DeclarationData()
+      ..shortName = 'UnionInterface'
+      ..fullIdentifier = 'mojo.test.UnionInterface')
+    ..interfaceName = 'UnionInterface'
+    ..methods = <int, mojom_types.MojomMethod>{
+      _UnionInterface_echoName: new mojom_types.MojomMethod()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'Echo')
+        ..ordinal = _UnionInterface_echoName
+        ..responseParams = _testUnionsUnionInterfaceEchoResponseParams()
+        ..parameters = _testUnionsUnionInterfaceEchoParams(),
+    };
+}
+
+class _UnionInterfaceServiceDescription implements service_describer.ServiceDescription {
+  dynamic getTopLevelInterface([Function responseFactory]) =>
+      _testUnionsUnionInterface();
+
+  dynamic getTypeDefinition(String typeKey, [Function responseFactory]) =>
+      getAllMojomTypeDefinitions()[typeKey];
+
+  dynamic getAllTypeDefinitions([Function responseFactory]) =>
+      getAllMojomTypeDefinitions();
+}
 
 abstract class UnionInterface {
   static const String serviceName = null;
@@ -3118,6 +3898,9 @@ class _UnionInterfaceProxyImpl extends bindings.Proxy {
     assert(endpoint.setDescription("For _UnionInterfaceProxyImpl"));
     return new _UnionInterfaceProxyImpl.fromEndpoint(endpoint);
   }
+
+  service_describer.ServiceDescription get serviceDescription =>
+    new _UnionInterfaceServiceDescription();
 
   void handleResponse(bindings.ServiceMessage message) {
     switch (message.header.type) {
@@ -3304,6 +4087,99 @@ class UnionInterfaceStub extends bindings.Stub {
   }
 
   int get version => 0;
+
+  service_describer.ServiceDescription get serviceDescription =>
+    new _UnionInterfaceServiceDescription();
 }
 
+
+Map<String, mojom_types.UserDefinedType> _initDescriptions() {
+  var map = new HashMap<String, mojom_types.UserDefinedType>();
+  map["test_unions_AnEnum__"] =
+    new mojom_types.UserDefinedType()
+      ..enumType = _testUnionsAnEnum();
+  map["test_unions_StructOfUnions__"] =
+    new mojom_types.UserDefinedType()
+      ..structType = _testUnionsStructOfUnions();
+  map["test_unions_WrapperStruct__"] =
+    new mojom_types.UserDefinedType()
+      ..structType = _testUnionsWrapperStruct();
+  map["test_unions_DummyStruct__"] =
+    new mojom_types.UserDefinedType()
+      ..structType = _testUnionsDummyStruct();
+  map["test_unions_SmallStruct__"] =
+    new mojom_types.UserDefinedType()
+      ..structType = _testUnionsSmallStruct();
+  map["test_unions_SmallStructNonNullableUnion__"] =
+    new mojom_types.UserDefinedType()
+      ..structType = _testUnionsSmallStructNonNullableUnion();
+  map["test_unions_StructNullObjectUnion__"] =
+    new mojom_types.UserDefinedType()
+      ..structType = _testUnionsStructNullObjectUnion();
+  map["test_unions_SmallObjStruct__"] =
+    new mojom_types.UserDefinedType()
+      ..structType = _testUnionsSmallObjStruct();
+  map["test_unions_TryNonNullStruct__"] =
+    new mojom_types.UserDefinedType()
+      ..structType = _testUnionsTryNonNullStruct();
+  map["test_unions_IncludingStruct__"] =
+    new mojom_types.UserDefinedType()
+      ..structType = _testUnionsIncludingStruct();
+  map["test_unions_SmallCache_SetIntValue_Params__"] =
+    new mojom_types.UserDefinedType()
+      ..structType = _testUnionsSmallCacheSetIntValueParams();
+  map["test_unions_SmallCache_GetIntValue_Params__"] =
+    new mojom_types.UserDefinedType()
+      ..structType = _testUnionsSmallCacheGetIntValueParams();
+  map["test_unions_SmallCache_GetIntValue_ResponseParams__"] =
+    new mojom_types.UserDefinedType()
+      ..structType = _testUnionsSmallCacheGetIntValueResponseParams();
+  map["test_unions_UnionInterface_Echo_Params__"] =
+    new mojom_types.UserDefinedType()
+      ..structType = _testUnionsUnionInterfaceEchoParams();
+  map["test_unions_UnionInterface_Echo_ResponseParams__"] =
+    new mojom_types.UserDefinedType()
+      ..structType = _testUnionsUnionInterfaceEchoResponseParams();
+  map["test_unions_PodUnion__"] =
+    new mojom_types.UserDefinedType()
+      ..unionType = _testUnionsPodUnion();
+  map["test_unions_UnionOfUnions__"] =
+    new mojom_types.UserDefinedType()
+      ..unionType = _testUnionsUnionOfUnions();
+  map["test_unions_ObjectUnion__"] =
+    new mojom_types.UserDefinedType()
+      ..unionType = _testUnionsObjectUnion();
+  map["test_unions_HandleUnion__"] =
+    new mojom_types.UserDefinedType()
+      ..unionType = _testUnionsHandleUnion();
+  map["test_unions_ObjectOnlyUnion__"] =
+    new mojom_types.UserDefinedType()
+      ..unionType = _testUnionsObjectOnlyUnion();
+  map["test_unions_OldUnion__"] =
+    new mojom_types.UserDefinedType()
+      ..unionType = _testUnionsOldUnion();
+  map["test_unions_NewUnion__"] =
+    new mojom_types.UserDefinedType()
+      ..unionType = _testUnionsNewUnion();
+  map["test_unions_SmallCache__"] =
+    new mojom_types.UserDefinedType()
+      ..interfaceType = _testUnionsSmallCache();
+  map["test_unions_UnionInterface__"] =
+    new mojom_types.UserDefinedType()
+      ..interfaceType = _testUnionsUnionInterface();
+  test_included_unions_mojom.getAllMojomTypeDefinitions()
+      .forEach((String s, mojom_types.UserDefinedType udt) {
+    map[s] = udt;
+  });
+
+  return map;
+}
+
+var _mojomDesc;
+Map<String, mojom_types.UserDefinedType> getAllMojomTypeDefinitions() {
+  if (_mojomDesc == null) {
+    _mojomDesc = _initDescriptions();
+  }
+  return _mojomDesc;
+}
 

@@ -8,6 +8,8 @@ import 'dart:async';
 
 import 'package:mojo/bindings.dart' as bindings;
 import 'package:mojo/core.dart' as core;
+import 'package:mojo/mojo/bindings/types/mojom_types.mojom.dart' as mojom_types;
+import 'package:mojo/mojo/bindings/types/service_describer.mojom.dart' as service_describer;
 
 class SystemUiVisibility extends bindings.MojoEnum {
   static const SystemUiVisibility standard = const SystemUiVisibility._(0);
@@ -60,11 +62,15 @@ class SystemUiVisibility extends bindings.MojoEnum {
         return 'SystemUiVisibility.fullscreen';
       case immersive:
         return 'SystemUiVisibility.immersive';
+      default:
+        return null;
     }
   }
 
   int toJson() => mojoEnumValue;
 }
+
+
 
 class ScreenOrientation extends bindings.MojoEnum {
   static const ScreenOrientation unspecified = const ScreenOrientation._(0);
@@ -124,11 +130,15 @@ class ScreenOrientation extends bindings.MojoEnum {
         return 'ScreenOrientation.portrait';
       case nosensor:
         return 'ScreenOrientation.nosensor';
+      default:
+        return null;
     }
   }
 
   int toJson() => mojoEnumValue;
 }
+
+
 
 class HapticFeedbackType extends bindings.MojoEnum {
   static const HapticFeedbackType longPress = const HapticFeedbackType._(0);
@@ -188,11 +198,15 @@ class HapticFeedbackType extends bindings.MojoEnum {
         return 'HapticFeedbackType.keyboardTap';
       case clockTick:
         return 'HapticFeedbackType.clockTick';
+      default:
+        return null;
     }
   }
 
   int toJson() => mojoEnumValue;
 }
+
+
 
 class AuralFeedbackType extends bindings.MojoEnum {
   static const AuralFeedbackType click = const AuralFeedbackType._(0);
@@ -259,11 +273,15 @@ class AuralFeedbackType extends bindings.MojoEnum {
         return 'AuralFeedbackType.navigationRight';
       case navigationDown:
         return 'AuralFeedbackType.navigationDown';
+      default:
+        return null;
     }
   }
 
   int toJson() => mojoEnumValue;
 }
+
+
 
 
 
@@ -343,6 +361,8 @@ class StringExtra extends bindings.Struct {
 }
 
 
+
+
 class ComponentName extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(24, 0)
@@ -417,6 +437,8 @@ class ComponentName extends bindings.Struct {
     return map;
   }
 }
+
+
 
 
 class Intent extends bindings.Struct {
@@ -551,6 +573,8 @@ class Intent extends bindings.Struct {
 }
 
 
+
+
 class TaskDescription extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(24, 0)
@@ -627,6 +651,8 @@ class TaskDescription extends bindings.Struct {
 }
 
 
+
+
 class _ActivityGetUserFeedbackParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(16, 0)
@@ -691,6 +717,8 @@ class _ActivityGetUserFeedbackParams extends bindings.Struct {
         'Object containing handles cannot be encoded to JSON.');
   }
 }
+
+
 
 
 class _ActivityStartActivityParams extends bindings.Struct {
@@ -761,6 +789,8 @@ class _ActivityStartActivityParams extends bindings.Struct {
 }
 
 
+
+
 class _ActivityFinishCurrentActivityParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(8, 0)
@@ -817,6 +847,8 @@ class _ActivityFinishCurrentActivityParams extends bindings.Struct {
     return map;
   }
 }
+
+
 
 
 class _ActivitySetTaskDescriptionParams extends bindings.Struct {
@@ -885,6 +917,8 @@ class _ActivitySetTaskDescriptionParams extends bindings.Struct {
     return map;
   }
 }
+
+
 
 
 class _ActivitySetSystemUiVisibilityParams extends bindings.Struct {
@@ -958,6 +992,8 @@ class _ActivitySetSystemUiVisibilityParams extends bindings.Struct {
 }
 
 
+
+
 class _ActivitySetRequestedOrientationParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(16, 0)
@@ -1029,6 +1065,8 @@ class _ActivitySetRequestedOrientationParams extends bindings.Struct {
 }
 
 
+
+
 class _PathServiceGetAppDataDirParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(8, 0)
@@ -1085,6 +1123,8 @@ class _PathServiceGetAppDataDirParams extends bindings.Struct {
     return map;
   }
 }
+
+
 
 
 class PathServiceGetAppDataDirResponseParams extends bindings.Struct {
@@ -1154,6 +1194,8 @@ class PathServiceGetAppDataDirResponseParams extends bindings.Struct {
 }
 
 
+
+
 class _PathServiceGetFilesDirParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(8, 0)
@@ -1210,6 +1252,8 @@ class _PathServiceGetFilesDirParams extends bindings.Struct {
     return map;
   }
 }
+
+
 
 
 class PathServiceGetFilesDirResponseParams extends bindings.Struct {
@@ -1279,6 +1323,8 @@ class PathServiceGetFilesDirResponseParams extends bindings.Struct {
 }
 
 
+
+
 class _PathServiceGetCacheDirParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(8, 0)
@@ -1335,6 +1381,8 @@ class _PathServiceGetCacheDirParams extends bindings.Struct {
     return map;
   }
 }
+
+
 
 
 class PathServiceGetCacheDirResponseParams extends bindings.Struct {
@@ -1402,6 +1450,8 @@ class PathServiceGetCacheDirResponseParams extends bindings.Struct {
     return map;
   }
 }
+
+
 
 
 class _UserFeedbackPerformHapticFeedbackParams extends bindings.Struct {
@@ -1475,6 +1525,8 @@ class _UserFeedbackPerformHapticFeedbackParams extends bindings.Struct {
 }
 
 
+
+
 class _UserFeedbackPerformAuralFeedbackParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(16, 0)
@@ -1545,12 +1597,25 @@ class _UserFeedbackPerformAuralFeedbackParams extends bindings.Struct {
   }
 }
 
+
+
+
 const int _Activity_getUserFeedbackName = 0;
 const int _Activity_startActivityName = 1;
 const int _Activity_finishCurrentActivityName = 2;
 const int _Activity_setTaskDescriptionName = 3;
 const int _Activity_setSystemUiVisibilityName = 4;
 const int _Activity_setRequestedOrientationName = 5;
+
+
+
+class _ActivityServiceDescription implements service_describer.ServiceDescription {
+  dynamic getTopLevelInterface([Function responseFactory]) => null;
+
+  dynamic getTypeDefinition(String typeKey, [Function responseFactory]) => null;
+
+  dynamic getAllTypeDefinitions([Function responseFactory]) => null;
+}
 
 abstract class Activity {
   static const String serviceName = "activity::Activity";
@@ -1577,6 +1642,9 @@ class _ActivityProxyImpl extends bindings.Proxy {
     assert(endpoint.setDescription("For _ActivityProxyImpl"));
     return new _ActivityProxyImpl.fromEndpoint(endpoint);
   }
+
+  service_describer.ServiceDescription get serviceDescription =>
+    new _ActivityServiceDescription();
 
   void handleResponse(bindings.ServiceMessage message) {
     switch (message.header.type) {
@@ -1790,11 +1858,24 @@ class ActivityStub extends bindings.Stub {
   }
 
   int get version => 0;
+
+  service_describer.ServiceDescription get serviceDescription =>
+    new _ActivityServiceDescription();
 }
 
 const int _PathService_getAppDataDirName = 0;
 const int _PathService_getFilesDirName = 1;
 const int _PathService_getCacheDirName = 2;
+
+
+
+class _PathServiceServiceDescription implements service_describer.ServiceDescription {
+  dynamic getTopLevelInterface([Function responseFactory]) => null;
+
+  dynamic getTypeDefinition(String typeKey, [Function responseFactory]) => null;
+
+  dynamic getAllTypeDefinitions([Function responseFactory]) => null;
+}
 
 abstract class PathService {
   static const String serviceName = "activity::PathService";
@@ -1818,6 +1899,9 @@ class _PathServiceProxyImpl extends bindings.Proxy {
     assert(endpoint.setDescription("For _PathServiceProxyImpl"));
     return new _PathServiceProxyImpl.fromEndpoint(endpoint);
   }
+
+  service_describer.ServiceDescription get serviceDescription =>
+    new _PathServiceServiceDescription();
 
   void handleResponse(bindings.ServiceMessage message) {
     switch (message.header.type) {
@@ -2113,10 +2197,23 @@ class PathServiceStub extends bindings.Stub {
   }
 
   int get version => 0;
+
+  service_describer.ServiceDescription get serviceDescription =>
+    new _PathServiceServiceDescription();
 }
 
 const int _UserFeedback_performHapticFeedbackName = 0;
 const int _UserFeedback_performAuralFeedbackName = 1;
+
+
+
+class _UserFeedbackServiceDescription implements service_describer.ServiceDescription {
+  dynamic getTopLevelInterface([Function responseFactory]) => null;
+
+  dynamic getTypeDefinition(String typeKey, [Function responseFactory]) => null;
+
+  dynamic getAllTypeDefinitions([Function responseFactory]) => null;
+}
 
 abstract class UserFeedback {
   static const String serviceName = null;
@@ -2139,6 +2236,9 @@ class _UserFeedbackProxyImpl extends bindings.Proxy {
     assert(endpoint.setDescription("For _UserFeedbackProxyImpl"));
     return new _UserFeedbackProxyImpl.fromEndpoint(endpoint);
   }
+
+  service_describer.ServiceDescription get serviceDescription =>
+    new _UserFeedbackServiceDescription();
 
   void handleResponse(bindings.ServiceMessage message) {
     switch (message.header.type) {
@@ -2297,6 +2397,10 @@ class UserFeedbackStub extends bindings.Stub {
   }
 
   int get version => 0;
+
+  service_describer.ServiceDescription get serviceDescription =>
+    new _UserFeedbackServiceDescription();
 }
+
 
 

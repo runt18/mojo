@@ -5,9 +5,12 @@
 library echo_service_mojom;
 
 import 'dart:async';
+import 'dart:collection';
 
 import 'package:mojo/bindings.dart' as bindings;
 import 'package:mojo/core.dart' as core;
+import 'package:mojo/mojo/bindings/types/mojom_types.mojom.dart' as mojom_types;
+import 'package:mojo/mojo/bindings/types/service_describer.mojom.dart' as service_describer;
 
 
 
@@ -77,6 +80,21 @@ class _EchoServiceEchoStringParams extends bindings.Struct {
   }
 }
 
+mojom_types.MojomStruct _echoServiceEchoServiceEchoStringParams() {
+  return new mojom_types.MojomStruct()
+    ..declData = (new mojom_types.DeclarationData()
+      ..shortName = 'EchoServiceEchoStringParams'
+      ..fullIdentifier = 'test.EchoService_EchoString_Params')
+    ..fields = <mojom_types.StructField>[
+      new mojom_types.StructField()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'Value')
+        ..type = (new mojom_types.Type()
+          ..stringType = (new mojom_types.StringType()
+            ..nullable = true
+          )),];
+}
+
 
 class EchoServiceEchoStringResponseParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
@@ -142,6 +160,21 @@ class EchoServiceEchoStringResponseParams extends bindings.Struct {
     map["value"] = value;
     return map;
   }
+}
+
+mojom_types.MojomStruct _echoServiceEchoServiceEchoStringResponseParams() {
+  return new mojom_types.MojomStruct()
+    ..declData = (new mojom_types.DeclarationData()
+      ..shortName = 'EchoServiceEchoStringResponseParams'
+      ..fullIdentifier = 'test.EchoService_EchoString_ResponseParams')
+    ..fields = <mojom_types.StructField>[
+      new mojom_types.StructField()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'Value')
+        ..type = (new mojom_types.Type()
+          ..stringType = (new mojom_types.StringType()
+            ..nullable = true
+          )),];
 }
 
 
@@ -220,6 +253,26 @@ class _EchoServiceDelayedEchoStringParams extends bindings.Struct {
   }
 }
 
+mojom_types.MojomStruct _echoServiceEchoServiceDelayedEchoStringParams() {
+  return new mojom_types.MojomStruct()
+    ..declData = (new mojom_types.DeclarationData()
+      ..shortName = 'EchoServiceDelayedEchoStringParams'
+      ..fullIdentifier = 'test.EchoService_DelayedEchoString_Params')
+    ..fields = <mojom_types.StructField>[
+      new mojom_types.StructField()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'Value')
+        ..type = (new mojom_types.Type()
+          ..stringType = (new mojom_types.StringType()
+            ..nullable = true
+          )),
+      new mojom_types.StructField()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'Millis')
+        ..type = (new mojom_types.Type()
+          ..simpleType = mojom_types.SimpleType.int32),];
+}
+
 
 class EchoServiceDelayedEchoStringResponseParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
@@ -287,8 +340,57 @@ class EchoServiceDelayedEchoStringResponseParams extends bindings.Struct {
   }
 }
 
+mojom_types.MojomStruct _echoServiceEchoServiceDelayedEchoStringResponseParams() {
+  return new mojom_types.MojomStruct()
+    ..declData = (new mojom_types.DeclarationData()
+      ..shortName = 'EchoServiceDelayedEchoStringResponseParams'
+      ..fullIdentifier = 'test.EchoService_DelayedEchoString_ResponseParams')
+    ..fields = <mojom_types.StructField>[
+      new mojom_types.StructField()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'Value')
+        ..type = (new mojom_types.Type()
+          ..stringType = (new mojom_types.StringType()
+            ..nullable = true
+          )),];
+}
+
+
 const int _EchoService_echoStringName = 0;
 const int _EchoService_delayedEchoStringName = 1;
+
+mojom_types.MojomInterface _echoServiceEchoService() {
+  return new mojom_types.MojomInterface()
+    ..declData = (new mojom_types.DeclarationData()
+      ..shortName = 'EchoService'
+      ..fullIdentifier = 'test.EchoService')
+    ..interfaceName = 'EchoService'
+    ..methods = <int, mojom_types.MojomMethod>{
+      _EchoService_echoStringName: new mojom_types.MojomMethod()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'EchoString')
+        ..ordinal = _EchoService_echoStringName
+        ..responseParams = _echoServiceEchoServiceEchoStringResponseParams()
+        ..parameters = _echoServiceEchoServiceEchoStringParams(),
+      _EchoService_delayedEchoStringName: new mojom_types.MojomMethod()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'DelayedEchoString')
+        ..ordinal = _EchoService_delayedEchoStringName
+        ..responseParams = _echoServiceEchoServiceDelayedEchoStringResponseParams()
+        ..parameters = _echoServiceEchoServiceDelayedEchoStringParams(),
+    };
+}
+
+class _EchoServiceServiceDescription implements service_describer.ServiceDescription {
+  dynamic getTopLevelInterface([Function responseFactory]) =>
+      _echoServiceEchoService();
+
+  dynamic getTypeDefinition(String typeKey, [Function responseFactory]) =>
+      getAllMojomTypeDefinitions()[typeKey];
+
+  dynamic getAllTypeDefinitions([Function responseFactory]) =>
+      getAllMojomTypeDefinitions();
+}
 
 abstract class EchoService {
   static const String serviceName = "test::EchoService";
@@ -311,6 +413,9 @@ class _EchoServiceProxyImpl extends bindings.Proxy {
     assert(endpoint.setDescription("For _EchoServiceProxyImpl"));
     return new _EchoServiceProxyImpl.fromEndpoint(endpoint);
   }
+
+  service_describer.ServiceDescription get serviceDescription =>
+    new _EchoServiceServiceDescription();
 
   void handleResponse(bindings.ServiceMessage message) {
     switch (message.header.type) {
@@ -554,6 +659,37 @@ class EchoServiceStub extends bindings.Stub {
   }
 
   int get version => 0;
+
+  service_describer.ServiceDescription get serviceDescription =>
+    new _EchoServiceServiceDescription();
 }
 
+
+Map<String, mojom_types.UserDefinedType> _initDescriptions() {
+  var map = new HashMap<String, mojom_types.UserDefinedType>();
+  map["echo_service_EchoService_EchoString_Params__"] =
+    new mojom_types.UserDefinedType()
+      ..structType = _echoServiceEchoServiceEchoStringParams();
+  map["echo_service_EchoService_EchoString_ResponseParams__"] =
+    new mojom_types.UserDefinedType()
+      ..structType = _echoServiceEchoServiceEchoStringResponseParams();
+  map["echo_service_EchoService_DelayedEchoString_Params__"] =
+    new mojom_types.UserDefinedType()
+      ..structType = _echoServiceEchoServiceDelayedEchoStringParams();
+  map["echo_service_EchoService_DelayedEchoString_ResponseParams__"] =
+    new mojom_types.UserDefinedType()
+      ..structType = _echoServiceEchoServiceDelayedEchoStringResponseParams();
+  map["echo_service_EchoService__"] =
+    new mojom_types.UserDefinedType()
+      ..interfaceType = _echoServiceEchoService();
+  return map;
+}
+
+var _mojomDesc;
+Map<String, mojom_types.UserDefinedType> getAllMojomTypeDefinitions() {
+  if (_mojomDesc == null) {
+    _mojomDesc = _initDescriptions();
+  }
+  return _mojomDesc;
+}
 

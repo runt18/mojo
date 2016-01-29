@@ -5,9 +5,12 @@
 library validation_test_interfaces_mojom;
 
 import 'dart:async';
+import 'dart:collection';
 
 import 'package:mojo/bindings.dart' as bindings;
 import 'package:mojo/core.dart' as core;
+import 'package:mojo/mojo/bindings/types/mojom_types.mojom.dart' as mojom_types;
+import 'package:mojo/mojo/bindings/types/service_describer.mojom.dart' as service_describer;
 
 class BasicEnum extends bindings.MojoEnum {
   static const BasicEnum a = const BasicEnum._(0);
@@ -74,10 +77,45 @@ class BasicEnum extends bindings.MojoEnum {
         return 'BasicEnum.d';
       case e:
         return 'BasicEnum.e';
+      default:
+        return null;
     }
   }
 
   int toJson() => mojoEnumValue;
+}
+
+mojom_types.MojomEnum _validationTestInterfacesBasicEnum() {
+  return new mojom_types.MojomEnum()
+    ..declData = (new mojom_types.DeclarationData()
+      ..shortName = 'BasicEnum'
+      ..fullIdentifier = 'mojo.test.BasicEnum')
+    ..values = <mojom_types.EnumValue>[
+      new mojom_types.EnumValue()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'A')
+        ..enumTypeKey = 'validation_test_interfaces_BasicEnum__'
+        ..intValue = 0,
+      new mojom_types.EnumValue()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'B')
+        ..enumTypeKey = 'validation_test_interfaces_BasicEnum__'
+        ..intValue = 1,
+      new mojom_types.EnumValue()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'C')
+        ..enumTypeKey = 'validation_test_interfaces_BasicEnum__'
+        ..intValue = 0,
+      new mojom_types.EnumValue()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'D')
+        ..enumTypeKey = 'validation_test_interfaces_BasicEnum__'
+        ..intValue = -3,
+      new mojom_types.EnumValue()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'E')
+        ..enumTypeKey = 'validation_test_interfaces_BasicEnum__'
+        ..intValue = 10,];
 }
 
 
@@ -148,6 +186,19 @@ class StructA extends bindings.Struct {
   }
 }
 
+mojom_types.MojomStruct _validationTestInterfacesStructA() {
+  return new mojom_types.MojomStruct()
+    ..declData = (new mojom_types.DeclarationData()
+      ..shortName = 'StructA'
+      ..fullIdentifier = 'mojo.test.StructA')
+    ..fields = <mojom_types.StructField>[
+      new mojom_types.StructField()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'I')
+        ..type = (new mojom_types.Type()
+          ..simpleType = mojom_types.SimpleType.uint64),];
+}
+
 
 class StructB extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
@@ -214,6 +265,22 @@ class StructB extends bindings.Struct {
     map["structA"] = structA;
     return map;
   }
+}
+
+mojom_types.MojomStruct _validationTestInterfacesStructB() {
+  return new mojom_types.MojomStruct()
+    ..declData = (new mojom_types.DeclarationData()
+      ..shortName = 'StructB'
+      ..fullIdentifier = 'mojo.test.StructB')
+    ..fields = <mojom_types.StructField>[
+      new mojom_types.StructField()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'StructA')
+        ..type = (new mojom_types.Type()
+          ..typeReference = (new mojom_types.TypeReference()
+          ..identifier = 'validation_test_interfaces_StructA__'
+          ..typeKey = 'validation_test_interfaces_StructA__'
+        )),];
 }
 
 
@@ -283,6 +350,21 @@ class StructC extends bindings.Struct {
   }
 }
 
+mojom_types.MojomStruct _validationTestInterfacesStructC() {
+  return new mojom_types.MojomStruct()
+    ..declData = (new mojom_types.DeclarationData()
+      ..shortName = 'StructC'
+      ..fullIdentifier = 'mojo.test.StructC')
+    ..fields = <mojom_types.StructField>[
+      new mojom_types.StructField()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'Data')
+        ..type = (new mojom_types.Type()
+          ..arrayType = (new mojom_types.ArrayType()
+            ..elementType = (new mojom_types.Type()
+                    ..simpleType = mojom_types.SimpleType.uint8))),];
+}
+
 
 class StructD extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
@@ -347,6 +429,22 @@ class StructD extends bindings.Struct {
     throw new bindings.MojoCodecError(
         'Object containing handles cannot be encoded to JSON.');
   }
+}
+
+mojom_types.MojomStruct _validationTestInterfacesStructD() {
+  return new mojom_types.MojomStruct()
+    ..declData = (new mojom_types.DeclarationData()
+      ..shortName = 'StructD'
+      ..fullIdentifier = 'mojo.test.StructD')
+    ..fields = <mojom_types.StructField>[
+      new mojom_types.StructField()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'MessagePipes')
+        ..type = (new mojom_types.Type()
+          ..arrayType = (new mojom_types.ArrayType()
+            ..elementType = (new mojom_types.Type()
+                    ..handleType = (new mojom_types.HandleType()
+                      ..kind = mojom_types.HandleTypeKind.messagePipe)))),];
 }
 
 
@@ -424,6 +522,28 @@ class StructE extends bindings.Struct {
   }
 }
 
+mojom_types.MojomStruct _validationTestInterfacesStructE() {
+  return new mojom_types.MojomStruct()
+    ..declData = (new mojom_types.DeclarationData()
+      ..shortName = 'StructE'
+      ..fullIdentifier = 'mojo.test.StructE')
+    ..fields = <mojom_types.StructField>[
+      new mojom_types.StructField()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'StructD')
+        ..type = (new mojom_types.Type()
+          ..typeReference = (new mojom_types.TypeReference()
+          ..identifier = 'validation_test_interfaces_StructD__'
+          ..typeKey = 'validation_test_interfaces_StructD__'
+        )),
+      new mojom_types.StructField()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'DataPipeConsumer')
+        ..type = (new mojom_types.Type()
+          ..handleType = (new mojom_types.HandleType()
+            ..kind = mojom_types.HandleTypeKind.dataPipeConsumer)),];
+}
+
 
 class StructF extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
@@ -489,6 +609,22 @@ class StructF extends bindings.Struct {
     map["fixedSizeArray"] = fixedSizeArray;
     return map;
   }
+}
+
+mojom_types.MojomStruct _validationTestInterfacesStructF() {
+  return new mojom_types.MojomStruct()
+    ..declData = (new mojom_types.DeclarationData()
+      ..shortName = 'StructF'
+      ..fullIdentifier = 'mojo.test.StructF')
+    ..fields = <mojom_types.StructField>[
+      new mojom_types.StructField()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'FixedSizeArray')
+        ..type = (new mojom_types.Type()
+          ..arrayType = (new mojom_types.ArrayType()
+            ..fixedLength = 3
+            ..elementType = (new mojom_types.Type()
+                    ..simpleType = mojom_types.SimpleType.uint8))),];
 }
 
 
@@ -586,6 +722,41 @@ class StructG extends bindings.Struct {
     map["str"] = str;
     return map;
   }
+}
+
+mojom_types.MojomStruct _validationTestInterfacesStructG() {
+  return new mojom_types.MojomStruct()
+    ..declData = (new mojom_types.DeclarationData()
+      ..shortName = 'StructG'
+      ..fullIdentifier = 'mojo.test.StructG')
+    ..fields = <mojom_types.StructField>[
+      new mojom_types.StructField()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'I')
+        ..type = (new mojom_types.Type()
+          ..simpleType = mojom_types.SimpleType.int32),
+      new mojom_types.StructField()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'StructA')
+        ..type = (new mojom_types.Type()
+          ..typeReference = (new mojom_types.TypeReference()
+          ..nullable = true
+        
+          ..identifier = 'validation_test_interfaces_StructA__'
+          ..typeKey = 'validation_test_interfaces_StructA__'
+        )),
+      new mojom_types.StructField()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'Str')
+        ..type = (new mojom_types.Type()
+          ..stringType = (new mojom_types.StringType()
+            ..nullable = true
+          )),
+      new mojom_types.StructField()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'B')
+        ..type = (new mojom_types.Type()
+          ..simpleType = mojom_types.SimpleType.bool),];
 }
 
 
@@ -759,6 +930,59 @@ class StructH extends bindings.Struct {
   }
 }
 
+mojom_types.MojomStruct _validationTestInterfacesStructH() {
+  return new mojom_types.MojomStruct()
+    ..declData = (new mojom_types.DeclarationData()
+      ..shortName = 'StructH'
+      ..fullIdentifier = 'mojo.test.StructH')
+    ..fields = <mojom_types.StructField>[
+      new mojom_types.StructField()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'A')
+        ..type = (new mojom_types.Type()
+          ..simpleType = mojom_types.SimpleType.bool),
+      new mojom_types.StructField()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'B')
+        ..type = (new mojom_types.Type()
+          ..simpleType = mojom_types.SimpleType.uint8),
+      new mojom_types.StructField()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'C')
+        ..type = (new mojom_types.Type()
+          ..typeReference = (new mojom_types.TypeReference()
+          ..nullable = true
+        
+          ..identifier = 'validation_test_interfaces_UnionA__'
+          ..typeKey = 'validation_test_interfaces_UnionA__'
+        )),
+      new mojom_types.StructField()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'D')
+        ..type = (new mojom_types.Type()
+          ..arrayType = (new mojom_types.ArrayType()
+            ..nullable = true
+            ..elementType = (new mojom_types.Type()
+                    ..typeReference = (new mojom_types.TypeReference()
+                    ..identifier = 'validation_test_interfaces_UnionA__'
+                    ..typeKey = 'validation_test_interfaces_UnionA__'
+                  )))),
+      new mojom_types.StructField()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'E')
+        ..type = (new mojom_types.Type()
+          ..mapType = (new mojom_types.MapType()
+            ..nullable = true
+          
+            ..keyType = (new mojom_types.Type()
+                    ..simpleType = mojom_types.SimpleType.uint8)
+            ..valueType = (new mojom_types.Type()
+                    ..typeReference = (new mojom_types.TypeReference()
+                    ..identifier = 'validation_test_interfaces_UnionA__'
+                    ..typeKey = 'validation_test_interfaces_UnionA__'
+                  )))),];
+}
+
 
 class BasicStruct extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
@@ -826,6 +1050,19 @@ class BasicStruct extends bindings.Struct {
   }
 }
 
+mojom_types.MojomStruct _validationTestInterfacesBasicStruct() {
+  return new mojom_types.MojomStruct()
+    ..declData = (new mojom_types.DeclarationData()
+      ..shortName = 'BasicStruct'
+      ..fullIdentifier = 'mojo.test.BasicStruct')
+    ..fields = <mojom_types.StructField>[
+      new mojom_types.StructField()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'A')
+        ..type = (new mojom_types.Type()
+          ..simpleType = mojom_types.SimpleType.int32),];
+}
+
 
 class StructWithEnumEnumWithin extends bindings.MojoEnum {
   static const StructWithEnumEnumWithin a = const StructWithEnumEnumWithin._(0);
@@ -885,10 +1122,40 @@ class StructWithEnumEnumWithin extends bindings.MojoEnum {
         return 'StructWithEnumEnumWithin.c';
       case d:
         return 'StructWithEnumEnumWithin.d';
+      default:
+        return null;
     }
   }
 
   int toJson() => mojoEnumValue;
+}
+
+mojom_types.MojomEnum _validationTestInterfacesEnumWithin() {
+  return new mojom_types.MojomEnum()
+    ..declData = (new mojom_types.DeclarationData()
+      ..shortName = 'EnumWithin'
+      ..fullIdentifier = 'mojo.test.EnumWithin')
+    ..values = <mojom_types.EnumValue>[
+      new mojom_types.EnumValue()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'A')
+        ..enumTypeKey = 'validation_test_interfaces_EnumWithin__'
+        ..intValue = 0,
+      new mojom_types.EnumValue()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'B')
+        ..enumTypeKey = 'validation_test_interfaces_EnumWithin__'
+        ..intValue = 1,
+      new mojom_types.EnumValue()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'C')
+        ..enumTypeKey = 'validation_test_interfaces_EnumWithin__'
+        ..intValue = 2,
+      new mojom_types.EnumValue()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'D')
+        ..enumTypeKey = 'validation_test_interfaces_EnumWithin__'
+        ..intValue = 3,];
 }
 
 class StructWithEnum extends bindings.Struct {
@@ -946,6 +1213,14 @@ class StructWithEnum extends bindings.Struct {
     Map map = new Map();
     return map;
   }
+}
+
+mojom_types.MojomStruct _validationTestInterfacesStructWithEnum() {
+  return new mojom_types.MojomStruct()
+    ..declData = (new mojom_types.DeclarationData()
+      ..shortName = 'StructWithEnum'
+      ..fullIdentifier = 'mojo.test.StructWithEnum')
+    ..fields = <mojom_types.StructField>[];
 }
 
 
@@ -1015,6 +1290,19 @@ class _BoundsCheckTestInterfaceMethod0Params extends bindings.Struct {
   }
 }
 
+mojom_types.MojomStruct _validationTestInterfacesBoundsCheckTestInterfaceMethod0Params() {
+  return new mojom_types.MojomStruct()
+    ..declData = (new mojom_types.DeclarationData()
+      ..shortName = 'BoundsCheckTestInterfaceMethod0Params'
+      ..fullIdentifier = 'mojo.test.BoundsCheckTestInterface_Method0_Params')
+    ..fields = <mojom_types.StructField>[
+      new mojom_types.StructField()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'Param0')
+        ..type = (new mojom_types.Type()
+          ..simpleType = mojom_types.SimpleType.uint8),];
+}
+
 
 class BoundsCheckTestInterfaceMethod0ResponseParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
@@ -1080,6 +1368,19 @@ class BoundsCheckTestInterfaceMethod0ResponseParams extends bindings.Struct {
     map["param0"] = param0;
     return map;
   }
+}
+
+mojom_types.MojomStruct _validationTestInterfacesBoundsCheckTestInterfaceMethod0ResponseParams() {
+  return new mojom_types.MojomStruct()
+    ..declData = (new mojom_types.DeclarationData()
+      ..shortName = 'BoundsCheckTestInterfaceMethod0ResponseParams'
+      ..fullIdentifier = 'mojo.test.BoundsCheckTestInterface_Method0_ResponseParams')
+    ..fields = <mojom_types.StructField>[
+      new mojom_types.StructField()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'Param0')
+        ..type = (new mojom_types.Type()
+          ..simpleType = mojom_types.SimpleType.uint8),];
 }
 
 
@@ -1149,6 +1450,19 @@ class _BoundsCheckTestInterfaceMethod1Params extends bindings.Struct {
   }
 }
 
+mojom_types.MojomStruct _validationTestInterfacesBoundsCheckTestInterfaceMethod1Params() {
+  return new mojom_types.MojomStruct()
+    ..declData = (new mojom_types.DeclarationData()
+      ..shortName = 'BoundsCheckTestInterfaceMethod1Params'
+      ..fullIdentifier = 'mojo.test.BoundsCheckTestInterface_Method1_Params')
+    ..fields = <mojom_types.StructField>[
+      new mojom_types.StructField()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'Param0')
+        ..type = (new mojom_types.Type()
+          ..simpleType = mojom_types.SimpleType.uint8),];
+}
+
 
 class _ConformanceTestInterfaceMethod0Params extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
@@ -1214,6 +1528,19 @@ class _ConformanceTestInterfaceMethod0Params extends bindings.Struct {
     map["param0"] = param0;
     return map;
   }
+}
+
+mojom_types.MojomStruct _validationTestInterfacesConformanceTestInterfaceMethod0Params() {
+  return new mojom_types.MojomStruct()
+    ..declData = (new mojom_types.DeclarationData()
+      ..shortName = 'ConformanceTestInterfaceMethod0Params'
+      ..fullIdentifier = 'mojo.test.ConformanceTestInterface_Method0_Params')
+    ..fields = <mojom_types.StructField>[
+      new mojom_types.StructField()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'Param0')
+        ..type = (new mojom_types.Type()
+          ..simpleType = mojom_types.SimpleType.float),];
 }
 
 
@@ -1282,6 +1609,22 @@ class _ConformanceTestInterfaceMethod1Params extends bindings.Struct {
     map["param0"] = param0;
     return map;
   }
+}
+
+mojom_types.MojomStruct _validationTestInterfacesConformanceTestInterfaceMethod1Params() {
+  return new mojom_types.MojomStruct()
+    ..declData = (new mojom_types.DeclarationData()
+      ..shortName = 'ConformanceTestInterfaceMethod1Params'
+      ..fullIdentifier = 'mojo.test.ConformanceTestInterface_Method1_Params')
+    ..fields = <mojom_types.StructField>[
+      new mojom_types.StructField()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'Param0')
+        ..type = (new mojom_types.Type()
+          ..typeReference = (new mojom_types.TypeReference()
+          ..identifier = 'validation_test_interfaces_StructA__'
+          ..typeKey = 'validation_test_interfaces_StructA__'
+        )),];
 }
 
 
@@ -1362,6 +1705,30 @@ class _ConformanceTestInterfaceMethod2Params extends bindings.Struct {
   }
 }
 
+mojom_types.MojomStruct _validationTestInterfacesConformanceTestInterfaceMethod2Params() {
+  return new mojom_types.MojomStruct()
+    ..declData = (new mojom_types.DeclarationData()
+      ..shortName = 'ConformanceTestInterfaceMethod2Params'
+      ..fullIdentifier = 'mojo.test.ConformanceTestInterface_Method2_Params')
+    ..fields = <mojom_types.StructField>[
+      new mojom_types.StructField()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'Param0')
+        ..type = (new mojom_types.Type()
+          ..typeReference = (new mojom_types.TypeReference()
+          ..identifier = 'validation_test_interfaces_StructB__'
+          ..typeKey = 'validation_test_interfaces_StructB__'
+        )),
+      new mojom_types.StructField()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'Param1')
+        ..type = (new mojom_types.Type()
+          ..typeReference = (new mojom_types.TypeReference()
+          ..identifier = 'validation_test_interfaces_StructA__'
+          ..typeKey = 'validation_test_interfaces_StructA__'
+        )),];
+}
+
 
 class _ConformanceTestInterfaceMethod3Params extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
@@ -1427,6 +1794,21 @@ class _ConformanceTestInterfaceMethod3Params extends bindings.Struct {
     map["param0"] = param0;
     return map;
   }
+}
+
+mojom_types.MojomStruct _validationTestInterfacesConformanceTestInterfaceMethod3Params() {
+  return new mojom_types.MojomStruct()
+    ..declData = (new mojom_types.DeclarationData()
+      ..shortName = 'ConformanceTestInterfaceMethod3Params'
+      ..fullIdentifier = 'mojo.test.ConformanceTestInterface_Method3_Params')
+    ..fields = <mojom_types.StructField>[
+      new mojom_types.StructField()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'Param0')
+        ..type = (new mojom_types.Type()
+          ..arrayType = (new mojom_types.ArrayType()
+            ..elementType = (new mojom_types.Type()
+                    ..simpleType = mojom_types.SimpleType.bool))),];
 }
 
 
@@ -1506,6 +1888,29 @@ class _ConformanceTestInterfaceMethod4Params extends bindings.Struct {
   }
 }
 
+mojom_types.MojomStruct _validationTestInterfacesConformanceTestInterfaceMethod4Params() {
+  return new mojom_types.MojomStruct()
+    ..declData = (new mojom_types.DeclarationData()
+      ..shortName = 'ConformanceTestInterfaceMethod4Params'
+      ..fullIdentifier = 'mojo.test.ConformanceTestInterface_Method4_Params')
+    ..fields = <mojom_types.StructField>[
+      new mojom_types.StructField()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'Param0')
+        ..type = (new mojom_types.Type()
+          ..typeReference = (new mojom_types.TypeReference()
+          ..identifier = 'validation_test_interfaces_StructC__'
+          ..typeKey = 'validation_test_interfaces_StructC__'
+        )),
+      new mojom_types.StructField()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'Param1')
+        ..type = (new mojom_types.Type()
+          ..arrayType = (new mojom_types.ArrayType()
+            ..elementType = (new mojom_types.Type()
+                    ..simpleType = mojom_types.SimpleType.uint8))),];
+}
+
 
 class _ConformanceTestInterfaceMethod5Params extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
@@ -1579,6 +1984,28 @@ class _ConformanceTestInterfaceMethod5Params extends bindings.Struct {
     throw new bindings.MojoCodecError(
         'Object containing handles cannot be encoded to JSON.');
   }
+}
+
+mojom_types.MojomStruct _validationTestInterfacesConformanceTestInterfaceMethod5Params() {
+  return new mojom_types.MojomStruct()
+    ..declData = (new mojom_types.DeclarationData()
+      ..shortName = 'ConformanceTestInterfaceMethod5Params'
+      ..fullIdentifier = 'mojo.test.ConformanceTestInterface_Method5_Params')
+    ..fields = <mojom_types.StructField>[
+      new mojom_types.StructField()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'Param0')
+        ..type = (new mojom_types.Type()
+          ..typeReference = (new mojom_types.TypeReference()
+          ..identifier = 'validation_test_interfaces_StructE__'
+          ..typeKey = 'validation_test_interfaces_StructE__'
+        )),
+      new mojom_types.StructField()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'Param1')
+        ..type = (new mojom_types.Type()
+          ..handleType = (new mojom_types.HandleType()
+            ..kind = mojom_types.HandleTypeKind.dataPipeProducer)),];
 }
 
 
@@ -1662,6 +2089,23 @@ class _ConformanceTestInterfaceMethod6Params extends bindings.Struct {
     map["param0"] = param0;
     return map;
   }
+}
+
+mojom_types.MojomStruct _validationTestInterfacesConformanceTestInterfaceMethod6Params() {
+  return new mojom_types.MojomStruct()
+    ..declData = (new mojom_types.DeclarationData()
+      ..shortName = 'ConformanceTestInterfaceMethod6Params'
+      ..fullIdentifier = 'mojo.test.ConformanceTestInterface_Method6_Params')
+    ..fields = <mojom_types.StructField>[
+      new mojom_types.StructField()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'Param0')
+        ..type = (new mojom_types.Type()
+          ..arrayType = (new mojom_types.ArrayType()
+            ..elementType = (new mojom_types.Type()
+                    ..arrayType = (new mojom_types.ArrayType()
+                      ..elementType = (new mojom_types.Type()
+                              ..simpleType = mojom_types.SimpleType.uint8))))),];
 }
 
 
@@ -1755,6 +2199,34 @@ class _ConformanceTestInterfaceMethod7Params extends bindings.Struct {
     map["param1"] = param1;
     return map;
   }
+}
+
+mojom_types.MojomStruct _validationTestInterfacesConformanceTestInterfaceMethod7Params() {
+  return new mojom_types.MojomStruct()
+    ..declData = (new mojom_types.DeclarationData()
+      ..shortName = 'ConformanceTestInterfaceMethod7Params'
+      ..fullIdentifier = 'mojo.test.ConformanceTestInterface_Method7_Params')
+    ..fields = <mojom_types.StructField>[
+      new mojom_types.StructField()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'Param0')
+        ..type = (new mojom_types.Type()
+          ..typeReference = (new mojom_types.TypeReference()
+          ..identifier = 'validation_test_interfaces_StructF__'
+          ..typeKey = 'validation_test_interfaces_StructF__'
+        )),
+      new mojom_types.StructField()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'Param1')
+        ..type = (new mojom_types.Type()
+          ..arrayType = (new mojom_types.ArrayType()
+            ..fixedLength = 2
+            ..elementType = (new mojom_types.Type()
+                    ..arrayType = (new mojom_types.ArrayType()
+                      ..nullable = true
+                      ..fixedLength = 3
+                      ..elementType = (new mojom_types.Type()
+                              ..simpleType = mojom_types.SimpleType.uint8))))),];
 }
 
 
@@ -1858,6 +2330,24 @@ class _ConformanceTestInterfaceMethod8Params extends bindings.Struct {
   }
 }
 
+mojom_types.MojomStruct _validationTestInterfacesConformanceTestInterfaceMethod8Params() {
+  return new mojom_types.MojomStruct()
+    ..declData = (new mojom_types.DeclarationData()
+      ..shortName = 'ConformanceTestInterfaceMethod8Params'
+      ..fullIdentifier = 'mojo.test.ConformanceTestInterface_Method8_Params')
+    ..fields = <mojom_types.StructField>[
+      new mojom_types.StructField()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'Param0')
+        ..type = (new mojom_types.Type()
+          ..arrayType = (new mojom_types.ArrayType()
+            ..elementType = (new mojom_types.Type()
+                    ..arrayType = (new mojom_types.ArrayType()
+                      ..nullable = true
+                      ..elementType = (new mojom_types.Type()
+                              ..stringType = (new mojom_types.StringType())))))),];
+}
+
 
 class _ConformanceTestInterfaceMethod9Params extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
@@ -1940,6 +2430,27 @@ class _ConformanceTestInterfaceMethod9Params extends bindings.Struct {
     throw new bindings.MojoCodecError(
         'Object containing handles cannot be encoded to JSON.');
   }
+}
+
+mojom_types.MojomStruct _validationTestInterfacesConformanceTestInterfaceMethod9Params() {
+  return new mojom_types.MojomStruct()
+    ..declData = (new mojom_types.DeclarationData()
+      ..shortName = 'ConformanceTestInterfaceMethod9Params'
+      ..fullIdentifier = 'mojo.test.ConformanceTestInterface_Method9_Params')
+    ..fields = <mojom_types.StructField>[
+      new mojom_types.StructField()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'Param0')
+        ..type = (new mojom_types.Type()
+          ..arrayType = (new mojom_types.ArrayType()
+            ..nullable = true
+            ..elementType = (new mojom_types.Type()
+                    ..arrayType = (new mojom_types.ArrayType()
+                      ..elementType = (new mojom_types.Type()
+                              ..handleType = (new mojom_types.HandleType()
+                                ..kind = mojom_types.HandleTypeKind.unspecified
+                                ..nullable = true
+                              )))))),];
 }
 
 
@@ -2049,6 +2560,23 @@ class _ConformanceTestInterfaceMethod10Params extends bindings.Struct {
   }
 }
 
+mojom_types.MojomStruct _validationTestInterfacesConformanceTestInterfaceMethod10Params() {
+  return new mojom_types.MojomStruct()
+    ..declData = (new mojom_types.DeclarationData()
+      ..shortName = 'ConformanceTestInterfaceMethod10Params'
+      ..fullIdentifier = 'mojo.test.ConformanceTestInterface_Method10_Params')
+    ..fields = <mojom_types.StructField>[
+      new mojom_types.StructField()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'Param0')
+        ..type = (new mojom_types.Type()
+          ..mapType = (new mojom_types.MapType()
+            ..keyType = (new mojom_types.Type()
+                    ..stringType = (new mojom_types.StringType()))
+            ..valueType = (new mojom_types.Type()
+                    ..simpleType = mojom_types.SimpleType.uint8))),];
+}
+
 
 class _ConformanceTestInterfaceMethod11Params extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
@@ -2115,6 +2643,22 @@ class _ConformanceTestInterfaceMethod11Params extends bindings.Struct {
     map["param0"] = param0;
     return map;
   }
+}
+
+mojom_types.MojomStruct _validationTestInterfacesConformanceTestInterfaceMethod11Params() {
+  return new mojom_types.MojomStruct()
+    ..declData = (new mojom_types.DeclarationData()
+      ..shortName = 'ConformanceTestInterfaceMethod11Params'
+      ..fullIdentifier = 'mojo.test.ConformanceTestInterface_Method11_Params')
+    ..fields = <mojom_types.StructField>[
+      new mojom_types.StructField()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'Param0')
+        ..type = (new mojom_types.Type()
+          ..typeReference = (new mojom_types.TypeReference()
+          ..identifier = 'validation_test_interfaces_StructG__'
+          ..typeKey = 'validation_test_interfaces_StructG__'
+        )),];
 }
 
 
@@ -2184,6 +2728,19 @@ class _ConformanceTestInterfaceMethod12Params extends bindings.Struct {
   }
 }
 
+mojom_types.MojomStruct _validationTestInterfacesConformanceTestInterfaceMethod12Params() {
+  return new mojom_types.MojomStruct()
+    ..declData = (new mojom_types.DeclarationData()
+      ..shortName = 'ConformanceTestInterfaceMethod12Params'
+      ..fullIdentifier = 'mojo.test.ConformanceTestInterface_Method12_Params')
+    ..fields = <mojom_types.StructField>[
+      new mojom_types.StructField()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'Param0')
+        ..type = (new mojom_types.Type()
+          ..simpleType = mojom_types.SimpleType.float),];
+}
+
 
 class ConformanceTestInterfaceMethod12ResponseParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
@@ -2249,6 +2806,19 @@ class ConformanceTestInterfaceMethod12ResponseParams extends bindings.Struct {
     map["param0"] = param0;
     return map;
   }
+}
+
+mojom_types.MojomStruct _validationTestInterfacesConformanceTestInterfaceMethod12ResponseParams() {
+  return new mojom_types.MojomStruct()
+    ..declData = (new mojom_types.DeclarationData()
+      ..shortName = 'ConformanceTestInterfaceMethod12ResponseParams'
+      ..fullIdentifier = 'mojo.test.ConformanceTestInterface_Method12_ResponseParams')
+    ..fields = <mojom_types.StructField>[
+      new mojom_types.StructField()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'Param0')
+        ..type = (new mojom_types.Type()
+          ..simpleType = mojom_types.SimpleType.float),];
 }
 
 
@@ -2333,6 +2903,39 @@ class _ConformanceTestInterfaceMethod13Params extends bindings.Struct {
   }
 }
 
+mojom_types.MojomStruct _validationTestInterfacesConformanceTestInterfaceMethod13Params() {
+  return new mojom_types.MojomStruct()
+    ..declData = (new mojom_types.DeclarationData()
+      ..shortName = 'ConformanceTestInterfaceMethod13Params'
+      ..fullIdentifier = 'mojo.test.ConformanceTestInterface_Method13_Params')
+    ..fields = <mojom_types.StructField>[
+      new mojom_types.StructField()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'Param0')
+        ..type = (new mojom_types.Type()
+          ..typeReference = (new mojom_types.TypeReference()
+          ..nullable = true
+        
+          ..identifier = 'validation_test_interfaces_InterfaceA__'
+          ..typeKey = 'validation_test_interfaces_InterfaceA__'
+        )),
+      new mojom_types.StructField()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'Param1')
+        ..type = (new mojom_types.Type()
+          ..simpleType = mojom_types.SimpleType.uint32),
+      new mojom_types.StructField()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'Param2')
+        ..type = (new mojom_types.Type()
+          ..typeReference = (new mojom_types.TypeReference()
+          ..nullable = true
+        
+          ..identifier = 'validation_test_interfaces_InterfaceA__'
+          ..typeKey = 'validation_test_interfaces_InterfaceA__'
+        )),];
+}
+
 
 class _ConformanceTestInterfaceMethod14Params extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
@@ -2404,6 +3007,22 @@ class _ConformanceTestInterfaceMethod14Params extends bindings.Struct {
   }
 }
 
+mojom_types.MojomStruct _validationTestInterfacesConformanceTestInterfaceMethod14Params() {
+  return new mojom_types.MojomStruct()
+    ..declData = (new mojom_types.DeclarationData()
+      ..shortName = 'ConformanceTestInterfaceMethod14Params'
+      ..fullIdentifier = 'mojo.test.ConformanceTestInterface_Method14_Params')
+    ..fields = <mojom_types.StructField>[
+      new mojom_types.StructField()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'Param0')
+        ..type = (new mojom_types.Type()
+          ..typeReference = (new mojom_types.TypeReference()
+          ..identifier = 'validation_test_interfaces_UnionA__'
+          ..typeKey = 'validation_test_interfaces_UnionA__'
+        )),];
+}
+
 
 class _ConformanceTestInterfaceMethod15Params extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
@@ -2470,6 +3089,22 @@ class _ConformanceTestInterfaceMethod15Params extends bindings.Struct {
     map["param0"] = param0;
     return map;
   }
+}
+
+mojom_types.MojomStruct _validationTestInterfacesConformanceTestInterfaceMethod15Params() {
+  return new mojom_types.MojomStruct()
+    ..declData = (new mojom_types.DeclarationData()
+      ..shortName = 'ConformanceTestInterfaceMethod15Params'
+      ..fullIdentifier = 'mojo.test.ConformanceTestInterface_Method15_Params')
+    ..fields = <mojom_types.StructField>[
+      new mojom_types.StructField()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'Param0')
+        ..type = (new mojom_types.Type()
+          ..typeReference = (new mojom_types.TypeReference()
+          ..identifier = 'validation_test_interfaces_StructH__'
+          ..typeKey = 'validation_test_interfaces_StructH__'
+        )),];
 }
 
 
@@ -2540,6 +3175,22 @@ class _IntegrationTestInterfaceMethod0Params extends bindings.Struct {
   }
 }
 
+mojom_types.MojomStruct _validationTestInterfacesIntegrationTestInterfaceMethod0Params() {
+  return new mojom_types.MojomStruct()
+    ..declData = (new mojom_types.DeclarationData()
+      ..shortName = 'IntegrationTestInterfaceMethod0Params'
+      ..fullIdentifier = 'mojo.test.IntegrationTestInterface_Method0_Params')
+    ..fields = <mojom_types.StructField>[
+      new mojom_types.StructField()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'Param0')
+        ..type = (new mojom_types.Type()
+          ..typeReference = (new mojom_types.TypeReference()
+          ..identifier = 'validation_test_interfaces_BasicStruct__'
+          ..typeKey = 'validation_test_interfaces_BasicStruct__'
+        )),];
+}
+
 
 class IntegrationTestInterfaceMethod0ResponseParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
@@ -2605,6 +3256,21 @@ class IntegrationTestInterfaceMethod0ResponseParams extends bindings.Struct {
     map["param0"] = param0;
     return map;
   }
+}
+
+mojom_types.MojomStruct _validationTestInterfacesIntegrationTestInterfaceMethod0ResponseParams() {
+  return new mojom_types.MojomStruct()
+    ..declData = (new mojom_types.DeclarationData()
+      ..shortName = 'IntegrationTestInterfaceMethod0ResponseParams'
+      ..fullIdentifier = 'mojo.test.IntegrationTestInterface_Method0_ResponseParams')
+    ..fields = <mojom_types.StructField>[
+      new mojom_types.StructField()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'Param0')
+        ..type = (new mojom_types.Type()
+          ..arrayType = (new mojom_types.ArrayType()
+            ..elementType = (new mojom_types.Type()
+                    ..simpleType = mojom_types.SimpleType.uint8))),];
 }
 
 
@@ -2995,6 +3661,105 @@ class UnionA extends bindings.Union {
   }
 }
 
+mojom_types.MojomUnion _validationTestInterfacesUnionA() {
+  return new mojom_types.MojomUnion()
+    ..declData = (new mojom_types.DeclarationData()
+      ..shortName = 'UnionA'
+      ..fullIdentifier = 'mojo.test.UnionA')
+    ..fields = <mojom_types.UnionField>[
+      new mojom_types.UnionField()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'A')
+        ..type = (new mojom_types.Type()
+          ..simpleType = mojom_types.SimpleType.uint16)
+        ..tag = 0,
+      new mojom_types.UnionField()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'B')
+        ..type = (new mojom_types.Type()
+          ..simpleType = mojom_types.SimpleType.uint32)
+        ..tag = 1,
+      new mojom_types.UnionField()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'C')
+        ..type = (new mojom_types.Type()
+          ..typeReference = (new mojom_types.TypeReference()
+          ..nullable = true
+        
+          ..identifier = 'validation_test_interfaces_StructA__'
+          ..typeKey = 'validation_test_interfaces_StructA__'
+        ))
+        ..tag = 2,
+      new mojom_types.UnionField()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'D')
+        ..type = (new mojom_types.Type()
+          ..arrayType = (new mojom_types.ArrayType()
+            ..nullable = true
+            ..elementType = (new mojom_types.Type()
+                    ..simpleType = mojom_types.SimpleType.uint8)))
+        ..tag = 3,
+      new mojom_types.UnionField()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'E')
+        ..type = (new mojom_types.Type()
+          ..mapType = (new mojom_types.MapType()
+            ..nullable = true
+          
+            ..keyType = (new mojom_types.Type()
+                    ..stringType = (new mojom_types.StringType()))
+            ..valueType = (new mojom_types.Type()
+                    ..simpleType = mojom_types.SimpleType.uint8)))
+        ..tag = 4,
+      new mojom_types.UnionField()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'F')
+        ..type = (new mojom_types.Type()
+          ..typeReference = (new mojom_types.TypeReference()
+          ..nullable = true
+        
+          ..identifier = 'validation_test_interfaces_UnionB__'
+          ..typeKey = 'validation_test_interfaces_UnionB__'
+        ))
+        ..tag = 5,
+      new mojom_types.UnionField()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'G')
+        ..type = (new mojom_types.Type()
+          ..typeReference = (new mojom_types.TypeReference()
+          ..identifier = 'validation_test_interfaces_StructA__'
+          ..typeKey = 'validation_test_interfaces_StructA__'
+        ))
+        ..tag = 6,
+      new mojom_types.UnionField()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'H')
+        ..type = (new mojom_types.Type()
+          ..arrayType = (new mojom_types.ArrayType()
+            ..elementType = (new mojom_types.Type()
+                    ..simpleType = mojom_types.SimpleType.uint8)))
+        ..tag = 7,
+      new mojom_types.UnionField()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'I')
+        ..type = (new mojom_types.Type()
+          ..mapType = (new mojom_types.MapType()
+            ..keyType = (new mojom_types.Type()
+                    ..stringType = (new mojom_types.StringType()))
+            ..valueType = (new mojom_types.Type()
+                    ..simpleType = mojom_types.SimpleType.uint8)))
+        ..tag = 8,
+      new mojom_types.UnionField()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'J')
+        ..type = (new mojom_types.Type()
+          ..typeReference = (new mojom_types.TypeReference()
+          ..identifier = 'validation_test_interfaces_UnionB__'
+          ..typeKey = 'validation_test_interfaces_UnionB__'
+        ))
+        ..tag = 9,];
+}
+
 
 enum UnionBTag {
   a,
@@ -3150,6 +3915,60 @@ class UnionB extends bindings.Union {
   }
 }
 
+mojom_types.MojomUnion _validationTestInterfacesUnionB() {
+  return new mojom_types.MojomUnion()
+    ..declData = (new mojom_types.DeclarationData()
+      ..shortName = 'UnionB'
+      ..fullIdentifier = 'mojo.test.UnionB')
+    ..fields = <mojom_types.UnionField>[
+      new mojom_types.UnionField()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'A')
+        ..type = (new mojom_types.Type()
+          ..simpleType = mojom_types.SimpleType.uint16)
+        ..tag = 0,
+      new mojom_types.UnionField()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'B')
+        ..type = (new mojom_types.Type()
+          ..simpleType = mojom_types.SimpleType.uint32)
+        ..tag = 1,
+      new mojom_types.UnionField()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'C')
+        ..type = (new mojom_types.Type()
+          ..simpleType = mojom_types.SimpleType.uint64)
+        ..tag = 2,
+      new mojom_types.UnionField()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'D')
+        ..type = (new mojom_types.Type()
+          ..simpleType = mojom_types.SimpleType.uint32)
+        ..tag = 3,];
+}
+
+
+mojom_types.MojomInterface _validationTestInterfacesInterfaceA() {
+  return new mojom_types.MojomInterface()
+    ..declData = (new mojom_types.DeclarationData()
+      ..shortName = 'InterfaceA'
+      ..fullIdentifier = 'mojo.test.InterfaceA')
+    ..interfaceName = 'InterfaceA'
+    ..methods = <int, mojom_types.MojomMethod>{
+    };
+}
+
+class _InterfaceAServiceDescription implements service_describer.ServiceDescription {
+  dynamic getTopLevelInterface([Function responseFactory]) =>
+      _validationTestInterfacesInterfaceA();
+
+  dynamic getTypeDefinition(String typeKey, [Function responseFactory]) =>
+      getAllMojomTypeDefinitions()[typeKey];
+
+  dynamic getAllTypeDefinitions([Function responseFactory]) =>
+      getAllMojomTypeDefinitions();
+}
+
 abstract class InterfaceA {
   static const String serviceName = null;
 }
@@ -3169,6 +3988,9 @@ class _InterfaceAProxyImpl extends bindings.Proxy {
     assert(endpoint.setDescription("For _InterfaceAProxyImpl"));
     return new _InterfaceAProxyImpl.fromEndpoint(endpoint);
   }
+
+  service_describer.ServiceDescription get serviceDescription =>
+    new _InterfaceAServiceDescription();
 
   void handleResponse(bindings.ServiceMessage message) {
     switch (message.header.type) {
@@ -3299,10 +4121,45 @@ class InterfaceAStub extends bindings.Stub {
   }
 
   int get version => 0;
+
+  service_describer.ServiceDescription get serviceDescription =>
+    new _InterfaceAServiceDescription();
 }
 
 const int _BoundsCheckTestInterface_method0Name = 0;
 const int _BoundsCheckTestInterface_method1Name = 1;
+
+mojom_types.MojomInterface _validationTestInterfacesBoundsCheckTestInterface() {
+  return new mojom_types.MojomInterface()
+    ..declData = (new mojom_types.DeclarationData()
+      ..shortName = 'BoundsCheckTestInterface'
+      ..fullIdentifier = 'mojo.test.BoundsCheckTestInterface')
+    ..interfaceName = 'BoundsCheckTestInterface'
+    ..methods = <int, mojom_types.MojomMethod>{
+      _BoundsCheckTestInterface_method0Name: new mojom_types.MojomMethod()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'Method0')
+        ..ordinal = _BoundsCheckTestInterface_method0Name
+        ..responseParams = _validationTestInterfacesBoundsCheckTestInterfaceMethod0ResponseParams()
+        ..parameters = _validationTestInterfacesBoundsCheckTestInterfaceMethod0Params(),
+      _BoundsCheckTestInterface_method1Name: new mojom_types.MojomMethod()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'Method1')
+        ..ordinal = _BoundsCheckTestInterface_method1Name
+        ..parameters = _validationTestInterfacesBoundsCheckTestInterfaceMethod1Params(),
+    };
+}
+
+class _BoundsCheckTestInterfaceServiceDescription implements service_describer.ServiceDescription {
+  dynamic getTopLevelInterface([Function responseFactory]) =>
+      _validationTestInterfacesBoundsCheckTestInterface();
+
+  dynamic getTypeDefinition(String typeKey, [Function responseFactory]) =>
+      getAllMojomTypeDefinitions()[typeKey];
+
+  dynamic getAllTypeDefinitions([Function responseFactory]) =>
+      getAllMojomTypeDefinitions();
+}
 
 abstract class BoundsCheckTestInterface {
   static const String serviceName = null;
@@ -3325,6 +4182,9 @@ class _BoundsCheckTestInterfaceProxyImpl extends bindings.Proxy {
     assert(endpoint.setDescription("For _BoundsCheckTestInterfaceProxyImpl"));
     return new _BoundsCheckTestInterfaceProxyImpl.fromEndpoint(endpoint);
   }
+
+  service_describer.ServiceDescription get serviceDescription =>
+    new _BoundsCheckTestInterfaceServiceDescription();
 
   void handleResponse(bindings.ServiceMessage message) {
     switch (message.header.type) {
@@ -3525,6 +4385,9 @@ class BoundsCheckTestInterfaceStub extends bindings.Stub {
   }
 
   int get version => 0;
+
+  service_describer.ServiceDescription get serviceDescription =>
+    new _BoundsCheckTestInterfaceServiceDescription();
 }
 
 const int _ConformanceTestInterface_method0Name = 0;
@@ -3543,6 +4406,108 @@ const int _ConformanceTestInterface_method12Name = 12;
 const int _ConformanceTestInterface_method13Name = 13;
 const int _ConformanceTestInterface_method14Name = 14;
 const int _ConformanceTestInterface_method15Name = 15;
+
+mojom_types.MojomInterface _validationTestInterfacesConformanceTestInterface() {
+  return new mojom_types.MojomInterface()
+    ..declData = (new mojom_types.DeclarationData()
+      ..shortName = 'ConformanceTestInterface'
+      ..fullIdentifier = 'mojo.test.ConformanceTestInterface')
+    ..interfaceName = 'ConformanceTestInterface'
+    ..methods = <int, mojom_types.MojomMethod>{
+      _ConformanceTestInterface_method0Name: new mojom_types.MojomMethod()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'Method0')
+        ..ordinal = _ConformanceTestInterface_method0Name
+        ..parameters = _validationTestInterfacesConformanceTestInterfaceMethod0Params(),
+      _ConformanceTestInterface_method1Name: new mojom_types.MojomMethod()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'Method1')
+        ..ordinal = _ConformanceTestInterface_method1Name
+        ..parameters = _validationTestInterfacesConformanceTestInterfaceMethod1Params(),
+      _ConformanceTestInterface_method2Name: new mojom_types.MojomMethod()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'Method2')
+        ..ordinal = _ConformanceTestInterface_method2Name
+        ..parameters = _validationTestInterfacesConformanceTestInterfaceMethod2Params(),
+      _ConformanceTestInterface_method3Name: new mojom_types.MojomMethod()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'Method3')
+        ..ordinal = _ConformanceTestInterface_method3Name
+        ..parameters = _validationTestInterfacesConformanceTestInterfaceMethod3Params(),
+      _ConformanceTestInterface_method4Name: new mojom_types.MojomMethod()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'Method4')
+        ..ordinal = _ConformanceTestInterface_method4Name
+        ..parameters = _validationTestInterfacesConformanceTestInterfaceMethod4Params(),
+      _ConformanceTestInterface_method5Name: new mojom_types.MojomMethod()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'Method5')
+        ..ordinal = _ConformanceTestInterface_method5Name
+        ..parameters = _validationTestInterfacesConformanceTestInterfaceMethod5Params(),
+      _ConformanceTestInterface_method6Name: new mojom_types.MojomMethod()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'Method6')
+        ..ordinal = _ConformanceTestInterface_method6Name
+        ..parameters = _validationTestInterfacesConformanceTestInterfaceMethod6Params(),
+      _ConformanceTestInterface_method7Name: new mojom_types.MojomMethod()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'Method7')
+        ..ordinal = _ConformanceTestInterface_method7Name
+        ..parameters = _validationTestInterfacesConformanceTestInterfaceMethod7Params(),
+      _ConformanceTestInterface_method8Name: new mojom_types.MojomMethod()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'Method8')
+        ..ordinal = _ConformanceTestInterface_method8Name
+        ..parameters = _validationTestInterfacesConformanceTestInterfaceMethod8Params(),
+      _ConformanceTestInterface_method9Name: new mojom_types.MojomMethod()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'Method9')
+        ..ordinal = _ConformanceTestInterface_method9Name
+        ..parameters = _validationTestInterfacesConformanceTestInterfaceMethod9Params(),
+      _ConformanceTestInterface_method10Name: new mojom_types.MojomMethod()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'Method10')
+        ..ordinal = _ConformanceTestInterface_method10Name
+        ..parameters = _validationTestInterfacesConformanceTestInterfaceMethod10Params(),
+      _ConformanceTestInterface_method11Name: new mojom_types.MojomMethod()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'Method11')
+        ..ordinal = _ConformanceTestInterface_method11Name
+        ..parameters = _validationTestInterfacesConformanceTestInterfaceMethod11Params(),
+      _ConformanceTestInterface_method12Name: new mojom_types.MojomMethod()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'Method12')
+        ..ordinal = _ConformanceTestInterface_method12Name
+        ..responseParams = _validationTestInterfacesConformanceTestInterfaceMethod12ResponseParams()
+        ..parameters = _validationTestInterfacesConformanceTestInterfaceMethod12Params(),
+      _ConformanceTestInterface_method13Name: new mojom_types.MojomMethod()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'Method13')
+        ..ordinal = _ConformanceTestInterface_method13Name
+        ..parameters = _validationTestInterfacesConformanceTestInterfaceMethod13Params(),
+      _ConformanceTestInterface_method14Name: new mojom_types.MojomMethod()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'Method14')
+        ..ordinal = _ConformanceTestInterface_method14Name
+        ..parameters = _validationTestInterfacesConformanceTestInterfaceMethod14Params(),
+      _ConformanceTestInterface_method15Name: new mojom_types.MojomMethod()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'Method15')
+        ..ordinal = _ConformanceTestInterface_method15Name
+        ..parameters = _validationTestInterfacesConformanceTestInterfaceMethod15Params(),
+    };
+}
+
+class _ConformanceTestInterfaceServiceDescription implements service_describer.ServiceDescription {
+  dynamic getTopLevelInterface([Function responseFactory]) =>
+      _validationTestInterfacesConformanceTestInterface();
+
+  dynamic getTypeDefinition(String typeKey, [Function responseFactory]) =>
+      getAllMojomTypeDefinitions()[typeKey];
+
+  dynamic getAllTypeDefinitions([Function responseFactory]) =>
+      getAllMojomTypeDefinitions();
+}
 
 abstract class ConformanceTestInterface {
   static const String serviceName = null;
@@ -3579,6 +4544,9 @@ class _ConformanceTestInterfaceProxyImpl extends bindings.Proxy {
     assert(endpoint.setDescription("For _ConformanceTestInterfaceProxyImpl"));
     return new _ConformanceTestInterfaceProxyImpl.fromEndpoint(endpoint);
   }
+
+  service_describer.ServiceDescription get serviceDescription =>
+    new _ConformanceTestInterfaceServiceDescription();
 
   void handleResponse(bindings.ServiceMessage message) {
     switch (message.header.type) {
@@ -3981,9 +4949,39 @@ class ConformanceTestInterfaceStub extends bindings.Stub {
   }
 
   int get version => 0;
+
+  service_describer.ServiceDescription get serviceDescription =>
+    new _ConformanceTestInterfaceServiceDescription();
 }
 
 const int _IntegrationTestInterface_method0Name = 0;
+
+mojom_types.MojomInterface _validationTestInterfacesIntegrationTestInterface() {
+  return new mojom_types.MojomInterface()
+    ..declData = (new mojom_types.DeclarationData()
+      ..shortName = 'IntegrationTestInterface'
+      ..fullIdentifier = 'mojo.test.IntegrationTestInterface')
+    ..interfaceName = 'IntegrationTestInterface'
+    ..methods = <int, mojom_types.MojomMethod>{
+      _IntegrationTestInterface_method0Name: new mojom_types.MojomMethod()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'Method0')
+        ..ordinal = _IntegrationTestInterface_method0Name
+        ..responseParams = _validationTestInterfacesIntegrationTestInterfaceMethod0ResponseParams()
+        ..parameters = _validationTestInterfacesIntegrationTestInterfaceMethod0Params(),
+    };
+}
+
+class _IntegrationTestInterfaceServiceDescription implements service_describer.ServiceDescription {
+  dynamic getTopLevelInterface([Function responseFactory]) =>
+      _validationTestInterfacesIntegrationTestInterface();
+
+  dynamic getTypeDefinition(String typeKey, [Function responseFactory]) =>
+      getAllMojomTypeDefinitions()[typeKey];
+
+  dynamic getAllTypeDefinitions([Function responseFactory]) =>
+      getAllMojomTypeDefinitions();
+}
 
 abstract class IntegrationTestInterface {
   static const String serviceName = null;
@@ -4005,6 +5003,9 @@ class _IntegrationTestInterfaceProxyImpl extends bindings.Proxy {
     assert(endpoint.setDescription("For _IntegrationTestInterfaceProxyImpl"));
     return new _IntegrationTestInterfaceProxyImpl.fromEndpoint(endpoint);
   }
+
+  service_describer.ServiceDescription get serviceDescription =>
+    new _IntegrationTestInterfaceServiceDescription();
 
   void handleResponse(bindings.ServiceMessage message) {
     switch (message.header.type) {
@@ -4191,6 +5192,142 @@ class IntegrationTestInterfaceStub extends bindings.Stub {
   }
 
   int get version => 0;
+
+  service_describer.ServiceDescription get serviceDescription =>
+    new _IntegrationTestInterfaceServiceDescription();
 }
 
+
+Map<String, mojom_types.UserDefinedType> _initDescriptions() {
+  var map = new HashMap<String, mojom_types.UserDefinedType>();
+  map["validation_test_interfaces_BasicEnum__"] =
+    new mojom_types.UserDefinedType()
+      ..enumType = _validationTestInterfacesBasicEnum();
+  map["validation_test_interfaces_StructA__"] =
+    new mojom_types.UserDefinedType()
+      ..structType = _validationTestInterfacesStructA();
+  map["validation_test_interfaces_StructB__"] =
+    new mojom_types.UserDefinedType()
+      ..structType = _validationTestInterfacesStructB();
+  map["validation_test_interfaces_StructC__"] =
+    new mojom_types.UserDefinedType()
+      ..structType = _validationTestInterfacesStructC();
+  map["validation_test_interfaces_StructD__"] =
+    new mojom_types.UserDefinedType()
+      ..structType = _validationTestInterfacesStructD();
+  map["validation_test_interfaces_StructE__"] =
+    new mojom_types.UserDefinedType()
+      ..structType = _validationTestInterfacesStructE();
+  map["validation_test_interfaces_StructF__"] =
+    new mojom_types.UserDefinedType()
+      ..structType = _validationTestInterfacesStructF();
+  map["validation_test_interfaces_StructG__"] =
+    new mojom_types.UserDefinedType()
+      ..structType = _validationTestInterfacesStructG();
+  map["validation_test_interfaces_StructH__"] =
+    new mojom_types.UserDefinedType()
+      ..structType = _validationTestInterfacesStructH();
+  map["validation_test_interfaces_BasicStruct__"] =
+    new mojom_types.UserDefinedType()
+      ..structType = _validationTestInterfacesBasicStruct();
+  map["validation_test_interfaces_StructWithEnum__"] =
+    new mojom_types.UserDefinedType()
+      ..structType = _validationTestInterfacesStructWithEnum();
+    map["validation_test_interfaces_EnumWithin__"] =
+    new mojom_types.UserDefinedType()
+      ..enumType = _validationTestInterfacesEnumWithin();
+  map["validation_test_interfaces_BoundsCheckTestInterface_Method0_Params__"] =
+    new mojom_types.UserDefinedType()
+      ..structType = _validationTestInterfacesBoundsCheckTestInterfaceMethod0Params();
+  map["validation_test_interfaces_BoundsCheckTestInterface_Method0_ResponseParams__"] =
+    new mojom_types.UserDefinedType()
+      ..structType = _validationTestInterfacesBoundsCheckTestInterfaceMethod0ResponseParams();
+  map["validation_test_interfaces_BoundsCheckTestInterface_Method1_Params__"] =
+    new mojom_types.UserDefinedType()
+      ..structType = _validationTestInterfacesBoundsCheckTestInterfaceMethod1Params();
+  map["validation_test_interfaces_ConformanceTestInterface_Method0_Params__"] =
+    new mojom_types.UserDefinedType()
+      ..structType = _validationTestInterfacesConformanceTestInterfaceMethod0Params();
+  map["validation_test_interfaces_ConformanceTestInterface_Method1_Params__"] =
+    new mojom_types.UserDefinedType()
+      ..structType = _validationTestInterfacesConformanceTestInterfaceMethod1Params();
+  map["validation_test_interfaces_ConformanceTestInterface_Method2_Params__"] =
+    new mojom_types.UserDefinedType()
+      ..structType = _validationTestInterfacesConformanceTestInterfaceMethod2Params();
+  map["validation_test_interfaces_ConformanceTestInterface_Method3_Params__"] =
+    new mojom_types.UserDefinedType()
+      ..structType = _validationTestInterfacesConformanceTestInterfaceMethod3Params();
+  map["validation_test_interfaces_ConformanceTestInterface_Method4_Params__"] =
+    new mojom_types.UserDefinedType()
+      ..structType = _validationTestInterfacesConformanceTestInterfaceMethod4Params();
+  map["validation_test_interfaces_ConformanceTestInterface_Method5_Params__"] =
+    new mojom_types.UserDefinedType()
+      ..structType = _validationTestInterfacesConformanceTestInterfaceMethod5Params();
+  map["validation_test_interfaces_ConformanceTestInterface_Method6_Params__"] =
+    new mojom_types.UserDefinedType()
+      ..structType = _validationTestInterfacesConformanceTestInterfaceMethod6Params();
+  map["validation_test_interfaces_ConformanceTestInterface_Method7_Params__"] =
+    new mojom_types.UserDefinedType()
+      ..structType = _validationTestInterfacesConformanceTestInterfaceMethod7Params();
+  map["validation_test_interfaces_ConformanceTestInterface_Method8_Params__"] =
+    new mojom_types.UserDefinedType()
+      ..structType = _validationTestInterfacesConformanceTestInterfaceMethod8Params();
+  map["validation_test_interfaces_ConformanceTestInterface_Method9_Params__"] =
+    new mojom_types.UserDefinedType()
+      ..structType = _validationTestInterfacesConformanceTestInterfaceMethod9Params();
+  map["validation_test_interfaces_ConformanceTestInterface_Method10_Params__"] =
+    new mojom_types.UserDefinedType()
+      ..structType = _validationTestInterfacesConformanceTestInterfaceMethod10Params();
+  map["validation_test_interfaces_ConformanceTestInterface_Method11_Params__"] =
+    new mojom_types.UserDefinedType()
+      ..structType = _validationTestInterfacesConformanceTestInterfaceMethod11Params();
+  map["validation_test_interfaces_ConformanceTestInterface_Method12_Params__"] =
+    new mojom_types.UserDefinedType()
+      ..structType = _validationTestInterfacesConformanceTestInterfaceMethod12Params();
+  map["validation_test_interfaces_ConformanceTestInterface_Method12_ResponseParams__"] =
+    new mojom_types.UserDefinedType()
+      ..structType = _validationTestInterfacesConformanceTestInterfaceMethod12ResponseParams();
+  map["validation_test_interfaces_ConformanceTestInterface_Method13_Params__"] =
+    new mojom_types.UserDefinedType()
+      ..structType = _validationTestInterfacesConformanceTestInterfaceMethod13Params();
+  map["validation_test_interfaces_ConformanceTestInterface_Method14_Params__"] =
+    new mojom_types.UserDefinedType()
+      ..structType = _validationTestInterfacesConformanceTestInterfaceMethod14Params();
+  map["validation_test_interfaces_ConformanceTestInterface_Method15_Params__"] =
+    new mojom_types.UserDefinedType()
+      ..structType = _validationTestInterfacesConformanceTestInterfaceMethod15Params();
+  map["validation_test_interfaces_IntegrationTestInterface_Method0_Params__"] =
+    new mojom_types.UserDefinedType()
+      ..structType = _validationTestInterfacesIntegrationTestInterfaceMethod0Params();
+  map["validation_test_interfaces_IntegrationTestInterface_Method0_ResponseParams__"] =
+    new mojom_types.UserDefinedType()
+      ..structType = _validationTestInterfacesIntegrationTestInterfaceMethod0ResponseParams();
+  map["validation_test_interfaces_UnionA__"] =
+    new mojom_types.UserDefinedType()
+      ..unionType = _validationTestInterfacesUnionA();
+  map["validation_test_interfaces_UnionB__"] =
+    new mojom_types.UserDefinedType()
+      ..unionType = _validationTestInterfacesUnionB();
+  map["validation_test_interfaces_InterfaceA__"] =
+    new mojom_types.UserDefinedType()
+      ..interfaceType = _validationTestInterfacesInterfaceA();
+  map["validation_test_interfaces_BoundsCheckTestInterface__"] =
+    new mojom_types.UserDefinedType()
+      ..interfaceType = _validationTestInterfacesBoundsCheckTestInterface();
+  map["validation_test_interfaces_ConformanceTestInterface__"] =
+    new mojom_types.UserDefinedType()
+      ..interfaceType = _validationTestInterfacesConformanceTestInterface();
+  map["validation_test_interfaces_IntegrationTestInterface__"] =
+    new mojom_types.UserDefinedType()
+      ..interfaceType = _validationTestInterfacesIntegrationTestInterface();
+  return map;
+}
+
+var _mojomDesc;
+Map<String, mojom_types.UserDefinedType> getAllMojomTypeDefinitions() {
+  if (_mojomDesc == null) {
+    _mojomDesc = _initDescriptions();
+  }
+  return _mojomDesc;
+}
 

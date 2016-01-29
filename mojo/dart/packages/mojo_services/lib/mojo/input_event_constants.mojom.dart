@@ -8,6 +8,8 @@ import 'dart:async';
 
 import 'package:mojo/bindings.dart' as bindings;
 import 'package:mojo/core.dart' as core;
+import 'package:mojo/mojo/bindings/types/mojom_types.mojom.dart' as mojom_types;
+
 
 class EventType extends bindings.MojoEnum {
   static const EventType unknown = const EventType._(0);
@@ -88,11 +90,15 @@ class EventType extends bindings.MojoEnum {
         return 'EventType.pointerMove';
       case pointerUp:
         return 'EventType.pointerUp';
+      default:
+        return null;
     }
   }
 
   int toJson() => mojoEnumValue;
 }
+
+
 
 class EventFlags extends bindings.MojoEnum {
   static const EventFlags none = const EventFlags._(0);
@@ -215,11 +221,15 @@ class EventFlags extends bindings.MojoEnum {
         return 'EventFlags.altgrDown';
       case mod3Down:
         return 'EventFlags.mod3Down';
+      default:
+        return null;
     }
   }
 
   int toJson() => mojoEnumValue;
 }
+
+
 
 class MouseEventFlags extends bindings.MojoEnum {
   static const MouseEventFlags isDoubleClick = const MouseEventFlags._(65536);
@@ -272,11 +282,15 @@ class MouseEventFlags extends bindings.MojoEnum {
         return 'MouseEventFlags.isTripleClick';
       case isNonClient:
         return 'MouseEventFlags.isNonClient';
+      default:
+        return null;
     }
   }
 
   int toJson() => mojoEnumValue;
 }
+
+
 
 class PointerKind extends bindings.MojoEnum {
   static const PointerKind touch = const PointerKind._(0);
@@ -322,11 +336,17 @@ class PointerKind extends bindings.MojoEnum {
         return 'PointerKind.touch';
       case mouse:
         return 'PointerKind.mouse';
+      default:
+        return null;
     }
   }
 
   int toJson() => mojoEnumValue;
 }
+
+
+
+
 
 
 

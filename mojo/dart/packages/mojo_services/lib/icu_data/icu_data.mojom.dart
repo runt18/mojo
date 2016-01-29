@@ -8,6 +8,8 @@ import 'dart:async';
 
 import 'package:mojo/bindings.dart' as bindings;
 import 'package:mojo/core.dart' as core;
+import 'package:mojo/mojo/bindings/types/mojom_types.mojom.dart' as mojom_types;
+import 'package:mojo/mojo/bindings/types/service_describer.mojom.dart' as service_describer;
 
 
 
@@ -78,6 +80,8 @@ class _IcuDataMapParams extends bindings.Struct {
 }
 
 
+
+
 class IcuDataMapResponseParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(16, 0)
@@ -143,7 +147,20 @@ class IcuDataMapResponseParams extends bindings.Struct {
   }
 }
 
+
+
+
 const int _IcuData_mapName = 0;
+
+
+
+class _IcuDataServiceDescription implements service_describer.ServiceDescription {
+  dynamic getTopLevelInterface([Function responseFactory]) => null;
+
+  dynamic getTypeDefinition(String typeKey, [Function responseFactory]) => null;
+
+  dynamic getAllTypeDefinitions([Function responseFactory]) => null;
+}
 
 abstract class IcuData {
   static const String serviceName = "icu_data::ICUData";
@@ -165,6 +182,9 @@ class _IcuDataProxyImpl extends bindings.Proxy {
     assert(endpoint.setDescription("For _IcuDataProxyImpl"));
     return new _IcuDataProxyImpl.fromEndpoint(endpoint);
   }
+
+  service_describer.ServiceDescription get serviceDescription =>
+    new _IcuDataServiceDescription();
 
   void handleResponse(bindings.ServiceMessage message) {
     switch (message.header.type) {
@@ -351,6 +371,10 @@ class IcuDataStub extends bindings.Stub {
   }
 
   int get version => 0;
+
+  service_describer.ServiceDescription get serviceDescription =>
+    new _IcuDataServiceDescription();
 }
+
 
 

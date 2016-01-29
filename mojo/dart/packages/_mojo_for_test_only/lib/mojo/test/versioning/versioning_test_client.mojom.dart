@@ -5,9 +5,12 @@
 library versioning_test_client_mojom;
 
 import 'dart:async';
+import 'dart:collection';
 
 import 'package:mojo/bindings.dart' as bindings;
 import 'package:mojo/core.dart' as core;
+import 'package:mojo/mojo/bindings/types/mojom_types.mojom.dart' as mojom_types;
+import 'package:mojo/mojo/bindings/types/service_describer.mojom.dart' as service_describer;
 
 class Department extends bindings.MojoEnum {
   static const Department sales = const Department._(0);
@@ -53,10 +56,30 @@ class Department extends bindings.MojoEnum {
         return 'Department.sales';
       case dev:
         return 'Department.dev';
+      default:
+        return null;
     }
   }
 
   int toJson() => mojoEnumValue;
+}
+
+mojom_types.MojomEnum _versioningTestClientDepartment() {
+  return new mojom_types.MojomEnum()
+    ..declData = (new mojom_types.DeclarationData()
+      ..shortName = 'Department'
+      ..fullIdentifier = 'mojo.test.versioning.Department')
+    ..values = <mojom_types.EnumValue>[
+      new mojom_types.EnumValue()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'Sales')
+        ..enumTypeKey = 'versioning_test_client_Department__'
+        ..intValue = 0,
+      new mojom_types.EnumValue()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'Dev')
+        ..enumTypeKey = 'versioning_test_client_Department__'
+        ..intValue = 1,];
 }
 
 
@@ -149,6 +172,32 @@ class Employee extends bindings.Struct {
   }
 }
 
+mojom_types.MojomStruct _versioningTestClientEmployee() {
+  return new mojom_types.MojomStruct()
+    ..declData = (new mojom_types.DeclarationData()
+      ..shortName = 'Employee'
+      ..fullIdentifier = 'mojo.test.versioning.Employee')
+    ..fields = <mojom_types.StructField>[
+      new mojom_types.StructField()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'EmployeeId')
+        ..type = (new mojom_types.Type()
+          ..simpleType = mojom_types.SimpleType.uint64),
+      new mojom_types.StructField()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'Name')
+        ..type = (new mojom_types.Type()
+          ..stringType = (new mojom_types.StringType())),
+      new mojom_types.StructField()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'Department')
+        ..type = (new mojom_types.Type()
+          ..typeReference = (new mojom_types.TypeReference()
+          ..identifier = 'versioning_test_client_Department__'
+          ..typeKey = 'versioning_test_client_Department__'
+        )),];
+}
+
 
 class _HumanResourceDatabaseAddEmployeeParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
@@ -217,6 +266,22 @@ class _HumanResourceDatabaseAddEmployeeParams extends bindings.Struct {
   }
 }
 
+mojom_types.MojomStruct _versioningTestClientHumanResourceDatabaseAddEmployeeParams() {
+  return new mojom_types.MojomStruct()
+    ..declData = (new mojom_types.DeclarationData()
+      ..shortName = 'HumanResourceDatabaseAddEmployeeParams'
+      ..fullIdentifier = 'mojo.test.versioning.HumanResourceDatabase_AddEmployee_Params')
+    ..fields = <mojom_types.StructField>[
+      new mojom_types.StructField()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'Employee')
+        ..type = (new mojom_types.Type()
+          ..typeReference = (new mojom_types.TypeReference()
+          ..identifier = 'versioning_test_client_Employee__'
+          ..typeKey = 'versioning_test_client_Employee__'
+        )),];
+}
+
 
 class HumanResourceDatabaseAddEmployeeResponseParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
@@ -282,6 +347,19 @@ class HumanResourceDatabaseAddEmployeeResponseParams extends bindings.Struct {
     map["success"] = success;
     return map;
   }
+}
+
+mojom_types.MojomStruct _versioningTestClientHumanResourceDatabaseAddEmployeeResponseParams() {
+  return new mojom_types.MojomStruct()
+    ..declData = (new mojom_types.DeclarationData()
+      ..shortName = 'HumanResourceDatabaseAddEmployeeResponseParams'
+      ..fullIdentifier = 'mojo.test.versioning.HumanResourceDatabase_AddEmployee_ResponseParams')
+    ..fields = <mojom_types.StructField>[
+      new mojom_types.StructField()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'Success')
+        ..type = (new mojom_types.Type()
+          ..simpleType = mojom_types.SimpleType.bool),];
 }
 
 
@@ -359,6 +437,24 @@ class _HumanResourceDatabaseQueryEmployeeParams extends bindings.Struct {
     map["retrieveFingerPrint"] = retrieveFingerPrint;
     return map;
   }
+}
+
+mojom_types.MojomStruct _versioningTestClientHumanResourceDatabaseQueryEmployeeParams() {
+  return new mojom_types.MojomStruct()
+    ..declData = (new mojom_types.DeclarationData()
+      ..shortName = 'HumanResourceDatabaseQueryEmployeeParams'
+      ..fullIdentifier = 'mojo.test.versioning.HumanResourceDatabase_QueryEmployee_Params')
+    ..fields = <mojom_types.StructField>[
+      new mojom_types.StructField()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'Id')
+        ..type = (new mojom_types.Type()
+          ..simpleType = mojom_types.SimpleType.uint64),
+      new mojom_types.StructField()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'RetrieveFingerPrint')
+        ..type = (new mojom_types.Type()
+          ..simpleType = mojom_types.SimpleType.bool),];
 }
 
 
@@ -439,6 +535,32 @@ class HumanResourceDatabaseQueryEmployeeResponseParams extends bindings.Struct {
   }
 }
 
+mojom_types.MojomStruct _versioningTestClientHumanResourceDatabaseQueryEmployeeResponseParams() {
+  return new mojom_types.MojomStruct()
+    ..declData = (new mojom_types.DeclarationData()
+      ..shortName = 'HumanResourceDatabaseQueryEmployeeResponseParams'
+      ..fullIdentifier = 'mojo.test.versioning.HumanResourceDatabase_QueryEmployee_ResponseParams')
+    ..fields = <mojom_types.StructField>[
+      new mojom_types.StructField()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'Employee')
+        ..type = (new mojom_types.Type()
+          ..typeReference = (new mojom_types.TypeReference()
+          ..nullable = true
+        
+          ..identifier = 'versioning_test_client_Employee__'
+          ..typeKey = 'versioning_test_client_Employee__'
+        )),
+      new mojom_types.StructField()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'FingerPrint')
+        ..type = (new mojom_types.Type()
+          ..arrayType = (new mojom_types.ArrayType()
+            ..nullable = true
+            ..elementType = (new mojom_types.Type()
+                    ..simpleType = mojom_types.SimpleType.uint8))),];
+}
+
 
 class _HumanResourceDatabaseAttachFingerPrintParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
@@ -515,6 +637,26 @@ class _HumanResourceDatabaseAttachFingerPrintParams extends bindings.Struct {
   }
 }
 
+mojom_types.MojomStruct _versioningTestClientHumanResourceDatabaseAttachFingerPrintParams() {
+  return new mojom_types.MojomStruct()
+    ..declData = (new mojom_types.DeclarationData()
+      ..shortName = 'HumanResourceDatabaseAttachFingerPrintParams'
+      ..fullIdentifier = 'mojo.test.versioning.HumanResourceDatabase_AttachFingerPrint_Params')
+    ..fields = <mojom_types.StructField>[
+      new mojom_types.StructField()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'Id')
+        ..type = (new mojom_types.Type()
+          ..simpleType = mojom_types.SimpleType.uint64),
+      new mojom_types.StructField()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'FingerPrint')
+        ..type = (new mojom_types.Type()
+          ..arrayType = (new mojom_types.ArrayType()
+            ..elementType = (new mojom_types.Type()
+                    ..simpleType = mojom_types.SimpleType.uint8))),];
+}
+
 
 class HumanResourceDatabaseAttachFingerPrintResponseParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
@@ -582,6 +724,19 @@ class HumanResourceDatabaseAttachFingerPrintResponseParams extends bindings.Stru
   }
 }
 
+mojom_types.MojomStruct _versioningTestClientHumanResourceDatabaseAttachFingerPrintResponseParams() {
+  return new mojom_types.MojomStruct()
+    ..declData = (new mojom_types.DeclarationData()
+      ..shortName = 'HumanResourceDatabaseAttachFingerPrintResponseParams'
+      ..fullIdentifier = 'mojo.test.versioning.HumanResourceDatabase_AttachFingerPrint_ResponseParams')
+    ..fields = <mojom_types.StructField>[
+      new mojom_types.StructField()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'Success')
+        ..type = (new mojom_types.Type()
+          ..simpleType = mojom_types.SimpleType.bool),];
+}
+
 
 class _HumanResourceDatabaseListEmployeeIdsParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
@@ -638,6 +793,14 @@ class _HumanResourceDatabaseListEmployeeIdsParams extends bindings.Struct {
     Map map = new Map();
     return map;
   }
+}
+
+mojom_types.MojomStruct _versioningTestClientHumanResourceDatabaseListEmployeeIdsParams() {
+  return new mojom_types.MojomStruct()
+    ..declData = (new mojom_types.DeclarationData()
+      ..shortName = 'HumanResourceDatabaseListEmployeeIdsParams'
+      ..fullIdentifier = 'mojo.test.versioning.HumanResourceDatabase_ListEmployeeIds_Params')
+    ..fields = <mojom_types.StructField>[];
 }
 
 
@@ -707,10 +870,72 @@ class HumanResourceDatabaseListEmployeeIdsResponseParams extends bindings.Struct
   }
 }
 
+mojom_types.MojomStruct _versioningTestClientHumanResourceDatabaseListEmployeeIdsResponseParams() {
+  return new mojom_types.MojomStruct()
+    ..declData = (new mojom_types.DeclarationData()
+      ..shortName = 'HumanResourceDatabaseListEmployeeIdsResponseParams'
+      ..fullIdentifier = 'mojo.test.versioning.HumanResourceDatabase_ListEmployeeIds_ResponseParams')
+    ..fields = <mojom_types.StructField>[
+      new mojom_types.StructField()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'Ids')
+        ..type = (new mojom_types.Type()
+          ..arrayType = (new mojom_types.ArrayType()
+            ..nullable = true
+            ..elementType = (new mojom_types.Type()
+                    ..simpleType = mojom_types.SimpleType.uint64))),];
+}
+
+
 const int _HumanResourceDatabase_addEmployeeName = 0;
 const int _HumanResourceDatabase_queryEmployeeName = 1;
 const int _HumanResourceDatabase_attachFingerPrintName = 2;
 const int _HumanResourceDatabase_listEmployeeIdsName = 3;
+
+mojom_types.MojomInterface _versioningTestClientHumanResourceDatabase() {
+  return new mojom_types.MojomInterface()
+    ..declData = (new mojom_types.DeclarationData()
+      ..shortName = 'HumanResourceDatabase'
+      ..fullIdentifier = 'mojo.test.versioning.HumanResourceDatabase')
+    ..interfaceName = 'HumanResourceDatabase'
+    ..methods = <int, mojom_types.MojomMethod>{
+      _HumanResourceDatabase_addEmployeeName: new mojom_types.MojomMethod()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'AddEmployee')
+        ..ordinal = _HumanResourceDatabase_addEmployeeName
+        ..responseParams = _versioningTestClientHumanResourceDatabaseAddEmployeeResponseParams()
+        ..parameters = _versioningTestClientHumanResourceDatabaseAddEmployeeParams(),
+      _HumanResourceDatabase_queryEmployeeName: new mojom_types.MojomMethod()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'QueryEmployee')
+        ..ordinal = _HumanResourceDatabase_queryEmployeeName
+        ..responseParams = _versioningTestClientHumanResourceDatabaseQueryEmployeeResponseParams()
+        ..parameters = _versioningTestClientHumanResourceDatabaseQueryEmployeeParams(),
+      _HumanResourceDatabase_attachFingerPrintName: new mojom_types.MojomMethod()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'AttachFingerPrint')
+        ..ordinal = _HumanResourceDatabase_attachFingerPrintName
+        ..responseParams = _versioningTestClientHumanResourceDatabaseAttachFingerPrintResponseParams()
+        ..parameters = _versioningTestClientHumanResourceDatabaseAttachFingerPrintParams(),
+      _HumanResourceDatabase_listEmployeeIdsName: new mojom_types.MojomMethod()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'ListEmployeeIds')
+        ..ordinal = _HumanResourceDatabase_listEmployeeIdsName
+        ..responseParams = _versioningTestClientHumanResourceDatabaseListEmployeeIdsResponseParams()
+        ..parameters = _versioningTestClientHumanResourceDatabaseListEmployeeIdsParams(),
+    };
+}
+
+class _HumanResourceDatabaseServiceDescription implements service_describer.ServiceDescription {
+  dynamic getTopLevelInterface([Function responseFactory]) =>
+      _versioningTestClientHumanResourceDatabase();
+
+  dynamic getTypeDefinition(String typeKey, [Function responseFactory]) =>
+      getAllMojomTypeDefinitions()[typeKey];
+
+  dynamic getAllTypeDefinitions([Function responseFactory]) =>
+      getAllMojomTypeDefinitions();
+}
 
 abstract class HumanResourceDatabase {
   static const String serviceName = "mojo::test::versioning::HumanResourceDatabase";
@@ -735,6 +960,9 @@ class _HumanResourceDatabaseProxyImpl extends bindings.Proxy {
     assert(endpoint.setDescription("For _HumanResourceDatabaseProxyImpl"));
     return new _HumanResourceDatabaseProxyImpl.fromEndpoint(endpoint);
   }
+
+  service_describer.ServiceDescription get serviceDescription =>
+    new _HumanResourceDatabaseServiceDescription();
 
   void handleResponse(bindings.ServiceMessage message) {
     switch (message.header.type) {
@@ -1091,6 +1319,55 @@ class HumanResourceDatabaseStub extends bindings.Stub {
   }
 
   int get version => 1;
+
+  service_describer.ServiceDescription get serviceDescription =>
+    new _HumanResourceDatabaseServiceDescription();
 }
 
+
+Map<String, mojom_types.UserDefinedType> _initDescriptions() {
+  var map = new HashMap<String, mojom_types.UserDefinedType>();
+  map["versioning_test_client_Department__"] =
+    new mojom_types.UserDefinedType()
+      ..enumType = _versioningTestClientDepartment();
+  map["versioning_test_client_Employee__"] =
+    new mojom_types.UserDefinedType()
+      ..structType = _versioningTestClientEmployee();
+  map["versioning_test_client_HumanResourceDatabase_AddEmployee_Params__"] =
+    new mojom_types.UserDefinedType()
+      ..structType = _versioningTestClientHumanResourceDatabaseAddEmployeeParams();
+  map["versioning_test_client_HumanResourceDatabase_AddEmployee_ResponseParams__"] =
+    new mojom_types.UserDefinedType()
+      ..structType = _versioningTestClientHumanResourceDatabaseAddEmployeeResponseParams();
+  map["versioning_test_client_HumanResourceDatabase_QueryEmployee_Params__"] =
+    new mojom_types.UserDefinedType()
+      ..structType = _versioningTestClientHumanResourceDatabaseQueryEmployeeParams();
+  map["versioning_test_client_HumanResourceDatabase_QueryEmployee_ResponseParams__"] =
+    new mojom_types.UserDefinedType()
+      ..structType = _versioningTestClientHumanResourceDatabaseQueryEmployeeResponseParams();
+  map["versioning_test_client_HumanResourceDatabase_AttachFingerPrint_Params__"] =
+    new mojom_types.UserDefinedType()
+      ..structType = _versioningTestClientHumanResourceDatabaseAttachFingerPrintParams();
+  map["versioning_test_client_HumanResourceDatabase_AttachFingerPrint_ResponseParams__"] =
+    new mojom_types.UserDefinedType()
+      ..structType = _versioningTestClientHumanResourceDatabaseAttachFingerPrintResponseParams();
+  map["versioning_test_client_HumanResourceDatabase_ListEmployeeIds_Params__"] =
+    new mojom_types.UserDefinedType()
+      ..structType = _versioningTestClientHumanResourceDatabaseListEmployeeIdsParams();
+  map["versioning_test_client_HumanResourceDatabase_ListEmployeeIds_ResponseParams__"] =
+    new mojom_types.UserDefinedType()
+      ..structType = _versioningTestClientHumanResourceDatabaseListEmployeeIdsResponseParams();
+  map["versioning_test_client_HumanResourceDatabase__"] =
+    new mojom_types.UserDefinedType()
+      ..interfaceType = _versioningTestClientHumanResourceDatabase();
+  return map;
+}
+
+var _mojomDesc;
+Map<String, mojom_types.UserDefinedType> getAllMojomTypeDefinitions() {
+  if (_mojomDesc == null) {
+    _mojomDesc = _initDescriptions();
+  }
+  return _mojomDesc;
+}
 

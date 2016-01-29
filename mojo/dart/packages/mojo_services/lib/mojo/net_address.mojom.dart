@@ -8,6 +8,8 @@ import 'dart:async';
 
 import 'package:mojo/bindings.dart' as bindings;
 import 'package:mojo/core.dart' as core;
+import 'package:mojo/mojo/bindings/types/mojom_types.mojom.dart' as mojom_types;
+
 
 class NetAddressFamily extends bindings.MojoEnum {
   static const NetAddressFamily unspecified = const NetAddressFamily._(0);
@@ -60,11 +62,15 @@ class NetAddressFamily extends bindings.MojoEnum {
         return 'NetAddressFamily.ipv4';
       case ipv6:
         return 'NetAddressFamily.ipv6';
+      default:
+        return null;
     }
   }
 
   int toJson() => mojoEnumValue;
 }
+
+
 
 
 
@@ -144,6 +150,8 @@ class NetAddressIPv4 extends bindings.Struct {
 }
 
 
+
+
 class NetAddressIPv6 extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(24, 0)
@@ -218,6 +226,8 @@ class NetAddressIPv6 extends bindings.Struct {
     return map;
   }
 }
+
+
 
 
 class NetAddress extends bindings.Struct {
@@ -309,5 +319,9 @@ class NetAddress extends bindings.Struct {
     return map;
   }
 }
+
+
+
+
 
 

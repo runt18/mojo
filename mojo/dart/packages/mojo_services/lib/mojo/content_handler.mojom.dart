@@ -8,6 +8,8 @@ import 'dart:async';
 
 import 'package:mojo/bindings.dart' as bindings;
 import 'package:mojo/core.dart' as core;
+import 'package:mojo/mojo/bindings/types/mojom_types.mojom.dart' as mojom_types;
+import 'package:mojo/mojo/bindings/types/service_describer.mojom.dart' as service_describer;
 import 'package:mojo/mojo/application.mojom.dart' as application_mojom;
 import 'package:mojo/mojo/url_response.mojom.dart' as url_response_mojom;
 
@@ -87,7 +89,20 @@ class _ContentHandlerStartApplicationParams extends bindings.Struct {
   }
 }
 
+
+
+
 const int _ContentHandler_startApplicationName = 0;
+
+
+
+class _ContentHandlerServiceDescription implements service_describer.ServiceDescription {
+  dynamic getTopLevelInterface([Function responseFactory]) => null;
+
+  dynamic getTypeDefinition(String typeKey, [Function responseFactory]) => null;
+
+  dynamic getAllTypeDefinitions([Function responseFactory]) => null;
+}
 
 abstract class ContentHandler {
   static const String serviceName = "mojo::ContentHandler";
@@ -109,6 +124,9 @@ class _ContentHandlerProxyImpl extends bindings.Proxy {
     assert(endpoint.setDescription("For _ContentHandlerProxyImpl"));
     return new _ContentHandlerProxyImpl.fromEndpoint(endpoint);
   }
+
+  service_describer.ServiceDescription get serviceDescription =>
+    new _ContentHandlerServiceDescription();
 
   void handleResponse(bindings.ServiceMessage message) {
     switch (message.header.type) {
@@ -254,6 +272,10 @@ class ContentHandlerStub extends bindings.Stub {
   }
 
   int get version => 0;
+
+  service_describer.ServiceDescription get serviceDescription =>
+    new _ContentHandlerServiceDescription();
 }
+
 
 

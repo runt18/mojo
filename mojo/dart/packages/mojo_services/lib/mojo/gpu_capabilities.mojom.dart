@@ -8,6 +8,8 @@ import 'dart:async';
 
 import 'package:mojo/bindings.dart' as bindings;
 import 'package:mojo/core.dart' as core;
+import 'package:mojo/mojo/bindings/types/mojom_types.mojom.dart' as mojom_types;
+
 
 
 
@@ -94,6 +96,8 @@ class GpuShaderPrecision extends bindings.Struct {
     return map;
   }
 }
+
+
 
 
 class GpuPerStagePrecisions extends bindings.Struct {
@@ -212,6 +216,8 @@ class GpuPerStagePrecisions extends bindings.Struct {
     return map;
   }
 }
+
+
 
 
 class GpuCapabilities extends bindings.Struct {
@@ -542,5 +548,9 @@ class GpuCapabilities extends bindings.Struct {
     return map;
   }
 }
+
+
+
+
 
 

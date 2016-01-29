@@ -5,9 +5,12 @@
 library pingpong_service_mojom;
 
 import 'dart:async';
+import 'dart:collection';
 
 import 'package:mojo/bindings.dart' as bindings;
 import 'package:mojo/core.dart' as core;
+import 'package:mojo/mojo/bindings/types/mojom_types.mojom.dart' as mojom_types;
+import 'package:mojo/mojo/bindings/types/service_describer.mojom.dart' as service_describer;
 
 
 
@@ -76,6 +79,22 @@ class _PingPongServiceSetClientParams extends bindings.Struct {
   }
 }
 
+mojom_types.MojomStruct _pingpongServicePingPongServiceSetClientParams() {
+  return new mojom_types.MojomStruct()
+    ..declData = (new mojom_types.DeclarationData()
+      ..shortName = 'PingPongServiceSetClientParams'
+      ..fullIdentifier = 'test.PingPongService_SetClient_Params')
+    ..fields = <mojom_types.StructField>[
+      new mojom_types.StructField()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'Client')
+        ..type = (new mojom_types.Type()
+          ..typeReference = (new mojom_types.TypeReference()
+          ..identifier = 'pingpong_service_PingPongClient__'
+          ..typeKey = 'pingpong_service_PingPongClient__'
+        )),];
+}
+
 
 class _PingPongServicePingParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
@@ -141,6 +160,19 @@ class _PingPongServicePingParams extends bindings.Struct {
     map["pingValue"] = pingValue;
     return map;
   }
+}
+
+mojom_types.MojomStruct _pingpongServicePingPongServicePingParams() {
+  return new mojom_types.MojomStruct()
+    ..declData = (new mojom_types.DeclarationData()
+      ..shortName = 'PingPongServicePingParams'
+      ..fullIdentifier = 'test.PingPongService_Ping_Params')
+    ..fields = <mojom_types.StructField>[
+      new mojom_types.StructField()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'PingValue')
+        ..type = (new mojom_types.Type()
+          ..simpleType = mojom_types.SimpleType.uint16),];
 }
 
 
@@ -219,6 +251,24 @@ class _PingPongServicePingTargetUrlParams extends bindings.Struct {
   }
 }
 
+mojom_types.MojomStruct _pingpongServicePingPongServicePingTargetUrlParams() {
+  return new mojom_types.MojomStruct()
+    ..declData = (new mojom_types.DeclarationData()
+      ..shortName = 'PingPongServicePingTargetUrlParams'
+      ..fullIdentifier = 'test.PingPongService_PingTargetURL_Params')
+    ..fields = <mojom_types.StructField>[
+      new mojom_types.StructField()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'Url')
+        ..type = (new mojom_types.Type()
+          ..stringType = (new mojom_types.StringType())),
+      new mojom_types.StructField()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'Count')
+        ..type = (new mojom_types.Type()
+          ..simpleType = mojom_types.SimpleType.uint16),];
+}
+
 
 class PingPongServicePingTargetUrlResponseParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
@@ -284,6 +334,19 @@ class PingPongServicePingTargetUrlResponseParams extends bindings.Struct {
     map["ok"] = ok;
     return map;
   }
+}
+
+mojom_types.MojomStruct _pingpongServicePingPongServicePingTargetUrlResponseParams() {
+  return new mojom_types.MojomStruct()
+    ..declData = (new mojom_types.DeclarationData()
+      ..shortName = 'PingPongServicePingTargetUrlResponseParams'
+      ..fullIdentifier = 'test.PingPongService_PingTargetURL_ResponseParams')
+    ..fields = <mojom_types.StructField>[
+      new mojom_types.StructField()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'Ok')
+        ..type = (new mojom_types.Type()
+          ..simpleType = mojom_types.SimpleType.bool),];
 }
 
 
@@ -360,6 +423,27 @@ class _PingPongServicePingTargetServiceParams extends bindings.Struct {
   }
 }
 
+mojom_types.MojomStruct _pingpongServicePingPongServicePingTargetServiceParams() {
+  return new mojom_types.MojomStruct()
+    ..declData = (new mojom_types.DeclarationData()
+      ..shortName = 'PingPongServicePingTargetServiceParams'
+      ..fullIdentifier = 'test.PingPongService_PingTargetService_Params')
+    ..fields = <mojom_types.StructField>[
+      new mojom_types.StructField()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'Service')
+        ..type = (new mojom_types.Type()
+          ..typeReference = (new mojom_types.TypeReference()
+          ..identifier = 'pingpong_service_PingPongService__'
+          ..typeKey = 'pingpong_service_PingPongService__'
+        )),
+      new mojom_types.StructField()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'Count')
+        ..type = (new mojom_types.Type()
+          ..simpleType = mojom_types.SimpleType.uint16),];
+}
+
 
 class PingPongServicePingTargetServiceResponseParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
@@ -425,6 +509,19 @@ class PingPongServicePingTargetServiceResponseParams extends bindings.Struct {
     map["ok"] = ok;
     return map;
   }
+}
+
+mojom_types.MojomStruct _pingpongServicePingPongServicePingTargetServiceResponseParams() {
+  return new mojom_types.MojomStruct()
+    ..declData = (new mojom_types.DeclarationData()
+      ..shortName = 'PingPongServicePingTargetServiceResponseParams'
+      ..fullIdentifier = 'test.PingPongService_PingTargetService_ResponseParams')
+    ..fields = <mojom_types.StructField>[
+      new mojom_types.StructField()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'Ok')
+        ..type = (new mojom_types.Type()
+          ..simpleType = mojom_types.SimpleType.bool),];
 }
 
 
@@ -493,6 +590,23 @@ class _PingPongServiceGetPingPongServiceParams extends bindings.Struct {
   }
 }
 
+mojom_types.MojomStruct _pingpongServicePingPongServiceGetPingPongServiceParams() {
+  return new mojom_types.MojomStruct()
+    ..declData = (new mojom_types.DeclarationData()
+      ..shortName = 'PingPongServiceGetPingPongServiceParams'
+      ..fullIdentifier = 'test.PingPongService_GetPingPongService_Params')
+    ..fields = <mojom_types.StructField>[
+      new mojom_types.StructField()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'Service')
+        ..type = (new mojom_types.Type()
+          ..typeReference = (new mojom_types.TypeReference()
+          ..isInterfaceRequest = true
+          ..identifier = 'pingpong_service_PingPongService__'
+          ..typeKey = 'pingpong_service_PingPongService__'
+        )),];
+}
+
 
 class _PingPongServiceQuitParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
@@ -549,6 +663,14 @@ class _PingPongServiceQuitParams extends bindings.Struct {
     Map map = new Map();
     return map;
   }
+}
+
+mojom_types.MojomStruct _pingpongServicePingPongServiceQuitParams() {
+  return new mojom_types.MojomStruct()
+    ..declData = (new mojom_types.DeclarationData()
+      ..shortName = 'PingPongServiceQuitParams'
+      ..fullIdentifier = 'test.PingPongService_Quit_Params')
+    ..fields = <mojom_types.StructField>[];
 }
 
 
@@ -618,12 +740,79 @@ class _PingPongClientPongParams extends bindings.Struct {
   }
 }
 
+mojom_types.MojomStruct _pingpongServicePingPongClientPongParams() {
+  return new mojom_types.MojomStruct()
+    ..declData = (new mojom_types.DeclarationData()
+      ..shortName = 'PingPongClientPongParams'
+      ..fullIdentifier = 'test.PingPongClient_Pong_Params')
+    ..fields = <mojom_types.StructField>[
+      new mojom_types.StructField()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'PongValue')
+        ..type = (new mojom_types.Type()
+          ..simpleType = mojom_types.SimpleType.uint16),];
+}
+
+
 const int _PingPongService_setClientName = 0;
 const int _PingPongService_pingName = 1;
 const int _PingPongService_pingTargetUrlName = 2;
 const int _PingPongService_pingTargetServiceName = 3;
 const int _PingPongService_getPingPongServiceName = 4;
 const int _PingPongService_quitName = 5;
+
+mojom_types.MojomInterface _pingpongServicePingPongService() {
+  return new mojom_types.MojomInterface()
+    ..declData = (new mojom_types.DeclarationData()
+      ..shortName = 'PingPongService'
+      ..fullIdentifier = 'test.PingPongService')
+    ..interfaceName = 'PingPongService'
+    ..methods = <int, mojom_types.MojomMethod>{
+      _PingPongService_setClientName: new mojom_types.MojomMethod()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'SetClient')
+        ..ordinal = _PingPongService_setClientName
+        ..parameters = _pingpongServicePingPongServiceSetClientParams(),
+      _PingPongService_pingName: new mojom_types.MojomMethod()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'Ping')
+        ..ordinal = _PingPongService_pingName
+        ..parameters = _pingpongServicePingPongServicePingParams(),
+      _PingPongService_pingTargetUrlName: new mojom_types.MojomMethod()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'PingTargetUrl')
+        ..ordinal = _PingPongService_pingTargetUrlName
+        ..responseParams = _pingpongServicePingPongServicePingTargetUrlResponseParams()
+        ..parameters = _pingpongServicePingPongServicePingTargetUrlParams(),
+      _PingPongService_pingTargetServiceName: new mojom_types.MojomMethod()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'PingTargetService')
+        ..ordinal = _PingPongService_pingTargetServiceName
+        ..responseParams = _pingpongServicePingPongServicePingTargetServiceResponseParams()
+        ..parameters = _pingpongServicePingPongServicePingTargetServiceParams(),
+      _PingPongService_getPingPongServiceName: new mojom_types.MojomMethod()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'GetPingPongService')
+        ..ordinal = _PingPongService_getPingPongServiceName
+        ..parameters = _pingpongServicePingPongServiceGetPingPongServiceParams(),
+      _PingPongService_quitName: new mojom_types.MojomMethod()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'Quit')
+        ..ordinal = _PingPongService_quitName
+        ..parameters = _pingpongServicePingPongServiceQuitParams(),
+    };
+}
+
+class _PingPongServiceServiceDescription implements service_describer.ServiceDescription {
+  dynamic getTopLevelInterface([Function responseFactory]) =>
+      _pingpongServicePingPongService();
+
+  dynamic getTypeDefinition(String typeKey, [Function responseFactory]) =>
+      getAllMojomTypeDefinitions()[typeKey];
+
+  dynamic getAllTypeDefinitions([Function responseFactory]) =>
+      getAllMojomTypeDefinitions();
+}
 
 abstract class PingPongService {
   static const String serviceName = "test::PingPongService";
@@ -650,6 +839,9 @@ class _PingPongServiceProxyImpl extends bindings.Proxy {
     assert(endpoint.setDescription("For _PingPongServiceProxyImpl"));
     return new _PingPongServiceProxyImpl.fromEndpoint(endpoint);
   }
+
+  service_describer.ServiceDescription get serviceDescription =>
+    new _PingPongServiceServiceDescription();
 
   void handleResponse(bindings.ServiceMessage message) {
     switch (message.header.type) {
@@ -949,9 +1141,38 @@ class PingPongServiceStub extends bindings.Stub {
   }
 
   int get version => 0;
+
+  service_describer.ServiceDescription get serviceDescription =>
+    new _PingPongServiceServiceDescription();
 }
 
 const int _PingPongClient_pongName = 0;
+
+mojom_types.MojomInterface _pingpongServicePingPongClient() {
+  return new mojom_types.MojomInterface()
+    ..declData = (new mojom_types.DeclarationData()
+      ..shortName = 'PingPongClient'
+      ..fullIdentifier = 'test.PingPongClient')
+    ..interfaceName = 'PingPongClient'
+    ..methods = <int, mojom_types.MojomMethod>{
+      _PingPongClient_pongName: new mojom_types.MojomMethod()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'Pong')
+        ..ordinal = _PingPongClient_pongName
+        ..parameters = _pingpongServicePingPongClientPongParams(),
+    };
+}
+
+class _PingPongClientServiceDescription implements service_describer.ServiceDescription {
+  dynamic getTopLevelInterface([Function responseFactory]) =>
+      _pingpongServicePingPongClient();
+
+  dynamic getTypeDefinition(String typeKey, [Function responseFactory]) =>
+      getAllMojomTypeDefinitions()[typeKey];
+
+  dynamic getAllTypeDefinitions([Function responseFactory]) =>
+      getAllMojomTypeDefinitions();
+}
 
 abstract class PingPongClient {
   static const String serviceName = null;
@@ -973,6 +1194,9 @@ class _PingPongClientProxyImpl extends bindings.Proxy {
     assert(endpoint.setDescription("For _PingPongClientProxyImpl"));
     return new _PingPongClientProxyImpl.fromEndpoint(endpoint);
   }
+
+  service_describer.ServiceDescription get serviceDescription =>
+    new _PingPongClientServiceDescription();
 
   void handleResponse(bindings.ServiceMessage message) {
     switch (message.header.type) {
@@ -1117,6 +1341,55 @@ class PingPongClientStub extends bindings.Stub {
   }
 
   int get version => 0;
+
+  service_describer.ServiceDescription get serviceDescription =>
+    new _PingPongClientServiceDescription();
 }
 
+
+Map<String, mojom_types.UserDefinedType> _initDescriptions() {
+  var map = new HashMap<String, mojom_types.UserDefinedType>();
+  map["pingpong_service_PingPongService_SetClient_Params__"] =
+    new mojom_types.UserDefinedType()
+      ..structType = _pingpongServicePingPongServiceSetClientParams();
+  map["pingpong_service_PingPongService_Ping_Params__"] =
+    new mojom_types.UserDefinedType()
+      ..structType = _pingpongServicePingPongServicePingParams();
+  map["pingpong_service_PingPongService_PingTargetURL_Params__"] =
+    new mojom_types.UserDefinedType()
+      ..structType = _pingpongServicePingPongServicePingTargetUrlParams();
+  map["pingpong_service_PingPongService_PingTargetURL_ResponseParams__"] =
+    new mojom_types.UserDefinedType()
+      ..structType = _pingpongServicePingPongServicePingTargetUrlResponseParams();
+  map["pingpong_service_PingPongService_PingTargetService_Params__"] =
+    new mojom_types.UserDefinedType()
+      ..structType = _pingpongServicePingPongServicePingTargetServiceParams();
+  map["pingpong_service_PingPongService_PingTargetService_ResponseParams__"] =
+    new mojom_types.UserDefinedType()
+      ..structType = _pingpongServicePingPongServicePingTargetServiceResponseParams();
+  map["pingpong_service_PingPongService_GetPingPongService_Params__"] =
+    new mojom_types.UserDefinedType()
+      ..structType = _pingpongServicePingPongServiceGetPingPongServiceParams();
+  map["pingpong_service_PingPongService_Quit_Params__"] =
+    new mojom_types.UserDefinedType()
+      ..structType = _pingpongServicePingPongServiceQuitParams();
+  map["pingpong_service_PingPongClient_Pong_Params__"] =
+    new mojom_types.UserDefinedType()
+      ..structType = _pingpongServicePingPongClientPongParams();
+  map["pingpong_service_PingPongService__"] =
+    new mojom_types.UserDefinedType()
+      ..interfaceType = _pingpongServicePingPongService();
+  map["pingpong_service_PingPongClient__"] =
+    new mojom_types.UserDefinedType()
+      ..interfaceType = _pingpongServicePingPongClient();
+  return map;
+}
+
+var _mojomDesc;
+Map<String, mojom_types.UserDefinedType> getAllMojomTypeDefinitions() {
+  if (_mojomDesc == null) {
+    _mojomDesc = _initDescriptions();
+  }
+  return _mojomDesc;
+}
 

@@ -8,6 +8,8 @@ import 'dart:async';
 
 import 'package:mojo/bindings.dart' as bindings;
 import 'package:mojo/core.dart' as core;
+import 'package:mojo/mojo/bindings/types/mojom_types.mojom.dart' as mojom_types;
+
 
 class MediaResult extends bindings.MojoEnum {
   static const MediaResult ok = const MediaResult._(0);
@@ -158,11 +160,17 @@ class MediaResult extends bindings.MojoEnum {
         return 'MediaResult.shuttingDown';
       case connectionLost:
         return 'MediaResult.connectionLost';
+      default:
+        return null;
     }
   }
 
   int toJson() => mojoEnumValue;
 }
+
+
+
+
 
 
 

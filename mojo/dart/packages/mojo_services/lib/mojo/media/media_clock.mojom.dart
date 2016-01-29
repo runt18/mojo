@@ -8,6 +8,8 @@ import 'dart:async';
 
 import 'package:mojo/bindings.dart' as bindings;
 import 'package:mojo/core.dart' as core;
+import 'package:mojo/mojo/bindings/types/mojom_types.mojom.dart' as mojom_types;
+import 'package:mojo/mojo/bindings/types/service_describer.mojom.dart' as service_describer;
 
 class ClockDisposition extends bindings.MojoEnum {
   static const ClockDisposition passive = const ClockDisposition._(0);
@@ -81,6 +83,8 @@ class ClockDisposition extends bindings.MojoEnum {
         return 'ClockDisposition.preferMaster';
       case master:
         return 'ClockDisposition.master';
+      default:
+        return null;
     }
   }
 
@@ -88,6 +92,19 @@ class ClockDisposition extends bindings.MojoEnum {
 }
 
 
+
+
+
+
+
+
+class _ClockServiceDescription implements service_describer.ServiceDescription {
+  dynamic getTopLevelInterface([Function responseFactory]) => null;
+
+  dynamic getTypeDefinition(String typeKey, [Function responseFactory]) => null;
+
+  dynamic getAllTypeDefinitions([Function responseFactory]) => null;
+}
 
 abstract class Clock {
   static const String serviceName = null;
@@ -108,6 +125,9 @@ class _ClockProxyImpl extends bindings.Proxy {
     assert(endpoint.setDescription("For _ClockProxyImpl"));
     return new _ClockProxyImpl.fromEndpoint(endpoint);
   }
+
+  service_describer.ServiceDescription get serviceDescription =>
+    new _ClockServiceDescription();
 
   void handleResponse(bindings.ServiceMessage message) {
     switch (message.header.type) {
@@ -238,6 +258,10 @@ class ClockStub extends bindings.Stub {
   }
 
   int get version => 0;
+
+  service_describer.ServiceDescription get serviceDescription =>
+    new _ClockServiceDescription();
 }
+
 
 

@@ -5,9 +5,12 @@
 library rect_mojom;
 
 import 'dart:async';
+import 'dart:collection';
 
 import 'package:mojo/bindings.dart' as bindings;
 import 'package:mojo/core.dart' as core;
+import 'package:mojo/mojo/bindings/types/mojom_types.mojom.dart' as mojom_types;
+
 
 
 
@@ -104,4 +107,49 @@ class Rect extends bindings.Struct {
   }
 }
 
+mojom_types.MojomStruct _rectRect() {
+  return new mojom_types.MojomStruct()
+    ..declData = (new mojom_types.DeclarationData()
+      ..shortName = 'Rect'
+      ..fullIdentifier = 'mojo.test.Rect')
+    ..fields = <mojom_types.StructField>[
+      new mojom_types.StructField()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'X')
+        ..type = (new mojom_types.Type()
+          ..simpleType = mojom_types.SimpleType.int32),
+      new mojom_types.StructField()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'Y')
+        ..type = (new mojom_types.Type()
+          ..simpleType = mojom_types.SimpleType.int32),
+      new mojom_types.StructField()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'Width')
+        ..type = (new mojom_types.Type()
+          ..simpleType = mojom_types.SimpleType.int32),
+      new mojom_types.StructField()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'Height')
+        ..type = (new mojom_types.Type()
+          ..simpleType = mojom_types.SimpleType.int32),];
+}
+
+
+
+Map<String, mojom_types.UserDefinedType> _initDescriptions() {
+  var map = new HashMap<String, mojom_types.UserDefinedType>();
+  map["rect_Rect__"] =
+    new mojom_types.UserDefinedType()
+      ..structType = _rectRect();
+  return map;
+}
+
+var _mojomDesc;
+Map<String, mojom_types.UserDefinedType> getAllMojomTypeDefinitions() {
+  if (_mojomDesc == null) {
+    _mojomDesc = _initDescriptions();
+  }
+  return _mojomDesc;
+}
 

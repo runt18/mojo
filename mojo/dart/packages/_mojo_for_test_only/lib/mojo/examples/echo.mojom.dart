@@ -5,9 +5,12 @@
 library echo_mojom;
 
 import 'dart:async';
+import 'dart:collection';
 
 import 'package:mojo/bindings.dart' as bindings;
 import 'package:mojo/core.dart' as core;
+import 'package:mojo/mojo/bindings/types/mojom_types.mojom.dart' as mojom_types;
+import 'package:mojo/mojo/bindings/types/service_describer.mojom.dart' as service_describer;
 
 
 
@@ -77,6 +80,21 @@ class _EchoEchoStringParams extends bindings.Struct {
   }
 }
 
+mojom_types.MojomStruct _echoEchoEchoStringParams() {
+  return new mojom_types.MojomStruct()
+    ..declData = (new mojom_types.DeclarationData()
+      ..shortName = 'EchoEchoStringParams'
+      ..fullIdentifier = 'mojo.examples.Echo_EchoString_Params')
+    ..fields = <mojom_types.StructField>[
+      new mojom_types.StructField()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'Value')
+        ..type = (new mojom_types.Type()
+          ..stringType = (new mojom_types.StringType()
+            ..nullable = true
+          )),];
+}
+
 
 class EchoEchoStringResponseParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
@@ -144,7 +162,50 @@ class EchoEchoStringResponseParams extends bindings.Struct {
   }
 }
 
+mojom_types.MojomStruct _echoEchoEchoStringResponseParams() {
+  return new mojom_types.MojomStruct()
+    ..declData = (new mojom_types.DeclarationData()
+      ..shortName = 'EchoEchoStringResponseParams'
+      ..fullIdentifier = 'mojo.examples.Echo_EchoString_ResponseParams')
+    ..fields = <mojom_types.StructField>[
+      new mojom_types.StructField()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'Value')
+        ..type = (new mojom_types.Type()
+          ..stringType = (new mojom_types.StringType()
+            ..nullable = true
+          )),];
+}
+
+
 const int _Echo_echoStringName = 0;
+
+mojom_types.MojomInterface _echoEcho() {
+  return new mojom_types.MojomInterface()
+    ..declData = (new mojom_types.DeclarationData()
+      ..shortName = 'Echo'
+      ..fullIdentifier = 'mojo.examples.Echo')
+    ..interfaceName = 'Echo'
+    ..methods = <int, mojom_types.MojomMethod>{
+      _Echo_echoStringName: new mojom_types.MojomMethod()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'EchoString')
+        ..ordinal = _Echo_echoStringName
+        ..responseParams = _echoEchoEchoStringResponseParams()
+        ..parameters = _echoEchoEchoStringParams(),
+    };
+}
+
+class _EchoServiceDescription implements service_describer.ServiceDescription {
+  dynamic getTopLevelInterface([Function responseFactory]) =>
+      _echoEcho();
+
+  dynamic getTypeDefinition(String typeKey, [Function responseFactory]) =>
+      getAllMojomTypeDefinitions()[typeKey];
+
+  dynamic getAllTypeDefinitions([Function responseFactory]) =>
+      getAllMojomTypeDefinitions();
+}
 
 abstract class Echo {
   static const String serviceName = "mojo::examples::Echo";
@@ -166,6 +227,9 @@ class _EchoProxyImpl extends bindings.Proxy {
     assert(endpoint.setDescription("For _EchoProxyImpl"));
     return new _EchoProxyImpl.fromEndpoint(endpoint);
   }
+
+  service_describer.ServiceDescription get serviceDescription =>
+    new _EchoServiceDescription();
 
   void handleResponse(bindings.ServiceMessage message) {
     switch (message.header.type) {
@@ -352,6 +416,31 @@ class EchoStub extends bindings.Stub {
   }
 
   int get version => 0;
+
+  service_describer.ServiceDescription get serviceDescription =>
+    new _EchoServiceDescription();
 }
 
+
+Map<String, mojom_types.UserDefinedType> _initDescriptions() {
+  var map = new HashMap<String, mojom_types.UserDefinedType>();
+  map["echo_Echo_EchoString_Params__"] =
+    new mojom_types.UserDefinedType()
+      ..structType = _echoEchoEchoStringParams();
+  map["echo_Echo_EchoString_ResponseParams__"] =
+    new mojom_types.UserDefinedType()
+      ..structType = _echoEchoEchoStringResponseParams();
+  map["echo_Echo__"] =
+    new mojom_types.UserDefinedType()
+      ..interfaceType = _echoEcho();
+  return map;
+}
+
+var _mojomDesc;
+Map<String, mojom_types.UserDefinedType> getAllMojomTypeDefinitions() {
+  if (_mojomDesc == null) {
+    _mojomDesc = _initDescriptions();
+  }
+  return _mojomDesc;
+}
 

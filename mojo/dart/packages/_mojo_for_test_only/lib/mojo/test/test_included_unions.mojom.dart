@@ -5,9 +5,12 @@
 library test_included_unions_mojom;
 
 import 'dart:async';
+import 'dart:collection';
 
 import 'package:mojo/bindings.dart' as bindings;
 import 'package:mojo/core.dart' as core;
+import 'package:mojo/mojo/bindings/types/mojom_types.mojom.dart' as mojom_types;
+
 
 
 
@@ -89,5 +92,36 @@ class IncludedUnion extends bindings.Union {
     result += ": $_data)";
     return result;
   }
+}
+
+mojom_types.MojomUnion _testIncludedUnionsIncludedUnion() {
+  return new mojom_types.MojomUnion()
+    ..declData = (new mojom_types.DeclarationData()
+      ..shortName = 'IncludedUnion'
+      ..fullIdentifier = 'mojo.test.IncludedUnion')
+    ..fields = <mojom_types.UnionField>[
+      new mojom_types.UnionField()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'A')
+        ..type = (new mojom_types.Type()
+          ..simpleType = mojom_types.SimpleType.int8)
+        ..tag = 0,];
+}
+
+
+Map<String, mojom_types.UserDefinedType> _initDescriptions() {
+  var map = new HashMap<String, mojom_types.UserDefinedType>();
+  map["test_included_unions_IncludedUnion__"] =
+    new mojom_types.UserDefinedType()
+      ..unionType = _testIncludedUnionsIncludedUnion();
+  return map;
+}
+
+var _mojomDesc;
+Map<String, mojom_types.UserDefinedType> getAllMojomTypeDefinitions() {
+  if (_mojomDesc == null) {
+    _mojomDesc = _initDescriptions();
+  }
+  return _mojomDesc;
 }
 

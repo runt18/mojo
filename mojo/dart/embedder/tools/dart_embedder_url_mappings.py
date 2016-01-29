@@ -24,6 +24,13 @@ def scan(package_root, directory, mapped_to):
     filenames = [f for f in filenames if f.endswith('.mojom')]
     for f in filenames:
       path = os.path.join(mapped_to, f)
+
+      # Note: This is incorrect for the files in the mojo.bindings.types
+      # module. We rectify the embedder url mapping by adding bindings/types.
+      if f.endswith('service_describer.mojom') or \
+        f.endswith('mojom_files.mojom') or f.endswith('mojom_types.mojom'):
+        path = os.path.join(mapped_to, 'bindings/types', f)
+
       # Append .dart.
       path += '.dart'
       print('--url_mapping=dart:_' + path + ',' +

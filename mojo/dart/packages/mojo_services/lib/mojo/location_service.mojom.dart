@@ -8,6 +8,8 @@ import 'dart:async';
 
 import 'package:mojo/bindings.dart' as bindings;
 import 'package:mojo/core.dart' as core;
+import 'package:mojo/mojo/bindings/types/mojom_types.mojom.dart' as mojom_types;
+import 'package:mojo/mojo/bindings/types/service_describer.mojom.dart' as service_describer;
 import 'package:mojo_services/mojo/location.mojom.dart' as location_mojom;
 
 
@@ -83,6 +85,8 @@ class _LocationServiceGetNextLocationParams extends bindings.Struct {
 }
 
 
+
+
 class LocationServiceGetNextLocationResponseParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(16, 0)
@@ -150,6 +154,9 @@ class LocationServiceGetNextLocationResponseParams extends bindings.Struct {
   }
 }
 
+
+
+
 const int _LocationService_getNextLocationName = 0;
   
 class LocationServiceUpdatePriority extends bindings.MojoEnum {
@@ -210,10 +217,24 @@ class LocationServiceUpdatePriority extends bindings.MojoEnum {
         return 'LocationServiceUpdatePriority.priorityLowPower';
       case priorityNoPower:
         return 'LocationServiceUpdatePriority.priorityNoPower';
+      default:
+        return null;
     }
   }
 
   int toJson() => mojoEnumValue;
+}
+
+
+
+
+
+class _LocationServiceServiceDescription implements service_describer.ServiceDescription {
+  dynamic getTopLevelInterface([Function responseFactory]) => null;
+
+  dynamic getTypeDefinition(String typeKey, [Function responseFactory]) => null;
+
+  dynamic getAllTypeDefinitions([Function responseFactory]) => null;
 }
 
 abstract class LocationService {
@@ -236,6 +257,9 @@ class _LocationServiceProxyImpl extends bindings.Proxy {
     assert(endpoint.setDescription("For _LocationServiceProxyImpl"));
     return new _LocationServiceProxyImpl.fromEndpoint(endpoint);
   }
+
+  service_describer.ServiceDescription get serviceDescription =>
+    new _LocationServiceServiceDescription();
 
   void handleResponse(bindings.ServiceMessage message) {
     switch (message.header.type) {
@@ -422,6 +446,10 @@ class LocationServiceStub extends bindings.Stub {
   }
 
   int get version => 0;
+
+  service_describer.ServiceDescription get serviceDescription =>
+    new _LocationServiceServiceDescription();
 }
+
 
 

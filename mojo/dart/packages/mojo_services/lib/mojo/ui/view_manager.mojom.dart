@@ -8,6 +8,8 @@ import 'dart:async';
 
 import 'package:mojo/bindings.dart' as bindings;
 import 'package:mojo/core.dart' as core;
+import 'package:mojo/mojo/bindings/types/mojom_types.mojom.dart' as mojom_types;
+import 'package:mojo/mojo/bindings/types/service_describer.mojom.dart' as service_describer;
 import 'package:mojo_services/mojo/ui/views.mojom.dart' as views_mojom;
 import 'package:mojo_services/mojo/ui/view_associates.mojom.dart' as view_associates_mojom;
 import 'package:mojo_services/mojo/ui/view_trees.mojom.dart' as view_trees_mojom;
@@ -97,6 +99,8 @@ class _ViewManagerRegisterViewParams extends bindings.Struct {
 }
 
 
+
+
 class ViewManagerRegisterViewResponseParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(16, 0)
@@ -163,6 +167,8 @@ class ViewManagerRegisterViewResponseParams extends bindings.Struct {
     return map;
   }
 }
+
+
 
 
 class _ViewManagerRegisterViewTreeParams extends bindings.Struct {
@@ -247,6 +253,8 @@ class _ViewManagerRegisterViewTreeParams extends bindings.Struct {
 }
 
 
+
+
 class ViewManagerRegisterViewTreeResponseParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(16, 0)
@@ -314,8 +322,21 @@ class ViewManagerRegisterViewTreeResponseParams extends bindings.Struct {
   }
 }
 
+
+
+
 const int _ViewManager_registerViewName = 0;
 const int _ViewManager_registerViewTreeName = 1;
+
+
+
+class _ViewManagerServiceDescription implements service_describer.ServiceDescription {
+  dynamic getTopLevelInterface([Function responseFactory]) => null;
+
+  dynamic getTypeDefinition(String typeKey, [Function responseFactory]) => null;
+
+  dynamic getAllTypeDefinitions([Function responseFactory]) => null;
+}
 
 abstract class ViewManager {
   static const String serviceName = "mojo::ui::ViewManager";
@@ -338,6 +359,9 @@ class _ViewManagerProxyImpl extends bindings.Proxy {
     assert(endpoint.setDescription("For _ViewManagerProxyImpl"));
     return new _ViewManagerProxyImpl.fromEndpoint(endpoint);
   }
+
+  service_describer.ServiceDescription get serviceDescription =>
+    new _ViewManagerServiceDescription();
 
   void handleResponse(bindings.ServiceMessage message) {
     switch (message.header.type) {
@@ -584,6 +608,10 @@ class ViewManagerStub extends bindings.Stub {
   }
 
   int get version => 0;
+
+  service_describer.ServiceDescription get serviceDescription =>
+    new _ViewManagerServiceDescription();
 }
+
 
 

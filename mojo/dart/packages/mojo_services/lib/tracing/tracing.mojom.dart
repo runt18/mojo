@@ -8,6 +8,8 @@ import 'dart:async';
 
 import 'package:mojo/bindings.dart' as bindings;
 import 'package:mojo/core.dart' as core;
+import 'package:mojo/mojo/bindings/types/mojom_types.mojom.dart' as mojom_types;
+import 'package:mojo/mojo/bindings/types/service_describer.mojom.dart' as service_describer;
 
 
 
@@ -85,6 +87,8 @@ class _TraceProviderStartTracingParams extends bindings.Struct {
 }
 
 
+
+
 class _TraceProviderStopTracingParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(8, 0)
@@ -141,6 +145,8 @@ class _TraceProviderStopTracingParams extends bindings.Struct {
     return map;
   }
 }
+
+
 
 
 class _TraceRecorderRecordParams extends bindings.Struct {
@@ -208,6 +214,8 @@ class _TraceRecorderRecordParams extends bindings.Struct {
     return map;
   }
 }
+
+
 
 
 class _TraceCollectorStartParams extends bindings.Struct {
@@ -284,6 +292,8 @@ class _TraceCollectorStartParams extends bindings.Struct {
 }
 
 
+
+
 class _TraceCollectorStopAndFlushParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(8, 0)
@@ -341,8 +351,21 @@ class _TraceCollectorStopAndFlushParams extends bindings.Struct {
   }
 }
 
+
+
+
 const int _TraceProvider_startTracingName = 0;
 const int _TraceProvider_stopTracingName = 1;
+
+
+
+class _TraceProviderServiceDescription implements service_describer.ServiceDescription {
+  dynamic getTopLevelInterface([Function responseFactory]) => null;
+
+  dynamic getTypeDefinition(String typeKey, [Function responseFactory]) => null;
+
+  dynamic getAllTypeDefinitions([Function responseFactory]) => null;
+}
 
 abstract class TraceProvider {
   static const String serviceName = "tracing::TraceProvider";
@@ -365,6 +388,9 @@ class _TraceProviderProxyImpl extends bindings.Proxy {
     assert(endpoint.setDescription("For _TraceProviderProxyImpl"));
     return new _TraceProviderProxyImpl.fromEndpoint(endpoint);
   }
+
+  service_describer.ServiceDescription get serviceDescription =>
+    new _TraceProviderServiceDescription();
 
   void handleResponse(bindings.ServiceMessage message) {
     switch (message.header.type) {
@@ -523,9 +549,22 @@ class TraceProviderStub extends bindings.Stub {
   }
 
   int get version => 0;
+
+  service_describer.ServiceDescription get serviceDescription =>
+    new _TraceProviderServiceDescription();
 }
 
 const int _TraceRecorder_recordName = 0;
+
+
+
+class _TraceRecorderServiceDescription implements service_describer.ServiceDescription {
+  dynamic getTopLevelInterface([Function responseFactory]) => null;
+
+  dynamic getTypeDefinition(String typeKey, [Function responseFactory]) => null;
+
+  dynamic getAllTypeDefinitions([Function responseFactory]) => null;
+}
 
 abstract class TraceRecorder {
   static const String serviceName = null;
@@ -547,6 +586,9 @@ class _TraceRecorderProxyImpl extends bindings.Proxy {
     assert(endpoint.setDescription("For _TraceRecorderProxyImpl"));
     return new _TraceRecorderProxyImpl.fromEndpoint(endpoint);
   }
+
+  service_describer.ServiceDescription get serviceDescription =>
+    new _TraceRecorderServiceDescription();
 
   void handleResponse(bindings.ServiceMessage message) {
     switch (message.header.type) {
@@ -691,10 +733,23 @@ class TraceRecorderStub extends bindings.Stub {
   }
 
   int get version => 0;
+
+  service_describer.ServiceDescription get serviceDescription =>
+    new _TraceRecorderServiceDescription();
 }
 
 const int _TraceCollector_startName = 0;
 const int _TraceCollector_stopAndFlushName = 1;
+
+
+
+class _TraceCollectorServiceDescription implements service_describer.ServiceDescription {
+  dynamic getTopLevelInterface([Function responseFactory]) => null;
+
+  dynamic getTypeDefinition(String typeKey, [Function responseFactory]) => null;
+
+  dynamic getAllTypeDefinitions([Function responseFactory]) => null;
+}
 
 abstract class TraceCollector {
   static const String serviceName = "tracing::TraceCollector";
@@ -717,6 +772,9 @@ class _TraceCollectorProxyImpl extends bindings.Proxy {
     assert(endpoint.setDescription("For _TraceCollectorProxyImpl"));
     return new _TraceCollectorProxyImpl.fromEndpoint(endpoint);
   }
+
+  service_describer.ServiceDescription get serviceDescription =>
+    new _TraceCollectorServiceDescription();
 
   void handleResponse(bindings.ServiceMessage message) {
     switch (message.header.type) {
@@ -875,6 +933,10 @@ class TraceCollectorStub extends bindings.Stub {
   }
 
   int get version => 0;
+
+  service_describer.ServiceDescription get serviceDescription =>
+    new _TraceCollectorServiceDescription();
 }
+
 
 

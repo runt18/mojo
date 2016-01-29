@@ -8,6 +8,8 @@ import 'dart:async';
 
 import 'package:mojo/bindings.dart' as bindings;
 import 'package:mojo/core.dart' as core;
+import 'package:mojo/mojo/bindings/types/mojom_types.mojom.dart' as mojom_types;
+import 'package:mojo/mojo/bindings/types/service_describer.mojom.dart' as service_describer;
 import 'package:mojo/mojo/network_error.mojom.dart' as network_error_mojom;
 
 
@@ -126,6 +128,8 @@ class _WebSocketConnectParams extends bindings.Struct {
 }
 
 
+
+
 class _WebSocketSendParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(24, 0)
@@ -215,6 +219,8 @@ class _WebSocketSendParams extends bindings.Struct {
 }
 
 
+
+
 class _WebSocketFlowControlParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(16, 0)
@@ -280,6 +286,8 @@ class _WebSocketFlowControlParams extends bindings.Struct {
     return map;
   }
 }
+
+
 
 
 class _WebSocketCloseParams extends bindings.Struct {
@@ -356,6 +364,8 @@ class _WebSocketCloseParams extends bindings.Struct {
     return map;
   }
 }
+
+
 
 
 class _WebSocketClientDidConnectParams extends bindings.Struct {
@@ -438,6 +448,8 @@ class _WebSocketClientDidConnectParams extends bindings.Struct {
         'Object containing handles cannot be encoded to JSON.');
   }
 }
+
+
 
 
 class _WebSocketClientDidReceiveDataParams extends bindings.Struct {
@@ -529,6 +541,8 @@ class _WebSocketClientDidReceiveDataParams extends bindings.Struct {
 }
 
 
+
+
 class _WebSocketClientDidReceiveFlowControlParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(16, 0)
@@ -596,6 +610,8 @@ class _WebSocketClientDidReceiveFlowControlParams extends bindings.Struct {
 }
 
 
+
+
 class _WebSocketClientDidFailParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(16, 0)
@@ -661,6 +677,8 @@ class _WebSocketClientDidFailParams extends bindings.Struct {
     return map;
   }
 }
+
+
 
 
 class _WebSocketClientDidCloseParams extends bindings.Struct {
@@ -747,6 +765,9 @@ class _WebSocketClientDidCloseParams extends bindings.Struct {
   }
 }
 
+
+
+
 const int _WebSocket_connectName = 0;
 const int _WebSocket_sendName = 1;
 const int _WebSocket_flowControlName = 2;
@@ -803,10 +824,24 @@ class WebSocketMessageType extends bindings.MojoEnum {
         return 'WebSocketMessageType.text';
       case binary:
         return 'WebSocketMessageType.binary';
+      default:
+        return null;
     }
   }
 
   int toJson() => mojoEnumValue;
+}
+
+
+
+
+
+class _WebSocketServiceDescription implements service_describer.ServiceDescription {
+  dynamic getTopLevelInterface([Function responseFactory]) => null;
+
+  dynamic getTypeDefinition(String typeKey, [Function responseFactory]) => null;
+
+  dynamic getAllTypeDefinitions([Function responseFactory]) => null;
 }
 
 abstract class WebSocket {
@@ -833,6 +868,9 @@ class _WebSocketProxyImpl extends bindings.Proxy {
     assert(endpoint.setDescription("For _WebSocketProxyImpl"));
     return new _WebSocketProxyImpl.fromEndpoint(endpoint);
   }
+
+  service_describer.ServiceDescription get serviceDescription =>
+    new _WebSocketServiceDescription();
 
   void handleResponse(bindings.ServiceMessage message) {
     switch (message.header.type) {
@@ -1026,6 +1064,9 @@ class WebSocketStub extends bindings.Stub {
   }
 
   int get version => 0;
+
+  service_describer.ServiceDescription get serviceDescription =>
+    new _WebSocketServiceDescription();
 }
 
 const int _WebSocketClient_didConnectName = 0;
@@ -1033,6 +1074,16 @@ const int _WebSocketClient_didReceiveDataName = 1;
 const int _WebSocketClient_didReceiveFlowControlName = 2;
 const int _WebSocketClient_didFailName = 3;
 const int _WebSocketClient_didCloseName = 4;
+
+
+
+class _WebSocketClientServiceDescription implements service_describer.ServiceDescription {
+  dynamic getTopLevelInterface([Function responseFactory]) => null;
+
+  dynamic getTypeDefinition(String typeKey, [Function responseFactory]) => null;
+
+  dynamic getAllTypeDefinitions([Function responseFactory]) => null;
+}
 
 abstract class WebSocketClient {
   static const String serviceName = null;
@@ -1058,6 +1109,9 @@ class _WebSocketClientProxyImpl extends bindings.Proxy {
     assert(endpoint.setDescription("For _WebSocketClientProxyImpl"));
     return new _WebSocketClientProxyImpl.fromEndpoint(endpoint);
   }
+
+  service_describer.ServiceDescription get serviceDescription =>
+    new _WebSocketClientServiceDescription();
 
   void handleResponse(bindings.ServiceMessage message) {
     switch (message.header.type) {
@@ -1264,6 +1318,10 @@ class WebSocketClientStub extends bindings.Stub {
   }
 
   int get version => 0;
+
+  service_describer.ServiceDescription get serviceDescription =>
+    new _WebSocketClientServiceDescription();
 }
+
 
 

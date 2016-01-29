@@ -8,6 +8,8 @@ import 'dart:async';
 
 import 'package:mojo/bindings.dart' as bindings;
 import 'package:mojo/core.dart' as core;
+import 'package:mojo/mojo/bindings/types/mojom_types.mojom.dart' as mojom_types;
+import 'package:mojo/mojo/bindings/types/service_describer.mojom.dart' as service_describer;
 import 'package:mojo_services/mojo/gfx/composition/nodes.mojom.dart' as nodes_mojom;
 import 'package:mojo_services/mojo/gfx/composition/resources.mojom.dart' as resources_mojom;
 import 'package:mojo_services/mojo/gfx/composition/scene_token.mojom.dart' as scene_token_mojom;
@@ -192,6 +194,8 @@ class SceneUpdate extends bindings.Struct {
 }
 
 
+
+
 class SceneMetadata extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(24, 0)
@@ -268,6 +272,8 @@ class SceneMetadata extends bindings.Struct {
 }
 
 
+
+
 class _SceneSetListenerParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(16, 0)
@@ -332,6 +338,8 @@ class _SceneSetListenerParams extends bindings.Struct {
         'Object containing handles cannot be encoded to JSON.');
   }
 }
+
+
 
 
 class _SceneUpdateParams extends bindings.Struct {
@@ -399,6 +407,8 @@ class _SceneUpdateParams extends bindings.Struct {
         'Object containing handles cannot be encoded to JSON.');
   }
 }
+
+
 
 
 class _ScenePublishParams extends bindings.Struct {
@@ -469,6 +479,8 @@ class _ScenePublishParams extends bindings.Struct {
 }
 
 
+
+
 class _SceneGetSchedulerParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(16, 0)
@@ -533,6 +545,8 @@ class _SceneGetSchedulerParams extends bindings.Struct {
         'Object containing handles cannot be encoded to JSON.');
   }
 }
+
+
 
 
 class _SceneListenerOnResourceUnavailableParams extends bindings.Struct {
@@ -602,6 +616,8 @@ class _SceneListenerOnResourceUnavailableParams extends bindings.Struct {
 }
 
 
+
+
 class SceneListenerOnResourceUnavailableResponseParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(8, 0)
@@ -659,10 +675,23 @@ class SceneListenerOnResourceUnavailableResponseParams extends bindings.Struct {
   }
 }
 
+
+
+
 const int _Scene_setListenerName = 0;
 const int _Scene_updateName = 1;
 const int _Scene_publishName = 2;
 const int _Scene_getSchedulerName = 3;
+
+
+
+class _SceneServiceDescription implements service_describer.ServiceDescription {
+  dynamic getTopLevelInterface([Function responseFactory]) => null;
+
+  dynamic getTypeDefinition(String typeKey, [Function responseFactory]) => null;
+
+  dynamic getAllTypeDefinitions([Function responseFactory]) => null;
+}
 
 abstract class Scene {
   static const String serviceName = null;
@@ -687,6 +716,9 @@ class _SceneProxyImpl extends bindings.Proxy {
     assert(endpoint.setDescription("For _SceneProxyImpl"));
     return new _SceneProxyImpl.fromEndpoint(endpoint);
   }
+
+  service_describer.ServiceDescription get serviceDescription =>
+    new _SceneServiceDescription();
 
   void handleResponse(bindings.ServiceMessage message) {
     switch (message.header.type) {
@@ -873,9 +905,22 @@ class SceneStub extends bindings.Stub {
   }
 
   int get version => 0;
+
+  service_describer.ServiceDescription get serviceDescription =>
+    new _SceneServiceDescription();
 }
 
 const int _SceneListener_onResourceUnavailableName = 0;
+
+
+
+class _SceneListenerServiceDescription implements service_describer.ServiceDescription {
+  dynamic getTopLevelInterface([Function responseFactory]) => null;
+
+  dynamic getTypeDefinition(String typeKey, [Function responseFactory]) => null;
+
+  dynamic getAllTypeDefinitions([Function responseFactory]) => null;
+}
 
 abstract class SceneListener {
   static const String serviceName = null;
@@ -897,6 +942,9 @@ class _SceneListenerProxyImpl extends bindings.Proxy {
     assert(endpoint.setDescription("For _SceneListenerProxyImpl"));
     return new _SceneListenerProxyImpl.fromEndpoint(endpoint);
   }
+
+  service_describer.ServiceDescription get serviceDescription =>
+    new _SceneListenerServiceDescription();
 
   void handleResponse(bindings.ServiceMessage message) {
     switch (message.header.type) {
@@ -1082,6 +1130,10 @@ class SceneListenerStub extends bindings.Stub {
   }
 
   int get version => 0;
+
+  service_describer.ServiceDescription get serviceDescription =>
+    new _SceneListenerServiceDescription();
 }
+
 
 

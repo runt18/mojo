@@ -8,6 +8,8 @@ import 'dart:async';
 
 import 'package:mojo/bindings.dart' as bindings;
 import 'package:mojo/core.dart' as core;
+import 'package:mojo/mojo/bindings/types/mojom_types.mojom.dart' as mojom_types;
+import 'package:mojo/mojo/bindings/types/service_describer.mojom.dart' as service_describer;
 import 'package:mojo/mojo/service_provider.mojom.dart' as service_provider_mojom;
 import 'package:mojo_services/mojo/ui/views.mojom.dart' as views_mojom;
 import 'package:mojo_services/mojo/ui/view_trees.mojom.dart' as view_trees_mojom;
@@ -126,6 +128,8 @@ class ViewAssociateInfo extends bindings.Struct {
 }
 
 
+
+
 class _ViewAssociateConnectParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(16, 0)
@@ -190,6 +194,8 @@ class _ViewAssociateConnectParams extends bindings.Struct {
         'Object containing handles cannot be encoded to JSON.');
   }
 }
+
+
 
 
 class ViewAssociateConnectResponseParams extends bindings.Struct {
@@ -258,6 +264,8 @@ class ViewAssociateConnectResponseParams extends bindings.Struct {
     return map;
   }
 }
+
+
 
 
 class _ViewAssociateConnectToViewServiceParams extends bindings.Struct {
@@ -343,6 +351,8 @@ class _ViewAssociateConnectToViewServiceParams extends bindings.Struct {
 }
 
 
+
+
 class _ViewAssociateConnectToViewTreeServiceParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(32, 0)
@@ -425,9 +435,22 @@ class _ViewAssociateConnectToViewTreeServiceParams extends bindings.Struct {
   }
 }
 
+
+
+
 const int _ViewAssociate_connectName = 0;
 const int _ViewAssociate_connectToViewServiceName = 1;
 const int _ViewAssociate_connectToViewTreeServiceName = 2;
+
+
+
+class _ViewAssociateServiceDescription implements service_describer.ServiceDescription {
+  dynamic getTopLevelInterface([Function responseFactory]) => null;
+
+  dynamic getTypeDefinition(String typeKey, [Function responseFactory]) => null;
+
+  dynamic getAllTypeDefinitions([Function responseFactory]) => null;
+}
 
 abstract class ViewAssociate {
   static const String serviceName = "mojo::ui::ViewAssociate";
@@ -451,6 +474,9 @@ class _ViewAssociateProxyImpl extends bindings.Proxy {
     assert(endpoint.setDescription("For _ViewAssociateProxyImpl"));
     return new _ViewAssociateProxyImpl.fromEndpoint(endpoint);
   }
+
+  service_describer.ServiceDescription get serviceDescription =>
+    new _ViewAssociateServiceDescription();
 
   void handleResponse(bindings.ServiceMessage message) {
     switch (message.header.type) {
@@ -669,8 +695,21 @@ class ViewAssociateStub extends bindings.Stub {
   }
 
   int get version => 0;
+
+  service_describer.ServiceDescription get serviceDescription =>
+    new _ViewAssociateServiceDescription();
 }
 
+
+
+
+class _ViewInspectorServiceDescription implements service_describer.ServiceDescription {
+  dynamic getTopLevelInterface([Function responseFactory]) => null;
+
+  dynamic getTypeDefinition(String typeKey, [Function responseFactory]) => null;
+
+  dynamic getAllTypeDefinitions([Function responseFactory]) => null;
+}
 
 abstract class ViewInspector {
   static const String serviceName = null;
@@ -691,6 +730,9 @@ class _ViewInspectorProxyImpl extends bindings.Proxy {
     assert(endpoint.setDescription("For _ViewInspectorProxyImpl"));
     return new _ViewInspectorProxyImpl.fromEndpoint(endpoint);
   }
+
+  service_describer.ServiceDescription get serviceDescription =>
+    new _ViewInspectorServiceDescription();
 
   void handleResponse(bindings.ServiceMessage message) {
     switch (message.header.type) {
@@ -821,6 +863,10 @@ class ViewInspectorStub extends bindings.Stub {
   }
 
   int get version => 0;
+
+  service_describer.ServiceDescription get serviceDescription =>
+    new _ViewInspectorServiceDescription();
 }
+
 
 

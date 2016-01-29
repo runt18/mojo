@@ -8,6 +8,8 @@ import 'dart:async';
 
 import 'package:mojo/bindings.dart' as bindings;
 import 'package:mojo/core.dart' as core;
+import 'package:mojo/mojo/bindings/types/mojom_types.mojom.dart' as mojom_types;
+import 'package:mojo/mojo/bindings/types/service_describer.mojom.dart' as service_describer;
 
 
 
@@ -78,6 +80,8 @@ class NfcData extends bindings.Struct {
 }
 
 
+
+
 class _NfcTransmissionCancelParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(8, 0)
@@ -134,6 +138,8 @@ class _NfcTransmissionCancelParams extends bindings.Struct {
     return map;
   }
 }
+
+
 
 
 class _NfcReceiverOnReceivedNfcDataParams extends bindings.Struct {
@@ -202,6 +208,8 @@ class _NfcReceiverOnReceivedNfcDataParams extends bindings.Struct {
     return map;
   }
 }
+
+
 
 
 class _NfcTransmitOnNextConnectionParams extends bindings.Struct {
@@ -279,6 +287,8 @@ class _NfcTransmitOnNextConnectionParams extends bindings.Struct {
 }
 
 
+
+
 class NfcTransmitOnNextConnectionResponseParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(16, 0)
@@ -346,6 +356,8 @@ class NfcTransmitOnNextConnectionResponseParams extends bindings.Struct {
 }
 
 
+
+
 class _NfcRegisterParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(8, 0)
@@ -402,6 +414,8 @@ class _NfcRegisterParams extends bindings.Struct {
     return map;
   }
 }
+
+
 
 
 class _NfcUnregisterParams extends bindings.Struct {
@@ -461,7 +475,20 @@ class _NfcUnregisterParams extends bindings.Struct {
   }
 }
 
+
+
+
 const int _NfcTransmission_cancelName = 0;
+
+
+
+class _NfcTransmissionServiceDescription implements service_describer.ServiceDescription {
+  dynamic getTopLevelInterface([Function responseFactory]) => null;
+
+  dynamic getTypeDefinition(String typeKey, [Function responseFactory]) => null;
+
+  dynamic getAllTypeDefinitions([Function responseFactory]) => null;
+}
 
 abstract class NfcTransmission {
   static const String serviceName = null;
@@ -483,6 +510,9 @@ class _NfcTransmissionProxyImpl extends bindings.Proxy {
     assert(endpoint.setDescription("For _NfcTransmissionProxyImpl"));
     return new _NfcTransmissionProxyImpl.fromEndpoint(endpoint);
   }
+
+  service_describer.ServiceDescription get serviceDescription =>
+    new _NfcTransmissionServiceDescription();
 
   void handleResponse(bindings.ServiceMessage message) {
     switch (message.header.type) {
@@ -626,9 +656,22 @@ class NfcTransmissionStub extends bindings.Stub {
   }
 
   int get version => 0;
+
+  service_describer.ServiceDescription get serviceDescription =>
+    new _NfcTransmissionServiceDescription();
 }
 
 const int _NfcReceiver_onReceivedNfcDataName = 0;
+
+
+
+class _NfcReceiverServiceDescription implements service_describer.ServiceDescription {
+  dynamic getTopLevelInterface([Function responseFactory]) => null;
+
+  dynamic getTypeDefinition(String typeKey, [Function responseFactory]) => null;
+
+  dynamic getAllTypeDefinitions([Function responseFactory]) => null;
+}
 
 abstract class NfcReceiver {
   static const String serviceName = "nfc::NfcReceiver";
@@ -650,6 +693,9 @@ class _NfcReceiverProxyImpl extends bindings.Proxy {
     assert(endpoint.setDescription("For _NfcReceiverProxyImpl"));
     return new _NfcReceiverProxyImpl.fromEndpoint(endpoint);
   }
+
+  service_describer.ServiceDescription get serviceDescription =>
+    new _NfcReceiverServiceDescription();
 
   void handleResponse(bindings.ServiceMessage message) {
     switch (message.header.type) {
@@ -794,11 +840,24 @@ class NfcReceiverStub extends bindings.Stub {
   }
 
   int get version => 0;
+
+  service_describer.ServiceDescription get serviceDescription =>
+    new _NfcReceiverServiceDescription();
 }
 
 const int _Nfc_transmitOnNextConnectionName = 0;
 const int _Nfc_registerName = 1;
 const int _Nfc_unregisterName = 2;
+
+
+
+class _NfcServiceDescription implements service_describer.ServiceDescription {
+  dynamic getTopLevelInterface([Function responseFactory]) => null;
+
+  dynamic getTypeDefinition(String typeKey, [Function responseFactory]) => null;
+
+  dynamic getAllTypeDefinitions([Function responseFactory]) => null;
+}
 
 abstract class Nfc {
   static const String serviceName = "nfc::Nfc";
@@ -822,6 +881,9 @@ class _NfcProxyImpl extends bindings.Proxy {
     assert(endpoint.setDescription("For _NfcProxyImpl"));
     return new _NfcProxyImpl.fromEndpoint(endpoint);
   }
+
+  service_describer.ServiceDescription get serviceDescription =>
+    new _NfcServiceDescription();
 
   void handleResponse(bindings.ServiceMessage message) {
     switch (message.header.type) {
@@ -1035,6 +1097,10 @@ class NfcStub extends bindings.Stub {
   }
 
   int get version => 0;
+
+  service_describer.ServiceDescription get serviceDescription =>
+    new _NfcServiceDescription();
 }
+
 
 

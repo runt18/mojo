@@ -8,6 +8,8 @@ import 'dart:async';
 
 import 'package:mojo/bindings.dart' as bindings;
 import 'package:mojo/core.dart' as core;
+import 'package:mojo/mojo/bindings/types/mojom_types.mojom.dart' as mojom_types;
+import 'package:mojo/mojo/bindings/types/service_describer.mojom.dart' as service_describer;
 import 'package:mojo_services/mojo/files/file.mojom.dart' as file_mojom;
 import 'package:mojo_services/mojo/files/types.mojom.dart' as types_mojom;
 
@@ -69,6 +71,8 @@ class _DirectoryReadParams extends bindings.Struct {
     return map;
   }
 }
+
+
 
 
 class DirectoryReadResponseParams extends bindings.Struct {
@@ -170,6 +174,8 @@ class DirectoryReadResponseParams extends bindings.Struct {
 }
 
 
+
+
 class _DirectoryStatParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(8, 0)
@@ -226,6 +232,8 @@ class _DirectoryStatParams extends bindings.Struct {
     return map;
   }
 }
+
+
 
 
 class DirectoryStatResponseParams extends bindings.Struct {
@@ -309,6 +317,8 @@ class DirectoryStatResponseParams extends bindings.Struct {
 }
 
 
+
+
 class _DirectoryTouchParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(24, 0)
@@ -387,6 +397,8 @@ class _DirectoryTouchParams extends bindings.Struct {
 }
 
 
+
+
 class DirectoryTouchResponseParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(16, 0)
@@ -456,6 +468,8 @@ class DirectoryTouchResponseParams extends bindings.Struct {
     return map;
   }
 }
+
+
 
 
 class _DirectoryOpenFileParams extends bindings.Struct {
@@ -540,6 +554,8 @@ class _DirectoryOpenFileParams extends bindings.Struct {
 }
 
 
+
+
 class DirectoryOpenFileResponseParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(16, 0)
@@ -609,6 +625,8 @@ class DirectoryOpenFileResponseParams extends bindings.Struct {
     return map;
   }
 }
+
+
 
 
 class _DirectoryOpenDirectoryParams extends bindings.Struct {
@@ -693,6 +711,8 @@ class _DirectoryOpenDirectoryParams extends bindings.Struct {
 }
 
 
+
+
 class DirectoryOpenDirectoryResponseParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(16, 0)
@@ -762,6 +782,8 @@ class DirectoryOpenDirectoryResponseParams extends bindings.Struct {
     return map;
   }
 }
+
+
 
 
 class _DirectoryRenameParams extends bindings.Struct {
@@ -840,6 +862,8 @@ class _DirectoryRenameParams extends bindings.Struct {
 }
 
 
+
+
 class DirectoryRenameResponseParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(16, 0)
@@ -909,6 +933,8 @@ class DirectoryRenameResponseParams extends bindings.Struct {
     return map;
   }
 }
+
+
 
 
 class _DirectoryDeleteParams extends bindings.Struct {
@@ -987,6 +1013,8 @@ class _DirectoryDeleteParams extends bindings.Struct {
 }
 
 
+
+
 class DirectoryDeleteResponseParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(16, 0)
@@ -1057,6 +1085,9 @@ class DirectoryDeleteResponseParams extends bindings.Struct {
   }
 }
 
+
+
+
 const int _Directory_readName = 0;
 const int _Directory_statName = 1;
 const int _Directory_touchName = 2;
@@ -1064,6 +1095,16 @@ const int _Directory_openFileName = 3;
 const int _Directory_openDirectoryName = 4;
 const int _Directory_renameName = 5;
 const int _Directory_deleteName = 6;
+
+
+
+class _DirectoryServiceDescription implements service_describer.ServiceDescription {
+  dynamic getTopLevelInterface([Function responseFactory]) => null;
+
+  dynamic getTypeDefinition(String typeKey, [Function responseFactory]) => null;
+
+  dynamic getAllTypeDefinitions([Function responseFactory]) => null;
+}
 
 abstract class Directory {
   static const String serviceName = null;
@@ -1091,6 +1132,9 @@ class _DirectoryProxyImpl extends bindings.Proxy {
     assert(endpoint.setDescription("For _DirectoryProxyImpl"));
     return new _DirectoryProxyImpl.fromEndpoint(endpoint);
   }
+
+  service_describer.ServiceDescription get serviceDescription =>
+    new _DirectoryServiceDescription();
 
   void handleResponse(bindings.ServiceMessage message) {
     switch (message.header.type) {
@@ -1620,6 +1664,10 @@ class DirectoryStub extends bindings.Stub {
   }
 
   int get version => 0;
+
+  service_describer.ServiceDescription get serviceDescription =>
+    new _DirectoryServiceDescription();
 }
+
 
 

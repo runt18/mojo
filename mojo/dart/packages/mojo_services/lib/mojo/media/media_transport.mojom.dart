@@ -8,6 +8,8 @@ import 'dart:async';
 
 import 'package:mojo/bindings.dart' as bindings;
 import 'package:mojo/core.dart' as core;
+import 'package:mojo/mojo/bindings/types/mojom_types.mojom.dart' as mojom_types;
+import 'package:mojo/mojo/bindings/types/service_describer.mojom.dart' as service_describer;
 import 'package:mojo_services/mojo/media/media_common.mojom.dart' as media_common_mojom;
 import 'package:mojo_services/mojo/media/media_pipe.mojom.dart' as media_pipe_mojom;
 import 'package:mojo_services/mojo/media/media_types.mojom.dart' as media_types_mojom;
@@ -80,6 +82,8 @@ class _MediaProducerConnectParams extends bindings.Struct {
 }
 
 
+
+
 class MediaProducerConnectResponseParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(8, 0)
@@ -136,6 +140,8 @@ class MediaProducerConnectResponseParams extends bindings.Struct {
     return map;
   }
 }
+
+
 
 
 class _MediaProducerDisconnectParams extends bindings.Struct {
@@ -196,6 +202,8 @@ class _MediaProducerDisconnectParams extends bindings.Struct {
 }
 
 
+
+
 class _MediaPullModeProducerGetBufferParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(8, 0)
@@ -252,6 +260,8 @@ class _MediaPullModeProducerGetBufferParams extends bindings.Struct {
     return map;
   }
 }
+
+
 
 
 class MediaPullModeProducerGetBufferResponseParams extends bindings.Struct {
@@ -318,6 +328,8 @@ class MediaPullModeProducerGetBufferResponseParams extends bindings.Struct {
         'Object containing handles cannot be encoded to JSON.');
   }
 }
+
+
 
 
 class _MediaPullModeProducerPullPacketParams extends bindings.Struct {
@@ -388,6 +400,8 @@ class _MediaPullModeProducerPullPacketParams extends bindings.Struct {
 }
 
 
+
+
 class MediaPullModeProducerPullPacketResponseParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(16, 0)
@@ -456,6 +470,8 @@ class MediaPullModeProducerPullPacketResponseParams extends bindings.Struct {
 }
 
 
+
+
 class _MediaPullModeProducerReleasePacketParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(16, 0)
@@ -522,6 +538,8 @@ class _MediaPullModeProducerReleasePacketParams extends bindings.Struct {
     return map;
   }
 }
+
+
 
 
 class _MediaConsumerSetBufferParams extends bindings.Struct {
@@ -598,6 +616,8 @@ class _MediaConsumerSetBufferParams extends bindings.Struct {
 }
 
 
+
+
 class MediaConsumerSetBufferResponseParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(8, 0)
@@ -654,6 +674,8 @@ class MediaConsumerSetBufferResponseParams extends bindings.Struct {
     return map;
   }
 }
+
+
 
 
 class _MediaConsumerPushPacketParams extends bindings.Struct {
@@ -724,6 +746,8 @@ class _MediaConsumerPushPacketParams extends bindings.Struct {
 }
 
 
+
+
 class MediaConsumerPushPacketResponseParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(8, 0)
@@ -781,8 +805,21 @@ class MediaConsumerPushPacketResponseParams extends bindings.Struct {
   }
 }
 
+
+
+
 const int _MediaProducer_connectName = 0;
 const int _MediaProducer_disconnectName = 1;
+
+
+
+class _MediaProducerServiceDescription implements service_describer.ServiceDescription {
+  dynamic getTopLevelInterface([Function responseFactory]) => null;
+
+  dynamic getTypeDefinition(String typeKey, [Function responseFactory]) => null;
+
+  dynamic getAllTypeDefinitions([Function responseFactory]) => null;
+}
 
 abstract class MediaProducer {
   static const String serviceName = null;
@@ -805,6 +842,9 @@ class _MediaProducerProxyImpl extends bindings.Proxy {
     assert(endpoint.setDescription("For _MediaProducerProxyImpl"));
     return new _MediaProducerProxyImpl.fromEndpoint(endpoint);
   }
+
+  service_describer.ServiceDescription get serviceDescription =>
+    new _MediaProducerServiceDescription();
 
   void handleResponse(bindings.ServiceMessage message) {
     switch (message.header.type) {
@@ -1003,11 +1043,24 @@ class MediaProducerStub extends bindings.Stub {
   }
 
   int get version => 0;
+
+  service_describer.ServiceDescription get serviceDescription =>
+    new _MediaProducerServiceDescription();
 }
 
 const int _MediaPullModeProducer_getBufferName = 0;
 const int _MediaPullModeProducer_pullPacketName = 1;
 const int _MediaPullModeProducer_releasePacketName = 2;
+
+
+
+class _MediaPullModeProducerServiceDescription implements service_describer.ServiceDescription {
+  dynamic getTopLevelInterface([Function responseFactory]) => null;
+
+  dynamic getTypeDefinition(String typeKey, [Function responseFactory]) => null;
+
+  dynamic getAllTypeDefinitions([Function responseFactory]) => null;
+}
 
 abstract class MediaPullModeProducer {
   static const String serviceName = null;
@@ -1031,6 +1084,9 @@ class _MediaPullModeProducerProxyImpl extends bindings.Proxy {
     assert(endpoint.setDescription("For _MediaPullModeProducerProxyImpl"));
     return new _MediaPullModeProducerProxyImpl.fromEndpoint(endpoint);
   }
+
+  service_describer.ServiceDescription get serviceDescription =>
+    new _MediaPullModeProducerServiceDescription();
 
   void handleResponse(bindings.ServiceMessage message) {
     switch (message.header.type) {
@@ -1286,10 +1342,23 @@ class MediaPullModeProducerStub extends bindings.Stub {
   }
 
   int get version => 0;
+
+  service_describer.ServiceDescription get serviceDescription =>
+    new _MediaPullModeProducerServiceDescription();
 }
 
 const int _MediaConsumer_setBufferName = 0;
 const int _MediaConsumer_pushPacketName = 1;
+
+
+
+class _MediaConsumerServiceDescription implements service_describer.ServiceDescription {
+  dynamic getTopLevelInterface([Function responseFactory]) => null;
+
+  dynamic getTypeDefinition(String typeKey, [Function responseFactory]) => null;
+
+  dynamic getAllTypeDefinitions([Function responseFactory]) => null;
+}
 
 abstract class MediaConsumer {
   static const String serviceName = null;
@@ -1312,6 +1381,9 @@ class _MediaConsumerProxyImpl extends bindings.Proxy {
     assert(endpoint.setDescription("For _MediaConsumerProxyImpl"));
     return new _MediaConsumerProxyImpl.fromEndpoint(endpoint);
   }
+
+  service_describer.ServiceDescription get serviceDescription =>
+    new _MediaConsumerServiceDescription();
 
   void handleResponse(bindings.ServiceMessage message) {
     switch (message.header.type) {
@@ -1553,6 +1625,10 @@ class MediaConsumerStub extends bindings.Stub {
   }
 
   int get version => 0;
+
+  service_describer.ServiceDescription get serviceDescription =>
+    new _MediaConsumerServiceDescription();
 }
+
 
 

@@ -8,6 +8,8 @@ import 'dart:async';
 
 import 'package:mojo/bindings.dart' as bindings;
 import 'package:mojo/core.dart' as core;
+import 'package:mojo/mojo/bindings/types/mojom_types.mojom.dart' as mojom_types;
+import 'package:mojo/mojo/bindings/types/service_describer.mojom.dart' as service_describer;
 import 'package:mojo/mojo/service_provider.mojom.dart' as service_provider_mojom;
 import 'package:mojo_services/mojo/ui/layouts.mojom.dart' as layouts_mojom;
 import 'package:mojo_services/mojo/ui/views.mojom.dart' as views_mojom;
@@ -81,6 +83,8 @@ class ViewTreeToken extends bindings.Struct {
 }
 
 
+
+
 class _ViewTreeOnLayoutParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(8, 0)
@@ -139,6 +143,8 @@ class _ViewTreeOnLayoutParams extends bindings.Struct {
 }
 
 
+
+
 class ViewTreeOnLayoutResponseParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(8, 0)
@@ -195,6 +201,8 @@ class ViewTreeOnLayoutResponseParams extends bindings.Struct {
     return map;
   }
 }
+
+
 
 
 class _ViewTreeOnRootUnavailableParams extends bindings.Struct {
@@ -264,6 +272,8 @@ class _ViewTreeOnRootUnavailableParams extends bindings.Struct {
 }
 
 
+
+
 class ViewTreeOnRootUnavailableResponseParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(8, 0)
@@ -320,6 +330,8 @@ class ViewTreeOnRootUnavailableResponseParams extends bindings.Struct {
     return map;
   }
 }
+
+
 
 
 class _ViewTreeHostGetServiceProviderParams extends bindings.Struct {
@@ -388,6 +400,8 @@ class _ViewTreeHostGetServiceProviderParams extends bindings.Struct {
 }
 
 
+
+
 class _ViewTreeHostRequestLayoutParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(8, 0)
@@ -444,6 +458,8 @@ class _ViewTreeHostRequestLayoutParams extends bindings.Struct {
     return map;
   }
 }
+
+
 
 
 class _ViewTreeHostSetRootParams extends bindings.Struct {
@@ -523,6 +539,8 @@ class _ViewTreeHostSetRootParams extends bindings.Struct {
 }
 
 
+
+
 class _ViewTreeHostResetRootParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(8, 0)
@@ -579,6 +597,8 @@ class _ViewTreeHostResetRootParams extends bindings.Struct {
     return map;
   }
 }
+
+
 
 
 class _ViewTreeHostLayoutRootParams extends bindings.Struct {
@@ -649,6 +669,8 @@ class _ViewTreeHostLayoutRootParams extends bindings.Struct {
 }
 
 
+
+
 class ViewTreeHostLayoutRootResponseParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(16, 0)
@@ -716,8 +738,21 @@ class ViewTreeHostLayoutRootResponseParams extends bindings.Struct {
   }
 }
 
+
+
+
 const int _ViewTree_onLayoutName = 0;
 const int _ViewTree_onRootUnavailableName = 1;
+
+
+
+class _ViewTreeServiceDescription implements service_describer.ServiceDescription {
+  dynamic getTopLevelInterface([Function responseFactory]) => null;
+
+  dynamic getTypeDefinition(String typeKey, [Function responseFactory]) => null;
+
+  dynamic getAllTypeDefinitions([Function responseFactory]) => null;
+}
 
 abstract class ViewTree {
   static const String serviceName = null;
@@ -740,6 +775,9 @@ class _ViewTreeProxyImpl extends bindings.Proxy {
     assert(endpoint.setDescription("For _ViewTreeProxyImpl"));
     return new _ViewTreeProxyImpl.fromEndpoint(endpoint);
   }
+
+  service_describer.ServiceDescription get serviceDescription =>
+    new _ViewTreeServiceDescription();
 
   void handleResponse(bindings.ServiceMessage message) {
     switch (message.header.type) {
@@ -979,6 +1017,9 @@ class ViewTreeStub extends bindings.Stub {
   }
 
   int get version => 0;
+
+  service_describer.ServiceDescription get serviceDescription =>
+    new _ViewTreeServiceDescription();
 }
 
 const int _ViewTreeHost_getServiceProviderName = 0;
@@ -986,6 +1027,16 @@ const int _ViewTreeHost_requestLayoutName = 1;
 const int _ViewTreeHost_setRootName = 2;
 const int _ViewTreeHost_resetRootName = 3;
 const int _ViewTreeHost_layoutRootName = 4;
+
+
+
+class _ViewTreeHostServiceDescription implements service_describer.ServiceDescription {
+  dynamic getTopLevelInterface([Function responseFactory]) => null;
+
+  dynamic getTypeDefinition(String typeKey, [Function responseFactory]) => null;
+
+  dynamic getAllTypeDefinitions([Function responseFactory]) => null;
+}
 
 abstract class ViewTreeHost {
   static const String serviceName = null;
@@ -1011,6 +1062,9 @@ class _ViewTreeHostProxyImpl extends bindings.Proxy {
     assert(endpoint.setDescription("For _ViewTreeHostProxyImpl"));
     return new _ViewTreeHostProxyImpl.fromEndpoint(endpoint);
   }
+
+  service_describer.ServiceDescription get serviceDescription =>
+    new _ViewTreeHostServiceDescription();
 
   void handleResponse(bindings.ServiceMessage message) {
     switch (message.header.type) {
@@ -1252,6 +1306,10 @@ class ViewTreeHostStub extends bindings.Stub {
   }
 
   int get version => 0;
+
+  service_describer.ServiceDescription get serviceDescription =>
+    new _ViewTreeHostServiceDescription();
 }
+
 
 

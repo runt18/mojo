@@ -8,6 +8,8 @@ import 'dart:async';
 
 import 'package:mojo/bindings.dart' as bindings;
 import 'package:mojo/core.dart' as core;
+import 'package:mojo/mojo/bindings/types/mojom_types.mojom.dart' as mojom_types;
+import 'package:mojo/mojo/bindings/types/service_describer.mojom.dart' as service_describer;
 import 'package:mojo_services/mojo/http_connection.mojom.dart' as http_connection_mojom;
 
 
@@ -85,7 +87,20 @@ class _HttpServerDelegateOnConnectedParams extends bindings.Struct {
   }
 }
 
+
+
+
 const int _HttpServerDelegate_onConnectedName = 0;
+
+
+
+class _HttpServerDelegateServiceDescription implements service_describer.ServiceDescription {
+  dynamic getTopLevelInterface([Function responseFactory]) => null;
+
+  dynamic getTypeDefinition(String typeKey, [Function responseFactory]) => null;
+
+  dynamic getAllTypeDefinitions([Function responseFactory]) => null;
+}
 
 abstract class HttpServerDelegate {
   static const String serviceName = null;
@@ -107,6 +122,9 @@ class _HttpServerDelegateProxyImpl extends bindings.Proxy {
     assert(endpoint.setDescription("For _HttpServerDelegateProxyImpl"));
     return new _HttpServerDelegateProxyImpl.fromEndpoint(endpoint);
   }
+
+  service_describer.ServiceDescription get serviceDescription =>
+    new _HttpServerDelegateServiceDescription();
 
   void handleResponse(bindings.ServiceMessage message) {
     switch (message.header.type) {
@@ -252,6 +270,10 @@ class HttpServerDelegateStub extends bindings.Stub {
   }
 
   int get version => 0;
+
+  service_describer.ServiceDescription get serviceDescription =>
+    new _HttpServerDelegateServiceDescription();
 }
+
 
 

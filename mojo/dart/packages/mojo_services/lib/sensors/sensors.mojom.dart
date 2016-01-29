@@ -8,6 +8,8 @@ import 'dart:async';
 
 import 'package:mojo/bindings.dart' as bindings;
 import 'package:mojo/core.dart' as core;
+import 'package:mojo/mojo/bindings/types/mojom_types.mojom.dart' as mojom_types;
+import 'package:mojo/mojo/bindings/types/service_describer.mojom.dart' as service_describer;
 
 class SensorType extends bindings.MojoEnum {
   static const SensorType accelerometer = const SensorType._(0);
@@ -172,11 +174,15 @@ class SensorType extends bindings.MojoEnum {
         return 'SensorType.stepCounter';
       case stepDetector:
         return 'SensorType.stepDetector';
+      default:
+        return null;
     }
   }
 
   int toJson() => mojoEnumValue;
 }
+
+
 
 
 
@@ -265,6 +271,8 @@ class SensorData extends bindings.Struct {
 }
 
 
+
+
 class _SensorListenerOnAccuracyChangedParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(16, 0)
@@ -330,6 +338,8 @@ class _SensorListenerOnAccuracyChangedParams extends bindings.Struct {
     return map;
   }
 }
+
+
 
 
 class _SensorListenerOnSensorChangedParams extends bindings.Struct {
@@ -398,6 +408,8 @@ class _SensorListenerOnSensorChangedParams extends bindings.Struct {
     return map;
   }
 }
+
+
 
 
 class _SensorServiceAddListenerParams extends bindings.Struct {
@@ -477,8 +489,21 @@ class _SensorServiceAddListenerParams extends bindings.Struct {
   }
 }
 
+
+
+
 const int _SensorListener_onAccuracyChangedName = 0;
 const int _SensorListener_onSensorChangedName = 1;
+
+
+
+class _SensorListenerServiceDescription implements service_describer.ServiceDescription {
+  dynamic getTopLevelInterface([Function responseFactory]) => null;
+
+  dynamic getTypeDefinition(String typeKey, [Function responseFactory]) => null;
+
+  dynamic getAllTypeDefinitions([Function responseFactory]) => null;
+}
 
 abstract class SensorListener {
   static const String serviceName = null;
@@ -501,6 +526,9 @@ class _SensorListenerProxyImpl extends bindings.Proxy {
     assert(endpoint.setDescription("For _SensorListenerProxyImpl"));
     return new _SensorListenerProxyImpl.fromEndpoint(endpoint);
   }
+
+  service_describer.ServiceDescription get serviceDescription =>
+    new _SensorListenerServiceDescription();
 
   void handleResponse(bindings.ServiceMessage message) {
     switch (message.header.type) {
@@ -659,9 +687,22 @@ class SensorListenerStub extends bindings.Stub {
   }
 
   int get version => 0;
+
+  service_describer.ServiceDescription get serviceDescription =>
+    new _SensorListenerServiceDescription();
 }
 
 const int _SensorService_addListenerName = 0;
+
+
+
+class _SensorServiceServiceDescription implements service_describer.ServiceDescription {
+  dynamic getTopLevelInterface([Function responseFactory]) => null;
+
+  dynamic getTypeDefinition(String typeKey, [Function responseFactory]) => null;
+
+  dynamic getAllTypeDefinitions([Function responseFactory]) => null;
+}
 
 abstract class SensorService {
   static const String serviceName = "sensors::SensorService";
@@ -683,6 +724,9 @@ class _SensorServiceProxyImpl extends bindings.Proxy {
     assert(endpoint.setDescription("For _SensorServiceProxyImpl"));
     return new _SensorServiceProxyImpl.fromEndpoint(endpoint);
   }
+
+  service_describer.ServiceDescription get serviceDescription =>
+    new _SensorServiceServiceDescription();
 
   void handleResponse(bindings.ServiceMessage message) {
     switch (message.header.type) {
@@ -828,6 +872,10 @@ class SensorServiceStub extends bindings.Stub {
   }
 
   int get version => 0;
+
+  service_describer.ServiceDescription get serviceDescription =>
+    new _SensorServiceServiceDescription();
 }
+
 
 

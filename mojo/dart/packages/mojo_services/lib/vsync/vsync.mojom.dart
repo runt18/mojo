@@ -8,6 +8,8 @@ import 'dart:async';
 
 import 'package:mojo/bindings.dart' as bindings;
 import 'package:mojo/core.dart' as core;
+import 'package:mojo/mojo/bindings/types/mojom_types.mojom.dart' as mojom_types;
+import 'package:mojo/mojo/bindings/types/service_describer.mojom.dart' as service_describer;
 
 
 
@@ -67,6 +69,8 @@ class _VSyncProviderAwaitVSyncParams extends bindings.Struct {
     return map;
   }
 }
+
+
 
 
 class VSyncProviderAwaitVSyncResponseParams extends bindings.Struct {
@@ -135,7 +139,20 @@ class VSyncProviderAwaitVSyncResponseParams extends bindings.Struct {
   }
 }
 
+
+
+
 const int _VSyncProvider_awaitVSyncName = 0;
+
+
+
+class _VSyncProviderServiceDescription implements service_describer.ServiceDescription {
+  dynamic getTopLevelInterface([Function responseFactory]) => null;
+
+  dynamic getTypeDefinition(String typeKey, [Function responseFactory]) => null;
+
+  dynamic getAllTypeDefinitions([Function responseFactory]) => null;
+}
 
 abstract class VSyncProvider {
   static const String serviceName = "vsync::VSyncProvider";
@@ -157,6 +174,9 @@ class _VSyncProviderProxyImpl extends bindings.Proxy {
     assert(endpoint.setDescription("For _VSyncProviderProxyImpl"));
     return new _VSyncProviderProxyImpl.fromEndpoint(endpoint);
   }
+
+  service_describer.ServiceDescription get serviceDescription =>
+    new _VSyncProviderServiceDescription();
 
   void handleResponse(bindings.ServiceMessage message) {
     switch (message.header.type) {
@@ -342,6 +362,10 @@ class VSyncProviderStub extends bindings.Stub {
   }
 
   int get version => 0;
+
+  service_describer.ServiceDescription get serviceDescription =>
+    new _VSyncProviderServiceDescription();
 }
+
 
 

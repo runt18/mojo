@@ -8,6 +8,8 @@ import 'dart:async';
 
 import 'package:mojo/bindings.dart' as bindings;
 import 'package:mojo/core.dart' as core;
+import 'package:mojo/mojo/bindings/types/mojom_types.mojom.dart' as mojom_types;
+import 'package:mojo/mojo/bindings/types/service_describer.mojom.dart' as service_describer;
 import 'package:mojo_services/http_server/http_request.mojom.dart' as http_request_mojom;
 import 'package:mojo_services/http_server/http_response.mojom.dart' as http_response_mojom;
 
@@ -87,6 +89,8 @@ class _HttpServerSetHandlerParams extends bindings.Struct {
 }
 
 
+
+
 class HttpServerSetHandlerResponseParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(16, 0)
@@ -154,6 +158,8 @@ class HttpServerSetHandlerResponseParams extends bindings.Struct {
 }
 
 
+
+
 class _HttpServerGetPortParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(8, 0)
@@ -210,6 +216,8 @@ class _HttpServerGetPortParams extends bindings.Struct {
     return map;
   }
 }
+
+
 
 
 class HttpServerGetPortResponseParams extends bindings.Struct {
@@ -279,6 +287,8 @@ class HttpServerGetPortResponseParams extends bindings.Struct {
 }
 
 
+
+
 class _HttpHandlerHandleRequestParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(16, 0)
@@ -344,6 +354,8 @@ class _HttpHandlerHandleRequestParams extends bindings.Struct {
         'Object containing handles cannot be encoded to JSON.');
   }
 }
+
+
 
 
 class HttpHandlerHandleRequestResponseParams extends bindings.Struct {
@@ -412,8 +424,21 @@ class HttpHandlerHandleRequestResponseParams extends bindings.Struct {
   }
 }
 
+
+
+
 const int _HttpServer_setHandlerName = 0;
 const int _HttpServer_getPortName = 1;
+
+
+
+class _HttpServerServiceDescription implements service_describer.ServiceDescription {
+  dynamic getTopLevelInterface([Function responseFactory]) => null;
+
+  dynamic getTypeDefinition(String typeKey, [Function responseFactory]) => null;
+
+  dynamic getAllTypeDefinitions([Function responseFactory]) => null;
+}
 
 abstract class HttpServer {
   static const String serviceName = null;
@@ -436,6 +461,9 @@ class _HttpServerProxyImpl extends bindings.Proxy {
     assert(endpoint.setDescription("For _HttpServerProxyImpl"));
     return new _HttpServerProxyImpl.fromEndpoint(endpoint);
   }
+
+  service_describer.ServiceDescription get serviceDescription =>
+    new _HttpServerServiceDescription();
 
   void handleResponse(bindings.ServiceMessage message) {
     switch (message.header.type) {
@@ -678,9 +706,22 @@ class HttpServerStub extends bindings.Stub {
   }
 
   int get version => 0;
+
+  service_describer.ServiceDescription get serviceDescription =>
+    new _HttpServerServiceDescription();
 }
 
 const int _HttpHandler_handleRequestName = 0;
+
+
+
+class _HttpHandlerServiceDescription implements service_describer.ServiceDescription {
+  dynamic getTopLevelInterface([Function responseFactory]) => null;
+
+  dynamic getTypeDefinition(String typeKey, [Function responseFactory]) => null;
+
+  dynamic getAllTypeDefinitions([Function responseFactory]) => null;
+}
 
 abstract class HttpHandler {
   static const String serviceName = null;
@@ -702,6 +743,9 @@ class _HttpHandlerProxyImpl extends bindings.Proxy {
     assert(endpoint.setDescription("For _HttpHandlerProxyImpl"));
     return new _HttpHandlerProxyImpl.fromEndpoint(endpoint);
   }
+
+  service_describer.ServiceDescription get serviceDescription =>
+    new _HttpHandlerServiceDescription();
 
   void handleResponse(bindings.ServiceMessage message) {
     switch (message.header.type) {
@@ -888,6 +932,10 @@ class HttpHandlerStub extends bindings.Stub {
   }
 
   int get version => 0;
+
+  service_describer.ServiceDescription get serviceDescription =>
+    new _HttpHandlerServiceDescription();
 }
+
 
 

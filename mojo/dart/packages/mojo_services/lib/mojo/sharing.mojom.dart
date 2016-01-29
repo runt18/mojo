@@ -8,6 +8,8 @@ import 'dart:async';
 
 import 'package:mojo/bindings.dart' as bindings;
 import 'package:mojo/core.dart' as core;
+import 'package:mojo/mojo/bindings/types/mojom_types.mojom.dart' as mojom_types;
+import 'package:mojo/mojo/bindings/types/service_describer.mojom.dart' as service_describer;
 
 
 
@@ -77,7 +79,20 @@ class _SharingServiceShareTextParams extends bindings.Struct {
   }
 }
 
+
+
+
 const int _SharingService_shareTextName = 0;
+
+
+
+class _SharingServiceServiceDescription implements service_describer.ServiceDescription {
+  dynamic getTopLevelInterface([Function responseFactory]) => null;
+
+  dynamic getTypeDefinition(String typeKey, [Function responseFactory]) => null;
+
+  dynamic getAllTypeDefinitions([Function responseFactory]) => null;
+}
 
 abstract class SharingService {
   static const String serviceName = "mojo::SharingService";
@@ -99,6 +114,9 @@ class _SharingServiceProxyImpl extends bindings.Proxy {
     assert(endpoint.setDescription("For _SharingServiceProxyImpl"));
     return new _SharingServiceProxyImpl.fromEndpoint(endpoint);
   }
+
+  service_describer.ServiceDescription get serviceDescription =>
+    new _SharingServiceServiceDescription();
 
   void handleResponse(bindings.ServiceMessage message) {
     switch (message.header.type) {
@@ -243,6 +261,10 @@ class SharingServiceStub extends bindings.Stub {
   }
 
   int get version => 0;
+
+  service_describer.ServiceDescription get serviceDescription =>
+    new _SharingServiceServiceDescription();
 }
+
 
 

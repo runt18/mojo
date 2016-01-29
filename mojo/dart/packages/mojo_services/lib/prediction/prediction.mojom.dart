@@ -8,6 +8,8 @@ import 'dart:async';
 
 import 'package:mojo/bindings.dart' as bindings;
 import 'package:mojo/core.dart' as core;
+import 'package:mojo/mojo/bindings/types/mojom_types.mojom.dart' as mojom_types;
+import 'package:mojo/mojo/bindings/types/service_describer.mojom.dart' as service_describer;
 
 
 
@@ -85,6 +87,8 @@ class PrevWordInfo extends bindings.Struct {
     return map;
   }
 }
+
+
 
 
 class PredictionInfo extends bindings.Struct {
@@ -180,6 +184,8 @@ class PredictionInfo extends bindings.Struct {
 }
 
 
+
+
 class _PredictionServiceGetPredictionListParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(16, 0)
@@ -246,6 +252,8 @@ class _PredictionServiceGetPredictionListParams extends bindings.Struct {
     return map;
   }
 }
+
+
 
 
 class PredictionServiceGetPredictionListResponseParams extends bindings.Struct {
@@ -332,7 +340,20 @@ class PredictionServiceGetPredictionListResponseParams extends bindings.Struct {
   }
 }
 
+
+
+
 const int _PredictionService_getPredictionListName = 0;
+
+
+
+class _PredictionServiceServiceDescription implements service_describer.ServiceDescription {
+  dynamic getTopLevelInterface([Function responseFactory]) => null;
+
+  dynamic getTypeDefinition(String typeKey, [Function responseFactory]) => null;
+
+  dynamic getAllTypeDefinitions([Function responseFactory]) => null;
+}
 
 abstract class PredictionService {
   static const String serviceName = "prediction::PredictionService";
@@ -354,6 +375,9 @@ class _PredictionServiceProxyImpl extends bindings.Proxy {
     assert(endpoint.setDescription("For _PredictionServiceProxyImpl"));
     return new _PredictionServiceProxyImpl.fromEndpoint(endpoint);
   }
+
+  service_describer.ServiceDescription get serviceDescription =>
+    new _PredictionServiceServiceDescription();
 
   void handleResponse(bindings.ServiceMessage message) {
     switch (message.header.type) {
@@ -540,6 +564,10 @@ class PredictionServiceStub extends bindings.Stub {
   }
 
   int get version => 0;
+
+  service_describer.ServiceDescription get serviceDescription =>
+    new _PredictionServiceServiceDescription();
 }
+
 
 

@@ -8,6 +8,8 @@ import 'dart:async';
 
 import 'package:mojo/bindings.dart' as bindings;
 import 'package:mojo/core.dart' as core;
+import 'package:mojo/mojo/bindings/types/mojom_types.mojom.dart' as mojom_types;
+import 'package:mojo/mojo/bindings/types/service_describer.mojom.dart' as service_describer;
 import 'package:mojo/mojo/network_error.mojom.dart' as network_error_mojom;
 import 'package:mojo_services/mojo/cookie_store.mojom.dart' as cookie_store_mojom;
 import 'package:mojo_services/mojo/host_resolver.mojom.dart' as host_resolver_mojom;
@@ -88,6 +90,8 @@ class _NetworkServiceCreateUrlLoaderParams extends bindings.Struct {
 }
 
 
+
+
 class _NetworkServiceGetCookieStoreParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(16, 0)
@@ -154,6 +158,8 @@ class _NetworkServiceGetCookieStoreParams extends bindings.Struct {
 }
 
 
+
+
 class _NetworkServiceCreateWebSocketParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(16, 0)
@@ -218,6 +224,8 @@ class _NetworkServiceCreateWebSocketParams extends bindings.Struct {
         'Object containing handles cannot be encoded to JSON.');
   }
 }
+
+
 
 
 class _NetworkServiceCreateTcpBoundSocketParams extends bindings.Struct {
@@ -293,6 +301,8 @@ class _NetworkServiceCreateTcpBoundSocketParams extends bindings.Struct {
         'Object containing handles cannot be encoded to JSON.');
   }
 }
+
+
 
 
 class NetworkServiceCreateTcpBoundSocketResponseParams extends bindings.Struct {
@@ -371,6 +381,8 @@ class NetworkServiceCreateTcpBoundSocketResponseParams extends bindings.Struct {
     return map;
   }
 }
+
+
 
 
 class _NetworkServiceCreateTcpConnectedSocketParams extends bindings.Struct {
@@ -464,6 +476,8 @@ class _NetworkServiceCreateTcpConnectedSocketParams extends bindings.Struct {
 }
 
 
+
+
 class NetworkServiceCreateTcpConnectedSocketResponseParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(24, 0)
@@ -542,6 +556,8 @@ class NetworkServiceCreateTcpConnectedSocketResponseParams extends bindings.Stru
 }
 
 
+
+
 class _NetworkServiceCreateUdpSocketParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(16, 0)
@@ -606,6 +622,8 @@ class _NetworkServiceCreateUdpSocketParams extends bindings.Struct {
         'Object containing handles cannot be encoded to JSON.');
   }
 }
+
+
 
 
 class _NetworkServiceCreateHttpServerParams extends bindings.Struct {
@@ -681,6 +699,8 @@ class _NetworkServiceCreateHttpServerParams extends bindings.Struct {
         'Object containing handles cannot be encoded to JSON.');
   }
 }
+
+
 
 
 class NetworkServiceCreateHttpServerResponseParams extends bindings.Struct {
@@ -761,6 +781,8 @@ class NetworkServiceCreateHttpServerResponseParams extends bindings.Struct {
 }
 
 
+
+
 class _NetworkServiceRegisterUrlLoaderInterceptorParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(16, 0)
@@ -825,6 +847,8 @@ class _NetworkServiceRegisterUrlLoaderInterceptorParams extends bindings.Struct 
         'Object containing handles cannot be encoded to JSON.');
   }
 }
+
+
 
 
 class _NetworkServiceCreateHostResolverParams extends bindings.Struct {
@@ -892,6 +916,9 @@ class _NetworkServiceCreateHostResolverParams extends bindings.Struct {
   }
 }
 
+
+
+
 const int _NetworkService_createUrlLoaderName = 0;
 const int _NetworkService_getCookieStoreName = 1;
 const int _NetworkService_createWebSocketName = 2;
@@ -901,6 +928,16 @@ const int _NetworkService_createUdpSocketName = 5;
 const int _NetworkService_createHttpServerName = 6;
 const int _NetworkService_registerUrlLoaderInterceptorName = 7;
 const int _NetworkService_createHostResolverName = 8;
+
+
+
+class _NetworkServiceServiceDescription implements service_describer.ServiceDescription {
+  dynamic getTopLevelInterface([Function responseFactory]) => null;
+
+  dynamic getTypeDefinition(String typeKey, [Function responseFactory]) => null;
+
+  dynamic getAllTypeDefinitions([Function responseFactory]) => null;
+}
 
 abstract class NetworkService {
   static const String serviceName = "mojo::NetworkService";
@@ -930,6 +967,9 @@ class _NetworkServiceProxyImpl extends bindings.Proxy {
     assert(endpoint.setDescription("For _NetworkServiceProxyImpl"));
     return new _NetworkServiceProxyImpl.fromEndpoint(endpoint);
   }
+
+  service_describer.ServiceDescription get serviceDescription =>
+    new _NetworkServiceServiceDescription();
 
   void handleResponse(bindings.ServiceMessage message) {
     switch (message.header.type) {
@@ -1320,6 +1360,10 @@ class NetworkServiceStub extends bindings.Stub {
   }
 
   int get version => 0;
+
+  service_describer.ServiceDescription get serviceDescription =>
+    new _NetworkServiceServiceDescription();
 }
+
 
 

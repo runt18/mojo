@@ -8,6 +8,8 @@ import 'dart:async';
 
 import 'package:mojo/bindings.dart' as bindings;
 import 'package:mojo/core.dart' as core;
+import 'package:mojo/mojo/bindings/types/mojom_types.mojom.dart' as mojom_types;
+import 'package:mojo/mojo/bindings/types/service_describer.mojom.dart' as service_describer;
 import 'package:mojo/mojo/network_error.mojom.dart' as network_error_mojom;
 import 'package:mojo_services/mojo/net_address.mojom.dart' as net_address_mojom;
 import 'package:mojo_services/mojo/tcp_connected_socket.mojom.dart' as tcp_connected_socket_mojom;
@@ -96,6 +98,8 @@ class _TcpServerSocketAcceptParams extends bindings.Struct {
 }
 
 
+
+
 class TcpServerSocketAcceptResponseParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(24, 0)
@@ -173,7 +177,20 @@ class TcpServerSocketAcceptResponseParams extends bindings.Struct {
   }
 }
 
+
+
+
 const int _TcpServerSocket_acceptName = 0;
+
+
+
+class _TcpServerSocketServiceDescription implements service_describer.ServiceDescription {
+  dynamic getTopLevelInterface([Function responseFactory]) => null;
+
+  dynamic getTypeDefinition(String typeKey, [Function responseFactory]) => null;
+
+  dynamic getAllTypeDefinitions([Function responseFactory]) => null;
+}
 
 abstract class TcpServerSocket {
   static const String serviceName = null;
@@ -195,6 +212,9 @@ class _TcpServerSocketProxyImpl extends bindings.Proxy {
     assert(endpoint.setDescription("For _TcpServerSocketProxyImpl"));
     return new _TcpServerSocketProxyImpl.fromEndpoint(endpoint);
   }
+
+  service_describer.ServiceDescription get serviceDescription =>
+    new _TcpServerSocketServiceDescription();
 
   void handleResponse(bindings.ServiceMessage message) {
     switch (message.header.type) {
@@ -384,6 +404,10 @@ class TcpServerSocketStub extends bindings.Stub {
   }
 
   int get version => 0;
+
+  service_describer.ServiceDescription get serviceDescription =>
+    new _TcpServerSocketServiceDescription();
 }
+
 
 

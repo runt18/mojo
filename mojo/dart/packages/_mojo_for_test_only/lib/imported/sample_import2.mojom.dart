@@ -5,9 +5,12 @@
 library sample_import2_mojom;
 
 import 'dart:async';
+import 'dart:collection';
 
 import 'package:mojo/bindings.dart' as bindings;
 import 'package:mojo/core.dart' as core;
+import 'package:mojo/mojo/bindings/types/mojom_types.mojom.dart' as mojom_types;
+
 import 'package:_mojo_for_test_only/imported/sample_import.mojom.dart' as sample_import_mojom;
 
 class Color extends bindings.MojoEnum {
@@ -54,10 +57,30 @@ class Color extends bindings.MojoEnum {
         return 'Color.red';
       case black:
         return 'Color.black';
+      default:
+        return null;
     }
   }
 
   int toJson() => mojoEnumValue;
+}
+
+mojom_types.MojomEnum _sampleImport2Color() {
+  return new mojom_types.MojomEnum()
+    ..declData = (new mojom_types.DeclarationData()
+      ..shortName = 'Color'
+      ..fullIdentifier = 'imported.Color')
+    ..values = <mojom_types.EnumValue>[
+      new mojom_types.EnumValue()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'Red')
+        ..enumTypeKey = 'sample_import2_Color__'
+        ..intValue = 0,
+      new mojom_types.EnumValue()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'Black')
+        ..enumTypeKey = 'sample_import2_Color__'
+        ..intValue = 1,];
 }
 
 
@@ -135,6 +158,24 @@ class Size extends bindings.Struct {
     map["height"] = height;
     return map;
   }
+}
+
+mojom_types.MojomStruct _sampleImport2Size() {
+  return new mojom_types.MojomStruct()
+    ..declData = (new mojom_types.DeclarationData()
+      ..shortName = 'Size'
+      ..fullIdentifier = 'imported.Size')
+    ..fields = <mojom_types.StructField>[
+      new mojom_types.StructField()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'Width')
+        ..type = (new mojom_types.Type()
+          ..simpleType = mojom_types.SimpleType.int32),
+      new mojom_types.StructField()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'Height')
+        ..type = (new mojom_types.Type()
+          ..simpleType = mojom_types.SimpleType.int32),];
 }
 
 
@@ -241,4 +282,72 @@ class Thing extends bindings.Struct {
   }
 }
 
+mojom_types.MojomStruct _sampleImport2Thing() {
+  return new mojom_types.MojomStruct()
+    ..declData = (new mojom_types.DeclarationData()
+      ..shortName = 'Thing'
+      ..fullIdentifier = 'imported.Thing')
+    ..fields = <mojom_types.StructField>[
+      new mojom_types.StructField()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'Shape')
+        ..type = (new mojom_types.Type()
+          ..typeReference = (new mojom_types.TypeReference()
+          ..identifier = 'sample_import_Shape__'
+          ..typeKey = 'sample_import_Shape__'
+        )),
+      new mojom_types.StructField()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'Color')
+        ..type = (new mojom_types.Type()
+          ..typeReference = (new mojom_types.TypeReference()
+          ..identifier = 'sample_import2_Color__'
+          ..typeKey = 'sample_import2_Color__'
+        )),
+      new mojom_types.StructField()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'Location')
+        ..type = (new mojom_types.Type()
+          ..typeReference = (new mojom_types.TypeReference()
+          ..identifier = 'sample_import_Point__'
+          ..typeKey = 'sample_import_Point__'
+        )),
+      new mojom_types.StructField()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'Size')
+        ..type = (new mojom_types.Type()
+          ..typeReference = (new mojom_types.TypeReference()
+          ..identifier = 'sample_import2_Size__'
+          ..typeKey = 'sample_import2_Size__'
+        )),];
+}
+
+
+
+Map<String, mojom_types.UserDefinedType> _initDescriptions() {
+  var map = new HashMap<String, mojom_types.UserDefinedType>();
+  map["sample_import2_Color__"] =
+    new mojom_types.UserDefinedType()
+      ..enumType = _sampleImport2Color();
+  map["sample_import2_Size__"] =
+    new mojom_types.UserDefinedType()
+      ..structType = _sampleImport2Size();
+  map["sample_import2_Thing__"] =
+    new mojom_types.UserDefinedType()
+      ..structType = _sampleImport2Thing();
+  sample_import_mojom.getAllMojomTypeDefinitions()
+      .forEach((String s, mojom_types.UserDefinedType udt) {
+    map[s] = udt;
+  });
+
+  return map;
+}
+
+var _mojomDesc;
+Map<String, mojom_types.UserDefinedType> getAllMojomTypeDefinitions() {
+  if (_mojomDesc == null) {
+    _mojomDesc = _initDescriptions();
+  }
+  return _mojomDesc;
+}
 

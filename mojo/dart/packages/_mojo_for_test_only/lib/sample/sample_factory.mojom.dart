@@ -5,9 +5,12 @@
 library sample_factory_mojom;
 
 import 'dart:async';
+import 'dart:collection';
 
 import 'package:mojo/bindings.dart' as bindings;
 import 'package:mojo/core.dart' as core;
+import 'package:mojo/mojo/bindings/types/mojom_types.mojom.dart' as mojom_types;
+import 'package:mojo/mojo/bindings/types/service_describer.mojom.dart' as service_describer;
 import 'package:_mojo_for_test_only/imported/sample_import.mojom.dart' as sample_import_mojom;
 
 
@@ -101,6 +104,46 @@ class Request extends bindings.Struct {
   }
 }
 
+mojom_types.MojomStruct _sampleFactoryRequest() {
+  return new mojom_types.MojomStruct()
+    ..declData = (new mojom_types.DeclarationData()
+      ..shortName = 'Request'
+      ..fullIdentifier = 'sample.Request')
+    ..fields = <mojom_types.StructField>[
+      new mojom_types.StructField()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'X')
+        ..type = (new mojom_types.Type()
+          ..simpleType = mojom_types.SimpleType.int32),
+      new mojom_types.StructField()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'Pipe')
+        ..type = (new mojom_types.Type()
+          ..handleType = (new mojom_types.HandleType()
+            ..kind = mojom_types.HandleTypeKind.messagePipe
+            ..nullable = true
+          )),
+      new mojom_types.StructField()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'MorePipes')
+        ..type = (new mojom_types.Type()
+          ..arrayType = (new mojom_types.ArrayType()
+            ..nullable = true
+            ..elementType = (new mojom_types.Type()
+                    ..handleType = (new mojom_types.HandleType()
+                      ..kind = mojom_types.HandleTypeKind.messagePipe)))),
+      new mojom_types.StructField()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'Obj')
+        ..type = (new mojom_types.Type()
+          ..typeReference = (new mojom_types.TypeReference()
+          ..nullable = true
+        
+          ..identifier = 'sample_import_ImportedInterface__'
+          ..typeKey = 'sample_import_ImportedInterface__'
+        )),];
+}
+
 
 class Response extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
@@ -175,6 +218,27 @@ class Response extends bindings.Struct {
   }
 }
 
+mojom_types.MojomStruct _sampleFactoryResponse() {
+  return new mojom_types.MojomStruct()
+    ..declData = (new mojom_types.DeclarationData()
+      ..shortName = 'Response'
+      ..fullIdentifier = 'sample.Response')
+    ..fields = <mojom_types.StructField>[
+      new mojom_types.StructField()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'X')
+        ..type = (new mojom_types.Type()
+          ..simpleType = mojom_types.SimpleType.int32),
+      new mojom_types.StructField()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'Pipe')
+        ..type = (new mojom_types.Type()
+          ..handleType = (new mojom_types.HandleType()
+            ..kind = mojom_types.HandleTypeKind.messagePipe
+            ..nullable = true
+          )),];
+}
+
 
 class _NamedObjectSetNameParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
@@ -242,6 +306,19 @@ class _NamedObjectSetNameParams extends bindings.Struct {
   }
 }
 
+mojom_types.MojomStruct _sampleFactoryNamedObjectSetNameParams() {
+  return new mojom_types.MojomStruct()
+    ..declData = (new mojom_types.DeclarationData()
+      ..shortName = 'NamedObjectSetNameParams'
+      ..fullIdentifier = 'sample.NamedObject_SetName_Params')
+    ..fields = <mojom_types.StructField>[
+      new mojom_types.StructField()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'Name')
+        ..type = (new mojom_types.Type()
+          ..stringType = (new mojom_types.StringType())),];
+}
+
 
 class _NamedObjectGetNameParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
@@ -298,6 +375,14 @@ class _NamedObjectGetNameParams extends bindings.Struct {
     Map map = new Map();
     return map;
   }
+}
+
+mojom_types.MojomStruct _sampleFactoryNamedObjectGetNameParams() {
+  return new mojom_types.MojomStruct()
+    ..declData = (new mojom_types.DeclarationData()
+      ..shortName = 'NamedObjectGetNameParams'
+      ..fullIdentifier = 'sample.NamedObject_GetName_Params')
+    ..fields = <mojom_types.StructField>[];
 }
 
 
@@ -365,6 +450,19 @@ class NamedObjectGetNameResponseParams extends bindings.Struct {
     map["name"] = name;
     return map;
   }
+}
+
+mojom_types.MojomStruct _sampleFactoryNamedObjectGetNameResponseParams() {
+  return new mojom_types.MojomStruct()
+    ..declData = (new mojom_types.DeclarationData()
+      ..shortName = 'NamedObjectGetNameResponseParams'
+      ..fullIdentifier = 'sample.NamedObject_GetName_ResponseParams')
+    ..fields = <mojom_types.StructField>[
+      new mojom_types.StructField()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'Name')
+        ..type = (new mojom_types.Type()
+          ..stringType = (new mojom_types.StringType())),];
 }
 
 
@@ -442,6 +540,30 @@ class _FactoryDoStuffParams extends bindings.Struct {
   }
 }
 
+mojom_types.MojomStruct _sampleFactoryFactoryDoStuffParams() {
+  return new mojom_types.MojomStruct()
+    ..declData = (new mojom_types.DeclarationData()
+      ..shortName = 'FactoryDoStuffParams'
+      ..fullIdentifier = 'sample.Factory_DoStuff_Params')
+    ..fields = <mojom_types.StructField>[
+      new mojom_types.StructField()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'Request')
+        ..type = (new mojom_types.Type()
+          ..typeReference = (new mojom_types.TypeReference()
+          ..identifier = 'sample_factory_Request__'
+          ..typeKey = 'sample_factory_Request__'
+        )),
+      new mojom_types.StructField()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'Pipe')
+        ..type = (new mojom_types.Type()
+          ..handleType = (new mojom_types.HandleType()
+            ..kind = mojom_types.HandleTypeKind.messagePipe
+            ..nullable = true
+          )),];
+}
+
 
 class FactoryDoStuffResponseParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
@@ -517,6 +639,27 @@ class FactoryDoStuffResponseParams extends bindings.Struct {
   }
 }
 
+mojom_types.MojomStruct _sampleFactoryFactoryDoStuffResponseParams() {
+  return new mojom_types.MojomStruct()
+    ..declData = (new mojom_types.DeclarationData()
+      ..shortName = 'FactoryDoStuffResponseParams'
+      ..fullIdentifier = 'sample.Factory_DoStuff_ResponseParams')
+    ..fields = <mojom_types.StructField>[
+      new mojom_types.StructField()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'Response')
+        ..type = (new mojom_types.Type()
+          ..typeReference = (new mojom_types.TypeReference()
+          ..identifier = 'sample_factory_Response__'
+          ..typeKey = 'sample_factory_Response__'
+        )),
+      new mojom_types.StructField()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'Text')
+        ..type = (new mojom_types.Type()
+          ..stringType = (new mojom_types.StringType())),];
+}
+
 
 class _FactoryDoStuff2Params extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
@@ -581,6 +724,20 @@ class _FactoryDoStuff2Params extends bindings.Struct {
     throw new bindings.MojoCodecError(
         'Object containing handles cannot be encoded to JSON.');
   }
+}
+
+mojom_types.MojomStruct _sampleFactoryFactoryDoStuff2Params() {
+  return new mojom_types.MojomStruct()
+    ..declData = (new mojom_types.DeclarationData()
+      ..shortName = 'FactoryDoStuff2Params'
+      ..fullIdentifier = 'sample.Factory_DoStuff2_Params')
+    ..fields = <mojom_types.StructField>[
+      new mojom_types.StructField()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'Pipe')
+        ..type = (new mojom_types.Type()
+          ..handleType = (new mojom_types.HandleType()
+            ..kind = mojom_types.HandleTypeKind.dataPipeConsumer)),];
 }
 
 
@@ -650,6 +807,19 @@ class FactoryDoStuff2ResponseParams extends bindings.Struct {
   }
 }
 
+mojom_types.MojomStruct _sampleFactoryFactoryDoStuff2ResponseParams() {
+  return new mojom_types.MojomStruct()
+    ..declData = (new mojom_types.DeclarationData()
+      ..shortName = 'FactoryDoStuff2ResponseParams'
+      ..fullIdentifier = 'sample.Factory_DoStuff2_ResponseParams')
+    ..fields = <mojom_types.StructField>[
+      new mojom_types.StructField()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'Text')
+        ..type = (new mojom_types.Type()
+          ..stringType = (new mojom_types.StringType())),];
+}
+
 
 class _FactoryCreateNamedObjectParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
@@ -714,6 +884,23 @@ class _FactoryCreateNamedObjectParams extends bindings.Struct {
     throw new bindings.MojoCodecError(
         'Object containing handles cannot be encoded to JSON.');
   }
+}
+
+mojom_types.MojomStruct _sampleFactoryFactoryCreateNamedObjectParams() {
+  return new mojom_types.MojomStruct()
+    ..declData = (new mojom_types.DeclarationData()
+      ..shortName = 'FactoryCreateNamedObjectParams'
+      ..fullIdentifier = 'sample.Factory_CreateNamedObject_Params')
+    ..fields = <mojom_types.StructField>[
+      new mojom_types.StructField()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'Obj')
+        ..type = (new mojom_types.Type()
+          ..typeReference = (new mojom_types.TypeReference()
+          ..isInterfaceRequest = true
+          ..identifier = 'sample_factory_NamedObject__'
+          ..typeKey = 'sample_factory_NamedObject__'
+        )),];
 }
 
 
@@ -782,6 +969,23 @@ class _FactoryRequestImportedInterfaceParams extends bindings.Struct {
   }
 }
 
+mojom_types.MojomStruct _sampleFactoryFactoryRequestImportedInterfaceParams() {
+  return new mojom_types.MojomStruct()
+    ..declData = (new mojom_types.DeclarationData()
+      ..shortName = 'FactoryRequestImportedInterfaceParams'
+      ..fullIdentifier = 'sample.Factory_RequestImportedInterface_Params')
+    ..fields = <mojom_types.StructField>[
+      new mojom_types.StructField()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'Obj')
+        ..type = (new mojom_types.Type()
+          ..typeReference = (new mojom_types.TypeReference()
+          ..isInterfaceRequest = true
+          ..identifier = 'sample_import_ImportedInterface__'
+          ..typeKey = 'sample_import_ImportedInterface__'
+        )),];
+}
+
 
 class FactoryRequestImportedInterfaceResponseParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
@@ -846,6 +1050,23 @@ class FactoryRequestImportedInterfaceResponseParams extends bindings.Struct {
     throw new bindings.MojoCodecError(
         'Object containing handles cannot be encoded to JSON.');
   }
+}
+
+mojom_types.MojomStruct _sampleFactoryFactoryRequestImportedInterfaceResponseParams() {
+  return new mojom_types.MojomStruct()
+    ..declData = (new mojom_types.DeclarationData()
+      ..shortName = 'FactoryRequestImportedInterfaceResponseParams'
+      ..fullIdentifier = 'sample.Factory_RequestImportedInterface_ResponseParams')
+    ..fields = <mojom_types.StructField>[
+      new mojom_types.StructField()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'Obj')
+        ..type = (new mojom_types.Type()
+          ..typeReference = (new mojom_types.TypeReference()
+          ..isInterfaceRequest = true
+          ..identifier = 'sample_import_ImportedInterface__'
+          ..typeKey = 'sample_import_ImportedInterface__'
+        )),];
 }
 
 
@@ -914,6 +1135,22 @@ class _FactoryTakeImportedInterfaceParams extends bindings.Struct {
   }
 }
 
+mojom_types.MojomStruct _sampleFactoryFactoryTakeImportedInterfaceParams() {
+  return new mojom_types.MojomStruct()
+    ..declData = (new mojom_types.DeclarationData()
+      ..shortName = 'FactoryTakeImportedInterfaceParams'
+      ..fullIdentifier = 'sample.Factory_TakeImportedInterface_Params')
+    ..fields = <mojom_types.StructField>[
+      new mojom_types.StructField()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'Obj')
+        ..type = (new mojom_types.Type()
+          ..typeReference = (new mojom_types.TypeReference()
+          ..identifier = 'sample_import_ImportedInterface__'
+          ..typeKey = 'sample_import_ImportedInterface__'
+        )),];
+}
+
 
 class FactoryTakeImportedInterfaceResponseParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
@@ -980,8 +1217,57 @@ class FactoryTakeImportedInterfaceResponseParams extends bindings.Struct {
   }
 }
 
+mojom_types.MojomStruct _sampleFactoryFactoryTakeImportedInterfaceResponseParams() {
+  return new mojom_types.MojomStruct()
+    ..declData = (new mojom_types.DeclarationData()
+      ..shortName = 'FactoryTakeImportedInterfaceResponseParams'
+      ..fullIdentifier = 'sample.Factory_TakeImportedInterface_ResponseParams')
+    ..fields = <mojom_types.StructField>[
+      new mojom_types.StructField()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'Obj')
+        ..type = (new mojom_types.Type()
+          ..typeReference = (new mojom_types.TypeReference()
+          ..identifier = 'sample_import_ImportedInterface__'
+          ..typeKey = 'sample_import_ImportedInterface__'
+        )),];
+}
+
+
 const int _NamedObject_setNameName = 0;
 const int _NamedObject_getNameName = 1;
+
+mojom_types.MojomInterface _sampleFactoryNamedObject() {
+  return new mojom_types.MojomInterface()
+    ..declData = (new mojom_types.DeclarationData()
+      ..shortName = 'NamedObject'
+      ..fullIdentifier = 'sample.NamedObject')
+    ..interfaceName = 'NamedObject'
+    ..methods = <int, mojom_types.MojomMethod>{
+      _NamedObject_setNameName: new mojom_types.MojomMethod()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'SetName')
+        ..ordinal = _NamedObject_setNameName
+        ..parameters = _sampleFactoryNamedObjectSetNameParams(),
+      _NamedObject_getNameName: new mojom_types.MojomMethod()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'GetName')
+        ..ordinal = _NamedObject_getNameName
+        ..responseParams = _sampleFactoryNamedObjectGetNameResponseParams()
+        ..parameters = _sampleFactoryNamedObjectGetNameParams(),
+    };
+}
+
+class _NamedObjectServiceDescription implements service_describer.ServiceDescription {
+  dynamic getTopLevelInterface([Function responseFactory]) =>
+      _sampleFactoryNamedObject();
+
+  dynamic getTypeDefinition(String typeKey, [Function responseFactory]) =>
+      getAllMojomTypeDefinitions()[typeKey];
+
+  dynamic getAllTypeDefinitions([Function responseFactory]) =>
+      getAllMojomTypeDefinitions();
+}
 
 abstract class NamedObject {
   static const String serviceName = "sample::NamedObject";
@@ -1004,6 +1290,9 @@ class _NamedObjectProxyImpl extends bindings.Proxy {
     assert(endpoint.setDescription("For _NamedObjectProxyImpl"));
     return new _NamedObjectProxyImpl.fromEndpoint(endpoint);
   }
+
+  service_describer.ServiceDescription get serviceDescription =>
+    new _NamedObjectServiceDescription();
 
   void handleResponse(bindings.ServiceMessage message) {
     switch (message.header.type) {
@@ -1203,6 +1492,9 @@ class NamedObjectStub extends bindings.Stub {
   }
 
   int get version => 0;
+
+  service_describer.ServiceDescription get serviceDescription =>
+    new _NamedObjectServiceDescription();
 }
 
 const int _Factory_doStuffName = 0;
@@ -1210,6 +1502,56 @@ const int _Factory_doStuff2Name = 1;
 const int _Factory_createNamedObjectName = 2;
 const int _Factory_requestImportedInterfaceName = 3;
 const int _Factory_takeImportedInterfaceName = 4;
+
+mojom_types.MojomInterface _sampleFactoryFactory() {
+  return new mojom_types.MojomInterface()
+    ..declData = (new mojom_types.DeclarationData()
+      ..shortName = 'Factory'
+      ..fullIdentifier = 'sample.Factory')
+    ..interfaceName = 'Factory'
+    ..methods = <int, mojom_types.MojomMethod>{
+      _Factory_doStuffName: new mojom_types.MojomMethod()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'DoStuff')
+        ..ordinal = _Factory_doStuffName
+        ..responseParams = _sampleFactoryFactoryDoStuffResponseParams()
+        ..parameters = _sampleFactoryFactoryDoStuffParams(),
+      _Factory_doStuff2Name: new mojom_types.MojomMethod()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'DoStuff2')
+        ..ordinal = _Factory_doStuff2Name
+        ..responseParams = _sampleFactoryFactoryDoStuff2ResponseParams()
+        ..parameters = _sampleFactoryFactoryDoStuff2Params(),
+      _Factory_createNamedObjectName: new mojom_types.MojomMethod()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'CreateNamedObject')
+        ..ordinal = _Factory_createNamedObjectName
+        ..parameters = _sampleFactoryFactoryCreateNamedObjectParams(),
+      _Factory_requestImportedInterfaceName: new mojom_types.MojomMethod()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'RequestImportedInterface')
+        ..ordinal = _Factory_requestImportedInterfaceName
+        ..responseParams = _sampleFactoryFactoryRequestImportedInterfaceResponseParams()
+        ..parameters = _sampleFactoryFactoryRequestImportedInterfaceParams(),
+      _Factory_takeImportedInterfaceName: new mojom_types.MojomMethod()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'TakeImportedInterface')
+        ..ordinal = _Factory_takeImportedInterfaceName
+        ..responseParams = _sampleFactoryFactoryTakeImportedInterfaceResponseParams()
+        ..parameters = _sampleFactoryFactoryTakeImportedInterfaceParams(),
+    };
+}
+
+class _FactoryServiceDescription implements service_describer.ServiceDescription {
+  dynamic getTopLevelInterface([Function responseFactory]) =>
+      _sampleFactoryFactory();
+
+  dynamic getTypeDefinition(String typeKey, [Function responseFactory]) =>
+      getAllMojomTypeDefinitions()[typeKey];
+
+  dynamic getAllTypeDefinitions([Function responseFactory]) =>
+      getAllMojomTypeDefinitions();
+}
 
 abstract class Factory {
   static const String serviceName = null;
@@ -1235,6 +1577,9 @@ class _FactoryProxyImpl extends bindings.Proxy {
     assert(endpoint.setDescription("For _FactoryProxyImpl"));
     return new _FactoryProxyImpl.fromEndpoint(endpoint);
   }
+
+  service_describer.ServiceDescription get serviceDescription =>
+    new _FactoryServiceDescription();
 
   void handleResponse(bindings.ServiceMessage message) {
     switch (message.header.type) {
@@ -1605,6 +1950,75 @@ class FactoryStub extends bindings.Stub {
   }
 
   int get version => 0;
+
+  service_describer.ServiceDescription get serviceDescription =>
+    new _FactoryServiceDescription();
 }
 
+
+Map<String, mojom_types.UserDefinedType> _initDescriptions() {
+  var map = new HashMap<String, mojom_types.UserDefinedType>();
+  map["sample_factory_Request__"] =
+    new mojom_types.UserDefinedType()
+      ..structType = _sampleFactoryRequest();
+  map["sample_factory_Response__"] =
+    new mojom_types.UserDefinedType()
+      ..structType = _sampleFactoryResponse();
+  map["sample_factory_NamedObject_SetName_Params__"] =
+    new mojom_types.UserDefinedType()
+      ..structType = _sampleFactoryNamedObjectSetNameParams();
+  map["sample_factory_NamedObject_GetName_Params__"] =
+    new mojom_types.UserDefinedType()
+      ..structType = _sampleFactoryNamedObjectGetNameParams();
+  map["sample_factory_NamedObject_GetName_ResponseParams__"] =
+    new mojom_types.UserDefinedType()
+      ..structType = _sampleFactoryNamedObjectGetNameResponseParams();
+  map["sample_factory_Factory_DoStuff_Params__"] =
+    new mojom_types.UserDefinedType()
+      ..structType = _sampleFactoryFactoryDoStuffParams();
+  map["sample_factory_Factory_DoStuff_ResponseParams__"] =
+    new mojom_types.UserDefinedType()
+      ..structType = _sampleFactoryFactoryDoStuffResponseParams();
+  map["sample_factory_Factory_DoStuff2_Params__"] =
+    new mojom_types.UserDefinedType()
+      ..structType = _sampleFactoryFactoryDoStuff2Params();
+  map["sample_factory_Factory_DoStuff2_ResponseParams__"] =
+    new mojom_types.UserDefinedType()
+      ..structType = _sampleFactoryFactoryDoStuff2ResponseParams();
+  map["sample_factory_Factory_CreateNamedObject_Params__"] =
+    new mojom_types.UserDefinedType()
+      ..structType = _sampleFactoryFactoryCreateNamedObjectParams();
+  map["sample_factory_Factory_RequestImportedInterface_Params__"] =
+    new mojom_types.UserDefinedType()
+      ..structType = _sampleFactoryFactoryRequestImportedInterfaceParams();
+  map["sample_factory_Factory_RequestImportedInterface_ResponseParams__"] =
+    new mojom_types.UserDefinedType()
+      ..structType = _sampleFactoryFactoryRequestImportedInterfaceResponseParams();
+  map["sample_factory_Factory_TakeImportedInterface_Params__"] =
+    new mojom_types.UserDefinedType()
+      ..structType = _sampleFactoryFactoryTakeImportedInterfaceParams();
+  map["sample_factory_Factory_TakeImportedInterface_ResponseParams__"] =
+    new mojom_types.UserDefinedType()
+      ..structType = _sampleFactoryFactoryTakeImportedInterfaceResponseParams();
+  map["sample_factory_NamedObject__"] =
+    new mojom_types.UserDefinedType()
+      ..interfaceType = _sampleFactoryNamedObject();
+  map["sample_factory_Factory__"] =
+    new mojom_types.UserDefinedType()
+      ..interfaceType = _sampleFactoryFactory();
+  sample_import_mojom.getAllMojomTypeDefinitions()
+      .forEach((String s, mojom_types.UserDefinedType udt) {
+    map[s] = udt;
+  });
+
+  return map;
+}
+
+var _mojomDesc;
+Map<String, mojom_types.UserDefinedType> getAllMojomTypeDefinitions() {
+  if (_mojomDesc == null) {
+    _mojomDesc = _initDescriptions();
+  }
+  return _mojomDesc;
+}
 

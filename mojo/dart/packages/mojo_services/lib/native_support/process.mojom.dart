@@ -8,6 +8,8 @@ import 'dart:async';
 
 import 'package:mojo/bindings.dart' as bindings;
 import 'package:mojo/core.dart' as core;
+import 'package:mojo/mojo/bindings/types/mojom_types.mojom.dart' as mojom_types;
+import 'package:mojo/mojo/bindings/types/service_describer.mojom.dart' as service_describer;
 import 'package:mojo_services/mojo/files/file.mojom.dart' as file_mojom;
 import 'package:mojo_services/mojo/files/types.mojom.dart' as types_mojom;
 
@@ -163,6 +165,8 @@ class _ProcessSpawnParams extends bindings.Struct {
 }
 
 
+
+
 class ProcessSpawnResponseParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(16, 0)
@@ -232,6 +236,8 @@ class ProcessSpawnResponseParams extends bindings.Struct {
     return map;
   }
 }
+
+
 
 
 class _ProcessSpawnWithTerminalParams extends bindings.Struct {
@@ -368,6 +374,8 @@ class _ProcessSpawnWithTerminalParams extends bindings.Struct {
 }
 
 
+
+
 class ProcessSpawnWithTerminalResponseParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(16, 0)
@@ -439,6 +447,8 @@ class ProcessSpawnWithTerminalResponseParams extends bindings.Struct {
 }
 
 
+
+
 class _ProcessControllerWaitParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(8, 0)
@@ -495,6 +505,8 @@ class _ProcessControllerWaitParams extends bindings.Struct {
     return map;
   }
 }
+
+
 
 
 class ProcessControllerWaitResponseParams extends bindings.Struct {
@@ -577,6 +589,8 @@ class ProcessControllerWaitResponseParams extends bindings.Struct {
 }
 
 
+
+
 class _ProcessControllerKillParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(16, 0)
@@ -642,6 +656,8 @@ class _ProcessControllerKillParams extends bindings.Struct {
     return map;
   }
 }
+
+
 
 
 class ProcessControllerKillResponseParams extends bindings.Struct {
@@ -714,8 +730,21 @@ class ProcessControllerKillResponseParams extends bindings.Struct {
   }
 }
 
+
+
+
 const int _Process_spawnName = 0;
 const int _Process_spawnWithTerminalName = 1;
+
+
+
+class _ProcessServiceDescription implements service_describer.ServiceDescription {
+  dynamic getTopLevelInterface([Function responseFactory]) => null;
+
+  dynamic getTypeDefinition(String typeKey, [Function responseFactory]) => null;
+
+  dynamic getAllTypeDefinitions([Function responseFactory]) => null;
+}
 
 abstract class Process {
   static const String serviceName = "native_support::Process";
@@ -738,6 +767,9 @@ class _ProcessProxyImpl extends bindings.Proxy {
     assert(endpoint.setDescription("For _ProcessProxyImpl"));
     return new _ProcessProxyImpl.fromEndpoint(endpoint);
   }
+
+  service_describer.ServiceDescription get serviceDescription =>
+    new _ProcessServiceDescription();
 
   void handleResponse(bindings.ServiceMessage message) {
     switch (message.header.type) {
@@ -990,10 +1022,23 @@ class ProcessStub extends bindings.Stub {
   }
 
   int get version => 0;
+
+  service_describer.ServiceDescription get serviceDescription =>
+    new _ProcessServiceDescription();
 }
 
 const int _ProcessController_waitName = 0;
 const int _ProcessController_killName = 1;
+
+
+
+class _ProcessControllerServiceDescription implements service_describer.ServiceDescription {
+  dynamic getTopLevelInterface([Function responseFactory]) => null;
+
+  dynamic getTypeDefinition(String typeKey, [Function responseFactory]) => null;
+
+  dynamic getAllTypeDefinitions([Function responseFactory]) => null;
+}
 
 abstract class ProcessController {
   static const String serviceName = null;
@@ -1016,6 +1061,9 @@ class _ProcessControllerProxyImpl extends bindings.Proxy {
     assert(endpoint.setDescription("For _ProcessControllerProxyImpl"));
     return new _ProcessControllerProxyImpl.fromEndpoint(endpoint);
   }
+
+  service_describer.ServiceDescription get serviceDescription =>
+    new _ProcessControllerServiceDescription();
 
   void handleResponse(bindings.ServiceMessage message) {
     switch (message.header.type) {
@@ -1258,6 +1306,10 @@ class ProcessControllerStub extends bindings.Stub {
   }
 
   int get version => 0;
+
+  service_describer.ServiceDescription get serviceDescription =>
+    new _ProcessControllerServiceDescription();
 }
+
 
 

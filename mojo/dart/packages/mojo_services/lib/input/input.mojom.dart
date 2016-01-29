@@ -8,6 +8,8 @@ import 'dart:async';
 
 import 'package:mojo/bindings.dart' as bindings;
 import 'package:mojo/core.dart' as core;
+import 'package:mojo/mojo/bindings/types/mojom_types.mojom.dart' as mojom_types;
+import 'package:mojo/mojo/bindings/types/service_describer.mojom.dart' as service_describer;
 
 
 
@@ -69,6 +71,8 @@ class _InputClientOnBackButtonParams extends bindings.Struct {
 }
 
 
+
+
 class InputClientOnBackButtonResponseParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(8, 0)
@@ -125,6 +129,8 @@ class InputClientOnBackButtonResponseParams extends bindings.Struct {
     return map;
   }
 }
+
+
 
 
 class _InputServiceSetClientParams extends bindings.Struct {
@@ -192,7 +198,20 @@ class _InputServiceSetClientParams extends bindings.Struct {
   }
 }
 
+
+
+
 const int _InputClient_onBackButtonName = 0;
+
+
+
+class _InputClientServiceDescription implements service_describer.ServiceDescription {
+  dynamic getTopLevelInterface([Function responseFactory]) => null;
+
+  dynamic getTypeDefinition(String typeKey, [Function responseFactory]) => null;
+
+  dynamic getAllTypeDefinitions([Function responseFactory]) => null;
+}
 
 abstract class InputClient {
   static const String serviceName = null;
@@ -214,6 +233,9 @@ class _InputClientProxyImpl extends bindings.Proxy {
     assert(endpoint.setDescription("For _InputClientProxyImpl"));
     return new _InputClientProxyImpl.fromEndpoint(endpoint);
   }
+
+  service_describer.ServiceDescription get serviceDescription =>
+    new _InputClientServiceDescription();
 
   void handleResponse(bindings.ServiceMessage message) {
     switch (message.header.type) {
@@ -398,9 +420,22 @@ class InputClientStub extends bindings.Stub {
   }
 
   int get version => 0;
+
+  service_describer.ServiceDescription get serviceDescription =>
+    new _InputClientServiceDescription();
 }
 
 const int _InputService_setClientName = 0;
+
+
+
+class _InputServiceServiceDescription implements service_describer.ServiceDescription {
+  dynamic getTopLevelInterface([Function responseFactory]) => null;
+
+  dynamic getTypeDefinition(String typeKey, [Function responseFactory]) => null;
+
+  dynamic getAllTypeDefinitions([Function responseFactory]) => null;
+}
 
 abstract class InputService {
   static const String serviceName = "input::InputService";
@@ -422,6 +457,9 @@ class _InputServiceProxyImpl extends bindings.Proxy {
     assert(endpoint.setDescription("For _InputServiceProxyImpl"));
     return new _InputServiceProxyImpl.fromEndpoint(endpoint);
   }
+
+  service_describer.ServiceDescription get serviceDescription =>
+    new _InputServiceServiceDescription();
 
   void handleResponse(bindings.ServiceMessage message) {
     switch (message.header.type) {
@@ -566,6 +604,10 @@ class InputServiceStub extends bindings.Stub {
   }
 
   int get version => 0;
+
+  service_describer.ServiceDescription get serviceDescription =>
+    new _InputServiceServiceDescription();
 }
+
 
 

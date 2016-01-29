@@ -8,6 +8,8 @@ import 'dart:async';
 
 import 'package:mojo/bindings.dart' as bindings;
 import 'package:mojo/core.dart' as core;
+import 'package:mojo/mojo/bindings/types/mojom_types.mojom.dart' as mojom_types;
+import 'package:mojo/mojo/bindings/types/service_describer.mojom.dart' as service_describer;
 import 'package:mojo/mojo/network_error.mojom.dart' as network_error_mojom;
 import 'package:mojo_services/mojo/net_address.mojom.dart' as net_address_mojom;
 
@@ -91,6 +93,8 @@ class _HostResolverGetHostAddressesParams extends bindings.Struct {
     return map;
   }
 }
+
+
 
 
 class HostResolverGetHostAddressesResponseParams extends bindings.Struct {
@@ -188,7 +192,20 @@ class HostResolverGetHostAddressesResponseParams extends bindings.Struct {
   }
 }
 
+
+
+
 const int _HostResolver_getHostAddressesName = 0;
+
+
+
+class _HostResolverServiceDescription implements service_describer.ServiceDescription {
+  dynamic getTopLevelInterface([Function responseFactory]) => null;
+
+  dynamic getTypeDefinition(String typeKey, [Function responseFactory]) => null;
+
+  dynamic getAllTypeDefinitions([Function responseFactory]) => null;
+}
 
 abstract class HostResolver {
   static const String serviceName = null;
@@ -210,6 +227,9 @@ class _HostResolverProxyImpl extends bindings.Proxy {
     assert(endpoint.setDescription("For _HostResolverProxyImpl"));
     return new _HostResolverProxyImpl.fromEndpoint(endpoint);
   }
+
+  service_describer.ServiceDescription get serviceDescription =>
+    new _HostResolverServiceDescription();
 
   void handleResponse(bindings.ServiceMessage message) {
     switch (message.header.type) {
@@ -398,6 +418,10 @@ class HostResolverStub extends bindings.Stub {
   }
 
   int get version => 0;
+
+  service_describer.ServiceDescription get serviceDescription =>
+    new _HostResolverServiceDescription();
 }
+
 
 

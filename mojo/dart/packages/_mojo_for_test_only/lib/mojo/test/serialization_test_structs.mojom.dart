@@ -5,9 +5,12 @@
 library serialization_test_structs_mojom;
 
 import 'dart:async';
+import 'dart:collection';
 
 import 'package:mojo/bindings.dart' as bindings;
 import 'package:mojo/core.dart' as core;
+import 'package:mojo/mojo/bindings/types/mojom_types.mojom.dart' as mojom_types;
+
 
 
 
@@ -77,6 +80,19 @@ class Struct1 extends bindings.Struct {
   }
 }
 
+mojom_types.MojomStruct _serializationTestStructsStruct1() {
+  return new mojom_types.MojomStruct()
+    ..declData = (new mojom_types.DeclarationData()
+      ..shortName = 'Struct1'
+      ..fullIdentifier = 'mojo.test.Struct1')
+    ..fields = <mojom_types.StructField>[
+      new mojom_types.StructField()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'I')
+        ..type = (new mojom_types.Type()
+          ..simpleType = mojom_types.SimpleType.uint8),];
+}
+
 
 class Struct2 extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
@@ -141,6 +157,20 @@ class Struct2 extends bindings.Struct {
     throw new bindings.MojoCodecError(
         'Object containing handles cannot be encoded to JSON.');
   }
+}
+
+mojom_types.MojomStruct _serializationTestStructsStruct2() {
+  return new mojom_types.MojomStruct()
+    ..declData = (new mojom_types.DeclarationData()
+      ..shortName = 'Struct2'
+      ..fullIdentifier = 'mojo.test.Struct2')
+    ..fields = <mojom_types.StructField>[
+      new mojom_types.StructField()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'Hdl')
+        ..type = (new mojom_types.Type()
+          ..handleType = (new mojom_types.HandleType()
+            ..kind = mojom_types.HandleTypeKind.unspecified)),];
 }
 
 
@@ -209,6 +239,22 @@ class Struct3 extends bindings.Struct {
     map["struct1"] = struct1;
     return map;
   }
+}
+
+mojom_types.MojomStruct _serializationTestStructsStruct3() {
+  return new mojom_types.MojomStruct()
+    ..declData = (new mojom_types.DeclarationData()
+      ..shortName = 'Struct3'
+      ..fullIdentifier = 'mojo.test.Struct3')
+    ..fields = <mojom_types.StructField>[
+      new mojom_types.StructField()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'Struct1')
+        ..type = (new mojom_types.Type()
+          ..typeReference = (new mojom_types.TypeReference()
+          ..identifier = 'serialization_test_structs_Struct1__'
+          ..typeKey = 'serialization_test_structs_Struct1__'
+        )),];
 }
 
 
@@ -295,6 +341,24 @@ class Struct4 extends bindings.Struct {
   }
 }
 
+mojom_types.MojomStruct _serializationTestStructsStruct4() {
+  return new mojom_types.MojomStruct()
+    ..declData = (new mojom_types.DeclarationData()
+      ..shortName = 'Struct4'
+      ..fullIdentifier = 'mojo.test.Struct4')
+    ..fields = <mojom_types.StructField>[
+      new mojom_types.StructField()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'Data')
+        ..type = (new mojom_types.Type()
+          ..arrayType = (new mojom_types.ArrayType()
+            ..elementType = (new mojom_types.Type()
+                    ..typeReference = (new mojom_types.TypeReference()
+                    ..identifier = 'serialization_test_structs_Struct1__'
+                    ..typeKey = 'serialization_test_structs_Struct1__'
+                  )))),];
+}
+
 
 class Struct5 extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
@@ -379,6 +443,25 @@ class Struct5 extends bindings.Struct {
   }
 }
 
+mojom_types.MojomStruct _serializationTestStructsStruct5() {
+  return new mojom_types.MojomStruct()
+    ..declData = (new mojom_types.DeclarationData()
+      ..shortName = 'Struct5'
+      ..fullIdentifier = 'mojo.test.Struct5')
+    ..fields = <mojom_types.StructField>[
+      new mojom_types.StructField()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'Pair')
+        ..type = (new mojom_types.Type()
+          ..arrayType = (new mojom_types.ArrayType()
+            ..fixedLength = 2
+            ..elementType = (new mojom_types.Type()
+                    ..typeReference = (new mojom_types.TypeReference()
+                    ..identifier = 'serialization_test_structs_Struct1__'
+                    ..typeKey = 'serialization_test_structs_Struct1__'
+                  )))),];
+}
+
 
 class Struct6 extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
@@ -444,6 +527,19 @@ class Struct6 extends bindings.Struct {
     map["str"] = str;
     return map;
   }
+}
+
+mojom_types.MojomStruct _serializationTestStructsStruct6() {
+  return new mojom_types.MojomStruct()
+    ..declData = (new mojom_types.DeclarationData()
+      ..shortName = 'Struct6'
+      ..fullIdentifier = 'mojo.test.Struct6')
+    ..fields = <mojom_types.StructField>[
+      new mojom_types.StructField()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'Str')
+        ..type = (new mojom_types.Type()
+          ..stringType = (new mojom_types.StringType())),];
 }
 
 
@@ -529,4 +625,72 @@ class StructOfNullables extends bindings.Struct {
   }
 }
 
+mojom_types.MojomStruct _serializationTestStructsStructOfNullables() {
+  return new mojom_types.MojomStruct()
+    ..declData = (new mojom_types.DeclarationData()
+      ..shortName = 'StructOfNullables'
+      ..fullIdentifier = 'mojo.test.StructOfNullables')
+    ..fields = <mojom_types.StructField>[
+      new mojom_types.StructField()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'Hdl')
+        ..type = (new mojom_types.Type()
+          ..handleType = (new mojom_types.HandleType()
+            ..kind = mojom_types.HandleTypeKind.unspecified
+            ..nullable = true
+          )),
+      new mojom_types.StructField()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'Struct1')
+        ..type = (new mojom_types.Type()
+          ..typeReference = (new mojom_types.TypeReference()
+          ..nullable = true
+        
+          ..identifier = 'serialization_test_structs_Struct1__'
+          ..typeKey = 'serialization_test_structs_Struct1__'
+        )),
+      new mojom_types.StructField()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'Str')
+        ..type = (new mojom_types.Type()
+          ..stringType = (new mojom_types.StringType()
+            ..nullable = true
+          )),];
+}
+
+
+
+Map<String, mojom_types.UserDefinedType> _initDescriptions() {
+  var map = new HashMap<String, mojom_types.UserDefinedType>();
+  map["serialization_test_structs_Struct1__"] =
+    new mojom_types.UserDefinedType()
+      ..structType = _serializationTestStructsStruct1();
+  map["serialization_test_structs_Struct2__"] =
+    new mojom_types.UserDefinedType()
+      ..structType = _serializationTestStructsStruct2();
+  map["serialization_test_structs_Struct3__"] =
+    new mojom_types.UserDefinedType()
+      ..structType = _serializationTestStructsStruct3();
+  map["serialization_test_structs_Struct4__"] =
+    new mojom_types.UserDefinedType()
+      ..structType = _serializationTestStructsStruct4();
+  map["serialization_test_structs_Struct5__"] =
+    new mojom_types.UserDefinedType()
+      ..structType = _serializationTestStructsStruct5();
+  map["serialization_test_structs_Struct6__"] =
+    new mojom_types.UserDefinedType()
+      ..structType = _serializationTestStructsStruct6();
+  map["serialization_test_structs_StructOfNullables__"] =
+    new mojom_types.UserDefinedType()
+      ..structType = _serializationTestStructsStructOfNullables();
+  return map;
+}
+
+var _mojomDesc;
+Map<String, mojom_types.UserDefinedType> getAllMojomTypeDefinitions() {
+  if (_mojomDesc == null) {
+    _mojomDesc = _initDescriptions();
+  }
+  return _mojomDesc;
+}
 

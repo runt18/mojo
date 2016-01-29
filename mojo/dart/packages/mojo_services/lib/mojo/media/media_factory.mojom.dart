@@ -8,6 +8,8 @@ import 'dart:async';
 
 import 'package:mojo/bindings.dart' as bindings;
 import 'package:mojo/core.dart' as core;
+import 'package:mojo/mojo/bindings/types/mojom_types.mojom.dart' as mojom_types;
+import 'package:mojo/mojo/bindings/types/service_describer.mojom.dart' as service_describer;
 import 'package:mojo_services/mojo/media/media_types.mojom.dart' as media_types_mojom;
 import 'package:mojo_services/mojo/media/media_player.mojom.dart' as media_player_mojom;
 import 'package:mojo_services/mojo/media/media_sink.mojom.dart' as media_sink_mojom;
@@ -87,6 +89,8 @@ class _MediaFactoryCreatePlayerParams extends bindings.Struct {
         'Object containing handles cannot be encoded to JSON.');
   }
 }
+
+
 
 
 class _MediaFactoryCreateSourceParams extends bindings.Struct {
@@ -190,6 +194,8 @@ class _MediaFactoryCreateSourceParams extends bindings.Struct {
 }
 
 
+
+
 class _MediaFactoryCreateSinkParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(32, 0)
@@ -272,9 +278,22 @@ class _MediaFactoryCreateSinkParams extends bindings.Struct {
   }
 }
 
+
+
+
 const int _MediaFactory_createPlayerName = 0;
 const int _MediaFactory_createSourceName = 1;
 const int _MediaFactory_createSinkName = 2;
+
+
+
+class _MediaFactoryServiceDescription implements service_describer.ServiceDescription {
+  dynamic getTopLevelInterface([Function responseFactory]) => null;
+
+  dynamic getTypeDefinition(String typeKey, [Function responseFactory]) => null;
+
+  dynamic getAllTypeDefinitions([Function responseFactory]) => null;
+}
 
 abstract class MediaFactory {
   static const String serviceName = "mojo::media::MediaFactory";
@@ -298,6 +317,9 @@ class _MediaFactoryProxyImpl extends bindings.Proxy {
     assert(endpoint.setDescription("For _MediaFactoryProxyImpl"));
     return new _MediaFactoryProxyImpl.fromEndpoint(endpoint);
   }
+
+  service_describer.ServiceDescription get serviceDescription =>
+    new _MediaFactoryServiceDescription();
 
   void handleResponse(bindings.ServiceMessage message) {
     switch (message.header.type) {
@@ -475,6 +497,10 @@ class MediaFactoryStub extends bindings.Stub {
   }
 
   int get version => 0;
+
+  service_describer.ServiceDescription get serviceDescription =>
+    new _MediaFactoryServiceDescription();
 }
+
 
 

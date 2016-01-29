@@ -8,6 +8,8 @@ import 'dart:async';
 
 import 'package:mojo/bindings.dart' as bindings;
 import 'package:mojo/core.dart' as core;
+import 'package:mojo/mojo/bindings/types/mojom_types.mojom.dart' as mojom_types;
+
 
 class KeyboardCode extends bindings.MojoEnum {
   static const KeyboardCode back = const KeyboardCode._(8);
@@ -1236,11 +1238,17 @@ class KeyboardCode extends bindings.MojoEnum {
         return 'KeyboardCode.unknown';
       case altgr:
         return 'KeyboardCode.altgr';
+      default:
+        return null;
     }
   }
 
   int toJson() => mojoEnumValue;
 }
+
+
+
+
 
 
 

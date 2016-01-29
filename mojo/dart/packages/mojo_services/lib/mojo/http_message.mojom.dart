@@ -8,6 +8,8 @@ import 'dart:async';
 
 import 'package:mojo/bindings.dart' as bindings;
 import 'package:mojo/core.dart' as core;
+import 'package:mojo/mojo/bindings/types/mojom_types.mojom.dart' as mojom_types;
+
 import 'package:mojo/mojo/http_header.mojom.dart' as http_header_mojom;
 
 
@@ -121,6 +123,8 @@ class HttpRequest extends bindings.Struct {
 }
 
 
+
+
 class HttpResponse extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(24, 0)
@@ -220,5 +224,9 @@ class HttpResponse extends bindings.Struct {
         'Object containing handles cannot be encoded to JSON.');
   }
 }
+
+
+
+
 
 

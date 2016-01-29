@@ -8,6 +8,8 @@ import 'dart:async';
 
 import 'package:mojo/bindings.dart' as bindings;
 import 'package:mojo/core.dart' as core;
+import 'package:mojo/mojo/bindings/types/mojom_types.mojom.dart' as mojom_types;
+import 'package:mojo/mojo/bindings/types/service_describer.mojom.dart' as service_describer;
 import 'package:mojo/mojo/url_response.mojom.dart' as url_response_mojom;
 
 
@@ -77,6 +79,8 @@ class _UrlResponseDiskCacheGetParams extends bindings.Struct {
     return map;
   }
 }
+
+
 
 
 class UrlResponseDiskCacheGetResponseParams extends bindings.Struct {
@@ -162,6 +166,8 @@ class UrlResponseDiskCacheGetResponseParams extends bindings.Struct {
 }
 
 
+
+
 class _UrlResponseDiskCacheValidateParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(16, 0)
@@ -227,6 +233,8 @@ class _UrlResponseDiskCacheValidateParams extends bindings.Struct {
     return map;
   }
 }
+
+
 
 
 class _UrlResponseDiskCacheUpdateParams extends bindings.Struct {
@@ -296,6 +304,8 @@ class _UrlResponseDiskCacheUpdateParams extends bindings.Struct {
 }
 
 
+
+
 class _UrlResponseDiskCacheUpdateAndGetParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(16, 0)
@@ -361,6 +371,8 @@ class _UrlResponseDiskCacheUpdateAndGetParams extends bindings.Struct {
         'Object containing handles cannot be encoded to JSON.');
   }
 }
+
+
 
 
 class UrlResponseDiskCacheUpdateAndGetResponseParams extends bindings.Struct {
@@ -439,6 +451,8 @@ class UrlResponseDiskCacheUpdateAndGetResponseParams extends bindings.Struct {
 }
 
 
+
+
 class _UrlResponseDiskCacheUpdateAndGetExtractedParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(16, 0)
@@ -504,6 +518,8 @@ class _UrlResponseDiskCacheUpdateAndGetExtractedParams extends bindings.Struct {
         'Object containing handles cannot be encoded to JSON.');
   }
 }
+
+
 
 
 class UrlResponseDiskCacheUpdateAndGetExtractedResponseParams extends bindings.Struct {
@@ -581,11 +597,24 @@ class UrlResponseDiskCacheUpdateAndGetExtractedResponseParams extends bindings.S
   }
 }
 
+
+
+
 const int _UrlResponseDiskCache_getName = 0;
 const int _UrlResponseDiskCache_validateName = 1;
 const int _UrlResponseDiskCache_updateName = 2;
 const int _UrlResponseDiskCache_updateAndGetName = 3;
 const int _UrlResponseDiskCache_updateAndGetExtractedName = 4;
+
+
+
+class _UrlResponseDiskCacheServiceDescription implements service_describer.ServiceDescription {
+  dynamic getTopLevelInterface([Function responseFactory]) => null;
+
+  dynamic getTypeDefinition(String typeKey, [Function responseFactory]) => null;
+
+  dynamic getAllTypeDefinitions([Function responseFactory]) => null;
+}
 
 abstract class UrlResponseDiskCache {
   static const String serviceName = "mojo::URLResponseDiskCache";
@@ -611,6 +640,9 @@ class _UrlResponseDiskCacheProxyImpl extends bindings.Proxy {
     assert(endpoint.setDescription("For _UrlResponseDiskCacheProxyImpl"));
     return new _UrlResponseDiskCacheProxyImpl.fromEndpoint(endpoint);
   }
+
+  service_describer.ServiceDescription get serviceDescription =>
+    new _UrlResponseDiskCacheServiceDescription();
 
   void handleResponse(bindings.ServiceMessage message) {
     switch (message.header.type) {
@@ -941,6 +973,10 @@ class UrlResponseDiskCacheStub extends bindings.Stub {
   }
 
   int get version => 0;
+
+  service_describer.ServiceDescription get serviceDescription =>
+    new _UrlResponseDiskCacheServiceDescription();
 }
+
 
 

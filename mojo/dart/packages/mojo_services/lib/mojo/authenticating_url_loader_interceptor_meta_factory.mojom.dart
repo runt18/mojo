@@ -8,6 +8,8 @@ import 'dart:async';
 
 import 'package:mojo/bindings.dart' as bindings;
 import 'package:mojo/core.dart' as core;
+import 'package:mojo/mojo/bindings/types/mojom_types.mojom.dart' as mojom_types;
+import 'package:mojo/mojo/bindings/types/service_describer.mojom.dart' as service_describer;
 import 'package:mojo_services/authentication/authentication.mojom.dart' as authentication_mojom;
 import 'package:mojo_services/mojo/url_loader_interceptor.mojom.dart' as url_loader_interceptor_mojom;
 
@@ -86,7 +88,20 @@ class _AuthenticatingUrlLoaderInterceptorMetaFactoryCreateUrlLoaderInterceptorFa
   }
 }
 
+
+
+
 const int _AuthenticatingUrlLoaderInterceptorMetaFactory_createUrlLoaderInterceptorFactoryName = 0;
+
+
+
+class _AuthenticatingUrlLoaderInterceptorMetaFactoryServiceDescription implements service_describer.ServiceDescription {
+  dynamic getTopLevelInterface([Function responseFactory]) => null;
+
+  dynamic getTypeDefinition(String typeKey, [Function responseFactory]) => null;
+
+  dynamic getAllTypeDefinitions([Function responseFactory]) => null;
+}
 
 abstract class AuthenticatingUrlLoaderInterceptorMetaFactory {
   static const String serviceName = "mojo::AuthenticatingURLLoaderInterceptorMetaFactory";
@@ -108,6 +123,9 @@ class _AuthenticatingUrlLoaderInterceptorMetaFactoryProxyImpl extends bindings.P
     assert(endpoint.setDescription("For _AuthenticatingUrlLoaderInterceptorMetaFactoryProxyImpl"));
     return new _AuthenticatingUrlLoaderInterceptorMetaFactoryProxyImpl.fromEndpoint(endpoint);
   }
+
+  service_describer.ServiceDescription get serviceDescription =>
+    new _AuthenticatingUrlLoaderInterceptorMetaFactoryServiceDescription();
 
   void handleResponse(bindings.ServiceMessage message) {
     switch (message.header.type) {
@@ -253,6 +271,10 @@ class AuthenticatingUrlLoaderInterceptorMetaFactoryStub extends bindings.Stub {
   }
 
   int get version => 0;
+
+  service_describer.ServiceDescription get serviceDescription =>
+    new _AuthenticatingUrlLoaderInterceptorMetaFactoryServiceDescription();
 }
+
 
 

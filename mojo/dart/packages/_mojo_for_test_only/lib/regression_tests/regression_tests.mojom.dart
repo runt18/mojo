@@ -5,9 +5,12 @@
 library regression_tests_mojom;
 
 import 'dart:async';
+import 'dart:collection';
 
 import 'package:mojo/bindings.dart' as bindings;
 import 'package:mojo/core.dart' as core;
+import 'package:mojo/mojo/bindings/types/mojom_types.mojom.dart' as mojom_types;
+import 'package:mojo/mojo/bindings/types/service_describer.mojom.dart' as service_describer;
 
 class EnumWithReference extends bindings.MojoEnum {
   static const EnumWithReference kStereoAndKeyboardMic = const EnumWithReference._(30);
@@ -53,10 +56,30 @@ class EnumWithReference extends bindings.MojoEnum {
         return 'EnumWithReference.kStereoAndKeyboardMic';
       case kMax:
         return 'EnumWithReference.kMax';
+      default:
+        return null;
     }
   }
 
   int toJson() => mojoEnumValue;
+}
+
+mojom_types.MojomEnum _regressionTestsEnumWithReference() {
+  return new mojom_types.MojomEnum()
+    ..declData = (new mojom_types.DeclarationData()
+      ..shortName = 'EnumWithReference'
+      ..fullIdentifier = 'regression_tests.EnumWithReference')
+    ..values = <mojom_types.EnumValue>[
+      new mojom_types.EnumValue()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'KStereoAndKeyboardMic')
+        ..enumTypeKey = 'regression_tests_EnumWithReference__'
+        ..intValue = 30,
+      new mojom_types.EnumValue()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'KMax')
+        ..enumTypeKey = 'regression_tests_EnumWithReference__'
+        ..intValue = 30,];
 }
 
 class EnumWithLowercase extends bindings.MojoEnum {
@@ -103,10 +126,30 @@ class EnumWithLowercase extends bindings.MojoEnum {
         return 'EnumWithLowercase.planarF16';
       case planarF32:
         return 'EnumWithLowercase.planarF32';
+      default:
+        return null;
     }
   }
 
   int toJson() => mojoEnumValue;
+}
+
+mojom_types.MojomEnum _regressionTestsEnumWithLowercase() {
+  return new mojom_types.MojomEnum()
+    ..declData = (new mojom_types.DeclarationData()
+      ..shortName = 'EnumWithLowercase'
+      ..fullIdentifier = 'regression_tests.EnumWithLowercase')
+    ..values = <mojom_types.EnumValue>[
+      new mojom_types.EnumValue()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'PlanarF16')
+        ..enumTypeKey = 'regression_tests_EnumWithLowercase__'
+        ..intValue = 0,
+      new mojom_types.EnumValue()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'PlanarF32')
+        ..enumTypeKey = 'regression_tests_EnumWithLowercase__'
+        ..intValue = 1,];
 }
 
 class EnumWithNumbers extends bindings.MojoEnum {
@@ -146,10 +189,25 @@ class EnumWithNumbers extends bindings.MojoEnum {
     switch(this) {
       case k21:
         return 'EnumWithNumbers.k21';
+      default:
+        return null;
     }
   }
 
   int toJson() => mojoEnumValue;
+}
+
+mojom_types.MojomEnum _regressionTestsEnumWithNumbers() {
+  return new mojom_types.MojomEnum()
+    ..declData = (new mojom_types.DeclarationData()
+      ..shortName = 'EnumWithNumbers'
+      ..fullIdentifier = 'regression_tests.EnumWithNumbers')
+    ..values = <mojom_types.EnumValue>[
+      new mojom_types.EnumValue()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'K21')
+        ..enumTypeKey = 'regression_tests_EnumWithNumbers__'
+        ..intValue = 4,];
 }
 
 class EnumWithK extends bindings.MojoEnum {
@@ -189,10 +247,25 @@ class EnumWithK extends bindings.MojoEnum {
     switch(this) {
       case k:
         return 'EnumWithK.k';
+      default:
+        return null;
     }
   }
 
   int toJson() => mojoEnumValue;
+}
+
+mojom_types.MojomEnum _regressionTestsEnumWithK() {
+  return new mojom_types.MojomEnum()
+    ..declData = (new mojom_types.DeclarationData()
+      ..shortName = 'EnumWithK'
+      ..fullIdentifier = 'regression_tests.EnumWithK')
+    ..values = <mojom_types.EnumValue>[
+      new mojom_types.EnumValue()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'K')
+        ..enumTypeKey = 'regression_tests_EnumWithK__'
+        ..intValue = 0,];
 }
 
 class EnumWithInternalAllCaps extends bindings.MojoEnum {
@@ -246,10 +319,35 @@ class EnumWithInternalAllCaps extends bindings.MojoEnum {
         return 'EnumWithInternalAllCaps.fullscreen';
       case immersive:
         return 'EnumWithInternalAllCaps.immersive';
+      default:
+        return null;
     }
   }
 
   int toJson() => mojoEnumValue;
+}
+
+mojom_types.MojomEnum _regressionTestsEnumWithInternalAllCaps() {
+  return new mojom_types.MojomEnum()
+    ..declData = (new mojom_types.DeclarationData()
+      ..shortName = 'EnumWithInternalAllCaps'
+      ..fullIdentifier = 'regression_tests.EnumWithINTERNALAllCaps')
+    ..values = <mojom_types.EnumValue>[
+      new mojom_types.EnumValue()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'Standard')
+        ..enumTypeKey = 'regression_tests_EnumWithINTERNALAllCaps__'
+        ..intValue = 0,
+      new mojom_types.EnumValue()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'Fullscreen')
+        ..enumTypeKey = 'regression_tests_EnumWithINTERNALAllCaps__'
+        ..intValue = 1,
+      new mojom_types.EnumValue()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'Immersive')
+        ..enumTypeKey = 'regression_tests_EnumWithINTERNALAllCaps__'
+        ..intValue = 2,];
 }
 
 class NormalEnum extends bindings.MojoEnum {
@@ -296,10 +394,30 @@ class NormalEnum extends bindings.MojoEnum {
         return 'NormalEnum.first';
       case second:
         return 'NormalEnum.second';
+      default:
+        return null;
     }
   }
 
   int toJson() => mojoEnumValue;
+}
+
+mojom_types.MojomEnum _regressionTestsNormalEnum() {
+  return new mojom_types.MojomEnum()
+    ..declData = (new mojom_types.DeclarationData()
+      ..shortName = 'NormalEnum'
+      ..fullIdentifier = 'regression_tests.NormalEnum')
+    ..values = <mojom_types.EnumValue>[
+      new mojom_types.EnumValue()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'First')
+        ..enumTypeKey = 'regression_tests_NormalEnum__'
+        ..intValue = 0,
+      new mojom_types.EnumValue()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'Second')
+        ..enumTypeKey = 'regression_tests_NormalEnum__'
+        ..intValue = 1,];
 }
 
 class CamelCaseTestEnum extends bindings.MojoEnum {
@@ -409,10 +527,75 @@ class CamelCaseTestEnum extends bindings.MojoEnum {
         return 'CamelCaseTestEnum.uint32Th1ng';
       case uint64Th1Ng:
         return 'CamelCaseTestEnum.uint64Th1Ng';
+      default:
+        return null;
     }
   }
 
   int toJson() => mojoEnumValue;
+}
+
+mojom_types.MojomEnum _regressionTestsCamelCaseTestEnum() {
+  return new mojom_types.MojomEnum()
+    ..declData = (new mojom_types.DeclarationData()
+      ..shortName = 'CamelCaseTestEnum'
+      ..fullIdentifier = 'regression_tests.CamelCaseTestEnum')
+    ..values = <mojom_types.EnumValue>[
+      new mojom_types.EnumValue()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'BoolThing')
+        ..enumTypeKey = 'regression_tests_CamelCaseTestEnum__'
+        ..intValue = 0,
+      new mojom_types.EnumValue()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'DoubleThing')
+        ..enumTypeKey = 'regression_tests_CamelCaseTestEnum__'
+        ..intValue = 1,
+      new mojom_types.EnumValue()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'FloatThing')
+        ..enumTypeKey = 'regression_tests_CamelCaseTestEnum__'
+        ..intValue = 2,
+      new mojom_types.EnumValue()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'Int8Thing')
+        ..enumTypeKey = 'regression_tests_CamelCaseTestEnum__'
+        ..intValue = 3,
+      new mojom_types.EnumValue()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'Int16Thing')
+        ..enumTypeKey = 'regression_tests_CamelCaseTestEnum__'
+        ..intValue = 4,
+      new mojom_types.EnumValue()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'Int32Th1Ng')
+        ..enumTypeKey = 'regression_tests_CamelCaseTestEnum__'
+        ..intValue = 5,
+      new mojom_types.EnumValue()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'Int64Th1ng')
+        ..enumTypeKey = 'regression_tests_CamelCaseTestEnum__'
+        ..intValue = 6,
+      new mojom_types.EnumValue()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'Uint8TH1ng')
+        ..enumTypeKey = 'regression_tests_CamelCaseTestEnum__'
+        ..intValue = 7,
+      new mojom_types.EnumValue()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'Uint16tH1Ng')
+        ..enumTypeKey = 'regression_tests_CamelCaseTestEnum__'
+        ..intValue = 8,
+      new mojom_types.EnumValue()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'Uint32Th1ng')
+        ..enumTypeKey = 'regression_tests_CamelCaseTestEnum__'
+        ..intValue = 9,
+      new mojom_types.EnumValue()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'Uint64Th1Ng')
+        ..enumTypeKey = 'regression_tests_CamelCaseTestEnum__'
+        ..intValue = 10,];
 }
 
 
@@ -484,6 +667,24 @@ class Edge extends bindings.Struct {
   }
 }
 
+mojom_types.MojomStruct _regressionTestsEdge() {
+  return new mojom_types.MojomStruct()
+    ..declData = (new mojom_types.DeclarationData()
+      ..shortName = 'Edge'
+      ..fullIdentifier = 'regression_tests.Edge')
+    ..fields = <mojom_types.StructField>[
+      new mojom_types.StructField()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'V')
+        ..type = (new mojom_types.Type()
+          ..typeReference = (new mojom_types.TypeReference()
+          ..nullable = true
+        
+          ..identifier = 'regression_tests_Vertex__'
+          ..typeKey = 'regression_tests_Vertex__'
+        )),];
+}
+
 
 class Vertex extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
@@ -552,6 +753,24 @@ class Vertex extends bindings.Struct {
   }
 }
 
+mojom_types.MojomStruct _regressionTestsVertex() {
+  return new mojom_types.MojomStruct()
+    ..declData = (new mojom_types.DeclarationData()
+      ..shortName = 'Vertex'
+      ..fullIdentifier = 'regression_tests.Vertex')
+    ..fields = <mojom_types.StructField>[
+      new mojom_types.StructField()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'E')
+        ..type = (new mojom_types.Type()
+          ..typeReference = (new mojom_types.TypeReference()
+          ..nullable = true
+        
+          ..identifier = 'regression_tests_EmptyStruct__'
+          ..typeKey = 'regression_tests_EmptyStruct__'
+        )),];
+}
+
 
 class EmptyStruct extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
@@ -608,6 +827,14 @@ class EmptyStruct extends bindings.Struct {
     Map map = new Map();
     return map;
   }
+}
+
+mojom_types.MojomStruct _regressionTestsEmptyStruct() {
+  return new mojom_types.MojomStruct()
+    ..declData = (new mojom_types.DeclarationData()
+      ..shortName = 'EmptyStruct'
+      ..fullIdentifier = 'regression_tests.EmptyStruct')
+    ..fields = <mojom_types.StructField>[];
 }
 
 
@@ -678,6 +905,24 @@ class A extends bindings.Struct {
   }
 }
 
+mojom_types.MojomStruct _regressionTestsA() {
+  return new mojom_types.MojomStruct()
+    ..declData = (new mojom_types.DeclarationData()
+      ..shortName = 'A'
+      ..fullIdentifier = 'regression_tests.A')
+    ..fields = <mojom_types.StructField>[
+      new mojom_types.StructField()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'B')
+        ..type = (new mojom_types.Type()
+          ..typeReference = (new mojom_types.TypeReference()
+          ..nullable = true
+        
+          ..identifier = 'regression_tests_B__'
+          ..typeKey = 'regression_tests_B__'
+        )),];
+}
+
 
 class B extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
@@ -746,6 +991,24 @@ class B extends bindings.Struct {
   }
 }
 
+mojom_types.MojomStruct _regressionTestsB() {
+  return new mojom_types.MojomStruct()
+    ..declData = (new mojom_types.DeclarationData()
+      ..shortName = 'B'
+      ..fullIdentifier = 'regression_tests.B')
+    ..fields = <mojom_types.StructField>[
+      new mojom_types.StructField()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'A')
+        ..type = (new mojom_types.Type()
+          ..typeReference = (new mojom_types.TypeReference()
+          ..nullable = true
+        
+          ..identifier = 'regression_tests_A__'
+          ..typeKey = 'regression_tests_A__'
+        )),];
+}
+
 
 class StructWithHandleCalledHandles extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
@@ -810,6 +1073,20 @@ class StructWithHandleCalledHandles extends bindings.Struct {
     throw new bindings.MojoCodecError(
         'Object containing handles cannot be encoded to JSON.');
   }
+}
+
+mojom_types.MojomStruct _regressionTestsStructWithHandleCalledHandles() {
+  return new mojom_types.MojomStruct()
+    ..declData = (new mojom_types.DeclarationData()
+      ..shortName = 'StructWithHandleCalledHandles'
+      ..fullIdentifier = 'regression_tests.StructWithHandleCalledHandles')
+    ..fields = <mojom_types.StructField>[
+      new mojom_types.StructField()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'Handles')
+        ..type = (new mojom_types.Type()
+          ..handleType = (new mojom_types.HandleType()
+            ..kind = mojom_types.HandleTypeKind.unspecified)),];
 }
 
 
@@ -878,6 +1155,22 @@ class StructWithArrayOfHandlesCalledHandles extends bindings.Struct {
   }
 }
 
+mojom_types.MojomStruct _regressionTestsStructWithArrayOfHandlesCalledHandles() {
+  return new mojom_types.MojomStruct()
+    ..declData = (new mojom_types.DeclarationData()
+      ..shortName = 'StructWithArrayOfHandlesCalledHandles'
+      ..fullIdentifier = 'regression_tests.StructWithArrayOfHandlesCalledHandles')
+    ..fields = <mojom_types.StructField>[
+      new mojom_types.StructField()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'Handles')
+        ..type = (new mojom_types.Type()
+          ..arrayType = (new mojom_types.ArrayType()
+            ..elementType = (new mojom_types.Type()
+                    ..handleType = (new mojom_types.HandleType()
+                      ..kind = mojom_types.HandleTypeKind.unspecified)))),];
+}
+
 
 class StructWithInterfaceCalledHandles extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
@@ -942,6 +1235,22 @@ class StructWithInterfaceCalledHandles extends bindings.Struct {
     throw new bindings.MojoCodecError(
         'Object containing handles cannot be encoded to JSON.');
   }
+}
+
+mojom_types.MojomStruct _regressionTestsStructWithInterfaceCalledHandles() {
+  return new mojom_types.MojomStruct()
+    ..declData = (new mojom_types.DeclarationData()
+      ..shortName = 'StructWithInterfaceCalledHandles'
+      ..fullIdentifier = 'regression_tests.StructWithInterfaceCalledHandles')
+    ..fields = <mojom_types.StructField>[
+      new mojom_types.StructField()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'Handles')
+        ..type = (new mojom_types.Type()
+          ..typeReference = (new mojom_types.TypeReference()
+          ..identifier = 'regression_tests_TestInterface__'
+          ..typeKey = 'regression_tests_TestInterface__'
+        )),];
 }
 
 
@@ -1023,6 +1332,24 @@ class ContainsArrayOfEnum extends bindings.Struct {
   }
 }
 
+mojom_types.MojomStruct _regressionTestsContainsArrayOfEnum() {
+  return new mojom_types.MojomStruct()
+    ..declData = (new mojom_types.DeclarationData()
+      ..shortName = 'ContainsArrayOfEnum'
+      ..fullIdentifier = 'regression_tests.ContainsArrayOfEnum')
+    ..fields = <mojom_types.StructField>[
+      new mojom_types.StructField()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'ArrayOfEnums')
+        ..type = (new mojom_types.Type()
+          ..arrayType = (new mojom_types.ArrayType()
+            ..elementType = (new mojom_types.Type()
+                    ..typeReference = (new mojom_types.TypeReference()
+                    ..identifier = 'regression_tests_NormalEnum__'
+                    ..typeKey = 'regression_tests_NormalEnum__'
+                  )))),];
+}
+
 
 class _CheckMethodWithEmptyResponseWithoutParameterAndEmptyResponseParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
@@ -1081,6 +1408,14 @@ class _CheckMethodWithEmptyResponseWithoutParameterAndEmptyResponseParams extend
   }
 }
 
+mojom_types.MojomStruct _regressionTestsCheckMethodWithEmptyResponseWithoutParameterAndEmptyResponseParams() {
+  return new mojom_types.MojomStruct()
+    ..declData = (new mojom_types.DeclarationData()
+      ..shortName = 'CheckMethodWithEmptyResponseWithoutParameterAndEmptyResponseParams'
+      ..fullIdentifier = 'regression_tests.CheckMethodWithEmptyResponse_WithoutParameterAndEmptyResponse_Params')
+    ..fields = <mojom_types.StructField>[];
+}
+
 
 class CheckMethodWithEmptyResponseWithoutParameterAndEmptyResponseResponseParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
@@ -1137,6 +1472,14 @@ class CheckMethodWithEmptyResponseWithoutParameterAndEmptyResponseResponseParams
     Map map = new Map();
     return map;
   }
+}
+
+mojom_types.MojomStruct _regressionTestsCheckMethodWithEmptyResponseWithoutParameterAndEmptyResponseResponseParams() {
+  return new mojom_types.MojomStruct()
+    ..declData = (new mojom_types.DeclarationData()
+      ..shortName = 'CheckMethodWithEmptyResponseWithoutParameterAndEmptyResponseResponseParams'
+      ..fullIdentifier = 'regression_tests.CheckMethodWithEmptyResponse_WithoutParameterAndEmptyResponse_ResponseParams')
+    ..fields = <mojom_types.StructField>[];
 }
 
 
@@ -1206,6 +1549,19 @@ class _CheckMethodWithEmptyResponseWithParameterAndEmptyResponseParams extends b
   }
 }
 
+mojom_types.MojomStruct _regressionTestsCheckMethodWithEmptyResponseWithParameterAndEmptyResponseParams() {
+  return new mojom_types.MojomStruct()
+    ..declData = (new mojom_types.DeclarationData()
+      ..shortName = 'CheckMethodWithEmptyResponseWithParameterAndEmptyResponseParams'
+      ..fullIdentifier = 'regression_tests.CheckMethodWithEmptyResponse_WithParameterAndEmptyResponse_Params')
+    ..fields = <mojom_types.StructField>[
+      new mojom_types.StructField()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'B')
+        ..type = (new mojom_types.Type()
+          ..simpleType = mojom_types.SimpleType.bool),];
+}
+
 
 class CheckMethodWithEmptyResponseWithParameterAndEmptyResponseResponseParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
@@ -1262,6 +1618,14 @@ class CheckMethodWithEmptyResponseWithParameterAndEmptyResponseResponseParams ex
     Map map = new Map();
     return map;
   }
+}
+
+mojom_types.MojomStruct _regressionTestsCheckMethodWithEmptyResponseWithParameterAndEmptyResponseResponseParams() {
+  return new mojom_types.MojomStruct()
+    ..declData = (new mojom_types.DeclarationData()
+      ..shortName = 'CheckMethodWithEmptyResponseWithParameterAndEmptyResponseResponseParams'
+      ..fullIdentifier = 'regression_tests.CheckMethodWithEmptyResponse_WithParameterAndEmptyResponse_ResponseParams')
+    ..fields = <mojom_types.StructField>[];
 }
 
 
@@ -1340,6 +1704,24 @@ class _CheckNameCollisionWithNameCollisionParams extends bindings.Struct {
   }
 }
 
+mojom_types.MojomStruct _regressionTestsCheckNameCollisionWithNameCollisionParams() {
+  return new mojom_types.MojomStruct()
+    ..declData = (new mojom_types.DeclarationData()
+      ..shortName = 'CheckNameCollisionWithNameCollisionParams'
+      ..fullIdentifier = 'regression_tests.CheckNameCollision_WithNameCollision_Params')
+    ..fields = <mojom_types.StructField>[
+      new mojom_types.StructField()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'Message')
+        ..type = (new mojom_types.Type()
+          ..simpleType = mojom_types.SimpleType.bool),
+      new mojom_types.StructField()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'Response')
+        ..type = (new mojom_types.Type()
+          ..simpleType = mojom_types.SimpleType.bool),];
+}
+
 
 class CheckNameCollisionWithNameCollisionResponseParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
@@ -1416,6 +1798,24 @@ class CheckNameCollisionWithNameCollisionResponseParams extends bindings.Struct 
   }
 }
 
+mojom_types.MojomStruct _regressionTestsCheckNameCollisionWithNameCollisionResponseParams() {
+  return new mojom_types.MojomStruct()
+    ..declData = (new mojom_types.DeclarationData()
+      ..shortName = 'CheckNameCollisionWithNameCollisionResponseParams'
+      ..fullIdentifier = 'regression_tests.CheckNameCollision_WithNameCollision_ResponseParams')
+    ..fields = <mojom_types.StructField>[
+      new mojom_types.StructField()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'Message')
+        ..type = (new mojom_types.Type()
+          ..simpleType = mojom_types.SimpleType.bool),
+      new mojom_types.StructField()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'Response')
+        ..type = (new mojom_types.Type()
+          ..simpleType = mojom_types.SimpleType.bool),];
+}
+
 
 class _CheckEnumCapsSetEnumWithInternalAllCapsParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
@@ -1487,6 +1887,22 @@ class _CheckEnumCapsSetEnumWithInternalAllCapsParams extends bindings.Struct {
   }
 }
 
+mojom_types.MojomStruct _regressionTestsCheckEnumCapsSetEnumWithInternalAllCapsParams() {
+  return new mojom_types.MojomStruct()
+    ..declData = (new mojom_types.DeclarationData()
+      ..shortName = 'CheckEnumCapsSetEnumWithInternalAllCapsParams'
+      ..fullIdentifier = 'regression_tests.CheckEnumCaps_SetEnumWithINTERNALAllCaps_Params')
+    ..fields = <mojom_types.StructField>[
+      new mojom_types.StructField()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'E')
+        ..type = (new mojom_types.Type()
+          ..typeReference = (new mojom_types.TypeReference()
+          ..identifier = 'regression_tests_EnumWithINTERNALAllCaps__'
+          ..typeKey = 'regression_tests_EnumWithINTERNALAllCaps__'
+        )),];
+}
+
 
 class _TestInterfaceSomeMessageParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
@@ -1543,6 +1959,14 @@ class _TestInterfaceSomeMessageParams extends bindings.Struct {
     Map map = new Map();
     return map;
   }
+}
+
+mojom_types.MojomStruct _regressionTestsTestInterfaceSomeMessageParams() {
+  return new mojom_types.MojomStruct()
+    ..declData = (new mojom_types.DeclarationData()
+      ..shortName = 'TestInterfaceSomeMessageParams'
+      ..fullIdentifier = 'regression_tests.TestInterface_SomeMessage_Params')
+    ..fields = <mojom_types.StructField>[];
 }
 
 
@@ -1628,6 +2052,21 @@ class _Regression551GetParams extends bindings.Struct {
   }
 }
 
+mojom_types.MojomStruct _regressionTestsRegression551GetParams() {
+  return new mojom_types.MojomStruct()
+    ..declData = (new mojom_types.DeclarationData()
+      ..shortName = 'Regression551GetParams'
+      ..fullIdentifier = 'regression_tests.Regression551_Get_Params')
+    ..fields = <mojom_types.StructField>[
+      new mojom_types.StructField()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'KeyPrefixes')
+        ..type = (new mojom_types.Type()
+          ..arrayType = (new mojom_types.ArrayType()
+            ..elementType = (new mojom_types.Type()
+                    ..stringType = (new mojom_types.StringType())))),];
+}
+
 
 class Regression551GetResponseParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
@@ -1695,6 +2134,19 @@ class Regression551GetResponseParams extends bindings.Struct {
   }
 }
 
+mojom_types.MojomStruct _regressionTestsRegression551GetResponseParams() {
+  return new mojom_types.MojomStruct()
+    ..declData = (new mojom_types.DeclarationData()
+      ..shortName = 'Regression551GetResponseParams'
+      ..fullIdentifier = 'regression_tests.Regression551_Get_ResponseParams')
+    ..fields = <mojom_types.StructField>[
+      new mojom_types.StructField()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'Result')
+        ..type = (new mojom_types.Type()
+          ..simpleType = mojom_types.SimpleType.int32),];
+}
+
 
 class _ServiceNameServiceNameParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
@@ -1751,6 +2203,14 @@ class _ServiceNameServiceNameParams extends bindings.Struct {
     Map map = new Map();
     return map;
   }
+}
+
+mojom_types.MojomStruct _regressionTestsServiceNameServiceNameParams() {
+  return new mojom_types.MojomStruct()
+    ..declData = (new mojom_types.DeclarationData()
+      ..shortName = 'ServiceNameServiceNameParams'
+      ..fullIdentifier = 'regression_tests.ServiceName_serviceName_Params')
+    ..fields = <mojom_types.StructField>[];
 }
 
 
@@ -1820,8 +2280,55 @@ class ServiceNameServiceNameResponseParams extends bindings.Struct {
   }
 }
 
+mojom_types.MojomStruct _regressionTestsServiceNameServiceNameResponseParams() {
+  return new mojom_types.MojomStruct()
+    ..declData = (new mojom_types.DeclarationData()
+      ..shortName = 'ServiceNameServiceNameResponseParams'
+      ..fullIdentifier = 'regression_tests.ServiceName_serviceName_ResponseParams')
+    ..fields = <mojom_types.StructField>[
+      new mojom_types.StructField()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'ServiceName')
+        ..type = (new mojom_types.Type()
+          ..stringType = (new mojom_types.StringType())),];
+}
+
+
 const int _CheckMethodWithEmptyResponse_withoutParameterAndEmptyResponseName = 0;
 const int _CheckMethodWithEmptyResponse_withParameterAndEmptyResponseName = 1;
+
+mojom_types.MojomInterface _regressionTestsCheckMethodWithEmptyResponse() {
+  return new mojom_types.MojomInterface()
+    ..declData = (new mojom_types.DeclarationData()
+      ..shortName = 'CheckMethodWithEmptyResponse'
+      ..fullIdentifier = 'regression_tests.CheckMethodWithEmptyResponse')
+    ..interfaceName = 'CheckMethodWithEmptyResponse'
+    ..methods = <int, mojom_types.MojomMethod>{
+      _CheckMethodWithEmptyResponse_withoutParameterAndEmptyResponseName: new mojom_types.MojomMethod()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'WithoutParameterAndEmptyResponse')
+        ..ordinal = _CheckMethodWithEmptyResponse_withoutParameterAndEmptyResponseName
+        ..responseParams = _regressionTestsCheckMethodWithEmptyResponseWithoutParameterAndEmptyResponseResponseParams()
+        ..parameters = _regressionTestsCheckMethodWithEmptyResponseWithoutParameterAndEmptyResponseParams(),
+      _CheckMethodWithEmptyResponse_withParameterAndEmptyResponseName: new mojom_types.MojomMethod()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'WithParameterAndEmptyResponse')
+        ..ordinal = _CheckMethodWithEmptyResponse_withParameterAndEmptyResponseName
+        ..responseParams = _regressionTestsCheckMethodWithEmptyResponseWithParameterAndEmptyResponseResponseParams()
+        ..parameters = _regressionTestsCheckMethodWithEmptyResponseWithParameterAndEmptyResponseParams(),
+    };
+}
+
+class _CheckMethodWithEmptyResponseServiceDescription implements service_describer.ServiceDescription {
+  dynamic getTopLevelInterface([Function responseFactory]) =>
+      _regressionTestsCheckMethodWithEmptyResponse();
+
+  dynamic getTypeDefinition(String typeKey, [Function responseFactory]) =>
+      getAllMojomTypeDefinitions()[typeKey];
+
+  dynamic getAllTypeDefinitions([Function responseFactory]) =>
+      getAllMojomTypeDefinitions();
+}
 
 abstract class CheckMethodWithEmptyResponse {
   static const String serviceName = null;
@@ -1844,6 +2351,9 @@ class _CheckMethodWithEmptyResponseProxyImpl extends bindings.Proxy {
     assert(endpoint.setDescription("For _CheckMethodWithEmptyResponseProxyImpl"));
     return new _CheckMethodWithEmptyResponseProxyImpl.fromEndpoint(endpoint);
   }
+
+  service_describer.ServiceDescription get serviceDescription =>
+    new _CheckMethodWithEmptyResponseServiceDescription();
 
   void handleResponse(bindings.ServiceMessage message) {
     switch (message.header.type) {
@@ -2083,9 +2593,39 @@ class CheckMethodWithEmptyResponseStub extends bindings.Stub {
   }
 
   int get version => 0;
+
+  service_describer.ServiceDescription get serviceDescription =>
+    new _CheckMethodWithEmptyResponseServiceDescription();
 }
 
 const int _CheckNameCollision_withNameCollisionName = 0;
+
+mojom_types.MojomInterface _regressionTestsCheckNameCollision() {
+  return new mojom_types.MojomInterface()
+    ..declData = (new mojom_types.DeclarationData()
+      ..shortName = 'CheckNameCollision'
+      ..fullIdentifier = 'regression_tests.CheckNameCollision')
+    ..interfaceName = 'CheckNameCollision'
+    ..methods = <int, mojom_types.MojomMethod>{
+      _CheckNameCollision_withNameCollisionName: new mojom_types.MojomMethod()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'WithNameCollision')
+        ..ordinal = _CheckNameCollision_withNameCollisionName
+        ..responseParams = _regressionTestsCheckNameCollisionWithNameCollisionResponseParams()
+        ..parameters = _regressionTestsCheckNameCollisionWithNameCollisionParams(),
+    };
+}
+
+class _CheckNameCollisionServiceDescription implements service_describer.ServiceDescription {
+  dynamic getTopLevelInterface([Function responseFactory]) =>
+      _regressionTestsCheckNameCollision();
+
+  dynamic getTypeDefinition(String typeKey, [Function responseFactory]) =>
+      getAllMojomTypeDefinitions()[typeKey];
+
+  dynamic getAllTypeDefinitions([Function responseFactory]) =>
+      getAllMojomTypeDefinitions();
+}
 
 abstract class CheckNameCollision {
   static const String serviceName = null;
@@ -2107,6 +2647,9 @@ class _CheckNameCollisionProxyImpl extends bindings.Proxy {
     assert(endpoint.setDescription("For _CheckNameCollisionProxyImpl"));
     return new _CheckNameCollisionProxyImpl.fromEndpoint(endpoint);
   }
+
+  service_describer.ServiceDescription get serviceDescription =>
+    new _CheckNameCollisionServiceDescription();
 
   void handleResponse(bindings.ServiceMessage message) {
     switch (message.header.type) {
@@ -2295,9 +2838,38 @@ class CheckNameCollisionStub extends bindings.Stub {
   }
 
   int get version => 0;
+
+  service_describer.ServiceDescription get serviceDescription =>
+    new _CheckNameCollisionServiceDescription();
 }
 
 const int _CheckEnumCaps_setEnumWithInternalAllCapsName = 0;
+
+mojom_types.MojomInterface _regressionTestsCheckEnumCaps() {
+  return new mojom_types.MojomInterface()
+    ..declData = (new mojom_types.DeclarationData()
+      ..shortName = 'CheckEnumCaps'
+      ..fullIdentifier = 'regression_tests.CheckEnumCaps')
+    ..interfaceName = 'CheckEnumCaps'
+    ..methods = <int, mojom_types.MojomMethod>{
+      _CheckEnumCaps_setEnumWithInternalAllCapsName: new mojom_types.MojomMethod()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'SetEnumWithInternalAllCaps')
+        ..ordinal = _CheckEnumCaps_setEnumWithInternalAllCapsName
+        ..parameters = _regressionTestsCheckEnumCapsSetEnumWithInternalAllCapsParams(),
+    };
+}
+
+class _CheckEnumCapsServiceDescription implements service_describer.ServiceDescription {
+  dynamic getTopLevelInterface([Function responseFactory]) =>
+      _regressionTestsCheckEnumCaps();
+
+  dynamic getTypeDefinition(String typeKey, [Function responseFactory]) =>
+      getAllMojomTypeDefinitions()[typeKey];
+
+  dynamic getAllTypeDefinitions([Function responseFactory]) =>
+      getAllMojomTypeDefinitions();
+}
 
 abstract class CheckEnumCaps {
   static const String serviceName = null;
@@ -2319,6 +2891,9 @@ class _CheckEnumCapsProxyImpl extends bindings.Proxy {
     assert(endpoint.setDescription("For _CheckEnumCapsProxyImpl"));
     return new _CheckEnumCapsProxyImpl.fromEndpoint(endpoint);
   }
+
+  service_describer.ServiceDescription get serviceDescription =>
+    new _CheckEnumCapsServiceDescription();
 
   void handleResponse(bindings.ServiceMessage message) {
     switch (message.header.type) {
@@ -2463,9 +3038,38 @@ class CheckEnumCapsStub extends bindings.Stub {
   }
 
   int get version => 0;
+
+  service_describer.ServiceDescription get serviceDescription =>
+    new _CheckEnumCapsServiceDescription();
 }
 
 const int _TestInterface_someMessageName = 0;
+
+mojom_types.MojomInterface _regressionTestsTestInterface() {
+  return new mojom_types.MojomInterface()
+    ..declData = (new mojom_types.DeclarationData()
+      ..shortName = 'TestInterface'
+      ..fullIdentifier = 'regression_tests.TestInterface')
+    ..interfaceName = 'TestInterface'
+    ..methods = <int, mojom_types.MojomMethod>{
+      _TestInterface_someMessageName: new mojom_types.MojomMethod()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'SomeMessage')
+        ..ordinal = _TestInterface_someMessageName
+        ..parameters = _regressionTestsTestInterfaceSomeMessageParams(),
+    };
+}
+
+class _TestInterfaceServiceDescription implements service_describer.ServiceDescription {
+  dynamic getTopLevelInterface([Function responseFactory]) =>
+      _regressionTestsTestInterface();
+
+  dynamic getTypeDefinition(String typeKey, [Function responseFactory]) =>
+      getAllMojomTypeDefinitions()[typeKey];
+
+  dynamic getAllTypeDefinitions([Function responseFactory]) =>
+      getAllMojomTypeDefinitions();
+}
 
 abstract class TestInterface {
   static const String serviceName = null;
@@ -2487,6 +3091,9 @@ class _TestInterfaceProxyImpl extends bindings.Proxy {
     assert(endpoint.setDescription("For _TestInterfaceProxyImpl"));
     return new _TestInterfaceProxyImpl.fromEndpoint(endpoint);
   }
+
+  service_describer.ServiceDescription get serviceDescription =>
+    new _TestInterfaceServiceDescription();
 
   void handleResponse(bindings.ServiceMessage message) {
     switch (message.header.type) {
@@ -2630,9 +3237,39 @@ class TestInterfaceStub extends bindings.Stub {
   }
 
   int get version => 0;
+
+  service_describer.ServiceDescription get serviceDescription =>
+    new _TestInterfaceServiceDescription();
 }
 
 const int _Regression551_getName = 0;
+
+mojom_types.MojomInterface _regressionTestsRegression551() {
+  return new mojom_types.MojomInterface()
+    ..declData = (new mojom_types.DeclarationData()
+      ..shortName = 'Regression551'
+      ..fullIdentifier = 'regression_tests.Regression551')
+    ..interfaceName = 'Regression551'
+    ..methods = <int, mojom_types.MojomMethod>{
+      _Regression551_getName: new mojom_types.MojomMethod()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'Get')
+        ..ordinal = _Regression551_getName
+        ..responseParams = _regressionTestsRegression551GetResponseParams()
+        ..parameters = _regressionTestsRegression551GetParams(),
+    };
+}
+
+class _Regression551ServiceDescription implements service_describer.ServiceDescription {
+  dynamic getTopLevelInterface([Function responseFactory]) =>
+      _regressionTestsRegression551();
+
+  dynamic getTypeDefinition(String typeKey, [Function responseFactory]) =>
+      getAllMojomTypeDefinitions()[typeKey];
+
+  dynamic getAllTypeDefinitions([Function responseFactory]) =>
+      getAllMojomTypeDefinitions();
+}
 
 abstract class Regression551 {
   static const String serviceName = null;
@@ -2654,6 +3291,9 @@ class _Regression551ProxyImpl extends bindings.Proxy {
     assert(endpoint.setDescription("For _Regression551ProxyImpl"));
     return new _Regression551ProxyImpl.fromEndpoint(endpoint);
   }
+
+  service_describer.ServiceDescription get serviceDescription =>
+    new _Regression551ServiceDescription();
 
   void handleResponse(bindings.ServiceMessage message) {
     switch (message.header.type) {
@@ -2840,9 +3480,39 @@ class Regression551Stub extends bindings.Stub {
   }
 
   int get version => 0;
+
+  service_describer.ServiceDescription get serviceDescription =>
+    new _Regression551ServiceDescription();
 }
 
 const int _ServiceName_serviceName_Name = 0;
+
+mojom_types.MojomInterface _regressionTestsServiceName() {
+  return new mojom_types.MojomInterface()
+    ..declData = (new mojom_types.DeclarationData()
+      ..shortName = 'ServiceName'
+      ..fullIdentifier = 'regression_tests.ServiceName')
+    ..interfaceName = 'ServiceName'
+    ..methods = <int, mojom_types.MojomMethod>{
+      _ServiceName_serviceName_Name: new mojom_types.MojomMethod()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'ServiceName')
+        ..ordinal = _ServiceName_serviceName_Name
+        ..responseParams = _regressionTestsServiceNameServiceNameResponseParams()
+        ..parameters = _regressionTestsServiceNameServiceNameParams(),
+    };
+}
+
+class _ServiceNameServiceDescription implements service_describer.ServiceDescription {
+  dynamic getTopLevelInterface([Function responseFactory]) =>
+      _regressionTestsServiceName();
+
+  dynamic getTypeDefinition(String typeKey, [Function responseFactory]) =>
+      getAllMojomTypeDefinitions()[typeKey];
+
+  dynamic getAllTypeDefinitions([Function responseFactory]) =>
+      getAllMojomTypeDefinitions();
+}
 
 abstract class ServiceName {
   static const String serviceName = null;
@@ -2864,6 +3534,9 @@ class _ServiceNameProxyImpl extends bindings.Proxy {
     assert(endpoint.setDescription("For _ServiceNameProxyImpl"));
     return new _ServiceNameProxyImpl.fromEndpoint(endpoint);
   }
+
+  service_describer.ServiceDescription get serviceDescription =>
+    new _ServiceNameServiceDescription();
 
   void handleResponse(bindings.ServiceMessage message) {
     switch (message.header.type) {
@@ -3049,6 +3722,124 @@ class ServiceNameStub extends bindings.Stub {
   }
 
   int get version => 0;
+
+  service_describer.ServiceDescription get serviceDescription =>
+    new _ServiceNameServiceDescription();
 }
 
+
+Map<String, mojom_types.UserDefinedType> _initDescriptions() {
+  var map = new HashMap<String, mojom_types.UserDefinedType>();
+  map["regression_tests_EnumWithReference__"] =
+    new mojom_types.UserDefinedType()
+      ..enumType = _regressionTestsEnumWithReference();
+  map["regression_tests_EnumWithLowercase__"] =
+    new mojom_types.UserDefinedType()
+      ..enumType = _regressionTestsEnumWithLowercase();
+  map["regression_tests_EnumWithNumbers__"] =
+    new mojom_types.UserDefinedType()
+      ..enumType = _regressionTestsEnumWithNumbers();
+  map["regression_tests_EnumWithK__"] =
+    new mojom_types.UserDefinedType()
+      ..enumType = _regressionTestsEnumWithK();
+  map["regression_tests_EnumWithINTERNALAllCaps__"] =
+    new mojom_types.UserDefinedType()
+      ..enumType = _regressionTestsEnumWithInternalAllCaps();
+  map["regression_tests_NormalEnum__"] =
+    new mojom_types.UserDefinedType()
+      ..enumType = _regressionTestsNormalEnum();
+  map["regression_tests_CamelCaseTestEnum__"] =
+    new mojom_types.UserDefinedType()
+      ..enumType = _regressionTestsCamelCaseTestEnum();
+  map["regression_tests_Edge__"] =
+    new mojom_types.UserDefinedType()
+      ..structType = _regressionTestsEdge();
+  map["regression_tests_Vertex__"] =
+    new mojom_types.UserDefinedType()
+      ..structType = _regressionTestsVertex();
+  map["regression_tests_EmptyStruct__"] =
+    new mojom_types.UserDefinedType()
+      ..structType = _regressionTestsEmptyStruct();
+  map["regression_tests_A__"] =
+    new mojom_types.UserDefinedType()
+      ..structType = _regressionTestsA();
+  map["regression_tests_B__"] =
+    new mojom_types.UserDefinedType()
+      ..structType = _regressionTestsB();
+  map["regression_tests_StructWithHandleCalledHandles__"] =
+    new mojom_types.UserDefinedType()
+      ..structType = _regressionTestsStructWithHandleCalledHandles();
+  map["regression_tests_StructWithArrayOfHandlesCalledHandles__"] =
+    new mojom_types.UserDefinedType()
+      ..structType = _regressionTestsStructWithArrayOfHandlesCalledHandles();
+  map["regression_tests_StructWithInterfaceCalledHandles__"] =
+    new mojom_types.UserDefinedType()
+      ..structType = _regressionTestsStructWithInterfaceCalledHandles();
+  map["regression_tests_ContainsArrayOfEnum__"] =
+    new mojom_types.UserDefinedType()
+      ..structType = _regressionTestsContainsArrayOfEnum();
+  map["regression_tests_CheckMethodWithEmptyResponse_WithoutParameterAndEmptyResponse_Params__"] =
+    new mojom_types.UserDefinedType()
+      ..structType = _regressionTestsCheckMethodWithEmptyResponseWithoutParameterAndEmptyResponseParams();
+  map["regression_tests_CheckMethodWithEmptyResponse_WithoutParameterAndEmptyResponse_ResponseParams__"] =
+    new mojom_types.UserDefinedType()
+      ..structType = _regressionTestsCheckMethodWithEmptyResponseWithoutParameterAndEmptyResponseResponseParams();
+  map["regression_tests_CheckMethodWithEmptyResponse_WithParameterAndEmptyResponse_Params__"] =
+    new mojom_types.UserDefinedType()
+      ..structType = _regressionTestsCheckMethodWithEmptyResponseWithParameterAndEmptyResponseParams();
+  map["regression_tests_CheckMethodWithEmptyResponse_WithParameterAndEmptyResponse_ResponseParams__"] =
+    new mojom_types.UserDefinedType()
+      ..structType = _regressionTestsCheckMethodWithEmptyResponseWithParameterAndEmptyResponseResponseParams();
+  map["regression_tests_CheckNameCollision_WithNameCollision_Params__"] =
+    new mojom_types.UserDefinedType()
+      ..structType = _regressionTestsCheckNameCollisionWithNameCollisionParams();
+  map["regression_tests_CheckNameCollision_WithNameCollision_ResponseParams__"] =
+    new mojom_types.UserDefinedType()
+      ..structType = _regressionTestsCheckNameCollisionWithNameCollisionResponseParams();
+  map["regression_tests_CheckEnumCaps_SetEnumWithINTERNALAllCaps_Params__"] =
+    new mojom_types.UserDefinedType()
+      ..structType = _regressionTestsCheckEnumCapsSetEnumWithInternalAllCapsParams();
+  map["regression_tests_TestInterface_SomeMessage_Params__"] =
+    new mojom_types.UserDefinedType()
+      ..structType = _regressionTestsTestInterfaceSomeMessageParams();
+  map["regression_tests_Regression551_Get_Params__"] =
+    new mojom_types.UserDefinedType()
+      ..structType = _regressionTestsRegression551GetParams();
+  map["regression_tests_Regression551_Get_ResponseParams__"] =
+    new mojom_types.UserDefinedType()
+      ..structType = _regressionTestsRegression551GetResponseParams();
+  map["regression_tests_ServiceName_serviceName_Params__"] =
+    new mojom_types.UserDefinedType()
+      ..structType = _regressionTestsServiceNameServiceNameParams();
+  map["regression_tests_ServiceName_serviceName_ResponseParams__"] =
+    new mojom_types.UserDefinedType()
+      ..structType = _regressionTestsServiceNameServiceNameResponseParams();
+  map["regression_tests_CheckMethodWithEmptyResponse__"] =
+    new mojom_types.UserDefinedType()
+      ..interfaceType = _regressionTestsCheckMethodWithEmptyResponse();
+  map["regression_tests_CheckNameCollision__"] =
+    new mojom_types.UserDefinedType()
+      ..interfaceType = _regressionTestsCheckNameCollision();
+  map["regression_tests_CheckEnumCaps__"] =
+    new mojom_types.UserDefinedType()
+      ..interfaceType = _regressionTestsCheckEnumCaps();
+  map["regression_tests_TestInterface__"] =
+    new mojom_types.UserDefinedType()
+      ..interfaceType = _regressionTestsTestInterface();
+  map["regression_tests_Regression551__"] =
+    new mojom_types.UserDefinedType()
+      ..interfaceType = _regressionTestsRegression551();
+  map["regression_tests_ServiceName__"] =
+    new mojom_types.UserDefinedType()
+      ..interfaceType = _regressionTestsServiceName();
+  return map;
+}
+
+var _mojomDesc;
+Map<String, mojom_types.UserDefinedType> getAllMojomTypeDefinitions() {
+  if (_mojomDesc == null) {
+    _mojomDesc = _initDescriptions();
+  }
+  return _mojomDesc;
+}
 

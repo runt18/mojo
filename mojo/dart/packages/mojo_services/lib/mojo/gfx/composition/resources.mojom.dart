@@ -8,6 +8,8 @@ import 'dart:async';
 
 import 'package:mojo/bindings.dart' as bindings;
 import 'package:mojo/core.dart' as core;
+import 'package:mojo/mojo/bindings/types/mojom_types.mojom.dart' as mojom_types;
+import 'package:mojo/mojo/bindings/types/service_describer.mojom.dart' as service_describer;
 import 'package:mojo_services/mojo/geometry.mojom.dart' as geometry_mojom;
 import 'package:mojo_services/mojo/gfx/composition/scene_token.mojom.dart' as scene_token_mojom;
 
@@ -79,6 +81,8 @@ class SceneResource extends bindings.Struct {
     return map;
   }
 }
+
+
 
 
 class MailboxTextureResource extends bindings.Struct {
@@ -172,6 +176,8 @@ class MailboxTextureResource extends bindings.Struct {
 }
 
 
+
+
 class _MailboxTextureCallbackOnMailboxTextureReleasedParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(8, 0)
@@ -228,6 +234,8 @@ class _MailboxTextureCallbackOnMailboxTextureReleasedParams extends bindings.Str
     return map;
   }
 }
+
+
 
 
 
@@ -336,7 +344,20 @@ class Resource extends bindings.Union {
     return result;
   }
 }
+
+
+
 const int _MailboxTextureCallback_onMailboxTextureReleasedName = 0;
+
+
+
+class _MailboxTextureCallbackServiceDescription implements service_describer.ServiceDescription {
+  dynamic getTopLevelInterface([Function responseFactory]) => null;
+
+  dynamic getTypeDefinition(String typeKey, [Function responseFactory]) => null;
+
+  dynamic getAllTypeDefinitions([Function responseFactory]) => null;
+}
 
 abstract class MailboxTextureCallback {
   static const String serviceName = null;
@@ -358,6 +379,9 @@ class _MailboxTextureCallbackProxyImpl extends bindings.Proxy {
     assert(endpoint.setDescription("For _MailboxTextureCallbackProxyImpl"));
     return new _MailboxTextureCallbackProxyImpl.fromEndpoint(endpoint);
   }
+
+  service_describer.ServiceDescription get serviceDescription =>
+    new _MailboxTextureCallbackServiceDescription();
 
   void handleResponse(bindings.ServiceMessage message) {
     switch (message.header.type) {
@@ -501,6 +525,10 @@ class MailboxTextureCallbackStub extends bindings.Stub {
   }
 
   int get version => 0;
+
+  service_describer.ServiceDescription get serviceDescription =>
+    new _MailboxTextureCallbackServiceDescription();
 }
+
 
 

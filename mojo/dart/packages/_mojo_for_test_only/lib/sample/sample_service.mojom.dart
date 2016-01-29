@@ -5,9 +5,12 @@
 library sample_service_mojom;
 
 import 'dart:async';
+import 'dart:collection';
 
 import 'package:mojo/bindings.dart' as bindings;
 import 'package:mojo/core.dart' as core;
+import 'package:mojo/mojo/bindings/types/mojom_types.mojom.dart' as mojom_types;
+import 'package:mojo/mojo/bindings/types/service_describer.mojom.dart' as service_describer;
 import 'package:_mojo_for_test_only/imported/sample_import.mojom.dart' as sample_import_mojom;
 import 'package:_mojo_for_test_only/imported/sample_import2.mojom.dart' as sample_import2_mojom;
 const int kTwelve = 12;
@@ -72,10 +75,40 @@ class BarType extends bindings.MojoEnum {
         return 'BarType.both';
       case invalid:
         return 'BarType.invalid';
+      default:
+        return null;
     }
   }
 
   int toJson() => mojoEnumValue;
+}
+
+mojom_types.MojomEnum _sampleServiceType() {
+  return new mojom_types.MojomEnum()
+    ..declData = (new mojom_types.DeclarationData()
+      ..shortName = 'Type'
+      ..fullIdentifier = 'sample.Type')
+    ..values = <mojom_types.EnumValue>[
+      new mojom_types.EnumValue()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'Vertical')
+        ..enumTypeKey = 'sample_service_Type__'
+        ..intValue = 1,
+      new mojom_types.EnumValue()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'Horizontal')
+        ..enumTypeKey = 'sample_service_Type__'
+        ..intValue = 2,
+      new mojom_types.EnumValue()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'Both')
+        ..enumTypeKey = 'sample_service_Type__'
+        ..intValue = 3,
+      new mojom_types.EnumValue()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'Invalid')
+        ..enumTypeKey = 'sample_service_Type__'
+        ..intValue = 4,];
 }
 
 class Bar extends bindings.Struct {
@@ -173,6 +206,37 @@ class Bar extends bindings.Struct {
     map["type"] = type;
     return map;
   }
+}
+
+mojom_types.MojomStruct _sampleServiceBar() {
+  return new mojom_types.MojomStruct()
+    ..declData = (new mojom_types.DeclarationData()
+      ..shortName = 'Bar'
+      ..fullIdentifier = 'sample.Bar')
+    ..fields = <mojom_types.StructField>[
+      new mojom_types.StructField()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'Alpha')
+        ..type = (new mojom_types.Type()
+          ..simpleType = mojom_types.SimpleType.uint8),
+      new mojom_types.StructField()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'Beta')
+        ..type = (new mojom_types.Type()
+          ..simpleType = mojom_types.SimpleType.uint8),
+      new mojom_types.StructField()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'Gamma')
+        ..type = (new mojom_types.Type()
+          ..simpleType = mojom_types.SimpleType.uint8),
+      new mojom_types.StructField()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'Type')
+        ..type = (new mojom_types.Type()
+          ..typeReference = (new mojom_types.TypeReference()
+          ..identifier = 'sample_service_Type__'
+          ..typeKey = 'sample_service_Type__'
+        )),];
 }
 
 
@@ -440,6 +504,129 @@ class Foo extends bindings.Struct {
     throw new bindings.MojoCodecError(
         'Object containing handles cannot be encoded to JSON.');
   }
+}
+
+mojom_types.MojomStruct _sampleServiceFoo() {
+  return new mojom_types.MojomStruct()
+    ..declData = (new mojom_types.DeclarationData()
+      ..shortName = 'Foo'
+      ..fullIdentifier = 'sample.Foo')
+    ..fields = <mojom_types.StructField>[
+      new mojom_types.StructField()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'Name')
+        ..type = (new mojom_types.Type()
+          ..stringType = (new mojom_types.StringType())),
+      new mojom_types.StructField()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'X')
+        ..type = (new mojom_types.Type()
+          ..simpleType = mojom_types.SimpleType.int32),
+      new mojom_types.StructField()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'Y')
+        ..type = (new mojom_types.Type()
+          ..simpleType = mojom_types.SimpleType.int32),
+      new mojom_types.StructField()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'A')
+        ..type = (new mojom_types.Type()
+          ..simpleType = mojom_types.SimpleType.bool),
+      new mojom_types.StructField()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'B')
+        ..type = (new mojom_types.Type()
+          ..simpleType = mojom_types.SimpleType.bool),
+      new mojom_types.StructField()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'C')
+        ..type = (new mojom_types.Type()
+          ..simpleType = mojom_types.SimpleType.bool),
+      new mojom_types.StructField()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'Bar')
+        ..type = (new mojom_types.Type()
+          ..typeReference = (new mojom_types.TypeReference()
+          ..nullable = true
+        
+          ..identifier = 'sample_service_Bar__'
+          ..typeKey = 'sample_service_Bar__'
+        )),
+      new mojom_types.StructField()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'ExtraBars')
+        ..type = (new mojom_types.Type()
+          ..arrayType = (new mojom_types.ArrayType()
+            ..nullable = true
+            ..elementType = (new mojom_types.Type()
+                    ..typeReference = (new mojom_types.TypeReference()
+                    ..identifier = 'sample_service_Bar__'
+                    ..typeKey = 'sample_service_Bar__'
+                  )))),
+      new mojom_types.StructField()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'Data')
+        ..type = (new mojom_types.Type()
+          ..arrayType = (new mojom_types.ArrayType()
+            ..nullable = true
+            ..elementType = (new mojom_types.Type()
+                    ..simpleType = mojom_types.SimpleType.uint8))),
+      new mojom_types.StructField()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'Source')
+        ..type = (new mojom_types.Type()
+          ..handleType = (new mojom_types.HandleType()
+            ..kind = mojom_types.HandleTypeKind.messagePipe
+            ..nullable = true
+          )),
+      new mojom_types.StructField()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'InputStreams')
+        ..type = (new mojom_types.Type()
+          ..arrayType = (new mojom_types.ArrayType()
+            ..nullable = true
+            ..elementType = (new mojom_types.Type()
+                    ..handleType = (new mojom_types.HandleType()
+                      ..kind = mojom_types.HandleTypeKind.dataPipeConsumer)))),
+      new mojom_types.StructField()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'OutputStreams')
+        ..type = (new mojom_types.Type()
+          ..arrayType = (new mojom_types.ArrayType()
+            ..nullable = true
+            ..elementType = (new mojom_types.Type()
+                    ..handleType = (new mojom_types.HandleType()
+                      ..kind = mojom_types.HandleTypeKind.dataPipeProducer)))),
+      new mojom_types.StructField()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'ArrayOfArrayOfBools')
+        ..type = (new mojom_types.Type()
+          ..arrayType = (new mojom_types.ArrayType()
+            ..nullable = true
+            ..elementType = (new mojom_types.Type()
+                    ..arrayType = (new mojom_types.ArrayType()
+                      ..elementType = (new mojom_types.Type()
+                              ..simpleType = mojom_types.SimpleType.bool))))),
+      new mojom_types.StructField()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'MultiArrayOfStrings')
+        ..type = (new mojom_types.Type()
+          ..arrayType = (new mojom_types.ArrayType()
+            ..nullable = true
+            ..elementType = (new mojom_types.Type()
+                    ..arrayType = (new mojom_types.ArrayType()
+                      ..elementType = (new mojom_types.Type()
+                              ..arrayType = (new mojom_types.ArrayType()
+                                ..elementType = (new mojom_types.Type()
+                                        ..stringType = (new mojom_types.StringType())))))))),
+      new mojom_types.StructField()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'ArrayOfBools')
+        ..type = (new mojom_types.Type()
+          ..arrayType = (new mojom_types.ArrayType()
+            ..nullable = true
+            ..elementType = (new mojom_types.Type()
+                    ..simpleType = mojom_types.SimpleType.bool))),];
 }
 
 
@@ -794,6 +981,185 @@ class DefaultsTest extends bindings.Struct {
   }
 }
 
+mojom_types.MojomStruct _sampleServiceDefaultsTest() {
+  return new mojom_types.MojomStruct()
+    ..declData = (new mojom_types.DeclarationData()
+      ..shortName = 'DefaultsTest'
+      ..fullIdentifier = 'sample.DefaultsTest')
+    ..fields = <mojom_types.StructField>[
+      new mojom_types.StructField()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'A0')
+        ..type = (new mojom_types.Type()
+          ..simpleType = mojom_types.SimpleType.int8),
+      new mojom_types.StructField()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'A1')
+        ..type = (new mojom_types.Type()
+          ..simpleType = mojom_types.SimpleType.uint8),
+      new mojom_types.StructField()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'A2')
+        ..type = (new mojom_types.Type()
+          ..simpleType = mojom_types.SimpleType.int16),
+      new mojom_types.StructField()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'A3')
+        ..type = (new mojom_types.Type()
+          ..simpleType = mojom_types.SimpleType.uint16),
+      new mojom_types.StructField()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'A4')
+        ..type = (new mojom_types.Type()
+          ..simpleType = mojom_types.SimpleType.int32),
+      new mojom_types.StructField()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'A5')
+        ..type = (new mojom_types.Type()
+          ..simpleType = mojom_types.SimpleType.uint32),
+      new mojom_types.StructField()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'A6')
+        ..type = (new mojom_types.Type()
+          ..simpleType = mojom_types.SimpleType.int64),
+      new mojom_types.StructField()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'A7')
+        ..type = (new mojom_types.Type()
+          ..simpleType = mojom_types.SimpleType.uint64),
+      new mojom_types.StructField()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'A8')
+        ..type = (new mojom_types.Type()
+          ..simpleType = mojom_types.SimpleType.int32),
+      new mojom_types.StructField()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'A9')
+        ..type = (new mojom_types.Type()
+          ..simpleType = mojom_types.SimpleType.int32),
+      new mojom_types.StructField()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'A10')
+        ..type = (new mojom_types.Type()
+          ..simpleType = mojom_types.SimpleType.int32),
+      new mojom_types.StructField()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'A11')
+        ..type = (new mojom_types.Type()
+          ..simpleType = mojom_types.SimpleType.bool),
+      new mojom_types.StructField()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'A12')
+        ..type = (new mojom_types.Type()
+          ..simpleType = mojom_types.SimpleType.bool),
+      new mojom_types.StructField()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'A13')
+        ..type = (new mojom_types.Type()
+          ..simpleType = mojom_types.SimpleType.float),
+      new mojom_types.StructField()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'A14')
+        ..type = (new mojom_types.Type()
+          ..simpleType = mojom_types.SimpleType.double),
+      new mojom_types.StructField()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'A15')
+        ..type = (new mojom_types.Type()
+          ..simpleType = mojom_types.SimpleType.double),
+      new mojom_types.StructField()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'A16')
+        ..type = (new mojom_types.Type()
+          ..simpleType = mojom_types.SimpleType.double),
+      new mojom_types.StructField()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'A17')
+        ..type = (new mojom_types.Type()
+          ..simpleType = mojom_types.SimpleType.double),
+      new mojom_types.StructField()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'A18')
+        ..type = (new mojom_types.Type()
+          ..arrayType = (new mojom_types.ArrayType()
+            ..elementType = (new mojom_types.Type()
+                    ..simpleType = mojom_types.SimpleType.uint8))),
+      new mojom_types.StructField()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'A19')
+        ..type = (new mojom_types.Type()
+          ..stringType = (new mojom_types.StringType())),
+      new mojom_types.StructField()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'A20')
+        ..type = (new mojom_types.Type()
+          ..typeReference = (new mojom_types.TypeReference()
+          ..identifier = 'sample_service_Type__'
+          ..typeKey = 'sample_service_Type__'
+        )),
+      new mojom_types.StructField()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'A21')
+        ..type = (new mojom_types.Type()
+          ..typeReference = (new mojom_types.TypeReference()
+          ..identifier = 'sample_import_Point__'
+          ..typeKey = 'sample_import_Point__'
+        )),
+      new mojom_types.StructField()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'A22')
+        ..type = (new mojom_types.Type()
+          ..typeReference = (new mojom_types.TypeReference()
+          ..identifier = 'sample_import2_Thing__'
+          ..typeKey = 'sample_import2_Thing__'
+        )),
+      new mojom_types.StructField()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'A23')
+        ..type = (new mojom_types.Type()
+          ..simpleType = mojom_types.SimpleType.uint64),
+      new mojom_types.StructField()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'A24')
+        ..type = (new mojom_types.Type()
+          ..simpleType = mojom_types.SimpleType.int64),
+      new mojom_types.StructField()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'A25')
+        ..type = (new mojom_types.Type()
+          ..simpleType = mojom_types.SimpleType.int64),
+      new mojom_types.StructField()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'A26')
+        ..type = (new mojom_types.Type()
+          ..simpleType = mojom_types.SimpleType.double),
+      new mojom_types.StructField()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'A27')
+        ..type = (new mojom_types.Type()
+          ..simpleType = mojom_types.SimpleType.double),
+      new mojom_types.StructField()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'A28')
+        ..type = (new mojom_types.Type()
+          ..simpleType = mojom_types.SimpleType.double),
+      new mojom_types.StructField()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'A29')
+        ..type = (new mojom_types.Type()
+          ..simpleType = mojom_types.SimpleType.float),
+      new mojom_types.StructField()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'A30')
+        ..type = (new mojom_types.Type()
+          ..simpleType = mojom_types.SimpleType.float),
+      new mojom_types.StructField()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'A31')
+        ..type = (new mojom_types.Type()
+          ..simpleType = mojom_types.SimpleType.float),];
+}
+
 
 class StructWithHoleV1 extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
@@ -868,6 +1234,24 @@ class StructWithHoleV1 extends bindings.Struct {
     map["v2"] = v2;
     return map;
   }
+}
+
+mojom_types.MojomStruct _sampleServiceStructWithHoleV1() {
+  return new mojom_types.MojomStruct()
+    ..declData = (new mojom_types.DeclarationData()
+      ..shortName = 'StructWithHoleV1'
+      ..fullIdentifier = 'sample.StructWithHoleV1')
+    ..fields = <mojom_types.StructField>[
+      new mojom_types.StructField()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'V1')
+        ..type = (new mojom_types.Type()
+          ..simpleType = mojom_types.SimpleType.int32),
+      new mojom_types.StructField()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'V2')
+        ..type = (new mojom_types.Type()
+          ..simpleType = mojom_types.SimpleType.int64),];
 }
 
 
@@ -953,6 +1337,29 @@ class StructWithHoleV2 extends bindings.Struct {
     map["v2"] = v2;
     return map;
   }
+}
+
+mojom_types.MojomStruct _sampleServiceStructWithHoleV2() {
+  return new mojom_types.MojomStruct()
+    ..declData = (new mojom_types.DeclarationData()
+      ..shortName = 'StructWithHoleV2'
+      ..fullIdentifier = 'sample.StructWithHoleV2')
+    ..fields = <mojom_types.StructField>[
+      new mojom_types.StructField()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'V1')
+        ..type = (new mojom_types.Type()
+          ..simpleType = mojom_types.SimpleType.int32),
+      new mojom_types.StructField()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'V2')
+        ..type = (new mojom_types.Type()
+          ..simpleType = mojom_types.SimpleType.int64),
+      new mojom_types.StructField()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'V3')
+        ..type = (new mojom_types.Type()
+          ..simpleType = mojom_types.SimpleType.int32),];
 }
 
 
@@ -1076,6 +1483,23 @@ class NonNullableMapStruct extends bindings.Struct {
   }
 }
 
+mojom_types.MojomStruct _sampleServiceNonNullableMapStruct() {
+  return new mojom_types.MojomStruct()
+    ..declData = (new mojom_types.DeclarationData()
+      ..shortName = 'NonNullableMapStruct'
+      ..fullIdentifier = 'sample.NonNullableMapStruct')
+    ..fields = <mojom_types.StructField>[
+      new mojom_types.StructField()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'MapField')
+        ..type = (new mojom_types.Type()
+          ..mapType = (new mojom_types.MapType()
+            ..keyType = (new mojom_types.Type()
+                    ..stringType = (new mojom_types.StringType()))
+            ..valueType = (new mojom_types.Type()
+                    ..stringType = (new mojom_types.StringType())))),];
+}
+
 
 class _ServiceFrobinateParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
@@ -1163,6 +1587,42 @@ class _ServiceFrobinateParams extends bindings.Struct {
   }
 }
 
+mojom_types.MojomStruct _sampleServiceServiceFrobinateParams() {
+  return new mojom_types.MojomStruct()
+    ..declData = (new mojom_types.DeclarationData()
+      ..shortName = 'ServiceFrobinateParams'
+      ..fullIdentifier = 'sample.Service_Frobinate_Params')
+    ..fields = <mojom_types.StructField>[
+      new mojom_types.StructField()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'Foo')
+        ..type = (new mojom_types.Type()
+          ..typeReference = (new mojom_types.TypeReference()
+          ..nullable = true
+        
+          ..identifier = 'sample_service_Foo__'
+          ..typeKey = 'sample_service_Foo__'
+        )),
+      new mojom_types.StructField()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'Baz')
+        ..type = (new mojom_types.Type()
+          ..typeReference = (new mojom_types.TypeReference()
+          ..identifier = 'sample_service_BazOptions__'
+          ..typeKey = 'sample_service_BazOptions__'
+        )),
+      new mojom_types.StructField()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'Port')
+        ..type = (new mojom_types.Type()
+          ..typeReference = (new mojom_types.TypeReference()
+          ..nullable = true
+        
+          ..identifier = 'sample_service_Port__'
+          ..typeKey = 'sample_service_Port__'
+        )),];
+}
+
 
 class ServiceFrobinateResponseParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
@@ -1230,6 +1690,19 @@ class ServiceFrobinateResponseParams extends bindings.Struct {
   }
 }
 
+mojom_types.MojomStruct _sampleServiceServiceFrobinateResponseParams() {
+  return new mojom_types.MojomStruct()
+    ..declData = (new mojom_types.DeclarationData()
+      ..shortName = 'ServiceFrobinateResponseParams'
+      ..fullIdentifier = 'sample.Service_Frobinate_ResponseParams')
+    ..fields = <mojom_types.StructField>[
+      new mojom_types.StructField()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'Result')
+        ..type = (new mojom_types.Type()
+          ..simpleType = mojom_types.SimpleType.int32),];
+}
+
 
 class _ServiceGetPortParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
@@ -1294,6 +1767,23 @@ class _ServiceGetPortParams extends bindings.Struct {
     throw new bindings.MojoCodecError(
         'Object containing handles cannot be encoded to JSON.');
   }
+}
+
+mojom_types.MojomStruct _sampleServiceServiceGetPortParams() {
+  return new mojom_types.MojomStruct()
+    ..declData = (new mojom_types.DeclarationData()
+      ..shortName = 'ServiceGetPortParams'
+      ..fullIdentifier = 'sample.Service_GetPort_Params')
+    ..fields = <mojom_types.StructField>[
+      new mojom_types.StructField()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'Port')
+        ..type = (new mojom_types.Type()
+          ..typeReference = (new mojom_types.TypeReference()
+          ..isInterfaceRequest = true
+          ..identifier = 'sample_service_Port__'
+          ..typeKey = 'sample_service_Port__'
+        )),];
 }
 
 
@@ -1370,6 +1860,28 @@ class _PortPostMessageParams extends bindings.Struct {
   }
 }
 
+mojom_types.MojomStruct _sampleServicePortPostMessageParams() {
+  return new mojom_types.MojomStruct()
+    ..declData = (new mojom_types.DeclarationData()
+      ..shortName = 'PortPostMessageParams'
+      ..fullIdentifier = 'sample.Port_PostMessage_Params')
+    ..fields = <mojom_types.StructField>[
+      new mojom_types.StructField()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'MessageText')
+        ..type = (new mojom_types.Type()
+          ..stringType = (new mojom_types.StringType())),
+      new mojom_types.StructField()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'Port')
+        ..type = (new mojom_types.Type()
+          ..typeReference = (new mojom_types.TypeReference()
+          ..identifier = 'sample_service_Port__'
+          ..typeKey = 'sample_service_Port__'
+        )),];
+}
+
+
 const int _Service_frobinateName = 0;
 const int _Service_getPortName = 1;
   
@@ -1417,10 +1929,62 @@ class ServiceBazOptions extends bindings.MojoEnum {
         return 'ServiceBazOptions.regular';
       case extra:
         return 'ServiceBazOptions.extra';
+      default:
+        return null;
     }
   }
 
   int toJson() => mojoEnumValue;
+}
+
+mojom_types.MojomEnum _sampleServiceBazOptions() {
+  return new mojom_types.MojomEnum()
+    ..declData = (new mojom_types.DeclarationData()
+      ..shortName = 'BazOptions'
+      ..fullIdentifier = 'sample.BazOptions')
+    ..values = <mojom_types.EnumValue>[
+      new mojom_types.EnumValue()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'Regular')
+        ..enumTypeKey = 'sample_service_BazOptions__'
+        ..intValue = 0,
+      new mojom_types.EnumValue()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'Extra')
+        ..enumTypeKey = 'sample_service_BazOptions__'
+        ..intValue = 1,];
+}
+
+mojom_types.MojomInterface _sampleServiceService() {
+  return new mojom_types.MojomInterface()
+    ..declData = (new mojom_types.DeclarationData()
+      ..shortName = 'Service'
+      ..fullIdentifier = 'sample.Service')
+    ..interfaceName = 'Service'
+    ..methods = <int, mojom_types.MojomMethod>{
+      _Service_frobinateName: new mojom_types.MojomMethod()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'Frobinate')
+        ..ordinal = _Service_frobinateName
+        ..responseParams = _sampleServiceServiceFrobinateResponseParams()
+        ..parameters = _sampleServiceServiceFrobinateParams(),
+      _Service_getPortName: new mojom_types.MojomMethod()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'GetPort')
+        ..ordinal = _Service_getPortName
+        ..parameters = _sampleServiceServiceGetPortParams(),
+    };
+}
+
+class _ServiceServiceDescription implements service_describer.ServiceDescription {
+  dynamic getTopLevelInterface([Function responseFactory]) =>
+      _sampleServiceService();
+
+  dynamic getTypeDefinition(String typeKey, [Function responseFactory]) =>
+      getAllMojomTypeDefinitions()[typeKey];
+
+  dynamic getAllTypeDefinitions([Function responseFactory]) =>
+      getAllMojomTypeDefinitions();
 }
 
 abstract class Service {
@@ -1445,6 +2009,9 @@ class _ServiceProxyImpl extends bindings.Proxy {
     assert(endpoint.setDescription("For _ServiceProxyImpl"));
     return new _ServiceProxyImpl.fromEndpoint(endpoint);
   }
+
+  service_describer.ServiceDescription get serviceDescription =>
+    new _ServiceServiceDescription();
 
   void handleResponse(bindings.ServiceMessage message) {
     switch (message.header.type) {
@@ -1647,9 +2214,38 @@ class ServiceStub extends bindings.Stub {
   }
 
   int get version => 0;
+
+  service_describer.ServiceDescription get serviceDescription =>
+    new _ServiceServiceDescription();
 }
 
 const int _Port_postMessageName = 0;
+
+mojom_types.MojomInterface _sampleServicePort() {
+  return new mojom_types.MojomInterface()
+    ..declData = (new mojom_types.DeclarationData()
+      ..shortName = 'Port'
+      ..fullIdentifier = 'sample.Port')
+    ..interfaceName = 'Port'
+    ..methods = <int, mojom_types.MojomMethod>{
+      _Port_postMessageName: new mojom_types.MojomMethod()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'PostMessage')
+        ..ordinal = _Port_postMessageName
+        ..parameters = _sampleServicePortPostMessageParams(),
+    };
+}
+
+class _PortServiceDescription implements service_describer.ServiceDescription {
+  dynamic getTopLevelInterface([Function responseFactory]) =>
+      _sampleServicePort();
+
+  dynamic getTypeDefinition(String typeKey, [Function responseFactory]) =>
+      getAllMojomTypeDefinitions()[typeKey];
+
+  dynamic getAllTypeDefinitions([Function responseFactory]) =>
+      getAllMojomTypeDefinitions();
+}
 
 abstract class Port {
   static const String serviceName = null;
@@ -1671,6 +2267,9 @@ class _PortProxyImpl extends bindings.Proxy {
     assert(endpoint.setDescription("For _PortProxyImpl"));
     return new _PortProxyImpl.fromEndpoint(endpoint);
   }
+
+  service_describer.ServiceDescription get serviceDescription =>
+    new _PortServiceDescription();
 
   void handleResponse(bindings.ServiceMessage message) {
     switch (message.header.type) {
@@ -1816,6 +2415,74 @@ class PortStub extends bindings.Stub {
   }
 
   int get version => 0;
+
+  service_describer.ServiceDescription get serviceDescription =>
+    new _PortServiceDescription();
 }
 
+
+Map<String, mojom_types.UserDefinedType> _initDescriptions() {
+  var map = new HashMap<String, mojom_types.UserDefinedType>();
+  map["sample_service_Bar__"] =
+    new mojom_types.UserDefinedType()
+      ..structType = _sampleServiceBar();
+    map["sample_service_Type__"] =
+    new mojom_types.UserDefinedType()
+      ..enumType = _sampleServiceType();
+  map["sample_service_Foo__"] =
+    new mojom_types.UserDefinedType()
+      ..structType = _sampleServiceFoo();
+  map["sample_service_DefaultsTest__"] =
+    new mojom_types.UserDefinedType()
+      ..structType = _sampleServiceDefaultsTest();
+  map["sample_service_StructWithHoleV1__"] =
+    new mojom_types.UserDefinedType()
+      ..structType = _sampleServiceStructWithHoleV1();
+  map["sample_service_StructWithHoleV2__"] =
+    new mojom_types.UserDefinedType()
+      ..structType = _sampleServiceStructWithHoleV2();
+  map["sample_service_NonNullableMapStruct__"] =
+    new mojom_types.UserDefinedType()
+      ..structType = _sampleServiceNonNullableMapStruct();
+  map["sample_service_Service_Frobinate_Params__"] =
+    new mojom_types.UserDefinedType()
+      ..structType = _sampleServiceServiceFrobinateParams();
+  map["sample_service_Service_Frobinate_ResponseParams__"] =
+    new mojom_types.UserDefinedType()
+      ..structType = _sampleServiceServiceFrobinateResponseParams();
+  map["sample_service_Service_GetPort_Params__"] =
+    new mojom_types.UserDefinedType()
+      ..structType = _sampleServiceServiceGetPortParams();
+  map["sample_service_Port_PostMessage_Params__"] =
+    new mojom_types.UserDefinedType()
+      ..structType = _sampleServicePortPostMessageParams();
+  map["sample_service_Service__"] =
+    new mojom_types.UserDefinedType()
+      ..interfaceType = _sampleServiceService();
+    map["sample_service_BazOptions__"] =
+    new mojom_types.UserDefinedType()
+      ..enumType = _sampleServiceBazOptions();
+  map["sample_service_Port__"] =
+    new mojom_types.UserDefinedType()
+      ..interfaceType = _sampleServicePort();
+  sample_import_mojom.getAllMojomTypeDefinitions()
+      .forEach((String s, mojom_types.UserDefinedType udt) {
+    map[s] = udt;
+  });
+
+  sample_import2_mojom.getAllMojomTypeDefinitions()
+      .forEach((String s, mojom_types.UserDefinedType udt) {
+    map[s] = udt;
+  });
+
+  return map;
+}
+
+var _mojomDesc;
+Map<String, mojom_types.UserDefinedType> getAllMojomTypeDefinitions() {
+  if (_mojomDesc == null) {
+    _mojomDesc = _initDescriptions();
+  }
+  return _mojomDesc;
+}
 

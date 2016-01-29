@@ -8,6 +8,8 @@ import 'dart:async';
 
 import 'package:mojo/bindings.dart' as bindings;
 import 'package:mojo/core.dart' as core;
+import 'package:mojo/mojo/bindings/types/mojom_types.mojom.dart' as mojom_types;
+
 const int kOpenFlagRead = 1;
 const int kOpenFlagWrite = 2;
 const int kOpenFlagCreate = 4;
@@ -111,11 +113,15 @@ class Error extends bindings.MojoEnum {
         return 'Error.unavailable';
       case internal:
         return 'Error.internal';
+      default:
+        return null;
     }
   }
 
   int toJson() => mojoEnumValue;
 }
+
+
 
 class Whence extends bindings.MojoEnum {
   static const Whence fromCurrent = const Whence._(0);
@@ -168,11 +174,15 @@ class Whence extends bindings.MojoEnum {
         return 'Whence.fromStart';
       case fromEnd:
         return 'Whence.fromEnd';
+      default:
+        return null;
     }
   }
 
   int toJson() => mojoEnumValue;
 }
+
+
 
 class FileType extends bindings.MojoEnum {
   static const FileType unknown = const FileType._(0);
@@ -225,11 +235,15 @@ class FileType extends bindings.MojoEnum {
         return 'FileType.regularFile';
       case directory:
         return 'FileType.directory';
+      default:
+        return null;
     }
   }
 
   int toJson() => mojoEnumValue;
 }
+
+
 
 
 
@@ -309,6 +323,8 @@ class Timespec extends bindings.Struct {
 }
 
 
+
+
 class TimespecOrNow extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(24, 0)
@@ -384,6 +400,8 @@ class TimespecOrNow extends bindings.Struct {
     return map;
   }
 }
+
+
 
 
 class FileInformation extends bindings.Struct {
@@ -486,6 +504,8 @@ class FileInformation extends bindings.Struct {
 }
 
 
+
+
 class DirectoryEntry extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(24, 0)
@@ -564,5 +584,9 @@ class DirectoryEntry extends bindings.Struct {
     return map;
   }
 }
+
+
+
+
 
 

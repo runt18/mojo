@@ -8,6 +8,8 @@ import 'dart:async';
 
 import 'package:mojo/bindings.dart' as bindings;
 import 'package:mojo/core.dart' as core;
+import 'package:mojo/mojo/bindings/types/mojom_types.mojom.dart' as mojom_types;
+import 'package:mojo/mojo/bindings/types/service_describer.mojom.dart' as service_describer;
 import 'package:mojo_services/mojo/command_buffer.mojom.dart' as command_buffer_mojom;
 import 'package:mojo_services/mojo/viewport_parameter_listener.mojom.dart' as viewport_parameter_listener_mojom;
 
@@ -79,6 +81,8 @@ class _ContextProviderCreateParams extends bindings.Struct {
 }
 
 
+
+
 class ContextProviderCreateResponseParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(16, 0)
@@ -144,7 +148,20 @@ class ContextProviderCreateResponseParams extends bindings.Struct {
   }
 }
 
+
+
+
 const int _ContextProvider_createName = 0;
+
+
+
+class _ContextProviderServiceDescription implements service_describer.ServiceDescription {
+  dynamic getTopLevelInterface([Function responseFactory]) => null;
+
+  dynamic getTypeDefinition(String typeKey, [Function responseFactory]) => null;
+
+  dynamic getAllTypeDefinitions([Function responseFactory]) => null;
+}
 
 abstract class ContextProvider {
   static const String serviceName = null;
@@ -166,6 +183,9 @@ class _ContextProviderProxyImpl extends bindings.Proxy {
     assert(endpoint.setDescription("For _ContextProviderProxyImpl"));
     return new _ContextProviderProxyImpl.fromEndpoint(endpoint);
   }
+
+  service_describer.ServiceDescription get serviceDescription =>
+    new _ContextProviderServiceDescription();
 
   void handleResponse(bindings.ServiceMessage message) {
     switch (message.header.type) {
@@ -352,6 +372,10 @@ class ContextProviderStub extends bindings.Stub {
   }
 
   int get version => 0;
+
+  service_describer.ServiceDescription get serviceDescription =>
+    new _ContextProviderServiceDescription();
 }
+
 
 

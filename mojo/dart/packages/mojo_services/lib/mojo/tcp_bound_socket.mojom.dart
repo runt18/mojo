@@ -8,6 +8,8 @@ import 'dart:async';
 
 import 'package:mojo/bindings.dart' as bindings;
 import 'package:mojo/core.dart' as core;
+import 'package:mojo/mojo/bindings/types/mojom_types.mojom.dart' as mojom_types;
+import 'package:mojo/mojo/bindings/types/service_describer.mojom.dart' as service_describer;
 import 'package:mojo/mojo/network_error.mojom.dart' as network_error_mojom;
 import 'package:mojo_services/mojo/net_address.mojom.dart' as net_address_mojom;
 import 'package:mojo_services/mojo/tcp_connected_socket.mojom.dart' as tcp_connected_socket_mojom;
@@ -81,6 +83,8 @@ class _TcpBoundSocketStartListeningParams extends bindings.Struct {
 }
 
 
+
+
 class TcpBoundSocketStartListeningResponseParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(16, 0)
@@ -147,6 +151,8 @@ class TcpBoundSocketStartListeningResponseParams extends bindings.Struct {
     return map;
   }
 }
+
+
 
 
 class _TcpBoundSocketConnectParams extends bindings.Struct {
@@ -240,6 +246,8 @@ class _TcpBoundSocketConnectParams extends bindings.Struct {
 }
 
 
+
+
 class TcpBoundSocketConnectResponseParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(16, 0)
@@ -307,8 +315,21 @@ class TcpBoundSocketConnectResponseParams extends bindings.Struct {
   }
 }
 
+
+
+
 const int _TcpBoundSocket_startListeningName = 0;
 const int _TcpBoundSocket_connectName = 1;
+
+
+
+class _TcpBoundSocketServiceDescription implements service_describer.ServiceDescription {
+  dynamic getTopLevelInterface([Function responseFactory]) => null;
+
+  dynamic getTypeDefinition(String typeKey, [Function responseFactory]) => null;
+
+  dynamic getAllTypeDefinitions([Function responseFactory]) => null;
+}
 
 abstract class TcpBoundSocket {
   static const String serviceName = null;
@@ -331,6 +352,9 @@ class _TcpBoundSocketProxyImpl extends bindings.Proxy {
     assert(endpoint.setDescription("For _TcpBoundSocketProxyImpl"));
     return new _TcpBoundSocketProxyImpl.fromEndpoint(endpoint);
   }
+
+  service_describer.ServiceDescription get serviceDescription =>
+    new _TcpBoundSocketServiceDescription();
 
   void handleResponse(bindings.ServiceMessage message) {
     switch (message.header.type) {
@@ -576,6 +600,10 @@ class TcpBoundSocketStub extends bindings.Stub {
   }
 
   int get version => 0;
+
+  service_describer.ServiceDescription get serviceDescription =>
+    new _TcpBoundSocketServiceDescription();
 }
+
 
 

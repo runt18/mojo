@@ -8,6 +8,8 @@ import 'dart:async';
 
 import 'package:mojo/bindings.dart' as bindings;
 import 'package:mojo/core.dart' as core;
+import 'package:mojo/mojo/bindings/types/mojom_types.mojom.dart' as mojom_types;
+
 
 class MediaTypeScheme extends bindings.MojoEnum {
   static const MediaTypeScheme unknown = const MediaTypeScheme._(0);
@@ -130,11 +132,15 @@ class MediaTypeScheme extends bindings.MojoEnum {
         return 'MediaTypeScheme.compressedAudio';
       case video:
         return 'MediaTypeScheme.video';
+      default:
+        return null;
     }
   }
 
   int toJson() => mojoEnumValue;
 }
+
+
 
 class LpcmSampleFormat extends bindings.MojoEnum {
   static const LpcmSampleFormat unknown = const LpcmSampleFormat._(0);
@@ -208,11 +214,15 @@ class LpcmSampleFormat extends bindings.MojoEnum {
         return 'LpcmSampleFormat.signed24In32';
       case float:
         return 'LpcmSampleFormat.float';
+      default:
+        return null;
     }
   }
 
   int toJson() => mojoEnumValue;
 }
+
+
 
 class AudioEncoding extends bindings.MojoEnum {
   static const AudioEncoding unknown = const AudioEncoding._(0);
@@ -265,11 +275,15 @@ class AudioEncoding extends bindings.MojoEnum {
         return 'AudioEncoding.any';
       case vorbis:
         return 'AudioEncoding.vorbis';
+      default:
+        return null;
     }
   }
 
   int toJson() => mojoEnumValue;
 }
+
+
 
 class VideoEncoding extends bindings.MojoEnum {
   static const VideoEncoding unknown = const VideoEncoding._(0);
@@ -329,11 +343,15 @@ class VideoEncoding extends bindings.MojoEnum {
         return 'VideoEncoding.theora';
       case vp8:
         return 'VideoEncoding.vp8';
+      default:
+        return null;
     }
   }
 
   int toJson() => mojoEnumValue;
 }
+
+
 
 class VideoProfile extends bindings.MojoEnum {
   static const VideoProfile unknown = const VideoProfile._(0);
@@ -456,11 +474,15 @@ class VideoProfile extends bindings.MojoEnum {
         return 'VideoProfile.h264StereoHigh';
       case h264MultiviewHigh:
         return 'VideoProfile.h264MultiviewHigh';
+      default:
+        return null;
     }
   }
 
   int toJson() => mojoEnumValue;
 }
+
+
 
 class PixelFormat extends bindings.MojoEnum {
   static const PixelFormat unknown = const PixelFormat._(0);
@@ -604,11 +626,15 @@ class PixelFormat extends bindings.MojoEnum {
         return 'PixelFormat.mjpeg';
       case mt21:
         return 'PixelFormat.mt21';
+      default:
+        return null;
     }
   }
 
   int toJson() => mojoEnumValue;
 }
+
+
 
 class ColorSpace extends bindings.MojoEnum {
   static const ColorSpace unknown = const ColorSpace._(0);
@@ -675,11 +701,15 @@ class ColorSpace extends bindings.MojoEnum {
         return 'ColorSpace.hdRec709';
       case sdRec601:
         return 'ColorSpace.sdRec601';
+      default:
+        return null;
     }
   }
 
   int toJson() => mojoEnumValue;
 }
+
+
 
 
 
@@ -763,6 +793,8 @@ class MediaType extends bindings.Struct {
 }
 
 
+
+
 class MediaTypeSet extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(32, 0)
@@ -841,6 +873,8 @@ class MediaTypeSet extends bindings.Struct {
     return map;
   }
 }
+
+
 
 
 class LpcmMediaTypeDetails extends bindings.Struct {
@@ -930,6 +964,8 @@ class LpcmMediaTypeDetails extends bindings.Struct {
     return map;
   }
 }
+
+
 
 
 class LpcmMediaTypeSetDetails extends bindings.Struct {
@@ -1039,6 +1075,8 @@ class LpcmMediaTypeSetDetails extends bindings.Struct {
 }
 
 
+
+
 class MultiplexedMediaTypeDetails extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(24, 0)
@@ -1133,6 +1171,8 @@ class MultiplexedMediaTypeDetails extends bindings.Struct {
 }
 
 
+
+
 class MultiplexedMediaTypeSetDetails extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(24, 0)
@@ -1225,6 +1265,8 @@ class MultiplexedMediaTypeSetDetails extends bindings.Struct {
     return map;
   }
 }
+
+
 
 
 class CompressedAudioMediaTypeDetails extends bindings.Struct {
@@ -1336,6 +1378,8 @@ class CompressedAudioMediaTypeDetails extends bindings.Struct {
     return map;
   }
 }
+
+
 
 
 class CompressedAudioMediaTypeSetDetails extends bindings.Struct {
@@ -1456,6 +1500,8 @@ class CompressedAudioMediaTypeSetDetails extends bindings.Struct {
     return map;
   }
 }
+
+
 
 
 class VideoMediaTypeDetails extends bindings.Struct {
@@ -1613,6 +1659,8 @@ class VideoMediaTypeDetails extends bindings.Struct {
 }
 
 
+
+
 class VideoMediaTypeSetDetails extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(32, 0)
@@ -1718,6 +1766,8 @@ class VideoMediaTypeSetDetails extends bindings.Struct {
     return map;
   }
 }
+
+
 
 
 
@@ -1880,6 +1930,8 @@ class MediaTypeDetails extends bindings.Union {
 }
 
 
+
+
 enum MediaTypeSetDetailsTag {
   multiplexed,
   lpcm,
@@ -2037,4 +2089,8 @@ class MediaTypeSetDetails extends bindings.Union {
     return result;
   }
 }
+
+
+
+
 

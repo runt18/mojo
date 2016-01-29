@@ -8,6 +8,8 @@ import 'dart:async';
 
 import 'package:mojo/bindings.dart' as bindings;
 import 'package:mojo/core.dart' as core;
+import 'package:mojo/mojo/bindings/types/mojom_types.mojom.dart' as mojom_types;
+import 'package:mojo/mojo/bindings/types/service_describer.mojom.dart' as service_describer;
 import 'package:mojo/mojo/url_request.mojom.dart' as url_request_mojom;
 import 'package:mojo/mojo/url_response.mojom.dart' as url_response_mojom;
 
@@ -89,6 +91,8 @@ class UrlLoaderInterceptorResponse extends bindings.Struct {
 }
 
 
+
+
 class _UrlLoaderInterceptorFactoryCreateParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(16, 0)
@@ -153,6 +157,8 @@ class _UrlLoaderInterceptorFactoryCreateParams extends bindings.Struct {
         'Object containing handles cannot be encoded to JSON.');
   }
 }
+
+
 
 
 class _UrlLoaderInterceptorInterceptRequestParams extends bindings.Struct {
@@ -222,6 +228,8 @@ class _UrlLoaderInterceptorInterceptRequestParams extends bindings.Struct {
 }
 
 
+
+
 class UrlLoaderInterceptorInterceptRequestResponseParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(16, 0)
@@ -289,6 +297,8 @@ class UrlLoaderInterceptorInterceptRequestResponseParams extends bindings.Struct
 }
 
 
+
+
 class _UrlLoaderInterceptorInterceptFollowRedirectParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(8, 0)
@@ -345,6 +355,8 @@ class _UrlLoaderInterceptorInterceptFollowRedirectParams extends bindings.Struct
     return map;
   }
 }
+
+
 
 
 class UrlLoaderInterceptorInterceptFollowRedirectResponseParams extends bindings.Struct {
@@ -414,6 +426,8 @@ class UrlLoaderInterceptorInterceptFollowRedirectResponseParams extends bindings
 }
 
 
+
+
 class _UrlLoaderInterceptorInterceptResponseParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(16, 0)
@@ -479,6 +493,8 @@ class _UrlLoaderInterceptorInterceptResponseParams extends bindings.Struct {
         'Object containing handles cannot be encoded to JSON.');
   }
 }
+
+
 
 
 class UrlLoaderInterceptorInterceptResponseResponseParams extends bindings.Struct {
@@ -547,7 +563,20 @@ class UrlLoaderInterceptorInterceptResponseResponseParams extends bindings.Struc
   }
 }
 
+
+
+
 const int _UrlLoaderInterceptorFactory_createName = 0;
+
+
+
+class _UrlLoaderInterceptorFactoryServiceDescription implements service_describer.ServiceDescription {
+  dynamic getTopLevelInterface([Function responseFactory]) => null;
+
+  dynamic getTypeDefinition(String typeKey, [Function responseFactory]) => null;
+
+  dynamic getAllTypeDefinitions([Function responseFactory]) => null;
+}
 
 abstract class UrlLoaderInterceptorFactory {
   static const String serviceName = null;
@@ -569,6 +598,9 @@ class _UrlLoaderInterceptorFactoryProxyImpl extends bindings.Proxy {
     assert(endpoint.setDescription("For _UrlLoaderInterceptorFactoryProxyImpl"));
     return new _UrlLoaderInterceptorFactoryProxyImpl.fromEndpoint(endpoint);
   }
+
+  service_describer.ServiceDescription get serviceDescription =>
+    new _UrlLoaderInterceptorFactoryServiceDescription();
 
   void handleResponse(bindings.ServiceMessage message) {
     switch (message.header.type) {
@@ -713,11 +745,24 @@ class UrlLoaderInterceptorFactoryStub extends bindings.Stub {
   }
 
   int get version => 0;
+
+  service_describer.ServiceDescription get serviceDescription =>
+    new _UrlLoaderInterceptorFactoryServiceDescription();
 }
 
 const int _UrlLoaderInterceptor_interceptRequestName = 0;
 const int _UrlLoaderInterceptor_interceptFollowRedirectName = 1;
 const int _UrlLoaderInterceptor_interceptResponseName = 2;
+
+
+
+class _UrlLoaderInterceptorServiceDescription implements service_describer.ServiceDescription {
+  dynamic getTopLevelInterface([Function responseFactory]) => null;
+
+  dynamic getTypeDefinition(String typeKey, [Function responseFactory]) => null;
+
+  dynamic getAllTypeDefinitions([Function responseFactory]) => null;
+}
 
 abstract class UrlLoaderInterceptor {
   static const String serviceName = null;
@@ -741,6 +786,9 @@ class _UrlLoaderInterceptorProxyImpl extends bindings.Proxy {
     assert(endpoint.setDescription("For _UrlLoaderInterceptorProxyImpl"));
     return new _UrlLoaderInterceptorProxyImpl.fromEndpoint(endpoint);
   }
+
+  service_describer.ServiceDescription get serviceDescription =>
+    new _UrlLoaderInterceptorServiceDescription();
 
   void handleResponse(bindings.ServiceMessage message) {
     switch (message.header.type) {
@@ -1038,6 +1086,10 @@ class UrlLoaderInterceptorStub extends bindings.Stub {
   }
 
   int get version => 0;
+
+  service_describer.ServiceDescription get serviceDescription =>
+    new _UrlLoaderInterceptorServiceDescription();
 }
+
 
 

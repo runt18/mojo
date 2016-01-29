@@ -8,6 +8,8 @@ import 'dart:async';
 
 import 'package:mojo/bindings.dart' as bindings;
 import 'package:mojo/core.dart' as core;
+import 'package:mojo/mojo/bindings/types/mojom_types.mojom.dart' as mojom_types;
+import 'package:mojo/mojo/bindings/types/service_describer.mojom.dart' as service_describer;
 import 'package:mojo_services/mojo/media/media_metadata.mojom.dart' as media_metadata_mojom;
 import 'package:mojo_services/mojo/media/media_state.mojom.dart' as media_state_mojom;
 import 'package:mojo_services/mojo/media/rate_control.mojom.dart' as rate_control_mojom;
@@ -105,6 +107,8 @@ class MediaPlayerStatus extends bindings.Struct {
 }
 
 
+
+
 class _MediaPlayerPlayParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(8, 0)
@@ -163,6 +167,8 @@ class _MediaPlayerPlayParams extends bindings.Struct {
 }
 
 
+
+
 class _MediaPlayerPauseParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(8, 0)
@@ -219,6 +225,8 @@ class _MediaPlayerPauseParams extends bindings.Struct {
     return map;
   }
 }
+
+
 
 
 class _MediaPlayerGetStatusParams extends bindings.Struct {
@@ -286,6 +294,8 @@ class _MediaPlayerGetStatusParams extends bindings.Struct {
     return map;
   }
 }
+
+
 
 
 class MediaPlayerGetStatusResponseParams extends bindings.Struct {
@@ -364,9 +374,22 @@ class MediaPlayerGetStatusResponseParams extends bindings.Struct {
   }
 }
 
+
+
+
 const int _MediaPlayer_playName = 0;
 const int _MediaPlayer_pauseName = 1;
 const int _MediaPlayer_getStatusName = 2;
+
+
+
+class _MediaPlayerServiceDescription implements service_describer.ServiceDescription {
+  dynamic getTopLevelInterface([Function responseFactory]) => null;
+
+  dynamic getTypeDefinition(String typeKey, [Function responseFactory]) => null;
+
+  dynamic getAllTypeDefinitions([Function responseFactory]) => null;
+}
 
 abstract class MediaPlayer {
   static const String serviceName = null;
@@ -390,6 +413,9 @@ class _MediaPlayerProxyImpl extends bindings.Proxy {
     assert(endpoint.setDescription("For _MediaPlayerProxyImpl"));
     return new _MediaPlayerProxyImpl.fromEndpoint(endpoint);
   }
+
+  service_describer.ServiceDescription get serviceDescription =>
+    new _MediaPlayerServiceDescription();
 
   void handleResponse(bindings.ServiceMessage message) {
     switch (message.header.type) {
@@ -603,6 +629,10 @@ class MediaPlayerStub extends bindings.Stub {
   }
 
   int get version => 0;
+
+  service_describer.ServiceDescription get serviceDescription =>
+    new _MediaPlayerServiceDescription();
 }
+
 
 

@@ -8,6 +8,8 @@ import 'dart:async';
 
 import 'package:mojo/bindings.dart' as bindings;
 import 'package:mojo/core.dart' as core;
+import 'package:mojo/mojo/bindings/types/mojom_types.mojom.dart' as mojom_types;
+import 'package:mojo/mojo/bindings/types/service_describer.mojom.dart' as service_describer;
 import 'package:mojo_services/mojo/media/audio_track.mojom.dart' as audio_track_mojom;
 
 
@@ -77,7 +79,20 @@ class _AudioServerCreateTrackParams extends bindings.Struct {
   }
 }
 
+
+
+
 const int _AudioServer_createTrackName = 0;
+
+
+
+class _AudioServerServiceDescription implements service_describer.ServiceDescription {
+  dynamic getTopLevelInterface([Function responseFactory]) => null;
+
+  dynamic getTypeDefinition(String typeKey, [Function responseFactory]) => null;
+
+  dynamic getAllTypeDefinitions([Function responseFactory]) => null;
+}
 
 abstract class AudioServer {
   static const String serviceName = "mojo::media::AudioServer";
@@ -99,6 +114,9 @@ class _AudioServerProxyImpl extends bindings.Proxy {
     assert(endpoint.setDescription("For _AudioServerProxyImpl"));
     return new _AudioServerProxyImpl.fromEndpoint(endpoint);
   }
+
+  service_describer.ServiceDescription get serviceDescription =>
+    new _AudioServerServiceDescription();
 
   void handleResponse(bindings.ServiceMessage message) {
     switch (message.header.type) {
@@ -243,6 +261,10 @@ class AudioServerStub extends bindings.Stub {
   }
 
   int get version => 0;
+
+  service_describer.ServiceDescription get serviceDescription =>
+    new _AudioServerServiceDescription();
 }
+
 
 

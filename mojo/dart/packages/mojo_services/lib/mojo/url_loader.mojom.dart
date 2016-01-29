@@ -8,6 +8,8 @@ import 'dart:async';
 
 import 'package:mojo/bindings.dart' as bindings;
 import 'package:mojo/core.dart' as core;
+import 'package:mojo/mojo/bindings/types/mojom_types.mojom.dart' as mojom_types;
+import 'package:mojo/mojo/bindings/types/service_describer.mojom.dart' as service_describer;
 import 'package:mojo/mojo/network_error.mojom.dart' as network_error_mojom;
 import 'package:mojo/mojo/url_request.mojom.dart' as url_request_mojom;
 import 'package:mojo/mojo/url_response.mojom.dart' as url_response_mojom;
@@ -91,6 +93,8 @@ class UrlLoaderStatus extends bindings.Struct {
 }
 
 
+
+
 class _UrlLoaderStartParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(16, 0)
@@ -156,6 +160,8 @@ class _UrlLoaderStartParams extends bindings.Struct {
         'Object containing handles cannot be encoded to JSON.');
   }
 }
+
+
 
 
 class UrlLoaderStartResponseParams extends bindings.Struct {
@@ -225,6 +231,8 @@ class UrlLoaderStartResponseParams extends bindings.Struct {
 }
 
 
+
+
 class _UrlLoaderFollowRedirectParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(8, 0)
@@ -281,6 +289,8 @@ class _UrlLoaderFollowRedirectParams extends bindings.Struct {
     return map;
   }
 }
+
+
 
 
 class UrlLoaderFollowRedirectResponseParams extends bindings.Struct {
@@ -350,6 +360,8 @@ class UrlLoaderFollowRedirectResponseParams extends bindings.Struct {
 }
 
 
+
+
 class _UrlLoaderQueryStatusParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(8, 0)
@@ -406,6 +418,8 @@ class _UrlLoaderQueryStatusParams extends bindings.Struct {
     return map;
   }
 }
+
+
 
 
 class UrlLoaderQueryStatusResponseParams extends bindings.Struct {
@@ -475,9 +489,22 @@ class UrlLoaderQueryStatusResponseParams extends bindings.Struct {
   }
 }
 
+
+
+
 const int _UrlLoader_startName = 0;
 const int _UrlLoader_followRedirectName = 1;
 const int _UrlLoader_queryStatusName = 2;
+
+
+
+class _UrlLoaderServiceDescription implements service_describer.ServiceDescription {
+  dynamic getTopLevelInterface([Function responseFactory]) => null;
+
+  dynamic getTypeDefinition(String typeKey, [Function responseFactory]) => null;
+
+  dynamic getAllTypeDefinitions([Function responseFactory]) => null;
+}
 
 abstract class UrlLoader {
   static const String serviceName = null;
@@ -501,6 +528,9 @@ class _UrlLoaderProxyImpl extends bindings.Proxy {
     assert(endpoint.setDescription("For _UrlLoaderProxyImpl"));
     return new _UrlLoaderProxyImpl.fromEndpoint(endpoint);
   }
+
+  service_describer.ServiceDescription get serviceDescription =>
+    new _UrlLoaderServiceDescription();
 
   void handleResponse(bindings.ServiceMessage message) {
     switch (message.header.type) {
@@ -797,6 +827,10 @@ class UrlLoaderStub extends bindings.Stub {
   }
 
   int get version => 0;
+
+  service_describer.ServiceDescription get serviceDescription =>
+    new _UrlLoaderServiceDescription();
 }
+
 
 

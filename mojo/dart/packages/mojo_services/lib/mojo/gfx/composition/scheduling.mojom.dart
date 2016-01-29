@@ -8,6 +8,8 @@ import 'dart:async';
 
 import 'package:mojo/bindings.dart' as bindings;
 import 'package:mojo/core.dart' as core;
+import 'package:mojo/mojo/bindings/types/mojom_types.mojom.dart' as mojom_types;
+import 'package:mojo/mojo/bindings/types/service_describer.mojom.dart' as service_describer;
 
 
 
@@ -105,6 +107,8 @@ class FrameInfo extends bindings.Struct {
 }
 
 
+
+
 class _SceneSchedulerScheduleFrameParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(8, 0)
@@ -161,6 +165,8 @@ class _SceneSchedulerScheduleFrameParams extends bindings.Struct {
     return map;
   }
 }
+
+
 
 
 class SceneSchedulerScheduleFrameResponseParams extends bindings.Struct {
@@ -230,7 +236,20 @@ class SceneSchedulerScheduleFrameResponseParams extends bindings.Struct {
   }
 }
 
+
+
+
 const int _SceneScheduler_scheduleFrameName = 0;
+
+
+
+class _SceneSchedulerServiceDescription implements service_describer.ServiceDescription {
+  dynamic getTopLevelInterface([Function responseFactory]) => null;
+
+  dynamic getTypeDefinition(String typeKey, [Function responseFactory]) => null;
+
+  dynamic getAllTypeDefinitions([Function responseFactory]) => null;
+}
 
 abstract class SceneScheduler {
   static const String serviceName = null;
@@ -252,6 +271,9 @@ class _SceneSchedulerProxyImpl extends bindings.Proxy {
     assert(endpoint.setDescription("For _SceneSchedulerProxyImpl"));
     return new _SceneSchedulerProxyImpl.fromEndpoint(endpoint);
   }
+
+  service_describer.ServiceDescription get serviceDescription =>
+    new _SceneSchedulerServiceDescription();
 
   void handleResponse(bindings.ServiceMessage message) {
     switch (message.header.type) {
@@ -437,6 +459,10 @@ class SceneSchedulerStub extends bindings.Stub {
   }
 
   int get version => 0;
+
+  service_describer.ServiceDescription get serviceDescription =>
+    new _SceneSchedulerServiceDescription();
 }
+
 
 

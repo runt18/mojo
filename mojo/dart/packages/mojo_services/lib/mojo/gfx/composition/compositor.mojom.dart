@@ -8,6 +8,8 @@ import 'dart:async';
 
 import 'package:mojo/bindings.dart' as bindings;
 import 'package:mojo/core.dart' as core;
+import 'package:mojo/mojo/bindings/types/mojom_types.mojom.dart' as mojom_types;
+import 'package:mojo/mojo/bindings/types/service_describer.mojom.dart' as service_describer;
 import 'package:mojo_services/mojo/geometry.mojom.dart' as geometry_mojom;
 import 'package:mojo_services/mojo/context_provider.mojom.dart' as context_provider_mojom;
 import 'package:mojo_services/mojo/gfx/composition/scene_token.mojom.dart' as scene_token_mojom;
@@ -91,6 +93,8 @@ class _CompositorCreateSceneParams extends bindings.Struct {
 }
 
 
+
+
 class CompositorCreateSceneResponseParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(16, 0)
@@ -157,6 +161,8 @@ class CompositorCreateSceneResponseParams extends bindings.Struct {
     return map;
   }
 }
+
+
 
 
 class _CompositorCreateRendererParams extends bindings.Struct {
@@ -240,8 +246,21 @@ class _CompositorCreateRendererParams extends bindings.Struct {
   }
 }
 
+
+
+
 const int _Compositor_createSceneName = 0;
 const int _Compositor_createRendererName = 1;
+
+
+
+class _CompositorServiceDescription implements service_describer.ServiceDescription {
+  dynamic getTopLevelInterface([Function responseFactory]) => null;
+
+  dynamic getTypeDefinition(String typeKey, [Function responseFactory]) => null;
+
+  dynamic getAllTypeDefinitions([Function responseFactory]) => null;
+}
 
 abstract class Compositor {
   static const String serviceName = "mojo::gfx::composition::Compositor";
@@ -264,6 +283,9 @@ class _CompositorProxyImpl extends bindings.Proxy {
     assert(endpoint.setDescription("For _CompositorProxyImpl"));
     return new _CompositorProxyImpl.fromEndpoint(endpoint);
   }
+
+  service_describer.ServiceDescription get serviceDescription =>
+    new _CompositorServiceDescription();
 
   void handleResponse(bindings.ServiceMessage message) {
     switch (message.header.type) {
@@ -467,6 +489,10 @@ class CompositorStub extends bindings.Stub {
   }
 
   int get version => 0;
+
+  service_describer.ServiceDescription get serviceDescription =>
+    new _CompositorServiceDescription();
 }
+
 
 

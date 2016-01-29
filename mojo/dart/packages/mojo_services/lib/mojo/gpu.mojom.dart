@@ -8,6 +8,8 @@ import 'dart:async';
 
 import 'package:mojo/bindings.dart' as bindings;
 import 'package:mojo/core.dart' as core;
+import 'package:mojo/mojo/bindings/types/mojom_types.mojom.dart' as mojom_types;
+import 'package:mojo/mojo/bindings/types/service_describer.mojom.dart' as service_describer;
 import 'package:mojo_services/mojo/command_buffer.mojom.dart' as command_buffer_mojom;
 
 
@@ -77,7 +79,20 @@ class _GpuCreateOffscreenGles2ContextParams extends bindings.Struct {
   }
 }
 
+
+
+
 const int _Gpu_createOffscreenGles2ContextName = 0;
+
+
+
+class _GpuServiceDescription implements service_describer.ServiceDescription {
+  dynamic getTopLevelInterface([Function responseFactory]) => null;
+
+  dynamic getTypeDefinition(String typeKey, [Function responseFactory]) => null;
+
+  dynamic getAllTypeDefinitions([Function responseFactory]) => null;
+}
 
 abstract class Gpu {
   static const String serviceName = "mojo::Gpu";
@@ -99,6 +114,9 @@ class _GpuProxyImpl extends bindings.Proxy {
     assert(endpoint.setDescription("For _GpuProxyImpl"));
     return new _GpuProxyImpl.fromEndpoint(endpoint);
   }
+
+  service_describer.ServiceDescription get serviceDescription =>
+    new _GpuServiceDescription();
 
   void handleResponse(bindings.ServiceMessage message) {
     switch (message.header.type) {
@@ -243,6 +261,10 @@ class GpuStub extends bindings.Stub {
   }
 
   int get version => 0;
+
+  service_describer.ServiceDescription get serviceDescription =>
+    new _GpuServiceDescription();
 }
+
 
 

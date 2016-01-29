@@ -8,6 +8,8 @@ import 'dart:async';
 
 import 'package:mojo/bindings.dart' as bindings;
 import 'package:mojo/core.dart' as core;
+import 'package:mojo/mojo/bindings/types/mojom_types.mojom.dart' as mojom_types;
+import 'package:mojo/mojo/bindings/types/service_describer.mojom.dart' as service_describer;
 
 class Error extends bindings.MojoEnum {
   static const Error networkTimeout = const Error._(1);
@@ -102,11 +104,15 @@ class Error extends bindings.MojoEnum {
         return 'Error.recognizerBusy';
       case insufficientPermissions:
         return 'Error.insufficientPermissions';
+      default:
+        return null;
     }
   }
 
   int toJson() => mojoEnumValue;
 }
+
+
 
 
 
@@ -186,6 +192,8 @@ class UtteranceCandidate extends bindings.Struct {
 }
 
 
+
+
 class _SpeechRecognizerServiceListenParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(8, 0)
@@ -242,6 +250,8 @@ class _SpeechRecognizerServiceListenParams extends bindings.Struct {
     return map;
   }
 }
+
+
 
 
 class SpeechRecognizerServiceListenResponseParams extends bindings.Struct {
@@ -315,6 +325,8 @@ class SpeechRecognizerServiceListenResponseParams extends bindings.Struct {
 }
 
 
+
+
 class _SpeechRecognizerServiceStopListeningParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(8, 0)
@@ -371,6 +383,8 @@ class _SpeechRecognizerServiceStopListeningParams extends bindings.Struct {
     return map;
   }
 }
+
+
 
 
 
@@ -498,8 +512,21 @@ class ResultOrError extends bindings.Union {
     return result;
   }
 }
+
+
+
 const int _SpeechRecognizerService_listenName = 0;
 const int _SpeechRecognizerService_stopListeningName = 1;
+
+
+
+class _SpeechRecognizerServiceServiceDescription implements service_describer.ServiceDescription {
+  dynamic getTopLevelInterface([Function responseFactory]) => null;
+
+  dynamic getTypeDefinition(String typeKey, [Function responseFactory]) => null;
+
+  dynamic getAllTypeDefinitions([Function responseFactory]) => null;
+}
 
 abstract class SpeechRecognizerService {
   static const String serviceName = "speech_recognizer::SpeechRecognizerService";
@@ -522,6 +549,9 @@ class _SpeechRecognizerServiceProxyImpl extends bindings.Proxy {
     assert(endpoint.setDescription("For _SpeechRecognizerServiceProxyImpl"));
     return new _SpeechRecognizerServiceProxyImpl.fromEndpoint(endpoint);
   }
+
+  service_describer.ServiceDescription get serviceDescription =>
+    new _SpeechRecognizerServiceServiceDescription();
 
   void handleResponse(bindings.ServiceMessage message) {
     switch (message.header.type) {
@@ -720,6 +750,10 @@ class SpeechRecognizerServiceStub extends bindings.Stub {
   }
 
   int get version => 0;
+
+  service_describer.ServiceDescription get serviceDescription =>
+    new _SpeechRecognizerServiceServiceDescription();
 }
+
 
 

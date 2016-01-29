@@ -8,6 +8,8 @@ import 'dart:async';
 
 import 'package:mojo/bindings.dart' as bindings;
 import 'package:mojo/core.dart' as core;
+import 'package:mojo/mojo/bindings/types/mojom_types.mojom.dart' as mojom_types;
+
 
 class MediaState extends bindings.MojoEnum {
   static const MediaState fault = const MediaState._(0);
@@ -74,11 +76,17 @@ class MediaState extends bindings.MojoEnum {
         return 'MediaState.playing';
       case ended:
         return 'MediaState.ended';
+      default:
+        return null;
     }
   }
 
   int toJson() => mojoEnumValue;
 }
+
+
+
+
 
 
 

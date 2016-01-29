@@ -8,6 +8,8 @@ import 'dart:async';
 
 import 'package:mojo/bindings.dart' as bindings;
 import 'package:mojo/core.dart' as core;
+import 'package:mojo/mojo/bindings/types/mojom_types.mojom.dart' as mojom_types;
+import 'package:mojo/mojo/bindings/types/service_describer.mojom.dart' as service_describer;
 import 'package:mojo_services/mojo/location.mojom.dart' as location_mojom;
 
 
@@ -72,6 +74,8 @@ class LocationType extends bindings.Struct {
     return map;
   }
 }
+
+
 
 
 class Bounds extends bindings.Struct {
@@ -150,6 +154,8 @@ class Bounds extends bindings.Struct {
     return map;
   }
 }
+
+
 
 
 class ComponentRestrictions extends bindings.Struct {
@@ -255,6 +261,8 @@ class ComponentRestrictions extends bindings.Struct {
 }
 
 
+
+
 class Options extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(32, 0)
@@ -340,6 +348,8 @@ class Options extends bindings.Struct {
     return map;
   }
 }
+
+
 
 
 class Geometry extends bindings.Struct {
@@ -438,6 +448,8 @@ class Geometry extends bindings.Struct {
     return map;
   }
 }
+
+
 
 
 class Result extends bindings.Struct {
@@ -551,6 +563,8 @@ class Result extends bindings.Struct {
 }
 
 
+
+
 class Status extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(8, 0)
@@ -612,6 +626,8 @@ class Status extends bindings.Struct {
     return map;
   }
 }
+
+
 
 
 class _GeocoderAddressToLocationParams extends bindings.Struct {
@@ -689,6 +705,8 @@ class _GeocoderAddressToLocationParams extends bindings.Struct {
     return map;
   }
 }
+
+
 
 
 class GeocoderAddressToLocationResponseParams extends bindings.Struct {
@@ -786,6 +804,8 @@ class GeocoderAddressToLocationResponseParams extends bindings.Struct {
 }
 
 
+
+
 class _GeocoderLocationToAddressParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(24, 0)
@@ -862,6 +882,8 @@ class _GeocoderLocationToAddressParams extends bindings.Struct {
     return map;
   }
 }
+
+
 
 
 class GeocoderLocationToAddressResponseParams extends bindings.Struct {
@@ -958,8 +980,21 @@ class GeocoderLocationToAddressResponseParams extends bindings.Struct {
   }
 }
 
+
+
+
 const int _Geocoder_addressToLocationName = 0;
 const int _Geocoder_locationToAddressName = 1;
+
+
+
+class _GeocoderServiceDescription implements service_describer.ServiceDescription {
+  dynamic getTopLevelInterface([Function responseFactory]) => null;
+
+  dynamic getTypeDefinition(String typeKey, [Function responseFactory]) => null;
+
+  dynamic getAllTypeDefinitions([Function responseFactory]) => null;
+}
 
 abstract class Geocoder {
   static const String serviceName = null;
@@ -982,6 +1017,9 @@ class _GeocoderProxyImpl extends bindings.Proxy {
     assert(endpoint.setDescription("For _GeocoderProxyImpl"));
     return new _GeocoderProxyImpl.fromEndpoint(endpoint);
   }
+
+  service_describer.ServiceDescription get serviceDescription =>
+    new _GeocoderServiceDescription();
 
   void handleResponse(bindings.ServiceMessage message) {
     switch (message.header.type) {
@@ -1228,6 +1266,10 @@ class GeocoderStub extends bindings.Stub {
   }
 
   int get version => 0;
+
+  service_describer.ServiceDescription get serviceDescription =>
+    new _GeocoderServiceDescription();
 }
+
 
 

@@ -8,6 +8,8 @@ import 'dart:async';
 
 import 'package:mojo/bindings.dart' as bindings;
 import 'package:mojo/core.dart' as core;
+import 'package:mojo/mojo/bindings/types/mojom_types.mojom.dart' as mojom_types;
+import 'package:mojo/mojo/bindings/types/service_describer.mojom.dart' as service_describer;
 
 
 
@@ -78,6 +80,8 @@ class _AssetBundleGetAsStreamParams extends bindings.Struct {
 }
 
 
+
+
 class AssetBundleGetAsStreamResponseParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(16, 0)
@@ -142,6 +146,8 @@ class AssetBundleGetAsStreamResponseParams extends bindings.Struct {
         'Object containing handles cannot be encoded to JSON.');
   }
 }
+
+
 
 
 class _AssetUnpackerUnpackZipStreamParams extends bindings.Struct {
@@ -217,7 +223,20 @@ class _AssetUnpackerUnpackZipStreamParams extends bindings.Struct {
   }
 }
 
+
+
+
 const int _AssetBundle_getAsStreamName = 0;
+
+
+
+class _AssetBundleServiceDescription implements service_describer.ServiceDescription {
+  dynamic getTopLevelInterface([Function responseFactory]) => null;
+
+  dynamic getTypeDefinition(String typeKey, [Function responseFactory]) => null;
+
+  dynamic getAllTypeDefinitions([Function responseFactory]) => null;
+}
 
 abstract class AssetBundle {
   static const String serviceName = "mojo::asset_bundle::AssetBundle";
@@ -239,6 +258,9 @@ class _AssetBundleProxyImpl extends bindings.Proxy {
     assert(endpoint.setDescription("For _AssetBundleProxyImpl"));
     return new _AssetBundleProxyImpl.fromEndpoint(endpoint);
   }
+
+  service_describer.ServiceDescription get serviceDescription =>
+    new _AssetBundleServiceDescription();
 
   void handleResponse(bindings.ServiceMessage message) {
     switch (message.header.type) {
@@ -425,9 +447,22 @@ class AssetBundleStub extends bindings.Stub {
   }
 
   int get version => 0;
+
+  service_describer.ServiceDescription get serviceDescription =>
+    new _AssetBundleServiceDescription();
 }
 
 const int _AssetUnpacker_unpackZipStreamName = 0;
+
+
+
+class _AssetUnpackerServiceDescription implements service_describer.ServiceDescription {
+  dynamic getTopLevelInterface([Function responseFactory]) => null;
+
+  dynamic getTypeDefinition(String typeKey, [Function responseFactory]) => null;
+
+  dynamic getAllTypeDefinitions([Function responseFactory]) => null;
+}
 
 abstract class AssetUnpacker {
   static const String serviceName = "mojo::asset_bundle::AssetUnpacker";
@@ -449,6 +484,9 @@ class _AssetUnpackerProxyImpl extends bindings.Proxy {
     assert(endpoint.setDescription("For _AssetUnpackerProxyImpl"));
     return new _AssetUnpackerProxyImpl.fromEndpoint(endpoint);
   }
+
+  service_describer.ServiceDescription get serviceDescription =>
+    new _AssetUnpackerServiceDescription();
 
   void handleResponse(bindings.ServiceMessage message) {
     switch (message.header.type) {
@@ -594,6 +632,10 @@ class AssetUnpackerStub extends bindings.Stub {
   }
 
   int get version => 0;
+
+  service_describer.ServiceDescription get serviceDescription =>
+    new _AssetUnpackerServiceDescription();
 }
+
 
 

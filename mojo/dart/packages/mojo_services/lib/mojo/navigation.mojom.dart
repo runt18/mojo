@@ -8,6 +8,8 @@ import 'dart:async';
 
 import 'package:mojo/bindings.dart' as bindings;
 import 'package:mojo/core.dart' as core;
+import 'package:mojo/mojo/bindings/types/mojom_types.mojom.dart' as mojom_types;
+import 'package:mojo/mojo/bindings/types/service_describer.mojom.dart' as service_describer;
 import 'package:mojo/mojo/url_request.mojom.dart' as url_request_mojom;
 
 class Target extends bindings.MojoEnum {
@@ -61,11 +63,15 @@ class Target extends bindings.MojoEnum {
         return 'Target.sourceNode';
       case newNode:
         return 'Target.newNode';
+      default:
+        return null;
     }
   }
 
   int toJson() => mojoEnumValue;
 }
+
+
 
 
 
@@ -148,6 +154,8 @@ class _NavigatorHostRequestNavigateParams extends bindings.Struct {
 }
 
 
+
+
 class _NavigatorHostRequestNavigateHistoryParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(16, 0)
@@ -213,6 +221,8 @@ class _NavigatorHostRequestNavigateHistoryParams extends bindings.Struct {
     return map;
   }
 }
+
+
 
 
 class _NavigatorHostDidNavigateLocallyParams extends bindings.Struct {
@@ -281,9 +291,22 @@ class _NavigatorHostDidNavigateLocallyParams extends bindings.Struct {
   }
 }
 
+
+
+
 const int _NavigatorHost_requestNavigateName = 0;
 const int _NavigatorHost_requestNavigateHistoryName = 1;
 const int _NavigatorHost_didNavigateLocallyName = 2;
+
+
+
+class _NavigatorHostServiceDescription implements service_describer.ServiceDescription {
+  dynamic getTopLevelInterface([Function responseFactory]) => null;
+
+  dynamic getTypeDefinition(String typeKey, [Function responseFactory]) => null;
+
+  dynamic getAllTypeDefinitions([Function responseFactory]) => null;
+}
 
 abstract class NavigatorHost {
   static const String serviceName = "mojo::NavigatorHost";
@@ -307,6 +330,9 @@ class _NavigatorHostProxyImpl extends bindings.Proxy {
     assert(endpoint.setDescription("For _NavigatorHostProxyImpl"));
     return new _NavigatorHostProxyImpl.fromEndpoint(endpoint);
   }
+
+  service_describer.ServiceDescription get serviceDescription =>
+    new _NavigatorHostServiceDescription();
 
   void handleResponse(bindings.ServiceMessage message) {
     switch (message.header.type) {
@@ -480,6 +506,10 @@ class NavigatorHostStub extends bindings.Stub {
   }
 
   int get version => 0;
+
+  service_describer.ServiceDescription get serviceDescription =>
+    new _NavigatorHostServiceDescription();
 }
+
 
 

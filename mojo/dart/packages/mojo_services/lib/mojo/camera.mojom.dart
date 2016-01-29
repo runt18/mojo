@@ -8,6 +8,8 @@ import 'dart:async';
 
 import 'package:mojo/bindings.dart' as bindings;
 import 'package:mojo/core.dart' as core;
+import 'package:mojo/mojo/bindings/types/mojom_types.mojom.dart' as mojom_types;
+import 'package:mojo/mojo/bindings/types/service_describer.mojom.dart' as service_describer;
 
 
 
@@ -85,6 +87,8 @@ class Photo extends bindings.Struct {
 }
 
 
+
+
 class _CameraRollServiceUpdateParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(8, 0)
@@ -143,6 +147,8 @@ class _CameraRollServiceUpdateParams extends bindings.Struct {
 }
 
 
+
+
 class _CameraRollServiceGetCountParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(8, 0)
@@ -199,6 +205,8 @@ class _CameraRollServiceGetCountParams extends bindings.Struct {
     return map;
   }
 }
+
+
 
 
 class CameraRollServiceGetCountResponseParams extends bindings.Struct {
@@ -268,6 +276,8 @@ class CameraRollServiceGetCountResponseParams extends bindings.Struct {
 }
 
 
+
+
 class _CameraRollServiceGetPhotoParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(16, 0)
@@ -333,6 +343,8 @@ class _CameraRollServiceGetPhotoParams extends bindings.Struct {
     return map;
   }
 }
+
+
 
 
 class CameraRollServiceGetPhotoResponseParams extends bindings.Struct {
@@ -402,6 +414,8 @@ class CameraRollServiceGetPhotoResponseParams extends bindings.Struct {
 }
 
 
+
+
 class _CameraServiceGetLatestFrameParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(8, 0)
@@ -458,6 +472,8 @@ class _CameraServiceGetLatestFrameParams extends bindings.Struct {
     return map;
   }
 }
+
+
 
 
 class CameraServiceGetLatestFrameResponseParams extends bindings.Struct {
@@ -525,9 +541,22 @@ class CameraServiceGetLatestFrameResponseParams extends bindings.Struct {
   }
 }
 
+
+
+
 const int _CameraRollService_updateName = 0;
 const int _CameraRollService_getCountName = 1;
 const int _CameraRollService_getPhotoName = 2;
+
+
+
+class _CameraRollServiceServiceDescription implements service_describer.ServiceDescription {
+  dynamic getTopLevelInterface([Function responseFactory]) => null;
+
+  dynamic getTypeDefinition(String typeKey, [Function responseFactory]) => null;
+
+  dynamic getAllTypeDefinitions([Function responseFactory]) => null;
+}
 
 abstract class CameraRollService {
   static const String serviceName = "mojo::CameraRollService";
@@ -551,6 +580,9 @@ class _CameraRollServiceProxyImpl extends bindings.Proxy {
     assert(endpoint.setDescription("For _CameraRollServiceProxyImpl"));
     return new _CameraRollServiceProxyImpl.fromEndpoint(endpoint);
   }
+
+  service_describer.ServiceDescription get serviceDescription =>
+    new _CameraRollServiceServiceDescription();
 
   void handleResponse(bindings.ServiceMessage message) {
     switch (message.header.type) {
@@ -805,9 +837,22 @@ class CameraRollServiceStub extends bindings.Stub {
   }
 
   int get version => 0;
+
+  service_describer.ServiceDescription get serviceDescription =>
+    new _CameraRollServiceServiceDescription();
 }
 
 const int _CameraService_getLatestFrameName = 0;
+
+
+
+class _CameraServiceServiceDescription implements service_describer.ServiceDescription {
+  dynamic getTopLevelInterface([Function responseFactory]) => null;
+
+  dynamic getTypeDefinition(String typeKey, [Function responseFactory]) => null;
+
+  dynamic getAllTypeDefinitions([Function responseFactory]) => null;
+}
 
 abstract class CameraService {
   static const String serviceName = "mojo::CameraService";
@@ -829,6 +874,9 @@ class _CameraServiceProxyImpl extends bindings.Proxy {
     assert(endpoint.setDescription("For _CameraServiceProxyImpl"));
     return new _CameraServiceProxyImpl.fromEndpoint(endpoint);
   }
+
+  service_describer.ServiceDescription get serviceDescription =>
+    new _CameraServiceServiceDescription();
 
   void handleResponse(bindings.ServiceMessage message) {
     switch (message.header.type) {
@@ -1014,6 +1062,10 @@ class CameraServiceStub extends bindings.Stub {
   }
 
   int get version => 0;
+
+  service_describer.ServiceDescription get serviceDescription =>
+    new _CameraServiceServiceDescription();
 }
+
 
 

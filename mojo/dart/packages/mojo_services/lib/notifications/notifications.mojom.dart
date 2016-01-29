@@ -8,6 +8,8 @@ import 'dart:async';
 
 import 'package:mojo/bindings.dart' as bindings;
 import 'package:mojo/core.dart' as core;
+import 'package:mojo/mojo/bindings/types/mojom_types.mojom.dart' as mojom_types;
+import 'package:mojo/mojo/bindings/types/service_describer.mojom.dart' as service_describer;
 
 
 
@@ -114,6 +116,8 @@ class NotificationData extends bindings.Struct {
 }
 
 
+
+
 class _NotificationClientOnSelectedParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(8, 0)
@@ -172,6 +176,8 @@ class _NotificationClientOnSelectedParams extends bindings.Struct {
 }
 
 
+
+
 class _NotificationClientOnDismissedParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(8, 0)
@@ -228,6 +234,8 @@ class _NotificationClientOnDismissedParams extends bindings.Struct {
     return map;
   }
 }
+
+
 
 
 class _NotificationUpdateParams extends bindings.Struct {
@@ -298,6 +306,8 @@ class _NotificationUpdateParams extends bindings.Struct {
 }
 
 
+
+
 class _NotificationCancelParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(8, 0)
@@ -354,6 +364,8 @@ class _NotificationCancelParams extends bindings.Struct {
     return map;
   }
 }
+
+
 
 
 class _NotificationServicePostParams extends bindings.Struct {
@@ -438,8 +450,21 @@ class _NotificationServicePostParams extends bindings.Struct {
   }
 }
 
+
+
+
 const int _NotificationClient_onSelectedName = 0;
 const int _NotificationClient_onDismissedName = 1;
+
+
+
+class _NotificationClientServiceDescription implements service_describer.ServiceDescription {
+  dynamic getTopLevelInterface([Function responseFactory]) => null;
+
+  dynamic getTypeDefinition(String typeKey, [Function responseFactory]) => null;
+
+  dynamic getAllTypeDefinitions([Function responseFactory]) => null;
+}
 
 abstract class NotificationClient {
   static const String serviceName = null;
@@ -462,6 +487,9 @@ class _NotificationClientProxyImpl extends bindings.Proxy {
     assert(endpoint.setDescription("For _NotificationClientProxyImpl"));
     return new _NotificationClientProxyImpl.fromEndpoint(endpoint);
   }
+
+  service_describer.ServiceDescription get serviceDescription =>
+    new _NotificationClientServiceDescription();
 
   void handleResponse(bindings.ServiceMessage message) {
     switch (message.header.type) {
@@ -618,10 +646,23 @@ class NotificationClientStub extends bindings.Stub {
   }
 
   int get version => 0;
+
+  service_describer.ServiceDescription get serviceDescription =>
+    new _NotificationClientServiceDescription();
 }
 
 const int _Notification_updateName = 0;
 const int _Notification_cancelName = 1;
+
+
+
+class _NotificationServiceDescription implements service_describer.ServiceDescription {
+  dynamic getTopLevelInterface([Function responseFactory]) => null;
+
+  dynamic getTypeDefinition(String typeKey, [Function responseFactory]) => null;
+
+  dynamic getAllTypeDefinitions([Function responseFactory]) => null;
+}
 
 abstract class Notification {
   static const String serviceName = null;
@@ -644,6 +685,9 @@ class _NotificationProxyImpl extends bindings.Proxy {
     assert(endpoint.setDescription("For _NotificationProxyImpl"));
     return new _NotificationProxyImpl.fromEndpoint(endpoint);
   }
+
+  service_describer.ServiceDescription get serviceDescription =>
+    new _NotificationServiceDescription();
 
   void handleResponse(bindings.ServiceMessage message) {
     switch (message.header.type) {
@@ -801,9 +845,22 @@ class NotificationStub extends bindings.Stub {
   }
 
   int get version => 0;
+
+  service_describer.ServiceDescription get serviceDescription =>
+    new _NotificationServiceDescription();
 }
 
 const int _NotificationService_postName = 0;
+
+
+
+class _NotificationServiceServiceDescription implements service_describer.ServiceDescription {
+  dynamic getTopLevelInterface([Function responseFactory]) => null;
+
+  dynamic getTypeDefinition(String typeKey, [Function responseFactory]) => null;
+
+  dynamic getAllTypeDefinitions([Function responseFactory]) => null;
+}
 
 abstract class NotificationService {
   static const String serviceName = "notifications::NotificationService";
@@ -825,6 +882,9 @@ class _NotificationServiceProxyImpl extends bindings.Proxy {
     assert(endpoint.setDescription("For _NotificationServiceProxyImpl"));
     return new _NotificationServiceProxyImpl.fromEndpoint(endpoint);
   }
+
+  service_describer.ServiceDescription get serviceDescription =>
+    new _NotificationServiceServiceDescription();
 
   void handleResponse(bindings.ServiceMessage message) {
     switch (message.header.type) {
@@ -971,6 +1031,10 @@ class NotificationServiceStub extends bindings.Stub {
   }
 
   int get version => 0;
+
+  service_describer.ServiceDescription get serviceDescription =>
+    new _NotificationServiceServiceDescription();
 }
+
 
 

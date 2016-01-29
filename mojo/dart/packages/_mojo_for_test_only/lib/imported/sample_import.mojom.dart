@@ -5,9 +5,12 @@
 library sample_import_mojom;
 
 import 'dart:async';
+import 'dart:collection';
 
 import 'package:mojo/bindings.dart' as bindings;
 import 'package:mojo/core.dart' as core;
+import 'package:mojo/mojo/bindings/types/mojom_types.mojom.dart' as mojom_types;
+import 'package:mojo/mojo/bindings/types/service_describer.mojom.dart' as service_describer;
 
 class Shape extends bindings.MojoEnum {
   static const Shape rectangle = const Shape._(1);
@@ -67,10 +70,40 @@ class Shape extends bindings.MojoEnum {
         return 'Shape.triangle';
       case last:
         return 'Shape.last';
+      default:
+        return null;
     }
   }
 
   int toJson() => mojoEnumValue;
+}
+
+mojom_types.MojomEnum _sampleImportShape() {
+  return new mojom_types.MojomEnum()
+    ..declData = (new mojom_types.DeclarationData()
+      ..shortName = 'Shape'
+      ..fullIdentifier = 'imported.Shape')
+    ..values = <mojom_types.EnumValue>[
+      new mojom_types.EnumValue()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'Rectangle')
+        ..enumTypeKey = 'sample_import_Shape__'
+        ..intValue = 1,
+      new mojom_types.EnumValue()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'Circle')
+        ..enumTypeKey = 'sample_import_Shape__'
+        ..intValue = 2,
+      new mojom_types.EnumValue()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'Triangle')
+        ..enumTypeKey = 'sample_import_Shape__'
+        ..intValue = 3,
+      new mojom_types.EnumValue()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'Last')
+        ..enumTypeKey = 'sample_import_Shape__'
+        ..intValue = 3,];
 }
 
 class AnotherShape extends bindings.MojoEnum {
@@ -124,10 +157,35 @@ class AnotherShape extends bindings.MojoEnum {
         return 'AnotherShape.circle';
       case triangle:
         return 'AnotherShape.triangle';
+      default:
+        return null;
     }
   }
 
   int toJson() => mojoEnumValue;
+}
+
+mojom_types.MojomEnum _sampleImportAnotherShape() {
+  return new mojom_types.MojomEnum()
+    ..declData = (new mojom_types.DeclarationData()
+      ..shortName = 'AnotherShape'
+      ..fullIdentifier = 'imported.AnotherShape')
+    ..values = <mojom_types.EnumValue>[
+      new mojom_types.EnumValue()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'Rectangle')
+        ..enumTypeKey = 'sample_import_AnotherShape__'
+        ..intValue = 10,
+      new mojom_types.EnumValue()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'Circle')
+        ..enumTypeKey = 'sample_import_AnotherShape__'
+        ..intValue = 11,
+      new mojom_types.EnumValue()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'Triangle')
+        ..enumTypeKey = 'sample_import_AnotherShape__'
+        ..intValue = 12,];
 }
 
 class YetAnotherShape extends bindings.MojoEnum {
@@ -181,10 +239,35 @@ class YetAnotherShape extends bindings.MojoEnum {
         return 'YetAnotherShape.circle';
       case triangle:
         return 'YetAnotherShape.triangle';
+      default:
+        return null;
     }
   }
 
   int toJson() => mojoEnumValue;
+}
+
+mojom_types.MojomEnum _sampleImportYetAnotherShape() {
+  return new mojom_types.MojomEnum()
+    ..declData = (new mojom_types.DeclarationData()
+      ..shortName = 'YetAnotherShape'
+      ..fullIdentifier = 'imported.YetAnotherShape')
+    ..values = <mojom_types.EnumValue>[
+      new mojom_types.EnumValue()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'Rectangle')
+        ..enumTypeKey = 'sample_import_YetAnotherShape__'
+        ..intValue = 20,
+      new mojom_types.EnumValue()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'Circle')
+        ..enumTypeKey = 'sample_import_YetAnotherShape__'
+        ..intValue = 21,
+      new mojom_types.EnumValue()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'Triangle')
+        ..enumTypeKey = 'sample_import_YetAnotherShape__'
+        ..intValue = 22,];
 }
 
 
@@ -264,6 +347,24 @@ class Point extends bindings.Struct {
   }
 }
 
+mojom_types.MojomStruct _sampleImportPoint() {
+  return new mojom_types.MojomStruct()
+    ..declData = (new mojom_types.DeclarationData()
+      ..shortName = 'Point'
+      ..fullIdentifier = 'imported.Point')
+    ..fields = <mojom_types.StructField>[
+      new mojom_types.StructField()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'X')
+        ..type = (new mojom_types.Type()
+          ..simpleType = mojom_types.SimpleType.int32),
+      new mojom_types.StructField()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'Y')
+        ..type = (new mojom_types.Type()
+          ..simpleType = mojom_types.SimpleType.int32),];
+}
+
 
 class _ImportedInterfaceDoSomethingParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
@@ -322,7 +423,42 @@ class _ImportedInterfaceDoSomethingParams extends bindings.Struct {
   }
 }
 
+mojom_types.MojomStruct _sampleImportImportedInterfaceDoSomethingParams() {
+  return new mojom_types.MojomStruct()
+    ..declData = (new mojom_types.DeclarationData()
+      ..shortName = 'ImportedInterfaceDoSomethingParams'
+      ..fullIdentifier = 'imported.ImportedInterface_DoSomething_Params')
+    ..fields = <mojom_types.StructField>[];
+}
+
+
 const int _ImportedInterface_doSomethingName = 0;
+
+mojom_types.MojomInterface _sampleImportImportedInterface() {
+  return new mojom_types.MojomInterface()
+    ..declData = (new mojom_types.DeclarationData()
+      ..shortName = 'ImportedInterface'
+      ..fullIdentifier = 'imported.ImportedInterface')
+    ..interfaceName = 'ImportedInterface'
+    ..methods = <int, mojom_types.MojomMethod>{
+      _ImportedInterface_doSomethingName: new mojom_types.MojomMethod()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'DoSomething')
+        ..ordinal = _ImportedInterface_doSomethingName
+        ..parameters = _sampleImportImportedInterfaceDoSomethingParams(),
+    };
+}
+
+class _ImportedInterfaceServiceDescription implements service_describer.ServiceDescription {
+  dynamic getTopLevelInterface([Function responseFactory]) =>
+      _sampleImportImportedInterface();
+
+  dynamic getTypeDefinition(String typeKey, [Function responseFactory]) =>
+      getAllMojomTypeDefinitions()[typeKey];
+
+  dynamic getAllTypeDefinitions([Function responseFactory]) =>
+      getAllMojomTypeDefinitions();
+}
 
 abstract class ImportedInterface {
   static const String serviceName = null;
@@ -344,6 +480,9 @@ class _ImportedInterfaceProxyImpl extends bindings.Proxy {
     assert(endpoint.setDescription("For _ImportedInterfaceProxyImpl"));
     return new _ImportedInterfaceProxyImpl.fromEndpoint(endpoint);
   }
+
+  service_describer.ServiceDescription get serviceDescription =>
+    new _ImportedInterfaceServiceDescription();
 
   void handleResponse(bindings.ServiceMessage message) {
     switch (message.header.type) {
@@ -487,6 +626,40 @@ class ImportedInterfaceStub extends bindings.Stub {
   }
 
   int get version => 0;
+
+  service_describer.ServiceDescription get serviceDescription =>
+    new _ImportedInterfaceServiceDescription();
 }
 
+
+Map<String, mojom_types.UserDefinedType> _initDescriptions() {
+  var map = new HashMap<String, mojom_types.UserDefinedType>();
+  map["sample_import_Shape__"] =
+    new mojom_types.UserDefinedType()
+      ..enumType = _sampleImportShape();
+  map["sample_import_AnotherShape__"] =
+    new mojom_types.UserDefinedType()
+      ..enumType = _sampleImportAnotherShape();
+  map["sample_import_YetAnotherShape__"] =
+    new mojom_types.UserDefinedType()
+      ..enumType = _sampleImportYetAnotherShape();
+  map["sample_import_Point__"] =
+    new mojom_types.UserDefinedType()
+      ..structType = _sampleImportPoint();
+  map["sample_import_ImportedInterface_DoSomething_Params__"] =
+    new mojom_types.UserDefinedType()
+      ..structType = _sampleImportImportedInterfaceDoSomethingParams();
+  map["sample_import_ImportedInterface__"] =
+    new mojom_types.UserDefinedType()
+      ..interfaceType = _sampleImportImportedInterface();
+  return map;
+}
+
+var _mojomDesc;
+Map<String, mojom_types.UserDefinedType> getAllMojomTypeDefinitions() {
+  if (_mojomDesc == null) {
+    _mojomDesc = _initDescriptions();
+  }
+  return _mojomDesc;
+}
 

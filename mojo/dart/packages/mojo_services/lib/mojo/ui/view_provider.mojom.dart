@@ -8,6 +8,8 @@ import 'dart:async';
 
 import 'package:mojo/bindings.dart' as bindings;
 import 'package:mojo/core.dart' as core;
+import 'package:mojo/mojo/bindings/types/mojom_types.mojom.dart' as mojom_types;
+import 'package:mojo/mojo/bindings/types/service_describer.mojom.dart' as service_describer;
 import 'package:mojo/mojo/service_provider.mojom.dart' as service_provider_mojom;
 import 'package:mojo_services/mojo/ui/views.mojom.dart' as views_mojom;
 
@@ -87,6 +89,8 @@ class _ViewProviderCreateViewParams extends bindings.Struct {
 }
 
 
+
+
 class ViewProviderCreateViewResponseParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(16, 0)
@@ -154,7 +158,20 @@ class ViewProviderCreateViewResponseParams extends bindings.Struct {
   }
 }
 
+
+
+
 const int _ViewProvider_createViewName = 0;
+
+
+
+class _ViewProviderServiceDescription implements service_describer.ServiceDescription {
+  dynamic getTopLevelInterface([Function responseFactory]) => null;
+
+  dynamic getTypeDefinition(String typeKey, [Function responseFactory]) => null;
+
+  dynamic getAllTypeDefinitions([Function responseFactory]) => null;
+}
 
 abstract class ViewProvider {
   static const String serviceName = "mojo::ui::ViewProvider";
@@ -176,6 +193,9 @@ class _ViewProviderProxyImpl extends bindings.Proxy {
     assert(endpoint.setDescription("For _ViewProviderProxyImpl"));
     return new _ViewProviderProxyImpl.fromEndpoint(endpoint);
   }
+
+  service_describer.ServiceDescription get serviceDescription =>
+    new _ViewProviderServiceDescription();
 
   void handleResponse(bindings.ServiceMessage message) {
     switch (message.header.type) {
@@ -363,6 +383,10 @@ class ViewProviderStub extends bindings.Stub {
   }
 
   int get version => 0;
+
+  service_describer.ServiceDescription get serviceDescription =>
+    new _ViewProviderServiceDescription();
 }
+
 
 

@@ -8,6 +8,8 @@ import 'dart:async';
 
 import 'package:mojo/bindings.dart' as bindings;
 import 'package:mojo/core.dart' as core;
+import 'package:mojo/mojo/bindings/types/mojom_types.mojom.dart' as mojom_types;
+import 'package:mojo/mojo/bindings/types/service_describer.mojom.dart' as service_describer;
 
 
 
@@ -76,6 +78,8 @@ class _AuthenticationServiceSelectAccountParams extends bindings.Struct {
     return map;
   }
 }
+
+
 
 
 class AuthenticationServiceSelectAccountResponseParams extends bindings.Struct {
@@ -152,6 +156,8 @@ class AuthenticationServiceSelectAccountResponseParams extends bindings.Struct {
     return map;
   }
 }
+
+
 
 
 class _AuthenticationServiceGetOAuth2TokenParams extends bindings.Struct {
@@ -246,6 +252,8 @@ class _AuthenticationServiceGetOAuth2TokenParams extends bindings.Struct {
 }
 
 
+
+
 class AuthenticationServiceGetOAuth2TokenResponseParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(24, 0)
@@ -322,6 +330,8 @@ class AuthenticationServiceGetOAuth2TokenResponseParams extends bindings.Struct 
 }
 
 
+
+
 class _AuthenticationServiceClearOAuth2TokenParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(16, 0)
@@ -388,9 +398,22 @@ class _AuthenticationServiceClearOAuth2TokenParams extends bindings.Struct {
   }
 }
 
+
+
+
 const int _AuthenticationService_selectAccountName = 0;
 const int _AuthenticationService_getOAuth2TokenName = 1;
 const int _AuthenticationService_clearOAuth2TokenName = 2;
+
+
+
+class _AuthenticationServiceServiceDescription implements service_describer.ServiceDescription {
+  dynamic getTopLevelInterface([Function responseFactory]) => null;
+
+  dynamic getTypeDefinition(String typeKey, [Function responseFactory]) => null;
+
+  dynamic getAllTypeDefinitions([Function responseFactory]) => null;
+}
 
 abstract class AuthenticationService {
   static const String serviceName = "authentication::AuthenticationService";
@@ -414,6 +437,9 @@ class _AuthenticationServiceProxyImpl extends bindings.Proxy {
     assert(endpoint.setDescription("For _AuthenticationServiceProxyImpl"));
     return new _AuthenticationServiceProxyImpl.fromEndpoint(endpoint);
   }
+
+  service_describer.ServiceDescription get serviceDescription =>
+    new _AuthenticationServiceServiceDescription();
 
   void handleResponse(bindings.ServiceMessage message) {
     switch (message.header.type) {
@@ -673,6 +699,10 @@ class AuthenticationServiceStub extends bindings.Stub {
   }
 
   int get version => 0;
+
+  service_describer.ServiceDescription get serviceDescription =>
+    new _AuthenticationServiceServiceDescription();
 }
+
 
 

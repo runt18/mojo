@@ -5,9 +5,12 @@
 library sample_interfaces_mojom;
 
 import 'dart:async';
+import 'dart:collection';
 
 import 'package:mojo/bindings.dart' as bindings;
 import 'package:mojo/core.dart' as core;
+import 'package:mojo/mojo/bindings/types/mojom_types.mojom.dart' as mojom_types;
+import 'package:mojo/mojo/bindings/types/service_describer.mojom.dart' as service_describer;
 const int kLong = 4405;
 
 class Enum extends bindings.MojoEnum {
@@ -47,10 +50,25 @@ class Enum extends bindings.MojoEnum {
     switch(this) {
       case value:
         return 'Enum.value';
+      default:
+        return null;
     }
   }
 
   int toJson() => mojoEnumValue;
+}
+
+mojom_types.MojomEnum _sampleInterfacesEnum() {
+  return new mojom_types.MojomEnum()
+    ..declData = (new mojom_types.DeclarationData()
+      ..shortName = 'Enum'
+      ..fullIdentifier = 'sample.Enum')
+    ..values = <mojom_types.EnumValue>[
+      new mojom_types.EnumValue()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'Value')
+        ..enumTypeKey = 'sample_interfaces_Enum__'
+        ..intValue = 0,];
 }
 
 
@@ -121,6 +139,19 @@ class _ProviderEchoStringParams extends bindings.Struct {
   }
 }
 
+mojom_types.MojomStruct _sampleInterfacesProviderEchoStringParams() {
+  return new mojom_types.MojomStruct()
+    ..declData = (new mojom_types.DeclarationData()
+      ..shortName = 'ProviderEchoStringParams'
+      ..fullIdentifier = 'sample.Provider_EchoString_Params')
+    ..fields = <mojom_types.StructField>[
+      new mojom_types.StructField()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'A')
+        ..type = (new mojom_types.Type()
+          ..stringType = (new mojom_types.StringType())),];
+}
+
 
 class ProviderEchoStringResponseParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
@@ -186,6 +217,19 @@ class ProviderEchoStringResponseParams extends bindings.Struct {
     map["a"] = a;
     return map;
   }
+}
+
+mojom_types.MojomStruct _sampleInterfacesProviderEchoStringResponseParams() {
+  return new mojom_types.MojomStruct()
+    ..declData = (new mojom_types.DeclarationData()
+      ..shortName = 'ProviderEchoStringResponseParams'
+      ..fullIdentifier = 'sample.Provider_EchoString_ResponseParams')
+    ..fields = <mojom_types.StructField>[
+      new mojom_types.StructField()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'A')
+        ..type = (new mojom_types.Type()
+          ..stringType = (new mojom_types.StringType())),];
 }
 
 
@@ -264,6 +308,24 @@ class _ProviderEchoStringsParams extends bindings.Struct {
   }
 }
 
+mojom_types.MojomStruct _sampleInterfacesProviderEchoStringsParams() {
+  return new mojom_types.MojomStruct()
+    ..declData = (new mojom_types.DeclarationData()
+      ..shortName = 'ProviderEchoStringsParams'
+      ..fullIdentifier = 'sample.Provider_EchoStrings_Params')
+    ..fields = <mojom_types.StructField>[
+      new mojom_types.StructField()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'A')
+        ..type = (new mojom_types.Type()
+          ..stringType = (new mojom_types.StringType())),
+      new mojom_types.StructField()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'B')
+        ..type = (new mojom_types.Type()
+          ..stringType = (new mojom_types.StringType())),];
+}
+
 
 class ProviderEchoStringsResponseParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
@@ -340,6 +402,24 @@ class ProviderEchoStringsResponseParams extends bindings.Struct {
   }
 }
 
+mojom_types.MojomStruct _sampleInterfacesProviderEchoStringsResponseParams() {
+  return new mojom_types.MojomStruct()
+    ..declData = (new mojom_types.DeclarationData()
+      ..shortName = 'ProviderEchoStringsResponseParams'
+      ..fullIdentifier = 'sample.Provider_EchoStrings_ResponseParams')
+    ..fields = <mojom_types.StructField>[
+      new mojom_types.StructField()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'A')
+        ..type = (new mojom_types.Type()
+          ..stringType = (new mojom_types.StringType())),
+      new mojom_types.StructField()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'B')
+        ..type = (new mojom_types.Type()
+          ..stringType = (new mojom_types.StringType())),];
+}
+
 
 class _ProviderEchoMessagePipeHandleParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
@@ -406,6 +486,20 @@ class _ProviderEchoMessagePipeHandleParams extends bindings.Struct {
   }
 }
 
+mojom_types.MojomStruct _sampleInterfacesProviderEchoMessagePipeHandleParams() {
+  return new mojom_types.MojomStruct()
+    ..declData = (new mojom_types.DeclarationData()
+      ..shortName = 'ProviderEchoMessagePipeHandleParams'
+      ..fullIdentifier = 'sample.Provider_EchoMessagePipeHandle_Params')
+    ..fields = <mojom_types.StructField>[
+      new mojom_types.StructField()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'A')
+        ..type = (new mojom_types.Type()
+          ..handleType = (new mojom_types.HandleType()
+            ..kind = mojom_types.HandleTypeKind.messagePipe)),];
+}
+
 
 class ProviderEchoMessagePipeHandleResponseParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
@@ -470,6 +564,20 @@ class ProviderEchoMessagePipeHandleResponseParams extends bindings.Struct {
     throw new bindings.MojoCodecError(
         'Object containing handles cannot be encoded to JSON.');
   }
+}
+
+mojom_types.MojomStruct _sampleInterfacesProviderEchoMessagePipeHandleResponseParams() {
+  return new mojom_types.MojomStruct()
+    ..declData = (new mojom_types.DeclarationData()
+      ..shortName = 'ProviderEchoMessagePipeHandleResponseParams'
+      ..fullIdentifier = 'sample.Provider_EchoMessagePipeHandle_ResponseParams')
+    ..fields = <mojom_types.StructField>[
+      new mojom_types.StructField()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'A')
+        ..type = (new mojom_types.Type()
+          ..handleType = (new mojom_types.HandleType()
+            ..kind = mojom_types.HandleTypeKind.messagePipe)),];
 }
 
 
@@ -543,6 +651,22 @@ class _ProviderEchoEnumParams extends bindings.Struct {
   }
 }
 
+mojom_types.MojomStruct _sampleInterfacesProviderEchoEnumParams() {
+  return new mojom_types.MojomStruct()
+    ..declData = (new mojom_types.DeclarationData()
+      ..shortName = 'ProviderEchoEnumParams'
+      ..fullIdentifier = 'sample.Provider_EchoEnum_Params')
+    ..fields = <mojom_types.StructField>[
+      new mojom_types.StructField()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'A')
+        ..type = (new mojom_types.Type()
+          ..typeReference = (new mojom_types.TypeReference()
+          ..identifier = 'sample_interfaces_Enum__'
+          ..typeKey = 'sample_interfaces_Enum__'
+        )),];
+}
+
 
 class ProviderEchoEnumResponseParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
@@ -614,6 +738,22 @@ class ProviderEchoEnumResponseParams extends bindings.Struct {
   }
 }
 
+mojom_types.MojomStruct _sampleInterfacesProviderEchoEnumResponseParams() {
+  return new mojom_types.MojomStruct()
+    ..declData = (new mojom_types.DeclarationData()
+      ..shortName = 'ProviderEchoEnumResponseParams'
+      ..fullIdentifier = 'sample.Provider_EchoEnum_ResponseParams')
+    ..fields = <mojom_types.StructField>[
+      new mojom_types.StructField()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'A')
+        ..type = (new mojom_types.Type()
+          ..typeReference = (new mojom_types.TypeReference()
+          ..identifier = 'sample_interfaces_Enum__'
+          ..typeKey = 'sample_interfaces_Enum__'
+        )),];
+}
+
 
 class _ProviderEchoIntParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
@@ -679,6 +819,19 @@ class _ProviderEchoIntParams extends bindings.Struct {
     map["a"] = a;
     return map;
   }
+}
+
+mojom_types.MojomStruct _sampleInterfacesProviderEchoIntParams() {
+  return new mojom_types.MojomStruct()
+    ..declData = (new mojom_types.DeclarationData()
+      ..shortName = 'ProviderEchoIntParams'
+      ..fullIdentifier = 'sample.Provider_EchoInt_Params')
+    ..fields = <mojom_types.StructField>[
+      new mojom_types.StructField()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'A')
+        ..type = (new mojom_types.Type()
+          ..simpleType = mojom_types.SimpleType.int32),];
 }
 
 
@@ -748,6 +901,19 @@ class ProviderEchoIntResponseParams extends bindings.Struct {
   }
 }
 
+mojom_types.MojomStruct _sampleInterfacesProviderEchoIntResponseParams() {
+  return new mojom_types.MojomStruct()
+    ..declData = (new mojom_types.DeclarationData()
+      ..shortName = 'ProviderEchoIntResponseParams'
+      ..fullIdentifier = 'sample.Provider_EchoInt_ResponseParams')
+    ..fields = <mojom_types.StructField>[
+      new mojom_types.StructField()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'A')
+        ..type = (new mojom_types.Type()
+          ..simpleType = mojom_types.SimpleType.int32),];
+}
+
 
 class _IntegerAccessorGetIntegerParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
@@ -804,6 +970,14 @@ class _IntegerAccessorGetIntegerParams extends bindings.Struct {
     Map map = new Map();
     return map;
   }
+}
+
+mojom_types.MojomStruct _sampleInterfacesIntegerAccessorGetIntegerParams() {
+  return new mojom_types.MojomStruct()
+    ..declData = (new mojom_types.DeclarationData()
+      ..shortName = 'IntegerAccessorGetIntegerParams'
+      ..fullIdentifier = 'sample.IntegerAccessor_GetInteger_Params')
+    ..fields = <mojom_types.StructField>[];
 }
 
 
@@ -887,6 +1061,27 @@ class IntegerAccessorGetIntegerResponseParams extends bindings.Struct {
   }
 }
 
+mojom_types.MojomStruct _sampleInterfacesIntegerAccessorGetIntegerResponseParams() {
+  return new mojom_types.MojomStruct()
+    ..declData = (new mojom_types.DeclarationData()
+      ..shortName = 'IntegerAccessorGetIntegerResponseParams'
+      ..fullIdentifier = 'sample.IntegerAccessor_GetInteger_ResponseParams')
+    ..fields = <mojom_types.StructField>[
+      new mojom_types.StructField()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'Data')
+        ..type = (new mojom_types.Type()
+          ..simpleType = mojom_types.SimpleType.int64),
+      new mojom_types.StructField()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'Type')
+        ..type = (new mojom_types.Type()
+          ..typeReference = (new mojom_types.TypeReference()
+          ..identifier = 'sample_interfaces_Enum__'
+          ..typeKey = 'sample_interfaces_Enum__'
+        )),];
+}
+
 
 class _IntegerAccessorSetIntegerParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
@@ -968,6 +1163,27 @@ class _IntegerAccessorSetIntegerParams extends bindings.Struct {
   }
 }
 
+mojom_types.MojomStruct _sampleInterfacesIntegerAccessorSetIntegerParams() {
+  return new mojom_types.MojomStruct()
+    ..declData = (new mojom_types.DeclarationData()
+      ..shortName = 'IntegerAccessorSetIntegerParams'
+      ..fullIdentifier = 'sample.IntegerAccessor_SetInteger_Params')
+    ..fields = <mojom_types.StructField>[
+      new mojom_types.StructField()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'Data')
+        ..type = (new mojom_types.Type()
+          ..simpleType = mojom_types.SimpleType.int64),
+      new mojom_types.StructField()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'Type')
+        ..type = (new mojom_types.Type()
+          ..typeReference = (new mojom_types.TypeReference()
+          ..identifier = 'sample_interfaces_Enum__'
+          ..typeKey = 'sample_interfaces_Enum__'
+        )),];
+}
+
 
 class _SampleInterfaceSampleMethod0Params extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
@@ -1024,6 +1240,14 @@ class _SampleInterfaceSampleMethod0Params extends bindings.Struct {
     Map map = new Map();
     return map;
   }
+}
+
+mojom_types.MojomStruct _sampleInterfacesSampleInterfaceSampleMethod0Params() {
+  return new mojom_types.MojomStruct()
+    ..declData = (new mojom_types.DeclarationData()
+      ..shortName = 'SampleInterfaceSampleMethod0Params'
+      ..fullIdentifier = 'sample.SampleInterface_SampleMethod0_Params')
+    ..fields = <mojom_types.StructField>[];
 }
 
 
@@ -1100,6 +1324,26 @@ class _SampleInterfaceSampleMethod1Params extends bindings.Struct {
     map["in2"] = in2;
     return map;
   }
+}
+
+mojom_types.MojomStruct _sampleInterfacesSampleInterfaceSampleMethod1Params() {
+  return new mojom_types.MojomStruct()
+    ..declData = (new mojom_types.DeclarationData()
+      ..shortName = 'SampleInterfaceSampleMethod1Params'
+      ..fullIdentifier = 'sample.SampleInterface_SampleMethod1_Params')
+    ..fields = <mojom_types.StructField>[
+      new mojom_types.StructField()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'In1')
+        ..type = (new mojom_types.Type()
+          ..simpleType = mojom_types.SimpleType.int32),
+      new mojom_types.StructField()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'In2')
+        ..type = (new mojom_types.Type()
+          ..stringType = (new mojom_types.StringType()
+            ..nullable = true
+          )),];
 }
 
 
@@ -1182,6 +1426,29 @@ class SampleInterfaceSampleMethod1ResponseParams extends bindings.Struct {
   }
 }
 
+mojom_types.MojomStruct _sampleInterfacesSampleInterfaceSampleMethod1ResponseParams() {
+  return new mojom_types.MojomStruct()
+    ..declData = (new mojom_types.DeclarationData()
+      ..shortName = 'SampleInterfaceSampleMethod1ResponseParams'
+      ..fullIdentifier = 'sample.SampleInterface_SampleMethod1_ResponseParams')
+    ..fields = <mojom_types.StructField>[
+      new mojom_types.StructField()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'Out1')
+        ..type = (new mojom_types.Type()
+          ..stringType = (new mojom_types.StringType()
+            ..nullable = true
+          )),
+      new mojom_types.StructField()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'Out2')
+        ..type = (new mojom_types.Type()
+          ..typeReference = (new mojom_types.TypeReference()
+          ..identifier = 'sample_interfaces_Enum__'
+          ..typeKey = 'sample_interfaces_Enum__'
+        )),];
+}
+
 
 class _SampleInterfaceSampleMethod2Params extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
@@ -1240,11 +1507,71 @@ class _SampleInterfaceSampleMethod2Params extends bindings.Struct {
   }
 }
 
+mojom_types.MojomStruct _sampleInterfacesSampleInterfaceSampleMethod2Params() {
+  return new mojom_types.MojomStruct()
+    ..declData = (new mojom_types.DeclarationData()
+      ..shortName = 'SampleInterfaceSampleMethod2Params'
+      ..fullIdentifier = 'sample.SampleInterface_SampleMethod2_Params')
+    ..fields = <mojom_types.StructField>[];
+}
+
+
 const int _Provider_echoStringName = 0;
 const int _Provider_echoStringsName = 1;
 const int _Provider_echoMessagePipeHandleName = 2;
 const int _Provider_echoEnumName = 3;
 const int _Provider_echoIntName = 4;
+
+mojom_types.MojomInterface _sampleInterfacesProvider() {
+  return new mojom_types.MojomInterface()
+    ..declData = (new mojom_types.DeclarationData()
+      ..shortName = 'Provider'
+      ..fullIdentifier = 'sample.Provider')
+    ..interfaceName = 'Provider'
+    ..methods = <int, mojom_types.MojomMethod>{
+      _Provider_echoStringName: new mojom_types.MojomMethod()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'EchoString')
+        ..ordinal = _Provider_echoStringName
+        ..responseParams = _sampleInterfacesProviderEchoStringResponseParams()
+        ..parameters = _sampleInterfacesProviderEchoStringParams(),
+      _Provider_echoStringsName: new mojom_types.MojomMethod()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'EchoStrings')
+        ..ordinal = _Provider_echoStringsName
+        ..responseParams = _sampleInterfacesProviderEchoStringsResponseParams()
+        ..parameters = _sampleInterfacesProviderEchoStringsParams(),
+      _Provider_echoMessagePipeHandleName: new mojom_types.MojomMethod()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'EchoMessagePipeHandle')
+        ..ordinal = _Provider_echoMessagePipeHandleName
+        ..responseParams = _sampleInterfacesProviderEchoMessagePipeHandleResponseParams()
+        ..parameters = _sampleInterfacesProviderEchoMessagePipeHandleParams(),
+      _Provider_echoEnumName: new mojom_types.MojomMethod()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'EchoEnum')
+        ..ordinal = _Provider_echoEnumName
+        ..responseParams = _sampleInterfacesProviderEchoEnumResponseParams()
+        ..parameters = _sampleInterfacesProviderEchoEnumParams(),
+      _Provider_echoIntName: new mojom_types.MojomMethod()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'EchoInt')
+        ..ordinal = _Provider_echoIntName
+        ..responseParams = _sampleInterfacesProviderEchoIntResponseParams()
+        ..parameters = _sampleInterfacesProviderEchoIntParams(),
+    };
+}
+
+class _ProviderServiceDescription implements service_describer.ServiceDescription {
+  dynamic getTopLevelInterface([Function responseFactory]) =>
+      _sampleInterfacesProvider();
+
+  dynamic getTypeDefinition(String typeKey, [Function responseFactory]) =>
+      getAllMojomTypeDefinitions()[typeKey];
+
+  dynamic getAllTypeDefinitions([Function responseFactory]) =>
+      getAllMojomTypeDefinitions();
+}
 
 abstract class Provider {
   static const String serviceName = null;
@@ -1270,6 +1597,9 @@ class _ProviderProxyImpl extends bindings.Proxy {
     assert(endpoint.setDescription("For _ProviderProxyImpl"));
     return new _ProviderProxyImpl.fromEndpoint(endpoint);
   }
+
+  service_describer.ServiceDescription get serviceDescription =>
+    new _ProviderServiceDescription();
 
   void handleResponse(bindings.ServiceMessage message) {
     switch (message.header.type) {
@@ -1682,10 +2012,45 @@ class ProviderStub extends bindings.Stub {
   }
 
   int get version => 0;
+
+  service_describer.ServiceDescription get serviceDescription =>
+    new _ProviderServiceDescription();
 }
 
 const int _IntegerAccessor_getIntegerName = 0;
 const int _IntegerAccessor_setIntegerName = 1;
+
+mojom_types.MojomInterface _sampleInterfacesIntegerAccessor() {
+  return new mojom_types.MojomInterface()
+    ..declData = (new mojom_types.DeclarationData()
+      ..shortName = 'IntegerAccessor'
+      ..fullIdentifier = 'sample.IntegerAccessor')
+    ..interfaceName = 'IntegerAccessor'
+    ..methods = <int, mojom_types.MojomMethod>{
+      _IntegerAccessor_getIntegerName: new mojom_types.MojomMethod()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'GetInteger')
+        ..ordinal = _IntegerAccessor_getIntegerName
+        ..responseParams = _sampleInterfacesIntegerAccessorGetIntegerResponseParams()
+        ..parameters = _sampleInterfacesIntegerAccessorGetIntegerParams(),
+      _IntegerAccessor_setIntegerName: new mojom_types.MojomMethod()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'SetInteger')
+        ..ordinal = _IntegerAccessor_setIntegerName
+        ..parameters = _sampleInterfacesIntegerAccessorSetIntegerParams(),
+    };
+}
+
+class _IntegerAccessorServiceDescription implements service_describer.ServiceDescription {
+  dynamic getTopLevelInterface([Function responseFactory]) =>
+      _sampleInterfacesIntegerAccessor();
+
+  dynamic getTypeDefinition(String typeKey, [Function responseFactory]) =>
+      getAllMojomTypeDefinitions()[typeKey];
+
+  dynamic getAllTypeDefinitions([Function responseFactory]) =>
+      getAllMojomTypeDefinitions();
+}
 
 abstract class IntegerAccessor {
   static const String serviceName = null;
@@ -1708,6 +2073,9 @@ class _IntegerAccessorProxyImpl extends bindings.Proxy {
     assert(endpoint.setDescription("For _IntegerAccessorProxyImpl"));
     return new _IntegerAccessorProxyImpl.fromEndpoint(endpoint);
   }
+
+  service_describer.ServiceDescription get serviceDescription =>
+    new _IntegerAccessorServiceDescription();
 
   void handleResponse(bindings.ServiceMessage message) {
     switch (message.header.type) {
@@ -1909,11 +2277,51 @@ class IntegerAccessorStub extends bindings.Stub {
   }
 
   int get version => 3;
+
+  service_describer.ServiceDescription get serviceDescription =>
+    new _IntegerAccessorServiceDescription();
 }
 
 const int _SampleInterface_sampleMethod0Name = 0;
 const int _SampleInterface_sampleMethod1Name = 1;
 const int _SampleInterface_sampleMethod2Name = 2;
+
+mojom_types.MojomInterface _sampleInterfacesSampleInterface() {
+  return new mojom_types.MojomInterface()
+    ..declData = (new mojom_types.DeclarationData()
+      ..shortName = 'SampleInterface'
+      ..fullIdentifier = 'sample.SampleInterface')
+    ..interfaceName = 'SampleInterface'
+    ..methods = <int, mojom_types.MojomMethod>{
+      _SampleInterface_sampleMethod0Name: new mojom_types.MojomMethod()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'SampleMethod0')
+        ..ordinal = _SampleInterface_sampleMethod0Name
+        ..parameters = _sampleInterfacesSampleInterfaceSampleMethod0Params(),
+      _SampleInterface_sampleMethod1Name: new mojom_types.MojomMethod()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'SampleMethod1')
+        ..ordinal = _SampleInterface_sampleMethod1Name
+        ..responseParams = _sampleInterfacesSampleInterfaceSampleMethod1ResponseParams()
+        ..parameters = _sampleInterfacesSampleInterfaceSampleMethod1Params(),
+      _SampleInterface_sampleMethod2Name: new mojom_types.MojomMethod()
+        ..declData = (new mojom_types.DeclarationData()
+          ..shortName = 'SampleMethod2')
+        ..ordinal = _SampleInterface_sampleMethod2Name
+        ..parameters = _sampleInterfacesSampleInterfaceSampleMethod2Params(),
+    };
+}
+
+class _SampleInterfaceServiceDescription implements service_describer.ServiceDescription {
+  dynamic getTopLevelInterface([Function responseFactory]) =>
+      _sampleInterfacesSampleInterface();
+
+  dynamic getTypeDefinition(String typeKey, [Function responseFactory]) =>
+      getAllMojomTypeDefinitions()[typeKey];
+
+  dynamic getAllTypeDefinitions([Function responseFactory]) =>
+      getAllMojomTypeDefinitions();
+}
 
 abstract class SampleInterface {
   static const String serviceName = null;
@@ -1937,6 +2345,9 @@ class _SampleInterfaceProxyImpl extends bindings.Proxy {
     assert(endpoint.setDescription("For _SampleInterfaceProxyImpl"));
     return new _SampleInterfaceProxyImpl.fromEndpoint(endpoint);
   }
+
+  service_describer.ServiceDescription get serviceDescription =>
+    new _SampleInterfaceServiceDescription();
 
   void handleResponse(bindings.ServiceMessage message) {
     switch (message.header.type) {
@@ -2151,6 +2562,85 @@ class SampleInterfaceStub extends bindings.Stub {
   }
 
   int get version => 0;
+
+  service_describer.ServiceDescription get serviceDescription =>
+    new _SampleInterfaceServiceDescription();
 }
 
+
+Map<String, mojom_types.UserDefinedType> _initDescriptions() {
+  var map = new HashMap<String, mojom_types.UserDefinedType>();
+  map["sample_interfaces_Enum__"] =
+    new mojom_types.UserDefinedType()
+      ..enumType = _sampleInterfacesEnum();
+  map["sample_interfaces_Provider_EchoString_Params__"] =
+    new mojom_types.UserDefinedType()
+      ..structType = _sampleInterfacesProviderEchoStringParams();
+  map["sample_interfaces_Provider_EchoString_ResponseParams__"] =
+    new mojom_types.UserDefinedType()
+      ..structType = _sampleInterfacesProviderEchoStringResponseParams();
+  map["sample_interfaces_Provider_EchoStrings_Params__"] =
+    new mojom_types.UserDefinedType()
+      ..structType = _sampleInterfacesProviderEchoStringsParams();
+  map["sample_interfaces_Provider_EchoStrings_ResponseParams__"] =
+    new mojom_types.UserDefinedType()
+      ..structType = _sampleInterfacesProviderEchoStringsResponseParams();
+  map["sample_interfaces_Provider_EchoMessagePipeHandle_Params__"] =
+    new mojom_types.UserDefinedType()
+      ..structType = _sampleInterfacesProviderEchoMessagePipeHandleParams();
+  map["sample_interfaces_Provider_EchoMessagePipeHandle_ResponseParams__"] =
+    new mojom_types.UserDefinedType()
+      ..structType = _sampleInterfacesProviderEchoMessagePipeHandleResponseParams();
+  map["sample_interfaces_Provider_EchoEnum_Params__"] =
+    new mojom_types.UserDefinedType()
+      ..structType = _sampleInterfacesProviderEchoEnumParams();
+  map["sample_interfaces_Provider_EchoEnum_ResponseParams__"] =
+    new mojom_types.UserDefinedType()
+      ..structType = _sampleInterfacesProviderEchoEnumResponseParams();
+  map["sample_interfaces_Provider_EchoInt_Params__"] =
+    new mojom_types.UserDefinedType()
+      ..structType = _sampleInterfacesProviderEchoIntParams();
+  map["sample_interfaces_Provider_EchoInt_ResponseParams__"] =
+    new mojom_types.UserDefinedType()
+      ..structType = _sampleInterfacesProviderEchoIntResponseParams();
+  map["sample_interfaces_IntegerAccessor_GetInteger_Params__"] =
+    new mojom_types.UserDefinedType()
+      ..structType = _sampleInterfacesIntegerAccessorGetIntegerParams();
+  map["sample_interfaces_IntegerAccessor_GetInteger_ResponseParams__"] =
+    new mojom_types.UserDefinedType()
+      ..structType = _sampleInterfacesIntegerAccessorGetIntegerResponseParams();
+  map["sample_interfaces_IntegerAccessor_SetInteger_Params__"] =
+    new mojom_types.UserDefinedType()
+      ..structType = _sampleInterfacesIntegerAccessorSetIntegerParams();
+  map["sample_interfaces_SampleInterface_SampleMethod0_Params__"] =
+    new mojom_types.UserDefinedType()
+      ..structType = _sampleInterfacesSampleInterfaceSampleMethod0Params();
+  map["sample_interfaces_SampleInterface_SampleMethod1_Params__"] =
+    new mojom_types.UserDefinedType()
+      ..structType = _sampleInterfacesSampleInterfaceSampleMethod1Params();
+  map["sample_interfaces_SampleInterface_SampleMethod1_ResponseParams__"] =
+    new mojom_types.UserDefinedType()
+      ..structType = _sampleInterfacesSampleInterfaceSampleMethod1ResponseParams();
+  map["sample_interfaces_SampleInterface_SampleMethod2_Params__"] =
+    new mojom_types.UserDefinedType()
+      ..structType = _sampleInterfacesSampleInterfaceSampleMethod2Params();
+  map["sample_interfaces_Provider__"] =
+    new mojom_types.UserDefinedType()
+      ..interfaceType = _sampleInterfacesProvider();
+  map["sample_interfaces_IntegerAccessor__"] =
+    new mojom_types.UserDefinedType()
+      ..interfaceType = _sampleInterfacesIntegerAccessor();
+  map["sample_interfaces_SampleInterface__"] =
+    new mojom_types.UserDefinedType()
+      ..interfaceType = _sampleInterfacesSampleInterface();
+  return map;
+}
+
+var _mojomDesc;
+Map<String, mojom_types.UserDefinedType> getAllMojomTypeDefinitions() {
+  if (_mojomDesc == null) {
+    _mojomDesc = _initDescriptions();
+  }
+  return _mojomDesc;
+}
 

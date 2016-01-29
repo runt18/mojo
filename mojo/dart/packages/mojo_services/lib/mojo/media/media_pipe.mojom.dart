@@ -8,6 +8,8 @@ import 'dart:async';
 
 import 'package:mojo/bindings.dart' as bindings;
 import 'package:mojo/core.dart' as core;
+import 'package:mojo/mojo/bindings/types/mojom_types.mojom.dart' as mojom_types;
+import 'package:mojo/mojo/bindings/types/service_describer.mojom.dart' as service_describer;
 import 'package:mojo_services/mojo/media/media_common.mojom.dart' as media_common_mojom;
 
 
@@ -86,6 +88,8 @@ class MediaPacketRegion extends bindings.Struct {
     return map;
   }
 }
+
+
 
 
 class MediaPacket extends bindings.Struct {
@@ -212,6 +216,8 @@ class MediaPacket extends bindings.Struct {
 }
 
 
+
+
 class MediaPipeState extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(24, 0)
@@ -287,6 +293,8 @@ class MediaPipeState extends bindings.Struct {
 }
 
 
+
+
 class _MediaPipeGetStateParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(8, 0)
@@ -343,6 +351,8 @@ class _MediaPipeGetStateParams extends bindings.Struct {
     return map;
   }
 }
+
+
 
 
 class MediaPipeGetStateResponseParams extends bindings.Struct {
@@ -412,6 +422,8 @@ class MediaPipeGetStateResponseParams extends bindings.Struct {
 }
 
 
+
+
 class _MediaPipeSendPacketParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(16, 0)
@@ -478,6 +490,8 @@ class _MediaPipeSendPacketParams extends bindings.Struct {
     return map;
   }
 }
+
+
 
 
 class MediaPipeSendPacketResponseParams extends bindings.Struct {
@@ -551,6 +565,8 @@ class MediaPipeSendPacketResponseParams extends bindings.Struct {
 }
 
 
+
+
 class _MediaPipeFlushParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(8, 0)
@@ -607,6 +623,8 @@ class _MediaPipeFlushParams extends bindings.Struct {
     return map;
   }
 }
+
+
 
 
 class MediaPipeFlushResponseParams extends bindings.Struct {
@@ -666,6 +684,9 @@ class MediaPipeFlushResponseParams extends bindings.Struct {
   }
 }
 
+
+
+
 const int _MediaPipe_getStateName = 0;
 const int _MediaPipe_sendPacketName = 1;
 const int _MediaPipe_flushName = 2;
@@ -714,10 +735,24 @@ class MediaPipeSendResult extends bindings.MojoEnum {
         return 'MediaPipeSendResult.consumed';
       case flushed:
         return 'MediaPipeSendResult.flushed';
+      default:
+        return null;
     }
   }
 
   int toJson() => mojoEnumValue;
+}
+
+
+
+
+
+class _MediaPipeServiceDescription implements service_describer.ServiceDescription {
+  dynamic getTopLevelInterface([Function responseFactory]) => null;
+
+  dynamic getTypeDefinition(String typeKey, [Function responseFactory]) => null;
+
+  dynamic getAllTypeDefinitions([Function responseFactory]) => null;
 }
 
 abstract class MediaPipe {
@@ -742,6 +777,9 @@ class _MediaPipeProxyImpl extends bindings.Proxy {
     assert(endpoint.setDescription("For _MediaPipeProxyImpl"));
     return new _MediaPipeProxyImpl.fromEndpoint(endpoint);
   }
+
+  service_describer.ServiceDescription get serviceDescription =>
+    new _MediaPipeServiceDescription();
 
   void handleResponse(bindings.ServiceMessage message) {
     switch (message.header.type) {
@@ -1037,6 +1075,10 @@ class MediaPipeStub extends bindings.Stub {
   }
 
   int get version => 0;
+
+  service_describer.ServiceDescription get serviceDescription =>
+    new _MediaPipeServiceDescription();
 }
+
 
 

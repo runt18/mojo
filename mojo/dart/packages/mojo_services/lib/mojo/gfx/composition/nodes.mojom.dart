@@ -8,6 +8,8 @@ import 'dart:async';
 
 import 'package:mojo/bindings.dart' as bindings;
 import 'package:mojo/core.dart' as core;
+import 'package:mojo/mojo/bindings/types/mojom_types.mojom.dart' as mojom_types;
+
 import 'package:mojo_services/mojo/geometry.mojom.dart' as geometry_mojom;
 import 'package:mojo_services/mojo/gfx/composition/hit_tests.mojom.dart' as hit_tests_mojom;
 
@@ -64,11 +66,15 @@ class NodeCombinator extends bindings.MojoEnum {
         return 'NodeCombinator.prune';
       case fallback:
         return 'NodeCombinator.fallback';
+      default:
+        return null;
     }
   }
 
   int toJson() => mojoEnumValue;
 }
+
+
 
 class Node extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
@@ -188,6 +194,8 @@ class Node extends bindings.Struct {
 }
 
 
+
+
 class RectNodeOp extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(24, 0)
@@ -264,6 +272,8 @@ class RectNodeOp extends bindings.Struct {
     return map;
   }
 }
+
+
 
 
 class ImageNodeOp extends bindings.Struct {
@@ -363,6 +373,8 @@ class ImageNodeOp extends bindings.Struct {
 }
 
 
+
+
 class SceneNodeOp extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(16, 0)
@@ -437,6 +449,8 @@ class SceneNodeOp extends bindings.Struct {
     return map;
   }
 }
+
+
 
 
 class LayerNodeOp extends bindings.Struct {
@@ -515,6 +529,8 @@ class LayerNodeOp extends bindings.Struct {
     return map;
   }
 }
+
+
 
 
 class Color extends bindings.Struct {
@@ -611,6 +627,8 @@ class Color extends bindings.Struct {
 }
 
 
+
+
 class Blend extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(16, 0)
@@ -676,6 +694,8 @@ class Blend extends bindings.Struct {
     return map;
   }
 }
+
+
 
 
 
@@ -836,4 +856,8 @@ class NodeOp extends bindings.Union {
     return result;
   }
 }
+
+
+
+
 

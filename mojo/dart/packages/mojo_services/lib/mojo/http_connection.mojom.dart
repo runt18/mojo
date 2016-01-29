@@ -8,6 +8,8 @@ import 'dart:async';
 
 import 'package:mojo/bindings.dart' as bindings;
 import 'package:mojo/core.dart' as core;
+import 'package:mojo/mojo/bindings/types/mojom_types.mojom.dart' as mojom_types;
+import 'package:mojo/mojo/bindings/types/service_describer.mojom.dart' as service_describer;
 import 'package:mojo/mojo/network_error.mojom.dart' as network_error_mojom;
 import 'package:mojo_services/mojo/http_message.mojom.dart' as http_message_mojom;
 import 'package:mojo_services/mojo/web_socket.mojom.dart' as web_socket_mojom;
@@ -81,6 +83,8 @@ class _HttpConnectionSetSendBufferSizeParams extends bindings.Struct {
 }
 
 
+
+
 class HttpConnectionSetSendBufferSizeResponseParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(16, 0)
@@ -149,6 +153,8 @@ class HttpConnectionSetSendBufferSizeResponseParams extends bindings.Struct {
 }
 
 
+
+
 class _HttpConnectionSetReceiveBufferSizeParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(16, 0)
@@ -214,6 +220,8 @@ class _HttpConnectionSetReceiveBufferSizeParams extends bindings.Struct {
     return map;
   }
 }
+
+
 
 
 class HttpConnectionSetReceiveBufferSizeResponseParams extends bindings.Struct {
@@ -284,6 +292,8 @@ class HttpConnectionSetReceiveBufferSizeResponseParams extends bindings.Struct {
 }
 
 
+
+
 class _HttpConnectionDelegateOnReceivedRequestParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(16, 0)
@@ -349,6 +359,8 @@ class _HttpConnectionDelegateOnReceivedRequestParams extends bindings.Struct {
         'Object containing handles cannot be encoded to JSON.');
   }
 }
+
+
 
 
 class HttpConnectionDelegateOnReceivedRequestResponseParams extends bindings.Struct {
@@ -418,6 +430,8 @@ class HttpConnectionDelegateOnReceivedRequestResponseParams extends bindings.Str
 }
 
 
+
+
 class _HttpConnectionDelegateOnReceivedWebSocketRequestParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(16, 0)
@@ -483,6 +497,8 @@ class _HttpConnectionDelegateOnReceivedWebSocketRequestParams extends bindings.S
         'Object containing handles cannot be encoded to JSON.');
   }
 }
+
+
 
 
 class HttpConnectionDelegateOnReceivedWebSocketRequestResponseParams extends bindings.Struct {
@@ -566,8 +582,21 @@ class HttpConnectionDelegateOnReceivedWebSocketRequestResponseParams extends bin
   }
 }
 
+
+
+
 const int _HttpConnection_setSendBufferSizeName = 0;
 const int _HttpConnection_setReceiveBufferSizeName = 1;
+
+
+
+class _HttpConnectionServiceDescription implements service_describer.ServiceDescription {
+  dynamic getTopLevelInterface([Function responseFactory]) => null;
+
+  dynamic getTypeDefinition(String typeKey, [Function responseFactory]) => null;
+
+  dynamic getAllTypeDefinitions([Function responseFactory]) => null;
+}
 
 abstract class HttpConnection {
   static const String serviceName = null;
@@ -590,6 +619,9 @@ class _HttpConnectionProxyImpl extends bindings.Proxy {
     assert(endpoint.setDescription("For _HttpConnectionProxyImpl"));
     return new _HttpConnectionProxyImpl.fromEndpoint(endpoint);
   }
+
+  service_describer.ServiceDescription get serviceDescription =>
+    new _HttpConnectionServiceDescription();
 
   void handleResponse(bindings.ServiceMessage message) {
     switch (message.header.type) {
@@ -832,10 +864,23 @@ class HttpConnectionStub extends bindings.Stub {
   }
 
   int get version => 0;
+
+  service_describer.ServiceDescription get serviceDescription =>
+    new _HttpConnectionServiceDescription();
 }
 
 const int _HttpConnectionDelegate_onReceivedRequestName = 0;
 const int _HttpConnectionDelegate_onReceivedWebSocketRequestName = 1;
+
+
+
+class _HttpConnectionDelegateServiceDescription implements service_describer.ServiceDescription {
+  dynamic getTopLevelInterface([Function responseFactory]) => null;
+
+  dynamic getTypeDefinition(String typeKey, [Function responseFactory]) => null;
+
+  dynamic getAllTypeDefinitions([Function responseFactory]) => null;
+}
 
 abstract class HttpConnectionDelegate {
   static const String serviceName = null;
@@ -858,6 +903,9 @@ class _HttpConnectionDelegateProxyImpl extends bindings.Proxy {
     assert(endpoint.setDescription("For _HttpConnectionDelegateProxyImpl"));
     return new _HttpConnectionDelegateProxyImpl.fromEndpoint(endpoint);
   }
+
+  service_describer.ServiceDescription get serviceDescription =>
+    new _HttpConnectionDelegateServiceDescription();
 
   void handleResponse(bindings.ServiceMessage message) {
     switch (message.header.type) {
@@ -1102,6 +1150,10 @@ class HttpConnectionDelegateStub extends bindings.Stub {
   }
 
   int get version => 0;
+
+  service_describer.ServiceDescription get serviceDescription =>
+    new _HttpConnectionDelegateServiceDescription();
 }
+
 
 

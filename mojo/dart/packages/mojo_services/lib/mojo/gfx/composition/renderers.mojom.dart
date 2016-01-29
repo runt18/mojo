@@ -8,6 +8,8 @@ import 'dart:async';
 
 import 'package:mojo/bindings.dart' as bindings;
 import 'package:mojo/core.dart' as core;
+import 'package:mojo/mojo/bindings/types/mojom_types.mojom.dart' as mojom_types;
+import 'package:mojo/mojo/bindings/types/service_describer.mojom.dart' as service_describer;
 import 'package:mojo_services/mojo/geometry.mojom.dart' as geometry_mojom;
 import 'package:mojo_services/mojo/gfx/composition/hit_tests.mojom.dart' as hit_tests_mojom;
 import 'package:mojo_services/mojo/gfx/composition/scene_token.mojom.dart' as scene_token_mojom;
@@ -101,6 +103,8 @@ class _RendererSetRootSceneParams extends bindings.Struct {
 }
 
 
+
+
 class _RendererGetHitTesterParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(16, 0)
@@ -166,8 +170,21 @@ class _RendererGetHitTesterParams extends bindings.Struct {
   }
 }
 
+
+
+
 const int _Renderer_setRootSceneName = 0;
 const int _Renderer_getHitTesterName = 1;
+
+
+
+class _RendererServiceDescription implements service_describer.ServiceDescription {
+  dynamic getTopLevelInterface([Function responseFactory]) => null;
+
+  dynamic getTypeDefinition(String typeKey, [Function responseFactory]) => null;
+
+  dynamic getAllTypeDefinitions([Function responseFactory]) => null;
+}
 
 abstract class Renderer {
   static const String serviceName = null;
@@ -190,6 +207,9 @@ class _RendererProxyImpl extends bindings.Proxy {
     assert(endpoint.setDescription("For _RendererProxyImpl"));
     return new _RendererProxyImpl.fromEndpoint(endpoint);
   }
+
+  service_describer.ServiceDescription get serviceDescription =>
+    new _RendererServiceDescription();
 
   void handleResponse(bindings.ServiceMessage message) {
     switch (message.header.type) {
@@ -350,6 +370,10 @@ class RendererStub extends bindings.Stub {
   }
 
   int get version => 0;
+
+  service_describer.ServiceDescription get serviceDescription =>
+    new _RendererServiceDescription();
 }
+
 
 

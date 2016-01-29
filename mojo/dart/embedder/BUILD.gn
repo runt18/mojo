@@ -82,6 +82,7 @@ group("dart_embedder_packages") {
   deps = [
     ":dart_embedder_package_application",
     ":dart_embedder_package_bindings",
+    ":dart_embedder_package_bindings_types",
     ":dart_embedder_package_files_service",
     ":dart_embedder_package_network",
     ":dart_embedder_package_network_service",
@@ -97,6 +98,12 @@ dart_embedder_package("dart_embedder_package_application") {
 dart_embedder_package("dart_embedder_package_bindings") {
   package = "mojo/public/interfaces/bindings"
   destination = "mojo/mojo"
+}
+
+dart_embedder_package("dart_embedder_package_bindings_types") {
+  package = "mojo/public/interfaces/bindings"
+  destination = "mojo/mojo/bindings/types"
+  is_bindings_types = true
 }
 
 dart_embedder_package("dart_embedder_package_network") {

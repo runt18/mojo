@@ -8,6 +8,8 @@ import 'dart:async';
 
 import 'package:mojo/bindings.dart' as bindings;
 import 'package:mojo/core.dart' as core;
+import 'package:mojo/mojo/bindings/types/mojom_types.mojom.dart' as mojom_types;
+import 'package:mojo/mojo/bindings/types/service_describer.mojom.dart' as service_describer;
 
 
 
@@ -67,6 +69,8 @@ class _DeviceInfoGetDeviceTypeParams extends bindings.Struct {
     return map;
   }
 }
+
+
 
 
 class DeviceInfoGetDeviceTypeResponseParams extends bindings.Struct {
@@ -138,6 +142,9 @@ class DeviceInfoGetDeviceTypeResponseParams extends bindings.Struct {
     return map;
   }
 }
+
+
+
 
 const int _DeviceInfo_getDeviceTypeName = 0;
   
@@ -220,10 +227,24 @@ class DeviceInfoDeviceType extends bindings.MojoEnum {
         return 'DeviceInfoDeviceType.desktop';
       case tv:
         return 'DeviceInfoDeviceType.tv';
+      default:
+        return null;
     }
   }
 
   int toJson() => mojoEnumValue;
+}
+
+
+
+
+
+class _DeviceInfoServiceDescription implements service_describer.ServiceDescription {
+  dynamic getTopLevelInterface([Function responseFactory]) => null;
+
+  dynamic getTypeDefinition(String typeKey, [Function responseFactory]) => null;
+
+  dynamic getAllTypeDefinitions([Function responseFactory]) => null;
 }
 
 abstract class DeviceInfo {
@@ -246,6 +267,9 @@ class _DeviceInfoProxyImpl extends bindings.Proxy {
     assert(endpoint.setDescription("For _DeviceInfoProxyImpl"));
     return new _DeviceInfoProxyImpl.fromEndpoint(endpoint);
   }
+
+  service_describer.ServiceDescription get serviceDescription =>
+    new _DeviceInfoServiceDescription();
 
   void handleResponse(bindings.ServiceMessage message) {
     switch (message.header.type) {
@@ -431,6 +455,10 @@ class DeviceInfoStub extends bindings.Stub {
   }
 
   int get version => 0;
+
+  service_describer.ServiceDescription get serviceDescription =>
+    new _DeviceInfoServiceDescription();
 }
+
 
 

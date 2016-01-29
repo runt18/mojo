@@ -8,6 +8,8 @@ import 'dart:async';
 
 import 'package:mojo/bindings.dart' as bindings;
 import 'package:mojo/core.dart' as core;
+import 'package:mojo/mojo/bindings/types/mojom_types.mojom.dart' as mojom_types;
+import 'package:mojo/mojo/bindings/types/service_describer.mojom.dart' as service_describer;
 import 'package:mojo_services/mojo/geometry.mojom.dart' as geometry_mojom;
 import 'package:mojo_services/mojo/context_provider.mojom.dart' as context_provider_mojom;
 import 'package:mojo_services/mojo/input_events.mojom.dart' as input_events_mojom;
@@ -89,6 +91,8 @@ class ViewportMetrics extends bindings.Struct {
     return map;
   }
 }
+
+
 
 
 class SurfaceConfiguration extends bindings.Struct {
@@ -203,6 +207,8 @@ class SurfaceConfiguration extends bindings.Struct {
 }
 
 
+
+
 class _NativeViewportCreateParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(24, 0)
@@ -281,6 +287,8 @@ class _NativeViewportCreateParams extends bindings.Struct {
 }
 
 
+
+
 class NativeViewportCreateResponseParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(16, 0)
@@ -349,6 +357,8 @@ class NativeViewportCreateResponseParams extends bindings.Struct {
 }
 
 
+
+
 class _NativeViewportShowParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(8, 0)
@@ -405,6 +415,8 @@ class _NativeViewportShowParams extends bindings.Struct {
     return map;
   }
 }
+
+
 
 
 class _NativeViewportHideParams extends bindings.Struct {
@@ -465,6 +477,8 @@ class _NativeViewportHideParams extends bindings.Struct {
 }
 
 
+
+
 class _NativeViewportCloseParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(8, 0)
@@ -521,6 +535,8 @@ class _NativeViewportCloseParams extends bindings.Struct {
     return map;
   }
 }
+
+
 
 
 class _NativeViewportSetSizeParams extends bindings.Struct {
@@ -591,6 +607,8 @@ class _NativeViewportSetSizeParams extends bindings.Struct {
 }
 
 
+
+
 class _NativeViewportSetEventDispatcherParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(16, 0)
@@ -655,6 +673,8 @@ class _NativeViewportSetEventDispatcherParams extends bindings.Struct {
         'Object containing handles cannot be encoded to JSON.');
   }
 }
+
+
 
 
 class _NativeViewportGetContextProviderParams extends bindings.Struct {
@@ -723,6 +743,8 @@ class _NativeViewportGetContextProviderParams extends bindings.Struct {
 }
 
 
+
+
 class _NativeViewportRequestMetricsParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(8, 0)
@@ -779,6 +801,8 @@ class _NativeViewportRequestMetricsParams extends bindings.Struct {
     return map;
   }
 }
+
+
 
 
 class NativeViewportRequestMetricsResponseParams extends bindings.Struct {
@@ -849,6 +873,8 @@ class NativeViewportRequestMetricsResponseParams extends bindings.Struct {
 }
 
 
+
+
 class _NativeViewportEventDispatcherOnEventParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(16, 0)
@@ -917,6 +943,8 @@ class _NativeViewportEventDispatcherOnEventParams extends bindings.Struct {
 }
 
 
+
+
 class NativeViewportEventDispatcherOnEventResponseParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(8, 0)
@@ -974,6 +1002,9 @@ class NativeViewportEventDispatcherOnEventResponseParams extends bindings.Struct
   }
 }
 
+
+
+
 const int _NativeViewport_createName = 0;
 const int _NativeViewport_showName = 1;
 const int _NativeViewport_hideName = 2;
@@ -982,6 +1013,16 @@ const int _NativeViewport_setSizeName = 4;
 const int _NativeViewport_setEventDispatcherName = 5;
 const int _NativeViewport_getContextProviderName = 6;
 const int _NativeViewport_requestMetricsName = 7;
+
+
+
+class _NativeViewportServiceDescription implements service_describer.ServiceDescription {
+  dynamic getTopLevelInterface([Function responseFactory]) => null;
+
+  dynamic getTypeDefinition(String typeKey, [Function responseFactory]) => null;
+
+  dynamic getAllTypeDefinitions([Function responseFactory]) => null;
+}
 
 abstract class NativeViewport {
   static const String serviceName = "mojo::NativeViewport";
@@ -1010,6 +1051,9 @@ class _NativeViewportProxyImpl extends bindings.Proxy {
     assert(endpoint.setDescription("For _NativeViewportProxyImpl"));
     return new _NativeViewportProxyImpl.fromEndpoint(endpoint);
   }
+
+  service_describer.ServiceDescription get serviceDescription =>
+    new _NativeViewportServiceDescription();
 
   void handleResponse(bindings.ServiceMessage message) {
     switch (message.header.type) {
@@ -1333,9 +1377,22 @@ class NativeViewportStub extends bindings.Stub {
   }
 
   int get version => 0;
+
+  service_describer.ServiceDescription get serviceDescription =>
+    new _NativeViewportServiceDescription();
 }
 
 const int _NativeViewportEventDispatcher_onEventName = 0;
+
+
+
+class _NativeViewportEventDispatcherServiceDescription implements service_describer.ServiceDescription {
+  dynamic getTopLevelInterface([Function responseFactory]) => null;
+
+  dynamic getTypeDefinition(String typeKey, [Function responseFactory]) => null;
+
+  dynamic getAllTypeDefinitions([Function responseFactory]) => null;
+}
 
 abstract class NativeViewportEventDispatcher {
   static const String serviceName = "mojo::NativeViewportEventDispatcher";
@@ -1357,6 +1414,9 @@ class _NativeViewportEventDispatcherProxyImpl extends bindings.Proxy {
     assert(endpoint.setDescription("For _NativeViewportEventDispatcherProxyImpl"));
     return new _NativeViewportEventDispatcherProxyImpl.fromEndpoint(endpoint);
   }
+
+  service_describer.ServiceDescription get serviceDescription =>
+    new _NativeViewportEventDispatcherServiceDescription();
 
   void handleResponse(bindings.ServiceMessage message) {
     switch (message.header.type) {
@@ -1542,6 +1602,10 @@ class NativeViewportEventDispatcherStub extends bindings.Stub {
   }
 
   int get version => 0;
+
+  service_describer.ServiceDescription get serviceDescription =>
+    new _NativeViewportEventDispatcherServiceDescription();
 }
+
 
 

@@ -8,6 +8,8 @@ import 'dart:async';
 
 import 'package:mojo/bindings.dart' as bindings;
 import 'package:mojo/core.dart' as core;
+import 'package:mojo/mojo/bindings/types/mojom_types.mojom.dart' as mojom_types;
+import 'package:mojo/mojo/bindings/types/service_describer.mojom.dart' as service_describer;
 import 'package:mojo_services/mojo/geometry.mojom.dart' as geometry_mojom;
 import 'package:mojo_services/mojo/gfx/composition/scene_token.mojom.dart' as scene_token_mojom;
 const int kHitIdNone = 0;
@@ -119,6 +121,8 @@ class Hit extends bindings.Struct {
 }
 
 
+
+
 class HitTestResult extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(16, 0)
@@ -203,6 +207,8 @@ class HitTestResult extends bindings.Struct {
 }
 
 
+
+
 class _HitTesterHitTestParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(16, 0)
@@ -269,6 +275,8 @@ class _HitTesterHitTestParams extends bindings.Struct {
     return map;
   }
 }
+
+
 
 
 class HitTesterHitTestResponseParams extends bindings.Struct {
@@ -338,7 +346,20 @@ class HitTesterHitTestResponseParams extends bindings.Struct {
   }
 }
 
+
+
+
 const int _HitTester_hitTestName = 0;
+
+
+
+class _HitTesterServiceDescription implements service_describer.ServiceDescription {
+  dynamic getTopLevelInterface([Function responseFactory]) => null;
+
+  dynamic getTypeDefinition(String typeKey, [Function responseFactory]) => null;
+
+  dynamic getAllTypeDefinitions([Function responseFactory]) => null;
+}
 
 abstract class HitTester {
   static const String serviceName = null;
@@ -360,6 +381,9 @@ class _HitTesterProxyImpl extends bindings.Proxy {
     assert(endpoint.setDescription("For _HitTesterProxyImpl"));
     return new _HitTesterProxyImpl.fromEndpoint(endpoint);
   }
+
+  service_describer.ServiceDescription get serviceDescription =>
+    new _HitTesterServiceDescription();
 
   void handleResponse(bindings.ServiceMessage message) {
     switch (message.header.type) {
@@ -546,6 +570,10 @@ class HitTesterStub extends bindings.Stub {
   }
 
   int get version => 0;
+
+  service_describer.ServiceDescription get serviceDescription =>
+    new _HitTesterServiceDescription();
 }
+
 
 

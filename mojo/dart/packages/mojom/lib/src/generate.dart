@@ -16,6 +16,8 @@ import 'package:path/path.dart' as path;
 
 part 'mojom_finder.dart';
 
+const String mojoTestPackage = '_mojo_for_test_only';
+
 class MojomGenerator {
   static dev.Counter _genMs;
   final bool _errorOnDuplicate;
@@ -161,6 +163,12 @@ class MojomGenerator {
 
       final servicesPath = _sniffForMojoServicesInclude(mojom.path);
 
+      // Force type information to be generated for the test package.
+      // TODO(afandria): Is there a better way to accomplish this goal?
+      // https://github.com/domokit/mojo/issues/641
+      final generateTypeInfoFlag = packageName == mojoTestPackage ?
+        '--generate-type-info' : '--no-generate-type-info';
+
       final arguments = [
         '--use_bundled_pylibs',
         '-g',
@@ -171,7 +179,8 @@ class MojomGenerator {
         sdkInc,
         '-I',
         importDir.path,
-        '--no-gen-imports'
+        '--no-gen-imports',
+        generateTypeInfoFlag
       ];
       if (servicesPath != null) {
         arguments.add('-I');
@@ -197,7 +206,7 @@ class MojomGenerator {
 
         // Generated .mojom.dart is under $output/dart-gen/$PACKAGE/lib/$X
         // Move $X to |destination|/lib/$X.
-        // Throw an exception if $PACKGE != [packageName].
+        // Throw an exception if $PACKAGE != [packageName].
         final generatedDirName = path.join(output, 'dart-gen');
         final generatedDir = new Directory(generatedDirName);
         log.info("generatedDir= $generatedDir");

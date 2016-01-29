@@ -8,8 +8,21 @@ import 'dart:async';
 
 import 'package:mojo/bindings.dart' as bindings;
 import 'package:mojo/core.dart' as core;
+import 'package:mojo/mojo/bindings/types/mojom_types.mojom.dart' as mojom_types;
+import 'package:mojo/mojo/bindings/types/service_describer.mojom.dart' as service_describer;
 
 
+
+
+
+
+class _TcpConnectedSocketServiceDescription implements service_describer.ServiceDescription {
+  dynamic getTopLevelInterface([Function responseFactory]) => null;
+
+  dynamic getTypeDefinition(String typeKey, [Function responseFactory]) => null;
+
+  dynamic getAllTypeDefinitions([Function responseFactory]) => null;
+}
 
 abstract class TcpConnectedSocket {
   static const String serviceName = null;
@@ -30,6 +43,9 @@ class _TcpConnectedSocketProxyImpl extends bindings.Proxy {
     assert(endpoint.setDescription("For _TcpConnectedSocketProxyImpl"));
     return new _TcpConnectedSocketProxyImpl.fromEndpoint(endpoint);
   }
+
+  service_describer.ServiceDescription get serviceDescription =>
+    new _TcpConnectedSocketServiceDescription();
 
   void handleResponse(bindings.ServiceMessage message) {
     switch (message.header.type) {
@@ -160,6 +176,10 @@ class TcpConnectedSocketStub extends bindings.Stub {
   }
 
   int get version => 0;
+
+  service_describer.ServiceDescription get serviceDescription =>
+    new _TcpConnectedSocketServiceDescription();
 }
+
 
 

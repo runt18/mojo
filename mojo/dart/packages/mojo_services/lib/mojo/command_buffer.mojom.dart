@@ -8,6 +8,8 @@ import 'dart:async';
 
 import 'package:mojo/bindings.dart' as bindings;
 import 'package:mojo/core.dart' as core;
+import 'package:mojo/mojo/bindings/types/mojom_types.mojom.dart' as mojom_types;
+import 'package:mojo/mojo/bindings/types/service_describer.mojom.dart' as service_describer;
 import 'package:mojo_services/mojo/gpu_capabilities.mojom.dart' as gpu_capabilities_mojom;
 
 
@@ -133,6 +135,8 @@ class CommandBufferState extends bindings.Struct {
 }
 
 
+
+
 class _CommandBufferSyncClientDidInitializeParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(24, 0)
@@ -210,6 +214,8 @@ class _CommandBufferSyncClientDidInitializeParams extends bindings.Struct {
 }
 
 
+
+
 class _CommandBufferSyncClientDidMakeProgressParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(16, 0)
@@ -276,6 +282,8 @@ class _CommandBufferSyncClientDidMakeProgressParams extends bindings.Struct {
     return map;
   }
 }
+
+
 
 
 class _CommandBufferSyncPointClientDidInsertSyncPointParams extends bindings.Struct {
@@ -345,6 +353,8 @@ class _CommandBufferSyncPointClientDidInsertSyncPointParams extends bindings.Str
 }
 
 
+
+
 class _CommandBufferLostContextObserverDidLoseContextParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(16, 0)
@@ -410,6 +420,8 @@ class _CommandBufferLostContextObserverDidLoseContextParams extends bindings.Str
     return map;
   }
 }
+
+
 
 
 class _CommandBufferInitializeParams extends bindings.Struct {
@@ -502,6 +514,8 @@ class _CommandBufferInitializeParams extends bindings.Struct {
 }
 
 
+
+
 class _CommandBufferSetGetBufferParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(16, 0)
@@ -567,6 +581,8 @@ class _CommandBufferSetGetBufferParams extends bindings.Struct {
     return map;
   }
 }
+
+
 
 
 class _CommandBufferFlushParams extends bindings.Struct {
@@ -636,6 +652,8 @@ class _CommandBufferFlushParams extends bindings.Struct {
 }
 
 
+
+
 class _CommandBufferMakeProgressParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(16, 0)
@@ -701,6 +719,8 @@ class _CommandBufferMakeProgressParams extends bindings.Struct {
     return map;
   }
 }
+
+
 
 
 class _CommandBufferRegisterTransferBufferParams extends bindings.Struct {
@@ -785,6 +805,8 @@ class _CommandBufferRegisterTransferBufferParams extends bindings.Struct {
 }
 
 
+
+
 class _CommandBufferDestroyTransferBufferParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(16, 0)
@@ -850,6 +872,8 @@ class _CommandBufferDestroyTransferBufferParams extends bindings.Struct {
     return map;
   }
 }
+
+
 
 
 class _CommandBufferInsertSyncPointParams extends bindings.Struct {
@@ -919,6 +943,8 @@ class _CommandBufferInsertSyncPointParams extends bindings.Struct {
 }
 
 
+
+
 class _CommandBufferRetireSyncPointParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(16, 0)
@@ -986,6 +1012,8 @@ class _CommandBufferRetireSyncPointParams extends bindings.Struct {
 }
 
 
+
+
 class _CommandBufferEchoParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(8, 0)
@@ -1042,6 +1070,8 @@ class _CommandBufferEchoParams extends bindings.Struct {
     return map;
   }
 }
+
+
 
 
 class CommandBufferEchoResponseParams extends bindings.Struct {
@@ -1101,8 +1131,21 @@ class CommandBufferEchoResponseParams extends bindings.Struct {
   }
 }
 
+
+
+
 const int _CommandBufferSyncClient_didInitializeName = 0;
 const int _CommandBufferSyncClient_didMakeProgressName = 1;
+
+
+
+class _CommandBufferSyncClientServiceDescription implements service_describer.ServiceDescription {
+  dynamic getTopLevelInterface([Function responseFactory]) => null;
+
+  dynamic getTypeDefinition(String typeKey, [Function responseFactory]) => null;
+
+  dynamic getAllTypeDefinitions([Function responseFactory]) => null;
+}
 
 abstract class CommandBufferSyncClient {
   static const String serviceName = null;
@@ -1125,6 +1168,9 @@ class _CommandBufferSyncClientProxyImpl extends bindings.Proxy {
     assert(endpoint.setDescription("For _CommandBufferSyncClientProxyImpl"));
     return new _CommandBufferSyncClientProxyImpl.fromEndpoint(endpoint);
   }
+
+  service_describer.ServiceDescription get serviceDescription =>
+    new _CommandBufferSyncClientServiceDescription();
 
   void handleResponse(bindings.ServiceMessage message) {
     switch (message.header.type) {
@@ -1284,9 +1330,22 @@ class CommandBufferSyncClientStub extends bindings.Stub {
   }
 
   int get version => 0;
+
+  service_describer.ServiceDescription get serviceDescription =>
+    new _CommandBufferSyncClientServiceDescription();
 }
 
 const int _CommandBufferSyncPointClient_didInsertSyncPointName = 0;
+
+
+
+class _CommandBufferSyncPointClientServiceDescription implements service_describer.ServiceDescription {
+  dynamic getTopLevelInterface([Function responseFactory]) => null;
+
+  dynamic getTypeDefinition(String typeKey, [Function responseFactory]) => null;
+
+  dynamic getAllTypeDefinitions([Function responseFactory]) => null;
+}
 
 abstract class CommandBufferSyncPointClient {
   static const String serviceName = null;
@@ -1308,6 +1367,9 @@ class _CommandBufferSyncPointClientProxyImpl extends bindings.Proxy {
     assert(endpoint.setDescription("For _CommandBufferSyncPointClientProxyImpl"));
     return new _CommandBufferSyncPointClientProxyImpl.fromEndpoint(endpoint);
   }
+
+  service_describer.ServiceDescription get serviceDescription =>
+    new _CommandBufferSyncPointClientServiceDescription();
 
   void handleResponse(bindings.ServiceMessage message) {
     switch (message.header.type) {
@@ -1452,9 +1514,22 @@ class CommandBufferSyncPointClientStub extends bindings.Stub {
   }
 
   int get version => 0;
+
+  service_describer.ServiceDescription get serviceDescription =>
+    new _CommandBufferSyncPointClientServiceDescription();
 }
 
 const int _CommandBufferLostContextObserver_didLoseContextName = 0;
+
+
+
+class _CommandBufferLostContextObserverServiceDescription implements service_describer.ServiceDescription {
+  dynamic getTopLevelInterface([Function responseFactory]) => null;
+
+  dynamic getTypeDefinition(String typeKey, [Function responseFactory]) => null;
+
+  dynamic getAllTypeDefinitions([Function responseFactory]) => null;
+}
 
 abstract class CommandBufferLostContextObserver {
   static const String serviceName = null;
@@ -1476,6 +1551,9 @@ class _CommandBufferLostContextObserverProxyImpl extends bindings.Proxy {
     assert(endpoint.setDescription("For _CommandBufferLostContextObserverProxyImpl"));
     return new _CommandBufferLostContextObserverProxyImpl.fromEndpoint(endpoint);
   }
+
+  service_describer.ServiceDescription get serviceDescription =>
+    new _CommandBufferLostContextObserverServiceDescription();
 
   void handleResponse(bindings.ServiceMessage message) {
     switch (message.header.type) {
@@ -1620,6 +1698,9 @@ class CommandBufferLostContextObserverStub extends bindings.Stub {
   }
 
   int get version => 0;
+
+  service_describer.ServiceDescription get serviceDescription =>
+    new _CommandBufferLostContextObserverServiceDescription();
 }
 
 const int _CommandBuffer_initializeName = 0;
@@ -1631,6 +1712,16 @@ const int _CommandBuffer_destroyTransferBufferName = 5;
 const int _CommandBuffer_insertSyncPointName = 6;
 const int _CommandBuffer_retireSyncPointName = 7;
 const int _CommandBuffer_echoName = 8;
+
+
+
+class _CommandBufferServiceDescription implements service_describer.ServiceDescription {
+  dynamic getTopLevelInterface([Function responseFactory]) => null;
+
+  dynamic getTypeDefinition(String typeKey, [Function responseFactory]) => null;
+
+  dynamic getAllTypeDefinitions([Function responseFactory]) => null;
+}
 
 abstract class CommandBuffer {
   static const String serviceName = null;
@@ -1660,6 +1751,9 @@ class _CommandBufferProxyImpl extends bindings.Proxy {
     assert(endpoint.setDescription("For _CommandBufferProxyImpl"));
     return new _CommandBufferProxyImpl.fromEndpoint(endpoint);
   }
+
+  service_describer.ServiceDescription get serviceDescription =>
+    new _CommandBufferServiceDescription();
 
   void handleResponse(bindings.ServiceMessage message) {
     switch (message.header.type) {
@@ -1961,6 +2055,10 @@ class CommandBufferStub extends bindings.Stub {
   }
 
   int get version => 0;
+
+  service_describer.ServiceDescription get serviceDescription =>
+    new _CommandBufferServiceDescription();
 }
+
 
 

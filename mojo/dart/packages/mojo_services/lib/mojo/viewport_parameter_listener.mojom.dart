@@ -8,6 +8,8 @@ import 'dart:async';
 
 import 'package:mojo/bindings.dart' as bindings;
 import 'package:mojo/core.dart' as core;
+import 'package:mojo/mojo/bindings/types/mojom_types.mojom.dart' as mojom_types;
+import 'package:mojo/mojo/bindings/types/service_describer.mojom.dart' as service_describer;
 
 
 
@@ -86,7 +88,20 @@ class _ViewportParameterListenerOnVSyncParametersUpdatedParams extends bindings.
   }
 }
 
+
+
+
 const int _ViewportParameterListener_onVSyncParametersUpdatedName = 0;
+
+
+
+class _ViewportParameterListenerServiceDescription implements service_describer.ServiceDescription {
+  dynamic getTopLevelInterface([Function responseFactory]) => null;
+
+  dynamic getTypeDefinition(String typeKey, [Function responseFactory]) => null;
+
+  dynamic getAllTypeDefinitions([Function responseFactory]) => null;
+}
 
 abstract class ViewportParameterListener {
   static const String serviceName = null;
@@ -108,6 +123,9 @@ class _ViewportParameterListenerProxyImpl extends bindings.Proxy {
     assert(endpoint.setDescription("For _ViewportParameterListenerProxyImpl"));
     return new _ViewportParameterListenerProxyImpl.fromEndpoint(endpoint);
   }
+
+  service_describer.ServiceDescription get serviceDescription =>
+    new _ViewportParameterListenerServiceDescription();
 
   void handleResponse(bindings.ServiceMessage message) {
     switch (message.header.type) {
@@ -253,6 +271,10 @@ class ViewportParameterListenerStub extends bindings.Stub {
   }
 
   int get version => 0;
+
+  service_describer.ServiceDescription get serviceDescription =>
+    new _ViewportParameterListenerServiceDescription();
 }
+
 
 

@@ -8,6 +8,8 @@ import 'dart:async';
 
 import 'package:mojo/bindings.dart' as bindings;
 import 'package:mojo/core.dart' as core;
+import 'package:mojo/mojo/bindings/types/mojom_types.mojom.dart' as mojom_types;
+
 import 'package:mojo_services/mojo/geometry.mojom.dart' as geometry_mojom;
 import 'package:mojo_services/mojo/surface_id.mojom.dart' as surface_id_mojom;
 
@@ -62,11 +64,15 @@ class YuvColorSpace extends bindings.MojoEnum {
         return 'YuvColorSpace.rec709';
       case jpeg:
         return 'YuvColorSpace.jpeg';
+      default:
+        return null;
     }
   }
 
   int toJson() => mojoEnumValue;
 }
+
+
 
 class Material extends bindings.MojoEnum {
   static const Material checkerboard = const Material._(1);
@@ -175,11 +181,15 @@ class Material extends bindings.MojoEnum {
         return 'Material.tiledContent';
       case yuvVideoContent:
         return 'Material.yuvVideoContent';
+      default:
+        return null;
     }
   }
 
   int toJson() => mojoEnumValue;
 }
+
+
 
 class SkXfermode extends bindings.MojoEnum {
   static const SkXfermode kClearMode = const SkXfermode._(0);
@@ -435,11 +445,15 @@ class SkXfermode extends bindings.MojoEnum {
         return 'SkXfermode.kLuminosityMode';
       case kLastMode:
         return 'SkXfermode.kLastMode';
+      default:
+        return null;
     }
   }
 
   int toJson() => mojoEnumValue;
 }
+
+
 
 
 
@@ -510,6 +524,8 @@ class Color extends bindings.Struct {
 }
 
 
+
+
 class CheckerboardQuadState extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(8, 0)
@@ -566,6 +582,8 @@ class CheckerboardQuadState extends bindings.Struct {
     return map;
   }
 }
+
+
 
 
 class DebugBorderQuadState extends bindings.Struct {
@@ -626,6 +644,8 @@ class DebugBorderQuadState extends bindings.Struct {
 }
 
 
+
+
 class IoSurfaceContentQuadState extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(8, 0)
@@ -682,6 +702,8 @@ class IoSurfaceContentQuadState extends bindings.Struct {
     return map;
   }
 }
+
+
 
 
 class RenderPassId extends bindings.Struct {
@@ -758,6 +780,8 @@ class RenderPassId extends bindings.Struct {
     return map;
   }
 }
+
+
 
 
 class RenderPassQuadState extends bindings.Struct {
@@ -867,6 +891,8 @@ class RenderPassQuadState extends bindings.Struct {
 }
 
 
+
+
 class SolidColorQuadState extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(24, 0)
@@ -944,6 +970,8 @@ class SolidColorQuadState extends bindings.Struct {
 }
 
 
+
+
 class SurfaceQuadState extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(16, 0)
@@ -1010,6 +1038,8 @@ class SurfaceQuadState extends bindings.Struct {
     return map;
   }
 }
+
+
 
 
 class TextureQuadState extends bindings.Struct {
@@ -1145,6 +1175,8 @@ class TextureQuadState extends bindings.Struct {
 }
 
 
+
+
 class TileQuadState extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(32, 0)
@@ -1250,6 +1282,8 @@ class TileQuadState extends bindings.Struct {
 }
 
 
+
+
 class StreamVideoQuadState extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(8, 0)
@@ -1306,6 +1340,8 @@ class StreamVideoQuadState extends bindings.Struct {
     return map;
   }
 }
+
+
 
 
 class YuvVideoQuadState extends bindings.Struct {
@@ -1423,6 +1459,8 @@ class YuvVideoQuadState extends bindings.Struct {
     return map;
   }
 }
+
+
 
 
 class Quad extends bindings.Struct {
@@ -1644,6 +1682,8 @@ class Quad extends bindings.Struct {
 }
 
 
+
+
 class SharedQuadState extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(56, 0)
@@ -1780,6 +1820,8 @@ class SharedQuadState extends bindings.Struct {
     return map;
   }
 }
+
+
 
 
 class Pass extends bindings.Struct {
@@ -1938,5 +1980,9 @@ class Pass extends bindings.Struct {
     return map;
   }
 }
+
+
+
+
 
 

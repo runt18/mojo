@@ -8,6 +8,8 @@ import 'dart:async';
 
 import 'package:mojo/bindings.dart' as bindings;
 import 'package:mojo/core.dart' as core;
+import 'package:mojo/mojo/bindings/types/mojom_types.mojom.dart' as mojom_types;
+import 'package:mojo/mojo/bindings/types/service_describer.mojom.dart' as service_describer;
 import 'package:mojo_services/mojo/context_provider.mojom.dart' as context_provider_mojom;
 import 'package:mojo_services/mojo/viewport_parameter_listener.mojom.dart' as viewport_parameter_listener_mojom;
 import 'package:mojo_services/mojo/surfaces.mojom.dart' as surfaces_mojom;
@@ -82,6 +84,8 @@ class _DisplaySubmitFrameParams extends bindings.Struct {
 }
 
 
+
+
 class DisplaySubmitFrameResponseParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(8, 0)
@@ -138,6 +142,8 @@ class DisplaySubmitFrameResponseParams extends bindings.Struct {
     return map;
   }
 }
+
+
 
 
 class _DisplayFactoryCreateParams extends bindings.Struct {
@@ -221,7 +227,20 @@ class _DisplayFactoryCreateParams extends bindings.Struct {
   }
 }
 
+
+
+
 const int _Display_submitFrameName = 0;
+
+
+
+class _DisplayServiceDescription implements service_describer.ServiceDescription {
+  dynamic getTopLevelInterface([Function responseFactory]) => null;
+
+  dynamic getTypeDefinition(String typeKey, [Function responseFactory]) => null;
+
+  dynamic getAllTypeDefinitions([Function responseFactory]) => null;
+}
 
 abstract class Display {
   static const String serviceName = null;
@@ -243,6 +262,9 @@ class _DisplayProxyImpl extends bindings.Proxy {
     assert(endpoint.setDescription("For _DisplayProxyImpl"));
     return new _DisplayProxyImpl.fromEndpoint(endpoint);
   }
+
+  service_describer.ServiceDescription get serviceDescription =>
+    new _DisplayServiceDescription();
 
   void handleResponse(bindings.ServiceMessage message) {
     switch (message.header.type) {
@@ -428,9 +450,22 @@ class DisplayStub extends bindings.Stub {
   }
 
   int get version => 0;
+
+  service_describer.ServiceDescription get serviceDescription =>
+    new _DisplayServiceDescription();
 }
 
 const int _DisplayFactory_createName = 0;
+
+
+
+class _DisplayFactoryServiceDescription implements service_describer.ServiceDescription {
+  dynamic getTopLevelInterface([Function responseFactory]) => null;
+
+  dynamic getTypeDefinition(String typeKey, [Function responseFactory]) => null;
+
+  dynamic getAllTypeDefinitions([Function responseFactory]) => null;
+}
 
 abstract class DisplayFactory {
   static const String serviceName = "mojo::DisplayFactory";
@@ -452,6 +487,9 @@ class _DisplayFactoryProxyImpl extends bindings.Proxy {
     assert(endpoint.setDescription("For _DisplayFactoryProxyImpl"));
     return new _DisplayFactoryProxyImpl.fromEndpoint(endpoint);
   }
+
+  service_describer.ServiceDescription get serviceDescription =>
+    new _DisplayFactoryServiceDescription();
 
   void handleResponse(bindings.ServiceMessage message) {
     switch (message.header.type) {
@@ -598,6 +636,10 @@ class DisplayFactoryStub extends bindings.Stub {
   }
 
   int get version => 0;
+
+  service_describer.ServiceDescription get serviceDescription =>
+    new _DisplayFactoryServiceDescription();
 }
+
 
 

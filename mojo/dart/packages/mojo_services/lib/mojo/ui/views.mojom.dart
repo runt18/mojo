@@ -8,6 +8,8 @@ import 'dart:async';
 
 import 'package:mojo/bindings.dart' as bindings;
 import 'package:mojo/core.dart' as core;
+import 'package:mojo/mojo/bindings/types/mojom_types.mojom.dart' as mojom_types;
+import 'package:mojo/mojo/bindings/types/service_describer.mojom.dart' as service_describer;
 import 'package:mojo/mojo/service_provider.mojom.dart' as service_provider_mojom;
 import 'package:mojo_services/mojo/gfx/composition/scenes.mojom.dart' as scenes_mojom;
 import 'package:mojo_services/mojo/ui/layouts.mojom.dart' as layouts_mojom;
@@ -79,6 +81,8 @@ class ViewToken extends bindings.Struct {
     return map;
   }
 }
+
+
 
 
 class _ViewOnLayoutParams extends bindings.Struct {
@@ -158,6 +162,8 @@ class _ViewOnLayoutParams extends bindings.Struct {
 }
 
 
+
+
 class ViewOnLayoutResponseParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(16, 0)
@@ -224,6 +230,8 @@ class ViewOnLayoutResponseParams extends bindings.Struct {
     return map;
   }
 }
+
+
 
 
 class _ViewOnChildUnavailableParams extends bindings.Struct {
@@ -293,6 +301,8 @@ class _ViewOnChildUnavailableParams extends bindings.Struct {
 }
 
 
+
+
 class ViewOnChildUnavailableResponseParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(8, 0)
@@ -349,6 +359,8 @@ class ViewOnChildUnavailableResponseParams extends bindings.Struct {
     return map;
   }
 }
+
+
 
 
 class _ViewHostGetServiceProviderParams extends bindings.Struct {
@@ -417,6 +429,8 @@ class _ViewHostGetServiceProviderParams extends bindings.Struct {
 }
 
 
+
+
 class _ViewHostCreateSceneParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(16, 0)
@@ -483,6 +497,8 @@ class _ViewHostCreateSceneParams extends bindings.Struct {
 }
 
 
+
+
 class _ViewHostRequestLayoutParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(8, 0)
@@ -539,6 +555,8 @@ class _ViewHostRequestLayoutParams extends bindings.Struct {
     return map;
   }
 }
+
+
 
 
 class _ViewHostAddChildParams extends bindings.Struct {
@@ -618,6 +636,8 @@ class _ViewHostAddChildParams extends bindings.Struct {
 }
 
 
+
+
 class _ViewHostRemoveChildParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(16, 0)
@@ -683,6 +703,8 @@ class _ViewHostRemoveChildParams extends bindings.Struct {
     return map;
   }
 }
+
+
 
 
 class _ViewHostLayoutChildParams extends bindings.Struct {
@@ -762,6 +784,8 @@ class _ViewHostLayoutChildParams extends bindings.Struct {
 }
 
 
+
+
 class ViewHostLayoutChildResponseParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(16, 0)
@@ -829,8 +853,21 @@ class ViewHostLayoutChildResponseParams extends bindings.Struct {
   }
 }
 
+
+
+
 const int _View_onLayoutName = 0;
 const int _View_onChildUnavailableName = 1;
+
+
+
+class _ViewServiceDescription implements service_describer.ServiceDescription {
+  dynamic getTopLevelInterface([Function responseFactory]) => null;
+
+  dynamic getTypeDefinition(String typeKey, [Function responseFactory]) => null;
+
+  dynamic getAllTypeDefinitions([Function responseFactory]) => null;
+}
 
 abstract class View {
   static const String serviceName = null;
@@ -853,6 +890,9 @@ class _ViewProxyImpl extends bindings.Proxy {
     assert(endpoint.setDescription("For _ViewProxyImpl"));
     return new _ViewProxyImpl.fromEndpoint(endpoint);
   }
+
+  service_describer.ServiceDescription get serviceDescription =>
+    new _ViewServiceDescription();
 
   void handleResponse(bindings.ServiceMessage message) {
     switch (message.header.type) {
@@ -1095,6 +1135,9 @@ class ViewStub extends bindings.Stub {
   }
 
   int get version => 0;
+
+  service_describer.ServiceDescription get serviceDescription =>
+    new _ViewServiceDescription();
 }
 
 const int _ViewHost_getServiceProviderName = 0;
@@ -1103,6 +1146,16 @@ const int _ViewHost_requestLayoutName = 2;
 const int _ViewHost_addChildName = 3;
 const int _ViewHost_removeChildName = 4;
 const int _ViewHost_layoutChildName = 5;
+
+
+
+class _ViewHostServiceDescription implements service_describer.ServiceDescription {
+  dynamic getTopLevelInterface([Function responseFactory]) => null;
+
+  dynamic getTypeDefinition(String typeKey, [Function responseFactory]) => null;
+
+  dynamic getAllTypeDefinitions([Function responseFactory]) => null;
+}
 
 abstract class ViewHost {
   static const String serviceName = null;
@@ -1129,6 +1182,9 @@ class _ViewHostProxyImpl extends bindings.Proxy {
     assert(endpoint.setDescription("For _ViewHostProxyImpl"));
     return new _ViewHostProxyImpl.fromEndpoint(endpoint);
   }
+
+  service_describer.ServiceDescription get serviceDescription =>
+    new _ViewHostServiceDescription();
 
   void handleResponse(bindings.ServiceMessage message) {
     switch (message.header.type) {
@@ -1386,6 +1442,10 @@ class ViewHostStub extends bindings.Stub {
   }
 
   int get version => 0;
+
+  service_describer.ServiceDescription get serviceDescription =>
+    new _ViewHostServiceDescription();
 }
+
 
 
