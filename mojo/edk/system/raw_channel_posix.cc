@@ -16,13 +16,13 @@
 #include <vector>
 
 #include "base/logging.h"
-#include "base/memory/weak_ptr.h"
 #include "mojo/edk/embedder/platform_channel_utils.h"
 #include "mojo/edk/platform/platform_handle.h"
 #include "mojo/edk/platform/platform_handle_watcher.h"
 #include "mojo/edk/platform/scoped_platform_handle.h"
 #include "mojo/edk/system/transport_data.h"
 #include "mojo/edk/util/make_unique.h"
+#include "mojo/edk/util/weak_ptr.h"
 #include "mojo/public/cpp/system/macros.h"
 
 using mojo::platform::PlatformHandle;
@@ -30,6 +30,7 @@ using mojo::platform::PlatformHandleWatcher;
 using mojo::platform::ScopedPlatformHandle;
 using mojo::util::MakeUnique;
 using mojo::util::MutexLocker;
+using mojo::util::WeakPtrFactory;
 
 namespace mojo {
 namespace system {
@@ -89,7 +90,7 @@ class RawChannelPosix final : public RawChannel {
 
   // This is used for posting tasks from write threads to the I/O thread. The
   // weak pointers it produces are only used/invalidated on the I/O thread.
-  base::WeakPtrFactory<RawChannelPosix> weak_ptr_factory_
+  WeakPtrFactory<RawChannelPosix> weak_ptr_factory_
       MOJO_GUARDED_BY(write_mutex());
 
   MOJO_DISALLOW_COPY_AND_ASSIGN(RawChannelPosix);
