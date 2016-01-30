@@ -305,3 +305,17 @@ func (token Token) Snippet(source string, color bool) (snippet string) {
 	snippet = snippetBuffer.String()
 	return
 }
+
+func StringLiteralTokenToText(token Token) string {
+	if token.Kind != StringLiteral {
+		panic("stringLiteralTokenToText can only accept StringLiteral tokens.")
+	}
+
+	text := token.Text
+	length := len(text)
+	if (length < 2) || (text[0] != '"') || (text[length-1] != '"') {
+		panic(fmt.Sprintf("Lexer returned a string literal token whose "+
+			"text was not delimited by quotation marks: '%s'.", text))
+	}
+	return text[1 : length-1]
+}

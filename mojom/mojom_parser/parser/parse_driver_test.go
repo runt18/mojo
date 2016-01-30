@@ -66,7 +66,7 @@ func (f *FakeFileExtractor) appendImportsToFile(fileName string, imports ...stri
 func (f *FakeFileExtractor) extractMojomFile(parser *Parser) *mojom.MojomFile {
 	file := parser.GetMojomFile()
 	for _, importName := range f.importNames[file.CanonicalFileName] {
-		file.AddImport(importName)
+		file.AddImport(mojom.NewImportedFile(importName, nil))
 	}
 	return file
 }

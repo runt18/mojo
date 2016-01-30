@@ -140,7 +140,8 @@ type DeclarationContainer struct {
 	containedScope *Scope
 	Enums          []*MojomEnum
 	Constants      []*UserDefinedConstant
-	// DeclaredObjects lists the objects in this container in lexical order.
+	// DeclaredObjects lists the objects in this container in order of occurrence
+	// in the source.
 	// It includes all declared objects (for example methods and fields) not just
 	// enums and constants.
 	DeclaredObjects []DeclaredObject
@@ -584,7 +585,8 @@ type MojomUnion struct {
 
 	fieldsByName map[string]*UnionField
 	Fields       []*UnionField
-	// DeclaredObjects is the list of union fields maintained in lexical order.
+	// DeclaredObjects is the list of union fields maintained in order of
+	// occurrence in the source.
 	DeclaredObjects []DeclaredObject
 }
 
@@ -653,7 +655,7 @@ type MojomEnum struct {
 	UserDefinedTypeBase
 
 	Values []*EnumValue
-	// DeclaredObjects is the list of enum values in lexical order.
+	// DeclaredObjects is the list of enum values in order of occurrence in the source.
 	DeclaredObjects []DeclaredObject
 	scopeForValues  *Scope
 }
@@ -1091,6 +1093,7 @@ func (d *DeclarationData) DeclaredObject() DeclaredObject {
 }
 
 type Attributes struct {
+	// The attributes are listed in order of occurrence in the source.
 	List []MojomAttribute
 }
 
@@ -1111,9 +1114,17 @@ type MojomAttribute struct {
 	Key string
 	// TODO(rudominer) Decide if we support attribute values as Names.
 	// See https://github.com/domokit/mojo/issues/561.
-	Value LiteralValue
+	Value    LiteralValue
+	KeyToken *lexer.Token
 }
 
 func (ma MojomAttribute) String() string {
 	return fmt.Sprintf("%s=%s ", ma.Key, ma.Value)
+}
+
+func NewMojomAttribute(keyToken *lexer.Token, value LiteralValue) (mojomAttribute MojomAttribute) {
+	mojomAttribute.KeyToken = keyToken
+	mojomAttribute.Key = keyToken.Text
+	mojomAttribute.Value = value
+	return
 }

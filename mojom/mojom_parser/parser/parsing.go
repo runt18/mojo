@@ -191,15 +191,15 @@ func (p *Parser) parseMojomFile() bool {
 		return true
 	}
 
-	importNames := p.parseImportStatements()
+	importedFiles := p.parseImportStatements()
 	if !p.OK() {
 		return false
 	}
-	for _, name := range importNames {
-		p.mojomFile.AddImport(name)
+	for _, importedFile := range importedFiles {
+		p.mojomFile.AddImport(importedFile)
 	}
 
-	if moduleIdentifier == "" && len(importNames) > 0 && initialAttributes != nil {
+	if moduleIdentifier == "" && len(importedFiles) > 0 && initialAttributes != nil {
 		message := "Attributes are not allowed before an import statement."
 		p.parseError(ParserErrorCodeBadAttributeLocation, message)
 		return false
@@ -287,7 +287,8 @@ func (p *Parser) parseAttributes() (attributes *mojom.Attributes) {
 
 	nextToken := p.lastConsumed
 	for nextToken.Kind != lexer.RBracket {
-		key := p.readName()
+		p.readName()
+		keyToken := p.lastConsumed
 		p.attachToken()
 		if !p.OK() {
 			return
@@ -311,7 +312,7 @@ func (p *Parser) parseAttributes() (attributes *mojom.Attributes) {
 		if !p.OK() {
 			return
 		}
-		attributes.List = append(attributes.List, mojom.MojomAttribute{key, value})
+		attributes.List = append(attributes.List, mojom.NewMojomAttribute(&keyToken, value))
 
 		nextToken = p.peekNextToken("I was reading an attributes section.")
 		if !p.OK() {
@@ -370,9 +371,9 @@ func (p *Parser) parseModuleDecl() (moduleIdentifier string) {
 
 // IMPORT_STMNT  -> import string_literal
 //
-// Returns a non-nil, but possibly empty, slice of import names.
-func (p *Parser) parseImportStatements() (names []string) {
-	names = make([]string, 0)
+// Returns a non-nil, but possibly empty, slice of ImportedFiles.
+func (p *Parser) parseImportStatements() (imports []*mojom.ImportedFile) {
+	imports = make([]*mojom.ImportedFile, 0)
 	if !p.OK() {
 		return
 	}
@@ -388,6 +389,7 @@ func (p *Parser) parseImportStatements() (names []string) {
 		p.consumeNextToken() // consume the IMPORT token.
 
 		fileName := p.readStringLiteral()
+		fileNameToken := p.lastConsumed
 		p.attachToken()
 		if !p.OK() {
 			return
@@ -397,7 +399,7 @@ func (p *Parser) parseImportStatements() (names []string) {
 			return
 		}
 
-		names = append(names, fileName)
+		imports = append(imports, mojom.NewImportedFile(fileName, &fileNameToken))
 
 		if p.checkEOF() {
 			// Allow a .mojom file containing only import statements.
@@ -1639,16 +1641,11 @@ func (p *Parser) readStringLiteral() (literal string) {
 		return
 	}
 
-	text := p.readText(lexer.StringLiteral)
-	if !p.OK() {
+	if !p.match(lexer.StringLiteral) {
 		return
 	}
-	length := len(text)
-	if (length < 2) || (text[0] != '"') || (text[length-1] != '"') {
-		panic(fmt.Sprintf("Lexer returned a string literal token whose "+
-			"text was not delimited by quotation marks: '%s'.", text))
-	}
-	return text[1 : length-1]
+
+	return lexer.StringLiteralTokenToText(p.lastConsumed)
 }
 
 func (p *Parser) readName() (name string) {

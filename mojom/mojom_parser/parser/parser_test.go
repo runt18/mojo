@@ -62,7 +62,7 @@ func TestSuccessfulParsing(t *testing.T) {
 	cases[testCaseNum].mojomContents = `[cool=true]module mojom.test;`
 	expectedFile.Attributes = mojom.NewAttributes()
 	expectedFile.Attributes.List = append(expectedFile.Attributes.List,
-		mojom.MojomAttribute{"cool", mojom.MakeBoolLiteralValue(true)})
+		mojom.MojomAttribute{"cool", mojom.MakeBoolLiteralValue(true), nil})
 	endTestCase()
 
 	////////////////////////////////////////////////////////////
@@ -70,7 +70,7 @@ func TestSuccessfulParsing(t *testing.T) {
 	////////////////////////////////////////////////////////////
 	startTestCase("")
 	cases[testCaseNum].mojomContents = `import "a.file";`
-	expectedFile.AddImport("a.file")
+	expectedFile.AddImport(mojom.NewImportedFile("a.file", nil))
 	endTestCase()
 
 	////////////////////////////////////////////////////////////
@@ -82,7 +82,7 @@ func TestSuccessfulParsing(t *testing.T) {
 
 	import "a.file";`
 	{
-		expectedFile.AddImport("a.file")
+		expectedFile.AddImport(mojom.NewImportedFile("a.file", nil))
 		endTestCase()
 	}
 
@@ -98,8 +98,8 @@ func TestSuccessfulParsing(t *testing.T) {
 	{
 		expectedFile.Attributes = mojom.NewAttributes()
 		expectedFile.Attributes.List = append(expectedFile.Attributes.List,
-			mojom.MojomAttribute{"cool", mojom.MakeBoolLiteralValue(true)})
-		expectedFile.AddImport("a.file")
+			mojom.MojomAttribute{"cool", mojom.MakeBoolLiteralValue(true), nil})
+		expectedFile.AddImport(mojom.NewImportedFile("a.file", nil))
 		endTestCase()
 	}
 	////////////////////////////////////////////////////////////
@@ -201,13 +201,13 @@ func TestSuccessfulParsing(t *testing.T) {
 		[happy=true] int32 x@4;
 	};`
 	{
-		expectedFile.AddImport("another.file")
-		expectedFile.AddImport("and.another.file")
+		expectedFile.AddImport(mojom.NewImportedFile("another.file", nil))
+		expectedFile.AddImport(mojom.NewImportedFile("and.another.file", nil))
 
 		structFoo := mojom.NewMojomStruct(mojom.DeclTestData("Foo"))
 		structFoo.InitAsScope(mojom.NewTestFileScope("test.scope"))
 		attributes := mojom.NewAttributes()
-		attributes.List = append(attributes.List, mojom.MojomAttribute{"happy", mojom.MakeBoolLiteralValue(true)})
+		attributes.List = append(attributes.List, mojom.MojomAttribute{"happy", mojom.MakeBoolLiteralValue(true), nil})
 		structFoo.AddField(mojom.NewStructField(mojom.DeclTestDataAWithOrdinal("x", attributes, 4), mojom.SimpleTypeInt32, nil))
 		expectedFile.AddStruct(structFoo)
 	}
@@ -230,15 +230,15 @@ func TestSuccessfulParsing(t *testing.T) {
 		bool w@6 = false;
 	};`
 	{
-		expectedFile.AddImport("another.file")
-		expectedFile.AddImport("and.another.file")
+		expectedFile.AddImport(mojom.NewImportedFile("another.file", nil))
+		expectedFile.AddImport(mojom.NewImportedFile("and.another.file", nil))
 
 		structFoo := mojom.NewMojomStruct(mojom.DeclTestData("Foo"))
 		structFoo.InitAsScope(mojom.NewTestFileScope("test.scope"))
 		structFoo.AddField(mojom.NewStructField(mojom.DeclTestDataWithOrdinal("x", 4), mojom.SimpleTypeInt32, mojom.MakeInt8LiteralValue(42)))
 		attributes := mojom.NewAttributes()
-		attributes.List = append(attributes.List, mojom.MojomAttribute{"age", mojom.MakeInt8LiteralValue(7)})
-		attributes.List = append(attributes.List, mojom.MojomAttribute{"level", mojom.MakeStringLiteralValue("high")})
+		attributes.List = append(attributes.List, mojom.MojomAttribute{"age", mojom.MakeInt8LiteralValue(7), nil})
+		attributes.List = append(attributes.List, mojom.MojomAttribute{"level", mojom.MakeStringLiteralValue("high"), nil})
 		structFoo.AddField(mojom.NewStructField(mojom.DeclTestDataA("y", attributes), mojom.BuiltInType("string"), mojom.MakeStringLiteralValue("Howdy!")))
 		structFoo.AddField(mojom.NewStructField(mojom.DeclTestData("z"), mojom.BuiltInType("string?"), nil))
 		structFoo.AddField(mojom.NewStructField(mojom.DeclTestDataWithOrdinal("w", 6), mojom.BuiltInType("bool"), mojom.MakeBoolLiteralValue(false)))
@@ -268,8 +268,8 @@ func TestSuccessfulParsing(t *testing.T) {
 
 	`
 	{
-		expectedFile.AddImport("another.file")
-		expectedFile.AddImport("and.another.file")
+		expectedFile.AddImport(mojom.NewImportedFile("another.file", nil))
+		expectedFile.AddImport(mojom.NewImportedFile("and.another.file", nil))
 
 		structFoo := mojom.NewMojomStruct(mojom.DeclTestData("Foo"))
 		structFoo.InitAsScope(mojom.NewTestFileScope("test.scope"))
@@ -314,10 +314,10 @@ func TestSuccessfulParsing(t *testing.T) {
 
 	`
 	{
-		expectedFile.AddImport("gpu/interfaces/command_buffer.mojom")
+		expectedFile.AddImport(mojom.NewImportedFile("gpu/interfaces/command_buffer.mojom", nil))
 
 		attributes := mojom.NewAttributes()
-		attributes.List = append(attributes.List, mojom.MojomAttribute{"ServiceName", mojom.MakeStringLiteralValue("mojo::Gpu")})
+		attributes.List = append(attributes.List, mojom.MojomAttribute{"ServiceName", mojom.MakeStringLiteralValue("mojo::Gpu"), nil})
 		interfaceGpu := mojom.NewMojomInterface(mojom.DeclTestDataA("Gpu", attributes))
 		expectedFile.AddInterface(interfaceGpu)
 	}
@@ -356,10 +356,10 @@ func TestSuccessfulParsing(t *testing.T) {
 	{
 		expectedFile.Attributes = mojom.NewAttributes()
 		expectedFile.Attributes.List = append(expectedFile.Attributes.List,
-			mojom.MojomAttribute{"php_namespace", mojom.MakeStringLiteralValue("mojom.test.php")})
+			mojom.MojomAttribute{"php_namespace", mojom.MakeStringLiteralValue("mojom.test.php"), nil})
 
-		expectedFile.AddImport("another.file")
-		expectedFile.AddImport("and.another.file")
+		expectedFile.AddImport(mojom.NewImportedFile("another.file", nil))
+		expectedFile.AddImport(mojom.NewImportedFile("and.another.file", nil))
 
 		expectedFile.AddConstant(mojom.NewUserDefinedConstant(mojom.DeclTestData("TOO_SMALL_VALUE"),
 			mojom.SimpleTypeInt8, mojom.MakeInt8LiteralValue(6)))
@@ -1497,9 +1497,16 @@ func TestDuplicateNameErrorsTwoFiles(t *testing.T) {
 }
 
 // TestLexicalOrdering tests that the DeclaredObjects fields of the
-// components of the mojom file are in lexical order.
+// components of the mojom file are in order of occurrence in the source.
 func TestLexicalOrdering(t *testing.T) {
 	source := `
+	[Key1="SomeModule",
+	Key2=10]
+	module hello.world;
+
+	import "import1";
+	import "import2";
+
 	interface InterfaceFoo {
 		Method1();
 		enum InnerEnum { };
@@ -1544,6 +1551,15 @@ func TestLexicalOrdering(t *testing.T) {
 	}
 
 	mojomFile := parser.GetMojomFile()
+
+	checkEq("Key1", mojomFile.Attributes.List[0].Key)
+	checkEq("Key1", mojomFile.Attributes.List[0].KeyToken.Text)
+	checkEq("Key2", mojomFile.Attributes.List[1].Key)
+	checkEq("Key2", mojomFile.Attributes.List[1].KeyToken.Text)
+
+	checkEq("import1", mojomFile.Imports[0].SpecifiedName)
+	checkEq("import2", mojomFile.Imports[1].SpecifiedName)
+
 	mojomInterface := mojomFile.DeclaredObjects[0].(*mojom.MojomInterface)
 	checkEq("InterfaceFoo", mojomInterface.SimpleName())
 	checkEq("Method1", mojomInterface.DeclaredObjects[0].(*mojom.MojomMethod).SimpleName())

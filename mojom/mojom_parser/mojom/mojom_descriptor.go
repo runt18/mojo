@@ -7,6 +7,7 @@ package mojom
 import (
 	"bytes"
 	"fmt"
+	"mojom/mojom_parser/lexer"
 	"strings"
 )
 
@@ -73,7 +74,8 @@ type MojomFile struct {
 	// The contents of the .mojom file.
 	fileContents string
 
-	// DeclaredObjects is a list of all user declared objects in lexical order.
+	// DeclaredObjects is a list of all user declared objects in order of
+	// occurrence in the source.
 	// It is the union of Interfaces, Structs, Unions, Enums and Constants.
 	DeclaredObjects []DeclaredObject
 }
@@ -90,10 +92,24 @@ type ImportedFile struct {
 	// file itself is processed that |CanonicalFileName| field is populated within each of the
 	// importing MojomFiles.
 	CanonicalFileName string
+
+	// NameToken is the StringLiteral token that contains the imported file name.
+	NameToken lexer.Token
 }
 
 func (f *ImportedFile) String() string {
 	return fmt.Sprintf("%q, ", f.SpecifiedName)
+}
+
+// NewImportedFile is a constructor for the ImportedFile type.
+func NewImportedFile(specifiedName string, nameToken *lexer.Token) (importedFile *ImportedFile) {
+	importedFile = new(ImportedFile)
+	importedFile.SpecifiedName = specifiedName
+	// This condition is there to make it easier to generate imported files in tests.
+	if nameToken != nil {
+		importedFile.NameToken = *nameToken
+	}
+	return
 }
 
 func newMojomFile(fileName, specifiedName string, descriptor *MojomDescriptor,
@@ -175,11 +191,9 @@ func (f *MojomFile) InitializeFileScope(moduleNamespace string) *Scope {
 	return f.FileScope
 }
 
-func (f *MojomFile) AddImport(specifiedFileName string) {
-	importedFile := new(ImportedFile)
-	importedFile.SpecifiedName = specifiedFileName
+func (f *MojomFile) AddImport(importedFile *ImportedFile) {
 	f.Imports = append(f.Imports, importedFile)
-	f.importsBySpecifiedName[specifiedFileName] = importedFile
+	f.importsBySpecifiedName[importedFile.SpecifiedName] = importedFile
 }
 
 // SetCanonicalImportName sets the |CanonicalFileName| field of the |ImportedFile|
