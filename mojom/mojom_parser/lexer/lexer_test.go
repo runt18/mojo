@@ -311,3 +311,13 @@ func TestTokenSnippetLongPrelude(t *testing.T) {
 	expected += strings.Repeat(" ", 58) + "^^^^^"
 	checkEq(t, expected, ts.PeekNext().Snippet(source, false))
 }
+
+func TestFilteredTokens(t *testing.T) {
+	source := "/* filtered1 */ hello world // filtered2"
+	ts := Tokenize(source)
+	ts.ConsumeNext()
+	ts.ConsumeNext()
+	filtered := ts.(*FilteredTokenStream).FilteredTokens()
+	checkEq(t, MultiLineComment, filtered[0].Kind)
+	checkEq(t, SingleLineComment, filtered[1].Kind)
+}

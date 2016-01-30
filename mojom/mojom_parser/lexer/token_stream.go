@@ -60,37 +60,45 @@ type FilteredTokenStream struct {
 	// filter contains the TokenKinds that should be skipped in the source
 	// TokenStream.
 	filter map[TokenKind]bool
+	// filteredTokens contains a copy of all tokens that were filtered out.
+	filteredTokens []Token
 }
 
 // See TokenStream.
 func (s *FilteredTokenStream) PeekNext() (token Token) {
-	s.skipBlacklisted()
+	s.skipFiltered()
 	return s.tokenStream.PeekNext()
 }
 
 // See TokenStream.
 func (s *FilteredTokenStream) ConsumeNext() {
-	s.skipBlacklisted()
+	s.skipFiltered()
 	s.tokenStream.ConsumeNext()
-	s.skipBlacklisted()
+	s.skipFiltered()
 }
 
-func (s *FilteredTokenStream) skipBlacklisted() {
+func (s *FilteredTokenStream) skipFiltered() {
 	t := s.tokenStream.PeekNext()
-	for s.isBlacklisted(t) {
+	for s.isFiltered(t) {
+		s.filteredTokens = append(s.filteredTokens, t)
 		s.tokenStream.ConsumeNext()
 		t = s.tokenStream.PeekNext()
 	}
 }
 
-// isBlacklisted checks if a Token is of a filtered TokenKind.
-func (s *FilteredTokenStream) isBlacklisted(token Token) (ok bool) {
+// isFiltered checks if a Token is of a filtered TokenKind.
+func (s *FilteredTokenStream) isFiltered(token Token) (ok bool) {
 	_, ok = s.filter[token.Kind]
 	return
 }
 
+// FilteredTokens returns the list of tokens that were filtered by the FilteredTokenStream.
+func (s *FilteredTokenStream) FilteredTokens() []Token {
+	return s.filteredTokens
+}
+
 func NewFilteredTokenStream(ts TokenStream, filter []TokenKind) (filteredTS *FilteredTokenStream) {
-	filteredTS = &FilteredTokenStream{ts, map[TokenKind]bool{}}
+	filteredTS = &FilteredTokenStream{ts, map[TokenKind]bool{}, []Token{}}
 	for _, tk := range filter {
 		if tk == EOF {
 			// We don't allow filtering EOF since that would cause an infinite loop.
