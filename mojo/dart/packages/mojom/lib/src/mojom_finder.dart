@@ -22,10 +22,12 @@ class MojomFinder {
   Directory _mojomRootDir;
   Directory _dartRootDir;
   List<String> _skip;
-  Map<String, String> _packageLocations;
+
+  // Cache of mappings from package name to Dart source location.
+  HashMap<String, Directory> _packageLocations;
 
   MojomFinder(this._mojomRootDir, this._dartRootDir, this._skip) {
-    _packageLocations = new Map<String, String>();
+    _packageLocations = new HashMap<String, Directory>();
     if (_mojomMs == null) {
       _mojomMs = new dev.Counter("mojom searching",
           "Time(ms) searching for .mojom files with DartPackage annotations.");
@@ -72,7 +74,7 @@ class MojomFinder {
     return packageInfos.values.toList();
   }
 
-  /// Extract a DartPackage attribute from a .mojom file.
+  // Extract a DartPackage attribute from a .mojom file.
   Future<String> _extractDartPackageAttribute(File mojom) async {
     String contents = await mojom.readAsString();
     int dpIndex = contents.indexOf('DartPackage');
@@ -103,17 +105,46 @@ class MojomFinder {
     return contents.substring(openQuoteIndex + 1, closeQuoteIndex);
   }
 
-  /// Finds where the Dart package named [package] lives. Looks immediately
-  /// under [_dartRootDir].
+  // Finds where the Dart package named [package] lives. Looks immediately
+  // under [_dartRootDir].
   Future<Directory> _findDartSourceDir(String package) async {
+    if (_packageLocations.containsKey(package)) {
+      return _packageLocations[package];
+    }
     var packagePath = path.join(_dartRootDir.path, package);
     Directory packageDir = new Directory(packagePath);
-    log.info("Looking for dart package: $packagePath");
     if (await packageDir.exists()) {
+      log.info("Found dart package $package at $packagePath");
+      _packageLocations[package] = packageDir;
       return packageDir;
+    }
+
+    // If the directory doesn't exist, look for a pubspec.yaml file with a
+    // 'name:' field matching the package name.
+    Directory dir = await _findDartSourceDirByPubspec(package);
+    if (dir != null) {
+      _packageLocations[package] = dir;
+      return dir;
     } else {
       log.info("$packagePath not found");
+      return null;
     }
+  }
+
+  Future<Directory> _findDartSourceDirByPubspec(String package) async {
+    await for (var entry in _dartRootDir.list(recursive: true)) {
+      if (entry is! File) continue;
+      if (_shouldSkip(entry)) continue;
+      if (!isPubspecYaml(entry.path)) continue;
+      String contents = await entry.readAsString();
+      var pubspec = yaml.loadYaml(contents);
+      String name = pubspec['name'];
+      if (name == package) {
+        log.info("Found dart package $package at ${entry.parent}");
+        return entry.parent;
+      }
+    }
+    return null;
   }
 
   bool _shouldSkip(File f) => containsPrefix(f.path, _skip);

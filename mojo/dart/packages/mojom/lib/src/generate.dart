@@ -7,12 +7,14 @@
 library generate;
 
 import 'dart:async';
+import 'dart:collection';
 import 'dart:convert';
 import 'dart:developer' as dev;
 import 'dart:io';
 
 import 'package:mojom/src/utils.dart';
 import 'package:path/path.dart' as path;
+import 'package:yaml/yaml.dart' as yaml;
 
 part 'mojom_finder.dart';
 

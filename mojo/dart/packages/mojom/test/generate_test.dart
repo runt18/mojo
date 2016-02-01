@@ -10,7 +10,7 @@ import 'package:mojom/src/utils.dart';
 import 'package:path/path.dart' as path;
 import 'package:unittest/unittest.dart';
 
-final singlePacakgeMojomContents = '''
+final String singlePacakgeMojomContents = '''
 [DartPackage="single_package"]
 module single_package;
 struct SinglePackage {
@@ -18,8 +18,43 @@ struct SinglePackage {
 };
 ''';
 
+final String singlePackagePubspecContents = '''
+name: single_package
+''';
+
 Future runCommand(List<String> args) {
   return new MojomCommandRunner().run(args);
+}
+
+Future<String> setupPackage(
+    String basePath, String dirName, String packageName, String pubspec) async {
+    // //dirName
+    String packagePath = path.join(basePath, dirName);
+    // //dirName/lib
+    String packageLibPath = path.join(packagePath, 'lib');
+    // //dirName/packages
+    String packagePackagesPath = path.join(packagePath, 'packages');
+    // //dirName/packages/packageName
+    String packagePackagePath =
+        path.join(packagePackagesPath, packageName);
+    // //dirName/pubspec.yaml
+    String pubspecPath = path.join(packagePath, 'pubspec.yaml');
+
+    // Create the directory structure
+    await new Directory(packageLibPath).create(recursive: true);
+    await new Directory(packagePackagesPath).create(recursive: true);
+    await new Link(packagePackagePath).create(packageLibPath);
+
+    // Write the pubspec.yaml
+    File pubspecFile = new File(pubspecPath);
+    await pubspecFile.create(recursive: true);
+    await pubspecFile.writeAsString(pubspec);
+
+    return packagePath;
+}
+
+Future destroyPackage(String basePath, String dirName) async {
+  await new Directory(path.join(basePath, dirName)).delete(recursive: true);
 }
 
 main() async {
@@ -41,6 +76,12 @@ main() async {
 
   setUp(() async {
     await new Directory(testMojomPath).create(recursive: true);
+
+    // //test_mojoms/single_package/public/interfaces/single_package.mojom
+    final singlePackageMojomFile = new File(path.join(testMojomPath,
+        'single_package', 'public', 'interfaces', 'single_package.mojom'));
+    await singlePackageMojomFile.create(recursive: true);
+    await singlePackageMojomFile.writeAsString(singlePacakgeMojomContents);
   });
 
   tearDown(() async {
@@ -48,35 +89,11 @@ main() async {
   });
 
   group('Commands', () {
-    // //single_package
-    final singlePackagePath = path.join(scriptPath, 'single_package');
-    // //single_package/.mojoms
-    final singlePackageMojomsPath = path.join(singlePackagePath, '.mojoms');
-    // //single_package/lib
-    final singlePackageLibPath = path.join(singlePackagePath, 'lib');
-    // //single_package/packages
-    final singlePackagePackagesPath = path.join(singlePackagePath, 'packages');
-    // //single_package/packages/single_package
-    final singlePackagePackagePath =
-        path.join(singlePackagePackagesPath, 'single_package');
-
-    setUp(() async {
-      await new Directory(singlePackageLibPath).create(recursive: true);
-      await new Directory(singlePackagePackagesPath).create(recursive: true);
-      await new Link(singlePackagePackagePath).create(singlePackageLibPath);
-
-      // //test_mojoms/single_package/public/interfaces/single_package.mojom
-      final singlePackageMojomFile = new File(path.join(testMojomPath,
-          'single_package', 'public', 'interfaces', 'single_package.mojom'));
-      await singlePackageMojomFile.create(recursive: true);
-      await singlePackageMojomFile.writeAsString(singlePacakgeMojomContents);
-    });
-
-    tearDown(() async {
-      await new Directory(singlePackagePath).delete(recursive: true);
-    });
-
     test('single', () async {
+      String packagePath = await setupPackage(
+          scriptPath, 'single_package', 'single_package',
+          singlePackagePubspecContents);
+
       await runCommand([
         'single',
         '-m',
@@ -84,35 +101,51 @@ main() async {
         '-r',
         testMojomPath,
         '-p',
-        singlePackagePath
+        packagePath
       ]);
 
       // Should have:
       // //single_package/lib/single_package/single_package.mojom.dart
       final resultPath = path.join(
-          singlePackageLibPath, 'single_package', 'single_package.mojom.dart');
+          packagePath, 'lib', 'single_package', 'single_package.mojom.dart');
       final resultFile = new File(resultPath);
       expect(await resultFile.exists(), isTrue);
 
-      // There should be no stray .mojoms file haning around.
-      final mojomsFile = new File(singlePackageMojomsPath);
-      expect(await mojomsFile.exists(), isFalse);
+      await destroyPackage(scriptPath, 'single_package');
     });
 
     test('gen', () async {
+      String packagePath = await setupPackage(
+          scriptPath, 'single_package', 'single_package',
+          singlePackagePubspecContents);
+
       await runCommand(
           ['gen', '-m', mojoSdk, '-r', testMojomPath, '-o', scriptPath]);
 
       // Should have:
       // //single_package/lib/single_package/single_package.mojom.dart
       final resultPath = path.join(
-          singlePackageLibPath, 'single_package', 'single_package.mojom.dart');
+          packagePath, 'lib', 'single_package', 'single_package.mojom.dart');
       final resultFile = new File(resultPath);
       expect(await resultFile.exists(), isTrue);
 
-      // There should be no stray .mojoms file haning around.
-      final mojomsFile = new File(singlePackageMojomsPath);
-      expect(await mojomsFile.exists(), isFalse);
+      await destroyPackage(scriptPath, 'single_package');
+    });
+
+    test('gen wrong name', () async {
+      String packagePath = await setupPackage(
+          scriptPath, 'wrong_name', 'single_package',
+          singlePackagePubspecContents);
+
+      await runCommand(
+          ['gen', '-m', mojoSdk, '-r', testMojomPath, '-o', scriptPath]);
+
+      final resultPath = path.join(
+          packagePath, 'lib', 'single_package', 'single_package.mojom.dart');
+      final resultFile = new File(resultPath);
+      expect(await resultFile.exists(), isTrue);
+
+      await destroyPackage(scriptPath, 'wrong_name');
     });
   });
 }

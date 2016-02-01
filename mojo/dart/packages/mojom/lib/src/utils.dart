@@ -15,6 +15,7 @@ import 'package:path/path.dart' as path;
 bool isMojomDart(String path) => path.endsWith('.mojom.dart');
 bool isMojom(String path) => path.endsWith('.mojom');
 bool isDotMojoms(String path) => path.endsWith(".mojoms");
+bool isPubspecYaml(String path) => path.endsWith("pubspec.yaml");
 
 String makeAbsolute(String p) =>
     path.isAbsolute(p) ? path.normalize(p) : path.normalize(path.absolute(p));
