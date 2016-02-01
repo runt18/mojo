@@ -49,7 +49,6 @@ tests = [
   },
   {
     "test": "mojo:moterm_apptests",
-    "shell-args": ["--args-for=mojo:native_viewport_service --use-headless-config --use-osmesa"],
   },
   {
     "test": "mojo:network_service_apptests",
