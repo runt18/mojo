@@ -137,13 +137,18 @@ action_foreach("dart_embedder_package_sdk") {
   ]
 }
 
+vmservice_sources_gypi =
+    exec_script(
+        "//build/gypi_to_gn.py",
+        [ rebase_path("//dart/runtime/bin/vmservice/vmservice_sources.gypi") ],
+        "scope",
+        [ rebase_path("//dart/runtime/bin/vmservice/vmservice_sources.gypi") ])
+
 dart_embedder_resources("generate_dart_embedder_service_isolate_resources_cc") {
-  inputs = [
-    "//mojo/dart/embedder/vmservice/loader.dart",
-    "//mojo/dart/embedder/vmservice/main.dart",
-    "//mojo/dart/embedder/vmservice/server.dart",
-  ]
-  root_prefix = "//mojo/dart/embedder/"
+  inputs = rebase_path(vmservice_sources_gypi.sources,
+                       "",
+                       "//dart/runtime/bin/vmservice/")
+  root_prefix = "//dart/runtime/bin/"
   output = "$target_gen_dir/dart_embedder_service_isolate_resources.cc"
   table_name = "dart_embedder_service_isolate"
 }

@@ -27,7 +27,7 @@ namespace dart {
   }
 
 #define kLibrarySourceNamePrefix "/vmservice"
-static const char* kVMServiceIOLibraryScriptResourceName = "main.dart";
+static const char* kVMServiceIOLibraryScriptResourceName = "vmservice_io.dart";
 
 struct ResourcesEntry {
   const char* path_;
@@ -126,9 +126,8 @@ struct VmServiceIONativeEntry {
 
 
 static VmServiceIONativeEntry _VmServiceIONativeEntries[] = {
-  {"ServiceIsolate_TriggerResourceLoad", 0, ServiceIsolate_TriggerResourceLoad},
-  {"ServiceIsolate_NotifyServerState", 2, ServiceIsolate_NotifyServerState},
-  {"ServiceIsolate_Shutdown", 0, ServiceIsolate_Shutdown },
+  {"VMServiceIO_NotifyServerState", 2, ServiceIsolate_NotifyServerState},
+  {"VMServiceIO_Shutdown", 0, ServiceIsolate_Shutdown },
 };
 
 
