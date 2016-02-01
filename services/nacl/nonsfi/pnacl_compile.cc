@@ -13,7 +13,7 @@
 #include "mojo/public/cpp/application/application_runner.h"
 #include "mojo/public/cpp/application/interface_factory.h"
 #include "mojo/public/cpp/bindings/strong_binding.h"
-#include "services/nacl/nonsfi/kPnaclLlcNexe.h"
+#include "services/nacl/nonsfi/kPnaclTranslatorCompile.h"
 #include "services/nacl/nonsfi/pnacl_compile.mojom.h"
 
 namespace mojo {
@@ -22,7 +22,8 @@ namespace nacl {
 class PexeCompilerImpl : public PexeCompilerInit {
  public:
   void PexeCompilerStart(ScopedMessagePipeHandle handle) override {
-    int nexe_fd = ::nacl::DataToTempFileDescriptor(::nacl::kPnaclLlcNexe);
+    int nexe_fd =
+        ::nacl::DataToTempFileDescriptor(::nacl::kPnaclTranslatorCompile);
     CHECK(nexe_fd >= 0) << "Could not open compiler nexe";
     ::nacl::MojoLaunchNexeNonsfi(nexe_fd,
                                  handle.release().value(),

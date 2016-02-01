@@ -53,8 +53,8 @@ if (!is_nacl) {
       ]
 
       deps = [
-        ":pnacl_llc_file",
         ":pnacl_translator_bindings",
+        ":pnacl_translator_compile_file",
         "//base",
         "//mojo/nacl/nonsfi:irt_mojo",
         "//mojo/public/cpp/application:standalone",
@@ -136,10 +136,17 @@ embed_file("ld_file") {
   namespace = "nacl"
   variable = "kLdNexe"
 }
-embed_file("pnacl_llc_file") {
-  source = "${pnacl_file_location_prefix}/bin/pnacl-llc.nexe"
+
+embed_file("pnacl_translator_compile_file") {
+  if (current_cpu == "arm") {
+    source = "${pnacl_file_location_prefix}/bin/pnacl-llc.nexe"
+  } else if (current_cpu == "x86" || current_cpu == "x64") {
+    source = "${pnacl_file_location_prefix}/bin/pnacl-sz.nexe"
+  } else {
+    assert(false, "Architecture not recognized by Non-SFI NaCl")
+  }
   namespace = "nacl"
-  variable = "kPnaclLlcNexe"
+  variable = "kPnaclTranslatorCompile"
 }
 
 # Create embedded files usable by the PNaCl translation IRT.
@@ -178,8 +185,8 @@ embed_file("libpnacl_irt_shim_dummy_file") {
 # IRT.
 group("pnacl_translator_irt") {
   public_deps = [
-    ":pnacl_translator_irt_files",
     ":pnacl_translator_bindings",
+    ":pnacl_translator_irt_files",
   ]
 }
 

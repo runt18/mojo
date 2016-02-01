@@ -6,6 +6,7 @@
 
 #include "base/files/file_util.h"
 #include "base/logging.h"
+#include "build/build_config.h"
 #include "mojo/nacl/nonsfi/irt_mojo_nonsfi.h"
 #include "mojo/public/cpp/bindings/array.h"
 #include "mojo/public/cpp/bindings/string.h"
@@ -26,10 +27,14 @@ class PexeCompilerImpl : public mojo::nacl::PexeCompiler {
   void PexeCompile(const mojo::String& pexe_file_name, const
                    mojo::Callback<void(mojo::Array<mojo::String>)>& callback)
       override {
-    // TODO(smklein): This number is arbitrary, but matches the translator
-    // in Chrome. Use a better heuristic for number of threads/object files.
     const static uint32_t num_threads = 4;
-    size_t obj_file_count = num_threads;
+#if defined(ARCH_CPU_ARM_FAMILY)
+    // pnacl-llc supports split modules.
+    const size_t obj_file_count = num_threads;
+#else
+    // subzero does need split modules.
+    const size_t obj_file_count = 1;
+#endif
     auto obj_file_names = mojo::Array<mojo::String>::New(obj_file_count);
     int obj_file_fds[obj_file_count];
 
@@ -43,20 +48,30 @@ class PexeCompilerImpl : public mojo::nacl::PexeCompiler {
       obj_file_names[i] = mojo::String(obj_file_name.value());
     }
 
-    // Non-SFI mode requries PIC.
-    char relocation_model[] = "-relocation-model=pic";
-    // Since we are compiling pexes, the bitcode format is 'pnacl'.
-    char bitcode_format[] = "-bitcode-format=pnacl";
+#if defined(__arm__)  // No subzero on arm: Uses pnacl-llc.nexe.
     // Number of modules should be equal to the number of object files for
     // stability. Use a char buffer more than large enough to hold any expected
     // argument size.
     char split_module[100];
     CHECK_GE(snprintf(split_module, sizeof(split_module), "-split-module=%d",
                       obj_file_count), 0) << "Error formatting split_module";
-    char* args[] = { relocation_model, bitcode_format, split_module, nullptr };
-    size_t argc = 3;
+    const char* args[] = {"-relocation_model=pic",  // Required for Non-SFI.
+                          "-bitcode-format=pnacl",  // We are compiling pexes.
+                          split_module, nullptr};
+#else  // Subzero: Uses pnacl-sz.nexe.
+    char threads[100];
+    CHECK_GE(snprintf(threads, sizeof(threads), "-threads=%d", num_threads), 0)
+        << "Error formatting threads";
+    // TODO(smklein): Update the target when Subzero is ready on ARM.
+    // TODO(smklein): Investigate using x8664 (x32 abi) on 64 bit architectures.
+    const char* args[] = {"-O2",           "-bitcode-format=pnacl",
+                          "-filetype=obj", "-target=x8632",
+                          "-nonsfi",       threads,
+                          nullptr};
+#endif
+    constexpr const size_t argc = sizeof(args) / sizeof(*args) - 1;
     funcs_->init_callback(num_threads, obj_file_fds, obj_file_count,
-                          args, argc);
+                          const_cast<char**>(args), argc);
 
     // Read the pexe using fread, and write the pexe into the callback function.
     static const size_t kBufferSize = 0x100000;
