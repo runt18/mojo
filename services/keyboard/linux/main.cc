@@ -11,7 +11,7 @@
 #include "mojo/public/cpp/application/application_impl.h"
 #include "mojo/public/cpp/application/connect.h"
 #include "mojo/public/cpp/application/interface_factory.h"
-#include "mojo/services/native_viewport/interfaces/native_viewport.mojom.h"
+#include "mojo/services/native_viewport/interfaces/native_viewport_event_dispatcher.mojom.h"
 #include "services/keyboard/linux/keyboard_service_impl.h"
 
 namespace keyboard {

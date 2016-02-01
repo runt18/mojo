@@ -2,7 +2,7 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-library context_provider_mojom;
+library native_viewport_event_dispatcher_mojom;
 
 import 'dart:async';
 
@@ -10,20 +10,19 @@ import 'package:mojo/bindings.dart' as bindings;
 import 'package:mojo/core.dart' as core;
 import 'package:mojo/mojo/bindings/types/mojom_types.mojom.dart' as mojom_types;
 import 'package:mojo/mojo/bindings/types/service_describer.mojom.dart' as service_describer;
-import 'package:mojo_services/mojo/command_buffer.mojom.dart' as command_buffer_mojom;
-import 'package:mojo_services/mojo/viewport_parameter_listener.mojom.dart' as viewport_parameter_listener_mojom;
+import 'package:mojo_services/mojo/input_events.mojom.dart' as input_events_mojom;
 
 
 
-class _ContextProviderCreateParams extends bindings.Struct {
+class _NativeViewportEventDispatcherOnEventParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
     const bindings.StructDataHeader(16, 0)
   ];
-  Object viewportParameterListener = null;
+  input_events_mojom.Event event = null;
 
-  _ContextProviderCreateParams() : super(kVersions.last.size);
+  _NativeViewportEventDispatcherOnEventParams() : super(kVersions.last.size);
 
-  static _ContextProviderCreateParams deserialize(bindings.Message message) {
+  static _NativeViewportEventDispatcherOnEventParams deserialize(bindings.Message message) {
     var decoder = new bindings.Decoder(message);
     var result = decode(decoder);
     if (decoder.excessHandles != null) {
@@ -32,11 +31,11 @@ class _ContextProviderCreateParams extends bindings.Struct {
     return result;
   }
 
-  static _ContextProviderCreateParams decode(bindings.Decoder decoder0) {
+  static _NativeViewportEventDispatcherOnEventParams decode(bindings.Decoder decoder0) {
     if (decoder0 == null) {
       return null;
     }
-    _ContextProviderCreateParams result = new _ContextProviderCreateParams();
+    _NativeViewportEventDispatcherOnEventParams result = new _NativeViewportEventDispatcherOnEventParams();
 
     var mainDataHeader = decoder0.decodeStructDataHeader();
     if (mainDataHeader.version <= kVersions.last.version) {
@@ -58,7 +57,8 @@ class _ContextProviderCreateParams extends bindings.Struct {
     }
     if (mainDataHeader.version >= 0) {
       
-      result.viewportParameterListener = decoder0.decodeServiceInterface(8, true, viewport_parameter_listener_mojom.ViewportParameterListenerProxy.newFromEndpoint);
+      var decoder1 = decoder0.decodePointer(8, false);
+      result.event = input_events_mojom.Event.decode(decoder1);
     }
     return result;
   }
@@ -66,32 +66,32 @@ class _ContextProviderCreateParams extends bindings.Struct {
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
     
-    encoder0.encodeInterface(viewportParameterListener, 8, true);
+    encoder0.encodeStruct(event, 8, false);
   }
 
   String toString() {
-    return "_ContextProviderCreateParams("
-           "viewportParameterListener: $viewportParameterListener" ")";
+    return "_NativeViewportEventDispatcherOnEventParams("
+           "event: $event" ")";
   }
 
   Map toJson() {
-    throw new bindings.MojoCodecError(
-        'Object containing handles cannot be encoded to JSON.');
+    Map map = new Map();
+    map["event"] = event;
+    return map;
   }
 }
 
 
 
 
-class ContextProviderCreateResponseParams extends bindings.Struct {
+class NativeViewportEventDispatcherOnEventResponseParams extends bindings.Struct {
   static const List<bindings.StructDataHeader> kVersions = const [
-    const bindings.StructDataHeader(16, 0)
+    const bindings.StructDataHeader(8, 0)
   ];
-  Object gles2Client = null;
 
-  ContextProviderCreateResponseParams() : super(kVersions.last.size);
+  NativeViewportEventDispatcherOnEventResponseParams() : super(kVersions.last.size);
 
-  static ContextProviderCreateResponseParams deserialize(bindings.Message message) {
+  static NativeViewportEventDispatcherOnEventResponseParams deserialize(bindings.Message message) {
     var decoder = new bindings.Decoder(message);
     var result = decode(decoder);
     if (decoder.excessHandles != null) {
@@ -100,11 +100,11 @@ class ContextProviderCreateResponseParams extends bindings.Struct {
     return result;
   }
 
-  static ContextProviderCreateResponseParams decode(bindings.Decoder decoder0) {
+  static NativeViewportEventDispatcherOnEventResponseParams decode(bindings.Decoder decoder0) {
     if (decoder0 == null) {
       return null;
     }
-    ContextProviderCreateResponseParams result = new ContextProviderCreateResponseParams();
+    NativeViewportEventDispatcherOnEventResponseParams result = new NativeViewportEventDispatcherOnEventResponseParams();
 
     var mainDataHeader = decoder0.decodeStructDataHeader();
     if (mainDataHeader.version <= kVersions.last.version) {
@@ -124,38 +124,31 @@ class ContextProviderCreateResponseParams extends bindings.Struct {
         'Message newer than the last known version cannot be shorter than '
         'required by the last known version.');
     }
-    if (mainDataHeader.version >= 0) {
-      
-      result.gles2Client = decoder0.decodeServiceInterface(8, true, command_buffer_mojom.CommandBufferProxy.newFromEndpoint);
-    }
     return result;
   }
 
   void encode(bindings.Encoder encoder) {
-    var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeInterface(gles2Client, 8, true);
+    encoder.getStructEncoderAtOffset(kVersions.last);
   }
 
   String toString() {
-    return "ContextProviderCreateResponseParams("
-           "gles2Client: $gles2Client" ")";
+    return "NativeViewportEventDispatcherOnEventResponseParams("")";
   }
 
   Map toJson() {
-    throw new bindings.MojoCodecError(
-        'Object containing handles cannot be encoded to JSON.');
+    Map map = new Map();
+    return map;
   }
 }
 
 
 
 
-const int _ContextProvider_createName = 0;
+const int _NativeViewportEventDispatcher_onEventName = 0;
 
 
 
-class _ContextProviderServiceDescription implements service_describer.ServiceDescription {
+class _NativeViewportEventDispatcherServiceDescription implements service_describer.ServiceDescription {
   dynamic getTopLevelInterface([Function responseFactory]) => null;
 
   dynamic getTypeDefinition(String typeKey, [Function responseFactory]) => null;
@@ -163,34 +156,34 @@ class _ContextProviderServiceDescription implements service_describer.ServiceDes
   dynamic getAllTypeDefinitions([Function responseFactory]) => null;
 }
 
-abstract class ContextProvider {
-  static const String serviceName = null;
-  dynamic create(Object viewportParameterListener,[Function responseFactory = null]);
+abstract class NativeViewportEventDispatcher {
+  static const String serviceName = "mojo::NativeViewportEventDispatcher";
+  dynamic onEvent(input_events_mojom.Event event,[Function responseFactory = null]);
 }
 
 
-class _ContextProviderProxyImpl extends bindings.Proxy {
-  _ContextProviderProxyImpl.fromEndpoint(
+class _NativeViewportEventDispatcherProxyImpl extends bindings.Proxy {
+  _NativeViewportEventDispatcherProxyImpl.fromEndpoint(
       core.MojoMessagePipeEndpoint endpoint) : super.fromEndpoint(endpoint);
 
-  _ContextProviderProxyImpl.fromHandle(core.MojoHandle handle) :
+  _NativeViewportEventDispatcherProxyImpl.fromHandle(core.MojoHandle handle) :
       super.fromHandle(handle);
 
-  _ContextProviderProxyImpl.unbound() : super.unbound();
+  _NativeViewportEventDispatcherProxyImpl.unbound() : super.unbound();
 
-  static _ContextProviderProxyImpl newFromEndpoint(
+  static _NativeViewportEventDispatcherProxyImpl newFromEndpoint(
       core.MojoMessagePipeEndpoint endpoint) {
-    assert(endpoint.setDescription("For _ContextProviderProxyImpl"));
-    return new _ContextProviderProxyImpl.fromEndpoint(endpoint);
+    assert(endpoint.setDescription("For _NativeViewportEventDispatcherProxyImpl"));
+    return new _NativeViewportEventDispatcherProxyImpl.fromEndpoint(endpoint);
   }
 
   service_describer.ServiceDescription get serviceDescription =>
-    new _ContextProviderServiceDescription();
+    new _NativeViewportEventDispatcherServiceDescription();
 
   void handleResponse(bindings.ServiceMessage message) {
     switch (message.header.type) {
-      case _ContextProvider_createName:
-        var r = ContextProviderCreateResponseParams.deserialize(
+      case _NativeViewportEventDispatcher_onEventName:
+        var r = NativeViewportEventDispatcherOnEventResponseParams.deserialize(
             message.payload);
         if (!message.header.hasRequestId) {
           proxyError("Expected a message with a valid request Id.");
@@ -218,65 +211,65 @@ class _ContextProviderProxyImpl extends bindings.Proxy {
 
   String toString() {
     var superString = super.toString();
-    return "_ContextProviderProxyImpl($superString)";
+    return "_NativeViewportEventDispatcherProxyImpl($superString)";
   }
 }
 
 
-class _ContextProviderProxyCalls implements ContextProvider {
-  _ContextProviderProxyImpl _proxyImpl;
+class _NativeViewportEventDispatcherProxyCalls implements NativeViewportEventDispatcher {
+  _NativeViewportEventDispatcherProxyImpl _proxyImpl;
 
-  _ContextProviderProxyCalls(this._proxyImpl);
-    dynamic create(Object viewportParameterListener,[Function responseFactory = null]) {
-      var params = new _ContextProviderCreateParams();
-      params.viewportParameterListener = viewportParameterListener;
+  _NativeViewportEventDispatcherProxyCalls(this._proxyImpl);
+    dynamic onEvent(input_events_mojom.Event event,[Function responseFactory = null]) {
+      var params = new _NativeViewportEventDispatcherOnEventParams();
+      params.event = event;
       return _proxyImpl.sendMessageWithRequestId(
           params,
-          _ContextProvider_createName,
+          _NativeViewportEventDispatcher_onEventName,
           -1,
           bindings.MessageHeader.kMessageExpectsResponse);
     }
 }
 
 
-class ContextProviderProxy implements bindings.ProxyBase {
+class NativeViewportEventDispatcherProxy implements bindings.ProxyBase {
   final bindings.Proxy impl;
-  ContextProvider ptr;
+  NativeViewportEventDispatcher ptr;
 
-  ContextProviderProxy(_ContextProviderProxyImpl proxyImpl) :
+  NativeViewportEventDispatcherProxy(_NativeViewportEventDispatcherProxyImpl proxyImpl) :
       impl = proxyImpl,
-      ptr = new _ContextProviderProxyCalls(proxyImpl);
+      ptr = new _NativeViewportEventDispatcherProxyCalls(proxyImpl);
 
-  ContextProviderProxy.fromEndpoint(
+  NativeViewportEventDispatcherProxy.fromEndpoint(
       core.MojoMessagePipeEndpoint endpoint) :
-      impl = new _ContextProviderProxyImpl.fromEndpoint(endpoint) {
-    ptr = new _ContextProviderProxyCalls(impl);
+      impl = new _NativeViewportEventDispatcherProxyImpl.fromEndpoint(endpoint) {
+    ptr = new _NativeViewportEventDispatcherProxyCalls(impl);
   }
 
-  ContextProviderProxy.fromHandle(core.MojoHandle handle) :
-      impl = new _ContextProviderProxyImpl.fromHandle(handle) {
-    ptr = new _ContextProviderProxyCalls(impl);
+  NativeViewportEventDispatcherProxy.fromHandle(core.MojoHandle handle) :
+      impl = new _NativeViewportEventDispatcherProxyImpl.fromHandle(handle) {
+    ptr = new _NativeViewportEventDispatcherProxyCalls(impl);
   }
 
-  ContextProviderProxy.unbound() :
-      impl = new _ContextProviderProxyImpl.unbound() {
-    ptr = new _ContextProviderProxyCalls(impl);
+  NativeViewportEventDispatcherProxy.unbound() :
+      impl = new _NativeViewportEventDispatcherProxyImpl.unbound() {
+    ptr = new _NativeViewportEventDispatcherProxyCalls(impl);
   }
 
-  factory ContextProviderProxy.connectToService(
+  factory NativeViewportEventDispatcherProxy.connectToService(
       bindings.ServiceConnector s, String url, [String serviceName]) {
-    ContextProviderProxy p = new ContextProviderProxy.unbound();
+    NativeViewportEventDispatcherProxy p = new NativeViewportEventDispatcherProxy.unbound();
     s.connectToService(url, p, serviceName);
     return p;
   }
 
-  static ContextProviderProxy newFromEndpoint(
+  static NativeViewportEventDispatcherProxy newFromEndpoint(
       core.MojoMessagePipeEndpoint endpoint) {
-    assert(endpoint.setDescription("For ContextProviderProxy"));
-    return new ContextProviderProxy.fromEndpoint(endpoint);
+    assert(endpoint.setDescription("For NativeViewportEventDispatcherProxy"));
+    return new NativeViewportEventDispatcherProxy.fromEndpoint(endpoint);
   }
 
-  String get serviceName => ContextProvider.serviceName;
+  String get serviceName => NativeViewportEventDispatcher.serviceName;
 
   Future close({bool immediate: false}) => impl.close(immediate: immediate);
 
@@ -293,33 +286,32 @@ class ContextProviderProxy implements bindings.ProxyBase {
   }
 
   String toString() {
-    return "ContextProviderProxy($impl)";
+    return "NativeViewportEventDispatcherProxy($impl)";
   }
 }
 
 
-class ContextProviderStub extends bindings.Stub {
-  ContextProvider _impl = null;
+class NativeViewportEventDispatcherStub extends bindings.Stub {
+  NativeViewportEventDispatcher _impl = null;
 
-  ContextProviderStub.fromEndpoint(
+  NativeViewportEventDispatcherStub.fromEndpoint(
       core.MojoMessagePipeEndpoint endpoint, [this._impl])
       : super.fromEndpoint(endpoint);
 
-  ContextProviderStub.fromHandle(core.MojoHandle handle, [this._impl])
+  NativeViewportEventDispatcherStub.fromHandle(core.MojoHandle handle, [this._impl])
       : super.fromHandle(handle);
 
-  ContextProviderStub.unbound() : super.unbound();
+  NativeViewportEventDispatcherStub.unbound() : super.unbound();
 
-  static ContextProviderStub newFromEndpoint(
+  static NativeViewportEventDispatcherStub newFromEndpoint(
       core.MojoMessagePipeEndpoint endpoint) {
-    assert(endpoint.setDescription("For ContextProviderStub"));
-    return new ContextProviderStub.fromEndpoint(endpoint);
+    assert(endpoint.setDescription("For NativeViewportEventDispatcherStub"));
+    return new NativeViewportEventDispatcherStub.fromEndpoint(endpoint);
   }
 
 
-  ContextProviderCreateResponseParams _ContextProviderCreateResponseParamsFactory(Object gles2Client) {
-    var mojo_factory_result = new ContextProviderCreateResponseParams();
-    mojo_factory_result.gles2Client = gles2Client;
+  NativeViewportEventDispatcherOnEventResponseParams _NativeViewportEventDispatcherOnEventResponseParamsFactory() {
+    var mojo_factory_result = new NativeViewportEventDispatcherOnEventResponseParams();
     return mojo_factory_result;
   }
 
@@ -331,16 +323,16 @@ class ContextProviderStub extends bindings.Stub {
     }
     assert(_impl != null);
     switch (message.header.type) {
-      case _ContextProvider_createName:
-        var params = _ContextProviderCreateParams.deserialize(
+      case _NativeViewportEventDispatcher_onEventName:
+        var params = _NativeViewportEventDispatcherOnEventParams.deserialize(
             message.payload);
-        var response = _impl.create(params.viewportParameterListener,_ContextProviderCreateResponseParamsFactory);
+        var response = _impl.onEvent(params.event,_NativeViewportEventDispatcherOnEventResponseParamsFactory);
         if (response is Future) {
           return response.then((response) {
             if (response != null) {
               return buildResponseWithId(
                   response,
-                  _ContextProvider_createName,
+                  _NativeViewportEventDispatcher_onEventName,
                   message.header.requestId,
                   bindings.MessageHeader.kMessageIsResponse);
             }
@@ -348,7 +340,7 @@ class ContextProviderStub extends bindings.Stub {
         } else if (response != null) {
           return buildResponseWithId(
               response,
-              _ContextProvider_createName,
+              _NativeViewportEventDispatcher_onEventName,
               message.header.requestId,
               bindings.MessageHeader.kMessageIsResponse);
         }
@@ -360,21 +352,21 @@ class ContextProviderStub extends bindings.Stub {
     return null;
   }
 
-  ContextProvider get impl => _impl;
-  set impl(ContextProvider d) {
+  NativeViewportEventDispatcher get impl => _impl;
+  set impl(NativeViewportEventDispatcher d) {
     assert(_impl == null);
     _impl = d;
   }
 
   String toString() {
     var superString = super.toString();
-    return "ContextProviderStub($superString)";
+    return "NativeViewportEventDispatcherStub($superString)";
   }
 
   int get version => 0;
 
   service_describer.ServiceDescription get serviceDescription =>
-    new _ContextProviderServiceDescription();
+    new _NativeViewportEventDispatcherServiceDescription();
 }
 
 

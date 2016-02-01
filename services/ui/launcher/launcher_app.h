@@ -11,6 +11,7 @@
 #include "mojo/public/cpp/application/application_delegate.h"
 #include "mojo/services/gfx/composition/interfaces/compositor.mojom.h"
 #include "mojo/services/native_viewport/interfaces/native_viewport.mojom.h"
+#include "mojo/services/native_viewport/interfaces/native_viewport_event_dispatcher.mojom.h"
 #include "mojo/services/ui/views/interfaces/view_manager.mojom.h"
 #include "mojo/services/ui/views/interfaces/view_provider.mojom.h"
 

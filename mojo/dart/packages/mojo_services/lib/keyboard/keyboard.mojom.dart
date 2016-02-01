@@ -10,7 +10,7 @@ import 'package:mojo/bindings.dart' as bindings;
 import 'package:mojo/core.dart' as core;
 import 'package:mojo/mojo/bindings/types/mojom_types.mojom.dart' as mojom_types;
 import 'package:mojo/mojo/bindings/types/service_describer.mojom.dart' as service_describer;
-import 'package:mojo_services/mojo/native_viewport.mojom.dart' as native_viewport_mojom;
+import 'package:mojo_services/mojo/native_viewport_event_dispatcher.mojom.dart' as native_viewport_event_dispatcher_mojom;
 
 class SubmitAction extends bindings.MojoEnum {
   static const SubmitAction done = const SubmitAction._(0);
@@ -1306,7 +1306,7 @@ class _KeyboardServiceFactoryCreateKeyboardServiceParams extends bindings.Struct
     }
     if (mainDataHeader.version >= 0) {
       
-      result.keyEventDispatcher = decoder0.decodeInterfaceRequest(8, false, native_viewport_mojom.NativeViewportEventDispatcherStub.newFromEndpoint);
+      result.keyEventDispatcher = decoder0.decodeInterfaceRequest(8, false, native_viewport_event_dispatcher_mojom.NativeViewportEventDispatcherStub.newFromEndpoint);
     }
     if (mainDataHeader.version >= 0) {
       

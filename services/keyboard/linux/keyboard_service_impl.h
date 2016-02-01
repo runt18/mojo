@@ -10,7 +10,7 @@
 #include "mojo/public/cpp/bindings/strong_binding.h"
 #include "mojo/public/interfaces/application/shell.mojom.h"
 #include "mojo/services/keyboard/interfaces/keyboard.mojom.h"
-#include "mojo/services/native_viewport/interfaces/native_viewport.mojom.h"
+#include "mojo/services/native_viewport/interfaces/native_viewport_event_dispatcher.mojom.h"
 
 namespace keyboard {
 
