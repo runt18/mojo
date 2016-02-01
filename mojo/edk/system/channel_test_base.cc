@@ -64,8 +64,8 @@ void ChannelTestBase::SetUpOnIOThread() {
   CHECK(io_thread()->IsCurrentAndRunning());
 
   embedder::PlatformChannelPair channel_pair;
-  raw_channels_[0] = RawChannel::Create(channel_pair.PassServerHandle());
-  raw_channels_[1] = RawChannel::Create(channel_pair.PassClientHandle());
+  raw_channels_[0] = RawChannel::Create(channel_pair.handle0.Pass());
+  raw_channels_[1] = RawChannel::Create(channel_pair.handle1.Pass());
 }
 
 }  // namespace test

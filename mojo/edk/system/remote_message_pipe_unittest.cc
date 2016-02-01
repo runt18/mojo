@@ -100,8 +100,8 @@ class RemoteMessagePipeTest : public testing::Test {
     CHECK(io_thread()->IsCurrentAndRunning());
 
     embedder::PlatformChannelPair channel_pair;
-    platform_handles_[0] = channel_pair.PassServerHandle();
-    platform_handles_[1] = channel_pair.PassClientHandle();
+    platform_handles_[0] = channel_pair.handle0.Pass();
+    platform_handles_[1] = channel_pair.handle1.Pass();
   }
 
   void TearDownOnIOThread() {

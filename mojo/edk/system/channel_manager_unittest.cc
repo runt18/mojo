@@ -69,7 +69,7 @@ TEST_F(ChannelManagerTest, Basic) {
 
   const ChannelId id = 1;
   RefPtr<MessagePipeDispatcher> d = channel_manager().CreateChannelOnIOThread(
-      id, channel_pair.PassServerHandle());
+      id, channel_pair.handle0.Pass());
 
   RefPtr<Channel> ch = channel_manager().GetChannel(id);
   EXPECT_TRUE(ch);
@@ -92,11 +92,11 @@ TEST_F(ChannelManagerTest, TwoChannels) {
 
   const ChannelId id1 = 1;
   RefPtr<MessagePipeDispatcher> d1 = channel_manager().CreateChannelOnIOThread(
-      id1, channel_pair.PassServerHandle());
+      id1, channel_pair.handle0.Pass());
 
   const ChannelId id2 = 2;
   RefPtr<MessagePipeDispatcher> d2 = channel_manager().CreateChannelOnIOThread(
-      id2, channel_pair.PassClientHandle());
+      id2, channel_pair.handle1.Pass());
 
   RefPtr<Channel> ch1 = channel_manager().GetChannel(id1);
   EXPECT_TRUE(ch1);
@@ -171,7 +171,7 @@ TEST_F(ChannelManagerTest, CallsFromOtherThread) {
 
   const ChannelId id = 1;
   RefPtr<MessagePipeDispatcher> d = channel_manager().CreateChannelOnIOThread(
-      id, channel_pair.PassServerHandle());
+      id, channel_pair.handle0.Pass());
 
   OtherThread thread(task_runner().Clone(), &channel_manager(), id,
                      [this]() { message_loop()->QuitNow(); });

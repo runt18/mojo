@@ -10,9 +10,4 @@ namespace switches {
 // |ConnectToMaster()| for its |platform_connection_id| argument.
 const char kChildConnectionId[] = "child-connection-id";
 
-// The value of this switch is the string that was produced by
-// |PlatformChannelPair::PrepareToPassClientHandleToChildProcess()| and should
-// be given to |PlatformChannelPair::PassClientHandleFromParentProcess()|.
-const char kPlatformChannelHandleInfo[] = "platform-channel-handle-info";
-
 }  // namespace switches

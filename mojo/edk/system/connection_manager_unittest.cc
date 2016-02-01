@@ -198,11 +198,10 @@ class ConnectionManagerTest : public testing::Test {
       SlaveConnectionManager* slave,
       const std::string& slave_name) {
     embedder::PlatformChannelPair platform_channel_pair;
-    ProcessIdentifier slave_process_identifier =
-        master->AddSlave(new TestSlaveInfo(slave_name),
-                         platform_channel_pair.PassServerHandle());
+    ProcessIdentifier slave_process_identifier = master->AddSlave(
+        new TestSlaveInfo(slave_name), platform_channel_pair.handle0.Pass());
     slave->Init(task_runner().Clone(), slave_process_delegate,
-                platform_channel_pair.PassClientHandle());
+                platform_channel_pair.handle1.Pass());
     return slave_process_identifier;
   }
 
@@ -652,7 +651,7 @@ TEST_F(ConnectionManagerTest, AddSlaveThenImmediateShutdown) {
   SlaveConnectionManager slave(platform_support());
   embedder::PlatformChannelPair platform_channel_pair;
   ProcessIdentifier slave_id = master.AddSlave(
-      new TestSlaveInfo("slave"), platform_channel_pair.PassServerHandle());
+      new TestSlaveInfo("slave"), platform_channel_pair.handle0.Pass());
   master.Shutdown();
   EXPECT_TRUE(IsValidSlaveProcessIdentifier(slave_id));
   // Since we never initialized |slave|, we don't have to shut it down.
@@ -665,7 +664,7 @@ TEST_F(ConnectionManagerTest, AddSlaveAndBootstrap) {
   embedder::PlatformChannelPair platform_channel_pair;
   ConnectionIdentifier connection_id = master.GenerateConnectionIdentifier();
   ProcessIdentifier slave_id = master.AddSlaveAndBootstrap(
-      new TestSlaveInfo("slave"), platform_channel_pair.PassServerHandle(),
+      new TestSlaveInfo("slave"), platform_channel_pair.handle0.Pass(),
       connection_id);
   EXPECT_TRUE(IsValidSlaveProcessIdentifier(slave_id));
 
@@ -682,7 +681,7 @@ TEST_F(ConnectionManagerTest, AddSlaveAndBootstrap) {
   MockSlaveProcessDelegate slave_process_delegate;
   SlaveConnectionManager slave(platform_support());
   slave.Init(task_runner().Clone(), &slave_process_delegate,
-             platform_channel_pair.PassClientHandle());
+             platform_channel_pair.handle1.Pass());
 
   ProcessIdentifier slave_peer = kInvalidProcessIdentifier;
   ScopedPlatformHandle h2;

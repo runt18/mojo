@@ -67,8 +67,8 @@ class PlatformChannelPairTest : public testing::Test {
 
 TEST_F(PlatformChannelPairTest, NoSigPipe) {
   PlatformChannelPair channel_pair;
-  ScopedPlatformHandle server_handle = channel_pair.PassServerHandle();
-  ScopedPlatformHandle client_handle = channel_pair.PassClientHandle();
+  ScopedPlatformHandle server_handle = channel_pair.handle0.Pass();
+  ScopedPlatformHandle client_handle = channel_pair.handle1.Pass();
 
   // Write to the client.
   static const char kHello[] = "hello";
@@ -108,8 +108,8 @@ TEST_F(PlatformChannelPairTest, NoSigPipe) {
 
 TEST_F(PlatformChannelPairTest, SendReceiveData) {
   PlatformChannelPair channel_pair;
-  ScopedPlatformHandle server_handle = channel_pair.PassServerHandle();
-  ScopedPlatformHandle client_handle = channel_pair.PassClientHandle();
+  ScopedPlatformHandle server_handle = channel_pair.handle0.Pass();
+  ScopedPlatformHandle client_handle = channel_pair.handle1.Pass();
 
   for (size_t i = 0; i < 10; i++) {
     std::string send_string(1 << i, 'A' + i);
@@ -136,8 +136,8 @@ TEST_F(PlatformChannelPairTest, SendReceiveFDs) {
   static const char kHello[] = "hello";
 
   PlatformChannelPair channel_pair;
-  ScopedPlatformHandle server_handle = channel_pair.PassServerHandle();
-  ScopedPlatformHandle client_handle = channel_pair.PassClientHandle();
+  ScopedPlatformHandle server_handle = channel_pair.handle0.Pass();
+  ScopedPlatformHandle client_handle = channel_pair.handle1.Pass();
 
 // Reduce the number of FDs opened on OS X to avoid test flake.
 #if defined(OS_MACOSX)
@@ -199,8 +199,8 @@ TEST_F(PlatformChannelPairTest, AppendReceivedFDs) {
   static const char kHello[] = "hello";
 
   PlatformChannelPair channel_pair;
-  ScopedPlatformHandle server_handle = channel_pair.PassServerHandle();
-  ScopedPlatformHandle client_handle = channel_pair.PassClientHandle();
+  ScopedPlatformHandle server_handle = channel_pair.handle0.Pass();
+  ScopedPlatformHandle client_handle = channel_pair.handle1.Pass();
 
   const std::string file_contents("hello world");
 

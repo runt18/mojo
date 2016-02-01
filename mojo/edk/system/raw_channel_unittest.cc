@@ -81,8 +81,8 @@ class RawChannelTest : public testing::Test {
 
   void SetUp() override {
     embedder::PlatformChannelPair channel_pair;
-    handles[0] = channel_pair.PassServerHandle();
-    handles[1] = channel_pair.PassClientHandle();
+    handles[0] = channel_pair.handle0.Pass();
+    handles[1] = channel_pair.handle1.Pass();
     io_thread_.Start();
   }
 

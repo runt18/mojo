@@ -148,10 +148,10 @@ TEST_F(MultiprocessEmbedderTest, ChannelsBasic) {
                                            test_io_watcher());
 
   PlatformChannelPair channel_pair;
-  ScopedTestChannel server_channel(channel_pair.PassServerHandle());
+  ScopedTestChannel server_channel(channel_pair.handle0.Pass());
   MojoHandle server_mp = server_channel.bootstrap_message_pipe();
   EXPECT_NE(server_mp, MOJO_HANDLE_INVALID);
-  ScopedTestChannel client_channel(channel_pair.PassClientHandle());
+  ScopedTestChannel client_channel(channel_pair.handle1.Pass());
   MojoHandle client_mp = client_channel.bootstrap_message_pipe();
   EXPECT_NE(client_mp, MOJO_HANDLE_INVALID);
 
@@ -194,10 +194,10 @@ TEST_F(MultiprocessEmbedderTest, ChannelsHandlePassing) {
                                            test_io_watcher());
 
   PlatformChannelPair channel_pair;
-  ScopedTestChannel server_channel(channel_pair.PassServerHandle());
+  ScopedTestChannel server_channel(channel_pair.handle0.Pass());
   MojoHandle server_mp = server_channel.bootstrap_message_pipe();
   EXPECT_NE(server_mp, MOJO_HANDLE_INVALID);
-  ScopedTestChannel client_channel(channel_pair.PassClientHandle());
+  ScopedTestChannel client_channel(channel_pair.handle1.Pass());
   MojoHandle client_mp = client_channel.bootstrap_message_pipe();
   EXPECT_NE(client_mp, MOJO_HANDLE_INVALID);
 
@@ -370,7 +370,7 @@ TEST_F(MultiprocessEmbedderTest, ChannelShutdownRace_MessagePipeClose) {
   for (size_t i = 0; i < kIterations; i++) {
     PlatformChannelPair channel_pair;
     std::unique_ptr<ScopedTestChannel> server_channel(
-        new ScopedTestChannel(channel_pair.PassServerHandle()));
+        new ScopedTestChannel(channel_pair.handle0.Pass()));
     server_channel->WaitForChannelCreationCompletion();
     server_channel->NoWaitOnShutdown();
 

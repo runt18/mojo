@@ -6,19 +6,21 @@
 
 #include "base/command_line.h"
 #include "base/logging.h"
+#include "base/posix/global_descriptors.h"
 #include "base/test/test_timeouts.h"
 #include "mojo/edk/embedder/platform_channel_pair.h"
+#include "mojo/edk/platform/platform_handle.h"
+#include "mojo/edk/platform/scoped_platform_handle.h"
 
+using mojo::platform::PlatformHandle;
 using mojo::platform::ScopedPlatformHandle;
 
 namespace mojo {
 namespace test {
 
-const char kPlatformChannelHandleInfoSwitch[] = "platform-channel-handle-info";
-
 MultiprocessTestHelper::MultiprocessTestHelper()
     : platform_channel_pair_(new embedder::PlatformChannelPair()) {
-  server_platform_handle = platform_channel_pair_->PassServerHandle();
+  server_platform_handle = platform_channel_pair_->handle0.Pass();
 }
 
 MultiprocessTestHelper::~MultiprocessTestHelper() {
@@ -41,16 +43,8 @@ void MultiprocessTestHelper::StartChildWithExtraSwitch(
 
   std::string test_child_main = test_child_name + "TestChildMain";
 
-  std::string string_for_child;
-  embedder::HandlePassingInformation handle_passing_info;
-  platform_channel_pair_->PrepareToPassClientHandleToChildProcess(
-      &string_for_child, &handle_passing_info);
-
   base::CommandLine command_line(
       base::GetMultiProcessTestChildBaseCommandLine());
-  command_line.AppendSwitchASCII(kPlatformChannelHandleInfoSwitch,
-                                 string_for_child);
-
   if (!switch_string.empty()) {
     CHECK(!command_line.HasSwitch(switch_string));
     if (!switch_value.empty())
@@ -59,12 +53,16 @@ void MultiprocessTestHelper::StartChildWithExtraSwitch(
       command_line.AppendSwitch(switch_string);
   }
 
+  base::FileHandleMappingVector fds_to_remap;
+  fds_to_remap.push_back(
+      std::pair<int, int>(platform_channel_pair_->handle1.get().fd,
+                          base::GlobalDescriptors::kBaseDescriptor));
   base::LaunchOptions options;
-  options.fds_to_remap = &handle_passing_info;
+  options.fds_to_remap = &fds_to_remap;
 
   test_child_ =
       base::SpawnMultiProcessTestChild(test_child_main, command_line, options);
-  platform_channel_pair_->ChildProcessLaunched();
+  platform_channel_pair_->handle1.reset();
 
   CHECK(test_child_.IsValid());
 }
@@ -86,12 +84,8 @@ bool MultiprocessTestHelper::WaitForChildTestShutdown() {
 // static
 void MultiprocessTestHelper::ChildSetup() {
   CHECK(base::CommandLine::InitializedForCurrentProcess());
-  const base::CommandLine& command_line =
-      *base::CommandLine::ForCurrentProcess();
-  client_platform_handle =
-      embedder::PlatformChannelPair::PassClientHandleFromParentProcess(
-          command_line.GetSwitchValueASCII(kPlatformChannelHandleInfoSwitch));
-  CHECK(client_platform_handle.is_valid());
+  client_platform_handle = ScopedPlatformHandle(
+      PlatformHandle(base::GlobalDescriptors::kBaseDescriptor));
 }
 
 // static

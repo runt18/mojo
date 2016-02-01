@@ -175,12 +175,12 @@ class TestSlaveConnection {
     embedder::PlatformChannelPair channel_pair;
     // Note: |ChannelId|s and |ProcessIdentifier|s are interchangeable.
     RefPtr<MessagePipeDispatcher> mp = master_ipc_support_->ConnectToSlave(
-        connection_id_, nullptr, channel_pair.PassServerHandle(),
+        connection_id_, nullptr, channel_pair.handle0.Pass(),
         [this]() { event_.Signal(); }, nullptr, &slave_id_);
     EXPECT_TRUE(mp);
     EXPECT_NE(slave_id_, kInvalidProcessIdentifier);
     EXPECT_NE(slave_id_, kMasterProcessIdentifier);
-    slave_platform_handle_ = channel_pair.PassClientHandle();
+    slave_platform_handle_ = channel_pair.handle1.Pass();
     return mp;
   }
 
@@ -579,7 +579,7 @@ TEST_F(IPCSupportTest, MasterSlaveInternal) {
   ProcessIdentifier slave_id = kInvalidProcessIdentifier;
   ScopedPlatformHandle master_second_platform_handle =
       master_ipc_support().ConnectToSlaveInternal(
-          connection_id, nullptr, channel_pair.PassServerHandle(), &slave_id);
+          connection_id, nullptr, channel_pair.handle0.Pass(), &slave_id);
   ASSERT_TRUE(master_second_platform_handle.is_valid());
   EXPECT_NE(slave_id, kInvalidProcessIdentifier);
   EXPECT_NE(slave_id, kMasterProcessIdentifier);
@@ -590,8 +590,7 @@ TEST_F(IPCSupportTest, MasterSlaveInternal) {
       &platform_support(), embedder::ProcessType::SLAVE,
       test_io_thread().task_runner().Clone(), &slave_process_delegate,
       test_io_thread().task_runner().Clone(),
-      test_io_thread().platform_handle_watcher(),
-      channel_pair.PassClientHandle());
+      test_io_thread().platform_handle_watcher(), channel_pair.handle1.Pass());
 
   ScopedPlatformHandle slave_second_platform_handle =
       slave_ipc_support.ConnectToMasterInternal(connection_id);

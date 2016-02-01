@@ -11,6 +11,7 @@
 #include "base/location.h"
 #include "base/logging.h"
 #include "base/macros.h"
+#include "base/posix/global_descriptors.h"
 #include "base/process/kill.h"
 #include "base/process/launch.h"
 #include "base/task_runner.h"
@@ -67,7 +68,7 @@ void ChildProcessHost::Start(const NativeApplicationOptions& options) {
   // |base_edk::PlatformTaskRunnerImpl| for each instance. Instead, there should
   // be one per thread.
   mojo::ScopedMessagePipeHandle handle(mojo::embedder::ConnectToSlave(
-      nullptr, launch_data->platform_channel_pair.PassServerHandle(),
+      nullptr, launch_data->platform_channel_pair.handle0.Pass(),
       [this]() { DidConnectToSlave(); },
       MakeRefCounted<base_edk::PlatformTaskRunnerImpl>(
           base::ThreadTaskRunnerHandle::Get()),
@@ -143,15 +144,12 @@ base::Process ChildProcessHost::DoLaunch(scoped_ptr<LaunchData> launch_data) {
   child_command_line.AppendSwitchASCII(switches::kChildConnectionId,
                                        launch_data->child_connection_id);
 
-  mojo::embedder::HandlePassingInformation handle_passing_info;
-  std::string platform_channel_info;
-  launch_data->platform_channel_pair.PrepareToPassClientHandleToChildProcess(
-      &platform_channel_info, &handle_passing_info);
-  child_command_line.AppendSwitchASCII(switches::kPlatformChannelHandleInfo,
-                                       platform_channel_info);
-
+  base::FileHandleMappingVector fds_to_remap;
+  fds_to_remap.push_back(
+      std::pair<int, int>(launch_data->platform_channel_pair.handle1.get().fd,
+                          base::GlobalDescriptors::kBaseDescriptor));
   base::LaunchOptions options;
-  options.fds_to_remap = &handle_passing_info;
+  options.fds_to_remap = &fds_to_remap;
 #if defined(OS_LINUX)
   options.allow_new_privs = launch_data->options.allow_new_privs;
 #endif
@@ -160,7 +158,7 @@ base::Process ChildProcessHost::DoLaunch(scoped_ptr<LaunchData> launch_data) {
   base::Process child_process =
       base::LaunchProcess(child_command_line, options);
   if (child_process.IsValid())
-    launch_data->platform_channel_pair.ChildProcessLaunched();
+    launch_data->platform_channel_pair.handle1.reset();
   return child_process.Pass();
 }
 

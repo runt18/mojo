@@ -17,6 +17,7 @@
 #include "base/memory/ref_counted.h"
 #include "base/memory/scoped_ptr.h"
 #include "base/message_loop/message_loop.h"
+#include "base/posix/global_descriptors.h"
 #include "base/single_thread_task_runner.h"
 #include "base/synchronization/waitable_event.h"
 #include "base/thread_task_runner_handle.h"
@@ -29,6 +30,7 @@
 #include "mojo/edk/embedder/platform_channel_pair.h"
 #include "mojo/edk/embedder/simple_platform_support.h"
 #include "mojo/edk/embedder/slave_process_delegate.h"
+#include "mojo/edk/platform/platform_handle.h"
 #include "mojo/edk/platform/platform_handle_watcher.h"
 #include "mojo/edk/platform/scoped_platform_handle.h"
 #include "mojo/edk/platform/task_runner.h"
@@ -42,6 +44,7 @@
 #include "shell/init.h"
 #include "shell/native_application_support.h"
 
+using mojo::platform::PlatformHandle;
 using mojo::platform::PlatformHandleWatcher;
 using mojo::platform::ScopedPlatformHandle;
 using mojo::platform::TaskRunner;
@@ -315,13 +318,8 @@ int main(int argc, char** argv) {
       command_line.GetSwitchValueASCII(switches::kChildConnectionId);
   CHECK(!child_connection_id.empty());
 
-  std::string platform_channel_info =
-      command_line.GetSwitchValueASCII(switches::kPlatformChannelHandleInfo);
-  ScopedPlatformHandle platform_handle =
-      mojo::embedder::PlatformChannelPair::PassClientHandleFromParentProcess(
-          platform_channel_info);
-  CHECK(platform_handle.is_valid());
-
+  ScopedPlatformHandle platform_handle(
+      (PlatformHandle(base::GlobalDescriptors::kBaseDescriptor)));
   shell::AppContext app_context;
   app_context.Init(platform_handle.Pass());
 

@@ -91,12 +91,12 @@ class RemoteDataPipeImplTest : public testing::Test {
     channels_[0] = MakeRefCounted<Channel>(&platform_support_);
     channels_[0]->Init(io_thread_.task_runner().Clone(),
                        io_thread_.platform_handle_watcher(),
-                       RawChannel::Create(channel_pair.PassServerHandle()));
+                       RawChannel::Create(channel_pair.handle0.Pass()));
     channels_[0]->SetBootstrapEndpoint(std::move(ep0));
     channels_[1] = MakeRefCounted<Channel>(&platform_support_);
     channels_[1]->Init(io_thread_.task_runner().Clone(),
                        io_thread_.platform_handle_watcher(),
-                       RawChannel::Create(channel_pair.PassClientHandle()));
+                       RawChannel::Create(channel_pair.handle1.Pass()));
     channels_[1]->SetBootstrapEndpoint(std::move(ep1));
   }
 
