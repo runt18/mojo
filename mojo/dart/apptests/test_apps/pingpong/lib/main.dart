@@ -100,8 +100,10 @@ class PingPongServiceImpl implements PingPongService {
       _pingPongClient.close();
       _pingPongClient = null;
     }
-    _stub.close();
-    _stub = null;
+    _stub.close().then((_) {
+      _stub = null;
+      _application.close();
+    });
   }
 }
 

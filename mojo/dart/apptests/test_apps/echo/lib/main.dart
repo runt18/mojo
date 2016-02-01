@@ -32,6 +32,12 @@ class EchoServiceImpl implements EchoService {
     return new Future.delayed(
         new Duration(milliseconds: millis), () => responseFactory(value));
   }
+
+  void quit() {
+    _stub.close().then((_) {
+      _application.close();
+    });
+  }
 }
 
 class EchoApplication extends Application {

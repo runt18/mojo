@@ -115,5 +115,13 @@ pingpongApptests(Application application, String url) {
       await targetServiceProxy.close();
       await pingPongServiceProxy.close();
     });
+
+    test('Quit', () async {
+      var pingPongServiceProxy = new PingPongServiceProxy.unbound();
+      application.connectToService(
+          "mojo:dart_pingpong", pingPongServiceProxy);
+      pingPongServiceProxy.ptr.quit();
+      await pingPongServiceProxy.close();
+    });
   });
 }
