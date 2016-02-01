@@ -73,7 +73,7 @@ if ! which lsb_release > /dev/null; then
 fi
 
 lsb_release=$(lsb_release --codename --short)
-ubuntu_codenames="(precise|trusty|utopic|vivid)"
+ubuntu_codenames="(precise|trusty|utopic|vivid|wily)"
 if [ 0 -eq "${do_unsupported-0}" ] && [ 0 -eq "${do_quick_check-0}" ] ; then
   if [[ ! $lsb_release =~ $ubuntu_codenames ]]; then
     echo "ERROR: Only Ubuntu 12.04 (precise), 14.04 (trusty), " \
@@ -97,7 +97,7 @@ fi
 chromeos_dev_list="libbluetooth-dev libxkbcommon-dev realpath"
 
 # Packages needed for development
-dev_list="apache2.2-bin bison cdbs curl dpkg-dev elfutils devscripts fakeroot
+dev_list="bison cdbs curl dpkg-dev elfutils devscripts fakeroot
           flex fonts-thai-tlwg g++ git-core git-svn gperf language-pack-da
           language-pack-fr language-pack-he language-pack-zh-hant
           libapache2-mod-php5 libasound2-dev libbrlapi-dev libav-tools
@@ -110,7 +110,7 @@ dev_list="apache2.2-bin bison cdbs curl dpkg-dev elfutils devscripts fakeroot
           patch perl php5-cgi pkg-config python python-cherrypy3 python-crypto
           python-dev python-numpy python-opencv python-openssl python-psutil
           python-yaml rpm ruby subversion ttf-dejavu-core ttf-indic-fonts
-          ttf-kochi-gothic ttf-kochi-mincho wdiff xfonts-mathml zip
+          ttf-kochi-gothic ttf-kochi-mincho wdiff
           $chromeos_dev_list"
 
 # 64-bit systems need a minimum set of 32-bit compat packages for the pre-built
@@ -213,7 +213,6 @@ if package_exists libbrlapi0.6; then
 else
   dev_list="${dev_list} libbrlapi0.5"
 fi
-
 
 # Some packages are only needed if the distribution actually supports
 # installing them.
