@@ -2,6 +2,9 @@
 # Use of this source code is governed by a BSD-style license that can be
 # found in the LICENSE file.
 
+# Define the sysroot directory.
+sysroot = "$root_out_dir/sysroot"
+
 config("fusl_config") {
   cflags = [
     # Flags from musl
@@ -39,6 +42,8 @@ config("fusl_config") {
   ]
 }
 
+# See the discussion below about what these files are, and their
+# relationship to other C runtime files.
 source_set("crt") {
   cflags = []
 
@@ -1467,10 +1472,12 @@ static_library("libc") {
   deps += [ ":libc_${current_cpu}" ]
 }
 
-# Build a sysroot.
-sysroot = "${target_out_dir}/sysroot/"
-sysroot_lib_dir = "${sysroot}/usr/lib"
-sysroot_include_dir = "${sysroot}/usr/include"
+# For simplicity, musl places all its symbols in libc. To support
+# linking against e.g. libm, either implicitly or with an explicit -lm
+# flag, we build empty libraries.
+static_library("libm") {
+  complete_static_lib = true
+}
 
 template("copy_objects") {
   assert(defined(invoker.input_dir), "input_dir must be defined")
@@ -1503,6 +1510,9 @@ template("copy_objects") {
     }
   }
 }
+
+sysroot_lib_dir = "${sysroot}/usr/lib"
+sysroot_include_dir = "${sysroot}/usr/include"
 
 copy_objects("copy_crt_objects") {
   sources = [
@@ -1548,34 +1558,126 @@ copy("copy_include_bits") {
   ]
 }
 
-copy("copy_libc") {
+copy("copy_libs") {
   deps = [
     ":libc",
+    ":libm",
   ]
   sources = [
     "${target_out_dir}/libc.a",
+    "${target_out_dir}/libm.a",
   ]
   outputs = [
-    "${sysroot_lib_dir}/libc.a",
+    "${sysroot_lib_dir}/{{source_name_part}}.a",
   ]
 }
 
-group("sysroot") {
+group("copy_sysroot") {
   deps = [
     ":copy_crt_objects",
     ":copy_include",
     ":copy_include_bits",
-    ":copy_libc",
+    ":copy_libs",
   ]
   if (current_cpu == "x64") {
     deps += [ ":copy_crt_x64_objects" ]
   }
 }
 
+# The crtXXX.o files that are copied elsewhere in this file define
+# _start, and the machinery to implement calling into the init and
+# fini sections. These things are libc dependent and hence part of
+# libc.
+#
+# Unlike the other crtXXX.o files, crtbegin and crtend, are provided
+# by the toolchain, not the libc. So we steal them from the host.
+#
+# crtbegin and crtend know how to call constructors and destructors.
+#
+# libgcc provides runtime support, and so also comes from the
+# compiler. Things in here are stack unwinding, arithmetic not
+# supported on the target architecture, and so on.
+#
+# The best document I am aware of describing the different variants of
+# these files (and crtXXX.o above) is
+# https://dev.gentoo.org/~vapier/crt.txt
+#
+# S and _s mean shared or PIE
+# T and _eh mean static
+action("finish_sysroot") {
+  script = "tools/populate_crt.py"
+
+  clang = "//third_party/llvm-build/Release+Asserts/bin/clang"
+  target = "$sysroot/usr/lib"
+
+  files = [
+    "crtbegin.o",
+    "crtbeginS.o",
+    "crtbeginT.o",
+    "crtend.o",
+    "crtendS.o",
+
+    "libgcc.a",
+    "libgcc_eh.a",
+    "libgcc_s.so",
+  ]
+
+  args = [
+    rebase_path(clang),
+    rebase_path(target),
+  ]
+  args += files
+
+  outputs = [
+    "$target/crtbegin.o",
+    "$target/crtbeginSo.o",
+    "$target/crtbeginT.o",
+    "$target/crtend.o",
+    "$target/crtendS.o",
+
+    "$target/libgcc.a",
+    "$target/libgcc_eh.a",
+    "$target/libgcc_s.so",
+  ]
+
+  deps = [
+    ":copy_sysroot",
+  ]
+}
+
+config("sysroot_config") {
+  rebased_sysroot = rebase_path(sysroot)
+
+  cflags = [
+    "--sysroot=$rebased_sysroot",
+    "-fPIC",
+    "-static",
+  ]
+
+  ldflags = [
+    "--sysroot=$rebased_sysroot",
+    "-static",
+  ]
+}
+
+executable("empty_main") {
+  configs = []
+  configs += [ ":sysroot_config" ]
+
+  sources = [
+    "test/empty_main.c",
+  ]
+
+  deps = [
+    ":finish_sysroot",
+  ]
+}
+
 group("fusl") {
   deps = [
-    ":crt",
-    ":libc",
-    ":sysroot",
+    ":crt(//build/toolchain/fusl:fusl_$current_cpu)",
+    ":empty_main(//build/toolchain/fusl:fusl_$current_cpu)",
+    ":finish_sysroot(//build/toolchain/fusl:fusl_$current_cpu)",
+    ":libc(//build/toolchain/fusl:fusl_$current_cpu)",
   ]
 }
