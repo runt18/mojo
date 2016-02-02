@@ -29,7 +29,7 @@ func TestSuccessfulParsing(t *testing.T) {
 		descriptor := mojom.NewMojomDescriptor()
 		fileName := fmt.Sprintf("file%d", testCaseNum)
 		expectedFile = descriptor.AddMojomFile(fileName, fileName, nil, "")
-		expectedFile.InitializeFileScope(moduleNameSpace)
+		expectedFile.InitializeFileScope(mojom.NewModuleNamespace(moduleNameSpace, nil))
 		cases = append(cases, testCase{fileName, "", expectedFile})
 	}
 

@@ -38,7 +38,7 @@ type MojomFile struct {
 
 	// The module namespace is the identifier declared via the "module"
 	// declaration in the .mojom file.
-	ModuleNamespace string
+	ModuleNamespace *ModuleNamespace
 
 	// Attributes declared in the Mojom file at the module level.
 	Attributes *Attributes
@@ -132,7 +132,7 @@ func newMojomFile(fileName, specifiedName string, descriptor *MojomDescriptor,
 		}
 	}
 	mojomFile.SpecifiedFileName = specifiedName
-	mojomFile.ModuleNamespace = ""
+	mojomFile.ModuleNamespace = nil
 	mojomFile.Imports = make([]*ImportedFile, 0)
 	mojomFile.importsBySpecifiedName = make(map[string]*ImportedFile)
 	mojomFile.Interfaces = make([]*MojomInterface, 0)
@@ -184,10 +184,10 @@ func (f *MojomFile) String() string {
 }
 
 // InitializeFileScope must be invoked before any of the Add*
-// methods below may invoked. |moduleNamespace| may be the empty string.
-func (f *MojomFile) InitializeFileScope(moduleNamespace string) *Scope {
+// methods below may invoked. |moduleNamespace| should not be nil.
+func (f *MojomFile) InitializeFileScope(moduleNamespace *ModuleNamespace) *Scope {
 	f.ModuleNamespace = moduleNamespace
-	f.FileScope = NewLexicalScope(ScopeFileModule, nil, moduleNamespace, f, nil)
+	f.FileScope = NewLexicalScope(ScopeFileModule, nil, moduleNamespace.Identifier, f, nil)
 	return f.FileScope
 }
 
@@ -653,6 +653,24 @@ func resolveSpecialEnumValueAssignment(ref *UserValueRef) bool {
 	default:
 	}
 	return false
+}
+
+// ModuleNamespace represents the identifier declared via the "module"
+// declaration in the .mojom file.
+type ModuleNamespace struct {
+	// Identifier is the name of the namespace. The identifier from the "module" declaration.
+	Identifier string
+	// Token is the token from which the Identifier was extracted.
+	Token *lexer.Token
+}
+
+// NewModuleNamespace creates a module namespace and returns a pointer to it.
+func NewModuleNamespace(identifier string, token *lexer.Token) *ModuleNamespace {
+	return &ModuleNamespace{identifier, token}
+}
+
+func (ns *ModuleNamespace) String() string {
+	return ns.Identifier
 }
 
 //////////////////////////////////////

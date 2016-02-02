@@ -166,23 +166,23 @@ func (p *Parser) parseMojomFile() bool {
 
 	initialAttributes := p.parseAttributes()
 
-	moduleIdentifier := p.parseModuleDecl()
+	moduleNamespace := p.parseModuleDecl()
 
 	if !p.OK() {
 		return false
 	}
 
-	if moduleIdentifier != "" {
+	if moduleNamespace.Identifier != "" {
 		p.mojomFile.Attributes = initialAttributes
 		initialAttributes = nil
 	}
 
 	// Set up the root scope
-	p.pushScope(p.mojomFile.InitializeFileScope(moduleIdentifier))
+	p.pushScope(p.mojomFile.InitializeFileScope(moduleNamespace))
 	defer p.popScope()
 
 	if p.checkEOF() {
-		if initialAttributes != nil && moduleIdentifier == "" {
+		if initialAttributes != nil && moduleNamespace.Identifier == "" {
 			message := "The .mojom file contains an attributes section but nothing else."
 			p.parseError(ParserErrorCodeBadAttributeLocation, message)
 			return false
@@ -199,7 +199,7 @@ func (p *Parser) parseMojomFile() bool {
 		p.mojomFile.AddImport(importedFile)
 	}
 
-	if moduleIdentifier == "" && len(importedFiles) > 0 && initialAttributes != nil {
+	if moduleNamespace.Identifier == "" && len(importedFiles) > 0 && initialAttributes != nil {
 		message := "Attributes are not allowed before an import statement."
 		p.parseError(ParserErrorCodeBadAttributeLocation, message)
 		return false
@@ -337,9 +337,10 @@ func (p *Parser) parseAttributes() (attributes *mojom.Attributes) {
 
 //MODULE_DECL -> module identifier semi
 //
-// If there is a module declaration then the identifier is returned. Otherwise
-// the empty string is returned. Check p.OK() for errors.
-func (p *Parser) parseModuleDecl() (moduleIdentifier string) {
+// parseModuleDecl returns a pointer to a ModuleNamespace. If there is not a
+// module declaration, its Identifier is an empty string. Check p.OK() for errors.
+func (p *Parser) parseModuleDecl() (moduleNamespace *mojom.ModuleNamespace) {
+	moduleNamespace = mojom.NewModuleNamespace("", nil)
 	if !p.OK() {
 		return
 	}
@@ -364,7 +365,9 @@ func (p *Parser) parseModuleDecl() (moduleIdentifier string) {
 	p.pushChildNode("moduleDecl")
 	defer p.popNode()
 
-	moduleIdentifier, _ = p.parseIdentifier()
+	moduleIdentifier, identifierToken := p.parseIdentifier()
+	moduleNamespace.Identifier = moduleIdentifier
+	moduleNamespace.Token = &identifierToken
 	p.matchSemicolon()
 	return
 }

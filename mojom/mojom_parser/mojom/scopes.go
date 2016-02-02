@@ -143,7 +143,7 @@ func NewLexicalScope(kind ScopeKind, parentScope *Scope, shortName string,
 		if containingType != nil {
 			panic("A file scope does not have a containing type.")
 		}
-		fullyQualifiedName = file.ModuleNamespace
+		fullyQualifiedName = file.ModuleNamespace.Identifier
 		parentScope = file.Descriptor.getAbstractModuleScope(fullyQualifiedName)
 	case ScopeInterface:
 		if parentScope == nil || parentScope.kind != ScopeFileModule {
