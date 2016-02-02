@@ -2,8 +2,8 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-// TODO(vtl): Move this to //mojo/platform (and rename it) once
-// platform_channel_utils.* has been moved/renamed.
+// TODO(vtl): Move this to //mojo/platform (and rename it) once I figure out
+// what to do with the //mojo/edk/test dependency.
 
 #include "mojo/edk/platform/platform_pipe.h"
 
@@ -21,8 +21,8 @@
 #include <vector>
 
 #include "build/build_config.h"
-#include "mojo/edk/embedder/platform_channel_utils.h"
 #include "mojo/edk/platform/platform_handle.h"
+#include "mojo/edk/platform/platform_pipe_utils_posix.h"
 #include "mojo/edk/platform/scoped_platform_handle.h"
 #include "mojo/edk/system/test/scoped_test_dir.h"
 #include "mojo/edk/test/test_utils.h"
@@ -30,12 +30,10 @@
 #include "mojo/public/cpp/system/macros.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
-using mojo::platform::PlatformPipe;
-using mojo::platform::PlatformHandle;
-using mojo::platform::ScopedPlatformHandle;
+using mojo::util::ScopedFILE;
 
 namespace mojo {
-namespace embedder {
+namespace platform {
 namespace {
 
 void WaitReadable(PlatformHandle h) {
@@ -93,14 +91,14 @@ TEST_F(PlatformPipeTest, NoSigPipe) {
   EXPECT_EQ(0, result);
 
   // Test our replacement for |write()|/|send()|.
-  result = PlatformChannelWrite(server_handle.get(), kHello, sizeof(kHello));
+  result = PlatformPipeWrite(server_handle.get(), kHello, sizeof(kHello));
   EXPECT_EQ(-1, result);
   EXPECT_EQ(EPIPE, errno);
 
   // Test our replacement for |writev()|/|sendv()|.
   struct iovec iov[2] = {{const_cast<char*>(kHello), sizeof(kHello)},
                          {const_cast<char*>(kHello), sizeof(kHello)}};
-  result = PlatformChannelWritev(server_handle.get(), iov, 2);
+  result = PlatformPipeWritev(server_handle.get(), iov, 2);
   EXPECT_EQ(-1, result);
   EXPECT_EQ(EPIPE, errno);
 }
@@ -114,15 +112,15 @@ TEST_F(PlatformPipeTest, SendReceiveData) {
     std::string send_string(1 << i, 'A' + i);
 
     EXPECT_EQ(static_cast<ssize_t>(send_string.size()),
-              PlatformChannelWrite(server_handle.get(), send_string.data(),
-                                   send_string.size()));
+              PlatformPipeWrite(server_handle.get(), send_string.data(),
+                                send_string.size()));
 
     WaitReadable(client_handle.get());
 
     char buf[10000] = {};
     std::deque<ScopedPlatformHandle> received_handles;
-    ssize_t result = PlatformChannelRecvmsg(client_handle.get(), buf,
-                                            sizeof(buf), &received_handles);
+    ssize_t result = PlatformPipeRecvmsg(client_handle.get(), buf, sizeof(buf),
+                                         &received_handles);
     EXPECT_EQ(static_cast<ssize_t>(send_string.size()), result);
     EXPECT_EQ(send_string, std::string(buf, static_cast<size_t>(result)));
     EXPECT_TRUE(received_handles.empty());
@@ -140,9 +138,9 @@ TEST_F(PlatformPipeTest, SendReceiveFDs) {
 
 // Reduce the number of FDs opened on OS X to avoid test flake.
 #if defined(OS_MACOSX)
-  const size_t kNumHandlesToSend = kPlatformChannelMaxNumHandles / 2;
+  const size_t kNumHandlesToSend = kPlatformPipeMaxNumHandles / 2;
 #else
-  const size_t kNumHandlesToSend = kPlatformChannelMaxNumHandles;
+  const size_t kNumHandlesToSend = kPlatformPipeMaxNumHandles;
 #endif
 
   for (size_t i = 1; i < kNumHandlesToSend; i++) {
@@ -151,7 +149,7 @@ TEST_F(PlatformPipeTest, SendReceiveFDs) {
     const char c = '0' + (i % 10);
     std::vector<ScopedPlatformHandle> platform_handles;
     for (size_t j = 1; j <= i; j++) {
-      util::ScopedFILE fp(test_dir.CreateFile());
+      ScopedFILE fp(test_dir.CreateFile());
       ASSERT_TRUE(fp);
       ASSERT_EQ(j, fwrite(std::string(j, c).data(), 1, j, fp.get()));
       platform_handles.push_back(test::PlatformHandleFromFILE(std::move(fp)));
@@ -162,7 +160,7 @@ TEST_F(PlatformPipeTest, SendReceiveFDs) {
     struct iovec iov = {const_cast<char*>(kHello), sizeof(kHello)};
     // We assume that the |sendmsg()| actually sends all the data.
     EXPECT_EQ(static_cast<ssize_t>(sizeof(kHello)),
-              PlatformChannelSendmsgWithHandles(
+              PlatformPipeSendmsgWithHandles(
                   server_handle.get(), &iov, 1,
                   reinterpret_cast<PlatformHandle*>(platform_handles.data()),
                   platform_handles.size()));
@@ -173,13 +171,13 @@ TEST_F(PlatformPipeTest, SendReceiveFDs) {
     std::deque<ScopedPlatformHandle> received_handles;
     // We assume that the |recvmsg()| actually reads all the data.
     EXPECT_EQ(static_cast<ssize_t>(sizeof(kHello)),
-              PlatformChannelRecvmsg(client_handle.get(), buf, sizeof(buf),
-                                     &received_handles));
+              PlatformPipeRecvmsg(client_handle.get(), buf, sizeof(buf),
+                                  &received_handles));
     EXPECT_STREQ(kHello, buf);
     EXPECT_EQ(i, received_handles.size());
 
     for (size_t j = 0; !received_handles.empty(); j++) {
-      util::ScopedFILE fp(test::FILEFromPlatformHandle(
+      ScopedFILE fp(test::FILEFromPlatformHandle(
           std::move(received_handles.front()), "rb"));
       received_handles.pop_front();
       ASSERT_TRUE(fp);
@@ -204,7 +202,7 @@ TEST_F(PlatformPipeTest, AppendReceivedFDs) {
   const std::string file_contents("hello world");
 
   {
-    util::ScopedFILE fp(test_dir.CreateFile());
+    ScopedFILE fp(test_dir.CreateFile());
     ASSERT_TRUE(fp);
     ASSERT_EQ(file_contents.size(),
               fwrite(file_contents.data(), 1, file_contents.size(), fp.get()));
@@ -216,7 +214,7 @@ TEST_F(PlatformPipeTest, AppendReceivedFDs) {
     struct iovec iov = {const_cast<char*>(kHello), sizeof(kHello)};
     // We assume that the |sendmsg()| actually sends all the data.
     EXPECT_EQ(static_cast<ssize_t>(sizeof(kHello)),
-              PlatformChannelSendmsgWithHandles(
+              PlatformPipeSendmsgWithHandles(
                   server_handle.get(), &iov, 1,
                   reinterpret_cast<PlatformHandle*>(platform_handles.data()),
                   platform_handles.size()));
@@ -231,15 +229,15 @@ TEST_F(PlatformPipeTest, AppendReceivedFDs) {
   char buf[100] = {};
   // We assume that the |recvmsg()| actually reads all the data.
   EXPECT_EQ(static_cast<ssize_t>(sizeof(kHello)),
-            PlatformChannelRecvmsg(client_handle.get(), buf, sizeof(buf),
-                                   &received_handles));
+            PlatformPipeRecvmsg(client_handle.get(), buf, sizeof(buf),
+                                &received_handles));
   EXPECT_STREQ(kHello, buf);
   ASSERT_EQ(2u, received_handles.size());
   EXPECT_FALSE(received_handles[0].is_valid());
   EXPECT_TRUE(received_handles[1].is_valid());
 
   {
-    util::ScopedFILE fp(
+    ScopedFILE fp(
         test::FILEFromPlatformHandle(std::move(received_handles[1]), "rb"));
     ASSERT_TRUE(fp);
     rewind(fp.get());
@@ -251,5 +249,5 @@ TEST_F(PlatformPipeTest, AppendReceivedFDs) {
 }
 
 }  // namespace
-}  // namespace embedder
+}  // namespace platform
 }  // namespace mojo

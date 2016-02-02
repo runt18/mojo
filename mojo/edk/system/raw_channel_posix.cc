@@ -16,15 +16,16 @@
 #include <vector>
 
 #include "base/logging.h"
-#include "mojo/edk/embedder/platform_channel_utils.h"
 #include "mojo/edk/platform/platform_handle.h"
 #include "mojo/edk/platform/platform_handle_watcher.h"
+#include "mojo/edk/platform/platform_pipe_utils_posix.h"
 #include "mojo/edk/platform/scoped_platform_handle.h"
 #include "mojo/edk/system/transport_data.h"
 #include "mojo/edk/util/make_unique.h"
 #include "mojo/edk/util/weak_ptr.h"
 #include "mojo/public/cpp/system/macros.h"
 
+using mojo::platform::kPlatformPipeMaxNumHandles;
 using mojo::platform::PlatformHandle;
 using mojo::platform::PlatformHandleWatcher;
 using mojo::platform::ScopedPlatformHandle;
@@ -129,14 +130,13 @@ void RawChannelPosix::EnqueueMessageNoLock(
     std::vector<ScopedPlatformHandle>* const platform_handles =
         message->transport_data()->platform_handles();
     if (platform_handles &&
-        platform_handles->size() > embedder::kPlatformChannelMaxNumHandles) {
+        platform_handles->size() > kPlatformPipeMaxNumHandles) {
       // We can't attach all the FDs to a single message, so we have to "split"
       // the message. Send as many control messages as needed first with FDs
       // attached (and no data).
       size_t i = 0;
-      for (; platform_handles->size() - i >
-                 embedder::kPlatformChannelMaxNumHandles;
-           i += embedder::kPlatformChannelMaxNumHandles) {
+      for (; platform_handles->size() - i > kPlatformPipeMaxNumHandles;
+           i += kPlatformPipeMaxNumHandles) {
         std::unique_ptr<MessageInTransit> fd_message(new MessageInTransit(
             MessageInTransit::Type::RAW_CHANNEL,
             MessageInTransit::Subtype::RAW_CHANNEL_POSIX_EXTRA_PLATFORM_HANDLES,
@@ -145,9 +145,8 @@ void RawChannelPosix::EnqueueMessageNoLock(
         std::unique_ptr<std::vector<ScopedPlatformHandle>> fds(
             MakeUnique<std::vector<ScopedPlatformHandle>>(
                 std::move_iterator<IteratorType>(platform_handles->begin() + i),
-                std::move_iterator<IteratorType>(
-                    platform_handles->begin() + i +
-                    embedder::kPlatformChannelMaxNumHandles)));
+                std::move_iterator<IteratorType>(platform_handles->begin() + i +
+                                                 kPlatformPipeMaxNumHandles)));
         fd_message->SetTransportData(MakeUnique<TransportData>(
             std::move(fds), GetSerializedPlatformHandleSize()));
         RawChannel::EnqueueMessageNoLock(std::move(fd_message));
@@ -233,7 +232,7 @@ RawChannel::IOResult RawChannelPosix::WriteNoLock(
     write_buffer_no_lock()->GetPlatformHandlesToSend(
         &num_platform_handles, &platform_handles, &serialization_data);
     DCHECK_GT(num_platform_handles, 0u);
-    DCHECK_LE(num_platform_handles, embedder::kPlatformChannelMaxNumHandles);
+    DCHECK_LE(num_platform_handles, kPlatformPipeMaxNumHandles);
     DCHECK(platform_handles);
 
     // TODO(vtl): Reduce code duplication. (This is duplicated from below.)
@@ -248,7 +247,7 @@ RawChannel::IOResult RawChannelPosix::WriteNoLock(
       iov[i].iov_len = buffers[i].size;
     }
 
-    write_result = embedder::PlatformChannelSendmsgWithHandles(
+    write_result = PlatformPipeSendmsgWithHandles(
         fd_.get(), iov, buffer_count, platform_handles, num_platform_handles);
     if (write_result >= 0) {
       for (size_t i = 0; i < num_platform_handles; i++)
@@ -260,8 +259,8 @@ RawChannel::IOResult RawChannelPosix::WriteNoLock(
     DCHECK(!buffers.empty());
 
     if (buffers.size() == 1) {
-      write_result = embedder::PlatformChannelWrite(fd_.get(), buffers[0].addr,
-                                                    buffers[0].size);
+      write_result =
+          PlatformPipeWrite(fd_.get(), buffers[0].addr, buffers[0].size);
     } else {
       const size_t kMaxBufferCount = 10;
       iovec iov[kMaxBufferCount];
@@ -271,8 +270,7 @@ RawChannel::IOResult RawChannelPosix::WriteNoLock(
         iov[i].iov_len = buffers[i].size;
       }
 
-      write_result =
-          embedder::PlatformChannelWritev(fd_.get(), iov, buffer_count);
+      write_result = PlatformPipeWritev(fd_.get(), iov, buffer_count);
     }
   }
 
@@ -413,20 +411,19 @@ RawChannel::IOResult RawChannelPosix::ReadImpl(size_t* bytes_read) {
   read_buffer()->GetBuffer(&buffer, &bytes_to_read);
 
   size_t old_num_platform_handles = read_platform_handles_.size();
-  ssize_t read_result = embedder::PlatformChannelRecvmsg(
-      fd_.get(), buffer, bytes_to_read, &read_platform_handles_);
+  ssize_t read_result = PlatformPipeRecvmsg(fd_.get(), buffer, bytes_to_read,
+                                            &read_platform_handles_);
   if (read_platform_handles_.size() > old_num_platform_handles) {
     DCHECK_LE(read_platform_handles_.size() - old_num_platform_handles,
-              embedder::kPlatformChannelMaxNumHandles);
+              kPlatformPipeMaxNumHandles);
 
     // We should never accumulate more than |TransportData::kMaxPlatformHandles
-    // + embedder::kPlatformChannelMaxNumHandles| handles. (The latter part is
-    // possible because we could have accumulated all the handles for a message,
-    // then received the message data plus the first set of handles for the next
+    // + kPlatformPipeMaxNumHandles| handles. (The latter part is possible
+    // because we could have accumulated all the handles for a message, then
+    // received the message data plus the first set of handles for the next
     // message in the subsequent |recvmsg()|.)
     if (read_platform_handles_.size() >
-        (TransportData::GetMaxPlatformHandles() +
-         embedder::kPlatformChannelMaxNumHandles)) {
+        (TransportData::GetMaxPlatformHandles() + kPlatformPipeMaxNumHandles)) {
       LOG(ERROR) << "Received too many platform handles";
       read_platform_handles_.clear();
       return IO_FAILED_UNKNOWN;
