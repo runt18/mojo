@@ -49,10 +49,19 @@ class PingPongApplication extends Application {
   @override
   void acceptConnection(String requestorUrl, String resolvedUrl,
       ApplicationConnection connection) {
+    // Provide the service implemented by PingPongServiceImpl.
     connection.provideService(PingPongService.serviceName,
         (endpoint) => new PingPongServiceImpl(this, endpoint));
+
+    // No services are required from the remote end.
+    connection.remoteServiceProvider.close();
+
     // Close the application when the first connection goes down.
-    connection.onError = ((_) => closeApplication());
+    connection.onError = ((_) {
+      connection.close().then((_) {
+        closeApplication();
+      });
+    });
   }
 
   Future closeApplication() async {

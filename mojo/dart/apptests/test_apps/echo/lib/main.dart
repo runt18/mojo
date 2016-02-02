@@ -46,8 +46,10 @@ class EchoApplication extends Application {
   @override
   void acceptConnection(String requestorUrl, String resolvedUrl,
       ApplicationConnection connection) {
-    connection.provideService(
-        EchoService.serviceName, (endpoint) => new EchoServiceImpl(this, endpoint));
+    // No services are required from the remote end.
+    connection.remoteServiceProvider.close();
+    connection.provideService(EchoService.serviceName,
+        (endpoint) => new EchoServiceImpl(this, endpoint));
   }
 }
 

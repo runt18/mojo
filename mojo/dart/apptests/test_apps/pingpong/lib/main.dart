@@ -113,6 +113,9 @@ class PingPongApplication extends Application {
   @override
   void acceptConnection(String requestorUrl, String resolvedUrl,
       ApplicationConnection connection) {
+    // No services are required from the remote end.
+    connection.remoteServiceProvider.close();
+
     connection.provideService(PingPongService.serviceName,
         (endpoint) => new PingPongServiceImpl(this, endpoint));
   }
