@@ -2,7 +2,10 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-#include "mojo/edk/embedder/platform_channel_pair.h"
+// TODO(vtl): Move this to //mojo/platform (and rename it) once
+// platform_channel_utils.* has been moved/renamed.
+
+#include "mojo/edk/platform/platform_pipe.h"
 
 #include <errno.h>
 #include <poll.h>
@@ -27,6 +30,7 @@
 #include "mojo/public/cpp/system/macros.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
+using mojo::platform::PlatformPipe;
 using mojo::platform::PlatformHandle;
 using mojo::platform::ScopedPlatformHandle;
 
@@ -41,10 +45,10 @@ void WaitReadable(PlatformHandle h) {
   ASSERT_EQ(1, poll(&pfds, 1, -1));
 }
 
-class PlatformChannelPairTest : public testing::Test {
+class PlatformPipeTest : public testing::Test {
  public:
-  PlatformChannelPairTest() {}
-  ~PlatformChannelPairTest() override {}
+  PlatformPipeTest() {}
+  ~PlatformPipeTest() override {}
 
   void SetUp() override {
     // Make sure |SIGPIPE| isn't being ignored.
@@ -61,11 +65,11 @@ class PlatformChannelPairTest : public testing::Test {
  private:
   struct sigaction old_action_;
 
-  MOJO_DISALLOW_COPY_AND_ASSIGN(PlatformChannelPairTest);
+  MOJO_DISALLOW_COPY_AND_ASSIGN(PlatformPipeTest);
 };
 
-TEST_F(PlatformChannelPairTest, NoSigPipe) {
-  PlatformChannelPair channel_pair;
+TEST_F(PlatformPipeTest, NoSigPipe) {
+  PlatformPipe channel_pair;
   ScopedPlatformHandle server_handle = channel_pair.handle0.Pass();
   ScopedPlatformHandle client_handle = channel_pair.handle1.Pass();
 
@@ -101,8 +105,8 @@ TEST_F(PlatformChannelPairTest, NoSigPipe) {
   EXPECT_EQ(EPIPE, errno);
 }
 
-TEST_F(PlatformChannelPairTest, SendReceiveData) {
-  PlatformChannelPair channel_pair;
+TEST_F(PlatformPipeTest, SendReceiveData) {
+  PlatformPipe channel_pair;
   ScopedPlatformHandle server_handle = channel_pair.handle0.Pass();
   ScopedPlatformHandle client_handle = channel_pair.handle1.Pass();
 
@@ -125,12 +129,12 @@ TEST_F(PlatformChannelPairTest, SendReceiveData) {
   }
 }
 
-TEST_F(PlatformChannelPairTest, SendReceiveFDs) {
+TEST_F(PlatformPipeTest, SendReceiveFDs) {
   mojo::system::test::ScopedTestDir test_dir;
 
   static const char kHello[] = "hello";
 
-  PlatformChannelPair channel_pair;
+  PlatformPipe channel_pair;
   ScopedPlatformHandle server_handle = channel_pair.handle0.Pass();
   ScopedPlatformHandle client_handle = channel_pair.handle1.Pass();
 
@@ -188,12 +192,12 @@ TEST_F(PlatformChannelPairTest, SendReceiveFDs) {
   }
 }
 
-TEST_F(PlatformChannelPairTest, AppendReceivedFDs) {
+TEST_F(PlatformPipeTest, AppendReceivedFDs) {
   mojo::system::test::ScopedTestDir test_dir;
 
   static const char kHello[] = "hello";
 
-  PlatformChannelPair channel_pair;
+  PlatformPipe channel_pair;
   ScopedPlatformHandle server_handle = channel_pair.handle0.Pass();
   ScopedPlatformHandle client_handle = channel_pair.handle1.Pass();
 

@@ -15,6 +15,7 @@ mojo_edk_source_set("platform") {
     "platform_handle.cc",
     "platform_handle.h",
     "platform_handle_watcher.h",
+    "platform_pipe.h",
     "platform_shared_buffer.h",
     "random.h",
     "scoped_platform_handle.h",

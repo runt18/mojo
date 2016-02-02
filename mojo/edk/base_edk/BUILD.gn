@@ -15,6 +15,7 @@ mojo_edk_source_set("base_edk") {
     "platform_message_loop_for_io_impl.h",
     "platform_message_loop_impl.cc",
     "platform_message_loop_impl.h",
+    "platform_pipe.cc",
     "platform_task_runner_impl.cc",
     "platform_task_runner_impl.h",
     "random.cc",

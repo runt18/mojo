@@ -8,18 +8,19 @@
 #include "base/logging.h"
 #include "base/posix/global_descriptors.h"
 #include "base/test/test_timeouts.h"
-#include "mojo/edk/embedder/platform_channel_pair.h"
 #include "mojo/edk/platform/platform_handle.h"
+#include "mojo/edk/platform/platform_pipe.h"
 #include "mojo/edk/platform/scoped_platform_handle.h"
 
 using mojo::platform::PlatformHandle;
+using mojo::platform::PlatformPipe;
 using mojo::platform::ScopedPlatformHandle;
 
 namespace mojo {
 namespace test {
 
 MultiprocessTestHelper::MultiprocessTestHelper()
-    : platform_channel_pair_(new embedder::PlatformChannelPair()) {
+    : platform_channel_pair_(new PlatformPipe()) {
   server_platform_handle = platform_channel_pair_->handle0.Pass();
 }
 

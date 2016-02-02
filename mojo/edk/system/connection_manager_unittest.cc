@@ -14,11 +14,11 @@
 
 #include "mojo/edk/base_edk/platform_task_runner_impl.h"
 #include "mojo/edk/embedder/master_process_delegate.h"
-#include "mojo/edk/embedder/platform_channel_pair.h"
 #include "mojo/edk/embedder/simple_platform_support.h"
 #include "mojo/edk/embedder/slave_process_delegate.h"
 #include "mojo/edk/platform/message_loop.h"
 #include "mojo/edk/platform/platform_handle.h"
+#include "mojo/edk/platform/platform_pipe.h"
 #include "mojo/edk/platform/test_message_loops.h"
 #include "mojo/edk/system/master_connection_manager.h"
 #include "mojo/edk/system/slave_connection_manager.h"
@@ -30,6 +30,7 @@
 
 using mojo::platform::MessageLoop;
 using mojo::platform::PlatformHandle;
+using mojo::platform::PlatformPipe;
 using mojo::platform::ScopedPlatformHandle;
 using mojo::platform::TaskRunner;
 using mojo::platform::test::CreateTestMessageLoop;
@@ -197,7 +198,7 @@ class ConnectionManagerTest : public testing::Test {
       embedder::SlaveProcessDelegate* slave_process_delegate,
       SlaveConnectionManager* slave,
       const std::string& slave_name) {
-    embedder::PlatformChannelPair platform_channel_pair;
+    PlatformPipe platform_channel_pair;
     ProcessIdentifier slave_process_identifier = master->AddSlave(
         new TestSlaveInfo(slave_name), platform_channel_pair.handle0.Pass());
     slave->Init(task_runner().Clone(), slave_process_delegate,
@@ -649,7 +650,7 @@ TEST_F(ConnectionManagerTest, AddSlaveThenImmediateShutdown) {
 
   MockSlaveProcessDelegate slave_process_delegate;
   SlaveConnectionManager slave(platform_support());
-  embedder::PlatformChannelPair platform_channel_pair;
+  PlatformPipe platform_channel_pair;
   ProcessIdentifier slave_id = master.AddSlave(
       new TestSlaveInfo("slave"), platform_channel_pair.handle0.Pass());
   master.Shutdown();
@@ -661,7 +662,7 @@ TEST_F(ConnectionManagerTest, AddSlaveAndBootstrap) {
   MasterConnectionManager master(platform_support());
   master.Init(task_runner().Clone(), &master_process_delegate());
 
-  embedder::PlatformChannelPair platform_channel_pair;
+  PlatformPipe platform_channel_pair;
   ConnectionIdentifier connection_id = master.GenerateConnectionIdentifier();
   ProcessIdentifier slave_id = master.AddSlaveAndBootstrap(
       new TestSlaveInfo("slave"), platform_channel_pair.handle0.Pass(),

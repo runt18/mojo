@@ -20,7 +20,7 @@
 #include "build/build_config.h"
 #include "mojo/edk/base_edk/platform_task_runner_impl.h"
 #include "mojo/edk/embedder/multiprocess_embedder.h"
-#include "mojo/edk/embedder/platform_channel_pair.h"
+#include "mojo/edk/platform/platform_pipe.h"
 #include "mojo/edk/util/ref_ptr.h"
 #include "mojo/public/cpp/system/message_pipe.h"
 #include "shell/application_manager/native_application_options.h"
@@ -28,6 +28,7 @@
 #include "shell/context.h"
 #include "shell/task_runners.h"
 
+using mojo::platform::PlatformPipe;
 using mojo::util::MakeRefCounted;
 
 namespace shell {
@@ -38,7 +39,7 @@ struct ChildProcessHost::LaunchData {
 
   NativeApplicationOptions options;
   base::FilePath child_path;
-  mojo::embedder::PlatformChannelPair platform_channel_pair;
+  PlatformPipe platform_channel_pair;
   std::string child_connection_id;
 };
 

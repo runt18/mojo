@@ -10,9 +10,9 @@
 
 #include "base/logging.h"
 #include "mojo/edk/embedder/master_process_delegate.h"
-#include "mojo/edk/embedder/platform_channel_pair.h"
 #include "mojo/edk/embedder/simple_platform_support.h"
 #include "mojo/edk/embedder/slave_process_delegate.h"
+#include "mojo/edk/platform/platform_pipe.h"
 #include "mojo/edk/system/channel_manager.h"
 #include "mojo/edk/system/connection_identifier.h"
 #include "mojo/edk/system/dispatcher.h"
@@ -30,6 +30,7 @@
 #include "mojo/public/cpp/system/macros.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
+using mojo::platform::PlatformPipe;
 using mojo::platform::ScopedPlatformHandle;
 using mojo::util::AutoResetWaitableEvent;
 using mojo::util::ManualResetWaitableEvent;
@@ -172,7 +173,7 @@ class TestSlaveConnection {
   // After this is called, |ShutdownChannelToSlave()| must be called (possibly
   // after |WaitForChannelToSlave()|) before destruction.
   RefPtr<MessagePipeDispatcher> ConnectToSlave() {
-    embedder::PlatformChannelPair channel_pair;
+    PlatformPipe channel_pair;
     // Note: |ChannelId|s and |ProcessIdentifier|s are interchangeable.
     RefPtr<MessagePipeDispatcher> mp = master_ipc_support_->ConnectToSlave(
         connection_id_, nullptr, channel_pair.handle0.Pass(),
@@ -575,7 +576,7 @@ TEST_F(IPCSupportTest, MasterSlaveInternal) {
   ConnectionIdentifier connection_id =
       master_ipc_support().GenerateConnectionIdentifier();
 
-  embedder::PlatformChannelPair channel_pair;
+  PlatformPipe channel_pair;
   ProcessIdentifier slave_id = kInvalidProcessIdentifier;
   ScopedPlatformHandle master_second_platform_handle =
       master_ipc_support().ConnectToSlaveInternal(

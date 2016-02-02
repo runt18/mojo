@@ -24,10 +24,10 @@ namespace embedder {
 // |IPC::MessageAttachmentSet::kMaxDescriptorsPerMessage|.
 const size_t kPlatformChannelMaxNumHandles = 128;
 
-// Use these to write to a socket created using |PlatformChannelPair| (or
-// equivalent). These are like |write()| and |writev()|, but handle |EINTR| and
-// never raise |SIGPIPE|. (Note: On Mac, the suppression of |SIGPIPE| is set up
-// by |PlatformChannelPair|.)
+// Use these to write to a socket created using |PlatformPipe| (or equivalent).
+// These are like |write()| and |writev()|, but handle |EINTR| and never raise
+// |SIGPIPE|. (Note: On Mac, the suppression of |SIGPIPE| is set up by
+// |PlatformPipe|.)
 ssize_t PlatformChannelWrite(platform::PlatformHandle h,
                              const void* bytes,
                              size_t num_bytes);
@@ -37,12 +37,11 @@ ssize_t PlatformChannelWritev(platform::PlatformHandle h,
 
 // Writes data, and the given set of |PlatformHandle|s (i.e., file descriptors)
 // over the Unix domain socket given by |h| (e.g., created using
-// |PlatformChannelPair()|). All the handles must be valid, and there must be at
-// least one and at most |kPlatformChannelMaxNumHandles| handles. The return
-// value is as for |sendmsg()|, namely -1 on failure and otherwise the number of
-// bytes of data sent on success (note that this may not be all the data
-// specified by |iov|). (The handles are not closed, regardless of success or
-// failure.)
+// |PlatformPipe()|). All the handles must be valid, and there must be at least
+// one and at most |kPlatformChannelMaxNumHandles| handles. The return value is
+// as for |sendmsg()|, namely -1 on failure and otherwise the number of bytes of
+// data sent on success (note that this may not be all the data specified by
+// |iov|). (The handles are not closed, regardless of success or failure.)
 ssize_t PlatformChannelSendmsgWithHandles(
     platform::PlatformHandle h,
     struct iovec* iov,

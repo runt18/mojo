@@ -8,9 +8,9 @@
 #include <memory>
 #include <utility>
 
-#include "mojo/edk/embedder/platform_channel_pair.h"
 #include "mojo/edk/embedder/simple_platform_support.h"
 #include "mojo/edk/platform/message_loop.h"
+#include "mojo/edk/platform/platform_pipe.h"
 #include "mojo/edk/platform/task_runner.h"
 #include "mojo/edk/platform/test_message_loops.h"
 #include "mojo/edk/system/channel.h"
@@ -23,6 +23,7 @@
 
 using mojo::platform::MessageLoop;
 using mojo::platform::PlatformHandleWatcher;
+using mojo::platform::PlatformPipe;
 using mojo::platform::TaskRunner;
 using mojo::platform::test::CreateTestMessageLoop;
 using mojo::platform::test::CreateTestMessageLoopForIO;
@@ -65,7 +66,7 @@ class ChannelManagerTest : public testing::Test {
 };
 
 TEST_F(ChannelManagerTest, Basic) {
-  embedder::PlatformChannelPair channel_pair;
+  PlatformPipe channel_pair;
 
   const ChannelId id = 1;
   RefPtr<MessagePipeDispatcher> d = channel_manager().CreateChannelOnIOThread(
@@ -88,7 +89,7 @@ TEST_F(ChannelManagerTest, Basic) {
 }
 
 TEST_F(ChannelManagerTest, TwoChannels) {
-  embedder::PlatformChannelPair channel_pair;
+  PlatformPipe channel_pair;
 
   const ChannelId id1 = 1;
   RefPtr<MessagePipeDispatcher> d1 = channel_manager().CreateChannelOnIOThread(
@@ -167,7 +168,7 @@ class OtherThread : public test::SimpleTestThread {
 };
 
 TEST_F(ChannelManagerTest, CallsFromOtherThread) {
-  embedder::PlatformChannelPair channel_pair;
+  PlatformPipe channel_pair;
 
   const ChannelId id = 1;
   RefPtr<MessagePipeDispatcher> d = channel_manager().CreateChannelOnIOThread(

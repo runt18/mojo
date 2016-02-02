@@ -10,8 +10,8 @@
 #include <utility>
 
 #include "base/logging.h"
-#include "mojo/edk/embedder/platform_channel_pair.h"
 #include "mojo/edk/embedder/simple_platform_support.h"
+#include "mojo/edk/platform/platform_pipe.h"
 #include "mojo/edk/system/channel.h"
 #include "mojo/edk/system/channel_endpoint.h"
 #include "mojo/edk/system/data_pipe.h"
@@ -27,6 +27,7 @@
 #include "mojo/public/cpp/system/macros.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
+using mojo::platform::PlatformPipe;
 using mojo::util::MakeRefCounted;
 using mojo::util::RefPtr;
 
@@ -87,7 +88,7 @@ class RemoteDataPipeImplTest : public testing::Test {
                        RefPtr<ChannelEndpoint>&& ep1) {
     CHECK(io_thread_.IsCurrentAndRunning());
 
-    embedder::PlatformChannelPair channel_pair;
+    PlatformPipe channel_pair;
     channels_[0] = MakeRefCounted<Channel>(&platform_support_);
     channels_[0]->Init(io_thread_.task_runner().Clone(),
                        io_thread_.platform_handle_watcher(),

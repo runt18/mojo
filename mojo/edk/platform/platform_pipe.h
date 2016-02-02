@@ -2,13 +2,13 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-#ifndef MOJO_EDK_EMBEDDER_PLATFORM_CHANNEL_PAIR_H_
-#define MOJO_EDK_EMBEDDER_PLATFORM_CHANNEL_PAIR_H_
+#ifndef MOJO_EDK_PLATFORM_PLATFORM_PIPE_H_
+#define MOJO_EDK_PLATFORM_PLATFORM_PIPE_H_
 
 #include "mojo/edk/platform/scoped_platform_handle.h"
 
 namespace mojo {
-namespace embedder {
+namespace platform {
 
 // A helper class for creating a pair of |PlatformHandle|s that are connected by
 // a suitable (platform-specific) bidirectional "pipe" (e.g., Unix domain
@@ -19,16 +19,16 @@ namespace embedder {
 // |PlatformChannel{Write,Writev}()| (from platform_channel_utils.h) instead of
 // |write()|, |writev()|, etc. Otherwise, you have to worry about platform
 // differences in suppressing |SIGPIPE|.
-class PlatformChannelPair {
+class PlatformPipe {
  public:
-  PlatformChannelPair();
-  ~PlatformChannelPair();
+  PlatformPipe();
+  ~PlatformPipe();
 
-  platform::ScopedPlatformHandle handle0;
-  platform::ScopedPlatformHandle handle1;
+  ScopedPlatformHandle handle0;
+  ScopedPlatformHandle handle1;
 };
 
-}  // namespace embedder
+}  // namespace platform
 }  // namespace mojo
 
-#endif  // MOJO_EDK_EMBEDDER_PLATFORM_CHANNEL_PAIR_H_
+#endif  // MOJO_EDK_PLATFORM_PLATFORM_PIPE_H_

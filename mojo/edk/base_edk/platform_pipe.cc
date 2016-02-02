@@ -2,7 +2,10 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-#include "mojo/edk/embedder/platform_channel_pair.h"
+// This file implements the class declared in
+// //mojo/edk/platform/platform_pipe.h.
+
+#include "mojo/edk/platform/platform_pipe.h"
 
 #include <fcntl.h>
 #include <sys/socket.h>
@@ -13,12 +16,10 @@
 #include "build/build_config.h"
 #include "mojo/edk/platform/platform_handle.h"
 
-using mojo::platform::PlatformHandle;
-
 namespace mojo {
-namespace embedder {
+namespace platform {
 
-PlatformChannelPair::PlatformChannelPair() {
+PlatformPipe::PlatformPipe() {
   // Create the Unix domain socket and set the ends to nonblocking.
   int fds[2];
   // TODO(vtl): Maybe fail gracefully if |socketpair()| fails.
@@ -43,7 +44,7 @@ PlatformChannelPair::PlatformChannelPair() {
   DCHECK(handle1.is_valid());
 }
 
-PlatformChannelPair::~PlatformChannelPair() {}
+PlatformPipe::~PlatformPipe() {}
 
-}  // namespace embedder
+}  // namespace platform
 }  // namespace mojo

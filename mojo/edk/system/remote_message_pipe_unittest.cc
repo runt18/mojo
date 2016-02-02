@@ -11,8 +11,8 @@
 #include <vector>
 
 #include "base/logging.h"
-#include "mojo/edk/embedder/platform_channel_pair.h"
 #include "mojo/edk/embedder/simple_platform_support.h"
+#include "mojo/edk/platform/platform_pipe.h"
 #include "mojo/edk/platform/platform_shared_buffer.h"
 #include "mojo/edk/platform/scoped_platform_handle.h"
 #include "mojo/edk/platform/thread_utils.h"
@@ -35,6 +35,7 @@
 #include "mojo/public/cpp/system/macros.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
+using mojo::platform::PlatformPipe;
 using mojo::platform::PlatformSharedBufferMapping;
 using mojo::platform::ScopedPlatformHandle;
 using mojo::platform::ThreadSleep;
@@ -99,7 +100,7 @@ class RemoteMessagePipeTest : public testing::Test {
   void SetUpOnIOThread() {
     CHECK(io_thread()->IsCurrentAndRunning());
 
-    embedder::PlatformChannelPair channel_pair;
+    PlatformPipe channel_pair;
     platform_handles_[0] = channel_pair.handle0.Pass();
     platform_handles_[1] = channel_pair.handle1.Pass();
   }

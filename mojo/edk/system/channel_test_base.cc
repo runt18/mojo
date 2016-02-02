@@ -7,9 +7,10 @@
 #include <utility>
 
 #include "base/logging.h"
-#include "mojo/edk/embedder/platform_channel_pair.h"
+#include "mojo/edk/platform/platform_pipe.h"
 #include "mojo/edk/system/raw_channel.h"
 
+using mojo::platform::PlatformPipe;
 using mojo::util::MakeRefCounted;
 
 namespace mojo {
@@ -63,7 +64,7 @@ void ChannelTestBase::ShutdownAndReleaseChannelOnIOThread(unsigned i) {
 void ChannelTestBase::SetUpOnIOThread() {
   CHECK(io_thread()->IsCurrentAndRunning());
 
-  embedder::PlatformChannelPair channel_pair;
+  PlatformPipe channel_pair;
   raw_channels_[0] = RawChannel::Create(channel_pair.handle0.Pass());
   raw_channels_[1] = RawChannel::Create(channel_pair.handle1.Pass());
 }

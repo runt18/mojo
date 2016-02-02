@@ -12,8 +12,8 @@
 #include <vector>
 
 #include "base/logging.h"
-#include "mojo/edk/embedder/platform_channel_pair.h"
 #include "mojo/edk/platform/platform_handle.h"
+#include "mojo/edk/platform/platform_pipe.h"
 #include "mojo/edk/platform/scoped_platform_handle.h"
 #include "mojo/edk/platform/thread_utils.h"
 #include "mojo/edk/system/message_in_transit.h"
@@ -32,6 +32,7 @@
 #include "testing/gtest/include/gtest/gtest.h"
 
 using mojo::platform::PlatformHandle;
+using mojo::platform::PlatformPipe;
 using mojo::platform::ScopedPlatformHandle;
 using mojo::platform::ThreadSleep;
 using mojo::util::AutoResetWaitableEvent;
@@ -80,7 +81,7 @@ class RawChannelTest : public testing::Test {
   ~RawChannelTest() override {}
 
   void SetUp() override {
-    embedder::PlatformChannelPair channel_pair;
+    PlatformPipe channel_pair;
     handles[0] = channel_pair.handle0.Pass();
     handles[1] = channel_pair.handle1.Pass();
     io_thread_.Start();
