@@ -1122,9 +1122,9 @@ func (ma MojomAttribute) String() string {
 	return fmt.Sprintf("%s=%s ", ma.Key, ma.Value)
 }
 
-func NewMojomAttribute(keyToken *lexer.Token, value LiteralValue) (mojomAttribute MojomAttribute) {
+func NewMojomAttribute(key string, keyToken *lexer.Token, value LiteralValue) (mojomAttribute MojomAttribute) {
 	mojomAttribute.KeyToken = keyToken
-	mojomAttribute.Key = keyToken.Text
+	mojomAttribute.Key = key
 	mojomAttribute.Value = value
 	return
 }

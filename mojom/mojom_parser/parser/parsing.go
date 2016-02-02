@@ -287,7 +287,7 @@ func (p *Parser) parseAttributes() (attributes *mojom.Attributes) {
 
 	nextToken := p.lastConsumed
 	for nextToken.Kind != lexer.RBracket {
-		p.readName()
+		key := p.readName()
 		keyToken := p.lastConsumed
 		p.attachToken()
 		if !p.OK() {
@@ -312,7 +312,7 @@ func (p *Parser) parseAttributes() (attributes *mojom.Attributes) {
 		if !p.OK() {
 			return
 		}
-		attributes.List = append(attributes.List, mojom.NewMojomAttribute(&keyToken, value))
+		attributes.List = append(attributes.List, mojom.NewMojomAttribute(key, &keyToken, value))
 
 		nextToken = p.peekNextToken("I was reading an attributes section.")
 		if !p.OK() {
