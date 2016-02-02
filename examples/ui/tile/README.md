@@ -12,4 +12,4 @@ their Views with the ViewManager for this to work.
 
 Specify the urls of the views to embed as a comma-delimited query parameter.
 
-  eg. out/Debug/mojo_shell "mojo:launcher mojo:tile_view?mojo:spinning_cube,mojo:moterm_example_app"
+  eg. out/Debug/mojo_shell "mojo:launcher mojo:tile_view?mojo:spinning_cube_view,mojo:noodles_view"
