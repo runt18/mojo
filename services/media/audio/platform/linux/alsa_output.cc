@@ -12,12 +12,16 @@ namespace mojo {
 namespace media {
 namespace audio {
 
-static constexpr LocalDuration TARGET_LATENCY = local_time::from_msec(35);
-static constexpr LocalDuration LOW_BUF_THRESH = local_time::from_msec(30);
-static constexpr LocalDuration ERROR_RECOVERY_TIME = local_time::from_msec(300);
-static constexpr LocalDuration WAIT_FOR_ALSA_DELAY = local_time::from_usec(500);
-static const std::set<uint8_t> SUPPORTED_CHANNEL_COUNTS({ 1, 2 });
-static const std::set<uint32_t> SUPPORTED_SAMPLE_RATES({
+constexpr LocalDuration AlsaOutput::kChunkDuration;
+constexpr uint32_t AlsaOutput::kLowBufThreshChunks;
+constexpr uint32_t AlsaOutput::kTargetLatencyChunks;
+constexpr LocalDuration AlsaOutput::kLowBufThresh;
+constexpr LocalDuration AlsaOutput::kTargetLatency;
+
+static constexpr LocalDuration kErrorRecoveryTime = local_time::from_msec(300);
+static constexpr LocalDuration kWaitForAlsaDelay  = local_time::from_usec(500);
+static const std::set<uint8_t> kSupportedChannelCounts({ 1, 2 });
+static const std::set<uint32_t> kSupportedSampleRates({
     48000, 32000, 24000, 16000, 8000, 4000,
     44100, 22050, 11025,
 });
@@ -80,27 +84,17 @@ MediaResult AlsaOutput::Configure(LpcmMediaTypeDetailsPtr config) {
   output_formatter_ = OutputFormatter::Select(config);
   if (!output_formatter_) { return MediaResult::UNSUPPORTED_CONFIG; }
 
-  switch (config->sample_format) {
-  case LpcmSampleFormat::UNSIGNED_8:
-    alsa_format_ = SND_PCM_FORMAT_U8;
-    break;
+  MediaResult res = AlsaSelectFormat(config);
+  if (res != MediaResult::OK) { return res; }
+  DCHECK_GE(alsa_format_, 0);
 
-  case LpcmSampleFormat::SIGNED_16:
-    alsa_format_ = SND_PCM_FORMAT_S16;
-    break;
-
-  case LpcmSampleFormat::SIGNED_24_IN_32:
-  default:
+  if (kSupportedSampleRates.find(config->frames_per_second) ==
+      kSupportedSampleRates.end()) {
     return MediaResult::UNSUPPORTED_CONFIG;
   }
 
-  if (SUPPORTED_SAMPLE_RATES.find(config->frames_per_second) ==
-      SUPPORTED_SAMPLE_RATES.end()) {
-    return MediaResult::UNSUPPORTED_CONFIG;
-  }
-
-  if (SUPPORTED_CHANNEL_COUNTS.find(config->channels) ==
-      SUPPORTED_CHANNEL_COUNTS.end()) {
+  if (kSupportedChannelCounts.find(config->channels) ==
+      kSupportedChannelCounts.end()) {
     return MediaResult::UNSUPPORTED_CONFIG;
   }
 
@@ -118,52 +112,17 @@ MediaResult AlsaOutput::Configure(LpcmMediaTypeDetailsPtr config) {
 }
 
 MediaResult AlsaOutput::Init() {
-  static const char* kAlsaDevice = "default";
-
   if (!output_formatter_) { return MediaResult::BAD_STATE; }
   if (alsa_device_) { return MediaResult::BAD_STATE; }
 
-  snd_pcm_sframes_t res;
-  res = snd_pcm_open(&alsa_device_,
-                     kAlsaDevice,
-                     SND_PCM_STREAM_PLAYBACK,
-                     SND_PCM_NONBLOCK);
-  if (res != 0) {
-    LOG(ERROR) << "Failed to open ALSA device \"" << kAlsaDevice << "\".";
-    return MediaResult::INTERNAL_ERROR;
-  }
-
-  res = snd_pcm_set_params(alsa_device_,
-                           alsa_format_,
-                           SND_PCM_ACCESS_RW_INTERLEAVED,
-                           output_formatter_->format()->channels,
-                           output_formatter_->format()->frames_per_second,
-                           0,   // do not allow ALSA resample
-                           local_time::to_usec<unsigned int>(TARGET_LATENCY));
-  if (res) {
-    LOG(ERROR) << "Failed to configure ALSA device \"" << kAlsaDevice << "\" "
-               << "(res = " << res << ")";
-    LOG(ERROR) << "Requested channels         : "
-               << output_formatter_->format()->channels;
-    LOG(ERROR) << "Requested frames per second: "
-               << output_formatter_->format()->frames_per_second;
-    LOG(ERROR) << "Requested ALSA format      : " << alsa_format_;
+  MediaResult res = AlsaOpen();
+  if (res != MediaResult::OK) {
     Cleanup();
-    return MediaResult::INTERNAL_ERROR;
+    return res;
   }
-
-  // Figure out how big our mixing buffer needs to be, then allocate it.
-  res = snd_pcm_avail_update(alsa_device_);
-  if (res <= 0) {
-    LOG(ERROR) << "[" << this << "] : "
-               << "Fatal error (" << res
-               << ") attempting to determine ALSA buffer size.";
-    Cleanup();
-    return MediaResult::INTERNAL_ERROR;
-  }
+  DCHECK(mix_buf_frames_);
 
   size_t buffer_size;
-  mix_buf_frames_ = res;
   buffer_size = mix_buf_frames_ * output_formatter_->bytes_per_frame();
   mix_buf_.reset(new uint8_t[buffer_size]);
 
@@ -174,10 +133,8 @@ MediaResult AlsaOutput::Init() {
 }
 
 void AlsaOutput::Cleanup() {
-  if (alsa_device_) {
-    snd_pcm_close(alsa_device_);
-    alsa_device_ = nullptr;
-  }
+  AlsaClose();
+  DCHECK(!alsa_device_);
 
   mix_buf_ = nullptr;
   mix_buf_frames_ = 0;
@@ -200,28 +157,38 @@ bool AlsaOutput::StartMixJob(MixJob* job, const LocalTime& process_start) {
   // the buffer.  If we are primed, but do not know the transformation between
   // audio frames and local time ticks, do our best to figure it out in the
   // process.
-  snd_pcm_sframes_t avail;
+  int res;
+  uint32_t avail;
   if (!local_to_output_known_) {
-    snd_pcm_sframes_t delay;
-
-    int res = snd_pcm_avail_delay(alsa_device_, &avail, &delay);
+    uint32_t delay;
+    res = AlsaGetAvailDelay(&avail, &delay);
     LocalTime now = LocalClock::now();
+
+    // When using the FNL tinyalsa implementation, if we have queued enough data
+    // to start, but have not actually started yet, the implementation will
+    // return EAGAIN to indicate that we are going to start "Real Soon Now".
+    // Wait just a bit, then try again.
+    if (res == -EAGAIN) {
+      SetNextSchedDelay(local_time::from_msec(1));
+      return false;
+    }
 
     if (res < 0) {
       HandleAlsaError(res);
       return false;
     }
 
-    DCHECK_GE(delay, 0);
     int64_t now_ticks = now.time_since_epoch().count();
-    local_to_output_ = LinearTransform(now_ticks, frames_per_tick_, -delay);
+    local_to_output_ = LinearTransform(now_ticks,
+                                       frames_per_tick_,
+                                       -static_cast<int64_t>(delay));
     local_to_output_known_ = true;
     frames_sent_ = 0;
     while (++local_to_output_gen_ == MixJob::INVALID_GENERATION) {}
   } else {
-    avail = snd_pcm_avail_update(alsa_device_);
-    if (avail < 0) {
-      HandleAlsaError(avail);
+    res = AlsaGetAvailDelay(&avail);
+    if (res < 0) {
+      HandleAlsaError(res);
       return false;
     }
   }
@@ -234,16 +201,15 @@ bool AlsaOutput::StartMixJob(MixJob* job, const LocalTime& process_start) {
                                                       &playout_time_ticks);
   DCHECK(trans_ok);
   LocalTime playout_time = LocalTime(LocalDuration(playout_time_ticks));
-  LocalTime low_buf_time = playout_time - LOW_BUF_THRESH;
+  LocalTime low_buf_time = playout_time - kLowBufThresh;
 
   if (process_start >= low_buf_time) {
     // Because of the way that ALSA consumes data and updates its internal
     // bookkeeping, it is possible that we are past our low buffer threshold,
     // but ALSA still thinks that there is no room to write new frames.  If this
     // is the case, just try again a short amount of time in the future.
-    DCHECK_GE(avail, 0);
     if (!avail) {
-      SetNextSchedDelay(WAIT_FOR_ALSA_DELAY);
+      SetNextSchedDelay(kWaitForAlsaDelay);
       return false;
     }
 
@@ -255,11 +221,12 @@ bool AlsaOutput::StartMixJob(MixJob* job, const LocalTime& process_start) {
     // reason, just try to send a full buffer and deal with the underflow when
     // ALSA notices it.
     int64_t fill_amt;
-    LocalTime playout_target = LocalClock::now() + TARGET_LATENCY;
+    LocalTime now = LocalClock::now();
+    LocalTime playout_target = now + kTargetLatency;
     if (playout_target > playout_time) {
       fill_amt = (playout_target - playout_time).count();
     } else {
-      fill_amt = TARGET_LATENCY.count();
+      fill_amt = kTargetLatency.count();
     }
 
     DCHECK_GE(fill_amt, 0);
@@ -291,9 +258,9 @@ bool AlsaOutput::FinishMixJob(const MixJob& job) {
   DCHECK(job.buf_frames);
 
   // We should always be able to write all of the data that we mixed.
-  snd_pcm_sframes_t res;
-  res = snd_pcm_writei(alsa_device_, job.buf, job.buf_frames);
-  if (res != job.buf_frames) {
+  int res;
+  res = AlsaWrite(job.buf, job.buf_frames);
+  if (static_cast<unsigned int>(res) != job.buf_frames) {
     HandleAlsaError(res);
     return false;
   }
@@ -303,7 +270,7 @@ bool AlsaOutput::FinishMixJob(const MixJob& job) {
 }
 
 void AlsaOutput::HandleAsUnderflow() {
-  snd_pcm_sframes_t res;
+  int res;
 
   // If we were already primed, then this is a legitimate underflow, not the
   // startup case or recovery from some other error.
@@ -312,7 +279,7 @@ void AlsaOutput::HandleAsUnderflow() {
     // friendly name to the output so the log helps to identify which output
     // underflowed.
     LOG(WARNING) << "[" << this << "] : underflow";
-    res = snd_pcm_recover(alsa_device_, -EPIPE, true);
+    res = AlsaRecover(-EPIPE);
     if (res < 0) {
       HandleAsError(res);
       return;
@@ -324,7 +291,7 @@ void AlsaOutput::HandleAsUnderflow() {
   // with the minimimum amt we can get away with and still be able to start
   // mixing without underflowing.
   output_formatter_->FillWithSilence(mix_buf_.get(), mix_buf_frames_);
-  res = snd_pcm_writei(alsa_device_, mix_buf_.get(), mix_buf_frames_);
+  res = AlsaWrite(mix_buf_.get(), mix_buf_frames_);
 
   if (res < 0) {
     HandleAsError(res);
@@ -336,15 +303,13 @@ void AlsaOutput::HandleAsUnderflow() {
   SetNextSchedDelay(local_time::from_msec(1));
 }
 
-void AlsaOutput::HandleAsError(snd_pcm_sframes_t code) {
+void AlsaOutput::HandleAsError(int code) {
   if (IsRecoverableAlsaError(code)) {
-    snd_pcm_sframes_t new_code;
-
     // TODO(johngro): Throttle this somehow.
     LOG(WARNING) << "[" << this << "] : Attempting to recover from ALSA error "
                  << code;
 
-    new_code = snd_pcm_recover(alsa_device_, code, true);
+    int new_code = AlsaRecover(code);
     DCHECK(!new_code || (new_code == code));
 
     // If we recovered, or we didn't and the original error was EINTR, schedule
@@ -359,7 +324,7 @@ void AlsaOutput::HandleAsError(snd_pcm_sframes_t code) {
     if (!new_code || (new_code == -EINTR)) {
       primed_ = false;
       local_to_output_known_ = false;
-      SetNextSchedDelay(ERROR_RECOVERY_TIME);
+      SetNextSchedDelay(kErrorRecoveryTime);
     }
   }
 
@@ -368,7 +333,7 @@ void AlsaOutput::HandleAsError(snd_pcm_sframes_t code) {
   ShutdownSelf();
 }
 
-void AlsaOutput::HandleAlsaError(snd_pcm_sframes_t code) {
+void AlsaOutput::HandleAlsaError(int code) {
   // ALSA signals an underflow by returning -EPIPE from jobs.  If the error code
   // is -EPIPE, treat this as an underflow and attempt to reprime the pipeline.
   if (code == -EPIPE) {

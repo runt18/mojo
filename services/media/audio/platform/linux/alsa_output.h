@@ -5,7 +5,6 @@
 #ifndef SERVICES_MEDIA_AUDIO_PLATFORM_LINUX_ALSA_OUTPUT_H_
 #define SERVICES_MEDIA_AUDIO_PLATFORM_LINUX_ALSA_OUTPUT_H_
 
-#include <alsa/asoundlib.h>
 #include <memory>
 
 #include "mojo/services/media/common/cpp/linear_transform.h"
@@ -36,17 +35,35 @@ class AlsaOutput : public StandardOutputBase {
   bool FinishMixJob(const MixJob& job) override;
 
  private:
-  void HandleAlsaError(snd_pcm_sframes_t code);
-  void HandleAsError(snd_pcm_sframes_t code);
+  static constexpr LocalDuration kChunkDuration  = local_time::from_msec(5);
+  static constexpr uint32_t kLowBufThreshChunks  = 6;
+  static constexpr uint32_t kTargetLatencyChunks = kLowBufThreshChunks + 1;
+  static constexpr LocalDuration kLowBufThresh   = kChunkDuration
+                                                 * kLowBufThreshChunks;
+  static constexpr LocalDuration kTargetLatency  = kChunkDuration
+                                                 * kTargetLatencyChunks;
+
+  void HandleAlsaError(int code);
+  void HandleAsError(int code);
   void HandleAsUnderflow();
 
-  snd_pcm_t* alsa_device_ = nullptr;
-  snd_pcm_format_t alsa_format_;
+  // libtinyalsa vs. libasound abstraction.  Methods are implemented either in
+  // alsa_output_tinyalsa.cc or alsa_output_desktop.cc depending on the target
+  // we are building for.
+  MediaResult AlsaOpen();
+  void AlsaClose();
+  MediaResult AlsaSelectFormat(const LpcmMediaTypeDetailsPtr& config);
+  int AlsaWrite(const void* data, uint32_t frames);
+  int AlsaGetAvailDelay(uint32_t* avail, uint32_t* delay = nullptr);
+  int AlsaRecover(int err_code);
+
+  void* alsa_device_ = nullptr;
+  int32_t alsa_format_ = -1;
 
   LinearTransform::Ratio frames_per_tick_;
 
   std::unique_ptr<uint8_t> mix_buf_;
-  uint32_t mix_buf_frames_;
+  uint32_t mix_buf_frames_ = 0;
 
   bool primed_ = false;
   bool local_to_output_known_ = false;
