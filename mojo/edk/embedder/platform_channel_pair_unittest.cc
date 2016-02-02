@@ -17,7 +17,6 @@
 #include <utility>
 #include <vector>
 
-#include "base/logging.h"
 #include "build/build_config.h"
 #include "mojo/edk/embedder/platform_channel_utils.h"
 #include "mojo/edk/platform/platform_handle.h"
@@ -39,7 +38,7 @@ void WaitReadable(PlatformHandle h) {
   struct pollfd pfds = {};
   pfds.fd = h.fd;
   pfds.events = POLLIN;
-  CHECK_EQ(poll(&pfds, 1, -1), 1);
+  ASSERT_EQ(1, poll(&pfds, 1, -1));
 }
 
 class PlatformChannelPairTest : public testing::Test {
@@ -86,24 +85,20 @@ TEST_F(PlatformChannelPairTest, NoSigPipe) {
 
   // Try reading again.
   ssize_t result = read(server_handle.get().fd, buffer, sizeof(buffer));
-  // We should probably get zero (for "end of file"), but -1 would also be okay.
-  EXPECT_TRUE(result == 0 || result == -1);
-  if (result == -1)
-    PLOG(WARNING) << "read (expected 0 for EOF)";
+  // We should get zero (for "end of file"), but -1 would also be okay.
+  EXPECT_EQ(0, result);
 
   // Test our replacement for |write()|/|send()|.
   result = PlatformChannelWrite(server_handle.get(), kHello, sizeof(kHello));
   EXPECT_EQ(-1, result);
-  if (errno != EPIPE)
-    PLOG(WARNING) << "write (expected EPIPE)";
+  EXPECT_EQ(EPIPE, errno);
 
   // Test our replacement for |writev()|/|sendv()|.
   struct iovec iov[2] = {{const_cast<char*>(kHello), sizeof(kHello)},
                          {const_cast<char*>(kHello), sizeof(kHello)}};
   result = PlatformChannelWritev(server_handle.get(), iov, 2);
   EXPECT_EQ(-1, result);
-  if (errno != EPIPE)
-    PLOG(WARNING) << "write (expected EPIPE)";
+  EXPECT_EQ(EPIPE, errno);
 }
 
 TEST_F(PlatformChannelPairTest, SendReceiveData) {
