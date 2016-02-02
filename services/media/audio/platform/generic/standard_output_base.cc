@@ -211,6 +211,9 @@ void StandardOutputBase::ForeachTrack(const TrackSetupTask& setup,
         if (!setup_done) { break; }
       }
 
+      // Capture the amplitude to apply for the next bit of audio.
+      info->amplitude_scale = link->amplitude_scale();
+
       // Now process the packet which is at the front of the track's queue.  If
       // the packet has been entirely consumed, pop it off the front and proceed
       // to the next one.  Otherwise, we are finished.
@@ -353,6 +356,7 @@ bool StandardOutputBase::ProcessMix(
                                             region.frac_frame_len,
                                             &frac_input_offset,
                                             info->step_size,
+                                            info->amplitude_scale,
                                             cur_mix_job_.accumulate);
     DCHECK_LE(output_offset, frames_left);
 

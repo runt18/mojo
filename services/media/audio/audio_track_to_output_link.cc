@@ -3,6 +3,8 @@
 // found in the LICENSE file.
 
 #include "base/logging.h"
+#include "services/media/audio/audio_output.h"
+#include "services/media/audio/audio_track_impl.h"
 #include "services/media/audio/audio_track_to_output_link.h"
 
 namespace mojo {
@@ -23,6 +25,31 @@ AudioTrackToOutputLink::AudioTrackToOutputLink(AudioTrackImplWeakPtr track,
 
 AudioTrackToOutputLink::~AudioTrackToOutputLink() {
   ReleaseQueue(pending_queue_);
+}
+
+void AudioTrackToOutputLink::UpdateGain() {
+  AudioTrackImplPtr track(GetTrack());
+  AudioOutputPtr    output(GetOutput());
+
+  // If either side of this relationship is going away, then we are shutting
+  // down.  Don't bother to re-calculate the amplitude scale factor.
+  if (!track || !output) { return; }
+
+  // Obtain the track gain and, if it is at or below the muted threshold, force
+  // the track to be muted and get out.
+  double db_gain = track->DbGain();
+  if (db_gain <= AudioTrack::kMutedGain) {
+    gain_.ForceMute();
+    return;
+  }
+
+  // Add in the output gain and clamp to the maximum allowed total gain.
+  db_gain += output->DbGain();
+  if (db_gain > AudioTrack::kMaxGain) {
+    db_gain = AudioTrack::kMaxGain;
+  }
+
+  gain_.Set(db_gain);
 }
 
 AudioTrackToOutputLinkPtr AudioTrackToOutputLink::New(
@@ -47,7 +74,7 @@ void AudioTrackToOutputLink::FlushPendingQueue() {
   // Note: the safety of this technique depends on Flush only ever being called
   // from the AudioTrack, and the AudioTrack's actions being serialized on the
   // AudioServer's message loop thread.  If multiple flushes are allowed to be
-  // invoked simultaniously, or if a packet is permitted to be added to the
+  // invoked simultaneously, or if a packet is permitted to be added to the
   // queue while a flush operation is in progress, it is possible to return
   // packets to the user in an order different than the one that they were
   // queued in.

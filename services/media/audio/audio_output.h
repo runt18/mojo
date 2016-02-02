@@ -35,6 +35,9 @@ class AudioOutput {
   MediaResult AddTrackLink(AudioTrackToOutputLinkPtr link);
   MediaResult RemoveTrackLink(const AudioTrackToOutputLinkPtr& link);
 
+  // Accessor for the current value of the dB gain for the output.
+  float DbGain() const { return db_gain_; }
+
  protected:
   explicit AudioOutput(AudioOutputManager* manager);
 
@@ -159,6 +162,11 @@ class AudioOutput {
   base::Lock shutdown_lock_;
   scoped_refptr<base::SequencedTaskRunner> task_runner_;
   AudioOutputWeakPtr weak_self_;
+
+  // TODO(johngro): Someday, when we expose output enumeration and control from
+  // the audio service, add the ability to change this value and update the
+  // assocated track-to-output-link amplitude scale factors.
+  float db_gain_ = 0.0;
 
   // TODO(johngro): Eliminate the shutting down flag and just use the
   // task_runner_'s nullness for this test?

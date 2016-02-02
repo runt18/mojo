@@ -10,6 +10,7 @@
 #include "mojo/services/media/common/interfaces/media_types.mojom.h"
 #include "services/media/audio/audio_pipe.h"
 #include "services/media/audio/audio_track_impl.h"
+#include "services/media/audio/gain.h"
 
 namespace mojo {
 namespace media {
@@ -80,6 +81,11 @@ class Mixer {
   // some form of (N,M) stepping system where we count by frac_step_size for N
   // output samples, then frac_step_size+1 for M samples, etc...
   //
+  // @param amplitude_scale
+  // The scale factor for the amplitude to be applied when mixing.  Currently,
+  // this is expressed as a 4.28 fixed point integer.  See the
+  // AudioTrackToOutputLink class for details.
+  //
   // @param accumulate
   // When true, the mixer will accumulate into the destination buffer (read,
   // sum, clip, write-back).  When false, the mixer will simply replace the
@@ -88,14 +94,15 @@ class Mixer {
   // @return True if the mixer is finished with this source data and will not
   // need it in the future.  False if the mixer has not consumed the entire
   // source buffer and will need more of it in the future.
-  virtual bool Mix(int32_t*    dst,
-                   uint32_t    dst_frames,
-                   uint32_t*   dst_offset,
-                   const void* src,
-                   uint32_t    frac_src_frames,
-                   int32_t*    frac_src_offset,
-                   uint32_t    frac_step_size,
-                   bool        accumulate) = 0;
+  virtual bool Mix(int32_t*     dst,
+                   uint32_t     dst_frames,
+                   uint32_t*    dst_offset,
+                   const void*  src,
+                   uint32_t     frac_src_frames,
+                   int32_t*     frac_src_offset,
+                   uint32_t     frac_step_size,
+                   Gain::AScale amplitude_scale,
+                   bool         accumulate) = 0;
 
   // Reset
   //

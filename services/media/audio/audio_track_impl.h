@@ -51,6 +51,7 @@ class AudioTrackImpl : public AudioTrack {
 
   uint32_t BytesPerFrame() const { return bytes_per_frame_; }
   const LpcmMediaTypeDetailsPtr& Format() const { return format_; }
+  float DbGain() const { return db_gain_; }
 
  private:
   friend class AudioPipe;
@@ -63,6 +64,7 @@ class AudioTrackImpl : public AudioTrack {
   void Configure(AudioTrackConfigurationPtr configuration,
                  InterfaceRequest<MediaPipe> req) override;
   void GetRateControl(InterfaceRequest<RateControl> req) override;
+  void SetGain(float db_gain) override;
 
   // Methods called by our AudioPipe.
   //
@@ -83,6 +85,7 @@ class AudioTrackImpl : public AudioTrack {
   uint32_t                  bytes_per_frame_ = 1;
   LpcmMediaTypeDetailsPtr   format_;
   AudioTrackToOutputLinkSet outputs_;
+  float                     db_gain_ = 0.0;
 };
 
 }  // namespace audio

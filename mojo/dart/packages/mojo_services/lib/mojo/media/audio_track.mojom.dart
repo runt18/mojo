@@ -473,11 +473,76 @@ class _AudioTrackGetRateControlParams extends bindings.Struct {
 }
 
 
+class _AudioTrackSetGainParams extends bindings.Struct {
+  static const List<bindings.StructDataHeader> kVersions = const [
+    const bindings.StructDataHeader(16, 0)
+  ];
+  double dbGain = 0.0;
 
+  _AudioTrackSetGainParams() : super(kVersions.last.size);
+
+  static _AudioTrackSetGainParams deserialize(bindings.Message message) {
+    var decoder = new bindings.Decoder(message);
+    var result = decode(decoder);
+    if (decoder.excessHandles != null) {
+      decoder.excessHandles.forEach((h) => h.close());
+    }
+    return result;
+  }
+
+  static _AudioTrackSetGainParams decode(bindings.Decoder decoder0) {
+    if (decoder0 == null) {
+      return null;
+    }
+    _AudioTrackSetGainParams result = new _AudioTrackSetGainParams();
+
+    var mainDataHeader = decoder0.decodeStructDataHeader();
+    if (mainDataHeader.version <= kVersions.last.version) {
+      // Scan in reverse order to optimize for more recent versions.
+      for (int i = kVersions.length - 1; i >= 0; --i) {
+        if (mainDataHeader.version >= kVersions[i].version) {
+          if (mainDataHeader.size == kVersions[i].size) {
+            // Found a match.
+            break;
+          }
+          throw new bindings.MojoCodecError(
+              'Header size doesn\'t correspond to known version size.');
+        }
+      }
+    } else if (mainDataHeader.size < kVersions.last.size) {
+      throw new bindings.MojoCodecError(
+        'Message newer than the last known version cannot be shorter than '
+        'required by the last known version.');
+    }
+    if (mainDataHeader.version >= 0) {
+      
+      result.dbGain = decoder0.decodeFloat(8);
+    }
+    return result;
+  }
+
+  void encode(bindings.Encoder encoder) {
+    var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
+    
+    encoder0.encodeFloat(dbGain, 8);
+  }
+
+  String toString() {
+    return "_AudioTrackSetGainParams("
+           "dbGain: $dbGain" ")";
+  }
+
+  Map toJson() {
+    Map map = new Map();
+    map["dbGain"] = dbGain;
+    return map;
+  }
+}
 
 const int _AudioTrack_describeName = 0;
 const int _AudioTrack_configureName = 1;
 const int _AudioTrack_getRateControlName = 2;
+const int _AudioTrack_setGainName = 3;
 
 
 
@@ -494,6 +559,9 @@ abstract class AudioTrack {
   dynamic describe([Function responseFactory = null]);
   void configure(AudioTrackConfiguration configuration, Object pipe);
   void getRateControl(Object rateControl);
+  void setGain(double dbGain);
+  static const double kMutedGain = -160.0;
+  static const double kMaxGain = 20.0;
 }
 
 
@@ -581,6 +649,15 @@ class _AudioTrackProxyCalls implements AudioTrack {
       var params = new _AudioTrackGetRateControlParams();
       params.rateControl = rateControl;
       _proxyImpl.sendMessage(params, _AudioTrack_getRateControlName);
+    }
+    void setGain(double dbGain) {
+      if (!_proxyImpl.isBound) {
+        _proxyImpl.proxyError("The Proxy is closed.");
+        return;
+      }
+      var params = new _AudioTrackSetGainParams();
+      params.dbGain = dbGain;
+      _proxyImpl.sendMessage(params, _AudioTrack_setGainName);
     }
 }
 
@@ -708,6 +785,11 @@ class AudioTrackStub extends bindings.Stub {
         var params = _AudioTrackGetRateControlParams.deserialize(
             message.payload);
         _impl.getRateControl(params.rateControl);
+        break;
+      case _AudioTrack_setGainName:
+        var params = _AudioTrackSetGainParams.deserialize(
+            message.payload);
+        _impl.setGain(params.dbGain);
         break;
       default:
         throw new bindings.MojoCodecError("Unexpected message name");

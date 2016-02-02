@@ -2,6 +2,7 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
+#include <algorithm>
 #include <limits>
 
 #include "base/logging.h"
@@ -14,6 +15,8 @@ namespace media {
 namespace audio {
 namespace mixers {
 
+using utils::ScalerType;
+
 // Point Sample Mixer implementation.
 template <size_t   DChCount,
           typename SType,
@@ -22,40 +25,45 @@ class PointSamplerImpl : public PointSampler {
  public:
   PointSamplerImpl() : PointSampler(0, FRAC_ONE - 1) {}
 
-  bool Mix(int32_t*    dst,
-           uint32_t    dst_frames,
-           uint32_t*   dst_offset,
-           const void* src,
-           uint32_t    frac_src_frames,
-           int32_t*    frac_src_offset,
-           uint32_t    frac_step_size,
-           bool        accumulate) override;
+  bool Mix(int32_t*     dst,
+           uint32_t     dst_frames,
+           uint32_t*    dst_offset,
+           const void*  src,
+           uint32_t     frac_src_frames,
+           int32_t*     frac_src_offset,
+           uint32_t     frac_step_size,
+           Gain::AScale amplitude_scale,
+           bool         accumulate) override;
 
  private:
-  template <bool DoAccumulate>
-  static inline bool Mix(int32_t*    dst,
-                         uint32_t    dst_frames,
-                         uint32_t*   dst_offset,
-                         const void* src,
-                         uint32_t    frac_src_frames,
-                         int32_t*    frac_src_offset,
-                         uint32_t    frac_step_size);
+  template <ScalerType ScaleType,
+            bool       DoAccumulate>
+  static inline bool Mix(int32_t*     dst,
+                         uint32_t     dst_frames,
+                         uint32_t*    dst_offset,
+                         const void*  src,
+                         uint32_t     frac_src_frames,
+                         int32_t*     frac_src_offset,
+                         uint32_t     frac_step_size,
+                         Gain::AScale amplitude_scale);
 };
 
 template <size_t   DChCount,
           typename SType,
           size_t   SChCount>
-template <bool DoAccumulate>
+template <ScalerType ScaleType,
+          bool       DoAccumulate>
 inline bool PointSamplerImpl<DChCount, SType, SChCount>::Mix(
-    int32_t*    dst,
-    uint32_t    dst_frames,
-    uint32_t*   dst_offset,
-    const void* src_void,
-    uint32_t    frac_src_frames,
-    int32_t*    frac_src_offset,
-    uint32_t    frac_step_size) {
+    int32_t*     dst,
+    uint32_t     dst_frames,
+    uint32_t*    dst_offset,
+    const void*  src_void,
+    uint32_t     frac_src_frames,
+    int32_t*     frac_src_offset,
+    uint32_t     frac_step_size,
+    Gain::AScale amplitude_scale) {
   using SR = utils::SrcReader<SType, SChCount, DChCount>;
-  using DM = utils::DstMixer<DoAccumulate>;
+  using DM = utils::DstMixer<ScaleType, DoAccumulate>;
 
   const SType* src  = static_cast<const SType*>(src_void);
   uint32_t     doff = *dst_offset;
@@ -66,21 +74,37 @@ inline bool PointSamplerImpl<DChCount, SType, SChCount>::Mix(
   DCHECK_LT(soff, static_cast<int32_t>(frac_src_frames));
   DCHECK_GE(soff, 0);
 
-  while ((doff < dst_frames) &&
-         (soff < static_cast<int32_t>(frac_src_frames))) {
-    uint32_t src_iter;
-    int32_t* out;
+  // If we are not attenuated to the point of being muted, go ahead and perform
+  // the mix.  Otherwise, just update the source and dest offsets.
+  if (ScaleType != ScalerType::MUTED) {
+    while ((doff < dst_frames) &&
+           (soff < static_cast<int32_t>(frac_src_frames))) {
+      uint32_t src_iter;
+      int32_t* out;
 
-    src_iter = (soff >> AudioTrackImpl::PTS_FRACTIONAL_BITS) * SChCount;
-    out = dst + (doff * DChCount);
+      src_iter = (soff >> AudioTrackImpl::PTS_FRACTIONAL_BITS) * SChCount;
+      out = dst + (doff * DChCount);
 
-    for (size_t dst_iter = 0; dst_iter < DChCount; ++dst_iter) {
-      int32_t sample = SR::Read(src + src_iter + (dst_iter / SR::DstPerSrc));
-      out[dst_iter] = DM::Mix(out[dst_iter], sample);
+      for (size_t dst_iter = 0; dst_iter < DChCount; ++dst_iter) {
+        int32_t sample = SR::Read(src + src_iter + (dst_iter / SR::DstPerSrc));
+        out[dst_iter] = DM::Mix(out[dst_iter], sample, amplitude_scale);
+      }
+
+      doff += 1;
+      soff += frac_step_size;
     }
+  } else {
+    if (doff < dst_frames) {
+      // Figure out how many samples we would have produced and update the soff
+      // and doff values appropriately.
+      uint32_t src_avail = ((frac_src_frames - soff) + frac_step_size - 1)
+                         / frac_step_size;
+      uint32_t dst_avail = (dst_frames - doff);
+      uint32_t avail     = std::min(src_avail, dst_avail);
 
-    doff += 1;
-    soff += frac_step_size;
+      soff += avail * frac_step_size;
+      doff += avail;
+    }
   }
 
   *dst_offset = doff;
@@ -93,20 +117,48 @@ template <size_t   DChCount,
           typename SType,
           size_t   SChCount>
 bool PointSamplerImpl<DChCount, SType, SChCount>::Mix(
-    int32_t*    dst,
-    uint32_t    dst_frames,
-    uint32_t*   dst_offset,
-    const void* src,
-    uint32_t    frac_src_frames,
-    int32_t*    frac_src_offset,
-    uint32_t    frac_step_size,
-    bool        accumulate) {
-  return accumulate ? Mix<true>(dst, dst_frames, dst_offset,
-                                src, frac_src_frames, frac_src_offset,
-                                frac_step_size)
-                    : Mix<false>(dst, dst_frames, dst_offset,
-                                src, frac_src_frames, frac_src_offset,
-                                frac_step_size);
+    int32_t*     dst,
+    uint32_t     dst_frames,
+    uint32_t*    dst_offset,
+    const void*  src,
+    uint32_t     frac_src_frames,
+    int32_t*     frac_src_offset,
+    uint32_t     frac_step_size,
+    Gain::AScale amplitude_scale,
+    bool         accumulate) {
+  if (amplitude_scale == Gain::UNITY) {
+    return accumulate ? Mix<ScalerType::EQ_UNITY, true>(
+                            dst, dst_frames, dst_offset,
+                            src, frac_src_frames, frac_src_offset,
+                            frac_step_size, amplitude_scale)
+                      : Mix<ScalerType::EQ_UNITY, false>(
+                            dst, dst_frames, dst_offset,
+                            src, frac_src_frames, frac_src_offset,
+                            frac_step_size, amplitude_scale);
+  } else if (amplitude_scale < Gain::MuteThreshold(15)) {
+    return Mix<ScalerType::MUTED, false>(
+               dst, dst_frames, dst_offset,
+               src, frac_src_frames, frac_src_offset,
+               frac_step_size, amplitude_scale);
+  } else if (amplitude_scale < Gain::UNITY) {
+    return accumulate ? Mix<ScalerType::LT_UNITY, true>(
+                            dst, dst_frames, dst_offset,
+                            src, frac_src_frames, frac_src_offset,
+                            frac_step_size, amplitude_scale)
+                      : Mix<ScalerType::LT_UNITY, false>(
+                            dst, dst_frames, dst_offset,
+                            src, frac_src_frames, frac_src_offset,
+                            frac_step_size, amplitude_scale);
+  } else {
+    return accumulate ? Mix<ScalerType::GT_UNITY, true>(
+                            dst, dst_frames, dst_offset,
+                            src, frac_src_frames, frac_src_offset,
+                            frac_step_size, amplitude_scale)
+                      : Mix<ScalerType::GT_UNITY, false>(
+                            dst, dst_frames, dst_offset,
+                            src, frac_src_frames, frac_src_offset,
+                            frac_step_size, amplitude_scale);
+  }
 }
 
 // Templates used to expand all of the different combinations of the possible

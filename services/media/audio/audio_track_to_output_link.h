@@ -11,6 +11,7 @@
 #include "base/synchronization/lock.h"
 #include "services/media/audio/audio_pipe.h"
 #include "services/media/audio/fwd_decls.h"
+#include "services/media/audio/gain.h"
 
 namespace mojo {
 namespace media {
@@ -68,6 +69,14 @@ class AudioTrackToOutputLink {
                                        AudioOutputWeakPtr output);
   virtual ~AudioTrackToOutputLink();
 
+  // Utility function which recomputes the amplitude scale factor as function of
+  // the track and the output gains.  Should only be called from the audio
+  // service's main message loop thread.
+  void UpdateGain();
+
+  // Accessor for the current value of the gain's amplitude scalar.
+  Gain::AScale amplitude_scale() const { return gain_.amplitude_scale(); }
+
   // Accessors for the track and output pointers.  Automatically attempts to
   // promote the weak pointer to a strong pointer.
   //
@@ -116,6 +125,7 @@ class AudioTrackToOutputLink {
   base::Lock pending_queue_lock_;
   PacketQueuePtr pending_queue_;
   bool flushed_ = true;
+  Gain gain_;
 #if !(defined(NDEBUG) && !defined(DCHECK_ALWAYS_ON))
   std::atomic<bool> flush_lock_held_;
 #endif

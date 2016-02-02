@@ -8,6 +8,8 @@
 #include <limits>
 #include <type_traits>
 
+#include "services/media/audio/gain.h"
+
 namespace mojo {
 namespace media {
 namespace audio {
@@ -18,6 +20,14 @@ namespace utils {
 // be used by mixer implementations and expanded/optimized at compile time in
 // order to produce efficient inner mixing loops for all of the different
 // variations of source/destination sample type/channel counts.
+
+// Enum used to differentiate between different scaling optimization types.
+enum class ScalerType {
+  MUTED,     // Massive attenuation.  Just skip data.
+  LT_UNITY,  // Less than unity gain.  Scaling is needed, but clipping is not.
+  EQ_UNITY,  // Unity gain.  Neither scaling nor clipping is needed.
+  GT_UNITY,  // Greater than unity gain.  Scaling and clipping is needed.
+};
 
 // Template to read samples and normalize them into signed 16 bit integers
 // stored in 32 bit integers.
@@ -45,6 +55,62 @@ class SampleNormalizer<
  public:
   static inline int32_t Read(const SType* src) {
     return static_cast<int32_t>(*src);
+  }
+};
+
+// Template used to scale a normalized sample value by the supplied amplitude
+// scaler.
+template <ScalerType ScaleType, typename Enable = void>
+class SampleScaler;
+
+template <ScalerType ScaleType>
+class SampleScaler<ScaleType,
+      typename std::enable_if<
+        (ScaleType == ScalerType::MUTED),
+      void>::type> {
+ public:
+  static inline int32_t Scale(int32_t val, Gain::AScale scale) {
+    return 0;
+  }
+};
+
+template <ScalerType ScaleType>
+class SampleScaler<ScaleType,
+      typename std::enable_if<
+        (ScaleType == ScalerType::LT_UNITY),
+      void>::type> {
+ public:
+  static inline int32_t Scale(int32_t val, Gain::AScale scale) {
+    return static_cast<int32_t>(
+        (static_cast<int64_t>(val) * scale) >> Gain::FRACTIONAL_BITS);
+  }
+};
+
+template <ScalerType ScaleType>
+class SampleScaler<ScaleType,
+      typename std::enable_if<
+        (ScaleType == ScalerType::EQ_UNITY),
+      void>::type> {
+ public:
+  static inline int32_t Scale(int32_t val, Gain::AScale scale) {
+    return val;
+  }
+};
+
+template <ScalerType ScaleType>
+class SampleScaler<ScaleType,
+      typename std::enable_if<
+        (ScaleType == ScalerType::GT_UNITY),
+      void>::type> {
+ public:
+  static inline int32_t Scale(int32_t val, Gain::AScale scale) {
+    using Limit = std::numeric_limits<int16_t>;
+
+    val = static_cast<int32_t>(
+        (static_cast<int64_t>(val) * scale) >> Gain::FRACTIONAL_BITS);
+
+    return (val > Limit::max()) ? Limit::max() :
+          ((val < Limit::min()) ? Limit::min() : val);
   }
 };
 
@@ -86,30 +152,37 @@ class SrcReader<SType, SChCount, DChCount,
 };
 
 // Template to mix normalized destination samples with normalized source samples
-// based on accumulation policy.
-template <bool     DoAccumulate,
+// based on scaling and accumulation policy.
+template <ScalerType ScaleType,
+          bool       DoAccumulate,
           typename Enable = void>
 class DstMixer;
 
-template <bool DoAccumulate>
-class DstMixer<DoAccumulate,
+template <ScalerType ScaleType,
+          bool       DoAccumulate>
+class DstMixer<ScaleType, DoAccumulate,
       typename std::enable_if<
         DoAccumulate == false,
       void>::type> {
  public:
-  static inline constexpr int32_t Mix(int32_t dst, int32_t sample) {
-    return sample;
+  static inline constexpr int32_t Mix(int32_t dst,
+                                      int32_t sample,
+                                      Gain::AScale scale) {
+    return SampleScaler<ScaleType>::Scale(sample, scale);
   }
 };
 
-template <bool DoAccumulate>
-class DstMixer<DoAccumulate,
+template <ScalerType ScaleType,
+          bool       DoAccumulate>
+class DstMixer<ScaleType, DoAccumulate,
       typename std::enable_if<
         DoAccumulate == true,
       void>::type> {
  public:
-  static inline constexpr int32_t Mix(int32_t dst, int32_t sample) {
-    return sample + dst;
+  static inline constexpr int32_t Mix(int32_t dst,
+                                      int32_t sample,
+                                      Gain::AScale scale) {
+    return SampleScaler<ScaleType>::Scale(sample, scale) + dst;
   }
 };
 

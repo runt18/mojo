@@ -276,11 +276,27 @@ void AudioTrackImpl::GetRateControl(InterfaceRequest<RateControl> req) {
   }
 }
 
+void AudioTrackImpl::SetGain(float db_gain) {
+  if (db_gain >= AudioTrack::kMaxGain) {
+    LOG(ERROR) << "Gain value too large (" << db_gain << ") for audio track.";
+    Shutdown();
+    return;
+  }
+
+  db_gain_ = db_gain;
+
+  for (const auto& output : outputs_) {
+    DCHECK(output);
+    output->UpdateGain();
+  }
+}
+
 void AudioTrackImpl::AddOutput(AudioTrackToOutputLinkPtr link) {
   // TODO(johngro): assert that we are on the main message loop thread.
   DCHECK(link);
   auto res = outputs_.emplace(link);
   DCHECK(res.second);
+  link->UpdateGain();
 }
 
 void AudioTrackImpl::RemoveOutput(AudioTrackToOutputLinkPtr link) {

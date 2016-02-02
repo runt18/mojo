@@ -12,6 +12,7 @@
 #include "mojo/services/media/common/interfaces/media_types.mojom.h"
 #include "services/media/audio/audio_output.h"
 #include "services/media/audio/audio_track_to_output_link.h"
+#include "services/media/audio/gain.h"
 #include "services/media/audio/platform/generic/mixer.h"
 #include "services/media/audio/platform/generic/output_formatter.h"
 
@@ -49,6 +50,7 @@ class StandardOutputBase : public AudioOutput {
     uint32_t lt_to_track_frames_gen = 0;
     uint32_t out_frames_to_track_frames_gen = MixJob::INVALID_GENERATION;
     uint32_t step_size;
+    Gain::AScale amplitude_scale;
     MixerPtr mixer;
 
     void UpdateTrackTrans(const AudioTrackImplPtr& track);
