@@ -39,7 +39,7 @@ struct ChildProcessHost::LaunchData {
 
   NativeApplicationOptions options;
   base::FilePath child_path;
-  PlatformPipe platform_channel_pair;
+  PlatformPipe platform_pipe;
   std::string child_connection_id;
 };
 
@@ -69,7 +69,7 @@ void ChildProcessHost::Start(const NativeApplicationOptions& options) {
   // |base_edk::PlatformTaskRunnerImpl| for each instance. Instead, there should
   // be one per thread.
   mojo::ScopedMessagePipeHandle handle(mojo::embedder::ConnectToSlave(
-      nullptr, launch_data->platform_channel_pair.handle0.Pass(),
+      nullptr, launch_data->platform_pipe.handle0.Pass(),
       [this]() { DidConnectToSlave(); },
       MakeRefCounted<base_edk::PlatformTaskRunnerImpl>(
           base::ThreadTaskRunnerHandle::Get()),
@@ -147,7 +147,7 @@ base::Process ChildProcessHost::DoLaunch(scoped_ptr<LaunchData> launch_data) {
 
   base::FileHandleMappingVector fds_to_remap;
   fds_to_remap.push_back(
-      std::pair<int, int>(launch_data->platform_channel_pair.handle1.get().fd,
+      std::pair<int, int>(launch_data->platform_pipe.handle1.get().fd,
                           base::GlobalDescriptors::kBaseDescriptor));
   base::LaunchOptions options;
   options.fds_to_remap = &fds_to_remap;
@@ -159,7 +159,7 @@ base::Process ChildProcessHost::DoLaunch(scoped_ptr<LaunchData> launch_data) {
   base::Process child_process =
       base::LaunchProcess(child_command_line, options);
   if (child_process.IsValid())
-    launch_data->platform_channel_pair.handle1.reset();
+    launch_data->platform_pipe.handle1.reset();
   return child_process.Pass();
 }
 

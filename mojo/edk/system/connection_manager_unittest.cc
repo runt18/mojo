@@ -198,11 +198,11 @@ class ConnectionManagerTest : public testing::Test {
       embedder::SlaveProcessDelegate* slave_process_delegate,
       SlaveConnectionManager* slave,
       const std::string& slave_name) {
-    PlatformPipe platform_channel_pair;
+    PlatformPipe platform_pipe;
     ProcessIdentifier slave_process_identifier = master->AddSlave(
-        new TestSlaveInfo(slave_name), platform_channel_pair.handle0.Pass());
+        new TestSlaveInfo(slave_name), platform_pipe.handle0.Pass());
     slave->Init(task_runner().Clone(), slave_process_delegate,
-                platform_channel_pair.handle1.Pass());
+                platform_pipe.handle1.Pass());
     return slave_process_identifier;
   }
 
@@ -650,9 +650,9 @@ TEST_F(ConnectionManagerTest, AddSlaveThenImmediateShutdown) {
 
   MockSlaveProcessDelegate slave_process_delegate;
   SlaveConnectionManager slave(platform_support());
-  PlatformPipe platform_channel_pair;
-  ProcessIdentifier slave_id = master.AddSlave(
-      new TestSlaveInfo("slave"), platform_channel_pair.handle0.Pass());
+  PlatformPipe platform_pipe;
+  ProcessIdentifier slave_id =
+      master.AddSlave(new TestSlaveInfo("slave"), platform_pipe.handle0.Pass());
   master.Shutdown();
   EXPECT_TRUE(IsValidSlaveProcessIdentifier(slave_id));
   // Since we never initialized |slave|, we don't have to shut it down.
@@ -662,11 +662,10 @@ TEST_F(ConnectionManagerTest, AddSlaveAndBootstrap) {
   MasterConnectionManager master(platform_support());
   master.Init(task_runner().Clone(), &master_process_delegate());
 
-  PlatformPipe platform_channel_pair;
+  PlatformPipe platform_pipe;
   ConnectionIdentifier connection_id = master.GenerateConnectionIdentifier();
   ProcessIdentifier slave_id = master.AddSlaveAndBootstrap(
-      new TestSlaveInfo("slave"), platform_channel_pair.handle0.Pass(),
-      connection_id);
+      new TestSlaveInfo("slave"), platform_pipe.handle0.Pass(), connection_id);
   EXPECT_TRUE(IsValidSlaveProcessIdentifier(slave_id));
 
   ScopedPlatformHandle h1;
@@ -682,7 +681,7 @@ TEST_F(ConnectionManagerTest, AddSlaveAndBootstrap) {
   MockSlaveProcessDelegate slave_process_delegate;
   SlaveConnectionManager slave(platform_support());
   slave.Init(task_runner().Clone(), &slave_process_delegate,
-             platform_channel_pair.handle1.Pass());
+             platform_pipe.handle1.Pass());
 
   ProcessIdentifier slave_peer = kInvalidProcessIdentifier;
   ScopedPlatformHandle h2;

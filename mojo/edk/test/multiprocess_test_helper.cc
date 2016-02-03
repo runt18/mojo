@@ -20,14 +20,14 @@ namespace mojo {
 namespace test {
 
 MultiprocessTestHelper::MultiprocessTestHelper()
-    : platform_channel_pair_(new PlatformPipe()) {
-  server_platform_handle = platform_channel_pair_->handle0.Pass();
+    : platform_pipe_(new PlatformPipe()) {
+  server_platform_handle = platform_pipe_->handle0.Pass();
 }
 
 MultiprocessTestHelper::~MultiprocessTestHelper() {
   CHECK(!test_child_.IsValid());
   server_platform_handle.reset();
-  platform_channel_pair_.reset();
+  platform_pipe_.reset();
 }
 
 void MultiprocessTestHelper::StartChild(const std::string& test_child_name) {
@@ -38,7 +38,7 @@ void MultiprocessTestHelper::StartChildWithExtraSwitch(
     const std::string& test_child_name,
     const std::string& switch_string,
     const std::string& switch_value) {
-  CHECK(platform_channel_pair_);
+  CHECK(platform_pipe_);
   CHECK(!test_child_name.empty());
   CHECK(!test_child_.IsValid());
 
@@ -56,14 +56,14 @@ void MultiprocessTestHelper::StartChildWithExtraSwitch(
 
   base::FileHandleMappingVector fds_to_remap;
   fds_to_remap.push_back(
-      std::pair<int, int>(platform_channel_pair_->handle1.get().fd,
+      std::pair<int, int>(platform_pipe_->handle1.get().fd,
                           base::GlobalDescriptors::kBaseDescriptor));
   base::LaunchOptions options;
   options.fds_to_remap = &fds_to_remap;
 
   test_child_ =
       base::SpawnMultiProcessTestChild(test_child_main, command_line, options);
-  platform_channel_pair_->handle1.reset();
+  platform_pipe_->handle1.reset();
 
   CHECK(test_child_.IsValid());
 }

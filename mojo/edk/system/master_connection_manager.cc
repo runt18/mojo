@@ -632,12 +632,12 @@ ConnectionManager::Result MasterConnectionManager::ConnectImplHelperNoLock(
           peer_process_identifier,
           ProcessConnections::ConnectionStatus::RUNNING,
           ScopedPlatformHandle());
-      PlatformPipe platform_channel_pair;
-      *platform_handle = platform_channel_pair.handle0.Pass();
+      PlatformPipe platform_pipe;
+      *platform_handle = platform_pipe.handle0.Pass();
 
       connections_[peer_process_identifier]->AddConnection(
           process_identifier, ProcessConnections::ConnectionStatus::PENDING,
-          platform_channel_pair.handle1.Pass());
+          platform_pipe.handle1.Pass());
       break;
     }
     case ProcessConnections::ConnectionStatus::PENDING:
