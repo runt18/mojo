@@ -14,6 +14,8 @@ mojo_edk_source_set("platform") {
     "message_loop.h",
     "platform_handle.cc",
     "platform_handle.h",
+    "platform_handle_utils_posix.cc",
+    "platform_handle_utils_posix.h",
     "platform_handle_watcher.h",
     "platform_pipe.h",
     "platform_pipe_utils_posix.h",
@@ -66,6 +68,7 @@ mojo_edk_source_set("unittests") {
   sources = [
     "aligned_alloc_unittest.cc",
     "io_thread_unittest.cc",
+    "platform_pipe_unittest.cc",
     "random_unittest.cc",
     "test_message_loops_unittest.cc",
     "test_stopwatch_unittest.cc",

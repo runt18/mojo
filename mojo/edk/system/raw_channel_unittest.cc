@@ -13,6 +13,7 @@
 
 #include "base/logging.h"
 #include "mojo/edk/platform/platform_handle.h"
+#include "mojo/edk/platform/platform_handle_utils_posix.h"
 #include "mojo/edk/platform/platform_pipe.h"
 #include "mojo/edk/platform/scoped_platform_handle.h"
 #include "mojo/edk/platform/thread_utils.h"
@@ -31,7 +32,9 @@
 #include "mojo/public/cpp/system/macros.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
+using mojo::platform::FILEFromPlatformHandle;
 using mojo::platform::PlatformHandle;
+using mojo::platform::PlatformHandleFromFILE;
 using mojo::platform::PlatformPipe;
 using mojo::platform::ScopedPlatformHandle;
 using mojo::platform::ThreadSleep;
@@ -768,7 +771,7 @@ class ReadPlatformHandlesCheckerRawChannelDelegate
     {
       char buffer[100] = {};
 
-      util::ScopedFILE fp(mojo::test::FILEFromPlatformHandle(h1.Pass(), "rb"));
+      util::ScopedFILE fp(FILEFromPlatformHandle(h1.Pass(), "rb"));
       EXPECT_TRUE(fp);
       rewind(fp.get());
       EXPECT_EQ(1u, fread(buffer, 1, sizeof(buffer), fp.get()));
@@ -777,7 +780,7 @@ class ReadPlatformHandlesCheckerRawChannelDelegate
 
     {
       char buffer[100] = {};
-      util::ScopedFILE fp(mojo::test::FILEFromPlatformHandle(h2.Pass(), "rb"));
+      util::ScopedFILE fp(FILEFromPlatformHandle(h2.Pass(), "rb"));
       EXPECT_TRUE(fp);
       rewind(fp.get());
       EXPECT_EQ(1u, fread(buffer, 1, sizeof(buffer), fp.get()));
@@ -824,10 +827,8 @@ TEST_F(RawChannelTest, ReadWritePlatformHandles) {
   {
     const char kHello[] = "hello";
     auto platform_handles = MakeUnique<std::vector<ScopedPlatformHandle>>();
-    platform_handles->push_back(
-        mojo::test::PlatformHandleFromFILE(std::move(fp1)));
-    platform_handles->push_back(
-        mojo::test::PlatformHandleFromFILE(std::move(fp2)));
+    platform_handles->push_back(PlatformHandleFromFILE(std::move(fp1)));
+    platform_handles->push_back(PlatformHandleFromFILE(std::move(fp2)));
 
     std::unique_ptr<MessageInTransit> message(
         new MessageInTransit(MessageInTransit::Type::ENDPOINT_CLIENT,

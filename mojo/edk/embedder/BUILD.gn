@@ -100,7 +100,6 @@ mojo_edk_unittests("mojo_edk_embedder_unittests") {
   sources = [
     "embedder_unittest.cc",
     "multiprocess_embedder_unittest.cc",
-    "platform_pipe_unittest.cc",
     "simple_platform_shared_buffer_unittest.cc",
   ]
 

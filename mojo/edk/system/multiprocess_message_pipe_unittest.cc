@@ -13,6 +13,7 @@
 
 #include "base/logging.h"
 #include "build/build_config.h"  // TODO(vtl): Remove this.
+#include "mojo/edk/platform/platform_handle_utils_posix.h"
 #include "mojo/edk/platform/platform_shared_buffer.h"
 #include "mojo/edk/platform/scoped_platform_handle.h"
 #include "mojo/edk/system/channel.h"
@@ -23,11 +24,12 @@
 #include "mojo/edk/system/raw_channel.h"
 #include "mojo/edk/system/shared_buffer_dispatcher.h"
 #include "mojo/edk/system/test/scoped_test_dir.h"
-#include "mojo/edk/test/test_utils.h"
 #include "mojo/edk/util/ref_ptr.h"
 #include "mojo/edk/util/scoped_file.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
+using mojo::platform::FILEFromPlatformHandle;
+using mojo::platform::PlatformHandleFromFILE;
 using mojo::platform::PlatformSharedBufferMapping;
 using mojo::platform::ScopedPlatformHandle;
 using mojo::util::RefPtr;
@@ -432,7 +434,7 @@ MOJO_MULTIPROCESS_TEST_CHILD_MAIN(CheckPlatformHandleFile) {
     CHECK(h.is_valid());
     dispatcher->Close();
 
-    util::ScopedFILE fp(mojo::test::FILEFromPlatformHandle(h.Pass(), "r"));
+    util::ScopedFILE fp(FILEFromPlatformHandle(h.Pass(), "r"));
     CHECK(fp);
     std::string fread_buffer(100, '\0');
     size_t bytes_read =
@@ -468,8 +470,8 @@ TEST_P(MultiprocessMessagePipeTestWithPipeCount, PlatformHandlePassing) {
     fflush(fp.get());
     rewind(fp.get());
 
-    auto dispatcher = PlatformHandleDispatcher::Create(ScopedPlatformHandle(
-        mojo::test::PlatformHandleFromFILE(std::move(fp))));
+    auto dispatcher = PlatformHandleDispatcher::Create(
+        ScopedPlatformHandle(PlatformHandleFromFILE(std::move(fp))));
     dispatchers.push_back(dispatcher);
     DispatcherTransport transport(
         test::DispatcherTryStartTransport(dispatcher.get()));

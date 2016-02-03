@@ -12,6 +12,7 @@
 
 #include "base/logging.h"
 #include "mojo/edk/embedder/simple_platform_support.h"
+#include "mojo/edk/platform/platform_handle_utils_posix.h"
 #include "mojo/edk/platform/platform_pipe.h"
 #include "mojo/edk/platform/platform_shared_buffer.h"
 #include "mojo/edk/platform/scoped_platform_handle.h"
@@ -29,12 +30,13 @@
 #include "mojo/edk/system/test/test_io_thread.h"
 #include "mojo/edk/system/test/timeouts.h"
 #include "mojo/edk/system/waiter.h"
-#include "mojo/edk/test/test_utils.h"
 #include "mojo/edk/util/ref_ptr.h"
 #include "mojo/edk/util/scoped_file.h"
 #include "mojo/public/cpp/system/macros.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
+using mojo::platform::FILEFromPlatformHandle;
+using mojo::platform::PlatformHandleFromFILE;
 using mojo::platform::PlatformPipe;
 using mojo::platform::PlatformSharedBufferMapping;
 using mojo::platform::ScopedPlatformHandle;
@@ -1031,8 +1033,8 @@ TEST_F(RemoteMessagePipeTest, PlatformHandlePassing) {
   EXPECT_EQ(sizeof(kHello), fwrite(kHello, 1, sizeof(kHello), fp.get()));
   // We'll try to pass this dispatcher, which will cause a |PlatformHandle| to
   // be passed.
-  auto dispatcher = PlatformHandleDispatcher::Create(
-      mojo::test::PlatformHandleFromFILE(std::move(fp)));
+  auto dispatcher =
+      PlatformHandleDispatcher::Create(PlatformHandleFromFILE(std::move(fp)));
 
   // Prepare to wait on MP 1, port 1. (Add the waiter now. Otherwise, if we do
   // it later, it might already be readable.)
@@ -1094,7 +1096,7 @@ TEST_F(RemoteMessagePipeTest, PlatformHandlePassing) {
   ScopedPlatformHandle h = dispatcher->PassPlatformHandle();
   EXPECT_TRUE(h.is_valid());
 
-  fp = mojo::test::FILEFromPlatformHandle(h.Pass(), "rb");
+  fp = FILEFromPlatformHandle(h.Pass(), "rb");
   EXPECT_FALSE(h.is_valid());
   EXPECT_TRUE(fp);
 

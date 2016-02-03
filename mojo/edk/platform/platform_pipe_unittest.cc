@@ -2,9 +2,6 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-// TODO(vtl): Move this to //mojo/platform (and rename it) once I figure out
-// what to do with the //mojo/edk/test dependency.
-
 #include "mojo/edk/platform/platform_pipe.h"
 
 #include <errno.h>
@@ -22,10 +19,10 @@
 
 #include "build/build_config.h"
 #include "mojo/edk/platform/platform_handle.h"
+#include "mojo/edk/platform/platform_handle_utils_posix.h"
 #include "mojo/edk/platform/platform_pipe_utils_posix.h"
 #include "mojo/edk/platform/scoped_platform_handle.h"
 #include "mojo/edk/system/test/scoped_test_dir.h"
-#include "mojo/edk/test/test_utils.h"
 #include "mojo/edk/util/scoped_file.h"
 #include "mojo/public/cpp/system/macros.h"
 #include "testing/gtest/include/gtest/gtest.h"
@@ -152,7 +149,7 @@ TEST_F(PlatformPipeTest, SendReceiveFDs) {
       ScopedFILE fp(test_dir.CreateFile());
       ASSERT_TRUE(fp);
       ASSERT_EQ(j, fwrite(std::string(j, c).data(), 1, j, fp.get()));
-      platform_handles.push_back(test::PlatformHandleFromFILE(std::move(fp)));
+      platform_handles.push_back(PlatformHandleFromFILE(std::move(fp)));
       ASSERT_TRUE(platform_handles.back().is_valid());
     }
 
@@ -177,8 +174,8 @@ TEST_F(PlatformPipeTest, SendReceiveFDs) {
     EXPECT_EQ(i, received_handles.size());
 
     for (size_t j = 0; !received_handles.empty(); j++) {
-      ScopedFILE fp(test::FILEFromPlatformHandle(
-          std::move(received_handles.front()), "rb"));
+      ScopedFILE fp(
+          FILEFromPlatformHandle(std::move(received_handles.front()), "rb"));
       received_handles.pop_front();
       ASSERT_TRUE(fp);
       rewind(fp.get());
@@ -207,7 +204,7 @@ TEST_F(PlatformPipeTest, AppendReceivedFDs) {
     ASSERT_EQ(file_contents.size(),
               fwrite(file_contents.data(), 1, file_contents.size(), fp.get()));
     std::vector<ScopedPlatformHandle> platform_handles;
-    platform_handles.push_back(test::PlatformHandleFromFILE(std::move(fp)));
+    platform_handles.push_back(PlatformHandleFromFILE(std::move(fp)));
     ASSERT_TRUE(platform_handles.back().is_valid());
 
     // Send the FD (+ "hello").
@@ -237,8 +234,7 @@ TEST_F(PlatformPipeTest, AppendReceivedFDs) {
   EXPECT_TRUE(received_handles[1].is_valid());
 
   {
-    ScopedFILE fp(
-        test::FILEFromPlatformHandle(std::move(received_handles[1]), "rb"));
+    ScopedFILE fp(FILEFromPlatformHandle(std::move(received_handles[1]), "rb"));
     ASSERT_TRUE(fp);
     rewind(fp.get());
     char read_buf[100];
