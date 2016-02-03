@@ -33,12 +33,7 @@ namespace media {
 
 int ostream_indent_index();
 
-std::ostream& begl(std::ostream& os) {
-  for (int i = 0; i < os.iword(ostream_indent_index()); i++) {
-    os << "    ";
-  }
-  return os;
-}
+std::ostream& begl(std::ostream& os);
 
 inline std::ostream& indent(std::ostream& os) {
   ++os.iword(ostream_indent_index());

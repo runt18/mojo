@@ -14,6 +14,13 @@ int ostream_indent_index() {
   return i;
 }
 
+std::ostream& begl(std::ostream& os) {
+  for (long i = 0; i < os.iword(ostream_indent_index()); i++) {
+    os << "    ";
+  }
+  return os;
+}
+
 std::ostream& operator<<(std::ostream& os, Result value) {
   switch (value) {
     case Result::kOk:
@@ -29,6 +36,7 @@ std::ostream& operator<<(std::ostream& os, Result value) {
     case Result::kNotFound:
       return os << "kNotFound";
   }
+  return os;
 }
 
 std::ostream& operator<<(std::ostream& os, Demand value) {
@@ -40,6 +48,7 @@ std::ostream& operator<<(std::ostream& os, Demand value) {
     case Demand::kPositive:
       return os << "kPositive";
   }
+  return os;
 }
 
 std::ostream& operator<<(std::ostream& os, const PacketPtr& value) {
@@ -231,6 +240,7 @@ std::ostream& operator<<(std::ostream& os, StreamType::Scheme value) {
     case StreamType::Scheme::kVideo:
       return os << "kVideo";
   }
+  return os;
 }
 
 std::ostream& operator<<(std::ostream& os, LpcmStreamType::SampleFormat value) {
@@ -248,6 +258,7 @@ std::ostream& operator<<(std::ostream& os, LpcmStreamType::SampleFormat value) {
     case LpcmStreamType::SampleFormat::kFloat:
       return os << "kFloat";
   }
+  return os;
 }
 
 std::ostream& operator<<(
@@ -261,6 +272,7 @@ std::ostream& operator<<(
     case CompressedAudioStreamType::AudioEncoding::kVorbis:
       return os << "kVorbis";
   }
+  return os;
 }
 
 std::ostream& operator<<(
@@ -276,6 +288,7 @@ std::ostream& operator<<(
     case VideoStreamType::VideoEncoding::kVp8:
       return os << "kVp8";
   }
+  return os;
 }
 
 std::ostream& operator<<(
@@ -309,6 +322,7 @@ std::ostream& operator<<(
     case VideoStreamType::VideoProfile::kH264MultiviewHigh:
       return os << "kH264MultiviewHigh";
   }
+  return os;
 }
 
 std::ostream& operator<<(std::ostream& os, VideoStreamType::PixelFormat value) {
@@ -346,6 +360,7 @@ std::ostream& operator<<(std::ostream& os, VideoStreamType::PixelFormat value) {
     case VideoStreamType::PixelFormat::kMt21:
       return os << "kRgb24";
   }
+  return os;
 }
 
 std::ostream& operator<<(std::ostream& os, VideoStreamType::ColorSpace value) {
@@ -361,6 +376,7 @@ std::ostream& operator<<(std::ostream& os, VideoStreamType::ColorSpace value) {
     case VideoStreamType::ColorSpace::kSdRec601:
       return os << "kSdRec601";
   }
+  return os;
 }
 
 std::ostream& operator<<(std::ostream& os, const BytesPtr& value) {

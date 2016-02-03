@@ -161,6 +161,8 @@ uint32_t LpcmStreamType::SampleSizeFromFormat(
     case SampleFormat::kAny:
       return 0;
   }
+
+  return 0;
 }
 
 StreamTypePtr LpcmStreamType::Clone() const {
