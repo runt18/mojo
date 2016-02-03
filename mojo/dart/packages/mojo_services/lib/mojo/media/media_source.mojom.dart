@@ -81,12 +81,27 @@ class MediaSourceStreamDescriptor extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeUint32(index, 8);
-    
-    encoder0.encodeStruct(mediaType, 16, false);
-    
-    encoder0.encodeStruct(originalMediaType, 24, false);
+    try {
+      encoder0.encodeUint32(index, 8);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "index of struct MediaSourceStreamDescriptor: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeStruct(mediaType, 16, false);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "mediaType of struct MediaSourceStreamDescriptor: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeStruct(originalMediaType, 24, false);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "originalMediaType of struct MediaSourceStreamDescriptor: $e";
+      rethrow;
+    }
   }
 
   String toString() {
@@ -168,10 +183,20 @@ class MediaSourceStatus extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeEnum(state, 8);
-    
-    encoder0.encodeStruct(metadata, 16, true);
+    try {
+      encoder0.encodeEnum(state, 8);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "state of struct MediaSourceStatus: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeStruct(metadata, 16, true);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "metadata of struct MediaSourceStatus: $e";
+      rethrow;
+    }
   }
 
   String toString() {
@@ -310,15 +335,19 @@ class MediaSourceGetStreamsResponseParams extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    if (streams == null) {
-      encoder0.encodeNullPointer(8, false);
-    } else {
-      var encoder1 = encoder0.encodePointerArray(streams.length, 8, bindings.kUnspecifiedArrayLength);
-      for (int i0 = 0; i0 < streams.length; ++i0) {
-        
-        encoder1.encodeStruct(streams[i0], bindings.ArrayDataHeader.kHeaderSize + bindings.kPointerSize * i0, false);
+    try {
+      if (streams == null) {
+        encoder0.encodeNullPointer(8, false);
+      } else {
+        var encoder1 = encoder0.encodePointerArray(streams.length, 8, bindings.kUnspecifiedArrayLength);
+        for (int i0 = 0; i0 < streams.length; ++i0) {
+          encoder1.encodeStruct(streams[i0], bindings.ArrayDataHeader.kHeaderSize + bindings.kPointerSize * i0, false);
+        }
       }
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "streams of struct MediaSourceGetStreamsResponseParams: $e";
+      rethrow;
     }
   }
 
@@ -451,8 +480,13 @@ class MediaSourceGetClockDispositionResponseParams extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeEnum(clockDisposition, 8);
+    try {
+      encoder0.encodeEnum(clockDisposition, 8);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "clockDisposition of struct MediaSourceGetClockDispositionResponseParams: $e";
+      rethrow;
+    }
   }
 
   String toString() {
@@ -520,8 +554,13 @@ class _MediaSourceGetMasterClockParams extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeInterfaceRequest(masterClock, 8, false);
+    try {
+      encoder0.encodeInterfaceRequest(masterClock, 8, false);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "masterClock of struct _MediaSourceGetMasterClockParams: $e";
+      rethrow;
+    }
   }
 
   String toString() {
@@ -588,8 +627,13 @@ class _MediaSourceSetMasterClockParams extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeInterface(masterClock, 8, true);
+    try {
+      encoder0.encodeInterface(masterClock, 8, true);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "masterClock of struct _MediaSourceSetMasterClockParams: $e";
+      rethrow;
+    }
   }
 
   String toString() {
@@ -661,10 +705,20 @@ class _MediaSourceGetProducerParams extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeUint32(streamIndex, 8);
-    
-    encoder0.encodeInterfaceRequest(producer, 12, false);
+    try {
+      encoder0.encodeUint32(streamIndex, 8);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "streamIndex of struct _MediaSourceGetProducerParams: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeInterfaceRequest(producer, 12, false);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "producer of struct _MediaSourceGetProducerParams: $e";
+      rethrow;
+    }
   }
 
   String toString() {
@@ -737,10 +791,20 @@ class _MediaSourceGetPullModeProducerParams extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeUint32(streamIndex, 8);
-    
-    encoder0.encodeInterfaceRequest(producer, 12, false);
+    try {
+      encoder0.encodeUint32(streamIndex, 8);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "streamIndex of struct _MediaSourceGetPullModeProducerParams: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeInterfaceRequest(producer, 12, false);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "producer of struct _MediaSourceGetPullModeProducerParams: $e";
+      rethrow;
+    }
   }
 
   String toString() {
@@ -808,8 +872,13 @@ class _MediaSourceGetStatusParams extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeUint64(versionLastSeen, 8);
+    try {
+      encoder0.encodeUint64(versionLastSeen, 8);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "versionLastSeen of struct _MediaSourceGetStatusParams: $e";
+      rethrow;
+    }
   }
 
   String toString() {
@@ -883,10 +952,20 @@ class MediaSourceGetStatusResponseParams extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeUint64(version, 8);
-    
-    encoder0.encodeStruct(status, 16, false);
+    try {
+      encoder0.encodeUint64(version, 8);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "version of struct MediaSourceGetStatusResponseParams: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeStruct(status, 16, false);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "status of struct MediaSourceGetStatusResponseParams: $e";
+      rethrow;
+    }
   }
 
   String toString() {

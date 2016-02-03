@@ -180,14 +180,34 @@ class Bar extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeUint8(alpha, 8);
-    
-    encoder0.encodeUint8(beta, 9);
-    
-    encoder0.encodeUint8(gamma, 10);
-    
-    encoder0.encodeEnum(type, 12);
+    try {
+      encoder0.encodeUint8(alpha, 8);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "alpha of struct Bar: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeUint8(beta, 9);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "beta of struct Bar: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeUint8(gamma, 10);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "gamma of struct Bar: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeEnum(type, 12);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "type of struct Bar: $e";
+      rethrow;
+    }
   }
 
   String toString() {
@@ -409,76 +429,146 @@ class Foo extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeInt32(x, 8);
-    
-    encoder0.encodeInt32(y, 12);
-    
-    encoder0.encodeBool(a, 16, 0);
-    
-    encoder0.encodeBool(b, 16, 1);
-    
-    encoder0.encodeBool(c, 16, 2);
-    
-    encoder0.encodeMessagePipeHandle(source, 20, true);
-    
-    encoder0.encodeStruct(bar, 24, true);
-    
-    encoder0.encodeUint8Array(data, 32, bindings.kArrayNullable, bindings.kUnspecifiedArrayLength);
-    
-    if (extraBars == null) {
-      encoder0.encodeNullPointer(40, true);
-    } else {
-      var encoder1 = encoder0.encodePointerArray(extraBars.length, 40, bindings.kUnspecifiedArrayLength);
-      for (int i0 = 0; i0 < extraBars.length; ++i0) {
-        
-        encoder1.encodeStruct(extraBars[i0], bindings.ArrayDataHeader.kHeaderSize + bindings.kPointerSize * i0, false);
-      }
+    try {
+      encoder0.encodeInt32(x, 8);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "x of struct Foo: $e";
+      rethrow;
     }
-    
-    encoder0.encodeString(name, 48, false);
-    
-    encoder0.encodeConsumerHandleArray(inputStreams, 56, bindings.kArrayNullable, bindings.kUnspecifiedArrayLength);
-    
-    encoder0.encodeProducerHandleArray(outputStreams, 64, bindings.kArrayNullable, bindings.kUnspecifiedArrayLength);
-    
-    if (arrayOfArrayOfBools == null) {
-      encoder0.encodeNullPointer(72, true);
-    } else {
-      var encoder1 = encoder0.encodePointerArray(arrayOfArrayOfBools.length, 72, bindings.kUnspecifiedArrayLength);
-      for (int i0 = 0; i0 < arrayOfArrayOfBools.length; ++i0) {
-        
-        encoder1.encodeBoolArray(arrayOfArrayOfBools[i0], bindings.ArrayDataHeader.kHeaderSize + bindings.kPointerSize * i0, bindings.kNothingNullable, bindings.kUnspecifiedArrayLength);
-      }
+    try {
+      encoder0.encodeInt32(y, 12);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "y of struct Foo: $e";
+      rethrow;
     }
-    
-    if (multiArrayOfStrings == null) {
-      encoder0.encodeNullPointer(80, true);
-    } else {
-      var encoder1 = encoder0.encodePointerArray(multiArrayOfStrings.length, 80, bindings.kUnspecifiedArrayLength);
-      for (int i0 = 0; i0 < multiArrayOfStrings.length; ++i0) {
-        
-        if (multiArrayOfStrings[i0] == null) {
-          encoder1.encodeNullPointer(bindings.ArrayDataHeader.kHeaderSize + bindings.kPointerSize * i0, false);
-        } else {
-          var encoder2 = encoder1.encodePointerArray(multiArrayOfStrings[i0].length, bindings.ArrayDataHeader.kHeaderSize + bindings.kPointerSize * i0, bindings.kUnspecifiedArrayLength);
-          for (int i1 = 0; i1 < multiArrayOfStrings[i0].length; ++i1) {
-            
-            if (multiArrayOfStrings[i0][i1] == null) {
-              encoder2.encodeNullPointer(bindings.ArrayDataHeader.kHeaderSize + bindings.kPointerSize * i1, false);
-            } else {
-              var encoder3 = encoder2.encodePointerArray(multiArrayOfStrings[i0][i1].length, bindings.ArrayDataHeader.kHeaderSize + bindings.kPointerSize * i1, bindings.kUnspecifiedArrayLength);
-              for (int i2 = 0; i2 < multiArrayOfStrings[i0][i1].length; ++i2) {
-                
-                encoder3.encodeString(multiArrayOfStrings[i0][i1][i2], bindings.ArrayDataHeader.kHeaderSize + bindings.kPointerSize * i2, false);
+    try {
+      encoder0.encodeBool(a, 16, 0);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "a of struct Foo: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeBool(b, 16, 1);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "b of struct Foo: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeBool(c, 16, 2);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "c of struct Foo: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeMessagePipeHandle(source, 20, true);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "source of struct Foo: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeStruct(bar, 24, true);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "bar of struct Foo: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeUint8Array(data, 32, bindings.kArrayNullable, bindings.kUnspecifiedArrayLength);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "data of struct Foo: $e";
+      rethrow;
+    }
+    try {
+      if (extraBars == null) {
+        encoder0.encodeNullPointer(40, true);
+      } else {
+        var encoder1 = encoder0.encodePointerArray(extraBars.length, 40, bindings.kUnspecifiedArrayLength);
+        for (int i0 = 0; i0 < extraBars.length; ++i0) {
+          encoder1.encodeStruct(extraBars[i0], bindings.ArrayDataHeader.kHeaderSize + bindings.kPointerSize * i0, false);
+        }
+      }
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "extraBars of struct Foo: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeString(name, 48, false);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "name of struct Foo: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeConsumerHandleArray(inputStreams, 56, bindings.kArrayNullable, bindings.kUnspecifiedArrayLength);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "inputStreams of struct Foo: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeProducerHandleArray(outputStreams, 64, bindings.kArrayNullable, bindings.kUnspecifiedArrayLength);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "outputStreams of struct Foo: $e";
+      rethrow;
+    }
+    try {
+      if (arrayOfArrayOfBools == null) {
+        encoder0.encodeNullPointer(72, true);
+      } else {
+        var encoder1 = encoder0.encodePointerArray(arrayOfArrayOfBools.length, 72, bindings.kUnspecifiedArrayLength);
+        for (int i0 = 0; i0 < arrayOfArrayOfBools.length; ++i0) {
+          encoder1.encodeBoolArray(arrayOfArrayOfBools[i0], bindings.ArrayDataHeader.kHeaderSize + bindings.kPointerSize * i0, bindings.kNothingNullable, bindings.kUnspecifiedArrayLength);
+        }
+      }
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "arrayOfArrayOfBools of struct Foo: $e";
+      rethrow;
+    }
+    try {
+      if (multiArrayOfStrings == null) {
+        encoder0.encodeNullPointer(80, true);
+      } else {
+        var encoder1 = encoder0.encodePointerArray(multiArrayOfStrings.length, 80, bindings.kUnspecifiedArrayLength);
+        for (int i0 = 0; i0 < multiArrayOfStrings.length; ++i0) {
+          if (multiArrayOfStrings[i0] == null) {
+            encoder1.encodeNullPointer(bindings.ArrayDataHeader.kHeaderSize + bindings.kPointerSize * i0, false);
+          } else {
+            var encoder2 = encoder1.encodePointerArray(multiArrayOfStrings[i0].length, bindings.ArrayDataHeader.kHeaderSize + bindings.kPointerSize * i0, bindings.kUnspecifiedArrayLength);
+            for (int i1 = 0; i1 < multiArrayOfStrings[i0].length; ++i1) {
+              if (multiArrayOfStrings[i0][i1] == null) {
+                encoder2.encodeNullPointer(bindings.ArrayDataHeader.kHeaderSize + bindings.kPointerSize * i1, false);
+              } else {
+                var encoder3 = encoder2.encodePointerArray(multiArrayOfStrings[i0][i1].length, bindings.ArrayDataHeader.kHeaderSize + bindings.kPointerSize * i1, bindings.kUnspecifiedArrayLength);
+                for (int i2 = 0; i2 < multiArrayOfStrings[i0][i1].length; ++i2) {
+                  encoder3.encodeString(multiArrayOfStrings[i0][i1][i2], bindings.ArrayDataHeader.kHeaderSize + bindings.kPointerSize * i2, false);
+                }
               }
             }
           }
         }
       }
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "multiArrayOfStrings of struct Foo: $e";
+      rethrow;
     }
-    
-    encoder0.encodeBoolArray(arrayOfBools, 88, bindings.kArrayNullable, bindings.kUnspecifiedArrayLength);
+    try {
+      encoder0.encodeBoolArray(arrayOfBools, 88, bindings.kArrayNullable, bindings.kUnspecifiedArrayLength);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "arrayOfBools of struct Foo: $e";
+      rethrow;
+    }
   }
 
   String toString() {
@@ -841,70 +931,230 @@ class DefaultsTest extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeInt8(a0, 8);
-    
-    encoder0.encodeUint8(a1, 9);
-    
-    encoder0.encodeInt16(a2, 10);
-    
-    encoder0.encodeUint16(a3, 12);
-    
-    encoder0.encodeBool(a11, 14, 0);
-    
-    encoder0.encodeBool(a12, 14, 1);
-    
-    encoder0.encodeInt32(a4, 16);
-    
-    encoder0.encodeUint32(a5, 20);
-    
-    encoder0.encodeInt64(a6, 24);
-    
-    encoder0.encodeUint64(a7, 32);
-    
-    encoder0.encodeInt32(a8, 40);
-    
-    encoder0.encodeInt32(a9, 44);
-    
-    encoder0.encodeInt32(a10, 48);
-    
-    encoder0.encodeFloat(a13, 52);
-    
-    encoder0.encodeDouble(a14, 56);
-    
-    encoder0.encodeDouble(a15, 64);
-    
-    encoder0.encodeDouble(a16, 72);
-    
-    encoder0.encodeDouble(a17, 80);
-    
-    encoder0.encodeUint8Array(a18, 88, bindings.kNothingNullable, bindings.kUnspecifiedArrayLength);
-    
-    encoder0.encodeString(a19, 96, false);
-    
-    encoder0.encodeEnum(a20, 104);
-    
-    encoder0.encodeFloat(a29, 108);
-    
-    encoder0.encodeStruct(a21, 112, false);
-    
-    encoder0.encodeStruct(a22, 120, false);
-    
-    encoder0.encodeUint64(a23, 128);
-    
-    encoder0.encodeInt64(a24, 136);
-    
-    encoder0.encodeInt64(a25, 144);
-    
-    encoder0.encodeDouble(a26, 152);
-    
-    encoder0.encodeDouble(a27, 160);
-    
-    encoder0.encodeDouble(a28, 168);
-    
-    encoder0.encodeFloat(a30, 176);
-    
-    encoder0.encodeFloat(a31, 180);
+    try {
+      encoder0.encodeInt8(a0, 8);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "a0 of struct DefaultsTest: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeUint8(a1, 9);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "a1 of struct DefaultsTest: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeInt16(a2, 10);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "a2 of struct DefaultsTest: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeUint16(a3, 12);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "a3 of struct DefaultsTest: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeBool(a11, 14, 0);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "a11 of struct DefaultsTest: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeBool(a12, 14, 1);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "a12 of struct DefaultsTest: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeInt32(a4, 16);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "a4 of struct DefaultsTest: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeUint32(a5, 20);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "a5 of struct DefaultsTest: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeInt64(a6, 24);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "a6 of struct DefaultsTest: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeUint64(a7, 32);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "a7 of struct DefaultsTest: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeInt32(a8, 40);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "a8 of struct DefaultsTest: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeInt32(a9, 44);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "a9 of struct DefaultsTest: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeInt32(a10, 48);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "a10 of struct DefaultsTest: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeFloat(a13, 52);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "a13 of struct DefaultsTest: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeDouble(a14, 56);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "a14 of struct DefaultsTest: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeDouble(a15, 64);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "a15 of struct DefaultsTest: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeDouble(a16, 72);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "a16 of struct DefaultsTest: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeDouble(a17, 80);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "a17 of struct DefaultsTest: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeUint8Array(a18, 88, bindings.kNothingNullable, bindings.kUnspecifiedArrayLength);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "a18 of struct DefaultsTest: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeString(a19, 96, false);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "a19 of struct DefaultsTest: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeEnum(a20, 104);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "a20 of struct DefaultsTest: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeFloat(a29, 108);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "a29 of struct DefaultsTest: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeStruct(a21, 112, false);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "a21 of struct DefaultsTest: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeStruct(a22, 120, false);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "a22 of struct DefaultsTest: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeUint64(a23, 128);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "a23 of struct DefaultsTest: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeInt64(a24, 136);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "a24 of struct DefaultsTest: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeInt64(a25, 144);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "a25 of struct DefaultsTest: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeDouble(a26, 152);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "a26 of struct DefaultsTest: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeDouble(a27, 160);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "a27 of struct DefaultsTest: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeDouble(a28, 168);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "a28 of struct DefaultsTest: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeFloat(a30, 176);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "a30 of struct DefaultsTest: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeFloat(a31, 180);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "a31 of struct DefaultsTest: $e";
+      rethrow;
+    }
   }
 
   String toString() {
@@ -1216,10 +1466,20 @@ class StructWithHoleV1 extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeInt32(v1, 8);
-    
-    encoder0.encodeInt64(v2, 16);
+    try {
+      encoder0.encodeInt32(v1, 8);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "v1 of struct StructWithHoleV1: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeInt64(v2, 16);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "v2 of struct StructWithHoleV1: $e";
+      rethrow;
+    }
   }
 
   String toString() {
@@ -1315,12 +1575,27 @@ class StructWithHoleV2 extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeInt32(v1, 8);
-    
-    encoder0.encodeInt32(v3, 12);
-    
-    encoder0.encodeInt64(v2, 16);
+    try {
+      encoder0.encodeInt32(v1, 8);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "v1 of struct StructWithHoleV2: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeInt32(v3, 12);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "v3 of struct StructWithHoleV2: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeInt64(v2, 16);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "v2 of struct StructWithHoleV2: $e";
+      rethrow;
+    }
   }
 
   String toString() {
@@ -1444,30 +1719,33 @@ class NonNullableMapStruct extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    if (mapField == null) {
-      encoder0.encodeNullPointer(8, false);
-    } else {
-      var encoder1 = encoder0.encoderForMap(8);
-      int size0 = mapField.length;
-      var keys0 = mapField.keys.toList();
-      var values0 = mapField.values.toList();
-      
-      {
-        var encoder2 = encoder1.encodePointerArray(keys0.length, bindings.ArrayDataHeader.kHeaderSize, bindings.kUnspecifiedArrayLength);
-        for (int i1 = 0; i1 < keys0.length; ++i1) {
-          
-          encoder2.encodeString(keys0[i1], bindings.ArrayDataHeader.kHeaderSize + bindings.kPointerSize * i1, false);
+    try {
+      if (mapField == null) {
+        encoder0.encodeNullPointer(8, false);
+      } else {
+        var encoder1 = encoder0.encoderForMap(8);
+        int size0 = mapField.length;
+        var keys0 = mapField.keys.toList();
+        var values0 = mapField.values.toList();
+        
+        {
+          var encoder2 = encoder1.encodePointerArray(keys0.length, bindings.ArrayDataHeader.kHeaderSize, bindings.kUnspecifiedArrayLength);
+          for (int i1 = 0; i1 < keys0.length; ++i1) {
+            encoder2.encodeString(keys0[i1], bindings.ArrayDataHeader.kHeaderSize + bindings.kPointerSize * i1, false);
+          }
+        }
+        
+        {
+          var encoder2 = encoder1.encodePointerArray(values0.length, bindings.ArrayDataHeader.kHeaderSize + bindings.kPointerSize, bindings.kUnspecifiedArrayLength);
+          for (int i1 = 0; i1 < values0.length; ++i1) {
+            encoder2.encodeString(values0[i1], bindings.ArrayDataHeader.kHeaderSize + bindings.kPointerSize * i1, false);
+          }
         }
       }
-      
-      {
-        var encoder2 = encoder1.encodePointerArray(values0.length, bindings.ArrayDataHeader.kHeaderSize + bindings.kPointerSize, bindings.kUnspecifiedArrayLength);
-        for (int i1 = 0; i1 < values0.length; ++i1) {
-          
-          encoder2.encodeString(values0[i1], bindings.ArrayDataHeader.kHeaderSize + bindings.kPointerSize * i1, false);
-        }
-      }
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "mapField of struct NonNullableMapStruct: $e";
+      rethrow;
     }
   }
 
@@ -1566,12 +1844,27 @@ class _ServiceFrobinateParams extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeStruct(foo, 8, true);
-    
-    encoder0.encodeEnum(baz, 16);
-    
-    encoder0.encodeInterface(port, 20, true);
+    try {
+      encoder0.encodeStruct(foo, 8, true);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "foo of struct _ServiceFrobinateParams: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeEnum(baz, 16);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "baz of struct _ServiceFrobinateParams: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeInterface(port, 20, true);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "port of struct _ServiceFrobinateParams: $e";
+      rethrow;
+    }
   }
 
   String toString() {
@@ -1674,8 +1967,13 @@ class ServiceFrobinateResponseParams extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeInt32(result, 8);
+    try {
+      encoder0.encodeInt32(result, 8);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "result of struct ServiceFrobinateResponseParams: $e";
+      rethrow;
+    }
   }
 
   String toString() {
@@ -1754,8 +2052,13 @@ class _ServiceGetPortParams extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeInterfaceRequest(port, 8, false);
+    try {
+      encoder0.encodeInterfaceRequest(port, 8, false);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "port of struct _ServiceGetPortParams: $e";
+      rethrow;
+    }
   }
 
   String toString() {
@@ -1842,10 +2145,20 @@ class _PortPostMessageParams extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeString(messageText, 8, false);
-    
-    encoder0.encodeInterface(port, 16, false);
+    try {
+      encoder0.encodeString(messageText, 8, false);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "messageText of struct _PortPostMessageParams: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeInterface(port, 16, false);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "port of struct _PortPostMessageParams: $e";
+      rethrow;
+    }
   }
 
   String toString() {

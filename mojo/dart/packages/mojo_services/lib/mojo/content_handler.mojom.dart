@@ -71,10 +71,20 @@ class _ContentHandlerStartApplicationParams extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeInterfaceRequest(application, 8, false);
-    
-    encoder0.encodeStruct(response, 16, false);
+    try {
+      encoder0.encodeInterfaceRequest(application, 8, false);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "application of struct _ContentHandlerStartApplicationParams: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeStruct(response, 16, false);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "response of struct _ContentHandlerStartApplicationParams: $e";
+      rethrow;
+    }
   }
 
   String toString() {

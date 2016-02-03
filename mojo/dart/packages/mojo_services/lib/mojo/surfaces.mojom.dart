@@ -155,8 +155,13 @@ class Mailbox extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeInt8Array(name, 8, bindings.kNothingNullable, 64);
+    try {
+      encoder0.encodeInt8Array(name, 8, bindings.kNothingNullable, 64);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "name of struct Mailbox: $e";
+      rethrow;
+    }
   }
 
   String toString() {
@@ -235,12 +240,27 @@ class MailboxHolder extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeStruct(mailbox, 8, false);
-    
-    encoder0.encodeUint32(textureTarget, 16);
-    
-    encoder0.encodeUint32(syncPoint, 20);
+    try {
+      encoder0.encodeStruct(mailbox, 8, false);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "mailbox of struct MailboxHolder: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeUint32(textureTarget, 16);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "textureTarget of struct MailboxHolder: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeUint32(syncPoint, 20);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "syncPoint of struct MailboxHolder: $e";
+      rethrow;
+    }
   }
 
   String toString() {
@@ -348,20 +368,55 @@ class TransferableResource extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeUint32(id, 8);
-    
-    encoder0.encodeEnum(format, 12);
-    
-    encoder0.encodeUint32(filter, 16);
-    
-    encoder0.encodeBool(isRepeated, 20, 0);
-    
-    encoder0.encodeBool(isSoftware, 20, 1);
-    
-    encoder0.encodeStruct(size, 24, false);
-    
-    encoder0.encodeStruct(mailboxHolder, 32, false);
+    try {
+      encoder0.encodeUint32(id, 8);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "id of struct TransferableResource: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeEnum(format, 12);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "format of struct TransferableResource: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeUint32(filter, 16);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "filter of struct TransferableResource: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeBool(isRepeated, 20, 0);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "isRepeated of struct TransferableResource: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeBool(isSoftware, 20, 1);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "isSoftware of struct TransferableResource: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeStruct(size, 24, false);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "size of struct TransferableResource: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeStruct(mailboxHolder, 32, false);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "mailboxHolder of struct TransferableResource: $e";
+      rethrow;
+    }
   }
 
   String toString() {
@@ -456,14 +511,34 @@ class ReturnedResource extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeUint32(id, 8);
-    
-    encoder0.encodeUint32(syncPoint, 12);
-    
-    encoder0.encodeInt32(count, 16);
-    
-    encoder0.encodeBool(lost, 20, 0);
+    try {
+      encoder0.encodeUint32(id, 8);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "id of struct ReturnedResource: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeUint32(syncPoint, 12);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "syncPoint of struct ReturnedResource: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeInt32(count, 16);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "count of struct ReturnedResource: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeBool(lost, 20, 0);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "lost of struct ReturnedResource: $e";
+      rethrow;
+    }
   }
 
   String toString() {
@@ -560,25 +635,33 @@ class Frame extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    if (resources == null) {
-      encoder0.encodeNullPointer(8, false);
-    } else {
-      var encoder1 = encoder0.encodePointerArray(resources.length, 8, bindings.kUnspecifiedArrayLength);
-      for (int i0 = 0; i0 < resources.length; ++i0) {
-        
-        encoder1.encodeStruct(resources[i0], bindings.ArrayDataHeader.kHeaderSize + bindings.kPointerSize * i0, false);
+    try {
+      if (resources == null) {
+        encoder0.encodeNullPointer(8, false);
+      } else {
+        var encoder1 = encoder0.encodePointerArray(resources.length, 8, bindings.kUnspecifiedArrayLength);
+        for (int i0 = 0; i0 < resources.length; ++i0) {
+          encoder1.encodeStruct(resources[i0], bindings.ArrayDataHeader.kHeaderSize + bindings.kPointerSize * i0, false);
+        }
       }
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "resources of struct Frame: $e";
+      rethrow;
     }
-    
-    if (passes == null) {
-      encoder0.encodeNullPointer(16, false);
-    } else {
-      var encoder1 = encoder0.encodePointerArray(passes.length, 16, bindings.kUnspecifiedArrayLength);
-      for (int i0 = 0; i0 < passes.length; ++i0) {
-        
-        encoder1.encodeStruct(passes[i0], bindings.ArrayDataHeader.kHeaderSize + bindings.kPointerSize * i0, false);
+    try {
+      if (passes == null) {
+        encoder0.encodeNullPointer(16, false);
+      } else {
+        var encoder1 = encoder0.encodePointerArray(passes.length, 16, bindings.kUnspecifiedArrayLength);
+        for (int i0 = 0; i0 < passes.length; ++i0) {
+          encoder1.encodeStruct(passes[i0], bindings.ArrayDataHeader.kHeaderSize + bindings.kPointerSize * i0, false);
+        }
       }
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "passes of struct Frame: $e";
+      rethrow;
     }
   }
 
@@ -658,15 +741,19 @@ class _ResourceReturnerReturnResourcesParams extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    if (resources == null) {
-      encoder0.encodeNullPointer(8, false);
-    } else {
-      var encoder1 = encoder0.encodePointerArray(resources.length, 8, bindings.kUnspecifiedArrayLength);
-      for (int i0 = 0; i0 < resources.length; ++i0) {
-        
-        encoder1.encodeStruct(resources[i0], bindings.ArrayDataHeader.kHeaderSize + bindings.kPointerSize * i0, false);
+    try {
+      if (resources == null) {
+        encoder0.encodeNullPointer(8, false);
+      } else {
+        var encoder1 = encoder0.encodePointerArray(resources.length, 8, bindings.kUnspecifiedArrayLength);
+        for (int i0 = 0; i0 < resources.length; ++i0) {
+          encoder1.encodeStruct(resources[i0], bindings.ArrayDataHeader.kHeaderSize + bindings.kPointerSize * i0, false);
+        }
       }
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "resources of struct _ResourceReturnerReturnResourcesParams: $e";
+      rethrow;
     }
   }
 
@@ -795,8 +882,13 @@ class SurfaceGetIdNamespaceResponseParams extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeUint32(idNamespace, 8);
+    try {
+      encoder0.encodeUint32(idNamespace, 8);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "idNamespace of struct SurfaceGetIdNamespaceResponseParams: $e";
+      rethrow;
+    }
   }
 
   String toString() {
@@ -864,8 +956,13 @@ class _SurfaceSetResourceReturnerParams extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeInterface(returner, 8, false);
+    try {
+      encoder0.encodeInterface(returner, 8, false);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "returner of struct _SurfaceSetResourceReturnerParams: $e";
+      rethrow;
+    }
   }
 
   String toString() {
@@ -932,8 +1029,13 @@ class _SurfaceCreateSurfaceParams extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeUint32(idLocal, 8);
+    try {
+      encoder0.encodeUint32(idLocal, 8);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "idLocal of struct _SurfaceCreateSurfaceParams: $e";
+      rethrow;
+    }
   }
 
   String toString() {
@@ -1007,10 +1109,20 @@ class _SurfaceSubmitFrameParams extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeUint32(idLocal, 8);
-    
-    encoder0.encodeStruct(frame, 16, false);
+    try {
+      encoder0.encodeUint32(idLocal, 8);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "idLocal of struct _SurfaceSubmitFrameParams: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeStruct(frame, 16, false);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "frame of struct _SurfaceSubmitFrameParams: $e";
+      rethrow;
+    }
   }
 
   String toString() {
@@ -1140,8 +1252,13 @@ class _SurfaceDestroySurfaceParams extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeUint32(idLocal, 8);
+    try {
+      encoder0.encodeUint32(idLocal, 8);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "idLocal of struct _SurfaceDestroySurfaceParams: $e";
+      rethrow;
+    }
   }
 
   String toString() {

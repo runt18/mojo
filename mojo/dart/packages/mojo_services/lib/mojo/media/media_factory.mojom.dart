@@ -72,10 +72,20 @@ class _MediaFactoryCreatePlayerParams extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeString(originUrl, 8, false);
-    
-    encoder0.encodeInterfaceRequest(player, 16, false);
+    try {
+      encoder0.encodeString(originUrl, 8, false);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "originUrl of struct _MediaFactoryCreatePlayerParams: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeInterfaceRequest(player, 16, false);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "player of struct _MediaFactoryCreatePlayerParams: $e";
+      rethrow;
+    }
   }
 
   String toString() {
@@ -164,20 +174,34 @@ class _MediaFactoryCreateSourceParams extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeString(originUrl, 8, false);
-    
-    if (allowedMediaTypes == null) {
-      encoder0.encodeNullPointer(16, true);
-    } else {
-      var encoder1 = encoder0.encodePointerArray(allowedMediaTypes.length, 16, bindings.kUnspecifiedArrayLength);
-      for (int i0 = 0; i0 < allowedMediaTypes.length; ++i0) {
-        
-        encoder1.encodeStruct(allowedMediaTypes[i0], bindings.ArrayDataHeader.kHeaderSize + bindings.kPointerSize * i0, false);
-      }
+    try {
+      encoder0.encodeString(originUrl, 8, false);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "originUrl of struct _MediaFactoryCreateSourceParams: $e";
+      rethrow;
     }
-    
-    encoder0.encodeInterfaceRequest(source, 24, false);
+    try {
+      if (allowedMediaTypes == null) {
+        encoder0.encodeNullPointer(16, true);
+      } else {
+        var encoder1 = encoder0.encodePointerArray(allowedMediaTypes.length, 16, bindings.kUnspecifiedArrayLength);
+        for (int i0 = 0; i0 < allowedMediaTypes.length; ++i0) {
+          encoder1.encodeStruct(allowedMediaTypes[i0], bindings.ArrayDataHeader.kHeaderSize + bindings.kPointerSize * i0, false);
+        }
+      }
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "allowedMediaTypes of struct _MediaFactoryCreateSourceParams: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeInterfaceRequest(source, 24, false);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "source of struct _MediaFactoryCreateSourceParams: $e";
+      rethrow;
+    }
   }
 
   String toString() {
@@ -257,12 +281,27 @@ class _MediaFactoryCreateSinkParams extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeString(destinationUrl, 8, false);
-    
-    encoder0.encodeStruct(mediaType, 16, false);
-    
-    encoder0.encodeInterfaceRequest(sink, 24, false);
+    try {
+      encoder0.encodeString(destinationUrl, 8, false);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "destinationUrl of struct _MediaFactoryCreateSinkParams: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeStruct(mediaType, 16, false);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "mediaType of struct _MediaFactoryCreateSinkParams: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeInterfaceRequest(sink, 24, false);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "sink of struct _MediaFactoryCreateSinkParams: $e";
+      rethrow;
+    }
   }
 
   String toString() {

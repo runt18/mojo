@@ -157,18 +157,48 @@ class Node extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeStruct(contentTransform, 8, true);
-    
-    encoder0.encodeStruct(contentClip, 16, true);
-    
-    encoder0.encodeUint32(hitId, 24);
-    
-    encoder0.encodeEnum(combinator, 28);
-    
-    encoder0.encodeUint32Array(childNodeIds, 32, bindings.kArrayNullable, bindings.kUnspecifiedArrayLength);
-    
-    encoder0.encodeUnion(op, 40, true);
+    try {
+      encoder0.encodeStruct(contentTransform, 8, true);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "contentTransform of struct Node: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeStruct(contentClip, 16, true);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "contentClip of struct Node: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeUint32(hitId, 24);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "hitId of struct Node: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeEnum(combinator, 28);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "combinator of struct Node: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeUint32Array(childNodeIds, 32, bindings.kArrayNullable, bindings.kUnspecifiedArrayLength);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "childNodeIds of struct Node: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeUnion(op, 40, true);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "op of struct Node: $e";
+      rethrow;
+    }
   }
 
   String toString() {
@@ -253,10 +283,20 @@ class RectNodeOp extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeStruct(contentRect, 8, false);
-    
-    encoder0.encodeStruct(color, 16, false);
+    try {
+      encoder0.encodeStruct(contentRect, 8, false);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "contentRect of struct RectNodeOp: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeStruct(color, 16, false);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "color of struct RectNodeOp: $e";
+      rethrow;
+    }
   }
 
   String toString() {
@@ -344,14 +384,34 @@ class ImageNodeOp extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeStruct(contentRect, 8, false);
-    
-    encoder0.encodeStruct(imageRect, 16, true);
-    
-    encoder0.encodeUint32(imageResourceId, 24);
-    
-    encoder0.encodeStruct(blend, 32, true);
+    try {
+      encoder0.encodeStruct(contentRect, 8, false);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "contentRect of struct ImageNodeOp: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeStruct(imageRect, 16, true);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "imageRect of struct ImageNodeOp: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeUint32(imageResourceId, 24);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "imageResourceId of struct ImageNodeOp: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeStruct(blend, 32, true);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "blend of struct ImageNodeOp: $e";
+      rethrow;
+    }
   }
 
   String toString() {
@@ -430,10 +490,20 @@ class SceneNodeOp extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeUint32(sceneResourceId, 8);
-    
-    encoder0.encodeUint32(sceneVersion, 12);
+    try {
+      encoder0.encodeUint32(sceneResourceId, 8);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "sceneResourceId of struct SceneNodeOp: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeUint32(sceneVersion, 12);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "sceneVersion of struct SceneNodeOp: $e";
+      rethrow;
+    }
   }
 
   String toString() {
@@ -510,10 +580,20 @@ class LayerNodeOp extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeStruct(layerSize, 8, false);
-    
-    encoder0.encodeStruct(blend, 16, true);
+    try {
+      encoder0.encodeStruct(layerSize, 8, false);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "layerSize of struct LayerNodeOp: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeStruct(blend, 16, true);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "blend of struct LayerNodeOp: $e";
+      rethrow;
+    }
   }
 
   String toString() {
@@ -598,14 +678,34 @@ class Color extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeUint8(red, 8);
-    
-    encoder0.encodeUint8(green, 9);
-    
-    encoder0.encodeUint8(blue, 10);
-    
-    encoder0.encodeUint8(alpha, 11);
+    try {
+      encoder0.encodeUint8(red, 8);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "red of struct Color: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeUint8(green, 9);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "green of struct Color: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeUint8(blue, 10);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "blue of struct Color: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeUint8(alpha, 11);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "alpha of struct Color: $e";
+      rethrow;
+    }
   }
 
   String toString() {
@@ -679,8 +779,13 @@ class Blend extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeUint8(alpha, 8);
+    try {
+      encoder0.encodeUint8(alpha, 8);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "alpha of struct Blend: $e";
+      rethrow;
+    }
   }
 
   String toString() {
@@ -814,19 +919,15 @@ class NodeOp extends bindings.Union {
     encoder0.encodeUint32(_tag_to_int[_tag], offset + 4);
     switch (_tag) {
       case NodeOpTag.rect:
-        
         encoder0.encodeStruct(rect, offset + 8, false);
         break;
       case NodeOpTag.image:
-        
         encoder0.encodeStruct(image, offset + 8, false);
         break;
       case NodeOpTag.scene:
-        
         encoder0.encodeStruct(scene, offset + 8, false);
         break;
       case NodeOpTag.layer:
-        
         encoder0.encodeStruct(layer, offset + 8, false);
         break;
       default:

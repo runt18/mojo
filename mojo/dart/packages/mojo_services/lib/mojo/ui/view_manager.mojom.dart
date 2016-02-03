@@ -77,12 +77,27 @@ class _ViewManagerRegisterViewParams extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeInterface(view, 8, false);
-    
-    encoder0.encodeInterfaceRequest(viewHost, 16, false);
-    
-    encoder0.encodeString(label, 24, true);
+    try {
+      encoder0.encodeInterface(view, 8, false);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "view of struct _ViewManagerRegisterViewParams: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeInterfaceRequest(viewHost, 16, false);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "viewHost of struct _ViewManagerRegisterViewParams: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeString(label, 24, true);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "label of struct _ViewManagerRegisterViewParams: $e";
+      rethrow;
+    }
   }
 
   String toString() {
@@ -152,8 +167,13 @@ class ViewManagerRegisterViewResponseParams extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeStruct(viewToken, 8, false);
+    try {
+      encoder0.encodeStruct(viewToken, 8, false);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "viewToken of struct ViewManagerRegisterViewResponseParams: $e";
+      rethrow;
+    }
   }
 
   String toString() {
@@ -231,12 +251,27 @@ class _ViewManagerRegisterViewTreeParams extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeInterface(viewTree, 8, false);
-    
-    encoder0.encodeInterfaceRequest(viewTreeHost, 16, false);
-    
-    encoder0.encodeString(label, 24, true);
+    try {
+      encoder0.encodeInterface(viewTree, 8, false);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "viewTree of struct _ViewManagerRegisterViewTreeParams: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeInterfaceRequest(viewTreeHost, 16, false);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "viewTreeHost of struct _ViewManagerRegisterViewTreeParams: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeString(label, 24, true);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "label of struct _ViewManagerRegisterViewTreeParams: $e";
+      rethrow;
+    }
   }
 
   String toString() {
@@ -306,8 +341,13 @@ class ViewManagerRegisterViewTreeResponseParams extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeStruct(viewTreeToken, 8, false);
+    try {
+      encoder0.encodeStruct(viewTreeToken, 8, false);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "viewTreeToken of struct ViewManagerRegisterViewTreeResponseParams: $e";
+      rethrow;
+    }
   }
 
   String toString() {

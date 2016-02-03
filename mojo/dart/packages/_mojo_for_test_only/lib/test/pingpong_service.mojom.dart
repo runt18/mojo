@@ -64,8 +64,13 @@ class _PingPongServiceSetClientParams extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeInterface(client, 8, false);
+    try {
+      encoder0.encodeInterface(client, 8, false);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "client of struct _PingPongServiceSetClientParams: $e";
+      rethrow;
+    }
   }
 
   String toString() {
@@ -146,8 +151,13 @@ class _PingPongServicePingParams extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeUint16(pingValue, 8);
+    try {
+      encoder0.encodeUint16(pingValue, 8);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "pingValue of struct _PingPongServicePingParams: $e";
+      rethrow;
+    }
   }
 
   String toString() {
@@ -231,10 +241,20 @@ class _PingPongServicePingTargetUrlParams extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeString(url, 8, false);
-    
-    encoder0.encodeUint16(count, 16);
+    try {
+      encoder0.encodeString(url, 8, false);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "url of struct _PingPongServicePingTargetUrlParams: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeUint16(count, 16);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "count of struct _PingPongServicePingTargetUrlParams: $e";
+      rethrow;
+    }
   }
 
   String toString() {
@@ -320,8 +340,13 @@ class PingPongServicePingTargetUrlResponseParams extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeBool(ok, 8, 0);
+    try {
+      encoder0.encodeBool(ok, 8, 0);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "ok of struct PingPongServicePingTargetUrlResponseParams: $e";
+      rethrow;
+    }
   }
 
   String toString() {
@@ -405,10 +430,20 @@ class _PingPongServicePingTargetServiceParams extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeInterface(service, 8, false);
-    
-    encoder0.encodeUint16(count, 16);
+    try {
+      encoder0.encodeInterface(service, 8, false);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "service of struct _PingPongServicePingTargetServiceParams: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeUint16(count, 16);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "count of struct _PingPongServicePingTargetServiceParams: $e";
+      rethrow;
+    }
   }
 
   String toString() {
@@ -495,8 +530,13 @@ class PingPongServicePingTargetServiceResponseParams extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeBool(ok, 8, 0);
+    try {
+      encoder0.encodeBool(ok, 8, 0);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "ok of struct PingPongServicePingTargetServiceResponseParams: $e";
+      rethrow;
+    }
   }
 
   String toString() {
@@ -575,8 +615,13 @@ class _PingPongServiceGetPingPongServiceParams extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeInterfaceRequest(service, 8, false);
+    try {
+      encoder0.encodeInterfaceRequest(service, 8, false);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "service of struct _PingPongServiceGetPingPongServiceParams: $e";
+      rethrow;
+    }
   }
 
   String toString() {
@@ -724,8 +769,13 @@ class _PingPongClientPongParams extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeUint16(pongValue, 8);
+    try {
+      encoder0.encodeUint16(pongValue, 8);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "pongValue of struct _PingPongClientPongParams: $e";
+      rethrow;
+    }
   }
 
   String toString() {

@@ -66,8 +66,13 @@ class SceneResource extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeStruct(sceneToken, 8, false);
+    try {
+      encoder0.encodeStruct(sceneToken, 8, false);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "sceneToken of struct SceneResource: $e";
+      rethrow;
+    }
   }
 
   String toString() {
@@ -151,14 +156,34 @@ class MailboxTextureResource extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeUint8Array(mailboxName, 8, bindings.kNothingNullable, 64);
-    
-    encoder0.encodeUint32(syncPoint, 16);
-    
-    encoder0.encodeStruct(size, 24, false);
-    
-    encoder0.encodeInterface(callback, 32, false);
+    try {
+      encoder0.encodeUint8Array(mailboxName, 8, bindings.kNothingNullable, 64);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "mailboxName of struct MailboxTextureResource: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeUint32(syncPoint, 16);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "syncPoint of struct MailboxTextureResource: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeStruct(size, 24, false);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "size of struct MailboxTextureResource: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeInterface(callback, 32, false);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "callback of struct MailboxTextureResource: $e";
+      rethrow;
+    }
   }
 
   String toString() {
@@ -316,11 +341,9 @@ class Resource extends bindings.Union {
     encoder0.encodeUint32(_tag_to_int[_tag], offset + 4);
     switch (_tag) {
       case ResourceTag.scene:
-        
         encoder0.encodeStruct(scene, offset + 8, false);
         break;
       case ResourceTag.mailboxTexture:
-        
         encoder0.encodeStruct(mailboxTexture, offset + 8, false);
         break;
       default:

@@ -63,8 +63,13 @@ class _AuthenticationServiceSelectAccountParams extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeBool(returnLastSelected, 8, 0);
+    try {
+      encoder0.encodeBool(returnLastSelected, 8, 0);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "returnLastSelected of struct _AuthenticationServiceSelectAccountParams: $e";
+      rethrow;
+    }
   }
 
   String toString() {
@@ -137,10 +142,20 @@ class AuthenticationServiceSelectAccountResponseParams extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeString(username, 8, true);
-    
-    encoder0.encodeString(error, 16, true);
+    try {
+      encoder0.encodeString(username, 8, true);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "username of struct AuthenticationServiceSelectAccountResponseParams: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeString(error, 16, true);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "error of struct AuthenticationServiceSelectAccountResponseParams: $e";
+      rethrow;
+    }
   }
 
   String toString() {
@@ -223,17 +238,26 @@ class _AuthenticationServiceGetOAuth2TokenParams extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeString(username, 8, false);
-    
-    if (scopes == null) {
-      encoder0.encodeNullPointer(16, false);
-    } else {
-      var encoder1 = encoder0.encodePointerArray(scopes.length, 16, bindings.kUnspecifiedArrayLength);
-      for (int i0 = 0; i0 < scopes.length; ++i0) {
-        
-        encoder1.encodeString(scopes[i0], bindings.ArrayDataHeader.kHeaderSize + bindings.kPointerSize * i0, false);
+    try {
+      encoder0.encodeString(username, 8, false);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "username of struct _AuthenticationServiceGetOAuth2TokenParams: $e";
+      rethrow;
+    }
+    try {
+      if (scopes == null) {
+        encoder0.encodeNullPointer(16, false);
+      } else {
+        var encoder1 = encoder0.encodePointerArray(scopes.length, 16, bindings.kUnspecifiedArrayLength);
+        for (int i0 = 0; i0 < scopes.length; ++i0) {
+          encoder1.encodeString(scopes[i0], bindings.ArrayDataHeader.kHeaderSize + bindings.kPointerSize * i0, false);
+        }
       }
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "scopes of struct _AuthenticationServiceGetOAuth2TokenParams: $e";
+      rethrow;
     }
   }
 
@@ -309,10 +333,20 @@ class AuthenticationServiceGetOAuth2TokenResponseParams extends bindings.Struct 
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeString(token, 8, true);
-    
-    encoder0.encodeString(error, 16, true);
+    try {
+      encoder0.encodeString(token, 8, true);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "token of struct AuthenticationServiceGetOAuth2TokenResponseParams: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeString(error, 16, true);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "error of struct AuthenticationServiceGetOAuth2TokenResponseParams: $e";
+      rethrow;
+    }
   }
 
   String toString() {
@@ -382,8 +416,13 @@ class _AuthenticationServiceClearOAuth2TokenParams extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeString(token, 8, false);
+    try {
+      encoder0.encodeString(token, 8, false);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "token of struct _AuthenticationServiceClearOAuth2TokenParams: $e";
+      rethrow;
+    }
   }
 
   String toString() {

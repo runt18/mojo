@@ -69,10 +69,20 @@ class _HttpServerDelegateOnConnectedParams extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeInterface(connection, 8, false);
-    
-    encoder0.encodeInterfaceRequest(delegate, 16, false);
+    try {
+      encoder0.encodeInterface(connection, 8, false);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "connection of struct _HttpServerDelegateOnConnectedParams: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeInterfaceRequest(delegate, 16, false);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "delegate of struct _HttpServerDelegateOnConnectedParams: $e";
+      rethrow;
+    }
   }
 
   String toString() {

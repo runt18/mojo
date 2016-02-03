@@ -79,14 +79,34 @@ class Rect extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeInt32(x, 8);
-    
-    encoder0.encodeInt32(y, 12);
-    
-    encoder0.encodeInt32(width, 16);
-    
-    encoder0.encodeInt32(height, 20);
+    try {
+      encoder0.encodeInt32(x, 8);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "x of struct Rect: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeInt32(y, 12);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "y of struct Rect: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeInt32(width, 16);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "width of struct Rect: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeInt32(height, 20);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "height of struct Rect: $e";
+      rethrow;
+    }
   }
 
   String toString() {

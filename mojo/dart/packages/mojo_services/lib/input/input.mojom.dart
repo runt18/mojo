@@ -183,8 +183,13 @@ class _InputServiceSetClientParams extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeInterface(client, 8, false);
+    try {
+      encoder0.encodeInterface(client, 8, false);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "client of struct _InputServiceSetClientParams: $e";
+      rethrow;
+    }
   }
 
   String toString() {

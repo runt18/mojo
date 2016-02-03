@@ -77,18 +77,27 @@ class _ServiceRegistryAddServicesParams extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    if (interfaceNames == null) {
-      encoder0.encodeNullPointer(8, false);
-    } else {
-      var encoder1 = encoder0.encodePointerArray(interfaceNames.length, 8, bindings.kUnspecifiedArrayLength);
-      for (int i0 = 0; i0 < interfaceNames.length; ++i0) {
-        
-        encoder1.encodeString(interfaceNames[i0], bindings.ArrayDataHeader.kHeaderSize + bindings.kPointerSize * i0, false);
+    try {
+      if (interfaceNames == null) {
+        encoder0.encodeNullPointer(8, false);
+      } else {
+        var encoder1 = encoder0.encodePointerArray(interfaceNames.length, 8, bindings.kUnspecifiedArrayLength);
+        for (int i0 = 0; i0 < interfaceNames.length; ++i0) {
+          encoder1.encodeString(interfaceNames[i0], bindings.ArrayDataHeader.kHeaderSize + bindings.kPointerSize * i0, false);
+        }
       }
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "interfaceNames of struct _ServiceRegistryAddServicesParams: $e";
+      rethrow;
     }
-    
-    encoder0.encodeInterface(serviceProvider, 16, false);
+    try {
+      encoder0.encodeInterface(serviceProvider, 16, false);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "serviceProvider of struct _ServiceRegistryAddServicesParams: $e";
+      rethrow;
+    }
   }
 
   String toString() {

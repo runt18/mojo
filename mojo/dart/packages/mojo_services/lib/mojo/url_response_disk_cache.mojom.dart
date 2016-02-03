@@ -64,8 +64,13 @@ class _UrlResponseDiskCacheGetParams extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeString(url, 8, false);
+    try {
+      encoder0.encodeString(url, 8, false);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "url of struct _UrlResponseDiskCacheGetParams: $e";
+      rethrow;
+    }
   }
 
   String toString() {
@@ -144,12 +149,27 @@ class UrlResponseDiskCacheGetResponseParams extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeStruct(response, 8, true);
-    
-    encoder0.encodeUint8Array(filePath, 16, bindings.kArrayNullable, bindings.kUnspecifiedArrayLength);
-    
-    encoder0.encodeUint8Array(cacheDirPath, 24, bindings.kArrayNullable, bindings.kUnspecifiedArrayLength);
+    try {
+      encoder0.encodeStruct(response, 8, true);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "response of struct UrlResponseDiskCacheGetResponseParams: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeUint8Array(filePath, 16, bindings.kArrayNullable, bindings.kUnspecifiedArrayLength);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "filePath of struct UrlResponseDiskCacheGetResponseParams: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeUint8Array(cacheDirPath, 24, bindings.kArrayNullable, bindings.kUnspecifiedArrayLength);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "cacheDirPath of struct UrlResponseDiskCacheGetResponseParams: $e";
+      rethrow;
+    }
   }
 
   String toString() {
@@ -218,8 +238,13 @@ class _UrlResponseDiskCacheValidateParams extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeString(url, 8, false);
+    try {
+      encoder0.encodeString(url, 8, false);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "url of struct _UrlResponseDiskCacheValidateParams: $e";
+      rethrow;
+    }
   }
 
   String toString() {
@@ -288,8 +313,13 @@ class _UrlResponseDiskCacheUpdateParams extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeStruct(response, 8, false);
+    try {
+      encoder0.encodeStruct(response, 8, false);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "response of struct _UrlResponseDiskCacheUpdateParams: $e";
+      rethrow;
+    }
   }
 
   String toString() {
@@ -357,8 +387,13 @@ class _UrlResponseDiskCacheUpdateAndGetParams extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeStruct(response, 8, false);
+    try {
+      encoder0.encodeStruct(response, 8, false);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "response of struct _UrlResponseDiskCacheUpdateAndGetParams: $e";
+      rethrow;
+    }
   }
 
   String toString() {
@@ -430,10 +465,20 @@ class UrlResponseDiskCacheUpdateAndGetResponseParams extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeUint8Array(filePath, 8, bindings.kArrayNullable, bindings.kUnspecifiedArrayLength);
-    
-    encoder0.encodeUint8Array(cacheDirPath, 16, bindings.kArrayNullable, bindings.kUnspecifiedArrayLength);
+    try {
+      encoder0.encodeUint8Array(filePath, 8, bindings.kArrayNullable, bindings.kUnspecifiedArrayLength);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "filePath of struct UrlResponseDiskCacheUpdateAndGetResponseParams: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeUint8Array(cacheDirPath, 16, bindings.kArrayNullable, bindings.kUnspecifiedArrayLength);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "cacheDirPath of struct UrlResponseDiskCacheUpdateAndGetResponseParams: $e";
+      rethrow;
+    }
   }
 
   String toString() {
@@ -504,8 +549,13 @@ class _UrlResponseDiskCacheUpdateAndGetExtractedParams extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeStruct(response, 8, false);
+    try {
+      encoder0.encodeStruct(response, 8, false);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "response of struct _UrlResponseDiskCacheUpdateAndGetExtractedParams: $e";
+      rethrow;
+    }
   }
 
   String toString() {
@@ -577,10 +627,20 @@ class UrlResponseDiskCacheUpdateAndGetExtractedResponseParams extends bindings.S
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeUint8Array(extractedDirPath, 8, bindings.kArrayNullable, bindings.kUnspecifiedArrayLength);
-    
-    encoder0.encodeUint8Array(cacheDirPath, 16, bindings.kArrayNullable, bindings.kUnspecifiedArrayLength);
+    try {
+      encoder0.encodeUint8Array(extractedDirPath, 8, bindings.kArrayNullable, bindings.kUnspecifiedArrayLength);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "extractedDirPath of struct UrlResponseDiskCacheUpdateAndGetExtractedResponseParams: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeUint8Array(cacheDirPath, 16, bindings.kArrayNullable, bindings.kUnspecifiedArrayLength);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "cacheDirPath of struct UrlResponseDiskCacheUpdateAndGetExtractedResponseParams: $e";
+      rethrow;
+    }
   }
 
   String toString() {

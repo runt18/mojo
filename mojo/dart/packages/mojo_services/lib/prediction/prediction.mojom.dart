@@ -68,10 +68,20 @@ class PrevWordInfo extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeString(word, 8, false);
-    
-    encoder0.encodeBool(isBeginningOfSentence, 16, 0);
+    try {
+      encoder0.encodeString(word, 8, false);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "word of struct PrevWordInfo: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeBool(isBeginningOfSentence, 16, 0);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "isBeginningOfSentence of struct PrevWordInfo: $e";
+      rethrow;
+    }
   }
 
   String toString() {
@@ -155,18 +165,27 @@ class PredictionInfo extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    if (previousWords == null) {
-      encoder0.encodeNullPointer(8, false);
-    } else {
-      var encoder1 = encoder0.encodePointerArray(previousWords.length, 8, bindings.kUnspecifiedArrayLength);
-      for (int i0 = 0; i0 < previousWords.length; ++i0) {
-        
-        encoder1.encodeStruct(previousWords[i0], bindings.ArrayDataHeader.kHeaderSize + bindings.kPointerSize * i0, false);
+    try {
+      if (previousWords == null) {
+        encoder0.encodeNullPointer(8, false);
+      } else {
+        var encoder1 = encoder0.encodePointerArray(previousWords.length, 8, bindings.kUnspecifiedArrayLength);
+        for (int i0 = 0; i0 < previousWords.length; ++i0) {
+          encoder1.encodeStruct(previousWords[i0], bindings.ArrayDataHeader.kHeaderSize + bindings.kPointerSize * i0, false);
+        }
       }
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "previousWords of struct PredictionInfo: $e";
+      rethrow;
     }
-    
-    encoder0.encodeString(currentWord, 16, false);
+    try {
+      encoder0.encodeString(currentWord, 16, false);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "currentWord of struct PredictionInfo: $e";
+      rethrow;
+    }
   }
 
   String toString() {
@@ -237,8 +256,13 @@ class _PredictionServiceGetPredictionListParams extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeStruct(predictionInfo, 8, false);
+    try {
+      encoder0.encodeStruct(predictionInfo, 8, false);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "predictionInfo of struct _PredictionServiceGetPredictionListParams: $e";
+      rethrow;
+    }
   }
 
   String toString() {
@@ -316,15 +340,19 @@ class PredictionServiceGetPredictionListResponseParams extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    if (predictionList == null) {
-      encoder0.encodeNullPointer(8, true);
-    } else {
-      var encoder1 = encoder0.encodePointerArray(predictionList.length, 8, bindings.kUnspecifiedArrayLength);
-      for (int i0 = 0; i0 < predictionList.length; ++i0) {
-        
-        encoder1.encodeString(predictionList[i0], bindings.ArrayDataHeader.kHeaderSize + bindings.kPointerSize * i0, false);
+    try {
+      if (predictionList == null) {
+        encoder0.encodeNullPointer(8, true);
+      } else {
+        var encoder1 = encoder0.encodePointerArray(predictionList.length, 8, bindings.kUnspecifiedArrayLength);
+        for (int i0 = 0; i0 < predictionList.length; ++i0) {
+          encoder1.encodeString(predictionList[i0], bindings.ArrayDataHeader.kHeaderSize + bindings.kPointerSize * i0, false);
+        }
       }
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "predictionList of struct PredictionServiceGetPredictionListResponseParams: $e";
+      rethrow;
     }
   }
 

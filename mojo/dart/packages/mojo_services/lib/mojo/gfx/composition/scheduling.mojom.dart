@@ -78,14 +78,34 @@ class FrameInfo extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeInt64(frameTime, 8);
-    
-    encoder0.encodeUint64(frameInterval, 16);
-    
-    encoder0.encodeInt64(frameDeadline, 24);
-    
-    encoder0.encodeInt64(presentationTime, 32);
+    try {
+      encoder0.encodeInt64(frameTime, 8);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "frameTime of struct FrameInfo: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeUint64(frameInterval, 16);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "frameInterval of struct FrameInfo: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeInt64(frameDeadline, 24);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "frameDeadline of struct FrameInfo: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeInt64(presentationTime, 32);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "presentationTime of struct FrameInfo: $e";
+      rethrow;
+    }
   }
 
   String toString() {
@@ -220,8 +240,13 @@ class SceneSchedulerScheduleFrameResponseParams extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeStruct(frameInfo, 8, false);
+    try {
+      encoder0.encodeStruct(frameInfo, 8, false);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "frameInfo of struct SceneSchedulerScheduleFrameResponseParams: $e";
+      rethrow;
+    }
   }
 
   String toString() {

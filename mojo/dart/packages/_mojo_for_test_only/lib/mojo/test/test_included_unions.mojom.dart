@@ -72,7 +72,6 @@ class IncludedUnion extends bindings.Union {
     encoder0.encodeUint32(_tag_to_int[_tag], offset + 4);
     switch (_tag) {
       case IncludedUnionTag.a:
-        
         encoder0.encodeInt8(a, offset + 8);
         break;
       default:

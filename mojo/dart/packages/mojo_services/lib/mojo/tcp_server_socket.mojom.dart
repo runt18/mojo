@@ -76,12 +76,27 @@ class _TcpServerSocketAcceptParams extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeConsumerHandle(sendStream, 8, false);
-    
-    encoder0.encodeProducerHandle(receiveStream, 12, false);
-    
-    encoder0.encodeInterfaceRequest(clientSocket, 16, false);
+    try {
+      encoder0.encodeConsumerHandle(sendStream, 8, false);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "sendStream of struct _TcpServerSocketAcceptParams: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeProducerHandle(receiveStream, 12, false);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "receiveStream of struct _TcpServerSocketAcceptParams: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeInterfaceRequest(clientSocket, 16, false);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "clientSocket of struct _TcpServerSocketAcceptParams: $e";
+      rethrow;
+    }
   }
 
   String toString() {
@@ -157,10 +172,20 @@ class TcpServerSocketAcceptResponseParams extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeStruct(result, 8, false);
-    
-    encoder0.encodeStruct(remoteAddress, 16, true);
+    try {
+      encoder0.encodeStruct(result, 8, false);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "result of struct TcpServerSocketAcceptResponseParams: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeStruct(remoteAddress, 16, true);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "remoteAddress of struct TcpServerSocketAcceptResponseParams: $e";
+      rethrow;
+    }
   }
 
   String toString() {

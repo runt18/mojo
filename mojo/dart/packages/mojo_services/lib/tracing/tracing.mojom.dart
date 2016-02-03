@@ -68,10 +68,20 @@ class _TraceProviderStartTracingParams extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeString(categories, 8, false);
-    
-    encoder0.encodeInterface(recorder, 16, false);
+    try {
+      encoder0.encodeString(categories, 8, false);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "categories of struct _TraceProviderStartTracingParams: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeInterface(recorder, 16, false);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "recorder of struct _TraceProviderStartTracingParams: $e";
+      rethrow;
+    }
   }
 
   String toString() {
@@ -199,8 +209,13 @@ class _TraceRecorderRecordParams extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeString(json, 8, false);
+    try {
+      encoder0.encodeString(json, 8, false);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "json of struct _TraceRecorderRecordParams: $e";
+      rethrow;
+    }
   }
 
   String toString() {
@@ -273,10 +288,20 @@ class _TraceCollectorStartParams extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeProducerHandle(stream, 8, false);
-    
-    encoder0.encodeString(categories, 16, false);
+    try {
+      encoder0.encodeProducerHandle(stream, 8, false);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "stream of struct _TraceCollectorStartParams: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeString(categories, 16, false);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "categories of struct _TraceCollectorStartParams: $e";
+      rethrow;
+    }
   }
 
   String toString() {

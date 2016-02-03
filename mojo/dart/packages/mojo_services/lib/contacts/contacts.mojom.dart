@@ -68,10 +68,20 @@ class Contact extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeInt64(id, 8);
-    
-    encoder0.encodeString(name, 16, false);
+    try {
+      encoder0.encodeInt64(id, 8);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "id of struct Contact: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeString(name, 16, false);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "name of struct Contact: $e";
+      rethrow;
+    }
   }
 
   String toString() {
@@ -141,8 +151,13 @@ class _ContactsServiceGetCountParams extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeString(filter, 8, true);
+    try {
+      encoder0.encodeString(filter, 8, true);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "filter of struct _ContactsServiceGetCountParams: $e";
+      rethrow;
+    }
   }
 
   String toString() {
@@ -210,8 +225,13 @@ class ContactsServiceGetCountResponseParams extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeUint64(count, 8);
+    try {
+      encoder0.encodeUint64(count, 8);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "count of struct ContactsServiceGetCountResponseParams: $e";
+      rethrow;
+    }
   }
 
   String toString() {
@@ -289,12 +309,27 @@ class _ContactsServiceGetParams extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeString(filter, 8, true);
-    
-    encoder0.encodeUint32(offset, 16);
-    
-    encoder0.encodeUint32(limit, 20);
+    try {
+      encoder0.encodeString(filter, 8, true);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "filter of struct _ContactsServiceGetParams: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeUint32(offset, 16);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "offset of struct _ContactsServiceGetParams: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeUint32(limit, 20);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "limit of struct _ContactsServiceGetParams: $e";
+      rethrow;
+    }
   }
 
   String toString() {
@@ -375,15 +410,19 @@ class ContactsServiceGetResponseParams extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    if (contacts == null) {
-      encoder0.encodeNullPointer(8, false);
-    } else {
-      var encoder1 = encoder0.encodePointerArray(contacts.length, 8, bindings.kUnspecifiedArrayLength);
-      for (int i0 = 0; i0 < contacts.length; ++i0) {
-        
-        encoder1.encodeStruct(contacts[i0], bindings.ArrayDataHeader.kHeaderSize + bindings.kPointerSize * i0, false);
+    try {
+      if (contacts == null) {
+        encoder0.encodeNullPointer(8, false);
+      } else {
+        var encoder1 = encoder0.encodePointerArray(contacts.length, 8, bindings.kUnspecifiedArrayLength);
+        for (int i0 = 0; i0 < contacts.length; ++i0) {
+          encoder1.encodeStruct(contacts[i0], bindings.ArrayDataHeader.kHeaderSize + bindings.kPointerSize * i0, false);
+        }
       }
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "contacts of struct ContactsServiceGetResponseParams: $e";
+      rethrow;
     }
   }
 
@@ -452,8 +491,13 @@ class _ContactsServiceGetEmailsParams extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeInt64(id, 8);
+    try {
+      encoder0.encodeInt64(id, 8);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "id of struct _ContactsServiceGetEmailsParams: $e";
+      rethrow;
+    }
   }
 
   String toString() {
@@ -529,15 +573,19 @@ class ContactsServiceGetEmailsResponseParams extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    if (emails == null) {
-      encoder0.encodeNullPointer(8, false);
-    } else {
-      var encoder1 = encoder0.encodePointerArray(emails.length, 8, bindings.kUnspecifiedArrayLength);
-      for (int i0 = 0; i0 < emails.length; ++i0) {
-        
-        encoder1.encodeString(emails[i0], bindings.ArrayDataHeader.kHeaderSize + bindings.kPointerSize * i0, false);
+    try {
+      if (emails == null) {
+        encoder0.encodeNullPointer(8, false);
+      } else {
+        var encoder1 = encoder0.encodePointerArray(emails.length, 8, bindings.kUnspecifiedArrayLength);
+        for (int i0 = 0; i0 < emails.length; ++i0) {
+          encoder1.encodeString(emails[i0], bindings.ArrayDataHeader.kHeaderSize + bindings.kPointerSize * i0, false);
+        }
       }
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "emails of struct ContactsServiceGetEmailsResponseParams: $e";
+      rethrow;
     }
   }
 
@@ -611,10 +659,20 @@ class _ContactsServiceGetPhotoParams extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeInt64(id, 8);
-    
-    encoder0.encodeBool(highResolution, 16, 0);
+    try {
+      encoder0.encodeInt64(id, 8);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "id of struct _ContactsServiceGetPhotoParams: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeBool(highResolution, 16, 0);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "highResolution of struct _ContactsServiceGetPhotoParams: $e";
+      rethrow;
+    }
   }
 
   String toString() {
@@ -684,8 +742,13 @@ class ContactsServiceGetPhotoResponseParams extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeString(photoUrl, 8, true);
+    try {
+      encoder0.encodeString(photoUrl, 8, true);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "photoUrl of struct ContactsServiceGetPhotoResponseParams: $e";
+      rethrow;
+    }
   }
 
   String toString() {

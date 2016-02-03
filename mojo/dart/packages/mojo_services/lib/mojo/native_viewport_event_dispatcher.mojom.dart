@@ -65,8 +65,13 @@ class _NativeViewportEventDispatcherOnEventParams extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeStruct(event, 8, false);
+    try {
+      encoder0.encodeStruct(event, 8, false);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "event of struct _NativeViewportEventDispatcherOnEventParams: $e";
+      rethrow;
+    }
   }
 
   String toString() {

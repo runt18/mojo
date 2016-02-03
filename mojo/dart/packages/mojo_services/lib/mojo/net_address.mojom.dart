@@ -129,10 +129,20 @@ class NetAddressIPv4 extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeUint16(port, 8);
-    
-    encoder0.encodeUint8Array(addr, 16, bindings.kNothingNullable, 4);
+    try {
+      encoder0.encodeUint16(port, 8);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "port of struct NetAddressIPv4: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeUint8Array(addr, 16, bindings.kNothingNullable, 4);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "addr of struct NetAddressIPv4: $e";
+      rethrow;
+    }
   }
 
   String toString() {
@@ -207,10 +217,20 @@ class NetAddressIPv6 extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeUint16(port, 8);
-    
-    encoder0.encodeUint8Array(addr, 16, bindings.kNothingNullable, 16);
+    try {
+      encoder0.encodeUint16(port, 8);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "port of struct NetAddressIPv6: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeUint8Array(addr, 16, bindings.kNothingNullable, 16);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "addr of struct NetAddressIPv6: $e";
+      rethrow;
+    }
   }
 
   String toString() {
@@ -296,12 +316,27 @@ class NetAddress extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeEnum(family, 8);
-    
-    encoder0.encodeStruct(ipv4, 16, true);
-    
-    encoder0.encodeStruct(ipv6, 24, true);
+    try {
+      encoder0.encodeEnum(family, 8);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "family of struct NetAddress: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeStruct(ipv4, 16, true);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "ipv4 of struct NetAddress: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeStruct(ipv6, 24, true);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "ipv6 of struct NetAddress: $e";
+      rethrow;
+    }
   }
 
   String toString() {

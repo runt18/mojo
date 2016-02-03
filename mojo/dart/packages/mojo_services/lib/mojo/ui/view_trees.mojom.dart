@@ -66,8 +66,13 @@ class ViewTreeToken extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeUint32(value, 8);
+    try {
+      encoder0.encodeUint32(value, 8);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "value of struct ViewTreeToken: $e";
+      rethrow;
+    }
   }
 
   String toString() {
@@ -255,8 +260,13 @@ class _ViewTreeOnRootUnavailableParams extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeUint32(rootKey, 8);
+    try {
+      encoder0.encodeUint32(rootKey, 8);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "rootKey of struct _ViewTreeOnRootUnavailableParams: $e";
+      rethrow;
+    }
   }
 
   String toString() {
@@ -384,8 +394,13 @@ class _ViewTreeHostGetServiceProviderParams extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeInterfaceRequest(serviceProvider, 8, false);
+    try {
+      encoder0.encodeInterfaceRequest(serviceProvider, 8, false);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "serviceProvider of struct _ViewTreeHostGetServiceProviderParams: $e";
+      rethrow;
+    }
   }
 
   String toString() {
@@ -518,10 +533,20 @@ class _ViewTreeHostSetRootParams extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeUint32(rootKey, 8);
-    
-    encoder0.encodeStruct(rootViewToken, 16, false);
+    try {
+      encoder0.encodeUint32(rootKey, 8);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "rootKey of struct _ViewTreeHostSetRootParams: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeStruct(rootViewToken, 16, false);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "rootViewToken of struct _ViewTreeHostSetRootParams: $e";
+      rethrow;
+    }
   }
 
   String toString() {
@@ -652,8 +677,13 @@ class _ViewTreeHostLayoutRootParams extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeStruct(rootLayoutParams, 8, false);
+    try {
+      encoder0.encodeStruct(rootLayoutParams, 8, false);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "rootLayoutParams of struct _ViewTreeHostLayoutRootParams: $e";
+      rethrow;
+    }
   }
 
   String toString() {
@@ -722,8 +752,13 @@ class ViewTreeHostLayoutRootResponseParams extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeStruct(info, 8, true);
+    try {
+      encoder0.encodeStruct(info, 8, true);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "info of struct ViewTreeHostLayoutRootResponseParams: $e";
+      rethrow;
+    }
   }
 
   String toString() {

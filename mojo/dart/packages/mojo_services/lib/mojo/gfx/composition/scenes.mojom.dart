@@ -135,47 +135,63 @@ class SceneUpdate extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeBool(clearResources, 8, 0);
-    
-    encoder0.encodeBool(clearNodes, 8, 1);
-    
-    if (resources == null) {
-      encoder0.encodeNullPointer(16, true);
-    } else {
-      var encoder1 = encoder0.encoderForMap(16);
-      int size0 = resources.length;
-      var keys0 = resources.keys.toList();
-      var values0 = resources.values.toList();
-      
-      encoder1.encodeUint32Array(keys0, bindings.ArrayDataHeader.kHeaderSize, bindings.kNothingNullable, bindings.kUnspecifiedArrayLength);
-      
-      {
-        var encoder2 = encoder1.encodeUnionArray(values0.length, bindings.ArrayDataHeader.kHeaderSize + bindings.kPointerSize, bindings.kUnspecifiedArrayLength);
-        for (int i1 = 0; i1 < values0.length; ++i1) {
-          
-          encoder2.encodeUnion(values0[i1], bindings.ArrayDataHeader.kHeaderSize + bindings.kUnionSize * i1, true);
-        }
-      }
+    try {
+      encoder0.encodeBool(clearResources, 8, 0);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "clearResources of struct SceneUpdate: $e";
+      rethrow;
     }
-    
-    if (nodes == null) {
-      encoder0.encodeNullPointer(24, true);
-    } else {
-      var encoder1 = encoder0.encoderForMap(24);
-      int size0 = nodes.length;
-      var keys0 = nodes.keys.toList();
-      var values0 = nodes.values.toList();
-      
-      encoder1.encodeUint32Array(keys0, bindings.ArrayDataHeader.kHeaderSize, bindings.kNothingNullable, bindings.kUnspecifiedArrayLength);
-      
-      {
-        var encoder2 = encoder1.encodePointerArray(values0.length, bindings.ArrayDataHeader.kHeaderSize + bindings.kPointerSize, bindings.kUnspecifiedArrayLength);
-        for (int i1 = 0; i1 < values0.length; ++i1) {
-          
-          encoder2.encodeStruct(values0[i1], bindings.ArrayDataHeader.kHeaderSize + bindings.kPointerSize * i1, true);
+    try {
+      encoder0.encodeBool(clearNodes, 8, 1);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "clearNodes of struct SceneUpdate: $e";
+      rethrow;
+    }
+    try {
+      if (resources == null) {
+        encoder0.encodeNullPointer(16, true);
+      } else {
+        var encoder1 = encoder0.encoderForMap(16);
+        int size0 = resources.length;
+        var keys0 = resources.keys.toList();
+        var values0 = resources.values.toList();
+        encoder1.encodeUint32Array(keys0, bindings.ArrayDataHeader.kHeaderSize, bindings.kNothingNullable, bindings.kUnspecifiedArrayLength);
+        
+        {
+          var encoder2 = encoder1.encodeUnionArray(values0.length, bindings.ArrayDataHeader.kHeaderSize + bindings.kPointerSize, bindings.kUnspecifiedArrayLength);
+          for (int i1 = 0; i1 < values0.length; ++i1) {
+            encoder2.encodeUnion(values0[i1], bindings.ArrayDataHeader.kHeaderSize + bindings.kUnionSize * i1, true);
+          }
         }
       }
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "resources of struct SceneUpdate: $e";
+      rethrow;
+    }
+    try {
+      if (nodes == null) {
+        encoder0.encodeNullPointer(24, true);
+      } else {
+        var encoder1 = encoder0.encoderForMap(24);
+        int size0 = nodes.length;
+        var keys0 = nodes.keys.toList();
+        var values0 = nodes.values.toList();
+        encoder1.encodeUint32Array(keys0, bindings.ArrayDataHeader.kHeaderSize, bindings.kNothingNullable, bindings.kUnspecifiedArrayLength);
+        
+        {
+          var encoder2 = encoder1.encodePointerArray(values0.length, bindings.ArrayDataHeader.kHeaderSize + bindings.kPointerSize, bindings.kUnspecifiedArrayLength);
+          for (int i1 = 0; i1 < values0.length; ++i1) {
+            encoder2.encodeStruct(values0[i1], bindings.ArrayDataHeader.kHeaderSize + bindings.kPointerSize * i1, true);
+          }
+        }
+      }
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "nodes of struct SceneUpdate: $e";
+      rethrow;
     }
   }
 
@@ -251,10 +267,20 @@ class SceneMetadata extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeUint32(version, 8);
-    
-    encoder0.encodeInt64(presentationTime, 16);
+    try {
+      encoder0.encodeUint32(version, 8);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "version of struct SceneMetadata: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeInt64(presentationTime, 16);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "presentationTime of struct SceneMetadata: $e";
+      rethrow;
+    }
   }
 
   String toString() {
@@ -324,8 +350,13 @@ class _SceneSetListenerParams extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeInterface(listener, 8, true);
+    try {
+      encoder0.encodeInterface(listener, 8, true);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "listener of struct _SceneSetListenerParams: $e";
+      rethrow;
+    }
   }
 
   String toString() {
@@ -393,8 +424,13 @@ class _SceneUpdateParams extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeStruct(update, 8, false);
+    try {
+      encoder0.encodeStruct(update, 8, false);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "update of struct _SceneUpdateParams: $e";
+      rethrow;
+    }
   }
 
   String toString() {
@@ -462,8 +498,13 @@ class _ScenePublishParams extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeStruct(metadata, 8, true);
+    try {
+      encoder0.encodeStruct(metadata, 8, true);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "metadata of struct _ScenePublishParams: $e";
+      rethrow;
+    }
   }
 
   String toString() {
@@ -531,8 +572,13 @@ class _SceneGetSchedulerParams extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeInterfaceRequest(scheduler, 8, false);
+    try {
+      encoder0.encodeInterfaceRequest(scheduler, 8, false);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "scheduler of struct _SceneGetSchedulerParams: $e";
+      rethrow;
+    }
   }
 
   String toString() {
@@ -599,8 +645,13 @@ class _SceneListenerOnResourceUnavailableParams extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeUint32(resourceId, 8);
+    try {
+      encoder0.encodeUint32(resourceId, 8);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "resourceId of struct _SceneListenerOnResourceUnavailableParams: $e";
+      rethrow;
+    }
   }
 
   String toString() {

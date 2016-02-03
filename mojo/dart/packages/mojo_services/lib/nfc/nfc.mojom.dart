@@ -63,8 +63,13 @@ class NfcData extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeUint8Array(data, 8, bindings.kArrayNullable, bindings.kUnspecifiedArrayLength);
+    try {
+      encoder0.encodeUint8Array(data, 8, bindings.kArrayNullable, bindings.kUnspecifiedArrayLength);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "data of struct NfcData: $e";
+      rethrow;
+    }
   }
 
   String toString() {
@@ -193,8 +198,13 @@ class _NfcReceiverOnReceivedNfcDataParams extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeStruct(nfcData, 8, false);
+    try {
+      encoder0.encodeStruct(nfcData, 8, false);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "nfcData of struct _NfcReceiverOnReceivedNfcDataParams: $e";
+      rethrow;
+    }
   }
 
   String toString() {
@@ -268,10 +278,20 @@ class _NfcTransmitOnNextConnectionParams extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeStruct(nfcData, 8, false);
-    
-    encoder0.encodeInterfaceRequest(transmission, 16, true);
+    try {
+      encoder0.encodeStruct(nfcData, 8, false);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "nfcData of struct _NfcTransmitOnNextConnectionParams: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeInterfaceRequest(transmission, 16, true);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "transmission of struct _NfcTransmitOnNextConnectionParams: $e";
+      rethrow;
+    }
   }
 
   String toString() {
@@ -339,8 +359,13 @@ class NfcTransmitOnNextConnectionResponseParams extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeBool(success, 8, 0);
+    try {
+      encoder0.encodeBool(success, 8, 0);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "success of struct NfcTransmitOnNextConnectionResponseParams: $e";
+      rethrow;
+    }
   }
 
   String toString() {

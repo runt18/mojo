@@ -72,10 +72,20 @@ class UrlLoaderInterceptorResponse extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeStruct(request, 8, true);
-    
-    encoder0.encodeStruct(response, 16, true);
+    try {
+      encoder0.encodeStruct(request, 8, true);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "request of struct UrlLoaderInterceptorResponse: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeStruct(response, 16, true);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "response of struct UrlLoaderInterceptorResponse: $e";
+      rethrow;
+    }
   }
 
   String toString() {
@@ -143,8 +153,13 @@ class _UrlLoaderInterceptorFactoryCreateParams extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeInterfaceRequest(interceptor, 8, false);
+    try {
+      encoder0.encodeInterfaceRequest(interceptor, 8, false);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "interceptor of struct _UrlLoaderInterceptorFactoryCreateParams: $e";
+      rethrow;
+    }
   }
 
   String toString() {
@@ -212,8 +227,13 @@ class _UrlLoaderInterceptorInterceptRequestParams extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeStruct(request, 8, false);
+    try {
+      encoder0.encodeStruct(request, 8, false);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "request of struct _UrlLoaderInterceptorInterceptRequestParams: $e";
+      rethrow;
+    }
   }
 
   String toString() {
@@ -281,8 +301,13 @@ class UrlLoaderInterceptorInterceptRequestResponseParams extends bindings.Struct
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeStruct(response, 8, false);
+    try {
+      encoder0.encodeStruct(response, 8, false);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "response of struct UrlLoaderInterceptorInterceptRequestResponseParams: $e";
+      rethrow;
+    }
   }
 
   String toString() {
@@ -410,8 +435,13 @@ class UrlLoaderInterceptorInterceptFollowRedirectResponseParams extends bindings
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeStruct(response, 8, true);
+    try {
+      encoder0.encodeStruct(response, 8, true);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "response of struct UrlLoaderInterceptorInterceptFollowRedirectResponseParams: $e";
+      rethrow;
+    }
   }
 
   String toString() {
@@ -479,8 +509,13 @@ class _UrlLoaderInterceptorInterceptResponseParams extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeStruct(response, 8, false);
+    try {
+      encoder0.encodeStruct(response, 8, false);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "response of struct _UrlLoaderInterceptorInterceptResponseParams: $e";
+      rethrow;
+    }
   }
 
   String toString() {
@@ -548,8 +583,13 @@ class UrlLoaderInterceptorInterceptResponseResponseParams extends bindings.Struc
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeStruct(response, 8, true);
+    try {
+      encoder0.encodeStruct(response, 8, true);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "response of struct UrlLoaderInterceptorInterceptResponseResponseParams: $e";
+      rethrow;
+    }
   }
 
   String toString() {

@@ -63,8 +63,13 @@ class _SharingServiceShareTextParams extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeString(text, 8, false);
+    try {
+      encoder0.encodeString(text, 8, false);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "text of struct _SharingServiceShareTextParams: $e";
+      rethrow;
+    }
   }
 
   String toString() {

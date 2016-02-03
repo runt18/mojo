@@ -82,12 +82,27 @@ class MediaPlayerStatus extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeEnum(state, 8);
-    
-    encoder0.encodeStruct(timelineTransform, 16, true);
-    
-    encoder0.encodeStruct(metadata, 24, true);
+    try {
+      encoder0.encodeEnum(state, 8);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "state of struct MediaPlayerStatus: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeStruct(timelineTransform, 16, true);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "timelineTransform of struct MediaPlayerStatus: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeStruct(metadata, 24, true);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "metadata of struct MediaPlayerStatus: $e";
+      rethrow;
+    }
   }
 
   String toString() {
@@ -279,8 +294,13 @@ class _MediaPlayerGetStatusParams extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeUint64(versionLastSeen, 8);
+    try {
+      encoder0.encodeUint64(versionLastSeen, 8);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "versionLastSeen of struct _MediaPlayerGetStatusParams: $e";
+      rethrow;
+    }
   }
 
   String toString() {
@@ -354,10 +374,20 @@ class MediaPlayerGetStatusResponseParams extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeUint64(version, 8);
-    
-    encoder0.encodeStruct(status, 16, false);
+    try {
+      encoder0.encodeUint64(version, 8);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "version of struct MediaPlayerGetStatusResponseParams: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeStruct(status, 16, false);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "status of struct MediaPlayerGetStatusResponseParams: $e";
+      rethrow;
+    }
   }
 
   String toString() {

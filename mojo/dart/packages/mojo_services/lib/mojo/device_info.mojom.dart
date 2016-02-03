@@ -127,8 +127,13 @@ class DeviceInfoGetDeviceTypeResponseParams extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeEnum(deviceType, 8);
+    try {
+      encoder0.encodeEnum(deviceType, 8);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "deviceType of struct DeviceInfoGetDeviceTypeResponseParams: $e";
+      rethrow;
+    }
   }
 
   String toString() {

@@ -90,22 +90,41 @@ class HttpRequest extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeString(method, 8, false);
-    
-    encoder0.encodeString(url, 16, false);
-    
-    if (headers == null) {
-      encoder0.encodeNullPointer(24, true);
-    } else {
-      var encoder1 = encoder0.encodePointerArray(headers.length, 24, bindings.kUnspecifiedArrayLength);
-      for (int i0 = 0; i0 < headers.length; ++i0) {
-        
-        encoder1.encodeStruct(headers[i0], bindings.ArrayDataHeader.kHeaderSize + bindings.kPointerSize * i0, false);
-      }
+    try {
+      encoder0.encodeString(method, 8, false);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "method of struct HttpRequest: $e";
+      rethrow;
     }
-    
-    encoder0.encodeConsumerHandle(body, 32, true);
+    try {
+      encoder0.encodeString(url, 16, false);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "url of struct HttpRequest: $e";
+      rethrow;
+    }
+    try {
+      if (headers == null) {
+        encoder0.encodeNullPointer(24, true);
+      } else {
+        var encoder1 = encoder0.encodePointerArray(headers.length, 24, bindings.kUnspecifiedArrayLength);
+        for (int i0 = 0; i0 < headers.length; ++i0) {
+          encoder1.encodeStruct(headers[i0], bindings.ArrayDataHeader.kHeaderSize + bindings.kPointerSize * i0, false);
+        }
+      }
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "headers of struct HttpRequest: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeConsumerHandle(body, 32, true);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "body of struct HttpRequest: $e";
+      rethrow;
+    }
   }
 
   String toString() {
@@ -196,19 +215,33 @@ class HttpResponse extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeUint32(statusCode, 8);
-    
-    encoder0.encodeConsumerHandle(body, 12, true);
-    
-    if (headers == null) {
-      encoder0.encodeNullPointer(16, true);
-    } else {
-      var encoder1 = encoder0.encodePointerArray(headers.length, 16, bindings.kUnspecifiedArrayLength);
-      for (int i0 = 0; i0 < headers.length; ++i0) {
-        
-        encoder1.encodeStruct(headers[i0], bindings.ArrayDataHeader.kHeaderSize + bindings.kPointerSize * i0, false);
+    try {
+      encoder0.encodeUint32(statusCode, 8);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "statusCode of struct HttpResponse: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeConsumerHandle(body, 12, true);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "body of struct HttpResponse: $e";
+      rethrow;
+    }
+    try {
+      if (headers == null) {
+        encoder0.encodeNullPointer(16, true);
+      } else {
+        var encoder1 = encoder0.encodePointerArray(headers.length, 16, bindings.kUnspecifiedArrayLength);
+        for (int i0 = 0; i0 < headers.length; ++i0) {
+          encoder1.encodeStruct(headers[i0], bindings.ArrayDataHeader.kHeaderSize + bindings.kPointerSize * i0, false);
+        }
       }
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "headers of struct HttpResponse: $e";
+      rethrow;
     }
   }
 

@@ -237,65 +237,84 @@ class StructOfUnions extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeUnion(u, 8, false);
-    
-    if (aOu == null) {
-      encoder0.encodeNullPointer(24, false);
-    } else {
-      var encoder1 = encoder0.encodeUnionArray(aOu.length, 24, bindings.kUnspecifiedArrayLength);
-      for (int i0 = 0; i0 < aOu.length; ++i0) {
-        
-        encoder1.encodeUnion(aOu[i0], bindings.ArrayDataHeader.kHeaderSize + bindings.kUnionSize * i0, false);
-      }
+    try {
+      encoder0.encodeUnion(u, 8, false);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "u of struct StructOfUnions: $e";
+      rethrow;
     }
-    
-    if (aHu == null) {
-      encoder0.encodeNullPointer(32, false);
-    } else {
-      var encoder1 = encoder0.encodeUnionArray(aHu.length, 32, bindings.kUnspecifiedArrayLength);
-      for (int i0 = 0; i0 < aHu.length; ++i0) {
-        
-        encoder1.encodeUnion(aHu[i0], bindings.ArrayDataHeader.kHeaderSize + bindings.kUnionSize * i0, false);
-      }
-    }
-    
-    if (mOu == null) {
-      encoder0.encodeNullPointer(40, false);
-    } else {
-      var encoder1 = encoder0.encoderForMap(40);
-      int size0 = mOu.length;
-      var keys0 = mOu.keys.toList();
-      var values0 = mOu.values.toList();
-      
-      encoder1.encodeInt64Array(keys0, bindings.ArrayDataHeader.kHeaderSize, bindings.kNothingNullable, bindings.kUnspecifiedArrayLength);
-      
-      {
-        var encoder2 = encoder1.encodeUnionArray(values0.length, bindings.ArrayDataHeader.kHeaderSize + bindings.kPointerSize, bindings.kUnspecifiedArrayLength);
-        for (int i1 = 0; i1 < values0.length; ++i1) {
-          
-          encoder2.encodeUnion(values0[i1], bindings.ArrayDataHeader.kHeaderSize + bindings.kUnionSize * i1, false);
+    try {
+      if (aOu == null) {
+        encoder0.encodeNullPointer(24, false);
+      } else {
+        var encoder1 = encoder0.encodeUnionArray(aOu.length, 24, bindings.kUnspecifiedArrayLength);
+        for (int i0 = 0; i0 < aOu.length; ++i0) {
+          encoder1.encodeUnion(aOu[i0], bindings.ArrayDataHeader.kHeaderSize + bindings.kUnionSize * i0, false);
         }
       }
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "aOu of struct StructOfUnions: $e";
+      rethrow;
     }
-    
-    if (mHu == null) {
-      encoder0.encodeNullPointer(48, false);
-    } else {
-      var encoder1 = encoder0.encoderForMap(48);
-      int size0 = mHu.length;
-      var keys0 = mHu.keys.toList();
-      var values0 = mHu.values.toList();
-      
-      encoder1.encodeInt64Array(keys0, bindings.ArrayDataHeader.kHeaderSize, bindings.kNothingNullable, bindings.kUnspecifiedArrayLength);
-      
-      {
-        var encoder2 = encoder1.encodeUnionArray(values0.length, bindings.ArrayDataHeader.kHeaderSize + bindings.kPointerSize, bindings.kUnspecifiedArrayLength);
-        for (int i1 = 0; i1 < values0.length; ++i1) {
-          
-          encoder2.encodeUnion(values0[i1], bindings.ArrayDataHeader.kHeaderSize + bindings.kUnionSize * i1, false);
+    try {
+      if (aHu == null) {
+        encoder0.encodeNullPointer(32, false);
+      } else {
+        var encoder1 = encoder0.encodeUnionArray(aHu.length, 32, bindings.kUnspecifiedArrayLength);
+        for (int i0 = 0; i0 < aHu.length; ++i0) {
+          encoder1.encodeUnion(aHu[i0], bindings.ArrayDataHeader.kHeaderSize + bindings.kUnionSize * i0, false);
         }
       }
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "aHu of struct StructOfUnions: $e";
+      rethrow;
+    }
+    try {
+      if (mOu == null) {
+        encoder0.encodeNullPointer(40, false);
+      } else {
+        var encoder1 = encoder0.encoderForMap(40);
+        int size0 = mOu.length;
+        var keys0 = mOu.keys.toList();
+        var values0 = mOu.values.toList();
+        encoder1.encodeInt64Array(keys0, bindings.ArrayDataHeader.kHeaderSize, bindings.kNothingNullable, bindings.kUnspecifiedArrayLength);
+        
+        {
+          var encoder2 = encoder1.encodeUnionArray(values0.length, bindings.ArrayDataHeader.kHeaderSize + bindings.kPointerSize, bindings.kUnspecifiedArrayLength);
+          for (int i1 = 0; i1 < values0.length; ++i1) {
+            encoder2.encodeUnion(values0[i1], bindings.ArrayDataHeader.kHeaderSize + bindings.kUnionSize * i1, false);
+          }
+        }
+      }
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "mOu of struct StructOfUnions: $e";
+      rethrow;
+    }
+    try {
+      if (mHu == null) {
+        encoder0.encodeNullPointer(48, false);
+      } else {
+        var encoder1 = encoder0.encoderForMap(48);
+        int size0 = mHu.length;
+        var keys0 = mHu.keys.toList();
+        var values0 = mHu.values.toList();
+        encoder1.encodeInt64Array(keys0, bindings.ArrayDataHeader.kHeaderSize, bindings.kNothingNullable, bindings.kUnspecifiedArrayLength);
+        
+        {
+          var encoder2 = encoder1.encodeUnionArray(values0.length, bindings.ArrayDataHeader.kHeaderSize + bindings.kPointerSize, bindings.kUnspecifiedArrayLength);
+          for (int i1 = 0; i1 < values0.length; ++i1) {
+            encoder2.encodeUnion(values0[i1], bindings.ArrayDataHeader.kHeaderSize + bindings.kUnionSize * i1, false);
+          }
+        }
+      }
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "mHu of struct StructOfUnions: $e";
+      rethrow;
     }
   }
 
@@ -435,12 +454,27 @@ class WrapperStruct extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeUnion(objectUnion, 8, true);
-    
-    encoder0.encodeUnion(podUnion, 24, true);
-    
-    encoder0.encodeUnion(handleUnion, 40, true);
+    try {
+      encoder0.encodeUnion(objectUnion, 8, true);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "objectUnion of struct WrapperStruct: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeUnion(podUnion, 24, true);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "podUnion of struct WrapperStruct: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeUnion(handleUnion, 40, true);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "handleUnion of struct WrapperStruct: $e";
+      rethrow;
+    }
   }
 
   String toString() {
@@ -545,8 +579,13 @@ class DummyStruct extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeInt8(fInt8, 8);
+    try {
+      encoder0.encodeInt8(fInt8, 8);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "fInt8 of struct DummyStruct: $e";
+      rethrow;
+    }
   }
 
   String toString() {
@@ -761,89 +800,117 @@ class SmallStruct extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeStruct(dummyStruct, 8, true);
-    
-    encoder0.encodeUnion(podUnion, 16, true);
-    
-    if (podUnionArray == null) {
-      encoder0.encodeNullPointer(32, true);
-    } else {
-      var encoder1 = encoder0.encodeUnionArray(podUnionArray.length, 32, bindings.kUnspecifiedArrayLength);
-      for (int i0 = 0; i0 < podUnionArray.length; ++i0) {
+    try {
+      encoder0.encodeStruct(dummyStruct, 8, true);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "dummyStruct of struct SmallStruct: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeUnion(podUnion, 16, true);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "podUnion of struct SmallStruct: $e";
+      rethrow;
+    }
+    try {
+      if (podUnionArray == null) {
+        encoder0.encodeNullPointer(32, true);
+      } else {
+        var encoder1 = encoder0.encodeUnionArray(podUnionArray.length, 32, bindings.kUnspecifiedArrayLength);
+        for (int i0 = 0; i0 < podUnionArray.length; ++i0) {
+          encoder1.encodeUnion(podUnionArray[i0], bindings.ArrayDataHeader.kHeaderSize + bindings.kUnionSize * i0, false);
+        }
+      }
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "podUnionArray of struct SmallStruct: $e";
+      rethrow;
+    }
+    try {
+      if (nullablePodUnionArray == null) {
+        encoder0.encodeNullPointer(40, true);
+      } else {
+        var encoder1 = encoder0.encodeUnionArray(nullablePodUnionArray.length, 40, bindings.kUnspecifiedArrayLength);
+        for (int i0 = 0; i0 < nullablePodUnionArray.length; ++i0) {
+          encoder1.encodeUnion(nullablePodUnionArray[i0], bindings.ArrayDataHeader.kHeaderSize + bindings.kUnionSize * i0, true);
+        }
+      }
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "nullablePodUnionArray of struct SmallStruct: $e";
+      rethrow;
+    }
+    try {
+      if (sArray == null) {
+        encoder0.encodeNullPointer(48, true);
+      } else {
+        var encoder1 = encoder0.encodePointerArray(sArray.length, 48, bindings.kUnspecifiedArrayLength);
+        for (int i0 = 0; i0 < sArray.length; ++i0) {
+          encoder1.encodeStruct(sArray[i0], bindings.ArrayDataHeader.kHeaderSize + bindings.kPointerSize * i0, false);
+        }
+      }
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "sArray of struct SmallStruct: $e";
+      rethrow;
+    }
+    try {
+      if (podUnionMap == null) {
+        encoder0.encodeNullPointer(56, true);
+      } else {
+        var encoder1 = encoder0.encoderForMap(56);
+        int size0 = podUnionMap.length;
+        var keys0 = podUnionMap.keys.toList();
+        var values0 = podUnionMap.values.toList();
         
-        encoder1.encodeUnion(podUnionArray[i0], bindings.ArrayDataHeader.kHeaderSize + bindings.kUnionSize * i0, false);
-      }
-    }
-    
-    if (nullablePodUnionArray == null) {
-      encoder0.encodeNullPointer(40, true);
-    } else {
-      var encoder1 = encoder0.encodeUnionArray(nullablePodUnionArray.length, 40, bindings.kUnspecifiedArrayLength);
-      for (int i0 = 0; i0 < nullablePodUnionArray.length; ++i0) {
+        {
+          var encoder2 = encoder1.encodePointerArray(keys0.length, bindings.ArrayDataHeader.kHeaderSize, bindings.kUnspecifiedArrayLength);
+          for (int i1 = 0; i1 < keys0.length; ++i1) {
+            encoder2.encodeString(keys0[i1], bindings.ArrayDataHeader.kHeaderSize + bindings.kPointerSize * i1, false);
+          }
+        }
         
-        encoder1.encodeUnion(nullablePodUnionArray[i0], bindings.ArrayDataHeader.kHeaderSize + bindings.kUnionSize * i0, true);
+        {
+          var encoder2 = encoder1.encodeUnionArray(values0.length, bindings.ArrayDataHeader.kHeaderSize + bindings.kPointerSize, bindings.kUnspecifiedArrayLength);
+          for (int i1 = 0; i1 < values0.length; ++i1) {
+            encoder2.encodeUnion(values0[i1], bindings.ArrayDataHeader.kHeaderSize + bindings.kUnionSize * i1, false);
+          }
+        }
       }
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "podUnionMap of struct SmallStruct: $e";
+      rethrow;
     }
-    
-    if (sArray == null) {
-      encoder0.encodeNullPointer(48, true);
-    } else {
-      var encoder1 = encoder0.encodePointerArray(sArray.length, 48, bindings.kUnspecifiedArrayLength);
-      for (int i0 = 0; i0 < sArray.length; ++i0) {
+    try {
+      if (nullablePodUnionMap == null) {
+        encoder0.encodeNullPointer(64, true);
+      } else {
+        var encoder1 = encoder0.encoderForMap(64);
+        int size0 = nullablePodUnionMap.length;
+        var keys0 = nullablePodUnionMap.keys.toList();
+        var values0 = nullablePodUnionMap.values.toList();
         
-        encoder1.encodeStruct(sArray[i0], bindings.ArrayDataHeader.kHeaderSize + bindings.kPointerSize * i0, false);
-      }
-    }
-    
-    if (podUnionMap == null) {
-      encoder0.encodeNullPointer(56, true);
-    } else {
-      var encoder1 = encoder0.encoderForMap(56);
-      int size0 = podUnionMap.length;
-      var keys0 = podUnionMap.keys.toList();
-      var values0 = podUnionMap.values.toList();
-      
-      {
-        var encoder2 = encoder1.encodePointerArray(keys0.length, bindings.ArrayDataHeader.kHeaderSize, bindings.kUnspecifiedArrayLength);
-        for (int i1 = 0; i1 < keys0.length; ++i1) {
-          
-          encoder2.encodeString(keys0[i1], bindings.ArrayDataHeader.kHeaderSize + bindings.kPointerSize * i1, false);
+        {
+          var encoder2 = encoder1.encodePointerArray(keys0.length, bindings.ArrayDataHeader.kHeaderSize, bindings.kUnspecifiedArrayLength);
+          for (int i1 = 0; i1 < keys0.length; ++i1) {
+            encoder2.encodeString(keys0[i1], bindings.ArrayDataHeader.kHeaderSize + bindings.kPointerSize * i1, false);
+          }
+        }
+        
+        {
+          var encoder2 = encoder1.encodeUnionArray(values0.length, bindings.ArrayDataHeader.kHeaderSize + bindings.kPointerSize, bindings.kUnspecifiedArrayLength);
+          for (int i1 = 0; i1 < values0.length; ++i1) {
+            encoder2.encodeUnion(values0[i1], bindings.ArrayDataHeader.kHeaderSize + bindings.kUnionSize * i1, true);
+          }
         }
       }
-      
-      {
-        var encoder2 = encoder1.encodeUnionArray(values0.length, bindings.ArrayDataHeader.kHeaderSize + bindings.kPointerSize, bindings.kUnspecifiedArrayLength);
-        for (int i1 = 0; i1 < values0.length; ++i1) {
-          
-          encoder2.encodeUnion(values0[i1], bindings.ArrayDataHeader.kHeaderSize + bindings.kUnionSize * i1, false);
-        }
-      }
-    }
-    
-    if (nullablePodUnionMap == null) {
-      encoder0.encodeNullPointer(64, true);
-    } else {
-      var encoder1 = encoder0.encoderForMap(64);
-      int size0 = nullablePodUnionMap.length;
-      var keys0 = nullablePodUnionMap.keys.toList();
-      var values0 = nullablePodUnionMap.values.toList();
-      
-      {
-        var encoder2 = encoder1.encodePointerArray(keys0.length, bindings.ArrayDataHeader.kHeaderSize, bindings.kUnspecifiedArrayLength);
-        for (int i1 = 0; i1 < keys0.length; ++i1) {
-          
-          encoder2.encodeString(keys0[i1], bindings.ArrayDataHeader.kHeaderSize + bindings.kPointerSize * i1, false);
-        }
-      }
-      
-      {
-        var encoder2 = encoder1.encodeUnionArray(values0.length, bindings.ArrayDataHeader.kHeaderSize + bindings.kPointerSize, bindings.kUnspecifiedArrayLength);
-        for (int i1 = 0; i1 < values0.length; ++i1) {
-          
-          encoder2.encodeUnion(values0[i1], bindings.ArrayDataHeader.kHeaderSize + bindings.kUnionSize * i1, true);
-        }
-      }
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "nullablePodUnionMap of struct SmallStruct: $e";
+      rethrow;
     }
   }
 
@@ -1019,8 +1086,13 @@ class SmallStructNonNullableUnion extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeUnion(podUnion, 8, false);
+    try {
+      encoder0.encodeUnion(podUnion, 8, false);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "podUnion of struct SmallStructNonNullableUnion: $e";
+      rethrow;
+    }
   }
 
   String toString() {
@@ -1102,8 +1174,13 @@ class StructNullObjectUnion extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeUnion(objUnion, 8, true);
+    try {
+      encoder0.encodeUnion(objUnion, 8, true);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "objUnion of struct StructNullObjectUnion: $e";
+      rethrow;
+    }
   }
 
   String toString() {
@@ -1196,10 +1273,20 @@ class SmallObjStruct extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeUnion(objUnion, 8, false);
-    
-    encoder0.encodeInt8(fInt8, 24);
+    try {
+      encoder0.encodeUnion(objUnion, 8, false);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "objUnion of struct SmallObjStruct: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeInt8(fInt8, 24);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "fInt8 of struct SmallObjStruct: $e";
+      rethrow;
+    }
   }
 
   String toString() {
@@ -1295,10 +1382,20 @@ class TryNonNullStruct extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeStruct(nullable, 8, true);
-    
-    encoder0.encodeStruct(nonNullable, 16, false);
+    try {
+      encoder0.encodeStruct(nullable, 8, true);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "nullable of struct TryNonNullStruct: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeStruct(nonNullable, 16, false);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "nonNullable of struct TryNonNullStruct: $e";
+      rethrow;
+    }
   }
 
   String toString() {
@@ -1396,8 +1493,13 @@ class IncludingStruct extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeUnion(a, 8, false);
+    try {
+      encoder0.encodeUnion(a, 8, false);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "a of struct IncludingStruct: $e";
+      rethrow;
+    }
   }
 
   String toString() {
@@ -1479,8 +1581,13 @@ class _SmallCacheSetIntValueParams extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeInt64(intValue, 8);
+    try {
+      encoder0.encodeInt64(intValue, 8);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "intValue of struct _SmallCacheSetIntValueParams: $e";
+      rethrow;
+    }
   }
 
   String toString() {
@@ -1625,8 +1732,13 @@ class SmallCacheGetIntValueResponseParams extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeInt64(intValue, 8);
+    try {
+      encoder0.encodeInt64(intValue, 8);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "intValue of struct SmallCacheGetIntValueResponseParams: $e";
+      rethrow;
+    }
   }
 
   String toString() {
@@ -1709,8 +1821,13 @@ class _UnionInterfaceEchoParams extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeUnion(inVal, 8, false);
+    try {
+      encoder0.encodeUnion(inVal, 8, false);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "inVal of struct _UnionInterfaceEchoParams: $e";
+      rethrow;
+    }
   }
 
   String toString() {
@@ -1796,8 +1913,13 @@ class UnionInterfaceEchoResponseParams extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeUnion(outVal, 8, false);
+    try {
+      encoder0.encodeUnion(outVal, 8, false);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "outVal of struct UnionInterfaceEchoResponseParams: $e";
+      rethrow;
+    }
   }
 
   String toString() {
@@ -2107,55 +2229,42 @@ class PodUnion extends bindings.Union {
     encoder0.encodeUint32(_tag_to_int[_tag], offset + 4);
     switch (_tag) {
       case PodUnionTag.fInt8:
-        
         encoder0.encodeInt8(fInt8, offset + 8);
         break;
       case PodUnionTag.fInt8Other:
-        
         encoder0.encodeInt8(fInt8Other, offset + 8);
         break;
       case PodUnionTag.fUint8:
-        
         encoder0.encodeUint8(fUint8, offset + 8);
         break;
       case PodUnionTag.fInt16:
-        
         encoder0.encodeInt16(fInt16, offset + 8);
         break;
       case PodUnionTag.fUint16:
-        
         encoder0.encodeUint16(fUint16, offset + 8);
         break;
       case PodUnionTag.fInt32:
-        
         encoder0.encodeInt32(fInt32, offset + 8);
         break;
       case PodUnionTag.fUint32:
-        
         encoder0.encodeUint32(fUint32, offset + 8);
         break;
       case PodUnionTag.fInt64:
-        
         encoder0.encodeInt64(fInt64, offset + 8);
         break;
       case PodUnionTag.fUint64:
-        
         encoder0.encodeUint64(fUint64, offset + 8);
         break;
       case PodUnionTag.fFloat:
-        
         encoder0.encodeFloat(fFloat, offset + 8);
         break;
       case PodUnionTag.fDouble:
-        
         encoder0.encodeDouble(fDouble, offset + 8);
         break;
       case PodUnionTag.fBool:
-        
         encoder0.encodeBool(fBool, offset + 8, 0);
         break;
       case PodUnionTag.fEnum:
-        
         encoder0.encodeEnum(fEnum, offset + 8);
         break;
       default:
@@ -2513,31 +2622,26 @@ class UnionOfUnions extends bindings.Union {
         encoder0.encodeNestedUnion(u, offset + 8, false);
         break;
       case UnionOfUnionsTag.aOu:
-        
         if (aOu == null) {
           encoder0.encodeNullPointer(offset + 8, false);
         } else {
           var encoder1 = encoder0.encodeUnionArray(aOu.length, offset + 8, bindings.kUnspecifiedArrayLength);
           for (int i0 = 0; i0 < aOu.length; ++i0) {
-            
             encoder1.encodeUnion(aOu[i0], bindings.ArrayDataHeader.kHeaderSize + bindings.kUnionSize * i0, false);
           }
         }
         break;
       case UnionOfUnionsTag.aHu:
-        
         if (aHu == null) {
           encoder0.encodeNullPointer(offset + 8, false);
         } else {
           var encoder1 = encoder0.encodeUnionArray(aHu.length, offset + 8, bindings.kUnspecifiedArrayLength);
           for (int i0 = 0; i0 < aHu.length; ++i0) {
-            
             encoder1.encodeUnion(aHu[i0], bindings.ArrayDataHeader.kHeaderSize + bindings.kUnionSize * i0, false);
           }
         }
         break;
       case UnionOfUnionsTag.mOu:
-        
         if (mOu == null) {
           encoder0.encodeNullPointer(offset + 8, false);
         } else {
@@ -2545,20 +2649,17 @@ class UnionOfUnions extends bindings.Union {
           int size0 = mOu.length;
           var keys0 = mOu.keys.toList();
           var values0 = mOu.values.toList();
-          
           encoder1.encodeInt64Array(keys0, bindings.ArrayDataHeader.kHeaderSize, bindings.kNothingNullable, bindings.kUnspecifiedArrayLength);
           
           {
             var encoder2 = encoder1.encodeUnionArray(values0.length, bindings.ArrayDataHeader.kHeaderSize + bindings.kPointerSize, bindings.kUnspecifiedArrayLength);
             for (int i1 = 0; i1 < values0.length; ++i1) {
-              
               encoder2.encodeUnion(values0[i1], bindings.ArrayDataHeader.kHeaderSize + bindings.kUnionSize * i1, false);
             }
           }
         }
         break;
       case UnionOfUnionsTag.mHu:
-        
         if (mHu == null) {
           encoder0.encodeNullPointer(offset + 8, false);
         } else {
@@ -2566,13 +2667,11 @@ class UnionOfUnions extends bindings.Union {
           int size0 = mHu.length;
           var keys0 = mHu.keys.toList();
           var values0 = mHu.values.toList();
-          
           encoder1.encodeInt64Array(keys0, bindings.ArrayDataHeader.kHeaderSize, bindings.kNothingNullable, bindings.kUnspecifiedArrayLength);
           
           {
             var encoder2 = encoder1.encodeUnionArray(values0.length, bindings.ArrayDataHeader.kHeaderSize + bindings.kPointerSize, bindings.kUnspecifiedArrayLength);
             for (int i1 = 0; i1 < values0.length; ++i1) {
-              
               encoder2.encodeUnion(values0[i1], bindings.ArrayDataHeader.kHeaderSize + bindings.kUnionSize * i1, false);
             }
           }
@@ -2865,27 +2964,21 @@ class ObjectUnion extends bindings.Union {
     encoder0.encodeUint32(_tag_to_int[_tag], offset + 4);
     switch (_tag) {
       case ObjectUnionTag.fInt8:
-        
         encoder0.encodeInt8(fInt8, offset + 8);
         break;
       case ObjectUnionTag.fString:
-        
         encoder0.encodeString(fString, offset + 8, false);
         break;
       case ObjectUnionTag.fDummy:
-        
         encoder0.encodeStruct(fDummy, offset + 8, false);
         break;
       case ObjectUnionTag.fNullable:
-        
         encoder0.encodeStruct(fNullable, offset + 8, true);
         break;
       case ObjectUnionTag.fArrayInt8:
-        
         encoder0.encodeInt8Array(fArrayInt8, offset + 8, bindings.kNothingNullable, bindings.kUnspecifiedArrayLength);
         break;
       case ObjectUnionTag.fMapInt8:
-        
         if (fMapInt8 == null) {
           encoder0.encodeNullPointer(offset + 8, false);
         } else {
@@ -2897,11 +2990,9 @@ class ObjectUnion extends bindings.Union {
           {
             var encoder2 = encoder1.encodePointerArray(keys0.length, bindings.ArrayDataHeader.kHeaderSize, bindings.kUnspecifiedArrayLength);
             for (int i1 = 0; i1 < keys0.length; ++i1) {
-              
               encoder2.encodeString(keys0[i1], bindings.ArrayDataHeader.kHeaderSize + bindings.kPointerSize * i1, false);
             }
           }
-          
           encoder1.encodeInt8Array(values0, bindings.ArrayDataHeader.kHeaderSize + bindings.kPointerSize, bindings.kNothingNullable, bindings.kUnspecifiedArrayLength);
         }
         break;
@@ -3160,27 +3251,21 @@ class HandleUnion extends bindings.Union {
     encoder0.encodeUint32(_tag_to_int[_tag], offset + 4);
     switch (_tag) {
       case HandleUnionTag.fHandle:
-        
         encoder0.encodeHandle(fHandle, offset + 8, false);
         break;
       case HandleUnionTag.fMessagePipe:
-        
         encoder0.encodeMessagePipeHandle(fMessagePipe, offset + 8, false);
         break;
       case HandleUnionTag.fDataPipeConsumer:
-        
         encoder0.encodeConsumerHandle(fDataPipeConsumer, offset + 8, false);
         break;
       case HandleUnionTag.fDataPipeProducer:
-        
         encoder0.encodeProducerHandle(fDataPipeProducer, offset + 8, false);
         break;
       case HandleUnionTag.fSharedBuffer:
-        
         encoder0.encodeSharedBufferHandle(fSharedBuffer, offset + 8, false);
         break;
       case HandleUnionTag.fSmallCache:
-        
         encoder0.encodeInterface(fSmallCache, offset + 8, false);
         break;
       default:
@@ -3328,7 +3413,6 @@ class ObjectOnlyUnion extends bindings.Union {
     encoder0.encodeUint32(_tag_to_int[_tag], offset + 4);
     switch (_tag) {
       case ObjectOnlyUnionTag.dummy1:
-        
         encoder0.encodeStruct(dummy1, offset + 8, false);
         break;
       default:
@@ -3425,7 +3509,6 @@ class OldUnion extends bindings.Union {
     encoder0.encodeUint32(_tag_to_int[_tag], offset + 4);
     switch (_tag) {
       case OldUnionTag.fInt8:
-        
         encoder0.encodeInt8(fInt8, offset + 8);
         break;
       default:
@@ -3537,11 +3620,9 @@ class NewUnion extends bindings.Union {
     encoder0.encodeUint32(_tag_to_int[_tag], offset + 4);
     switch (_tag) {
       case NewUnionTag.fInt8:
-        
         encoder0.encodeInt8(fInt8, offset + 8);
         break;
       case NewUnionTag.fInt16:
-        
         encoder0.encodeInt16(fInt16, offset + 8);
         break;
       default:

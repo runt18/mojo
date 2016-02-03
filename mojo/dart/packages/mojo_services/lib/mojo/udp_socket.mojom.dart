@@ -126,8 +126,13 @@ class UdpSocketAllowAddressReuseResponseParams extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeStruct(result, 8, false);
+    try {
+      encoder0.encodeStruct(result, 8, false);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "result of struct UdpSocketAllowAddressReuseResponseParams: $e";
+      rethrow;
+    }
   }
 
   String toString() {
@@ -196,8 +201,13 @@ class _UdpSocketBindParams extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeStruct(addr, 8, false);
+    try {
+      encoder0.encodeStruct(addr, 8, false);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "addr of struct _UdpSocketBindParams: $e";
+      rethrow;
+    }
   }
 
   String toString() {
@@ -277,12 +287,27 @@ class UdpSocketBindResponseParams extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeStruct(result, 8, false);
-    
-    encoder0.encodeStruct(boundAddr, 16, true);
-    
-    encoder0.encodeInterfaceRequest(receiver, 24, true);
+    try {
+      encoder0.encodeStruct(result, 8, false);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "result of struct UdpSocketBindResponseParams: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeStruct(boundAddr, 16, true);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "boundAddr of struct UdpSocketBindResponseParams: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeInterfaceRequest(receiver, 24, true);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "receiver of struct UdpSocketBindResponseParams: $e";
+      rethrow;
+    }
   }
 
   String toString() {
@@ -352,8 +377,13 @@ class _UdpSocketConnectParams extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeStruct(remoteAddr, 8, false);
+    try {
+      encoder0.encodeStruct(remoteAddr, 8, false);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "remoteAddr of struct _UdpSocketConnectParams: $e";
+      rethrow;
+    }
   }
 
   String toString() {
@@ -433,12 +463,27 @@ class UdpSocketConnectResponseParams extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeStruct(result, 8, false);
-    
-    encoder0.encodeStruct(localAddr, 16, true);
-    
-    encoder0.encodeInterfaceRequest(receiver, 24, true);
+    try {
+      encoder0.encodeStruct(result, 8, false);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "result of struct UdpSocketConnectResponseParams: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeStruct(localAddr, 16, true);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "localAddr of struct UdpSocketConnectResponseParams: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeInterfaceRequest(receiver, 24, true);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "receiver of struct UdpSocketConnectResponseParams: $e";
+      rethrow;
+    }
   }
 
   String toString() {
@@ -507,8 +552,13 @@ class _UdpSocketSetSendBufferSizeParams extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeUint32(size, 8);
+    try {
+      encoder0.encodeUint32(size, 8);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "size of struct _UdpSocketSetSendBufferSizeParams: $e";
+      rethrow;
+    }
   }
 
   String toString() {
@@ -577,8 +627,13 @@ class UdpSocketSetSendBufferSizeResponseParams extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeStruct(result, 8, false);
+    try {
+      encoder0.encodeStruct(result, 8, false);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "result of struct UdpSocketSetSendBufferSizeResponseParams: $e";
+      rethrow;
+    }
   }
 
   String toString() {
@@ -646,8 +701,13 @@ class _UdpSocketSetReceiveBufferSizeParams extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeUint32(size, 8);
+    try {
+      encoder0.encodeUint32(size, 8);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "size of struct _UdpSocketSetReceiveBufferSizeParams: $e";
+      rethrow;
+    }
   }
 
   String toString() {
@@ -716,8 +776,13 @@ class UdpSocketSetReceiveBufferSizeResponseParams extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeStruct(result, 8, false);
+    try {
+      encoder0.encodeStruct(result, 8, false);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "result of struct UdpSocketSetReceiveBufferSizeResponseParams: $e";
+      rethrow;
+    }
   }
 
   String toString() {
@@ -785,8 +850,13 @@ class _UdpSocketNegotiateMaxPendingSendRequestsParams extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeUint32(requestedSize, 8);
+    try {
+      encoder0.encodeUint32(requestedSize, 8);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "requestedSize of struct _UdpSocketNegotiateMaxPendingSendRequestsParams: $e";
+      rethrow;
+    }
   }
 
   String toString() {
@@ -854,8 +924,13 @@ class UdpSocketNegotiateMaxPendingSendRequestsResponseParams extends bindings.St
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeUint32(actualSize, 8);
+    try {
+      encoder0.encodeUint32(actualSize, 8);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "actualSize of struct UdpSocketNegotiateMaxPendingSendRequestsResponseParams: $e";
+      rethrow;
+    }
   }
 
   String toString() {
@@ -923,8 +998,13 @@ class _UdpSocketReceiveMoreParams extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeUint32(datagramNumber, 8);
+    try {
+      encoder0.encodeUint32(datagramNumber, 8);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "datagramNumber of struct _UdpSocketReceiveMoreParams: $e";
+      rethrow;
+    }
   }
 
   String toString() {
@@ -998,10 +1078,20 @@ class _UdpSocketSendToParams extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeStruct(destAddr, 8, true);
-    
-    encoder0.encodeUint8Array(data, 16, bindings.kNothingNullable, bindings.kUnspecifiedArrayLength);
+    try {
+      encoder0.encodeStruct(destAddr, 8, true);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "destAddr of struct _UdpSocketSendToParams: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeUint8Array(data, 16, bindings.kNothingNullable, bindings.kUnspecifiedArrayLength);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "data of struct _UdpSocketSendToParams: $e";
+      rethrow;
+    }
   }
 
   String toString() {
@@ -1072,8 +1162,13 @@ class UdpSocketSendToResponseParams extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeStruct(result, 8, false);
+    try {
+      encoder0.encodeStruct(result, 8, false);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "result of struct UdpSocketSendToResponseParams: $e";
+      rethrow;
+    }
   }
 
   String toString() {
@@ -1153,12 +1248,27 @@ class _UdpSocketReceiverOnReceivedParams extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeStruct(result, 8, false);
-    
-    encoder0.encodeStruct(srcAddr, 16, true);
-    
-    encoder0.encodeUint8Array(data, 24, bindings.kArrayNullable, bindings.kUnspecifiedArrayLength);
+    try {
+      encoder0.encodeStruct(result, 8, false);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "result of struct _UdpSocketReceiverOnReceivedParams: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeStruct(srcAddr, 16, true);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "srcAddr of struct _UdpSocketReceiverOnReceivedParams: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeUint8Array(data, 24, bindings.kArrayNullable, bindings.kUnspecifiedArrayLength);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "data of struct _UdpSocketReceiverOnReceivedParams: $e";
+      rethrow;
+    }
   }
 
   String toString() {

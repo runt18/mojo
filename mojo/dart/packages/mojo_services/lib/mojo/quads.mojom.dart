@@ -507,8 +507,13 @@ class Color extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeUint32(rgba, 8);
+    try {
+      encoder0.encodeUint32(rgba, 8);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "rgba of struct Color: $e";
+      rethrow;
+    }
   }
 
   String toString() {
@@ -761,10 +766,20 @@ class RenderPassId extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeInt32(layerId, 8);
-    
-    encoder0.encodeInt32(index, 12);
+    try {
+      encoder0.encodeInt32(layerId, 8);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "layerId of struct RenderPassId: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeInt32(index, 12);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "index of struct RenderPassId: $e";
+      rethrow;
+    }
   }
 
   String toString() {
@@ -858,16 +873,41 @@ class RenderPassQuadState extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeStruct(renderPassId, 8, false);
-    
-    encoder0.encodeUint32(maskResourceId, 16);
-    
-    encoder0.encodeStruct(maskUvScale, 24, false);
-    
-    encoder0.encodeStruct(maskTextureSize, 32, false);
-    
-    encoder0.encodeStruct(filtersScale, 40, false);
+    try {
+      encoder0.encodeStruct(renderPassId, 8, false);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "renderPassId of struct RenderPassQuadState: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeUint32(maskResourceId, 16);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "maskResourceId of struct RenderPassQuadState: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeStruct(maskUvScale, 24, false);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "maskUvScale of struct RenderPassQuadState: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeStruct(maskTextureSize, 32, false);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "maskTextureSize of struct RenderPassQuadState: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeStruct(filtersScale, 40, false);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "filtersScale of struct RenderPassQuadState: $e";
+      rethrow;
+    }
   }
 
   String toString() {
@@ -949,10 +989,20 @@ class SolidColorQuadState extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeStruct(color, 8, false);
-    
-    encoder0.encodeBool(forceAntiAliasingOff, 16, 0);
+    try {
+      encoder0.encodeStruct(color, 8, false);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "color of struct SolidColorQuadState: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeBool(forceAntiAliasingOff, 16, 0);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "forceAntiAliasingOff of struct SolidColorQuadState: $e";
+      rethrow;
+    }
   }
 
   String toString() {
@@ -1023,8 +1073,13 @@ class SurfaceQuadState extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeStruct(surface, 8, false);
+    try {
+      encoder0.encodeStruct(surface, 8, false);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "surface of struct SurfaceQuadState: $e";
+      rethrow;
+    }
   }
 
   String toString() {
@@ -1130,22 +1185,62 @@ class TextureQuadState extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeUint32(resourceId, 8);
-    
-    encoder0.encodeBool(premultipliedAlpha, 12, 0);
-    
-    encoder0.encodeBool(flipped, 12, 1);
-    
-    encoder0.encodeBool(nearestNeighbor, 12, 2);
-    
-    encoder0.encodeStruct(uvTopLeft, 16, false);
-    
-    encoder0.encodeStruct(uvBottomRight, 24, false);
-    
-    encoder0.encodeStruct(backgroundColor, 32, false);
-    
-    encoder0.encodeFloatArray(vertexOpacity, 40, bindings.kNothingNullable, 4);
+    try {
+      encoder0.encodeUint32(resourceId, 8);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "resourceId of struct TextureQuadState: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeBool(premultipliedAlpha, 12, 0);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "premultipliedAlpha of struct TextureQuadState: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeBool(flipped, 12, 1);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "flipped of struct TextureQuadState: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeBool(nearestNeighbor, 12, 2);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "nearestNeighbor of struct TextureQuadState: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeStruct(uvTopLeft, 16, false);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "uvTopLeft of struct TextureQuadState: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeStruct(uvBottomRight, 24, false);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "uvBottomRight of struct TextureQuadState: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeStruct(backgroundColor, 32, false);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "backgroundColor of struct TextureQuadState: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeFloatArray(vertexOpacity, 40, bindings.kNothingNullable, 4);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "vertexOpacity of struct TextureQuadState: $e";
+      rethrow;
+    }
   }
 
   String toString() {
@@ -1249,16 +1344,41 @@ class TileQuadState extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeStruct(texCoordRect, 8, false);
-    
-    encoder0.encodeStruct(textureSize, 16, false);
-    
-    encoder0.encodeBool(swizzleContents, 24, 0);
-    
-    encoder0.encodeBool(nearestNeighbor, 24, 1);
-    
-    encoder0.encodeUint32(resourceId, 28);
+    try {
+      encoder0.encodeStruct(texCoordRect, 8, false);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "texCoordRect of struct TileQuadState: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeStruct(textureSize, 16, false);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "textureSize of struct TileQuadState: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeBool(swizzleContents, 24, 0);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "swizzleContents of struct TileQuadState: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeBool(nearestNeighbor, 24, 1);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "nearestNeighbor of struct TileQuadState: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeUint32(resourceId, 28);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "resourceId of struct TileQuadState: $e";
+      rethrow;
+    }
   }
 
   String toString() {
@@ -1424,18 +1544,48 @@ class YuvVideoQuadState extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeStruct(texCoordRect, 8, false);
-    
-    encoder0.encodeUint32(yPlaneResourceId, 16);
-    
-    encoder0.encodeUint32(uPlaneResourceId, 20);
-    
-    encoder0.encodeUint32(vPlaneResourceId, 24);
-    
-    encoder0.encodeUint32(aPlaneResourceId, 28);
-    
-    encoder0.encodeEnum(colorSpace, 32);
+    try {
+      encoder0.encodeStruct(texCoordRect, 8, false);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "texCoordRect of struct YuvVideoQuadState: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeUint32(yPlaneResourceId, 16);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "yPlaneResourceId of struct YuvVideoQuadState: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeUint32(uPlaneResourceId, 20);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "uPlaneResourceId of struct YuvVideoQuadState: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeUint32(vPlaneResourceId, 24);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "vPlaneResourceId of struct YuvVideoQuadState: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeUint32(aPlaneResourceId, 28);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "aPlaneResourceId of struct YuvVideoQuadState: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeEnum(colorSpace, 32);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "colorSpace of struct YuvVideoQuadState: $e";
+      rethrow;
+    }
   }
 
   String toString() {
@@ -1605,38 +1755,118 @@ class Quad extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeEnum(material, 8);
-    
-    encoder0.encodeBool(needsBlending, 12, 0);
-    
-    encoder0.encodeStruct(rect, 16, false);
-    
-    encoder0.encodeStruct(opaqueRect, 24, false);
-    
-    encoder0.encodeStruct(visibleRect, 32, false);
-    
-    encoder0.encodeUint32(sharedQuadStateIndex, 40);
-    
-    encoder0.encodeStruct(checkerboardQuadState, 48, true);
-    
-    encoder0.encodeStruct(debugBorderQuadState, 56, true);
-    
-    encoder0.encodeStruct(ioSurfaceQuadState, 64, true);
-    
-    encoder0.encodeStruct(renderPassQuadState, 72, true);
-    
-    encoder0.encodeStruct(solidColorQuadState, 80, true);
-    
-    encoder0.encodeStruct(surfaceQuadState, 88, true);
-    
-    encoder0.encodeStruct(textureQuadState, 96, true);
-    
-    encoder0.encodeStruct(tileQuadState, 104, true);
-    
-    encoder0.encodeStruct(streamVideoQuadState, 112, true);
-    
-    encoder0.encodeStruct(yuvVideoQuadState, 120, true);
+    try {
+      encoder0.encodeEnum(material, 8);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "material of struct Quad: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeBool(needsBlending, 12, 0);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "needsBlending of struct Quad: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeStruct(rect, 16, false);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "rect of struct Quad: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeStruct(opaqueRect, 24, false);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "opaqueRect of struct Quad: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeStruct(visibleRect, 32, false);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "visibleRect of struct Quad: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeUint32(sharedQuadStateIndex, 40);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "sharedQuadStateIndex of struct Quad: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeStruct(checkerboardQuadState, 48, true);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "checkerboardQuadState of struct Quad: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeStruct(debugBorderQuadState, 56, true);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "debugBorderQuadState of struct Quad: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeStruct(ioSurfaceQuadState, 64, true);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "ioSurfaceQuadState of struct Quad: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeStruct(renderPassQuadState, 72, true);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "renderPassQuadState of struct Quad: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeStruct(solidColorQuadState, 80, true);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "solidColorQuadState of struct Quad: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeStruct(surfaceQuadState, 88, true);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "surfaceQuadState of struct Quad: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeStruct(textureQuadState, 96, true);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "textureQuadState of struct Quad: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeStruct(tileQuadState, 104, true);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "tileQuadState of struct Quad: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeStruct(streamVideoQuadState, 112, true);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "streamVideoQuadState of struct Quad: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeStruct(yuvVideoQuadState, 120, true);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "yuvVideoQuadState of struct Quad: $e";
+      rethrow;
+    }
   }
 
   String toString() {
@@ -1777,22 +2007,62 @@ class SharedQuadState extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeStruct(contentToTargetTransform, 8, false);
-    
-    encoder0.encodeStruct(contentBounds, 16, false);
-    
-    encoder0.encodeStruct(visibleContentRect, 24, false);
-    
-    encoder0.encodeStruct(clipRect, 32, false);
-    
-    encoder0.encodeBool(isClipped, 40, 0);
-    
-    encoder0.encodeFloat(opacity, 44);
-    
-    encoder0.encodeEnum(blendMode, 48);
-    
-    encoder0.encodeInt32(sortingContextId, 52);
+    try {
+      encoder0.encodeStruct(contentToTargetTransform, 8, false);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "contentToTargetTransform of struct SharedQuadState: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeStruct(contentBounds, 16, false);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "contentBounds of struct SharedQuadState: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeStruct(visibleContentRect, 24, false);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "visibleContentRect of struct SharedQuadState: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeStruct(clipRect, 32, false);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "clipRect of struct SharedQuadState: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeBool(isClipped, 40, 0);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "isClipped of struct SharedQuadState: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeFloat(opacity, 44);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "opacity of struct SharedQuadState: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeEnum(blendMode, 48);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "blendMode of struct SharedQuadState: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeInt32(sortingContextId, 52);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "sortingContextId of struct SharedQuadState: $e";
+      rethrow;
+    }
   }
 
   String toString() {
@@ -1925,35 +2195,68 @@ class Pass extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeInt32(id, 8);
-    
-    encoder0.encodeBool(hasTransparentBackground, 12, 0);
-    
-    encoder0.encodeStruct(outputRect, 16, false);
-    
-    encoder0.encodeStruct(damageRect, 24, false);
-    
-    encoder0.encodeStruct(transformToRootTarget, 32, false);
-    
-    if (quads == null) {
-      encoder0.encodeNullPointer(40, false);
-    } else {
-      var encoder1 = encoder0.encodePointerArray(quads.length, 40, bindings.kUnspecifiedArrayLength);
-      for (int i0 = 0; i0 < quads.length; ++i0) {
-        
-        encoder1.encodeStruct(quads[i0], bindings.ArrayDataHeader.kHeaderSize + bindings.kPointerSize * i0, false);
-      }
+    try {
+      encoder0.encodeInt32(id, 8);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "id of struct Pass: $e";
+      rethrow;
     }
-    
-    if (sharedQuadStates == null) {
-      encoder0.encodeNullPointer(48, false);
-    } else {
-      var encoder1 = encoder0.encodePointerArray(sharedQuadStates.length, 48, bindings.kUnspecifiedArrayLength);
-      for (int i0 = 0; i0 < sharedQuadStates.length; ++i0) {
-        
-        encoder1.encodeStruct(sharedQuadStates[i0], bindings.ArrayDataHeader.kHeaderSize + bindings.kPointerSize * i0, false);
+    try {
+      encoder0.encodeBool(hasTransparentBackground, 12, 0);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "hasTransparentBackground of struct Pass: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeStruct(outputRect, 16, false);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "outputRect of struct Pass: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeStruct(damageRect, 24, false);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "damageRect of struct Pass: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeStruct(transformToRootTarget, 32, false);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "transformToRootTarget of struct Pass: $e";
+      rethrow;
+    }
+    try {
+      if (quads == null) {
+        encoder0.encodeNullPointer(40, false);
+      } else {
+        var encoder1 = encoder0.encodePointerArray(quads.length, 40, bindings.kUnspecifiedArrayLength);
+        for (int i0 = 0; i0 < quads.length; ++i0) {
+          encoder1.encodeStruct(quads[i0], bindings.ArrayDataHeader.kHeaderSize + bindings.kPointerSize * i0, false);
+        }
       }
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "quads of struct Pass: $e";
+      rethrow;
+    }
+    try {
+      if (sharedQuadStates == null) {
+        encoder0.encodeNullPointer(48, false);
+      } else {
+        var encoder1 = encoder0.encodePointerArray(sharedQuadStates.length, 48, bindings.kUnspecifiedArrayLength);
+        for (int i0 = 0; i0 < sharedQuadStates.length; ++i0) {
+          encoder1.encodeStruct(sharedQuadStates[i0], bindings.ArrayDataHeader.kHeaderSize + bindings.kPointerSize * i0, false);
+        }
+      }
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "sharedQuadStates of struct Pass: $e";
+      rethrow;
     }
   }
 

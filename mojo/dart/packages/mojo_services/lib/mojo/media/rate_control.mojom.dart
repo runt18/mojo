@@ -78,14 +78,34 @@ class TimelineQuad extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeInt64(referenceOffset, 8);
-    
-    encoder0.encodeInt64(targetOffset, 16);
-    
-    encoder0.encodeInt32(referenceDelta, 24);
-    
-    encoder0.encodeUint32(targetDelta, 28);
+    try {
+      encoder0.encodeInt64(referenceOffset, 8);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "referenceOffset of struct TimelineQuad: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeInt64(targetOffset, 16);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "targetOffset of struct TimelineQuad: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeInt32(referenceDelta, 24);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "referenceDelta of struct TimelineQuad: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeUint32(targetDelta, 28);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "targetDelta of struct TimelineQuad: $e";
+      rethrow;
+    }
   }
 
   String toString() {
@@ -172,12 +192,27 @@ class TimelineTransform extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeStruct(quad, 8, false);
-    
-    encoder0.encodeUint32(referenceTimelineId, 16);
-    
-    encoder0.encodeUint32(targetTimelineId, 20);
+    try {
+      encoder0.encodeStruct(quad, 8, false);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "quad of struct TimelineTransform: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeUint32(referenceTimelineId, 16);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "referenceTimelineId of struct TimelineTransform: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeUint32(targetTimelineId, 20);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "targetTimelineId of struct TimelineTransform: $e";
+      rethrow;
+    }
   }
 
   String toString() {
@@ -310,8 +345,13 @@ class RateControlGetCurrentTransformResponseParams extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeStruct(trans, 8, false);
+    try {
+      encoder0.encodeStruct(trans, 8, false);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "trans of struct RateControlGetCurrentTransformResponseParams: $e";
+      rethrow;
+    }
   }
 
   String toString() {
@@ -380,8 +420,13 @@ class _RateControlSetCurrentQuadParams extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeStruct(quad, 8, false);
+    try {
+      encoder0.encodeStruct(quad, 8, false);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "quad of struct _RateControlSetCurrentQuadParams: $e";
+      rethrow;
+    }
   }
 
   String toString() {
@@ -449,8 +494,13 @@ class _RateControlSetTargetTimelineIdParams extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeUint32(id, 8);
+    try {
+      encoder0.encodeUint32(id, 8);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "id of struct _RateControlSetTargetTimelineIdParams: $e";
+      rethrow;
+    }
   }
 
   String toString() {
@@ -523,10 +573,20 @@ class _RateControlSetRateParams extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeInt32(referenceDelta, 8);
-    
-    encoder0.encodeUint32(targetDelta, 12);
+    try {
+      encoder0.encodeInt32(referenceDelta, 8);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "referenceDelta of struct _RateControlSetRateParams: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeUint32(targetDelta, 12);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "targetDelta of struct _RateControlSetRateParams: $e";
+      rethrow;
+    }
   }
 
   String toString() {
@@ -606,12 +666,27 @@ class _RateControlSetRateAtReferenceTimeParams extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeInt32(referenceDelta, 8);
-    
-    encoder0.encodeUint32(targetDelta, 12);
-    
-    encoder0.encodeInt64(referenceTime, 16);
+    try {
+      encoder0.encodeInt32(referenceDelta, 8);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "referenceDelta of struct _RateControlSetRateAtReferenceTimeParams: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeUint32(targetDelta, 12);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "targetDelta of struct _RateControlSetRateAtReferenceTimeParams: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeInt64(referenceTime, 16);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "referenceTime of struct _RateControlSetRateAtReferenceTimeParams: $e";
+      rethrow;
+    }
   }
 
   String toString() {
@@ -693,12 +768,27 @@ class _RateControlSetRateAtTargetTimeParams extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeInt32(referenceDelta, 8);
-    
-    encoder0.encodeUint32(targetDelta, 12);
-    
-    encoder0.encodeInt64(targetTime, 16);
+    try {
+      encoder0.encodeInt32(referenceDelta, 8);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "referenceDelta of struct _RateControlSetRateAtTargetTimeParams: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeUint32(targetDelta, 12);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "targetDelta of struct _RateControlSetRateAtTargetTimeParams: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeInt64(targetTime, 16);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "targetTime of struct _RateControlSetRateAtTargetTimeParams: $e";
+      rethrow;
+    }
   }
 
   String toString() {

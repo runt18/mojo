@@ -145,17 +145,26 @@ class DirectoryReadResponseParams extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeEnum(error, 8);
-    
-    if (directoryContents == null) {
-      encoder0.encodeNullPointer(16, true);
-    } else {
-      var encoder1 = encoder0.encodePointerArray(directoryContents.length, 16, bindings.kUnspecifiedArrayLength);
-      for (int i0 = 0; i0 < directoryContents.length; ++i0) {
-        
-        encoder1.encodeStruct(directoryContents[i0], bindings.ArrayDataHeader.kHeaderSize + bindings.kPointerSize * i0, false);
+    try {
+      encoder0.encodeEnum(error, 8);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "error of struct DirectoryReadResponseParams: $e";
+      rethrow;
+    }
+    try {
+      if (directoryContents == null) {
+        encoder0.encodeNullPointer(16, true);
+      } else {
+        var encoder1 = encoder0.encodePointerArray(directoryContents.length, 16, bindings.kUnspecifiedArrayLength);
+        for (int i0 = 0; i0 < directoryContents.length; ++i0) {
+          encoder1.encodeStruct(directoryContents[i0], bindings.ArrayDataHeader.kHeaderSize + bindings.kPointerSize * i0, false);
+        }
       }
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "directoryContents of struct DirectoryReadResponseParams: $e";
+      rethrow;
     }
   }
 
@@ -296,10 +305,20 @@ class DirectoryStatResponseParams extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeEnum(error, 8);
-    
-    encoder0.encodeStruct(fileInformation, 16, true);
+    try {
+      encoder0.encodeEnum(error, 8);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "error of struct DirectoryStatResponseParams: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeStruct(fileInformation, 16, true);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "fileInformation of struct DirectoryStatResponseParams: $e";
+      rethrow;
+    }
   }
 
   String toString() {
@@ -376,10 +395,20 @@ class _DirectoryTouchParams extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeStruct(atime, 8, true);
-    
-    encoder0.encodeStruct(mtime, 16, true);
+    try {
+      encoder0.encodeStruct(atime, 8, true);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "atime of struct _DirectoryTouchParams: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeStruct(mtime, 16, true);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "mtime of struct _DirectoryTouchParams: $e";
+      rethrow;
+    }
   }
 
   String toString() {
@@ -453,8 +482,13 @@ class DirectoryTouchResponseParams extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeEnum(error, 8);
+    try {
+      encoder0.encodeEnum(error, 8);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "error of struct DirectoryTouchResponseParams: $e";
+      rethrow;
+    }
   }
 
   String toString() {
@@ -532,12 +566,27 @@ class _DirectoryOpenFileParams extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeString(path, 8, false);
-    
-    encoder0.encodeInterfaceRequest(file, 16, true);
-    
-    encoder0.encodeUint32(openFlags, 20);
+    try {
+      encoder0.encodeString(path, 8, false);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "path of struct _DirectoryOpenFileParams: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeInterfaceRequest(file, 16, true);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "file of struct _DirectoryOpenFileParams: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeUint32(openFlags, 20);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "openFlags of struct _DirectoryOpenFileParams: $e";
+      rethrow;
+    }
   }
 
   String toString() {
@@ -610,8 +659,13 @@ class DirectoryOpenFileResponseParams extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeEnum(error, 8);
+    try {
+      encoder0.encodeEnum(error, 8);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "error of struct DirectoryOpenFileResponseParams: $e";
+      rethrow;
+    }
   }
 
   String toString() {
@@ -689,12 +743,27 @@ class _DirectoryOpenDirectoryParams extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeString(path, 8, false);
-    
-    encoder0.encodeInterfaceRequest(directory, 16, true);
-    
-    encoder0.encodeUint32(openFlags, 20);
+    try {
+      encoder0.encodeString(path, 8, false);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "path of struct _DirectoryOpenDirectoryParams: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeInterfaceRequest(directory, 16, true);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "directory of struct _DirectoryOpenDirectoryParams: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeUint32(openFlags, 20);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "openFlags of struct _DirectoryOpenDirectoryParams: $e";
+      rethrow;
+    }
   }
 
   String toString() {
@@ -767,8 +836,13 @@ class DirectoryOpenDirectoryResponseParams extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeEnum(error, 8);
+    try {
+      encoder0.encodeEnum(error, 8);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "error of struct DirectoryOpenDirectoryResponseParams: $e";
+      rethrow;
+    }
   }
 
   String toString() {
@@ -841,10 +915,20 @@ class _DirectoryRenameParams extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeString(path, 8, false);
-    
-    encoder0.encodeString(newPath, 16, false);
+    try {
+      encoder0.encodeString(path, 8, false);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "path of struct _DirectoryRenameParams: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeString(newPath, 16, false);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "newPath of struct _DirectoryRenameParams: $e";
+      rethrow;
+    }
   }
 
   String toString() {
@@ -918,8 +1002,13 @@ class DirectoryRenameResponseParams extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeEnum(error, 8);
+    try {
+      encoder0.encodeEnum(error, 8);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "error of struct DirectoryRenameResponseParams: $e";
+      rethrow;
+    }
   }
 
   String toString() {
@@ -992,10 +1081,20 @@ class _DirectoryDeleteParams extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeString(path, 8, false);
-    
-    encoder0.encodeUint32(deleteFlags, 16);
+    try {
+      encoder0.encodeString(path, 8, false);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "path of struct _DirectoryDeleteParams: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeUint32(deleteFlags, 16);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "deleteFlags of struct _DirectoryDeleteParams: $e";
+      rethrow;
+    }
   }
 
   String toString() {
@@ -1069,8 +1168,13 @@ class DirectoryDeleteResponseParams extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeEnum(error, 8);
+    try {
+      encoder0.encodeEnum(error, 8);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "error of struct DirectoryDeleteResponseParams: $e";
+      rethrow;
+    }
   }
 
   String toString() {

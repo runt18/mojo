@@ -64,8 +64,13 @@ class Struct1 extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeUint8(i, 8);
+    try {
+      encoder0.encodeUint8(i, 8);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "i of struct Struct1: $e";
+      rethrow;
+    }
   }
 
   String toString() {
@@ -144,8 +149,13 @@ class Struct2 extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeHandle(hdl, 8, false);
+    try {
+      encoder0.encodeHandle(hdl, 8, false);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "hdl of struct Struct2: $e";
+      rethrow;
+    }
   }
 
   String toString() {
@@ -225,8 +235,13 @@ class Struct3 extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeStruct(struct1, 8, false);
+    try {
+      encoder0.encodeStruct(struct1, 8, false);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "struct1 of struct Struct3: $e";
+      rethrow;
+    }
   }
 
   String toString() {
@@ -317,15 +332,19 @@ class Struct4 extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    if (data == null) {
-      encoder0.encodeNullPointer(8, false);
-    } else {
-      var encoder1 = encoder0.encodePointerArray(data.length, 8, bindings.kUnspecifiedArrayLength);
-      for (int i0 = 0; i0 < data.length; ++i0) {
-        
-        encoder1.encodeStruct(data[i0], bindings.ArrayDataHeader.kHeaderSize + bindings.kPointerSize * i0, false);
+    try {
+      if (data == null) {
+        encoder0.encodeNullPointer(8, false);
+      } else {
+        var encoder1 = encoder0.encodePointerArray(data.length, 8, bindings.kUnspecifiedArrayLength);
+        for (int i0 = 0; i0 < data.length; ++i0) {
+          encoder1.encodeStruct(data[i0], bindings.ArrayDataHeader.kHeaderSize + bindings.kPointerSize * i0, false);
+        }
       }
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "data of struct Struct4: $e";
+      rethrow;
     }
   }
 
@@ -419,15 +438,19 @@ class Struct5 extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    if (pair == null) {
-      encoder0.encodeNullPointer(8, false);
-    } else {
-      var encoder1 = encoder0.encodePointerArray(pair.length, 8, 2);
-      for (int i0 = 0; i0 < pair.length; ++i0) {
-        
-        encoder1.encodeStruct(pair[i0], bindings.ArrayDataHeader.kHeaderSize + bindings.kPointerSize * i0, false);
+    try {
+      if (pair == null) {
+        encoder0.encodeNullPointer(8, false);
+      } else {
+        var encoder1 = encoder0.encodePointerArray(pair.length, 8, 2);
+        for (int i0 = 0; i0 < pair.length; ++i0) {
+          encoder1.encodeStruct(pair[i0], bindings.ArrayDataHeader.kHeaderSize + bindings.kPointerSize * i0, false);
+        }
       }
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "pair of struct Struct5: $e";
+      rethrow;
     }
   }
 
@@ -513,8 +536,13 @@ class Struct6 extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeString(str, 8, false);
+    try {
+      encoder0.encodeString(str, 8, false);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "str of struct Struct6: $e";
+      rethrow;
+    }
   }
 
   String toString() {
@@ -604,12 +632,27 @@ class StructOfNullables extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeHandle(hdl, 8, true);
-    
-    encoder0.encodeStruct(struct1, 16, true);
-    
-    encoder0.encodeString(str, 24, true);
+    try {
+      encoder0.encodeHandle(hdl, 8, true);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "hdl of struct StructOfNullables: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeStruct(struct1, 16, true);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "struct1 of struct StructOfNullables: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeString(str, 24, true);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "str of struct StructOfNullables: $e";
+      rethrow;
+    }
   }
 
   String toString() {

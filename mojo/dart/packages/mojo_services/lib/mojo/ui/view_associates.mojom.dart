@@ -91,25 +91,33 @@ class ViewAssociateInfo extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    if (viewServiceNames == null) {
-      encoder0.encodeNullPointer(8, true);
-    } else {
-      var encoder1 = encoder0.encodePointerArray(viewServiceNames.length, 8, bindings.kUnspecifiedArrayLength);
-      for (int i0 = 0; i0 < viewServiceNames.length; ++i0) {
-        
-        encoder1.encodeString(viewServiceNames[i0], bindings.ArrayDataHeader.kHeaderSize + bindings.kPointerSize * i0, false);
+    try {
+      if (viewServiceNames == null) {
+        encoder0.encodeNullPointer(8, true);
+      } else {
+        var encoder1 = encoder0.encodePointerArray(viewServiceNames.length, 8, bindings.kUnspecifiedArrayLength);
+        for (int i0 = 0; i0 < viewServiceNames.length; ++i0) {
+          encoder1.encodeString(viewServiceNames[i0], bindings.ArrayDataHeader.kHeaderSize + bindings.kPointerSize * i0, false);
+        }
       }
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "viewServiceNames of struct ViewAssociateInfo: $e";
+      rethrow;
     }
-    
-    if (viewTreeServiceNames == null) {
-      encoder0.encodeNullPointer(16, true);
-    } else {
-      var encoder1 = encoder0.encodePointerArray(viewTreeServiceNames.length, 16, bindings.kUnspecifiedArrayLength);
-      for (int i0 = 0; i0 < viewTreeServiceNames.length; ++i0) {
-        
-        encoder1.encodeString(viewTreeServiceNames[i0], bindings.ArrayDataHeader.kHeaderSize + bindings.kPointerSize * i0, false);
+    try {
+      if (viewTreeServiceNames == null) {
+        encoder0.encodeNullPointer(16, true);
+      } else {
+        var encoder1 = encoder0.encodePointerArray(viewTreeServiceNames.length, 16, bindings.kUnspecifiedArrayLength);
+        for (int i0 = 0; i0 < viewTreeServiceNames.length; ++i0) {
+          encoder1.encodeString(viewTreeServiceNames[i0], bindings.ArrayDataHeader.kHeaderSize + bindings.kPointerSize * i0, false);
+        }
       }
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "viewTreeServiceNames of struct ViewAssociateInfo: $e";
+      rethrow;
     }
   }
 
@@ -180,8 +188,13 @@ class _ViewAssociateConnectParams extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeInterface(inspector, 8, false);
+    try {
+      encoder0.encodeInterface(inspector, 8, false);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "inspector of struct _ViewAssociateConnectParams: $e";
+      rethrow;
+    }
   }
 
   String toString() {
@@ -249,8 +262,13 @@ class ViewAssociateConnectResponseParams extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeStruct(info, 8, false);
+    try {
+      encoder0.encodeStruct(info, 8, false);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "info of struct ViewAssociateConnectResponseParams: $e";
+      rethrow;
+    }
   }
 
   String toString() {
@@ -329,12 +347,27 @@ class _ViewAssociateConnectToViewServiceParams extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeStruct(viewToken, 8, false);
-    
-    encoder0.encodeString(serviceName_, 16, false);
-    
-    encoder0.encodeMessagePipeHandle(pipe, 24, false);
+    try {
+      encoder0.encodeStruct(viewToken, 8, false);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "viewToken of struct _ViewAssociateConnectToViewServiceParams: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeString(serviceName_, 16, false);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "serviceName_ of struct _ViewAssociateConnectToViewServiceParams: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeMessagePipeHandle(pipe, 24, false);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "pipe of struct _ViewAssociateConnectToViewServiceParams: $e";
+      rethrow;
+    }
   }
 
   String toString() {
@@ -414,12 +447,27 @@ class _ViewAssociateConnectToViewTreeServiceParams extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeStruct(viewTreeToken, 8, false);
-    
-    encoder0.encodeString(serviceName_, 16, false);
-    
-    encoder0.encodeMessagePipeHandle(pipe, 24, false);
+    try {
+      encoder0.encodeStruct(viewTreeToken, 8, false);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "viewTreeToken of struct _ViewAssociateConnectToViewTreeServiceParams: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeString(serviceName_, 16, false);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "serviceName_ of struct _ViewAssociateConnectToViewTreeServiceParams: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeMessagePipeHandle(pipe, 24, false);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "pipe of struct _ViewAssociateConnectToViewTreeServiceParams: $e";
+      rethrow;
+    }
   }
 
   String toString() {

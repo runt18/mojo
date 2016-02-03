@@ -115,36 +115,69 @@ class _ProcessSpawnParams extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeUint8Array(path, 8, bindings.kNothingNullable, bindings.kUnspecifiedArrayLength);
-    
-    if (argv == null) {
-      encoder0.encodeNullPointer(16, true);
-    } else {
-      var encoder1 = encoder0.encodePointerArray(argv.length, 16, bindings.kUnspecifiedArrayLength);
-      for (int i0 = 0; i0 < argv.length; ++i0) {
-        
-        encoder1.encodeUint8Array(argv[i0], bindings.ArrayDataHeader.kHeaderSize + bindings.kPointerSize * i0, bindings.kNothingNullable, bindings.kUnspecifiedArrayLength);
-      }
+    try {
+      encoder0.encodeUint8Array(path, 8, bindings.kNothingNullable, bindings.kUnspecifiedArrayLength);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "path of struct _ProcessSpawnParams: $e";
+      rethrow;
     }
-    
-    if (envp == null) {
-      encoder0.encodeNullPointer(24, true);
-    } else {
-      var encoder1 = encoder0.encodePointerArray(envp.length, 24, bindings.kUnspecifiedArrayLength);
-      for (int i0 = 0; i0 < envp.length; ++i0) {
-        
-        encoder1.encodeUint8Array(envp[i0], bindings.ArrayDataHeader.kHeaderSize + bindings.kPointerSize * i0, bindings.kNothingNullable, bindings.kUnspecifiedArrayLength);
+    try {
+      if (argv == null) {
+        encoder0.encodeNullPointer(16, true);
+      } else {
+        var encoder1 = encoder0.encodePointerArray(argv.length, 16, bindings.kUnspecifiedArrayLength);
+        for (int i0 = 0; i0 < argv.length; ++i0) {
+          encoder1.encodeUint8Array(argv[i0], bindings.ArrayDataHeader.kHeaderSize + bindings.kPointerSize * i0, bindings.kNothingNullable, bindings.kUnspecifiedArrayLength);
+        }
       }
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "argv of struct _ProcessSpawnParams: $e";
+      rethrow;
     }
-    
-    encoder0.encodeInterface(stdinFile, 32, true);
-    
-    encoder0.encodeInterface(stdoutFile, 40, true);
-    
-    encoder0.encodeInterface(stderrFile, 48, true);
-    
-    encoder0.encodeInterfaceRequest(processController, 56, false);
+    try {
+      if (envp == null) {
+        encoder0.encodeNullPointer(24, true);
+      } else {
+        var encoder1 = encoder0.encodePointerArray(envp.length, 24, bindings.kUnspecifiedArrayLength);
+        for (int i0 = 0; i0 < envp.length; ++i0) {
+          encoder1.encodeUint8Array(envp[i0], bindings.ArrayDataHeader.kHeaderSize + bindings.kPointerSize * i0, bindings.kNothingNullable, bindings.kUnspecifiedArrayLength);
+        }
+      }
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "envp of struct _ProcessSpawnParams: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeInterface(stdinFile, 32, true);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "stdinFile of struct _ProcessSpawnParams: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeInterface(stdoutFile, 40, true);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "stdoutFile of struct _ProcessSpawnParams: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeInterface(stderrFile, 48, true);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "stderrFile of struct _ProcessSpawnParams: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeInterfaceRequest(processController, 56, false);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "processController of struct _ProcessSpawnParams: $e";
+      rethrow;
+    }
   }
 
   String toString() {
@@ -221,8 +254,13 @@ class ProcessSpawnResponseParams extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeEnum(error, 8);
+    try {
+      encoder0.encodeEnum(error, 8);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "error of struct ProcessSpawnResponseParams: $e";
+      rethrow;
+    }
   }
 
   String toString() {
@@ -330,32 +368,55 @@ class _ProcessSpawnWithTerminalParams extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeUint8Array(path, 8, bindings.kNothingNullable, bindings.kUnspecifiedArrayLength);
-    
-    if (argv == null) {
-      encoder0.encodeNullPointer(16, true);
-    } else {
-      var encoder1 = encoder0.encodePointerArray(argv.length, 16, bindings.kUnspecifiedArrayLength);
-      for (int i0 = 0; i0 < argv.length; ++i0) {
-        
-        encoder1.encodeUint8Array(argv[i0], bindings.ArrayDataHeader.kHeaderSize + bindings.kPointerSize * i0, bindings.kNothingNullable, bindings.kUnspecifiedArrayLength);
-      }
+    try {
+      encoder0.encodeUint8Array(path, 8, bindings.kNothingNullable, bindings.kUnspecifiedArrayLength);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "path of struct _ProcessSpawnWithTerminalParams: $e";
+      rethrow;
     }
-    
-    if (envp == null) {
-      encoder0.encodeNullPointer(24, true);
-    } else {
-      var encoder1 = encoder0.encodePointerArray(envp.length, 24, bindings.kUnspecifiedArrayLength);
-      for (int i0 = 0; i0 < envp.length; ++i0) {
-        
-        encoder1.encodeUint8Array(envp[i0], bindings.ArrayDataHeader.kHeaderSize + bindings.kPointerSize * i0, bindings.kNothingNullable, bindings.kUnspecifiedArrayLength);
+    try {
+      if (argv == null) {
+        encoder0.encodeNullPointer(16, true);
+      } else {
+        var encoder1 = encoder0.encodePointerArray(argv.length, 16, bindings.kUnspecifiedArrayLength);
+        for (int i0 = 0; i0 < argv.length; ++i0) {
+          encoder1.encodeUint8Array(argv[i0], bindings.ArrayDataHeader.kHeaderSize + bindings.kPointerSize * i0, bindings.kNothingNullable, bindings.kUnspecifiedArrayLength);
+        }
       }
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "argv of struct _ProcessSpawnWithTerminalParams: $e";
+      rethrow;
     }
-    
-    encoder0.encodeInterface(terminalFile, 32, false);
-    
-    encoder0.encodeInterfaceRequest(processController, 40, false);
+    try {
+      if (envp == null) {
+        encoder0.encodeNullPointer(24, true);
+      } else {
+        var encoder1 = encoder0.encodePointerArray(envp.length, 24, bindings.kUnspecifiedArrayLength);
+        for (int i0 = 0; i0 < envp.length; ++i0) {
+          encoder1.encodeUint8Array(envp[i0], bindings.ArrayDataHeader.kHeaderSize + bindings.kPointerSize * i0, bindings.kNothingNullable, bindings.kUnspecifiedArrayLength);
+        }
+      }
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "envp of struct _ProcessSpawnWithTerminalParams: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeInterface(terminalFile, 32, false);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "terminalFile of struct _ProcessSpawnWithTerminalParams: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeInterfaceRequest(processController, 40, false);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "processController of struct _ProcessSpawnWithTerminalParams: $e";
+      rethrow;
+    }
   }
 
   String toString() {
@@ -430,8 +491,13 @@ class ProcessSpawnWithTerminalResponseParams extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeEnum(error, 8);
+    try {
+      encoder0.encodeEnum(error, 8);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "error of struct ProcessSpawnWithTerminalResponseParams: $e";
+      rethrow;
+    }
   }
 
   String toString() {
@@ -568,10 +634,20 @@ class ProcessControllerWaitResponseParams extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeEnum(error, 8);
-    
-    encoder0.encodeInt32(exitStatus, 12);
+    try {
+      encoder0.encodeEnum(error, 8);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "error of struct ProcessControllerWaitResponseParams: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeInt32(exitStatus, 12);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "exitStatus of struct ProcessControllerWaitResponseParams: $e";
+      rethrow;
+    }
   }
 
   String toString() {
@@ -641,8 +717,13 @@ class _ProcessControllerKillParams extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeInt32(signal, 8);
+    try {
+      encoder0.encodeInt32(signal, 8);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "signal of struct _ProcessControllerKillParams: $e";
+      rethrow;
+    }
   }
 
   String toString() {
@@ -714,8 +795,13 @@ class ProcessControllerKillResponseParams extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeEnum(error, 8);
+    try {
+      encoder0.encodeEnum(error, 8);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "error of struct ProcessControllerKillResponseParams: $e";
+      rethrow;
+    }
   }
 
   String toString() {

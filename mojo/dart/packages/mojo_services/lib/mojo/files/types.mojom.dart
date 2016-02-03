@@ -302,10 +302,20 @@ class Timespec extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeInt64(seconds, 8);
-    
-    encoder0.encodeInt32(nanoseconds, 16);
+    try {
+      encoder0.encodeInt64(seconds, 8);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "seconds of struct Timespec: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeInt32(nanoseconds, 16);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "nanoseconds of struct Timespec: $e";
+      rethrow;
+    }
   }
 
   String toString() {
@@ -381,10 +391,20 @@ class TimespecOrNow extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeBool(now, 8, 0);
-    
-    encoder0.encodeStruct(timespec, 16, true);
+    try {
+      encoder0.encodeBool(now, 8, 0);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "now of struct TimespecOrNow: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeStruct(timespec, 16, true);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "timespec of struct TimespecOrNow: $e";
+      rethrow;
+    }
   }
 
   String toString() {
@@ -475,14 +495,34 @@ class FileInformation extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeEnum(type, 8);
-    
-    encoder0.encodeInt64(size, 16);
-    
-    encoder0.encodeStruct(atime, 24, true);
-    
-    encoder0.encodeStruct(mtime, 32, true);
+    try {
+      encoder0.encodeEnum(type, 8);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "type of struct FileInformation: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeInt64(size, 16);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "size of struct FileInformation: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeStruct(atime, 24, true);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "atime of struct FileInformation: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeStruct(mtime, 32, true);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "mtime of struct FileInformation: $e";
+      rethrow;
+    }
   }
 
   String toString() {
@@ -565,10 +605,20 @@ class DirectoryEntry extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeEnum(type, 8);
-    
-    encoder0.encodeString(name, 16, false);
+    try {
+      encoder0.encodeEnum(type, 8);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "type of struct DirectoryEntry: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeString(name, 16, false);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "name of struct DirectoryEntry: $e";
+      rethrow;
+    }
   }
 
   String toString() {

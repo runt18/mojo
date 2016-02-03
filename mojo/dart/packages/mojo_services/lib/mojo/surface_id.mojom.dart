@@ -68,10 +68,20 @@ class SurfaceId extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeUint32(local, 8);
-    
-    encoder0.encodeUint32(idNamespace, 12);
+    try {
+      encoder0.encodeUint32(local, 8);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "local of struct SurfaceId: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeUint32(idNamespace, 12);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "idNamespace of struct SurfaceId: $e";
+      rethrow;
+    }
   }
 
   String toString() {

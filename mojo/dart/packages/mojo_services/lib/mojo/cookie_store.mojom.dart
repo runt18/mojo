@@ -63,8 +63,13 @@ class _CookieStoreGetParams extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeString(url, 8, false);
+    try {
+      encoder0.encodeString(url, 8, false);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "url of struct _CookieStoreGetParams: $e";
+      rethrow;
+    }
   }
 
   String toString() {
@@ -132,8 +137,13 @@ class CookieStoreGetResponseParams extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeString(cookies, 8, false);
+    try {
+      encoder0.encodeString(cookies, 8, false);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "cookies of struct CookieStoreGetResponseParams: $e";
+      rethrow;
+    }
   }
 
   String toString() {
@@ -206,10 +216,20 @@ class _CookieStoreSetParams extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeString(url, 8, false);
-    
-    encoder0.encodeString(cookie, 16, false);
+    try {
+      encoder0.encodeString(url, 8, false);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "url of struct _CookieStoreSetParams: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeString(cookie, 16, false);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "cookie of struct _CookieStoreSetParams: $e";
+      rethrow;
+    }
   }
 
   String toString() {
@@ -279,8 +299,13 @@ class CookieStoreSetResponseParams extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeBool(success, 8, 0);
+    try {
+      encoder0.encodeBool(success, 8, 0);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "success of struct CookieStoreSetResponseParams: $e";
+      rethrow;
+    }
   }
 
   String toString() {

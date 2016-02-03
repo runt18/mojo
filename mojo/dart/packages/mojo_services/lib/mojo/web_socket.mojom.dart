@@ -92,24 +92,48 @@ class _WebSocketConnectParams extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeString(url, 8, false);
-    
-    if (protocols == null) {
-      encoder0.encodeNullPointer(16, false);
-    } else {
-      var encoder1 = encoder0.encodePointerArray(protocols.length, 16, bindings.kUnspecifiedArrayLength);
-      for (int i0 = 0; i0 < protocols.length; ++i0) {
-        
-        encoder1.encodeString(protocols[i0], bindings.ArrayDataHeader.kHeaderSize + bindings.kPointerSize * i0, false);
-      }
+    try {
+      encoder0.encodeString(url, 8, false);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "url of struct _WebSocketConnectParams: $e";
+      rethrow;
     }
-    
-    encoder0.encodeString(origin, 24, false);
-    
-    encoder0.encodeConsumerHandle(sendStream, 32, false);
-    
-    encoder0.encodeInterface(client, 36, false);
+    try {
+      if (protocols == null) {
+        encoder0.encodeNullPointer(16, false);
+      } else {
+        var encoder1 = encoder0.encodePointerArray(protocols.length, 16, bindings.kUnspecifiedArrayLength);
+        for (int i0 = 0; i0 < protocols.length; ++i0) {
+          encoder1.encodeString(protocols[i0], bindings.ArrayDataHeader.kHeaderSize + bindings.kPointerSize * i0, false);
+        }
+      }
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "protocols of struct _WebSocketConnectParams: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeString(origin, 24, false);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "origin of struct _WebSocketConnectParams: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeConsumerHandle(sendStream, 32, false);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "sendStream of struct _WebSocketConnectParams: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeInterface(client, 36, false);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "client of struct _WebSocketConnectParams: $e";
+      rethrow;
+    }
   }
 
   String toString() {
@@ -194,12 +218,27 @@ class _WebSocketSendParams extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeBool(fin, 8, 0);
-    
-    encoder0.encodeEnum(type, 12);
-    
-    encoder0.encodeUint32(numBytes, 16);
+    try {
+      encoder0.encodeBool(fin, 8, 0);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "fin of struct _WebSocketSendParams: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeEnum(type, 12);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "type of struct _WebSocketSendParams: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeUint32(numBytes, 16);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "numBytes of struct _WebSocketSendParams: $e";
+      rethrow;
+    }
   }
 
   String toString() {
@@ -271,8 +310,13 @@ class _WebSocketFlowControlParams extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeInt64(quota, 8);
+    try {
+      encoder0.encodeInt64(quota, 8);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "quota of struct _WebSocketFlowControlParams: $e";
+      rethrow;
+    }
   }
 
   String toString() {
@@ -345,10 +389,20 @@ class _WebSocketCloseParams extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeUint16(code, 8);
-    
-    encoder0.encodeString(reason, 16, false);
+    try {
+      encoder0.encodeUint16(code, 8);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "code of struct _WebSocketCloseParams: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeString(reason, 16, false);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "reason of struct _WebSocketCloseParams: $e";
+      rethrow;
+    }
   }
 
   String toString() {
@@ -428,12 +482,27 @@ class _WebSocketClientDidConnectParams extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeString(selectedSubprotocol, 8, false);
-    
-    encoder0.encodeString(extensions, 16, false);
-    
-    encoder0.encodeConsumerHandle(receiveStream, 24, false);
+    try {
+      encoder0.encodeString(selectedSubprotocol, 8, false);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "selectedSubprotocol of struct _WebSocketClientDidConnectParams: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeString(extensions, 16, false);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "extensions of struct _WebSocketClientDidConnectParams: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeConsumerHandle(receiveStream, 24, false);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "receiveStream of struct _WebSocketClientDidConnectParams: $e";
+      rethrow;
+    }
   }
 
   String toString() {
@@ -516,12 +585,27 @@ class _WebSocketClientDidReceiveDataParams extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeBool(fin, 8, 0);
-    
-    encoder0.encodeEnum(type, 12);
-    
-    encoder0.encodeUint32(numBytes, 16);
+    try {
+      encoder0.encodeBool(fin, 8, 0);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "fin of struct _WebSocketClientDidReceiveDataParams: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeEnum(type, 12);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "type of struct _WebSocketClientDidReceiveDataParams: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeUint32(numBytes, 16);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "numBytes of struct _WebSocketClientDidReceiveDataParams: $e";
+      rethrow;
+    }
   }
 
   String toString() {
@@ -593,8 +677,13 @@ class _WebSocketClientDidReceiveFlowControlParams extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeInt64(quota, 8);
+    try {
+      encoder0.encodeInt64(quota, 8);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "quota of struct _WebSocketClientDidReceiveFlowControlParams: $e";
+      rethrow;
+    }
   }
 
   String toString() {
@@ -662,8 +751,13 @@ class _WebSocketClientDidFailParams extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeString(message, 8, false);
+    try {
+      encoder0.encodeString(message, 8, false);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "message of struct _WebSocketClientDidFailParams: $e";
+      rethrow;
+    }
   }
 
   String toString() {
@@ -741,12 +835,27 @@ class _WebSocketClientDidCloseParams extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeBool(wasClean, 8, 0);
-    
-    encoder0.encodeUint16(code, 10);
-    
-    encoder0.encodeString(reason, 16, false);
+    try {
+      encoder0.encodeBool(wasClean, 8, 0);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "wasClean of struct _WebSocketClientDidCloseParams: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeUint16(code, 10);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "code of struct _WebSocketClientDidCloseParams: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeString(reason, 16, false);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "reason of struct _WebSocketClientDidCloseParams: $e";
+      rethrow;
+    }
   }
 
   String toString() {

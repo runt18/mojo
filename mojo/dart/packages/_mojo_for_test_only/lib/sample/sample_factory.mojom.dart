@@ -80,14 +80,34 @@ class Request extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeInt32(x, 8);
-    
-    encoder0.encodeMessagePipeHandle(pipe, 12, true);
-    
-    encoder0.encodeMessagePipeHandleArray(morePipes, 16, bindings.kArrayNullable, bindings.kUnspecifiedArrayLength);
-    
-    encoder0.encodeInterface(obj, 24, true);
+    try {
+      encoder0.encodeInt32(x, 8);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "x of struct Request: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeMessagePipeHandle(pipe, 12, true);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "pipe of struct Request: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeMessagePipeHandleArray(morePipes, 16, bindings.kArrayNullable, bindings.kUnspecifiedArrayLength);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "morePipes of struct Request: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeInterface(obj, 24, true);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "obj of struct Request: $e";
+      rethrow;
+    }
   }
 
   String toString() {
@@ -200,10 +220,20 @@ class Response extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeInt32(x, 8);
-    
-    encoder0.encodeMessagePipeHandle(pipe, 12, true);
+    try {
+      encoder0.encodeInt32(x, 8);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "x of struct Response: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeMessagePipeHandle(pipe, 12, true);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "pipe of struct Response: $e";
+      rethrow;
+    }
   }
 
   String toString() {
@@ -290,8 +320,13 @@ class _NamedObjectSetNameParams extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeString(name, 8, false);
+    try {
+      encoder0.encodeString(name, 8, false);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "name of struct _NamedObjectSetNameParams: $e";
+      rethrow;
+    }
   }
 
   String toString() {
@@ -436,8 +471,13 @@ class NamedObjectGetNameResponseParams extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeString(name, 8, false);
+    try {
+      encoder0.encodeString(name, 8, false);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "name of struct NamedObjectGetNameResponseParams: $e";
+      rethrow;
+    }
   }
 
   String toString() {
@@ -522,10 +562,20 @@ class _FactoryDoStuffParams extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeStruct(request, 8, false);
-    
-    encoder0.encodeMessagePipeHandle(pipe, 16, true);
+    try {
+      encoder0.encodeStruct(request, 8, false);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "request of struct _FactoryDoStuffParams: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeMessagePipeHandle(pipe, 16, true);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "pipe of struct _FactoryDoStuffParams: $e";
+      rethrow;
+    }
   }
 
   String toString() {
@@ -621,10 +671,20 @@ class FactoryDoStuffResponseParams extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeStruct(response, 8, false);
-    
-    encoder0.encodeString(text, 16, false);
+    try {
+      encoder0.encodeStruct(response, 8, false);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "response of struct FactoryDoStuffResponseParams: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeString(text, 16, false);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "text of struct FactoryDoStuffResponseParams: $e";
+      rethrow;
+    }
   }
 
   String toString() {
@@ -711,8 +771,13 @@ class _FactoryDoStuff2Params extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeConsumerHandle(pipe, 8, false);
+    try {
+      encoder0.encodeConsumerHandle(pipe, 8, false);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "pipe of struct _FactoryDoStuff2Params: $e";
+      rethrow;
+    }
   }
 
   String toString() {
@@ -791,8 +856,13 @@ class FactoryDoStuff2ResponseParams extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeString(text, 8, false);
+    try {
+      encoder0.encodeString(text, 8, false);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "text of struct FactoryDoStuff2ResponseParams: $e";
+      rethrow;
+    }
   }
 
   String toString() {
@@ -871,8 +941,13 @@ class _FactoryCreateNamedObjectParams extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeInterfaceRequest(obj, 8, false);
+    try {
+      encoder0.encodeInterfaceRequest(obj, 8, false);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "obj of struct _FactoryCreateNamedObjectParams: $e";
+      rethrow;
+    }
   }
 
   String toString() {
@@ -954,8 +1029,13 @@ class _FactoryRequestImportedInterfaceParams extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeInterfaceRequest(obj, 8, false);
+    try {
+      encoder0.encodeInterfaceRequest(obj, 8, false);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "obj of struct _FactoryRequestImportedInterfaceParams: $e";
+      rethrow;
+    }
   }
 
   String toString() {
@@ -1037,8 +1117,13 @@ class FactoryRequestImportedInterfaceResponseParams extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeInterfaceRequest(obj, 8, false);
+    try {
+      encoder0.encodeInterfaceRequest(obj, 8, false);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "obj of struct FactoryRequestImportedInterfaceResponseParams: $e";
+      rethrow;
+    }
   }
 
   String toString() {
@@ -1120,8 +1205,13 @@ class _FactoryTakeImportedInterfaceParams extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeInterface(obj, 8, false);
+    try {
+      encoder0.encodeInterface(obj, 8, false);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "obj of struct _FactoryTakeImportedInterfaceParams: $e";
+      rethrow;
+    }
   }
 
   String toString() {
@@ -1202,8 +1292,13 @@ class FactoryTakeImportedInterfaceResponseParams extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeInterface(obj, 8, false);
+    try {
+      encoder0.encodeInterface(obj, 8, false);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "obj of struct FactoryTakeImportedInterfaceResponseParams: $e";
+      rethrow;
+    }
   }
 
   String toString() {

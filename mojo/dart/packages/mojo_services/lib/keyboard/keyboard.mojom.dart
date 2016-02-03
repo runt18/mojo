@@ -194,14 +194,34 @@ class CompletionData extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeInt64(id, 8);
-    
-    encoder0.encodeInt32(position, 16);
-    
-    encoder0.encodeString(text, 24, false);
-    
-    encoder0.encodeString(label, 32, false);
+    try {
+      encoder0.encodeInt64(id, 8);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "id of struct CompletionData: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeInt32(position, 16);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "position of struct CompletionData: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeString(text, 24, false);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "text of struct CompletionData: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeString(label, 32, false);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "label of struct CompletionData: $e";
+      rethrow;
+    }
   }
 
   String toString() {
@@ -285,12 +305,27 @@ class CorrectionData extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeInt32(offset, 8);
-    
-    encoder0.encodeString(oldText, 16, false);
-    
-    encoder0.encodeString(newText, 24, false);
+    try {
+      encoder0.encodeInt32(offset, 8);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "offset of struct CorrectionData: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeString(oldText, 16, false);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "oldText of struct CorrectionData: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeString(newText, 24, false);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "newText of struct CorrectionData: $e";
+      rethrow;
+    }
   }
 
   String toString() {
@@ -363,8 +398,13 @@ class _KeyboardClientCommitCompletionParams extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeStruct(completion, 8, false);
+    try {
+      encoder0.encodeStruct(completion, 8, false);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "completion of struct _KeyboardClientCommitCompletionParams: $e";
+      rethrow;
+    }
   }
 
   String toString() {
@@ -433,8 +473,13 @@ class _KeyboardClientCommitCorrectionParams extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeStruct(correction, 8, false);
+    try {
+      encoder0.encodeStruct(correction, 8, false);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "correction of struct _KeyboardClientCommitCorrectionParams: $e";
+      rethrow;
+    }
   }
 
   String toString() {
@@ -507,10 +552,20 @@ class _KeyboardClientCommitTextParams extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeString(text, 8, false);
-    
-    encoder0.encodeInt32(newCursorPosition, 16);
+    try {
+      encoder0.encodeString(text, 8, false);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "text of struct _KeyboardClientCommitTextParams: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeInt32(newCursorPosition, 16);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "newCursorPosition of struct _KeyboardClientCommitTextParams: $e";
+      rethrow;
+    }
   }
 
   String toString() {
@@ -585,10 +640,20 @@ class _KeyboardClientDeleteSurroundingTextParams extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeInt32(beforeLength, 8);
-    
-    encoder0.encodeInt32(afterLength, 12);
+    try {
+      encoder0.encodeInt32(beforeLength, 8);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "beforeLength of struct _KeyboardClientDeleteSurroundingTextParams: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeInt32(afterLength, 12);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "afterLength of struct _KeyboardClientDeleteSurroundingTextParams: $e";
+      rethrow;
+    }
   }
 
   String toString() {
@@ -663,10 +728,20 @@ class _KeyboardClientSetComposingRegionParams extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeInt32(start, 8);
-    
-    encoder0.encodeInt32(end, 12);
+    try {
+      encoder0.encodeInt32(start, 8);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "start of struct _KeyboardClientSetComposingRegionParams: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeInt32(end, 12);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "end of struct _KeyboardClientSetComposingRegionParams: $e";
+      rethrow;
+    }
   }
 
   String toString() {
@@ -741,10 +816,20 @@ class _KeyboardClientSetComposingTextParams extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeString(text, 8, false);
-    
-    encoder0.encodeInt32(newCursorPosition, 16);
+    try {
+      encoder0.encodeString(text, 8, false);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "text of struct _KeyboardClientSetComposingTextParams: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeInt32(newCursorPosition, 16);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "newCursorPosition of struct _KeyboardClientSetComposingTextParams: $e";
+      rethrow;
+    }
   }
 
   String toString() {
@@ -819,10 +904,20 @@ class _KeyboardClientSetSelectionParams extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeInt32(start, 8);
-    
-    encoder0.encodeInt32(end, 12);
+    try {
+      encoder0.encodeInt32(start, 8);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "start of struct _KeyboardClientSetSelectionParams: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeInt32(end, 12);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "end of struct _KeyboardClientSetSelectionParams: $e";
+      rethrow;
+    }
   }
 
   String toString() {
@@ -896,8 +991,13 @@ class _KeyboardClientSubmitParams extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeEnum(action, 8);
+    try {
+      encoder0.encodeEnum(action, 8);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "action of struct _KeyboardClientSubmitParams: $e";
+      rethrow;
+    }
   }
 
   String toString() {
@@ -974,10 +1074,20 @@ class _KeyboardServiceShowParams extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeInterface(client, 8, false);
-    
-    encoder0.encodeEnum(type, 16);
+    try {
+      encoder0.encodeInterface(client, 8, false);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "client of struct _KeyboardServiceShowParams: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeEnum(type, 16);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "type of struct _KeyboardServiceShowParams: $e";
+      rethrow;
+    }
   }
 
   String toString() {
@@ -1165,8 +1275,13 @@ class _KeyboardServiceSetTextParams extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeString(text, 8, false);
+    try {
+      encoder0.encodeString(text, 8, false);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "text of struct _KeyboardServiceSetTextParams: $e";
+      rethrow;
+    }
   }
 
   String toString() {
@@ -1239,10 +1354,20 @@ class _KeyboardServiceSetSelectionParams extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeInt32(start, 8);
-    
-    encoder0.encodeInt32(end, 12);
+    try {
+      encoder0.encodeInt32(start, 8);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "start of struct _KeyboardServiceSetSelectionParams: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeInt32(end, 12);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "end of struct _KeyboardServiceSetSelectionParams: $e";
+      rethrow;
+    }
   }
 
   String toString() {
@@ -1317,10 +1442,20 @@ class _KeyboardServiceFactoryCreateKeyboardServiceParams extends bindings.Struct
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeInterfaceRequest(keyEventDispatcher, 8, false);
-    
-    encoder0.encodeInterfaceRequest(serviceRequest, 12, false);
+    try {
+      encoder0.encodeInterfaceRequest(keyEventDispatcher, 8, false);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "keyEventDispatcher of struct _KeyboardServiceFactoryCreateKeyboardServiceParams: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeInterfaceRequest(serviceRequest, 12, false);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "serviceRequest of struct _KeyboardServiceFactoryCreateKeyboardServiceParams: $e";
+      rethrow;
+    }
   }
 
   String toString() {

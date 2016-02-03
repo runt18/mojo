@@ -72,10 +72,20 @@ class UrlLoaderStatus extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeStruct(error, 8, true);
-    
-    encoder0.encodeBool(isLoading, 16, 0);
+    try {
+      encoder0.encodeStruct(error, 8, true);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "error of struct UrlLoaderStatus: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeBool(isLoading, 16, 0);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "isLoading of struct UrlLoaderStatus: $e";
+      rethrow;
+    }
   }
 
   String toString() {
@@ -146,8 +156,13 @@ class _UrlLoaderStartParams extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeStruct(request, 8, false);
+    try {
+      encoder0.encodeStruct(request, 8, false);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "request of struct _UrlLoaderStartParams: $e";
+      rethrow;
+    }
   }
 
   String toString() {
@@ -215,8 +230,13 @@ class UrlLoaderStartResponseParams extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeStruct(response, 8, false);
+    try {
+      encoder0.encodeStruct(response, 8, false);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "response of struct UrlLoaderStartResponseParams: $e";
+      rethrow;
+    }
   }
 
   String toString() {
@@ -344,8 +364,13 @@ class UrlLoaderFollowRedirectResponseParams extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeStruct(response, 8, false);
+    try {
+      encoder0.encodeStruct(response, 8, false);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "response of struct UrlLoaderFollowRedirectResponseParams: $e";
+      rethrow;
+    }
   }
 
   String toString() {
@@ -473,8 +498,13 @@ class UrlLoaderQueryStatusResponseParams extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeStruct(status, 8, false);
+    try {
+      encoder0.encodeStruct(status, 8, false);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "status of struct UrlLoaderQueryStatusResponseParams: $e";
+      rethrow;
+    }
   }
 
   String toString() {

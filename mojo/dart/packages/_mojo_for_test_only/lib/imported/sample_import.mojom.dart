@@ -327,10 +327,20 @@ class Point extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeInt32(x, 8);
-    
-    encoder0.encodeInt32(y, 12);
+    try {
+      encoder0.encodeInt32(x, 8);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "x of struct Point: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeInt32(y, 12);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "y of struct Point: $e";
+      rethrow;
+    }
   }
 
   String toString() {

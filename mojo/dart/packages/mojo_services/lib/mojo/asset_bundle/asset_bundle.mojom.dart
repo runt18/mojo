@@ -63,8 +63,13 @@ class _AssetBundleGetAsStreamParams extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeString(assetName, 8, false);
+    try {
+      encoder0.encodeString(assetName, 8, false);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "assetName of struct _AssetBundleGetAsStreamParams: $e";
+      rethrow;
+    }
   }
 
   String toString() {
@@ -132,8 +137,13 @@ class AssetBundleGetAsStreamResponseParams extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeConsumerHandle(assetData, 8, false);
+    try {
+      encoder0.encodeConsumerHandle(assetData, 8, false);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "assetData of struct AssetBundleGetAsStreamResponseParams: $e";
+      rethrow;
+    }
   }
 
   String toString() {
@@ -205,10 +215,20 @@ class _AssetUnpackerUnpackZipStreamParams extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeConsumerHandle(zippedAssets, 8, false);
-    
-    encoder0.encodeInterfaceRequest(assetBundle, 12, false);
+    try {
+      encoder0.encodeConsumerHandle(zippedAssets, 8, false);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "zippedAssets of struct _AssetUnpackerUnpackZipStreamParams: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeInterfaceRequest(assetBundle, 12, false);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "assetBundle of struct _AssetUnpackerUnpackZipStreamParams: $e";
+      rethrow;
+    }
   }
 
   String toString() {

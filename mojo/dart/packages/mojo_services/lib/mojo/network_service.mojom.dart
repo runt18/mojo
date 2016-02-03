@@ -74,8 +74,13 @@ class _NetworkServiceCreateUrlLoaderParams extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeInterfaceRequest(loader, 8, false);
+    try {
+      encoder0.encodeInterfaceRequest(loader, 8, false);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "loader of struct _NetworkServiceCreateUrlLoaderParams: $e";
+      rethrow;
+    }
   }
 
   String toString() {
@@ -142,8 +147,13 @@ class _NetworkServiceGetCookieStoreParams extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeInterfaceRequest(cookieStore, 8, false);
+    try {
+      encoder0.encodeInterfaceRequest(cookieStore, 8, false);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "cookieStore of struct _NetworkServiceGetCookieStoreParams: $e";
+      rethrow;
+    }
   }
 
   String toString() {
@@ -210,8 +220,13 @@ class _NetworkServiceCreateWebSocketParams extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeInterfaceRequest(socket, 8, false);
+    try {
+      encoder0.encodeInterfaceRequest(socket, 8, false);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "socket of struct _NetworkServiceCreateWebSocketParams: $e";
+      rethrow;
+    }
   }
 
   String toString() {
@@ -284,10 +299,20 @@ class _NetworkServiceCreateTcpBoundSocketParams extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeStruct(localAddress, 8, true);
-    
-    encoder0.encodeInterfaceRequest(boundSocket, 16, false);
+    try {
+      encoder0.encodeStruct(localAddress, 8, true);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "localAddress of struct _NetworkServiceCreateTcpBoundSocketParams: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeInterfaceRequest(boundSocket, 16, false);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "boundSocket of struct _NetworkServiceCreateTcpBoundSocketParams: $e";
+      rethrow;
+    }
   }
 
   String toString() {
@@ -362,10 +387,20 @@ class NetworkServiceCreateTcpBoundSocketResponseParams extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeStruct(result, 8, false);
-    
-    encoder0.encodeStruct(boundTo, 16, true);
+    try {
+      encoder0.encodeStruct(result, 8, false);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "result of struct NetworkServiceCreateTcpBoundSocketResponseParams: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeStruct(boundTo, 16, true);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "boundTo of struct NetworkServiceCreateTcpBoundSocketResponseParams: $e";
+      rethrow;
+    }
   }
 
   String toString() {
@@ -451,14 +486,34 @@ class _NetworkServiceCreateTcpConnectedSocketParams extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeStruct(remoteAddress, 8, false);
-    
-    encoder0.encodeConsumerHandle(sendStream, 16, false);
-    
-    encoder0.encodeProducerHandle(receiveStream, 20, false);
-    
-    encoder0.encodeInterfaceRequest(clientSocket, 24, false);
+    try {
+      encoder0.encodeStruct(remoteAddress, 8, false);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "remoteAddress of struct _NetworkServiceCreateTcpConnectedSocketParams: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeConsumerHandle(sendStream, 16, false);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "sendStream of struct _NetworkServiceCreateTcpConnectedSocketParams: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeProducerHandle(receiveStream, 20, false);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "receiveStream of struct _NetworkServiceCreateTcpConnectedSocketParams: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeInterfaceRequest(clientSocket, 24, false);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "clientSocket of struct _NetworkServiceCreateTcpConnectedSocketParams: $e";
+      rethrow;
+    }
   }
 
   String toString() {
@@ -535,10 +590,20 @@ class NetworkServiceCreateTcpConnectedSocketResponseParams extends bindings.Stru
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeStruct(result, 8, false);
-    
-    encoder0.encodeStruct(localAddress, 16, true);
+    try {
+      encoder0.encodeStruct(result, 8, false);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "result of struct NetworkServiceCreateTcpConnectedSocketResponseParams: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeStruct(localAddress, 16, true);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "localAddress of struct NetworkServiceCreateTcpConnectedSocketResponseParams: $e";
+      rethrow;
+    }
   }
 
   String toString() {
@@ -608,8 +673,13 @@ class _NetworkServiceCreateUdpSocketParams extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeInterfaceRequest(socket, 8, false);
+    try {
+      encoder0.encodeInterfaceRequest(socket, 8, false);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "socket of struct _NetworkServiceCreateUdpSocketParams: $e";
+      rethrow;
+    }
   }
 
   String toString() {
@@ -682,10 +752,20 @@ class _NetworkServiceCreateHttpServerParams extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeStruct(localAddress, 8, false);
-    
-    encoder0.encodeInterface(delegate, 16, false);
+    try {
+      encoder0.encodeStruct(localAddress, 8, false);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "localAddress of struct _NetworkServiceCreateHttpServerParams: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeInterface(delegate, 16, false);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "delegate of struct _NetworkServiceCreateHttpServerParams: $e";
+      rethrow;
+    }
   }
 
   String toString() {
@@ -760,10 +840,20 @@ class NetworkServiceCreateHttpServerResponseParams extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeStruct(result, 8, false);
-    
-    encoder0.encodeStruct(boundTo, 16, true);
+    try {
+      encoder0.encodeStruct(result, 8, false);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "result of struct NetworkServiceCreateHttpServerResponseParams: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeStruct(boundTo, 16, true);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "boundTo of struct NetworkServiceCreateHttpServerResponseParams: $e";
+      rethrow;
+    }
   }
 
   String toString() {
@@ -833,8 +923,13 @@ class _NetworkServiceRegisterUrlLoaderInterceptorParams extends bindings.Struct 
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeInterface(factory, 8, false);
+    try {
+      encoder0.encodeInterface(factory, 8, false);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "factory of struct _NetworkServiceRegisterUrlLoaderInterceptorParams: $e";
+      rethrow;
+    }
   }
 
   String toString() {
@@ -901,8 +996,13 @@ class _NetworkServiceCreateHostResolverParams extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeInterfaceRequest(hostResolver, 8, false);
+    try {
+      encoder0.encodeInterfaceRequest(hostResolver, 8, false);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "hostResolver of struct _NetworkServiceCreateHostResolverParams: $e";
+      rethrow;
+    }
   }
 
   String toString() {

@@ -69,10 +69,20 @@ class MediaPacketRegion extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeUint64(offset, 8);
-    
-    encoder0.encodeUint64(length, 16);
+    try {
+      encoder0.encodeUint64(offset, 8);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "offset of struct MediaPacketRegion: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeUint64(length, 16);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "length of struct MediaPacketRegion: $e";
+      rethrow;
+    }
   }
 
   String toString() {
@@ -175,23 +185,47 @@ class MediaPacket extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeInt64(pts, 8);
-    
-    encoder0.encodeUint64(duration, 16);
-    
-    encoder0.encodeBool(endOfStream, 24, 0);
-    
-    encoder0.encodeStruct(payload, 32, false);
-    
-    if (extraPayload == null) {
-      encoder0.encodeNullPointer(40, true);
-    } else {
-      var encoder1 = encoder0.encodePointerArray(extraPayload.length, 40, bindings.kUnspecifiedArrayLength);
-      for (int i0 = 0; i0 < extraPayload.length; ++i0) {
-        
-        encoder1.encodeStruct(extraPayload[i0], bindings.ArrayDataHeader.kHeaderSize + bindings.kPointerSize * i0, false);
+    try {
+      encoder0.encodeInt64(pts, 8);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "pts of struct MediaPacket: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeUint64(duration, 16);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "duration of struct MediaPacket: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeBool(endOfStream, 24, 0);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "endOfStream of struct MediaPacket: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeStruct(payload, 32, false);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "payload of struct MediaPacket: $e";
+      rethrow;
+    }
+    try {
+      if (extraPayload == null) {
+        encoder0.encodeNullPointer(40, true);
+      } else {
+        var encoder1 = encoder0.encodePointerArray(extraPayload.length, 40, bindings.kUnspecifiedArrayLength);
+        for (int i0 = 0; i0 < extraPayload.length; ++i0) {
+          encoder1.encodeStruct(extraPayload[i0], bindings.ArrayDataHeader.kHeaderSize + bindings.kPointerSize * i0, false);
+        }
       }
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "extraPayload of struct MediaPacket: $e";
+      rethrow;
     }
   }
 
@@ -274,10 +308,20 @@ class MediaPipeState extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeSharedBufferHandle(payloadBuffer, 8, false);
-    
-    encoder0.encodeUint64(payloadBufferLen, 16);
+    try {
+      encoder0.encodeSharedBufferHandle(payloadBuffer, 8, false);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "payloadBuffer of struct MediaPipeState: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeUint64(payloadBufferLen, 16);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "payloadBufferLen of struct MediaPipeState: $e";
+      rethrow;
+    }
   }
 
   String toString() {
@@ -406,8 +450,13 @@ class MediaPipeGetStateResponseParams extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeStruct(state, 8, false);
+    try {
+      encoder0.encodeStruct(state, 8, false);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "state of struct MediaPipeGetStateResponseParams: $e";
+      rethrow;
+    }
   }
 
   String toString() {
@@ -475,8 +524,13 @@ class _MediaPipeSendPacketParams extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeStruct(packet, 8, false);
+    try {
+      encoder0.encodeStruct(packet, 8, false);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "packet of struct _MediaPipeSendPacketParams: $e";
+      rethrow;
+    }
   }
 
   String toString() {
@@ -548,8 +602,13 @@ class MediaPipeSendPacketResponseParams extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeEnum(result, 8);
+    try {
+      encoder0.encodeEnum(result, 8);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "result of struct MediaPipeSendPacketResponseParams: $e";
+      rethrow;
+    }
   }
 
   String toString() {

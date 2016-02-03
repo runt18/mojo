@@ -68,8 +68,13 @@ class _LocationServiceGetNextLocationParams extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeEnum(priority, 8);
+    try {
+      encoder0.encodeEnum(priority, 8);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "priority of struct _LocationServiceGetNextLocationParams: $e";
+      rethrow;
+    }
   }
 
   String toString() {
@@ -138,8 +143,13 @@ class LocationServiceGetNextLocationResponseParams extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeStruct(location, 8, true);
+    try {
+      encoder0.encodeStruct(location, 8, true);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "location of struct LocationServiceGetNextLocationResponseParams: $e";
+      rethrow;
+    }
   }
 
   String toString() {

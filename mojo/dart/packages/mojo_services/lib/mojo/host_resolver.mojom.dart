@@ -74,10 +74,20 @@ class _HostResolverGetHostAddressesParams extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeString(host, 8, false);
-    
-    encoder0.encodeEnum(family, 16);
+    try {
+      encoder0.encodeString(host, 8, false);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "host of struct _HostResolverGetHostAddressesParams: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeEnum(family, 16);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "family of struct _HostResolverGetHostAddressesParams: $e";
+      rethrow;
+    }
   }
 
   String toString() {
@@ -164,17 +174,26 @@ class HostResolverGetHostAddressesResponseParams extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeStruct(result, 8, false);
-    
-    if (addresses == null) {
-      encoder0.encodeNullPointer(16, true);
-    } else {
-      var encoder1 = encoder0.encodePointerArray(addresses.length, 16, bindings.kUnspecifiedArrayLength);
-      for (int i0 = 0; i0 < addresses.length; ++i0) {
-        
-        encoder1.encodeStruct(addresses[i0], bindings.ArrayDataHeader.kHeaderSize + bindings.kPointerSize * i0, false);
+    try {
+      encoder0.encodeStruct(result, 8, false);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "result of struct HostResolverGetHostAddressesResponseParams: $e";
+      rethrow;
+    }
+    try {
+      if (addresses == null) {
+        encoder0.encodeNullPointer(16, true);
+      } else {
+        var encoder1 = encoder0.encodePointerArray(addresses.length, 16, bindings.kUnspecifiedArrayLength);
+        for (int i0 = 0; i0 < addresses.length; ++i0) {
+          encoder1.encodeStruct(addresses[i0], bindings.ArrayDataHeader.kHeaderSize + bindings.kPointerSize * i0, false);
+        }
       }
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "addresses of struct HostResolverGetHostAddressesResponseParams: $e";
+      rethrow;
     }
   }
 

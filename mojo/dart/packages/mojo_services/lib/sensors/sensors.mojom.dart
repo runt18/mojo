@@ -246,12 +246,27 @@ class SensorData extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeInt32(accuracy, 8);
-    
-    encoder0.encodeInt64(timeStamp, 16);
-    
-    encoder0.encodeFloatArray(values, 24, bindings.kNothingNullable, bindings.kUnspecifiedArrayLength);
+    try {
+      encoder0.encodeInt32(accuracy, 8);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "accuracy of struct SensorData: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeInt64(timeStamp, 16);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "timeStamp of struct SensorData: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeFloatArray(values, 24, bindings.kNothingNullable, bindings.kUnspecifiedArrayLength);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "values of struct SensorData: $e";
+      rethrow;
+    }
   }
 
   String toString() {
@@ -323,8 +338,13 @@ class _SensorListenerOnAccuracyChangedParams extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeInt32(accuracy, 8);
+    try {
+      encoder0.encodeInt32(accuracy, 8);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "accuracy of struct _SensorListenerOnAccuracyChangedParams: $e";
+      rethrow;
+    }
   }
 
   String toString() {
@@ -393,8 +413,13 @@ class _SensorListenerOnSensorChangedParams extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeStruct(data, 8, false);
+    try {
+      encoder0.encodeStruct(data, 8, false);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "data of struct _SensorListenerOnSensorChangedParams: $e";
+      rethrow;
+    }
   }
 
   String toString() {
@@ -471,10 +496,20 @@ class _SensorServiceAddListenerParams extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeEnum(type, 8);
-    
-    encoder0.encodeInterface(listener, 12, false);
+    try {
+      encoder0.encodeEnum(type, 8);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "type of struct _SensorServiceAddListenerParams: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeInterface(listener, 12, false);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "listener of struct _SensorServiceAddListenerParams: $e";
+      rethrow;
+    }
   }
 
   String toString() {

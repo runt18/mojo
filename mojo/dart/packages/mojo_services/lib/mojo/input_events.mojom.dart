@@ -100,20 +100,55 @@ class KeyData extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeInt32(keyCode, 8);
-    
-    encoder0.encodeBool(isChar, 12, 0);
-    
-    encoder0.encodeUint16(character, 14);
-    
-    encoder0.encodeEnum(windowsKeyCode, 16);
-    
-    encoder0.encodeInt32(nativeKeyCode, 20);
-    
-    encoder0.encodeUint16(text, 24);
-    
-    encoder0.encodeUint16(unmodifiedText, 26);
+    try {
+      encoder0.encodeInt32(keyCode, 8);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "keyCode of struct KeyData: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeBool(isChar, 12, 0);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "isChar of struct KeyData: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeUint16(character, 14);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "character of struct KeyData: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeEnum(windowsKeyCode, 16);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "windowsKeyCode of struct KeyData: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeInt32(nativeKeyCode, 20);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "nativeKeyCode of struct KeyData: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeUint16(text, 24);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "text of struct KeyData: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeUint16(unmodifiedText, 26);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "unmodifiedText of struct KeyData: $e";
+      rethrow;
+    }
   }
 
   String toString() {
@@ -252,30 +287,90 @@ class PointerData extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeInt32(pointerId, 8);
-    
-    encoder0.encodeEnum(kind, 12);
-    
-    encoder0.encodeFloat(x, 16);
-    
-    encoder0.encodeFloat(y, 20);
-    
-    encoder0.encodeFloat(screenX, 24);
-    
-    encoder0.encodeFloat(screenY, 28);
-    
-    encoder0.encodeFloat(pressure, 32);
-    
-    encoder0.encodeFloat(radiusMajor, 36);
-    
-    encoder0.encodeFloat(radiusMinor, 40);
-    
-    encoder0.encodeFloat(orientation, 44);
-    
-    encoder0.encodeFloat(horizontalWheel, 48);
-    
-    encoder0.encodeFloat(verticalWheel, 52);
+    try {
+      encoder0.encodeInt32(pointerId, 8);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "pointerId of struct PointerData: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeEnum(kind, 12);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "kind of struct PointerData: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeFloat(x, 16);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "x of struct PointerData: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeFloat(y, 20);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "y of struct PointerData: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeFloat(screenX, 24);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "screenX of struct PointerData: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeFloat(screenY, 28);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "screenY of struct PointerData: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeFloat(pressure, 32);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "pressure of struct PointerData: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeFloat(radiusMajor, 36);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "radiusMajor of struct PointerData: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeFloat(radiusMinor, 40);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "radiusMinor of struct PointerData: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeFloat(orientation, 44);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "orientation of struct PointerData: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeFloat(horizontalWheel, 48);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "horizontalWheel of struct PointerData: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeFloat(verticalWheel, 52);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "verticalWheel of struct PointerData: $e";
+      rethrow;
+    }
   }
 
   String toString() {
@@ -395,16 +490,41 @@ class Event extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeEnum(action, 8);
-    
-    encoder0.encodeEnum(flags, 12);
-    
-    encoder0.encodeInt64(timeStamp, 16);
-    
-    encoder0.encodeStruct(keyData, 24, true);
-    
-    encoder0.encodeStruct(pointerData, 32, true);
+    try {
+      encoder0.encodeEnum(action, 8);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "action of struct Event: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeEnum(flags, 12);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "flags of struct Event: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeInt64(timeStamp, 16);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "timeStamp of struct Event: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeStruct(keyData, 24, true);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "keyData of struct Event: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeStruct(pointerData, 32, true);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "pointerData of struct Event: $e";
+      rethrow;
+    }
   }
 
   String toString() {

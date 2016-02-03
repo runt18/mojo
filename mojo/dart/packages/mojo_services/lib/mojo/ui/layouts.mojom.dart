@@ -80,14 +80,34 @@ class BoxConstraints extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeInt32(minWidth, 8);
-    
-    encoder0.encodeInt32(maxWidth, 12);
-    
-    encoder0.encodeInt32(minHeight, 16);
-    
-    encoder0.encodeInt32(maxHeight, 20);
+    try {
+      encoder0.encodeInt32(minWidth, 8);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "minWidth of struct BoxConstraints: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeInt32(maxWidth, 12);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "maxWidth of struct BoxConstraints: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeInt32(minHeight, 16);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "minHeight of struct BoxConstraints: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeInt32(maxHeight, 20);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "maxHeight of struct BoxConstraints: $e";
+      rethrow;
+    }
   }
 
   String toString() {
@@ -167,10 +187,20 @@ class ViewLayoutParams extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeStruct(constraints, 8, false);
-    
-    encoder0.encodeFloat(devicePixelRatio, 16);
+    try {
+      encoder0.encodeStruct(constraints, 8, false);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "constraints of struct ViewLayoutParams: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeFloat(devicePixelRatio, 16);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "devicePixelRatio of struct ViewLayoutParams: $e";
+      rethrow;
+    }
   }
 
   String toString() {
@@ -247,10 +277,20 @@ class ViewLayoutInfo extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeStruct(sceneToken, 8, false);
-    
-    encoder0.encodeStruct(size, 16, false);
+    try {
+      encoder0.encodeStruct(sceneToken, 8, false);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "sceneToken of struct ViewLayoutInfo: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeStruct(size, 16, false);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "size of struct ViewLayoutInfo: $e";
+      rethrow;
+    }
   }
 
   String toString() {
@@ -321,8 +361,13 @@ class ViewLayoutResult extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeStruct(size, 8, false);
+    try {
+      encoder0.encodeStruct(size, 8, false);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "size of struct ViewLayoutResult: $e";
+      rethrow;
+    }
   }
 
   String toString() {

@@ -135,10 +135,20 @@ class Bounds extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeStruct(northeast, 8, false);
-    
-    encoder0.encodeStruct(southwest, 16, false);
+    try {
+      encoder0.encodeStruct(northeast, 8, false);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "northeast of struct Bounds: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeStruct(southwest, 16, false);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "southwest of struct Bounds: $e";
+      rethrow;
+    }
   }
 
   String toString() {
@@ -228,16 +238,41 @@ class ComponentRestrictions extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeString(administrativeArea, 8, true);
-    
-    encoder0.encodeString(country, 16, true);
-    
-    encoder0.encodeString(locality, 24, true);
-    
-    encoder0.encodeString(postalCode, 32, true);
-    
-    encoder0.encodeString(route, 40, true);
+    try {
+      encoder0.encodeString(administrativeArea, 8, true);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "administrativeArea of struct ComponentRestrictions: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeString(country, 16, true);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "country of struct ComponentRestrictions: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeString(locality, 24, true);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "locality of struct ComponentRestrictions: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeString(postalCode, 32, true);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "postalCode of struct ComponentRestrictions: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeString(route, 40, true);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "route of struct ComponentRestrictions: $e";
+      rethrow;
+    }
   }
 
   String toString() {
@@ -325,12 +360,27 @@ class Options extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeStruct(restrictions, 8, true);
-    
-    encoder0.encodeStruct(location, 16, true);
-    
-    encoder0.encodeString(region, 24, true);
+    try {
+      encoder0.encodeStruct(restrictions, 8, true);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "restrictions of struct Options: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeStruct(location, 16, true);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "location of struct Options: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeString(region, 24, true);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "region of struct Options: $e";
+      rethrow;
+    }
   }
 
   String toString() {
@@ -421,14 +471,34 @@ class Geometry extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeStruct(location, 8, false);
-    
-    encoder0.encodeStruct(locationType, 16, false);
-    
-    encoder0.encodeStruct(viewport, 24, false);
-    
-    encoder0.encodeStruct(bounds, 32, true);
+    try {
+      encoder0.encodeStruct(location, 8, false);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "location of struct Geometry: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeStruct(locationType, 16, false);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "locationType of struct Geometry: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeStruct(viewport, 24, false);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "viewport of struct Geometry: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeStruct(bounds, 32, true);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "bounds of struct Geometry: $e";
+      rethrow;
+    }
   }
 
   String toString() {
@@ -526,21 +596,40 @@ class Result extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeBool(partialMatch, 8, 0);
-    
-    encoder0.encodeStruct(geometry, 16, false);
-    
-    encoder0.encodeString(formattedAddress, 24, false);
-    
-    if (types == null) {
-      encoder0.encodeNullPointer(32, false);
-    } else {
-      var encoder1 = encoder0.encodePointerArray(types.length, 32, bindings.kUnspecifiedArrayLength);
-      for (int i0 = 0; i0 < types.length; ++i0) {
-        
-        encoder1.encodeString(types[i0], bindings.ArrayDataHeader.kHeaderSize + bindings.kPointerSize * i0, false);
+    try {
+      encoder0.encodeBool(partialMatch, 8, 0);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "partialMatch of struct Result: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeStruct(geometry, 16, false);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "geometry of struct Result: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeString(formattedAddress, 24, false);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "formattedAddress of struct Result: $e";
+      rethrow;
+    }
+    try {
+      if (types == null) {
+        encoder0.encodeNullPointer(32, false);
+      } else {
+        var encoder1 = encoder0.encodePointerArray(types.length, 32, bindings.kUnspecifiedArrayLength);
+        for (int i0 = 0; i0 < types.length; ++i0) {
+          encoder1.encodeString(types[i0], bindings.ArrayDataHeader.kHeaderSize + bindings.kPointerSize * i0, false);
+        }
       }
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "types of struct Result: $e";
+      rethrow;
     }
   }
 
@@ -686,10 +775,20 @@ class _GeocoderAddressToLocationParams extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeString(address, 8, false);
-    
-    encoder0.encodeStruct(options, 16, true);
+    try {
+      encoder0.encodeString(address, 8, false);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "address of struct _GeocoderAddressToLocationParams: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeStruct(options, 16, true);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "options of struct _GeocoderAddressToLocationParams: $e";
+      rethrow;
+    }
   }
 
   String toString() {
@@ -775,17 +874,26 @@ class GeocoderAddressToLocationResponseParams extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeString(status, 8, false);
-    
-    if (results == null) {
-      encoder0.encodeNullPointer(16, true);
-    } else {
-      var encoder1 = encoder0.encodePointerArray(results.length, 16, bindings.kUnspecifiedArrayLength);
-      for (int i0 = 0; i0 < results.length; ++i0) {
-        
-        encoder1.encodeStruct(results[i0], bindings.ArrayDataHeader.kHeaderSize + bindings.kPointerSize * i0, false);
+    try {
+      encoder0.encodeString(status, 8, false);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "status of struct GeocoderAddressToLocationResponseParams: $e";
+      rethrow;
+    }
+    try {
+      if (results == null) {
+        encoder0.encodeNullPointer(16, true);
+      } else {
+        var encoder1 = encoder0.encodePointerArray(results.length, 16, bindings.kUnspecifiedArrayLength);
+        for (int i0 = 0; i0 < results.length; ++i0) {
+          encoder1.encodeStruct(results[i0], bindings.ArrayDataHeader.kHeaderSize + bindings.kPointerSize * i0, false);
+        }
       }
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "results of struct GeocoderAddressToLocationResponseParams: $e";
+      rethrow;
     }
   }
 
@@ -863,10 +971,20 @@ class _GeocoderLocationToAddressParams extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeStruct(location, 8, false);
-    
-    encoder0.encodeStruct(options, 16, true);
+    try {
+      encoder0.encodeStruct(location, 8, false);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "location of struct _GeocoderLocationToAddressParams: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeStruct(options, 16, true);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "options of struct _GeocoderLocationToAddressParams: $e";
+      rethrow;
+    }
   }
 
   String toString() {
@@ -952,17 +1070,26 @@ class GeocoderLocationToAddressResponseParams extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeString(status, 8, false);
-    
-    if (results == null) {
-      encoder0.encodeNullPointer(16, true);
-    } else {
-      var encoder1 = encoder0.encodePointerArray(results.length, 16, bindings.kUnspecifiedArrayLength);
-      for (int i0 = 0; i0 < results.length; ++i0) {
-        
-        encoder1.encodeStruct(results[i0], bindings.ArrayDataHeader.kHeaderSize + bindings.kPointerSize * i0, false);
+    try {
+      encoder0.encodeString(status, 8, false);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "status of struct GeocoderLocationToAddressResponseParams: $e";
+      rethrow;
+    }
+    try {
+      if (results == null) {
+        encoder0.encodeNullPointer(16, true);
+      } else {
+        var encoder1 = encoder0.encodePointerArray(results.length, 16, bindings.kUnspecifiedArrayLength);
+        for (int i0 = 0; i0 < results.length; ++i0) {
+          encoder1.encodeStruct(results[i0], bindings.ArrayDataHeader.kHeaderSize + bindings.kPointerSize * i0, false);
+        }
       }
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "results of struct GeocoderLocationToAddressResponseParams: $e";
+      rethrow;
     }
   }
 

@@ -772,10 +772,20 @@ class MediaType extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeEnum(scheme, 8);
-    
-    encoder0.encodeUnion(details, 16, true);
+    try {
+      encoder0.encodeEnum(scheme, 8);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "scheme of struct MediaType: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeUnion(details, 16, true);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "details of struct MediaType: $e";
+      rethrow;
+    }
   }
 
   String toString() {
@@ -854,10 +864,20 @@ class MediaTypeSet extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeEnum(scheme, 8);
-    
-    encoder0.encodeUnion(details, 16, true);
+    try {
+      encoder0.encodeEnum(scheme, 8);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "scheme of struct MediaTypeSet: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeUnion(details, 16, true);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "details of struct MediaTypeSet: $e";
+      rethrow;
+    }
   }
 
   String toString() {
@@ -941,12 +961,27 @@ class LpcmMediaTypeDetails extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeEnum(sampleFormat, 8);
-    
-    encoder0.encodeUint32(channels, 12);
-    
-    encoder0.encodeUint32(framesPerSecond, 16);
+    try {
+      encoder0.encodeEnum(sampleFormat, 8);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "sampleFormat of struct LpcmMediaTypeDetails: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeUint32(channels, 12);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "channels of struct LpcmMediaTypeDetails: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeUint32(framesPerSecond, 16);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "framesPerSecond of struct LpcmMediaTypeDetails: $e";
+      rethrow;
+    }
   }
 
   String toString() {
@@ -1042,16 +1077,41 @@ class LpcmMediaTypeSetDetails extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeEnum(sampleFormat, 8);
-    
-    encoder0.encodeUint32(minChannels, 12);
-    
-    encoder0.encodeUint32(maxChannels, 16);
-    
-    encoder0.encodeUint32(minFramesPerSecond, 20);
-    
-    encoder0.encodeUint32(maxFramesPerSecond, 24);
+    try {
+      encoder0.encodeEnum(sampleFormat, 8);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "sampleFormat of struct LpcmMediaTypeSetDetails: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeUint32(minChannels, 12);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "minChannels of struct LpcmMediaTypeSetDetails: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeUint32(maxChannels, 16);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "maxChannels of struct LpcmMediaTypeSetDetails: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeUint32(minFramesPerSecond, 20);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "minFramesPerSecond of struct LpcmMediaTypeSetDetails: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeUint32(maxFramesPerSecond, 24);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "maxFramesPerSecond of struct LpcmMediaTypeSetDetails: $e";
+      rethrow;
+    }
   }
 
   String toString() {
@@ -1142,17 +1202,26 @@ class MultiplexedMediaTypeDetails extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeStruct(multiplexType, 8, false);
-    
-    if (substreamTypes == null) {
-      encoder0.encodeNullPointer(16, false);
-    } else {
-      var encoder1 = encoder0.encodePointerArray(substreamTypes.length, 16, bindings.kUnspecifiedArrayLength);
-      for (int i0 = 0; i0 < substreamTypes.length; ++i0) {
-        
-        encoder1.encodeStruct(substreamTypes[i0], bindings.ArrayDataHeader.kHeaderSize + bindings.kPointerSize * i0, false);
+    try {
+      encoder0.encodeStruct(multiplexType, 8, false);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "multiplexType of struct MultiplexedMediaTypeDetails: $e";
+      rethrow;
+    }
+    try {
+      if (substreamTypes == null) {
+        encoder0.encodeNullPointer(16, false);
+      } else {
+        var encoder1 = encoder0.encodePointerArray(substreamTypes.length, 16, bindings.kUnspecifiedArrayLength);
+        for (int i0 = 0; i0 < substreamTypes.length; ++i0) {
+          encoder1.encodeStruct(substreamTypes[i0], bindings.ArrayDataHeader.kHeaderSize + bindings.kPointerSize * i0, false);
+        }
       }
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "substreamTypes of struct MultiplexedMediaTypeDetails: $e";
+      rethrow;
     }
   }
 
@@ -1238,17 +1307,26 @@ class MultiplexedMediaTypeSetDetails extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeStruct(multiplexTypeSet, 8, false);
-    
-    if (substreamTypeSets == null) {
-      encoder0.encodeNullPointer(16, false);
-    } else {
-      var encoder1 = encoder0.encodePointerArray(substreamTypeSets.length, 16, bindings.kUnspecifiedArrayLength);
-      for (int i0 = 0; i0 < substreamTypeSets.length; ++i0) {
-        
-        encoder1.encodeStruct(substreamTypeSets[i0], bindings.ArrayDataHeader.kHeaderSize + bindings.kPointerSize * i0, false);
+    try {
+      encoder0.encodeStruct(multiplexTypeSet, 8, false);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "multiplexTypeSet of struct MultiplexedMediaTypeSetDetails: $e";
+      rethrow;
+    }
+    try {
+      if (substreamTypeSets == null) {
+        encoder0.encodeNullPointer(16, false);
+      } else {
+        var encoder1 = encoder0.encodePointerArray(substreamTypeSets.length, 16, bindings.kUnspecifiedArrayLength);
+        for (int i0 = 0; i0 < substreamTypeSets.length; ++i0) {
+          encoder1.encodeStruct(substreamTypeSets[i0], bindings.ArrayDataHeader.kHeaderSize + bindings.kPointerSize * i0, false);
+        }
       }
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "substreamTypeSets of struct MultiplexedMediaTypeSetDetails: $e";
+      rethrow;
     }
   }
 
@@ -1347,16 +1425,41 @@ class CompressedAudioMediaTypeDetails extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeEnum(encoding, 8);
-    
-    encoder0.encodeEnum(sampleFormat, 12);
-    
-    encoder0.encodeUint32(channels, 16);
-    
-    encoder0.encodeUint32(framesPerSecond, 20);
-    
-    encoder0.encodeString(extraDataBase64, 24, false);
+    try {
+      encoder0.encodeEnum(encoding, 8);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "encoding of struct CompressedAudioMediaTypeDetails: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeEnum(sampleFormat, 12);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "sampleFormat of struct CompressedAudioMediaTypeDetails: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeUint32(channels, 16);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "channels of struct CompressedAudioMediaTypeDetails: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeUint32(framesPerSecond, 20);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "framesPerSecond of struct CompressedAudioMediaTypeDetails: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeString(extraDataBase64, 24, false);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "extraDataBase64 of struct CompressedAudioMediaTypeDetails: $e";
+      rethrow;
+    }
   }
 
   String toString() {
@@ -1465,18 +1568,48 @@ class CompressedAudioMediaTypeSetDetails extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeEnum(encoding, 8);
-    
-    encoder0.encodeEnum(sampleFormat, 12);
-    
-    encoder0.encodeUint32(minChannels, 16);
-    
-    encoder0.encodeUint32(maxChannels, 20);
-    
-    encoder0.encodeUint32(minFramesPerSecond, 24);
-    
-    encoder0.encodeUint32(maxFramesPerSecond, 28);
+    try {
+      encoder0.encodeEnum(encoding, 8);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "encoding of struct CompressedAudioMediaTypeSetDetails: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeEnum(sampleFormat, 12);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "sampleFormat of struct CompressedAudioMediaTypeSetDetails: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeUint32(minChannels, 16);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "minChannels of struct CompressedAudioMediaTypeSetDetails: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeUint32(maxChannels, 20);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "maxChannels of struct CompressedAudioMediaTypeSetDetails: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeUint32(minFramesPerSecond, 24);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "minFramesPerSecond of struct CompressedAudioMediaTypeSetDetails: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeUint32(maxFramesPerSecond, 28);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "maxFramesPerSecond of struct CompressedAudioMediaTypeSetDetails: $e";
+      rethrow;
+    }
   }
 
   String toString() {
@@ -1610,24 +1743,69 @@ class VideoMediaTypeDetails extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeEnum(encoding, 8);
-    
-    encoder0.encodeEnum(profile, 12);
-    
-    encoder0.encodeEnum(pixelFormat, 16);
-    
-    encoder0.encodeEnum(colorSpace, 20);
-    
-    encoder0.encodeUint32(width, 24);
-    
-    encoder0.encodeUint32(height, 28);
-    
-    encoder0.encodeUint32(codedWidth, 32);
-    
-    encoder0.encodeUint32(codedHeight, 36);
-    
-    encoder0.encodeString(extraDataBase64, 40, false);
+    try {
+      encoder0.encodeEnum(encoding, 8);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "encoding of struct VideoMediaTypeDetails: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeEnum(profile, 12);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "profile of struct VideoMediaTypeDetails: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeEnum(pixelFormat, 16);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "pixelFormat of struct VideoMediaTypeDetails: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeEnum(colorSpace, 20);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "colorSpace of struct VideoMediaTypeDetails: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeUint32(width, 24);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "width of struct VideoMediaTypeDetails: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeUint32(height, 28);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "height of struct VideoMediaTypeDetails: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeUint32(codedWidth, 32);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "codedWidth of struct VideoMediaTypeDetails: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeUint32(codedHeight, 36);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "codedHeight of struct VideoMediaTypeDetails: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeString(extraDataBase64, 40, false);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "extraDataBase64 of struct VideoMediaTypeDetails: $e";
+      rethrow;
+    }
   }
 
   String toString() {
@@ -1735,16 +1913,41 @@ class VideoMediaTypeSetDetails extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeEnum(encoding, 8);
-    
-    encoder0.encodeUint32(minWidth, 12);
-    
-    encoder0.encodeUint32(maxWidth, 16);
-    
-    encoder0.encodeUint32(minHeight, 20);
-    
-    encoder0.encodeUint32(maxHeight, 24);
+    try {
+      encoder0.encodeEnum(encoding, 8);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "encoding of struct VideoMediaTypeSetDetails: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeUint32(minWidth, 12);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "minWidth of struct VideoMediaTypeSetDetails: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeUint32(maxWidth, 16);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "maxWidth of struct VideoMediaTypeSetDetails: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeUint32(minHeight, 20);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "minHeight of struct VideoMediaTypeSetDetails: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeUint32(maxHeight, 24);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "maxHeight of struct VideoMediaTypeSetDetails: $e";
+      rethrow;
+    }
   }
 
   String toString() {
@@ -1886,19 +2089,15 @@ class MediaTypeDetails extends bindings.Union {
     encoder0.encodeUint32(_tag_to_int[_tag], offset + 4);
     switch (_tag) {
       case MediaTypeDetailsTag.multiplexed:
-        
         encoder0.encodeStruct(multiplexed, offset + 8, false);
         break;
       case MediaTypeDetailsTag.lpcm:
-        
         encoder0.encodeStruct(lpcm, offset + 8, false);
         break;
       case MediaTypeDetailsTag.compressedAudio:
-        
         encoder0.encodeStruct(compressedAudio, offset + 8, false);
         break;
       case MediaTypeDetailsTag.video:
-        
         encoder0.encodeStruct(video, offset + 8, false);
         break;
       default:
@@ -2047,19 +2246,15 @@ class MediaTypeSetDetails extends bindings.Union {
     encoder0.encodeUint32(_tag_to_int[_tag], offset + 4);
     switch (_tag) {
       case MediaTypeSetDetailsTag.multiplexed:
-        
         encoder0.encodeStruct(multiplexed, offset + 8, false);
         break;
       case MediaTypeSetDetailsTag.lpcm:
-        
         encoder0.encodeStruct(lpcm, offset + 8, false);
         break;
       case MediaTypeSetDetailsTag.compressedAudio:
-        
         encoder0.encodeStruct(compressedAudio, offset + 8, false);
         break;
       case MediaTypeSetDetailsTag.video:
-        
         encoder0.encodeStruct(video, offset + 8, false);
         break;
       default:

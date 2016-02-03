@@ -357,7 +357,7 @@ class ServiceNameImpl implements regression.ServiceName {
   }
 
   dynamic serviceName_(Function responseFactory) =>
-      responseFactory(ServiceName.serviceName);
+      responseFactory(regression.ServiceName.serviceName);
 }
 
 void serviceNameIsolate(core.MojoMessagePipeEndpoint endpoint) {
@@ -381,17 +381,17 @@ Future<bool> testServiceName() {
 
 
 testCamelCase() {
-  var e = CamelCaseTestEnum.boolThing;
-  e = CamelCaseTestEnum.doubleThing;
-  e = CamelCaseTestEnum.floatThing;
-  e = CamelCaseTestEnum.int8Thing;
-  e = CamelCaseTestEnum.int16Thing;
-  e = CamelCaseTestEnum.int32Th1Ng;
-  e = CamelCaseTestEnum.int64Th1ng;
-  e = CamelCaseTestEnum.uint8TH1ng;
-  e = CamelCaseTestEnum.uint16tH1Ng;
-  e = CamelCaseTestEnum.uint32Th1ng;
-  e = CamelCaseTestEnum.uint64Th1Ng;
+  var e = regression.CamelCaseTestEnum.boolThing;
+  e = regression.CamelCaseTestEnum.doubleThing;
+  e = regression.CamelCaseTestEnum.floatThing;
+  e = regression.CamelCaseTestEnum.int8Thing;
+  e = regression.CamelCaseTestEnum.int16Thing;
+  e = regression.CamelCaseTestEnum.int32Th1Ng;
+  e = regression.CamelCaseTestEnum.int64Th1ng;
+  e = regression.CamelCaseTestEnum.uint8TH1ng;
+  e = regression.CamelCaseTestEnum.uint16tH1Ng;
+  e = regression.CamelCaseTestEnum.uint32Th1ng;
+  e = regression.CamelCaseTestEnum.uint64Th1Ng;
 }
 
 testValidateMojomTypes() {
@@ -710,16 +710,30 @@ _checkMojomInterface(mojom_types.MojomInterface mi, String shortName,
   });
 }
 
+void testSerializeErrorMessage() {
+  var s6 = new serialization.Struct6();
+  s6.str = null;
+  try {
+    var message = messageOfStruct(s6);
+    Expect.fail("Should throw");
+  } on bindings.MojoCodecError catch(e) {
+    // str isn't nullable, so encoding the struct should throw, and the message
+    // should contain the offending struct and field.
+    Expect.isTrue(e.message.contains("str") &&
+                  e.message.contains("Struct6"));
+  }
+}
 
 main() async {
   testSerializeStructs();
   testUnions();
   testValidateMojomTypes();
+  testCamelCase();
+  testSerializeErrorMessage();
   await testEnums();
   await testCallResponse();
   await testAwaitCallResponse();
   await runOnClosedTest();
   await testRegression551();
   await testServiceName();
-  testCamelCase();
 }

@@ -130,8 +130,13 @@ class CalculatorClearResponseParams extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeDouble(value, 8);
+    try {
+      encoder0.encodeDouble(value, 8);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "value of struct CalculatorClearResponseParams: $e";
+      rethrow;
+    }
   }
 
   String toString() {
@@ -210,8 +215,13 @@ class _CalculatorAddParams extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeDouble(value, 8);
+    try {
+      encoder0.encodeDouble(value, 8);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "value of struct _CalculatorAddParams: $e";
+      rethrow;
+    }
   }
 
   String toString() {
@@ -290,8 +300,13 @@ class CalculatorAddResponseParams extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeDouble(value, 8);
+    try {
+      encoder0.encodeDouble(value, 8);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "value of struct CalculatorAddResponseParams: $e";
+      rethrow;
+    }
   }
 
   String toString() {
@@ -370,8 +385,13 @@ class _CalculatorMultiplyParams extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeDouble(value, 8);
+    try {
+      encoder0.encodeDouble(value, 8);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "value of struct _CalculatorMultiplyParams: $e";
+      rethrow;
+    }
   }
 
   String toString() {
@@ -450,8 +470,13 @@ class CalculatorMultiplyResponseParams extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeDouble(value, 8);
+    try {
+      encoder0.encodeDouble(value, 8);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "value of struct CalculatorMultiplyResponseParams: $e";
+      rethrow;
+    }
   }
 
   String toString() {

@@ -340,10 +340,20 @@ class StringExtra extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeString(name, 8, false);
-    
-    encoder0.encodeString(value, 16, false);
+    try {
+      encoder0.encodeString(name, 8, false);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "name of struct StringExtra: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeString(value, 16, false);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "value of struct StringExtra: $e";
+      rethrow;
+    }
   }
 
   String toString() {
@@ -418,10 +428,20 @@ class ComponentName extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeString(packageName, 8, false);
-    
-    encoder0.encodeString(className, 16, false);
+    try {
+      encoder0.encodeString(packageName, 8, false);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "packageName of struct ComponentName: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeString(className, 16, false);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "className of struct ComponentName: $e";
+      rethrow;
+    }
   }
 
   String toString() {
@@ -528,26 +548,55 @@ class Intent extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeString(action, 8, false);
-    
-    encoder0.encodeString(url, 16, false);
-    
-    encoder0.encodeUint32(flags, 24);
-    
-    encoder0.encodeStruct(component, 32, true);
-    
-    if (stringExtras == null) {
-      encoder0.encodeNullPointer(40, true);
-    } else {
-      var encoder1 = encoder0.encodePointerArray(stringExtras.length, 40, bindings.kUnspecifiedArrayLength);
-      for (int i0 = 0; i0 < stringExtras.length; ++i0) {
-        
-        encoder1.encodeStruct(stringExtras[i0], bindings.ArrayDataHeader.kHeaderSize + bindings.kPointerSize * i0, false);
-      }
+    try {
+      encoder0.encodeString(action, 8, false);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "action of struct Intent: $e";
+      rethrow;
     }
-    
-    encoder0.encodeString(type, 48, true);
+    try {
+      encoder0.encodeString(url, 16, false);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "url of struct Intent: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeUint32(flags, 24);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "flags of struct Intent: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeStruct(component, 32, true);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "component of struct Intent: $e";
+      rethrow;
+    }
+    try {
+      if (stringExtras == null) {
+        encoder0.encodeNullPointer(40, true);
+      } else {
+        var encoder1 = encoder0.encodePointerArray(stringExtras.length, 40, bindings.kUnspecifiedArrayLength);
+        for (int i0 = 0; i0 < stringExtras.length; ++i0) {
+          encoder1.encodeStruct(stringExtras[i0], bindings.ArrayDataHeader.kHeaderSize + bindings.kPointerSize * i0, false);
+        }
+      }
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "stringExtras of struct Intent: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeString(type, 48, true);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "type of struct Intent: $e";
+      rethrow;
+    }
   }
 
   String toString() {
@@ -630,10 +679,20 @@ class TaskDescription extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeString(label, 8, true);
-    
-    encoder0.encodeUint32(primaryColor, 16);
+    try {
+      encoder0.encodeString(label, 8, true);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "label of struct TaskDescription: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeUint32(primaryColor, 16);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "primaryColor of struct TaskDescription: $e";
+      rethrow;
+    }
   }
 
   String toString() {
@@ -703,8 +762,13 @@ class _ActivityGetUserFeedbackParams extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeInterfaceRequest(userFeedback, 8, false);
+    try {
+      encoder0.encodeInterfaceRequest(userFeedback, 8, false);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "userFeedback of struct _ActivityGetUserFeedbackParams: $e";
+      rethrow;
+    }
   }
 
   String toString() {
@@ -772,8 +836,13 @@ class _ActivityStartActivityParams extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeStruct(intent, 8, false);
+    try {
+      encoder0.encodeStruct(intent, 8, false);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "intent of struct _ActivityStartActivityParams: $e";
+      rethrow;
+    }
   }
 
   String toString() {
@@ -902,8 +971,13 @@ class _ActivitySetTaskDescriptionParams extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeStruct(description, 8, false);
+    try {
+      encoder0.encodeStruct(description, 8, false);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "description of struct _ActivitySetTaskDescriptionParams: $e";
+      rethrow;
+    }
   }
 
   String toString() {
@@ -975,8 +1049,13 @@ class _ActivitySetSystemUiVisibilityParams extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeEnum(visibility, 8);
+    try {
+      encoder0.encodeEnum(visibility, 8);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "visibility of struct _ActivitySetSystemUiVisibilityParams: $e";
+      rethrow;
+    }
   }
 
   String toString() {
@@ -1048,8 +1127,13 @@ class _ActivitySetRequestedOrientationParams extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeEnum(orientation, 8);
+    try {
+      encoder0.encodeEnum(orientation, 8);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "orientation of struct _ActivitySetRequestedOrientationParams: $e";
+      rethrow;
+    }
   }
 
   String toString() {
@@ -1177,8 +1261,13 @@ class PathServiceGetAppDataDirResponseParams extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeString(path, 8, false);
+    try {
+      encoder0.encodeString(path, 8, false);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "path of struct PathServiceGetAppDataDirResponseParams: $e";
+      rethrow;
+    }
   }
 
   String toString() {
@@ -1306,8 +1395,13 @@ class PathServiceGetFilesDirResponseParams extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeString(path, 8, false);
+    try {
+      encoder0.encodeString(path, 8, false);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "path of struct PathServiceGetFilesDirResponseParams: $e";
+      rethrow;
+    }
   }
 
   String toString() {
@@ -1435,8 +1529,13 @@ class PathServiceGetCacheDirResponseParams extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeString(path, 8, false);
+    try {
+      encoder0.encodeString(path, 8, false);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "path of struct PathServiceGetCacheDirResponseParams: $e";
+      rethrow;
+    }
   }
 
   String toString() {
@@ -1508,8 +1607,13 @@ class _UserFeedbackPerformHapticFeedbackParams extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeEnum(type, 8);
+    try {
+      encoder0.encodeEnum(type, 8);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "type of struct _UserFeedbackPerformHapticFeedbackParams: $e";
+      rethrow;
+    }
   }
 
   String toString() {
@@ -1581,8 +1685,13 @@ class _UserFeedbackPerformAuralFeedbackParams extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeEnum(type, 8);
+    try {
+      encoder0.encodeEnum(type, 8);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "type of struct _UserFeedbackPerformAuralFeedbackParams: $e";
+      rethrow;
+    }
   }
 
   String toString() {

@@ -171,10 +171,20 @@ class UtteranceCandidate extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeString(text, 8, false);
-    
-    encoder0.encodeFloat(confidenceScore, 16);
+    try {
+      encoder0.encodeString(text, 8, false);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "text of struct UtteranceCandidate: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeFloat(confidenceScore, 16);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "confidenceScore of struct UtteranceCandidate: $e";
+      rethrow;
+    }
   }
 
   String toString() {
@@ -308,8 +318,13 @@ class SpeechRecognizerServiceListenResponseParams extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeUnion(resultOrError, 8, false);
+    try {
+      encoder0.encodeUnion(resultOrError, 8, false);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "resultOrError of struct SpeechRecognizerServiceListenResponseParams: $e";
+      rethrow;
+    }
   }
 
   String toString() {
@@ -476,17 +491,14 @@ class ResultOrError extends bindings.Union {
     encoder0.encodeUint32(_tag_to_int[_tag], offset + 4);
     switch (_tag) {
       case ResultOrErrorTag.errorCode:
-        
         encoder0.encodeEnum(errorCode, offset + 8);
         break;
       case ResultOrErrorTag.results:
-        
         if (results == null) {
           encoder0.encodeNullPointer(offset + 8, false);
         } else {
           var encoder1 = encoder0.encodePointerArray(results.length, offset + 8, bindings.kUnspecifiedArrayLength);
           for (int i0 = 0; i0 < results.length; ++i0) {
-            
             encoder1.encodeStruct(results[i0], bindings.ArrayDataHeader.kHeaderSize + bindings.kPointerSize * i0, false);
           }
         }

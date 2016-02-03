@@ -78,12 +78,27 @@ class _RendererSetRootSceneParams extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeStruct(sceneToken, 8, false);
-    
-    encoder0.encodeUint32(sceneVersion, 16);
-    
-    encoder0.encodeStruct(viewport, 24, false);
+    try {
+      encoder0.encodeStruct(sceneToken, 8, false);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "sceneToken of struct _RendererSetRootSceneParams: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeUint32(sceneVersion, 16);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "sceneVersion of struct _RendererSetRootSceneParams: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeStruct(viewport, 24, false);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "viewport of struct _RendererSetRootSceneParams: $e";
+      rethrow;
+    }
   }
 
   String toString() {
@@ -155,8 +170,13 @@ class _RendererGetHitTesterParams extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeInterfaceRequest(hitTester, 8, false);
+    try {
+      encoder0.encodeInterfaceRequest(hitTester, 8, false);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "hitTester of struct _RendererGetHitTesterParams: $e";
+      rethrow;
+    }
   }
 
   String toString() {

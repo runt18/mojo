@@ -135,10 +135,20 @@ class _NavigatorHostRequestNavigateParams extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeEnum(target, 8);
-    
-    encoder0.encodeStruct(request, 16, false);
+    try {
+      encoder0.encodeEnum(target, 8);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "target of struct _NavigatorHostRequestNavigateParams: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeStruct(request, 16, false);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "request of struct _NavigatorHostRequestNavigateParams: $e";
+      rethrow;
+    }
   }
 
   String toString() {
@@ -206,8 +216,13 @@ class _NavigatorHostRequestNavigateHistoryParams extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeInt32(delta, 8);
+    try {
+      encoder0.encodeInt32(delta, 8);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "delta of struct _NavigatorHostRequestNavigateHistoryParams: $e";
+      rethrow;
+    }
   }
 
   String toString() {
@@ -275,8 +290,13 @@ class _NavigatorHostDidNavigateLocallyParams extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeString(url, 8, false);
+    try {
+      encoder0.encodeString(url, 8, false);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "url of struct _NavigatorHostDidNavigateLocallyParams: $e";
+      rethrow;
+    }
   }
 
   String toString() {

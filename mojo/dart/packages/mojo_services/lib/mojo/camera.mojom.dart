@@ -68,10 +68,20 @@ class Photo extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeString(uniqueId, 8, false);
-    
-    encoder0.encodeConsumerHandle(content, 16, false);
+    try {
+      encoder0.encodeString(uniqueId, 8, false);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "uniqueId of struct Photo: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeConsumerHandle(content, 16, false);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "content of struct Photo: $e";
+      rethrow;
+    }
   }
 
   String toString() {
@@ -259,8 +269,13 @@ class CameraRollServiceGetCountResponseParams extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeUint32(numPhotos, 8);
+    try {
+      encoder0.encodeUint32(numPhotos, 8);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "numPhotos of struct CameraRollServiceGetCountResponseParams: $e";
+      rethrow;
+    }
   }
 
   String toString() {
@@ -328,8 +343,13 @@ class _CameraRollServiceGetPhotoParams extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeUint32(index, 8);
+    try {
+      encoder0.encodeUint32(index, 8);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "index of struct _CameraRollServiceGetPhotoParams: $e";
+      rethrow;
+    }
   }
 
   String toString() {
@@ -398,8 +418,13 @@ class CameraRollServiceGetPhotoResponseParams extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeStruct(photo, 8, true);
+    try {
+      encoder0.encodeStruct(photo, 8, true);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "photo of struct CameraRollServiceGetPhotoResponseParams: $e";
+      rethrow;
+    }
   }
 
   String toString() {
@@ -526,8 +551,13 @@ class CameraServiceGetLatestFrameResponseParams extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeConsumerHandle(content, 8, true);
+    try {
+      encoder0.encodeConsumerHandle(content, 8, true);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "content of struct CameraServiceGetLatestFrameResponseParams: $e";
+      rethrow;
+    }
   }
 
   String toString() {

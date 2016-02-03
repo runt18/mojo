@@ -64,8 +64,13 @@ class _EchoEchoStringParams extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeString(value, 8, true);
+    try {
+      encoder0.encodeString(value, 8, true);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "value of struct _EchoEchoStringParams: $e";
+      rethrow;
+    }
   }
 
   String toString() {
@@ -146,8 +151,13 @@ class EchoEchoStringResponseParams extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeString(value, 8, true);
+    try {
+      encoder0.encodeString(value, 8, true);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "value of struct EchoEchoStringResponseParams: $e";
+      rethrow;
+    }
   }
 
   String toString() {

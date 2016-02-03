@@ -76,15 +76,19 @@ class AudioTrackDescriptor extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    if (supportedMediaTypes == null) {
-      encoder0.encodeNullPointer(8, false);
-    } else {
-      var encoder1 = encoder0.encodePointerArray(supportedMediaTypes.length, 8, bindings.kUnspecifiedArrayLength);
-      for (int i0 = 0; i0 < supportedMediaTypes.length; ++i0) {
-        
-        encoder1.encodeStruct(supportedMediaTypes[i0], bindings.ArrayDataHeader.kHeaderSize + bindings.kPointerSize * i0, false);
+    try {
+      if (supportedMediaTypes == null) {
+        encoder0.encodeNullPointer(8, false);
+      } else {
+        var encoder1 = encoder0.encodePointerArray(supportedMediaTypes.length, 8, bindings.kUnspecifiedArrayLength);
+        for (int i0 = 0; i0 < supportedMediaTypes.length; ++i0) {
+          encoder1.encodeStruct(supportedMediaTypes[i0], bindings.ArrayDataHeader.kHeaderSize + bindings.kPointerSize * i0, false);
+        }
       }
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "supportedMediaTypes of struct AudioTrackDescriptor: $e";
+      rethrow;
     }
   }
 
@@ -169,14 +173,34 @@ class AudioTrackConfiguration extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeStruct(mediaType, 8, false);
-    
-    encoder0.encodeUint64(maxFrames, 16);
-    
-    encoder0.encodeUint32(audioFrameRatio, 24);
-    
-    encoder0.encodeUint32(mediaTimeRatio, 28);
+    try {
+      encoder0.encodeStruct(mediaType, 8, false);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "mediaType of struct AudioTrackConfiguration: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeUint64(maxFrames, 16);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "maxFrames of struct AudioTrackConfiguration: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeUint32(audioFrameRatio, 24);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "audioFrameRatio of struct AudioTrackConfiguration: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeUint32(mediaTimeRatio, 28);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "mediaTimeRatio of struct AudioTrackConfiguration: $e";
+      rethrow;
+    }
   }
 
   String toString() {
@@ -311,8 +335,13 @@ class AudioTrackDescribeResponseParams extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeStruct(descriptor, 8, false);
+    try {
+      encoder0.encodeStruct(descriptor, 8, false);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "descriptor of struct AudioTrackDescribeResponseParams: $e";
+      rethrow;
+    }
   }
 
   String toString() {
@@ -386,10 +415,20 @@ class _AudioTrackConfigureParams extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeStruct(configuration, 8, false);
-    
-    encoder0.encodeInterfaceRequest(pipe, 16, false);
+    try {
+      encoder0.encodeStruct(configuration, 8, false);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "configuration of struct _AudioTrackConfigureParams: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeInterfaceRequest(pipe, 16, false);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "pipe of struct _AudioTrackConfigureParams: $e";
+      rethrow;
+    }
   }
 
   String toString() {
@@ -457,8 +496,13 @@ class _AudioTrackGetRateControlParams extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeInterfaceRequest(rateControl, 8, false);
+    try {
+      encoder0.encodeInterfaceRequest(rateControl, 8, false);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "rateControl of struct _AudioTrackGetRateControlParams: $e";
+      rethrow;
+    }
   }
 
   String toString() {
@@ -471,6 +515,8 @@ class _AudioTrackGetRateControlParams extends bindings.Struct {
         'Object containing handles cannot be encoded to JSON.');
   }
 }
+
+
 
 
 class _AudioTrackSetGainParams extends bindings.Struct {
@@ -523,8 +569,13 @@ class _AudioTrackSetGainParams extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeFloat(dbGain, 8);
+    try {
+      encoder0.encodeFloat(dbGain, 8);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "dbGain of struct _AudioTrackSetGainParams: $e";
+      rethrow;
+    }
   }
 
   String toString() {
@@ -538,6 +589,9 @@ class _AudioTrackSetGainParams extends bindings.Struct {
     return map;
   }
 }
+
+
+
 
 const int _AudioTrack_describeName = 0;
 const int _AudioTrack_configureName = 1;

@@ -128,8 +128,13 @@ class FileCloseResponseParams extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeEnum(err, 8);
+    try {
+      encoder0.encodeEnum(err, 8);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "err of struct FileCloseResponseParams: $e";
+      rethrow;
+    }
   }
 
   String toString() {
@@ -211,12 +216,27 @@ class _FileReadParams extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeUint32(numBytesToRead, 8);
-    
-    encoder0.encodeEnum(whence, 12);
-    
-    encoder0.encodeInt64(offset, 16);
+    try {
+      encoder0.encodeUint32(numBytesToRead, 8);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "numBytesToRead of struct _FileReadParams: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeEnum(whence, 12);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "whence of struct _FileReadParams: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeInt64(offset, 16);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "offset of struct _FileReadParams: $e";
+      rethrow;
+    }
   }
 
   String toString() {
@@ -297,10 +317,20 @@ class FileReadResponseParams extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeEnum(error, 8);
-    
-    encoder0.encodeUint8Array(bytesRead, 16, bindings.kArrayNullable, bindings.kUnspecifiedArrayLength);
+    try {
+      encoder0.encodeEnum(error, 8);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "error of struct FileReadResponseParams: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeUint8Array(bytesRead, 16, bindings.kArrayNullable, bindings.kUnspecifiedArrayLength);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "bytesRead of struct FileReadResponseParams: $e";
+      rethrow;
+    }
   }
 
   String toString() {
@@ -384,12 +414,27 @@ class _FileWriteParams extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeUint8Array(bytesToWrite, 8, bindings.kNothingNullable, bindings.kUnspecifiedArrayLength);
-    
-    encoder0.encodeInt64(offset, 16);
-    
-    encoder0.encodeEnum(whence, 24);
+    try {
+      encoder0.encodeUint8Array(bytesToWrite, 8, bindings.kNothingNullable, bindings.kUnspecifiedArrayLength);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "bytesToWrite of struct _FileWriteParams: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeInt64(offset, 16);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "offset of struct _FileWriteParams: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeEnum(whence, 24);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "whence of struct _FileWriteParams: $e";
+      rethrow;
+    }
   }
 
   String toString() {
@@ -470,10 +515,20 @@ class FileWriteResponseParams extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeEnum(error, 8);
-    
-    encoder0.encodeUint32(numBytesWritten, 12);
+    try {
+      encoder0.encodeEnum(error, 8);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "error of struct FileWriteResponseParams: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeUint32(numBytesWritten, 12);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "numBytesWritten of struct FileWriteResponseParams: $e";
+      rethrow;
+    }
   }
 
   String toString() {
@@ -562,14 +617,34 @@ class _FileReadToStreamParams extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeProducerHandle(source, 8, false);
-    
-    encoder0.encodeEnum(whence, 12);
-    
-    encoder0.encodeInt64(offset, 16);
-    
-    encoder0.encodeInt64(numBytesToRead, 24);
+    try {
+      encoder0.encodeProducerHandle(source, 8, false);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "source of struct _FileReadToStreamParams: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeEnum(whence, 12);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "whence of struct _FileReadToStreamParams: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeInt64(offset, 16);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "offset of struct _FileReadToStreamParams: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeInt64(numBytesToRead, 24);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "numBytesToRead of struct _FileReadToStreamParams: $e";
+      rethrow;
+    }
   }
 
   String toString() {
@@ -643,8 +718,13 @@ class FileReadToStreamResponseParams extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeEnum(error, 8);
+    try {
+      encoder0.encodeEnum(error, 8);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "error of struct FileReadToStreamResponseParams: $e";
+      rethrow;
+    }
   }
 
   String toString() {
@@ -726,12 +806,27 @@ class _FileWriteFromStreamParams extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeConsumerHandle(sink, 8, false);
-    
-    encoder0.encodeEnum(whence, 12);
-    
-    encoder0.encodeInt64(offset, 16);
+    try {
+      encoder0.encodeConsumerHandle(sink, 8, false);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "sink of struct _FileWriteFromStreamParams: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeEnum(whence, 12);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "whence of struct _FileWriteFromStreamParams: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeInt64(offset, 16);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "offset of struct _FileWriteFromStreamParams: $e";
+      rethrow;
+    }
   }
 
   String toString() {
@@ -804,8 +899,13 @@ class FileWriteFromStreamResponseParams extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeEnum(error, 8);
+    try {
+      encoder0.encodeEnum(error, 8);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "error of struct FileWriteFromStreamResponseParams: $e";
+      rethrow;
+    }
   }
 
   String toString() {
@@ -942,10 +1042,20 @@ class FileTellResponseParams extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeEnum(error, 8);
-    
-    encoder0.encodeInt64(position, 16);
+    try {
+      encoder0.encodeEnum(error, 8);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "error of struct FileTellResponseParams: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeInt64(position, 16);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "position of struct FileTellResponseParams: $e";
+      rethrow;
+    }
   }
 
   String toString() {
@@ -1024,10 +1134,20 @@ class _FileSeekParams extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeInt64(offset, 8);
-    
-    encoder0.encodeEnum(whence, 16);
+    try {
+      encoder0.encodeInt64(offset, 8);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "offset of struct _FileSeekParams: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeEnum(whence, 16);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "whence of struct _FileSeekParams: $e";
+      rethrow;
+    }
   }
 
   String toString() {
@@ -1106,10 +1226,20 @@ class FileSeekResponseParams extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeEnum(error, 8);
-    
-    encoder0.encodeInt64(position, 16);
+    try {
+      encoder0.encodeEnum(error, 8);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "error of struct FileSeekResponseParams: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeInt64(position, 16);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "position of struct FileSeekResponseParams: $e";
+      rethrow;
+    }
   }
 
   String toString() {
@@ -1249,10 +1379,20 @@ class FileStatResponseParams extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeEnum(error, 8);
-    
-    encoder0.encodeStruct(fileInformation, 16, true);
+    try {
+      encoder0.encodeEnum(error, 8);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "error of struct FileStatResponseParams: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeStruct(fileInformation, 16, true);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "fileInformation of struct FileStatResponseParams: $e";
+      rethrow;
+    }
   }
 
   String toString() {
@@ -1322,8 +1462,13 @@ class _FileTruncateParams extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeInt64(size, 8);
+    try {
+      encoder0.encodeInt64(size, 8);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "size of struct _FileTruncateParams: $e";
+      rethrow;
+    }
   }
 
   String toString() {
@@ -1395,8 +1540,13 @@ class FileTruncateResponseParams extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeEnum(error, 8);
+    try {
+      encoder0.encodeEnum(error, 8);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "error of struct FileTruncateResponseParams: $e";
+      rethrow;
+    }
   }
 
   String toString() {
@@ -1471,10 +1621,20 @@ class _FileTouchParams extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeStruct(atime, 8, true);
-    
-    encoder0.encodeStruct(mtime, 16, true);
+    try {
+      encoder0.encodeStruct(atime, 8, true);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "atime of struct _FileTouchParams: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeStruct(mtime, 16, true);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "mtime of struct _FileTouchParams: $e";
+      rethrow;
+    }
   }
 
   String toString() {
@@ -1548,8 +1708,13 @@ class FileTouchResponseParams extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeEnum(error, 8);
+    try {
+      encoder0.encodeEnum(error, 8);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "error of struct FileTouchResponseParams: $e";
+      rethrow;
+    }
   }
 
   String toString() {
@@ -1617,8 +1782,13 @@ class _FileDupParams extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeInterfaceRequest(file, 8, false);
+    try {
+      encoder0.encodeInterfaceRequest(file, 8, false);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "file of struct _FileDupParams: $e";
+      rethrow;
+    }
   }
 
   String toString() {
@@ -1689,8 +1859,13 @@ class FileDupResponseParams extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeEnum(error, 8);
+    try {
+      encoder0.encodeEnum(error, 8);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "error of struct FileDupResponseParams: $e";
+      rethrow;
+    }
   }
 
   String toString() {
@@ -1763,10 +1938,20 @@ class _FileReopenParams extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeInterfaceRequest(file, 8, false);
-    
-    encoder0.encodeUint32(openFlags, 12);
+    try {
+      encoder0.encodeInterfaceRequest(file, 8, false);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "file of struct _FileReopenParams: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeUint32(openFlags, 12);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "openFlags of struct _FileReopenParams: $e";
+      rethrow;
+    }
   }
 
   String toString() {
@@ -1838,8 +2023,13 @@ class FileReopenResponseParams extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeEnum(error, 8);
+    try {
+      encoder0.encodeEnum(error, 8);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "error of struct FileReopenResponseParams: $e";
+      rethrow;
+    }
   }
 
   String toString() {
@@ -1976,10 +2166,20 @@ class FileAsBufferResponseParams extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeEnum(error, 8);
-    
-    encoder0.encodeSharedBufferHandle(buffer, 12, true);
+    try {
+      encoder0.encodeEnum(error, 8);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "error of struct FileAsBufferResponseParams: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeSharedBufferHandle(buffer, 12, true);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "buffer of struct FileAsBufferResponseParams: $e";
+      rethrow;
+    }
   }
 
   String toString() {
@@ -2052,10 +2252,20 @@ class _FileIoctlParams extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeUint32(request, 8);
-    
-    encoder0.encodeUint32Array(inValues, 16, bindings.kArrayNullable, bindings.kUnspecifiedArrayLength);
+    try {
+      encoder0.encodeUint32(request, 8);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "request of struct _FileIoctlParams: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeUint32Array(inValues, 16, bindings.kArrayNullable, bindings.kUnspecifiedArrayLength);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "inValues of struct _FileIoctlParams: $e";
+      rethrow;
+    }
   }
 
   String toString() {
@@ -2134,10 +2344,20 @@ class FileIoctlResponseParams extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeEnum(error, 8);
-    
-    encoder0.encodeUint32Array(outValues, 16, bindings.kArrayNullable, bindings.kUnspecifiedArrayLength);
+    try {
+      encoder0.encodeEnum(error, 8);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "error of struct FileIoctlResponseParams: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeUint32Array(outValues, 16, bindings.kArrayNullable, bindings.kUnspecifiedArrayLength);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "outValues of struct FileIoctlResponseParams: $e";
+      rethrow;
+    }
   }
 
   String toString() {

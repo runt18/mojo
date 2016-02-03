@@ -64,8 +64,13 @@ class _AudioServerCreateTrackParams extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeInterfaceRequest(track, 8, false);
+    try {
+      encoder0.encodeInterfaceRequest(track, 8, false);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "track of struct _AudioServerCreateTrackParams: $e";
+      rethrow;
+    }
   }
 
   String toString() {

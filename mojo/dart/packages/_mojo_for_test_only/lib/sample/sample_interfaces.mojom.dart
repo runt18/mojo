@@ -123,8 +123,13 @@ class _ProviderEchoStringParams extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeString(a, 8, false);
+    try {
+      encoder0.encodeString(a, 8, false);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "a of struct _ProviderEchoStringParams: $e";
+      rethrow;
+    }
   }
 
   String toString() {
@@ -203,8 +208,13 @@ class ProviderEchoStringResponseParams extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeString(a, 8, false);
+    try {
+      encoder0.encodeString(a, 8, false);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "a of struct ProviderEchoStringResponseParams: $e";
+      rethrow;
+    }
   }
 
   String toString() {
@@ -288,10 +298,20 @@ class _ProviderEchoStringsParams extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeString(a, 8, false);
-    
-    encoder0.encodeString(b, 16, false);
+    try {
+      encoder0.encodeString(a, 8, false);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "a of struct _ProviderEchoStringsParams: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeString(b, 16, false);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "b of struct _ProviderEchoStringsParams: $e";
+      rethrow;
+    }
   }
 
   String toString() {
@@ -382,10 +402,20 @@ class ProviderEchoStringsResponseParams extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeString(a, 8, false);
-    
-    encoder0.encodeString(b, 16, false);
+    try {
+      encoder0.encodeString(a, 8, false);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "a of struct ProviderEchoStringsResponseParams: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeString(b, 16, false);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "b of struct ProviderEchoStringsResponseParams: $e";
+      rethrow;
+    }
   }
 
   String toString() {
@@ -471,8 +501,13 @@ class _ProviderEchoMessagePipeHandleParams extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeMessagePipeHandle(a, 8, false);
+    try {
+      encoder0.encodeMessagePipeHandle(a, 8, false);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "a of struct _ProviderEchoMessagePipeHandleParams: $e";
+      rethrow;
+    }
   }
 
   String toString() {
@@ -551,8 +586,13 @@ class ProviderEchoMessagePipeHandleResponseParams extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeMessagePipeHandle(a, 8, false);
+    try {
+      encoder0.encodeMessagePipeHandle(a, 8, false);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "a of struct ProviderEchoMessagePipeHandleResponseParams: $e";
+      rethrow;
+    }
   }
 
   String toString() {
@@ -635,8 +675,13 @@ class _ProviderEchoEnumParams extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeEnum(a, 8);
+    try {
+      encoder0.encodeEnum(a, 8);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "a of struct _ProviderEchoEnumParams: $e";
+      rethrow;
+    }
   }
 
   String toString() {
@@ -722,8 +767,13 @@ class ProviderEchoEnumResponseParams extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeEnum(a, 8);
+    try {
+      encoder0.encodeEnum(a, 8);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "a of struct ProviderEchoEnumResponseParams: $e";
+      rethrow;
+    }
   }
 
   String toString() {
@@ -805,8 +855,13 @@ class _ProviderEchoIntParams extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeInt32(a, 8);
+    try {
+      encoder0.encodeInt32(a, 8);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "a of struct _ProviderEchoIntParams: $e";
+      rethrow;
+    }
   }
 
   String toString() {
@@ -885,8 +940,13 @@ class ProviderEchoIntResponseParams extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeInt32(a, 8);
+    try {
+      encoder0.encodeInt32(a, 8);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "a of struct ProviderEchoIntResponseParams: $e";
+      rethrow;
+    }
   }
 
   String toString() {
@@ -1041,10 +1101,20 @@ class IntegerAccessorGetIntegerResponseParams extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeInt64(data, 8);
-    
-    encoder0.encodeEnum(type, 16);
+    try {
+      encoder0.encodeInt64(data, 8);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "data of struct IntegerAccessorGetIntegerResponseParams: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeEnum(type, 16);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "type of struct IntegerAccessorGetIntegerResponseParams: $e";
+      rethrow;
+    }
   }
 
   String toString() {
@@ -1143,10 +1213,20 @@ class _IntegerAccessorSetIntegerParams extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeInt64(data, 8);
-    
-    encoder0.encodeEnum(type, 16);
+    try {
+      encoder0.encodeInt64(data, 8);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "data of struct _IntegerAccessorSetIntegerParams: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeEnum(type, 16);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "type of struct _IntegerAccessorSetIntegerParams: $e";
+      rethrow;
+    }
   }
 
   String toString() {
@@ -1306,10 +1386,20 @@ class _SampleInterfaceSampleMethod1Params extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeInt32(in1, 8);
-    
-    encoder0.encodeString(in2, 16, true);
+    try {
+      encoder0.encodeInt32(in1, 8);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "in1 of struct _SampleInterfaceSampleMethod1Params: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeString(in2, 16, true);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "in2 of struct _SampleInterfaceSampleMethod1Params: $e";
+      rethrow;
+    }
   }
 
   String toString() {
@@ -1406,10 +1496,20 @@ class SampleInterfaceSampleMethod1ResponseParams extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeString(out1, 8, true);
-    
-    encoder0.encodeEnum(out2, 16);
+    try {
+      encoder0.encodeString(out1, 8, true);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "out1 of struct SampleInterfaceSampleMethod1ResponseParams: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeEnum(out2, 16);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "out2 of struct SampleInterfaceSampleMethod1ResponseParams: $e";
+      rethrow;
+    }
   }
 
   String toString() {

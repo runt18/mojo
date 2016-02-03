@@ -70,10 +70,20 @@ class _AuthenticatingUrlLoaderInterceptorMetaFactoryCreateUrlLoaderInterceptorFa
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeInterfaceRequest(factoryRequest, 8, false);
-    
-    encoder0.encodeInterface(authenticationService, 12, false);
+    try {
+      encoder0.encodeInterfaceRequest(factoryRequest, 8, false);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "factoryRequest of struct _AuthenticatingUrlLoaderInterceptorMetaFactoryCreateUrlLoaderInterceptorFactoryParams: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeInterface(authenticationService, 12, false);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "authenticationService of struct _AuthenticatingUrlLoaderInterceptorMetaFactoryCreateUrlLoaderInterceptorFactoryParams: $e";
+      rethrow;
+    }
   }
 
   String toString() {

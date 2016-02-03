@@ -67,8 +67,13 @@ class _TcpBoundSocketStartListeningParams extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeInterfaceRequest(server, 8, false);
+    try {
+      encoder0.encodeInterfaceRequest(server, 8, false);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "server of struct _TcpBoundSocketStartListeningParams: $e";
+      rethrow;
+    }
   }
 
   String toString() {
@@ -136,8 +141,13 @@ class TcpBoundSocketStartListeningResponseParams extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeStruct(result, 8, false);
+    try {
+      encoder0.encodeStruct(result, 8, false);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "result of struct TcpBoundSocketStartListeningResponseParams: $e";
+      rethrow;
+    }
   }
 
   String toString() {
@@ -221,14 +231,34 @@ class _TcpBoundSocketConnectParams extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeStruct(remoteAddress, 8, false);
-    
-    encoder0.encodeConsumerHandle(sendStream, 16, false);
-    
-    encoder0.encodeProducerHandle(receiveStream, 20, false);
-    
-    encoder0.encodeInterfaceRequest(clientSocket, 24, false);
+    try {
+      encoder0.encodeStruct(remoteAddress, 8, false);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "remoteAddress of struct _TcpBoundSocketConnectParams: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeConsumerHandle(sendStream, 16, false);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "sendStream of struct _TcpBoundSocketConnectParams: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeProducerHandle(receiveStream, 20, false);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "receiveStream of struct _TcpBoundSocketConnectParams: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeInterfaceRequest(clientSocket, 24, false);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "clientSocket of struct _TcpBoundSocketConnectParams: $e";
+      rethrow;
+    }
   }
 
   String toString() {
@@ -299,8 +329,13 @@ class TcpBoundSocketConnectResponseParams extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeStruct(result, 8, false);
+    try {
+      encoder0.encodeStruct(result, 8, false);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "result of struct TcpBoundSocketConnectResponseParams: $e";
+      rethrow;
+    }
   }
 
   String toString() {

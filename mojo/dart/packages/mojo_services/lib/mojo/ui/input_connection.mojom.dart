@@ -64,8 +64,13 @@ class _InputConnectionSetListenerParams extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeInterface(listener, 8, true);
+    try {
+      encoder0.encodeInterface(listener, 8, true);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "listener of struct _InputConnectionSetListenerParams: $e";
+      rethrow;
+    }
   }
 
   String toString() {
@@ -133,8 +138,13 @@ class _InputListenerOnEventParams extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeStruct(event, 8, false);
+    try {
+      encoder0.encodeStruct(event, 8, false);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "event of struct _InputListenerOnEventParams: $e";
+      rethrow;
+    }
   }
 
   String toString() {
@@ -202,8 +212,13 @@ class InputListenerOnEventResponseParams extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeBool(consumed, 8, 0);
+    try {
+      encoder0.encodeBool(consumed, 8, 0);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "consumed of struct InputListenerOnEventResponseParams: $e";
+      rethrow;
+    }
   }
 
   String toString() {

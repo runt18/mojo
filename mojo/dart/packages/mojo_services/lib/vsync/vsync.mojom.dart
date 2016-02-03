@@ -123,8 +123,13 @@ class VSyncProviderAwaitVSyncResponseParams extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeInt64(timeStamp, 8);
+    try {
+      encoder0.encodeInt64(timeStamp, 8);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "timeStamp of struct VSyncProviderAwaitVSyncResponseParams: $e";
+      rethrow;
+    }
   }
 
   String toString() {

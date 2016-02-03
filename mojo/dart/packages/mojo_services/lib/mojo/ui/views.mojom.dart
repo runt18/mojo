@@ -66,8 +66,13 @@ class ViewToken extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeUint32(value, 8);
+    try {
+      encoder0.encodeUint32(value, 8);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "value of struct ViewToken: $e";
+      rethrow;
+    }
   }
 
   String toString() {
@@ -141,10 +146,20 @@ class _ViewOnLayoutParams extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeStruct(layoutParams, 8, false);
-    
-    encoder0.encodeUint32Array(childrenNeedingLayout, 16, bindings.kNothingNullable, bindings.kUnspecifiedArrayLength);
+    try {
+      encoder0.encodeStruct(layoutParams, 8, false);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "layoutParams of struct _ViewOnLayoutParams: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeUint32Array(childrenNeedingLayout, 16, bindings.kNothingNullable, bindings.kUnspecifiedArrayLength);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "childrenNeedingLayout of struct _ViewOnLayoutParams: $e";
+      rethrow;
+    }
   }
 
   String toString() {
@@ -215,8 +230,13 @@ class ViewOnLayoutResponseParams extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeStruct(result, 8, false);
+    try {
+      encoder0.encodeStruct(result, 8, false);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "result of struct ViewOnLayoutResponseParams: $e";
+      rethrow;
+    }
   }
 
   String toString() {
@@ -284,8 +304,13 @@ class _ViewOnChildUnavailableParams extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeUint32(childKey, 8);
+    try {
+      encoder0.encodeUint32(childKey, 8);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "childKey of struct _ViewOnChildUnavailableParams: $e";
+      rethrow;
+    }
   }
 
   String toString() {
@@ -413,8 +438,13 @@ class _ViewHostGetServiceProviderParams extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeInterfaceRequest(serviceProvider, 8, false);
+    try {
+      encoder0.encodeInterfaceRequest(serviceProvider, 8, false);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "serviceProvider of struct _ViewHostGetServiceProviderParams: $e";
+      rethrow;
+    }
   }
 
   String toString() {
@@ -481,8 +511,13 @@ class _ViewHostCreateSceneParams extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeInterfaceRequest(scene, 8, false);
+    try {
+      encoder0.encodeInterfaceRequest(scene, 8, false);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "scene of struct _ViewHostCreateSceneParams: $e";
+      rethrow;
+    }
   }
 
   String toString() {
@@ -615,10 +650,20 @@ class _ViewHostAddChildParams extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeUint32(childKey, 8);
-    
-    encoder0.encodeStruct(childViewToken, 16, false);
+    try {
+      encoder0.encodeUint32(childKey, 8);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "childKey of struct _ViewHostAddChildParams: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeStruct(childViewToken, 16, false);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "childViewToken of struct _ViewHostAddChildParams: $e";
+      rethrow;
+    }
   }
 
   String toString() {
@@ -688,8 +733,13 @@ class _ViewHostRemoveChildParams extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeUint32(childKey, 8);
+    try {
+      encoder0.encodeUint32(childKey, 8);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "childKey of struct _ViewHostRemoveChildParams: $e";
+      rethrow;
+    }
   }
 
   String toString() {
@@ -763,10 +813,20 @@ class _ViewHostLayoutChildParams extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeUint32(childKey, 8);
-    
-    encoder0.encodeStruct(childLayoutParams, 16, false);
+    try {
+      encoder0.encodeUint32(childKey, 8);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "childKey of struct _ViewHostLayoutChildParams: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeStruct(childLayoutParams, 16, false);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "childLayoutParams of struct _ViewHostLayoutChildParams: $e";
+      rethrow;
+    }
   }
 
   String toString() {
@@ -837,8 +897,13 @@ class ViewHostLayoutChildResponseParams extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeStruct(info, 8, true);
+    try {
+      encoder0.encodeStruct(info, 8, true);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "info of struct ViewHostLayoutChildResponseParams: $e";
+      rethrow;
+    }
   }
 
   String toString() {

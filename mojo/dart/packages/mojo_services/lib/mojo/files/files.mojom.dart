@@ -70,10 +70,20 @@ class _FilesOpenFileSystemParams extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeString(fileSystem, 8, true);
-    
-    encoder0.encodeInterfaceRequest(directory, 16, false);
+    try {
+      encoder0.encodeString(fileSystem, 8, true);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "fileSystem of struct _FilesOpenFileSystemParams: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeInterfaceRequest(directory, 16, false);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "directory of struct _FilesOpenFileSystemParams: $e";
+      rethrow;
+    }
   }
 
   String toString() {
@@ -145,8 +155,13 @@ class FilesOpenFileSystemResponseParams extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeEnum(error, 8);
+    try {
+      encoder0.encodeEnum(error, 8);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "error of struct FilesOpenFileSystemResponseParams: $e";
+      rethrow;
+    }
   }
 
   String toString() {

@@ -66,8 +66,13 @@ class _MediaProducerConnectParams extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeInterface(consumer, 8, false);
+    try {
+      encoder0.encodeInterface(consumer, 8, false);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "consumer of struct _MediaProducerConnectParams: $e";
+      rethrow;
+    }
   }
 
   String toString() {
@@ -314,8 +319,13 @@ class MediaPullModeProducerGetBufferResponseParams extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeSharedBufferHandle(buffer, 8, false);
+    try {
+      encoder0.encodeSharedBufferHandle(buffer, 8, false);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "buffer of struct MediaPullModeProducerGetBufferResponseParams: $e";
+      rethrow;
+    }
   }
 
   String toString() {
@@ -383,8 +393,13 @@ class _MediaPullModeProducerPullPacketParams extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeStruct(toRelease, 8, true);
+    try {
+      encoder0.encodeStruct(toRelease, 8, true);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "toRelease of struct _MediaPullModeProducerPullPacketParams: $e";
+      rethrow;
+    }
   }
 
   String toString() {
@@ -453,8 +468,13 @@ class MediaPullModeProducerPullPacketResponseParams extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeStruct(packet, 8, false);
+    try {
+      encoder0.encodeStruct(packet, 8, false);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "packet of struct MediaPullModeProducerPullPacketResponseParams: $e";
+      rethrow;
+    }
   }
 
   String toString() {
@@ -523,8 +543,13 @@ class _MediaPullModeProducerReleasePacketParams extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeStruct(toRelease, 8, false);
+    try {
+      encoder0.encodeStruct(toRelease, 8, false);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "toRelease of struct _MediaPullModeProducerReleasePacketParams: $e";
+      rethrow;
+    }
   }
 
   String toString() {
@@ -597,10 +622,20 @@ class _MediaConsumerSetBufferParams extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeSharedBufferHandle(buffer, 8, false);
-    
-    encoder0.encodeUint64(size, 16);
+    try {
+      encoder0.encodeSharedBufferHandle(buffer, 8, false);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "buffer of struct _MediaConsumerSetBufferParams: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeUint64(size, 16);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "size of struct _MediaConsumerSetBufferParams: $e";
+      rethrow;
+    }
   }
 
   String toString() {
@@ -729,8 +764,13 @@ class _MediaConsumerPushPacketParams extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeStruct(packet, 8, false);
+    try {
+      encoder0.encodeStruct(packet, 8, false);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "packet of struct _MediaConsumerPushPacketParams: $e";
+      rethrow;
+    }
   }
 
   String toString() {

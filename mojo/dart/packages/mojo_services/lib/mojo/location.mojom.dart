@@ -123,32 +123,97 @@ class Location extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeUint64(time, 8);
-    
-    encoder0.encodeBool(hasElapsedRealTimeNanos, 16, 0);
-    
-    encoder0.encodeBool(hasAltitude, 16, 1);
-    
-    encoder0.encodeBool(hasSpeed, 16, 2);
-    
-    encoder0.encodeBool(hasBearing, 16, 3);
-    
-    encoder0.encodeBool(hasAccuracy, 16, 4);
-    
-    encoder0.encodeFloat(speed, 20);
-    
-    encoder0.encodeUint64(elapsedRealTimeNanos, 24);
-    
-    encoder0.encodeDouble(latitude, 32);
-    
-    encoder0.encodeDouble(longitude, 40);
-    
-    encoder0.encodeDouble(altitude, 48);
-    
-    encoder0.encodeFloat(bearing, 56);
-    
-    encoder0.encodeFloat(accuracy, 60);
+    try {
+      encoder0.encodeUint64(time, 8);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "time of struct Location: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeBool(hasElapsedRealTimeNanos, 16, 0);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "hasElapsedRealTimeNanos of struct Location: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeBool(hasAltitude, 16, 1);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "hasAltitude of struct Location: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeBool(hasSpeed, 16, 2);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "hasSpeed of struct Location: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeBool(hasBearing, 16, 3);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "hasBearing of struct Location: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeBool(hasAccuracy, 16, 4);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "hasAccuracy of struct Location: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeFloat(speed, 20);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "speed of struct Location: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeUint64(elapsedRealTimeNanos, 24);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "elapsedRealTimeNanos of struct Location: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeDouble(latitude, 32);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "latitude of struct Location: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeDouble(longitude, 40);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "longitude of struct Location: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeDouble(altitude, 48);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "altitude of struct Location: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeFloat(bearing, 56);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "bearing of struct Location: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeFloat(accuracy, 60);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "accuracy of struct Location: $e";
+      rethrow;
+    }
   }
 
   String toString() {

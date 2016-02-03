@@ -140,10 +140,20 @@ class Size extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeInt32(width, 8);
-    
-    encoder0.encodeInt32(height, 12);
+    try {
+      encoder0.encodeInt32(width, 8);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "width of struct Size: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeInt32(height, 12);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "height of struct Size: $e";
+      rethrow;
+    }
   }
 
   String toString() {
@@ -254,14 +264,34 @@ class Thing extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeEnum(shape, 8);
-    
-    encoder0.encodeEnum(color, 12);
-    
-    encoder0.encodeStruct(location, 16, false);
-    
-    encoder0.encodeStruct(size, 24, false);
+    try {
+      encoder0.encodeEnum(shape, 8);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "shape of struct Thing: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeEnum(color, 12);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "color of struct Thing: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeStruct(location, 16, false);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "location of struct Thing: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeStruct(size, 24, false);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "size of struct Thing: $e";
+      rethrow;
+    }
   }
 
   String toString() {

@@ -93,20 +93,55 @@ class MediaMetadata extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeUint64(duration, 8);
-    
-    encoder0.encodeString(title, 16, true);
-    
-    encoder0.encodeString(artist, 24, true);
-    
-    encoder0.encodeString(album, 32, true);
-    
-    encoder0.encodeString(publisher, 40, true);
-    
-    encoder0.encodeString(genre, 48, true);
-    
-    encoder0.encodeString(composer, 56, true);
+    try {
+      encoder0.encodeUint64(duration, 8);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "duration of struct MediaMetadata: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeString(title, 16, true);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "title of struct MediaMetadata: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeString(artist, 24, true);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "artist of struct MediaMetadata: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeString(album, 32, true);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "album of struct MediaMetadata: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeString(publisher, 40, true);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "publisher of struct MediaMetadata: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeString(genre, 48, true);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "genre of struct MediaMetadata: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeString(composer, 56, true);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "composer of struct MediaMetadata: $e";
+      rethrow;
+    }
   }
 
   String toString() {

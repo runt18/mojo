@@ -70,10 +70,20 @@ class _ViewProviderCreateViewParams extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeInterfaceRequest(services, 8, true);
-    
-    encoder0.encodeInterface(exposedServices, 12, true);
+    try {
+      encoder0.encodeInterfaceRequest(services, 8, true);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "services of struct _ViewProviderCreateViewParams: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeInterface(exposedServices, 12, true);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "exposedServices of struct _ViewProviderCreateViewParams: $e";
+      rethrow;
+    }
   }
 
   String toString() {
@@ -142,8 +152,13 @@ class ViewProviderCreateViewResponseParams extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeStruct(viewToken, 8, false);
+    try {
+      encoder0.encodeStruct(viewToken, 8, false);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "viewToken of struct ViewProviderCreateViewResponseParams: $e";
+      rethrow;
+    }
   }
 
   String toString() {

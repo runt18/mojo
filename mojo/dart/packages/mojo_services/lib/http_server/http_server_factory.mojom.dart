@@ -71,10 +71,20 @@ class _HttpServerFactoryCreateHttpServerParams extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeInterfaceRequest(serverRequest, 8, false);
-    
-    encoder0.encodeStruct(localAddress, 16, true);
+    try {
+      encoder0.encodeInterfaceRequest(serverRequest, 8, false);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "serverRequest of struct _HttpServerFactoryCreateHttpServerParams: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeStruct(localAddress, 16, true);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "localAddress of struct _HttpServerFactoryCreateHttpServerParams: $e";
+      rethrow;
+    }
   }
 
   String toString() {

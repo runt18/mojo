@@ -63,8 +63,13 @@ class _IcuDataMapParams extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeString(sha1hash, 8, false);
+    try {
+      encoder0.encodeString(sha1hash, 8, false);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "sha1hash of struct _IcuDataMapParams: $e";
+      rethrow;
+    }
   }
 
   String toString() {
@@ -132,8 +137,13 @@ class IcuDataMapResponseParams extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeSharedBufferHandle(icuData, 8, true);
+    try {
+      encoder0.encodeSharedBufferHandle(icuData, 8, true);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "icuData of struct IcuDataMapResponseParams: $e";
+      rethrow;
+    }
   }
 
   String toString() {

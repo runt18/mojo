@@ -74,10 +74,20 @@ class _CompositorCreateSceneParams extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeInterfaceRequest(scene, 8, false);
-    
-    encoder0.encodeString(label, 16, true);
+    try {
+      encoder0.encodeInterfaceRequest(scene, 8, false);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "scene of struct _CompositorCreateSceneParams: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeString(label, 16, true);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "label of struct _CompositorCreateSceneParams: $e";
+      rethrow;
+    }
   }
 
   String toString() {
@@ -146,8 +156,13 @@ class CompositorCreateSceneResponseParams extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeStruct(sceneToken, 8, false);
+    try {
+      encoder0.encodeStruct(sceneToken, 8, false);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "sceneToken of struct CompositorCreateSceneResponseParams: $e";
+      rethrow;
+    }
   }
 
   String toString() {
@@ -225,12 +240,27 @@ class _CompositorCreateRendererParams extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeInterface(contextProvider, 8, false);
-    
-    encoder0.encodeInterfaceRequest(renderer, 16, false);
-    
-    encoder0.encodeString(label, 24, true);
+    try {
+      encoder0.encodeInterface(contextProvider, 8, false);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "contextProvider of struct _CompositorCreateRendererParams: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeInterfaceRequest(renderer, 16, false);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "renderer of struct _CompositorCreateRendererParams: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeString(label, 24, true);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "label of struct _CompositorCreateRendererParams: $e";
+      rethrow;
+    }
   }
 
   String toString() {

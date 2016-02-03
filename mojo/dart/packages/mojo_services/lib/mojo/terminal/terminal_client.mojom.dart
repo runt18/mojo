@@ -64,8 +64,13 @@ class _TerminalClientConnectToTerminalParams extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeInterface(terminal, 8, false);
+    try {
+      encoder0.encodeInterface(terminal, 8, false);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "terminal of struct _TerminalClientConnectToTerminalParams: $e";
+      rethrow;
+    }
   }
 
   String toString() {

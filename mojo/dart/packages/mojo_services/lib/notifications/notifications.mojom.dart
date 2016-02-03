@@ -83,16 +83,41 @@ class NotificationData extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeString(title, 8, true);
-    
-    encoder0.encodeString(text, 16, true);
-    
-    encoder0.encodeBool(playSound, 24, 0);
-    
-    encoder0.encodeBool(vibrate, 24, 1);
-    
-    encoder0.encodeBool(setLights, 24, 2);
+    try {
+      encoder0.encodeString(title, 8, true);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "title of struct NotificationData: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeString(text, 16, true);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "text of struct NotificationData: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeBool(playSound, 24, 0);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "playSound of struct NotificationData: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeBool(vibrate, 24, 1);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "vibrate of struct NotificationData: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeBool(setLights, 24, 2);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "setLights of struct NotificationData: $e";
+      rethrow;
+    }
   }
 
   String toString() {
@@ -289,8 +314,13 @@ class _NotificationUpdateParams extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeStruct(notificationData, 8, false);
+    try {
+      encoder0.encodeStruct(notificationData, 8, false);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "notificationData of struct _NotificationUpdateParams: $e";
+      rethrow;
+    }
   }
 
   String toString() {
@@ -429,12 +459,27 @@ class _NotificationServicePostParams extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeStruct(notificationData, 8, false);
-    
-    encoder0.encodeInterface(client, 16, true);
-    
-    encoder0.encodeInterfaceRequest(notification, 24, true);
+    try {
+      encoder0.encodeStruct(notificationData, 8, false);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "notificationData of struct _NotificationServicePostParams: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeInterface(client, 16, true);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "client of struct _NotificationServicePostParams: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeInterfaceRequest(notification, 24, true);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "notification of struct _NotificationServicePostParams: $e";
+      rethrow;
+    }
   }
 
   String toString() {

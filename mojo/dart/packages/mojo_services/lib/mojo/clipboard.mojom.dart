@@ -67,8 +67,13 @@ class _ClipboardGetSequenceNumberParams extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeEnum(clipboardType, 8);
+    try {
+      encoder0.encodeEnum(clipboardType, 8);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "clipboardType of struct _ClipboardGetSequenceNumberParams: $e";
+      rethrow;
+    }
   }
 
   String toString() {
@@ -136,8 +141,13 @@ class ClipboardGetSequenceNumberResponseParams extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeUint64(sequence, 8);
+    try {
+      encoder0.encodeUint64(sequence, 8);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "sequence of struct ClipboardGetSequenceNumberResponseParams: $e";
+      rethrow;
+    }
   }
 
   String toString() {
@@ -209,8 +219,13 @@ class _ClipboardGetAvailableMimeTypesParams extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeEnum(clipboardTypes, 8);
+    try {
+      encoder0.encodeEnum(clipboardTypes, 8);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "clipboardTypes of struct _ClipboardGetAvailableMimeTypesParams: $e";
+      rethrow;
+    }
   }
 
   String toString() {
@@ -286,15 +301,19 @@ class ClipboardGetAvailableMimeTypesResponseParams extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    if (types == null) {
-      encoder0.encodeNullPointer(8, false);
-    } else {
-      var encoder1 = encoder0.encodePointerArray(types.length, 8, bindings.kUnspecifiedArrayLength);
-      for (int i0 = 0; i0 < types.length; ++i0) {
-        
-        encoder1.encodeString(types[i0], bindings.ArrayDataHeader.kHeaderSize + bindings.kPointerSize * i0, false);
+    try {
+      if (types == null) {
+        encoder0.encodeNullPointer(8, false);
+      } else {
+        var encoder1 = encoder0.encodePointerArray(types.length, 8, bindings.kUnspecifiedArrayLength);
+        for (int i0 = 0; i0 < types.length; ++i0) {
+          encoder1.encodeString(types[i0], bindings.ArrayDataHeader.kHeaderSize + bindings.kPointerSize * i0, false);
+        }
       }
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "types of struct ClipboardGetAvailableMimeTypesResponseParams: $e";
+      rethrow;
     }
   }
 
@@ -372,10 +391,20 @@ class _ClipboardReadMimeTypeParams extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeEnum(clipboardType, 8);
-    
-    encoder0.encodeString(mimeType, 16, false);
+    try {
+      encoder0.encodeEnum(clipboardType, 8);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "clipboardType of struct _ClipboardReadMimeTypeParams: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeString(mimeType, 16, false);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "mimeType of struct _ClipboardReadMimeTypeParams: $e";
+      rethrow;
+    }
   }
 
   String toString() {
@@ -445,8 +474,13 @@ class ClipboardReadMimeTypeResponseParams extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeUint8Array(data, 8, bindings.kArrayNullable, bindings.kUnspecifiedArrayLength);
+    try {
+      encoder0.encodeUint8Array(data, 8, bindings.kArrayNullable, bindings.kUnspecifiedArrayLength);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "data of struct ClipboardReadMimeTypeResponseParams: $e";
+      rethrow;
+    }
   }
 
   String toString() {
@@ -556,32 +590,40 @@ class _ClipboardWriteClipboardDataParams extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeEnum(clipboardType, 8);
-    
-    if (data == null) {
-      encoder0.encodeNullPointer(16, true);
-    } else {
-      var encoder1 = encoder0.encoderForMap(16);
-      int size0 = data.length;
-      var keys0 = data.keys.toList();
-      var values0 = data.values.toList();
-      
-      {
-        var encoder2 = encoder1.encodePointerArray(keys0.length, bindings.ArrayDataHeader.kHeaderSize, bindings.kUnspecifiedArrayLength);
-        for (int i1 = 0; i1 < keys0.length; ++i1) {
-          
-          encoder2.encodeString(keys0[i1], bindings.ArrayDataHeader.kHeaderSize + bindings.kPointerSize * i1, false);
+    try {
+      encoder0.encodeEnum(clipboardType, 8);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "clipboardType of struct _ClipboardWriteClipboardDataParams: $e";
+      rethrow;
+    }
+    try {
+      if (data == null) {
+        encoder0.encodeNullPointer(16, true);
+      } else {
+        var encoder1 = encoder0.encoderForMap(16);
+        int size0 = data.length;
+        var keys0 = data.keys.toList();
+        var values0 = data.values.toList();
+        
+        {
+          var encoder2 = encoder1.encodePointerArray(keys0.length, bindings.ArrayDataHeader.kHeaderSize, bindings.kUnspecifiedArrayLength);
+          for (int i1 = 0; i1 < keys0.length; ++i1) {
+            encoder2.encodeString(keys0[i1], bindings.ArrayDataHeader.kHeaderSize + bindings.kPointerSize * i1, false);
+          }
+        }
+        
+        {
+          var encoder2 = encoder1.encodePointerArray(values0.length, bindings.ArrayDataHeader.kHeaderSize + bindings.kPointerSize, bindings.kUnspecifiedArrayLength);
+          for (int i1 = 0; i1 < values0.length; ++i1) {
+            encoder2.encodeUint8Array(values0[i1], bindings.ArrayDataHeader.kHeaderSize + bindings.kPointerSize * i1, bindings.kNothingNullable, bindings.kUnspecifiedArrayLength);
+          }
         }
       }
-      
-      {
-        var encoder2 = encoder1.encodePointerArray(values0.length, bindings.ArrayDataHeader.kHeaderSize + bindings.kPointerSize, bindings.kUnspecifiedArrayLength);
-        for (int i1 = 0; i1 < values0.length; ++i1) {
-          
-          encoder2.encodeUint8Array(values0[i1], bindings.ArrayDataHeader.kHeaderSize + bindings.kPointerSize * i1, bindings.kNothingNullable, bindings.kUnspecifiedArrayLength);
-        }
-      }
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "data of struct _ClipboardWriteClipboardDataParams: $e";
+      rethrow;
     }
   }
 

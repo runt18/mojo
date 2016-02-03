@@ -66,8 +66,13 @@ class _HttpConnectionSetSendBufferSizeParams extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeUint32(size, 8);
+    try {
+      encoder0.encodeUint32(size, 8);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "size of struct _HttpConnectionSetSendBufferSizeParams: $e";
+      rethrow;
+    }
   }
 
   String toString() {
@@ -136,8 +141,13 @@ class HttpConnectionSetSendBufferSizeResponseParams extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeStruct(result, 8, false);
+    try {
+      encoder0.encodeStruct(result, 8, false);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "result of struct HttpConnectionSetSendBufferSizeResponseParams: $e";
+      rethrow;
+    }
   }
 
   String toString() {
@@ -205,8 +215,13 @@ class _HttpConnectionSetReceiveBufferSizeParams extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeUint32(size, 8);
+    try {
+      encoder0.encodeUint32(size, 8);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "size of struct _HttpConnectionSetReceiveBufferSizeParams: $e";
+      rethrow;
+    }
   }
 
   String toString() {
@@ -275,8 +290,13 @@ class HttpConnectionSetReceiveBufferSizeResponseParams extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeStruct(result, 8, false);
+    try {
+      encoder0.encodeStruct(result, 8, false);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "result of struct HttpConnectionSetReceiveBufferSizeResponseParams: $e";
+      rethrow;
+    }
   }
 
   String toString() {
@@ -345,8 +365,13 @@ class _HttpConnectionDelegateOnReceivedRequestParams extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeStruct(request, 8, false);
+    try {
+      encoder0.encodeStruct(request, 8, false);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "request of struct _HttpConnectionDelegateOnReceivedRequestParams: $e";
+      rethrow;
+    }
   }
 
   String toString() {
@@ -414,8 +439,13 @@ class HttpConnectionDelegateOnReceivedRequestResponseParams extends bindings.Str
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeStruct(response, 8, false);
+    try {
+      encoder0.encodeStruct(response, 8, false);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "response of struct HttpConnectionDelegateOnReceivedRequestResponseParams: $e";
+      rethrow;
+    }
   }
 
   String toString() {
@@ -483,8 +513,13 @@ class _HttpConnectionDelegateOnReceivedWebSocketRequestParams extends bindings.S
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeStruct(request, 8, false);
+    try {
+      encoder0.encodeStruct(request, 8, false);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "request of struct _HttpConnectionDelegateOnReceivedWebSocketRequestParams: $e";
+      rethrow;
+    }
   }
 
   String toString() {
@@ -561,12 +596,27 @@ class HttpConnectionDelegateOnReceivedWebSocketRequestResponseParams extends bin
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeInterfaceRequest(webSocket, 8, true);
-    
-    encoder0.encodeConsumerHandle(sendStream, 12, true);
-    
-    encoder0.encodeInterface(client, 16, true);
+    try {
+      encoder0.encodeInterfaceRequest(webSocket, 8, true);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "webSocket of struct HttpConnectionDelegateOnReceivedWebSocketRequestResponseParams: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeConsumerHandle(sendStream, 12, true);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "sendStream of struct HttpConnectionDelegateOnReceivedWebSocketRequestResponseParams: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeInterface(client, 16, true);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "client of struct HttpConnectionDelegateOnReceivedWebSocketRequestResponseParams: $e";
+      rethrow;
+    }
   }
 
   String toString() {

@@ -148,12 +148,27 @@ class Employee extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeUint64(employeeId, 8);
-    
-    encoder0.encodeString(name, 16, false);
-    
-    encoder0.encodeEnum(department, 24);
+    try {
+      encoder0.encodeUint64(employeeId, 8);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "employeeId of struct Employee: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeString(name, 16, false);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "name of struct Employee: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeEnum(department, 24);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "department of struct Employee: $e";
+      rethrow;
+    }
   }
 
   String toString() {
@@ -250,8 +265,13 @@ class _HumanResourceDatabaseAddEmployeeParams extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeStruct(employee, 8, false);
+    try {
+      encoder0.encodeStruct(employee, 8, false);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "employee of struct _HumanResourceDatabaseAddEmployeeParams: $e";
+      rethrow;
+    }
   }
 
   String toString() {
@@ -333,8 +353,13 @@ class HumanResourceDatabaseAddEmployeeResponseParams extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeBool(success, 8, 0);
+    try {
+      encoder0.encodeBool(success, 8, 0);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "success of struct HumanResourceDatabaseAddEmployeeResponseParams: $e";
+      rethrow;
+    }
   }
 
   String toString() {
@@ -419,10 +444,20 @@ class _HumanResourceDatabaseQueryEmployeeParams extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeUint64(id, 8);
-    
-    encoder0.encodeBool(retrieveFingerPrint, 16, 0);
+    try {
+      encoder0.encodeUint64(id, 8);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "id of struct _HumanResourceDatabaseQueryEmployeeParams: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeBool(retrieveFingerPrint, 16, 0);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "retrieveFingerPrint of struct _HumanResourceDatabaseQueryEmployeeParams: $e";
+      rethrow;
+    }
   }
 
   String toString() {
@@ -515,10 +550,20 @@ class HumanResourceDatabaseQueryEmployeeResponseParams extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeStruct(employee, 8, true);
-    
-    encoder0.encodeUint8Array(fingerPrint, 16, bindings.kArrayNullable, bindings.kUnspecifiedArrayLength);
+    try {
+      encoder0.encodeStruct(employee, 8, true);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "employee of struct HumanResourceDatabaseQueryEmployeeResponseParams: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeUint8Array(fingerPrint, 16, bindings.kArrayNullable, bindings.kUnspecifiedArrayLength);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "fingerPrint of struct HumanResourceDatabaseQueryEmployeeResponseParams: $e";
+      rethrow;
+    }
   }
 
   String toString() {
@@ -617,10 +662,20 @@ class _HumanResourceDatabaseAttachFingerPrintParams extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeUint64(id, 8);
-    
-    encoder0.encodeUint8Array(fingerPrint, 16, bindings.kNothingNullable, bindings.kUnspecifiedArrayLength);
+    try {
+      encoder0.encodeUint64(id, 8);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "id of struct _HumanResourceDatabaseAttachFingerPrintParams: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeUint8Array(fingerPrint, 16, bindings.kNothingNullable, bindings.kUnspecifiedArrayLength);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "fingerPrint of struct _HumanResourceDatabaseAttachFingerPrintParams: $e";
+      rethrow;
+    }
   }
 
   String toString() {
@@ -708,8 +763,13 @@ class HumanResourceDatabaseAttachFingerPrintResponseParams extends bindings.Stru
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeBool(success, 8, 0);
+    try {
+      encoder0.encodeBool(success, 8, 0);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "success of struct HumanResourceDatabaseAttachFingerPrintResponseParams: $e";
+      rethrow;
+    }
   }
 
   String toString() {
@@ -854,8 +914,13 @@ class HumanResourceDatabaseListEmployeeIdsResponseParams extends bindings.Struct
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeUint64Array(ids, 8, bindings.kArrayNullable, bindings.kUnspecifiedArrayLength);
+    try {
+      encoder0.encodeUint64Array(ids, 8, bindings.kArrayNullable, bindings.kUnspecifiedArrayLength);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "ids of struct HumanResourceDatabaseListEmployeeIdsResponseParams: $e";
+      rethrow;
+    }
   }
 
   String toString() {

@@ -70,10 +70,20 @@ class _HttpServerSetHandlerParams extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeString(pattern, 8, false);
-    
-    encoder0.encodeInterface(handler, 16, false);
+    try {
+      encoder0.encodeString(pattern, 8, false);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "pattern of struct _HttpServerSetHandlerParams: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeInterface(handler, 16, false);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "handler of struct _HttpServerSetHandlerParams: $e";
+      rethrow;
+    }
   }
 
   String toString() {
@@ -141,8 +151,13 @@ class HttpServerSetHandlerResponseParams extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeBool(success, 8, 0);
+    try {
+      encoder0.encodeBool(success, 8, 0);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "success of struct HttpServerSetHandlerResponseParams: $e";
+      rethrow;
+    }
   }
 
   String toString() {
@@ -270,8 +285,13 @@ class HttpServerGetPortResponseParams extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeUint16(port, 8);
+    try {
+      encoder0.encodeUint16(port, 8);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "port of struct HttpServerGetPortResponseParams: $e";
+      rethrow;
+    }
   }
 
   String toString() {
@@ -340,8 +360,13 @@ class _HttpHandlerHandleRequestParams extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeStruct(request, 8, false);
+    try {
+      encoder0.encodeStruct(request, 8, false);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "request of struct _HttpHandlerHandleRequestParams: $e";
+      rethrow;
+    }
   }
 
   String toString() {
@@ -409,8 +434,13 @@ class HttpHandlerHandleRequestResponseParams extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeStruct(response, 8, false);
+    try {
+      encoder0.encodeStruct(response, 8, false);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "response of struct HttpHandlerHandleRequestResponseParams: $e";
+      rethrow;
+    }
   }
 
   String toString() {

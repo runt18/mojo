@@ -64,8 +64,13 @@ class _EchoServiceEchoStringParams extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeString(value, 8, true);
+    try {
+      encoder0.encodeString(value, 8, true);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "value of struct _EchoServiceEchoStringParams: $e";
+      rethrow;
+    }
   }
 
   String toString() {
@@ -146,8 +151,13 @@ class EchoServiceEchoStringResponseParams extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeString(value, 8, true);
+    try {
+      encoder0.encodeString(value, 8, true);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "value of struct EchoServiceEchoStringResponseParams: $e";
+      rethrow;
+    }
   }
 
   String toString() {
@@ -233,10 +243,20 @@ class _EchoServiceDelayedEchoStringParams extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeString(value, 8, true);
-    
-    encoder0.encodeInt32(millis, 16);
+    try {
+      encoder0.encodeString(value, 8, true);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "value of struct _EchoServiceDelayedEchoStringParams: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeInt32(millis, 16);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "millis of struct _EchoServiceDelayedEchoStringParams: $e";
+      rethrow;
+    }
   }
 
   String toString() {
@@ -324,8 +344,13 @@ class EchoServiceDelayedEchoStringResponseParams extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeString(value, 8, true);
+    try {
+      encoder0.encodeString(value, 8, true);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "value of struct EchoServiceDelayedEchoStringResponseParams: $e";
+      rethrow;
+    }
   }
 
   String toString() {

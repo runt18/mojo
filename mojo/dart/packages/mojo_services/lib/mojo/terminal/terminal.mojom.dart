@@ -71,10 +71,20 @@ class _TerminalConnectParams extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeInterfaceRequest(terminalFile, 8, false);
-    
-    encoder0.encodeBool(force, 12, 0);
+    try {
+      encoder0.encodeInterfaceRequest(terminalFile, 8, false);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "terminalFile of struct _TerminalConnectParams: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeBool(force, 12, 0);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "force of struct _TerminalConnectParams: $e";
+      rethrow;
+    }
   }
 
   String toString() {
@@ -146,8 +156,13 @@ class TerminalConnectResponseParams extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeEnum(error, 8);
+    try {
+      encoder0.encodeEnum(error, 8);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "error of struct TerminalConnectResponseParams: $e";
+      rethrow;
+    }
   }
 
   String toString() {
@@ -220,10 +235,20 @@ class _TerminalConnectToClientParams extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeInterface(terminalClient, 8, false);
-    
-    encoder0.encodeBool(force, 16, 0);
+    try {
+      encoder0.encodeInterface(terminalClient, 8, false);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "terminalClient of struct _TerminalConnectToClientParams: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeBool(force, 16, 0);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "force of struct _TerminalConnectToClientParams: $e";
+      rethrow;
+    }
   }
 
   String toString() {
@@ -295,8 +320,13 @@ class TerminalConnectToClientResponseParams extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeEnum(error, 8);
+    try {
+      encoder0.encodeEnum(error, 8);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "error of struct TerminalConnectToClientResponseParams: $e";
+      rethrow;
+    }
   }
 
   String toString() {
@@ -438,12 +468,27 @@ class TerminalGetSizeResponseParams extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeEnum(error, 8);
-    
-    encoder0.encodeUint32(rows, 12);
-    
-    encoder0.encodeUint32(columns, 16);
+    try {
+      encoder0.encodeEnum(error, 8);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "error of struct TerminalGetSizeResponseParams: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeUint32(rows, 12);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "rows of struct TerminalGetSizeResponseParams: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeUint32(columns, 16);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "columns of struct TerminalGetSizeResponseParams: $e";
+      rethrow;
+    }
   }
 
   String toString() {
@@ -525,12 +570,27 @@ class _TerminalSetSizeParams extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeUint32(rows, 8);
-    
-    encoder0.encodeUint32(columns, 12);
-    
-    encoder0.encodeBool(reset, 16, 0);
+    try {
+      encoder0.encodeUint32(rows, 8);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "rows of struct _TerminalSetSizeParams: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeUint32(columns, 12);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "columns of struct _TerminalSetSizeParams: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeBool(reset, 16, 0);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "reset of struct _TerminalSetSizeParams: $e";
+      rethrow;
+    }
   }
 
   String toString() {
@@ -616,12 +676,27 @@ class TerminalSetSizeResponseParams extends bindings.Struct {
 
   void encode(bindings.Encoder encoder) {
     var encoder0 = encoder.getStructEncoderAtOffset(kVersions.last);
-    
-    encoder0.encodeEnum(error, 8);
-    
-    encoder0.encodeUint32(rows, 12);
-    
-    encoder0.encodeUint32(columns, 16);
+    try {
+      encoder0.encodeEnum(error, 8);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "error of struct TerminalSetSizeResponseParams: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeUint32(rows, 12);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "rows of struct TerminalSetSizeResponseParams: $e";
+      rethrow;
+    }
+    try {
+      encoder0.encodeUint32(columns, 16);
+    } on bindings.MojoCodecError catch(e) {
+      e.message = "Error encountered while encoding field "
+          "columns of struct TerminalSetSizeResponseParams: $e";
+      rethrow;
+    }
   }
 
   String toString() {
