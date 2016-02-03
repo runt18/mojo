@@ -1,0 +1,72 @@
+# Copyright 2016 The Chromium Authors. All rights reserved.
+# Use of this source code is governed by a BSD-style license that can be
+# found in the LICENSE file.
+
+import("//build/module_args/mojo.gni")
+import("$mojo_sdk_root/mojo/public/mojo_sdk.gni")
+
+source_set("framework") {
+  sources = [
+    "allocator.cc",
+    "allocator.h",
+    "conversion_pipeline_builder.cc",
+    "conversion_pipeline_builder.h",
+    "engine.cc",
+    "engine.h",
+    "formatting.cc",
+    "formatting.h",
+    "lpcm_util.cc",
+    "lpcm_util.h",
+    "metadata.cc",
+    "metadata.h",
+    "models/active_sink.h",
+    "models/active_source.h",
+    "models/demand.h",
+    "models/lpcm_frame_buffer.cc",
+    "models/lpcm_frame_buffer.h",
+    "models/lpcm_transform.h",
+    "models/multistream_packet_source.h",
+    "models/packet_transform.h",
+    "packet.cc",
+    "packet.h",
+    "parts/decoder.h",
+    "parts/demux.h",
+    "parts/file_reader.cc",
+    "parts/file_reader.h",
+    "parts/lpcm_reformatter.cc",
+    "parts/lpcm_reformatter.h",
+    "parts/null_sink.cc",
+    "parts/null_sink.h",
+    "parts/reader.cc",
+    "parts/reader.h",
+    "ptr.h",
+    "result.h",
+    "stages/active_sink_stage.cc",
+    "stages/active_sink_stage.h",
+    "stages/active_source_stage.cc",
+    "stages/active_source_stage.h",
+    "stages/distributor_stage.cc",
+    "stages/distributor_stage.h",
+    "stages/lpcm_stage_input.cc",
+    "stages/lpcm_stage_input.h",
+    "stages/lpcm_stage_output.cc",
+    "stages/lpcm_stage_output.h",
+    "stages/lpcm_transform_stage.cc",
+    "stages/lpcm_transform_stage.h",
+    "stages/packet_transform_stage.cc",
+    "stages/packet_transform_stage.h",
+    "stages/stage.cc",
+    "stages/stage.h",
+    "stages/stage_input.cc",
+    "stages/stage_input.h",
+    "stages/stage_output.cc",
+    "stages/stage_output.h",
+    "stream_type.cc",
+    "stream_type.h",
+  ]
+
+  deps = [
+    "//base",
+    "//url",
+  ]
+}
