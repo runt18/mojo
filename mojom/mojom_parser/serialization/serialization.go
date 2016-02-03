@@ -164,7 +164,7 @@ func translateUserDefinedType(t mojom.UserDefinedType) mojom_types.UserDefinedTy
 func translateMojomStruct(s *mojom.MojomStruct) mojom_types.MojomStruct {
 	mojomStruct := mojom_types.MojomStruct{}
 	mojomStruct.DeclData = translateDeclarationData(&s.DeclarationData)
-	mojomStruct.DeclData.ContainedDeclarations = translateContainedDeclarations(&s.DeclarationContainer)
+	mojomStruct.DeclData.ContainedDeclarations = translateContainedDeclarations(&s.NestedDeclarations)
 
 	for _, field := range s.Fields {
 		mojomStruct.Fields = append(mojomStruct.Fields, translateStructField(field))
@@ -206,7 +206,7 @@ func translateMojomInterface(intrfc *mojom.MojomInterface) *mojom_types.UserDefi
 	mojomInterface := mojom_types.UserDefinedTypeInterfaceType{}
 
 	mojomInterface.Value.DeclData = translateDeclarationData(&intrfc.DeclarationData)
-	mojomInterface.Value.DeclData.ContainedDeclarations = translateContainedDeclarations(&intrfc.DeclarationContainer)
+	mojomInterface.Value.DeclData.ContainedDeclarations = translateContainedDeclarations(&intrfc.NestedDeclarations)
 
 	// TODO(rudominer) The Interface name field need not be the name from the .mojom file.
 	mojomInterface.Value.InterfaceName = intrfc.SimpleName()
@@ -553,7 +553,7 @@ func translateDeclarationData(d *mojom.DeclarationData) *mojom_types.Declaration
 }
 
 // Returns nil if there are no contained declarations
-func translateContainedDeclarations(container *mojom.DeclarationContainer) *mojom_types.ContainedDeclarations {
+func translateContainedDeclarations(container *mojom.NestedDeclarations) *mojom_types.ContainedDeclarations {
 	if container.Enums == nil && container.Constants == nil {
 		return nil
 	}

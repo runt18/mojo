@@ -48,6 +48,7 @@ func (k UserDefinedTypeKind) String() string {
 // A DeclaredObject is anything that can be registered in a scope:
 // A UserDefinedType, a UserDefinedValue, a method or a struct field.
 type DeclaredObject interface {
+	Attributes() *Attributes
 	SimpleName() string
 	NameToken() lexer.Token
 	FullyQualifiedName() string
@@ -134,29 +135,41 @@ func (b UserDefinedTypeBase) Scope() *Scope {
 	return b.scope
 }
 
-// Some user-defined types, namely interfaces and structs, may act as
-// namespaced scopes for declarations of constants and enums.
-type DeclarationContainer struct {
-	containedScope *Scope
-	Enums          []*MojomEnum
-	Constants      []*UserDefinedConstant
-	// DeclaredObjects lists the objects in this container in order of occurrence
-	// in the source.
-	// It includes all declared objects (for example methods and fields) not just
-	// enums and constants.
+// DeclaredObjectsContainerBase holds a list of DeclaredObjects in order of
+// occurrence in the source.
+// It includes all declared objects (for example methods and fields) not just
+// enums and constants.
+type DeclaredObjectsContainerBase struct {
 	DeclaredObjects []DeclaredObject
 }
 
-// Adds an enum to the type associated with this DeclarationContainer,
+func (c DeclaredObjectsContainerBase) GetDeclaredObjects() []DeclaredObject {
+	return c.DeclaredObjects
+}
+
+type DeclaredObjectsContainer interface {
+	GetDeclaredObjects() []DeclaredObject
+}
+
+// Some user-defined types, namely interfaces and structs, may act as
+// namespaced scopes for declarations of constants and enums.
+type NestedDeclarations struct {
+	DeclaredObjectsContainerBase
+	containedScope *Scope
+	Enums          []*MojomEnum
+	Constants      []*UserDefinedConstant
+}
+
+// Adds an enum to the type associated with this NestedDeclarations,
 // which must be an interface or struct.
-func (c *DeclarationContainer) AddEnum(mojomEnum *MojomEnum) DuplicateNameError {
+func (c *NestedDeclarations) AddEnum(mojomEnum *MojomEnum) DuplicateNameError {
 	c.DeclaredObjects = append(c.DeclaredObjects, mojomEnum)
 	c.Enums = append(c.Enums, mojomEnum)
 	return mojomEnum.RegisterInScope(c.containedScope)
 }
 
 // Adds a declared constant to this type, which must be an interface or struct.
-func (c *DeclarationContainer) AddConstant(declaredConst *UserDefinedConstant) DuplicateNameError {
+func (c *NestedDeclarations) AddConstant(declaredConst *UserDefinedConstant) DuplicateNameError {
 	c.DeclaredObjects = append(c.DeclaredObjects, declaredConst)
 	c.Constants = append(c.Constants, declaredConst)
 	if declaredConst == nil {
@@ -186,7 +199,7 @@ const (
 
 type MojomStruct struct {
 	UserDefinedTypeBase
-	DeclarationContainer
+	NestedDeclarations
 
 	structType StructType
 
@@ -414,7 +427,7 @@ func (f StructField) String() string {
 
 type MojomInterface struct {
 	UserDefinedTypeBase
-	DeclarationContainer
+	NestedDeclarations
 
 	MethodsByOrdinal map[uint32]*MojomMethod
 
@@ -582,12 +595,10 @@ func (m *MojomMethod) KindString() string {
 /////////////////////////////////////////////////////////////
 type MojomUnion struct {
 	UserDefinedTypeBase
+	DeclaredObjectsContainerBase
 
 	fieldsByName map[string]*UnionField
 	Fields       []*UnionField
-	// DeclaredObjects is the list of union fields maintained in order of
-	// occurrence in the source.
-	DeclaredObjects []DeclaredObject
 }
 
 func NewMojomUnion(declData DeclarationData) *MojomUnion {
@@ -653,11 +664,10 @@ func (f *UnionField) KindString() string {
 /////////////////////////////////////////////////////////////
 type MojomEnum struct {
 	UserDefinedTypeBase
+	DeclaredObjectsContainerBase
 
-	Values []*EnumValue
-	// DeclaredObjects is the list of enum values in order of occurrence in the source.
-	DeclaredObjects []DeclaredObject
-	scopeForValues  *Scope
+	Values         []*EnumValue
+	scopeForValues *Scope
 }
 
 func NewMojomEnum(declData DeclarationData) *MojomEnum {
@@ -967,6 +977,11 @@ func (b BuiltInConstantValue) String() string {
 	default:
 		panic(fmt.Sprintf("Unknown BuiltInConstantValue %d", b))
 	}
+}
+
+// From interface DeclaredObject.
+func (b BuiltInConstantValue) Attributes() *Attributes {
+	panic("BuiltInConstantValue does not have Attributes.")
 }
 
 // From interface ConcreteValue
