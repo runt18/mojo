@@ -31,6 +31,9 @@ tests = [
     "cacheable": False,
   },
   {
+    "test": "mojo_public_c_bindings_unittests",
+  },
+  {
     "test": "mojo_public_environment_unittests",
   },
   {
