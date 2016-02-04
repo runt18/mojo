@@ -193,6 +193,7 @@ bool ParseEvents(base::ListValue* event_list, std::vector<Event>* result) {
     base::DictionaryValue* event_dict;
     if (!val->GetAsDictionary(&event_dict)) {
       LOG(WARNING) << "Ignoring incorrect trace event (not a dictionary)";
+      LOG(WARNING) << *event_dict;
       continue;
     }
 
@@ -201,6 +202,7 @@ bool ParseEvents(base::ListValue* event_list, std::vector<Event>* result) {
     std::string phase;
     if (!event_dict->GetString("ph", &phase)) {
       LOG(WARNING) << "Ignoring incorrect trace event (missing phase)";
+      LOG(WARNING) << *event_dict;
       continue;
     }
     if (phase == "X") {
@@ -214,6 +216,7 @@ bool ParseEvents(base::ListValue* event_list, std::vector<Event>* result) {
 
     if (!event_dict->GetString("name", &event.name)) {
       LOG(ERROR) << "Incorrect trace event (no name)";
+      LOG(ERROR) << *event_dict;
       return false;
     }
 
@@ -224,6 +227,7 @@ bool ParseEvents(base::ListValue* event_list, std::vector<Event>* result) {
     double timestamp;
     if (!event_dict->GetDouble("ts", &timestamp)) {
       LOG(WARNING) << "Ingoring incorrect trace event (no timestamp)";
+      LOG(WARNING) << *event_dict;
       continue;
     }
     event.timestamp = base::TimeTicks::FromInternalValue(timestamp);
@@ -232,6 +236,7 @@ bool ParseEvents(base::ListValue* event_list, std::vector<Event>* result) {
       double duration;
       if (!event_dict->GetDouble("dur", &duration)) {
         LOG(WARNING) << "Ignoring incorrect complete event (no duration)";
+        LOG(WARNING) << *event_dict;
         continue;
       }
 

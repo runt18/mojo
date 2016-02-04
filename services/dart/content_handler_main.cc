@@ -28,6 +28,7 @@
 namespace dart {
 
 const char kCompleteTimeline[] = "--complete-timeline";
+const char kDartTimeline[] = "--dart-timeline";
 const char kEnableStrictMode[] = "--enable-strict-mode";
 const char kDisableObservatory[] = "--disable-observatory";
 const char kTraceStartup[] = "--trace-startup";
@@ -139,10 +140,16 @@ class DartContentHandlerApp : public mojo::ApplicationDelegate {
       observatory_enabled = false;
     }
 
+    bool enable_dart_timeline = false;
+    if (app->HasArg(kDartTimeline)) {
+      enable_dart_timeline = true;
+    }
+
     bool success = mojo::dart::DartController::Initialize(
         service_connector_,
         default_strict_,
         observatory_enabled,
+        enable_dart_timeline,
         &timeline_arg,
         timeline_arg_count);
 

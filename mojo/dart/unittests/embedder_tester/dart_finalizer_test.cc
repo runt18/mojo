@@ -24,7 +24,7 @@ class DartFinalizerTest : public DartTest {
     const char* args[kNumArgs];
     args[0] = "--new-gen-semi-max-size=1";
     args[1] = "--old_gen_growth_rate=1";
-    DartController::Initialize(nullptr, true, false, args, kNumArgs);
+    DartController::Initialize(nullptr, true, false, false, args, kNumArgs);
   }
 
   void RunTest(const std::string& test) {

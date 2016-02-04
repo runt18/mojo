@@ -99,7 +99,8 @@ class DartController {
   // type checking enabled.
   static bool Initialize(DartControllerServiceConnector* service_connector,
                          bool strict_compilation,
-                         bool observatory_enabled,
+                         bool enable_observatory,
+                         bool enable_dart_timeline,
                          const char** extra_args,
                          int extra_args_count);
 
@@ -159,6 +160,7 @@ class DartController {
                                           bool use_dart_run_loop);
 
   static void InitVmIfNeeded(Dart_EntropySource entropy,
+                             bool enable_dart_timeline,
                              const char** arguments,
                              int arguments_count);
 
@@ -170,7 +172,7 @@ class DartController {
   static MojoHandle handle_watcher_producer_handle_;
   static bool initialized_;
   static bool strict_compilation_;
-  static bool observatory_enabled_;
+  static bool enable_observatory_;
   static bool service_isolate_running_;
   static bool service_isolate_spawned_;
   static DartControllerServiceConnector* service_connector_;

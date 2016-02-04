@@ -10,8 +10,12 @@
 namespace dart {
 
 void DartTimelineController::Enable(const mojo::String& categories) {
-  // TODO(johnmccutchan): Respect |categories|.
-  EnableAll();
+  if (categories == mojo::String("Dart")) {
+    Dart_GlobalTimelineSetRecordedStreams(DART_TIMELINE_STREAM_DART);
+  } else {
+    // TODO(johnmccutchan): Respect |categories|.
+    EnableAll();
+  }
 }
 
 void DartTimelineController::EnableAll() {

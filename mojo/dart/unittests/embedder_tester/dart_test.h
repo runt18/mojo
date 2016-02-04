@@ -22,7 +22,7 @@ class DartTest : public testing::Test {
   DartTest() {}
 
   static void SetUpTestCase() {
-    DartController::Initialize(nullptr, true, false, nullptr, 0);
+    DartController::Initialize(nullptr, true, false, false, nullptr, 0);
   }
 
   static void TearDownTestCase() {

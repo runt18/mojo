@@ -81,7 +81,7 @@ void TracingApp::StopAndFlush() {
   // support this directly we do our own MojoWaitMany over the handles and read
   // individual messages until all are closed or our absolute deadline has
   // elapsed.
-  static const MojoDeadline kTimeToWaitMicros = 5000 * 1000;
+  static const MojoDeadline kTimeToWaitMicros = 5 * 1000000;
   MojoTimeTicks end = MojoGetTimeTicksNow() + kTimeToWaitMicros;
 
   while (!recorder_impls_.empty()) {

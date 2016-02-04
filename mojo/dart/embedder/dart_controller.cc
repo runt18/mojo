@@ -352,7 +352,7 @@ Dart_Isolate DartController::CreateIsolateHelper(
     if (Dart_IsServiceIsolate(isolate)) {
       service_isolate_spawned_ = true;
       const intptr_t port =
-          (SupportDartMojoIo() && observatory_enabled_) ? 0 : -1;
+          (SupportDartMojoIo() && enable_observatory_) ? 0 : -1;
       InitializeDartMojoIo();
       if (!VmService::Setup("127.0.0.1", port)) {
         *error = strdup(VmService::GetErrorMessage());
@@ -513,7 +513,7 @@ MojoHandle DartController::handle_watcher_producer_handle_ =
 bool DartController::service_isolate_running_ = false;
 bool DartController::service_isolate_spawned_ = false;
 bool DartController::strict_compilation_ = false;
-bool DartController::observatory_enabled_ = true;
+bool DartController::enable_observatory_ = true;
 DartControllerServiceConnector* DartController::service_connector_ = nullptr;
 base::Lock DartController::lock_;
 
@@ -615,6 +615,7 @@ static Dart_Handle GetVMServiceAssetsArchiveCallback() {
 }
 
 void DartController::InitVmIfNeeded(Dart_EntropySource entropy,
+                                    bool enable_dart_timeline,
                                     const char** vm_flags,
                                     int vm_flags_count) {
   base::AutoLock al(lock_);
@@ -664,6 +665,9 @@ void DartController::InitVmIfNeeded(Dart_EntropySource entropy,
       GetVMServiceAssetsArchiveCallback);
   CHECK(error == nullptr);
   initialized_ = true;
+  if (enable_dart_timeline) {
+    Dart_GlobalTimelineSetRecordedStreams(DART_TIMELINE_STREAM_DART);
+  }
 }
 
 void DartController::BlockForServiceIsolate() {
@@ -689,13 +693,17 @@ static bool GenerateEntropy(uint8_t* buffer, intptr_t length) {
 bool DartController::Initialize(
     DartControllerServiceConnector* service_connector,
     bool strict_compilation,
-    bool observatory_enabled,
+    bool enable_observatory,
+    bool enable_dart_timeline,
     const char** extra_args,
     int extra_args_count) {
   service_connector_ = service_connector;
-  observatory_enabled_ = observatory_enabled;
+  enable_observatory_ = enable_observatory;
   strict_compilation_ = strict_compilation;
-  InitVmIfNeeded(GenerateEntropy, extra_args, extra_args_count);
+  InitVmIfNeeded(GenerateEntropy,
+                 enable_dart_timeline,
+                 extra_args,
+                 extra_args_count);
   return true;
 }
 

@@ -41,7 +41,7 @@ benchmarks = [
       {'name': '90th percentile ping', 'spec': 'percentile_duration/Dart/ping/0.90'},
     ],
     'shell-args': [
-      '--args-for=mojo:dart_content_handler --complete-timeline',
+      '--args-for=mojo:dart_content_handler --dart-timeline',
     ]
   },
   {
@@ -55,7 +55,7 @@ benchmarks = [
       {'name': '90th percentile ping', 'spec': 'percentile_duration/Dart/ping/0.90'},
     ],
     'shell-args': [
-      '--args-for=mojo:dart_content_handler --complete-timeline --run-on-message-loop',
+      '--args-for=mojo:dart_content_handler --dart-timeline --run-on-message-loop',
     ]
   },
   {
@@ -70,7 +70,7 @@ benchmarks = [
     ],
     'shell-args': [
       '--args-for=https://core.mojoapps.io/dart_rtt_benchmark.mojo --cpp-server',
-      '--args-for=mojo:dart_content_handler --complete-timeline',
+      '--args-for=mojo:dart_content_handler --dart-timeline',
     ]
   },
   {
@@ -85,7 +85,7 @@ benchmarks = [
     ],
     'shell-args': [
       '--args-for=https://core.mojoapps.io/dart_rtt_benchmark.mojo --cpp-server',
-      '--args-for=mojo:dart_content_handler --complete-timeline --run-on-message-loop',
+      '--args-for=mojo:dart_content_handler --dart-timeline --run-on-message-loop',
     ]
   },
   {
@@ -99,7 +99,7 @@ benchmarks = [
       {'name': '90th percentile ping', 'spec': 'percentile_duration/Dart/ping/0.90'},
     ],
     'shell-args': [
-      '--args-for=mojo:dart_content_handler --complete-timeline',
+      '--args-for=mojo:dart_content_handler --dart-timeline',
     ]
   },
   {
@@ -113,7 +113,7 @@ benchmarks = [
       {'name': '90th percentile ping', 'spec': 'percentile_duration/Dart/ping/0.90'},
     ],
     'shell-args': [
-      '--args-for=mojo:dart_content_handler --complete-timeline --run-on-message-loop',
+      '--args-for=mojo:dart_content_handler --dart-timeline --run-on-message-loop',
     ]
   },
   {
@@ -142,7 +142,7 @@ benchmarks = [
     ],
     'shell-args': [
       '--args-for=https://core.mojoapps.io/dart_rtt_benchmark.mojo --num-clients=100 --num-active-clients=100',
-      '--args-for=mojo:dart_content_handler --complete-timeline',
+      '--args-for=mojo:dart_content_handler --dart-timeline',
     ]
   },
   {
@@ -157,7 +157,7 @@ benchmarks = [
     ],
     'shell-args': [
       '--args-for=https://core.mojoapps.io/dart_rtt_benchmark.mojo --num-clients=100 --num-active-clients=100',
-      '--args-for=mojo:dart_content_handler --complete-timeline --run-on-message-loop',
+      '--args-for=mojo:dart_content_handler --dart-timeline --run-on-message-loop',
     ]
   },
   {
@@ -172,7 +172,7 @@ benchmarks = [
     ],
     'shell-args': [
       '--args-for=https://core.mojoapps.io/dart_rtt_benchmark.mojo --cpp-server --num-clients=100 --num-active-clients=100',
-      '--args-for=mojo:dart_content_handler --complete-timeline',
+      '--args-for=mojo:dart_content_handler --dart-timeline',
     ]
   },
   {
@@ -187,7 +187,7 @@ benchmarks = [
     ],
     'shell-args': [
       '--args-for=https://core.mojoapps.io/dart_rtt_benchmark.mojo --cpp-server --num-clients=100 --num-active-clients=100',
-      '--args-for=mojo:dart_content_handler --complete-timeline --run-on-message-loop',
+      '--args-for=mojo:dart_content_handler --dart-timeline --run-on-message-loop',
     ]
   },
 ]
