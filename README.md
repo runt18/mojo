@@ -1,9 +1,12 @@
 Mojo
 ====
 
-Mojo is an effort to extract a common platform out of Chrome's renderer and
-plugin processes that can support multiple types of sandboxed content, such as
-HTML, Pepper, or NaCl.
+Mojo is a collection of interprocess communication technologies, protocols
+and a runtime for creating applications and services that are composable while
+being loosely coupled. It simplifies the creation of fully asynchronous
+component-based systems and provides guarantees so that components made by
+different vendors and in different programming languages can interoperate.
+
 
 ## Set-up and code check-out
 
@@ -17,6 +20,7 @@ gclient command from depot_tools to manage most third party dependencies.
 2. [Googlers only] Install Goma in ~/goma.
 3. Create a directory somewhere for your checkout (preferably on an SSD), cd
    into it, and run the following commands:
+
 
 
 ```
