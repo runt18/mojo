@@ -78,7 +78,7 @@ void ChildProcessHost::Start(const NativeApplicationOptions& options) {
   // |channel_info_|, but only after the callback has been called.
   CHECK(channel_info_);
 
-  controller_.Bind(mojo::InterfacePtrInfo<ChildController>(handle.Pass(), 0u));
+  controller_.Bind(mojo::InterfaceHandle<ChildController>(handle.Pass(), 0u));
   controller_.set_connection_error_handler([this]() { OnConnectionError(); });
 
   CHECK(base::PostTaskAndReplyWithResult(

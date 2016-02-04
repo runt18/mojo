@@ -168,8 +168,8 @@ NoodlesView::RasterizerDelegate::RasterizerDelegate(
 NoodlesView::RasterizerDelegate::~RasterizerDelegate() {}
 
 void NoodlesView::RasterizerDelegate::CreateRasterizer(
-    mojo::InterfacePtrInfo<mojo::ApplicationConnector> connector_info,
-    mojo::InterfacePtrInfo<mojo::gfx::composition::Scene> scene_info) {
+    mojo::InterfaceHandle<mojo::ApplicationConnector> connector_info,
+    mojo::InterfaceHandle<mojo::gfx::composition::Scene> scene_info) {
   rasterizer_.reset(
       new Rasterizer(mojo::MakeProxy(connector_info.Pass()).Pass(),
                      mojo::MakeProxy(scene_info.Pass()).Pass()));

@@ -89,7 +89,7 @@ class ApplicationManager {
                                mojo::InterfacePtr<Interface>* ptr) {
     mojo::ScopedMessagePipeHandle service_handle =
         ConnectToServiceByName(application_url, Interface::Name_);
-    ptr->Bind(mojo::InterfacePtrInfo<Interface>(service_handle.Pass(), 0u));
+    ptr->Bind(mojo::InterfaceHandle<Interface>(service_handle.Pass(), 0u));
   }
 
   mojo::ScopedMessagePipeHandle ConnectToServiceByName(

@@ -36,7 +36,7 @@ class ShellTestBase : public testing::Test {
   template <typename Interface>
   void ConnectToService(const GURL& application_url,
                         mojo::InterfacePtr<Interface>* ptr) {
-    mojo::InterfacePtrInfo<Interface> interface(
+    mojo::InterfaceHandle<Interface> interface(
         ConnectToService(application_url, Interface::Name_).Pass(), 0u);
     ptr->Bind(interface.Pass());
   }

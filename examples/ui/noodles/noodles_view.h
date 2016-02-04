@@ -62,8 +62,8 @@ class NoodlesView : public mojo::ui::BaseView,
     ~RasterizerDelegate();
 
     void CreateRasterizer(
-        mojo::InterfacePtrInfo<mojo::ApplicationConnector> connector_info,
-        mojo::InterfacePtrInfo<mojo::gfx::composition::Scene> scene_info);
+        mojo::InterfaceHandle<mojo::ApplicationConnector> connector_info,
+        mojo::InterfaceHandle<mojo::gfx::composition::Scene> scene_info);
 
     void PublishNextFrame();
 

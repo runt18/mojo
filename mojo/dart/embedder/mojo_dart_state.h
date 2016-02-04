@@ -66,8 +66,8 @@ class MojoDartState : public tonic::DartState {
     DCHECK(!network_service_.is_bound());
     MessagePipeHandle handle(raw_handle);
     ScopedMessagePipeHandle message_pipe(handle);
-    InterfacePtrInfo<mojo::NetworkService> interface_info(message_pipe.Pass(),
-                                                          0);
+    InterfaceHandle<mojo::NetworkService> interface_info(message_pipe.Pass(),
+                                                         0);
     network_service_.Bind(interface_info.Pass());
     DCHECK(network_service_.is_bound());
   }

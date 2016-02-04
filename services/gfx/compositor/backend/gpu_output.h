@@ -62,7 +62,7 @@ class GpuOutput : public Output {
     ~RasterizerDelegate();
 
     void CreateRasterizer(
-        mojo::InterfacePtrInfo<mojo::ContextProvider> context_provider_info,
+        mojo::InterfaceHandle<mojo::ContextProvider> context_provider_info,
         const std::shared_ptr<VsyncScheduler>& scheduler,
         const scoped_refptr<base::TaskRunner>& task_runner,
         const base::Closure& error_callback);

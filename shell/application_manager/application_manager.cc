@@ -68,7 +68,7 @@ class ApplicationManager::ContentHandlerConnection {
                                   base::Closure());
     mojo::MessagePipe pipe;
     content_handler_.Bind(
-        mojo::InterfacePtrInfo<mojo::ContentHandler>(pipe.handle0.Pass(), 0u));
+        mojo::InterfaceHandle<mojo::ContentHandler>(pipe.handle0.Pass(), 0u));
     services->ConnectToService(mojo::ContentHandler::Name_,
                                pipe.handle1.Pass());
     content_handler_.set_connection_error_handler(

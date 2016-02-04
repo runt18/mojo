@@ -47,7 +47,7 @@ class DemoTask {
 
   void Run() {
     integer_service_.Bind(
-        InterfacePtrInfo<IntegerService>(proxy_handle_.Pass(), 0u));
+        InterfaceHandle<IntegerService>(proxy_handle_.Pass(), 0u));
     base::Callback<void(int32_t)> callback =
         base::Bind(&DemoTask::SaveResultAndFinish, base::Unretained(this));
     for(int unsigned i = 0; i < iteration_count_; i++) {

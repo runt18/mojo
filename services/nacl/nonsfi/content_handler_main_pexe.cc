@@ -28,8 +28,8 @@ namespace {
 class CompilerUI {
  public:
   explicit CompilerUI(mojo::ScopedMessagePipeHandle handle) {
-    compiler_.Bind(mojo::InterfacePtrInfo<mojo::nacl::PexeCompiler>(
-        handle.Pass(), 0u));
+    compiler_.Bind(
+        mojo::InterfaceHandle<mojo::nacl::PexeCompiler>(handle.Pass(), 0u));
   }
 
   // Synchronous method to compile pexe into object file.
@@ -50,8 +50,8 @@ class CompilerUI {
 class LinkerUI {
  public:
   explicit LinkerUI(mojo::ScopedMessagePipeHandle handle) {
-    linker_.Bind(mojo::InterfacePtrInfo<mojo::nacl::PexeLinker>(
-        handle.Pass(), 0u));
+    linker_.Bind(
+        mojo::InterfaceHandle<mojo::nacl::PexeLinker>(handle.Pass(), 0u));
   }
 
   // Synchronous method to link object file into nexe.

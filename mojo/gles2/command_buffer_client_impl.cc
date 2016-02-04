@@ -121,10 +121,9 @@ CommandBufferClientImpl::CommandBufferClientImpl(
       last_put_offset_(-1),
       next_transfer_buffer_id_(0),
       async_waiter_(async_waiter) {
-  command_buffer_.Bind(
-      mojo::InterfacePtrInfo<mojo::CommandBuffer>(command_buffer_handle.Pass(),
-                                                  0u),
-      async_waiter);
+  command_buffer_.Bind(mojo::InterfaceHandle<mojo::CommandBuffer>(
+                           command_buffer_handle.Pass(), 0u),
+                       async_waiter);
   command_buffer_.set_connection_error_handler(
       [this]() { DidLoseContext(gpu::error::kUnknown); });
 }

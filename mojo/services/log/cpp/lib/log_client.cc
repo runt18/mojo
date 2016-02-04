@@ -10,7 +10,7 @@
 #include <utility>
 
 #include "mojo/public/c/environment/logger.h"
-#include "mojo/public/cpp/bindings/interface_ptr_info.h"
+#include "mojo/public/cpp/bindings/interface_handle.h"
 #include "mojo/public/cpp/bindings/lib/message_builder.h"
 #include "mojo/public/cpp/system/macros.h"
 #include "mojo/public/cpp/system/message_pipe.h"
@@ -48,7 +48,7 @@ class LogClient {
   void SetMinimumLogLevel(MojoLogLevel level);
 
  private:
-  const InterfacePtrInfo<mojo::log::Log> log_interface_;
+  const InterfaceHandle<mojo::log::Log> log_interface_;
   const MojoLogger* const fallback_logger_;
 
   MOJO_DISALLOW_COPY_AND_ASSIGN(LogClient);
