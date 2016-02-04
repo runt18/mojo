@@ -7,6 +7,7 @@
 #include <math.h>
 
 #include <cstdlib>
+#include <utility>
 
 #include "base/bind.h"
 #include "base/logging.h"
@@ -170,9 +171,9 @@ NoodlesView::RasterizerDelegate::~RasterizerDelegate() {}
 void NoodlesView::RasterizerDelegate::CreateRasterizer(
     mojo::InterfaceHandle<mojo::ApplicationConnector> connector_info,
     mojo::InterfaceHandle<mojo::gfx::composition::Scene> scene_info) {
-  rasterizer_.reset(
-      new Rasterizer(mojo::MakeProxy(connector_info.Pass()).Pass(),
-                     mojo::MakeProxy(scene_info.Pass()).Pass()));
+  rasterizer_.reset(new Rasterizer(
+      mojo::ApplicationConnectorPtr::Create(std::move(connector_info)),
+      mojo::gfx::composition::ScenePtr::Create(std::move(scene_info))));
 }
 
 void NoodlesView::RasterizerDelegate::PublishNextFrame() {

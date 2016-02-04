@@ -16,7 +16,8 @@ GaneshView::GaneshView(
     const std::string& label,
     const mojo::ui::ViewProvider::CreateViewCallback& create_view_callback)
     : BaseView(app_impl, label, create_view_callback),
-      gl_context_owner_(mojo::MakeProxy(app_impl->CreateApplicationConnector())
+      gl_context_owner_(mojo::ApplicationConnectorPtr::Create(
+                            app_impl->CreateApplicationConnector())
                             .get()),
       ganesh_context_(gl_context()),
       ganesh_renderer_(&ganesh_context_) {}

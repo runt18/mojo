@@ -26,7 +26,8 @@ class GLRendererTest : public mojo::test::ApplicationTestBase {
   void SetUp() override {
     mojo::test::ApplicationTestBase::SetUp();
     gl_context_ = mojo::GLContext::CreateOffscreen(
-        mojo::MakeProxy(application_impl()->CreateApplicationConnector())
+        mojo::ApplicationConnectorPtr::Create(
+            application_impl()->CreateApplicationConnector())
             .get());
     quit_message_loop_callback_ = base::Bind(
         &GLRendererTest::QuitMessageLoopCallback, weak_factory_.GetWeakPtr());

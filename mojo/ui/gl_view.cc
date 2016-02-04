@@ -14,7 +14,8 @@ GLView::GLView(
     const std::string& label,
     const mojo::ui::ViewProvider::CreateViewCallback& create_view_callback)
     : BaseView(app_impl, label, create_view_callback),
-      gl_context_owner_(mojo::MakeProxy(app_impl->CreateApplicationConnector())
+      gl_context_owner_(ApplicationConnectorPtr::Create(
+                            app_impl->CreateApplicationConnector())
                             .get()),
       gl_renderer_(gl_context_owner_.context()) {}
 

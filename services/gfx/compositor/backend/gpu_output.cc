@@ -4,6 +4,8 @@
 
 #include "services/gfx/compositor/backend/gpu_output.h"
 
+#include <utility>
+
 #include "base/bind.h"
 #include "base/location.h"
 #include "base/logging.h"
@@ -95,9 +97,9 @@ void GpuOutput::RasterizerDelegate::CreateRasterizer(
     const std::shared_ptr<VsyncScheduler>& scheduler,
     const scoped_refptr<base::TaskRunner>& task_runner,
     const base::Closure& error_callback) {
-  rasterizer_.reset(
-      new GpuRasterizer(mojo::MakeProxy(context_provider_info.Pass()).Pass(),
-                        scheduler, task_runner, error_callback));
+  rasterizer_.reset(new GpuRasterizer(
+      mojo::ContextProviderPtr::Create(std::move(context_provider_info)),
+      scheduler, task_runner, error_callback));
 }
 
 void GpuOutput::RasterizerDelegate::SubmitNextFrame() {
