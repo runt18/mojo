@@ -1083,3 +1083,312 @@ func TestSingleFileResolutionSuccess(t *testing.T) {
 		}
 	}
 }
+
+////////////////////////////////////////////////
+/// TestFindReachableTypes
+////////////////////////////////////////////////
+
+// typeGraphTestCase stores the data for one test case.
+type typeGraphTestCase struct {
+	mojomContents          string
+	typeToSearch           string
+	expectedReachableTypes []string
+}
+
+// typeGraphTest contains a series of test cases.
+type typeGraphTest struct {
+	cases []typeGraphTestCase
+}
+
+// addTestCase() should be invoked at the start of a case in TestFindReachableTypes.
+func (test *typeGraphTest) addTestCase(contents, typeToSearch string, expectedReachableTypes []string) {
+	test.cases = append(test.cases, typeGraphTestCase{contents, typeToSearch, expectedReachableTypes})
+}
+
+// TestFindReachableTypes() iterates through a series of test cases.
+// For each case we expect for parsing and resolution to succeed. Then we
+// invoke FindReachableTypes() on |typeToSearch| and compare the result
+// to |expectedReachableTypes|.
+func TestFindReachableTypes(t *testing.T) {
+	test := typeGraphTest{}
+
+	////////////////////////////////////////////////////////////
+	// Test Case
+	////////////////////////////////////////////////////////////
+	{
+		contents := `
+	struct Struct1{
+	};
+
+	struct Struct2{
+		Struct1 x;
+	};
+
+    struct Struct3{
+		Struct2 x;
+	};
+
+	struct Struct4{
+		Struct3 x;
+	};
+
+	union Union1 {
+		Struct3 x;
+		Struct2 y;
+	};
+
+	union Union2 {
+		Struct2 x;
+	};
+	`
+		test.addTestCase(contents,
+			"Struct4",
+			[]string{"Struct1", "Struct2", "Struct3", "Struct4"},
+		)
+
+		test.addTestCase(contents,
+			"Union1",
+			[]string{"Union1", "Struct1", "Struct2", "Struct3"},
+		)
+
+		test.addTestCase(contents,
+			"Union2",
+			[]string{"Union2", "Struct1", "Struct2"},
+		)
+	}
+
+	////////////////////////////////////////////////////////////
+	// Test Case
+	////////////////////////////////////////////////////////////
+	{
+		contents := `
+	   	struct Struct1{
+	   		Struct4 x;
+	   	};
+
+	   	struct Struct2{
+	   		Struct1 x;
+	   	};
+
+	    struct Struct3{
+	   		Struct2 x;
+	   	};
+
+	   	struct Struct4{
+	   		Struct3 x;
+	   	};
+
+	   	union Union1 {
+	   		Struct2 x;
+	   	};
+	   	`
+
+		test.addTestCase(contents,
+			"Union1",
+			[]string{"Union1", "Struct1", "Struct2", "Struct3", "Struct4"},
+		)
+	}
+
+	////////////////////////////////////////////////////////////
+	// Test Cases
+	////////////////////////////////////////////////////////////
+	{
+		contents := `
+
+		enum Height {
+			SHORT, TALL
+		};
+
+		struct Struct1{
+		  enum Color {
+			RED, BLUE
+		  };
+		};
+
+		struct Struct2{
+			const Struct1.Color FAVORITE = RED;
+		};
+		`
+
+		test.addTestCase(contents,
+			"Struct1",
+			[]string{"Struct1", "Struct1.Color"},
+		)
+
+		test.addTestCase(contents,
+			"Struct2",
+			[]string{"Struct2", "Struct1.Color"},
+		)
+	}
+
+	////////////////////////////////////////////////////////////
+	// Test Cases
+	////////////////////////////////////////////////////////////
+	{
+		contents := `
+		enum Color {
+			RED, BLUE
+		};
+
+		enum Height {
+			SHORT, TALL
+		};
+
+		struct Struct1{};
+		struct Struct2{};
+
+		interface Interface1 {
+			const Color FAVORITE_COLOR = RED;
+
+			Foo(int32 x) => (string y);
+		};
+
+		interface Interface2 {
+			Foo(int32 x) => (Struct1 y);
+		};
+		`
+
+		test.addTestCase(contents,
+			"Interface1",
+			[]string{"Interface1", "Color"},
+		)
+
+		test.addTestCase(contents,
+			"Interface2",
+			[]string{"Interface2", "Struct1"},
+		)
+	}
+
+	////////////////////////////////////////////////////////////
+	// Test Cases
+	////////////////////////////////////////////////////////////
+
+	{
+		contents := `
+		enum Color {
+			RED, BLUE
+		};
+
+		enum Height {
+			SHORT, TALL
+		};
+
+		struct Struct1{};
+		struct Struct2{};
+
+		interface Interface1 {
+			const Color FAVORITE_COLOR = RED;
+
+			Foo(map<Height, int8> x) => (string y);
+		};
+
+		interface Interface2 {
+			Foo(int32 x) => (array<Struct1?> y);
+		};
+		`
+
+		test.addTestCase(contents,
+			"Interface1",
+			[]string{"Interface1", "Color", "Height"},
+		)
+
+		test.addTestCase(contents,
+			"Interface2",
+			[]string{"Interface2", "Struct1"},
+		)
+	}
+
+	////////////////////////////////////////////////////////////
+	// Test Cases
+	////////////////////////////////////////////////////////////
+
+	{
+		contents := `
+		enum Color {
+			RED, BLUE
+		};
+
+		enum Height {
+			SHORT, TALL
+		};
+
+		struct Struct1{};
+		struct Struct2{};
+
+		interface Interface1 {
+			const Color FAVORITE_COLOR = RED;
+
+			Foo(int32 x) => (string y);
+			Bar(map<string, Height> z) => ();
+		};
+
+		interface Interface2 {
+			Foo(int32 x) => (map<Height, Struct1?> y);
+		};
+		`
+
+		test.addTestCase(contents,
+			"Interface1",
+			[]string{"Interface1", "Color", "Height"},
+		)
+
+		test.addTestCase(contents,
+			"Interface2",
+			[]string{"Interface2", "Height", "Struct1"},
+		)
+	}
+
+	////////////////////////////////////////////////////////////
+	// Execute all of the test cases.
+	////////////////////////////////////////////////////////////
+	for i, c := range test.cases {
+		// Parse and resolve the mojom input.
+		descriptor := mojom.NewMojomDescriptor()
+		fileName := fmt.Sprintf("file%d", i)
+		parser := MakeParser(fileName, fileName, c.mojomContents, descriptor, nil)
+		parser.Parse()
+		if !parser.OK() {
+			t.Errorf("Parsing error for %s: %s", fileName, parser.GetError().Error())
+			continue
+		}
+		err := descriptor.Resolve()
+		if err != nil {
+			t.Errorf("Resolution failed for test case %d: %s", i, err.Error())
+			continue
+		}
+
+		userDefinedType := descriptor.TypesByKey[mojom.ComputeTypeKey(c.typeToSearch)]
+		result := userDefinedType.FindReachableTypes()
+		if err := compareTypeSets(descriptor, c.expectedReachableTypes, result); err != nil {
+			t.Errorf("Case %d, unexpected typeset for %s: %s\n", i, c.typeToSearch, err.Error())
+			continue
+		}
+	}
+}
+
+func compareTypeSets(descriptor *mojom.MojomDescriptor, expectedTypeNames, actualTypeKeys []string) error {
+	expectedSet := userDefinedTypeSet(descriptor, expectedTypeNames, false)
+	actualSet := userDefinedTypeSet(descriptor, actualTypeKeys, true)
+	return expectedSet.Compare(&actualSet)
+}
+
+func userDefinedTypeSet(descriptor *mojom.MojomDescriptor, types []string, typesAreKeys bool) mojom.UserDefinedTypeSet {
+	typeSet := mojom.MakeUserDefinedTypeSet()
+	for _, t := range types {
+		if t == "" {
+			panic("Found empty type in types array.")
+		}
+		var typeKey string
+		if typesAreKeys {
+			typeKey = t
+		} else {
+			typeKey = mojom.ComputeTypeKey(t)
+		}
+		userDefinedType := descriptor.TypesByKey[typeKey]
+		if userDefinedType == nil {
+			panic(fmt.Sprintf("No type found for: %s", t))
+		}
+		typeSet.Add(userDefinedType)
+	}
+	return typeSet
+}

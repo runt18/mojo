@@ -725,7 +725,7 @@ Files:
 /// Miscelleneous utilities
 /// //////////////////////////////////////////////////////////////////
 
-func computeTypeKey(fullyQualifiedName string) (typeKey string) {
+func ComputeTypeKey(fullyQualifiedName string) (typeKey string) {
 	if typeKey, ok := fqnToTypeKey[fullyQualifiedName]; ok == true {
 		return typeKey
 	}

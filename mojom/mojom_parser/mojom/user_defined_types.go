@@ -68,9 +68,15 @@ func FullLocationString(o DeclaredObject) string {
 /////////////////////////////////////////////////////////////
 type UserDefinedType interface {
 	DeclaredObject
+	DeclaredObjectsContainer
 	Kind() UserDefinedTypeKind
 	TypeKey() string
 	IsAssignmentCompatibleWith(value LiteralValue) bool
+
+	// FindReachableTypes returns the list of type keys of all UserDefinedTypes that are
+	// reachable from this UserDefinedType. This method must only be invoked
+	// after type resolution has succeeded.
+	FindReachableTypes() []string
 }
 
 // This struct is embedded in each of MojomStruct, MojomInterface
@@ -79,6 +85,109 @@ type UserDefinedTypeBase struct {
 	DeclarationData
 	thisType UserDefinedType
 	typeKey  string
+}
+
+// UserDefinedTypeSet is a set of UserDefinedTypes
+type UserDefinedTypeSet map[UserDefinedType]bool
+
+func MakeUserDefinedTypeSet() UserDefinedTypeSet {
+	return make(map[UserDefinedType]bool)
+}
+
+func (s *UserDefinedTypeSet) Add(t UserDefinedType) {
+	(*s)[t] = true
+}
+
+func (s *UserDefinedTypeSet) AddAll(s2 UserDefinedTypeSet) {
+	for t, _ := range s2 {
+		(*s)[t] = true
+	}
+}
+
+func (s *UserDefinedTypeSet) Contains(t UserDefinedType) bool {
+	_, ok := (*s)[t]
+	return ok
+}
+
+// Compare is used in tests. It returns
+// a non-nil error in case expected is not equal to actual.
+func (expected *UserDefinedTypeSet) Compare(actual *UserDefinedTypeSet) error {
+	for n, _ := range *expected {
+		if n == nil {
+			panic("expected contains a nil.")
+		}
+		if !actual.Contains(n) {
+			return fmt.Errorf("%s is in expected but not actual", n.TypeKey())
+		}
+	}
+	for n, _ := range *actual {
+		if n == nil {
+			panic("actual contains a nil.")
+		}
+		if !expected.Contains(n) {
+			return fmt.Errorf("%s is in actual but not expected", n.TypeKey())
+		}
+	}
+	return nil
+}
+
+// See UserDefinedType interface.
+func (b *UserDefinedTypeBase) FindReachableTypes() []string {
+	reachableSet := MakeUserDefinedTypeSet()
+	findReachableTypes(b.thisType, reachableSet)
+	typeKeys := make([]string, len(reachableSet))
+	i := 0
+	for t, _ := range reachableSet {
+		typeKeys[i] = t.TypeKey()
+		if typeKeys[i] == "" {
+			panic(fmt.Sprintf("Empty typeKey for %v", t))
+		}
+		i++
+	}
+	return typeKeys
+}
+
+// findReachableTypes is a recursive helper function for FindReachableTypes.
+// It performs a depth-first search through the type graph while populating
+// |reachableSet| with the UserDefinedTypes encountered during the search.
+func findReachableTypes(udt UserDefinedType, reachableSet UserDefinedTypeSet) {
+	if reachableSet.Contains(udt) {
+		return
+	}
+	// Synthetic request and response structs should not actually be added
+	// to the reachable set.
+	if strct, ok := udt.(*MojomStruct); !ok || strct.structType == StructTypeRegular {
+		reachableSet.Add(udt)
+	}
+	for _, object := range udt.GetDeclaredObjects() {
+		switch object := object.(type) {
+		case *MojomEnum:
+			// There is an edge in the type graph from this struct or interface
+			// type to a contained Enum.
+			findReachableTypes(object, reachableSet)
+		case *UserDefinedConstant:
+			// There is an edge in the type graph from this struct or interface
+			// type to the type of a contained constant.
+			for t, _ := range object.DeclaredType().ReferencedUserDefinedTypes() {
+				findReachableTypes(t, reachableSet)
+			}
+		case *StructField:
+			// There is an edge in the type graph from this struct type to the type of a field.
+			for t, _ := range object.FieldType.ReferencedUserDefinedTypes() {
+				findReachableTypes(t, reachableSet)
+			}
+		case *UnionField:
+			// There is an edge in the type graph from this union type to the type of a field.
+			for t, _ := range object.FieldType.ReferencedUserDefinedTypes() {
+				findReachableTypes(t, reachableSet)
+			}
+		case *MojomMethod:
+			// There is an edge in the type graph from this interface type to
+			// the type of a request or response parameter.
+			findReachableTypes(object.Parameters, reachableSet)
+			findReachableTypes(object.ResponseParameters, reachableSet)
+		}
+	}
 }
 
 // This method is invoked from the constructors for the containing types:
@@ -114,7 +223,7 @@ func (b *UserDefinedTypeBase) RegisterInScope(scope *Scope) DuplicateNameError {
 	}
 
 	b.fullyQualifiedName = buildDottedName(scope.fullyQualifiedName, b.simpleName)
-	b.typeKey = computeTypeKey(b.fullyQualifiedName)
+	b.typeKey = ComputeTypeKey(b.fullyQualifiedName)
 	scope.descriptor.TypesByKey[b.typeKey] = b.thisType
 	return nil
 }
@@ -827,7 +936,7 @@ func (v *UserDefinedValueBase) RegisterInScope(scope *Scope) DuplicateNameError 
 	}
 
 	v.fullyQualifiedName = buildDottedName(scope.fullyQualifiedName, v.simpleName)
-	v.valueKey = computeTypeKey(v.fullyQualifiedName)
+	v.valueKey = ComputeTypeKey(v.fullyQualifiedName)
 	scope.file.Descriptor.ValuesByKey[v.valueKey] = v.thisValue
 	return nil
 }
