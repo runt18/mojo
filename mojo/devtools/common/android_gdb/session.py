@@ -81,7 +81,7 @@ class DebugSession(object):
     self._adb = adb
     self._remote_file_cache = os.path.join(os.getenv('HOME'), '.mojosymbols')
 
-    if pyelftools_dir != None:
+    if pyelftools_dir is not None:
       sys.path.append(pyelftools_dir)
     try:
       import elftools.elf.elffile as elffile
@@ -109,7 +109,7 @@ class DebugSession(object):
     self.stop()
 
   def stop(self, _unused_return_value=None):
-    if self._remote_file_reader_process != None:
+    if self._remote_file_reader_process is not None:
       self._remote_file_reader_process.kill()
 
   def _find_libraries(self, lib_dirs):

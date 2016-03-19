@@ -105,7 +105,7 @@ def gatherFrames(node, source_dir):
     frames += [frame_dict]
 
     global TheAddressTable
-    if TheAddressTable != None and frame_dict[SRC_LINE] == "":
+    if TheAddressTable is not None and frame_dict[SRC_LINE] == "":
       # Try using gdb
       TheAddressTable.Add(frame_dict[OBJECT_FILE],
                           frame_dict[INSTRUCTION_POINTER])
@@ -219,7 +219,7 @@ class ValgrindError:
         description = None
         stack = None
         frames = None
-      elif description and node.localName != None:
+      elif description and node.localName is not None:
         # The lastest description has no stack, e.g. "Address 0x28 is unknown"
         self._additional.append(description)
         description = None
@@ -257,11 +257,11 @@ class ValgrindError:
         i = i + 1
 
         global TheAddressTable
-        if TheAddressTable != None and frame[SRC_FILE_DIR] == "":
+        if TheAddressTable is not None and frame[SRC_FILE_DIR] == "":
            # Try using gdb
            foo = TheAddressTable.GetFileLine(frame[OBJECT_FILE],
                                              frame[INSTRUCTION_POINTER])
-           if foo[0] != None:
+           if foo[0] is not None:
              output += (" (" + foo[0] + ":" + foo[1] + ")")
         elif frame[SRC_FILE_DIR] != "":
           output += (" (" + frame[SRC_FILE_DIR] + "/" + frame[SRC_FILE_NAME] +
@@ -273,7 +273,7 @@ class ValgrindError:
     for additional in self._additional:
       output += additional + "\n"
 
-    assert self._suppression != None, "Your Valgrind doesn't generate " \
+    assert self._suppression is not None, "Your Valgrind doesn't generate " \
                                       "suppressions - is it too old?"
 
     if self._testcase:
@@ -462,7 +462,7 @@ class MemcheckAnalyzer:
     suppcounts = defaultdict(int)
     badfiles = set()
 
-    if self._analyze_start_time == None:
+    if self._analyze_start_time is None:
       self._analyze_start_time = time.time()
     start_time = self._analyze_start_time
 
@@ -531,7 +531,7 @@ class MemcheckAnalyzer:
               logging.warn("> %s" % context_data)
           context_file.close()
           continue
-        if TheAddressTable != None:
+        if TheAddressTable is not None:
           load_objs = parsed_file.getElementsByTagName("load_obj")
           for load_obj in load_objs:
             obj = getTextOf(load_obj, "obj")
@@ -590,7 +590,7 @@ class MemcheckAnalyzer:
     if cur_report_errors:
       logging.error("FAIL! There were %s errors: " % len(cur_report_errors))
 
-      if TheAddressTable != None:
+      if TheAddressTable is not None:
         TheAddressTable.ResolveAll()
 
       for error in cur_report_errors:

@@ -156,7 +156,7 @@ class IDLNode(object):
             self.out.append(tab + '  PROPERTIES')
             self.out.extend(proplist)
 
-    if filter_nodes == None:
+    if filter_nodes is None:
       filter_nodes = ['Comment', 'Copyright']
 
     search = DumpTreeSearch(accept_props)

@@ -49,7 +49,7 @@ class Generator(object):
     for interface in self.module.interfaces:
       for method in interface.methods:
         result.append(self._GetStructFromMethod(method))
-        if method.response_parameters != None:
+        if method.response_parameters is not None:
           result.append(self._GetResponseStructFromMethod(method))
     return result
 

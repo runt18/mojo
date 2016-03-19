@@ -3824,7 +3824,7 @@ class CHeaderWriter(CWriter):
 
     self.Write(_LICENSE)
     self.Write(_DO_NOT_EDIT_WARNING)
-    if not file_comment == None:
+    if not file_comment is None:
       self.Write(file_comment)
     self.Write("#ifndef %s\n" % self.guard)
     self.Write("#define %s\n\n" % self.guard)
@@ -3853,7 +3853,7 @@ class TypeHandler(object):
   def WriteStruct(self, func, file):
     """Writes a structure that matches the arguments to a function."""
     comment = func.GetInfo('cmd_comment')
-    if not comment == None:
+    if not comment is None:
       file.Write(comment)
     file.Write("struct %s {\n" % func.name)
     file.Write("  typedef %s ValueType;\n" % func.name)
@@ -3862,7 +3862,7 @@ class TypeHandler(object):
     func.WriteCmdFlag(file)
     file.Write("\n")
     result = func.GetInfo('result')
-    if not result == None:
+    if not result is None:
       if len(result) == 1:
         file.Write("  typedef %s Result;\n\n" % result[0])
       else:
@@ -3903,7 +3903,7 @@ class TypeHandler(object):
       file.Write("              \"offset of %s %s should be %d\");\n" %
                  (func.name, arg.name, offset))
       offset += _SIZE_OF_UINT32
-    if not result == None and len(result) > 1:
+    if not result is None and len(result) > 1:
       offset = 0;
       for line in result:
         parts = line.split()
@@ -4176,7 +4176,7 @@ static_assert(offsetof(%(cmd_name)s::Result, %(field_name)s) == %(offset)d,
           gl_arg_strings.append("_")
         gl_func_name = func.GetGLTestFunctionName()
         gl_error_test = ''
-        if not gl_error == None:
+        if not gl_error is None:
           gl_error_test = '\n  EXPECT_EQ(%s, GetGLError());' % gl_error
 
         vars = {
@@ -4266,7 +4266,7 @@ TEST_P(%(test_name)s, %(name)sInvalidArgs%(arg_index)d_%(value_index)d) {
   def WriteGLES2ImplementationDeclaration(self, func, file):
     """Writes the GLES2 Implemention declaration."""
     impl_decl = func.GetInfo('impl_decl')
-    if impl_decl == None or impl_decl == True:
+    if impl_decl is None or impl_decl == True:
       file.Write("%s %s(%s) override;\n" %
                  (func.return_type, func.original_name,
                   func.MakeTypedOriginalArgString("")))
@@ -4333,9 +4333,9 @@ TEST_P(%(test_name)s, %(name)sInvalidArgs%(arg_index)d_%(value_index)d) {
     impl_decl = func.GetInfo('impl_decl')
     gen_cmd = func.GetInfo('gen_cmd')
     if (func.can_auto_generate and
-        (impl_func == None or impl_func == True) and
-        (impl_decl == None or impl_decl == True) and
-        (gen_cmd == None or gen_cmd == True)):
+        (impl_func is None or impl_func == True) and
+        (impl_decl is None or impl_decl == True) and
+        (gen_cmd is None or gen_cmd == True)):
       file.Write("%s GLES2Implementation::%s(%s) {\n" %
                  (func.return_type, func.original_name,
                   func.MakeTypedOriginalArgString("")))
@@ -4378,7 +4378,7 @@ TEST_P(%(test_name)s, %(name)sInvalidArgs%(arg_index)d_%(value_index)d) {
     """Writes the GLES2 Implemention unit test."""
     client_test = func.GetInfo('client_test')
     if (func.can_auto_generate and
-        (client_test == None or client_test == True)):
+        (client_test is None or client_test == True)):
       code = """
 TEST_F(GLES2ImplementationTest, %(name)s) {
   struct Cmds {
@@ -5186,8 +5186,8 @@ TEST_P(%(test_name)s, %(name)sInvalidArgs%(arg_index)d_%(value_index)d) {
     impl_decl = func.GetInfo('impl_decl')
 
     if (func.can_auto_generate and
-          (impl_func == None or impl_func == True) and
-          (impl_decl == None or impl_decl == True)):
+          (impl_func is None or impl_func == True) and
+          (impl_decl is None or impl_decl == True)):
 
       file.Write("%s GLES2Implementation::%s(%s) {\n" %
                  (func.return_type, func.original_name,
@@ -5911,7 +5911,7 @@ TEST_P(%(test_name)s, %(name)sInvalidArgs) {
   def WriteGLES2Implementation(self, func, file):
     """Overrriden from TypeHandler."""
     impl_decl = func.GetInfo('impl_decl')
-    if impl_decl == None or impl_decl == True:
+    if impl_decl is None or impl_decl == True:
       args = {
           'return_type': func.return_type,
           'name': func.original_name,
@@ -6102,7 +6102,7 @@ class GETnHandler(TypeHandler):
   def WriteGLES2Implementation(self, func, file):
     """Overrriden from TypeHandler."""
     impl_decl = func.GetInfo('impl_decl')
-    if impl_decl == None or impl_decl == True:
+    if impl_decl is None or impl_decl == True:
       file.Write("%s GLES2Implementation::%s(%s) {\n" %
                  (func.return_type, func.original_name,
                   func.MakeTypedOriginalArgString("")))
@@ -6447,12 +6447,12 @@ TEST_P(%(test_name)s, %(name)sInvalidArgs%(arg_index)d_%(value_index)d) {
 
   def __NeedsToCalcDataCount(self, func):
     use_count_func = func.GetInfo('use_count_func')
-    return use_count_func != None and use_count_func != False
+    return use_count_func is not None and use_count_func != False
 
   def WriteGLES2Implementation(self, func, file):
     """Overrriden from TypeHandler."""
     impl_func = func.GetInfo('impl_func')
-    if (impl_func != None and impl_func != True):
+    if (impl_func is not None and impl_func != True):
       return;
     file.Write("%s GLES2Implementation::%s(%s) {\n" %
                (func.return_type, func.original_name,
@@ -6481,7 +6481,7 @@ TEST_P(%(test_name)s, %(name)sInvalidArgs%(arg_index)d_%(value_index)d) {
   def WriteGLES2ImplementationUnitTest(self, func, file):
     """Writes the GLES2 Implemention unit test."""
     client_test = func.GetInfo('client_test')
-    if (client_test != None and client_test != True):
+    if (client_test is not None and client_test != True):
       return;
     code = """
 TEST_F(GLES2ImplementationTest, %(name)s) {
@@ -7021,7 +7021,7 @@ class PUTSTRHandler(ArrayArgTypeHandler):
     log_code_block = """  GPU_CLIENT_LOG_CODE_BLOCK({
     for (GLsizei ii = 0; ii < count; ++ii) {
       if (%(data)s[ii]) {"""
-    if length_arg == None:
+    if length_arg is None:
       log_code_block += """
         GPU_CLIENT_LOG("  " << ii << ": ---\\n" << %(data)s[ii] << "\\n---");"""
     else:
@@ -7041,7 +7041,7 @@ class PUTSTRHandler(ArrayArgTypeHandler):
 """
     file.Write(log_code_block % {
           'data': data_arg.name,
-          'length': length_arg.name if not length_arg == None else ''
+          'length': length_arg.name if not length_arg is None else ''
       })
     for arg in func.GetOriginalArgs():
       arg.WriteClientSideValidationCode(file, func)
@@ -7066,7 +7066,7 @@ class PUTSTRHandler(ArrayArgTypeHandler):
 """
     file.Write(code_block % {
         'data': data_arg.name,
-        'length': length_arg.name if not length_arg == None else 'NULL',
+        'length': length_arg.name if not length_arg is None else 'NULL',
         'func_name': func.name,
         'bucket_args': ', '.join(bucket_args),
       })
@@ -7142,7 +7142,7 @@ TEST_F(GLES2ImplementationTest, %(name)s) {
         'bucket_args': ", ".join(bucket_args),
       })
 
-    if self.__GetLengthArg(func) == None:
+    if self.__GetLengthArg(func) is None:
       return
     code = """
 TEST_F(GLES2ImplementationTest, %(name)sWithLength) {
@@ -7562,7 +7562,7 @@ class IsHandler(TypeHandler):
     """Overrriden from TypeHandler."""
     func.AddCmdArg(Argument("result_shm_id", 'uint32_t'))
     func.AddCmdArg(Argument("result_shm_offset", 'uint32_t'))
-    if func.GetInfo('result') == None:
+    if func.GetInfo('result') is None:
       func.AddInfo('result', ['uint32_t'])
 
   def WriteServiceUnitTest(self, func, file, *extras):
@@ -7663,7 +7663,7 @@ TEST_P(%(test_name)s, %(name)sInvalidArgsBadSharedMemoryId) {
   def WriteGLES2Implementation(self, func, file):
     """Overrriden from TypeHandler."""
     impl_func = func.GetInfo('impl_func')
-    if impl_func == None or impl_func == True:
+    if impl_func is None or impl_func == True:
       error_value = func.GetInfo("error_value") or "GL_FALSE"
       file.Write("%s GLES2Implementation::%s(%s) {\n" %
                  (func.return_type, func.original_name,
@@ -7700,7 +7700,7 @@ TEST_P(%(test_name)s, %(name)sInvalidArgsBadSharedMemoryId) {
   def WriteGLES2ImplementationUnitTest(self, func, file):
     """Overrriden from TypeHandler."""
     client_test = func.GetInfo('client_test')
-    if client_test == None or client_test == True:
+    if client_test is None or client_test == True:
       code = """
 TEST_F(GLES2ImplementationTest, %(name)s) {
   struct Cmds {
@@ -7952,7 +7952,7 @@ class Argument(object):
   def GetValidArg(self, func):
     """Gets a valid value for this argument."""
     valid_arg = func.GetValidArg(self)
-    if valid_arg != None:
+    if valid_arg is not None:
       return valid_arg
 
     index = func.GetOriginalArgs().index(self)
@@ -7961,7 +7961,7 @@ class Argument(object):
   def GetValidClientSideArg(self, func):
     """Gets a valid value for this argument."""
     valid_arg = func.GetValidArg(self)
-    if valid_arg != None:
+    if valid_arg is not None:
       return valid_arg
 
     if self.IsPointer():
@@ -7974,7 +7974,7 @@ class Argument(object):
   def GetValidClientSideCmdArg(self, func):
     """Gets a valid value for this argument."""
     valid_arg = func.GetValidArg(self)
-    if valid_arg != None:
+    if valid_arg is not None:
       return valid_arg
     try:
       index = func.GetOriginalArgs().index(self)
@@ -8224,7 +8224,7 @@ class EnumBaseArgument(Argument):
 
   def GetValidArg(self, func):
     valid_arg = func.GetValidArg(self)
-    if valid_arg != None:
+    if valid_arg is not None:
       return valid_arg
     valid = self.named_type.GetValidValues()
     if valid:
@@ -8241,7 +8241,7 @@ class EnumBaseArgument(Argument):
   def GetValidClientSideCmdArg(self, func):
     """Gets a valid value for this argument."""
     valid_arg = func.GetValidArg(self)
-    if valid_arg != None:
+    if valid_arg is not None:
       return valid_arg
 
     valid = self.named_type.GetValidValues()
@@ -8802,7 +8802,7 @@ class Function(object):
 
   def GetGLTestFunctionName(self):
     gl_func_name = self.GetInfo('gl_test_func')
-    if gl_func_name == None:
+    if gl_func_name is None:
       gl_func_name = self.GetGLFunctionName()
     if gl_func_name.startswith("gl"):
       gl_func_name = gl_func_name[2:]
@@ -9412,7 +9412,7 @@ class GLGenerator(object):
         #    self.Log("%s uses bare GLenum %s." % (func_name, arg.name))
 
         gen_cmd = f.GetInfo('gen_cmd')
-        if gen_cmd == True or gen_cmd == None:
+        if gen_cmd == True or gen_cmd is None:
           if f.type_handler.NeedsDataTransferFunction(f):
             methods = f.GetDataTransferMethods()
             if 'immediate' in methods:

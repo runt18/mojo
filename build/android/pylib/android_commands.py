@@ -1171,7 +1171,7 @@ class AndroidCommands(object):
     Devices running user builds don't have adb root, but may provide "su" which
     can be used for accessing protected files.
     """
-    return (self._GetProtectedFileCommandRunner() != None)
+    return (self._GetProtectedFileCommandRunner() is not None)
 
   def _GetProtectedFileCommandRunner(self):
     """Finds the best method to access protected files on the device.

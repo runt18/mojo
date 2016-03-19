@@ -354,7 +354,7 @@ class Method(object):
 
   def AddResponseParameter(self, name, kind, ordinal=None, default=None,
                            attributes=None):
-    if self.response_parameters == None:
+    if self.response_parameters is None:
       self.response_parameters = []
     parameter = Parameter(name, kind, ordinal, default, attributes)
     self.response_parameters.append(parameter)
@@ -635,6 +635,6 @@ def IsCloneableKind(kind):
 
 def HasCallbacks(interface):
   for method in interface.methods:
-    if method.response_parameters != None:
+    if method.response_parameters is not None:
       return True
   return False

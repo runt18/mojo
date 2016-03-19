@@ -30,7 +30,7 @@ class GenerateEmbeddedFiles(object):
     self.scan_dir = scan_dir
     self.base_dir = base_dir
     self.count = 0;
-    if self.base_dir != None:
+    if self.base_dir is not None:
       self.files_data_h = open(os.path.join(base_dir, "FilesDATA.h"), "wb")
       self.files_data_c = open(os.path.join(base_dir, "FilesDATA.c"), "wb")
       self.files_toc_c = open(os.path.join(base_dir, "FilesTOC.c"), "wb")
@@ -46,7 +46,7 @@ class GenerateEmbeddedFiles(object):
 
     self.AddFiles(scan_dir)
 
-    if self.base_dir != None:
+    if self.base_dir is not None:
       self.files_toc_c.write("\n};\n\n");
       self.files_toc_c.write(
         "int numFileEntrys = sizeof(files) / sizeof(struct FileEntry);\n");
@@ -69,7 +69,7 @@ class GenerateEmbeddedFiles(object):
         if not file in GenerateEmbeddedFiles.paths_to_ignore:
           sub_dirs.append(full_path)
       elif ext in GenerateEmbeddedFiles.extensions_to_include:
-        if self.base_dir == None:
+        if self.base_dir is None:
           print full_path.replace("\\", "/")
         else:
           self.count += 1

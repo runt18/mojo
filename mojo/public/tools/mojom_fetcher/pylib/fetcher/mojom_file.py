@@ -36,7 +36,7 @@ class MojomFile(object):
         params["mojo_sdk_deps"].append(target)
       else:
         target, import_dir = dep.get_target_and_import(include_dirs)
-        if import_dir != None:
+        if import_dir is not None:
             params["import_dirs"].add(import_dir)
         params["deps"].append(target)
 

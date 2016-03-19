@@ -410,7 +410,7 @@ class Emulator(object):
         seconds_waited += self._WAITFORDEVICE_TIMEOUT
         device.adb.KillServer()
       self.popen.poll()
-      if self.popen.returncode != None:
+      if self.popen.returncode is not None:
         raise EmulatorLaunchException('EMULATOR DIED')
 
     if seconds_waited >= self._LAUNCH_TIMEOUT:
@@ -427,7 +427,7 @@ class Emulator(object):
     self._DeleteAVD()
     if self.popen:
       self.popen.poll()
-      if self.popen.returncode == None:
+      if self.popen.returncode is None:
         self.popen.kill()
       self.popen = None
 

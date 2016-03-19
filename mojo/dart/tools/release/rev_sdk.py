@@ -63,13 +63,13 @@ def update_pubspec_dependency(pubspec, leaf_package, new_version):
     with open(pubspec, 'r') as stream:
         spec = yaml.load(stream)
         dependencies = spec['dependencies']
-        assert(dependencies != None)
+        assert(dependencies is not None)
         # Extract the version we currently depend on.
         version = dependencies.get(leaf_package)
         # Handle the case where leaf_package is new or missing from the pubspec.
-        if version == None:
+        if version is None:
             version = ''
-        assert(version != None)
+        assert(version is not None)
         # Update the version to the latest.
         dependencies[leaf_package] = new_version
         if version == new_version:
@@ -104,7 +104,7 @@ def main():
     package_map = build_leaf_package_map(leaf_packages)
     for leaf_package in package_map:
         leaf_package_dir = package_map[leaf_package]
-        assert(leaf_package_dir != None)
+        assert(leaf_package_dir is not None)
         leaf_package_pubspec = os.path.join(leaf_package_dir, 'pubspec.yaml')
         # Get current the version number for leaf_package.
         leaf_package_version = get_pubspec_version(leaf_package_pubspec)

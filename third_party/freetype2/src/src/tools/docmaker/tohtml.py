@@ -308,7 +308,7 @@ class  HtmlFormatter( Formatter ):
         return self.file_prefix + section.name + ".html"
 
     def  make_block_url( self, block, name = None ):
-        if name == None:
+        if name is None:
             name = block.name
 
         try:
@@ -544,7 +544,7 @@ class  HtmlFormatter( Formatter ):
         self.index_items = {}
 
     def  index_dump( self, index_filename = None ):
-        if index_filename == None:
+        if index_filename is None:
             index_filename = self.file_prefix + "index.html"
 
         Formatter.index_dump( self, index_filename )
@@ -586,10 +586,10 @@ class  HtmlFormatter( Formatter ):
         print self.html_footer
 
     def  toc_dump( self, toc_filename = None, index_filename = None ):
-        if toc_filename == None:
+        if toc_filename is None:
             toc_filename = self.file_prefix + "toc.html"
 
-        if index_filename == None:
+        if index_filename is None:
             index_filename = self.file_prefix + "index.html"
 
         Formatter.toc_dump( self, toc_filename, index_filename )

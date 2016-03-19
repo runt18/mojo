@@ -64,16 +64,16 @@ def runTest(test, basedir):
     uri = test.prop('href')
     id = test.prop('id')
     type = test.prop('type')
-    if uri == None:
+    if uri is None:
         print "Test without ID:", uri
 	return -1
-    if id == None:
+    if id is None:
         print "Test without URI:", id
 	return -1
-    if type == None:
+    if type is None:
         print "Test without URI:", id
 	return -1
-    if basedir != None:
+    if basedir is not None:
 	URI = basedir + "/" + uri
     else:
         URI = uri
@@ -90,8 +90,8 @@ def runTest(test, basedir):
 	    output = None
 	if output == '':
 	    output = None
-	if output != None:
-	    if basedir != None:
+	if output is not None:
+	    if basedir is not None:
 		output = basedir + "/" + output
 	    if os.access(output, os.R_OK) == 0:
 		print "Result for %s missing: %s" % (id, output)
@@ -109,9 +109,9 @@ def runTest(test, basedir):
 	doc = libxml2.parseFile(URI)
     except:
         doc = None
-    if doc != None:
+    if doc is not None:
         res = doc.xincludeProcess()
-	if res >= 0 and expected != None:
+	if res >= 0 and expected is not None:
 	    result = doc.serialize()
 	    if result != expected:
 	        print "Result for %s differs" % (id)
@@ -162,7 +162,7 @@ def runTest(test, basedir):
 	    log.write("   ----\n%s   ----\n" % (error_msg))
 	    error_msg = ''
 	log.write("\n")
-    if diff != None:
+    if diff is not None:
         log.write("diff from test %s:\n" %(id))
 	log.write("   -----------\n%s\n   -----------\n" % (diff));
 
@@ -171,14 +171,14 @@ def runTest(test, basedir):
 
 def runTestCases(case):
     creator = case.prop('creator')
-    if creator != None:
+    if creator is not None:
 	print "=>", creator
     base = case.getBase(None)
     basedir = case.prop('basedir')
-    if basedir != None:
+    if basedir is not None:
 	base = libxml2.buildURI(basedir, base)
     test = case.children
-    while test != None:
+    while test is not None:
         if test.name == 'testcase':
 	    runTest(test, base)
 	if test.name == 'testcases':
@@ -186,7 +186,7 @@ def runTestCases(case):
         test = test.next
         
 conf = libxml2.parseFile(CONF)
-if conf == None:
+if conf is None:
     print "Unable to load %s" % CONF
     sys.exit(1)
 
@@ -196,13 +196,13 @@ if testsuite.name != 'testsuite':
     sys.exit(1)
 
 profile = testsuite.prop('PROFILE')
-if profile != None:
+if profile is not None:
     print profile
 
 start = time.time()
 
 case = testsuite.children
-while case != None:
+while case is not None:
     if case.name == 'testcases':
 	old_test_nr = test_nr
 	old_test_succeed = test_succeed

@@ -424,9 +424,9 @@ def ParseCL(text, name):
 		if line != '' and line[0] == '#':
 			continue
 		if line == '' or line[0] == ' ' or line[0] == '\t':
-			if sname == None and line != '':
+			if sname is None and line != '':
 				return None, lineno, 'text outside section'
-			if sname != None:
+			if sname is not None:
 				sections[sname] += line + '\n'
 			continue
 		p = line.find(':')
@@ -611,7 +611,7 @@ def RepoDir(ui, repo):
 # Find (or make) code review directory.  On error, ui.warn and return None
 def CodeReviewDir(ui, repo):
 	dir = RepoDir(ui, repo)
-	if dir == None:
+	if dir is None:
 		return None
 	dir += '/.hg/codereview/'
 	if not os.path.isdir(dir):
@@ -643,7 +643,7 @@ def StripCommon(text):
 			continue
 		line = TabsToSpaces(line)
 		white = line[:len(line)-len(line.lstrip())]
-		if ws == None:
+		if ws is None:
 			ws = white
 		else:
 			common = ''
@@ -653,7 +653,7 @@ def StripCommon(text):
 			ws = common
 		if ws == '':
 			break
-	if ws == None:
+	if ws is None:
 		return text
 	t = ''
 	for line in text.split('\n'):
@@ -2456,7 +2456,7 @@ def MySend1(request_path, payload=None,
 	# TODO: Don't require authentication.  Let the server say
 	# whether it is necessary.
 	global rpc
-	if rpc == None:
+	if rpc is None:
 		rpc = GetRpcServer(upload_options)
 	self = rpc
 	if not self.authenticated and force_auth:
@@ -3311,9 +3311,9 @@ class VersionControlSystem(object):
 				base_content = None
 				file_id_str = file_id_str[file_id_str.rfind("_") + 1:]
 			file_id = int(file_id_str)
-			if base_content != None:
+			if base_content is not None:
 				StartUploadFile(filename, file_id, base_content, is_binary, status, True)
-			if new_content != None:
+			if new_content is not None:
 				StartUploadFile(filename, file_id, new_content, is_binary, status, False)
 		WaitForUploads()
 

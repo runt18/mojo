@@ -342,7 +342,7 @@ class FileTranslator(object):
     module_type.attributes = self.AttributesFromMojom(mojom)
     module_type.name = mojom.decl_data.short_name
     module_type.spec = mojom.decl_data.full_identifier
-    if module_type.spec == None:
+    if module_type.spec is None:
       module_type.spec = mojom.decl_data.short_name
     self.PopulateModuleOrImportedFrom(module_type, mojom)
 
@@ -777,7 +777,7 @@ class FileTranslator(object):
     module_type_class, from_mojom = user_defined_types[mojom_type.tag]
     module_type = module_type_class()
 
-    if module_type.spec == None:
+    if module_type.spec is None:
       # module.py expects the spec of user defined types to be set when
       # constructing map, array, and interface request types, but the value
       # appears to be only used for error messages.
