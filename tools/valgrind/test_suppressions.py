@@ -139,15 +139,15 @@ def main(argv):
   reports_count = 0
   for r in all_reports:
     cur_supp = supp['common_suppressions']
-    if all([re.search("%20Mac%20|mac_valgrind", url)
-            for url in all_reports[r]]):
+    if all( re.search("%20Mac%20|mac_valgrind", url)
+            for url in all_reports[r]):
       # Include mac suppressions if the report is only present on Mac
       cur_supp += supp['mac_suppressions']
-    elif all([re.search("Linux%20", url) for url in all_reports[r]]):
+    elif all( re.search("Linux%20", url) for url in all_reports[r]):
       cur_supp += supp['linux_suppressions']
-    if all(["DrMemory" in url for url in all_reports[r]]):
+    if all( "DrMemory" in url for url in all_reports[r]):
       cur_supp += supp['drmem_suppressions']
-    if all(["DrMemory%20full" in url for url in all_reports[r]]):
+    if all( "DrMemory%20full" in url for url in all_reports[r]):
       cur_supp += supp['drmem_full_suppressions']
 
     # Test if this report is already suppressed

@@ -210,7 +210,7 @@ assert set(EXECUTABLE_PATHS) & set(NON_EXECUTABLE_PATHS) == set()
 
 VALID_CHARS = set(string.ascii_lowercase + string.digits + '/-_.')
 for paths in (EXECUTABLE_PATHS, NON_EXECUTABLE_PATHS, IGNORED_PATHS):
-  assert all([set(path).issubset(VALID_CHARS) for path in paths])
+  assert all( set(path).issubset(VALID_CHARS) for path in paths)
 
 
 def capture(cmd, cwd):

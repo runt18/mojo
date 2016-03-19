@@ -152,7 +152,7 @@ class ReraiserThreadGroup(object):
     Args:
       watcher: same as in |JoinAll|. Only used if threads are alive.
     """
-    if any([t.isAlive() for t in self._threads]):
+    if any( t.isAlive() for t in self._threads):
       self.JoinAll(watcher)
     return [t.GetReturnValue() for t in self._threads]
 

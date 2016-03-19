@@ -78,7 +78,7 @@ class EnumDefinition(object):
       prefix_to_strip = self.original_enum_name
       prefix_to_strip = re.sub('(?!^)([A-Z]+)', r'_\1', prefix_to_strip).upper()
       prefix_to_strip += '_'
-      if not all([w.startswith(prefix_to_strip) for w in self.entries.keys()]):
+      if not all( w.startswith(prefix_to_strip) for w in self.entries.keys()):
         prefix_to_strip = ''
 
     entries = collections.OrderedDict()
