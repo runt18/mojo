@@ -417,7 +417,7 @@ def parseIntegratedTestScriptCommands(source_path):
 
 
 def parseIntegratedTestScript(test, normalize_slashes=False,
-                              extra_substitutions=[], require_script=True):
+                              extra_substitutions=None, require_script=True):
     """parseIntegratedTestScript - Scan an LLVM/Clang style integrated test
     script and extract the lines to 'RUN' as well as 'XFAIL' and 'REQUIRES'
     and 'UNSUPPORTED' information. The RUN lines also will have variable
@@ -425,6 +425,8 @@ def parseIntegratedTestScript(test, normalize_slashes=False,
     returned. This can be used for test formats where the actual script is
     optional or ignored.
     """
+    if extra_substitutions is None:
+        extra_substitutions = []
 
     # Get the temporary location, this is always relative to the test suite
     # root, not test source root.
@@ -591,7 +593,9 @@ def _runShTest(test, litConfig, useExternalSh,
 
 
 def executeShTest(test, litConfig, useExternalSh,
-                  extra_substitutions=[]):
+                  extra_substitutions=None):
+    if extra_substitutions is None:
+        extra_substitutions = []
     if test.config.unsupported:
         return (Test.UNSUPPORTED, 'Test is unsupported')
 

@@ -171,12 +171,14 @@ class AdbInterface:
 
   def StartInstrumentationForPackage(
       self, package_name, runner_name, timeout_time=60*10,
-      no_window_animation=False, instrumentation_args={}):
+      no_window_animation=False, instrumentation_args=None):
     """Run instrumentation test for given package and runner.
 
     Equivalent to StartInstrumentation, except instrumentation path is
     separated into its package and runner components.
     """
+    if instrumentation_args is None:
+      instrumentation_args = {}
     instrumentation_path = "%s/%s" % (package_name, runner_name)
     return self.StartInstrumentation(instrumentation_path, timeout_time=timeout_time,
                                      no_window_animation=no_window_animation,
@@ -184,7 +186,7 @@ class AdbInterface:
 
   def StartInstrumentation(
       self, instrumentation_path, timeout_time=60*10, no_window_animation=False,
-      profile=False, instrumentation_args={}, silent_log=False):
+      profile=False, instrumentation_args=None, silent_log=False):
 
     """Runs an instrumentation class on the target.
 
@@ -222,6 +224,8 @@ class AdbInterface:
        DeviceUnresponsiveError: if device system process is not responding
        InstrumentationError: if instrumentation failed to run
     """
+    if instrumentation_args is None:
+      instrumentation_args = {}
 
     command_string = self._BuildInstrumentationCommandPath(
         instrumentation_path, no_window_animation=no_window_animation,
@@ -256,13 +260,15 @@ class AdbInterface:
 
   def StartInstrumentationNoResults(
       self, package_name, runner_name, no_window_animation=False,
-      raw_mode=False, instrumentation_args={}):
+      raw_mode=False, instrumentation_args=None):
     """Runs instrumentation and dumps output to stdout.
 
     Equivalent to StartInstrumentation, but will dump instrumentation
     'normal' output to stdout, instead of parsing return results. Command will
     never timeout.
     """
+    if instrumentation_args is None:
+      instrumentation_args = {}
     adb_command_string = self.PreviewInstrumentationCommand(
         package_name, runner_name, no_window_animation=no_window_animation,
         raw_mode=raw_mode, instrumentation_args=instrumentation_args)
@@ -271,8 +277,10 @@ class AdbInterface:
 
   def PreviewInstrumentationCommand(
       self, package_name, runner_name, no_window_animation=False,
-      raw_mode=False, instrumentation_args={}):
+      raw_mode=False, instrumentation_args=None):
     """Returns a string of adb command that will be executed."""
+    if instrumentation_args is None:
+      instrumentation_args = {}
     inst_command_string = self._BuildInstrumentationCommand(
         package_name, runner_name, no_window_animation=no_window_animation,
         raw_mode=raw_mode, instrumentation_args=instrumentation_args)
@@ -281,7 +289,9 @@ class AdbInterface:
 
   def _BuildInstrumentationCommand(
       self, package, runner_name, no_window_animation=False, profile=False,
-      raw_mode=True, instrumentation_args={}):
+      raw_mode=True, instrumentation_args=None):
+    if instrumentation_args is None:
+      instrumentation_args = {}
     instrumentation_path = "%s/%s" % (package, runner_name)
 
     return self._BuildInstrumentationCommandPath(
@@ -291,7 +301,9 @@ class AdbInterface:
 
   def _BuildInstrumentationCommandPath(
       self, instrumentation_path, no_window_animation=False, profile=False,
-      raw_mode=True, instrumentation_args={}):
+      raw_mode=True, instrumentation_args=None):
+    if instrumentation_args is None:
+      instrumentation_args = {}
     command_string = "am instrument"
     if no_window_animation:
       command_string += " --no_window_animation"
