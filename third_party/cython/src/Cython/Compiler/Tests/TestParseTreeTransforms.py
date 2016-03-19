@@ -226,13 +226,12 @@ class TestDebugTransform(DebuggerTestCase):
             L = list(t.find('/Module/Globals'))
             # assertTrue is retarded, use the normal assert statement
             assert L
-            xml_globals = dict(
-                            [(e.attrib['name'], e.attrib['type']) for e in L])
+            xml_globals = {e.attrib['name']: e.attrib['type'] for e in L}
             self.assertEqual(len(L), len(xml_globals))
 
             L = list(t.find('/Module/Functions'))
             assert L
-            xml_funcs = dict([(e.attrib['qualified_name'], e) for e in L])
+            xml_funcs = {e.attrib['qualified_name']: e for e in L}
             self.assertEqual(len(L), len(xml_funcs))
 
             # test globals

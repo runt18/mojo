@@ -23,7 +23,7 @@ cfuncs_file = os.path.join(root, 'cfuncs.c')
 
 f = open(codefile)
 try:
-    source_to_lineno = dict([ (line.strip(), i + 1) for i, line in enumerate(f) ])
+    source_to_lineno = {line.strip(): i + 1 for i, line in enumerate(f)}
 finally:
     f.close()
 

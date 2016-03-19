@@ -56,7 +56,7 @@ class JSONGeneratorTest(unittest.TestCase):
     PASS_tests = tests_set - (DISABLED_tests | FLAKY_tests | FAILS_tests)
 
     failed_tests = set(failed_tests_list) - DISABLED_tests
-    failed_count_map = dict([(t, 1) for t in failed_tests])
+    failed_count_map = {t: 1 for t in failed_tests}
 
     test_timings = {}
     i = 0
@@ -76,7 +76,7 @@ class JSONGeneratorTest(unittest.TestCase):
         None,   # don't fetch past json results archive
         test_results_map)
 
-    failed_count_map = dict([(t, 1) for t in failed_tests])
+    failed_count_map = {t: 1 for t in failed_tests}
 
     # Test incremental json results
     incremental_json = generator.GetJSON()

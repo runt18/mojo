@@ -611,8 +611,8 @@ class MapType(SerializableType):
     if value is None:
       return value
     if isinstance(value, dict):
-      return dict([(self._key_type.Convert(x), self._value_type.Convert(y)) for
-                   x, y in value.iteritems()])
+      return {self._key_type.Convert(x): self._value_type.Convert(y) for
+                   x, y in value.iteritems()}
     raise TypeError('%r is not a dictionary.')
 
   def Serialize(self, value, data_offset, data, handle_offset):

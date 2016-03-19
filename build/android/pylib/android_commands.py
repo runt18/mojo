@@ -1057,10 +1057,10 @@ class AndroidCommands(object):
       # Otherwise, we want to push any file on the host for which a file with
       # an equivalent MD5 sum does not exist at the same relative path on the
       # device.
-      device_rel = dict([(os.path.relpath(os.path.normpath(t.path),
-                                          real_device_path),
-                          t.hash)
-                         for t in device_hash_tuples])
+      device_rel = {os.path.relpath(os.path.normpath(t.path),
+                                          real_device_path):
+                          t.hash
+                         for t in device_hash_tuples}
       ShouldPush = lambda p, h: p not in device_rel or h != device_rel[p]
 
     return [RelToRealPaths(path) for path, host_hash in host_rel
