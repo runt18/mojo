@@ -207,7 +207,7 @@ def executeShCmd(cmd, shenv, results):
                                           env = cmd_shenv.env,
                                           close_fds = kUseCloseFDs))
         except OSError as e:
-            raise InternalShellError(j, 'Could not create process due to {}'.format(e))
+            raise InternalShellError(j, 'Could not create process due to {0}'.format(e))
 
         # Immediately close stdin for any process taking stdin from us.
         if stdin == subprocess.PIPE:
