@@ -64,7 +64,9 @@ class Symbolizer(object):
 
 
 class LLVMSymbolizer(Symbolizer):
-  def __init__(self, symbolizer_path, default_arch, system, dsym_hints=[]):
+  def __init__(self, symbolizer_path, default_arch, system, dsym_hints=None):
+    if dsym_hints is None:
+      dsym_hints = []
     super(LLVMSymbolizer, self).__init__()
     self.symbolizer_path = symbolizer_path
     self.default_arch = default_arch
@@ -119,7 +121,9 @@ class LLVMSymbolizer(Symbolizer):
     return result
 
 
-def LLVMSymbolizerFactory(system, default_arch, dsym_hints=[]):
+def LLVMSymbolizerFactory(system, default_arch, dsym_hints=None):
+  if dsym_hints is None:
+    dsym_hints = []
   symbolizer_path = os.getenv('LLVM_SYMBOLIZER_PATH')
   if not symbolizer_path:
     symbolizer_path = os.getenv('ASAN_SYMBOLIZER_PATH')

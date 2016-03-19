@@ -607,7 +607,9 @@ class CFuncDeclaratorNode(CDeclaratorNode):
         else:
             return None
 
-    def analyse(self, return_type, env, nonempty = 0, directive_locals = {}):
+    def analyse(self, return_type, env, nonempty = 0, directive_locals = None):
+        if directive_locals is None:
+            directive_locals = {}
         if nonempty:
             nonempty -= 1
         func_type_args = []
@@ -6457,8 +6459,10 @@ class TryFinallyStatNode(StatNode):
         code.mark_pos(self.finally_clause.pos)
         code.putln("/*finally:*/ {")
 
-        def fresh_finally_clause(_next=[self.finally_clause]):
+        def fresh_finally_clause(_next=None):
             # generate the original subtree once and always keep a fresh copy
+            if _next is None:
+                _next = [self.finally_clause]
             node = _next[0]
             node_copy = copy.deepcopy(node)
             if node is self.finally_clause:

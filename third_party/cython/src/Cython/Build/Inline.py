@@ -109,12 +109,14 @@ def _create_context(cython_include_dirs):
 def cython_inline(code,
                   get_type=unsafe_type,
                   lib_dir=os.path.join(get_cython_cache_dir(), 'inline'),
-                  cython_include_dirs=['.'],
+                  cython_include_dirs=None,
                   force=False,
                   quiet=False,
                   locals=None,
                   globals=None,
                   **kwds):
+    if cython_include_dirs is None:
+        cython_include_dirs = ['.']
     if get_type is None:
         get_type = lambda x: 'object'
     code = to_unicode(code)

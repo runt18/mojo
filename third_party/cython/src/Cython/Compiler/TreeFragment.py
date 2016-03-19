@@ -30,7 +30,7 @@ class StringParseContext(Main.Context):
             raise AssertionError("Not yet supporting any cimports/includes from string code snippets")
         return ModuleScope(module_name, parent_module = None, context = self)
 
-def parse_from_strings(name, code, pxds={}, level=None, initial_pos=None,
+def parse_from_strings(name, code, pxds=None, level=None, initial_pos=None,
                        context=None, allow_struct_enum_decorator=False):
     """
     Utility method to parse a (unicode) string of code. This is mostly
@@ -45,6 +45,8 @@ def parse_from_strings(name, code, pxds={}, level=None, initial_pos=None,
     The tree, i.e. a ModuleNode. The ModuleNode's scope attribute is
     set to the scope used when parsing.
     """
+    if pxds is None:
+        pxds = {}
     if context is None:
         context = StringParseContext(name)
     # Since source files carry an encoding, it makes sense in this context
@@ -198,7 +200,13 @@ def strip_common_indent(lines):
     return lines
 
 class TreeFragment(object):
-    def __init__(self, code, name="(tree fragment)", pxds={}, temps=[], pipeline=[], level=None, initial_pos=None):
+    def __init__(self, code, name="(tree fragment)", pxds=None, temps=None, pipeline=None, level=None, initial_pos=None):
+        if pxds is None:
+            pxds = {}
+        if temps is None:
+            temps = []
+        if pipeline is None:
+            pipeline = []
         if isinstance(code, unicode):
             def fmt(x): return u"\n".join(strip_common_indent(x.split(u"\n")))
 
@@ -226,7 +234,11 @@ class TreeFragment(object):
     def copy(self):
         return copy_code_tree(self.root)
 
-    def substitute(self, nodes={}, temps=[], pos = None):
+    def substitute(self, nodes=None, temps=None, pos = None):
+        if nodes is None:
+            nodes = {}
+        if temps is None:
+            temps = []
         return TemplateTransform()(self.root,
                                    substitutions = nodes,
                                    temps = self.temps + temps, pos = pos)

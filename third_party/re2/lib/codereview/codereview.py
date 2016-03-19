@@ -2764,7 +2764,7 @@ class ClientLoginError(urllib2.HTTPError):
 class AbstractRpcServer(object):
 	"""Provides a common interface for a simple RPC server."""
 
-	def __init__(self, host, auth_function, host_override=None, extra_headers={}, save_cookies=False):
+	def __init__(self, host, auth_function, host_override=None, extra_headers=None, save_cookies=False):
 		"""Creates a new HttpRpcServer.
 
 		Args:
@@ -2778,6 +2778,8 @@ class AbstractRpcServer(object):
 				If False, use an in-memory cookiejar instead.  Subclasses must
 				implement this functionality.  Defaults to False.
 		"""
+		if extra_headers is None:
+			extra_headers = {}
 		self.host = host
 		self.host_override = host_override
 		self.auth_function = auth_function
