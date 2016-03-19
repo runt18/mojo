@@ -63,7 +63,7 @@ def CombineLogFiles(list_of_lists, logger):
         cur_device_log += ['***** POSSIBLE INCOMPLETE LOGCAT *****']
         logger.info('Unable to splice %s. Incomplete logcat?', cur_file)
 
-    cur_device_log += ['*'*30 + '  %s' % cur_file]
+    cur_device_log += ['*'*30 + '  {0!s}'.format(cur_file)]
     cur_device_log.extend(cur_file_lines[common_index:])
 
   return cur_device_log
@@ -138,7 +138,7 @@ def ShutdownLogcatMonitor(base_dir, logger):
       time.sleep(.2)
       if not os.path.exists(monitor_pid_path):
         return
-      if not os.path.exists('/proc/%d' % monitor_pid):
+      if not os.path.exists('/proc/{0:d}'.format(monitor_pid)):
         logger.warning('Monitor (pid %d) terminated uncleanly?', monitor_pid)
         return
       logger.info('Waiting for logcat process to terminate.')
@@ -192,7 +192,7 @@ def main(argv):
       logger.warning('Monitor just started? Sleeping %.1fs', sleep_time)
       time.sleep(sleep_time)
 
-    assert os.path.exists(base_dir), '%s does not exist' % base_dir
+    assert os.path.exists(base_dir), '{0!s} does not exist'.format(base_dir)
     ShutdownLogcatMonitor(base_dir, logger)
     separator = '\n' + '*' * 80 + '\n\n'
     for log in GetDeviceLogs(FindLogFiles(base_dir), logger):

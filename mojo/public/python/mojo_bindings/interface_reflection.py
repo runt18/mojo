@@ -148,7 +148,7 @@ class InterfaceManager(object):
       for method in self.methods:
         dictionary[method.name] = _ProxyMethodCall(method)
       self._proxy_class = type(
-          '%sProxy' % self.name,
+          '{0!s}Proxy'.format(self.name),
           (self.interface_class, reflection.InterfaceProxy),
           dictionary)
 
@@ -167,7 +167,7 @@ class InterfaceManager(object):
         'Accept': accept_method,
         'AcceptWithResponder': accept_method,
       }
-      self._stub_class = type('%sStub' % self.name,
+      self._stub_class = type('{0!s}Stub'.format(self.name),
                               (messaging.MessageReceiverWithResponder,),
                               dictionary)
     return self._stub_class(impl)
@@ -269,7 +269,7 @@ def _ConstructParameterStruct(descriptor, name, suffix):
     'DESCRIPTOR': descriptor,
   }
   return reflection.MojoStructType(
-      '%s%s' % (name, suffix),
+      '{0!s}{1!s}'.format(name, suffix),
       (object,),
       parameter_dictionary)
 
@@ -282,7 +282,7 @@ class _ProxyErrorHandler(messaging.ConnectionErrorHandler):
   def OnError(self, result):
     if self._callbacks is None:
       return
-    exception = messaging.MessagingException('Mojo error: %d' % result)
+    exception = messaging.MessagingException('Mojo error: {0:d}'.format(result))
     for (callback, _) in self._callbacks.iteritems():
       callback(exception)
     self._callbacks = None

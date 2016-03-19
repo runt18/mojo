@@ -43,7 +43,7 @@ class Intent(object):
     if self._component and '/' in component:
       self._package, self._activity = component.split('/', 1)
     elif self._package and self._activity:
-      self._component = '%s/%s' % (package, activity)
+      self._component = '{0!s}/{1!s}'.format(package, activity)
 
   @property
   def action(self):
@@ -109,5 +109,5 @@ class Intent(object):
           args.extend(['--ef', key, str(value)])
         else:
           raise NotImplementedError(
-              'Intent does not know how to pass %s extras' % type(value))
+              'Intent does not know how to pass {0!s} extras'.format(type(value)))
     return args

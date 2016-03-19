@@ -150,7 +150,7 @@ class StateMap(object):
     from Transitions import state_set_str
     for new_state in self.new_machine.states:
       old_state_set = self.new_to_old_dict[id(new_state)]
-      file.write("   State %s <-- %s\n" % (
+      file.write("   State {0!s} <-- {1!s}\n".format(
         new_state['number'], state_set_str(old_state_set)))
 
 

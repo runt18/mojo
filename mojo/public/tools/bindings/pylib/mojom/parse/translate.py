@@ -56,7 +56,7 @@ def _MapKind(kind):
     reference_kinds = ('m', 's', 'h', 'a', 'r', 'x')
     if base_kind[0] not in reference_kinds:
       raise Exception(
-          'A type (spec "%s") cannot be made nullable' % base_kind)
+          'A type (spec "{0!s}") cannot be made nullable'.format(base_kind))
     return '?' + base_kind
   if kind.endswith('}'):
     lbracket = kind.rfind('{')

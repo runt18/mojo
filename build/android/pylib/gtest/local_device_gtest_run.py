@@ -46,7 +46,7 @@ def PullAppFilesImpl(device, package, files, directory):
     host_file = os.path.join(host_dir, *f.split(posixpath.sep))
     host_file_base, ext = os.path.splitext(host_file)
     for i in itertools.count():
-      host_file = '%s_%d%s' % (host_file_base, i, ext)
+      host_file = '{0!s}_{1:d}{2!s}'.format(host_file_base, i, ext)
       if not os.path.exists(host_file):
         break
     device.PullFile(device_file, host_file)
@@ -58,7 +58,7 @@ class _ApkDelegate(object):
     self._package = test_instance.package
     self._runner = test_instance.runner
 
-    self._component = '%s/%s' % (self._package, self._runner)
+    self._component = '{0!s}/{1!s}'.format(self._package, self._runner)
     self._extras = test_instance.extras
 
   def Install(self, device):
@@ -68,7 +68,7 @@ class _ApkDelegate(object):
     extras = dict(self._extras)
 
     with device_temp_file.DeviceTempFile(device.adb) as command_line_file:
-      device.WriteFile(command_line_file.name, '_ %s' % flags if flags else '_')
+      device.WriteFile(command_line_file.name, '_ {0!s}'.format(flags) if flags else '_')
       extras[_EXTRA_COMMAND_LINE_FILE] = command_line_file.name
 
       with device_temp_file.DeviceTempFile(device.adb) as test_list_file:
@@ -90,7 +90,7 @@ class _ExeDelegate(object):
   def __init__(self, tr, exe):
     self._exe_host_path = exe
     self._exe_file_name = os.path.split(exe)[-1]
-    self._exe_device_path = '%s/%s' % (
+    self._exe_device_path = '{0!s}/{1!s}'.format(
         constants.TEST_EXECUTABLE_DIR, self._exe_file_name)
     deps_host_path = self._exe_host_path + '_deps'
     if os.path.exists(deps_host_path):
@@ -114,19 +114,19 @@ class _ExeDelegate(object):
         self._exe_device_path,
     ]
     if test:
-      cmd.append('--gtest_filter=%s' % ':'.join(test))
+      cmd.append('--gtest_filter={0!s}'.format(':'.join(test)))
     if flags:
       cmd.append(flags)
     cwd = constants.TEST_EXECUTABLE_DIR
 
     env = {
       'LD_LIBRARY_PATH':
-          '%s/%s_deps' % (constants.TEST_EXECUTABLE_DIR, self._exe_file_name),
+          '{0!s}/{1!s}_deps'.format(constants.TEST_EXECUTABLE_DIR, self._exe_file_name),
     }
     try:
       gcov_strip_depth = os.environ['NATIVE_COVERAGE_DEPTH_STRIP']
       external = device.GetExternalStoragePath()
-      env['GCOV_PREFIX'] = '%s/gcov' % external
+      env['GCOV_PREFIX'] = '{0!s}/gcov'.format(external)
       env['GCOV_PREFIX_STRIP'] = gcov_strip_depth
     except (device_errors.CommandFailedError, KeyError):
       pass
@@ -135,7 +135,7 @@ class _ExeDelegate(object):
     # for long shell commands lands.
     with device_temp_file.DeviceTempFile(device.adb) as script_file:
       script_contents = ' '.join(cmd)
-      logging.info('script contents: %r' % script_contents)
+      logging.info('script contents: {0!r}'.format(script_contents))
       device.WriteFile(script_file.name, script_contents)
       output = device.RunShellCommand(['sh', script_file.name], cwd=cwd,
                                       env=env, **kwargs)

@@ -27,7 +27,7 @@ class SystemProperties(dict):
 
   def __setitem__(self, key, value):
     # TODO(tonyg): This can fail with no root. Verify that it succeeds.
-    self._adb.SendShellCommand('setprop %s "%s"' % (key, value), retry_count=3)
+    self._adb.SendShellCommand('setprop {0!s} "{1!s}"'.format(key, value), retry_count=3)
 
   @staticmethod
   def _IsStatic(key):
@@ -37,4 +37,4 @@ class SystemProperties(dict):
             key.startswith('ro.product.'))
 
   def _GetProperty(self, key):
-    return self._adb.SendShellCommand('getprop %s' % key, retry_count=3).strip()
+    return self._adb.SendShellCommand('getprop {0!s}'.format(key), retry_count=3).strip()

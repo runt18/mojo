@@ -30,8 +30,8 @@ CLANG_REVISION = os.popen(CLANG_UPDATE_PY + ' --print-revision').read().rstrip()
 CLANG_BUCKET = 'gs://chromium-browser-clang/Linux_x64'
 
 def main():
-  targz_name = 'llvmgold-%s.tgz' % CLANG_REVISION
-  remote_path = '%s/%s' % (CLANG_BUCKET, targz_name)
+  targz_name = 'llvmgold-{0!s}.tgz'.format(CLANG_REVISION)
+  remote_path = '{0!s}/{1!s}'.format(CLANG_BUCKET, targz_name)
 
   os.chdir(LLVM_BUILD_PATH)
 

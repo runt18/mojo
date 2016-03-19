@@ -412,7 +412,7 @@ def GenerateCredits():
         for key, val in env.items():
             if escape:
                 val = cgi.escape(val)
-            template = template.replace('{{%s}}' % key, val)
+            template = template.replace('{{{{{0!s}}}}}'.format(key), val)
         return template
 
     root = os.path.join(os.path.dirname(__file__), '..')

@@ -148,11 +148,11 @@ def DiffAndConfirm(filename, should_confirm, perform_safety_checks):
   answers Y to the confirmation prompt.
   """
   def ConfirmFunction(filename, fixfilename):
-    diff = os.system('diff -u %s %s' % (filename, fixfilename))
+    diff = os.system('diff -u {0!s} {1!s}'.format(filename, fixfilename))
     if sys.platform != 'win32':
       diff >>= 8
     if diff == 0:  # Check exit code.
-      print '%s: no change' % filename
+      print '{0!s}: no change'.format(filename)
       return False
 
     return (not should_confirm or YesNo('Use new file (y/N)?'))

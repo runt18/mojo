@@ -68,7 +68,7 @@ def _AddVersionKeys(plist, version=None):
   if version:
     match = re.match('\d+\.\d+\.(\d+\.\d+)$', version)
     if not match:
-      print >>sys.stderr, 'Invalid version string specified: "%s"' % version
+      print >>sys.stderr, 'Invalid version string specified: "{0!s}"'.format(version)
       return False
 
     full_version = match.group(0)
@@ -136,7 +136,7 @@ def _AddBreakpadKeys(plist, branding):
   """Adds the Breakpad keys. This must be called AFTER _AddVersionKeys() and
   also requires the |branding| argument."""
   plist['BreakpadReportInterval'] = '3600'  # Deliberately a string.
-  plist['BreakpadProduct'] = '%s_Mac' % branding
+  plist['BreakpadProduct'] = '{0!s}_Mac'.format(branding)
   plist['BreakpadProductDisplay'] = branding
   plist['BreakpadVersion'] = plist['CFBundleShortVersionString']
   # These are both deliberately strings and not boolean.

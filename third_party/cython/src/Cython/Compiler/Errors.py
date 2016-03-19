@@ -18,7 +18,7 @@ class PyrexWarning(Exception):
 def context(position):
     source = position[0]
     assert not (isinstance(source, unicode) or isinstance(source, str)), (
-        "Please replace filename strings with Scanning.FileSourceDescriptor instances %r" % source)
+        "Please replace filename strings with Scanning.FileSourceDescriptor instances {0!r}".format(source))
     try:
         F = source.get_lines()
     except UnicodeDecodeError:
@@ -26,13 +26,13 @@ def context(position):
         s = u"[unprintable code]\n"
     else:
         s = u''.join(F[max(0, position[1]-6):position[1]])
-        s = u'...\n%s%s^\n' % (s, u' '*(position[2]-1))
-    s = u'%s\n%s%s\n' % (u'-'*60, s, u'-'*60)
+        s = u'...\n{0!s}{1!s}^\n'.format(s, u' '*(position[2]-1))
+    s = u'{0!s}\n{1!s}{2!s}\n'.format(u'-'*60, s, u'-'*60)
     return s
 
 def format_position(position):
     if position:
-        return u"%s:%d:%d: " % (position[0].get_error_description(),
+        return u"{0!s}:{1:d}:{2:d}: ".format(position[0].get_error_description(),
                                 position[1], position[2])
     return u''
 
@@ -40,7 +40,7 @@ def format_error(message, position):
     if position:
         pos_str = format_position(position)
         cont = context(position)
-        message = u'\nError compiling Cython file:\n%s\n%s%s' % (cont, pos_str, message or u'')
+        message = u'\nError compiling Cython file:\n{0!s}\n{1!s}{2!s}'.format(cont, pos_str, message or u'')
     return message
 
 class CompileError(PyrexError):
@@ -73,15 +73,14 @@ class InternalError(Exception):
 
     def __init__(self, message):
         self.message_only = message
-        Exception.__init__(self, u"Internal compiler error: %s"
-            % message)
+        Exception.__init__(self, u"Internal compiler error: {0!s}".format(message))
 
 class AbortError(Exception):
     # Throw this to stop the compilation immediately.
 
     def __init__(self, message):
         self.message_only = message
-        Exception.__init__(self, u"Abort error: %s" % message)
+        Exception.__init__(self, u"Abort error: {0!s}".format(message))
 
 class CompilerCrash(CompileError):
     # raised when an unexpected exception occurs in a transform
@@ -92,7 +91,7 @@ class CompilerCrash(CompileError):
             message = u'\n'
         self.message_only = message
         if context:
-            message = u"Compiler crash in %s%s" % (context, message)
+            message = u"Compiler crash in {0!s}{1!s}".format(context, message)
         if stacktrace:
             import traceback
             message += (
@@ -101,7 +100,7 @@ class CompilerCrash(CompileError):
         if cause:
             if not stacktrace:
                 message += u'\n'
-            message += u'%s: %s' % (cause.__class__.__name__, cause)
+            message += u'{0!s}: {1!s}'.format(cause.__class__.__name__, cause)
         CompileError.__init__(self, pos, message)
         # Python Exception subclass pickling is broken,
         # see http://bugs.python.org/issue1692335
@@ -144,7 +143,7 @@ def report_error(err):
         # See Main.py for why dual reporting occurs. Quick fix for now.
         if err.reported: return
         err.reported = True
-        try: line = u"%s\n" % err
+        try: line = u"{0!s}\n".format(err)
         except UnicodeEncodeError:
             # Python <= 2.5 does this for non-ASCII Unicode exceptions
             line = format_error(getattr(err, 'message_only', "[unprintable exception message]"),
@@ -176,7 +175,7 @@ def message(position, message, level=1):
     if level < LEVEL:
         return
     warn = CompileWarning(position, message)
-    line = "note: %s\n" % warn
+    line = "note: {0!s}\n".format(warn)
     if listing_file:
         listing_file.write(line)
     if echo_file:
@@ -189,7 +188,7 @@ def warning(position, message, level=0):
     if Options.warning_errors and position:
         return error(position, message)
     warn = CompileWarning(position, message)
-    line = "warning: %s\n" % warn
+    line = "warning: {0!s}\n".format(warn)
     if listing_file:
         listing_file.write(line)
     if echo_file:
@@ -201,7 +200,7 @@ def warn_once(position, message, level=0):
     if level < LEVEL or message in _warn_once_seen:
         return
     warn = CompileWarning(position, message)
-    line = "warning: %s\n" % warn
+    line = "warning: {0!s}\n".format(warn)
     if listing_file:
         listing_file.write(line)
     if echo_file:

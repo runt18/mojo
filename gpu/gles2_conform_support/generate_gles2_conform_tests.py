@@ -35,13 +35,13 @@ def GenerateTests(file):
 
   for test in tests:
     file.write("""
-TEST(GLES2ConformTest, %(name)s) {
-  EXPECT_TRUE(RunGLES2ConformTest("%(path)s"));
-}
-""" % {
+TEST(GLES2ConformTest, {name!s}) {{
+  EXPECT_TRUE(RunGLES2ConformTest("{path!s}"));
+}}
+""".format(**{
         "name": re.sub(r'[^A-Za-z0-9]', '_', test),
         "path": test,
-      })
+      }))
 
 
 def main(argv):

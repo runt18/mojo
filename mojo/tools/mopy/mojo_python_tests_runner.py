@@ -26,7 +26,7 @@ class MojoPythonTestRunner(object):
     self.apply_customization(args)
 
     loader = unittest.loader.TestLoader()
-    print "Running Python unit tests under %s..." % self._test_dir
+    print "Running Python unit tests under {0!s}...".format(self._test_dir)
 
     src_root = mopy.paths.Paths().src_root
     pylib_dir = os.path.abspath(os.path.join(src_root, self._test_dir))

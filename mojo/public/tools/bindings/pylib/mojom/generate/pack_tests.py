@@ -54,13 +54,13 @@ def TestSequence(kinds, fields, offsets):
   struct = mojom.Struct('test')
   index = 1
   for kind in kinds:
-    struct.AddField("%d" % index, kind)
+    struct.AddField("{0:d}".format(index), kind)
     index += 1
   ps = pack.PackedStruct(struct)
   num_fields = len(ps.packed_fields)
   errors += EXPECT_EQ(len(kinds), num_fields)
   for i in xrange(num_fields):
-    EXPECT_EQ("%d" % fields[i], ps.packed_fields[i].field.name)
+    EXPECT_EQ("{0:d}".format(fields[i]), ps.packed_fields[i].field.name)
     EXPECT_EQ(offsets[i], ps.packed_fields[i].offset)
 
   return errors
@@ -159,7 +159,7 @@ def TestBools():
   for i in xrange(8):
     pf = ps.packed_fields[i]
     errors += EXPECT_EQ(0, pf.offset)
-    errors += EXPECT_EQ("bit%d" % i, pf.field.name)
+    errors += EXPECT_EQ("bit{0:d}".format(i), pf.field.name)
     errors += EXPECT_EQ(i, pf.bit)
 
   # Ninth bit goes into second byte.

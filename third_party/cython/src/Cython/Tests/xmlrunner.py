@@ -123,8 +123,7 @@ class _XMLTestResult(_TextTestResult):
                 self.start_time = self.stop_time = 0
 
             if self.showAll:
-                self.stream.writeln('(%.3fs) %s' % \
-                    (test_info.get_elapsed_time(), verbose_str))
+                self.stream.writeln('({0:.3f}s) {1!s}'.format(test_info.get_elapsed_time(), verbose_str))
             elif self.dots:
                 self.stream.write(short_str)
         self.callback = callback
@@ -185,11 +184,11 @@ class _XMLTestResult(_TextTestResult):
             if isinstance(test_info, tuple):
                 test_info, exc_info = test_info
             self.stream.writeln(self.separator1)
-            self.stream.writeln('%s [%.3fs]: %s' % (
+            self.stream.writeln('{0!s} [{1:.3f}s]: {2!s}'.format(
                 flavour, test_info.get_elapsed_time(),
                 test_info.get_description()))
             self.stream.writeln(self.separator2)
-            self.stream.writeln('%s' % test_info.get_error_info())
+            self.stream.writeln('{0!s}'.format(test_info.get_error_info()))
 
     def _get_info_by_testcase(self):
         """This method organizes test results by TestCase module. This
@@ -222,8 +221,8 @@ class _XMLTestResult(_TextTestResult):
         testsuite.setAttribute('name', str(suite_name))
         testsuite.setAttribute('tests', str(len(tests)))
 
-        testsuite.setAttribute('time', '%.3f' %
-            sum([e.get_elapsed_time() for e in tests]))
+        testsuite.setAttribute('time', '{0:.3f}'.format(
+            sum([e.get_elapsed_time() for e in tests])))
 
         failures = len([1 for e in tests if e.outcome == _TestInfo.FAILURE])
         testsuite.setAttribute('failures', str(failures))
@@ -244,7 +243,7 @@ class _XMLTestResult(_TextTestResult):
         testcase.setAttribute('name', test_result.test_method.shortDescription()
                               or getattr(test_result.test_method, '_testMethodName',
                                          str(test_result.test_method)))
-        testcase.setAttribute('time', '%.3f' % test_result.get_elapsed_time())
+        testcase.setAttribute('time', '{0:.3f}'.format(test_result.get_elapsed_time()))
 
         if (test_result.outcome != _TestInfo.SUCCESS):
             elem_name = ('failure', 'error')[test_result.outcome-1]
@@ -301,8 +300,7 @@ class _XMLTestResult(_TextTestResult):
             xml_content = doc.toprettyxml(indent='\t')
 
             if type(test_runner.output) is str:
-                report_file = open('%s%sTEST-%s.xml' % \
-                    (test_runner.output, os.sep, suite), 'w')
+                report_file = open('{0!s}{1!s}TEST-{2!s}.xml'.format(test_runner.output, os.sep, suite), 'w')
                 try:
                     report_file.write(xml_content)
                 finally:
@@ -350,8 +348,7 @@ class XMLTestRunner(TextTestRunner):
         result.printErrors()
         self.stream.writeln(result.separator2)
         run = result.testsRun
-        self.stream.writeln("Ran %d test%s in %.3fs" %
-            (run, run != 1 and "s" or "", time_taken))
+        self.stream.writeln("Ran {0:d} test{1!s} in {2:.3f}s".format(run, run != 1 and "s" or "", time_taken))
         self.stream.writeln()
 
         # Error traces
@@ -359,11 +356,11 @@ class XMLTestRunner(TextTestRunner):
             self.stream.write("FAILED (")
             failed, errored = (len(result.failures), len(result.errors))
             if failed:
-                self.stream.write("failures=%d" % failed)
+                self.stream.write("failures={0:d}".format(failed))
             if errored:
                 if failed:
                     self.stream.write(", ")
-                self.stream.write("errors=%d" % errored)
+                self.stream.write("errors={0:d}".format(errored))
             self.stream.writeln(")")
         else:
             self.stream.writeln("OK")

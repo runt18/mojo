@@ -81,7 +81,7 @@ class ValidationTest(mojo_unittest.MojoTestCase):
       handles = [HandleMock() for _ in xrange(data.num_handles)]
       message = messaging.Message(data.data, handles)
       self.assertEquals(message_receiver.Accept(message), expected,
-                        'Unexpected result for test: %s' % filename)
+                        'Unexpected result for test: {0!s}'.format(filename))
 
   def testConformance(self):
     manager = validation_test_interfaces_mojom.ConformanceTestInterface.manager

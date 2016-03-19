@@ -140,7 +140,7 @@ class BaseTool(object):
     self._source_dir = self._options.source_dir
     if self._options.keep_logs:
       # log_parent_dir has trailing slash if non-empty
-      self.log_dir = self.log_parent_dir + "%s.logs" % self.ToolName()
+      self.log_dir = self.log_parent_dir + "{0!s}.logs".format(self.ToolName())
       if os.path.exists(self.log_dir):
         shutil.rmtree(self.log_dir)
       os.mkdir(self.log_dir)
@@ -148,9 +148,9 @@ class BaseTool(object):
 
     self._ignore_exit_code = self._options.ignore_exit_code
     if self._options.gtest_filter != "":
-      self._args.append("--gtest_filter=%s" % self._options.gtest_filter)
+      self._args.append("--gtest_filter={0!s}".format(self._options.gtest_filter))
     if self._options.gtest_repeat:
-      self._args.append("--gtest_repeat=%s" % self._options.gtest_repeat)
+      self._args.append("--gtest_repeat={0!s}".format(self._options.gtest_repeat))
     if self._options.gtest_print_time:
       self._args.append("--gtest_print_time")
 
@@ -215,7 +215,7 @@ class BaseTool(object):
     seconds = runtime_in_seconds % 3600
     minutes = seconds / 60
     seconds = seconds % 60
-    logging.info("elapsed time: %02d:%02d:%02d" % (hours, minutes, seconds))
+    logging.info("elapsed time: {0:02d}:{1:02d}:{2:02d}".format(hours, minutes, seconds))
     if (min_runtime_in_seconds > 0 and
         runtime_in_seconds < min_runtime_in_seconds):
       logging.error("Layout tests finished too quickly. "
@@ -347,9 +347,9 @@ class ValgrindTool(BaseTool):
       path = os.path.join(os.environ['CHROME_VALGRIND'], "bin", "valgrind")
     else:
       path = "valgrind"
-    proc = [path, "--tool=%s" % tool_name]
+    proc = [path, "--tool={0!s}".format(tool_name)]
 
-    proc += ["--num-callers=%i" % int(self._options.num_callers)]
+    proc += ["--num-callers={0:d}".format(int(self._options.num_callers))]
 
     if self._options.trace_children:
       proc += ["--trace-children=yes"]
@@ -367,12 +367,12 @@ class ValgrindTool(BaseTool):
     for suppression_file in self._options.suppressions:
       if os.path.exists(suppression_file):
         suppression_count += 1
-        proc += ["--suppressions=%s" % suppression_file]
+        proc += ["--suppressions={0!s}".format(suppression_file)]
 
     if not suppression_count:
       logging.warning("WARNING: NOT USING SUPPRESSIONS!")
 
-    logfilename = self.log_dir + ("/%s." % tool_name) + "%p"
+    logfilename = self.log_dir + ("/{0!s}.".format(tool_name)) + "%p"
     if self.UseXML():
       proc += ["--xml=yes", "--xml-file=" + logfilename]
     else:
@@ -425,7 +425,7 @@ class ValgrindTool(BaseTool):
 
     if webkit:
       # Webkit layout_tests pass the URL as the first line of stdin.
-      f.write('tee $TESTNAME_FILE | %s "$@"\n' % command)
+      f.write('tee $TESTNAME_FILE | {0!s} "$@"\n'.format(command))
     else:
       # Try to get the test case name by looking at the program arguments.
       # i.e. Chromium ui_tests used --test-name arg.
@@ -466,7 +466,7 @@ class ValgrindTool(BaseTool):
     for ppid in ppids:
       testcase_name = None
       try:
-        f = open(self.log_dir + ("/testcase.%d.name" % ppid))
+        f = open(self.log_dir + ("/testcase.{0:d}.name".format(ppid)))
         testcase_name = f.read().strip()
         f.close()
         wk_layout_prefix="third_party/WebKit/LayoutTests/"
@@ -476,16 +476,16 @@ class ValgrindTool(BaseTool):
       except IOError:
         pass
       print "====================================================="
-      print " Below is the report for valgrind wrapper PID=%d." % ppid
+      print " Below is the report for valgrind wrapper PID={0:d}.".format(ppid)
       if testcase_name:
-        print " It was used while running the `%s` test." % testcase_name
+        print " It was used while running the `{0!s}` test.".format(testcase_name)
       else:
         print " You can find the corresponding test"
-        print " by searching the above log for 'PID=%d'" % ppid
+        print " by searching the above log for 'PID={0:d}'".format(ppid)
       sys.stdout.flush()
 
       ppid_filenames = [f for f in filenames \
-                        if re.search("\.%d\.[0-9]+$" % ppid, f)]
+                        if re.search("\.{0:d}\.[0-9]+$".format(ppid), f)]
       # check_sanity won't work with browser wrappers
       assert check_sanity == False
       ret |= analyzer.Report(ppid_filenames, testcase_name)
@@ -531,7 +531,7 @@ class Memcheck(ValgrindTool):
 
   def ToolSpecificFlags(self):
     ret = ["--gen-suppressions=all", "--demangle=no"]
-    ret += ["--leak-check=%s" % self._options.leak_check]
+    ret += ["--leak-check={0!s}".format(self._options.leak_check)]
 
     if self._options.show_all_leaks:
       ret += ["--show-reachable=yes"]
@@ -785,22 +785,21 @@ class DrMemory(BaseTool):
       for ppid in ppids:
         testcase_name = None
         try:
-          f = open("%s/testcase.%s.name" % (self.log_dir, ppid))
+          f = open("{0!s}/testcase.{1!s}.name".format(self.log_dir, ppid))
           testcase_name = f.read().strip()
           f.close()
         except IOError:
           pass
         print "====================================================="
-        print " Below is the report for drmemory wrapper PID=%s." % ppid
+        print " Below is the report for drmemory wrapper PID={0!s}.".format(ppid)
         if testcase_name:
-          print " It was used while running the `%s` test." % testcase_name
+          print " It was used while running the `{0!s}` test.".format(testcase_name)
         else:
           # TODO(timurrrr): hm, the PID line is suppressed on Windows...
           print " You can find the corresponding test"
-          print " by searching the above log for 'PID=%s'" % ppid
+          print " by searching the above log for 'PID={0!s}'".format(ppid)
         sys.stdout.flush()
-        ppid_filenames = glob.glob("%s/testcase.%s.logs/*/results.txt" %
-                                   (self.log_dir, ppid))
+        ppid_filenames = glob.glob("{0!s}/testcase.{1!s}.logs/*/results.txt".format(self.log_dir, ppid))
         ret |= analyzer.Report(ppid_filenames, testcase_name, False)
         print "====================================================="
         sys.stdout.flush()
@@ -827,7 +826,7 @@ class ToolFactory:
       platform_name = common.PlatformNames()[0]
     except common.NotImplementedError:
       platform_name = sys.platform + "(Unknown)"
-    raise RuntimeError, "Unknown tool (tool=%s, platform=%s)" % (tool_name,
+    raise RuntimeError, "Unknown tool (tool={0!s}, platform={1!s})".format(tool_name,
                                                                  platform_name)
 
 def CreateTool(tool):

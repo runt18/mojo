@@ -35,7 +35,7 @@ def RunCommand(command, fail_hard=True):
   """Run command and return success (True) or failure; or if fail_hard is
      True, exit on failure."""
 
-  print 'Running %s' % (str(command))
+  print 'Running {0!s}'.format((str(command)))
   if subprocess.call(command, shell=False) == 0:
     return True
   print 'Failed.'

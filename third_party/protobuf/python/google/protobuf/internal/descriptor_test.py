@@ -404,8 +404,7 @@ class DescriptorCopyToProtoTest(unittest.TestCase):
 
     self.assertEqual(
         actual_proto, expected_proto,
-        'Not equal,\nActual:\n%s\nExpected:\n%s\n'
-        % (str(actual_proto), str(expected_proto)))
+        'Not equal,\nActual:\n{0!s}\nExpected:\n{1!s}\n'.format(str(actual_proto), str(expected_proto)))
 
   def _InternalTestCopyToProto(self, desc, expected_proto_class,
                                expected_proto_ascii):

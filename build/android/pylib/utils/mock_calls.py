@@ -32,7 +32,7 @@ class TestCase(unittest.TestCase):
           received_call = call(*args, **kwargs)
           self._test_case.assertTrue(
               self._expected_calls,
-              msg=('Unexpected call: %s' % str(received_call)))
+              msg=('Unexpected call: {0!s}'.format(str(received_call))))
           expected_call, action = self._expected_calls.pop(0)
           self._test_case.assertTrue(
               received_call == expected_call,
@@ -63,7 +63,7 @@ class TestCase(unittest.TestCase):
       for patch in self._patched:
         patch.__exit__(exc_type, exc_val, exc_tb)
       if exc_type is None:
-        missing = ''.join('  expected: %s\n' % str(call)
+        missing = ''.join('  expected: {0!s}\n'.format(str(call))
                           for call, _ in self._expected_calls)
         self._test_case.assertFalse(
             missing,
@@ -91,7 +91,7 @@ class TestCase(unittest.TestCase):
     """
     path = call.name.split('.')
     if path.pop(0) != 'self':
-      raise ValueError("Target %r outside of 'self' object" % call.name)
+      raise ValueError("Target {0!r} outside of 'self' object".format(call.name))
     target = self
     for attr in path:
       target = getattr(target, attr)

@@ -297,7 +297,7 @@ class CythonBase(object):
         try:
             source_desc, lineno = self.get_source_desc(frame)
         except NoFunctionNameInFrameError:
-            print '#%-2d Unknown Frame (compile with -g)' % index
+            print '#{0:<2d} Unknown Frame (compile with -g)'.format(index)
             return
 
         if not is_c and self.is_python_function(frame):
@@ -330,11 +330,11 @@ class CythonBase(object):
             # Seriously? Why is the address not an int?
             func_address = int(str(gdb_value.address).split()[0], 0)
 
-        a = ', '.join('%s=%s' % (name, val) for name, val in func_args)
-        print '#%-2d 0x%016x in %s(%s)' % (index, func_address, func_name, a),
+        a = ', '.join('{0!s}={1!s}'.format(name, val) for name, val in func_args)
+        print '#{0:<2d} 0x{1:016x} in {2!s}({3!s})'.format(index, func_address, func_name, a),
 
         if source_desc.filename is not None:
-            print 'at %s:%s' % (source_desc.filename, lineno),
+            print 'at {0!s}:{1!s}'.format(source_desc.filename, lineno),
 
         print
 
@@ -378,10 +378,10 @@ class CythonBase(object):
         if libpython.pretty_printer_lookup(value):
             typename = ''
         else:
-            typename = '(%s) ' % (value.type,)
+            typename = '({0!s}) '.format(value.type)
 
         if max_name_length is None:
-            print '%s%s = %s%s' % (prefix, name, typename, value)
+            print '{0!s}{1!s} = {2!s}{3!s}'.format(prefix, name, typename, value)
         else:
             print '%s%-*s = %s%s' % (prefix, max_name_length, name, typename,
                                      value)
@@ -442,7 +442,7 @@ class SourceFileDescriptor(object):
                 if lex_source and not lex_entire:
                     line = self.lex(line)
 
-                yield '%s %4d    %s' % (prefix, start + idx, line.rstrip())
+                yield '{0!s} {1:4d}    {2!s}'.format(prefix, start + idx, line.rstrip())
 
     def get_source(self, start, stop=None, lex_source=True, mark_line=0,
                    lex_entire=False):
@@ -672,8 +672,7 @@ class CyImport(CythonCommand):
             try:
                 f = open(arg)
             except OSError, e:
-                raise gdb.GdbError('Unable to open file %r: %s' %
-                                                (args, e.args[1]))
+                raise gdb.GdbError('Unable to open file {0!r}: {1!s}'.format(args, e.args[1]))
 
             t = etree.parse(f)
 
@@ -757,7 +756,7 @@ class CyBreak(CythonCommand):
 
         if lineno in cython_module.lineno_cy2c:
             c_lineno = cython_module.lineno_cy2c[lineno]
-            breakpoint = '%s:%s' % (cython_module.c_filename, c_lineno)
+            breakpoint = '{0!s}:{1!s}'.format(cython_module.c_filename, c_lineno)
             gdb.execute('break ' + breakpoint)
         else:
             raise gdb.GdbError("Not a valid line number. "
@@ -783,7 +782,7 @@ class CyBreak(CythonCommand):
                 # multiple functions, let the user pick one
                 print 'There are multiple such functions:'
                 for idx, func in enumerate(funcs):
-                    print '%3d) %s' % (idx, func.qualified_name)
+                    print '{0:3d}) {1!s}'.format(idx, func.qualified_name)
 
                 while True:
                     try:
@@ -808,9 +807,9 @@ class CyBreak(CythonCommand):
                 break_funcs = [funcs[0]]
 
         for func in break_funcs:
-            gdb.execute('break %s' % func.cname)
+            gdb.execute('break {0!s}'.format(func.cname))
             if func.pf_cname:
-                gdb.execute('break %s' % func.pf_cname)
+                gdb.execute('break {0!s}'.format(func.pf_cname))
 
     def invoke(self, function_names, from_tty):
         argv = string_to_argv(function_names.encode('UTF-8'))
@@ -822,7 +821,7 @@ class CyBreak(CythonCommand):
 
         for funcname in argv:
             if python_breakpoints:
-                gdb.execute('py-break %s' % funcname)
+                gdb.execute('py-break {0!s}'.format(funcname))
             elif ':' in funcname:
                 self._break_pyx(funcname)
             else:
@@ -1009,7 +1008,7 @@ class CySelect(CythonCommand):
         try:
             stackno = int(stackno)
         except ValueError:
-            raise gdb.GdbError("Not a valid number: %r" % (stackno,))
+            raise gdb.GdbError("Not a valid number: {0!r}".format(stackno))
 
         frame = gdb.selected_frame()
         while frame.newer():
@@ -1018,7 +1017,7 @@ class CySelect(CythonCommand):
         stackdepth = libpython.stackdepth(frame)
 
         try:
-            gdb.execute('select %d' % (stackdepth - stackno - 1,))
+            gdb.execute('select {0:d}'.format(stackdepth - stackno - 1))
         except RuntimeError, e:
             raise gdb.GdbError(*e.args)
 
@@ -1202,10 +1201,10 @@ class EvaluateOrExecuteCodeMixin(object):
                 pystringp = executor.alloc_pystring(name)
                 code = '''
                     (PyObject *) PyDict_SetItem(
-                        (PyObject *) %d,
-                        (PyObject *) %d,
-                        (PyObject *) %s)
-                ''' % (local_dict_pointer, pystringp, cyvar.cname)
+                        (PyObject *) {0:d},
+                        (PyObject *) {1:d},
+                        (PyObject *) {2!s})
+                '''.format(local_dict_pointer, pystringp, cyvar.cname)
 
                 try:
                     if gdb.parse_and_eval(code) < 0:
@@ -1297,7 +1296,7 @@ class CySet(CythonCommand):
 
         varname, expr = name_and_expr
         cname = self.cy.cy_cname.invoke(varname.strip())
-        gdb.execute("set %s = %s" % (cname, expr))
+        gdb.execute("set {0!s} = {1!s}".format(cname, expr))
 
 
 # Functions
@@ -1325,7 +1324,7 @@ class CyCName(gdb.Function, CythonBase):
             elif cyname in cython_function.module.globals:
                 cname = cython_function.module.globals[cyname].cname
             else:
-                qname = '%s.%s' % (cython_function.module.name, cyname)
+                qname = '{0!s}.{1!s}'.format(cython_function.module.name, cyname)
                 if qname in cython_function.module.functions:
                     cname = cython_function.module.functions[qname].cname
 
@@ -1333,7 +1332,7 @@ class CyCName(gdb.Function, CythonBase):
             cname = self.cy.functions_by_qualified_name.get(cyname)
 
         if not cname:
-            raise gdb.GdbError('No such Cython variable: %s' % cyname)
+            raise gdb.GdbError('No such Cython variable: {0!s}'.format(cyname))
 
         return cname
 
@@ -1355,7 +1354,7 @@ class CyCValue(CyCName):
         elif cyname in globals_dict:
             return globals_dict[cyname]._gdbval
         else:
-            raise gdb.GdbError("Variable %s is not initialized." % cyname)
+            raise gdb.GdbError("Variable {0!s} is not initialized.".format(cyname))
 
 
 class CyLine(gdb.Function, CythonBase):

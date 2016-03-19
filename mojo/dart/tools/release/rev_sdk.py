@@ -73,11 +73,11 @@ def update_pubspec_dependency(pubspec, leaf_package, new_version):
         # Update the version to the latest.
         dependencies[leaf_package] = new_version
         if version == new_version:
-            print "%20s no update for %20s  %6s" % (spec['name'],
+            print "{0:20!s} no update for {1:20!s}  {2:6!s}".format(spec['name'],
                                                     leaf_package,
                                                     version)
             return
-        print "%20s %20s  %6s => %6s" % (spec['name'],
+        print "{0:20!s} {1:20!s}  {2:6!s} => {3:6!s}".format(spec['name'],
                                          leaf_package,
                                          version,
                                          dependencies[leaf_package])

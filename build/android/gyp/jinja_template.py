@@ -50,8 +50,7 @@ def ProcessFiles(env, input_filenames, loader_base_dir, inputs_base_dir,
       relpath = os.path.relpath(os.path.abspath(input_filename),
                                 os.path.abspath(inputs_base_dir))
       if relpath.startswith(os.pardir):
-        raise Exception('input file %s is not contained in inputs base dir %s'
-                        % (input_filename, inputs_base_dir))
+        raise Exception('input file {0!s} is not contained in inputs base dir {1!s}'.format(input_filename, inputs_base_dir))
 
       output_filename = os.path.join(temp_dir, relpath)
       parent_dir = os.path.dirname(output_filename)

@@ -26,7 +26,7 @@ def _build_shell_arguments(shell_args, apptest_url, apptest_args):
   """
   result = list(shell_args)
   if apptest_args:
-    result.append("--args-for=%s %s" % (apptest_url, " ".join(apptest_args)))
+    result.append("--args-for={0!s} {1!s}".format(apptest_url, " ".join(apptest_args)))
   result.append(apptest_url)
   return result
 
@@ -49,7 +49,7 @@ def run_apptest(shell, shell_args, apptest_url, apptest_args, timeout,
     True iff the test succeeded, False otherwise.
   """
   arguments = _build_shell_arguments(shell_args, apptest_url, apptest_args)
-  command_line = "mojo_shell " + " ".join(["%r" % x for x in arguments])
+  command_line = "mojo_shell " + " ".join(["{0!r}".format(x) for x in arguments])
 
   _logger.debug("Starting: " + command_line)
   start_time = time.time()
@@ -60,14 +60,14 @@ def run_apptest(shell, shell_args, apptest_url, apptest_args, timeout,
 
   # Only log if it took more than 3 second.
   if run_time >= 3:
-    _logger.info("Test took %.3f seconds: %s" % (run_time, command_line))
+    _logger.info("Test took {0:.3f} seconds: {1!s}".format(run_time, command_line))
 
   if exit_code or did_time_out or not output_test(output):
-    print 'Failed test: %r' % command_line
+    print 'Failed test: {0!r}'.format(command_line)
     if exit_code:
-      print '  due to shell exit code %d' % exit_code
+      print '  due to shell exit code {0:d}'.format(exit_code)
     elif did_time_out:
-      print '  due to exceeded timeout of %fs' % timeout
+      print '  due to exceeded timeout of {0:f}s'.format(timeout)
     else:
       print '  due to test results'
     print 72 * '-'

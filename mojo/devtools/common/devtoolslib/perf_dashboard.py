@@ -141,17 +141,16 @@ def _upload(server_url, json_data):
   # When data is provided to urllib2.Request, a POST is sent instead of GET.
   # The data must be in the application/x-www-form-urlencoded format.
   data = urllib.urlencode({"data": json_data})
-  req = urllib2.Request("%s/add_point" % server_url, data)
+  req = urllib2.Request("{0!s}/add_point".format(server_url), data)
   try:
     urllib2.urlopen(req)
   except urllib2.HTTPError as e:
     raise _UploadException('HTTPError: %d. Response: %s\n'
                            'JSON: %s\n' % (e.code, e.read(), json_data))
   except urllib2.URLError as e:
-    raise _UploadException('URLError: %s for JSON %s\n' %
-                           (str(e.reason), json_data))
+    raise _UploadException('URLError: {0!s} for JSON {1!s}\n'.format(str(e.reason), json_data))
   except httplib.HTTPException as e:
-    raise _UploadException('HTTPException for JSON %s\n' % json_data)
+    raise _UploadException('HTTPException for JSON {0!s}\n'.format(json_data))
 
 
 def upload_chart_data(master_name, bot_name, test_name, builder_name,
@@ -193,11 +192,11 @@ def upload_chart_data(master_name, bot_name, test_name, builder_name,
 
   if dry_run:
     print 'Will not upload because --dry-run is specified.'
-    print 'Server: %s' % upload_url
+    print 'Server: {0!s}'.format(upload_url)
     print 'Data:'
     pprint.pprint(formatted_data)
   else:
-    print 'Uploading data to %s ...' % upload_url
+    print 'Uploading data to {0!s} ...'.format(upload_url)
     try:
       _upload(upload_url, json.dumps(formatted_data))
     except _UploadException as e:
@@ -212,6 +211,6 @@ def upload_chart_data(master_name, bot_name, test_name, builder_name,
         'tests': test_name,
         'rev': point_id
     })
-    print 'Results Dashboard: %s/report?%s' % (upload_url, dashboard_params)
+    print 'Results Dashboard: {0!s}/report?{1!s}'.format(upload_url, dashboard_params)
 
   return True

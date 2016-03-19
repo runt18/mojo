@@ -156,7 +156,7 @@ def get_shell_config(script_args):
     else:
       inferred_origin += "/linux-x64"
     # Get the versions that were built against Modular's version of the SDK.
-    inferred_origin += "/%s" % inferred_params['mojo_version']
+    inferred_origin += "/{0!s}".format(inferred_params['mojo_version'])
     if script_args.verbose:
       print('Inferring origin from `MOJO_VERSION` as: ' +
             inferred_origin)
@@ -195,7 +195,7 @@ def get_shell_config(script_args):
       if script_args.config_aliases:
         for alias_spec in script_args.config_aliases:
           alias_from, alias_to = alias_spec.split('=')
-          config_file_aliases.append(('@{%s}' % alias_from, alias_to))
+          config_file_aliases.append(('@{{{0!s}}}'.format(alias_from), alias_to))
 
       if inferred_params['build_dir_path']:
         config_file_aliases.append(('@{BUILD_DIR}',

@@ -115,13 +115,13 @@ class ParserBuilder(object):
 
     # Copy the generated sha1 file to the stamp_file location.
     target_dir = self._get_dir_name_for_arch(target_os, target_arch)
-    sha1_file = '%s.sha1' % self._get_output_path(target_os, target_arch)
+    sha1_file = '{0!s}.sha1'.format(self._get_output_path(target_os, target_arch))
     assert os.path.exists(sha1_file)
     stamp_file = os.path.join(self._src_root, 'mojo', 'public', 'tools',
         'bindings', 'mojom_parser', 'bin', target_dir, 'mojom_parser.sha1')
     shutil.move(sha1_file, stamp_file)
     self._info_print(
-        "Wrote stamp file %s. You probably want to commit this." % stamp_file)
+        "Wrote stamp file {0!s}. You probably want to commit this.".format(stamp_file))
 
     return 0
 
@@ -147,13 +147,13 @@ class ParserBuilder(object):
     save_cwd = os.getcwd()
     os.chdir(os.path.join(self._src_root, 'mojom', 'mojom_parser'))
     self._info_print(
-        "Building the Mojom parser for %s %s..." % (target_os, target_arch))
+        "Building the Mojom parser for {0!s} {1!s}...".format(target_os, target_arch))
     result = subprocess.call(
         [self._go_tool, 'build', '-o', out_path] , env=environ)
     if result == 0:
-      self._info_print("Success! Built %s" % out_path)
+      self._info_print("Success! Built {0!s}".format(out_path))
     else:
-      print >> sys.stderr, "Failure building Mojom parser for %s %s!" % (
+      print >> sys.stderr, "Failure building Mojom parser for {0!s} {1!s}!".format(
           target_os, target_arch)
 
     os.chdir(save_cwd)
@@ -175,8 +175,8 @@ class ParserBuilder(object):
     out_path = self._get_output_path(target_os, target_arch)
     assert os.path.exists(out_path)
 
-    cloud_path = 'mojo/mojom_parser/%s' % self._get_dir_name_for_arch(
-        target_os, target_arch)
+    cloud_path = 'mojo/mojom_parser/{0!s}'.format(self._get_dir_name_for_arch(
+        target_os, target_arch))
 
     upload_cmd = ['python', upload_script, out_path, '-b', cloud_path]
 
@@ -184,7 +184,7 @@ class ParserBuilder(object):
     if self._quiet:
       stdout = open(os.devnull, 'w')
     self._info_print(
-        "Uploading mojom_parser (%s,%s) to GCS..." % (target_os, target_arch))
+        "Uploading mojom_parser ({0!s},{1!s}) to GCS...".format(target_os, target_arch))
     return subprocess.call(upload_cmd, stdout=stdout)
 
   def _get_dir_name_for_arch(self, target_os, target_arch):
@@ -196,7 +196,7 @@ class ParserBuilder(object):
 
   def _get_output_path(self, target_os, target_arch):
     return os.path.join(self._out_dir,
-                        'mojom_parser_%s_%s' % (target_os, target_arch))
+                        'mojom_parser_{0!s}_{1!s}'.format(target_os, target_arch))
 
   def _get_depot_tools_path(self, src_root):
     name = 'find_depot_tools'

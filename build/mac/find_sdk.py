@@ -60,7 +60,7 @@ def main():
   sdks = [s for s in sdks  # ['10.5', '10.6'] => ['10.6']
           if parse_version(s) >= parse_version(min_sdk_version)]
   if not sdks:
-    raise Exception('No %s+ SDK found' % min_sdk_version)
+    raise Exception('No {0!s}+ SDK found'.format(min_sdk_version))
   best_sdk = sorted(sdks, key=parse_version)[0]
 
   if options.verify and best_sdk != min_sdk_version and not options.sdk_path:
@@ -68,8 +68,7 @@ def main():
     print >> sys.stderr, '                                           vvvvvvv'
     print >> sys.stderr, ''
     print >> sys.stderr, \
-        'This build requires the %s SDK, but it was not found on your system.' \
-        % min_sdk_version
+        'This build requires the {0!s} SDK, but it was not found on your system.'.format(min_sdk_version)
     print >> sys.stderr, \
         'Either install it, or explicitly set mac_sdk in your GYP_DEFINES.'
     print >> sys.stderr, ''

@@ -81,9 +81,9 @@ class ApkHelper(object):
     except KeyError:
       return None
     if '.' not in activity:
-      activity = '%s.%s' % (self.GetPackageName(), activity)
+      activity = '{0!s}.{1!s}'.format(self.GetPackageName(), activity)
     elif activity.startswith('.'):
-      activity = '%s%s' % (self.GetPackageName(), activity)
+      activity = '{0!s}{1!s}'.format(self.GetPackageName(), activity)
     return activity
 
   def GetInstrumentationName(
@@ -108,7 +108,7 @@ class ApkHelper(object):
       if m:
         self._package_name = m.group(1)
         return self._package_name
-    raise Exception('Failed to determine package name of %s' % self._apk_path)
+    raise Exception('Failed to determine package name of {0!s}'.format(self._apk_path))
 
   def _GetManifest(self):
     if not self._manifest:

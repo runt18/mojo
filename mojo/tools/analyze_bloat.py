@@ -22,7 +22,7 @@ def binaries(path):
             name = match.group(1)
             if name.endswith('apptests'):
                 continue
-            binary = os.path.join(path, 'lib%s_library.so' % name)
+            binary = os.path.join(path, 'lib{0!s}_library.so'.format(name))
             if os.path.exists(binary):
                 yield name, binary
 

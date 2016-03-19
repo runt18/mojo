@@ -72,7 +72,7 @@ def GlobToRegex(glob_pattern, ignore_case=False):
     elif char == '?':
       regex += '.'
     elif ignore_case and char.isalpha():
-      regex += '[%s%s]' % (char.lower(), char.upper())
+      regex += '[{0!s}{1!s}]'.format(char.lower(), char.upper())
     else:
       regex += re.escape(char)
   return ''.join(regex)
@@ -158,7 +158,7 @@ def ReadSuppressionsFromFile(filename):
   }
   tool = FilenameToTool(filename)
   assert tool in tool_to_parser, (
-      "unknown tool %s for filename %s" % (tool, filename))
+      "unknown tool {0!s} for filename {1!s}".format(tool, filename))
   parse_func = tool_to_parser[tool]
 
   # Consider non-existent files to be empty.
@@ -184,7 +184,7 @@ class ValgrindStyleSuppression(Suppression):
 
   def __init__(self, description, type, stack, defined_at):
     """Creates a suppression using the Memcheck syntax."""
-    regex = '{\n.*\n%s\n' % type
+    regex = '{{\n.*\n{0!s}\n'.format(type)
     for line in stack:
       if line == ELLIPSIS:
         regex += '(.*\n)*'
@@ -212,10 +212,10 @@ class ValgrindStyleSuppression(Suppression):
     # e.g. Addr1 printed as Unaddressable with Addr4 suppression.
     # Be careful to check the access size while copying legacy suppressions!
     for sz in [1, 2, 4, 8]:
-      regex = regex.replace("\nMemcheck:Addr%d\n" % sz,
-                            "\nMemcheck:(Addr%d|Unaddressable)\n" % sz)
-      regex = regex.replace("\nMemcheck:Value%d\n" % sz,
-                            "\nMemcheck:(Value%d|Uninitialized)\n" % sz)
+      regex = regex.replace("\nMemcheck:Addr{0:d}\n".format(sz),
+                            "\nMemcheck:(Addr{0:d}|Unaddressable)\n".format(sz))
+      regex = regex.replace("\nMemcheck:Value{0:d}\n".format(sz),
+                            "\nMemcheck:(Value{0:d}|Uninitialized)\n".format(sz))
     regex = regex.replace("\nMemcheck:Cond\n",
                           "\nMemcheck:(Cond|Uninitialized)\n")
     regex = regex.replace("\nMemcheck:Unaddressable\n",
@@ -229,7 +229,7 @@ class ValgrindStyleSuppression(Suppression):
   def __str__(self):
     """Stringify."""
     lines = [self.description, self.type] + self.stack
-    return "{\n   %s\n}\n" % "\n   ".join(lines)
+    return "{{\n   {0!s}\n}}\n".format("\n   ".join(lines))
 
 
 class SuppressionError(Exception):
@@ -238,7 +238,7 @@ class SuppressionError(Exception):
     self._happened_at = happened_at
 
   def __str__(self):
-    return 'Error reading suppressions at %s!\n%s' % (
+    return 'Error reading suppressions at {0!s}!\n{1!s}'.format(
         self._happened_at, self._message)
 
 
@@ -270,11 +270,11 @@ def ReadValgrindStyleSuppressions(lines, supp_descriptor):
         pass
       else:
         raise SuppressionError('Expected: "{"',
-                               "%s:%d" % (supp_descriptor, nline))
+                               "{0!s}:{1:d}".format(supp_descriptor, nline))
     elif line.startswith('}'):
       result.append(
           ValgrindStyleSuppression(cur_descr, cur_type, cur_stack,
-                                   "%s:%d" % (supp_descriptor, nline)))
+                                   "{0!s}:{1:d}".format(supp_descriptor, nline)))
       cur_descr = ''
       cur_type = ''
       cur_stack = []
@@ -285,15 +285,15 @@ def ReadValgrindStyleSuppressions(lines, supp_descriptor):
     elif not cur_type:
       if not line.startswith("Memcheck:"):
         raise SuppressionError(
-            'Expected "Memcheck:TYPE", got "%s"' % line,
-            "%s:%d" % (supp_descriptor, nline))
+            'Expected "Memcheck:TYPE", got "{0!s}"'.format(line),
+            "{0!s}:{1:d}".format(supp_descriptor, nline))
       supp_type = line.split(':')[1]
       if not supp_type in ["Addr1", "Addr2", "Addr4", "Addr8",
                            "Cond", "Free", "Jump", "Leak", "Overlap", "Param",
                            "Value1", "Value2", "Value4", "Value8",
                            "Unaddressable", "Uninitialized"]:
-        raise SuppressionError('Unknown suppression type "%s"' % supp_type,
-                               "%s:%d" % (supp_descriptor, nline))
+        raise SuppressionError('Unknown suppression type "{0!s}"'.format(supp_type),
+                               "{0!s}:{1:d}".format(supp_descriptor, nline))
       cur_type = line
       continue
     elif re.match("^fun:.*|^obj:.*|^\.\.\.$", line):
@@ -303,7 +303,7 @@ def ReadValgrindStyleSuppressions(lines, supp_descriptor):
     else:
       raise SuppressionError(
           '"fun:function_name" or "obj:object_file" or "..." expected',
-          "%s:%d" % (supp_descriptor, nline))
+          "{0!s}:{1:d}".format(supp_descriptor, nline))
   return result
 
 
@@ -384,7 +384,7 @@ class DrMemorySuppression(Suppression):
     # Match to fetch the instruction from the report and try to match against
     # that.
     if instr:
-      regex += 'instruction=%s\n' % GlobToRegex(instr)
+      regex += 'instruction={0!s}\n'.format(GlobToRegex(instr))
 
     for line in stack:
       if line == ELLIPSIS:
@@ -392,10 +392,10 @@ class DrMemorySuppression(Suppression):
       elif '!' in line:
         (mod, func) = line.split('!')
         if func == ELLIPSIS:  # mod!ellipsis frame
-          regex += '(%s\!.*\n)+' % GlobToRegex(mod, ignore_case=True)
+          regex += '({0!s}\!.*\n)+'.format(GlobToRegex(mod, ignore_case=True))
         else:  # mod!func frame
           # Ignore case for the module match, but not the function match.
-          regex += '%s\!%s\n' % (GlobToRegex(mod, ignore_case=True),
+          regex += '{0!s}\!{1!s}\n'.format(GlobToRegex(mod, ignore_case=True),
                                  GlobToRegex(func, ignore_case=False))
       else:
         regex += GlobToRegex(line)
@@ -409,9 +409,9 @@ class DrMemorySuppression(Suppression):
     """Stringify."""
     text = self.type + "\n"
     if self.description:
-      text += "name=%s\n" % self.description
+      text += "name={0!s}\n".format(self.description)
     if self.instr:
-      text += "instruction=%s\n" % self.instr
+      text += "instruction={0!s}\n".format(self.instr)
     text += "\n".join(self.stack)
     text += "\n"
     return text
@@ -460,14 +460,14 @@ def ReadDrMemorySuppressions(lines, supp_descriptor):
       raise SuppressionError('Expected a DrMemory error type, '
                              'found %r instead\n  Valid error types: %s' %
                              (line, ' '.join(DRMEMORY_ERROR_TYPES)),
-                             "%s:%d" % (supp_descriptor, line_no))
+                             "{0!s}:{1:d}".format(supp_descriptor, line_no))
 
     # Suppression starts here.
     report_type = line
     name = ''
     instr = None
     stack = []
-    defined_at = "%s:%d" % (supp_descriptor, line_no)
+    defined_at = "{0!s}:{1:d}".format(supp_descriptor, line_no)
     found_stack = False
     for (line_no, line) in lines:
       if not found_stack and line.startswith('name='):
@@ -494,11 +494,9 @@ def ReadDrMemorySuppressions(lines, supp_descriptor):
         stack.append(line)
 
     if len(stack) == 0:  # In case we hit EOF or blank without any stack frames.
-      raise SuppressionError('Suppression "%s" has no stack frames, ends at %d'
-                             % (name, line_no), defined_at)
+      raise SuppressionError('Suppression "{0!s}" has no stack frames, ends at {1:d}'.format(name, line_no), defined_at)
     if stack[-1] == ELLIPSIS:
-      raise SuppressionError('Suppression "%s" ends in an ellipsis on line %d' %
-                             (name, line_no), defined_at)
+      raise SuppressionError('Suppression "{0!s}" ends in an ellipsis on line {1:d}'.format(name, line_no), defined_at)
 
     suppressions.append(
         DrMemorySuppression(name, report_type, instr, stack, defined_at))
@@ -530,11 +528,11 @@ def TestStack(stack, positive, negative, suppression_parser=None):
   for supp in positive:
     parsed = suppression_parser(supp.split("\n"), "positive_suppression")
     assert parsed[0].Match(stack.split("\n")), (
-        "Suppression:\n%s\ndidn't match stack:\n%s" % (supp, stack))
+        "Suppression:\n{0!s}\ndidn't match stack:\n{1!s}".format(supp, stack))
   for supp in negative:
     parsed = suppression_parser(supp.split("\n"), "negative_suppression")
     assert not parsed[0].Match(stack.split("\n")), (
-        "Suppression:\n%s\ndid match stack:\n%s" % (supp, stack))
+        "Suppression:\n{0!s}\ndid match stack:\n{1!s}".format(supp, stack))
 
 
 def TestFailPresubmit(supp_text, error_text, suppression_parser=None):
@@ -553,17 +551,15 @@ def TestFailPresubmit(supp_text, error_text, suppression_parser=None):
   except SuppressionError, e:
     # If parsing raised an exception, match the error text here.
     assert error_text in str(e), (
-        "presubmit text %r not in SuppressionError:\n%r" %
-        (error_text, str(e)))
+        "presubmit text {0!r} not in SuppressionError:\n{1!r}".format(error_text, str(e)))
   else:
     # Otherwise, run the presubmit checks over the supps.  We expect a single
     # error that has text matching error_text.
     errors = PresubmitCheckSuppressions(supps)
     assert len(errors) == 1, (
-        "expected exactly one presubmit error, got:\n%s" % errors)
+        "expected exactly one presubmit error, got:\n{0!s}".format(errors))
     assert error_text in str(errors[0]), (
-        "presubmit text %r not in SuppressionError:\n%r" %
-        (error_text, str(errors[0])))
+        "presubmit text {0!r} not in SuppressionError:\n{1!r}".format(error_text, str(errors[0])))
 
 
 def SelfTest():
@@ -902,8 +898,7 @@ def SelfTest():
     filename.replace('/', os.sep)  # Make the path look native.
     tool = FilenameToTool(filename)
     assert tool == expected_tool, (
-        "failed to get expected tool for filename %r, expected %s, got %s" %
-        (filename, expected_tool, tool))
+        "failed to get expected tool for filename {0!r}, expected {1!s}, got {2!s}".format(filename, expected_tool, tool))
 
   # Test ValgrindStyleSuppression.__str__.
   supp = ValgrindStyleSuppression("http://crbug.com/1234", "Memcheck:Leak",
@@ -916,7 +911,7 @@ def SelfTest():
               "   fun:foo\n"
               "}\n")
   assert str(supp) == supp_str, (
-      "str(supp) != supp_str:\nleft: %s\nright: %s" % (str(supp), supp_str))
+      "str(supp) != supp_str:\nleft: {0!s}\nright: {1!s}".format(str(supp), supp_str))
 
   # Test DrMemorySuppression.__str__.
   supp = DrMemorySuppression(
@@ -926,7 +921,7 @@ def SelfTest():
               "...\n"
               "*!foo\n")
   assert str(supp) == supp_str, (
-      "str(supp) != supp_str:\nleft: %s\nright: %s" % (str(supp), supp_str))
+      "str(supp) != supp_str:\nleft: {0!s}\nright: {1!s}".format(str(supp), supp_str))
 
   supp = DrMemorySuppression(
       "http://crbug.com/1234", "UNINITIALIZED READ", "test 0x08(%eax) $0x01",
@@ -937,7 +932,7 @@ def SelfTest():
               "ntdll.dll!*\n"
               "*!foo\n")
   assert str(supp) == supp_str, (
-      "str(supp) != supp_str:\nleft: %s\nright: %s" % (str(supp), supp_str))
+      "str(supp) != supp_str:\nleft: {0!s}\nright: {1!s}".format(str(supp), supp_str))
 
 
 if __name__ == '__main__':

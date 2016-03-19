@@ -152,7 +152,7 @@ def parse_command_line(args):
                         x_args, relaxed_bool=True,
                         current_settings=options.compiler_directives)
                 except ValueError, e:
-                    sys.stderr.write("Error in compiler directive: %s\n" % e.args[0])
+                    sys.stderr.write("Error in compiler directive: {0!s}\n".format(e.args[0]))
                     sys.exit(1)
             elif option.startswith('--debug'):
                 option = option[2:].replace('-', '_')
@@ -160,13 +160,13 @@ def parse_command_line(args):
                 if option in dir(DebugFlags):
                     setattr(DebugFlags, option, True)
                 else:
-                    sys.stderr.write("Unknown debug flag: %s\n" % option)
+                    sys.stderr.write("Unknown debug flag: {0!s}\n".format(option))
                     bad_usage()
             elif option in ('-h', '--help'):
                 sys.stdout.write(usage)
                 sys.exit(0)
             else:
-                sys.stderr.write("Unknown compiler flag: %s\n" % option)
+                sys.stderr.write("Unknown compiler flag: {0!s}\n".format(option))
                 sys.exit(1)
         else:
             sources.append(pop_arg())

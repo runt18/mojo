@@ -25,29 +25,29 @@ class _TextTestResult(unittest._TextTestResult):
     self._fails = set()
 
   def _GetTestURI(self, test):
-    return '%s.%s.%s' % (test.__class__.__module__,
+    return '{0!s}.{1!s}.{2!s}'.format(test.__class__.__module__,
                          test.__class__.__name__,
                          test._testMethodName)
 
   def getDescription(self, test):
-    return '%s: "%s"' % (self._GetTestURI(test), test.shortDescription())
+    return '{0!s}: "{1!s}"'.format(self._GetTestURI(test), test.shortDescription())
 
   def startTest(self, test):
     unittest.TestResult.startTest(self, test)
-    self.stream.writeln('[ RUN        ] %s' % self.getDescription(test))
+    self.stream.writeln('[ RUN        ] {0!s}'.format(self.getDescription(test)))
 
   def addSuccess(self, test):
     unittest.TestResult.addSuccess(self, test)
-    self.stream.writeln('[         OK ] %s' % self._GetTestURI(test))
+    self.stream.writeln('[         OK ] {0!s}'.format(self._GetTestURI(test)))
 
   def addError(self, test, err):
     unittest.TestResult.addError(self, test, err)
-    self.stream.writeln('[      ERROR ] %s' % self._GetTestURI(test))
+    self.stream.writeln('[      ERROR ] {0!s}'.format(self._GetTestURI(test)))
     self._fails.add(self._GetTestURI(test))
 
   def addFailure(self, test, err):
     unittest.TestResult.addFailure(self, test, err)
-    self.stream.writeln('[     FAILED ] %s' % self._GetTestURI(test))
+    self.stream.writeln('[     FAILED ] {0!s}'.format(self._GetTestURI(test)))
     self._fails.add(self._GetTestURI(test))
 
   def getRetestFilter(self):

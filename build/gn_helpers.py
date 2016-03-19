@@ -21,7 +21,7 @@ def ToGNString(value, allow_dicts = True):
     return '"' + value.replace('"', '\\"') + '"'
 
   if isinstance(value, list):
-    return '[ %s ]' % ', '.join(ToGNString(v) for v in value)
+    return '[ {0!s} ]'.format(', '.join(ToGNString(v) for v in value))
 
   if isinstance(value, dict):
     if not allow_dicts:
@@ -30,7 +30,7 @@ def ToGNString(value, allow_dicts = True):
     for key in value:
       if not isinstance(key, str):
         raise GNException("Dictionary key is not a string.")
-      result += "%s = %s\n" % (key, ToGNString(value[key], False))
+      result += "{0!s} = {1!s}\n".format(key, ToGNString(value[key], False))
     return result
 
   if isinstance(value, int):

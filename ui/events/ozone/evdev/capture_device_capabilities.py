@@ -30,7 +30,7 @@ def serialize_bitfield(bitfield, max_bit):
       if code in bitfield:
         group_val |= (1 << group_bit)
     if group_val or result:
-      result += '%x' % group_val
+      result += '{0:x}'.format(group_val)
       if group:
         result += ' '
   if not result:
@@ -39,7 +39,7 @@ def serialize_bitfield(bitfield, max_bit):
 
 
 def dump_absinfo(out, capabilities, identifier):
-  out.write('const DeviceAbsoluteAxis %s[] = {\n' % identifier)
+  out.write('const DeviceAbsoluteAxis {0!s}[] = {{\n'.format(identifier))
 
   for code, absinfo in capabilities[evdev.ecodes.EV_ABS]:
     # Set value := 0 to make it deterministic.
@@ -47,7 +47,7 @@ def dump_absinfo(out, capabilities, identifier):
     absinfo_struct = (0, absinfo.min, absinfo.max, absinfo.fuzz, absinfo.flat,
                       absinfo.resolution)
     data = (code_name,) + absinfo_struct
-    out.write('    {%s, {%d, %d, %d, %d, %d, %d}},\n' % data)
+    out.write('    {{{0!s}, {{{1:d}, {2:d}, {3:d}, {4:d}, {5:d}, {6:d}}}}},\n'.format(*data))
 
   out.write('};\n')
 
@@ -108,13 +108,13 @@ def dump_capabilities(out, dev, identifier):
     absinfo_identifier = identifier + 'AbsAxes'
     dump_absinfo(out, capabilities, absinfo_identifier)
 
-  out.write('const DeviceCapabilities %s = {\n' % identifier)
+  out.write('const DeviceCapabilities {0!s} = {{\n'.format(identifier))
   for name, val in fields:
-    out.write('    /* %s */ "%s",\n' % (name, val))
+    out.write('    /* {0!s} */ "{1!s}",\n'.format(name, val))
 
   if has_abs:
-    out.write('    %s,\n' % absinfo_identifier)
-    out.write('    arraysize(%s),\n' % absinfo_identifier)
+    out.write('    {0!s},\n'.format(absinfo_identifier))
+    out.write('    arraysize({0!s}),\n'.format(absinfo_identifier))
 
   out.write('};\n')
 

@@ -47,7 +47,7 @@ def SetLibraryDirs(dirs):
 def FullLibraryPath(library_name):
   assert _library_dirs is not None
   for directory in _library_dirs:
-    path = '%s/%s' % (directory, library_name)
+    path = '{0!s}/{1!s}'.format(directory, library_name)
     if os.path.exists(path):
       return path
   return library_name
@@ -117,7 +117,7 @@ def main():
 
   # Convert to "base" library names: e.g. libfoo.so -> foo
   java_libraries_list = (
-      '{%s}' % ','.join(['"%s"' % s[3:-3] for s in libraries]))
+      '{{{0!s}}}'.format(','.join(['"{0!s}"'.format(s[3:-3]) for s in libraries])))
 
   build_utils.WriteJson(
       {'libraries': libraries, 'java_libraries_list': java_libraries_list},

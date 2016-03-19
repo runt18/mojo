@@ -42,7 +42,7 @@ class TestPrettyPrinters(test_libcython_in_gdb.DebugTestCase):
     def pyobject_fromcode(self, code, gdbvar=None):
         if gdbvar is not None:
             d = {'varname':gdbvar, 'code':code}
-            gdb.execute('set $%(varname)s = %(code)s' % d)
+            gdb.execute('set ${varname!s} = {code!s}'.format(**d))
             code = '$' + gdbvar
 
         return libpython.PyObjectPtr.from_pyobject_ptr(self.get_pyobject(code))
@@ -59,17 +59,17 @@ class TestPrettyPrinters(test_libcython_in_gdb.DebugTestCase):
         assert '"' not in string
 
         # ensure double quotes
-        code = '(PyObject *) %s("%s", %d)' % (funcname, string, len(string))
+        code = '(PyObject *) {0!s}("{1!s}", {2:d})'.format(funcname, string, len(string))
         return self.pyobject_fromcode(code, gdbvar=gdbvar)
 
     def alloc_unicodestring(self, string, gdbvar=None):
         self.alloc_bytestring(string.encode('UTF-8'), gdbvar='_temp')
 
         postfix = libpython.get_inferior_unicode_postfix()
-        funcname = 'PyUnicode%s_FromEncodedObject' % (postfix,)
+        funcname = 'PyUnicode{0!s}_FromEncodedObject'.format(postfix)
 
         return self.pyobject_fromcode(
-            '(PyObject *) %s($_temp, "UTF-8", "strict")' % funcname,
+            '(PyObject *) {0!s}($_temp, "UTF-8", "strict")'.format(funcname),
             gdbvar=gdbvar)
 
     def test_bytestring(self):

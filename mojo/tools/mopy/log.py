@@ -25,5 +25,4 @@ def InitLogging(verbose_count):
   logger = logging.getLogger()
   logger.setLevel(level)
 
-  logger.debug("Initialized logging: verbose_count=%d, level=%d" %
-               (verbose_count, level))
+  logger.debug("Initialized logging: verbose_count={0:d}, level={1:d}".format(verbose_count, level))

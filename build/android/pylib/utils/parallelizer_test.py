@@ -101,7 +101,7 @@ class ParallelizerTest(unittest.TestCase):
     self.assertTrue(all(results))
 
   def testAllRaise(self):
-    devices = [ParallelizerTestObject(Exception('thing %d' % i))
+    devices = [ParallelizerTestObject(Exception('thing {0:d}'.format(i)))
                for i in xrange(0, 10)]
     p = ParallelizerTestObject.parallel(devices).doRaiseTheThing()
     with self.assertRaises(Exception):
@@ -110,7 +110,7 @@ class ParallelizerTest(unittest.TestCase):
   def testOneFailOthersComplete(self):
     parallel_device_count = 10
     exception_index = 7
-    exception_msg = 'thing %d' % exception_index
+    exception_msg = 'thing {0:d}'.format(exception_index)
 
     try:
       completion_files = [tempfile.NamedTemporaryFile(delete=False)

@@ -49,19 +49,18 @@ class AndroidManifest(object):
       return None
     if len(instrumentation_els) != 1:
       raise Exception(
-          'More than one <instrumentation> element found in %s' % self.path)
+          'More than one <instrumentation> element found in {0!s}'.format(self.path))
     return instrumentation_els[0]
 
   def CheckInstrumentation(self, expected_package):
     instr = self.GetInstrumentation()
     if not instr:
-      raise Exception('No <instrumentation> elements found in %s' % self.path)
+      raise Exception('No <instrumentation> elements found in {0!s}'.format(self.path))
     instrumented_package = instr.getAttributeNS(
         'http://schemas.android.com/apk/res/android', 'targetPackage')
     if instrumented_package != expected_package:
       raise Exception(
-          'Wrong instrumented package. Expected %s, got %s'
-          % (expected_package, instrumented_package))
+          'Wrong instrumented package. Expected {0!s}, got {1!s}'.format(expected_package, instrumented_package))
 
   def GetPackageName(self):
     return self.manifest.getAttribute('package')
@@ -156,7 +155,7 @@ def main(argv):
 
   if not options.type in [
       'java_library', 'android_resources', 'android_apk', 'deps_dex']:
-    raise Exception('Unknown type: <%s>' % options.type)
+    raise Exception('Unknown type: <{0!s}>'.format(options.type))
 
   required_options = ['build_config'] + {
       'java_library': ['jar_path'],
@@ -334,8 +333,8 @@ def main(argv):
                 libraries))
         # Create a java literal array with the "base" library names:
         # e.g. libfoo.so -> foo
-        java_libraries_list = '{%s}' % ','.join(
-            ['"%s"' % s[3:-3] for s in all_native_library_deps])
+        java_libraries_list = '{{{0!s}}}'.format(','.join(
+            ['"{0!s}"'.format(s[3:-3]) for s in all_native_library_deps]))
         library_paths = map(
             write_ordered_libraries.FullLibraryPath, all_native_library_deps)
 

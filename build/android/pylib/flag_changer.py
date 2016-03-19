@@ -109,12 +109,12 @@ class FlagChanger(object):
       file_contents = self._device.ReadFile(
           self._cmdline_file, as_root=use_root).rstrip()
       assert file_contents == cmd_line, (
-          'Failed to set the command line file at %s' % self._cmdline_file)
+          'Failed to set the command line file at {0!s}'.format(self._cmdline_file))
     else:
       self._device.RunShellCommand('rm ' + self._cmdline_file,
                                    as_root=use_root)
       assert not self._device.FileExists(self._cmdline_file), (
-          'Failed to remove the command line file at %s' % self._cmdline_file)
+          'Failed to remove the command line file at {0!s}'.format(self._cmdline_file))
 
   @staticmethod
   def _TokenizeFlags(line):

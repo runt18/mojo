@@ -15,4 +15,4 @@ def CreateEnvironment(args, error_func):
   if args.environment == 'remote_device':
     return remote_device_environment.RemoteDeviceEnvironment(args,
                                                              error_func)
-  error_func('Unable to create %s environment.' % args.environment)
+  error_func('Unable to create {0!s} environment.'.format(args.environment))

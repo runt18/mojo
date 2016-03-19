@@ -128,7 +128,7 @@ class Generator(object):
 
   def _GetStructFromMethod(self, method):
     """Converts a method's parameters into the fields of a struct."""
-    params_class = "%s_%s_Params" % (method.interface.name, method.name)
+    params_class = "{0!s}_{1!s}_Params".format(method.interface.name, method.name)
     struct = mojom.Struct(params_class, module=method.interface.module)
     for param in method.parameters:
       struct.AddField(param.name, param.kind, param.ordinal,
@@ -137,7 +137,7 @@ class Generator(object):
 
   def _GetResponseStructFromMethod(self, method):
     """Converts a method's response_parameters into the fields of a struct."""
-    params_class = "%s_%s_ResponseParams" % (method.interface.name, method.name)
+    params_class = "{0!s}_{1!s}_ResponseParams".format(method.interface.name, method.name)
     struct = mojom.Struct(params_class, module=method.interface.module)
     for param in method.response_parameters:
       struct.AddField(param.name, param.kind, param.ordinal,

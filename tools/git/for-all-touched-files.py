@@ -45,7 +45,7 @@ def GitShell(args, ignore_return=False):
   (out, err) = job.communicate()
   if job.returncode != 0 and not ignore_return:
     print out
-    raise Exception("Error %d running command %s" % (
+    raise Exception("Error {0:d} running command {1!s}".format(
         job.returncode, args))
   return out.split('\n')
 
@@ -60,7 +60,7 @@ def FilenamesFromGit(branch_name, extensions):
   If extensions is not an empty list, include only files with one of
   the extensions on the list.
   """
-  lines = GitShell('git diff --stat=600,500 %s' % branch_name)
+  lines = GitShell('git diff --stat=600,500 {0!s}'.format(branch_name))
   filenames = []
   for line in lines:
     line = line.lstrip()

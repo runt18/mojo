@@ -21,7 +21,7 @@ class TimeoutError(Exception):
 
 def RunSubprocessInBackground(proc):
   """Runs a subprocess in the background. Returns a handle to the process."""
-  logging.info("running %s in the background" % " ".join(proc))
+  logging.info("running {0!s} in the background".format(" ".join(proc)))
   return subprocess.Popen(proc)
 
 
@@ -34,7 +34,7 @@ def RunSubprocess(proc, timeout=0):
     timeout: how long to wait before killing, <= 0 means wait forever
   """
 
-  logging.info("running %s, timeout %d sec" % (" ".join(proc), timeout))
+  logging.info("running {0!s}, timeout {1:d} sec".format(" ".join(proc), timeout))
   sys.stdout.flush()
   sys.stderr.flush()
 
@@ -76,11 +76,11 @@ def RunSubprocess(proc, timeout=0):
     else:
       # Does this kill all children, too?
       os.kill(p.pid, signal.SIGINT)
-    logging.error("KILLED %d" % p.pid)
+    logging.error("KILLED {0:d}".format(p.pid))
     # Give the process a chance to actually die before continuing
     # so that cleanup can happen safely.
     time.sleep(1.0)
-    logging.error("TIMEOUT waiting for %s" % proc[0])
+    logging.error("TIMEOUT waiting for {0!s}".format(proc[0]))
     raise TimeoutError(proc[0])
   else:
     for line in p.stdout:
@@ -92,7 +92,7 @@ def RunSubprocess(proc, timeout=0):
   logging.info("collecting result code")
   result = p.poll()
   if result:
-    logging.error("%s exited with non-zero result code %d" % (proc[0], result))
+    logging.error("{0!s} exited with non-zero result code {1:d}".format(proc[0], result))
   return result
 
 
@@ -157,9 +157,9 @@ def PlatformNames():
     names = ['win32']
     version_name = WindowsVersionName()
     if version_name is not None:
-      names.append('win-%s' % version_name)
+      names.append('win-{0!s}'.format(version_name))
     return names
-  raise NotImplementedError('Unknown platform "%s".' % sys.platform)
+  raise NotImplementedError('Unknown platform "{0!s}".'.format(sys.platform))
 
 
 def PutEnvAndLog(env_name, env_value):
@@ -246,7 +246,7 @@ def PrintUsedSuppressionsList(suppcounts):
   print "Suppressions used:"
   print "  count name"
   for (name, count) in sorted(suppcounts.items(), key=lambda (k,v): (v,k)):
-    print "%7d %s" % (count, name)
+    print "{0:7d} {1!s}".format(count, name)
   print "-----------------------------------------------------"
   sys.stdout.flush()
   return True

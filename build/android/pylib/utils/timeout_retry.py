@@ -50,8 +50,7 @@ class TimeoutRetryThread(reraiser_thread.ReraiserThread):
       if msg is None:
         msg = 'Timeout expired'
       if remaining > 0:
-        msg += (', wait of %.1f secs required but only %.1f secs left'
-                % (required, remaining))
+        msg += (', wait of {0:.1f} secs required but only {1:.1f} secs left'.format(required, remaining))
       self._expired = True
       raise reraiser_thread.TimeoutError(msg)
     return remaining
@@ -113,13 +112,13 @@ def WaitFor(condition, wait_period=5, max_tries=None):
       max_tries -= 1
     msg = ['condition', repr(condition_name), 'met' if result else 'not met']
     if timeout_thread:
-      msg.append('(%.1fs)' % timeout_thread.GetElapsedTime())
+      msg.append('({0:.1f}s)'.format(timeout_thread.GetElapsedTime()))
     logging.info(' '.join(msg))
     if result:
       return result
     if timeout_thread:
       timeout_thread.GetRemainingTime(wait_period,
-          msg='Timed out waiting for %r' % condition_name)
+          msg='Timed out waiting for {0!r}'.format(condition_name))
     time.sleep(wait_period)
   return None
 
@@ -153,7 +152,7 @@ def Run(func, timeout, retries, args=None, kwargs=None):
   while True:
     child_thread = TimeoutRetryThread(
       RunOnTimeoutThread, timeout,
-      name='TimeoutThread-%d-for-%s' % (num_try,
+      name='TimeoutThread-{0:d}-for-{1!s}'.format(num_try,
                                         threading.current_thread().name))
     try:
       thread_group = reraiser_thread.ReraiserThreadGroup([child_thread])

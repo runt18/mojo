@@ -312,7 +312,7 @@ class PyObjectPtr(object):
                 # http://bugs.python.org/issue8032#msg100882
                 if self.address == 0:
                     return '0x0'
-                return '<%s at remote 0x%x>' % (self.tp_name, self.address)
+                return '<{0!s} at remote 0x{1:x}>'.format(self.tp_name, self.address)
 
         return FakeRepr(self.safe_tp_name(),
                         long(self._gdbval))
@@ -455,7 +455,7 @@ def _write_instance_repr(out, visited, name, pyop_attrdict, address):
             out.write('=')
             pyop_val.write_repr(out, visited)
         out.write(')')
-    out.write(' at remote 0x%x>' % address)
+    out.write(' at remote 0x{0:x}>'.format(address))
 
 
 class InstanceProxy(object):
@@ -467,12 +467,12 @@ class InstanceProxy(object):
 
     def __repr__(self):
         if isinstance(self.attrdict, dict):
-            kwargs = ', '.join(["%s=%r" % (arg, val)
+            kwargs = ', '.join(["{0!s}={1!r}".format(arg, val)
                                 for arg, val in self.attrdict.iteritems()])
-            return '<%s(%s) at remote 0x%x>' % (self.cl_name,
+            return '<{0!s}({1!s}) at remote 0x{2:x}>'.format(self.cl_name,
                                                 kwargs, self.address)
         else:
-            return '<%s at remote 0x%x>' % (self.cl_name,
+            return '<{0!s} at remote 0x{1:x}>'.format(self.cl_name,
                                             self.address)
 
 def _PyObject_VAR_SIZE(typeobj, nitems):
@@ -549,7 +549,7 @@ class PyTypeObjectPtr(PyObjectPtr):
         except RuntimeError:
             tp_name = 'unknown'
 
-        out.write('<type %s at remote 0x%x>' % (tp_name,
+        out.write('<type {0!s} at remote 0x{1:x}>'.format(tp_name,
                                                 self.as_address()))
         # pyop_attrdict = self.get_attr_dict()
         # _write_instance_repr(out, visited,
@@ -561,7 +561,7 @@ class ProxyException(Exception):
         self.args = args
 
     def __repr__(self):
-        return '%s%r' % (self.tp_name, self.args)
+        return '{0!s}{1!r}'.format(self.tp_name, self.args)
 
 class PyBaseExceptionObjectPtr(PyObjectPtr):
     """
@@ -603,7 +603,7 @@ class BuiltInFunctionProxy(object):
         self.ml_name = ml_name
 
     def __repr__(self):
-        return "<built-in function %s>" % self.ml_name
+        return "<built-in function {0!s}>".format(self.ml_name)
 
 class BuiltInMethodProxy(object):
     def __init__(self, ml_name, pyop_m_self):
@@ -611,8 +611,7 @@ class BuiltInMethodProxy(object):
         self.pyop_m_self = pyop_m_self
 
     def __repr__(self):
-        return ('<built-in method %s of %s object at remote 0x%x>'
-                % (self.ml_name,
+        return ('<built-in method {0!s} of {1!s} object at remote 0x{2:x}>'.format(self.ml_name,
                    self.pyop_m_self.safe_tp_name(),
                    self.pyop_m_self.as_address())
                 )
@@ -834,7 +833,7 @@ class PyLongObjectPtr(PyObjectPtr):
     def write_repr(self, out, visited):
         # Write this out as a Python 3 int literal, i.e. without the "L" suffix
         proxy = self.proxyval(visited)
-        out.write("%s" % proxy)
+        out.write("{0!s}".format(proxy))
 
 
 class PyBoolObjectPtr(PyLongObjectPtr):
@@ -972,8 +971,7 @@ class PyFrameObjectPtr(PyObjectPtr):
         if self.is_optimized_out():
             out.write('(frame information optimized out)')
             return
-        out.write('Frame 0x%x, for file %s, line %i, in %s ('
-                  % (self.as_address(),
+        out.write('Frame 0x{0:x}, for file {1!s}, line {2:d}, in {3!s} ('.format(self.as_address(),
                      self.co_filename.proxyval(visited),
                      self.current_line_num(),
                      self.co_name.proxyval(visited)))
@@ -995,7 +993,7 @@ class PySetObjectPtr(PyObjectPtr):
     def proxyval(self, visited):
         # Guard against infinite loops:
         if self.as_address() in visited:
-            return ProxyAlreadyVisited('%s(...)' % self.safe_tp_name())
+            return ProxyAlreadyVisited('{0!s}(...)'.format(self.safe_tp_name()))
         visited.add(self.as_address())
 
         members = []
@@ -1522,12 +1520,12 @@ class Frame(object):
             pyop = self.get_pyop()
             if pyop:
                 line = pyop.get_truncated_repr(MAX_OUTPUT_LEN)
-                write_unicode(sys.stdout, '#%i %s\n' % (self.get_index(), line))
+                write_unicode(sys.stdout, '#{0:d} {1!s}\n'.format(self.get_index(), line))
                 sys.stdout.write(pyop.current_line())
             else:
-                sys.stdout.write('#%i (unable to read python frame information)\n' % self.get_index())
+                sys.stdout.write('#{0:d} (unable to read python frame information)\n'.format(self.get_index()))
         else:
-            sys.stdout.write('#%i\n' % self.get_index())
+            sys.stdout.write('#{0:d}\n'.format(self.get_index()))
 
 class PyList(gdb.Command):
     '''List the current Python source code, if any
@@ -1593,7 +1591,7 @@ class PyList(gdb.Command):
                 # Highlight current line:
                 if i + start == lineno:
                     linestr = '>' + linestr
-                sys.stdout.write('%4s    %s' % (linestr, line))
+                sys.stdout.write('{0:4!s}    {1!s}'.format(linestr, line))
 
 
 # ...and register the command:
@@ -1696,12 +1694,11 @@ class PyPrint(gdb.Command):
         pyop_var, scope = pyop_frame.get_var_by_name(name)
 
         if pyop_var:
-            print ('%s %r = %s'
-                   % (scope,
+            print ('{0!s} {1!r} = {2!s}'.format(scope,
                       name,
                       pyop_var.get_truncated_repr(MAX_OUTPUT_LEN)))
         else:
-            print '%r not found' % name
+            print '{0!r} not found'.format(name)
 
 PyPrint()
 
@@ -1797,10 +1794,10 @@ class PyBreak(gdb.Command):
     def invoke(self, funcname, from_tty):
         if '.' in funcname:
             modname, dot, funcname = funcname.rpartition('.')
-            cond = '$pyname_equals("%s") && $pymod_equals("%s")' % (funcname,
+            cond = '$pyname_equals("{0!s}") && $pymod_equals("{1!s}")'.format(funcname,
                                                                     modname)
         else:
-            cond = '$pyname_equals("%s")' % funcname
+            cond = '$pyname_equals("{0!s}")'.format(funcname)
 
         gdb.execute('break PyEval_EvalFrameEx if ' + cond)
 
@@ -1815,7 +1812,7 @@ class _LoggingState(object):
     def __init__(self):
         self.fd, self.filename = tempfile.mkstemp()
         self.file = os.fdopen(self.fd, 'r+')
-        _execute("set logging file %s" % self.filename)
+        _execute("set logging file {0!s}".format(self.filename))
         self.file_position_stack = []
 
         atexit.register(os.close, self.fd)
@@ -1891,7 +1888,7 @@ def source_gdb_script(script_contents, to_string=False):
     f = os.fdopen(fd, 'w')
     f.write(script_contents)
     f.close()
-    gdb.execute("source %s" % filename, to_string=to_string)
+    gdb.execute("source {0!s}".format(filename), to_string=to_string)
     os.remove(filename)
 
 def register_defines():
@@ -1941,12 +1938,12 @@ class ExecutionControlCommandBase(gdb.Command):
             self.lang_info.runtime_break_functions())
 
         for location in all_locations:
-            result = gdb.execute('break %s' % location, to_string=True)
+            result = gdb.execute('break {0!s}'.format(location), to_string=True)
             yield re.search(r'Breakpoint (\d+)', result).group(1)
 
     def delete_breakpoints(self, breakpoint_list):
         for bp in breakpoint_list:
-            gdb.execute("delete %s" % bp)
+            gdb.execute("delete {0!s}".format(bp))
 
     def filter_output(self, result):
         reflags = re.MULTILINE
@@ -1976,7 +1973,7 @@ class ExecutionControlCommandBase(gdb.Command):
         match_finish = re.search(r'^Value returned is \$\d+ = (.*)', result,
                                  re.MULTILINE)
         if match_finish:
-            finish_output = 'Value returned: %s\n' % match_finish.group(1)
+            finish_output = 'Value returned: {0!s}\n'.format(match_finish.group(1))
         else:
             finish_output = ''
 
@@ -2201,7 +2198,7 @@ class PythonInfo(LanguageInfo):
     def get_source_line(self, frame):
         try:
             pyframe = self.pyframe(frame)
-            return '%4d    %s' % (pyframe.current_line_num(),
+            return '{0:4d}    {1!s}'.format(pyframe.current_line_num(),
                                   pyframe.current_line().rstrip())
         except IOError, e:
             return None
@@ -2215,7 +2212,7 @@ class PythonInfo(LanguageInfo):
                 inf_value = tstate['curexc_value']
 
                 if inf_type:
-                    return 'An exception was raised: %s' % (inf_value,)
+                    return 'An exception was raised: {0!s}'.format(inf_value)
         except (ValueError, RuntimeError), e:
             # Could not read the variable tstate or it's memory, it's ok
             pass
@@ -2238,7 +2235,7 @@ class PythonStepperMixin(object):
         output = gdb.execute('watch f->f_lasti', to_string=True)
         watchpoint = int(re.search(r'[Ww]atchpoint (\d+):', output).group(1))
         self.step(stepinto=stepinto, stepover_command='finish')
-        gdb.execute('delete %s' % watchpoint)
+        gdb.execute('delete {0!s}'.format(watchpoint))
 
 
 class PyStep(ExecutionControlCommandBase, PythonStepperMixin):
@@ -2316,7 +2313,7 @@ class PythonCodeExecutor(object):
     Py_eval_input = 258
 
     def malloc(self, size):
-        chunk = (gdb.parse_and_eval("(void *) malloc((size_t) %d)" % size))
+        chunk = (gdb.parse_and_eval("(void *) malloc((size_t) {0:d})".format(size)))
 
         pointer = pointervalue(chunk)
         if pointer == 0:
@@ -2338,12 +2335,11 @@ class PythonCodeExecutor(object):
             gdb.parse_and_eval(PyString_FromStringAndSize)
         except RuntimeError:
             # Python 3
-            PyString_FromStringAndSize = ('PyUnicode%s_FromStringAndSize' %
-                                               (get_inferior_unicode_postfix(),))
+            PyString_FromStringAndSize = ('PyUnicode{0!s}_FromStringAndSize'.format(get_inferior_unicode_postfix()))
 
         try:
             result = gdb.parse_and_eval(
-                '(PyObject *) %s((char *) %d, (size_t) %d)' % (
+                '(PyObject *) {0!s}((char *) {1:d}, (size_t) {2:d})'.format(
                             PyString_FromStringAndSize, stringp, len(string)))
         finally:
             self.free(stringp)
@@ -2356,18 +2352,18 @@ class PythonCodeExecutor(object):
         return pointer
 
     def free(self, pointer):
-        gdb.parse_and_eval("free((void *) %d)" % pointer)
+        gdb.parse_and_eval("free((void *) {0:d})".format(pointer))
 
     def incref(self, pointer):
         "Increment the reference count of a Python object in the inferior."
-        gdb.parse_and_eval('Py_IncRef((PyObject *) %d)' % pointer)
+        gdb.parse_and_eval('Py_IncRef((PyObject *) {0:d})'.format(pointer))
 
     def xdecref(self, pointer):
         "Decrement the reference count of a Python object in the inferior."
         # Py_DecRef is like Py_XDECREF, but a function. So we don't have
         # to check for NULL. This should also decref all our allocated
         # Python strings.
-        gdb.parse_and_eval('Py_DecRef((PyObject *) %d)' % pointer)
+        gdb.parse_and_eval('Py_DecRef((PyObject *) {0:d})'.format(pointer))
 
     def evalcode(self, code, input_type, global_dict=None, local_dict=None):
         """
@@ -2393,12 +2389,12 @@ class PythonCodeExecutor(object):
 
         code = """
             PyRun_String(
-                (char *) %(code)d,
-                (int) %(start)d,
-                (PyObject *) %(globals)s,
-                (PyObject *) %(locals)d)
-        """ % dict(code=pointer, start=input_type,
-                   globals=globalsp, locals=localsp)
+                (char *) {code:d},
+                (int) {start:d},
+                (PyObject *) {globals!s},
+                (PyObject *) {locals:d})
+        """.format(**dict(code=pointer, start=input_type,
+                   globals=globalsp, locals=localsp))
 
         with FetchAndRestoreError():
             try:
@@ -2425,7 +2421,7 @@ class FetchAndRestoreError(PythonCodeExecutor):
         self.errstate = type, value, traceback
 
     def __enter__(self):
-        gdb.parse_and_eval("PyErr_Fetch(%d, %d, %d)" % self.errstate)
+        gdb.parse_and_eval("PyErr_Fetch({0:d}, {1:d}, {2:d})".format(*self.errstate))
 
     def __exit__(self, *args):
         if gdb.parse_and_eval("(int) PyErr_Occurred()"):
@@ -2477,7 +2473,7 @@ class FixGdbCommand(gdb.Command):
     def invoke(self, args, from_tty):
         self.fix_gdb()
         try:
-            gdb.execute('%s %s' % (self.actual_command, args))
+            gdb.execute('{0!s} {1!s}'.format(self.actual_command, args))
         except RuntimeError, e:
             raise gdb.GdbError(str(e))
         self.fix_gdb()

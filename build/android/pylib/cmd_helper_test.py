@@ -26,7 +26,7 @@ class CmdHelperSingleQuoteTest(unittest.TestCase):
 
   def testSingleQuote_dontExpand(self):
     test_string = 'hello $TEST_VAR'
-    cmd = 'TEST_VAR=world; echo %s' % cmd_helper.SingleQuote(test_string)
+    cmd = 'TEST_VAR=world; echo {0!s}'.format(cmd_helper.SingleQuote(test_string))
     self.assertEquals(test_string,
                       cmd_helper.GetCmdOutput(cmd, shell=True).rstrip())
 
@@ -47,7 +47,7 @@ class CmdHelperDoubleQuoteTest(unittest.TestCase):
 
   def testSingleQuote_doExpand(self):
     test_string = 'hello $TEST_VAR'
-    cmd = 'TEST_VAR=world; echo %s' % cmd_helper.DoubleQuote(test_string)
+    cmd = 'TEST_VAR=world; echo {0!s}'.format(cmd_helper.DoubleQuote(test_string))
     self.assertEquals('hello world',
                       cmd_helper.GetCmdOutput(cmd, shell=True).rstrip())
 

@@ -43,7 +43,7 @@ class TestJar(object):
 
   def __init__(self, jar_path):
     if not os.path.exists(jar_path):
-      raise Exception('%s not found, please build it' % jar_path)
+      raise Exception('{0!s} not found, please build it'.format(jar_path))
 
     self._PROGUARD_PATH = os.path.join(constants.ANDROID_SDK_ROOT,
                                        'tools/proguard/lib/proguard.jar')
@@ -97,7 +97,7 @@ class TestJar(object):
       test_methods = (m for m in c['methods']
                       if m['method'].startswith('test'))
       for m in test_methods:
-        qualified_method = '%s#%s' % (c['class'], m['method'])
+        qualified_method = '{0!s}#{1!s}'.format(c['class'], m['method'])
         annotations = dict(class_annotations)
         annotations.update(m['annotations'])
         self._test_methods[qualified_method] = m

@@ -280,7 +280,7 @@ def strip_string_literals(code, prefix='__Pyx_L'):
                     continue
             if code[q] == quote_type and (quote_len == 1 or (code_len > q + 2 and quote_type == code[q+1] == code[q+2])):
                 counter += 1
-                label = "%s%s_" % (prefix, counter)
+                label = "{0!s}{1!s}_".format(prefix, counter)
                 literals[label] = code[start+quote_len:q]
                 full_quote = code[q:q+quote_len]
                 new_code.append(full_quote)
@@ -297,7 +297,7 @@ def strip_string_literals(code, prefix='__Pyx_L'):
             new_code.append(code[start:hash_mark+1])
             end = code.find('\n', hash_mark)
             counter += 1
-            label = "%s%s_" % (prefix, counter)
+            label = "{0!s}{1!s}_".format(prefix, counter)
             if end == -1:
                 end_or_none = None
             else:
@@ -431,7 +431,7 @@ class DependencyTree(object):
                 all.add(include_path)
                 all.update(self.included_files(include_path))
             elif not self.quiet:
-                print("Unable to locate '%s' referenced from '%s'" % (filename, include))
+                print("Unable to locate '{0!s}' referenced from '{1!s}'".format(filename, include))
         return all
 
     @cached_method
@@ -493,7 +493,7 @@ class DependencyTree(object):
             if pxd_file is not None:
                 pxd_list.append(pxd_file)
             elif not self.quiet:
-                print("missing cimport in module '%s': %s" % (module, filename))
+                print("missing cimport in module '{0!s}': {1!s}".format(module, filename))
         return tuple(pxd_list)
 
     @cached_method
@@ -759,9 +759,9 @@ def cythonize(module_list, exclude=[], nthreads=0, aliases=None, quiet=False, fo
                 if force or c_timestamp < dep_timestamp:
                     if not quiet:
                         if source == dep:
-                            print("Compiling %s because it changed." % source)
+                            print("Compiling {0!s} because it changed.".format(source))
                         else:
-                            print("Compiling %s because it depends on %s." % (source, dep))
+                            print("Compiling {0!s} because it depends on {1!s}.".format(source, dep))
                     if not force and hasattr(options, 'cache'):
                         extra = m.language
                         fingerprint = deps.transitive_fingerprint(source, extra)
@@ -812,8 +812,8 @@ def cythonize(module_list, exclude=[], nthreads=0, aliases=None, quiet=False, fo
         if failed_modules:
             for module in failed_modules:
                 module_list.remove(module)
-            print("Failed compilations: %s" % ', '.join(sorted([
-                module.name for module in failed_modules])))
+            print("Failed compilations: {0!s}".format(', '.join(sorted([
+                module.name for module in failed_modules]))))
     if hasattr(options, 'cache'):
         cleanup_cache(options.cache, getattr(options, 'cache_size', 1024 * 1024 * 100))
     # cythonize() is often followed by the (non-Python-buffered)
@@ -872,10 +872,10 @@ def cythonize_one(pyx_file, c_file, fingerprint, quiet, options=None, raise_on_f
         # Cython-generated c files are highly compressible.
         # (E.g. a compression ratio of about 10 for Sage).
         fingerprint_file = join_path(
-            options.cache, "%s-%s%s" % (os.path.basename(c_file), fingerprint, gzip_ext))
+            options.cache, "{0!s}-{1!s}{2!s}".format(os.path.basename(c_file), fingerprint, gzip_ext))
         if os.path.exists(fingerprint_file):
             if not quiet:
-                print("Found compiled %s in cache" % pyx_file)
+                print("Found compiled {0!s} in cache".format(pyx_file))
             os.utime(fingerprint_file, None)
             g = gzip_open(fingerprint_file, 'rb')
             try:
@@ -888,7 +888,7 @@ def cythonize_one(pyx_file, c_file, fingerprint, quiet, options=None, raise_on_f
                 g.close()
             return
     if not quiet:
-        print("Cythonizing %s" % pyx_file)
+        print("Cythonizing {0!s}".format(pyx_file))
     if options is None:
         options = CompilationOptions(default_options)
     options.output_file = c_file
@@ -899,7 +899,7 @@ def cythonize_one(pyx_file, c_file, fingerprint, quiet, options=None, raise_on_f
         if result.num_errors > 0:
             any_failures = 1
     except (EnvironmentError, PyrexError), e:
-        sys.stderr.write('%s\n' % e)
+        sys.stderr.write('{0!s}\n'.format(e))
         any_failures = 1
         # XXX
         import traceback

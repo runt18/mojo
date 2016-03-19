@@ -144,20 +144,20 @@ def CheckForMissingDevices(options, devices):
   new_missing_devs = list(set(missing_devs) - set(last_missing_devices))
 
   if new_missing_devs and os.environ.get('BUILDBOT_SLAVENAME'):
-    logging.info('new_missing_devs %s' % new_missing_devs)
-    devices_missing_msg = '%d devices not detected.' % len(missing_devs)
+    logging.info('new_missing_devs {0!s}'.format(new_missing_devs))
+    devices_missing_msg = '{0:d} devices not detected.'.format(len(missing_devs))
     bb_annotations.PrintSummaryText(devices_missing_msg)
 
     from_address = 'chrome-bot@chromium.org'
     to_addresses = ['chrome-labs-tech-ticket@google.com',
                     'chrome-android-device-alert@google.com']
     cc_addresses = ['chrome-android-device-alert@google.com']
-    subject = 'Devices offline on %s, %s, %s' % (
+    subject = 'Devices offline on {0!s}, {1!s}, {2!s}'.format(
       os.environ.get('BUILDBOT_SLAVENAME'),
       os.environ.get('BUILDBOT_BUILDERNAME'),
       os.environ.get('BUILDBOT_BUILDNUMBER'))
-    msg = ('Please reboot the following devices:\n%s' %
-           '\n'.join(map(str, new_missing_devs)))
+    msg = ('Please reboot the following devices:\n{0!s}'.format(
+           '\n'.join(map(str, new_missing_devs))))
     SendEmail(from_address, to_addresses, cc_addresses, subject, msg)
 
   all_known_devices = list(device_serials | set(last_devices))
@@ -169,26 +169,26 @@ def CheckForMissingDevices(options, devices):
     # present or if it was empty.
     return ['No online devices. Have any devices been plugged in?']
   if missing_devs:
-    devices_missing_msg = '%d devices not detected.' % len(missing_devs)
+    devices_missing_msg = '{0:d} devices not detected.'.format(len(missing_devs))
     bb_annotations.PrintSummaryText(devices_missing_msg)
-    return ['Current online devices: %s' % ', '.join(d for d in device_serials),
-            '%s are no longer visible. Were they removed?' % missing_devs]
+    return ['Current online devices: {0!s}'.format(', '.join(d for d in device_serials)),
+            '{0!s} are no longer visible. Were they removed?'.format(missing_devs)]
   else:
     new_devs = device_serials - set(last_devices)
     if new_devs and os.path.exists(last_devices_path):
       bb_annotations.PrintWarning()
       bb_annotations.PrintSummaryText(
-          '%d new devices detected' % len(new_devs))
+          '{0:d} new devices detected'.format(len(new_devs)))
       logging.info('New devices detected:')
       for d in new_devs:
         logging.info('  %s', d)
 
 
 def SendEmail(from_address, to_addresses, cc_addresses, subject, msg):
-  msg_body = '\r\n'.join(['From: %s' % from_address,
-                          'To: %s' % ', '.join(to_addresses),
-                          'CC: %s' % ', '.join(cc_addresses),
-                          'Subject: %s' % subject, '', msg])
+  msg_body = '\r\n'.join(['From: {0!s}'.format(from_address),
+                          'To: {0!s}'.format(', '.join(to_addresses)),
+                          'CC: {0!s}'.format(', '.join(cc_addresses)),
+                          'Subject: {0!s}'.format(subject), '', msg])
   try:
     server = smtplib.SMTP('localhost')
     server.sendmail(from_address, to_addresses, msg_body)
@@ -274,7 +274,7 @@ def main():
 
   options, args = parser.parse_args()
   if args:
-    parser.error('Unknown options %s' % args)
+    parser.error('Unknown options {0!s}'.format(args))
 
   run_tests_helper.SetLogLevel(options.verbose)
 
@@ -326,7 +326,7 @@ def main():
     with open('/home/chrome-bot/.adb_device_info', 'w') as f:
       for device in json_data:
         try:
-          f.write('%s %s %s %.1fC %s%%\n' % (device['serial'], device['type'],
+          f.write('{0!s} {1!s} {2!s} {3:.1f}C {4!s}%\n'.format(device['serial'], device['type'],
               device['build'], float(device['battery']['temperature']) / 10,
               device['battery']['level']))
         except Exception:
@@ -337,8 +337,7 @@ def main():
   unique_types = list(set(types))
   unique_builds = list(set(builds))
 
-  bb_annotations.PrintMsg('Online devices: %d. Device types %s, builds %s'
-                           % (len(devices), unique_types, unique_builds))
+  bb_annotations.PrintMsg('Online devices: {0:d}. Device types {1!s}, builds {2!s}'.format(len(devices), unique_types, unique_builds))
 
   for j in json_data:
     logging.info('Device %s (%s)', j.get('serial'), j.get('type'))
@@ -352,8 +351,8 @@ def main():
 
   for dev, dev_errors in zip(devices, errors):
     if dev_errors:
-      err_msg += ['%s errors:' % str(dev)]
-      err_msg += ['    %s' % error for error in dev_errors]
+      err_msg += ['{0!s} errors:'.format(str(dev))]
+      err_msg += ['    {0!s}'.format(error) for error in dev_errors]
 
   if err_msg:
     bb_annotations.PrintWarning()
@@ -363,7 +362,7 @@ def main():
     to_addresses = ['chromium-android-device-alerts@google.com']
     bot_name = os.environ.get('BUILDBOT_BUILDERNAME')
     slave_name = os.environ.get('BUILDBOT_SLAVENAME')
-    subject = 'Device status check errors on %s, %s.' % (slave_name, bot_name)
+    subject = 'Device status check errors on {0!s}, {1!s}.'.format(slave_name, bot_name)
     SendEmail(from_address, to_addresses, [], subject, '\n'.join(err_msg))
 
   if options.device_status_dashboard:

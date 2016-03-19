@@ -17,17 +17,17 @@ import sys
 
 def _GenerateCompileCommands(files, include_paths):
   """Returns a JSON string containing a compilation database for the input."""
-  include_path_flags = ' '.join('-I %s' % include_path
+  include_path_flags = ' '.join('-I {0!s}'.format(include_path)
                                for include_path in include_paths)
   return json.dumps([{'directory': '.',
-                      'command': 'clang++ -std=c++11 -fsyntax-only %s -c %s' % (
+                      'command': 'clang++ -std=c++11 -fsyntax-only {0!s} -c {1!s}'.format(
                           include_path_flags, f),
                       'file': f} for f in files], indent=2)
 
 
 def _NumberOfTestsToString(tests):
   """Returns an English describing the number of tests."""
-  return "%d test%s" % (tests, 's' if tests != 1 else '')
+  return "{0:d} test{1!s}".format(tests, 's' if tests != 1 else '')
 
 
 def main(argv):
@@ -80,13 +80,13 @@ def main(argv):
     run_tool = subprocess.Popen(args, stdout=subprocess.PIPE)
     stdout, _ = run_tool.communicate()
     if run_tool.returncode != 0:
-      print 'run_tool failed:\n%s' % stdout
+      print 'run_tool failed:\n{0!s}'.format(stdout)
       sys.exit(1)
 
     passed = 0
     failed = 0
     for expected, actual in zip(expected_files, actual_files):
-      print '[ RUN      ] %s' % os.path.relpath(actual)
+      print '[ RUN      ] {0!s}'.format(os.path.relpath(actual))
       expected_output = actual_output = None
       with open(expected, 'r') as f:
         expected_output = f.readlines()
@@ -98,22 +98,22 @@ def main(argv):
                                          fromfile=os.path.relpath(expected),
                                          tofile=os.path.relpath(actual)):
           sys.stdout.write(line)
-        print '[  FAILED  ] %s' % os.path.relpath(actual)
+        print '[  FAILED  ] {0!s}'.format(os.path.relpath(actual))
         # Don't clean up the file on failure, so the results can be referenced
         # more easily.
         continue
-      print '[       OK ] %s' % os.path.relpath(actual)
+      print '[       OK ] {0!s}'.format(os.path.relpath(actual))
       passed += 1
       os.remove(actual)
 
     if failed == 0:
       os.remove(compile_database)
 
-    print '[==========] %s ran.' % _NumberOfTestsToString(len(source_files))
+    print '[==========] {0!s} ran.'.format(_NumberOfTestsToString(len(source_files)))
     if passed > 0:
-      print '[  PASSED  ] %s.' % _NumberOfTestsToString(passed)
+      print '[  PASSED  ] {0!s}.'.format(_NumberOfTestsToString(passed))
     if failed > 0:
-      print '[  FAILED  ] %s.' % _NumberOfTestsToString(failed)
+      print '[  FAILED  ] {0!s}.'.format(_NumberOfTestsToString(failed))
   finally:
     # No matter what, unstage the git changes we made earlier to avoid polluting
     # the index.

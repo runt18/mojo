@@ -70,7 +70,7 @@ def LoadGenerators(generators_string):
     elif generator_name.endswith(".py"):
       pass
     else:
-      print "Unknown generator name %s" % generator_name
+      print "Unknown generator name {0!s}".format(generator_name)
       sys.exit(1)
     generator_module = imp.load_source(os.path.basename(generator_name)[:-3],
                                        generator_name)
@@ -82,7 +82,7 @@ def MakeImportStackMessage(imported_filename_stack):
   """Make a (human-readable) message listing a chain of imports. (Returned
   string begins with a newline (if nonempty) and does not end with one.)"""
   return ''.join(
-      reversed(["\n  %s was imported by %s" % (a, b) for (a, b) in \
+      reversed(["\n  {0!s} was imported by {1!s}".format(a, b) for (a, b) in \
                     zip(imported_filename_stack[1:], imported_filename_stack)]))
 
 
@@ -157,7 +157,7 @@ class MojomProcessor(object):
       return
 
     if filename in imported_filename_stack:
-      print "%s: Error: Circular dependency" % filename + \
+      print "{0!s}: Error: Circular dependency".format(filename) + \
           MakeImportStackMessage(imported_filename_stack + [filename])
       sys.exit(1)
 
@@ -165,7 +165,7 @@ class MojomProcessor(object):
       with open(filename) as f:
         source = f.read()
     except IOError as e:
-      print "%s: Error: %s" % (e.filename, e.strerror) + \
+      print "{0!s}: Error: {1!s}".format(e.filename, e.strerror) + \
           MakeImportStackMessage(imported_filename_stack + [filename])
       sys.exit(1)
 

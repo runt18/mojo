@@ -17,7 +17,7 @@ class ServiceProviderImpl(service_provider_mojom.ServiceProvider):
     if service_name is None:
       service_name = service_class.manager.service_name
     if service_name is None:
-      logging.error("No ServiceName specified for %s." % service_class.__name__)
+      logging.error("No ServiceName specified for {0!s}.".format(service_class.__name__))
       return
     self._name_to_service_connector[service_name] = service_class
 

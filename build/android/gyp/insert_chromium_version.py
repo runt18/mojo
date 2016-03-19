@@ -28,7 +28,7 @@ def InsertChromiumVersion(android_objcopy,
     stream.write(version_string)
     stream.flush()
     objcopy_command = [android_objcopy,
-                       '--add-section', '.chromium.version=%s' % stream.name,
+                       '--add-section', '.chromium.version={0!s}'.format(stream.name),
                        library_path]
     build_utils.CheckOutput(objcopy_command)
 

@@ -129,12 +129,12 @@ def _FindIllegalAbsolutePathsInBuildFiles(input_api, package):
 def _PathReferenceInBuildFileWarningItem(build_file, line_num, referenced_path):
   """Returns a string expressing a warning item that |referenced_path| is
   referenced at |line_num| in |build_file|."""
-  return "%s, line %d (%s)" % (build_file, line_num, referenced_path)
+  return "{0!s}, line {1:d} ({2!s})".format(build_file, line_num, referenced_path)
 
 def _IncorrectSourceSetTypeWarningItem(build_file, line_num):
   """Returns a string expressing that the error occurs at |line_num| in
   |build_file|."""
-  return "%s, line %d" % (build_file, line_num)
+  return "{0!s}, line {1:d}".format(build_file, line_num)
 
 def _CheckNoIllegalAbsolutePathsInBuildFiles(input_api, output_api, package):
   """Makes sure that the BUILD.gn files within |package| do not reference the

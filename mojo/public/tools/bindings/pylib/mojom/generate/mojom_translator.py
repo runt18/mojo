@@ -488,11 +488,11 @@ class FileTranslator(object):
     if value.tag == mojom_types_mojom.Value.Tags.literal_value:
       if (value.literal_value.tag
           == mojom_types_mojom.LiteralValue.Tags.string_value):
-        return '"%s"' % value.literal_value.data
+        return '"{0!s}"'.format(value.literal_value.data)
       if (value.literal_value.tag
           == mojom_types_mojom.LiteralValue.Tags.bool_value):
         # The strings 'true' and 'false' are used to represent bool literals.
-        return ('%s' % value.literal_value.data).lower()
+        return ('{0!s}'.format(value.literal_value.data)).lower()
       elif (value.literal_value.tag
           == mojom_types_mojom.LiteralValue.Tags.float_value or
           value.literal_value.tag

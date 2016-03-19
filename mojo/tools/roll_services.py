@@ -43,7 +43,7 @@ def write_file_to_gs(gsutil_exe, file_contents, dest):
 
 
 def roll_version(gsutil_exe, config, version):
-  service_dir = 'gs://mojo/services/%s/%s' % (target(config), version)
+  service_dir = 'gs://mojo/services/{0!s}/{1!s}'.format(target(config), version)
   services = subprocess.check_output(
       [gsutil_exe, 'ls', service_dir]).strip().split('\n')
   for service in services:

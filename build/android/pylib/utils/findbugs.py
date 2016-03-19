@@ -98,7 +98,7 @@ class FindBugsWarning(object):
     return not self == other
 
   def __str__(self):
-    return '%s: %s' % (self.bug_type, '\n  '.join(self.message))
+    return '{0!s}: {1!s}'.format(self.bug_type, '\n  '.join(self.message))
 
 
 def Run(exclude, classes_to_analyze, auxiliary_classes, output_file,
@@ -117,15 +117,15 @@ def Run(exclude, classes_to_analyze, auxiliary_classes, output_file,
   # TODO(jbudorick): Get this from the build system.
   system_classes = [
     os.path.join(constants.ANDROID_SDK_ROOT, 'platforms',
-                 'android-%s' % constants.ANDROID_SDK_VERSION, 'android.jar')
+                 'android-{0!s}'.format(constants.ANDROID_SDK_VERSION), 'android.jar')
   ]
   system_classes.extend(os.path.abspath(classes)
                         for classes in auxiliary_classes or [])
 
   cmd = ['java',
-         '-classpath', '%s:' % _FINDBUGS_JAR,
-         '-Xmx%dm' % _FINDBUGS_MAX_HEAP,
-         '-Dfindbugs.home="%s"' % _FINDBUGS_HOME,
+         '-classpath', '{0!s}:'.format(_FINDBUGS_JAR),
+         '-Xmx{0:d}m'.format(_FINDBUGS_MAX_HEAP),
+         '-Dfindbugs.home="{0!s}"'.format(_FINDBUGS_HOME),
          '-jar', _FINDBUGS_JAR,
          '-textui', '-sortByClass',
          '-pluginList', _FINDBUGS_PLUGIN_PATH, '-xml:withMessages']

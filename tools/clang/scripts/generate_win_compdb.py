@@ -66,14 +66,14 @@ def main(argv):
       'ninja -C out/Debug -t compdb cc cxx objc objcxx'))
 
   compile_db = json.loads(compile_db_as_json)
-  print 'Read in %d entries from the compile db' % len(compile_db)
+  print 'Read in {0:d} entries from the compile db'.format(len(compile_db))
   compile_db = [_ProcessEntry(e) for e in compile_db]
   original_length = len(compile_db)
 
   # Filter out NaCl stuff. The clang tooling chokes on them.
   compile_db = [e for e in compile_db if '_nacl.cc.pdb' not in e['command']
       and '_nacl_win64.cc.pdb' not in e['command']]
-  print 'Filtered out %d entries...' % (original_length - len(compile_db))
+  print 'Filtered out {0:d} entries...'.format((original_length - len(compile_db)))
   f = file('out/Debug/compile_commands.json', 'w')
   f.write(json.dumps(compile_db, indent=2))
   print 'Done!'

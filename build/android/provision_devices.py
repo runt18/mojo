@@ -140,7 +140,7 @@ def WipeDevice(device, options):
             adb_public_keys = f.readlines()
           adb_keys_set.update(adb_public_keys)
         except IOError:
-          logging.warning('Unable to find adb keys file %s.' % adb_key_file)
+          logging.warning('Unable to find adb keys file {0!s}.'.format(adb_key_file))
       _WriteAdbKeysFile(device, '\n'.join(adb_keys_set))
   except device_errors.CommandFailedError:
     logging.exception('Possible failure while wiping the device. '
@@ -203,7 +203,7 @@ def _ConfigureLocalProperties(device, java_debug=True):
       ]
   if java_debug:
     local_props.append(
-        '%s=all' % device_utils.DeviceUtils.JAVA_ASSERT_PROPERTY)
+        '{0!s}=all'.format(device_utils.DeviceUtils.JAVA_ASSERT_PROPERTY))
     local_props.append('debug.checkjni=1')
   try:
     device.WriteFile(
@@ -223,7 +223,7 @@ def FinishProvisioning(device, options):
       as_root=True, check_return=True)
   props = device.RunShellCommand('getprop', check_return=True)
   for prop in props:
-    logging.info('  %s' % prop)
+    logging.info('  {0!s}'.format(prop))
   if options.auto_reconnect:
     _PushAndLaunchAdbReboot(device, options.target)
 
@@ -237,13 +237,13 @@ def _PushAndLaunchAdbReboot(device, target):
     target: The build target (example, Debug or Release) which helps in
             locating the adb_reboot binary.
   """
-  logging.info('Will push and launch adb_reboot on %s' % str(device))
+  logging.info('Will push and launch adb_reboot on {0!s}'.format(str(device)))
   # Kill if adb_reboot is already running.
   device.KillAll('adb_reboot', blocking=True, timeout=2, quiet=True)
   # Push adb_reboot
   logging.info('  Pushing adb_reboot ...')
   adb_reboot = os.path.join(constants.DIR_SOURCE_ROOT,
-                            'out/%s/adb_reboot' % target)
+                            'out/{0!s}/adb_reboot'.format(target))
   device.PushChangedFiles([(adb_reboot, '/data/local/tmp/')])
   # Launch adb_reboot
   logging.info('  Launching adb_reboot ...')

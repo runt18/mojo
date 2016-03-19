@@ -185,7 +185,7 @@ class build_ext(_build_ext.build_ext):
             from Cython.Compiler.Errors import PyrexError
         except ImportError:
             e = sys.exc_info()[1]
-            print("failed to import Cython: %s" % e)
+            print("failed to import Cython: {0!s}".format(e))
             raise DistutilsPlatformError("Cython does not appear to be installed")
 
         new_sources = []

@@ -64,7 +64,7 @@ def _GetDisabledTestsFilterFromFile(suite_name):
   """
   filter_file_path = os.path.join(
       os.path.abspath(os.path.dirname(__file__)),
-      'filter', '%s_disabled' % suite_name)
+      'filter', '{0!s}_disabled'.format(suite_name))
 
   if not filter_file_path or not os.path.exists(filter_file_path):
     logging.info('No filter file found at %s', filter_file_path)
@@ -72,7 +72,7 @@ def _GetDisabledTestsFilterFromFile(suite_name):
 
   filters = [x for x in [x.strip() for x in file(filter_file_path).readlines()]
              if x and x[0] != '#']
-  disabled_filter = '*-%s' % ':'.join(filters)
+  disabled_filter = '*-{0!s}'.format(':'.join(filters))
   logging.info('Applying filter "%s" obtained from %s',
                disabled_filter, filter_file_path)
   return disabled_filter
@@ -213,8 +213,8 @@ def Setup(test_options, devices):
 
   if test_options.run_disabled:
     test_options = test_options._replace(
-        test_arguments=('%s --gtest_also_run_disabled_tests' %
-                        test_options.test_arguments))
+        test_arguments=('{0!s} --gtest_also_run_disabled_tests'.format(
+                        test_options.test_arguments)))
   else:
     tests = _FilterDisabledTests(tests, test_options.suite_name,
                                  bool(test_options.gtest_filter))

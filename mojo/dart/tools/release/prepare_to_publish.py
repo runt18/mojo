@@ -35,7 +35,7 @@ and requires building Android release. Are you sure you wish to continue?
 """
 
 def confirm(prompt):
-    user_input = raw_input("%s (y/N) " % prompt)
+    user_input = raw_input("{0!s} (y/N) ".format(prompt))
     try:
         return distutils.util.strtobool(user_input) == 1
     except ValueError:

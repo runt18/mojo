@@ -84,7 +84,7 @@ class TestRunner(base_test_runner.BaseTestRunner):
 
   def _TakeScreenshot(self, test):
     """Takes a screenshot from the device."""
-    screenshot_name = os.path.join(constants.SCREENSHOTS_DIR, '%s.png' % test)
+    screenshot_name = os.path.join(constants.SCREENSHOTS_DIR, '{0!s}.png'.format(test))
     logging.info('Taking screenshot named %s', screenshot_name)
     self.device.TakeScreenshot(screenshot_name)
 
@@ -137,8 +137,8 @@ class TestRunner(base_test_runner.BaseTestRunner):
     self._RestartHttpServerForwarderIfNecessary()
 
     if self.coverage_dir:
-      coverage_basename = '%s.ec' % test
-      self.coverage_device_file = '%s/%s/%s' % (
+      coverage_basename = '{0!s}.ec'.format(test)
+      self.coverage_device_file = '{0!s}/{1!s}/{2!s}'.format(
           self.device.GetExternalStoragePath(),
           TestRunner._DEVICE_COVERAGE_DIR, coverage_basename)
       self.coverage_host_file = os.path.join(
@@ -206,7 +206,7 @@ class TestRunner(base_test_runner.BaseTestRunner):
       self.device.PullFile(
           self.coverage_device_file, self.coverage_host_file)
       self.device.RunShellCommand(
-          'rm -f %s' % self.coverage_device_file)
+          'rm -f {0!s}'.format(self.coverage_device_file))
 
   def TearDownPerfMonitoring(self, test):
     """Cleans up performance monitoring if the specified test required it.
@@ -276,8 +276,7 @@ class TestRunner(base_test_runner.BaseTestRunner):
       try:
         timeout_scale = int(annotations['TimeoutScale'])
       except ValueError:
-        logging.warning('Non-integer value of TimeoutScale ignored. (%s)'
-                        % annotations['TimeoutScale'])
+        logging.warning('Non-integer value of TimeoutScale ignored. ({0!s})'.format(annotations['TimeoutScale']))
     if self.options.wait_for_debugger:
       timeout_scale *= 100
     return timeout_scale
@@ -317,7 +316,7 @@ class TestRunner(base_test_runner.BaseTestRunner):
     extras = self._GetInstrumentationArgs()
     extras['class'] = test
     return self.device.StartInstrumentation(
-        '%s/%s' % (self.test_pkg.GetPackageName(), self.options.test_runner),
+        '{0!s}/{1!s}'.format(self.test_pkg.GetPackageName(), self.options.test_runner),
         raw=True, extras=extras, timeout=timeout, retries=3)
 
   def _GenerateTestResult(self, test, instr_result_code, instr_result_bundle,

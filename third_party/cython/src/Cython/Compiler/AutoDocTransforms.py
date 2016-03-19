@@ -29,18 +29,18 @@ class EmbedSignature(CythonTransform):
     def _fmt_expr_node(self, node, precedence=0):
         if isinstance(node, ExprNodes.BinopNode) and not node.inplace:
             new_prec = self.binop_precedence.get(node.operator, 0)
-            result = '%s %s %s' % (self._fmt_expr_node(node.operand1, new_prec),
+            result = '{0!s} {1!s} {2!s}'.format(self._fmt_expr_node(node.operand1, new_prec),
                                    node.operator,
                                    self._fmt_expr_node(node.operand2, new_prec))
             if precedence > new_prec:
-                result = '(%s)' % result
+                result = '({0!s})'.format(result)
         elif isinstance(node, ExprNodes.UnopNode):
-            result = '%s%s' % (node.operator,
+            result = '{0!s}{1!s}'.format(node.operator,
                                self._fmt_expr_node(node.operand, self.unop_precedence))
             if precedence > self.unop_precedence:
-                result = '(%s)' % result
+                result = '({0!s})'.format(result)
         elif isinstance(node, ExprNodes.AttributeNode):
-            result = '%s.%s' % (self._fmt_expr_node(node.obj), node.attribute)
+            result = '{0!s}.{1!s}'.format(self._fmt_expr_node(node.obj), node.attribute)
         else:
             result = node.name
         return result
@@ -55,10 +55,10 @@ class EmbedSignature(CythonTransform):
             repr_val = repr(ctval)
             if isinstance(default_val, ExprNodes.UnicodeNode):
                 if repr_val[:1] != 'u':
-                    return u'u%s' % repr_val
+                    return u'u{0!s}'.format(repr_val)
             elif isinstance(default_val, ExprNodes.BytesNode):
                 if repr_val[:1] != 'b':
-                    return u'b%s' % repr_val
+                    return u'b{0!s}'.format(repr_val)
             elif isinstance(default_val, ExprNodes.StringNode):
                 if repr_val[:1] in 'ub':
                     return repr_val[1:]
@@ -77,7 +77,7 @@ class EmbedSignature(CythonTransform):
         if arg.default:
             arg_defv = self._fmt_arg_defv(arg)
             if arg_defv:
-                doc = doc + ('=%s' % arg_defv)
+                doc = doc + ('={0!s}'.format(arg_defv))
         return doc
 
     def _fmt_arglist(self, args,
@@ -90,11 +90,11 @@ class EmbedSignature(CythonTransform):
                 arg_doc = self._fmt_arg(arg)
                 arglist.append(arg_doc)
         if pargs:
-            arglist.insert(npargs, '*%s' % pargs.name)
+            arglist.insert(npargs, '*{0!s}'.format(pargs.name))
         elif nkargs:
             arglist.insert(npargs, '*')
         if kargs:
-            arglist.append('**%s' % kargs.name)
+            arglist.append('**{0!s}'.format(kargs.name))
         return arglist
 
     def _fmt_ret_type(self, ret):
@@ -112,18 +112,18 @@ class EmbedSignature(CythonTransform):
                                     nkargs, kargs,
                                     hide_self=hide_self)
         arglist_doc = ', '.join(arglist)
-        func_doc = '%s(%s)' % (func_name, arglist_doc)
+        func_doc = '{0!s}({1!s})'.format(func_name, arglist_doc)
         if cls_name:
-            func_doc = '%s.%s' % (cls_name, func_doc)
+            func_doc = '{0!s}.{1!s}'.format(cls_name, func_doc)
         if return_type:
             ret_doc = self._fmt_ret_type(return_type)
             if ret_doc:
-                func_doc = '%s -> %s' % (func_doc, ret_doc)
+                func_doc = '{0!s} -> {1!s}'.format(func_doc, ret_doc)
         return func_doc
 
     def _embed_signature(self, signature, node_doc):
         if node_doc:
-            return "%s\n%s" % (signature, node_doc)
+            return "{0!s}\n{1!s}".format(signature, node_doc)
         else:
             return signature
 
@@ -220,10 +220,10 @@ class EmbedSignature(CythonTransform):
             # property synthesised from a cdef public attribute
             type_name = entry.type.declaration_code("", for_display=1)
             if not entry.type.is_pyobject:
-                type_name = "'%s'" % type_name
+                type_name = "'{0!s}'".format(type_name)
             elif entry.type.is_extension_type:
                 type_name = entry.type.module_name + '.' + type_name
-            signature = '%s: %s' % (entry.name, type_name)
+            signature = '{0!s}: {1!s}'.format(entry.name, type_name)
             new_doc = self._embed_signature(signature, entry.doc)
             entry.doc = EncodedString(new_doc)
         return node

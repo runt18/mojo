@@ -57,7 +57,7 @@ class AdbInterface:
 
   def SetTargetSerial(self, serial):
     """Direct all future commands to Android target with the given serial."""
-    self._target_arg = "-s %s" % serial
+    self._target_arg = "-s {0!s}".format(serial)
 
   def SendCommand(self, command_string, timeout_time=20, retry_count=3):
     """Send a command via adb.
@@ -74,8 +74,8 @@ class AdbInterface:
     Raises:
       WaitForResponseTimedOutError if device does not respond to command within time
     """
-    adb_cmd = "%s %s %s" % (self._adb_path, self._target_arg, command_string)
-    logger.SilentLog("about to run %s" % adb_cmd)
+    adb_cmd = "{0!s} {1!s} {2!s}".format(self._adb_path, self._target_arg, command_string)
+    logger.SilentLog("about to run {0!s}".format(adb_cmd))
     return run_command.RunCommand(adb_cmd, timeout_time=timeout_time,
                                   retry_count=retry_count)
 
@@ -95,7 +95,7 @@ class AdbInterface:
     Raises:
       WaitForResponseTimedOutError: if device does not respond to command
     """
-    return self.SendCommand("shell %s" % cmd, timeout_time=timeout_time,
+    return self.SendCommand("shell {0!s}".format(cmd), timeout_time=timeout_time,
                             retry_count=retry_count)
 
   def BugReport(self, path):
@@ -116,7 +116,7 @@ class AdbInterface:
       src: file path of host file to push
       dest: destination absolute file path on device
     """
-    self.SendCommand("push %s %s" % (src, dest), timeout_time=60)
+    self.SendCommand("push {0!s} {1!s}".format(src, dest), timeout_time=60)
 
   def Pull(self, src, dest):
     """Pulls the file src on the device onto dest on the host.
@@ -133,10 +133,10 @@ class AdbInterface:
       os.makedirs(os.path.dirname(dest))
 
     if self.DoesFileExist(src):
-      self.SendCommand("pull %s %s" % (src, dest), timeout_time=60)
+      self.SendCommand("pull {0!s} {1!s}".format(src, dest), timeout_time=60)
       return True
     else:
-      logger.Log("ADB Pull Failed: Source file %s does not exist." % src)
+      logger.Log("ADB Pull Failed: Source file {0!s} does not exist.".format(src))
       return False
 
   def DoesFileExist(self, src):
@@ -149,7 +149,7 @@ class AdbInterface:
       True if file exists
     """
 
-    output = self.SendShellCommand("ls %s" % src)
+    output = self.SendShellCommand("ls {0!s}".format(src))
     error = "No such file or directory"
 
     if error in output:
@@ -166,7 +166,7 @@ class AdbInterface:
       self.SendCommand("wait-for-device")
       return True
     else:
-      logger.Log("Unrecognized output from adb root: %s" % output)
+      logger.Log("Unrecognized output from adb root: {0!s}".format(output))
       return False
 
   def StartInstrumentationForPackage(
@@ -177,7 +177,7 @@ class AdbInterface:
     Equivalent to StartInstrumentation, except instrumentation path is
     separated into its package and runner components.
     """
-    instrumentation_path = "%s/%s" % (package_name, runner_name)
+    instrumentation_path = "{0!s}/{1!s}".format(package_name, runner_name)
     return self.StartInstrumentation(instrumentation_path, timeout_time=timeout_time,
                                      no_window_animation=no_window_animation,
                                      instrumentation_args=instrumentation_args)
@@ -236,8 +236,7 @@ class AdbInterface:
             self.SendShellCommand(command_string, timeout_time=timeout_time,
                                   retry_count=2)))
     if "code" not in inst_finished_bundle:
-      logger.Log('No code available. inst_finished_bundle contains: %s '
-                 % inst_finished_bundle)
+      logger.Log('No code available. inst_finished_bundle contains: {0!s} '.format(inst_finished_bundle))
       raise errors.InstrumentationError("no test results... device setup "
                                         "correctly?")
 
@@ -245,7 +244,7 @@ class AdbInterface:
       long_msg_result = "no error message"
       if "longMsg" in inst_finished_bundle:
         long_msg_result = inst_finished_bundle["longMsg"]
-        logger.Log("Error! Test run failed: %s" % long_msg_result)
+        logger.Log("Error! Test run failed: {0!s}".format(long_msg_result))
       raise errors.InstrumentationError(long_msg_result)
 
     if "INSTRUMENTATION_ABORTED" in inst_finished_bundle:
@@ -276,13 +275,13 @@ class AdbInterface:
     inst_command_string = self._BuildInstrumentationCommand(
         package_name, runner_name, no_window_animation=no_window_animation,
         raw_mode=raw_mode, instrumentation_args=instrumentation_args)
-    command_string = "adb %s shell %s" % (self._target_arg, inst_command_string)
+    command_string = "adb {0!s} shell {1!s}".format(self._target_arg, inst_command_string)
     return command_string
 
   def _BuildInstrumentationCommand(
       self, package, runner_name, no_window_animation=False, profile=False,
       raw_mode=True, instrumentation_args={}):
-    instrumentation_path = "%s/%s" % (package, runner_name)
+    instrumentation_path = "{0!s}/{1!s}".format(package, runner_name)
 
     return self._BuildInstrumentationCommandPath(
         instrumentation_path, no_window_animation=no_window_animation,
@@ -298,14 +297,13 @@ class AdbInterface:
     if profile:
       self._CreateTraceDir()
       command_string += (
-          " -p %s/%s.dmtrace" %
-          (self.DEVICE_TRACE_DIR, instrumentation_path.split(".")[-1]))
+          " -p {0!s}/{1!s}.dmtrace".format(self.DEVICE_TRACE_DIR, instrumentation_path.split(".")[-1]))
 
     for key, value in instrumentation_args.items():
-      command_string += " -e %s '%s'" % (key, value)
+      command_string += " -e {0!s} '{1!s}'".format(key, value)
     if raw_mode:
       command_string += " -r"
-    command_string += " -w %s" % instrumentation_path
+    command_string += " -w {0!s}".format(instrumentation_path)
     return command_string
 
   def _CreateTraceDir(self):
@@ -334,7 +332,7 @@ class AdbInterface:
                                         wait_time)
     except errors.WaitForResponseTimedOutError:
       raise errors.WaitForResponseTimedOutError(
-          "Package manager did not respond after %s seconds" % wait_time)
+          "Package manager did not respond after {0!s} seconds".format(wait_time))
 
   def WaitForInstrumentation(self, package_name, runner_name, wait_time=120):
     """Waits for given instrumentation to be present on device
@@ -346,11 +344,11 @@ class AdbInterface:
       WaitForResponseTimedOutError if wait_time elapses and instrumentation
       still not present.
     """
-    instrumentation_path = "%s/%s" % (package_name, runner_name)
+    instrumentation_path = "{0!s}/{1!s}".format(package_name, runner_name)
     logger.Log("Waiting for instrumentation to be present")
     # Query the package manager
     try:
-      command = "pm list instrumentation | grep %s" % instrumentation_path
+      command = "pm list instrumentation | grep {0!s}".format(instrumentation_path)
       self._WaitForShellCommandContents(command, "instrumentation:", wait_time,
                                         raise_abort=False)
     except errors.WaitForResponseTimedOutError :
@@ -371,7 +369,7 @@ class AdbInterface:
       WaitForResponseTimedOutError if wait_time elapses and the process is
           still not running
     """
-    logger.Log("Waiting for process %s" % name)
+    logger.Log("Waiting for process {0!s}".format(name))
     self.SendCommand("wait-for-device")
     self._WaitForShellCommandContents("ps", name, wait_time)
 
@@ -386,7 +384,7 @@ class AdbInterface:
       WaitForResponseTimedOutError if wait_time elapses and the process is
           still running
     """
-    logger.Log("Waiting for process %s to end" % name)
+    logger.Log("Waiting for process {0!s} to end".format(name))
     self._WaitForShellCommandContents("ps", name, wait_time, invert=True)
 
   def _WaitForShellCommandContents(self, command, expected, wait_time,
@@ -461,7 +459,7 @@ class AdbInterface:
         attempts += 1
     if not boot_complete:
       raise errors.WaitForResponseTimedOutError(
-          "dev.bootcomplete flag was not set after %s seconds" % wait_time)
+          "dev.bootcomplete flag was not set after {0!s} seconds".format(wait_time))
 
   def Sync(self, retry_count=3, runtime_restart=False):
     """Perform a adb sync.

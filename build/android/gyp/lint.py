@@ -61,10 +61,10 @@ def _RunLint(lint_path, config_path, processed_config_path, manifest_path,
       path = location_elem.attributes['file'].value
       line = location_elem.getAttribute('line')
       if line:
-        error = '%s:%s %s: %s [warning]' % (path, line, message, issue_id)
+        error = '{0!s}:{1!s} {2!s}: {3!s} [warning]'.format(path, line, message, issue_id)
       else:
         # Issues in class files don't have a line number.
-        error = '%s %s: %s [warning]' % (path, message, issue_id)
+        error = '{0!s} {1!s}: {2!s} [warning]'.format(path, message, issue_id)
       print >> sys.stderr, error
       for attr in ['errorLine1', 'errorLine2']:
         error_line = issue.getAttribute(attr)

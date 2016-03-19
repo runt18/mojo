@@ -45,13 +45,13 @@ def main():
   execution_globals = {"config": config}
   exec args.test_list_file in execution_globals
   test_list = execution_globals["tests"]
-  _logger.debug("Test list: %s" % test_list)
+  _logger.debug("Test list: {0!s}".format(test_list))
 
-  print "Running tests in directory: %s" % args.root_dir
+  print "Running tests in directory: {0!s}".format(args.root_dir)
   os.chdir(args.root_dir)
 
   if args.successes_cache:
-    print "Successes cache file: %s" % args.successes_cache
+    print "Successes cache file: {0!s}".format(args.successes_cache)
   else:
     print "No successes cache file (will run all tests unconditionally)"
 
@@ -66,8 +66,8 @@ def main():
       _logger.debug("Successes: %s", successes)
     except IOError:
       # Just assume that it didn't exist, or whatever.
-      print ("Failed to read successes cache file %s (will create)" %
-             args.successes_cache)
+      print ("Failed to read successes cache file {0!s} (will create)".format(
+             args.successes_cache))
       successes = set()
 
   gtest.set_color()
@@ -81,31 +81,31 @@ def main():
     # TODO(vtl): Add type.
     cacheable = test_dict.get("cacheable", True)
     if not cacheable:
-      _logger.debug("%s is marked as non-cacheable" % test_name)
+      _logger.debug("{0!s} is marked as non-cacheable".format(test_name))
 
     gtest_file = test
     if config.target_os == Config.OS_ANDROID:
       gtest_file = test + "_apk/" + test + "-debug.apk"
 
     if successes_cache_file and cacheable:
-      _logger.debug("Getting transitive hash for %s ... " % test_name)
+      _logger.debug("Getting transitive hash for {0!s} ... ".format(test_name))
       try:
         if config.target_os == Config.OS_ANDROID:
           gtest_hash = file_hash(gtest_file)
         else:
           gtest_hash = transitive_hash(gtest_file)
       except subprocess.CalledProcessError:
-        print "Failed to get transitive hash for %s" % test_name
+        print "Failed to get transitive hash for {0!s}".format(test_name)
         exit_code = 1
         continue
-      _logger.debug("  Transitive hash: %s" % gtest_hash)
+      _logger.debug("  Transitive hash: {0!s}".format(gtest_hash))
 
       if gtest_hash in successes:
-        print "Skipping %s (previously succeeded)" % test_name
+        print "Skipping {0!s} (previously succeeded)".format(test_name)
         continue
 
-    _logger.info("Will start: %s" % test_name)
-    print "Running %s...." % test_name,
+    _logger.info("Will start: {0!s}".format(test_name))
+    print "Running {0!s}....".format(test_name),
     sys.stdout.flush()
     try:
       if config.target_os == Config.OS_ANDROID:
@@ -120,7 +120,7 @@ def main():
         ]
       else:
         command = ["./" + test]
-      _logger.debug("Command: %s" % command)
+      _logger.debug("Command: {0!s}".format(command))
       subprocess.check_output(command, stderr=subprocess.STDOUT)
       print "Succeeded"
       # Record success.
@@ -129,7 +129,7 @@ def main():
         successes_cache_file.write(gtest_hash + "\n")
         successes_cache_file.flush()
     except subprocess.CalledProcessError as e:
-      print "Failed with exit code %d and output:" % e.returncode
+      print "Failed with exit code {0:d} and output:".format(e.returncode)
       print 72 * "-"
       print e.output
       print 72 * "-"
@@ -139,7 +139,7 @@ def main():
       print "  Failed to start test"
       exit_code = 1
       continue
-    _logger.info("Completed: %s" % test_name)
+    _logger.info("Completed: {0!s}".format(test_name))
   if exit_code == 0:
     print "All tests succeeded"
   if successes_cache_file:

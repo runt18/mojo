@@ -139,7 +139,7 @@ class IDLPPAPIParser(IDLParser):
                   | integer RSHIFT integer"""
     val = str(p[1])
     if len(p) > 2:
-      val = "%s %s %s" % (p[1], p[2], p[3])
+      val = "{0!s} {1!s} {2!s}".format(p[1], p[2], p[3])
     p[0] = ListFromConcat(self.BuildAttribute('TYPE', 'integer'),
                           self.BuildAttribute('VALUE', val))
 
@@ -307,7 +307,7 @@ def main(argv):
 
   print '\n'.join(ast.Tree(accept_props=['PROD', 'TYPE', 'VALUE']))
   if errors:
-    print '\nFound %d errors.\n' % errors
+    print '\nFound {0:d} errors.\n'.format(errors)
 
 
   return errors

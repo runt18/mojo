@@ -41,7 +41,7 @@ def _UInt(s):
   except ValueError:
     v = -1
   if len(s) < 4 or len(s) > 6 or v < 0 or v > _RUNE_MAX:
-    raise InputError("invalid Unicode value %s" % (s,))
+    raise InputError("invalid Unicode value {0!s}".format(s))
   return v
 
 
@@ -68,7 +68,7 @@ def _URange(s):
     hi = _UInt(a[1])
     if lo < hi:
       return range(lo, hi + 1)
-  raise InputError("invalid Unicode range %s" % (s,))
+  raise InputError("invalid Unicode range {0!s}".format(s))
 
 
 def _UStr(v):
@@ -86,8 +86,8 @@ def _UStr(v):
     InputError: the argument is not a valid Unicode value.
   """
   if v < 0 or v > _RUNE_MAX:
-    raise InputError("invalid Unicode value %s" % (v,))
-  return "0x%04X" % (v,)
+    raise InputError("invalid Unicode value {0!s}".format(v))
+  return "0x{0:04X}".format(v)
 
 
 def _ParseContinue(s):
@@ -145,7 +145,7 @@ def ReadUnicodeTable(filename, nfields, doline):
   """
 
   if nfields < 2:
-    raise InputError("invalid number of fields %d" % (nfields,))
+    raise InputError("invalid number of fields {0:d}".format(nfields))
 
   if type(filename) == str:
     if filename.startswith("http://"):
@@ -173,8 +173,7 @@ def ReadUnicodeTable(filename, nfields, doline):
       # Must have the expected number of fields.
       fields = [s.strip() for s in line.split(";")]
       if len(fields) != nfields:
-        raise InputError("wrong number of fields %d %d - %s" %
-                         (len(fields), nfields, line))
+        raise InputError("wrong number of fields {0:d} {1:d} - {2!s}".format(len(fields), nfields, line))
 
       # The Unicode text files have two different ways
       # to list a Unicode range.  Either the first field is
@@ -189,12 +188,11 @@ def ReadUnicodeTable(filename, nfields, doline):
         # this one had better give the Last one.
         if (len(codes) != 1 or codes[0] <= first or
             cont != "Last" or name != expect_last):
-          raise InputError("expected Last line for %s" %
-                           (expect_last,))
+          raise InputError("expected Last line for {0!s}".format(expect_last))
         codes = range(first, codes[0] + 1)
         first = None
         expect_last = None
-        fields[0] = "%04X..%04X" % (codes[0], codes[-1])
+        fields[0] = "{0:04X}..{1:04X}".format(codes[0], codes[-1])
         fields[1] = name
       elif cont == "First":
         # Otherwise, if this is the First code in a range,
@@ -208,12 +206,11 @@ def ReadUnicodeTable(filename, nfields, doline):
       doline(codes, fields)
 
     except Exception, e:
-      print "%s:%d: %s" % (filename, lineno, e)
+      print "{0!s}:{1:d}: {2!s}".format(filename, lineno, e)
       raise
 
   if expect_last is not None:
-    raise InputError("expected Last line for %s; got EOF" %
-                     (expect_last,))
+    raise InputError("expected Last line for {0!s}; got EOF".format(expect_last))
 
 
 def CaseGroups(unicode_dir=_UNICODE_DIR):

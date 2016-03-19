@@ -65,9 +65,9 @@ class TestPackageExecutable(TestPackage):
     #     /code/chrome if GCOV_PREFIX_STRIP=3
     try:
       depth = os.environ['NATIVE_COVERAGE_DEPTH_STRIP']
-      export_string = ('export GCOV_PREFIX="%s/gcov"\n' %
-                       device.GetExternalStoragePath())
-      export_string += 'export GCOV_PREFIX_STRIP=%s\n' % depth
+      export_string = ('export GCOV_PREFIX="{0!s}/gcov"\n'.format(
+                       device.GetExternalStoragePath()))
+      export_string += 'export GCOV_PREFIX_STRIP={0!s}\n'.format(depth)
       return export_string
     except KeyError:
       logging.info('NATIVE_COVERAGE_DEPTH_STRIP is not defined: '
@@ -113,7 +113,7 @@ class TestPackageExecutable(TestPackage):
   #override
   def GetAllTests(self, device):
     lib_path = posixpath.join(
-        constants.TEST_EXECUTABLE_DIR, '%s_deps' % self.suite_name)
+        constants.TEST_EXECUTABLE_DIR, '{0!s}_deps'.format(self.suite_name))
 
     cmd = []
     if self.tool.GetTestWrapper():
@@ -140,8 +140,7 @@ class TestPackageExecutable(TestPackage):
     else:
       target_name = self.suite_path + '_stripped'
       if not os.path.isfile(target_name):
-        raise Exception('Did not find %s, build target %s' %
-                        (target_name, self.suite_name + '_stripped'))
+        raise Exception('Did not find {0!s}, build target {1!s}'.format(target_name, self.suite_name + '_stripped'))
 
       target_mtime = os.stat(target_name).st_mtime
       source_mtime = os.stat(self.suite_path).st_mtime

@@ -64,10 +64,10 @@ def main():
   command_line = [
     dart_snapshotter,
     main_dart,
-    '--package-root=%s' % package_root,
-    '--snapshot=%s' % snapshot,
-    '--depfile=%s' % dep_file,
-    '--build-output=%s' % build_output
+    '--package-root={0!s}'.format(package_root),
+    '--snapshot={0!s}'.format(snapshot),
+    '--depfile={0!s}'.format(dep_file),
+    '--build-output={0!s}'.format(build_output)
   ]
   subprocess.check_call(command_line)
   if not os.path.isfile(snapshot):
@@ -79,8 +79,7 @@ def main():
     snapshot_file.seek(20)
     actual_hash = snapshot_file.read(32)
   if not actual_hash == expected_hash:
-    print ('wrong hash: actual = %s, expected = %s'
-           % (actual_hash, expected_hash))
+    print ('wrong hash: actual = {0!s}, expected = {1!s}'.format(actual_hash, expected_hash))
     return 1
 
   with open(dep_file) as dep_file:

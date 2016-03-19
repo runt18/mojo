@@ -6,13 +6,13 @@ def print_process_error(command_line, error):
   """Properly format an exception raised from a failed command execution."""
 
   if command_line:
-    print 'Failed command: %r' % command_line
+    print 'Failed command: {0!r}'.format(command_line)
   else:
     print 'Failed command:'
   print 72 * '-'
 
   if hasattr(error, 'returncode'):
-    print '  with exit code %d' % error.returncode
+    print '  with exit code {0:d}'.format(error.returncode)
     print 72 * '-'
 
   if hasattr(error, 'output'):

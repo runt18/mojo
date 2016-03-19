@@ -73,7 +73,7 @@ class RemoteDeviceTestRun(test_run.TestRun):
       remote_device_helper.TestHttpResponse(
         test_start_res, 'Unable to run test.')
       self._test_run_id = test_start_res.json()['response']['test_run_id']
-      logging.info('Test run id: %s' % self._test_run_id)
+      logging.info('Test run id: {0!s}'.format(self._test_run_id))
 
     if self._env.collect:
       current_status = ''
@@ -93,8 +93,7 @@ class RemoteDeviceTestRun(test_run.TestRun):
             current_status, self._env.timeouts['unknown'])
         if timeout_counter > timeout:
           raise remote_device_helper.RemoteDeviceError(
-              'Timeout while in %s state for %s seconds'
-              % (current_status, timeout),
+              'Timeout while in {0!s} state for {1!s} seconds'.format(current_status, timeout),
               is_infra_error=True)
         time.sleep(self.WAIT_TIME)
         timeout_counter += self.WAIT_TIME
@@ -167,7 +166,7 @@ class RemoteDeviceTestRun(test_run.TestRun):
       if test['test_type'] == test_name:
         return test['test_id']
     raise remote_device_helper.RemoteDeviceError(
-        'No test found with name %s' % (test_name))
+        'No test found with name {0!s}'.format((test_name)))
 
   def _DownloadTestResults(self, results_path):
     """Download the test results from remote device service.
@@ -176,7 +175,7 @@ class RemoteDeviceTestRun(test_run.TestRun):
       results_path: Path to download appurify results zipfile.
     """
     if results_path:
-      logging.info('Downloading results to %s.' % results_path)
+      logging.info('Downloading results to {0!s}.'.format(results_path))
       if not os.path.exists(os.path.dirname(results_path)):
         os.makedirs(os.path.dirname(results_path))
       with appurify_sanitized.SanitizeLogging(self._env.verbose_count,
@@ -205,7 +204,7 @@ class RemoteDeviceTestRun(test_run.TestRun):
     config = {'runner': runner_package}
     if environment_variables:
       config['environment_vars'] = ','.join(
-          '%s=%s' % (k, v) for k, v in environment_variables.iteritems())
+          '{0!s}={1!s}'.format(k, v) for k, v in environment_variables.iteritems())
 
     self._app_id = self._UploadAppToDevice(app_path)
 
@@ -237,7 +236,7 @@ class RemoteDeviceTestRun(test_run.TestRun):
     else:
       self._test_id = self._UploadTestToDevice('robotium', test_path)
 
-    logging.info('Setting config: %s' % config)
+    logging.info('Setting config: {0!s}'.format(config))
     appurify_configs = {}
     if self._env.network_config:
       appurify_configs['network'] = self._env.network_config
@@ -253,7 +252,7 @@ class RemoteDeviceTestRun(test_run.TestRun):
         upload_results = appurify_sanitized.api.apps_upload(
             self._env.token, apk_src, 'raw', name=self._test_instance.suite)
       remote_device_helper.TestHttpResponse(
-          upload_results, 'Unable to upload %s.' % app_path)
+          upload_results, 'Unable to upload {0!s}.'.format(app_path))
       return upload_results.json()['response']['app_id']
 
   def _UploadTestToDevice(self, test_type, test_path, app_id=None):
@@ -261,14 +260,14 @@ class RemoteDeviceTestRun(test_run.TestRun):
     Args:
       test_type: Type of test that is being uploaded. Ex. uirobot, gtest..
     """
-    logging.info('Uploading %s to remote service.' % test_path)
+    logging.info('Uploading {0!s} to remote service.'.format(test_path))
     with open(test_path, 'rb') as test_src:
       with appurify_sanitized.SanitizeLogging(self._env.verbose_count,
                                               logging.WARNING):
         upload_results = appurify_sanitized.api.tests_upload(
             self._env.token, test_src, 'raw', test_type, app_id=app_id)
       remote_device_helper.TestHttpResponse(upload_results,
-          'Unable to upload %s.' % test_path)
+          'Unable to upload {0!s}.'.format(test_path))
       return upload_results.json()['response']['test_id']
 
   def _SetTestConfig(self, runner_type, runner_configs,
@@ -289,15 +288,15 @@ class RemoteDeviceTestRun(test_run.TestRun):
     with tempfile.TemporaryFile() as config:
       config_data = [
           '[appurify]',
-          'network=%s' % network,
-          'pcap=%s' % pcap,
-          'profiler=%s' % profiler,
-          'videocapture=%s' % videocapture,
-          '[%s]' % runner_type
+          'network={0!s}'.format(network),
+          'pcap={0!s}'.format(pcap),
+          'profiler={0!s}'.format(profiler),
+          'videocapture={0!s}'.format(videocapture),
+          '[{0!s}]'.format(runner_type)
       ]
       config_data.extend(
-          '%s=%s' % (k, v) for k, v in runner_configs.iteritems())
-      config.write(''.join('%s\n' % l for l in config_data))
+          '{0!s}={1!s}'.format(k, v) for k, v in runner_configs.iteritems())
+      config.write(''.join('{0!s}\n'.format(l) for l in config_data))
       config.flush()
       config.seek(0)
       with appurify_sanitized.SanitizeLogging(self._env.verbose_count,

@@ -31,7 +31,7 @@ def main():
   for line in out.splitlines():
     parts = line.split('\t')
     if len(parts) != 3:
-      print 'Skipping: %s -- not a rename?' % parts
+      print 'Skipping: {0!s} -- not a rename?'.format(parts)
       continue
     attrs, fro, to = parts
     if attrs.split()[4].startswith('R'):
@@ -42,7 +42,7 @@ def main():
         '--no_error_for_non_source_file',
         fro, to])
     else:
-      print 'Skipping: %s -- not a rename?' % fro
+      print 'Skipping: {0!s} -- not a rename?'.format(fro)
   return 0
 
 

@@ -37,7 +37,7 @@ GSUTIL_PATH = os.path.join(DEPOT_PATH, 'gsutil.py')
 def RunCommand(command, env=None):
   """Run command and return success (True) or failure."""
 
-  print 'Running %s' % (str(command))
+  print 'Running {0!s}'.format((str(command)))
   if subprocess.call(command, shell=False, env=env) == 0:
     return True
   print 'Failed.'
@@ -78,18 +78,18 @@ def Compress(tools_name):
   with open(os.path.join(INSTALL_DIR, archive_name)) as f:
     sha1 = hashlib.sha1(f.read()).hexdigest()
   os.rename(os.path.join(INSTALL_DIR, archive_name),
-            os.path.join(INSTALL_DIR, '%s.tar.gz' % sha1))
+            os.path.join(INSTALL_DIR, '{0!s}.tar.gz'.format(sha1)))
   return sha1
 
 def Upload(tools_name, sha1):
   """Uploads INSTALL_DIR/sha1.tar.gz to Google Cloud Storage under
      gs://mojo/android/tool and writes sha1 to THIS_DIR/VERSION_*."""
 
-  file_name = '%s.tar.gz' % sha1
+  file_name = '{0!s}.tar.gz'.format(sha1)
   upload_cmd = ['python', GSUTIL_PATH, 'cp',
                 '-n', # Do not upload if the file already exists.
                 os.path.join(INSTALL_DIR, file_name),
-                'gs://mojo/android/tool/%s' % file_name]
+                'gs://mojo/android/tool/{0!s}'.format(file_name)]
 
   print "Uploading ' + tools_name + ' tools to GCS."
   if not RunCommand(upload_cmd):
@@ -100,11 +100,11 @@ def Upload(tools_name, sha1):
   version_stamp = VersionStampName(tools_name)
   stamp_file = os.path.join(THIS_DIR, version_stamp)
   with open(stamp_file, 'w+') as stamp:
-    stamp.write('%s\n' % sha1)
+    stamp.write('{0!s}\n'.format(sha1))
 
   stamp_file = os.path.join(INSTALL_DIR, version_stamp)
   with open(stamp_file, 'w+') as stamp:
-    stamp.write('%s\n' % sha1)
+    stamp.write('{0!s}\n'.format(sha1))
 
 def main(argv):
   option_parser = optparse.OptionParser()

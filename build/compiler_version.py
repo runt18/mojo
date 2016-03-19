@@ -19,7 +19,7 @@ compiler_version_cache = {}  # Map from (compiler, tool) -> version.
 
 
 def Usage(program_name):
-  print '%s MODE TOOL' % os.path.basename(program_name)
+  print '{0!s} MODE TOOL'.format(os.path.basename(program_name))
   print 'MODE: host or target.'
   print 'TOOL: assembler or compiler or linker.'
   return 1
@@ -31,9 +31,9 @@ def ParseArgs(args):
   mode = args[0]
   tool = args[1]
   if mode not in ('host', 'target'):
-    raise Exception('Invalid mode: %s' % mode)
+    raise Exception('Invalid mode: {0!s}'.format(mode))
   if tool not in ('assembler', 'compiler', 'linker'):
-    raise Exception('Invalid tool: %s' % tool)
+    raise Exception('Invalid tool: {0!s}'.format(tool))
   return mode, tool
 
 
@@ -75,7 +75,7 @@ def GetVersion(compiler, tool):
       # Fedora: GNU gold (version 2.23.2) 1.11
       version_re = re.compile(r"^GNU [^ ]+ .* (\d+).(\d+).*?$", re.M)
     else:
-      raise Exception("Unknown tool %s" % tool)
+      raise Exception("Unknown tool {0!s}".format(tool))
 
     # Force the locale to C otherwise the version string could be localized
     # making regex matching fail.
@@ -119,7 +119,7 @@ def DoMain(args):
   ret_code, result = ExtractVersion(mode, tool)
   if ret_code == 0:
     return result
-  raise Exception("Failed to extract compiler version for args: %s" % args)
+  raise Exception("Failed to extract compiler version for args: {0!s}".format(args))
 
 
 def ExtractVersion(mode, tool):

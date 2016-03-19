@@ -170,7 +170,7 @@ class DeviceUtils(object):
       self.adb = adb_wrapper.AdbWrapper(device.GetDevice())
       self.old_interface = device
     else:
-      raise ValueError('Unsupported device value: %r' % device)
+      raise ValueError('Unsupported device value: {0!r}'.format(device))
     self._commands_installed = None
     self._default_timeout = default_timeout
     self._default_retries = default_retries
@@ -364,7 +364,7 @@ class DeviceUtils(object):
     for line in output:
       if not line.startswith('package:'):
         raise device_errors.CommandFailedError(
-            'pm path returned: %r' % '\n'.join(output), str(self))
+            'pm path returned: {0!r}'.format('\n'.join(output)), str(self))
       apks.append(line[len('package:'):])
     return apks
 
@@ -381,7 +381,7 @@ class DeviceUtils(object):
     """
     try:
       output = self._RunPipedShellCommand(
-          'pm dump %s | grep dataDir=' % cmd_helper.SingleQuote(package))
+          'pm dump {0!s} | grep dataDir='.format(cmd_helper.SingleQuote(package)))
       for line in output:
         _, _, dataDir = line.partition('dataDir=')
         if dataDir:
@@ -555,8 +555,7 @@ class DeviceUtils(object):
     """
     if self.build_version_sdk < required_sdk_level:
       raise device_errors.DeviceVersionError(
-          ('Requires SDK level %s, device is SDK level %s' %
-           (required_sdk_level, self.build_version_sdk)),
+          ('Requires SDK level {0!s}, device is SDK level {1!s}'.format(required_sdk_level, self.build_version_sdk)),
            device_serial=self.adb.GetDeviceSerial())
 
 
@@ -616,9 +615,9 @@ class DeviceUtils(object):
     """
     def env_quote(key, value):
       if not DeviceUtils._VALID_SHELL_VARIABLE.match(key):
-        raise KeyError('Invalid shell variable name %r' % key)
+        raise KeyError('Invalid shell variable name {0!r}'.format(key))
       # using double quotes here to allow interpolation of shell variables
-      return '%s=%s' % (key, cmd_helper.DoubleQuote(value))
+      return '{0!s}={1!s}'.format(key, cmd_helper.DoubleQuote(value))
 
     def run(cmd):
       return self.adb.Shell(cmd)
@@ -640,12 +639,12 @@ class DeviceUtils(object):
           self._WriteFileWithPush(script.name, cmd)
           logging.info('Large shell command will be run from file: %s ...',
                        cmd[:100])
-          return handle_check_return('sh %s' % script.name_quoted)
+          return handle_check_return('sh {0!s}'.format(script.name_quoted))
 
     def handle_large_output(cmd, large_output_mode):
       if large_output_mode:
         with device_temp_file.DeviceTempFile(self.adb) as large_output_file:
-          cmd = '%s > %s' % (cmd, large_output_file.name)
+          cmd = '{0!s} > {1!s}'.format(cmd, large_output_file.name)
           logging.debug('Large output mode enabled. Will write output to '
                         'device and read results from file.')
           handle_large_command(cmd)
@@ -667,12 +666,12 @@ class DeviceUtils(object):
       cmd = ' '.join(cmd_helper.SingleQuote(s) for s in cmd)
     if env:
       env = ' '.join(env_quote(k, v) for k, v in env.iteritems())
-      cmd = '%s %s' % (env, cmd)
+      cmd = '{0!s} {1!s}'.format(env, cmd)
     if cwd:
-      cmd = 'cd %s && %s' % (cmd_helper.SingleQuote(cwd), cmd)
+      cmd = 'cd {0!s} && {1!s}'.format(cmd_helper.SingleQuote(cwd), cmd)
     if as_root and self.NeedsSU():
       # "su -c sh -c" allows using shell features in |cmd|
-      cmd = 'su -c sh -c %s' % cmd_helper.SingleQuote(cmd)
+      cmd = 'su -c sh -c {0!s}'.format(cmd_helper.SingleQuote(cmd))
 
     output = handle_large_output(cmd, large_output).splitlines()
 
@@ -690,7 +689,7 @@ class DeviceUtils(object):
   def _RunPipedShellCommand(self, script, **kwargs):
     PIPESTATUS_LEADER = 'PIPESTATUS: '
 
-    script += '; echo "%s${PIPESTATUS[@]}"' % PIPESTATUS_LEADER
+    script += '; echo "{0!s}${{PIPESTATUS[@]}}"'.format(PIPESTATUS_LEADER)
     kwargs['check_return'] = True
     output = self.RunShellCommand(script, **kwargs)
     pipestatus_line = output[-1]
@@ -742,9 +741,9 @@ class DeviceUtils(object):
         return 0
       else:
         raise device_errors.CommandFailedError(
-            'No process "%s"' % process_name, str(self))
+            'No process "{0!s}"'.format(process_name), str(self))
 
-    cmd = ['kill', '-%d' % signum] + pids.values()
+    cmd = ['kill', '-{0:d}'.format(signum)] + pids.values()
     self.RunShellCommand(cmd, as_root=as_root, check_return=True)
 
     if blocking:
@@ -1001,7 +1000,7 @@ class DeviceUtils(object):
     else:
       to_push = []
       for host_abs_path, host_checksum in host_checksums.iteritems():
-        device_abs_path = '%s/%s' % (
+        device_abs_path = '{0!s}/{1!s}'.format(
             real_device_path, os.path.relpath(host_abs_path, real_host_path))
         device_checksum = device_checksums.pop(device_abs_path, None)
         if device_checksum != host_checksum:
@@ -1047,7 +1046,7 @@ class DeviceUtils(object):
           install_commands.InstallCommands(self)
         self._commands_installed = True
       except Exception as e:
-        logging.warning('unzip not available: %s' % str(e))
+        logging.warning('unzip not available: {0!s}'.format(str(e)))
         self._commands_installed = False
 
   @staticmethod
@@ -1098,13 +1097,13 @@ class DeviceUtils(object):
       zip_proc.start()
       zip_proc.join()
 
-      zip_on_device = '%s/tmp.zip' % self.GetExternalStoragePath()
+      zip_on_device = '{0!s}/tmp.zip'.format(self.GetExternalStoragePath())
       try:
         self.adb.Push(zip_file.name, zip_on_device)
         self.RunShellCommand(
             ['unzip', zip_on_device],
             as_root=True,
-            env={'PATH': '%s:$PATH' % install_commands.BIN_DIR},
+            env={'PATH': '{0!s}:$PATH'.format(install_commands.BIN_DIR)},
             check_return=True)
       finally:
         if zip_proc.is_alive():
@@ -1259,7 +1258,7 @@ class DeviceUtils(object):
     if not force_push and len(contents) < self._MAX_ADB_COMMAND_LENGTH:
       # If the contents are small, for efficieny we write the contents with
       # a shell command rather than pushing a file.
-      cmd = 'echo -n %s > %s' % (cmd_helper.SingleQuote(contents),
+      cmd = 'echo -n {0!s} > {1!s}'.format(cmd_helper.SingleQuote(contents),
                                  cmd_helper.SingleQuote(device_path))
       self.RunShellCommand(cmd, as_root=as_root, check_return=True)
     elif as_root and self.NeedsSU():
@@ -1321,7 +1320,7 @@ class DeviceUtils(object):
       if filename == target:
         return stat
     raise device_errors.CommandFailedError(
-        'Cannot find file or directory: %r' % device_path, str(self))
+        'Cannot find file or directory: {0!r}'.format(device_path), str(self))
 
   @decorators.WithTimeoutAndRetriesFromInstance()
   def SetJavaAsserts(self, enabled, timeout=None, retries=None):
@@ -1360,7 +1359,7 @@ class DeviceUtils(object):
     index, value = find_property(properties, self.JAVA_ASSERT_PROPERTY)
     if new_value != value:
       if new_value:
-        new_line = '%s=%s' % (self.JAVA_ASSERT_PROPERTY, new_value)
+        new_line = '{0!s}={1!s}'.format(self.JAVA_ASSERT_PROPERTY, new_value)
         if index is None:
           properties.append(new_line)
         else:
@@ -1455,7 +1454,7 @@ class DeviceUtils(object):
       return int(value)
     except ValueError:
       raise device_errors.CommandFailedError(
-          'Invalid build version sdk: %r' % value)
+          'Invalid build version sdk: {0!r}'.format(value))
 
   @property
   def product_cpu_abi(self):
@@ -1490,7 +1489,7 @@ class DeviceUtils(object):
       CommandTimeoutError on timeout.
     """
     assert isinstance(property_name, basestring), (
-        "property_name is not a string: %r" % property_name)
+        "property_name is not a string: {0!r}".format(property_name))
 
     cache_key = '_prop:' + property_name
     if cache and cache_key in self._cache:
@@ -1527,8 +1526,8 @@ class DeviceUtils(object):
       CommandTimeoutError on timeout.
     """
     assert isinstance(property_name, basestring), (
-        "property_name is not a string: %r" % property_name)
-    assert isinstance(value, basestring), "value is not a string: %r" % value
+        "property_name is not a string: {0!r}".format(property_name))
+    assert isinstance(value, basestring), "value is not a string: {0!r}".format(value)
 
     self.RunShellCommand(['setprop', property_name, value], check_return=True)
     if property_name in self._cache:
@@ -1537,8 +1536,7 @@ class DeviceUtils(object):
     # single shell script to both set- and getprop.
     if check and value != self.GetProp(property_name):
       raise device_errors.CommandFailedError(
-          'Unable to set property %r on the device to %r'
-          % (property_name, value), str(self))
+          'Unable to set property {0!r} on the device to {1!r}'.format(property_name, value), str(self))
 
   @decorators.WithTimeoutAndRetriesFromInstance()
   def GetABI(self, timeout=None, retries=None):
@@ -1578,7 +1576,7 @@ class DeviceUtils(object):
     procs_pids = {}
     try:
       ps_output = self._RunPipedShellCommand(
-          'ps | grep -F %s' % cmd_helper.SingleQuote(process_name))
+          'ps | grep -F {0!s}'.format(cmd_helper.SingleQuote(process_name)))
     except device_errors.AdbShellCommandFailedError as e:
       if e.status and isinstance(e.status, list) and not e.status[0]:
         # If ps succeeded but grep failed, there were no processes with the
@@ -1616,7 +1614,7 @@ class DeviceUtils(object):
       DeviceUnreachableError on missing device.
     """
     if not host_path:
-      host_path = os.path.abspath('screenshot-%s.png' % _GetTimeStamp())
+      host_path = os.path.abspath('screenshot-{0!s}.png'.format(_GetTimeStamp()))
     with device_temp_file.DeviceTempFile(self.adb, suffix='.png') as device_tmp:
       self.RunShellCommand(['/system/bin/screencap', '-p', device_tmp.name],
                            check_return=True)
@@ -1660,20 +1658,20 @@ class DeviceUtils(object):
         'Private_Dirty')
 
     showmap_out = self._RunPipedShellCommand(
-        'showmap %d | grep TOTAL' % int(pid), as_root=True)
+        'showmap {0:d} | grep TOTAL'.format(int(pid)), as_root=True)
 
     split_totals = showmap_out[-1].split()
     if (not split_totals
         or len(split_totals) != 9
         or split_totals[-1] != 'TOTAL'):
       raise device_errors.CommandFailedError(
-          'Invalid output from showmap: %s' % '\n'.join(showmap_out))
+          'Invalid output from showmap: {0!s}'.format('\n'.join(showmap_out)))
 
     return dict(itertools.izip(SMAPS_COLUMNS, (int(n) for n in split_totals)))
 
   def _GetMemoryUsageForPidFromStatus(self, pid):
     for line in self.ReadFile(
-        '/proc/%s/status' % str(pid), as_root=True).splitlines():
+        '/proc/{0!s}/status'.format(str(pid)), as_root=True).splitlines():
       if line.startswith('VmHWM:'):
         return {'VmHWM': int(line.split()[1])}
     else:

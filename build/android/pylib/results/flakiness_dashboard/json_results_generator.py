@@ -237,8 +237,7 @@ class JSONResultsGeneratorBase(object):
 
     builder_name = self._builder_name
     if results_json and builder_name not in results_json:
-      _log.debug('Builder name (%s) is not in the results.json file.'
-                 % builder_name)
+      _log.debug('Builder name ({0!s}) is not in the results.json file.'.format(builder_name))
 
     self._ConvertJSONToCurrentVersion(results_json)
 
@@ -286,7 +285,7 @@ class JSONResultsGeneratorBase(object):
     files = [(json_file, os.path.join(self._results_directory, json_file))
              for json_file in json_files]
 
-    url = 'http://%s/testfile/upload' % self._test_results_server
+    url = 'http://{0!s}/testfile/upload'.format(self._test_results_server)
     # Set uploading timeout in case appengine server is having problems.
     # 120 seconds are more than enough to upload test results.
     uploader = _FileUploader(url, 120)
@@ -297,12 +296,11 @@ class JSONResultsGeneratorBase(object):
           _log.info('JSON uploaded.')
         else:
           _log.debug(
-              "JSON upload failed, %d: '%s'" %
-              (response.code, response.read()))
+              "JSON upload failed, {0:d}: '{1!s}'".format(response.code, response.read()))
       else:
         _log.error('JSON upload failed; no response returned')
     except Exception, err:
-      _log.error('Upload failed: %s' % err)
+      _log.error('Upload failed: {0!s}'.format(err))
       return
 
   def _GetTestTiming(self, test_name):
@@ -674,7 +672,7 @@ def _EncodeMultipartFormData(fields, files):
 
   for key, value in fields:
     lines.append('--' + BOUNDARY)
-    lines.append('Content-Disposition: form-data; name="%s"' % key)
+    lines.append('Content-Disposition: form-data; name="{0!s}"'.format(key))
     lines.append('')
     if isinstance(value, unicode):
       value = value.encode('utf-8')
@@ -684,7 +682,7 @@ def _EncodeMultipartFormData(fields, files):
     lines.append('--' + BOUNDARY)
     lines.append('Content-Disposition: form-data; name="%s"; '
                  'filename="%s"' % (key, filename))
-    lines.append('Content-Type: %s' % _GetMIMEType(filename))
+    lines.append('Content-Type: {0!s}'.format(_GetMIMEType(filename)))
     lines.append('')
     if isinstance(value, unicode):
       value = value.encode('utf-8')
@@ -693,5 +691,5 @@ def _EncodeMultipartFormData(fields, files):
   lines.append('--' + BOUNDARY + '--')
   lines.append('')
   body = CRLF.join(lines)
-  content_type = 'multipart/form-data; boundary=%s' % BOUNDARY
+  content_type = 'multipart/form-data; boundary={0!s}'.format(BOUNDARY)
   return content_type, body

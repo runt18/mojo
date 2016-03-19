@@ -201,7 +201,7 @@ def AddGTestOptions(parser):
                      nargs='+', metavar='SUITE_NAME', required=True,
                      help=('Executable name of the test suite to run. '
                            'Available suites include (but are not limited to): '
-                            '%s' % ', '.join('"%s"' % s for s in gtest_suites)))
+                            '%s' % ', '.join('"{0!s}"'.format(s) for s in gtest_suites)))
   group.add_argument('--gtest_also_run_disabled_tests',
                      '--gtest-also-run-disabled-tests',
                      dest='run_disabled', action='store_true',
@@ -374,13 +374,13 @@ def ProcessInstrumentationOptions(args):
   args.test_apk_path = os.path.join(
       constants.GetOutDirectory(),
       constants.SDK_BUILD_APKS_DIR,
-      '%s.apk' % args.test_apk)
+      '{0!s}.apk'.format(args.test_apk))
   args.test_apk_jar_path = os.path.join(
       constants.GetOutDirectory(),
       constants.SDK_BUILD_TEST_JAVALIB_DIR,
-      '%s.jar' %  args.test_apk)
-  args.test_support_apk_path = '%sSupport%s' % (
-      os.path.splitext(args.test_apk_path))
+      '{0!s}.jar'.format(args.test_apk))
+  args.test_support_apk_path = '{0!s}Support{1!s}'.format(*(
+      os.path.splitext(args.test_apk_path)))
 
   args.test_runner = apk_helper.GetInstrumentationName(args.test_apk_path)
 
@@ -445,7 +445,7 @@ def ProcessUIAutomatorOptions(args):
     args.uiautomator_jar = os.path.join(
         constants.GetOutDirectory(),
         constants.SDK_BUILD_JAVALIB_DIR,
-        '%s.dex.jar' % args.test_jar)
+        '{0!s}.dex.jar'.format(args.test_jar))
   args.uiautomator_info_jar = (
       args.uiautomator_jar[:args.uiautomator_jar.find('.dex.jar')] +
       '_java.jar')
@@ -706,7 +706,7 @@ def _RunLinkerTests(args, devices):
 
 def _RunInstrumentationTests(args, devices):
   """Subcommand of RunTestsCommands which runs instrumentation tests."""
-  logging.info('_RunInstrumentationTests(%s, %s)' % (str(args), str(devices)))
+  logging.info('_RunInstrumentationTests({0!s}, {1!s})'.format(str(args), str(devices)))
 
   instrumentation_options = ProcessInstrumentationOptions(args)
 
@@ -893,8 +893,7 @@ def _GetAttachedDevices(test_device=None):
     test_device = [d for d in attached_devices if d == test_device]
     if not test_device:
       raise device_errors.DeviceUnreachableError(
-          'Did not find device %s among attached device. Attached devices: %s'
-          % (test_device, ', '.join(attached_devices)))
+          'Did not find device {0!s} among attached device. Attached devices: {1!s}'.format(test_device, ', '.join(attached_devices)))
     return test_device
 
   else:
@@ -966,7 +965,7 @@ _SUPPORTED_IN_PLATFORM_MODE = [
 def RunTestsInPlatformMode(args, parser):
 
   if args.command not in _SUPPORTED_IN_PLATFORM_MODE:
-    parser.error('%s is not yet supported in platform mode' % args.command)
+    parser.error('{0!s} is not yet supported in platform mode'.format(args.command))
 
   with environment_factory.CreateEnvironment(args, parser.error) as env:
     with test_instance_factory.CreateTestInstance(args, parser.error) as test:

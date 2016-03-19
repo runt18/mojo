@@ -28,7 +28,7 @@ def AddKey(input_jar, output, key, value):
         if len(manifest_content):
           manifest_content += '\n'
       os.unlink(manifest_file)
-    manifest_content += '%s: %s\n' % (key, value)
+    manifest_content += '{0!s}: {1!s}\n'.format(key, value)
     with open(manifest_file, 'w') as f:
       f.write(manifest_content)
     shutil.make_archive(os.path.join(working_dir, 'output'), 'zip',

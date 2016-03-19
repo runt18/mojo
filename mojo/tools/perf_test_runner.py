@@ -47,7 +47,7 @@ def _ConvertPerfDataToChartFormat(perf_data, test_name):
   charts = {}
   for line in perf_data:
     match = re.match(_PERF_LINE_REGEX, line)
-    assert match, "Unable to parse the following input: %s" % line
+    assert match, "Unable to parse the following input: {0!s}".format(line)
 
     chart_name = match.group(1)
     trace_name = match.group(3) if match.group(3) else "summary"

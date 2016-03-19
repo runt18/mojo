@@ -116,7 +116,7 @@ def DeleteAllTempAVDs():
     if 'run_tests_avd' in avd_name:
       cmd = ['android', '-s', 'delete', 'avd', '--name', avd_name]
       cmd_helper.RunCmd(cmd)
-      logging.info('Delete AVD %s' % avd_name)
+      logging.info('Delete AVD {0!s}'.format(avd_name))
 
 
 class PortPool(object):
@@ -165,9 +165,9 @@ def LaunchTempEmulators(emulator_count, abi, api_level, wait_for_boot=True):
   """
   emulators = []
   for n in xrange(emulator_count):
-    t = time_profile.TimeProfile('Emulator launch %d' % n)
+    t = time_profile.TimeProfile('Emulator launch {0:d}'.format(n))
     # Creates a temporary AVD.
-    avd_name = 'run_tests_avd_%d' % n
+    avd_name = 'run_tests_avd_{0:d}'.format(n)
     logging.info('Emulator launch %d with avd_name=%s and api=%d',
         n, avd_name, api_level)
     emulator = Emulator(avd_name, abi)
@@ -248,7 +248,7 @@ class Emulator(object):
   def _DeviceName():
     """Return our device name."""
     port = _GetAvailablePort()
-    return ('emulator-%d' % port, port)
+    return ('emulator-{0:d}'.format(port), port)
 
   def CreateAVD(self, api_level):
     """Creates an AVD with the given name.
@@ -266,7 +266,7 @@ class Emulator(object):
     else:
       abi_option = 'x86'
 
-    api_target = 'android-%s' % api_level
+    api_target = 'android-{0!s}'.format(api_level)
 
     avd_command = [
         self.android,
@@ -285,12 +285,12 @@ class Emulator(object):
     # Instead of creating a custom profile, we overwrite config files.
     avd_process.expect('Do you wish to create a custom hardware profile')
     avd_process.sendline('no\n')
-    avd_process.expect('Created AVD \'%s\'' % self.avd_name)
+    avd_process.expect('Created AVD \'{0!s}\''.format(self.avd_name))
 
     # Replace current configuration with default Galaxy Nexus config.
     avds_dir = os.path.join(os.path.expanduser('~'), '.android', 'avd')
-    ini_file = os.path.join(avds_dir, '%s.ini' % self.avd_name)
-    new_config_ini = os.path.join(avds_dir, '%s.avd' % self.avd_name,
+    ini_file = os.path.join(avds_dir, '{0!s}.ini'.format(self.avd_name))
+    new_config_ini = os.path.join(avds_dir, '{0!s}.avd'.format(self.avd_name),
                                   'config.ini')
 
     # Remove config files with defaults to replace with Google's GN settings.
@@ -300,9 +300,9 @@ class Emulator(object):
     # Create new configuration files with Galaxy Nexus by Google settings.
     with open(ini_file, 'w') as new_ini:
       new_ini.write('avd.ini.encoding=ISO-8859-1\n')
-      new_ini.write('target=%s\n' % api_target)
-      new_ini.write('path=%s/%s.avd\n' % (avds_dir, self.avd_name))
-      new_ini.write('path.rel=avd/%s.avd\n' % self.avd_name)
+      new_ini.write('target={0!s}\n'.format(api_target))
+      new_ini.write('path={0!s}/{1!s}.avd\n'.format(avds_dir, self.avd_name))
+      new_ini.write('path.rel=avd/{0!s}.avd\n'.format(self.avd_name))
 
     custom_config = CONFIG_TEMPLATE
     replacements = CONFIG_REPLACEMENTS[self.abi]
@@ -378,7 +378,7 @@ class Emulator(object):
     TODO(jrg): is there a less hacky way to accomplish the same goal?
     """
     logging.info('Aggressive Image Cleanup')
-    emulator_imagedir = '/tmp/android-%s' % os.environ['USER']
+    emulator_imagedir = '/tmp/android-{0!s}'.format(os.environ['USER'])
     if not os.path.exists(emulator_imagedir):
       return
     for image in os.listdir(emulator_imagedir):

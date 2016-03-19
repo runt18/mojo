@@ -21,23 +21,22 @@ def _LogToFile(results, test_type, suite_name):
       log_file_path, re.sub(r'\W', '_', test_type).lower() + '.log')
   if not os.path.exists(full_file_name):
     with open(full_file_name, 'w') as log_file:
-      print >> log_file, '\n%s results for %s build %s:' % (
+      print >> log_file, '\n{0!s} results for {1!s} build {2!s}:'.format(
           test_type, os.environ.get('BUILDBOT_BUILDERNAME'),
           os.environ.get('BUILDBOT_BUILDNUMBER'))
-    logging.info('Writing results to %s.' % full_file_name)
+    logging.info('Writing results to {0!s}.'.format(full_file_name))
 
-  logging.info('Writing results to %s.' % full_file_name)
+  logging.info('Writing results to {0!s}.'.format(full_file_name))
   with open(full_file_name, 'a') as log_file:
     shortened_suite_name = suite_name[:25] + (suite_name[25:] and '...')
-    print >> log_file, '%s%s' % (shortened_suite_name.ljust(30),
+    print >> log_file, '{0!s}{1!s}'.format(shortened_suite_name.ljust(30),
                                  results.GetShortForm())
 
 
 def _LogToFlakinessDashboard(results, test_type, test_package,
                              flakiness_server):
   """Upload results to the flakiness dashboard"""
-  logging.info('Upload results for test type "%s", test package "%s" to %s' %
-               (test_type, test_package, flakiness_server))
+  logging.info('Upload results for test type "{0!s}", test package "{1!s}" to {2!s}'.format(test_type, test_package, flakiness_server))
 
   try:
     if test_type == 'Instrumentation':
@@ -47,8 +46,8 @@ def _LogToFlakinessDashboard(results, test_type, test_package,
                                 'ChromeShellTest',
                                 'ChromeSyncShellTest',
                                 'AndroidWebViewTest']
-        dashboard_test_type = ('%s_instrumentation_tests' %
-                               test_package.lower().rstrip('test'))
+        dashboard_test_type = ('{0!s}_instrumentation_tests'.format(
+                               test_package.lower().rstrip('test')))
       # Downstream server.
       else:
         dashboard_test_type = 'Chromium_Android_Instrumentation'

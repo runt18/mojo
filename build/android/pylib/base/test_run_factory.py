@@ -36,6 +36,5 @@ def CreateTestRun(_args, env, test_instance, error_func):
           env, test_instance)
 
 
-  error_func('Unable to create test run for %s tests in %s environment'
-             % (str(test_instance), str(env)))
+  error_func('Unable to create test run for {0!s} tests in {1!s} environment'.format(str(test_instance), str(env)))
 

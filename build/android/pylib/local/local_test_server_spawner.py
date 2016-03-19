@@ -27,8 +27,8 @@ class LocalTestServerSpawner(test_server.TestServer):
   #override
   def SetUp(self):
     self._device.WriteFile(
-        '%s/net-test-server-ports' % self._device.GetExternalStoragePath(),
-        '%s:0' % str(self.port))
+        '{0!s}/net-test-server-ports'.format(self._device.GetExternalStoragePath()),
+        '{0!s}:0'.format(str(self.port)))
     forwarder.Forwarder.Map(
         [(self.port, self.port)], self._device, self._tool)
     self._spawning_server.Start()

@@ -46,7 +46,7 @@ def RewriteLine(line, opts):
         try:
           args[i] = RewritePath(args[i], opts)
         except IndexError:
-          sys.stderr.write('Missing argument following %s\n' % prefix)
+          sys.stderr.write('Missing argument following {0!s}\n'.format(prefix))
           break
       elif args[i].startswith(prefix):
         args[i] = prefix + RewritePath(args[i][len(prefix):], opts)

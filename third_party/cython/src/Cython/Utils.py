@@ -18,7 +18,7 @@ def cached_function(f):
     return wrapper
 
 def cached_method(f):
-    cache_name = '__%s_cache' % f.__name__
+    cache_name = '__{0!s}_cache'.format(f.__name__)
     def wrapper(self, *args):
         cache = getattr(self, cache_name, None)
         if cache is None:

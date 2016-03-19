@@ -29,13 +29,13 @@ class ContentSettings(dict):
       return 'l'
     if isinstance(value, str):
       return 's'
-    raise ValueError('Unsupported type %s' % type(value))
+    raise ValueError('Unsupported type {0!s}'.format(type(value)))
 
   def iteritems(self):
     # Example row:
     # 'Row: 0 _id=13, name=logging_id2, value=-1fccbaa546705b05'
     for row in self._device.RunShellCommand(
-        'content query --uri content://%s' % self._table, as_root=True):
+        'content query --uri content://{0!s}'.format(self._table), as_root=True):
       fields = row.split(', ')
       key = None
       value = None

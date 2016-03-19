@@ -18,9 +18,9 @@ class Error(Exception):
 
   def __str__(self):
     if self.lineno:
-      s = "%s:%d: Error: %s" % (self.filename, self.lineno, self.message)
+      s = "{0!s}:{1:d}: Error: {2!s}".format(self.filename, self.lineno, self.message)
     else:
-      s = "%s: Error: %s" % (self.filename, self.message)
+      s = "{0!s}: Error: {1!s}".format(self.filename, self.message)
     return "\n".join([s] + self.addenda) if self.addenda else s
 
   def __repr__(self):

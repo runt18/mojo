@@ -36,8 +36,8 @@ def resolver(URL, ID, ctxt):
 
     if resources.has_key(URL):
         return(StringIO.StringIO(resources[URL]))
-    log.write("Resolver failure: asked %s\n" % (URL))
-    log.write("resources: %s\n" % (resources))
+    log.write("Resolver failure: asked {0!s}\n".format((URL)))
+    log.write("resources: {0!s}\n".format((resources)))
     return None
 
 #
@@ -82,7 +82,7 @@ def handle_valid(node, schema):
 	return
 
     if debug:
-        print "instance line %d" % (node.lineNo())
+        print "instance line {0:d}".format((node.lineNo()))
        
     try:
         ctxt = schema.relaxNGNewValidCtxt()
@@ -135,7 +135,7 @@ def handle_invalid(node, schema):
 	return
 
     if debug:
-        print "instance line %d" % (node.lineNo())
+        print "instance line {0:d}".format((node.lineNo()))
        
     try:
         ctxt = schema.relaxNGNewValidCtxt()
@@ -277,12 +277,12 @@ def handle_testCase(node):
     global resources
 
     sections = node.xpathEval('string(section)')
-    log.write("\n    ======== test %d line %d section %s ==========\n" % (
+    log.write("\n    ======== test {0:d} line {1:d} section {2!s} ==========\n".format(
 
               nb_schemas_tests, node.lineNo(), sections))
     resources = {}
     if debug:
-        print "test %d line %d" % (nb_schemas_tests, node.lineNo())
+        print "test {0:d} line {1:d}".format(nb_schemas_tests, node.lineNo())
 
     dirs = node.xpathEval('dir')
     for dir in dirs:
@@ -294,16 +294,16 @@ def handle_testCase(node):
     tsts = node.xpathEval('incorrect')
     if tsts != []:
         if len(tsts) != 1:
-	    print "warning test line %d has more than one <incorrect> example" %(node.lineNo())
+	    print "warning test line {0:d} has more than one <incorrect> example".format((node.lineNo()))
 	schema = handle_incorrect(tsts[0])
     else:
         tsts = node.xpathEval('correct')
 	if tsts != []:
 	    if len(tsts) != 1:
-		print "warning test line %d has more than one <correct> example"% (node.lineNo())
+		print "warning test line {0:d} has more than one <correct> example".format((node.lineNo()))
 	    schema = handle_correct(tsts[0])
 	else:
-	    print "warning <testCase> line %d has no <correct> nor <incorrect> child" % (node.lineNo())
+	    print "warning <testCase> line {0:d} has no <correct> nor <incorrect> child".format((node.lineNo()))
 
     nb_schemas_tests = nb_schemas_tests + 1;
     
@@ -349,7 +349,7 @@ def handle_testSuite(node, level = 0):
         for section in sections:
 	    msg = msg + section.content + " "
 	if quiet == 0:
-	    print "Tests for section %s" % (msg)
+	    print "Tests for section {0!s}".format((msg))
     for test in node.xpathEval('testCase'):
         handle_testCase(test)
     for test in node.xpathEval('testSuite'):
@@ -360,14 +360,14 @@ def handle_testSuite(node, level = 0):
         msg = ""
         for section in sections:
 	    msg = msg + section.content + " "
-        print "Result of tests for section %s" % (msg)
+        print "Result of tests for section {0!s}".format((msg))
         if nb_schemas_tests != old_schemas_tests:
-	    print "found %d test schemas: %d success %d failures" % (
+	    print "found {0:d} test schemas: {1:d} success {2:d} failures".format(
 		  nb_schemas_tests - old_schemas_tests,
 		  nb_schemas_success - old_schemas_success,
 		  nb_schemas_failed - old_schemas_failed)
 	if nb_instances_tests != old_instances_tests:
-	    print "found %d test instances: %d success %d failures" % (
+	    print "found {0:d} test instances: {1:d} success {2:d} failures".format(
 		  nb_instances_tests - old_instances_tests,
 		  nb_instances_success - old_instances_success,
 		  nb_instances_failed - old_instances_failed)
@@ -382,14 +382,14 @@ testsuite = libxml2.parseFile(CONF)
 #
 def callback(ctx, str):
     global log
-    log.write("%s%s" % (ctx, str))
+    log.write("{0!s}{1!s}".format(ctx, str))
 
 libxml2.registerErrorHandler(callback, "")
 
 libxml2.setEntityLoader(resolver)
 root = testsuite.getRootElement()
 if root.name != 'testSuite':
-    print "%s doesn't start with a testSuite element, aborting" % (CONF)
+    print "{0!s} doesn't start with a testSuite element, aborting".format((CONF))
     sys.exit(1)
 if quiet == 0:
     print "Running Relax NG testsuite"
@@ -398,10 +398,10 @@ handle_testSuite(root)
 if quiet == 0:
     print "\nTOTAL:\n"
 if quiet == 0 or nb_schemas_failed != 0:
-    print "found %d test schemas: %d success %d failures" % (
+    print "found {0:d} test schemas: {1:d} success {2:d} failures".format(
       nb_schemas_tests, nb_schemas_success, nb_schemas_failed)
 if quiet == 0 or nb_instances_failed != 0:
-    print "found %d test instances: %d success %d failures" % (
+    print "found {0:d} test instances: {1:d} success {2:d} failures".format(
       nb_instances_tests, nb_instances_success, nb_instances_failed)
 
 
@@ -414,5 +414,5 @@ if libxml2.debugMemory(1) == 0:
     if quiet == 0:
 	print "OK"
 else:
-    print "Memory leak %d bytes" % (libxml2.debugMemory(1))
+    print "Memory leak {0:d} bytes".format((libxml2.debugMemory(1)))
     libxml2.dumpMemory()

@@ -27,25 +27,25 @@ class DeviceTempFile(object):
     """
     self._adb = adb
     # make sure that the temp dir is writable
-    self._adb.Shell('test -d %s' % cmd_helper.SingleQuote(dir))
+    self._adb.Shell('test -d {0!s}'.format(cmd_helper.SingleQuote(dir)))
     while True:
       self.name = '{dir}/{prefix}-{time:d}-{nonce:d}{suffix}'.format(
         dir=dir, prefix=prefix, time=int(time.time()),
         nonce=random.randint(0, 1000000), suffix=suffix)
       self.name_quoted = cmd_helper.SingleQuote(self.name)
       try:
-        self._adb.Shell('test -e %s' % self.name_quoted)
+        self._adb.Shell('test -e {0!s}'.format(self.name_quoted))
       except device_errors.AdbCommandFailedError:
         break # file does not exist
 
     # Immediately touch the file, so other temp files can't get the same name.
-    self._adb.Shell('touch %s' % self.name_quoted)
+    self._adb.Shell('touch {0!s}'.format(self.name_quoted))
 
   def close(self):
     """Deletes the temporary file from the device."""
     # ignore exception if the file is already gone.
     try:
-      self._adb.Shell('rm -f %s' % self.name_quoted)
+      self._adb.Shell('rm -f {0!s}'.format(self.name_quoted))
     except device_errors.AdbCommandFailedError:
       # file does not exist on Android version without 'rm -f' support (ICS)
       pass

@@ -50,7 +50,7 @@ def _mojom_output_path(mojom):
   namespace = mojom['namespace']
   elements = ['lib']
   elements.extend(namespace.split('.'))
-  elements.append("%s.dart" % name)
+  elements.append("{0!s}.dart".format(name))
   return os.path.join(*elements)
 
 
@@ -76,12 +76,12 @@ def _load_mojom(path_to_mojom):
 
 def _print_regenerate_message(package):
   print("""
-*** Dart Generated Bindings Check Failed for package: %s
+*** Dart Generated Bindings Check Failed for package: {0!s}
 
 To regenerate all bindings, from the src directory, run:
 
 ./mojo/dart/tools/bindings/generate.py
-""" % (package))
+""".format((package)))
 
 
 # Returns a map from package name to source directory.
@@ -167,7 +167,7 @@ def _check_new(package, expected, current):
   check_failure = False
   for mojom_dart in expected:
     if not current.get(mojom_dart):
-      print("FAIL: Package %s missing %s" % (package, mojom_dart))
+      print("FAIL: Package {0!s} missing {1!s}".format(package, mojom_dart))
       check_failure = True
   return check_failure
 
@@ -177,7 +177,7 @@ def _check_delete(package, expected, current):
   check_failure = False
   for mojom_dart in current:
     if not expected.get(mojom_dart):
-      print("FAIL: Package %s no longer has %s." % (package, mojom_dart))
+      print("FAIL: Package {0!s} no longer has {1!s}.".format(package, mojom_dart))
       print("Delete %s", os.path.join(PACKAGES_DIR, mojom_dart))
       check_failure = True
   return check_failure
@@ -193,7 +193,7 @@ def _check_stale(package, expected, current):
       continue
     generated_mtime = current[mojom_dart]
     if generated_mtime < source_mtime:
-      print("FAIL: Package %s has old %s" % (package, mojom_dart))
+      print("FAIL: Package {0!s} has old {1!s}".format(package, mojom_dart))
       check_failure = True
   return check_failure
 
@@ -322,7 +322,7 @@ def presubmit_check(packages, affected_files):
       mojom = _load_mojom(mojom_file)
     except Exception:
       # Could not load .mojom file
-      print("Could not load mojom file: %s" % mojom_file)
+      print("Could not load mojom file: {0!s}".format(mojom_file))
       return True
 
     package = _mojom_package(mojom)
@@ -342,7 +342,7 @@ def presubmit_check(packages, affected_files):
 
     if mojom_mtime > mojom_dart_mtime:
       check_failure = True
-      print("Package %s has old %s" % (package, mojom_dart_path))
+      print("Package {0!s} has old {1!s}".format(package, mojom_dart_path))
       if not (package in packages_with_failures):
         packages_with_failures.append(package)
       continue
@@ -368,8 +368,7 @@ def presubmit_check(packages, affected_files):
     # file was updated without updating the related .mojom file.
     if not (mojom_dart_path in updated_mojom_dart_files):
       check_failure = True
-      print("Package %s has new %s without updating source .mojom file." %
-            (package, mojom_dart_path))
+      print("Package {0!s} has new {1!s} without updating source .mojom file.".format(package, mojom_dart_path))
       if not (package in packages_with_failures):
         packages_with_failures.append(package)
 

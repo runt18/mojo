@@ -100,7 +100,7 @@ def GetAverageRunInfo(json_data, name):
 
         result['units'] = 'ms'
       else:
-        raise Exception('Entry did not contain valid value info: %s' % entry)
+        raise Exception('Entry did not contain valid value info: {0!s}'.format(entry))
 
     if not val_type in entry:
       raise Exception('Entry did not contain expected value type "%s" '

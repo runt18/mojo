@@ -32,7 +32,7 @@ class LinuxShell(Shell):
     else:
       server_address = http_server.start_http_server(mappings, port)
 
-    return 'http://%s:%d/' % server_address
+    return 'http://{0!s}:{1:d}/'.format(*server_address)
 
   @overrides(Shell)
   def forward_host_port_to_shell(self, host_port):

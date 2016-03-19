@@ -31,7 +31,7 @@ class Return(Action):
     return isinstance(other, Return) and self.value == other.value
 
   def __repr__(self):
-    return "Return(%s)" % repr(self.value)
+    return "Return({0!s})".format(repr(self.value))
 
 
 class Call(Action):
@@ -46,7 +46,7 @@ class Call(Action):
     return self.function(token_stream, text)
 
   def __repr__(self):
-    return "Call(%s)" % self.function.__name__
+    return "Call({0!s})".format(self.function.__name__)
 
   def same_as(self, other):
     return isinstance(other, Call) and self.function is other.function
@@ -66,7 +66,7 @@ class Begin(Action):
     token_stream.begin(self.state_name)
 
   def __repr__(self):
-    return "Begin(%s)" % self.state_name
+    return "Begin({0!s})".format(self.state_name)
 
   def same_as(self, other):
     return isinstance(other, Begin) and self.state_name == other.state_name

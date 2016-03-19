@@ -63,7 +63,7 @@ def QualifyFilenameAsProto(filename):
     return filename
   basename = match.groups(0)
   gitlsfiles = subprocess.Popen(
-    ['git', 'ls-files', '--', '*/%s.proto' % basename],
+    ['git', 'ls-files', '--', '*/{0!s}.proto'.format(basename)],
     stdout=subprocess.PIPE)
   candidate = filename
   for line in gitlsfiles.stdout:
@@ -90,7 +90,7 @@ def QualifyFilename(filename, symbol):
     return filename
   symbol = match.group(1)
   gitgrep = subprocess.Popen(
-    ['git', 'grep', '-l', symbol, '--', '*/%s' % filename],
+    ['git', 'grep', '-l', symbol, '--', '*/{0!s}'.format(filename)],
     stdout=subprocess.PIPE)
   candidate = filename
   for line in gitgrep.stdout:
@@ -142,7 +142,7 @@ disassembly_re = re.compile(r'^\s+[0-9a-f]+:.*<(\S+)>')
 def ExtractSymbolReferences(binary, start, end):
   """Given a span of addresses, returns symbol references from disassembly."""
   cmd = ['objdump', binary, '--disassemble',
-         '--start-address=0x%x' % start, '--stop-address=0x%x' % end]
+         '--start-address=0x{0:x}'.format(start), '--stop-address=0x{0:x}'.format(end)]
   objdump = subprocess.Popen(cmd, stdout=subprocess.PIPE)
 
   refs = set()
@@ -209,7 +209,7 @@ def main():
           note = 'protocol compiler bug: crbug.com/105626'
 
         if note:
-          ref_output.append('%s [%s]' % (ref, note))
+          ref_output.append('{0!s} [{1!s}]'.format(ref, note))
         else:
           ref_output.append(ref)
 
@@ -217,15 +217,15 @@ def main():
       if ref_output:
         print '\n'.join('# ' + qualified_filename + ' ' + r for r in ref_output)
       else:
-        print '# %s: (empty initializer list)' % qualified_filename
+        print '# {0!s}: (empty initializer list)'.format(qualified_filename)
     else:
-      print '%s (initializer offset 0x%x size 0x%x)' % (qualified_filename,
+      print '{0!s} (initializer offset 0x{1:x} size 0x{2:x})'.format(qualified_filename,
                                                         addr, size)
-      print ''.join('  %s\n' % r for r in ref_output)
+      print ''.join('  {0!s}\n'.format(r) for r in ref_output)
 
   if opts.diffable:
     print '#',
-  print 'Found %d static initializers in %d files.' % (initializer_count,
+  print 'Found {0:d} static initializers in {1:d} files.'.format(initializer_count,
                                                        file_count)
 
   return 0

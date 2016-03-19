@@ -37,10 +37,10 @@ SDK_EXTRAS_JSON_FILE = os.path.join(os.path.dirname(__file__),
 
 
 def clean_and_extract(dir_name, package_name, zip_file):
-  local_dir = '%s/%s/%s' % (SDK_EXTRAS_PATH, dir_name, package_name)
+  local_dir = '{0!s}/{1!s}/{2!s}'.format(SDK_EXTRAS_PATH, dir_name, package_name)
   if os.path.exists(local_dir):
     shutil.rmtree(local_dir)
-  local_zip = '%s/%s' % (SDK_EXTRAS_PATH, zip_file)
+  local_zip = '{0!s}/{1!s}'.format(SDK_EXTRAS_PATH, zip_file)
   with zipfile.ZipFile(local_zip) as z:
     z.extractall(path=SDK_EXTRAS_PATH)
 
@@ -53,9 +53,9 @@ def main():
   with open(SDK_EXTRAS_JSON_FILE) as json_file:
     packages = json.load(json_file)
   for package in packages:
-    local_zip = '%s/%s' % (SDK_EXTRAS_PATH, package['zip'])
+    local_zip = '{0!s}/{1!s}'.format(SDK_EXTRAS_PATH, package['zip'])
     if not os.path.exists(local_zip):
-      package_zip = '%s/%s' % (SDK_EXTRAS_BUCKET, package['zip'])
+      package_zip = '{0!s}/{1!s}'.format(SDK_EXTRAS_BUCKET, package['zip'])
       try:
         subprocess.check_call(['python', GSUTIL_PATH, '--force-version', '4.7',
                                'cp', package_zip, local_zip])

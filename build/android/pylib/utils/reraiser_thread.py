@@ -119,8 +119,7 @@ class ReraiserThreadGroup(object):
     while alive_threads:
       for thread in alive_threads[:]:
         if watcher.IsTimedOut():
-          raise TimeoutError('Timed out waiting for %d of %d threads.' %
-                             (len(alive_threads), len(self._threads)))
+          raise TimeoutError('Timed out waiting for {0:d} of {1:d} threads.'.format(len(alive_threads), len(self._threads)))
         # Allow the main thread to periodically check for interrupts.
         thread.join(0.1)
         if not thread.isAlive():

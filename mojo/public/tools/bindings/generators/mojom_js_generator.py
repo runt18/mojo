@@ -46,7 +46,7 @@ def JavaScriptDefaultValue(field):
   if field.default:
     if mojom.IsStructKind(field.kind):
       assert field.default == "default"
-      return "new %s()" % JavaScriptType(field.kind)
+      return "new {0!s}()".format(JavaScriptType(field.kind))
     return ExpressionToText(field.default)
   if field.kind in mojom.PRIMITIVES:
     return _kind_to_javascript_default_value[field.kind]
@@ -63,7 +63,7 @@ def JavaScriptDefaultValue(field):
     return _kind_to_javascript_default_value[mojom.MSGPIPE]
   if mojom.IsEnumKind(field.kind):
     return "0"
-  raise Exception("No valid default: %s" % field)
+  raise Exception("No valid default: {0!s}".format(field))
 
 
 def JavaScriptPayloadSize(packed):
@@ -109,17 +109,17 @@ def CodecType(kind):
   if mojom.IsStructKind(kind):
     pointer_type = "NullablePointerTo" if mojom.IsNullableKind(kind) \
         else "PointerTo"
-    return "new codec.%s(%s)" % (pointer_type, JavaScriptType(kind))
+    return "new codec.{0!s}({1!s})".format(pointer_type, JavaScriptType(kind))
   if mojom.IsUnionKind(kind):
     return JavaScriptType(kind)
   if mojom.IsArrayKind(kind):
     array_type = "NullableArrayOf" if mojom.IsNullableKind(kind) else "ArrayOf"
-    array_length = "" if kind.length is None else ", %d" % kind.length
+    array_length = "" if kind.length is None else ", {0:d}".format(kind.length)
     element_type = ElementCodecType(kind.kind)
-    return "new codec.%s(%s%s)" % (array_type, element_type, array_length)
+    return "new codec.{0!s}({1!s}{2!s})".format(array_type, element_type, array_length)
   if mojom.IsInterfaceKind(kind):
-    return "codec.%s" % ("NullableInterface" if mojom.IsNullableKind(kind)
-        else "Interface")
+    return "codec.{0!s}".format(("NullableInterface" if mojom.IsNullableKind(kind)
+        else "Interface"))
   if mojom.IsInterfaceRequestKind(kind):
     return CodecType(mojom.MSGPIPE)
   if mojom.IsEnumKind(kind):
@@ -128,77 +128,75 @@ def CodecType(kind):
     map_type = "NullableMapOf" if mojom.IsNullableKind(kind) else "MapOf"
     key_type = ElementCodecType(kind.key_kind)
     value_type = ElementCodecType(kind.value_kind)
-    return "new codec.%s(%s, %s)" % (map_type, key_type, value_type)
-  raise Exception("No codec type for %s" % kind)
+    return "new codec.{0!s}({1!s}, {2!s})".format(map_type, key_type, value_type)
+  raise Exception("No codec type for {0!s}".format(kind))
 
 
 def ElementCodecType(kind):
   if mojom.IsUnionKind(kind):
     wrapper_type = "NullableUnionWrapper" if mojom.IsNullableKind(kind) \
         else "UnionWrapper"
-    return "new codec.%s(%s)" % (wrapper_type, JavaScriptType(kind))
+    return "new codec.{0!s}({1!s})".format(wrapper_type, JavaScriptType(kind))
   return "codec.PackedBool" if mojom.IsBoolKind(kind) else CodecType(kind)
 
 def JavaScriptDecodeSnippet(kind):
   if kind in mojom.PRIMITIVES or mojom.IsUnionKind(kind):
-    return "decodeStruct(%s)" % CodecType(kind)
+    return "decodeStruct({0!s})".format(CodecType(kind))
   if mojom.IsStructKind(kind):
-    return "decodeStructPointer(%s)" % JavaScriptType(kind)
+    return "decodeStructPointer({0!s})".format(JavaScriptType(kind))
   if mojom.IsMapKind(kind):
-    return "decodeMapPointer(%s, %s)" % \
-        (ElementCodecType(kind.key_kind), ElementCodecType(kind.value_kind))
+    return "decodeMapPointer({0!s}, {1!s})".format(ElementCodecType(kind.key_kind), ElementCodecType(kind.value_kind))
   if mojom.IsArrayKind(kind) and mojom.IsBoolKind(kind.kind):
     return "decodeArrayPointer(codec.PackedBool)"
   if mojom.IsArrayKind(kind):
-    return "decodeArrayPointer(%s)" % CodecType(kind.kind)
+    return "decodeArrayPointer({0!s})".format(CodecType(kind.kind))
   if mojom.IsInterfaceKind(kind):
-    return "decodeStruct(%s)" % CodecType(kind)
+    return "decodeStruct({0!s})".format(CodecType(kind))
   if mojom.IsUnionKind(kind):
-    return "decodeUnion(%s)" % CodecType(kind)
+    return "decodeUnion({0!s})".format(CodecType(kind))
   if mojom.IsInterfaceRequestKind(kind):
     return JavaScriptDecodeSnippet(mojom.MSGPIPE)
   if mojom.IsEnumKind(kind):
     return JavaScriptDecodeSnippet(mojom.INT32)
-  raise Exception("No decode snippet for %s" % kind)
+  raise Exception("No decode snippet for {0!s}".format(kind))
 
 
 def JavaScriptEncodeSnippet(kind):
   if kind in mojom.PRIMITIVES or mojom.IsUnionKind(kind):
-    return "encodeStruct(%s, " % CodecType(kind)
+    return "encodeStruct({0!s}, ".format(CodecType(kind))
   if mojom.IsUnionKind(kind):
-    return "encodeStruct(%s, " % JavaScriptType(kind)
+    return "encodeStruct({0!s}, ".format(JavaScriptType(kind))
   if mojom.IsStructKind(kind):
-    return "encodeStructPointer(%s, " % JavaScriptType(kind)
+    return "encodeStructPointer({0!s}, ".format(JavaScriptType(kind))
   if mojom.IsMapKind(kind):
-    return "encodeMapPointer(%s, %s, " % \
-        (ElementCodecType(kind.key_kind), ElementCodecType(kind.value_kind))
+    return "encodeMapPointer({0!s}, {1!s}, ".format(ElementCodecType(kind.key_kind), ElementCodecType(kind.value_kind))
   if mojom.IsArrayKind(kind) and mojom.IsBoolKind(kind.kind):
     return "encodeArrayPointer(codec.PackedBool, ";
   if mojom.IsArrayKind(kind):
-    return "encodeArrayPointer(%s, " % CodecType(kind.kind)
+    return "encodeArrayPointer({0!s}, ".format(CodecType(kind.kind))
   if mojom.IsInterfaceKind(kind):
-    return "encodeStruct(%s, " % CodecType(kind)
+    return "encodeStruct({0!s}, ".format(CodecType(kind))
   if mojom.IsInterfaceRequestKind(kind):
     return JavaScriptEncodeSnippet(mojom.MSGPIPE)
   if mojom.IsEnumKind(kind):
     return JavaScriptEncodeSnippet(mojom.INT32)
-  raise Exception("No encode snippet for %s" % kind)
+  raise Exception("No encode snippet for {0!s}".format(kind))
 
 
 def JavaScriptUnionDecodeSnippet(kind):
   if mojom.IsUnionKind(kind):
-    return "decodeStructPointer(%s)" % JavaScriptType(kind)
+    return "decodeStructPointer({0!s})".format(JavaScriptType(kind))
   return JavaScriptDecodeSnippet(kind)
 
 
 def JavaScriptUnionEncodeSnippet(kind):
   if mojom.IsUnionKind(kind):
-    return "encodeStructPointer(%s, " % JavaScriptType(kind)
+    return "encodeStructPointer({0!s}, ".format(JavaScriptType(kind))
   return JavaScriptEncodeSnippet(kind)
 
 
 def JavaScriptFieldOffset(packed_field):
-  return "offset + codec.kStructHeaderSize + %s" % packed_field.offset
+  return "offset + codec.kStructHeaderSize + {0!s}".format(packed_field.offset)
 
 
 def JavaScriptNullableParam(field):
@@ -223,20 +221,19 @@ def JavaScriptValidateArrayParams(field):
   expected_dimension_sizes = GetArrayExpectedDimensionSizes(
       field.kind)
   element_type = ElementCodecType(element_kind)
-  return "%s, %s, %s, %s, 0" % \
-      (element_size, element_type, nullable,
+  return "{0!s}, {1!s}, {2!s}, {3!s}, 0".format(element_size, element_type, nullable,
        expected_dimension_sizes)
 
 
 def JavaScriptValidateStructParams(field):
   nullable = JavaScriptNullableParam(field)
   struct_type = JavaScriptType(field.kind)
-  return "%s, %s" % (struct_type, nullable)
+  return "{0!s}, {1!s}".format(struct_type, nullable)
 
 def JavaScriptValidateUnionParams(field):
   nullable = JavaScriptNullableParam(field)
   union_type = JavaScriptType(field.kind)
-  return "%s, %s" % (union_type, nullable)
+  return "{0!s}, {1!s}".format(union_type, nullable)
 
 def JavaScriptValidateMapParams(field):
   nullable = JavaScriptNullableParam(field)
@@ -244,18 +241,17 @@ def JavaScriptValidateMapParams(field):
   values_kind = field.kind.value_kind;
   values_type = ElementCodecType(values_kind)
   values_nullable = "true" if mojom.IsNullableKind(values_kind) else "false"
-  return "%s, %s, %s, %s" % \
-      (nullable, keys_type, values_type, values_nullable)
+  return "{0!s}, {1!s}, {2!s}, {3!s}".format(nullable, keys_type, values_type, values_nullable)
 
 
 def JavaScriptValidateStringParams(field):
   nullable = JavaScriptNullableParam(field)
-  return "%s" % (nullable)
+  return "{0!s}".format((nullable))
 
 
 def JavaScriptValidateHandleParams(field):
   nullable = JavaScriptNullableParam(field)
-  return "%s" % (nullable)
+  return "{0!s}".format((nullable))
 
 def JavaScriptValidateInterfaceParams(field):
   return JavaScriptValidateHandleParams(field)
@@ -277,10 +273,10 @@ def JavaScriptStubMethodParameterValue(parameter):
   name = parameter.name;
   if (mojom.IsInterfaceKind(parameter.kind)):
    type = JavaScriptType(parameter.kind)
-   return "connection.bindHandleToProxy(%s, %s)" % (name, type)
+   return "connection.bindHandleToProxy({0!s}, {1!s})".format(name, type)
   if (mojom.IsInterfaceRequestKind(parameter.kind)):
    type = JavaScriptType(parameter.kind.kind)
-   return "connection.bindHandleToStub(%s, %s)" % (name, type)
+   return "connection.bindHandleToStub({0!s}, {1!s})".format(name, type)
   return name;
 
 
@@ -386,7 +382,7 @@ class Generator(generator.Generator):
 
   def GenerateFiles(self, args):
     self.Write(self.GenerateAMDModule(),
-        self.MatchMojomFilePath("%s.js" % self.module.name))
+        self.MatchMojomFilePath("{0!s}.js".format(self.module.name)))
 
   def GetImports(self):
     used_names = set()

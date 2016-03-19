@@ -21,12 +21,12 @@ class NodeTypeWriter(TreeVisitor):
         else:
             tip = self.access_path[-1]
             if tip[2] is not None:
-                name = u"%s[%d]" % tip[1:3]
+                name = u"{0!s}[{1:d}]".format(*tip[1:3])
             else:
                 name = tip[1]
 
         self.result.append(u"  " * self._indents +
-                           u"%s: %s" % (name, node.__class__.__name__))
+                           u"{0!s}: {1!s}".format(name, node.__class__.__name__))
         self._indents += 1
         self.visitchildren(node)
         self._indents -= 1
@@ -58,9 +58,9 @@ class CythonTest(unittest.TestCase):
         if not isinstance(expected, list): expected = expected.split(u"\n")
         if not isinstance(result, list): result = result.split(u"\n")
         for idx, (expected_line, result_line) in enumerate(zip(expected, result)):
-            self.assertEqual(expected_line, result_line, "Line %d:\nExp: %s\nGot: %s" % (idx, expected_line, result_line))
+            self.assertEqual(expected_line, result_line, "Line {0:d}:\nExp: {1!s}\nGot: {2!s}".format(idx, expected_line, result_line))
         self.assertEqual(len(expected), len(result),
-            "Unmatched lines. Got:\n%s\nExpected:\n%s" % ("\n".join(expected), u"\n".join(result)))
+            "Unmatched lines. Got:\n{0!s}\nExpected:\n{1!s}".format("\n".join(expected), u"\n".join(result)))
 
     def codeToLines(self, tree):
         writer = CodeWriter()
@@ -76,13 +76,13 @@ class CythonTest(unittest.TestCase):
         expected_lines = strip_common_indent(expected.split("\n"))
 
         for idx, (line, expected_line) in enumerate(zip(result_lines, expected_lines)):
-            self.assertEqual(expected_line, line, "Line %d:\nGot: %s\nExp: %s" % (idx, line, expected_line))
+            self.assertEqual(expected_line, line, "Line {0:d}:\nGot: {1!s}\nExp: {2!s}".format(idx, line, expected_line))
         self.assertEqual(len(result_lines), len(expected_lines),
-            "Unmatched lines. Got:\n%s\nExpected:\n%s" % ("\n".join(result_lines), expected))
+            "Unmatched lines. Got:\n{0!s}\nExpected:\n{1!s}".format("\n".join(result_lines), expected))
 
     def assertNodeExists(self, path, result_tree):
         self.assertNotEqual(TreePath.find_first(result_tree, path), None,
-                            "Path '%s' not found in result tree" % path)
+                            "Path '{0!s}' not found in result tree".format(path))
 
     def fragment(self, code, pxds={}, pipeline=[]):
         "Simply create a tree fragment using the name of the test-case in parse errors."
@@ -100,7 +100,7 @@ class CythonTest(unittest.TestCase):
         """
         try:
             func()
-            self.fail("Expected an exception of type %r" % exc_type)
+            self.fail("Expected an exception of type {0!r}".format(exc_type))
         except exc_type, e:
             self.assert_(isinstance(e, exc_type))
             return e
@@ -158,13 +158,13 @@ class TreeAssertVisitor(VisitorTransform):
                 if TreePath.find_first(node, path) is None:
                     Errors.error(
                         node.pos,
-                        "Expected path '%s' not found in result tree" % path)
+                        "Expected path '{0!s}' not found in result tree".format(path))
         if 'test_fail_if_path_exists' in directives:
             for path in directives['test_fail_if_path_exists']:
                 if TreePath.find_first(node, path) is not None:
                     Errors.error(
                         node.pos,
-                        "Unexpected path '%s' found in result tree" %  path)
+                        "Unexpected path '{0!s}' found in result tree".format(path))
         self.visitchildren(node)
         return node
 

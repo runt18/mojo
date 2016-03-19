@@ -36,8 +36,7 @@ class BasePref(object):
 
   def __init__(self, elem):
     if elem.tag != type(self).tag_name:
-      raise TypeError('Property %r has type %r, but trying to access as %r' %
-                      (elem.get('name'), elem.tag, type(self).tag_name))
+      raise TypeError('Property {0!r} has type {1!r}, but trying to access as {2!r}'.format(elem.get('name'), elem.tag, type(self).tag_name))
     self._elem = elem
 
   def __str__(self):
@@ -197,7 +196,7 @@ class SharedPrefs(object):
     self._xml = None
     self._package = package
     self._filename = filename
-    self._path = '/data/data/%s/shared_prefs/%s' % (package, filename)
+    self._path = '/data/data/{0!s}/shared_prefs/{1!s}'.format(package, filename)
     self._changed = False
 
   def __repr__(self):

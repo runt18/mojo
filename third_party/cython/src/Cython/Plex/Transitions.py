@@ -178,7 +178,7 @@ class TransitionMap(object):
     special_strs = {}
     for event, set in self.special.iteritems():
       special_strs[event] = state_set_str(set)
-    return "[%s]+%s" % (
+    return "[{0!s}]+{1!s}".format(
       ','.join(map_strs),
       special_strs
     )
@@ -210,13 +210,13 @@ class TransitionMap(object):
         if code1 == maxint:
           k = "any"
         else:
-          k = "< %s" % self.dump_char(code1)
+          k = "< {0!s}".format(self.dump_char(code1))
       elif code1 == maxint:
-        k = "> %s" % self.dump_char(code0 - 1)
+        k = "> {0!s}".format(self.dump_char(code0 - 1))
       elif code0 == code1 - 1:
         k = self.dump_char(code0)
       else:
-        k = "%s..%s" % (self.dump_char(code0),
+        k = "{0!s}..{1!s}".format(self.dump_char(code0),
           self.dump_char(code1 - 1))
       self.dump_trans(k, set, file)
 
@@ -224,10 +224,10 @@ class TransitionMap(object):
     if 0 <= code <= 255:
       return repr(chr(code))
     else:
-      return "chr(%d)" % code
+      return "chr({0:d})".format(code)
 
   def dump_trans(self, key, set, file):
-    file.write("      %s --> %s\n" % (key, self.dump_set(set)))
+    file.write("      {0!s} --> {1!s}\n".format(key, self.dump_set(set)))
 
   def dump_set(self, set):
     return state_set_str(set)
@@ -241,7 +241,7 @@ class TransitionMap(object):
 #            set1[state] = 1
 
 def state_set_str(set):
-  return "[%s]" % ','.join(["S%d" % state.number for state in set])
+  return "[{0!s}]".format(','.join(["S{0:d}".format(state.number) for state in set]))
 
 
 

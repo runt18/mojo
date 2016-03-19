@@ -15,7 +15,7 @@ class CommandFailedError(base_error.BaseError):
 
   def __init__(self, message, device_serial=None):
     if device_serial is not None:
-      message = '(device: %s) %s' % (device_serial, message)
+      message = '(device: {0!s}) {1!s}'.format(device_serial, message)
     self.device_serial = device_serial
     super(CommandFailedError, self).__init__(message)
 
@@ -30,12 +30,12 @@ class AdbCommandFailedError(CommandFailedError):
     self.status = status
     if not message:
       adb_cmd = ' '.join(cmd_helper.SingleQuote(arg) for arg in self.args)
-      message = ['adb %s: failed ' % adb_cmd]
+      message = ['adb {0!s}: failed '.format(adb_cmd)]
       if status:
-        message.append('with exit status %s ' % self.status)
+        message.append('with exit status {0!s} '.format(self.status))
       if output:
         message.append('and output:\n')
-        message.extend('- %s\n' % line for line in output.splitlines())
+        message.extend('- {0!s}\n'.format(line) for line in output.splitlines())
       else:
         message.append('and no output.')
       message = ''.join(message)
@@ -55,15 +55,15 @@ class AdbShellCommandFailedError(AdbCommandFailedError):
   def __init__(self, command, output, status, device_serial=None):
     self.command = command
     message = ['shell command run via adb failed on the device:\n',
-               '  command: %s\n' % command]
-    message.append('  exit status: %s\n' % status)
+               '  command: {0!s}\n'.format(command)]
+    message.append('  exit status: {0!s}\n'.format(status))
     if output:
       message.append('  output:\n')
       if isinstance(output, basestring):
         output_lines = output.splitlines()
       else:
         output_lines = output
-      message.extend('  - %s\n' % line for line in output_lines)
+      message.extend('  - {0!s}\n'.format(line) for line in output_lines)
     else:
       message.append("  output: ''\n")
     message = ''.join(message)

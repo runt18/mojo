@@ -84,9 +84,9 @@ def PrintTopSymbols(symbol_reports, top_count):
   symboltable = dict(zip(symbols, demangled))
 
   print "\n"
-  print "Top %d symbols" % top_count
+  print "Top {0:d} symbols".format(top_count)
   for (symbol, suppressions) in sorted_reports[:top_count]:
-    print "%4d occurrences : %s" % (len(suppressions), symboltable[symbol])
+    print "{0:4d} occurrences : {1!s}".format(len(suppressions), symboltable[symbol])
 
 def ReadHashExclusions(exclusions):
   input_file = file(exclusions, 'r')
@@ -168,9 +168,9 @@ def main(argv):
       print "==================================="
       print "This report observed at"
       for url in all_reports[r]:
-        print "  %s" % url
+        print "  {0!s}".format(url)
       print "didn't match any suppressions:"
-      print "Suppression (error hash=#%s#):" % (report_hashes[r])
+      print "Suppression (error hash=#{0!s}#):".format((report_hashes[r]))
       print r
       print "==================================="
 
@@ -180,8 +180,8 @@ def main(argv):
           symbol_reports[symbol].append(report_hashes[r])
 
   if reports_count > 0:
-    print ("%d unique reports don't match any of the suppressions" %
-           reports_count)
+    print ("{0:d} unique reports don't match any of the suppressions".format(
+           reports_count))
     if args.top_symbols > 0:
       PrintTopSymbols(symbol_reports, args.top_symbols)
 

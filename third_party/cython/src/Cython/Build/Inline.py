@@ -80,7 +80,7 @@ def safe_type(arg, context=None):
     elif py_type is bool:
         return 'bint'
     elif 'numpy' in sys.modules and isinstance(arg, sys.modules['numpy'].ndarray):
-        return 'numpy.ndarray[numpy.%s_t, ndim=%s]' % (arg.dtype.name, arg.ndim)
+        return 'numpy.ndarray[numpy.{0!s}_t, ndim={1!s}]'.format(arg.dtype.name, arg.ndim)
     else:
         for base_type in py_type.mro():
             if base_type.__module__ in ('__builtin__', 'builtins'):
@@ -89,7 +89,7 @@ def safe_type(arg, context=None):
             if module:
                 entry = module.lookup(base_type.__name__)
                 if entry.is_type:
-                    return '%s.%s' % (base_type.__module__, base_type.__name__)
+                    return '{0!s}.{1!s}'.format(base_type.__module__, base_type.__name__)
         return 'object'
 
 def _get_build_extension():
@@ -143,7 +143,7 @@ def cython_inline(code,
     cimports = []
     for name, arg in kwds.items():
         if arg is cython_module:
-            cimports.append('\ncimport cython as %s' % name)
+            cimports.append('\ncimport cython as {0!s}'.format(name))
             del kwds[name]
     arg_names = kwds.keys()
     arg_names.sort()
@@ -172,20 +172,20 @@ def cython_inline(code,
             for type, _ in arg_sigs:
                 m = qualified.match(type)
                 if m:
-                    cimports.append('\ncimport %s' % m.groups()[0])
+                    cimports.append('\ncimport {0!s}'.format(m.groups()[0]))
                     # one special case
                     if m.groups()[0] == 'numpy':
                         import numpy
                         c_include_dirs.append(numpy.get_include())
                         # cflags.append('-Wno-unused')
             module_body, func_body = extract_func_code(code)
-            params = ', '.join(['%s %s' % a for a in arg_sigs])
+            params = ', '.join(['{0!s} {1!s}'.format(*a) for a in arg_sigs])
             module_code = """
-%(module_body)s
-%(cimports)s
-def __invoke(%(params)s):
-%(func_body)s
-            """ % {'cimports': '\n'.join(cimports), 'module_body': module_body, 'params': params, 'func_body': func_body }
+{module_body!s}
+{cimports!s}
+def __invoke({params!s}):
+{func_body!s}
+            """.format(**{'cimports': '\n'.join(cimports), 'module_body': module_body, 'params': params, 'func_body': func_body })
             for key, value in literals.items():
                 module_code = module_code.replace(key, value)
             pyx_file = os.path.join(lib_dir, module_name + '.pyx')
@@ -267,12 +267,12 @@ except ImportError:
         for name, value in kwd_values.items():
             if name in args:
                 if name in all:
-                    raise TypeError("Duplicate argument %s" % name)
+                    raise TypeError("Duplicate argument {0!s}".format(name))
                 all[name] = kwd_values.pop(name)
         if kwds is not None:
             all[kwds] = kwd_values
         elif kwd_values:
-            raise TypeError("Unexpected keyword arguments: %s" % kwd_values.keys())
+            raise TypeError("Unexpected keyword arguments: {0!s}".format(kwd_values.keys()))
         if defaults is None:
             defaults = ()
         first_default = len(args) - len(defaults)
@@ -281,13 +281,13 @@ except ImportError:
                 if ix >= first_default:
                     all[name] = defaults[ix - first_default]
                 else:
-                    raise TypeError("Missing argument: %s" % name)
+                    raise TypeError("Missing argument: {0!s}".format(name))
         return all
 
 def get_body(source):
     ix = source.index(':')
     if source[:5] == 'lambda':
-        return "return %s" % source[ix+1:]
+        return "return {0!s}".format(source[ix+1:])
     else:
         return source[ix+1:]
 

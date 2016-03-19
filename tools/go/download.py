@@ -30,7 +30,7 @@ GSUTIL_PATH = os.path.join(DEPOT_PATH, 'gsutil.py')
 def RunCommand(command):
   """Run command and return success (True) or failure."""
 
-  print 'Running %s' % (str(command))
+  print 'Running {0!s}'.format((str(command)))
   if subprocess.call(command, shell=False) == 0:
     return True
   print 'Failed.'
@@ -63,7 +63,7 @@ def InstallGoBinaries(version):
   # Download go tool binaries from GCS.
   archive_path = os.path.join(INSTALL_DIR, 'go.tar.gz')
   download_cmd = ['python', GSUTIL_PATH, 'cp',
-                  'gs://mojo/go/tool/%s.tar.gz' % version,
+                  'gs://mojo/go/tool/{0!s}.tar.gz'.format(version),
                   archive_path]
   if not RunCommand(download_cmd):
     print ('WARNING: Failed to download Go tool binaries.')
@@ -75,7 +75,7 @@ def InstallGoBinaries(version):
   os.remove(archive_path)
   # Write version as the last step.
   with open(os.path.join(INSTALL_DIR, VersionFileName()), 'w+') as f:
-    f.write('%s\n' % version)
+    f.write('{0!s}\n'.format(version))
 
 def main():
   # Read latest version.

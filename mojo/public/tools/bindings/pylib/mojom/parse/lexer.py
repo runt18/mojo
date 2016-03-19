@@ -249,5 +249,5 @@ class Lexer(object):
     t.lexer.lineno += t.value.count("\n")
 
   def t_error(self, t):
-    msg = "Illegal character %s" % repr(t.value[0])
+    msg = "Illegal character {0!s}".format(repr(t.value[0]))
     self._error(msg, t)

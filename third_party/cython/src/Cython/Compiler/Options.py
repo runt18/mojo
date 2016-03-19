@@ -155,7 +155,7 @@ extra_warnings = {
 def one_of(*args):
     def validate(name, value):
         if value not in args:
-            raise ValueError("%s directive must be one of %s, got '%s'" % (
+            raise ValueError("{0!s} directive must be one of {1!s}, got '{2!s}'".format(
                 name, args, value))
         else:
             return value
@@ -273,13 +273,13 @@ def parse_directive_value(name, value, relaxed_bool=False):
             value = value.lower()
             if value in ("true", "yes"): return True
             elif value in ("false", "no"): return False
-        raise ValueError("%s directive must be set to True or False, got '%s'" % (
+        raise ValueError("{0!s} directive must be set to True or False, got '{1!s}'".format(
             name, orig_value))
     elif type is int:
         try:
             return int(value)
         except ValueError:
-            raise ValueError("%s directive must be set to an integer, got '%s'" % (
+            raise ValueError("{0!s} directive must be set to an integer, got '{1!s}'".format(
                 name, orig_value))
     elif type is str:
         return str(value)
@@ -324,7 +324,7 @@ def parse_directive_list(s, relaxed_bool=False, ignore_unknown=False,
     for item in s.split(','):
         item = item.strip()
         if not item: continue
-        if not '=' in item: raise ValueError('Expected "=" in option "%s"' % item)
+        if not '=' in item: raise ValueError('Expected "=" in option "{0!s}"'.format(item))
         name, value = [ s.strip() for s in item.strip().split('=', 1) ]
         if name not in directive_defaults:
             found = False
@@ -336,7 +336,7 @@ def parse_directive_list(s, relaxed_bool=False, ignore_unknown=False,
                         parsed_value = parse_directive_value(directive, value, relaxed_bool=relaxed_bool)
                         result[directive] = parsed_value
             if not found and not ignore_unknown:
-                raise ValueError('Unknown option: "%s"' % name)
+                raise ValueError('Unknown option: "{0!s}"'.format(name))
         else:
             parsed_value = parse_directive_value(name, value, relaxed_bool=relaxed_bool)
             result[name] = parsed_value

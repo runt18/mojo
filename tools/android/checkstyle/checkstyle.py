@@ -59,9 +59,9 @@ def RunCheckstyle(input_api, output_api, style_file, black_list=None):
       line = error.attributes['line'].value
       column = ''
       if error.hasAttribute('column'):
-        column = '%s:' % (error.attributes['column'].value)
+        column = '{0!s}:'.format((error.attributes['column'].value))
       message = error.attributes['message'].value
-      result = '  %s:%s:%s %s' % (fileName, line, column, message)
+      result = '  {0!s}:{1!s}:{2!s} {3!s}'.format(fileName, line, column, message)
 
       severity = error.attributes['severity'].value
       if severity == 'error':

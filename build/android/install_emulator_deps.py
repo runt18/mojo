@@ -65,7 +65,7 @@ def CheckSDKPlatform(api_level=DEFAULT_ANDROID_API_LEVEL):
   """
   android_binary = os.path.join(constants.EMULATOR_SDK_ROOT,
                                 'sdk', 'tools', 'android')
-  pattern = re.compile('id: [0-9]+ or "android-%d"' % api_level)
+  pattern = re.compile('id: [0-9]+ or "android-{0:d}"'.format(api_level))
   try:
     exit_code, stdout = cmd_helper.GetCmdStatusAndOutput(
         [android_binary, 'list'])
@@ -90,7 +90,7 @@ def CheckX86Image(api_level=DEFAULT_ANDROID_API_LEVEL):
     True if sdk/system-images/android-<api_level>/x86 exists inside
     EMULATOR_SDK_ROOT.
   """
-  api_target = 'android-%d' % api_level
+  api_target = 'android-{0:d}'.format(api_level)
   return os.path.exists(os.path.join(constants.EMULATOR_SDK_ROOT,
                                      'sdk', 'system-images',
                                      api_target, 'x86'))
@@ -125,7 +125,7 @@ def RunKvmOk():
 def GetSDK():
   """Download the SDK and unzip it into EMULATOR_SDK_ROOT."""
   logging.info('Download Android SDK.')
-  sdk_url = '%s/%s' % (SDK_BASE_URL, SDK_ZIP)
+  sdk_url = '{0!s}/{1!s}'.format(SDK_BASE_URL, SDK_ZIP)
   try:
     cmd_helper.RunCmd(['curl', '-o', '/tmp/sdk.zip', sdk_url])
     print 'curled unzipping...'
@@ -134,7 +134,7 @@ def GetSDK():
       raise Exception('ERROR: could not download/unzip Android SDK.')
     # Get the name of the sub-directory that everything will be extracted to.
     dirname, _ = os.path.splitext(SDK_ZIP)
-    zip_dir = '/tmp/%s' % dirname
+    zip_dir = '/tmp/{0!s}'.format(dirname)
     # Move the extracted directory to EMULATOR_SDK_ROOT
     shutil.move(zip_dir, constants.EMULATOR_SDK_ROOT)
   finally:
@@ -168,19 +168,19 @@ def GetX86Image(api_level=DEFAULT_ANDROID_API_LEVEL):
   """
   logging.info('Download x86 system image directory into sdk directory.')
   # TODO(andrewhayden): Use python tempfile lib instead
-  temp_file = '/tmp/x86_img_android-%d.zip' % api_level
+  temp_file = '/tmp/x86_img_android-{0:d}.zip'.format(api_level)
   if api_level not in X86_IMG_URLS:
-    raise Exception('ERROR: no URL known for x86 image for android-%s' %
-                    api_level)
+    raise Exception('ERROR: no URL known for x86 image for android-{0!s}'.format(
+                    api_level))
   try:
     cmd_helper.RunCmd(['curl', '-o', temp_file, X86_IMG_URLS[api_level]])
     rc = cmd_helper.RunCmd(['unzip', '-o', temp_file, '-d', '/tmp/'])
     if rc:
       raise Exception('ERROR: Could not download/unzip image zip.')
-    api_target = 'android-%d' % api_level
+    api_target = 'android-{0:d}'.format(api_level)
     sys_imgs = os.path.join(constants.EMULATOR_SDK_ROOT, 'sdk',
                             'system-images', api_target, 'x86')
-    logging.info('Deploying system image to %s' % sys_imgs)
+    logging.info('Deploying system image to {0!s}'.format(sys_imgs))
     shutil.move('/tmp/x86', sys_imgs)
   finally:
     os.unlink(temp_file)
@@ -195,34 +195,34 @@ def GetSDKPlatform(api_level=DEFAULT_ANDROID_API_LEVEL):
   android_binary = os.path.join(constants.EMULATOR_SDK_ROOT,
                                 'sdk', 'tools', 'android')
   pattern = re.compile(
-      r'\s*([0-9]+)- SDK Platform Android [\.,0-9]+, API %d.*' % api_level)
+      r'\s*([0-9]+)- SDK Platform Android [\.,0-9]+, API {0:d}.*'.format(api_level))
   # Example:
   #   2- SDK Platform Android 4.3, API 18, revision 2
   exit_code, stdout = cmd_helper.GetCmdStatusAndOutput(
       [android_binary, 'list', 'sdk'])
   if exit_code != 0:
-    raise Exception('\'android list sdk\' command return %d' % exit_code)
+    raise Exception('\'android list sdk\' command return {0:d}'.format(exit_code))
   for line in stdout.split('\n'):
     match = pattern.match(line)
     if match:
       index = match.group(1)
-      print 'package %s corresponds to platform level %d' % (index, api_level)
+      print 'package {0!s} corresponds to platform level {1:d}'.format(index, api_level)
       # update sdk --no-ui --filter $INDEX
       update_command = [android_binary,
                         'update', 'sdk', '--no-ui', '--filter', index]
       update_command_str = ' '.join(update_command)
-      logging.info('running update command: %s' % update_command_str)
+      logging.info('running update command: {0!s}'.format(update_command_str))
       update_process = pexpect.spawn(update_command_str)
       # TODO(andrewhayden): Do we need to bug the user about this?
       if update_process.expect('Do you accept the license') != 0:
         raise Exception('License agreement check failed')
       update_process.sendline('y')
       if update_process.expect('Done. 1 package installed.') == 0:
-        print 'Successfully installed platform for API level %d' % api_level
+        print 'Successfully installed platform for API level {0:d}'.format(api_level)
         return
       else:
         raise Exception('Failed to install platform update')
-  raise Exception('Could not find android-%d update for the SDK!' % api_level)
+  raise Exception('Could not find android-{0:d} update for the SDK!'.format(api_level))
 
 
 def main(argv):
@@ -252,17 +252,17 @@ def main(argv):
 
   # Check target. The target has to be installed in order to run the emulator.
   if CheckSDKPlatform(options.api_level):
-    logging.info('SDK platform android-%d already present, skipping.' %
-                 options.api_level)
+    logging.info('SDK platform android-{0:d} already present, skipping.'.format(
+                 options.api_level))
   else:
-    logging.info('SDK platform android-%d not present, installing.' %
-                 options.api_level)
+    logging.info('SDK platform android-{0:d} not present, installing.'.format(
+                 options.api_level))
     GetSDKPlatform(options.api_level)
 
   # Download the x86 system image only if needed.
   if CheckX86Image(options.api_level):
-    logging.info('x86 image for android-%d already present, skipping.' %
-                 options.api_level)
+    logging.info('x86 image for android-{0:d} already present, skipping.'.format(
+                 options.api_level))
   else:
     GetX86Image(options.api_level)
 

@@ -74,7 +74,7 @@ class TreeVisitor(object):
             if source:
                 import os.path
                 source = os.path.basename(source.get_description())
-            values.append(u'%s:%s:%s' % (source, pos[1], pos[2]))
+            values.append(u'{0!s}:{1!s}:{2!s}'.format(source, pos[1], pos[2]))
         attribute_names = dir(node)
         attribute_names.sort()
         for attr in attribute_names:
@@ -89,13 +89,13 @@ class TreeVisitor(object):
             if value is None or value == 0:
                 continue
             elif isinstance(value, list):
-                value = u'[...]/%d' % len(value)
+                value = u'[...]/{0:d}'.format(len(value))
             elif not isinstance(value, (str, unicode, long, int, float)):
                 continue
             else:
                 value = repr(value)
-            values.append(u'%s = %s' % (attr, value))
-        return u'%s(%s)' % (node.__class__.__name__,
+            values.append(u'{0!s} = {1!s}'.format(attr, value))
+        return u'{0!s}({1!s})'.format(node.__class__.__name__,
                            u',\n    '.join(values))
 
     def _find_node_path(self, stacktrace):
@@ -124,15 +124,15 @@ class TreeVisitor(object):
                 index = ''
             else:
                 node = node[index]
-                index = u'[%d]' % index
-            trace.append(u'%s.%s%s = %s' % (
+                index = u'[{0:d}]'.format(index)
+            trace.append(u'{0!s}.{1!s}{2!s} = {3!s}'.format(
                 parent.__class__.__name__, attribute, index,
                 self.dump_node(node)))
         stacktrace, called_nodes = self._find_node_path(sys.exc_info()[2])
         last_node = child
         for node, method_name, pos in called_nodes:
             last_node = node
-            trace.append(u"File '%s', line %d, in %s: %s" % (
+            trace.append(u"File '{0!s}', line {1:d}, in {2!s}: {3!s}".format(
                 pos[0], pos[1], method_name, self.dump_node(node)))
         raise Errors.CompilerCrash(
             getattr(last_node, 'pos', None), self.__class__.__name__,
@@ -154,7 +154,7 @@ class TreeVisitor(object):
             print self.access_path
             print self.access_path[-1][0].pos
             print self.access_path[-1][0].__dict__
-        raise RuntimeError("Visitor %r does not accept object: %s" % (self, obj))
+        raise RuntimeError("Visitor {0!r} does not accept object: {1!s}".format(self, obj))
 
     def visit(self, obj):
         return self._visit(obj)
@@ -209,7 +209,7 @@ class TreeVisitor(object):
                     childretval = [self._visitchild(x, parent, attr, idx) for idx, x in enumerate(child)]
                 else:
                     childretval = self._visitchild(child, parent, attr, None)
-                    assert not isinstance(childretval, list), 'Cannot insert list here: %s in %r' % (attr, parent)
+                    assert not isinstance(childretval, list), 'Cannot insert list here: {0!s} in {1!r}'.format(attr, parent)
                 result[attr] = childretval
         return result
 
@@ -541,9 +541,9 @@ class MethodDispatcherTransform(EnvTransform):
 
     def _find_handler(self, match_name, has_kwargs):
         call_type = has_kwargs and 'general' or 'simple'
-        handler = getattr(self, '_handle_%s_%s' % (call_type, match_name), None)
+        handler = getattr(self, '_handle_{0!s}_{1!s}'.format(call_type, match_name), None)
         if handler is None:
-            handler = getattr(self, '_handle_any_%s' % match_name, None)
+            handler = getattr(self, '_handle_any_{0!s}'.format(match_name), None)
         return handler
 
     def _delegate_to_assigned_value(self, node, function, arg_list, kwargs):
@@ -580,7 +580,7 @@ class MethodDispatcherTransform(EnvTransform):
                         node, function, arg_list, kwargs)
                 return node
             function_handler = self._find_handler(
-                "function_%s" % function.name, kwargs)
+                "function_{0!s}".format(function.name), kwargs)
             if function_handler is None:
                 return self._handle_function(node, function.name, function, arg_list, kwargs)
             if kwargs:
@@ -614,12 +614,12 @@ class MethodDispatcherTransform(EnvTransform):
                                     is_unbound_method, type_name,
                                     node, function, arg_list, kwargs):
         method_handler = self._find_handler(
-            "method_%s_%s" % (type_name, attr_name), kwargs)
+            "method_{0!s}_{1!s}".format(type_name, attr_name), kwargs)
         if method_handler is None:
             if (attr_name in TypeSlots.method_name_to_slot
                     or attr_name == '__new__'):
                 method_handler = self._find_handler(
-                    "slot%s" % attr_name, kwargs)
+                    "slot{0!s}".format(attr_name), kwargs)
             if method_handler is None:
                 return self._handle_method(
                     node, type_name, attr_name, function,
@@ -712,7 +712,7 @@ class PrintTree(TreeVisitor):
         self._indent = self._indent[:-2]
 
     def __call__(self, tree, phase=None):
-        print("Parse tree dump at phase '%s'" % phase)
+        print("Parse tree dump at phase '{0!s}'".format(phase))
         self.visit(tree)
         return tree
 
@@ -726,10 +726,10 @@ class PrintTree(TreeVisitor):
         else:
             parent, attr, idx = self.access_path[-1]
             if idx is not None:
-                name = "%s[%d]" % (attr, idx)
+                name = "{0!s}[{1:d}]".format(attr, idx)
             else:
                 name = attr
-        print("%s- %s: %s" % (self._indent, name, self.repr_of(node)))
+        print("{0!s}- {1!s}: {2!s}".format(self._indent, name, self.repr_of(node)))
         self.indent()
         self.visitchildren(node)
         self.unindent()
@@ -741,12 +741,12 @@ class PrintTree(TreeVisitor):
         else:
             result = node.__class__.__name__
             if isinstance(node, ExprNodes.NameNode):
-                result += "(type=%s, name=\"%s\")" % (repr(node.type), node.name)
+                result += "(type={0!s}, name=\"{1!s}\")".format(repr(node.type), node.name)
             elif isinstance(node, Nodes.DefNode):
-                result += "(name=\"%s\")" % node.name
+                result += "(name=\"{0!s}\")".format(node.name)
             elif isinstance(node, ExprNodes.ExprNode):
                 t = node.type
-                result += "(type=%s)" % repr(t)
+                result += "(type={0!s})".format(repr(t))
             elif node.pos:
                 pos = node.pos
                 path = pos[0].get_description()
@@ -754,7 +754,7 @@ class PrintTree(TreeVisitor):
                     path = path.split('/')[-1]
                 if '\\' in path:
                     path = path.split('\\')[-1]
-                result += "(pos=(%s:%s:%s))" % (path, pos[1], pos[2])
+                result += "(pos=({0!s}:{1!s}:{2!s}))".format(path, pos[1], pos[2])
 
             return result
 

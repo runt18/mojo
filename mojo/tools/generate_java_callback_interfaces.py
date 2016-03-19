@@ -46,10 +46,10 @@ public interface Callbacks {
 
 def GenerateCallback(nb_args):
   params = '\n      * '.join(
-      ['@param <T%d> the type of argument %d.' % (i+1, i+1)
+      ['@param <T{0:d}> the type of argument {1:d}.'.format(i+1, i+1)
        for i in xrange(nb_args)])
-  template_parameters = ', '.join(['T%d' % (i+1) for i in xrange(nb_args)])
-  callback_parameters = ', '.join(['T%d arg%d' % ((i+1), (i+1))
+  template_parameters = ', '.join(['T{0:d}'.format((i+1)) for i in xrange(nb_args)])
+  callback_parameters = ', '.join(['T{0:d} arg{1:d}'.format((i+1), (i+1))
                                    for i in xrange(nb_args)])
   return CALLBACK_TEMPLATE % (nb_args, params, nb_args, template_parameters,
                               callback_parameters)

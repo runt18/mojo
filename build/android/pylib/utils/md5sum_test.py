@@ -152,7 +152,7 @@ class Md5SumTest(unittest.TestCase):
           ['sh', '/data/local/tmp/test/script/file.sh'])
 
   def testCalculateDeviceMd5Sums_generator(self):
-    test_path = ('/storage/emulated/legacy/test/file%d.dat' % n
+    test_path = ('/storage/emulated/legacy/test/file{0:d}.dat'.format(n)
                  for n in xrange(0, 2))
 
     device = mock.NonCallableMock()

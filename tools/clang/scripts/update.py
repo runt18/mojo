@@ -37,7 +37,7 @@ if use_head_revision:
 # This is incremented when pushing a new build of Clang at the same revision.
 CLANG_SUB_REVISION=1
 
-PACKAGE_VERSION = "%s-%s" % (LLVM_WIN_REVISION, CLANG_SUB_REVISION)
+PACKAGE_VERSION = "{0!s}-{1!s}".format(LLVM_WIN_REVISION, CLANG_SUB_REVISION)
 
 # Path constants. (All of these should be absolute paths.)
 THIS_DIR = os.path.abspath(os.path.dirname(__file__))
@@ -74,7 +74,7 @@ def DownloadUrl(url, output_file):
   """Download url into output_file."""
   CHUNK_SIZE = 4096
   TOTAL_DOTS = 10
-  sys.stdout.write('Downloading %s ' % url)
+  sys.stdout.write('Downloading {0!s} '.format(url))
   sys.stdout.flush()
   response = urllib2.urlopen(url)
   total_size = int(response.info().getheader('Content-Length').strip())
@@ -164,7 +164,7 @@ def RunCommand(command, msvc_arch=None, env=None, fail_hard=True):
 def CopyFile(src, dst):
   """Copy a file from src to dst."""
   shutil.copy(src, dst)
-  print "Copying %s to %s" % (src, dst)
+  print "Copying {0!s} to {1!s}".format(src, dst)
 
 
 def CopyDirectoryContents(src, dst, filename_filter=None):
@@ -181,14 +181,14 @@ def CopyDirectoryContents(src, dst, filename_filter=None):
 
 def Checkout(name, url, dir):
   """Checkout the SVN module at url into dir. Use name for the log message."""
-  print "Checking out %s r%s into '%s'" % (name, LLVM_WIN_REVISION, dir)
+  print "Checking out {0!s} r{1!s} into '{2!s}'".format(name, LLVM_WIN_REVISION, dir)
 
   command = ['svn', 'checkout', '--force', url + '@' + LLVM_WIN_REVISION, dir]
   if RunCommand(command, fail_hard=False):
     return
 
   if os.path.isdir(dir):
-    print "Removing %s." % (dir)
+    print "Removing {0!s}.".format((dir))
     RmTree(dir)
 
   print "Retrying."
@@ -283,7 +283,7 @@ def AddCMakeToPath():
                              'cmake-3.2.2-win32-x86', 'bin')
   else:
     suffix = 'Darwin' if sys.platform == 'darwin' else 'Linux'
-    zip_name = 'cmake310_%s.tgz' % suffix
+    zip_name = 'cmake310_{0!s}.tgz'.format(suffix)
     cmake_dir = os.path.join(LLVM_BUILD_TOOLS_DIR, 'cmake310', 'bin')
   if not os.path.exists(cmake_dir):
     if not os.path.exists(LLVM_BUILD_TOOLS_DIR):
@@ -320,7 +320,7 @@ def GetVSVersion():
 
 
 def UpdateClang(args):
-  print 'Updating Clang to %s...' % PACKAGE_VERSION
+  print 'Updating Clang to {0!s}...'.format(PACKAGE_VERSION)
   if ReadStampFile() == PACKAGE_VERSION:
     print 'Already up to date.'
     return 0
@@ -329,7 +329,7 @@ def UpdateClang(args):
   WriteStampFile('')
 
   if not args.force_local_build:
-    cds_file = "clang-%s.tgz" %  PACKAGE_VERSION
+    cds_file = "clang-{0!s}.tgz".format(PACKAGE_VERSION)
     cds_full_url = CDS_URL + '/Win/' + cds_file
 
     # Check if there's a prebuilt binary and if so just fetch that. That's
@@ -344,7 +344,7 @@ def UpdateClang(args):
         f.seek(0)
         # TODO(thakis): Delete LLVM_BUILD_DIR before extracting.
         tarfile.open(mode='r:gz', fileobj=f).extractall(path=LLVM_BUILD_DIR)
-        print 'clang %s unpacked' % PACKAGE_VERSION
+        print 'clang {0!s} unpacked'.format(PACKAGE_VERSION)
         # Download the gold plugin if requested to by an environment variable.
         # This is used by the CFI ClusterFuzz bot.
         if 'LLVM_DOWNLOAD_GOLD_PLUGIN' in os.environ:
@@ -352,7 +352,7 @@ def UpdateClang(args):
         WriteStampFile(PACKAGE_VERSION)
         return 0
       except urllib2.HTTPError:
-        print 'Did not find prebuilt clang %s, building locally' % cds_file
+        print 'Did not find prebuilt clang {0!s}, building locally'.format(cds_file)
 
   AddCMakeToPath()
 
@@ -383,8 +383,8 @@ def UpdateClang(args):
     cxx = os.path.join(args.gcc_toolchain, 'bin', 'g++')
 
     if not os.access(cc, os.X_OK):
-      print 'Invalid --gcc-toolchain: "%s"' % args.gcc_toolchain
-      print '"%s" does not appear to be valid.' % cc
+      print 'Invalid --gcc-toolchain: "{0!s}"'.format(args.gcc_toolchain)
+      print '"{0!s}" does not appear to be valid.'.format(cc)
       return 1
 
     # Set LD_LIBRARY_PATH to make auxiliary targets (tablegen, bootstrap
@@ -534,8 +534,8 @@ def UpdateClang(args):
       '-DCMAKE_SHARED_LINKER_FLAGS=' + ' '.join(ldflags),
       '-DCMAKE_MODULE_LINKER_FLAGS=' + ' '.join(ldflags),
       '-DCMAKE_INSTALL_PREFIX=' + LLVM_BUILD_DIR,
-      '-DCHROMIUM_TOOLS_SRC=%s' % os.path.join(CHROMIUM_DIR, 'tools', 'clang'),
-      '-DCHROMIUM_TOOLS=%s' % ';'.join(args.tools)]
+      '-DCHROMIUM_TOOLS_SRC={0!s}'.format(os.path.join(CHROMIUM_DIR, 'tools', 'clang')),
+      '-DCHROMIUM_TOOLS={0!s}'.format(';'.join(args.tools))]
   # TODO(thakis): Unconditionally append this to base_cmake_args instead once
   # compiler-rt can build with clang-cl on Windows (http://llvm.org/PR23698)
   cc_args = base_cmake_args if sys.platform != 'win32' else cmake_args

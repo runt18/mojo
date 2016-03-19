@@ -33,10 +33,10 @@ _IMPLEMENTATION_EXTENSIONS = r'\.(cc|cpp|cxx|mm)$'
 # Regular expression that matches code only used for test binaries
 # (best effort).
 _TEST_CODE_EXCLUDED_PATHS = (
-    r'.*/(fake_|test_|mock_).+%s' % _IMPLEMENTATION_EXTENSIONS,
-    r'.+_test_(base|support|util)%s' % _IMPLEMENTATION_EXTENSIONS,
-    r'.+_(app|browser|perf|pixel|unit)?test(_[a-z]+)?%s' %
-        _IMPLEMENTATION_EXTENSIONS,
+    r'.*/(fake_|test_|mock_).+{0!s}'.format(_IMPLEMENTATION_EXTENSIONS),
+    r'.+_test_(base|support|util){0!s}'.format(_IMPLEMENTATION_EXTENSIONS),
+    r'.+_(app|browser|perf|pixel|unit)?test(_[a-z]+)?{0!s}'.format(
+        _IMPLEMENTATION_EXTENSIONS),
     r'.*/(test|tool(s)?)/.*',
     # Non-production example code.
     r'mojo/examples/.*',
@@ -183,13 +183,13 @@ def _CheckNoProductionCodeUsingTestOnlyFunctions(input_api, output_api):
   # We only scan .cc files and the like, as the declaration of
   # for-testing functions in header files are hard to distinguish from
   # calls to such functions without a proper C++ parser.
-  file_inclusion_pattern = r'.+%s' % _IMPLEMENTATION_EXTENSIONS
+  file_inclusion_pattern = r'.+{0!s}'.format(_IMPLEMENTATION_EXTENSIONS)
 
   base_function_pattern = r'[ :]test::[^\s]+|ForTest(ing)?|for_test(ing)?'
-  inclusion_pattern = input_api.re.compile(r'(%s)\s*\(' % base_function_pattern)
-  comment_pattern = input_api.re.compile(r'//.*(%s)' % base_function_pattern)
+  inclusion_pattern = input_api.re.compile(r'({0!s})\s*\('.format(base_function_pattern))
+  comment_pattern = input_api.re.compile(r'//.*({0!s})'.format(base_function_pattern))
   exclusion_pattern = input_api.re.compile(
-    r'::[A-Za-z0-9_]+(%s)|(%s)[^;]+\{' % (
+    r'::[A-Za-z0-9_]+({0!s})|({1!s})[^;]+\{{'.format(
       base_function_pattern, base_function_pattern))
 
   def FilterFile(affected_file):
@@ -209,7 +209,7 @@ def _CheckNoProductionCodeUsingTestOnlyFunctions(input_api, output_api):
           not comment_pattern.search(line) and
           not exclusion_pattern.search(line)):
         problems.append(
-          '%s:%d\n    %s' % (local_path, line_number, line.strip()))
+          '{0!s}:{1:d}\n    {2!s}'.format(local_path, line_number, line.strip()))
 
   if problems:
     return [output_api.PresubmitPromptOrNotify(_TEST_ONLY_WARNING, problems)]
@@ -247,7 +247,7 @@ def _CheckNoUNIT_TESTInSourceFiles(input_api, output_api):
 
     for line_num, line in f.ChangedContents():
       if 'UNIT_TEST ' in line or line.endswith('UNIT_TEST'):
-        problems.append('    %s:%d' % (f.LocalPath(), line_num))
+        problems.append('    {0!s}:{1:d}'.format(f.LocalPath(), line_num))
 
   if not problems:
     return []
@@ -268,7 +268,7 @@ def _CheckNoNewWStrings(input_api, output_api):
       if 'presubmit: allow wstring' in line:
         allowWString = True
       elif not allowWString and 'wstring' in line:
-        problems.append('    %s:%d' % (f.LocalPath(), line_num))
+        problems.append('    {0!s}:{1:d}'.format(f.LocalPath(), line_num))
         allowWString = False
       else:
         allowWString = False
@@ -337,9 +337,9 @@ def _CheckNoBannedFunctions(input_api, output_api):
           problems = warnings;
           if error:
             problems = errors;
-          problems.append('    %s:%d:' % (f.LocalPath(), line_num))
+          problems.append('    {0!s}:{1:d}:'.format(f.LocalPath(), line_num))
           for message_line in message:
-            problems.append('      %s' % message_line)
+            problems.append('      {0!s}'.format(message_line))
 
   result = []
   if (warnings):
@@ -381,7 +381,7 @@ def _CheckNoTrinaryTrueFalse(input_api, output_api):
 
     for line_num, line in f.ChangedContents():
       if pattern.match(line):
-        problems.append('    %s:%d' % (f.LocalPath(), line_num))
+        problems.append('    {0!s}:{1:d}'.format(f.LocalPath(), line_num))
 
   if not problems:
     return []
@@ -452,7 +452,7 @@ def _CheckIncludeOrderForScope(scope, input_api, file_path, changed_linenums):
   warnings = []
   for (line_num, previous_line_num) in problem_linenums:
     if line_num in changed_linenums or previous_line_num in changed_linenums:
-      warnings.append('    %s:%d' % (file_path, line_num))
+      warnings.append('    {0!s}:{1:d}'.format(file_path, line_num))
   return warnings
 
 
@@ -566,7 +566,7 @@ def _CheckForVersionControlConflictsInFile(input_api, f):
   errors = []
   for line_num, line in f.ChangedContents():
     if pattern.match(line):
-      errors.append('    %s:%d %s' % (f.LocalPath(), line_num, line))
+      errors.append('    {0!s}:{1:d} {2!s}'.format(f.LocalPath(), line_num, line))
   return errors
 
 
@@ -598,7 +598,7 @@ def _CheckHardcodedGoogleHostsInLowerLayers(input_api, output_api):
                   input_api.DEFAULT_BLACK_LIST))
 
   base_pattern = '"[^"]*google\.com[^"]*"'
-  comment_pattern = input_api.re.compile('//.*%s' % base_pattern)
+  comment_pattern = input_api.re.compile('//.*{0!s}'.format(base_pattern))
   pattern = input_api.re.compile(base_pattern)
   problems = []  # items are (filename, line_number, line)
   for f in input_api.AffectedSourceFiles(FilterFile):
@@ -610,7 +610,7 @@ def _CheckHardcodedGoogleHostsInLowerLayers(input_api, output_api):
     return [output_api.PresubmitPromptOrNotify(
         'Most layers below src/chrome/ should not hardcode service URLs.\n'
         'Are you sure this is correct?',
-        ['  %s:%d:  %s' % (
+        ['  {0!s}:{1:d}:  {2!s}'.format(
             problem[0], problem[1], problem[2]) for problem in problems])]
   else:
     return []
@@ -623,7 +623,7 @@ def _CheckNoAbbreviationInPngFileName(input_api, output_api):
   errors = []
   for f in input_api.AffectedFiles(include_deletes=False):
     if pattern.match(f.LocalPath()):
-      errors.append('    %s' % f.LocalPath())
+      errors.append('    {0!s}'.format(f.LocalPath()))
 
   results = []
   if errors:
@@ -635,7 +635,7 @@ def _CheckNoAbbreviationInPngFileName(input_api, output_api):
 
 
 def _CheckSpamLogging(input_api, output_api):
-  file_inclusion_pattern = r'.+%s' % _IMPLEMENTATION_EXTENSIONS
+  file_inclusion_pattern = r'.+{0!s}'.format(_IMPLEMENTATION_EXTENSIONS)
   black_list = (_EXCLUDED_PATHS +
                 _TEST_CODE_EXCLUDED_PATHS +
                 input_api.DEFAULT_BLACK_LIST +
@@ -712,7 +712,7 @@ def _CheckForAnonymousVariables(input_api, output_api):
     'SkAutoTrace',
     'SkAutoUnref',
   ]
-  anonymous = r'(%s)\s*[({]' % '|'.join(they_who_must_be_named)
+  anonymous = r'({0!s})\s*[({{]'.format('|'.join(they_who_must_be_named))
   # bad: base::AutoLock(lock.get());
   # not bad: base::AutoLock lock(lock.get());
   bad_pattern = input_api.re.compile(anonymous)
@@ -725,7 +725,7 @@ def _CheckForAnonymousVariables(input_api, output_api):
       continue
     for linenum, line in f.ChangedContents():
       if bad_pattern.search(line) and not good_pattern.search(line):
-        errors.append('%s:%d' % (f.LocalPath(), linenum))
+        errors.append('{0!s}:{1:d}'.format(f.LocalPath(), linenum))
 
   if errors:
     return [output_api.PresubmitError(
@@ -783,8 +783,7 @@ def _CheckParseErrors(input_api, output_api):
     action = get_action(affected_file)
     parse_error = action(input_api, affected_file.AbsoluteLocalPath())
     if parse_error:
-      results.append(output_api.PresubmitError('%s could not be parsed: %s' %
-          (affected_file.LocalPath(), parse_error)))
+      results.append(output_api.PresubmitError('{0!s} could not be parsed: {1!s}'.format(affected_file.LocalPath(), parse_error)))
   return results
 
 
@@ -848,8 +847,7 @@ def _CheckNoDeprecatedCSS(input_api, output_api):
       for (deprecated_value, value) in _DEPRECATED_CSS:
         if input_api.re.search(deprecated_value, line):
           results.append(output_api.PresubmitError(
-              "%s:%d: Use of deprecated CSS %s, use %s instead" %
-              (fpath.LocalPath(), line_num, deprecated_value, value)))
+              "{0!s}:{1:d}: Use of deprecated CSS {2!s}, use {3!s} instead".format(fpath.LocalPath(), line_num, deprecated_value, value)))
   return results
 
 
@@ -860,7 +858,7 @@ def _CheckForOverrideAndFinalRules(input_api, output_api):
     if (f.LocalPath().endswith(('.cc', '.cpp', '.h', '.mm'))):
       for line_num, line in f.ChangedContents():
         if (input_api.re.search(r'\b(FINAL|OVERRIDE)\b', line)):
-          problems.append('    %s:%d' % (f.LocalPath(), line_num))
+          problems.append('    {0!s}:{1:d}'.format(f.LocalPath(), line_num))
 
   if not problems:
     return []
@@ -979,8 +977,8 @@ def _CheckForInvalidOSMacrosInFile(input_api, f):
       for match in os_macro.finditer(line):
         if not match.group(1) in _VALID_OS_MACROS:
           good = _DidYouMeanOSMacro(match.group(1))
-          did_you_mean = ' (did you mean %s?)' % good if good else ''
-          results.append('    %s:%d %s%s' % (f.LocalPath(),
+          did_you_mean = ' (did you mean {0!s}?)'.format(good) if good else ''
+          results.append('    {0!s}:{1:d} {2!s}{3!s}'.format(f.LocalPath(),
                                              lnum,
                                              match.group(1),
                                              did_you_mean))
@@ -1025,9 +1023,9 @@ def _CheckForInvalidIfDefinedMacrosInFile(input_api, f):
   for lnum, line in f.ChangedContents():
     for match in ifdef_macro.finditer(line):
       if match.group(1) in ALWAYS_DEFINED_MACROS:
-        always_defined = ' %s is always defined. ' % match.group(1)
-        did_you_mean = 'Did you mean \'#if %s\'?' % match.group(1)
-        results.append('    %s:%d %s\n\t%s' % (f.LocalPath(),
+        always_defined = ' {0!s} is always defined. '.format(match.group(1))
+        did_you_mean = 'Did you mean \'#if {0!s}\'?'.format(match.group(1))
+        results.append('    {0!s}:{1:d} {2!s}\n\t{3!s}'.format(f.LocalPath(),
                                                lnum,
                                                always_defined,
                                                did_you_mean))

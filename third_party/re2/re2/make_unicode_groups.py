@@ -41,9 +41,9 @@ def MakeRanges(codes):
 
 def PrintRanges(type, name, ranges):
   """Print the ranges as an array of type named name."""
-  print "static %s %s[] = {" % (type, name,)
+  print "static {0!s} {1!s}[] = {{".format(type, name)
   for lo, hi in ranges:
-    print "\t{ %d, %d }," % (lo, hi)
+    print "\t{{ {0:d}, {1:d} }},".format(lo, hi)
   print "};"
 
 # def PrintCodes(type, name, codes):
@@ -72,7 +72,7 @@ def PrintGroup(name, codes):
   n16 += len(range16)
   n32 += len(range32)
 
-  ugroup = "{ \"%s\", +1" % (name,)
+  ugroup = "{{ \"{0!s}\", +1".format(name)
   # if len(code16) > 0:
   #   PrintCodes("uint16", name+"_code16", code16)
   #   ugroup += ", %s_code16, %d" % (name, len(code16))
@@ -80,12 +80,12 @@ def PrintGroup(name, codes):
   #   ugroup += ", 0, 0"
   if len(range16) > 0:
     PrintRanges("URange16", name+"_range16", range16)
-    ugroup += ", %s_range16, %d" % (name, len(range16))
+    ugroup += ", {0!s}_range16, {1:d}".format(name, len(range16))
   else:
     ugroup += ", 0, 0"
   if len(range32) > 0:
     PrintRanges("URange32", name+"_range32", range32)
-    ugroup += ", %s_range32, %d" % (name, len(range32))
+    ugroup += ", {0!s}_range32, {1:d}".format(name, len(range32))
   else:
     ugroup += ", 0, 0"
   ugroup += " }"
@@ -98,13 +98,13 @@ def main():
     ugroups.append(PrintGroup(name, codes))
   for name, codes in unicode.Scripts().iteritems():
     ugroups.append(PrintGroup(name, codes))
-  print "// %d 16-bit ranges, %d 32-bit ranges" % (n16, n32)
+  print "// {0:d} 16-bit ranges, {1:d} 32-bit ranges".format(n16, n32)
   print "UGroup unicode_groups[] = {";
   ugroups.sort()
   for ug in ugroups:
-    print "\t%s," % (ug,)
+    print "\t{0!s},".format(ug)
   print "};"
-  print "int num_unicode_groups = %d;" % (len(ugroups),)
+  print "int num_unicode_groups = {0:d};".format(len(ugroups))
   print _trailer
 
 if __name__ == '__main__':

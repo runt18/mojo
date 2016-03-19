@@ -109,7 +109,7 @@ class ResultsUploader(object):
       else:
         # Ensure there's no leading "origin/"
         buildbot_branch = buildbot_branch[buildbot_branch.find('/') + 1:]
-      self._master_name = '%s-%s' % (self._build_name, buildbot_branch)
+      self._master_name = '{0!s}-{1!s}'.format(self._build_name, buildbot_branch)
 
     self._test_results_map = {}
 
@@ -163,7 +163,7 @@ class ResultsUploader(object):
       results_generator.GenerateTimesMSFile()
       results_generator.UploadJSONFiles(json_files)
     except Exception as e:
-      logging.error("Uploading results to test server failed: %s." % e)
+      logging.error("Uploading results to test server failed: {0!s}.".format(e))
     finally:
       shutil.rmtree(tmp_folder)
 

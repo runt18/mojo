@@ -75,13 +75,13 @@ class LLVMSymbolizer(Symbolizer):
   def open_llvm_symbolizer(self):
     cmd = [self.symbolizer_path,
            '--use-symbol-table=true',
-           '--demangle=%s' % demangle,
+           '--demangle={0!s}'.format(demangle),
            '--functions=short',
            '--inlining=true',
-           '--default-arch=%s' % self.default_arch]
+           '--default-arch={0!s}'.format(self.default_arch)]
     if self.system == 'Darwin':
       for hint in self.dsym_hints:
-        cmd.append('--dsym-hint=%s' % hint)
+        cmd.append('--dsym-hint={0!s}'.format(hint))
     if DEBUG:
       print ' '.join(cmd)
     try:
@@ -97,7 +97,7 @@ class LLVMSymbolizer(Symbolizer):
       return None
     result = []
     try:
-      symbolizer_input = '"%s" %s' % (binary, offset)
+      symbolizer_input = '"{0!s}" {1!s}'.format(binary, offset)
       if DEBUG:
         print symbolizer_input
       print >> self.pipe.stdin, symbolizer_input
@@ -110,7 +110,7 @@ class LLVMSymbolizer(Symbolizer):
         if (not function_name.startswith('??') or
             not file_name.startswith('??')):
           # Append only non-trivial frames.
-          result.append('%s in %s %s' % (addr, function_name,
+          result.append('{0!s} in {1!s} {2!s}'.format(addr, function_name,
                                          file_name))
     except Exception:
       result = []
@@ -160,7 +160,7 @@ class Addr2LineSymbolizer(Symbolizer):
       function_name = ''
       file_name = ''
     file_name = fix_filename(file_name)
-    return ['%s in %s %s' % (addr, function_name, file_name)]
+    return ['{0!s} in {1!s} {2!s}'.format(addr, function_name, file_name)]
 
 
 class UnbufferedLineConverter(object):
@@ -205,7 +205,7 @@ class DarwinSymbolizer(Symbolizer):
 
   def open_atos(self):
     if DEBUG:
-      print 'atos -o %s -arch %s' % (self.binary, self.arch)
+      print 'atos -o {0!s} -arch {1!s}'.format(self.binary, self.arch)
     cmdline = ['atos', '-o', self.binary, '-arch', self.arch]
     self.atos = UnbufferedLineConverter(cmdline, close_stderr=True)
 
@@ -213,7 +213,7 @@ class DarwinSymbolizer(Symbolizer):
     """Overrides Symbolizer.symbolize."""
     if self.binary != binary:
       return None
-    atos_line = self.atos.convert('0x%x' % int(offset, 16))
+    atos_line = self.atos.convert('0x{0:x}'.format(int(offset, 16)))
     while "got symbolicator for" in atos_line:
       atos_line = self.atos.readline()
     # A well-formed atos response looks like this:
@@ -225,9 +225,9 @@ class DarwinSymbolizer(Symbolizer):
       function_name = match.group(1)
       function_name = re.sub('\(.*?\)', '', function_name)
       file_name = fix_filename(match.group(3))
-      return ['%s in %s %s' % (addr, function_name, file_name)]
+      return ['{0!s} in {1!s} {2!s}'.format(addr, function_name, file_name)]
     else:
-      return ['%s in %s' % (addr, atos_line)]
+      return ['{0!s} in {1!s}'.format(addr, atos_line)]
 
 
 # Chain several symbolizers so that if one symbolizer fails, we fall back
@@ -332,7 +332,7 @@ class BreakpadSymbolizer(Symbolizer):
     res = self.get_sym_file_line(int(offset, 16))
     if res:
       function_name, file_name, line_no = res
-      result = ['%s in %s %s:%d' % (
+      result = ['{0!s} in {1!s} {2!s}:{3:d}'.format(
           addr, function_name, file_name, line_no)]
       print result
       return result
@@ -406,7 +406,7 @@ class SymbolizationLoop(object):
     else:
       result = []
       for symbolized_frame in symbolized_lines:
-        result.append('    #%s %s' % (str(self.frame_no), symbolized_frame.rstrip()))
+        result.append('    #{0!s} {1!s}'.format(str(self.frame_no), symbolized_frame.rstrip()))
         self.frame_no += 1
       return result
 

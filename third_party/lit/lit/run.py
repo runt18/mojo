@@ -245,8 +245,7 @@ class Run(object):
 
           if max_procs_soft < desired_limit:
             resource.setrlimit(resource.RLIMIT_NPROC, (desired_limit, max_procs_hard))
-            self.lit_config.note('raised the process limit from %d to %d' % \
-                                 (max_procs_soft, desired_limit))
+            self.lit_config.note('raised the process limit from {0:d} to {1:d}'.format(max_procs_soft, desired_limit))
         except:
           pass
 

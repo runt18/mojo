@@ -51,8 +51,7 @@ def CheckChange(input_api, output_api):
         continue
       if check_for_memcheck:
         if not line.startswith('Memcheck:'):
-          errors.append('"%s" should be "Memcheck:..." in %s line %s' %
-                        (line, f.LocalPath(), line_num))
+          errors.append('"{0!s}" should be "Memcheck:..." in {1!s} line {2!s}'.format(line, f.LocalPath(), line_num))
         check_for_memcheck = False;
       if line == '{':
         skip_next_line = 'skip_suppression_name'
@@ -65,7 +64,7 @@ def CheckChange(input_api, output_api):
           line.startswith('Memcheck:') or line == '}' or
           line == '...'):
         continue
-      errors.append('"%s" is probably wrong: %s line %s' % (line, f.LocalPath(),
+      errors.append('"{0!s}" is probably wrong: {1!s} line {2!s}'.format(line, f.LocalPath(),
                                                             line_num))
   if errors:
     return [output_api.PresubmitError('\n'.join(errors))]

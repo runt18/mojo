@@ -34,8 +34,8 @@ class TestPackageApk(TestPackage):
     """
     TestPackage.__init__(self, suite_name)
     self.suite_path = os.path.join(
-        constants.GetOutDirectory(), '%s_apk' % suite_name,
-        '%s-debug.apk' % suite_name)
+        constants.GetOutDirectory(), '{0!s}_apk'.format(suite_name),
+        '{0!s}-debug.apk'.format(suite_name))
     if suite_name == 'content_browsertests':
       self._package_info = constants.PACKAGE_INFO['content_browsertests']
     elif suite_name == 'components_browsertests':
@@ -60,12 +60,12 @@ class TestPackageApk(TestPackage):
   def _WatchFifo(self, device, timeout, logfile=None):
     for i in range(100):
       if device.FileExists(self._GetFifo()):
-        logging.info('Fifo created. Slept for %f secs' % (i * 0.5))
+        logging.info('Fifo created. Slept for {0:f} secs'.format((i * 0.5)))
         break
       time.sleep(0.5)
     else:
       raise device_errors.DeviceUnreachableError(
-          'Unable to find fifo on device %s ' % self._GetFifo())
+          'Unable to find fifo on device {0!s} '.format(self._GetFifo()))
     args = shlex.split(device.old_interface.Adb()._target_arg)
     args += ['shell', 'cat', self._GetFifo()]
     return pexpect.spawn('adb', args, timeout=timeout, logfile=logfile)
@@ -87,7 +87,7 @@ class TestPackageApk(TestPackage):
     if self.suite_name == 'content_browsertests':
       try:
         device.RunShellCommand(
-            'rm -r %s/content_shell' % device.GetExternalStoragePath(),
+            'rm -r {0!s}/content_shell'.format(device.GetExternalStoragePath()),
             timeout=60 * 2)
       except device_errors.CommandFailedError:
         # TODO(jbudorick) Handle this exception appropriately once the
@@ -96,7 +96,7 @@ class TestPackageApk(TestPackage):
     elif self.suite_name == 'components_browsertests':
       try:
         device.RunShellCommand(
-            'rm -r %s/components_shell' % device.GetExternalStoragePath(),
+            'rm -r {0!s}/components_shell'.format(device.GetExternalStoragePath()),
             timeout=60 * 2)
       except device_errors.CommandFailedError:
         # TODO(jbudorick) Handle this exception appropriately once the
@@ -106,7 +106,7 @@ class TestPackageApk(TestPackage):
   #override
   def CreateCommandLineFileOnDevice(self, device, test_filter, test_arguments):
     self._CreateCommandLineFileOnDevice(
-        device, '--gtest_filter=%s %s' % (test_filter, test_arguments))
+        device, '--gtest_filter={0!s} {1!s}'.format(test_filter, test_arguments))
 
   #override
   def GetAllTests(self, device):

@@ -23,7 +23,7 @@ def GetPlatformName():
     return 'mac'
   if IsLinux():
     return 'linux'
-  raise NotImplementedError('Unknown platform "%s".' % sys.platform)
+  raise NotImplementedError('Unknown platform "{0!s}".'.format(sys.platform))
 
 
 def IsWindows():
@@ -100,7 +100,7 @@ def Unzip(zip_path, output_dir):
     unzip_cmd = ['unzip', '-o']
   unzip_cmd += [zip_path]
   if RunCommand(unzip_cmd, output_dir) != 0:
-    raise RuntimeError('Unable to unzip %s to %s' % (zip_path, output_dir))
+    raise RuntimeError('Unable to unzip {0!s} to {1!s}'.format(zip_path, output_dir))
 
 
 def Kill(pid):

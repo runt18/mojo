@@ -49,7 +49,7 @@ class AutoTestDictTransform(ScopeTrackingTransform):
 
     def add_test(self, testpos, path, doctest):
         pos = self.testspos
-        keystr = u'%s (line %d)' % (path, testpos[1])
+        keystr = u'{0!s} (line {1:d})'.format(path, testpos[1])
         key = UnicodeNode(pos, value=EncodedString(keystr))
         value = UnicodeNode(pos, value=doctest)
         self.tests.append(DictItemNode(pos, key=key, value=value))
@@ -87,10 +87,10 @@ class AutoTestDictTransform(ScopeTrackingTransform):
                 class_name = self.scope_node.class_name
             if isinstance(node.entry.scope, Symtab.PropertyScope):
                 property_method_name = node.entry.scope.name
-                path = "%s.%s.%s" % (class_name, node.entry.scope.name,
+                path = "{0!s}.{1!s}.{2!s}".format(class_name, node.entry.scope.name,
                                      node.entry.name)
             else:
-                path = "%s.%s" % (class_name, node.entry.name)
+                path = "{0!s}.{1!s}".format(class_name, node.entry.name)
         else:
             assert False
         self.add_test(node.pos, path, node.doc)

@@ -71,7 +71,7 @@ def ParseAndReportErrors(filename):
   except Exception:
     import traceback
     traceback.print_exc()
-    sys.stderr.write('Failed to parse XML file: %s\n' % filename)
+    sys.stderr.write('Failed to parse XML file: {0!s}\n'.format(filename))
     sys.exit(1)
 
 

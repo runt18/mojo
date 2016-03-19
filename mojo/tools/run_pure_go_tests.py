@@ -40,7 +40,7 @@ def main():
   for path in test_dirs:
     test_dir = os.path.join(src_root, *path.split('/'))
     os.chdir(test_dir)
-    print "Running Go tests in %s..." % test_dir
+    print "Running Go tests in {0!s}...".format(test_dir)
     call_result = InvokeGo(go_tool, ["test"], src_root=src_root)
     if call_result:
       return call_result

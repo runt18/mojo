@@ -31,7 +31,7 @@ def Jar(class_files, classes_dir, jar_path, manifest_file=None):
     empty_file = os.path.join(temp_dir, '.empty')
     build_utils.Touch(empty_file)
     jar_cmd.append(os.path.relpath(empty_file, jar_cwd))
-    record_path = '%s.md5.stamp' % jar_path
+    record_path = '{0!s}.md5.stamp'.format(jar_path)
     md5_check.CallAndRecordIfStale(
         lambda: build_utils.CheckOutput(jar_cmd, cwd=jar_cwd),
         record_path=record_path,

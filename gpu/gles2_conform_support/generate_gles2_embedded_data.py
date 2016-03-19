@@ -73,11 +73,11 @@ class GenerateEmbeddedFiles(object):
           print full_path.replace("\\", "/")
         else:
           self.count += 1
-          name = "_FILE_%s_%d" % (ext.upper(), self.count)
+          name = "_FILE_{0!s}_{1:d}".format(ext.upper(), self.count)
           name = name.replace(".", "_")
 
-          self.files_data_h.write("extern const char %s[];\n" % name)
-          self.files_data_c.write("const char %s[] = \n" % name)
+          self.files_data_h.write("extern const char {0!s}[];\n".format(name))
+          self.files_data_c.write("const char {0!s}[] = \n".format(name))
 
           data = open(full_path, "r")
           lines = data.readlines();
@@ -89,10 +89,10 @@ class GenerateEmbeddedFiles(object):
             line = line.replace("\\", "\\\\")
             line = line.replace("\"", "\\\"")
 
-            self.files_data_c.write('"%s\\n"\n' % line)
+            self.files_data_c.write('"{0!s}\\n"\n'.format(line))
 
           self.files_data_c.write(";\n")
-          self.files_toc_c.write("\t{ \"%s\", %s, 0 },\n" % (
+          self.files_toc_c.write("\t{{ \"{0!s}\", {1!s}, 0 }},\n".format(
               base_path.replace("\\", "/"), name))
 
     for sub_dir in sub_dirs:

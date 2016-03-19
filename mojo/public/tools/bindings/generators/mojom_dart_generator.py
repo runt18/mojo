@@ -203,11 +203,11 @@ _spec_to_encode_method = {
 # they are used to generate mojom Type's and ServiceDescription implementations.
 # They need to be imported, unless the file itself is being generated.
 _service_describer_pkg_short = "service_describer"
-_service_describer_pkg = "package:mojo/mojo/bindings/types/%s.mojom.dart" % \
-  _service_describer_pkg_short
+_service_describer_pkg = "package:mojo/mojo/bindings/types/{0!s}.mojom.dart".format( \
+  _service_describer_pkg_short)
 _mojom_types_pkg_short = "mojom_types"
-_mojom_types_pkg = "package:mojo/mojo/bindings/types/%s.mojom.dart" % \
-  _mojom_types_pkg_short
+_mojom_types_pkg = "package:mojo/mojo/bindings/types/{0!s}.mojom.dart".format( \
+  _mojom_types_pkg_short)
 
 def GetDartType(kind):
   if kind.imported_from:
@@ -218,10 +218,9 @@ def DartDefaultValue(field):
   if field.default:
     if mojom.IsStructKind(field.kind):
       assert field.default == "default"
-      return "new %s()" % GetDartType(field.kind)
+      return "new {0!s}()".format(GetDartType(field.kind))
     if mojom.IsEnumKind(field.kind):
-      return ("new %s(%s)" %
-          (GetDartType(field.kind), ExpressionToText(field.default)))
+      return ("new {0!s}({1!s})".format(GetDartType(field.kind), ExpressionToText(field.default)))
     return ExpressionToText(field.default)
   if field.kind in mojom.PRIMITIVES:
     return _kind_to_dart_default_value[field.kind]
@@ -310,12 +309,12 @@ def GetNameForElementUnsafe(element):
     # mangle the enum name by prepending it with the name of the containing
     # element.
     if element.parent_kind:
-      return ("%s%s" % (GetNameForElement(element.parent_kind),
+      return ("{0!s}{1!s}".format(GetNameForElement(element.parent_kind),
                         UpperCamelCase(element.name)))
     return UpperCamelCase(element.name)
   if isinstance(element, mojom.EnumValue):
     return (GetNameForElement(element.enum) + '.' + CamelCase(element.name))
-  raise Exception('Unexpected element: %s' % element)
+  raise Exception('Unexpected element: {0!s}'.format(element))
 
 def GetNameForElement(element):
   name = GetNameForElementUnsafe(element)
@@ -362,13 +361,13 @@ def AppendDecodeParams(initial_params, kind, bit):
     else:
       params.append(GetDartTrueFalse(mojom.IsNullableKind(kind)))
   if mojom.IsInterfaceKind(kind):
-    params.append('%sProxy.newFromEndpoint' % GetDartType(kind))
+    params.append('{0!s}Proxy.newFromEndpoint'.format(GetDartType(kind)))
   if mojom.IsArrayKind(kind) and mojom.IsInterfaceKind(kind.kind):
-    params.append('%sProxy.newFromEndpoint' % GetDartType(kind.kind))
+    params.append('{0!s}Proxy.newFromEndpoint'.format(GetDartType(kind.kind)))
   if mojom.IsInterfaceRequestKind(kind):
-    params.append('%sStub.newFromEndpoint' % GetDartType(kind.kind))
+    params.append('{0!s}Stub.newFromEndpoint'.format(GetDartType(kind.kind)))
   if mojom.IsArrayKind(kind) and mojom.IsInterfaceRequestKind(kind.kind):
-    params.append('%sStub.newFromEndpoint' % GetDartType(kind.kind.kind))
+    params.append('{0!s}Stub.newFromEndpoint'.format(GetDartType(kind.kind.kind)))
   if mojom.IsArrayKind(kind):
     params.append(GetArrayExpectedLength(kind))
   return params
@@ -398,7 +397,7 @@ def DecodeMethod(kind, offset, bit):
     return _spec_to_decode_method[kind.spec]
   methodName = _DecodeMethodName(kind)
   params = AppendDecodeParams([ str(offset) ], kind, bit)
-  return '%s(%s)' % (methodName, ', '.join(params))
+  return '{0!s}({1!s})'.format(methodName, ', '.join(params))
 
 def EncodeMethod(kind, variable, offset, bit):
   def _EncodeMethodName(kind):
@@ -417,7 +416,7 @@ def EncodeMethod(kind, variable, offset, bit):
     return _spec_to_encode_method[kind.spec]
   methodName = _EncodeMethodName(kind)
   params = AppendEncodeParams([ variable, str(offset) ], kind, bit)
-  return '%s(%s)' % (methodName, ', '.join(params))
+  return '{0!s}({1!s})'.format(methodName, ', '.join(params))
 
 def TranslateConstants(token):
   if isinstance(token, mojom.BuiltinValue):
@@ -479,7 +478,7 @@ def GetPackage(module):
 def GetImportUri(module):
   package = GetPackage(module);
   elements = module.namespace.split('.')
-  elements.append("%s" % module.name)
+  elements.append("{0!s}".format(module.name))
   return os.path.join(package, *elements)
 
 def RaiseHelper(msg):
@@ -539,12 +538,10 @@ class Generator(generator.Generator):
       "interfaces": self.GetInterfaces(),
       "imported_interfaces": self.GetImportedInterfaces(),
       "imported_from": self.ImportedFrom(),
-      "typepkg": '%s.' % _mojom_types_pkg_short,
-      "descpkg": '%s.' % _service_describer_pkg_short,
-      "mojom_types_import": 'import \'%s\' as %s;' % \
-        (_mojom_types_pkg, _mojom_types_pkg_short),
-      "service_describer_import": 'import \'%s\' as %s;' % \
-        (_service_describer_pkg, _service_describer_pkg_short),
+      "typepkg": '{0!s}.'.format(_mojom_types_pkg_short),
+      "descpkg": '{0!s}.'.format(_service_describer_pkg_short),
+      "mojom_types_import": 'import \'{0!s}\' as {1!s};'.format(_mojom_types_pkg, _mojom_types_pkg_short),
+      "service_describer_import": 'import \'{0!s}\' as {1!s};'.format(_service_describer_pkg, _service_describer_pkg_short),
     }
 
     # If this is the mojom types package, clear the import-related params.
@@ -577,7 +574,7 @@ class Generator(generator.Generator):
     self.should_gen_mojom_types = "--generate_type_info" in args
 
     elements = self.module.namespace.split('.')
-    elements.append("%s.dart" % self.module.name)
+    elements.append("{0!s}.dart".format(self.module.name))
 
     lib_module = self.GenerateLibModule(args)
 
@@ -601,7 +598,7 @@ class Generator(generator.Generator):
     full_gen_path = os.path.join(self.output_dir, gen_path)
     self.Write(lib_module, gen_path)
 
-    link = self.MatchMojomFilePath("%s.dart" % self.module.name)
+    link = self.MatchMojomFilePath("{0!s}.dart".format(self.module.name))
     full_link_path = os.path.join(self.output_dir, link)
     try:
       os.unlink(full_link_path)

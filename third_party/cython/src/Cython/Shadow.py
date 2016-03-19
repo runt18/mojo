@@ -25,7 +25,7 @@ class _ArrayType(object):
         elif self.is_f_contig:
             axes[0] = "::1"
 
-        return "%s[%s]" % (self.dtype, ", ".join(axes))
+        return "{0!s}[{1!s}]".format(self.dtype, ", ".join(axes))
 
 
 def index_type(base_type, item):
@@ -211,7 +211,7 @@ class PointerType(CythonType):
             return not self._items and not value._items
 
     def __repr__(self):
-        return "%s *" % (self._basetype,)
+        return "{0!s} *".format(self._basetype)
 
 class ArrayType(PointerType):
 
@@ -227,7 +227,7 @@ class StructType(CythonType):
             if len(data) > 0:
                 raise ValueError('Cannot accept keyword arguments when casting.')
             if type(cast_from) is not type(self):
-                raise ValueError('Cannot cast from %s'%cast_from)
+                raise ValueError('Cannot cast from {0!s}'.format(cast_from))
             for key, value in cast_from.__dict__.items():
                 setattr(self, key, value)
         else:
@@ -238,7 +238,7 @@ class StructType(CythonType):
         if key in self._members:
             self.__dict__[key] = cast(self._members[key], value)
         else:
-            raise AttributeError("Struct has no member '%s'" % key)
+            raise AttributeError("Struct has no member '{0!s}'".format(key))
 
 
 class UnionType(CythonType):
@@ -253,7 +253,7 @@ class UnionType(CythonType):
             elif type(cast_from) is type(self):
                 datadict = cast_from.__dict__
             else:
-                raise ValueError('Cannot cast from %s'%cast_from)
+                raise ValueError('Cannot cast from {0!s}'.format(cast_from))
         else:
             datadict = data
         if len(datadict) > 1:
@@ -267,7 +267,7 @@ class UnionType(CythonType):
         elif key in self._members:
             self.__dict__ = {key: cast(self._members[key], value)}
         else:
-            raise AttributeError("Union has no member '%s'" % key)
+            raise AttributeError("Union has no member '{0!s}'".format(key))
 
 def pointer(basetype):
     class PointerInstance(PointerType):
@@ -383,7 +383,7 @@ void = typedef(int, "void")
 
 for t in int_types + float_types + complex_types + other_types:
     for i in range(1, 4):
-        gs["%s_%s" % ('p'*i, t)] = globals()[t]._pointer(i)
+        gs["{0!s}_{1!s}".format('p'*i, t)] = globals()[t]._pointer(i)
 
 void = typedef(None, "void")
 NULL = p_void(0)

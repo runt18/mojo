@@ -131,8 +131,8 @@ class GtestTestInstance(test_instance.TestInstance):
     self._suite = args.suite_name[0]
 
     self._apk_path = os.path.join(
-        constants.GetOutDirectory(), '%s_apk' % self._suite,
-        '%s-debug.apk' % self._suite)
+        constants.GetOutDirectory(), '{0!s}_apk'.format(self._suite),
+        '{0!s}-debug.apk'.format(self._suite))
     self._exe_path = os.path.join(constants.GetOutDirectory(),
                                   self._suite)
     if not os.path.exists(self._apk_path):
@@ -154,7 +154,7 @@ class GtestTestInstance(test_instance.TestInstance):
     if not os.path.exists(self._exe_path):
       self._exe_path = None
     if not self._apk_path and not self._exe_path:
-      error_func('Could not find apk or executable for %s' % self._suite)
+      error_func('Could not find apk or executable for {0!s}'.format(self._suite))
 
     self._data_deps = []
     if args.test_filter:
@@ -175,7 +175,7 @@ class GtestTestInstance(test_instance.TestInstance):
       self._isolate_abs_path = os.path.abspath(args.isolate_file_path)
       self._isolate_delegate = isolate_delegate
       self._isolated_abs_path = os.path.join(
-          constants.GetOutDirectory(), '%s.isolated' % self._suite)
+          constants.GetOutDirectory(), '{0!s}.isolated'.format(self._suite))
     else:
       logging.warning('No isolate file provided. No data deps will be pushed.');
       self._isolate_delegate = None
@@ -245,19 +245,19 @@ class GtestTestInstance(test_instance.TestInstance):
 
     if disabled_prefixes is None:
       disabled_prefixes = ['DISABLED_', 'FLAKY_', 'FAILS_', 'PRE_', 'MANUAL_']
-    disabled_filter_items += ['%s*' % dp for dp in disabled_prefixes]
-    disabled_filter_items += ['*.%s*' % dp for dp in disabled_prefixes]
+    disabled_filter_items += ['{0!s}*'.format(dp) for dp in disabled_prefixes]
+    disabled_filter_items += ['*.{0!s}*'.format(dp) for dp in disabled_prefixes]
 
     disabled_tests_file_path = os.path.join(
         constants.DIR_SOURCE_ROOT, 'build', 'android', 'pylib', 'gtest',
-        'filter', '%s_disabled' % self._suite)
+        'filter', '{0!s}_disabled'.format(self._suite))
     if disabled_tests_file_path and os.path.exists(disabled_tests_file_path):
       with open(disabled_tests_file_path) as disabled_tests_file:
         disabled_filter_items += [
-            '%s' % l for l in (line.strip() for line in disabled_tests_file)
+            '{0!s}'.format(l) for l in (line.strip() for line in disabled_tests_file)
             if l and not l.startswith('#')]
 
-    return '*-%s' % ':'.join(disabled_filter_items)
+    return '*-{0!s}'.format(':'.join(disabled_filter_items))
 
   def ParseGTestOutput(self, output):
     """Parses raw gtest output and returns a list of results.

@@ -167,7 +167,7 @@ def mojom_path(filename):
   _, name = os.path.split(filename)
   mojom = Translate(tree, name)
   elements = mojom['namespace'].split('.')
-  elements.append("%s" % mojom['name'])
+  elements.append("{0!s}".format(mojom['name']))
   return os.path.join(*elements)
 
 
@@ -183,7 +183,7 @@ def analyze_entrypoints(dart_sdk, package_root, entrypoints):
   try:
     subprocess.check_output(cmd, stderr=subprocess.STDOUT)
   except subprocess.CalledProcessError as e:
-    print('Failed analyzing %s' % entrypoints)
+    print('Failed analyzing {0!s}'.format(entrypoints))
     print(e.output)
     return e.returncode
   return 0
@@ -263,7 +263,7 @@ def main():
   mappings = {}
   for mapping in args.sdk_ext_mappings:
     library, path = mapping.split(',', 1)
-    mappings[library] = '../sdk_ext/%s' % path
+    mappings[library] = '../sdk_ext/{0!s}'.format(path)
 
   sdkext_path = os.path.join(lib_path, '_sdkext')
   if mappings:

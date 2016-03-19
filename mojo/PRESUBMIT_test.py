@@ -42,7 +42,7 @@ class AbsoluteReferencesInBuildFilesTest(unittest.TestCase):
     its name and |paths| as its contents, with each path being wrapped in a
     pair of double-quotes to match the syntax for strings within BUILD.gn
     files."""
-    contents = [ '"%s"' % path for path in paths ]
+    contents = [ '"{0!s}"'.format(path) for path in paths ]
     mock_file = MockFile(filename, contents)
     mock_input_api = MockInputApi()
     mock_input_api.files.append(mock_file)

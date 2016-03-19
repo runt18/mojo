@@ -48,7 +48,7 @@ class SerializableType(Type):
   def __init__(self, typecode):
     Type.__init__(self)
     self.typecode = typecode
-    self.byte_size = struct.calcsize('<%s' % self.GetTypeCode())
+    self.byte_size = struct.calcsize('<{0!s}'.format(self.GetTypeCode()))
 
   def GetTypeCode(self):
     """
@@ -68,7 +68,7 @@ class SerializableType(Type):
     Returns the alignment required by the encoding of this type. By default it
     is set to the byte size of the biggest packed value.
     """
-    return max([struct.calcsize('<%s' % c) for c in self.GetTypeCode()])
+    return max([struct.calcsize('<{0!s}'.format(c)) for c in self.GetTypeCode()])
 
   def Serialize(self, value, data_offset, data, handle_offset):
     """
@@ -148,10 +148,9 @@ class IntegerType(NumericType):
     if value is None:
       raise TypeError('None is not an integer.')
     if not isinstance(value, (int, long)):
-      raise TypeError('%r is not an integer type' % value)
+      raise TypeError('{0!r} is not an integer type'.format(value))
     if value < self._min_value or value > self._max_value:
-      raise OverflowError('%r is not in the range [%d, %d]' %
-                          (value, self._min_value, self._max_value))
+      raise OverflowError('{0!r} is not in the range [{1:d}, {2:d}]'.format(value, self._min_value, self._max_value))
     return value
 
 
@@ -162,7 +161,7 @@ class FloatType(NumericType):
     if value is None:
       raise TypeError('None is not an floating point number.')
     if not isinstance(value, (int, long, float)):
-      raise TypeError('%r is not a numeric type' % value)
+      raise TypeError('{0!r} is not a numeric type'.format(value))
     return float(value)
 
 
@@ -267,7 +266,7 @@ class StringType(PointerType):
       return value
     if isinstance(value, str):
       return unicode(value)
-    raise TypeError('%r is not a string' % value)
+    raise TypeError('{0!r} is not a string'.format(value))
 
   def SerializePointer(self, value, data_offset, data, handle_offset):
     string_array = array.array('b')
@@ -318,7 +317,7 @@ class HandleType(BaseHandleType):
     if value is None:
       return mojo_system.Handle()
     if not isinstance(value, mojo_system.Handle):
-      raise TypeError('%r is not a handle' % value)
+      raise TypeError('{0!r} is not a handle'.format(value))
     return value
 
   def FromHandle(self, handle):
@@ -335,7 +334,7 @@ class InterfaceRequestType(BaseHandleType):
     if value is None:
       return reflection.InterfaceRequest(mojo_system.Handle())
     if not isinstance(value, reflection.InterfaceRequest):
-      raise TypeError('%r is not an interface request' % value)
+      raise TypeError('{0!r} is not an interface request'.format(value))
     return value
 
   def FromHandle(self, handle):
@@ -357,7 +356,7 @@ class InterfaceType(BaseHandleType):
   def Convert(self, value):
     if value is None or isinstance(value, self.interface):
       return value
-    raise TypeError('%r is not an instance of ' % self.interface)
+    raise TypeError('{0!r} is not an instance of '.format(self.interface))
 
   @property
   def interface(self):
@@ -491,7 +490,7 @@ class GenericArrayType(BaseArrayType):
 
     serialization.HEADER_STRUCT.pack_into(data, data_end, size, len(value))
     # TODO(azani): Refactor so we don't have to create big formatting strings.
-    struct.pack_into(('%s' % self.sub_type.GetTypeCode()) * len(value),
+    struct.pack_into(('{0!s}'.format(self.sub_type.GetTypeCode())) * len(value),
                      data,
                      data_end + serialization.HEADER_STRUCT.size,
                      *to_pack)
@@ -529,7 +528,7 @@ class NativeArrayType(BaseArrayType):
   def __init__(self, typecode, nullable=False, length=0):
     BaseArrayType.__init__(self, nullable, length)
     self.array_typecode = typecode
-    self.element_size = struct.calcsize('<%s' % self.array_typecode)
+    self.element_size = struct.calcsize('<{0!s}'.format(self.array_typecode))
 
   def Convert(self, value):
     if value is None:
@@ -571,7 +570,7 @@ class StructType(PointerType):
   def Convert(self, value):
     if value is None or isinstance(value, self.struct_type):
       return value
-    raise TypeError('%r is not an instance of %r' % (value, self.struct_type))
+    raise TypeError('{0!r} is not an instance of {1!r}'.format(value, self.struct_type))
 
   def GetDefaultValue(self, value):
     if value:

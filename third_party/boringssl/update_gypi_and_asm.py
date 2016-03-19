@@ -98,11 +98,11 @@ def ExtractPerlAsmFromCMakeFile(cmakefile):
       if not line.startswith('perlasm('):
         continue
       if not line.endswith(')'):
-        raise ValueError('Bad perlasm line in %s' % cmakefile)
+        raise ValueError('Bad perlasm line in {0!s}'.format(cmakefile))
       # Remove "perlasm(" from start and ")" from end
       params = line[8:-1].split()
       if len(params) < 2:
-        raise ValueError('Bad perlasm line in %s' % cmakefile)
+        raise ValueError('Bad perlasm line in {0!s}'.format(cmakefile))
       perlasms.append({
           'extra_args': params[2:],
           'input': os.path.join(os.path.dirname(cmakefile), params[1]),
@@ -161,13 +161,13 @@ def WriteAsmFiles(perlasms):
   for osarch in OS_ARCH_COMBOS:
     (osname, arch, perlasm_style, extra_args, asm_ext) = osarch
     key = (osname, arch)
-    outDir = '%s-%s' % key
+    outDir = '{0!s}-{1!s}'.format(*key)
 
     for perlasm in perlasms:
       filename = os.path.basename(perlasm['input'])
       output = perlasm['output']
       if not output.startswith('src'):
-        raise ValueError('output missing src: %s' % output)
+        raise ValueError('output missing src: {0!s}'.format(output))
       output = os.path.join(outDir, output[4:])
       output = output.replace('${ASM_EXT}', asm_ext)
 
@@ -183,9 +183,9 @@ def WriteAsmFiles(perlasms):
 
 
 def PrintVariableSection(out, name, files):
-  out.write('    \'%s\': [\n' % name)
+  out.write('    \'{0!s}\': [\n'.format(name))
   for f in sorted(files):
-    out.write('      \'%s\',\n' % f)
+    out.write('      \'{0!s}\',\n'.format(f))
   out.write('    ],\n')
 
 
@@ -210,8 +210,7 @@ def main():
 
     for ((osname, arch), asm_files) in sorted(
         WriteAsmFiles(perlasms).iteritems()):
-      PrintVariableSection(gypi, 'boringssl_%s_%s_sources' %
-                           (osname, arch), asm_files)
+      PrintVariableSection(gypi, 'boringssl_{0!s}_{1!s}_sources'.format(osname, arch), asm_files)
 
     gypi.write('  }\n}\n')
 
@@ -223,20 +222,20 @@ def main():
 
     test_names = []
     for test in sorted(test_c_files):
-      test_name = 'boringssl_%s' % os.path.splitext(os.path.basename(test))[0]
-      test_gypi.write("""    {
-      'target_name': '%s',
+      test_name = 'boringssl_{0!s}'.format(os.path.splitext(os.path.basename(test))[0])
+      test_gypi.write("""    {{
+      'target_name': '{0!s}',
       'type': 'executable',
       'dependencies': [
         'boringssl.gyp:boringssl',
       ],
       'sources': [
-        '%s',
+        '{1!s}',
       ],
       # TODO(davidben): Fix size_t truncations in BoringSSL.
       # https://crbug.com/429039
       'msvs_disabled_warnings': [ 4267, ],
-    },\n""" % (test_name, test))
+    }},\n""".format(test_name, test))
       test_names.append(test_name)
 
     test_names.sort()
@@ -246,7 +245,7 @@ def main():
     'boringssl_test_targets': [\n""")
 
     for test in test_names:
-      test_gypi.write("""      '%s',\n""" % test)
+      test_gypi.write("""      '{0!s}',\n""".format(test))
 
     test_gypi.write('    ],\n  }\n}\n')
 

@@ -27,10 +27,10 @@ class Emailer:
 
   @staticmethod
   def format_email_body(time_str, offline_str, failed_str, noteworthy_str):
-    return '%s%s%s%s' % (time_str, offline_str, failed_str, noteworthy_str)
+    return '{0!s}{1!s}{2!s}{3!s}'.format(time_str, offline_str, failed_str, noteworthy_str)
 
   def send_email(self, body):
-    message = 'From: %s\r\nTo: %s\r\nSubject: %s\r\n\r\n%s' % (self.email_from,
+    message = 'From: {0!s}\r\nTo: {1!s}\r\nSubject: {2!s}\r\n\r\n{3!s}'.format(self.email_from,
             ','.join(self.email_to), Emailer.SUBJECT, body)
 
     try:
@@ -40,7 +40,7 @@ class Emailer:
       server.sendmail(self.email_from, self.email_to, message)
       server.quit()
     except Exception as e:
-      print 'Error sending email: %s' % str(e)
+      print 'Error sending email: {0!s}'.format(str(e))
 
   def testEmailLogin(self):
     server = smtplib.SMTP(Emailer.GMAIL_SMTP_SERVER)
@@ -126,7 +126,7 @@ class GpuBot:
     return gpu_bot
 
 def errorNoMostRecentBuild(waterfall_name, bot_name):
-  print 'No most recent build available: %s::%s' % (waterfall_name, bot_name)
+  print 'No most recent build available: {0!s}::{1!s}'.format(waterfall_name, bot_name)
 
 class Waterfall:
   BASE_URL = 'http://build.chromium.org/p/'
@@ -170,7 +170,7 @@ class Waterfall:
     querystring = '?'
 
     for i in range(n):
-      querystring += 'select=-%d&' % (i + 1)
+      querystring += 'select=-{0:d}&'.format((i + 1))
 
     querystring += 'filter'
 
@@ -182,7 +182,7 @@ class Waterfall:
     querystring = '?'
 
     for bot_name in filter:
-      querystring += 'select=%s&' % urllib.quote(bot_name)
+      querystring += 'select={0!s}&'.format(urllib.quote(bot_name))
 
     querystring += 'filter'
 
@@ -245,7 +245,7 @@ class Waterfall:
             bot.bot_name)
 
     for i in range(NUM_BUILDS):
-      current_build_name = '-%d' % (i + 1)
+      current_build_name = '-{0:d}'.format((i + 1))
       current_build = builds[current_build_name]
 
       if 'results' in current_build and current_build['results'] is not None:
@@ -300,20 +300,19 @@ def roughTimeDiffInHours(t1, t2):
   return abs(hours)
 
 def getBotStr(bot):
-  s = '  %s::%s\n' % (bot.waterfall_name, bot.bot_name)
+  s = '  {0!s}::{1!s}\n'.format(bot.waterfall_name, bot.bot_name)
 
   if bot.failure_string is not None:
-    s += '  failure: %s\n' % bot.failure_string
+    s += '  failure: {0!s}\n'.format(bot.failure_string)
 
   if bot.getEndTime() is not None:
-    s += ('  last build end time: %s (roughly %f hours ago)\n' %
-    (formatTime(bot.getEndTime()), bot.getHoursSinceLastRun()))
+    s += ('  last build end time: {0!s} (roughly {1:f} hours ago)\n'.format(formatTime(bot.getEndTime()), bot.getHoursSinceLastRun()))
 
   if bot.bot_url is not None:
-    s += '  bot url: %s\n' % bot.bot_url
+    s += '  bot url: {0!s}\n'.format(bot.bot_url)
 
   if bot.build_url is not None:
-    s += '  build url: %s\n' % bot.build_url
+    s += '  build url: {0!s}\n'.format(bot.build_url)
 
   s += '\n'
   return s
@@ -328,10 +327,10 @@ def getBotsStr(bots):
   return s
 
 def getOfflineBotsStr(offline_bots):
-  return 'Offline bots:\n%s' % getBotsStr(offline_bots)
+  return 'Offline bots:\n{0!s}'.format(getBotsStr(offline_bots))
 
 def getFailedBotsStr(failed_bots):
-  return 'Failed bots:\n%s' % getBotsStr(failed_bots)
+  return 'Failed bots:\n{0!s}'.format(getBotsStr(failed_bots))
 
 def getBotDicts(bots):
   dicts = []
@@ -506,7 +505,7 @@ class GpuBotPoller:
     return previous_results
 
   def checkBots(self):
-    time_str = 'Current time: %s\n\n' % (formatTime(time.localtime()))
+    time_str = 'Current time: {0!s}\n\n'.format((formatTime(time.localtime())))
     print time_str
 
     try:
@@ -534,7 +533,7 @@ class GpuBotPoller:
         self.emailer.send_email(Emailer.format_email_body(time_str, offline_str,
             failed_str, noteworthy_str))
     except Exception as e:
-      error_str = 'Error: %s' % str(e)
+      error_str = 'Error: {0!s}'.format(str(e))
       print error_str
 
       if self.send_email_on_error:
@@ -610,7 +609,7 @@ def parseArgs(sys_args):
             'requires --email-to and --email-from.')
   elif (args.email_password_file and
           not os.path.isfile(args.email_password_file)):
-    parser.error('File does not exist: %s' % args.email_password_file)
+    parser.error('File does not exist: {0!s}'.format(args.email_password_file))
 
   return args
 
@@ -624,7 +623,7 @@ def main(sys_args):
     try:
       emailer.testEmailLogin()
     except Exception as e:
-      print 'Error logging into email account: %s' % str(e)
+      print 'Error logging into email account: {0!s}'.format(str(e))
       return 1
 
   poller = GpuBotPoller(emailer,
@@ -639,7 +638,7 @@ def main(sys_args):
     if args.repeat_delay is None:
       break
 
-    print 'Will run again in %d minutes...\n' % args.repeat_delay
+    print 'Will run again in {0:d} minutes...\n'.format(args.repeat_delay)
     time.sleep(args.repeat_delay * 60)
 
   return 0

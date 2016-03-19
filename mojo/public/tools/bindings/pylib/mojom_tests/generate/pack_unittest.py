@@ -42,13 +42,13 @@ class PackTest(unittest.TestCase):
     struct = mojom.Struct('test')
     index = 1
     for kind in kinds:
-      struct.AddField('%d' % index, kind)
+      struct.AddField('{0:d}'.format(index), kind)
       index += 1
     ps = pack.PackedStruct(struct)
     num_fields = len(ps.packed_fields)
     self.assertEquals(len(kinds), num_fields)
     for i in xrange(num_fields):
-      self.assertEquals('%d' % fields[i], ps.packed_fields[i].field.name)
+      self.assertEquals('{0:d}'.format(fields[i]), ps.packed_fields[i].field.name)
       self.assertEquals(offsets[i], ps.packed_fields[i].offset)
 
   def testMinVersion(self):

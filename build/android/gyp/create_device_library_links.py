@@ -58,11 +58,11 @@ def TriggerSymlinkScript(options):
     return
 
   apk_package = apk_helper.GetPackageName(options.apk)
-  apk_libraries_dir = '/data/data/%s/lib' % apk_package
+  apk_libraries_dir = '/data/data/{0!s}/lib'.format(apk_package)
 
   device_dir = os.path.dirname(options.script_device_path)
-  mkdir_cmd = ('if [ ! -e %(dir)s ]; then mkdir -p %(dir)s; fi ' %
-      { 'dir': device_dir })
+  mkdir_cmd = ('if [ ! -e {dir!s} ]; then mkdir -p {dir!s}; fi '.format(**
+      { 'dir': device_dir }))
   RunShellCommand(device, mkdir_cmd)
   device.PushChangedFiles([(options.script_host_path,
                             options.script_device_path)])

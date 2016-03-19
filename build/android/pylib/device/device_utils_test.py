@@ -655,7 +655,7 @@ class DeviceUtilsRunShellCommandTest(DeviceUtilsTest):
 
   def testRunShellCommand_withHugeCmd(self):
     payload = 'hi! ' * 1024
-    expected_cmd = "echo '%s'" % payload
+    expected_cmd = "echo '{0!s}'".format(payload)
     with self.assertCalls(
       (mock.call.pylib.utils.device_temp_file.DeviceTempFile(
           self.adb, suffix='.sh'), MockTempFile('/sdcard/temp-123.sh')),
@@ -666,7 +666,7 @@ class DeviceUtilsRunShellCommandTest(DeviceUtilsTest):
 
   def testRunShellCommand_withHugeCmdAmdSU(self):
     payload = 'hi! ' * 1024
-    expected_cmd = """su -c sh -c 'echo '"'"'%s'"'"''""" % payload
+    expected_cmd = """su -c sh -c 'echo '"'"'{0!s}'"'"''""".format(payload)
     with self.assertCalls(
       (self.call.device.NeedsSU(), True),
       (mock.call.pylib.utils.device_temp_file.DeviceTempFile(
@@ -744,7 +744,7 @@ class DeviceUtilsRunShellCommandTest(DeviceUtilsTest):
   def testRunShellCommand_largeOutput_enabled(self):
     cmd = 'echo $VALUE'
     temp_file = MockTempFile('/sdcard/temp-123')
-    cmd_redirect = '%s > %s' % (cmd, temp_file.name)
+    cmd_redirect = '{0!s} > {1!s}'.format(cmd, temp_file.name)
     with self.assertCalls(
         (mock.call.pylib.utils.device_temp_file.DeviceTempFile(self.adb),
             temp_file),
@@ -765,7 +765,7 @@ class DeviceUtilsRunShellCommandTest(DeviceUtilsTest):
   def testRunShellCommand_largeOutput_disabledTrigger(self):
     cmd = 'echo $VALUE'
     temp_file = MockTempFile('/sdcard/temp-123')
-    cmd_redirect = '%s > %s' % (cmd, temp_file.name)
+    cmd_redirect = '{0!s} > {1!s}'.format(cmd, temp_file.name)
     with self.assertCalls(
         (self.call.adb.Shell(cmd), self.ShellError('', None)),
         (mock.call.pylib.utils.device_temp_file.DeviceTempFile(self.adb),

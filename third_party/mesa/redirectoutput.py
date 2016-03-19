@@ -8,7 +8,7 @@ import subprocess
 import sys
 
 if len(sys.argv) < 3:
-  print "Usage: %s OUTPUTFILE SCRIPTNAME ARGUMENTS" % sys.argv[0]
+  print "Usage: {0!s} OUTPUTFILE SCRIPTNAME ARGUMENTS".format(sys.argv[0])
   print "Re-execs the python interpreter against SCRIPTNAME with ARGS,"
   print "redirecting output to OUTPUTFILE."
   sys.exit(1)

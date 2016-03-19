@@ -283,7 +283,7 @@ class Parser(object):
                       'shared_buffer'):
         # Note: We don't enable tracking of line numbers for everything, so we
         # can't use |p.lineno(3)|.
-        raise ParseError(self.filename, "Invalid handle type %r:" % p[3],
+        raise ParseError(self.filename, "Invalid handle type {0!r}:".format(p[3]),
                          lineno=p.lineno(1),
                          snippet=self._GetSnippet(p.lineno(1)))
       p[0] = "handle<" + p[3] + ">"
@@ -296,7 +296,7 @@ class Parser(object):
     """fixed_array : ARRAY LANGLE typename COMMA INT_CONST_DEC RANGLE"""
     value = int(p[5])
     if value == 0 or value > _MAX_ARRAY_SIZE:
-      raise ParseError(self.filename, "Fixed array size %d invalid:" % value,
+      raise ParseError(self.filename, "Fixed array size {0:d} invalid:".format(value),
                        lineno=p.lineno(5),
                        snippet=self._GetSnippet(p.lineno(5)))
     p[0] = p[3] + "[" + p[5] + "]"
@@ -317,7 +317,7 @@ class Parser(object):
     """ordinal : ORDINAL"""
     value = int(p[1][1:])
     if value > _MAX_ORDINAL_VALUE:
-      raise ParseError(self.filename, "Ordinal value %d too large:" % value,
+      raise ParseError(self.filename, "Ordinal value {0:d} too large:".format(value),
                        lineno=p.lineno(1),
                        snippet=self._GetSnippet(p.lineno(1)))
     p[0] = ast.Ordinal(value, filename=self.filename, lineno=p.lineno(1))
@@ -398,7 +398,7 @@ class Parser(object):
       # TODO(vtl): Can we figure out what's missing?
       raise ParseError(self.filename, "Unexpected end of file")
 
-    raise ParseError(self.filename, "Unexpected %r:" % e.value, lineno=e.lineno,
+    raise ParseError(self.filename, "Unexpected {0!r}:".format(e.value), lineno=e.lineno,
                      snippet=self._GetSnippet(e.lineno))
 
   def _GetSnippet(self, lineno):

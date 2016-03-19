@@ -81,9 +81,9 @@ def LoadPythonDictionary(path):
     e.filename = path
     raise
   except Exception, e:
-    raise Exception("Unexpected error while reading %s: %s" % (path, str(e)))
+    raise Exception("Unexpected error while reading {0!s}: {1!s}".format(path, str(e)))
 
-  assert isinstance(file_data, dict), "%s does not eval to a dictionary" % path
+  assert isinstance(file_data, dict), "{0!s} does not eval to a dictionary".format(path)
 
   # Flatten any variables to the top level.
   if 'variables' in file_data:

@@ -20,7 +20,7 @@ def main(argv):
 
   for d in directories:
     if not os.path.exists(d):
-      print >> sys.stderr, '%s does not exist' % d
+      print >> sys.stderr, '{0!s} does not exist'.format(d)
       return 1
     for root, _, filenames in os.walk(d):
       for f in fnmatch.filter(filenames, options.pattern):

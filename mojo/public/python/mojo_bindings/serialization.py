@@ -276,7 +276,7 @@ class UnionSerializer(object):
     if field.field_type.IsUnion():
       typecode = 'Q'
 
-    struct.pack_into('<%s' % typecode, data, 8, entry)
+    struct.pack_into('<{0!s}'.format(typecode), data, 8, entry)
     return data, handles
 
   def Deserialize(self, context, union_class):
@@ -289,7 +289,7 @@ class UnionSerializer(object):
       return None
 
     if size != 16:
-      raise DeserializationException('Invalid union size %s' % size)
+      raise DeserializationException('Invalid union size {0!s}'.format(size))
 
     union = union_class.__new__(union_class)
     if tag not in self._fields:

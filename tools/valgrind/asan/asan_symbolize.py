@@ -144,14 +144,14 @@ def chrome_dsym_hints(binary):
   bundle_positions = app_positions + framework_positions
   bundle_positions.sort()
   assert len(bundle_positions) <= 2, \
-      "The path contains more than two nested bundles: %s" % binary
+      "The path contains more than two nested bundles: {0!s}".format(binary)
   if len(bundle_positions) == 0:
     # Case 1: this is a standalone executable or dylib.
     return []
   assert (not (len(app_positions) == 1 and
                len(framework_positions) == 1 and
                app_positions[0] > framework_positions[0])), \
-      "The path contains an app bundle inside a framework: %s" % binary
+      "The path contains an app bundle inside a framework: {0!s}".format(binary)
   # Cases 2 and 3. The outermost bundle (which is the only bundle in the case 2)
   # is located in the product dir.
   outermost_bundle = bundle_positions[0]
@@ -159,7 +159,7 @@ def chrome_dsym_hints(binary):
   # In case 2 this is the same as |outermost_bundle|.
   innermost_bundle = bundle_positions[-1]
   dsym_path = product_dir + [path_parts[innermost_bundle]]
-  result = '%s.dSYM' % os.path.join(*dsym_path)
+  result = '{0!s}.dSYM'.format(os.path.join(*dsym_path))
   return [result]
 
 

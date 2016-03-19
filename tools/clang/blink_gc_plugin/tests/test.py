@@ -29,15 +29,15 @@ def run_test(test_base_name, cmd, reset_results):
     # just ignore an exit code that indicates failure.
     actual = e.output
   except Exception as e:
-    return 'could not execute %s (%s)' % (cmd, e)
+    return 'could not execute {0!s} ({1!s})'.format(cmd, e)
 
   # Some Blink GC plugins dump a JSON representation of the object graph, and
   # use the processed results as the actual results of the test.
-  if os.path.exists('%s.graph.json' % test_base_name):
+  if os.path.exists('{0!s}.graph.json'.format(test_base_name)):
     try:
       actual = subprocess.check_output(
           ['python', '../process-graph.py', '-c',
-           '%s.graph.json' % test_base_name],
+           '{0!s}.graph.json'.format(test_base_name)],
           stderr=subprocess.STDOUT)
     except subprocess.CalledProcessError, e:
       # The graph processing script returns a failure exit code if the graph is
@@ -47,16 +47,16 @@ def run_test(test_base_name, cmd, reset_results):
     finally:
       # Clean up the .graph.json file to prevent false passes from stale results
       # from a previous run.
-      os.remove('%s.graph.json' % test_base_name)
+      os.remove('{0!s}.graph.json'.format(test_base_name))
 
   # On Windows, clang emits CRLF as the end of line marker. Normalize it to LF
   # to match posix systems.
   actual = actual.replace('\r\n', '\n')
 
-  result_file = '%s.txt%s' % (
+  result_file = '{0!s}.txt{1!s}'.format(
       test_base_name, '' if reset_results else '.actual')
   try:
-    expected = open('%s.txt' % test_base_name).read()
+    expected = open('{0!s}.txt'.format(test_base_name)).read()
   except IOError:
     open(result_file, 'w').write(actual)
     return 'no expected file found'
@@ -96,19 +96,19 @@ def run_tests(clang_path, plugin_path, reset_results):
 
   tests = glob.glob('*.cpp')
   for test in tests:
-    sys.stdout.write('Testing %s... ' % test)
+    sys.stdout.write('Testing {0!s}... '.format(test))
     test_base_name, _ = os.path.splitext(test)
 
     cmd = base_cmd[:]
     try:
-      cmd.extend(file('%s.flags' % test_base_name).read().split())
+      cmd.extend(file('{0!s}.flags'.format(test_base_name)).read().split())
     except IOError:
       pass
     cmd.append(test)
 
     failure_message = run_test(test_base_name, cmd, reset_results)
     if failure_message:
-      print 'failed: %s' % failure_message
+      print 'failed: {0!s}'.format(failure_message)
       failing.append(test_base_name)
     else:
       print 'passed!'
@@ -129,16 +129,16 @@ def main():
 
   os.chdir(os.path.dirname(os.path.realpath(__file__)))
 
-  print 'Using clang %s...' % args.clang_path
-  print 'Using plugin %s...' % args.plugin_path
+  print 'Using clang {0!s}...'.format(args.clang_path)
+  print 'Using plugin {0!s}...'.format(args.plugin_path)
 
   passing, failing = run_tests(args.clang_path,
                                args.plugin_path,
                                args.reset_results)
-  print 'Ran %d tests: %d succeeded, %d failed' % (
+  print 'Ran {0:d} tests: {1:d} succeeded, {2:d} failed'.format(
       len(passing) + len(failing), len(passing), len(failing))
   for test in failing:
-    print '    %s' % test
+    print '    {0!s}'.format(test)
   return len(failing)
 
 

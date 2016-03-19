@@ -318,7 +318,7 @@ class InvalidOSMacroNamesTest(unittest.TestCase):
     self.assertTrue('(did you mean OS_WIN?)' in errors[0])
 
   def testValidOSMacroNames(self):
-    lines = ['#if defined(%s)' % m for m in PRESUBMIT._VALID_OS_MACROS]
+    lines = ['#if defined({0!s})'.format(m) for m in PRESUBMIT._VALID_OS_MACROS]
     errors = PRESUBMIT._CheckForInvalidOSMacrosInFile(
         MockInputApi(), MockFile('some/path/foo_platform.cc', lines))
     self.assertEqual(0, len(errors))

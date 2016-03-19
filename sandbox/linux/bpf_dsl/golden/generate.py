@@ -34,12 +34,12 @@ struct Golden {
 """)
 
   for name, datas in sorted(goldens.items()):
-    f.write("const Golden k%s = {\n" % name)
+    f.write("const Golden k{0!s} = {{\n".format(name))
     for data in datas:
       if data is None:
         f.write("  nullptr,\n")
       else:
-        f.write("  \"%s\",\n" % data.replace("\n", "\\n\\\n"))
+        f.write("  \"{0!s}\",\n".format(data.replace("\n", "\\n\\\n")))
     f.write("};\n\n")
 
   f.write("""\

@@ -90,13 +90,13 @@ def main(argv):
   if missing_warnings:
     print 'Missing warnings:'
     for w in missing_warnings:
-      print '%s' % str(w)
+      print '{0!s}'.format(str(w))
 
   unexpected_warnings = findbugs_warnings.difference(_EXPECTED_WARNINGS)
   if unexpected_warnings:
     print 'Unexpected warnings:'
     for w in unexpected_warnings:
-      print '%s' % str(w)
+      print '{0!s}'.format(str(w))
 
   return len(unexpected_warnings) + len(missing_warnings)
 

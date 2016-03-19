@@ -227,7 +227,7 @@ class FileSourceDescriptor(SourceDescriptor):
         return hash(self.filename)
 
     def __repr__(self):
-        return "<FileSourceDescriptor:%s>" % self.filename
+        return "<FileSourceDescriptor:{0!s}>".format(self.filename)
 
 class StringSourceDescriptor(SourceDescriptor):
     """
@@ -267,7 +267,7 @@ class StringSourceDescriptor(SourceDescriptor):
         return isinstance(other, StringSourceDescriptor) and self.name == other.name
 
     def __repr__(self):
-        return "<StringSourceDescriptor:%s>" % self.name
+        return "<StringSourceDescriptor:{0!s}>".format(self.name)
 
 #------------------------------------------------------------------
 
@@ -419,8 +419,8 @@ class PyrexScanner(Scanner):
             if not self.systring or self.sy == self.systring:
                 t = self.sy
             else:
-                t = "%s %s" % (self.sy, self.systring)
-            print("--- %3d %2d %s" % (line, col, t))
+                t = "{0!s} {1!s}".format(self.sy, self.systring)
+            print("--- {0:3d} {1:2d} {2!s}".format(line, col, t))
 
     def peek(self):
         saved = self.sy, self.systring
@@ -467,7 +467,7 @@ class PyrexScanner(Scanner):
                 found = self.systring
             else:
                 found = self.sy
-            self.error("Expected '%s', found '%s'" % (what, found))
+            self.error("Expected '{0!s}', found '{1!s}'".format(what, found))
 
     def expect_indent(self):
         self.expect('INDENT',

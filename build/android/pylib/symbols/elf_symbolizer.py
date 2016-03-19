@@ -265,8 +265,8 @@ class ELFSymbolizer(object):
         while (datetime.datetime.now() - start_time < timeout):
           # poll() returns !None if the process exited. a2l should never exit.
           if self._proc.poll():
-            logging.warning('addr2line crashed, respawning (lib: %s).' %
-                            self._lib_file_name)
+            logging.warning('addr2line crashed, respawning (lib: {0!s}).'.format(
+                            self._lib_file_name))
             self._RestartAddr2LineProcess()
             # TODO(primiano): the best thing to do in this case would be
             # shrinking the pool size as, very likely, addr2line is crashed
@@ -284,8 +284,8 @@ class ELFSymbolizer(object):
           return
 
         # If this point is reached, we waited more than |addr2line_timeout|.
-        logging.warning('Hung addr2line process, respawning (lib: %s).' %
-                        self._lib_file_name)
+        logging.warning('Hung addr2line process, respawning (lib: {0!s}).'.format(
+                        self._lib_file_name))
         self._RestartAddr2LineProcess()
 
     def ProcessAllResolvedSymbolsInQueue(self):
@@ -320,7 +320,7 @@ class ELFSymbolizer(object):
       self._proc = None
 
     def _WriteToA2lStdin(self, addr):
-      self._proc.stdin.write('%s\n' % hex(addr))
+      self._proc.stdin.write('{0!s}\n'.format(hex(addr)))
       if self._symbolizer.inlines:
         # In the case of inlines we output an extra blank line, which causes
         # addr2line to emit a (??,??:0) tuple that we use as a boundary marker.
@@ -346,7 +346,7 @@ class ELFSymbolizer(object):
             if not m.group(2).startswith('?'):
               source_line = int(m.group(2))
         else:
-          logging.warning('Got invalid symbol path from addr2line: %s' % line2)
+          logging.warning('Got invalid symbol path from addr2line: {0!s}'.format(line2))
 
         # In case disambiguation is on, and needed
         was_ambiguous = False
@@ -463,5 +463,5 @@ class ELFSymbolInfo(object):
     self.was_ambiguous = was_ambiguous
 
   def __str__(self):
-    return '%s [%s:%d]' % (
+    return '{0!s} [{1!s}:{2:d}]'.format(
         self.name or '??', self.source_path or '??', self.source_line or 0)

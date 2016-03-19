@@ -94,7 +94,7 @@ class Node:
     self.edges = {}
     self.reset()
   def __repr__(self):
-    return "%s(%s) %s" % (self.name, self.visited, self.edges)
+    return "{0!s}({1!s}) {2!s}".format(self.name, self.visited, self.edges)
   def update_node(self, decl):
     # Currently we don't track any node info besides its edges.
     pass
@@ -136,9 +136,9 @@ class Edge:
     # edge to a particular type. For example, if the field A::m_f
     # has type HashMap<WeakMember<B>, Member<B>> we will have a
     # strong edge with key m_f#B from A to B.
-    self.key = '%s#%s' % (self.lbl, self.dst)
+    self.key = '{0!s}#{1!s}'.format(self.lbl, self.dst)
   def __repr__(self):
-    return '%s (%s) => %s' % (self.src, self.lbl, self.dst)
+    return '{0!s} ({1!s}) => {2!s}'.format(self.src, self.lbl, self.dst)
   def is_root(self):
     return self.kind == 2
   def is_weak(self):
@@ -158,7 +158,7 @@ def build_graphs_in_dir(dirname):
   # TODO: Use plateform independent code, eg, os.walk
   files = subprocess.check_output(
     ['find', dirname, '-name', '*.graph.json']).split('\n')
-  log("Found %d files" % len(files))
+  log("Found {0:d} files".format(len(files)))
   for f in files:
     f.strip()
     if len(f) < 1:
@@ -202,7 +202,7 @@ def copy_super_edges(edge):
       new_edge = Edge(
         src = sub_node.name,
         dst = e.dst,
-        lbl = '%s <: %s' % (super_node.name, e.lbl),
+        lbl = '{0!s} <: {1!s}'.format(super_node.name, e.lbl),
         ptr = e.ptr,
         kind = e.kind,
         loc = e.loc,
@@ -226,7 +226,7 @@ def complete_graph():
     for edge in node.edges.itervalues():
       if edge.is_root():
         roots.append(edge)
-  log("Copied edges down <super> edges for %d graph nodes" % global_inc_copy)
+  log("Copied edges down <super> edges for {0:d} graph nodes".format(global_inc_copy))
 
 def reset_graph():
   for n in graph.itervalues():
@@ -384,7 +384,7 @@ def print_stats():
   total = sum([len(g) for (s,g) in groups])
   for (s, g) in groups:
     percent = len(g) * 100 / total
-    print "%2d%% is %s (%d hierarchies)" % (percent, s, len(g))
+    print "{0:2d}% is {1!s} ({2:d} hierarchies)".format(percent, s, len(g))
 
   for base in gcref_managed:
     stats = dict({ 'classes': 0, 'ref-mixins': 0 })
@@ -397,15 +397,14 @@ def print_stats():
   for (node, stats) in hierarchies:
     total = stats['mem'] + stats['ref'] + stats['raw']
     print (
-      "%s %3d%% of %-30s: %3d cls, %3d mem, %3d ref, %3d raw, %3d ref-mixins" %
-      (stats['ref'] == 0 and stats['ref-mixins'] == 0 and "*" or " ",
+      "{0!s} {1:3d}% of {2:<30!s}: {3:3d} cls, {4:3d} mem, {5:3d} ref, {6:3d} raw, {7:3d} ref-mixins".format(stats['ref'] == 0 and stats['ref-mixins'] == 0 and "*" or " ",
        total == 0 and 100 or stats['mem'] * 100 / total,
        node.name.replace('blink::', ''),
        stats['classes'],
        stats['mem'],
        stats['ref'],
        stats['raw'],
-       stats['ref-mixins'],
+       stats['ref-mixins']
      ))
 
 def hierarchy_stats(node, stats):
@@ -445,7 +444,7 @@ def main():
         else:
           log("Building graph from file: " + f)
           build_graph(f)
-    log("Completing graph construction (%d graph nodes)" % len(graph))
+    log("Completing graph construction ({0:d} graph nodes)".format(len(graph)))
     complete_graph()
     if args.pickle_graph:
       save_graph()

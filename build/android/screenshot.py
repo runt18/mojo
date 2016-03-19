@@ -16,13 +16,13 @@ from pylib.device import device_errors
 from pylib.device import device_utils
 
 def _PrintMessage(heading, eol='\n'):
-  sys.stdout.write('%s%s' % (heading, eol))
+  sys.stdout.write('{0!s}{1!s}'.format(heading, eol))
   sys.stdout.flush()
 
 
 def _CaptureScreenshot(device, host_file):
   host_file = device.TakeScreenshot(host_file)
-  _PrintMessage('Screenshot written to %s' % os.path.abspath(host_file))
+  _PrintMessage('Screenshot written to {0!s}'.format(os.path.abspath(host_file)))
 
 
 def _CaptureVideo(device, host_file, options):
@@ -38,7 +38,7 @@ def _CaptureVideo(device, host_file, options):
   finally:
     recorder.Stop()
   host_file = recorder.Pull(host_file)
-  _PrintMessage('Video written to %s' % os.path.abspath(host_file))
+  _PrintMessage('Video written to {0!s}'.format(os.path.abspath(host_file)))
 
 
 def main():

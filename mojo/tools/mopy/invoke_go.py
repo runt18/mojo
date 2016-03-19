@@ -95,9 +95,9 @@ def InvokeGo(go_tool, go_options, work_dir=None, src_root=None,
       ndk_cc = os.path.join(ndk_path, 'toolchains', NDK_TOOLCHAIN,
           'prebuilt', arch, 'bin', 'arm-linux-androideabi-gcc')
       sysroot = os.path.join(ndk_path, 'platforms', NDK_PLATFORM, 'arch-arm')
-      env['CGO_CFLAGS'] += ' --sysroot %s' % sysroot
-      env['CGO_LDFLAGS'] += ' --sysroot %s' % sysroot
-      env['CC'] = '%s --sysroot %s' % (ndk_cc, sysroot)
+      env['CGO_CFLAGS'] += ' --sysroot {0!s}'.format(sysroot)
+      env['CGO_LDFLAGS'] += ' --sysroot {0!s}'.format(sysroot)
+      env['CC'] = '{0!s} --sysroot {1!s}'.format(ndk_cc, sysroot)
   elif target_os == 'mac':
     env['CGO_ENABLED'] = '1'
     env['GOOS'] = 'darwin'

@@ -27,7 +27,7 @@ def PackArmLibraryRelocations(android_pack_relocations,
     stream.write('NULL')
     stream.flush()
     objcopy_command = [android_objcopy,
-                       '--add-section', '%s=%s' % (added_section, stream.name),
+                       '--add-section', '{0!s}={1!s}'.format(added_section, stream.name),
                        input_path, output_path]
     subprocess.check_call(objcopy_command)
 

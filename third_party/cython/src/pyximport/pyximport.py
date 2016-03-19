@@ -116,15 +116,12 @@ def handle_special_build(modname, pyxfilename):
         make_ext = getattr(mod,'make_ext',None)
         if make_ext:
             ext = make_ext(modname, pyxfilename)
-            assert ext and ext.sources, ("make_ext in %s did not return Extension" 
-                                         % special_build)
+            assert ext and ext.sources, ("make_ext in {0!s} did not return Extension".format(special_build))
         make_setup_args = getattr(mod,'make_setup_args',None)
         if make_setup_args:
             setup_args = make_setup_args()
-            assert isinstance(setup_args,dict), ("make_setup_args in %s did not return a dict" 
-                                         % special_build)
-        assert set or setup_args, ("neither make_ext nor make_setup_args %s" 
-                                         % special_build)
+            assert isinstance(setup_args,dict), ("make_setup_args in {0!s} did not return a dict".format(special_build))
+        assert set or setup_args, ("neither make_ext nor make_setup_args {0!s}".format(special_build))
         ext.sources = [os.path.join(os.path.dirname(special_build), source) 
                        for source in ext.sources]
     return ext, setup_args
@@ -168,7 +165,7 @@ def handle_dependencies(pyxfilename):
 
 def build_module(name, pyxfilename, pyxbuild_dir=None, inplace=False, language_level=None):
     assert os.path.exists(pyxfilename), (
-        "Path does not exist: %s" % pyxfilename)
+        "Path does not exist: {0!s}".format(pyxfilename))
     handle_dependencies(pyxfilename)
 
     extension_mod,setup_args = get_distutils_extension(name, pyxfilename, language_level)
@@ -184,7 +181,7 @@ def build_module(name, pyxfilename, pyxbuild_dir=None, inplace=False, language_l
                                   setup_args=sargs,
                                   inplace=inplace,
                                   reload_support=pyxargs.reload_support)
-    assert os.path.exists(so_path), "Cannot find: %s" % so_path
+    assert os.path.exists(so_path), "Cannot find: {0!s}".format(so_path)
     
     junkpath = os.path.join(os.path.dirname(so_path), name+"_*") #very dangerous with --inplace ? yes, indeed, trying to eat my files ;)
     junkstuff = glob.glob(junkpath)
@@ -218,8 +215,7 @@ def load_module(name, pyxfilename, pyxbuild_dir=None, is_package=False,
             assert mod.__file__ in (pyxfilename, pyxfilename+'c', pyxfilename+'o'), (mod.__file__, pyxfilename)
         else:
             import traceback
-            raise ImportError("Building module %s failed: %s" %
-                              (name,
+            raise ImportError("Building module {0!s} failed: {1!s}".format(name,
                                traceback.format_exception_only(*sys.exc_info()[:2]))), None, sys.exc_info()[2]
     return mod
 
@@ -307,7 +303,7 @@ class PyxImporter(object):
                                  language_level=self.language_level)
 
         # not found, normal package, not a .pyx file, none of our business
-        _debug("%s not found" % fullname)
+        _debug("{0!s} not found".format(fullname))
         return None
 
 class PyImporter(PyxImporter):
@@ -388,7 +384,7 @@ class LibLoader(object):
         try:
             source_path, so_path, is_package = self._libs[fullname]
         except KeyError:
-            raise ValueError("invalid module %s" % fullname)
+            raise ValueError("invalid module {0!s}".format(fullname))
         _debug("Loading shared library module '%s' from %s", fullname, so_path)
         return load_module(fullname, source_path, so_path=so_path, is_package=is_package)
 
@@ -413,7 +409,7 @@ class PyxLoader(object):
 
     def load_module(self, fullname):
         assert self.fullname == fullname, (
-            "invalid module, expected %s, got %s" % (
+            "invalid module, expected {0!s}, got {1!s}".format(
             self.fullname, fullname))
         if self.init_path:
             # package

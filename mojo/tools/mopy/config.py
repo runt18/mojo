@@ -100,7 +100,7 @@ class Config(object):
       return Config.ARCH_X64
     if machine.startswith("arm"):
       return Config.ARCH_ARM
-    raise Exception("Cannot identify CPU arch: %s" % machine)
+    raise Exception("Cannot identify CPU arch: {0!s}".format(machine))
 
   # Getters for standard fields ------------------------------------------------
 

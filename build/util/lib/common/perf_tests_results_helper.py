@@ -66,7 +66,7 @@ def GeomMeanAndStdDevFromHistogram(histogram_json):
 def _ValueToString(v):
   # Special case for floats so we don't print using scientific notation.
   if isinstance(v, float):
-    return '%f' % v
+    return '{0:f}'.format(v)
   else:
     return str(v)
 
@@ -76,7 +76,7 @@ def _MeanAndStdDevFromList(values):
   sd = None
   if len(values) > 1:
     try:
-      value = '[%s]' % ','.join([_ValueToString(v) for v in values])
+      value = '[{0!s}]'.format(','.join([_ValueToString(v) for v in values]))
       avg = sum([float(v) for v in values]) / len(values)
       sqdiffs = [(float(v) - avg) ** 2 for v in values]
       variance = sum(sqdiffs) / (len(values) - 1)
@@ -90,7 +90,7 @@ def _MeanAndStdDevFromList(values):
 
 def PrintPages(page_list):
   """Prints list of pages to stdout in the format required by perf tests."""
-  print 'Pages: [%s]' % ','.join([_EscapePerfResult(p) for p in page_list])
+  print 'Pages: [{0!s}]'.format(','.join([_EscapePerfResult(p) for p in page_list]))
 
 
 def PrintPerfResult(measurement, trace, values, units,
@@ -120,7 +120,7 @@ def PrintPerfResult(measurement, trace, values, units,
       String of the formated perf result.
   """
   assert perf_result_data_type.IsValidType(result_type), \
-         'result type: %s is invalid' % result_type
+         'result type: {0!s} is invalid'.format(result_type)
 
   trace_name = _EscapePerfResult(trace)
 
@@ -132,7 +132,7 @@ def PrintPerfResult(measurement, trace, values, units,
     flattened_values = FlattenList(values)
     assert len(flattened_values)
     value, avg, sd = _MeanAndStdDevFromList(flattened_values)
-    output = '%s%s: %s%s%s %s' % (
+    output = '{0!s}{1!s}: {2!s}{3!s}{4!s} {5!s}'.format(
         RESULT_TYPES[result_type],
         _EscapePerfResult(measurement),
         trace_name,
@@ -148,7 +148,7 @@ def PrintPerfResult(measurement, trace, values, units,
     # across different histograms.
     assert len(values) == 1
     value = values[0]
-    output = '%s%s: %s= %s %s' % (
+    output = '{0!s}{1!s}: {2!s}= {3!s} {4!s}'.format(
         RESULT_TYPES[result_type],
         _EscapePerfResult(measurement),
         trace_name,
@@ -157,9 +157,9 @@ def PrintPerfResult(measurement, trace, values, units,
     avg, sd = GeomMeanAndStdDevFromHistogram(value)
 
   if avg:
-    output += '\nAvg %s: %f%s' % (measurement, avg, units)
+    output += '\nAvg {0!s}: {1:f}{2!s}'.format(measurement, avg, units)
   if sd:
-    output += '\nSd  %s: %f%s' % (measurement, sd, units)
+    output += '\nSd  {0!s}: {1:f}{2!s}'.format(measurement, sd, units)
   if print_to_stdout:
     print output
     sys.stdout.flush()

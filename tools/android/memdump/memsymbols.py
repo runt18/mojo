@@ -56,7 +56,7 @@ def _GetResidentPagesSet(memdump_contents, lib_name, verbose):
 
     r = MAP_RX.match(line)
     if not r:
-      sys.stderr.write('Skipping %s from %s\n' % (line, memdump_file))
+      sys.stderr.write('Skipping {0!s} from {1!s}\n'.format(line, memdump_file))
       continue
 
     map_start = int(r.group(1), 16)
@@ -75,17 +75,17 @@ def _GetResidentPagesSet(memdump_contents, lib_name, verbose):
     bitmap_pages_count = len(bitmap) * 8
 
     if verbose:
-      print 'Found %s: mapped %d pages in mode %s @ offset %s.' % (
+      print 'Found {0!s}: mapped {1:d} pages in mode {2!s} @ offset {3!s}.'.format(
             lib, map_pages_count, prot, _HexAddr(offset))
-      print ' Map range in the process VA: [%s - %s]. Len: %s' % (
+      print ' Map range in the process VA: [{0!s} - {1!s}]. Len: {2!s}'.format(
           _HexAddr(map_start),
           _HexAddr(map_end),
           _HexAddr(map_pages_count * _PAGE_SIZE))
-      print ' Corresponding addresses in the binary: [%s - %s]. Len: %s' % (
+      print ' Corresponding addresses in the binary: [{0!s} - {1!s}]. Len: {2!s}'.format(
           _HexAddr(offset),
           _HexAddr(offset + map_end - map_start),
           _HexAddr(map_pages_count * _PAGE_SIZE))
-      print ' Bitmap: %d pages' % bitmap_pages_count
+      print ' Bitmap: {0:d} pages'.format(bitmap_pages_count)
       print ''
 
     assert(bitmap_pages_count >= map_pages_count)
@@ -112,8 +112,8 @@ def main(argv):
   (options, args) = parser.parse_args()
 
   if len(args) != 3:
-    print 'Usage: %s [-v] memdump.file nm.file library.so' % (
-        os.path.basename(argv[0]))
+    print 'Usage: {0!s} [-v] memdump.file nm.file library.so'.format((
+        os.path.basename(argv[0])))
     return 1
 
   memdump_file = args[0]
@@ -138,7 +138,7 @@ def main(argv):
 
     r = NM_RX.match(line)
     if not r:
-      sys.stderr.write('Skipping %s from %s\n' % (line, nm_file))
+      sys.stderr.write('Skipping {0!s} from {1!s}\n'.format(line, nm_file))
       continue
 
     sym_addr = int(r.group(1), 16)

@@ -134,7 +134,7 @@ def main():
     elif options.output is None:
       options.output = options.args.pop(0)
   if options.args:
-    parser.error('Unexpected arguments: %r' % options.args)
+    parser.error('Unexpected arguments: {0!r}'.format(options.args))
 
   values = fetch_values(options.file)
   for key, val in evals.iteritems():
@@ -146,13 +146,13 @@ def main():
     contents = subst_file(options.input, values)
   else:
     # Generate a default set of version information.
-    contents = """MAJOR=%(MAJOR)s
-MINOR=%(MINOR)s
-BUILD=%(BUILD)s
-PATCH=%(PATCH)s
-LASTCHANGE=%(LASTCHANGE)s
-OFFICIAL_BUILD=%(OFFICIAL_BUILD)s
-""" % values
+    contents = """MAJOR={MAJOR!s}
+MINOR={MINOR!s}
+BUILD={BUILD!s}
+PATCH={PATCH!s}
+LASTCHANGE={LASTCHANGE!s}
+OFFICIAL_BUILD={OFFICIAL_BUILD!s}
+""".format(**values)
 
   if options.output is not None:
     write_if_changed(options.output, contents)

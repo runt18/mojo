@@ -178,8 +178,7 @@ def get_openmp_compiler_flags(language):
         p = subprocess.Popen([cc, "-v"], stderr=subprocess.PIPE, env=env)
     except EnvironmentError:
         # Be compatible with Python 3
-        warnings.warn("Unable to find the %s compiler: %s: %s" %
-                      (language, os.strerror(sys.exc_info()[1].errno), cc))
+        warnings.warn("Unable to find the {0!s} compiler: {1!s}: {2!s}".format(language, os.strerror(sys.exc_info()[1].errno), cc))
         return None
     _, output = p.communicate()
 
@@ -336,9 +335,9 @@ def parse_tags(filepath):
                     continue
                 if tag == 'tags':
                     tag = 'tag'
-                    print("WARNING: test tags use the 'tag' directive, not 'tags' (%s)" % filepath)
+                    print("WARNING: test tags use the 'tag' directive, not 'tags' ({0!s})".format(filepath))
                 if tag not in ('mode', 'tag', 'ticket', 'cython', 'distutils'):
-                    print("WARNING: unknown test directive '%s' found (%s)" % (tag, filepath))
+                    print("WARNING: unknown test directive '{0!s}' found ({1!s})".format(tag, filepath))
                 values = values.split(',')
                 tags[tag].extend(filter(None, [value.strip() for value in values]))
             elif tags:
@@ -407,7 +406,7 @@ class ErrorWriter(object):
                         (not is_warning and collect_errors):
                     result.append( (int(line), int(column), message.strip()) )
         result.sort()
-        return [ "%d:%d: %s" % values for values in result ]
+        return [ "{0:d}:{1:d}: {2!s}".format(*values) for values in result ]
 
     def geterrors(self):
         return self._collect(True, False)
@@ -476,7 +475,7 @@ class TestBuilder(object):
                 tags = defaultdict(list)
             else:
                 tags = parse_tags(filepath)
-            fqmodule = "%s.%s" % (context, module)
+            fqmodule = "{0!s}.{1!s}".format(context, module)
             if not [ 1 for match in self.selectors
                      if match(fqmodule, tags) ]:
                 continue
@@ -583,7 +582,7 @@ class CythonCompileTestCase(unittest.TestCase):
         unittest.TestCase.__init__(self)
 
     def shortDescription(self):
-        return "compiling (%s) %s" % (self.language, self.module)
+        return "compiling ({0!s}) {1!s}".format(self.language, self.module)
 
     def setUp(self):
         from Cython.Compiler import Options
@@ -657,11 +656,11 @@ class CythonCompileTestCase(unittest.TestCase):
         return source_file
 
     def build_target_filename(self, module_name):
-        target = '%s.%s' % (module_name, self.language)
+        target = '{0!s}.{1!s}'.format(module_name, self.language)
         return target
 
     def related_files(self, test_directory, module_name):
-        is_related = re.compile('%s_.*[.].*' % module_name).match
+        is_related = re.compile('{0!s}_.*[.].*'.format(module_name)).match
         return [filename for filename in list_unchanging_dir(test_directory)
                 if is_related(filename)]
 
@@ -870,7 +869,7 @@ class CythonRunTestCase(CythonCompileTestCase):
         if self.cython_only:
             return CythonCompileTestCase.shortDescription(self)
         else:
-            return "compiling (%s) and running %s" % (self.language, self.module)
+            return "compiling ({0!s}) and running {1!s}".format(self.language, self.module)
 
     def run(self, result=None):
         if result is None:
@@ -967,8 +966,7 @@ def run_forked_test(result, run_func, test_name, fork=True):
         # upper byte of result_code, and the signal it was
         # killed by in the lower byte
         if result_code & 255:
-            raise Exception("Tests in module '%s' were unexpectedly killed by signal %d"%
-                            (module_name, result_code & 255))
+            raise Exception("Tests in module '{0!s}' were unexpectedly killed by signal {1:d}".format(module_name, result_code & 255))
         result_code >>= 8
         if result_code in (0,1):
             input = open(result_file, 'rb')
@@ -977,8 +975,7 @@ def run_forked_test(result, run_func, test_name, fork=True):
             finally:
                 input.close()
         if result_code:
-            raise Exception("Tests in module '%s' exited with status %d" %
-                            (module_name, result_code))
+            raise Exception("Tests in module '{0!s}' exited with status {1:d}".format(module_name, result_code))
     finally:
         try: os.unlink(result_file)
         except: pass
@@ -990,7 +987,7 @@ class PureDoctestTestCase(unittest.TestCase):
         unittest.TestCase.__init__(self, 'run')
 
     def shortDescription(self):
-        return "running pure doctests in %s" % self.module_name
+        return "running pure doctests in {0!s}".format(self.module_name)
 
     def run(self, result=None):
         if result is None:
@@ -1067,12 +1064,12 @@ class PartialTestResult(_TextTestResult):
 
     class _StringIO(StringIO):
         def writeln(self, line):
-            self.write("%s\n" % line)
+            self.write("{0!s}\n".format(line))
 
 
 class CythonUnitTestCase(CythonRunTestCase):
     def shortDescription(self):
-        return "compiling (%s) tests in %s" % (self.language, self.module)
+        return "compiling ({0!s}) tests in {1!s}".format(self.language, self.module)
 
     def run_tests(self, result, ext_so_path):
         module = import_ext(self.module, ext_so_path)
@@ -1252,7 +1249,7 @@ class EndToEndTest(unittest.TestCase):
         unittest.TestCase.__init__(self)
 
     def shortDescription(self):
-        return "End-to-end %s" % self.name
+        return "End-to-end {0!s}".format(self.name)
 
     def setUp(self):
         from Cython.TestUtils import unpack_source_tree
@@ -1282,7 +1279,7 @@ class EndToEndTest(unittest.TestCase):
     def runTest(self):
         self.success = False
         commands = (self.commands
-            .replace("CYTHON", "PYTHON %s" % os.path.join(self.cython_root, 'cython.py'))
+            .replace("CYTHON", "PYTHON {0!s}".format(os.path.join(self.cython_root, 'cython.py')))
             .replace("PYTHON", sys.executable))
         old_path = os.environ.get('PYTHONPATH')
         os.environ['PYTHONPATH'] = self.cython_syspath + os.pathsep + (old_path or '')
@@ -1318,12 +1315,12 @@ class EmbedTest(unittest.TestCase):
         self.old_dir = os.getcwd()
         os.chdir(self.working_dir)
         os.system(
-            "make PYTHON='%s' clean > /dev/null" % sys.executable)
+            "make PYTHON='{0!s}' clean > /dev/null".format(sys.executable))
 
     def tearDown(self):
         try:
             os.system(
-                "make PYTHON='%s' clean > /dev/null" % sys.executable)
+                "make PYTHON='{0!s}' clean > /dev/null".format(sys.executable))
         except:
             pass
         os.chdir(self.old_dir)
@@ -1335,7 +1332,7 @@ class EmbedTest(unittest.TestCase):
         if not os.path.isdir(libdir) or libname not in os.listdir(libdir):
             libdir = os.path.join(os.path.dirname(sys.executable), '..', 'lib')
             if not os.path.isdir(libdir) or libname not in os.listdir(libdir):
-                libdir = os.path.join(libdir, 'python%d.%d' % sys.version_info[:2], 'config')
+                libdir = os.path.join(libdir, 'python{0:d}.{1:d}'.format(*sys.version_info[:2]), 'config')
                 if not os.path.isdir(libdir) or libname not in os.listdir(libdir):
                     # report the error for the original directory
                     libdir = sysconfig.get_config_var('LIBDIR')
@@ -1344,7 +1341,7 @@ class EmbedTest(unittest.TestCase):
             cython = os.path.join(CY3_DIR, cython)
         cython = os.path.abspath(os.path.join('..', '..', cython))
         self.assert_(os.system(
-            "make PYTHON='%s' CYTHON='%s' LIBDIR1='%s' test > make.output" % (sys.executable, cython, libdir)) == 0)
+            "make PYTHON='{0!s}' CYTHON='{1!s}' LIBDIR1='{2!s}' test > make.output".format(sys.executable, cython, libdir)) == 0)
         try:
             os.remove('make.output')
         except OSError:
@@ -1417,7 +1414,7 @@ class RegExSelector:
         try:
             self.pattern = re.compile(pattern_string, re.I|re.U)
         except re.error:
-            print('Invalid pattern: %r' % pattern_string)
+            print('Invalid pattern: {0!r}'.format(pattern_string))
             raise
 
     def __call__(self, testname, tags=None):
@@ -1500,7 +1497,7 @@ def check_thread_termination(ignore_seen=True):
         return
     sys.stderr.write("warning: left-over threads found after running test:\n")
     for t in blocking_threads:
-        sys.stderr.write('...%s\n'  % repr(t))
+        sys.stderr.write('...{0!s}\n'.format(repr(t)))
     raise PendingThreadsError("left-over threads found after running test")
 
 def subprocess_output(cmd):
@@ -1560,7 +1557,7 @@ def main():
                       help="C compiler type")
     backend_list = ','.join(BACKENDS)
     parser.add_option("--backends", dest="backends", default=backend_list,
-                      help="select backends to test (default: %s)" % backend_list)
+                      help="select backends to test (default: {0!s})".format(backend_list))
     parser.add_option("--no-c", dest="use_c",
                       action="store_false", default=True,
                       help="do not test C compilation backend")
@@ -1709,12 +1706,12 @@ def main():
         for shard_num, return_code in pool.imap_unordered(runtests_callback, tasks):
             if return_code != 0:
                 errors.append(shard_num)
-                print("FAILED (%s/%s)" % (shard_num, options.shard_count))
-            print("ALL DONE (%s/%s)" % (shard_num, options.shard_count))
+                print("FAILED ({0!s}/{1!s})".format(shard_num, options.shard_count))
+            print("ALL DONE ({0!s}/{1!s})".format(shard_num, options.shard_count))
         pool.close()
         pool.join()
         if errors:
-            print("Errors for shards %s" % ", ".join([str(e) for e in errors]))
+            print("Errors for shards {0!s}".format(", ".join([str(e) for e in errors])))
             return_code = 1
         else:
             return_code = 0
@@ -1757,10 +1754,10 @@ def runtests(options, cmd_args, coverage=None):
         os.makedirs(WORKDIR)
 
     if options.shard_num <= 0:
-        sys.stderr.write("Python %s\n" % sys.version)
+        sys.stderr.write("Python {0!s}\n".format(sys.version))
         sys.stderr.write("\n")
         if WITH_CYTHON:
-            sys.stderr.write("Running tests against Cython %s\n" % get_version())
+            sys.stderr.write("Running tests against Cython {0!s}\n".format(get_version()))
         else:
             sys.stderr.write("Running tests without Cython.\n")
 
@@ -1793,7 +1790,7 @@ def runtests(options, cmd_args, coverage=None):
     if options.tickets:
         for ticket_number in options.tickets:
             test_bugs = True
-            cmd_args.append('ticket:%s' % ticket_number)
+            cmd_args.append('ticket:{0!s}'.format(ticket_number))
     if not test_bugs:
         for selector in cmd_args:
             if selector.startswith('bugs'):
@@ -1834,12 +1831,12 @@ def runtests(options, cmd_args, coverage=None):
         elif backend == 'cpp' and not options.use_cpp:
             continue
         elif backend not in BACKENDS:
-            sys.stderr.write("Unknown backend requested: '%s' not one of [%s]\n" % (
+            sys.stderr.write("Unknown backend requested: '{0!s}' not one of [{1!s}]\n".format(
                 backend, ','.join(BACKENDS)))
             sys.exit(1)
         backends.append(backend)
     if options.shard_num <= 0:
-        sys.stderr.write("Backends: %s\n" % ','.join(backends))
+        sys.stderr.write("Backends: {0!s}\n".format(','.join(backends)))
     languages = backends
 
     sys.stderr.write("\n")
@@ -1870,7 +1867,7 @@ def runtests(options, cmd_args, coverage=None):
                                     True,
                                     options.cython_only, languages, test_bugs,
                                     options.fork, sys.version_info[0])
-            sys.stderr.write("Including CPython regression tests in %s\n" % sys_pyregr_dir)
+            sys.stderr.write("Including CPython regression tests in {0!s}\n".format(sys_pyregr_dir))
             test_suite.addTest(filetests.handle_directory(sys_pyregr_dir, 'pyregr'))
 
     if options.xml_output_dir:
@@ -1904,7 +1901,7 @@ def runtests(options, cmd_args, coverage=None):
     if missing_dep_excluder.tests_missing_deps:
         sys.stderr.write("Following tests excluded because of missing dependencies on your system:\n")
         for test in missing_dep_excluder.tests_missing_deps:
-            sys.stderr.write("   %s\n" % test)
+            sys.stderr.write("   {0!s}\n".format(test))
 
     if options.with_refnanny:
         import refnanny

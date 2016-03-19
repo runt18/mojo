@@ -30,7 +30,7 @@ def _RunSplitSelectCmd(args, timeout=None, retries=None):
   status, output = cmd_helper.GetCmdStatusAndOutputWithTimeout(
       cmd, timeout_retry.CurrentTimeoutThread().GetRemainingTime())
   if status != 0:
-    raise Exception('Failed running command %s' % str(cmd))
+    raise Exception('Failed running command {0!s}'.format(str(cmd)))
   return output
 
 def _SplitConfig(device):
@@ -39,8 +39,7 @@ def _SplitConfig(device):
   Args:
     device: A DeviceUtils object.
   """
-  return ('%s-r%s-%s:%s' %
-          (device.language,
+  return ('{0!s}-r{1!s}-{2!s}:{3!s}'.format(device.language,
            device.country,
            device.screen_density,
            device.product_cpu_abi))

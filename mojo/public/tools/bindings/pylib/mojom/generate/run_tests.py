@@ -9,14 +9,14 @@ import subprocess
 import sys
 
 def TestMojom(testname, args):
-  print '\nRunning unit tests for %s.' % testname
+  print '\nRunning unit tests for {0!s}.'.format(testname)
   try:
     args = [sys.executable, testname] + args
     subprocess.check_call(args, stdout=sys.stdout)
     print 'Succeeded'
     return 0
   except subprocess.CalledProcessError as err:
-    print 'Failed with %s.' % str(err)
+    print 'Failed with {0!s}.'.format(str(err))
     return 1
 
 

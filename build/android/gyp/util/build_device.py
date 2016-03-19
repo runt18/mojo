@@ -49,7 +49,7 @@ class BuildDevice(object):
     #   org.chromium.chrome.shell.apk
     # -rw-r--r-- system   system    7376582 2013-04-19 16:34 \
     #   org.chromium.chrome.shell-1.apk
-    apk_matcher = lambda s: re.match('.*%s(-[0-9]*)?.apk$' % apk_package, s)
+    apk_matcher = lambda s: re.match('.*{0!s}(-[0-9]*)?.apk$'.format(apk_package), s)
     matches = filter(apk_matcher, self.install_metadata)
     return matches[0] if matches else None
 

@@ -44,7 +44,7 @@ class DeviceTempFileTest(mock_calls.TestCase):
     def check_and_return(cmd):
       self.assertTrue(
           cmd.startswith(cmd_prefix),
-          'command %r does not start with prefix %r' % (cmd, cmd_prefix))
+          'command {0!r} does not start with prefix {1!r}'.format(cmd, cmd_prefix))
       if callable(action):
         return action(cmd)
       else:
@@ -70,7 +70,7 @@ class DeviceTempFileTest(mock_calls.TestCase):
         self.mockShellCall('touch '),
         self.mockShellCall('rm -f ')):
       with device_temp_file.DeviceTempFile(self.adb) as tmpfile:
-        logging.debug('Temp file name: %s' % tmpfile.name)
+        logging.debug('Temp file name: {0!s}'.format(tmpfile.name))
 
   def testTempFileLifecycle(self):
     with self.assertCalls(
@@ -80,7 +80,7 @@ class DeviceTempFileTest(mock_calls.TestCase):
       tempFileContextManager = device_temp_file.DeviceTempFile(self.adb)
     with mock.patch.object(self.adb, 'Shell'):
       with tempFileContextManager as tmpfile:
-        logging.debug('Temp file name: %s' % tmpfile.name)
+        logging.debug('Temp file name: {0!s}'.format(tmpfile.name))
         self.assertEquals(0, self.adb.Shell.call_count)
       self.assertEquals(1, self.adb.Shell.call_count)
       args, _ = self.adb.Shell.call_args

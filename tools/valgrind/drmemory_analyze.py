@@ -41,17 +41,17 @@ class DrMemoryError:
 
   def __str__(self):
     output = ""
-    output += "### BEGIN MEMORY TOOL REPORT (error hash=#%016X#)\n" % \
-        self.ErrorHash()
+    output += "### BEGIN MEMORY TOOL REPORT (error hash=#{0:016X}#)\n".format( \
+        self.ErrorHash())
     output += self._report + "\n"
     if self._testcase:
-      output += "The report came from the `%s` test.\n" % self._testcase
-    output += "Suppression (error hash=#%016X#):\n" % self.ErrorHash()
+      output += "The report came from the `{0!s}` test.\n".format(self._testcase)
+    output += "Suppression (error hash=#{0:016X}#):\n".format(self.ErrorHash())
     output += ("  For more info on using suppressions see "
         "http://dev.chromium.org/developers/how-tos/using-drmemory#TOC-Suppressing-error-reports-from-the-\n")
-    output += "{\n%s\n}\n" % self._suppression
-    output += "### END MEMORY TOOL REPORT (error hash=#%016X#)\n" % \
-        self.ErrorHash()
+    output += "{{\n{0!s}\n}}\n".format(self._suppression)
+    output += "### END MEMORY TOOL REPORT (error hash=#{0:016X}#)\n".format( \
+        self.ErrorHash())
     return output
 
   # This is a device-independent hash identifying the suppression.
@@ -176,11 +176,11 @@ class DrMemoryAnalyzer:
 
     sys.stdout.flush()
     sys.stderr.flush()
-    logging.info("Found %i error reports" % len(to_report))
+    logging.info("Found {0:d} error reports".format(len(to_report)))
     for report in to_report:
       self.error_count += 1
-      logging.info("Report #%d\n%s" % (self.error_count, report))
-    logging.info("Total: %i error reports" % len(to_report))
+      logging.info("Report #{0:d}\n{1!s}".format(self.error_count, report))
+    logging.info("Total: {0:d} error reports".format(len(to_report)))
     sys.stdout.flush()
     return -1
 

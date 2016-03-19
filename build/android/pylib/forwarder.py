@@ -35,7 +35,7 @@ class _FileLock(object):
   def __enter__(self):
     self._fd = os.open(self._path, os.O_RDONLY | os.O_CREAT)
     if self._fd < 0:
-      raise Exception('Could not open file %s for reading' % self._path)
+      raise Exception('Could not open file {0!s} for reading'.format(self._path))
     fcntl.flock(self._fd, fcntl.LOCK_EX)
 
   def __exit__(self, _exception_type, _exception_value, traceback):
@@ -101,7 +101,7 @@ class Forwarder(object):
           else: raise
         if exit_code != 0:
           Forwarder._KillDeviceLocked(device, tool)
-          raise Exception('%s exited with %d:\n%s' % (
+          raise Exception('{0!s} exited with {1:d}:\n{2!s}'.format(
               instance._host_forwarder_path, exit_code, '\n'.join(output)))
         tokens = output.split(':')
         if len(tokens) != 2:
@@ -221,7 +221,7 @@ class Forwarder(object):
     serial = str(device)
     serial_with_port = (serial, device_port)
     if not serial_with_port in instance._device_to_host_port_map:
-      logging.error('Trying to unmap non-forwarded port %d' % device_port)
+      logging.error('Trying to unmap non-forwarded port {0:d}'.format(device_port))
       return
     redirection_command = ['--adb=' + constants.GetAdbPath(),
                            '--serial-id=' + serial,
@@ -229,7 +229,7 @@ class Forwarder(object):
     (exit_code, output) = cmd_helper.GetCmdStatusAndOutput(
         [instance._host_forwarder_path] + redirection_command)
     if exit_code != 0:
-      logging.error('%s exited with %d:\n%s' % (
+      logging.error('{0!s} exited with {1:d}:\n{2!s}'.format(
           instance._host_forwarder_path, exit_code, '\n'.join(output)))
     host_port = instance._device_to_host_port_map[serial_with_port]
     del instance._device_to_host_port_map[serial_with_port]
@@ -264,7 +264,7 @@ class Forwarder(object):
       self._KillHostLocked()
       pid_file.seek(0)
       pid_file.write(
-          '%s:%s' % (pid_for_lock, str(_GetProcessStartTime(pid_for_lock))))
+          '{0!s}:{1!s}'.format(pid_for_lock, str(_GetProcessStartTime(pid_for_lock))))
       pid_file.truncate()
 
   def _InitDeviceLocked(self, device, tool):
@@ -287,7 +287,7 @@ class Forwarder(object):
     device.PushChangedFiles([(
         self._device_forwarder_path_on_host,
         Forwarder._DEVICE_FORWARDER_FOLDER)])
-    cmd = '%s %s' % (tool.GetUtilWrapper(), Forwarder._DEVICE_FORWARDER_PATH)
+    cmd = '{0!s} {1!s}'.format(tool.GetUtilWrapper(), Forwarder._DEVICE_FORWARDER_PATH)
     device.RunShellCommand(
         cmd, env={'LD_LIBRARY_PATH': Forwarder._DEVICE_FORWARDER_FOLDER},
         check_return=True)
@@ -305,7 +305,7 @@ class Forwarder(object):
       (exit_code, output) = cmd_helper.GetCmdStatusAndOutput(
           ['pkill', '-9', 'host_forwarder'])
       if exit_code != 0:
-        raise Exception('%s exited with %d:\n%s' % (
+        raise Exception('{0!s} exited with {1:d}:\n{2!s}'.format(
               self._host_forwarder_path, exit_code, '\n'.join(output)))
 
   @staticmethod
@@ -324,7 +324,7 @@ class Forwarder(object):
     if not device.FileExists(Forwarder._DEVICE_FORWARDER_PATH):
       return
 
-    cmd = '%s %s --kill-server' % (tool.GetUtilWrapper(),
+    cmd = '{0!s} {1!s} --kill-server'.format(tool.GetUtilWrapper(),
                                    Forwarder._DEVICE_FORWARDER_PATH)
     device.RunShellCommand(
         cmd, env={'LD_LIBRARY_PATH': Forwarder._DEVICE_FORWARDER_FOLDER},

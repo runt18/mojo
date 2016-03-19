@@ -27,14 +27,13 @@ def _ProcessDircmpResults(results, verbose=False):
             bool(results.diff_files))
   if verbose:
     for f in results.left_only:
-      print "%s exists in golden directory but not in current output" % f
+      print "{0!s} exists in golden directory but not in current output".format(f)
     for f in results.right_only:
-      print "%s exists in current output but not in golden directory" % f
+      print "{0!s} exists in current output but not in golden directory".format(f)
     for f in results.common_funny + results.funny_files:
-      print "Unable to compare %s between golden directory and current output" \
-          % f
+      print "Unable to compare {0!s} between golden directory and current output".format(f)
     for f in results.diff_files:
-      print "%s differs between golden directory and current output" % f
+      print "{0!s} differs between golden directory and current output".format(f)
   for r in results.subdirs.values():
     # If we're being verbose, check subdirectories even if we know that there
     # are differences. Note that it's "... and rv" to avoid the short-circuit.
@@ -58,20 +57,20 @@ def main():
 
   if args.generate_golden_files:
     if os.path.exists(args.golden_dir):
-      print "WARNING: golden directory %s already exists" % args.golden_dir
+      print "WARNING: golden directory {0!s} already exists".format(args.golden_dir)
     out_dir = args.golden_dir
   else:
     if not os.path.exists(args.golden_dir):
-      print "ERROR: golden directory %s does not exist" % args.golden_dir
+      print "ERROR: golden directory {0!s} does not exist".format(args.golden_dir)
       return 1
     out_dir = mkdtemp()
   if args.verbose:
-    print "Generating files to %s ..." % out_dir
+    print "Generating files to {0!s} ...".format(out_dir)
 
   mojom_files = FindFiles(paths.mojo_dir, "*.mojom")
   for mojom_file in mojom_files:
     if args.verbose:
-      print "  Processing %s ..." % os.path.relpath(mojom_file, paths.mojo_dir)
+      print "  Processing {0!s} ...".format(os.path.relpath(mojom_file, paths.mojo_dir))
     # TODO(vtl): This may wrong, since the path can be overridden in the .gyp
     # file.
     RunBindingsGenerator(out_dir, paths.mojo_dir, mojom_file,
@@ -85,10 +84,10 @@ def main():
 
   if args.keep_temp_dir:
     if args.verbose:
-      print "Not removing %s ..." % out_dir
+      print "Not removing {0!s} ...".format(out_dir)
   else:
     if args.verbose:
-      print "Removing %s ..." % out_dir
+      print "Removing {0!s} ...".format(out_dir)
     rmtree(out_dir)
 
   if not identical:

@@ -58,7 +58,7 @@ def FetchAndExtract(arch):
 
   sha1file = tarball + '.sha1'
   if not os.path.exists(sha1file):
-    print "WARNING: No binutils found for your architecture (%s)!" % arch
+    print "WARNING: No binutils found for your architecture ({0!s})!".format(arch)
     return 0
 
   checksum = ReadFile(sha1file)
@@ -110,7 +110,7 @@ def main(args):
       return ret
     # Fetch the x64 toolchain as well for official bots with 64-bit kernels.
     return FetchAndExtract('x64')
-  print "Host architecture %s is not supported." % arch
+  print "Host architecture {0!s} is not supported.".format(arch)
   return 1
 
 

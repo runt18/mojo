@@ -25,7 +25,7 @@ def main(args):
   exec(d, scope)
   for hook in scope["hooks"]:
     name = hook["name"]
-    print "________ running '%s' in '%s'" % (" ".join(hook["action"]),
+    print "________ running '{0!s}' in '{1!s}'".format(" ".join(hook["action"]),
         gclient_path)
     subprocess.check_call(hook["action"], cwd=gclient_path)
     print

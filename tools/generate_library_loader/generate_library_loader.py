@@ -191,21 +191,21 @@ def main():
   header = options.header
   if options.link_directly == 0 and options.bundled_header:
     header = options.bundled_header
-  wrapped_header_include = '#include %s\n' % header
+  wrapped_header_include = '#include {0!s}\n'.format(header)
 
   # Some libraries (e.g. libpci) have headers that cannot be included
   # without extern "C", otherwise they cause the link to fail.
   # TODO(phajdan.jr): This is a workaround for broken headers. Remove it.
   if options.use_extern_c:
-    wrapped_header_include = 'extern "C" {\n%s\n}\n' % wrapped_header_include
+    wrapped_header_include = 'extern "C" {{\n{0!s}\n}}\n'.format(wrapped_header_include)
 
   # It seems cleaner just to have a single #define here and #ifdefs in bunch
   # of places, rather than having a different set of templates, duplicating
   # or complicating more code.
   if options.link_directly == 0:
-    wrapped_header_include += '#define %s_DLOPEN\n' % unique_prefix
+    wrapped_header_include += '#define {0!s}_DLOPEN\n'.format(unique_prefix)
   elif options.link_directly == 1:
-    wrapped_header_include += '#define %s_DT_NEEDED\n' % unique_prefix
+    wrapped_header_include += '#define {0!s}_DT_NEEDED\n'.format(unique_prefix)
   else:
     parser.error('Invalid value for --link-directly. Should be 0 or 1.')
 

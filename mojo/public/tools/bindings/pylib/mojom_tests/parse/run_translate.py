@@ -18,12 +18,12 @@ from mojom.parse.translate import Translate
 
 def main(argv):
   if len(argv) < 2:
-    print "usage: %s filename" % sys.argv[0]
+    print "usage: {0!s} filename".format(sys.argv[0])
     return 1
 
   for filename in argv[1:]:
     with open(filename) as f:
-      print "%s:" % filename
+      print "{0!s}:".format(filename)
       print Translate(Parse(f.read(), filename),
                       os.path.splitext(os.path.basename(filename))[0])
 

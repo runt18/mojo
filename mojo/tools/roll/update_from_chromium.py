@@ -72,12 +72,12 @@ def chromium_rev_number(src_commit):
 
 def rev(source_dir):
   for d in dirs:
-    print "removing directory %s" % d
+    print "removing directory {0!s}".format(d)
     try:
       system(["git", "rm", "-r", d], cwd=mojo_root_dir)
     except subprocess.CalledProcessError:
-      print "Could not remove %s" % d
-    print "cloning directory %s" % d
+      print "Could not remove {0!s}".format(d)
+    print "cloning directory {0!s}".format(d)
     files = system(["git", "ls-files", d], cwd=source_dir)
     for f in files.splitlines():
       dest_path = os.path.join(mojo_root_dir, f)

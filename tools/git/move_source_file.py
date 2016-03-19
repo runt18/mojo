@@ -68,7 +68,7 @@ def MakeDestinationPath(from_path, to_path):
 def MoveFile(from_path, to_path):
   """Performs a git mv command to move a file from |from_path| to |to_path|.
   """
-  if not os.system('git mv %s %s' % (from_path, to_path)) == 0:
+  if not os.system('git mv {0!s} {1!s}'.format(from_path, to_path)) == 0:
     raise Exception('Fatal: Failed to run git mv command.')
 
 
@@ -87,8 +87,8 @@ def UpdatePostMove(from_path, to_path):
 
     # Update include/import references.
     files_with_changed_includes = mffr.MultiFileFindReplace(
-        r'(#(include|import)\s*["<])%s([>"])' % re.escape(from_path),
-        r'\1%s\3' % to_path,
+        r'(#(include|import)\s*["<]){0!s}([>"])'.format(re.escape(from_path)),
+        r'\1{0!s}\3'.format(to_path),
         ['*.cc', '*.h', '*.m', '*.mm', '*.cpp'])
 
     # Reorder headers in files that changed.
@@ -103,8 +103,8 @@ def UpdatePostMove(from_path, to_path):
   # slow, one good way to speed it up is to make the comment handling
   # optional under a flag.
   mffr.MultiFileFindReplace(
-      r'(//.*)%s' % re.escape(from_path),
-      r'\1%s' % to_path,
+      r'(//.*){0!s}'.format(re.escape(from_path)),
+      r'\1{0!s}'.format(to_path),
       ['*.cc', '*.h', '*.m', '*.mm', '*.cpp'])
 
   # Update references in GYP and BUILD.gn files.
@@ -144,8 +144,8 @@ def UpdatePostMove(from_path, to_path):
   to_rest = to_path
   while True:
     files_with_changed_sources = mffr.MultiFileFindReplace(
-        r'([\'"])%s([\'"])' % from_rest,
-        r'\1%s\2' % to_rest,
+        r'([\'"]){0!s}([\'"])'.format(from_rest),
+        r'\1{0!s}\2'.format(to_rest),
         [os.path.join(visiting_directory, 'BUILD.gn'),
          os.path.join(visiting_directory, '*.gyp*')])
     for changed_file in files_with_changed_sources:
@@ -215,14 +215,14 @@ def main():
   orig_to_path = args[-1]
 
   if len(from_paths) > 1 and not os.path.isdir(orig_to_path):
-    print 'Target %s is not a directory.' % orig_to_path
+    print 'Target {0!s} is not a directory.'.format(orig_to_path)
     print
     parser.print_help()
     return 1
 
   for from_path in from_paths:
     if not opts.error_for_non_source_file and not IsHandledFile(from_path):
-      print '%s does not appear to be a source file, skipping' % (from_path)
+      print '{0!s} does not appear to be a source file, skipping'.format((from_path))
       continue
     to_path = MakeDestinationPath(from_path, orig_to_path)
     if not opts.already_moved:

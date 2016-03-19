@@ -160,11 +160,11 @@ class AndroidShell(Shell):
       # TODO(ppi): Should we have a retry loop to handle the unlikely races?
       device_port = self._find_available_device_port()
     subprocess.check_call(self._adb_command([
-        'reverse', 'tcp:%d' % device_port, 'tcp:%d' % host_port]))
+        'reverse', 'tcp:{0:d}'.format(device_port), 'tcp:{0:d}'.format(host_port)]))
 
     def _unmap_port():
       unmap_command = self._adb_command([
-          'reverse', '--remove', 'tcp:%d' % device_port])
+          'reverse', '--remove', 'tcp:{0:d}'.format(device_port)])
       subprocess.Popen(unmap_command)
     atexit.register(_unmap_port)
     return device_port
@@ -182,11 +182,11 @@ class AndroidShell(Shell):
       # TODO(ppi): Should we have a retry loop to handle the unlikely races?
       host_port = _find_available_host_port()
     subprocess.check_call(self._adb_command([
-        'forward', 'tcp:%d' % host_port, 'tcp:%d' % device_port]))
+        'forward', 'tcp:{0:d}'.format(host_port), 'tcp:{0:d}'.format(device_port)]))
 
     def _unmap_port():
       unmap_command = self._adb_command([
-          'forward', '--remove', 'tcp:%d' % device_port])
+          'forward', '--remove', 'tcp:{0:d}'.format(device_port)])
       subprocess.Popen(unmap_command)
     atexit.register(_unmap_port)
     return host_port
@@ -208,7 +208,7 @@ class AndroidShell(Shell):
     """Returns a path to a cache directory owned by the shell where temporary
     files can be stored.
     """
-    return '/data/data/%s/cache/tmp/' % _MOJO_SHELL_PACKAGE_NAME
+    return '/data/data/{0!s}/cache/tmp/'.format(_MOJO_SHELL_PACKAGE_NAME)
 
   def pull_file(self, device_path, destination_path, remove_original=False):
     """Copies or moves the specified file on the device to the host."""
@@ -264,7 +264,7 @@ class AndroidShell(Shell):
     Args:
       shell_apk_path: Path to the shell Android binary.
     """
-    device_sha1_path = '/sdcard/%s/%s.sha1' % (_MOJO_SHELL_PACKAGE_NAME,
+    device_sha1_path = '/sdcard/{0!s}/{1!s}.sha1'.format(_MOJO_SHELL_PACKAGE_NAME,
                                                'MojoShell')
     apk_sha1 = hashlib.sha1(open(shell_apk_path, 'rb').read()).hexdigest()
     device_apk_sha1 = subprocess.check_output(self._adb_command([
@@ -311,13 +311,13 @@ class AndroidShell(Shell):
       atexit.register(self.stop_shell)
       self.stop_shell_registered = True
 
-    STDOUT_PIPE = '/data/data/%s/stdout.fifo' % _MOJO_SHELL_PACKAGE_NAME
+    STDOUT_PIPE = '/data/data/{0!s}/stdout.fifo'.format(_MOJO_SHELL_PACKAGE_NAME)
 
     cmd = self._adb_command(['shell', 'am', 'start',
                             '-S',
                             '-a', 'android.intent.action.VIEW',
-                            '-n', '%s/.MojoShellActivity' %
-                            _MOJO_SHELL_PACKAGE_NAME])
+                            '-n', '{0!s}/.MojoShellActivity'.format(
+                            _MOJO_SHELL_PACKAGE_NAME)])
 
     parameters = []
     if stdout or on_application_stop:
@@ -326,13 +326,13 @@ class AndroidShell(Shell):
           ['shell', 'run-as', _MOJO_SHELL_PACKAGE_NAME,
            'rm', '-f', STDOUT_PIPE]))
 
-      parameters.append('--fifo-path=%s' % STDOUT_PIPE)
+      parameters.append('--fifo-path={0!s}'.format(STDOUT_PIPE))
       self._read_fifo(STDOUT_PIPE, stdout, on_application_stop)
     parameters.extend(arguments)
 
     if parameters:
       device_filename = (
-          '/sdcard/%s/args_%s' % (_MOJO_SHELL_PACKAGE_NAME, str(uuid.uuid4())))
+          '/sdcard/{0!s}/args_{1!s}'.format(_MOJO_SHELL_PACKAGE_NAME, str(uuid.uuid4())))
       with tempfile.NamedTemporaryFile(delete=False) as temp:
         try:
           for parameter in parameters:
@@ -393,8 +393,7 @@ class AndroidShell(Shell):
         if match:
           device_port = int(match.group(1))
           host_port = self._forward_host_port_to_device(0, device_port)
-          print ('Dart observatory available at the host at http://127.0.0.1:%d'
-                 % host_port)
+          print ('Dart observatory available at the host at http://127.0.0.1:{0:d}'.format(host_port))
 
     logcat_watch_thread = threading.Thread(
         target=_forward_observatories_as_needed)
@@ -415,8 +414,8 @@ class AndroidShell(Shell):
     else:
       server_address = http_server.start_http_server(mappings, port)
 
-    return 'http://127.0.0.1:%d/' % self._forward_device_port_to_host(
-        port, server_address[1])
+    return 'http://127.0.0.1:{0:d}/'.format(self._forward_device_port_to_host(
+        port, server_address[1]))
 
   @overrides(Shell)
   def forward_host_port_to_shell(self, host_port):

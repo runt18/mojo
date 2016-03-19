@@ -98,7 +98,7 @@ def _DeviceAbiToArch(device_abi):
   for arch in arches:
     if arch in device_abi:
       return arch
-  raise RuntimeError('Unknown device ABI: %s' % device_abi)
+  raise RuntimeError('Unknown device ABI: {0!s}'.format(device_abi))
 
 def _ResolveSymbols(tombstone_data, include_stack, device_abi):
   """Run the stack tool for given tombstone input.

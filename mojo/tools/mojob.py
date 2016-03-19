@@ -130,10 +130,10 @@ def _gn(config):
   gn_args = CommandLineForGNArgs(GNArgsForConfig(config))
   out_dir = _get_out_dir(config)
   command.append(out_dir)
-  command.append('--args=%s' % ' '.join(gn_args))
+  command.append('--args={0!s}'.format(' '.join(gn_args)))
 
-  print 'Running %s %s ...' % (command[0],
-                               ' '.join('\'%s\'' % x for x in command[1:]))
+  print 'Running {0!s} {1!s} ...'.format(command[0],
+                               ' '.join('\'{0!s}\''.format(x) for x in command[1:]))
   return subprocess.call(command)
 
 
@@ -144,11 +144,11 @@ def _build(config):
 
   out_dir = _get_out_dir(config)
   gn_args = ParseGNConfig(out_dir)
-  print 'Building in %s ...' % out_dir
+  print 'Building in {0!s} ...'.format(out_dir)
   if gn_args.get('use_goma'):
     # Use the configured goma directory.
     local_goma_dir = gn_args.get('goma_dir')
-    print 'Ensuring goma (in %s) started ...' % local_goma_dir
+    print 'Ensuring goma (in {0!s}) started ...'.format(local_goma_dir)
     command = ['python',
                os.path.join(local_goma_dir, 'goma_ctl.py'),
                'ensure_start']
@@ -179,14 +179,14 @@ def _run_tests(config, test_types):
   final_exit_code = 0
   failure_list = []
   for entry in test_list:
-    print 'Running: %s' % entry['name']
-    print 'Command: %s' % ' '.join(entry['command'])
+    print 'Running: {0!s}'.format(entry['name'])
+    print 'Command: {0!s}'.format(' '.join(entry['command']))
     if dry_run:
       continue
 
-    _logger.info('Starting: %s' % ' '.join(entry['command']))
+    _logger.info('Starting: {0!s}'.format(' '.join(entry['command'])))
     exit_code = subprocess.call(entry['command'])
-    _logger.info('Completed: %s' % ' '.join(entry['command']))
+    _logger.info('Completed: {0!s}'.format(' '.join(entry['command'])))
     if exit_code:
       if not final_exit_code:
         final_exit_code = exit_code
@@ -237,8 +237,8 @@ def _analyzedart(config):
                                                   "packages"))
   if config.values.get('package_name'):
     command.append(config.values.get('package_name'))
-  print 'Running %s %s ...' % (command[0],
-                               ' '.join('\'%s\'' % x for x in command[1:]))
+  print 'Running {0!s} {1!s} ...'.format(command[0],
+                               ' '.join('\'{0!s}\''.format(x) for x in command[1:]))
   return subprocess.call(command)
 
 def main():

@@ -165,7 +165,7 @@ class _HeartBeatLogger(object):
     now = time.time()
     if now - self._tick >= _HeartBeatLogger._PRINT_INTERVAL:
       self._tick = now
-      print '--single-step output length %d' % self._len
+      print '--single-step output length {0:d}'.format(self._len)
       sys.stdout.flush()
 
   def stop(self):
@@ -262,13 +262,12 @@ class TestRunner(base_test_runner.BaseTestRunner):
     except Exception as e:
       logging.error('Exception when tearing down device %s', e)
 
-    cmd = ('%s --device %s' %
-           (self._tests['steps'][test_name]['cmd'],
+    cmd = ('{0!s} --device {1!s}'.format(self._tests['steps'][test_name]['cmd'],
             self.device_serial))
 
     if self._options.collect_chartjson_data:
       self._output_dir = tempfile.mkdtemp()
-      cmd = cmd + ' --output-dir=%s' % self._output_dir
+      cmd = cmd + ' --output-dir={0!s}'.format(self._output_dir)
 
     logging.info(
         'temperature: %s (0.1 C)',
@@ -286,7 +285,7 @@ class TestRunner(base_test_runner.BaseTestRunner):
     logging.info('Timeout for %s test: %s', test_name, timeout)
     full_cmd = cmd
     if self._options.dry_run:
-      full_cmd = 'echo %s' % cmd
+      full_cmd = 'echo {0!s}'.format(cmd)
 
     logfile = sys.stdout
     if self._options.single_step:
@@ -325,7 +324,7 @@ class TestRunner(base_test_runner.BaseTestRunner):
       try:
         self.device.WaitUntilFullyBooted(timeout=120)
       except device_errors.CommandTimeoutError as e:
-        logging.error('Device failed to return after %s: %s' % (test_name, e))
+        logging.error('Device failed to return after {0!s}: {1!s}'.format(test_name, e))
 
     actual_exit_code = exit_code
     if test_name in self._flaky_tests:

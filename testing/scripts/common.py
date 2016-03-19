@@ -55,9 +55,9 @@ def run_script(argv, funcs):
 
 
 def run_command(argv):
-  print 'Running %r' % argv
+  print 'Running {0!r}'.format(argv)
   rc = subprocess.call(argv)
-  print 'Command %r returned exit code %d' % (argv, rc)
+  print 'Command {0!r} returned exit code {1:d}'.format(argv, rc)
   return rc
 
 

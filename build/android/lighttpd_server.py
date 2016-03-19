@@ -131,8 +131,7 @@ class LighttpdServer(object):
           if (r.status == 200 and r.reason == 'OK' and
               r.getheader('Server') == self.server_tag):
             return (None, server_msg)
-          client_error = ('Bad response: %s %s version %s\n  ' %
-                          (r.status, r.reason, r.version) +
+          client_error = ('Bad response: {0!s} {1!s} version {2!s}\n  '.format(r.status, r.reason, r.version) +
                           '\n  '.join([': '.join(h) for h in r.getheaders()]))
       except (httplib.HTTPException, socket.error) as client_error:
         pass  # Probably too quick connecting: try again
@@ -154,11 +153,11 @@ class LighttpdServer(object):
     Args:
       port: Port number to check.
     """
-    if subprocess.call(['fuser', '-kv', '%d/tcp' % port]) == 0:
+    if subprocess.call(['fuser', '-kv', '{0:d}/tcp'.format(port)]) == 0:
       # Give the process some time to terminate and check that it is gone.
       time.sleep(2)
-      assert subprocess.call(['fuser', '-v', '%d/tcp' % port]) != 0, \
-          'Unable to kill process listening on port %d.' % port
+      assert subprocess.call(['fuser', '-v', '{0:d}/tcp'.format(port)]) != 0, \
+          'Unable to kill process listening on port {0:d}.'.format(port)
 
   @staticmethod
   def _GetDefaultBaseConfig():

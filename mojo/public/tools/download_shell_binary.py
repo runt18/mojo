@@ -42,7 +42,7 @@ def download(tools_directory, version_file):
   elif sys.platform == "darwin":
     platforms = ["android-arm"]
   else:
-    print "No prebuilt shell available for %s" % sys.platform
+    print "No prebuilt shell available for {0!s}".format(sys.platform)
     return 0
 
   for platform in platforms:

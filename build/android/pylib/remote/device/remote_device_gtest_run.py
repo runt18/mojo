@@ -52,7 +52,7 @@ class RemoteDeviceGtestTestRun(remote_device_test_run.RemoteDeviceTestRun):
       env_vars = {}
       filter_string = self._test_instance._GenerateDisabledFilterString(None)
       if filter_string:
-        flag_file.write('_ --gtest_filter=%s' % filter_string)
+        flag_file.write('_ --gtest_filter={0!s}'.format(filter_string))
         flag_file.flush()
         env_vars[_EXTRA_COMMAND_LINE_FILE] = os.path.basename(flag_file.name)
         self._test_instance._data_deps.append(

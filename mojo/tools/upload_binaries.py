@@ -137,13 +137,13 @@ def upload_shell(config, dry_run, verbose):
           zipinfo.compress_type = compress_type
           zipinfo.date_time = time.gmtime(os.path.getmtime(filename))
           if verbose:
-            print "zipping %s" % filename
+            print "zipping {0!s}".format(filename)
           z.writestr(zipinfo, binary.read())
     upload(config, zip_file.name, dest, dry_run, gzip=False)
 
   # Update the LATEST file to contain the version of the new binary.
   latest_file = config.values['upload_location'] + \
-                ("shell/%s/LATEST" % target(config))
+                ("shell/{0!s}/LATEST".format(target(config)))
   write_file_to_gs(version, latest_file, config, dry_run)
 
 
@@ -169,13 +169,13 @@ def upload_dart_snapshotter(config, dry_run, verbose):
         zipinfo.compress_type = compress_type
         zipinfo.date_time = time.gmtime(os.path.getmtime(dart_snapshotter_path))
         if verbose:
-          print "zipping %s" % dart_snapshotter_path
+          print "zipping {0!s}".format(dart_snapshotter_path)
         z.writestr(zipinfo, dart_snapshotter_binary.read())
     upload(config, zip_file.name, dest, dry_run, gzip=False)
 
   # Update the LATEST file to contain the version of the new binary.
   latest_file = config.values['upload_location'] + \
-                ("dart_snapshotter/%s/LATEST" % target(config))
+                ("dart_snapshotter/{0!s}/LATEST".format(target(config)))
   write_file_to_gs(version, latest_file, config, dry_run)
 
 
@@ -183,7 +183,7 @@ def upload_app(app_binary_path, config, dry_run):
   app_binary_name = os.path.basename(app_binary_path)
   version = Version().version
   gsutil_app_location = (config.values['upload_location'] + \
-      ("services/%s/%s/%s" % (target(config), version, app_binary_name)))
+      ("services/{0!s}/{1!s}/{2!s}".format(target(config), version, app_binary_name)))
 
   # Upload the new binary.
   upload(config, app_binary_path, gsutil_app_location, dry_run)
@@ -193,7 +193,7 @@ def upload_system_thunks_lib(config, dry_run):
   paths = Paths(config)
   version = Version().version
   dest = config.values['upload_location'] + \
-         ("system_thunks/%s/%s/libsystem_thunks.a" % (target(config), version))
+         ("system_thunks/{0!s}/{1!s}/libsystem_thunks.a".format(target(config), version))
   source_path = paths.build_dir + "/obj/mojo/libsystem_thunks.a"
   upload(config, source_path, dest, dry_run)
 

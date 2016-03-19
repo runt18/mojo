@@ -62,7 +62,7 @@ class IDLAttribute(object):
     self.value = value
 
   def __str__(self):
-    return '%s=%s' % (self.name, self.value)
+    return '{0!s}={1!s}'.format(self.name, self.value)
 
   def GetClass(self):
     return self._cls
@@ -96,11 +96,11 @@ class IDLNode(object):
   # Return a string representation of this node
   def __str__(self):
     name = self.GetProperty('NAME','')
-    return '%s(%s)' % (self._cls, name)
+    return '{0!s}({1!s})'.format(self._cls, name)
 
   def GetLogLine(self, msg):
     filename, lineno = self.GetFileAndLine()
-    return '%s(%d) : %s\n' % (filename, lineno, msg)
+    return '{0!s}({1:d}) : {2!s}\n'.format(filename, lineno, msg)
 
   # Log an error for this object
   def Error(self, msg):
@@ -151,7 +151,7 @@ class IDLNode(object):
           proplist = []
           for key, value in node.GetProperties().iteritems():
             if key in self.props:
-              proplist.append(tab + '    %s: %s' % (key, str(value)))
+              proplist.append(tab + '    {0!s}: {1!s}'.format(key, str(value)))
           if proplist:
             self.out.append(tab + '  PROPERTIES')
             self.out.extend(proplist)
@@ -201,7 +201,7 @@ class IDLNode(object):
         child._parent = self
         self._children.append(child)
         continue
-      raise RuntimeError('Adding child of type %s.\n' % type(child).__name__)
+      raise RuntimeError('Adding child of type {0!s}.\n'.format(type(child).__name__))
 
 
 #

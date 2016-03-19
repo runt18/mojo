@@ -20,7 +20,7 @@ def RemoveStrings(grd_path, string_names):
   with open(grd_path, 'r') as f:
     grd = f.read()
   names_pattern = '|'.join(map(re.escape, string_names))
-  pattern = r'<message [^>]*name="(%s)".*?</message>\s*' % names_pattern
+  pattern = r'<message [^>]*name="({0!s})".*?</message>\s*'.format(names_pattern)
   grd = re.sub(pattern, '', grd, flags=re.DOTALL)
   with open(grd_path, 'w') as f:
     f.write(grd)

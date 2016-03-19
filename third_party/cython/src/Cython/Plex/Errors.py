@@ -21,7 +21,7 @@ class InvalidRegex(PlexError):
 class InvalidToken(PlexError):
 
   def __init__(self, token_number, message):
-    PlexError.__init__(self, "Token number %d: %s" % (token_number, message))
+    PlexError.__init__(self, "Token number {0:d}: {1!s}".format(token_number, message))
 
 class InvalidScanner(PlexError):
   pass
@@ -43,8 +43,7 @@ class UnrecognizedInput(PlexError):
     self.state_name = state_name
 
   def __str__(self):
-    return ("'%s', line %d, char %d: Token not recognised in state %s"
-            % (self.position + (repr(self.state_name),)))
+    return ("'{0!s}', line {1:d}, char {2:d}: Token not recognised in state {3!s}".format(*(self.position + (repr(self.state_name),))))
 
 
 

@@ -120,8 +120,8 @@ class RE(object):
         beginning of a line. If nocase is true, upper and lower case
         letters should be treated as equivalent.
         """
-        raise NotImplementedError("%s.build_machine not implemented" %
-            self.__class__.__name__)
+        raise NotImplementedError("{0!s}.build_machine not implemented".format(
+            self.__class__.__name__))
 
     def build_opt(self, m, initial_state, c):
         """
@@ -162,7 +162,7 @@ class RE(object):
 
     def wrong_type(self, num, value, expected):
         if type(value) == types.InstanceType:
-                got = "%s.%s instance" % (
+                got = "{0!s}.{1!s} instance".format(
                     value.__class__.__module__, value.__class__.__name__)
         else:
             got = type(value).__name__
@@ -216,7 +216,7 @@ def Char(c):
         result = CodeRange(ord(c), ord(c) + 1)
     else:
         result = SpecialSymbol(c)
-    result.str = "Char(%s)" % repr(c)
+    result.str = "Char({0!s})".format(repr(c))
     return result
 
 class RawCodeRange(RE):
@@ -247,7 +247,7 @@ class RawCodeRange(RE):
                 initial_state.add_transition(self.lowercase_range, final_state)
 
     def calc_str(self):
-        return "CodeRange(%d,%d)" % (self.code1, self.code2)
+        return "CodeRange({0:d},{1:d})".format(self.code1, self.code2)
 
 class _RawNewline(RE):
     """
@@ -328,7 +328,7 @@ class Seq(RE):
                 match_bol = re.match_nl or (match_bol and re.nullable)
 
     def calc_str(self):
-        return "Seq(%s)" % ','.join(map(str, self.re_list))
+        return "Seq({0!s})".format(','.join(map(str, self.re_list)))
 
 
 class Alt(RE):
@@ -367,7 +367,7 @@ class Alt(RE):
                 re.build_machine(m, initial_state, final_state, 0, nocase)
 
     def calc_str(self):
-        return "Alt(%s)" % ','.join(map(str, self.re_list))
+        return "Alt({0!s})".format(','.join(map(str, self.re_list)))
 
 
 class Rep1(RE):
@@ -388,7 +388,7 @@ class Rep1(RE):
         s2.link_to(final_state)
 
     def calc_str(self):
-        return "Rep1(%s)" % self.re
+        return "Rep1({0!s})".format(self.re)
 
 
 class SwitchCase(RE):
@@ -415,7 +415,7 @@ class SwitchCase(RE):
             name = "NoCase"
         else:
             name = "Case"
-        return "%s(%s)" % (name, self.re)
+        return "{0!s}({1!s})".format(name, self.re)
 
 #
 #     Composite RE constructors
@@ -436,7 +436,7 @@ def Str1(s):
     Str1(s) is an RE which matches the literal string |s|.
     """
     result = Seq(*tuple(map(Char, s)))
-    result.str = "Str(%s)" % repr(s)
+    result.str = "Str({0!s})".format(repr(s))
     return result
 
 def Str(*strs):
@@ -448,7 +448,7 @@ def Str(*strs):
         return Str1(strs[0])
     else:
         result = Alt(*tuple(map(Str1, strs)))
-        result.str = "Str(%s)" % ','.join(map(repr, strs))
+        result.str = "Str({0!s})".format(','.join(map(repr, strs)))
         return result
 
 def Any(s):
@@ -457,7 +457,7 @@ def Any(s):
     """
     #result = apply(Alt, tuple(map(Char, s)))
     result = CodeRanges(chars_to_ranges(s))
-    result.str = "Any(%s)" % repr(s)
+    result.str = "Any({0!s})".format(repr(s))
     return result
 
 def AnyBut(s):
@@ -469,7 +469,7 @@ def AnyBut(s):
     ranges.insert(0, -maxint)
     ranges.append(maxint)
     result = CodeRanges(ranges)
-    result.str = "AnyBut(%s)" % repr(s)
+    result.str = "AnyBut({0!s})".format(repr(s))
     return result
 
 AnyChar = AnyBut("")
@@ -488,13 +488,13 @@ def Range(s1, s2 = None):
     """
     if s2:
         result = CodeRange(ord(s1), ord(s2) + 1)
-        result.str = "Range(%s,%s)" % (s1, s2)
+        result.str = "Range({0!s},{1!s})".format(s1, s2)
     else:
         ranges = []
         for i in range(0, len(s1), 2):
             ranges.append(CodeRange(ord(s1[i]), ord(s1[i+1]) + 1))
         result = Alt(*ranges)
-        result.str = "Range(%s)" % repr(s1)
+        result.str = "Range({0!s})".format(repr(s1))
     return result
 
 def Opt(re):
@@ -502,7 +502,7 @@ def Opt(re):
     Opt(re) is an RE which matches either |re| or the empty string.
     """
     result = Alt(re, Empty)
-    result.str = "Opt(%s)" % re
+    result.str = "Opt({0!s})".format(re)
     return result
 
 def Rep(re):
@@ -510,7 +510,7 @@ def Rep(re):
     Rep(re) is an RE which matches zero or more repetitions of |re|.
     """
     result = Opt(Rep1(re))
-    result.str = "Rep(%s)" % re
+    result.str = "Rep({0!s})".format(re)
     return result
 
 def NoCase(re):

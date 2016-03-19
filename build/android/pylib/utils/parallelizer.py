@@ -114,13 +114,13 @@ class Parallelizer(object):
       raise AttributeError('Nothing to call.')
     for o in self._objs:
       if not callable(o):
-        raise AttributeError("'%s' is not callable" % o.__name__)
+        raise AttributeError("'{0!s}' is not callable".format(o.__name__))
 
     r = type(self)(self._orig_objs)
     r._objs = reraiser_thread.ReraiserThreadGroup(
         [reraiser_thread.ReraiserThread(
             o, args=args, kwargs=kwargs,
-            name='%s.%s' % (str(d), o.__name__))
+            name='{0!s}.{1!s}'.format(str(d), o.__name__))
          for d, o in zip(self._orig_objs, self._objs)])
     r._objs.StartAll() # pylint: disable=W0212
     return r
@@ -176,7 +176,7 @@ class Parallelizer(object):
     r._objs = reraiser_thread.ReraiserThreadGroup(
         [reraiser_thread.ReraiserThread(
             f, args=tuple([o] + list(args)), kwargs=kwargs,
-            name='%s(%s)' % (f.__name__, d))
+            name='{0!s}({1!s})'.format(f.__name__, d))
          for d, o in zip(self._orig_objs, self._objs)])
     r._objs.StartAll() # pylint: disable=W0212
     return r

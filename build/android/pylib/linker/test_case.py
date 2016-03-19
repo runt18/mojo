@@ -150,22 +150,22 @@ def _StartActivityAndWaitForLinkerTestStatus(device, timeout):
 class LibraryLoadMap(dict):
   """A helper class to pretty-print a map of library names to load addresses."""
   def __str__(self):
-    items = ['\'%s\': 0x%x' % (name, address) for \
+    items = ['\'{0!s}\': 0x{1:x}'.format(name, address) for \
         (name, address) in self.iteritems()]
-    return '{%s}' % (', '.join(items))
+    return '{{{0!s}}}'.format((', '.join(items)))
 
   def __repr__(self):
-    return 'LibraryLoadMap(%s)' % self.__str__()
+    return 'LibraryLoadMap({0!s})'.format(self.__str__())
 
 
 class AddressList(list):
   """A helper class to pretty-print a list of load addresses."""
   def __str__(self):
-    items = ['0x%x' % address for address in self]
-    return '[%s]' % (', '.join(items))
+    items = ['0x{0:x}'.format(address) for address in self]
+    return '[{0!s}]'.format((', '.join(items)))
 
   def __repr__(self):
-    return 'AddressList(%s)' % self.__str__()
+    return 'AddressList({0!s})'.format(self.__str__())
 
 
 def _ExtractLibraryLoadAddressesFromLogcat(logs):
@@ -227,11 +227,9 @@ def _CheckLoadAddressRandomization(lib_map_list, process_type):
 
 
   if bad_libs:
-    return False, '%s libraries failed randomization: %s' % \
-        (process_type, bad_libs)
+    return False, '{0!s} libraries failed randomization: {1!s}'.format(process_type, bad_libs)
 
-  return True, '%s libraries properly randomized: %s' % \
-      (process_type, lib_addr_map)
+  return True, '{0!s} libraries properly randomized: {1!s}'.format(process_type, lib_addr_map)
 
 
 class LinkerTestCaseBase(object):
@@ -248,7 +246,7 @@ class LinkerTestCaseBase(object):
     else:
       test_suffix = 'ForRegularDevice'
     class_name = self.__class__.__name__
-    self.qualified_name = '%s.%s' % (class_name, test_suffix)
+    self.qualified_name = '{0!s}.{1!s}'.format(class_name, test_suffix)
     self.tagged_name = self.qualified_name
 
   def _RunTest(self, _device):

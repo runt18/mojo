@@ -23,10 +23,10 @@ def main():
   return subprocess.check_call([
     args.executable,
     args.main,
-    '--package-root=%s' % args.package_root,
-    '--snapshot=%s' % args.snapshot,
-    '--depfile=%s' % args.depfile,
-    '--build-output=%s' % args.build_output,
+    '--package-root={0!s}'.format(args.package_root),
+    '--snapshot={0!s}'.format(args.snapshot),
+    '--depfile={0!s}'.format(args.depfile),
+    '--build-output={0!s}'.format(args.build_output),
   ])
 
 if __name__ == '__main__':

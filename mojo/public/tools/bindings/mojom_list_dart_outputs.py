@@ -24,7 +24,7 @@ def mojom_path(name, namespace, attributes):
     package_name = attributes['DartPackage']
   elements = [package_name, 'lib']
   elements.extend(namespace.split('.'))
-  elements.append("%s.dart" % name)
+  elements.append("{0!s}.dart".format(name))
   return os.path.join(*elements)
 
 
@@ -37,14 +37,14 @@ def process_mojom(path_to_mojom):
     with open(filename) as f:
       source = f.read()
   except IOError:
-    print("Error reading %s" % filename)
+    print("Error reading {0!s}".format(filename))
     sys.exit(2)
 
   # Parse
   try:
     tree = Parse(source, name)
   except Error:
-    print("Error parsing %s" % filename)
+    print("Error parsing {0!s}".format(filename))
     sys.exit(2)
 
   mojom = Translate(tree, name)

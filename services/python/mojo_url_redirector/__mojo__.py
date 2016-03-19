@@ -55,12 +55,12 @@ def _HttpRedirectResponse(new_location):
 
 
 def _RequestIdentifier(requested_app, requested_platform):
-  return "[Request: %s on %s]" % (requested_app, requested_platform)
+  return "[Request: {0!s} on {1!s}]".format(requested_app, requested_platform)
 
 
 def _LogMessageForRequest(request_identifier, message, log=logging.info,
                           exc_info=None):
-  log("%s %s" % (request_identifier, message), exc_info=exc_info)
+  log("{0!s} {1!s}".format(request_identifier, message), exc_info=exc_info)
 
 
 class MojoUrlRedirector(http_server_mojom.HttpHandler):
@@ -94,7 +94,7 @@ class MojoUrlRedirector(http_server_mojom.HttpHandler):
   def RedirectToCurrentAppLocation(self, requested_platform, requested_app):
     # Construct a URLRequest to fetch the app location file...
     app_location_request = url_request_mojom.UrlRequest()
-    app_location_request.url = "%s/%s/%s_location" % (
+    app_location_request.url = "{0!s}/{1!s}/{2!s}_location".format(
         self.app_location_files_url, requested_platform, requested_app)
     app_location_request.auto_follow_redirects = True
 
@@ -112,11 +112,11 @@ class MojoUrlRedirector(http_server_mojom.HttpHandler):
                                  request_identifier, url_loader_proxy):
     error_message = None
     if app_location_response.error:
-      error_message = "Network error from app location fetch: %d" % (
-          app_location_response.error.code)
+      error_message = "Network error from app location fetch: {0:d}".format((
+          app_location_response.error.code))
     elif app_location_response.status_code != 200:
-      error_message = "Unexpected http status from app location fetch: %s" % (
-          app_location_response.status_code)
+      error_message = "Unexpected http status from app location fetch: {0!s}".format((
+          app_location_response.status_code))
 
     if error_message:
       _LogMessageForRequest(request_identifier, error_message,
@@ -136,7 +136,7 @@ class MojoUrlRedirector(http_server_mojom.HttpHandler):
       # This is a Google storage path.
       app_location = "https://storage.googleapis.com/" + app_location
     _LogMessageForRequest(request_identifier,
-                          "Redirecting to %s" % app_location)
+                          "Redirecting to {0!s}".format(app_location))
     return _HttpRedirectResponse(app_location)
 
 

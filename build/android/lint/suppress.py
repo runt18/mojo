@@ -45,7 +45,7 @@ _Issue = collections.namedtuple('Issue', ['severity', 'paths'])
 
 
 def _ParseConfigFile(config_path):
-  print 'Parsing %s' % config_path
+  print 'Parsing {0!s}'.format(config_path)
   issues_dict = {}
   dom = minidom.parse(config_path)
   for issue in dom.getElementsByTagName('issue'):
@@ -59,7 +59,7 @@ def _ParseConfigFile(config_path):
 
 
 def _ParseAndMergeResultFile(result_path, issues_dict):
-  print 'Parsing and merging %s' % result_path
+  print 'Parsing and merging {0!s}'.format(result_path)
   dom = minidom.parse(result_path)
   for issue in dom.getElementsByTagName('issue'):
     issue_id = issue.attributes['id'].value
@@ -82,7 +82,7 @@ def _WriteConfigFile(config_path, issues_dict):
     if severity:
       issue.attributes['severity'] = severity
     if severity == 'ignore':
-      print 'Warning: [%s] is suppressed globally.' % issue_id
+      print 'Warning: [{0!s}] is suppressed globally.'.format(issue_id)
     else:
       for path in sorted(paths):
         ignore = new_dom.createElement('ignore')
@@ -92,7 +92,7 @@ def _WriteConfigFile(config_path, issues_dict):
 
   with open(config_path, 'w') as f:
     f.write(new_dom.toprettyxml(indent='  ', encoding='utf-8'))
-  print 'Updated %s' % config_path
+  print 'Updated {0!s}'.format(config_path)
 
 
 def _Suppress(config_path, result_path):

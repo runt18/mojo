@@ -28,8 +28,7 @@ from pylib.forwarder import Forwarder
 
 
 # Path that are needed to import necessary modules when launching a testserver.
-os.environ['PYTHONPATH'] = os.environ.get('PYTHONPATH', '') + (':%s:%s:%s:%s:%s'
-    % (os.path.join(constants.DIR_SOURCE_ROOT, 'third_party'),
+os.environ['PYTHONPATH'] = os.environ.get('PYTHONPATH', '') + (':{0!s}:{1!s}:{2!s}:{3!s}:{4!s}'.format(os.path.join(constants.DIR_SOURCE_ROOT, 'third_party'),
        os.path.join(constants.DIR_SOURCE_ROOT, 'third_party', 'tlslite'),
        os.path.join(constants.DIR_SOURCE_ROOT, 'third_party', 'pyftpdlib',
                     'src'),
@@ -89,7 +88,7 @@ def _GetServerTypeCommandLine(server_type):
     A string containing the command-line argument.
   """
   if server_type not in SERVER_TYPES:
-    raise NotImplementedError('Unknown server type: %s' % server_type)
+    raise NotImplementedError('Unknown server type: {0!s}'.format(server_type))
   if server_type == 'udpecho':
     raise Exception('Please do not run UDP echo tests because we do not have '
                     'a UDP forwarder tool.')
@@ -189,7 +188,7 @@ class TestServerThread(threading.Thread):
     assert self.host_port == args_copy['port']
     if self.host_port == 0:
       (self.pipe_in, self.pipe_out) = os.pipe()
-      self.command_line.append('--startup-pipe=%d' % self.pipe_out)
+      self.command_line.append('--startup-pipe={0:d}'.format(self.pipe_out))
 
     # Pass the remaining arguments as-is.
     for key, values in args_copy.iteritems():
@@ -197,9 +196,9 @@ class TestServerThread(threading.Thread):
         values = [values]
       for value in values:
         if value is None:
-          self.command_line.append('--%s' % key)
+          self.command_line.append('--{0!s}'.format(key))
         else:
-          self.command_line.append('--%s=%s' % (key, value))
+          self.command_line.append('--{0!s}={1!s}'.format(key, value))
 
   def _CloseUnnecessaryFDsForTestServerProcess(self):
     # This is required to avoid subtle deadlocks that could be caused by the

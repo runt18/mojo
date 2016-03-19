@@ -20,15 +20,15 @@ FONTS_DIR = '/usr/local/share/fonts'
 
 def main(args):
   if not sys.platform.startswith('linux'):
-    print "Error: %s must be run on Linux." % __file__
+    print "Error: {0!s} must be run on Linux.".format(__file__)
     return 1
 
   if os.getuid() != 0:
-    print "Error: %s must be run as root." % __file__
+    print "Error: {0!s} must be run as root.".format(__file__)
     return 1
 
   if not os.path.isdir(FONTS_DIR):
-    print "Error: Destination directory does not exist: %s" % FONTS_DIR
+    print "Error: Destination directory does not exist: {0!s}".format(FONTS_DIR)
     return 1
 
   dest_dir = os.path.join(FONTS_DIR, 'chromeos')
@@ -37,7 +37,7 @@ def main(args):
   if os.path.exists(stamp):
     with open(stamp) as s:
       if s.read() == URL:
-        print "Chrome OS fonts already up-to-date in %s." % dest_dir
+        print "Chrome OS fonts already up-to-date in {0!s}.".format(dest_dir)
         return 0
 
   if os.path.isdir(dest_dir):
@@ -45,7 +45,7 @@ def main(args):
   os.mkdir(dest_dir)
   os.chmod(dest_dir, 0755)
 
-  print "Installing Chrome OS fonts to %s." % dest_dir
+  print "Installing Chrome OS fonts to {0!s}.".format(dest_dir)
   tarball = os.path.join(dest_dir, os.path.basename(URL))
   subprocess.check_call(['curl', '-L', URL, '-o', tarball])
   subprocess.check_call(['tar', '--no-same-owner', '--no-same-permissions',
@@ -56,7 +56,7 @@ def main(args):
   with open(readme, 'w') as s:
     s.write("This directory and its contents are auto-generated.\n")
     s.write("It may be deleted and recreated. Do not modify.\n")
-    s.write("Script: %s\n" % __file__)
+    s.write("Script: {0!s}\n".format(__file__))
 
   with open(stamp, 'w') as s:
     s.write(URL)

@@ -32,9 +32,9 @@ class RemoteDeviceInstrumentationTestRun(
       logging.debug('preparing to run %d instrumentation tests remotely:',
                     len(tests))
       for t in tests:
-        test_name = '%s#%s' % (t['class'], t['method'])
+        test_name = '{0!s}#{1!s}'.format(t['class'], t['method'])
         logging.debug('  %s', test_name)
-        test_list_file.write('%s\n' % test_name)
+        test_list_file.write('{0!s}\n'.format(test_name))
       test_list_file.flush()
       self._test_instance._data_deps.append(
           (os.path.abspath(test_list_file.name), None))
@@ -69,6 +69,6 @@ class RemoteDeviceInstrumentationTestRun(
     elif isinstance(result, list):
       r.AddResults(result)
     else:
-      raise Exception('Unexpected result type: %s' % type(result).__name__)
+      raise Exception('Unexpected result type: {0!s}'.format(type(result).__name__))
 
     return r

@@ -21,4 +21,4 @@ def TestHttpResponse(response, error_msg):
   """
   if response.status_code != 200:
     raise RemoteDeviceError(
-        '%s (%d: %s)' % (error_msg, response.status_code, response.reason))
+        '{0!s} ({1:d}: {2!s})'.format(error_msg, response.status_code, response.reason))

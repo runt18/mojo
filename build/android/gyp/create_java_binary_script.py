@@ -61,7 +61,7 @@ def main(argv):
 
   with open(options.output, 'w') as script:
     script.write(script_template.format(
-      classpath=('"%s"' % '", "'.join(classpath)),
+      classpath=('"{0!s}"'.format('", "'.join(classpath))),
       main_class=options.main_class))
 
   os.chmod(options.output, 0750)

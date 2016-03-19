@@ -31,7 +31,7 @@ def Init(log_file_path):
   """Set the path to the log file"""
   global _LOG_FILE
   _LOG_FILE = log_file_path
-  print "Using log file: %s" % _LOG_FILE
+  print "Using log file: {0!s}".format(_LOG_FILE)
 
 def GetLogFilePath():
   """Returns the path and name of the Log file"""
@@ -60,7 +60,7 @@ def _PrependTimeStamp(log_string):
   """Returns the log_string prepended with current timestamp """
   global _log_time
   if _log_time:
-    return "# %s: %s" % (datetime.datetime.now().strftime("%m/%d/%y %H:%M:%S"),
+    return "# {0!s}: {1!s}".format(datetime.datetime.now().strftime("%m/%d/%y %H:%M:%S"),
         log_string)
   else:
     # timestamp logging disabled

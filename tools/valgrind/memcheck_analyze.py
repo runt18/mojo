@@ -96,7 +96,7 @@ def gatherFrames(node, source_dir):
     # Ignore this frame and all the following if it's a "boring" function.
     enough_frames = False
     for regexp in _BORING_CALLERS:
-      if re.match("^%s$" % regexp, frame_dict[FUNCTION_NAME]):
+      if re.match("^{0!s}$".format(regexp), frame_dict[FUNCTION_NAME]):
         enough_frames = True
         break
     if enough_frames:
@@ -232,8 +232,8 @@ class ValgrindError:
         including suppression (which is just a mangled backtrace).'''
     output = ""
     output += "\n" # Make sure the ### is at the beginning of line.
-    output += "### BEGIN MEMORY TOOL REPORT (error hash=#%016X#)\n" % \
-        self.ErrorHash()
+    output += "### BEGIN MEMORY TOOL REPORT (error hash=#{0:016X}#)\n".format( \
+        self.ErrorHash())
     if (self._commandline):
       output += self._commandline + "\n"
 
@@ -277,8 +277,8 @@ class ValgrindError:
                                       "suppressions - is it too old?"
 
     if self._testcase:
-      output += "The report came from the `%s` test.\n" % self._testcase
-    output += "Suppression (error hash=#%016X#):\n" % self.ErrorHash()
+      output += "The report came from the `{0!s}` test.\n".format(self._testcase)
+    output += "Suppression (error hash=#{0:016X}#):\n".format(self.ErrorHash())
     output += ("  For more info on using suppressions see "
                "http://dev.chromium.org/developers/tree-sheriffs/sheriff-details-chromium/memory-sheriff#TOC-Suppressing-memory-reports")
 
@@ -293,8 +293,8 @@ class ValgrindError:
 
     # Make suppressions even less platform-dependent.
     for sz in [1, 2, 4, 8]:
-      supp = supp.replace("Memcheck:Addr%d" % sz, "Memcheck:Unaddressable")
-      supp = supp.replace("Memcheck:Value%d" % sz, "Memcheck:Uninitialized")
+      supp = supp.replace("Memcheck:Addr{0:d}".format(sz), "Memcheck:Unaddressable")
+      supp = supp.replace("Memcheck:Value{0:d}".format(sz), "Memcheck:Uninitialized")
     supp = supp.replace("Memcheck:Cond", "Memcheck:Uninitialized")
 
     # Split into lines so we can enforce length limits
@@ -311,7 +311,7 @@ class ValgrindError:
     enough_frames = False
     for frameno in range(newlen):
       for boring_caller in _BORING_CALLERS:
-        if re.match("^ +fun:%s$" % boring_caller, supplines[frameno]):
+        if re.match("^ +fun:{0!s}$".format(boring_caller), supplines[frameno]):
           newlen = frameno
           enough_frames = True
           break
@@ -330,8 +330,8 @@ class ValgrindError:
         supplines[frame] = "*".join(m.groups())
 
     output += "\n".join(supplines) + "\n"
-    output += "### END MEMORY TOOL REPORT (error hash=#%016X#)\n" % \
-        self.ErrorHash()
+    output += "### END MEMORY TOOL REPORT (error hash=#{0:016X}#)\n".format( \
+        self.ErrorHash())
 
     return output
 
@@ -487,7 +487,7 @@ class MemcheckAnalyzer:
         if pid:
           # Make sure the process is still running so we don't wait for
           # 3 minutes if it was killed. See http://crbug.com/17453
-          ps_out = subprocess.Popen("ps p %s" % pid, shell=True,
+          ps_out = subprocess.Popen("ps p {0!s}".format(pid), shell=True,
                                     stdout=subprocess.PIPE).stdout
           if len(ps_out.readlines()) < 2:
             running = False
@@ -509,13 +509,13 @@ class MemcheckAnalyzer:
         newsize = os.path.getsize(file)
         if origsize > newsize+1:
           logging.warn(str(origsize - newsize) +
-                       " bytes of junk were after </valgrindoutput> in %s!" %
-                       file)
+                       " bytes of junk were after </valgrindoutput> in {0!s}!".format(
+                       file))
         try:
           parsed_file = parse(file);
         except ExpatError, e:
           parse_failed = True
-          logging.warn("could not parse %s: %s" % (file, e))
+          logging.warn("could not parse {0!s}: {1!s}".format(file, e))
           lineno = e.lineno - 1
           context_lines = 5
           context_start = max(0, lineno - context_lines)
@@ -526,9 +526,9 @@ class MemcheckAnalyzer:
           for i in range(context_start, context_end):
             context_data = context_file.readline().rstrip()
             if i != lineno:
-              logging.warn("  %s" % context_data)
+              logging.warn("  {0!s}".format(context_data))
             else:
-              logging.warn("> %s" % context_data)
+              logging.warn("> {0!s}".format(context_data))
           context_file.close()
           continue
         if TheAddressTable != None:
@@ -575,10 +575,10 @@ class MemcheckAnalyzer:
             suppcounts[name] += int(count)
 
     if len(badfiles) > 0:
-      logging.warn("valgrind didn't finish writing %d files?!" % len(badfiles))
+      logging.warn("valgrind didn't finish writing {0:d} files?!".format(len(badfiles)))
       for file in badfiles:
-        logging.warn("Last 20 lines of %s :" % file)
-        os.system("tail -n 20 '%s' 1>&2" % file)
+        logging.warn("Last 20 lines of {0!s} :".format(file))
+        os.system("tail -n 20 '{0!s}' 1>&2".format(file))
 
     if parse_failed:
       logging.error("FAIL! Couldn't parse Valgrind output file")
@@ -588,7 +588,7 @@ class MemcheckAnalyzer:
 
     retcode = 0
     if cur_report_errors:
-      logging.error("FAIL! There were %s errors: " % len(cur_report_errors))
+      logging.error("FAIL! There were {0!s} errors: ".format(len(cur_report_errors)))
 
       if TheAddressTable != None:
         TheAddressTable.ResolveAll()
@@ -610,7 +610,7 @@ class MemcheckAnalyzer:
         logging.error("FAIL! Sanity check failed!")
         logging.info("The following test errors were not handled: ")
         for (name, count) in remaining_sanity_supp.iteritems():
-          logging.info("  * %dx %s" % (count, name))
+          logging.info("  * {0:d}x {1!s}".format(count, name))
         retcode = -3
 
     if retcode != 0:

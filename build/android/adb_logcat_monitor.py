@@ -55,7 +55,7 @@ def StartLogcatIfNecessary(device_id, adb_cmd, base_dir):
 
   logging.info('Starting logcat %d for device %s', logcat_num,
                device_id)
-  logcat_filename = 'logcat_%s_%03d' % (device_id, logcat_num)
+  logcat_filename = 'logcat_{0!s}_{1:03d}'.format(device_id, logcat_num)
   logcat_file = open(os.path.join(base_dir, logcat_filename), 'w')
   process = subprocess.Popen([adb_cmd, '-s', device_id,
                               'logcat', '-v', 'threadtime'],
@@ -98,7 +98,7 @@ def main(base_dir, adb_cmd='adb'):
   """Monitor adb forever.  Expects a SIGINT (Ctrl-C) to kill."""
   # We create the directory to ensure 'run once' semantics
   if os.path.exists(base_dir):
-    print 'adb_logcat_monitor: %s already exists? Cleaning' % base_dir
+    print 'adb_logcat_monitor: {0!s} already exists? Cleaning'.format(base_dir)
     shutil.rmtree(base_dir, ignore_errors=True)
 
   os.makedirs(base_dir)
@@ -153,4 +153,4 @@ if __name__ == '__main__':
     print 'adb_logcat_monitor: Initializing'
     sys.exit(main(*sys.argv[1:3]))
 
-  print 'Usage: %s <base_dir> [<adb_binary_path>]' % sys.argv[0]
+  print 'Usage: {0!s} <base_dir> [<adb_binary_path>]'.format(sys.argv[0])

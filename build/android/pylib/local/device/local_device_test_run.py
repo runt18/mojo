@@ -29,7 +29,7 @@ class LocalDeviceTestRun(test_run.TestRun):
         elif isinstance(result, list):
           r.AddResults(result)
         else:
-          raise Exception('Unexpected result type: %s' % type(result).__name__)
+          raise Exception('Unexpected result type: {0!s}'.format(type(result).__name__))
         if isinstance(tests, test_collection.TestCollection):
           tests.test_completed()
       return r

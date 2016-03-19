@@ -472,7 +472,7 @@ class SimpleAssignmentTypeInferer(object):
 
         if verbose:
             for entry in inferred:
-                message(entry.pos, "inferred '%s' to be of type '%s'" % (
+                message(entry.pos, "inferred '{0!s}' to be of type '{1!s}'".format(
                     entry.name, entry.type))
 
 

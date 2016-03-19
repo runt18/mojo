@@ -99,7 +99,7 @@ def ExpandProduction(p):
     return 'Attr:' + str(p)
   if type(p) == str:
     return 'str:' + p
-  return '%s:%s' % (p.__class__.__name__, str(p))
+  return '{0!s}:{1!s}'.format(p.__class__.__name__, str(p))
 
 # TokenTypeName
 #
@@ -107,20 +107,20 @@ def ExpandProduction(p):
 #
 def TokenTypeName(t):
   if t.type == 'SYMBOL':
-    return 'symbol %s' % t.value
+    return 'symbol {0!s}'.format(t.value)
   if t.type in ['HEX', 'INT', 'OCT', 'FLOAT']:
-    return 'value %s' % t.value
+    return 'value {0!s}'.format(t.value)
   if t.type == 'string' :
-    return 'string "%s"' % t.value
+    return 'string "{0!s}"'.format(t.value)
   if t.type == 'COMMENT' :
     return 'comment'
   if t.type == t.value:
-    return '"%s"' % t.value
+    return '"{0!s}"'.format(t.value)
   if t.type == ',':
     return 'Comma'
   if t.type == 'identifier':
-    return 'identifier "%s"' % t.value
-  return 'keyword "%s"' % t.value
+    return 'identifier "{0!s}"'.format(t.value)
+  return 'keyword "{0!s}"'.format(t.value)
 
 
 #
@@ -1079,15 +1079,15 @@ class IDLParser(object):
       pos = t.lexpos
       prev = self.yaccobj.symstack[-1]
       if type(prev) == lex.LexToken:
-        msg = "Unexpected %s after %s." % (
+        msg = "Unexpected {0!s} after {1!s}.".format(
             TokenTypeName(t), TokenTypeName(prev))
       else:
-        msg = "Unexpected %s." % (t.value)
+        msg = "Unexpected {0!s}.".format((t.value))
     else:
       last = self.LastToken()
       lineno = last.lineno
       pos = last.lexpos
-      msg = "Unexpected end of file after %s." % TokenTypeName(last)
+      msg = "Unexpected end of file after {0!s}.".format(TokenTypeName(last))
       self.yaccobj.restart()
 
     # Attempt to remap the error to a friendlier form
@@ -1143,9 +1143,9 @@ class IDLParser(object):
     except:
       print 'Exception while parsing:'
       for num, item in enumerate(p):
-        print '  [%d] %s' % (num, ExpandProduction(item))
+        print '  [{0:d}] {1!s}'.format(num, ExpandProduction(item))
       if self.LastToken():
-        print 'Last token: %s' % str(self.LastToken())
+        print 'Last token: {0!s}'.format(str(self.LastToken()))
       raise
 
   def BuildNamed(self, cls, p, index, childlist=None):
@@ -1242,7 +1242,7 @@ class IDLParser(object):
       return IDLNode('File', filename, 0, 0, nodes + [name])
 
     except lex.LexError as lexError:
-      sys.stderr.write('Error in token: %s\n' % str(lexError))
+      sys.stderr.write('Error in token: {0!s}\n'.format(str(lexError)))
     return None
 
 
@@ -1258,7 +1258,7 @@ def ParseFile(parser, filename):
 
     except Exception as e:
       last = parser.LastToken()
-      sys.stderr.write('%s(%d) : Internal parsing error\n\t%s.\n' % (
+      sys.stderr.write('{0!s}({1:d}) : Internal parsing error\n\t{2!s}.\n'.format(
                        filename, last.lineno, str(e)))
 
 
@@ -1276,7 +1276,7 @@ def main(argv):
 
   print '\n'.join(ast.Tree(accept_props=['PROD']))
   if errors:
-    print '\nFound %d errors.\n' % errors
+    print '\nFound {0:d} errors.\n'.format(errors)
 
   return errors
 

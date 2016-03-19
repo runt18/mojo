@@ -54,8 +54,8 @@ def main():
 
   coverage_files = _GetFilesWithExt(options.coverage_dir, 'ec')
   metadata_files = _GetFilesWithExt(options.metadata_dir, 'em')
-  print 'Found coverage files: %s' % str(coverage_files)
-  print 'Found metadata files: %s' % str(metadata_files)
+  print 'Found coverage files: {0!s}'.format(str(coverage_files))
+  print 'Found metadata files: {0!s}'.format(str(metadata_files))
 
   sources = []
   for f in metadata_files:
@@ -63,7 +63,7 @@ def main():
     with open(sources_file, 'r') as sf:
       sources.extend(json.load(sf))
   sources = [os.path.join(constants.DIR_SOURCE_ROOT, s) for s in sources]
-  print 'Sources: %s' % sources
+  print 'Sources: {0!s}'.format(sources)
 
   input_args = []
   for f in coverage_files + metadata_files:

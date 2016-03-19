@@ -28,7 +28,7 @@ def increment_version(version):
 
 def count_commits(start, end):
     return subprocess.check_output([
-        'git', 'rev-list', '%s...%s' % (start, end)]).count('\n')
+        'git', 'rev-list', '{0!s}...{1!s}'.format(start, end)]).count('\n')
 
 
 def last_commit_to(file_path, fmt='%h'):
@@ -42,7 +42,7 @@ def update_pubspec(pubspec):
         spec = yaml.load(stream)
         old_version = spec['version']
         spec['version'] = increment_version(old_version)
-        print "%20s  %6s => %6s" % (spec['name'], old_version, spec['version'])
+        print "{0:20!s}  {1:6!s} => {2:6!s}".format(spec['name'], old_version, spec['version'])
 
     with open(pubspec, 'w') as stream:
         yaml.dump(spec, stream=stream, default_flow_style=False)
@@ -53,15 +53,15 @@ def update_changelog(changelog, pubspec, version):
     old = last_commit_to(pubspec)
     new = last_commit_to('.')
     long_new = last_commit_to('.', '%H')
-    url = "https://github.com/domokit/mojo/compare/%s...%s" % (old, new)
+    url = "https://github.com/domokit/mojo/compare/{0!s}...{1!s}".format(old, new)
     count = count_commits(old, new)
-    message = """## %s
+    message = """## {0!s}
 
-  - %s changes: %s
+  - {1!s} changes: {2!s}
 
-  MOJO_SDK: %s
+  MOJO_SDK: {3!s}
 
-""" % (version, count, url, long_new)
+""".format(version, count, url, long_new)
     prepend_to_file(message, changelog)
 
 
@@ -89,13 +89,13 @@ def build_package_map():
 
 def print_package_map(package_map):
   if (package_map == None) or (len(package_map) == 0):
-    print('No packages found in %s' % PACKAGES_DIR)
+    print('No packages found in {0!s}'.format(PACKAGES_DIR))
     return
 
-  print('There are %d known packages:' % len(package_map))
+  print('There are {0:d} known packages:'.format(len(package_map)))
   for package in package_map:
     package_dir = package_map[package]
-    print('%s -> %s' % (package, package_dir))
+    print('{0!s} -> {1!s}'.format(package, package_dir))
 
 
 def main():
@@ -114,7 +114,7 @@ def main():
     for package in args.packages:
       package_dir = package_map.get(package)
       if package_dir == None:
-          print('ERROR: Do not know package %s' % package)
+          print('ERROR: Do not know package {0!s}'.format(package))
           print_package_map(package_map)
           return 1
 

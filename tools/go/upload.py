@@ -54,7 +54,7 @@ GSUTIL_PATH = os.path.join(DEPOT_PATH, 'gsutil.py')
 def RunCommand(command, env=None):
   """Run command and return success (True) or failure."""
 
-  print 'Running %s' % (str(command))
+  print 'Running {0!s}'.format((str(command)))
   if subprocess.call(command, shell=False, env=env) == 0:
     return True
   print 'Failed.'
@@ -101,9 +101,9 @@ def BuildGoAndroid():
   os.chdir(os.path.join(MOJO_DIR, 'third_party', 'android_tools', 'ndk'))
   ndk_out_dir = tempfile.mkdtemp(prefix='android_ndk')
   script_path = os.path.join('build', 'tools', 'make-standalone-toolchain.sh')
-  make_toolchain_cmd = ['bash', script_path, '--platform=%s' % NDK_PLATFORM,
-                        '--toolchain=%s' % NDK_TOOLCHAIN,
-                        '--install-dir=%s' % ndk_out_dir]
+  make_toolchain_cmd = ['bash', script_path, '--platform={0!s}'.format(NDK_PLATFORM),
+                        '--toolchain={0!s}'.format(NDK_TOOLCHAIN),
+                        '--install-dir={0!s}'.format(ndk_out_dir)]
   if not RunCommand(make_toolchain_cmd):
     print "Faild to build the Android NDK tool chain."
     sys.exit(1)
@@ -112,7 +112,7 @@ def BuildGoAndroid():
   env = os.environ.copy()
   env["GOROOT"] = go_host
   env["GOROOT_BOOTSTRAP"] = go_host
-  env["CC_FOR_TARGET"] = '%s' % cc
+  env["CC_FOR_TARGET"] = '{0!s}'.format(cc)
   env["CGO_ENABLED"] = '1'
   env["GOOS"] = 'android'
   env["GOARCH"] = 'arm'
@@ -139,18 +139,18 @@ def Compress():
   with open(os.path.join(INSTALL_DIR, 'a.tar.gz')) as f:
     sha1 = hashlib.sha1(f.read()).hexdigest()
   os.rename(os.path.join(INSTALL_DIR, 'a.tar.gz'),
-            os.path.join(INSTALL_DIR, '%s.tar.gz' % sha1))
+            os.path.join(INSTALL_DIR, '{0!s}.tar.gz'.format(sha1)))
   return sha1
 
 def Upload(sha1):
   """Uploads INSTALL_DIR/sha1.tar.gz to Google Cloud Storage under
      gs://mojo/go/tool and writes sha1 to THIS_DIR/VERSION."""
 
-  file_name = '%s.tar.gz' % sha1
+  file_name = '{0!s}.tar.gz'.format(sha1)
   upload_cmd = ['python', GSUTIL_PATH, 'cp',
                 '-n', # Do not upload if the file already exists.
                 os.path.join(INSTALL_DIR, file_name),
-                'gs://mojo/go/tool/%s' % file_name]
+                'gs://mojo/go/tool/{0!s}'.format(file_name)]
 
   print "Uploading go tool to GCS."
   if not RunCommand(upload_cmd):
@@ -160,11 +160,11 @@ def Upload(sha1):
   # Write versions as the last step.
   stamp_file = os.path.join(THIS_DIR, VersionFileName())
   with open(stamp_file, 'w+') as stamp:
-    stamp.write('%s\n' % sha1)
+    stamp.write('{0!s}\n'.format(sha1))
 
   stamp_file = os.path.join(INSTALL_DIR, VersionFileName())
   with open(stamp_file, 'w+') as stamp:
-    stamp.write('%s\n' % sha1)
+    stamp.write('{0!s}\n'.format(sha1))
 
 def main():
   ExtractBinaries(sys.argv[1])

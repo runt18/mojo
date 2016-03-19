@@ -118,8 +118,7 @@ def _CreateSourcesFile(sources_string, sources_file, src_root):
   for s in sources:
     abs_source = os.path.abspath(s)
     if abs_source[:len(src_root)] != src_root:
-      print ('Error: found source directory not under repository root: %s %s'
-             % (abs_source, src_root))
+      print ('Error: found source directory not under repository root: {0!s} {1!s}'.format(abs_source, src_root))
       return 1
     rel_source = os.path.relpath(abs_source, src_root)
 

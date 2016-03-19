@@ -90,8 +90,8 @@ def testNotWf(filename, id):
     if doc != None:
 	doc.freeDoc()
     if ret == 0 or ctxt.wellFormed() != 0:
-        print "%s: error: Well Formedness error not detected" % (id)
-	log.write("%s: error: Well Formedness error not detected\n" % (id))
+        print "{0!s}: error: Well Formedness error not detected".format((id))
+	log.write("{0!s}: error: Well Formedness error not detected\n".format((id)))
 	return 0
     return 1
 
@@ -116,8 +116,8 @@ def testNotWfEnt(filename, id):
     if doc != None:
 	doc.freeDoc()
     if ret == 0 or ctxt.wellFormed() != 0:
-        print "%s: error: Well Formedness error not detected" % (id)
-	log.write("%s: error: Well Formedness error not detected\n" % (id))
+        print "{0!s}: error: Well Formedness error not detected".format((id))
+	log.write("{0!s}: error: Well Formedness error not detected\n".format((id)))
 	return 0
     return 1
 
@@ -143,8 +143,8 @@ def testNotWfEntDtd(filename, id):
     if doc != None:
 	doc.freeDoc()
     if ret == 0 or ctxt.wellFormed() != 0:
-        print "%s: error: Well Formedness error not detected" % (id)
-	log.write("%s: error: Well Formedness error not detected\n" % (id))
+        print "{0!s}: error: Well Formedness error not detected".format((id))
+	log.write("{0!s}: error: Well Formedness error not detected\n".format((id)))
 	return 0
     return 1
 
@@ -168,14 +168,14 @@ def testWfEntDtd(filename, id):
     except:
         doc = None
     if doc == None or ret != 0 or ctxt.wellFormed() == 0:
-        print "%s: error: wrongly failed to parse the document" % (id)
-	log.write("%s: error: wrongly failed to parse the document\n" % (id))
+        print "{0!s}: error: wrongly failed to parse the document".format((id))
+	log.write("{0!s}: error: wrongly failed to parse the document\n".format((id)))
 	if doc != None:
 	    doc.freeDoc()
 	return 0
     if error_nr != 0:
-        print "%s: warning: WF document generated an error msg" % (id)
-	log.write("%s: error: WF document generated an error msg\n" % (id))
+        print "{0!s}: warning: WF document generated an error msg".format((id))
+	log.write("{0!s}: error: WF document generated an error msg\n".format((id)))
 	doc.freeDoc()
 	return 2
     doc.freeDoc()
@@ -203,12 +203,12 @@ def testError(filename, id):
     if doc != None:
 	doc.freeDoc()
     if ctxt.wellFormed() == 0:
-        print "%s: warning: failed to parse the document but accepted" % (id)
-	log.write("%s: warning: failed to parse the document but accepte\n" % (id))
+        print "{0!s}: warning: failed to parse the document but accepted".format((id))
+	log.write("{0!s}: warning: failed to parse the document but accepte\n".format((id)))
 	return 2
     if error_nr != 0:
-        print "%s: warning: WF document generated an error msg" % (id)
-	log.write("%s: error: WF document generated an error msg\n" % (id))
+        print "{0!s}: warning: WF document generated an error msg".format((id))
+	log.write("{0!s}: error: WF document generated an error msg\n".format((id)))
 	return 2
     return 1
 
@@ -232,17 +232,17 @@ def testInvalid(filename, id):
         doc = None
     valid = ctxt.isValid()
     if doc == None:
-        print "%s: error: wrongly failed to parse the document" % (id)
-	log.write("%s: error: wrongly failed to parse the document\n" % (id))
+        print "{0!s}: error: wrongly failed to parse the document".format((id))
+	log.write("{0!s}: error: wrongly failed to parse the document\n".format((id)))
 	return 0
     if valid == 1:
-        print "%s: error: Validity error not detected" % (id)
-	log.write("%s: error: Validity error not detected\n" % (id))
+        print "{0!s}: error: Validity error not detected".format((id))
+	log.write("{0!s}: error: Validity error not detected\n".format((id)))
 	doc.freeDoc()
 	return 0
     if error_nr == 0:
-        print "%s: warning: Validity error not reported" % (id)
-	log.write("%s: warning: Validity error not reported\n" % (id))
+        print "{0!s}: warning: Validity error not reported".format((id))
+	log.write("{0!s}: warning: Validity error not reported\n".format((id)))
 	doc.freeDoc()
 	return 2
         
@@ -268,17 +268,17 @@ def testValid(filename, id):
         doc = None
     valid = ctxt.isValid()
     if doc == None:
-        print "%s: error: wrongly failed to parse the document" % (id)
-	log.write("%s: error: wrongly failed to parse the document\n" % (id))
+        print "{0!s}: error: wrongly failed to parse the document".format((id))
+	log.write("{0!s}: error: wrongly failed to parse the document\n".format((id)))
 	return 0
     if valid != 1:
-        print "%s: error: Validity check failed" % (id)
-	log.write("%s: error: Validity check failed\n" % (id))
+        print "{0!s}: error: Validity check failed".format((id))
+	log.write("{0!s}: error: Validity check failed\n".format((id)))
 	doc.freeDoc()
 	return 0
     if error_nr != 0 or valid != 1:
-        print "%s: warning: valid document reported an error" % (id)
-	log.write("%s: warning: valid document reported an error\n" % (id))
+        print "{0!s}: warning: valid document reported an error".format((id))
+	log.write("{0!s}: warning: valid document reported an error\n".format((id)))
 	doc.freeDoc()
 	return 2
     doc.freeDoc()
@@ -302,11 +302,11 @@ def runTest(test):
     base = test.getBase(None)
     URI = libxml2.buildURI(uri, base)
     if os.access(URI, os.R_OK) == 0:
-        print "Test %s missing: base %s uri %s" % (URI, base, uri)
+        print "Test {0!s} missing: base {1!s} uri {2!s}".format(URI, base, uri)
 	return -1
     type = test.prop('TYPE')
     if type == None:
-        print "Test %s missing TYPE" % (id)
+        print "Test {0!s} missing TYPE".format((id))
 	return -1
 
     extra = None
@@ -344,16 +344,16 @@ def runTest(test):
 
     # Log the ontext
     if res != 1:
-	log.write("   File: %s\n" % (URI))
+	log.write("   File: {0!s}\n".format((URI)))
 	content = string.strip(test.content)
 	while content[-1] == '\n':
 	    content = content[0:-1]
 	if extra != None:
-	    log.write("   %s:%s:%s\n" % (type, extra, content))
+	    log.write("   {0!s}:{1!s}:{2!s}\n".format(type, extra, content))
 	else:
-	    log.write("   %s:%s\n\n" % (type, content))
+	    log.write("   {0!s}:{1!s}\n\n".format(type, content))
 	if error_msg != '':
-	    log.write("   ----\n%s   ----\n" % (error_msg))
+	    log.write("   ----\n{0!s}   ----\n".format((error_msg)))
 	    error_msg = ''
 	log.write("\n")
 
@@ -375,7 +375,7 @@ def runTestCases(case):
         
 conf = loadNoentDoc(CONF)
 if conf == None:
-    print "Unable to load %s" % CONF
+    print "Unable to load {0!s}".format(CONF)
     sys.exit(1)
 
 testsuite = conf.getRootElement()
@@ -397,7 +397,7 @@ while case != None:
 	old_test_failed = test_failed
 	old_test_error = test_error
         runTestCases(case)
-	print "   Ran %d tests: %d suceeded, %d failed and %d generated an error" % (
+	print "   Ran {0:d} tests: {1:d} suceeded, {2:d} failed and {3:d} generated an error".format(
 	       test_nr - old_test_nr, test_succeed - old_test_succeed,
 	       test_failed - old_test_failed, test_error - old_test_error)
     case = case.next
@@ -405,5 +405,5 @@ while case != None:
 conf.freeDoc()
 log.close()
 
-print "Ran %d tests: %d suceeded, %d failed and %d generated an error in %.2f s." % (
+print "Ran {0:d} tests: {1:d} suceeded, {2:d} failed and {3:d} generated an error in {4:.2f} s.".format(
       test_nr, test_succeed, test_failed, test_error, time.time() - start)

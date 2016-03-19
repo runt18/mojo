@@ -34,7 +34,7 @@ class BenchmarkRunner(object):
         yield name
 
   def _run_test(self, test_name):
-    print "Running %s ..." % test_name
+    print "Running {0!s} ...".format(test_name)
     run_script_path = os.path.join(self._benchmark_dir, test_name, 'run.py')
     if os.path.isfile(run_script_path):
       run_module = '.'.join([test_name, 'run'])

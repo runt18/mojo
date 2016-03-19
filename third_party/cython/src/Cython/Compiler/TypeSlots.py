@@ -183,7 +183,7 @@ class SlotDescriptor(object):
         py3 = self.py3
         guard = None
         if ifdef:
-            guard = ("#if %s" % ifdef)
+            guard = ("#if {0!s}".format(ifdef))
         elif not py3 or py3 == '<RESERVED>':
             guard = ("#if PY_MAJOR_VERSION < 3")
         elif not py2:
@@ -211,13 +211,13 @@ class SlotDescriptor(object):
                     inherited_value = self.slot_code(current_scope)
                 if inherited_value != "0":
                     code.putln("#if CYTHON_COMPILING_IN_PYPY")
-                    code.putln("%s, /*%s*/" % (inherited_value, self.slot_name))
+                    code.putln("{0!s}, /*{1!s}*/".format(inherited_value, self.slot_name))
                     code.putln("#else")
                     end_pypy_guard = True
         preprocessor_guard = self.preprocessor_guard_code()
         if preprocessor_guard:
             code.putln(preprocessor_guard)
-        code.putln("%s, /*%s*/" % (value, self.slot_name))
+        code.putln("{0!s}, /*{1!s}*/".format(value, self.slot_name))
         if self.py3 == '<RESERVED>':
             code.putln("#else")
             code.putln("0, /*reserved*/")
@@ -235,7 +235,7 @@ class SlotDescriptor(object):
         if self.is_initialised_dynamically:
             value = self.slot_code(scope)
             if value != "0":
-                code.putln("%s.%s = %s;" % (
+                code.putln("{0!s}.{1!s} = {2!s};".format(
                     scope.parent_type.typeobj_cname,
                     self.slot_name,
                     value
@@ -396,7 +396,7 @@ class TypeFlagsSlot(SlotDescriptor):
             value += "|Py_TPFLAGS_HAVE_VERSION_TAG"
         else:
             # it's enabled in 'Py_TPFLAGS_DEFAULT' in Py3
-            value = "(%s&~Py_TPFLAGS_HAVE_VERSION_TAG)" % value
+            value = "({0!s}&~Py_TPFLAGS_HAVE_VERSION_TAG)".format(value)
         value += "|Py_TPFLAGS_CHECKTYPES|Py_TPFLAGS_HAVE_NEWBUFFER"
         if not scope.parent_type.is_final_type:
             value += "|Py_TPFLAGS_BASETYPE"
@@ -414,7 +414,7 @@ class DocStringSlot(SlotDescriptor):
                 doc = scope.doc.utf8encode()
             else:
                 doc = scope.doc.byteencode()
-            return '__Pyx_DOCSTR("%s")' % StringEncoding.escape_byte_string(doc)
+            return '__Pyx_DOCSTR("{0!s}")'.format(StringEncoding.escape_byte_string(doc))
         else:
             return "0"
 
@@ -437,18 +437,18 @@ class SuiteSlot(SlotDescriptor):
         return True
 
     def substructure_cname(self, scope):
-        return "%s%s_%s" % (Naming.pyrex_prefix, self.slot_name, scope.class_name)
+        return "{0!s}{1!s}_{2!s}".format(Naming.pyrex_prefix, self.slot_name, scope.class_name)
 
     def slot_code(self, scope):
         if not self.is_empty(scope):
-            return "&%s" % self.substructure_cname(scope)
+            return "&{0!s}".format(self.substructure_cname(scope))
         return "0"
 
     def generate_substructure(self, scope, code):
         if not self.is_empty(scope):
             code.putln("")
             code.putln(
-                "static %s %s = {" % (
+                "static {0!s} {1!s} = {{".format(
                     self.slot_type,
                     self.substructure_cname(scope)))
             for slot in self.sub_slots:
@@ -493,7 +493,7 @@ class BaseClassSlot(SlotDescriptor):
     def generate_dynamic_init_code(self, scope, code):
         base_type = scope.parent_type.base_type
         if base_type:
-            code.putln("%s.%s = %s;" % (
+            code.putln("{0!s}.{1!s} = {2!s};".format(
                 scope.parent_type.typeobj_cname,
                 self.slot_name,
                 base_type.typeptr_cname))

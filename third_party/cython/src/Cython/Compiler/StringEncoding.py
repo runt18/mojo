@@ -164,7 +164,7 @@ class BytesLiteral(_bytes):
             return self.decode('ISO-8859-1').encode('ISO-8859-1')
 
     def utf8encode(self):
-        assert False, "this is not a unicode string: %r" % self
+        assert False, "this is not a unicode string: {0!r}".format(self)
 
     def __str__(self):
         """Fake-decode the byte string to unicode to support %
@@ -197,17 +197,17 @@ def _to_escape_sequence(s):
         return r'\\'
     else:
         # within a character sequence, oct passes much better than hex
-        return ''.join(['\\%03o' % ord(c) for c in s])
+        return ''.join(['\\{0:03o}'.format(ord(c)) for c in s])
 
 
 def _build_specials_replacer():
     subexps = []
     replacements = {}
     for special in _c_special:
-        regexp = ''.join(['[%s]' % c.replace('\\', '\\\\') for c in special])
+        regexp = ''.join(['[{0!s}]'.format(c.replace('\\', '\\\\')) for c in special])
         subexps.append(regexp)
         replacements[special.encode('ASCII')] = _to_escape_sequence(special).encode('ASCII')
-    sub = re.compile(('(%s)' % '|'.join(subexps)).encode('ASCII')).sub
+    sub = re.compile(('({0!s})'.format('|'.join(subexps))).encode('ASCII')).sub
     def replace_specials(m):
         return replacements[m.group(1)]
     def replace(s):
@@ -227,7 +227,7 @@ def escape_char(c):
     n = ord(c)
     if n < 32 or n > 127:
         # hex works well for characters
-        return "\\x%02X" % n
+        return "\\x{0:02X}".format(n)
     else:
         return c
 
@@ -247,7 +247,7 @@ def escape_byte_string(s):
         append, extend = s_new.append, s_new.extend
         for b in s:
             if b >= 128:
-                extend(('\\%3o' % b).encode('ASCII'))
+                extend(('\\{0:3o}'.format(b)).encode('ASCII'))
             else:
                 append(b)
         return s_new.decode('ISO-8859-1')
@@ -257,7 +257,7 @@ def escape_byte_string(s):
         for c in s:
             o = ord(c)
             if o >= 128:
-                append('\\%3o' % o)
+                append('\\{0:3o}'.format(o))
             else:
                 append(c)
         return join_bytes(l).decode('ISO-8859-1')

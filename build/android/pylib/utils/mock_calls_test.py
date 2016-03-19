@@ -50,7 +50,7 @@ class TestCaseWithAssertCallsTest(mock_calls.TestCase):
 
   def ShellError(self):
     def action(cmd):
-      raise ValueError('(device %s) command %r is not nice' % (self.adb, cmd))
+      raise ValueError('(device {0!s}) command {1!r} is not nice'.format(self.adb, cmd))
     return action
 
   def get_answer(self):

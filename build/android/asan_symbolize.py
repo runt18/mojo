@@ -30,7 +30,7 @@ def _ParseAsanLogLine(line):
       'prefix': m.group(1),
       'library': m.group(4),
       'pos': m.group(2),
-      'rel_address': '%08x' % int(m.group(5), 16),
+      'rel_address': '{0:08x}'.format(int(m.group(5), 16)),
   }
 
 
@@ -81,7 +81,7 @@ def _Symbolize(asan_input):
     if (m['library'] in all_symbols and
         m['rel_address'] in all_symbols[m['library']]['symbols']):
       s = all_symbols[m['library']]['symbols'][m['rel_address']][0]
-      print '%s%s %s %s' % (m['prefix'], m['pos'], s[0], s[1])
+      print '{0!s}{1!s} {2!s} {3!s}'.format(m['prefix'], m['pos'], s[0], s[1])
     else:
       print asan_log_line['raw_log']
 

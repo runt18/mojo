@@ -49,7 +49,7 @@ class ApplicationImpl(application_mojom.Application):
     service to be connected to. Returns a proxy to the service.
     """
     if not service_class.manager.service_name:
-      logging.error("No ServiceName specified for %s." % service_class.__name__)
+      logging.error("No ServiceName specified for {0!s}.".format(service_class.__name__))
       return
     application_proxy, request = (
         service_provider_mojom.ServiceProvider.manager.NewRequest())

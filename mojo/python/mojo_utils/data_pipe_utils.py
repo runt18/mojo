@@ -66,7 +66,7 @@ def CopyFromDataPipe(data_pipe, deadline):
         self.resolve(self.data[:self.index])
         return
 
-      self.reject(DataPipeCopyException("Result: %d" % result))
+      self.reject(DataPipeCopyException("Result: {0:d}".format(result)))
 
 
   def GenerationMethod(resolve, reject):

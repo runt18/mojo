@@ -31,20 +31,20 @@ class RemoteFileConnection(object):
     self._socket.close()
 
   def open(self, filename):
-    self._send("O %s\n" % filename)
+    self._send("O {0!s}\n".format(filename))
     result = self._receive(1)
     if result != 'O':
       raise RemoteFileConnectionException("Unable to open file " + filename)
 
   def seek(self, pos, mode=0):
-    self._send("S %d %d\n" % (pos, mode))
+    self._send("S {0:d} {1:d}\n".format(pos, mode))
     result = self._receive(1)
     if result != 'O':
       raise RemoteFileConnectionException("Unable to seek in file.")
 
   def read(self, size=0):
     assert size > 0
-    self._send("R %d\n" % size)
+    self._send("R {0:d}\n".format(size))
     result = self._receive(1)
     if result != 'O':
       raise RemoteFileConnectionException("Unable to read file.")

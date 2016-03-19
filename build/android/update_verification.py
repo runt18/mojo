@@ -41,7 +41,7 @@ def CreateAppData(device, old_apk, app_data, package_name):
   raw_input('Set the application state. Once ready, press enter and '
             'select "Backup my data" on the device.')
   device.adb.Backup(app_data, packages=[package_name])
-  logging.critical('Application data saved to %s' % app_data)
+  logging.critical('Application data saved to {0!s}'.format(app_data))
 
 def TestUpdate(device, old_apk, new_apk, app_data, package_name):
   device.Install(old_apk)
@@ -92,7 +92,7 @@ def main():
   if not devices:
     raise device_errors.NoDevicesError()
   device = devices[0]
-  logging.info('Using device %s for testing.' % str(device))
+  logging.info('Using device {0!s} for testing.'.format(str(device)))
 
   package_name = (args.package_name if args.package_name
                   else apk_helper.GetPackageName(args.old_apk))
@@ -102,7 +102,7 @@ def main():
     TestUpdate(
         device, args.old_apk, args.new_apk, args.app_data, package_name)
   else:
-    raise Exception('Unknown test command: %s' % args.command)
+    raise Exception('Unknown test command: {0!s}'.format(args.command))
 
 if __name__ == '__main__':
   sys.exit(main())

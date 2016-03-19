@@ -138,7 +138,7 @@ class Scanner(object):
     action = self.run_machine_inlined()
     if action is not None:
       if self.trace:
-        print("Scanner: read: Performing %s %d:%d" % (
+        print("Scanner: read: Performing {0!s} {1:d}:{2:d}".format(
           action, self.start_pos, self.cur_pos))
       text = self.buffer[self.start_pos - self.buf_start_pos :
                          self.cur_pos   - self.buf_start_pos]
@@ -170,7 +170,7 @@ class Scanner(object):
     trace = self.trace
     while 1:
       if trace: #TRACE#
-        print("State %d, %d/%d:%s -->" % ( #TRACE#
+        print("State {0:d}, {1:d}/{2:d}:{3!s} -->".format( #TRACE#
           state['number'], input_state, cur_pos, repr(cur_char)))  #TRACE#
       # Begin inlined self.save_for_backup()
       #action = state.action #@slow
@@ -186,7 +186,7 @@ class Scanner(object):
         new_state = c and state.get('else') #@fast
       if new_state:
         if trace: #TRACE#
-          print("State %d" % new_state['number'])  #TRACE#
+          print("State {0:d}".format(new_state['number']))  #TRACE#
         state = new_state
         # Begin inlined: self.next_char()
         if input_state == 1:
@@ -254,13 +254,13 @@ class Scanner(object):
     self.next_pos     = next_pos
     if trace: #TRACE#
       if action is not None: #TRACE#
-        print("Doing %s" % action) #TRACE#
+        print("Doing {0!s}".format(action)) #TRACE#
     return action
 
   def next_char(self):
     input_state = self.input_state
     if self.trace:
-      print("Scanner: next: %s [%d] %d" % (" "*20, input_state, self.cur_pos))
+      print("Scanner: next: {0!s} [{1:d}] {2:d}".format(" "*20, input_state, self.cur_pos))
     if input_state == 1:
       self.cur_pos = self.next_pos
       c = self.read_char()
@@ -286,7 +286,7 @@ class Scanner(object):
     else: # input_state = 5
       self.cur_char = u''
     if self.trace:
-      print("--> [%d] %d %s" % (input_state, self.cur_pos, repr(self.cur_char)))
+      print("--> [{0:d}] {1:d} {2!s}".format(input_state, self.cur_pos, repr(self.cur_char)))
 
   def position(self):
     """

@@ -54,7 +54,7 @@ def find_package_base(path):
     base_dir, package_path = os.path.split(path)
     while os.path.isfile(os.path.join(base_dir, '__init__.py')):
         base_dir, parent = os.path.split(base_dir)
-        package_path = '%s/%s' % (parent, package_path)
+        package_path = '{0!s}/{1!s}'.format(parent, package_path)
     return base_dir, package_path
 
 
@@ -72,7 +72,7 @@ def cython_compile(path_pattern, options):
 
             if os.path.isdir(path):
                 # recursively compiling a package
-                paths = [os.path.join(path, '**', '*.%s' % ext)
+                paths = [os.path.join(path, '**', '*.{0!s}'.format(ext))
                          for ext in ('py', 'pyx')]
             else:
                 # assume it's a file(-like thing)
@@ -154,8 +154,8 @@ def parse_args(args):
                       help='build extension modules in place using distutils (implies -b)')
     parser.add_option('-j', '--parallel', dest='parallel', metavar='N',
                       type=int, default=parallel_compiles,
-                      help=('run builds in N parallel jobs (default: %d)' %
-                            parallel_compiles or 1))
+                      help=('run builds in N parallel jobs (default: {0:d})'.format(
+                            parallel_compiles) or 1))
     parser.add_option('-f', '--force', dest='force', action='store_true',
                       help='force recompilation')
     parser.add_option('-q', '--quiet', dest='quiet', action='store_true',

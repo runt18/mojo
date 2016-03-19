@@ -276,7 +276,7 @@ class Mojom(NodeBase):
            self.definition_list == other.definition_list
 
   def __repr__(self):
-    return "%s(%r, %r, %r)" % (self.__class__.__name__, self.module,
+    return "{0!s}({1!r}, {2!r}, {3!r})".format(self.__class__.__name__, self.module,
                                self.import_list, self.definition_list)
 
 

@@ -60,11 +60,11 @@ def main(argv):
 
   if len(argv) < 2:
     print """\
-Usage: %s [file] ...
+Usage: {0!s} [file] ...
 
 Prints the \"transitive\" hash of each (executable) file. The transitive
 hash is a hash of the file and all the shared libraries on which it
-depends (done in an order-independent way).""" % basename(argv[0])
+depends (done in an order-independent way).""".format(basename(argv[0]))
     return 0
 
   rv = 0

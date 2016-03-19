@@ -150,7 +150,7 @@ class TestResult(object):
     self._fields_map.setdefault('class')
     self._fields_map.setdefault('test')
 
-    self._test_name = '%s:%s' % (self._fields_map['class'],
+    self._test_name = '{0!s}:{1!s}'.format(self._fields_map['class'],
                                  self._fields_map['test'])
     self._status_code = int(re_status_code.group('status_code'))
     if 'stack' in self._fields_map:

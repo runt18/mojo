@@ -84,7 +84,7 @@ def run(shell, shell_args, app, duration_seconds, measurements, verbose,
   shell_args = list(shell_args)
   shell_args.append(_BENCHMARK_APP)
   shell_args.append('--force-offline-by-default')
-  shell_args.append('--args-for=%s %s' % (_BENCHMARK_APP,
+  shell_args.append('--args-for={0!s} {1!s}'.format(_BENCHMARK_APP,
                                           ' '.join(benchmark_args)))
 
   if verbose:

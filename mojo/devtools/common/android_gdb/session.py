@@ -117,7 +117,7 @@ class DebugSession(object):
     """
     res = {}
     for lib_dir in lib_dirs:
-      for fn in glob.glob('%s/*.so' % lib_dir):
+      for fn in glob.glob('{0!s}/*.so'.format(lib_dir)):
         with open(fn, 'r') as f:
           s = get_signature(f, self._elffile_module)
           if s is not None:
@@ -129,7 +129,7 @@ class DebugSession(object):
       elf = self._elffile_module.ELFFile(f)
       s = elf.get_section_by_name(".text")
       text_address = mapping[0].start + s['sh_offset']
-      _gdb_execute("add-symbol-file %s 0x%x" % (local_file, text_address))
+      _gdb_execute("add-symbol-file {0!s} 0x{1:x}".format(local_file, text_address))
 
   def _download_file(self, signature, remote):
     """Downloads a remote file either from the cloud or through GDB connection.
@@ -139,13 +139,13 @@ class DebugSession(object):
     """
     temp_file = tempfile.NamedTemporaryFile()
     logging.info("Trying to download symbols from the cloud.")
-    symbols_url = "http://storage.googleapis.com/mojo/symbols/%s" % signature
+    symbols_url = "http://storage.googleapis.com/mojo/symbols/{0!s}".format(signature)
     try:
       symbol_file = urllib2.urlopen(symbols_url)
       try:
         with open(temp_file.name, "w") as dst:
           shutil.copyfileobj(symbol_file, dst)
-          logging.info("Getting symbols for %s at %s." % (remote, symbols_url))
+          logging.info("Getting symbols for {0!s} at {1!s}.".format(remote, symbols_url))
           # This allows the deletion of temporary files on disk when the
           # debugging session terminates.
           self._downloaded_files.append(temp_file)
@@ -154,8 +154,8 @@ class DebugSession(object):
         symbol_file.close()
     except urllib2.HTTPError:
       pass
-    logging.info("Downloading file %s" % remote)
-    _gdb_execute("remote get %s %s" % (remote, temp_file.name))
+    logging.info("Downloading file {0!s}".format(remote))
+    _gdb_execute("remote get {0!s} {1!s}".format(remote, temp_file.name))
     # This allows the deletion of temporary files on disk when the debugging
     # session terminates.
     self._downloaded_files.append(temp_file)
@@ -226,7 +226,7 @@ class DebugSession(object):
            filename.startswith('/data/app')) and
           not filename.endswith('.apk') and
           not filename.endswith('.dex')):
-        logging.info('Pre-mapping: %s' % file_mappings[0].filename)
+        logging.info('Pre-mapping: {0!s}'.format(file_mappings[0].filename))
         self._try_to_map(file_mappings)
 
     if current_thread_only:
@@ -237,7 +237,7 @@ class DebugSession(object):
       nb_threads = len(_gdb_execute("info threads").split("\n")) - 2
       for i in xrange(nb_threads):
         try:
-          _gdb_execute("thread %d" % (i + 1))
+          _gdb_execute("thread {0:d}".format((i + 1)))
           self._map_symbols_on_current_thread(mapped_files)
         except gdb.error:
           traceback.print_exc()
@@ -277,7 +277,7 @@ class DebugSession(object):
         [self._adb, 'shell', config.REMOTE_FILE_READER_DEVICE_PATH],
         stdout=subprocess.PIPE, preexec_fn = os.setpgrp)
     port = int(self._remote_file_reader_process.stdout.readline())
-    subprocess.check_call([self._adb, 'forward', 'tcp:10000', 'tcp:%d' % port])
+    subprocess.check_call([self._adb, 'forward', 'tcp:10000', 'tcp:{0:d}'.format(port)])
     self._rfc.connect()
 
     _gdb_execute('target remote localhost:9999')

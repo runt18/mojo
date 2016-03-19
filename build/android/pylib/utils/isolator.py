@@ -102,7 +102,7 @@ class Isolator(object):
       isolate_cmd.extend(['--config-variable', k, v])
 
     if cmd_helper.RunCmd(isolate_cmd):
-      raise Exception('isolate command failed: %s' % ' '.join(isolate_cmd))
+      raise Exception('isolate command failed: {0!s}'.format(' '.join(isolate_cmd)))
 
   def VerifyHardlinks(self):
     """Checks |isolate_deps_dir| for a hardlink.

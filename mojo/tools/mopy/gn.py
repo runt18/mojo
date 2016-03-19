@@ -111,8 +111,8 @@ def CommandLineForGNArgs(gn_args):
   """
   def _ToCommandLine(key, value):
     if type(value) is bool:
-      return "%s=%s" % (key, "true" if value else "false")
-    return "%s=\"%s\"" % (key, value)
+      return "{0!s}={1!s}".format(key, "true" if value else "false")
+    return "{0!s}=\"{1!s}\"".format(key, value)
   return [_ToCommandLine(x, y) for x, y in gn_args.iteritems()]
 
 

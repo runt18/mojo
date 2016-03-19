@@ -47,7 +47,7 @@ class WebIDLLexer(unittest.TestCase):
   def testRebuildText(self):
     for filename in self.filenames:
       tokens1 = FileToTokens(self.lexer, filename)
-      to_text = '\n'.join(['%s' % t.value for t in tokens1])
+      to_text = '\n'.join(['{0!s}'.format(t.value) for t in tokens1])
       tokens2 = TextToTokens(self.lexer, to_text)
 
       count1 = len(tokens1)
@@ -55,7 +55,7 @@ class WebIDLLexer(unittest.TestCase):
       self.assertEqual(count1, count2)
 
       for i in range(count1):
-        msg = 'Value %s does not match original %s on line %d of %s.' % (
+        msg = 'Value {0!s} does not match original {1!s} on line {2:d} of {3!s}.'.format(
               tokens2[i].value, tokens1[i].value, tokens1[i].lineno, filename)
         self.assertEqual(tokens1[i].value, tokens2[i].value, msg)
 
@@ -80,7 +80,7 @@ class WebIDLLexer(unittest.TestCase):
       while index < count:
         expect_type = tokens[index].value
         actual_type = tokens[index + 1].type
-        msg = 'Type %s does not match expected %s on line %d of %s.' % (
+        msg = 'Type {0!s} does not match expected {1!s} on line {2:d} of {3!s}.'.format(
               actual_type, expect_type, tokens[index].lineno, filename)
         index += 2
         self.assertEqual(expect_type, actual_type, msg)

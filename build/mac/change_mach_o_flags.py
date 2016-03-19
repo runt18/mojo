@@ -107,7 +107,7 @@ def CheckedSeek(file, offset):
   new_offset = file.tell()
   if new_offset != offset:
     raise MachOError, \
-          'seek: expected offset %d, observed %d' % (offset, new_offset)
+          'seek: expected offset {0:d}, observed {1:d}'.format(offset, new_offset)
 
 
 def CheckedRead(file, count):
@@ -117,7 +117,7 @@ def CheckedRead(file, count):
   bytes = file.read(count)
   if len(bytes) != count:
     raise MachOError, \
-          'read: expected length %d, observed %d' % (count, len(bytes))
+          'read: expected length {0:d}, observed {1:d}'.format(count, len(bytes))
 
   return bytes
 
@@ -190,7 +190,7 @@ def HandleMachOFile(file, options, offset=0):
     endian = '>'
   else:
     raise MachOError, \
-          'Mach-O file at offset %d has illusion of magic' % offset
+          'Mach-O file at offset {0:d} has illusion of magic'.format(offset)
 
   CheckedSeek(file, offset)
   magic, cputype, cpusubtype, filetype, ncmds, sizeofcmds, flags = \
@@ -198,8 +198,7 @@ def HandleMachOFile(file, options, offset=0):
   assert magic == MH_MAGIC or magic == MH_MAGIC_64
   if filetype != MH_EXECUTE:
     raise MachOError, \
-          'Mach-O file at offset %d is type 0x%x, expected MH_EXECUTE' % \
-              (offset, filetype)
+          'Mach-O file at offset {0:d} is type 0x{1:x}, expected MH_EXECUTE'.format(offset, filetype)
 
   original_flags = flags
 
@@ -263,7 +262,7 @@ def main(me, args):
       magic == MH_MAGIC_64 or magic == MH_CIGAM_64:
     HandleMachOFile(executable_file, options)
   else:
-    raise MachOError, '%s is not a Mach-O or fat file' % executable_file
+    raise MachOError, '{0!s} is not a Mach-O or fat file'.format(executable_file)
 
   executable_file.close()
   return 0

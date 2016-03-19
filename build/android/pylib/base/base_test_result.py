@@ -100,37 +100,37 @@ class TestRunResults(object):
         for t in sorted(self._GetType(test_type)):
           log = t.GetLog()
           if log:
-            s.append('[%s] %s:' % (test_type, t))
+            s.append('[{0!s}] {1!s}:'.format(test_type, t))
             s.append(log)
     return '\n'.join(s)
 
   def GetGtestForm(self):
     """Get the gtest string representation of this object."""
     s = []
-    plural = lambda n, s, p: '%d %s' % (n, p if n != 1 else s)
+    plural = lambda n, s, p: '{0:d} {1!s}'.format(n, p if n != 1 else s)
     tests = lambda n: plural(n, 'test', 'tests')
 
-    s.append('[==========] %s ran.' % (tests(len(self.GetAll()))))
-    s.append('[  PASSED  ] %s.' % (tests(len(self.GetPass()))))
+    s.append('[==========] {0!s} ran.'.format((tests(len(self.GetAll())))))
+    s.append('[  PASSED  ] {0!s}.'.format((tests(len(self.GetPass())))))
 
     skipped = self.GetSkip()
     if skipped:
-      s.append('[  SKIPPED ] Skipped %s, listed below:' % tests(len(skipped)))
+      s.append('[  SKIPPED ] Skipped {0!s}, listed below:'.format(tests(len(skipped))))
       for t in sorted(skipped):
-        s.append('[  SKIPPED ] %s' % str(t))
+        s.append('[  SKIPPED ] {0!s}'.format(str(t)))
 
     all_failures = self.GetFail().union(self.GetCrash(), self.GetTimeout(),
         self.GetUnknown())
     if all_failures:
-      s.append('[  FAILED  ] %s, listed below:' % tests(len(all_failures)))
+      s.append('[  FAILED  ] {0!s}, listed below:'.format(tests(len(all_failures))))
       for t in sorted(self.GetFail()):
-        s.append('[  FAILED  ] %s' % str(t))
+        s.append('[  FAILED  ] {0!s}'.format(str(t)))
       for t in sorted(self.GetCrash()):
-        s.append('[  FAILED  ] %s (CRASHED)' % str(t))
+        s.append('[  FAILED  ] {0!s} (CRASHED)'.format(str(t)))
       for t in sorted(self.GetTimeout()):
-        s.append('[  FAILED  ] %s (TIMEOUT)' % str(t))
+        s.append('[  FAILED  ] {0!s} (TIMEOUT)'.format(str(t)))
       for t in sorted(self.GetUnknown()):
-        s.append('[  FAILED  ] %s (UNKNOWN)' % str(t))
+        s.append('[  FAILED  ] {0!s} (UNKNOWN)'.format(str(t)))
       s.append('')
       s.append(plural(len(all_failures), 'FAILED TEST', 'FAILED TESTS'))
     return '\n'.join(s)
@@ -138,9 +138,9 @@ class TestRunResults(object):
   def GetShortForm(self):
     """Get the short string representation of this object."""
     s = []
-    s.append('ALL: %d' % len(self._results))
+    s.append('ALL: {0:d}'.format(len(self._results)))
     for test_type in ResultType.GetTypes():
-      s.append('%s: %d' % (test_type, len(self._GetType(test_type))))
+      s.append('{0!s}: {1:d}'.format(test_type, len(self._GetType(test_type))))
     return ''.join([x.ljust(15) for x in s])
 
   def __str__(self):

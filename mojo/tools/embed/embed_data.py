@@ -23,8 +23,8 @@ def main():
   if not os.path.exists(opts.out_dir):
     os.makedirs(opts.out_dir)
 
-  header = os.path.join(opts.out_dir, '%s.h' % opts.variable)
-  c_file = os.path.join(opts.out_dir, '%s.cc' % opts.variable)
+  header = os.path.join(opts.out_dir, '{0!s}.h'.format(opts.variable))
+  c_file = os.path.join(opts.out_dir, '{0!s}.cc'.format(opts.variable))
   namespaces = opts.namespace.split('::')
 
   data = None
@@ -37,13 +37,13 @@ def main():
     f.write('#include "mojo/tools/embed/data.h"\n')
     f.write('\n')
     for n in namespaces:
-      f.write('namespace %s {\n' % n)
-    f.write('extern const mojo::embed::Data %s;\n' % opts.variable);
+      f.write('namespace {0!s} {{\n'.format(n))
+    f.write('extern const mojo::embed::Data {0!s};\n'.format(opts.variable));
     for n in reversed(namespaces):
-      f.write('}  // namespace %s\n' % n)
+      f.write('}}  // namespace {0!s}\n'.format(n))
 
   sha1hash = hashlib.sha1(data).hexdigest()
-  values = ["0x%02x" % ord(c) for c in data]
+  values = ["0x{0:02x}".format(ord(c)) for c in data]
   lines = []
   chunk_size = 16
   for i in range(0, len(values), chunk_size):
@@ -55,22 +55,22 @@ def main():
     f.write('#include "mojo/tools/embed/data.h"\n')
     f.write('\n')
     for n in namespaces:
-      f.write('namespace %s {\n' % n)
+      f.write('namespace {0!s} {{\n'.format(n))
     f.write('namespace {\n')
-    f.write("const char data[%d] = {\n" % len(data))
+    f.write("const char data[{0:d}] = {{\n".format(len(data)))
     f.write(",\n".join(lines))
     f.write("\n};\n")
     f.write('}  // namespace\n')
     f.write('\n')
-    f.write('extern const mojo::embed::Data %s;\n' % opts.variable);
-    f.write('const mojo::embed::Data %s = {\n' % opts.variable);
-    f.write('  "%s",\n' % sha1hash)
+    f.write('extern const mojo::embed::Data {0!s};\n'.format(opts.variable));
+    f.write('const mojo::embed::Data {0!s} = {{\n'.format(opts.variable));
+    f.write('  "{0!s}",\n'.format(sha1hash))
     f.write('  data,\n')
     f.write('  sizeof(data)\n')
     f.write('};\n');
     f.write('\n')
     for n in reversed(namespaces):
-      f.write('}  // namespace %s\n' % n)
+      f.write('}}  // namespace {0!s}\n'.format(n))
 
 if __name__ == '__main__':
   main()

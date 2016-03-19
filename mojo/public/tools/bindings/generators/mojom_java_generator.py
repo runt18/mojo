@@ -131,7 +131,7 @@ def GetNameForElement(element):
                           mojom.Constant,
                           mojom.EnumField)):
     return ConstantStyle(element.name)
-  raise Exception('Unexpected element: %s' % element)
+  raise Exception('Unexpected element: {0!s}'.format(element))
 
 def GetInterfaceResponseName(method):
   return UpperCamelCase(method.name + 'Response')
@@ -182,9 +182,9 @@ def AppendEncodeDecodeParams(initial_params, context, kind, bit):
   if mojom.IsArrayKind(kind):
     params.append(GetArrayExpectedLength(kind))
   if mojom.IsInterfaceKind(kind):
-    params.append('%s.MANAGER' % GetJavaType(context, kind))
+    params.append('{0!s}.MANAGER'.format(GetJavaType(context, kind)))
   if mojom.IsArrayKind(kind) and mojom.IsInterfaceKind(kind.kind):
-    params.append('%s.MANAGER' % GetJavaType(context, kind.kind))
+    params.append('{0!s}.MANAGER'.format(GetJavaType(context, kind.kind)))
   return params
 
 
@@ -202,13 +202,13 @@ def DecodeMethod(context, kind, offset, bit):
     return _spec_to_decode_method[kind.spec]
   methodName = _DecodeMethodName(kind)
   params = AppendEncodeDecodeParams([ str(offset) ], context, kind, bit)
-  return '%s(%s)' % (methodName, ', '.join(params))
+  return '{0!s}({1!s})'.format(methodName, ', '.join(params))
 
 @contextfilter
 def EncodeMethod(context, kind, variable, offset, bit):
   params = AppendEncodeDecodeParams(
       [ variable, str(offset) ], context, kind, bit)
-  return 'encode(%s)' % ', '.join(params)
+  return 'encode({0!s})'.format(', '.join(params))
 
 def GetPackage(module):
   if module.attributes and 'JavaPackage' in module.attributes:
@@ -248,17 +248,17 @@ def GetJavaType(context, kind, boxed=False, with_generics=True):
       mojom.IsUnionKind(kind)):
     return GetNameForKind(context, kind)
   if mojom.IsInterfaceRequestKind(kind):
-    return ('org.chromium.mojo.bindings.InterfaceRequest<%s>' %
-            GetNameForKind(context, kind.kind))
+    return ('org.chromium.mojo.bindings.InterfaceRequest<{0!s}>'.format(
+            GetNameForKind(context, kind.kind)))
   if mojom.IsMapKind(kind):
     if with_generics:
-      return 'java.util.Map<%s, %s>' % (
+      return 'java.util.Map<{0!s}, {1!s}>'.format(
           GetBoxedJavaType(context, kind.key_kind),
           GetBoxedJavaType(context, kind.value_kind))
     else:
       return 'java.util.Map'
   if mojom.IsArrayKind(kind):
-    return '%s[]' % GetJavaType(context, kind.kind, boxed, with_generics)
+    return '{0!s}[]'.format(GetJavaType(context, kind.kind, boxed, with_generics))
   if mojom.IsEnumKind(kind):
     return 'int'
   return _spec_to_java_type[kind.spec]
@@ -268,14 +268,14 @@ def DefaultValue(context, field):
   assert field.default
   if isinstance(field.kind, mojom.Struct):
     assert field.default == 'default'
-    return 'new %s()' % GetJavaType(context, field.kind)
-  return '(%s) %s' % (
+    return 'new {0!s}()'.format(GetJavaType(context, field.kind))
+  return '({0!s}) {1!s}'.format(
       GetJavaType(context, field.kind),
       ExpressionToText(context, field.default, kind_spec=field.kind.spec))
 
 @contextfilter
 def ConstantValue(context, constant):
-  return '(%s) %s' % (
+  return '({0!s}) {1!s}'.format(
       GetJavaType(context, constant.kind),
       ExpressionToText(context, constant.value, kind_spec=constant.kind.spec))
 
@@ -283,7 +283,7 @@ def ConstantValue(context, constant):
 def NewArray(context, kind, size):
   if mojom.IsArrayKind(kind.kind):
     return NewArray(context, kind.kind, size) + '[]'
-  return 'new %s[%s]' % (
+  return 'new {0!s}[{1!s}]'.format(
       GetJavaType(context, kind.kind, boxed=False, with_generics=False), size)
 
 @contextfilter
@@ -306,13 +306,13 @@ def ExpressionToText(context, token, kind_spec=''):
     # Add Long suffix to all integer literals.
     number = ast.literal_eval(token.lstrip('+ '))
     if not isinstance(number, (int, long)):
-      raise ValueError('got unexpected type %r for int literal %r' % (
+      raise ValueError('got unexpected type {0!r} for int literal {1!r}'.format(
           type(number), token))
     # If the literal is too large to fit a signed long, convert it to the
     # equivalent signed long.
     if number >= 2 ** 63:
       number -= 2 ** 64
-    return '%dL' % number
+    return '{0:d}L'.format(number)
   if isinstance(token, mojom.BuiltinValue):
     if token.value == 'double.INFINITY':
       return 'java.lang.Double.POSITIVE_INFINITY'
@@ -474,25 +474,25 @@ class Generator(generator.Generator):
     # module, annotating structs with required information.
     for struct in self.GetStructs():
       self.Write(self.GenerateStructSource(struct),
-                 '%s.java' % GetNameForElement(struct))
+                 '{0!s}.java'.format(GetNameForElement(struct)))
 
     for union in self.module.unions:
       self.Write(self.GenerateUnionSource(union),
-                 '%s.java' % GetNameForElement(union))
+                 '{0!s}.java'.format(GetNameForElement(union)))
 
     for enum in self.module.enums:
       self.Write(self.GenerateEnumSource(enum),
-                 '%s.java' % GetNameForElement(enum))
+                 '{0!s}.java'.format(GetNameForElement(enum)))
 
     for interface in self.GetInterfaces():
       self.Write(self.GenerateInterfaceSource(interface),
-                 '%s.java' % GetNameForElement(interface))
+                 '{0!s}.java'.format(GetNameForElement(interface)))
       self.Write(self.GenerateInterfaceInternalSource(interface),
-                 '%s_Internal.java' % GetNameForElement(interface))
+                 '{0!s}_Internal.java'.format(GetNameForElement(interface)))
 
     if self.module.constants:
       self.Write(self.GenerateConstantsSource(self.module),
-                 '%s.java' % GetConstantsMainEntityName(self.module))
+                 '{0!s}.java'.format(GetConstantsMainEntityName(self.module)))
 
   def GenerateFiles(self, unparsed_args):
     parser = argparse.ArgumentParser()
@@ -504,7 +504,7 @@ class Generator(generator.Generator):
 
     # Generate the java files in a temporary directory and place a single
     # srcjar in the output directory.
-    basename = self.MatchMojomFilePath("%s.srcjar" % self.module.name)
+    basename = self.MatchMojomFilePath("{0!s}.srcjar".format(self.module.name))
     zip_filename = os.path.join(self.output_dir, basename)
     with TempDir() as temp_java_root:
       self.output_dir = os.path.join(temp_java_root, package_path)

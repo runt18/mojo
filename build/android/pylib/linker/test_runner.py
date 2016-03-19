@@ -38,7 +38,7 @@ class LinkerExceptionTestResult(base_test_result.BaseTestResult):
     super(LinkerExceptionTestResult, self).__init__(
         test_name,
         base_test_result.ResultType.FAIL,
-        log="%s %s" % (exc_type, log_msg))
+        log="{0!s} {1!s}".format(exc_type, log_msg))
 
 
 class LinkerTestRunner(base_test_runner.BaseTestRunner):
@@ -61,10 +61,10 @@ class LinkerTestRunner(base_test_runner.BaseTestRunner):
   #override
   def InstallTestPackage(self):
     apk_path = os.path.join(
-        constants.GetOutDirectory(), 'apks', '%s.apk' % _PACKAGE_NAME)
+        constants.GetOutDirectory(), 'apks', '{0!s}.apk'.format(_PACKAGE_NAME))
 
     if not os.path.exists(apk_path):
-      raise Exception('%s not found, please build it' % apk_path)
+      raise Exception('{0!s} not found, please build it'.format(apk_path))
 
     self.device.Install(apk_path)
 

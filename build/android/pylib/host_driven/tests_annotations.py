@@ -89,6 +89,6 @@ def DisabledTest(function):
 def Feature(feature_list):
   def _AddFeatures(function):
     for feature in feature_list:
-      AnnotatedFunctions._AddFunction('Feature:%s' % feature, function)
+      AnnotatedFunctions._AddFunction('Feature:{0!s}'.format(feature), function)
     return AnnotatedFunctions._AddFunction('Feature', function)
   return _AddFeatures

@@ -41,13 +41,13 @@ class CommandOptionParser(optparse.OptionParser):
   #override
   def get_command_list(self):
     if self.commands_dict.keys():
-      return '\nCommands:\n  %s\n' % '\n  '.join(
-          sorted(self.commands_dict.keys()))
+      return '\nCommands:\n  {0!s}\n'.format('\n  '.join(
+          sorted(self.commands_dict.keys())))
     return ''
 
   def get_example(self):
     if self.example:
-      return '\nExample:\n  %s\n' % self.example
+      return '\nExample:\n  {0!s}\n'.format(self.example)
     return ''
 
 

@@ -38,8 +38,8 @@ class BaseTestRunner(object):
     self.tool = CreateTool(tool, self.device)
     self._http_server = None
     self._forwarder_device_port = 8000
-    self.forwarder_base_url = ('http://localhost:%d' %
-        self._forwarder_device_port)
+    self.forwarder_base_url = ('http://localhost:{0:d}'.format(
+        self._forwarder_device_port))
     # We will allocate port for test server spawner when calling method
     # LaunchChromeTestServerSpawner and allocate port for test server when
     # starting it in TestServerThread.
@@ -51,7 +51,7 @@ class BaseTestRunner(object):
     self.device.WriteFile(
         self.device.GetExternalStoragePath() + '/' +
             NET_TEST_SERVER_PORT_INFO_FILE,
-        '%d:%d' % (self.test_server_spawner_port, self.test_server_port))
+        '{0:d}:{1:d}'.format(self.test_server_spawner_port, self.test_server_port))
 
   def RunTest(self, test):
     """Runs a test. Needs to be overridden.

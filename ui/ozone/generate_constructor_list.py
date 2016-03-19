@@ -82,22 +82,21 @@ def GenerateConstructorList(out, namespace, export, typenames, platforms,
   out.write('\n')
 
   for include in includes:
-    out.write('#include %(include)s\n' % {'include': include})
+    out.write('#include {include!s}\n'.format(**{'include': include}))
   out.write('\n')
 
-  out.write('namespace %(namespace)s {\n' % {'namespace': namespace})
+  out.write('namespace {namespace!s} {{\n'.format(**{'namespace': namespace}))
   out.write('\n')
 
   # Declarations of constructor functions.
   for typename in typenames:
     for platform in platforms:
       constructor = GetConstructorName(typename, platform)
-      out.write('%(typename)s* %(constructor)s();\n'
-               % {'typename': typename,
-                  'constructor': constructor})
+      out.write('{typename!s}* {constructor!s}();\n'.format(**{'typename': typename,
+                  'constructor': constructor}))
     out.write('\n')
 
-  out.write('}  // namespace %(namespace)s\n' % {'namespace': namespace})
+  out.write('}}  // namespace {namespace!s}\n'.format(**{'namespace': namespace}))
   out.write('\n')
 
   out.write('namespace ui {\n')
@@ -105,28 +104,23 @@ def GenerateConstructorList(out, namespace, export, typenames, platforms,
 
   # Handy typedefs for constructor types.
   for typename in typenames:
-    out.write('typedef %(typename)s* (*%(typedef)s)();\n'
-              % {'typename': namespace + '::' + typename,
-                 'typedef': GetTypedefName(typename)})
+    out.write('typedef {typename!s}* (*{typedef!s})();\n'.format(**{'typename': namespace + '::' + typename,
+                 'typedef': GetTypedefName(typename)}))
   out.write('\n')
 
   # The actual constructor lists.
   for typename in typenames:
-    out.write('template <> const %(typedef)s\n'
-              % {'typedef': GetTypedefName(typename)})
-    out.write('PlatformConstructorList<%(typename)s>::kConstructors[] = {\n'
-              % {'typename': namespace + '::' + typename})
+    out.write('template <> const {typedef!s}\n'.format(**{'typedef': GetTypedefName(typename)}))
+    out.write('PlatformConstructorList<{typename!s}>::kConstructors[] = {{\n'.format(**{'typename': namespace + '::' + typename}))
     for platform in platforms:
       constructor = GetConstructorName(typename, platform)
-      out.write('  &%(namespace)s::%(constructor)s,\n'
-                % {'namespace': namespace, 'constructor': constructor})
+      out.write('  &{namespace!s}::{constructor!s},\n'.format(**{'namespace': namespace, 'constructor': constructor}))
     out.write('};\n')
     out.write('\n')
 
   # Exported template instantiation.
   for typename in typenames:
-    out.write('template class %(export)s PlatformObject<%(typename)s>;\n'
-              % {'export': export, 'typename': namespace + '::' + typename})
+    out.write('template class {export!s} PlatformObject<{typename!s}>;\n'.format(**{'export': export, 'typename': namespace + '::' + typename}))
   out.write('\n')
 
   out.write('}  // namespace ui\n')

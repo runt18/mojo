@@ -20,7 +20,7 @@ class TestPackage(test_jar.TestJar):
     test_jar.TestJar.__init__(self, jar_info_path)
 
     if not os.path.exists(jar_path):
-      raise Exception('%s not found, please build it' % jar_path)
+      raise Exception('{0!s} not found, please build it'.format(jar_path))
     self._jar_path = jar_path
 
   def GetPackageName(self):

@@ -82,7 +82,7 @@ class DeviceUtilsPushDeleteFilesTest(unittest.TestCase):
 
   def testPushChangedFiles_noFileChange(self):
     (host_file_path, file_name) = self._MakeTempFile(_OLD_CONTENTS)
-    device_file_path = "%s/%s" % (_DEVICE_DIR, file_name)
+    device_file_path = "{0!s}/{1!s}".format(_DEVICE_DIR, file_name)
     self.adb.Push(host_file_path, device_file_path)
     self.device.PushChangedFiles([(host_file_path, device_file_path)])
     result = self.device.RunShellCommand(['cat', device_file_path],
@@ -94,7 +94,7 @@ class DeviceUtilsPushDeleteFilesTest(unittest.TestCase):
 
   def testPushChangedFiles_singleFileChange(self):
     (host_file_path, file_name) = self._MakeTempFile(_OLD_CONTENTS)
-    device_file_path = "%s/%s" % (_DEVICE_DIR, file_name)
+    device_file_path = "{0!s}/{1!s}".format(_DEVICE_DIR, file_name)
     self.adb.Push(host_file_path, device_file_path)
 
     with open(host_file_path, 'w') as f:
@@ -112,7 +112,7 @@ class DeviceUtilsPushDeleteFilesTest(unittest.TestCase):
     (host_file_path, file_name) = self._MakeTempFileGivenDir(
         host_tmp_dir, _OLD_CONTENTS)
 
-    device_file_path = "%s/%s" % (_DEVICE_DIR, file_name)
+    device_file_path = "{0!s}/{1!s}".format(_DEVICE_DIR, file_name)
     self.adb.Push(host_file_path, device_file_path)
 
     cmd_helper.RunCmd(['rm', host_file_path])
@@ -131,8 +131,8 @@ class DeviceUtilsPushDeleteFilesTest(unittest.TestCase):
     (host_file_path2, file_name2) = self._MakeTempFileGivenDir(
         host_tmp_dir, _OLD_CONTENTS)
 
-    device_file_path1 = "%s/%s" % (_DEVICE_DIR, file_name1)
-    device_file_path2 = "%s/%s" % (_DEVICE_DIR, file_name2)
+    device_file_path1 = "{0!s}/{1!s}".format(_DEVICE_DIR, file_name1)
+    device_file_path2 = "{0!s}/{1!s}".format(_DEVICE_DIR, file_name2)
     self.adb.Push(host_file_path1, device_file_path1)
     self.adb.Push(host_file_path2, device_file_path2)
 
@@ -153,8 +153,8 @@ class DeviceUtilsPushDeleteFilesTest(unittest.TestCase):
 
   def testPushAndDeleteFiles_SubDir(self):
     host_tmp_dir = tempfile.mkdtemp()
-    host_sub_dir1 = "%s/%s" % (host_tmp_dir, _SUB_DIR1)
-    host_sub_dir2 = "%s/%s/%s" % (host_tmp_dir, _SUB_DIR, _SUB_DIR2)
+    host_sub_dir1 = "{0!s}/{1!s}".format(host_tmp_dir, _SUB_DIR1)
+    host_sub_dir2 = "{0!s}/{1!s}/{2!s}".format(host_tmp_dir, _SUB_DIR, _SUB_DIR2)
     cmd_helper.RunCmd(['mkdir', '-p', host_sub_dir1])
     cmd_helper.RunCmd(['mkdir', '-p', host_sub_dir2])
 
@@ -167,10 +167,10 @@ class DeviceUtilsPushDeleteFilesTest(unittest.TestCase):
     (host_file_path4, file_name4) = self._MakeTempFileGivenDir(
         host_sub_dir2, _OLD_CONTENTS)
 
-    device_file_path1 = "%s/%s" % (_DEVICE_DIR, file_name1)
-    device_file_path2 = "%s/%s" % (_DEVICE_DIR, file_name2)
-    device_file_path3 = "%s/%s/%s" % (_DEVICE_DIR, _SUB_DIR1, file_name3)
-    device_file_path4 = "%s/%s/%s/%s" % (_DEVICE_DIR, _SUB_DIR,
+    device_file_path1 = "{0!s}/{1!s}".format(_DEVICE_DIR, file_name1)
+    device_file_path2 = "{0!s}/{1!s}".format(_DEVICE_DIR, file_name2)
+    device_file_path3 = "{0!s}/{1!s}/{2!s}".format(_DEVICE_DIR, _SUB_DIR1, file_name3)
+    device_file_path4 = "{0!s}/{1!s}/{2!s}/{3!s}".format(_DEVICE_DIR, _SUB_DIR,
                                          _SUB_DIR2, file_name4)
 
     self.adb.Push(host_file_path1, device_file_path1)
@@ -199,8 +199,7 @@ class DeviceUtilsPushDeleteFilesTest(unittest.TestCase):
                                       single_line=True)
     self.assertEqual(_OLD_CONTENTS, result)
 
-    result = self.device.RunShellCommand(["ls", "%s/%s/%s"
-                                          % (_DEVICE_DIR, _SUB_DIR, _SUB_DIR2)],
+    result = self.device.RunShellCommand(["ls", "{0!s}/{1!s}/{2!s}".format(_DEVICE_DIR, _SUB_DIR, _SUB_DIR2)],
                                          single_line=True)
     self.assertEqual('', result)
 

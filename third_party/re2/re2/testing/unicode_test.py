@@ -87,7 +87,7 @@ class ReadUnicodeTableTest(googletest.TestCase):
     def DoLine(codes, fields):
       self.assertEquals(3, len(fields))
       ncall[0] += 1
-      self.assertEquals("Line %d" % (ncall[0],), fields[2])
+      self.assertEquals("Line {0:d}".format(ncall[0]), fields[2])
       if ncall[0] == 1:
         self.assertEquals([0x0041], codes)
         self.assertEquals("0041", fields[0])

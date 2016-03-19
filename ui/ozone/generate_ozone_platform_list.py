@@ -91,11 +91,11 @@ def GeneratePlatformListHeader(out, platforms):
 
   # Prototypes for platform initializers.
   for plat_id, plat_name in enumerate(platforms):
-    out.write('const int %s = %d;\n' % (GetConstantName(plat_name), plat_id))
+    out.write('const int {0!s} = {1:d};\n'.format(GetConstantName(plat_name), plat_id))
   out.write('\n')
 
   # Platform count.
-  out.write('const int kPlatformCount = %d;\n' % len(platforms))
+  out.write('const int kPlatformCount = {0:d};\n'.format(len(platforms)))
   out.write('\n')
 
   # Declaration for names list.
@@ -126,7 +126,7 @@ def GeneratePlatformListSource(out, platforms):
 
   # Prototypes for platform initializers.
   for plat_name in platforms:
-    out.write('    "%s",  // %s\n' % (plat_name, GetConstantName(plat_name)))
+    out.write('    "{0!s}",  // {1!s}\n'.format(plat_name, GetConstantName(plat_name)))
   out.write('};\n')
   out.write('\n')
 

@@ -218,7 +218,7 @@ def capture(cmd, cwd):
 
   Ignores the error code or stderr.
   """
-  logging.debug('%s; cwd=%s' % (' '.join(cmd), cwd))
+  logging.debug('{0!s}; cwd={1!s}'.format(' '.join(cmd), cwd))
   env = os.environ.copy()
   env['LANGUAGE'] = 'en_US.UTF-8'
   p = subprocess.Popen(
@@ -331,7 +331,7 @@ class ApiBase(object):
     self.count_read_header = 0
 
   def check_file(self, rel_path):
-    logging.debug('check_file(%s)' % rel_path)
+    logging.debug('check_file({0!s})'.format(rel_path))
     self.count += 1
 
     if (not must_be_executable(rel_path) and
@@ -347,7 +347,7 @@ class ApiBase(object):
     """Check the files in start_dir, recursively check its subdirectories."""
     errors = []
     items = self.list_dir(start_dir)
-    logging.info('check(%s) -> %d' % (start_dir, len(items)))
+    logging.info('check({0!s}) -> {1:d}'.format(start_dir, len(items)))
     for item in items:
       full_path = os.path.join(self.root_dir, start_dir, item)
       rel_path = full_path[len(self.root_dir) + 1:]
@@ -378,7 +378,7 @@ class ApiAllFilesAtOnceBase(ApiBase):
     if self._files is None:
       self._files = sorted(self._get_all_files())
       if not self.bare_output:
-        print 'Found %s files' % len(self._files)
+        print 'Found {0!s} files'.format(len(self._files))
     start_dir = start_dir[len(self.root_dir) + 1:]
     return [
       x[len(start_dir):] for x in self._files if x.startswith(start_dir)
@@ -400,12 +400,12 @@ def get_scm(dir_path, bare):
   root = get_git_root(dir_path or cwd)
   if root:
     if not bare:
-      print('Found git repository at %s' % root)
+      print('Found git repository at {0!s}'.format(root))
     return ApiGit(dir_path or root, bare)
 
   # Returns a non-scm aware checker.
   if not bare:
-    print('Failed to determine the SCM for %s' % dir_path)
+    print('Failed to determine the SCM for {0!s}'.format(dir_path))
   return ApiBase(dir_path or cwd, bare)
 
 
@@ -469,7 +469,7 @@ Examples:
       print '\n'.join(e['full_path'] for e in errors)
     else:
       print '\nFAILED\n'
-      print '\n'.join('%s: %s' % (e['full_path'], e['error']) for e in errors)
+      print '\n'.join('{0!s}: {1!s}'.format(e['full_path'], e['error']) for e in errors)
     return 1
   if not options.bare:
     print '\nSUCCESS\n'

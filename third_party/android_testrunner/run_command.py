@@ -58,7 +58,7 @@ def RunCommand(cmd, timeout_time=None, retry_count=3, return_output=True,
       if retry_count == 0:
         raise
       retry_count -= 1
-      logger.Log("No response for %s, retrying" % cmd)
+      logger.Log("No response for {0!s}, retrying".format(cmd))
     else:
       # Success
       return result
@@ -114,12 +114,12 @@ def RunOnce(cmd, timeout_time=None, return_output=True, stdin_input=None):
       if output is not None and len(output) > 0:
         so.append(output)
     except OSError, e:
-      logger.SilentLog("failed to retrieve stdout from: %s" % cmd)
+      logger.SilentLog("failed to retrieve stdout from: {0!s}".format(cmd))
       logger.Log(e)
       so.append("ERROR")
       error_occurred = True
     if pipe.returncode:
-      logger.SilentLog("Error: %s returned %d error code" %(cmd,
+      logger.SilentLog("Error: {0!s} returned {1:d} error code".format(cmd,
           pipe.returncode))
       error_occurred = True
 
@@ -133,7 +133,7 @@ def RunOnce(cmd, timeout_time=None, return_output=True, stdin_input=None):
       # Can't kill a dead process.
       pass
     finally:
-      logger.SilentLog("about to raise a timeout for: %s" % cmd)
+      logger.SilentLog("about to raise a timeout for: {0!s}".format(cmd))
       raise errors.WaitForResponseTimedOutError
 
   output = "".join(so)

@@ -150,9 +150,9 @@ class Lexicon(object):
       debug.write("\n============= DFA ===========\n")
       dfa.dump(debug)
     if timings:
-      timings.write("Constructing NFA : %5.2f\n" % (time2 - time1))
-      timings.write("Converting to DFA: %5.2f\n" % (time4 - time3))
-      timings.write("TOTAL            : %5.2f\n" % total_time)
+      timings.write("Constructing NFA : {0:5.2f}\n".format((time2 - time1)))
+      timings.write("Converting to DFA: {0:5.2f}\n".format((time4 - time3)))
+      timings.write("TOTAL            : {0:5.2f}\n".format(total_time))
     self.machine = dfa
 
   def add_token_to_machine(self, machine, initial_state, token_spec, token_number):
@@ -176,7 +176,7 @@ class Lexicon(object):
                        match_bol = 1, nocase = 0)
       final_state.set_action(action, priority = -token_number)
     except Errors.PlexError, e:
-      raise e.__class__("Token number %d: %s" % (token_number, e))
+      raise e.__class__("Token number {0:d}: {1!s}".format(token_number, e))
 
   def parse_token_definition(self, token_spec):
     if type(token_spec) != types.TupleType:

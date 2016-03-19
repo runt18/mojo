@@ -118,7 +118,7 @@ def Intersect(l1, l2):
 
 def typecheck(s, t):
 	if type(s) != t:
-		raise hg_util.Abort("type check failed: %s has type %s != %s" % (repr(s), type(s), t))
+		raise hg_util.Abort("type check failed: {0!s} has type {1!s} != {2!s}".format(repr(s), type(s), t))
 
 # If we have to pass unicode instead of str, ustr does that conversion clearly.
 def ustr(s):
@@ -302,7 +302,7 @@ class CL(object):
 		if len(s) > 60:
 			s = s[0:55] + "..."
 		if self.name != "new":
-			s = "code review %s: %s" % (self.name, s)
+			s = "code review {0!s}: {1!s}".format(self.name, s)
 		typecheck(s, str)
 		return s
 
@@ -386,7 +386,7 @@ class CL(object):
 	def Mail(self, ui, repo):
 		pmsg = "Hello " + JoinComma(self.reviewer)
 		if self.cc:
-			pmsg += " (cc: %s)" % (', '.join(self.cc),)
+			pmsg += " (cc: {0!s})".format(', '.join(self.cc))
 		pmsg += ",\n"
 		pmsg += "\n"
 		repourl = ui.expandpath("default")
@@ -525,7 +525,7 @@ def LoadCL(ui, repo, name, web=True):
 		d = JSONGet(ui, "/api/" + name + "?messages=true")
 		set_status(None)
 		if d is None:
-			return None, "cannot load CL %s from server" % (name,)
+			return None, "cannot load CL {0!s} from server".format(name)
 		if 'owner_email' not in d or 'issue' not in d or str(d['issue']) != name:
 			return None, "malformed response loading CL data from code review server"
 		cl.dict = d
@@ -600,7 +600,7 @@ def LoadAllCL(ui, repo, web=True):
 def RepoDir(ui, repo):
 	url = repo.url();
 	if not url.startswith('file:'):
-		ui.warn("repository %s is not in local file system\n" % (url,))
+		ui.warn("repository {0!s} is not in local file system\n".format(url))
 		return None
 	url = url[5:]
 	if url.endswith('/'):
@@ -618,7 +618,7 @@ def CodeReviewDir(ui, repo):
 		try:
 			os.mkdir(dir, 0700)
 		except:
-			ui.warn('cannot mkdir %s: %s\n' % (dir, ExceptionDetail()))
+			ui.warn('cannot mkdir {0!s}: {1!s}\n'.format(dir, ExceptionDetail()))
 			return None
 	typecheck(dir, str)
 	return dir
@@ -717,14 +717,14 @@ def promptyesno(ui, msg):
 		return ui.promptchoice(msg, ["&yes", "&no"], 0) == 0
 
 def promptremove(ui, repo, f):
-	if promptyesno(ui, "hg remove %s (y/n)?" % (f,)):
+	if promptyesno(ui, "hg remove {0!s} (y/n)?".format(f)):
 		if hg_commands.remove(ui, repo, 'path:'+f) != 0:
-			ui.warn("error removing %s" % (f,))
+			ui.warn("error removing {0!s}".format(f))
 
 def promptadd(ui, repo, f):
-	if promptyesno(ui, "hg add %s (y/n)?" % (f,)):
+	if promptyesno(ui, "hg add {0!s} (y/n)?".format(f)):
 		if hg_commands.add(ui, repo, 'path:'+f) != 0:
-			ui.warn("error adding %s" % (f,))
+			ui.warn("error adding {0!s}".format(f))
 
 def EditCL(ui, repo, cl):
 	set_status(None)	# do not show status
@@ -745,7 +745,7 @@ def EditCL(ui, repo, cl):
 
 		clx, line, err = ParseCL(s, cl.name)
 		if err != '':
-			if not promptyesno(ui, "error parsing change list: line %d: %s\nre-edit (y/n)?" % (line, err)):
+			if not promptyesno(ui, "error parsing change list: line {0:d}: {1!s}\nre-edit (y/n)?".format(line, err)):
 				return "change list not modified"
 			continue
 		
@@ -782,21 +782,21 @@ def EditCL(ui, repo, cl):
 				files.append(f)
 				continue
 			if f in ignored:
-				ui.warn("error: %s is excluded by .hgignore; omitting\n" % (f,))
+				ui.warn("error: {0!s} is excluded by .hgignore; omitting\n".format(f))
 				continue
 			if f in clean:
-				ui.warn("warning: %s is listed in the CL but unchanged\n" % (f,))
+				ui.warn("warning: {0!s} is listed in the CL but unchanged\n".format(f))
 				files.append(f)
 				continue
 			p = repo.root + '/' + f
 			if os.path.isfile(p):
-				ui.warn("warning: %s is a file but not known to hg\n" % (f,))
+				ui.warn("warning: {0!s} is a file but not known to hg\n".format(f))
 				files.append(f)
 				continue
 			if os.path.isdir(p):
-				ui.warn("error: %s is a directory, not a file; omitting\n" % (f,))
+				ui.warn("error: {0!s} is a directory, not a file; omitting\n".format(f))
 				continue
-			ui.warn("error: %s does not exist; omitting\n" % (f,))
+			ui.warn("error: {0!s} does not exist; omitting\n".format(f))
 		clx.files = files
 
 		cl.desc = clx.desc
@@ -858,9 +858,9 @@ def ChangedFiles(ui, repo, pats, taken=None):
 		files = hg_matchPattern(ui, repo, p, modified=True, added=True, removed=True)
 		for f in files:
 			if f in taken:
-				ui.warn("warning: %s already in CL %s\n" % (f, taken[f].name))
+				ui.warn("warning: {0!s} already in CL {1!s}\n".format(f, taken[f].name))
 		if not files:
-			ui.warn("warning: %s did not match any modified files\n" % (p,))
+			ui.warn("warning: {0!s} did not match any modified files\n".format(p))
 
 	# Again, all at once (eliminates duplicates)
 	l = hg_matchPattern(ui, repo, *pats, modified=True, added=True, removed=True)
@@ -974,7 +974,7 @@ def ReadContributors(ui, repo):
 			opening = repo.root + '/CONTRIBUTORS'
 			f = open(repo.root + '/CONTRIBUTORS', 'r')
 	except:
-		ui.write("warning: cannot open %s: %s\n" % (opening, ExceptionDetail()))
+		ui.write("warning: cannot open {0!s}: {1!s}\n".format(opening, ExceptionDetail()))
 		return
 
 	contributors = {}
@@ -1000,7 +1000,7 @@ def CheckContributor(ui, repo, user=None):
 	set_status("checking CONTRIBUTORS file")
 	user, userline = FindContributor(ui, repo, user, warn=False)
 	if not userline:
-		raise hg_util.Abort("cannot find %s in CONTRIBUTORS" % (user,))
+		raise hg_util.Abort("cannot find {0!s} in CONTRIBUTORS".format(user))
 	return userline
 
 def FindContributor(ui, repo, user=None, warn=True):
@@ -1016,11 +1016,11 @@ def FindContributor(ui, repo, user=None, warn=True):
 	contributors = ReadContributors(ui, repo)
 	if user not in contributors:
 		if warn:
-			ui.warn("warning: cannot find %s in CONTRIBUTORS\n" % (user,))
+			ui.warn("warning: cannot find {0!s} in CONTRIBUTORS\n".format(user))
 		return user, None
 	
 	user, email = contributors[user]
-	return email, "%s <%s>" % (user, email)
+	return email, "{0!s} <{1!s}>".format(user, email)
 
 #######################################################################
 # Mercurial helper functions.
@@ -1100,7 +1100,7 @@ def hg_matchPattern(ui, repo, *pats, **opts):
 				# Given patterns, Mercurial shows relative to cwd
 				p = to_slash(os.path.realpath(f[1]))
 				if not p.startswith(prefix):
-					print >>sys.stderr, "File %s not in repo root %s.\n" % (p, prefix)
+					print >>sys.stderr, "File {0!s} not in repo root {1!s}.\n".format(p, prefix)
 				else:
 					ret.append(p[len(prefix):])
 			else:
@@ -1341,7 +1341,7 @@ def change(ui, repo, *pats, **opts):
 		s = sys.stdin.read()
 		clx, line, err = ParseCL(s, name)
 		if err != '':
-			return "error parsing change list: line %d: %s" % (line, err)
+			return "error parsing change list: line {0:d}: {1!s}".format(line, err)
 		if clx.desc is not None:
 			cl.desc = clx.desc;
 			dirty[cl] = True
@@ -1539,11 +1539,11 @@ def clpatch_or_undo(ui, repo, clname, opts, mode):
 					found = True
 					break
 			if not found:
-				return "cannot find CL %s in local repository" % clname
+				return "cannot find CL {0!s} in local repository".format(clname)
 		else:
 			rev = repo[clname]
 			if not rev:
-				return "unknown revision %s" % clname
+				return "unknown revision {0!s}".format(clname)
 			clname = rev2clname(rev)
 			if clname == "":
 				return "cannot find CL name in revision description"
@@ -1570,7 +1570,7 @@ def clpatch_or_undo(ui, repo, clname, opts, mode):
 		if err != "":
 			return err
 		if patch == emptydiff:
-			return "codereview issue %s has no diff" % clname
+			return "codereview issue {0!s} has no diff".format(clname)
 
 	# find current hg version (hg identify)
 	ctx = repo[None]
@@ -1586,11 +1586,11 @@ def clpatch_or_undo(ui, repo, clname, opts, mode):
 		try:
 			repo[vers].description()
 		except:
-			return "local repository is out of date; sync to get %s" % (vers)
+			return "local repository is out of date; sync to get {0!s}".format((vers))
 		patch1, err = portPatch(repo, patch, vers, id)
 		if err != "":
 			if not opts["ignore_hgpatch_failure"]:
-				return "codereview issue %s is out of date: %s (%s->%s)" % (clname, err, vers, id)
+				return "codereview issue {0!s} is out of date: {1!s} ({2!s}->{3!s})".format(clname, err, vers, id)
 		else:
 			patch = patch1
 	argv = ["hgpatch"]
@@ -1607,7 +1607,7 @@ def clpatch_or_undo(ui, repo, clname, opts, mode):
 	cl.local = True
 	cl.files = out.strip().split()
 	if not cl.files and not opts["ignore_hgpatch_failure"]:
-		return "codereview issue %s has no changed files" % clname
+		return "codereview issue {0!s} has no changed files".format(clname)
 	files = ChangedFiles(ui, repo, [])
 	extra = Sub(cl.files, files)
 	if extra:
@@ -1648,7 +1648,7 @@ def portPatch(repo, patch, oldver, newver):
 			return "", err
 		n1 += d
 		n2 += d
-		lines[i] = "@@ -%d,%d +%d,%d @@\n" % (n1, len1, n2, len2)
+		lines[i] = "@@ -{0:d},{1:d} +{2:d},{3:d} @@\n".format(n1, len1, n2, len2)
 		
 	newpatch = ''.join(lines)
 	return newpatch, ""
@@ -1732,9 +1732,9 @@ def file(ui, repo, clname, pat, *pats, **opts):
 		if oldfiles:
 			if not ui.quiet:
 				ui.status("# Removing files from CL.  To undo:\n")
-				ui.status("#	cd %s\n" % (repo.root))
+				ui.status("#	cd {0!s}\n".format((repo.root)))
 				for f in oldfiles:
-					ui.status("#	hg file %s %s\n" % (cl.name, f))
+					ui.status("#	hg file {0!s} {1!s}\n".format(cl.name, f))
 			cl.files = Sub(cl.files, oldfiles)
 			cl.Flush(ui, repo)
 		else:
@@ -1751,11 +1751,11 @@ def file(ui, repo, clname, pat, *pats, **opts):
 		if f in taken:
 			if not warned and not ui.quiet:
 				ui.status("# Taking files from other CLs.  To undo:\n")
-				ui.status("#	cd %s\n" % (repo.root))
+				ui.status("#	cd {0!s}\n".format((repo.root)))
 				warned = True
 			ocl = taken[f]
 			if not ui.quiet:
-				ui.status("#	hg file %s %s\n" % (ocl.name, f))
+				ui.status("#	hg file {0!s} {1!s}\n".format(ocl.name, f))
 			if ocl not in dirty:
 				ocl.files = Sub(ocl.files, files)
 				dirty[ocl] = True
@@ -1935,7 +1935,7 @@ def submit(ui, repo, *pats, **opts):
 	cl.Flush(ui, repo)
 	CheckFormat(ui, repo, cl.files)
 
-	about += "%s%s\n" % (server_url_base, cl.name)
+	about += "{0!s}{1!s}\n".format(server_url_base, cl.name)
 
 	if cl.copied_from:
 		about += "\nCommitter: " + CheckContributor(ui, repo, None) + "\n"
@@ -1988,11 +1988,11 @@ def submit(ui, repo, *pats, **opts):
 		"(^https?://([^@/]+@)?code\.google\.com/p/([^/.]+)(\.[^./]+)?/?)", url)
 	if m:
 		if m.group(1): # prj.googlecode.com/hg/ case
-			changeURL = "http://code.google.com/p/%s/source/detail?r=%s" % (m.group(3), changeURL)
+			changeURL = "http://code.google.com/p/{0!s}/source/detail?r={1!s}".format(m.group(3), changeURL)
 		elif m.group(4) and m.group(7): # code.google.com/p/prj.subrepo/ case
-			changeURL = "http://code.google.com/p/%s/source/detail?r=%s&repo=%s" % (m.group(6), changeURL, m.group(7)[1:])
+			changeURL = "http://code.google.com/p/{0!s}/source/detail?r={1!s}&repo={2!s}".format(m.group(6), changeURL, m.group(7)[1:])
 		elif m.group(4): # code.google.com/p/prj/ case
-			changeURL = "http://code.google.com/p/%s/source/detail?r=%s" % (m.group(6), changeURL)
+			changeURL = "http://code.google.com/p/{0!s}/source/detail?r={1!s}".format(m.group(6), changeURL)
 		else:
 			print >>sys.stderr, "URL: ", url
 	else:
@@ -2009,7 +2009,7 @@ def submit(ui, repo, *pats, **opts):
 
 	c = repo[None]
 	if c.branch() == releaseBranch and not c.modified() and not c.added() and not c.removed():
-		ui.write("switching from %s to default branch.\n" % releaseBranch)
+		ui.write("switching from {0!s} to default branch.\n".format(releaseBranch))
 		err = hg_clean(repo, "default")
 		if err:
 			return err
@@ -2042,10 +2042,10 @@ def sync_changes(ui, repo):
 		desc = repo[rev].description().strip()
 		for clname in re.findall('(?m)^http://(?:[^\n]+)/([0-9]+)$', desc):
 			if IsLocalCL(ui, repo, clname) and IsRietveldSubmitted(ui, clname, repo[rev].hex()):
-				ui.warn("CL %s submitted as %s; closing\n" % (clname, repo[rev]))
+				ui.warn("CL {0!s} submitted as {1!s}; closing\n".format(clname, repo[rev]))
 				cl, err = LoadCL(ui, repo, clname, web=False)
 				if err != "":
-					ui.warn("loading CL %s: %s\n" % (clname, err))
+					ui.warn("loading CL {0!s}: {1!s}\n".format(clname, err))
 					continue
 				if not cl.copied_from:
 					EditDesc(cl.name, closed=True, private=cl.private)
@@ -2057,16 +2057,16 @@ def sync_changes(ui, repo):
 	for cl in all.values():
 		extra = Sub(cl.files, changed)
 		if extra:
-			ui.warn("Removing unmodified files from CL %s:\n" % (cl.name,))
+			ui.warn("Removing unmodified files from CL {0!s}:\n".format(cl.name))
 			for f in extra:
-				ui.warn("\t%s\n" % (f,))
+				ui.warn("\t{0!s}\n".format(f))
 			cl.files = Sub(cl.files, extra)
 			cl.Flush(ui, repo)
 		if not cl.files:
 			if not cl.copied_from:
-				ui.warn("CL %s has no files; delete (abandon) with hg change -d %s\n" % (cl.name, cl.name))
+				ui.warn("CL {0!s} has no files; delete (abandon) with hg change -d {1!s}\n".format(cl.name, cl.name))
 			else:
-				ui.warn("CL %s has no files; delete locally with hg change -D %s\n" % (cl.name, cl.name))
+				ui.warn("CL {0!s} has no files; delete locally with hg change -D {1!s}\n".format(cl.name, cl.name))
 	return
 
 #######################################################################
@@ -2088,7 +2088,7 @@ def upload(ui, repo, name, **opts):
 	if not cl.local:
 		return "cannot upload non-local change"
 	cl.Upload(ui, repo)
-	print "%s%s\n" % (server_url_base, cl.name)
+	print "{0!s}{1!s}\n".format(server_url_base, cl.name)
 	return
 
 #######################################################################
@@ -2263,7 +2263,7 @@ def reposetup(ui, repo):
 
 	remote = ui.config("paths", "default", "")
 	if remote.find("://") < 0:
-		raise hg_util.Abort("codereview: default path '%s' is not a URL" % (remote,))
+		raise hg_util.Abort("codereview: default path '{0!s}' is not a URL".format(remote))
 
 	InstallMatch(ui, repo)
 	RietveldSetup(ui, repo)
@@ -2332,7 +2332,7 @@ def JSONGet(ui, path):
 		typecheck(data, str)
 		d = fix_json(json.loads(data))
 	except:
-		ui.warn("JSONGet %s: %s\n" % (path, ExceptionDetail()))
+		ui.warn("JSONGet {0!s}: {1!s}\n".format(path, ExceptionDetail()))
 		return None
 	return d
 
@@ -2384,7 +2384,7 @@ def DownloadCL(ui, repo, clname):
 	set_status("downloading CL " + clname)
 	cl, err = LoadCL(ui, repo, clname, web=True)
 	if err != "":
-		return None, None, None, "error loading CL %s: %s" % (clname, err)
+		return None, None, None, "error loading CL {0!s}: {1!s}".format(clname, err)
 
 	# Find most recent diff
 	diffs = cl.dict.get("patchsets", [])
@@ -2394,7 +2394,7 @@ def DownloadCL(ui, repo, clname):
 
 	patchset = JSONGet(ui, "/api/" + clname + "/" + str(patchid))
 	if patchset is None:
-		return None, None, None, "error loading CL patchset %s/%d" % (clname, patchid)
+		return None, None, None, "error loading CL patchset {0!s}/{1:d}".format(clname, patchid)
 	if patchset.get("patchset", 0) != patchid:
 		return None, None, None, "malformed patchset information"
 	
@@ -2409,7 +2409,7 @@ def DownloadCL(ui, repo, clname):
 	# Print warning if email is not in CONTRIBUTORS file.
 	email = cl.dict.get("owner_email", "")
 	if not email:
-		return None, None, None, "cannot find owner for %s" % (clname)
+		return None, None, None, "cannot find owner for {0!s}".format((clname))
 	him = FindContributor(ui, repo, email)
 	me = FindContributor(ui, repo, None)
 	if him == me:
@@ -2471,7 +2471,7 @@ def MySend1(request_path, payload=None,
 		while True:
 			tries += 1
 			args = dict(kwargs)
-			url = "http://%s%s" % (self.host, request_path)
+			url = "http://{0!s}{1!s}".format(self.host, request_path)
 			if args:
 				url += "?" + urllib.urlencode(args)
 			req = self._CreateRequest(url=url, data=payload)
@@ -2718,7 +2718,7 @@ def GetEmail(prompt):
 			last_email_file = open(last_email_file_name, "r")
 			last_email = last_email_file.readline().strip("\n")
 			last_email_file.close()
-			prompt += " [%s]" % last_email
+			prompt += " [{0!s}]".format(last_email)
 		except IOError, e:
 			pass
 	email = raw_input(prompt + ": ").strip()
@@ -2861,7 +2861,7 @@ class AbstractRpcServer(object):
 		# This is a dummy value to allow us to identify when we're successful.
 		continue_location = "http://localhost/"
 		args = {"continue": continue_location, "auth": auth_token}
-		req = self._CreateRequest("http://%s/_ah/login?%s" % (self.host, urllib.urlencode(args)))
+		req = self._CreateRequest("http://{0!s}/_ah/login?{1!s}".format(self.host, urllib.urlencode(args)))
 		try:
 			response = self.opener.open(req)
 		except urllib2.HTTPError, e:
@@ -2951,7 +2951,7 @@ class AbstractRpcServer(object):
 			while True:
 				tries += 1
 				args = dict(kwargs)
-				url = "http://%s%s" % (self.host, request_path)
+				url = "http://{0!s}{1!s}".format(self.host, request_path)
 				if args:
 					url += "?" + urllib.urlencode(args)
 				req = self._CreateRequest(url=url, data=payload)
@@ -2979,7 +2979,7 @@ class HttpRpcServer(AbstractRpcServer):
 		"""Save the cookie jar after authentication."""
 		super(HttpRpcServer, self)._Authenticate()
 		if self.save_cookies:
-			StatusUpdate("Saving authentication cookies to %s" % self.cookie_file)
+			StatusUpdate("Saving authentication cookies to {0!s}".format(self.cookie_file))
 			self.cookie_jar.save()
 
 	def _GetOpener(self):
@@ -3002,7 +3002,7 @@ class HttpRpcServer(AbstractRpcServer):
 				try:
 					self.cookie_jar.load()
 					self.authenticated = True
-					StatusUpdate("Loaded authentication cookies from %s" % self.cookie_file)
+					StatusUpdate("Loaded authentication cookies from {0!s}".format(self.cookie_file))
 				except (cookielib.LoadError, IOError):
 					# Failed to load cookies - just ignore them.
 					pass
@@ -3037,8 +3037,8 @@ def GetRpcServer(options):
 
 		email = options.email
 		if email is None:
-			email = GetEmail("Email (login for uploading to %s)" % options.server)
-		password = getpass.getpass("Password for %s: " % email)
+			email = GetEmail("Email (login for uploading to {0!s})".format(options.server))
+		password = getpass.getpass("Password for {0!s}: ".format(email))
 
 		# Put status back.
 		global_status = st
@@ -3050,12 +3050,12 @@ def GetRpcServer(options):
 		email = options.email
 		if email is None:
 			email = "test@example.com"
-			logging.info("Using debug user %s.  Override with --email" % email)
+			logging.info("Using debug user {0!s}.  Override with --email".format(email))
 		server = rpc_server_class(
 				options.server,
 				lambda: (email, "password"),
 				host_override=options.host,
-				extra_headers={"Cookie": 'dev_appserver_login="%s:False"' % email},
+				extra_headers={"Cookie": 'dev_appserver_login="{0!s}:False"'.format(email)},
 				save_cookies=options.save_cookies)
 		# Don't try to talk to ClientLogin.
 		server.authenticated = True
@@ -3085,7 +3085,7 @@ def EncodeMultipartFormData(fields, files):
 		typecheck(key, str)
 		typecheck(value, str)
 		lines.append('--' + BOUNDARY)
-		lines.append('Content-Disposition: form-data; name="%s"' % key)
+		lines.append('Content-Disposition: form-data; name="{0!s}"'.format(key))
 		lines.append('')
 		lines.append(value)
 	for (key, filename, value) in files:
@@ -3093,14 +3093,14 @@ def EncodeMultipartFormData(fields, files):
 		typecheck(filename, str)
 		typecheck(value, str)
 		lines.append('--' + BOUNDARY)
-		lines.append('Content-Disposition: form-data; name="%s"; filename="%s"' % (key, filename))
-		lines.append('Content-Type: %s' % GetContentType(filename))
+		lines.append('Content-Disposition: form-data; name="{0!s}"; filename="{1!s}"'.format(key, filename))
+		lines.append('Content-Type: {0!s}'.format(GetContentType(filename)))
 		lines.append('')
 		lines.append(value)
 	lines.append('--' + BOUNDARY + '--')
 	lines.append('')
 	body = CRLF.join(lines)
-	content_type = 'multipart/form-data; boundary=%s' % BOUNDARY
+	content_type = 'multipart/form-data; boundary={0!s}'.format(BOUNDARY)
 	return content_type, body
 
 
@@ -3152,9 +3152,9 @@ def RunShell(command, silent_ok=False, universal_newlines=True,
 		print_output=False, env=os.environ):
 	data, retcode = RunShellWithReturnCode(command, print_output, universal_newlines, env)
 	if retcode:
-		ErrorExit("Got error status from %s:\n%s" % (command, data))
+		ErrorExit("Got error status from {0!s}:\n{1!s}".format(command, data))
 	if not silent_ok and not data:
-		ErrorExit("No output from %s" % command)
+		ErrorExit("No output from {0!s}".format(command))
 	return data
 
 
@@ -3176,12 +3176,12 @@ class VersionControlSystem(object):
 			args: Extra arguments to pass to the diff command.
 		"""
 		raise NotImplementedError(
-				"abstract method -- subclass %s must override" % self.__class__)
+				"abstract method -- subclass {0!s} must override".format(self.__class__))
 
 	def GetUnknownFiles(self):
 		"""Return a list of files unknown to the VCS."""
 		raise NotImplementedError(
-				"abstract method -- subclass %s must override" % self.__class__)
+				"abstract method -- subclass {0!s} must override".format(self.__class__))
 
 	def CheckForUnknownFiles(self):
 		"""Show an "are you sure?" prompt if there are unknown files."""
@@ -3209,7 +3209,7 @@ class VersionControlSystem(object):
 		"""
 
 		raise NotImplementedError(
-				"abstract method -- subclass %s must override" % self.__class__)
+				"abstract method -- subclass {0!s} must override".format(self.__class__))
 
 
 	def GetBaseFiles(self, diff):
@@ -3244,14 +3244,13 @@ class VersionControlSystem(object):
 			else:
 				type = "current"
 			if len(content) > MAX_UPLOAD_SIZE:
-				print ("Not uploading the %s file for %s because it's too large." %
-							(type, filename))
+				print ("Not uploading the {0!s} file for {1!s} because it's too large.".format(type, filename))
 				file_too_large = True
 				content = ""
 			checksum = md5(content).hexdigest()
 			if options.verbose > 0 and not file_too_large:
-				print "Uploading %s file for %s" % (type, filename)
-			url = "/%d/upload_content/%d/%d" % (int(issue), int(patchset), file_id)
+				print "Uploading {0!s} file for {1!s}".format(type, filename)
+			url = "/{0:d}/upload_content/{1:d}/{2:d}".format(int(issue), int(patchset), file_id)
 			form_fields = [
 				("filename", filename),
 				("status", status),
@@ -3266,7 +3265,7 @@ class VersionControlSystem(object):
 			ctype, body = EncodeMultipartFormData(form_fields, [("data", filename, content)])
 			response_body = rpc_server.Send(url, body, content_type=ctype)
 			if not response_body.startswith("OK"):
-				StatusUpdate("  --> %s" % response_body)
+				StatusUpdate("  --> {0!s}".format(response_body))
 				sys.exit(1)
 
 		# Don't want to spawn too many threads, nor do we want to
@@ -3410,7 +3409,7 @@ class MercurialVCS(VersionControlSystem):
 				# NOTE: for proper handling of moved/copied files, we have to use
 				# the second filename.
 				filename = m.group(2)
-				svndiff.append("Index: %s" % filename)
+				svndiff.append("Index: {0!s}".format(filename))
 				svndiff.append("=" * 67)
 				filecount += 1
 				logging.info(line)
@@ -3554,12 +3553,12 @@ def UploadSeparatePatches(issue, rpc_server, patchset, data, options):
 			form_fields.append(("content_upload", "1"))
 		files = [("data", "data.diff", patch[1])]
 		ctype, body = EncodeMultipartFormData(form_fields, files)
-		url = "/%d/upload_patch/%d" % (int(issue), int(patchset))
+		url = "/{0:d}/upload_patch/{1:d}".format(int(issue), int(patchset))
 		print "Uploading patch for " + patch[0]
 		response_body = rpc_server.Send(url, body, content_type=ctype)
 		lines = response_body.splitlines()
 		if not lines or lines[0] != "OK":
-			StatusUpdate("  --> %s" % response_body)
+			StatusUpdate("  --> {0!s}".format(response_body))
 			sys.exit(1)
 		rv.append([lines[1], patch[0]])
 	return rv

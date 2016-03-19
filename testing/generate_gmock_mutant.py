@@ -352,7 +352,7 @@ def Merge(a):
 
 
 def GenTuple(pattern, n):
-  return Clean("base::Tuple<%s>" % (Gen(pattern, n, 1)))
+  return Clean("base::Tuple<{0!s}>".format((Gen(pattern, n, 1))))
 
 
 def FixCode(s):
@@ -368,7 +368,7 @@ def FixCode(s):
 
 
 def GenerateDispatch(prebound, calltime):
-  print "\n// %d - %d" % (prebound, calltime)
+  print "\n// {0:d} - {1:d}".format(prebound, calltime)
   args = {
       "template_params": Merge([Gen("typename P%", prebound, 1),
                                 Gen("typename C%", calltime, 1)]),
@@ -383,7 +383,7 @@ def GenerateDispatch(prebound, calltime):
 
 
 def GenerateCreateFunctor(prebound, calltime):
-  print "// %d - %d" % (prebound, calltime)
+  print "// {0:d} - {1:d}".format(prebound, calltime)
   args = {
       "calltime": GenTuple("A%", calltime),
       "prebound": GenTuple("P%", prebound),

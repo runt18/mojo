@@ -110,7 +110,7 @@ def _ExtractEditsFromStdout(build_directory, stdout):
       path = os.path.realpath(os.path.join(build_directory, path))
       edits[path].append(Edit(edit_type, int(offset), int(length), replacement))
     except ValueError:
-      print 'Unable to parse edit: %s' % line
+      print 'Unable to parse edit: {0!s}'.format(line)
   return edits
 
 
@@ -198,13 +198,13 @@ class _CompilerDispatcher(object):
         self.__edit_count += len(v)
     else:
       self.__failed_count += 1
-      sys.stdout.write('\nFailed to process %s\n' % result['filename'])
+      sys.stdout.write('\nFailed to process {0!s}\n'.format(result['filename']))
       sys.stdout.write(result['stderr'])
       sys.stdout.write('\n')
     percentage = (
         float(self.__success_count + self.__failed_count) /
         len(self.__filenames)) * 100
-    sys.stdout.write('Succeeded: %d, Failed: %d, Edits: %d [%.2f%%]\r' % (
+    sys.stdout.write('Succeeded: {0:d}, Failed: {1:d}, Edits: {2:d} [{3:.2f}%]\r'.format(
         self.__success_count, self.__failed_count, self.__edit_count,
         percentage))
     sys.stdout.flush()
@@ -244,10 +244,10 @@ def _ApplyEdits(edits, clang_format_diff_path):
       # TODO(dcheng): python3.3 exposes this publicly as shlex.quote, but Chrome
       # uses python2.7. Use the deprecated interface until Chrome uses a newer
       # Python.
-      if subprocess.call('git diff -U0 %s | python %s -i -p1 -style=file ' % (
+      if subprocess.call('git diff -U0 {0!s} | python {1!s} -i -p1 -style=file '.format(
           pipes.quote(k), clang_format_diff_path), shell=True) != 0:
-        print 'clang-format failed for %s' % k
-  print 'Applied %d edits to %d files' % (edit_count, len(edits))
+        print 'clang-format failed for {0!s}'.format(k)
+  print 'Applied {0:d} edits to {1:d} files'.format(edit_count, len(edits))
 
 
 _WHITESPACE_BYTES = frozenset((ord('\t'), ord('\n'), ord('\r'), ord(' ')))

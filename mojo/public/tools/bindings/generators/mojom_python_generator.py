@@ -92,7 +92,7 @@ def GetNameForElement(element):
     return ConstantStyle(element.name)
   if isinstance(element, mojom.Field):
     return FieldStyle(element.name)
-  raise Exception('Unexpected element: %s' % element)
+  raise Exception('Unexpected element: {0!s}'.format(element))
 
 def ExpressionToText(token):
   if isinstance(token, (mojom.EnumValue, mojom.NamedValue)):
@@ -123,19 +123,19 @@ def GetFieldType(kind, field=None):
   if mojom.IsArrayKind(kind):
     arguments = []
     if kind.kind in _kind_to_typecode_for_native_array:
-      arguments.append('%r' % _kind_to_typecode_for_native_array[kind.kind])
+      arguments.append('{0!r}'.format(_kind_to_typecode_for_native_array[kind.kind]))
     elif kind.kind != mojom.BOOL:
       arguments.append(GetFieldType(kind.kind))
     if mojom.IsNullableKind(kind):
       arguments.append('nullable=True')
     if kind.length is not None:
-      arguments.append('length=%d' % kind.length)
+      arguments.append('length={0:d}'.format(kind.length))
     array_type = 'GenericArrayType'
     if kind.kind == mojom.BOOL:
       array_type = 'BooleanArrayType'
     elif kind.kind in _kind_to_typecode_for_native_array:
       array_type = 'NativeArrayType'
-    return '_descriptor.%s(%s)' % (array_type, ', '.join(arguments))
+    return '_descriptor.{0!s}({1!s})'.format(array_type, ', '.join(arguments))
 
   if mojom.IsMapKind(kind):
     arguments = [
@@ -144,34 +144,34 @@ def GetFieldType(kind, field=None):
     ]
     if mojom.IsNullableKind(kind):
       arguments.append('nullable=True')
-    return '_descriptor.MapType(%s)' % ', '.join(arguments)
+    return '_descriptor.MapType({0!s})'.format(', '.join(arguments))
 
   if mojom.IsUnionKind(kind):
-    arguments = [ 'lambda: %s' % GetFullyQualifiedName(kind) ]
+    arguments = [ 'lambda: {0!s}'.format(GetFullyQualifiedName(kind)) ]
     if mojom.IsNullableKind(kind):
       arguments.append('nullable=True')
-    return '_descriptor.UnionType(%s)' % ', '.join(arguments)
+    return '_descriptor.UnionType({0!s})'.format(', '.join(arguments))
 
   if mojom.IsStructKind(kind):
-    arguments = [ 'lambda: %s' % GetFullyQualifiedName(kind) ]
+    arguments = [ 'lambda: {0!s}'.format(GetFullyQualifiedName(kind)) ]
     if mojom.IsNullableKind(kind):
       arguments.append('nullable=True')
-    return '_descriptor.StructType(%s)' % ', '.join(arguments)
+    return '_descriptor.StructType({0!s})'.format(', '.join(arguments))
 
   if mojom.IsEnumKind(kind):
     return GetFieldType(mojom.INT32)
 
   if mojom.IsInterfaceKind(kind):
-    arguments = [ 'lambda: %s' % GetFullyQualifiedName(kind) ]
+    arguments = [ 'lambda: {0!s}'.format(GetFullyQualifiedName(kind)) ]
     if mojom.IsNullableKind(kind):
       arguments.append('nullable=True')
-    return '_descriptor.InterfaceType(%s)' % ', '.join(arguments)
+    return '_descriptor.InterfaceType({0!s})'.format(', '.join(arguments))
 
   if mojom.IsInterfaceRequestKind(kind):
     arguments = []
     if mojom.IsNullableKind(kind):
       arguments.append('nullable=True')
-    return '_descriptor.InterfaceRequestType(%s)' % ', '.join(arguments)
+    return '_descriptor.InterfaceRequestType({0!s})'.format(', '.join(arguments))
 
   return _kind_to_type[kind]
 
@@ -179,7 +179,7 @@ def GetFieldDescriptor(field, index, min_version, union_field=False):
   class_name = 'SingleFieldGroup'
   if field.kind == mojom.BOOL and not union_field:
     class_name = 'FieldDescriptor'
-  arguments = [ '%r' % GetNameForElement(field) ]
+  arguments = [ '{0!r}'.format(GetNameForElement(field)) ]
   arguments.append(GetFieldType(field.kind, field))
   arguments.append(str(index))
   arguments.append(str(min_version))
@@ -187,8 +187,8 @@ def GetFieldDescriptor(field, index, min_version, union_field=False):
     if mojom.IsStructKind(field.kind):
       arguments.append('default_value=True')
     else:
-      arguments.append('default_value=%s' % ExpressionToText(field.default))
-  return '_descriptor.%s(%s)' % (class_name, ', '.join(arguments))
+      arguments.append('default_value={0!s}'.format(ExpressionToText(field.default)))
+  return '_descriptor.{0!s}({1!s})'.format(class_name, ', '.join(arguments))
 
 def GetStructFieldDescriptor(packed_field):
   return GetFieldDescriptor(
@@ -200,7 +200,7 @@ def GetUnionFieldDescriptor(field):
 def GetFieldGroup(byte):
   if byte.packed_fields[0].field.kind == mojom.BOOL:
     descriptors = map(GetStructFieldDescriptor, byte.packed_fields)
-    return '_descriptor.BooleanGroup([%s])' % ', '.join(descriptors)
+    return '_descriptor.BooleanGroup([{0!s}])'.format(', '.join(descriptors))
   assert len(byte.packed_fields) == 1
   return GetStructFieldDescriptor(byte.packed_fields[0])
 
@@ -232,7 +232,7 @@ class Generator(generator.Generator):
   def GenerateFiles(self, args):
     import_path = MojomToPythonImport(self.module.name)
     self.Write(self.GeneratePythonModule(),
-               self.MatchMojomFilePath('%s.py' % import_path))
+               self.MatchMojomFilePath('{0!s}.py'.format(import_path)))
 
   def GetImports(self):
     for each in self.module.transitive_imports:

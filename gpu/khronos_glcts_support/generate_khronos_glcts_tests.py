@@ -60,7 +60,7 @@ def ReadRunFile(run_file):
     elif ext == ".run":
       tests += ReadRunFile(os.path.join(base_dir, line))
     else:
-      raise ValueError, "Unexpected line '%s' in '%s'" % (line, run_file)
+      raise ValueError, "Unexpected line '{0!s}' in '{1!s}'".format(line, run_file)
   return tests
 
 def GenerateTests(run_files, output):
@@ -87,7 +87,7 @@ def GenerateTests(run_files, output):
       rel_path = os.path.relpath(test, run_file_dir)
       root, ext = os.path.splitext(rel_path)
       name = root.replace('.', '_')
-      name = "%s.%s" % (suite_prefix, name.replace(os.path.sep, '.'))
+      name = "{0!s}.{1!s}".format(suite_prefix, name.replace(os.path.sep, '.'))
       output.write(TEST_DEF_TEMPLATE
         % {
           "gname": re.sub(r'[^A-Za-z0-9]', '_', name),

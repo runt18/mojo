@@ -125,15 +125,15 @@ def CreateManifest(manifest_path, classpath, main_class=None,
   """
   output = ['Manifest-Version: 1.0']
   if main_class:
-    output.append('Main-Class: %s' % main_class)
+    output.append('Main-Class: {0!s}'.format(main_class))
   if manifest_entries:
     for k, v in manifest_entries:
-      output.append('%s: %s' % (k, v))
+      output.append('{0!s}: {1!s}'.format(k, v))
   if classpath:
     sanitized_paths = []
     for path in classpath:
       sanitized_paths.append(os.path.basename(path.strip('"')))
-    output.append('Class-Path: %s' % ' '.join(sanitized_paths))
+    output.append('Class-Path: {0!s}'.format(' '.join(sanitized_paths)))
   output.append('Created-By: ')
   output.append('')
 

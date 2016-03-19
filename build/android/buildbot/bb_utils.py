@@ -59,14 +59,14 @@ def RunCmd(command, flunk_on_failure=True, halt_on_failure=False,
   code = SpawnCmd(command, stdout, cwd).wait()
   print '<', CommandToString(command)
   if code != 0:
-    print 'ERROR: process exited with code %d' % code
+    print 'ERROR: process exited with code {0:d}'.format(code)
     if code != warning_code and flunk_on_failure:
       bb_annotations.PrintError()
     else:
       bb_annotations.PrintWarning()
     # Allow steps to have both halting (i.e. 1) and non-halting exit codes.
     if code != warning_code and halt_on_failure:
-      print 'FATAL %d != %d' % (code, warning_code)
+      print 'FATAL {0:d} != {1:d}'.format(code, warning_code)
       sys.exit(1)
   return code
 
@@ -85,14 +85,14 @@ def GetParser():
 
 
 def EncodeProperties(options):
-  return ['--factory-properties=%s' % json.dumps(options.factory_properties),
-          '--build-properties=%s' % json.dumps(options.build_properties)]
+  return ['--factory-properties={0!s}'.format(json.dumps(options.factory_properties)),
+          '--build-properties={0!s}'.format(json.dumps(options.build_properties))]
 
 
 def RunSteps(steps, step_cmds, options):
   unknown_steps = set(steps) - set(step for step, _ in step_cmds)
   if unknown_steps:
-    print >> sys.stderr, 'FATAL: Unknown steps %s' % list(unknown_steps)
+    print >> sys.stderr, 'FATAL: Unknown steps {0!s}'.format(list(unknown_steps))
     sys.exit(1)
 
   for step, cmd in step_cmds:

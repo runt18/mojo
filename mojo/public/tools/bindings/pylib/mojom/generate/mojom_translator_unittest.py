@@ -430,7 +430,7 @@ class TestUserDefinedTypeFromMojom(unittest.TestCase):
       return mojom_types_mojom.LiteralValue(double_value=x)
     elif isinstance(x, bool):
       return mojom_types_mojom.LiteralValue(bool_value=x)
-    raise Exception("unexpected type(x)=%s" % type(x))
+    raise Exception("unexpected type(x)={0!s}".format(type(x)))
 
 
   def test_attributes(self):

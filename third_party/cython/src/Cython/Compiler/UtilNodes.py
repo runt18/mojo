@@ -55,7 +55,7 @@ class TempRefNode(AtomicExprNode):
             rhs.make_owned_reference(code)
             # TODO: analyse control flow to see if this is necessary
             code.put_xdecref(self.result(), self.ctype())
-        code.putln('%s = %s;' % (self.result(), rhs.result_as(self.ctype())))
+        code.putln('{0!s} = {1!s};'.format(self.result(), rhs.result_as(self.ctype())))
         rhs.generate_post_assignment_code(code)
         rhs.free_temps(code)
 
@@ -202,7 +202,7 @@ class ResultRefNode(AtomicExprNode):
             rhs.make_owned_reference(code)
             if not self.lhs_of_first_assignment:
                 code.put_decref(self.result(), self.ctype())
-        code.putln('%s = %s;' % (self.result(), rhs.result_as(self.ctype())))
+        code.putln('{0!s} = {1!s};'.format(self.result(), rhs.result_as(self.ctype())))
         rhs.generate_post_assignment_code(code)
         rhs.free_temps(code)
 
@@ -233,7 +233,7 @@ class LetNodeMixin:
             self.temp_expression.make_owned_reference(code)
             self.temp = code.funcstate.allocate_temp(
                 self.temp_type, manage_ref=True)
-            code.putln("%s = %s;" % (self.temp, self.temp_expression.result()))
+            code.putln("{0!s} = {1!s};".format(self.temp, self.temp_expression.result()))
             self.temp_expression.generate_disposal_code(code)
             self.temp_expression.free_temps(code)
         self.lazy_temp.result_code = self.temp

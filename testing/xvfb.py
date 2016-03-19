@@ -35,7 +35,7 @@ def get_xvfb_path(server_dir):
     xvfb_path = os.path.join(server_dir, 'Xvfb')
   if not os.path.exists(xvfb_path):
     print >> sys.stderr, (
-        'No Xvfb found in designated server path: %s' % server_dir)
+        'No Xvfb found in designated server path: {0!s}'.format(server_dir))
     raise Exception('No virtual server')
   return xvfb_path
 
@@ -55,7 +55,7 @@ def start_xvfb(xvfb_path, display):
     proc = subprocess.Popen(
         cmd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
   except OSError:
-    print >> sys.stderr, 'Failed to run %s' % ' '.join(cmd)
+    print >> sys.stderr, 'Failed to run {0!s}'.format(' '.join(cmd))
     return
   return proc
 
@@ -68,13 +68,12 @@ def wait_for_xvfb(xdisplaycheck, env):
         stderr=subprocess.STDOUT,
         env=env)
   except OSError:
-    print >> sys.stderr, 'Failed to load %s with cwd=%s' % (
+    print >> sys.stderr, 'Failed to load {0!s} with cwd={1!s}'.format(
         xdisplaycheck, os.getcwd())
     return False
   except subprocess.CalledProcessError as e:
     print >> sys.stderr, (
-        'Xvfb failed to load properly (code %d) according to %s' %
-        (e.returncode, xdisplaycheck))
+        'Xvfb failed to load properly (code {0:d}) according to {1!s}'.format(e.returncode, xdisplaycheck))
     return False
 
   return True
@@ -110,11 +109,11 @@ def run_executable(cmd, build_dir, env):
           print 'Xvfb still running, stopping.'
           xvfb_proc.terminate()
         else:
-          print 'Xvfb exited, code %d' % rc
+          print 'Xvfb exited, code {0:d}'.format(rc)
 
         print 'Xvfb output:'
         for l in xvfb_proc.communicate()[0].splitlines():
-          print '> %s' % l
+          print '> {0!s}'.format(l)
 
         return 3
       # Inhibit recursion.
@@ -126,7 +125,7 @@ def run_executable(cmd, build_dir, env):
         subprocess.Popen(
             wm_cmd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, env=env)
       except OSError:
-        print >> sys.stderr, 'Failed to run %s' % ' '.join(wm_cmd)
+        print >> sys.stderr, 'Failed to run {0!s}'.format(' '.join(wm_cmd))
         return 1
     return test_env.run_executable(cmd, env)
   finally:

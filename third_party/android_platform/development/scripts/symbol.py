@@ -76,8 +76,7 @@ def ToolPath(tool, toolchain_info=None):
     raise Exception("Could not find tool chain")
 
   toolchain_subdir = (
-      "third_party/android_tools/%s/toolchains/%s/prebuilt/linux-x86_64/bin" %
-       (ndk, toolchain_source))
+      "third_party/android_tools/{0!s}/toolchains/{1!s}/prebuilt/linux-x86_64/bin".format(ndk, toolchain_source))
 
   return os.path.join(CHROME_SRC,
                       toolchain_subdir,
@@ -438,7 +437,7 @@ def CallAddr2LineForSet(lib, unique_addrs):
   result = {}
   addrs = sorted(unique_addrs)
   for addr in addrs:
-    child.stdin.write("0x%s\n" % addr)
+    child.stdin.write("0x{0!s}\n".format(addr))
     child.stdin.flush()
     records = []
     first = True
@@ -573,4 +572,4 @@ def CallCppFilt(mangled_symbol):
 def FormatSymbolWithOffset(symbol, offset):
   if offset == 0:
     return symbol
-  return "%s+%d" % (symbol, offset)
+  return "{0!s}+{1:d}".format(symbol, offset)

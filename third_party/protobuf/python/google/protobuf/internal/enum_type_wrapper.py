@@ -52,14 +52,14 @@ class EnumTypeWrapper(object):
     """Returns a string containing the name of an enum value."""
     if number in self._enum_type.values_by_number:
       return self._enum_type.values_by_number[number].name
-    raise ValueError('Enum %s has no name defined for value %d' % (
+    raise ValueError('Enum {0!s} has no name defined for value {1:d}'.format(
         self._enum_type.name, number))
 
   def Value(self, name):
     """Returns the value coresponding to the given enum name."""
     if name in self._enum_type.values_by_name:
       return self._enum_type.values_by_name[name].number
-    raise ValueError('Enum %s has no value defined for name %s' % (
+    raise ValueError('Enum {0!s} has no value defined for name {1!s}'.format(
         self._enum_type.name, name))
 
   def keys(self):

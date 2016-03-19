@@ -322,12 +322,12 @@ def run_pipeline(pipeline, source, printtree=True):
                 if phase is not None:
                     if DebugFlags.debug_verbose_pipeline:
                         t = time()
-                        print "Entering pipeline phase %r" % phase
+                        print "Entering pipeline phase {0!r}".format(phase)
                     if not printtree and isinstance(phase, PrintTree):
                         continue
                     data = phase(data)
                     if DebugFlags.debug_verbose_pipeline:
-                        print "    %.3f seconds" % (time() - t)
+                        print "    {0:.3f} seconds".format((time() - t))
         except CompileError, err:
             # err is set
             Errors.report_error(err)

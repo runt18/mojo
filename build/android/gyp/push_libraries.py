@@ -42,7 +42,7 @@ def DoPush(options):
         needs_directory[:] = [] # = False
       device.PushChangedFiles([(host_path, device_path)])
 
-    record_path = '%s.%s.push.md5.stamp' % (host_path, serial_number)
+    record_path = '{0!s}.{1!s}.push.md5.stamp'.format(host_path, serial_number)
     md5_check.CallAndRecordIfStale(
         Push,
         record_path=record_path,

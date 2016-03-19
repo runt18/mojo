@@ -144,7 +144,7 @@ class TestRunner(base_test_runner.BaseTestRunner):
       # crashed without outputting the CRASHED marker (crbug.com/175538).
       if not self.device.IsOnline():
         raise device_errors.DeviceUnreachableError(
-            'Device %s went offline.' % str(self.device))
+            'Device {0!s} went offline.'.format(str(self.device)))
       if full_test_name:
         results.AddResult(base_test_result.BaseTestResult(
             full_test_name, base_test_result.ResultType.CRASH,

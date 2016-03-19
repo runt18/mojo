@@ -24,7 +24,7 @@ TRACE_DEF_FILES = [ "include/freetype/internal/fttrace.h" ]
 
 for i in range( 1, len( sys.argv ) ):
   if sys.argv[i].startswith( "--help" ):
-    print "Usage: %s [option]" % sys.argv[0]
+    print "Usage: {0!s} [option]".format(sys.argv[0])
     print "Search used-but-defined and defined-but-not-used trace_XXX macros"
     print ""
     print "  --help:"
@@ -32,11 +32,11 @@ for i in range( 1, len( sys.argv ) ):
     print ""
     print "  --src-dirs=dir1:dir2:..."
     print "        Specify the directories of C source files to be checked"
-    print "        Default is %s" % ":".join( SRC_FILE_DIRS )
+    print "        Default is {0!s}".format(":".join( SRC_FILE_DIRS ))
     print ""
     print "  --def-files=file1:file2:..."
     print "        Specify the header files including FT_TRACE_DEF()"
-    print "        Default is %s" % ":".join( TRACE_DEF_FILES )
+    print "        Default is {0!s}".format(":".join( TRACE_DEF_FILES ))
     print ""
     exit(0)
   if sys.argv[i].startswith( "--src-dirs=" ):
@@ -65,9 +65,9 @@ for d in SRC_FILE_DIRS:
           if trace_use_pat.match( src_line ) != None:
             component_name = trace_use_pat.sub( '', src_line )
             if component_name in USED_COMPONENT:
-              USED_COMPONENT[component_name].append( "%s:%d" % ( src_pathname, line_num ) )
+              USED_COMPONENT[component_name].append( "{0!s}:{1:d}".format(src_pathname, line_num ) )
             else:
-              USED_COMPONENT[component_name] = [ "%s:%d" % ( src_pathname, line_num ) ]
+              USED_COMPONENT[component_name] = [ "{0!s}:{1:d}".format(src_pathname, line_num ) ]
 
 
 # --------------------------------------------------------------
@@ -86,11 +86,9 @@ for f in TRACE_DEF_FILES:
       component_name = trace_def_pat_opn.sub( '', hdr_line )
       component_name = trace_def_pat_cls.sub( '', component_name )
       if component_name in KNOWN_COMPONENT:
-        print "trace component %s is defined twice, see %s and fttrace.h:%d" % \
-          ( component_name, KNOWN_COMPONENT[component_name], line_num )
+        print "trace component {0!s} is defined twice, see {1!s} and fttrace.h:{2:d}".format(component_name, KNOWN_COMPONENT[component_name], line_num )
       else:
-        KNOWN_COMPONENT[component_name] = "%s:%d" % \
-          ( os.path.basename( f ), line_num )
+        KNOWN_COMPONENT[component_name] = "{0!s}:{1:d}".format(os.path.basename( f ), line_num )
 
 
 # --------------------------------------------------------------
@@ -102,7 +100,7 @@ cmpnt = USED_COMPONENT.keys()
 cmpnt.sort()
 for c in cmpnt:
   if c not in KNOWN_COMPONENT:
-    print "Trace component %s (used in %s) is not defined." % ( c, ", ".join( USED_COMPONENT[c] ) )
+    print "Trace component {0!s} (used in {1!s}) is not defined.".format(c, ", ".join( USED_COMPONENT[c] ) )
 
 print "# Trace component is defined but not used in the implementations."
 cmpnt = KNOWN_COMPONENT.keys()
@@ -110,5 +108,5 @@ cmpnt.sort()
 for c in cmpnt:
   if c not in USED_COMPONENT:
     if c != "any":
-      print "Trace component %s (defined in %s) is not used." % ( c, KNOWN_COMPONENT[c] )
+      print "Trace component {0!s} (defined in {1!s}) is not used.".format(c, KNOWN_COMPONENT[c] )
 

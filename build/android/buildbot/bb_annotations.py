@@ -11,7 +11,7 @@ def PrintLink(label, url):
     label: A string with the name of the label.
     url: A string of the URL.
   """
-  print '@@@STEP_LINK@%s@%s@@@' % (label, url)
+  print '@@@STEP_LINK@{0!s}@{1!s}@@@'.format(label, url)
 
 
 def PrintMsg(msg):
@@ -20,7 +20,7 @@ def PrintMsg(msg):
   Args:
     msg: String to be appended.
   """
-  print '@@@STEP_TEXT@%s@@@' % msg
+  print '@@@STEP_TEXT@{0!s}@@@'.format(msg)
 
 
 def PrintSummaryText(msg):
@@ -29,7 +29,7 @@ def PrintSummaryText(msg):
   Args:
     msg: String to be appended.
   """
-  print '@@@STEP_SUMMARY_TEXT@%s@@@' % msg
+  print '@@@STEP_SUMMARY_TEXT@{0!s}@@@'.format(msg)
 
 
 def PrintError():
@@ -43,4 +43,4 @@ def PrintWarning():
 
 
 def PrintNamedStep(step):
-  print '@@@BUILD_STEP %s@@@' % step
+  print '@@@BUILD_STEP {0!s}@@@'.format(step)

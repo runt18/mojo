@@ -34,7 +34,7 @@ class EnumDefinition(object):
 
   def AppendEntry(self, key, value):
     if key in self.entries:
-      raise Exception('Multiple definitions of key %s found.' % key)
+      raise Exception('Multiple definitions of key {0!s} found.'.format(key))
     self.entries[key] = value
 
   @property
@@ -51,8 +51,7 @@ class EnumDefinition(object):
     assert self.enum_package
     assert self.entries
     if self.fixed_type and self.fixed_type not in ENUM_FIXED_TYPE_WHITELIST:
-      raise Exception('Fixed type %s for enum %s not whitelisted.' %
-          (self.fixed_type, self.class_name))
+      raise Exception('Fixed type {0!s} for enum {1!s} not whitelisted.'.format(self.fixed_type, self.class_name))
 
   def _AssignEntryIndices(self):
     # Enums, if given no value, are given the value of the previous enum + 1.

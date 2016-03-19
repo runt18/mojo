@@ -17,12 +17,12 @@ from mojom.parse.parser import Parse, ParseError
 
 def main(argv):
   if len(argv) < 2:
-    print "usage: %s filename" % argv[0]
+    print "usage: {0!s} filename".format(argv[0])
     return 0
 
   for filename in argv[1:]:
     with open(filename) as f:
-      print "%s:" % filename
+      print "{0!s}:".format(filename)
       try:
         print Parse(f.read(), filename)
       except ParseError, e:

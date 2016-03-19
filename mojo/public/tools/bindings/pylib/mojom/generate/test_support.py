@@ -157,7 +157,7 @@ def TestTestModule(module):
 def PrintFailure(string):
   stack = traceback.extract_stack()
   frame = stack[len(stack)-3]
-  sys.stderr.write("ERROR at %s:%d, %s\n" % (frame[0], frame[1], string))
+  sys.stderr.write("ERROR at {0!s}:{1:d}, {2!s}\n".format(frame[0], frame[1], string))
   print "Traceback:"
   for line in traceback.format_list(stack[:len(stack)-2]):
     sys.stderr.write(line)
@@ -165,7 +165,7 @@ def PrintFailure(string):
 
 def EXPECT_EQ(a, b):
   if a != b:
-    PrintFailure("%s != %s" % (a, b))
+    PrintFailure("{0!s} != {1!s}".format(a, b))
     return 1
   return 0
 
@@ -178,7 +178,7 @@ def EXPECT_TRUE(a):
 
 
 def RunTest(fn):
-  sys.stdout.write('Running %s...' % fn.__name__)
+  sys.stdout.write('Running {0!s}...'.format(fn.__name__))
   try:
     errors = fn()
   except:
@@ -189,5 +189,5 @@ def RunTest(fn):
   elif errors == 1:
     sys.stdout.write('1 ERROR\n')
   else:
-    sys.stdout.write('%d ERRORS\n' % errors)
+    sys.stdout.write('{0:d} ERRORS\n'.format(errors))
   return errors

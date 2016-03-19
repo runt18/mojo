@@ -49,10 +49,10 @@ def generate_proto(source):
   if (not os.path.exists(output) or
       (os.path.exists(source) and
        os.path.getmtime(source) > os.path.getmtime(output))):
-    print "Generating %s..." % output
+    print "Generating {0!s}...".format(output)
 
     if not os.path.exists(source):
-      sys.stderr.write("Can't find required file: %s\n" % source)
+      sys.stderr.write("Can't find required file: {0!s}\n".format(source))
       sys.exit(-1)
 
     if protoc == None:

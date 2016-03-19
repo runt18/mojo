@@ -142,7 +142,7 @@ class AdbWrapper(object):
     return self._device_serial
 
   def __repr__(self):
-    return '%s(\'%s\')' % (self.__class__.__name__, self)
+    return '{0!s}(\'{1!s}\')'.format(self.__class__.__name__, self)
 
   # pylint: disable=unused-argument
   @classmethod
@@ -223,7 +223,7 @@ class AdbWrapper(object):
       _VerifyLocalFileExists(local)
     except IOError:
       raise device_errors.AdbCommandFailedError(
-          cmd, 'File not found on host: %s' % local, device_serial=str(self))
+          cmd, 'File not found on host: {0!s}'.format(local), device_serial=str(self))
 
   def Shell(self, command, expect_status=0, timeout=_DEFAULT_TIMEOUT,
             retries=_DEFAULT_RETRIES):
@@ -246,7 +246,7 @@ class AdbWrapper(object):
     if expect_status is None:
       args = ['shell', command]
     else:
-      args = ['shell', '%s; echo %%$?;' % command.rstrip()]
+      args = ['shell', '{0!s}; echo %$?;'.format(command.rstrip())]
     output = self._RunDeviceAdbCmd(args, timeout, retries, check_error=False)
     if expect_status is not None:
       output_end = output.rfind('%')

@@ -87,16 +87,16 @@ def SetLockScreenSettings(device):
     values = generate_values(key, value)
 
     cmd = """begin transaction;
-delete from '%(table)s' where %(primary_key)s='%(primary_value)s';
-insert into '%(table)s' (%(columns)s) values (%(values)s);
-commit transaction;""" % {
+delete from '{table!s}' where {primary_key!s}='{primary_value!s}';
+insert into '{table!s}' ({columns!s}) values ({values!s});
+commit transaction;""".format(**{
       'table': table,
       'primary_key': columns[0],
       'primary_value': values[0],
       'columns': ', '.join(columns),
-      'values': ', '.join(["'%s'" % value for value in values])
-    }
-    output_msg = device.RunShellCommand('sqlite3 %s "%s"' % (db, cmd),
+      'values': ', '.join(["'{0!s}'".format(value) for value in values])
+    })
+    output_msg = device.RunShellCommand('sqlite3 {0!s} "{1!s}"'.format(db, cmd),
                                         as_root=True)
     if output_msg:
       logging.info(' '.join(output_msg))

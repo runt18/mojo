@@ -27,32 +27,32 @@ class WebIDLParser(unittest.TestCase):
     for comment in comments:
       check, value = ParseCommentTest(comment.GetName())
       if check == 'BUILD':
-        msg = 'Expecting %s, but found %s.\n' % (value, str(node))
+        msg = 'Expecting {0!s}, but found {1!s}.\n'.format(value, str(node))
         self.assertEqual(value, str(node), msg)
 
       if check == 'ERROR':
-        msg = node.GetLogLine('Expecting\n\t%s\nbut found \n\t%s\n' % (
+        msg = node.GetLogLine('Expecting\n\t{0!s}\nbut found \n\t{1!s}\n'.format(
                               value, str(node)))
         self.assertEqual(value, node.GetName(), msg)
 
       if check == 'PROP':
         key, expect = value.split('=')
         actual = str(node.GetProperty(key))
-        msg = 'Mismatched property %s: %s vs %s.\n' % (key, expect, actual)
+        msg = 'Mismatched property {0!s}: {1!s} vs {2!s}.\n'.format(key, expect, actual)
         self.assertEqual(expect, actual, msg)
 
       if check == 'TREE':
         quick = '\n'.join(node.Tree())
         lineno = node.GetProperty('LINENO')
-        msg = 'Mismatched tree at line %d:\n%sVS\n%s' % (lineno, value, quick)
+        msg = 'Mismatched tree at line {0:d}:\n{1!s}VS\n{2!s}'.format(lineno, value, quick)
         self.assertEqual(value, quick, msg)
 
   def testExpectedNodes(self):
     for filename in self.filenames:
       filenode = ParseFile(self.parser, filename)
       children = filenode.GetChildren()
-      self.assertTrue(len(children) > 2, 'Expecting children in %s.' %
-                      filename)
+      self.assertTrue(len(children) > 2, 'Expecting children in {0!s}.'.format(
+                      filename))
 
       for node in filenode.GetChildren()[2:]:
         self._TestNode(node)
@@ -68,26 +68,26 @@ class PepperIDLParser(unittest.TestCase):
     for comment in comments:
       check, value = ParseCommentTest(comment.GetName())
       if check == 'BUILD':
-        msg = '%s - Expecting %s, but found %s.\n' % (
+        msg = '{0!s} - Expecting {1!s}, but found {2!s}.\n'.format(
             filename, value, str(node))
         self.assertEqual(value, str(node), msg)
 
       if check == 'ERROR':
-        msg = node.GetLogLine('%s - Expecting\n\t%s\nbut found \n\t%s\n' % (
+        msg = node.GetLogLine('{0!s} - Expecting\n\t{1!s}\nbut found \n\t{2!s}\n'.format(
                               filename, value, str(node)))
         self.assertEqual(value, node.GetName(), msg)
 
       if check == 'PROP':
         key, expect = value.split('=')
         actual = str(node.GetProperty(key))
-        msg = '%s - Mismatched property %s: %s vs %s.\n' % (
+        msg = '{0!s} - Mismatched property {1!s}: {2!s} vs {3!s}.\n'.format(
                               filename, key, expect, actual)
         self.assertEqual(expect, actual, msg)
 
       if check == 'TREE':
         quick = '\n'.join(node.Tree())
         lineno = node.GetProperty('LINENO')
-        msg = '%s - Mismatched tree at line %d:\n%sVS\n%s' % (
+        msg = '{0!s} - Mismatched tree at line {1:d}:\n{2!s}VS\n{3!s}'.format(
                               filename, lineno, value, quick)
         self.assertEqual(value, quick, msg)
 
@@ -95,8 +95,8 @@ class PepperIDLParser(unittest.TestCase):
     for filename in self.filenames:
       filenode = ParseFile(self.parser, filename)
       children = filenode.GetChildren()
-      self.assertTrue(len(children) > 2, 'Expecting children in %s.' %
-                      filename)
+      self.assertTrue(len(children) > 2, 'Expecting children in {0!s}.'.format(
+                      filename))
 
       for node in filenode.GetChildren()[2:]:
         self._TestNode(filename, node)

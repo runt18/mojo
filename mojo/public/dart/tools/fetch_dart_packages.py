@@ -29,11 +29,11 @@ def list_packages(directory):
       print(child)
 
 def remove_existing_packages(base_path):
-  print('Removing all package directories under %s' % base_path)
+  print('Removing all package directories under {0!s}'.format(base_path))
   for child in os.listdir(base_path):
     path = os.path.join(base_path, child)
     if os.path.isdir(path):
-      print('Removing %s ' % path)
+      print('Removing {0!s} '.format(path))
       shutil.rmtree(path)
 
 def pub_get(pub_exe):
@@ -45,7 +45,7 @@ def copy_packages(base_path):
     lib_path = os.path.realpath(os.path.join(packages_path, package))
     package_path = os.path.normpath(os.path.join(lib_path, '..'))
     destinaton_path = os.path.join(base_path, package)
-    print('Copying %s to %s' % (package_path, destinaton_path))
+    print('Copying {0!s} to {1!s}'.format(package_path, destinaton_path))
     shutil.copytree(package_path, destinaton_path)
 
 def cleanup(base_path):

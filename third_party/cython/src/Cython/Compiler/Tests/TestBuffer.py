@@ -50,7 +50,7 @@ class TestBufferOptions(CythonTest):
 
     def parse_opts(self, opts, expect_error=False):
         assert opts != ""
-        s = u"def f():\n  cdef object[%s] x" % opts
+        s = u"def f():\n  cdef object[{0!s}] x".format(opts)
         self.expect_error = expect_error
         root = self.fragment(s, pipeline=[NormalizeTree(self), PostParse(self)]).root
         if not expect_error:

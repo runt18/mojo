@@ -4948,7 +4948,7 @@ class StringTable:
 
     for name in sublist:
       line += comma
-      line += "%4d" % self.indices[name]
+      line += "{0:4d}".format(self.indices[name])
       col  += 1
       comma = ","
       if col == 14:
@@ -5197,7 +5197,7 @@ def dump_encoding( file, encoding_name, encoding_list ):
   col   = 0
   for value in encoding_list:
     line += comma
-    line += "%3d" % value
+    line += "{0:3d}".format(value)
     comma = ","
     col  += 1
     if col == 16:
@@ -5220,7 +5220,7 @@ def dump_array( the_array, write, array_name ):
 
   for value in the_array:
     line += comma
-    line += "%3d" % ord( value )
+    line += "{0:3d}".format(ord( value ))
     comma = ","
     col  += 1
 
@@ -5262,7 +5262,7 @@ def main():
   write( "/***************************************************************************/\n" )
   write( "/*                                                                         */\n" )
 
-  write( "/*  %-71s*/\n" % os.path.basename( sys.argv[1] ) )
+  write( "/*  {0:<71!s}*/\n".format(os.path.basename( sys.argv[1] )) )
 
   write( "/*                                                                         */\n" )
   write( "/*    PostScript glyph names.                                              */\n" )

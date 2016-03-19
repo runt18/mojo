@@ -32,7 +32,7 @@ def ModifyHeader(header_file, extra_header):
     for line in f:
       header_contents.append(line)
       if line == PROTOC_INCLUDE_POINT:
-        extra_header_msg = '#include "%s"\n' % extra_header
+        extra_header_msg = '#include "{0!s}"\n'.format(extra_header)
         header_contents.append(extra_header_msg)
         include_point_found = True;
   if not include_point_found:
@@ -114,7 +114,7 @@ def main(argv):
   try:
     # Run what is hopefully protoc.
     protoc_args = args[1:]
-    protoc_args += ['--proto_path=%s' % proto_path,
+    protoc_args += ['--proto_path={0!s}'.format(proto_path),
                     os.path.join(proto_path, options.proto_in_file)]
     ret = subprocess.call(protoc_args)
     if ret != 0:

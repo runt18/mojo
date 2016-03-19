@@ -164,8 +164,8 @@ def PackageArgsForExtractedZip(d):
 def RenameDensitySplits(apk_path):
   """Renames all density splits to have shorter / predictable names."""
   for density, config in DENSITY_SPLITS.iteritems():
-    src_path = '%s_%s' % (apk_path, '_'.join(config))
-    dst_path = '%s-%s' % (apk_path, density)
+    src_path = '{0!s}_{1!s}'.format(apk_path, '_'.join(config))
+    dst_path = '{0!s}-{1!s}'.format(apk_path, density)
     if os.path.exists(dst_path):
       os.unlink(dst_path)
     os.rename(src_path, dst_path)
@@ -173,7 +173,7 @@ def RenameDensitySplits(apk_path):
 
 def CheckDensityMissedConfigs(apk_path):
   """Raises an exception if apk_path contains any density-specifc files."""
-  triggers = ['-%s' % density for density in DENSITY_SPLITS]
+  triggers = ['-{0!s}'.format(density) for density in DENSITY_SPLITS]
   with zipfile.ZipFile(apk_path) as main_apk_zip:
     for name in main_apk_zip.namelist():
       for trigger in triggers:

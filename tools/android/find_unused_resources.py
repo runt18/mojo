@@ -54,8 +54,8 @@ def GetUsedResources(source_paths, resource_types):
     [('drawable', 'app_icon'), ('layout', 'month_picker'), ...]
   """
   type_regex = '|'.join(map(re.escape, resource_types))
-  patterns = [r'@(())(%s)/(\w+)' % type_regex,
-              r'\b((\w+\.)*)R\.(%s)\.(\w+)' % type_regex]
+  patterns = [r'@(())({0!s})/(\w+)'.format(type_regex),
+              r'\b((\w+\.)*)R\.({0!s})\.(\w+)'.format(type_regex)]
   resources = []
   for pattern in patterns:
     p = subprocess.Popen(
@@ -82,7 +82,7 @@ def FormatResources(resources):
   Args:
     resources: a list of resources, given as (type, name) tuples.
   """
-  return '\n'.join(['%-12s %s' % (t, n) for t, n in sorted(resources)])
+  return '\n'.join(['{0:<12!s} {1!s}'.format(t, n) for t, n in sorted(resources)])
 
 
 def ParseArgs(args):
@@ -131,13 +131,13 @@ def main(args=None):
         '-v to see them.' % len(undefined_resources))
 
   if verbose:
-    print '%d undefined resources:' % len(undefined_resources)
+    print '{0:d} undefined resources:'.format(len(undefined_resources))
     print FormatResources(undefined_resources), '\n'
-    print '%d resources defined:' % len(defined_resources)
+    print '{0:d} resources defined:'.format(len(defined_resources))
     print FormatResources(defined_resources), '\n'
-    print '%d used resources:' % len(used_resources)
+    print '{0:d} used resources:'.format(len(used_resources))
     print FormatResources(used_resources), '\n'
-    print '%d unused resources:' % len(unused_resources)
+    print '{0:d} unused resources:'.format(len(unused_resources))
   print FormatResources(unused_resources)
 
 

@@ -28,8 +28,8 @@ with open(mojo_deps_path) as mojo_deps_file:
     if m:
       git_hash = m.group(0)
       if not git_hash in chromium_deps:
-        print "%s in mojo DEPS but not in chromium DEPS" % git_hash
-        print "line %s" % line.strip()
+        print "{0!s} in mojo DEPS but not in chromium DEPS".format(git_hash)
+        print "line {0!s}".format(line.strip())
         found_mismatch = True
 
 if found_mismatch:

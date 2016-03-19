@@ -43,7 +43,7 @@ def RetrieveDeviceConfig(device):
   density_dpi = int(device.GetProp('ro.sf.lcd_density'))
   density = _DPI_TO_DENSITY.get(density_dpi, 'tvdpi')
   abi = device.product_cpu_abi
-  return '%s-r%s-%s:%s' % (language, country, density, abi)
+  return '{0!s}-r{1!s}-{2!s}:{3!s}'.format(language, country, density, abi)
 
 
 def GetNewMetadata(device, apk_package):
@@ -54,7 +54,7 @@ def GetNewMetadata(device, apk_package):
   # org.chromium.chrome.shell.apk
   # -rw-r--r-- system   system    7376582 2013-04-19 16:34 \
   # org.chromium.chrome.shell-1.apk
-  apk_matcher = lambda s: re.match('.*%s(-[0-9]*)?(.apk)?$' % apk_package, s)
+  apk_matcher = lambda s: re.match('.*{0!s}(-[0-9]*)?(.apk)?$'.format(apk_package), s)
   matches = filter(apk_matcher, output)
   return matches[0] if matches else None
 
@@ -108,7 +108,7 @@ def main():
   serial_number = device.GetSerialNumber()
   apk_package = apk_helper.GetPackageName(options.apk_path)
 
-  metadata_path = '%s.%s.device.time.stamp' % (options.apk_path, serial_number)
+  metadata_path = '{0!s}.{1!s}.device.time.stamp'.format(options.apk_path, serial_number)
 
   # If the APK on the device does not match the one that was last installed by
   # the build, then the APK has to be installed (regardless of the md5 record).
@@ -149,7 +149,7 @@ def main():
     build_utils.Touch(options.install_record)
 
 
-  record_path = '%s.%s.md5.stamp' % (options.apk_path, serial_number)
+  record_path = '{0!s}.{1!s}.md5.stamp'.format(options.apk_path, serial_number)
   md5_check.CallAndRecordIfStale(
       Install,
       record_path=record_path,

@@ -28,7 +28,7 @@ def ResetTestServerPortAllocation():
   """
   try:
     with open(constants.TEST_SERVER_PORT_FILE, 'w') as fp:
-      fp.write('%d' % constants.TEST_SERVER_PORT_FIRST)
+      fp.write('{0:d}'.format(constants.TEST_SERVER_PORT_FIRST))
     if os.path.exists(constants.TEST_SERVER_PORT_LOCKFILE):
       os.unlink(constants.TEST_SERVER_PORT_LOCKFILE)
     return True
@@ -63,7 +63,7 @@ def AllocateTestServerPort():
         port = 0
       else:
         fp.seek(0, os.SEEK_SET)
-        fp.write('%d' % (port + 1))
+        fp.write('{0:d}'.format((port + 1)))
   except Exception as e:
     logging.error(e)
   finally:
@@ -109,7 +109,7 @@ def IsDevicePortUsed(device, device_port, state=''):
   Returns:
     True if the port on device is already used, otherwise returns False.
   """
-  base_url = '127.0.0.1:%d' % device_port
+  base_url = '127.0.0.1:{0:d}'.format(device_port)
   netstat_results = device.RunShellCommand('netstat')
   for single_connect in netstat_results:
     # Column 3 is the local address which we want to check with.
@@ -160,8 +160,7 @@ def IsHttpServerConnectable(host, port, tries=3, command='GET', path='/',
         content = r.read()
         if r.status == 200 and r.reason == 'OK' and content == expected_read:
           return (True, '')
-        client_error = ('Bad response: %s %s version %s\n  ' %
-                        (r.status, r.reason, r.version) +
+        client_error = ('Bad response: {0!s} {1!s} version {2!s}\n  '.format(r.status, r.reason, r.version) +
                         '\n  '.join([': '.join(h) for h in r.getheaders()]))
     except (httplib.HTTPException, socket.error) as e:
       # Probably too quick connecting: try again.

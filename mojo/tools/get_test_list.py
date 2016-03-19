@@ -216,7 +216,7 @@ def GetTestList(config, verbose_count=0):
 
   # Perf tests -----------------------------------------------------------------
 
-  bot_name = "linux_%s" % ("debug" if config.is_debug else "release")
+  bot_name = "linux_{0!s}".format(("debug" if config.is_debug else "release"))
 
   if target_os == Config.OS_LINUX and ShouldRunTest(Config.TEST_TYPE_PERF):
     test_names = ["mojo_public_system_perftests",
@@ -279,7 +279,7 @@ def GetTestList(config, verbose_count=0):
               os.path.join("build", "android", "test_runner.py"),
               "instrumentation",
               "--test-apk=MojoTest",
-              "--output-directory=%s" % build_dir,
+              "--output-directory={0!s}".format(build_dir),
               "--test_data=bindings:mojo/public/interfaces/bindings/tests/data"]
              + verbose_flags)
 

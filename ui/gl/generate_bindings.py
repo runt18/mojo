@@ -1689,48 +1689,46 @@ def GenerateHeader(file, functions, set_name, used_extensions):
   file.write(LICENSE_AND_HEADER +
 """
 
-#ifndef UI_GFX_GL_GL_BINDINGS_AUTOGEN_%(name)s_H_
-#define UI_GFX_GL_GL_BINDINGS_AUTOGEN_%(name)s_H_
+#ifndef UI_GFX_GL_GL_BINDINGS_AUTOGEN_{name!s}_H_
+#define UI_GFX_GL_GL_BINDINGS_AUTOGEN_{name!s}_H_
 
-namespace gfx {
+namespace gfx {{
 
 class GLContext;
 
-""" % {'name': set_name.upper()})
+""".format(**{'name': set_name.upper()}))
 
   # Write typedefs for function pointer types. Always use the GL name for the
   # typedef.
   file.write('\n')
   for func in functions:
-    file.write('typedef %s (GL_BINDING_CALL *%sProc)(%s);\n' %
-        (func['return_type'], func['known_as'], func['arguments']))
+    file.write('typedef {0!s} (GL_BINDING_CALL *{1!s}Proc)({2!s});\n'.format(func['return_type'], func['known_as'], func['arguments']))
 
   # Write declarations for booleans indicating which extensions are available.
   file.write('\n')
-  file.write("struct Extensions%s {\n" % set_name.upper())
+  file.write("struct Extensions{0!s} {{\n".format(set_name.upper()))
   for extension in sorted(used_extensions):
-    file.write('  bool b_%s;\n' % extension)
+    file.write('  bool b_{0!s};\n'.format(extension))
   file.write('};\n')
   file.write('\n')
 
   # Write Procs struct.
-  file.write("struct Procs%s {\n" % set_name.upper())
+  file.write("struct Procs{0!s} {{\n".format(set_name.upper()))
   for func in functions:
-    file.write('  %sProc %sFn;\n' % (func['known_as'], func['known_as']))
+    file.write('  {0!s}Proc {1!s}Fn;\n'.format(func['known_as'], func['known_as']))
   file.write('};\n')
   file.write('\n')
 
   # Write Api class.
   file.write(
-"""class GL_EXPORT %(name)sApi {
+"""class GL_EXPORT {name!s}Api {{
  public:
-  %(name)sApi();
-  virtual ~%(name)sApi();
+  {name!s}Api();
+  virtual ~{name!s}Api();
 
-""" % {'name': set_name.upper()})
+""".format(**{'name': set_name.upper()}))
   for func in functions:
-    file.write('  virtual %s %sFn(%s) = 0;\n' %
-      (func['return_type'], func['known_as'], func['arguments']))
+    file.write('  virtual {0!s} {1!s}Fn({2!s}) = 0;\n'.format(func['return_type'], func['known_as'], func['arguments']))
   file.write('};\n')
   file.write('\n')
 
@@ -1740,12 +1738,11 @@ class GLContext;
   # macro.
   file.write('\n')
   for func in functions:
-    file.write('#define %s ::gfx::g_current_%s_context->%sFn\n' %
-        (func['known_as'], set_name.lower(), func['known_as']))
+    file.write('#define {0!s} ::gfx::g_current_{1!s}_context->{2!s}Fn\n'.format(func['known_as'], set_name.lower(), func['known_as']))
 
   file.write('\n')
-  file.write('#endif  //  UI_GFX_GL_GL_BINDINGS_AUTOGEN_%s_H_\n' %
-      set_name.upper())
+  file.write('#endif  //  UI_GFX_GL_GL_BINDINGS_AUTOGEN_{0!s}_H_\n'.format(
+      set_name.upper()))
 
 
 def GenerateAPIHeader(file, functions, set_name):
@@ -1756,8 +1753,7 @@ def GenerateAPIHeader(file, functions, set_name):
 
   # Write API declaration.
   for func in functions:
-    file.write('  %s %sFn(%s) override;\n' %
-      (func['return_type'], func['known_as'], func['arguments']))
+    file.write('  {0!s} {1!s}Fn({2!s}) override;\n'.format(func['return_type'], func['known_as'], func['arguments']))
 
   file.write('\n')
 
@@ -1776,8 +1772,7 @@ def GenerateMockHeader(file, functions, set_name):
     arg_count = 0
     if len(args):
       arg_count = func['arguments'].count(',') + 1
-    file.write('  MOCK_METHOD%d(%s, %s(%s));\n' %
-      (arg_count, func['known_as'][2:], func['return_type'], args))
+    file.write('  MOCK_METHOD{0:d}({1!s}, {2!s}({3!s}));\n'.format(arg_count, func['known_as'][2:], func['return_type'], args))
 
   file.write('\n')
 
@@ -1803,14 +1798,14 @@ def GenerateSource(file, functions, set_name, used_extensions):
 
 #include <string>
 
-%s
+{0!s}
 
-namespace gfx {
-""" % includes_string)
+namespace gfx {{
+""".format(includes_string))
 
   file.write('\n')
   file.write('static bool g_debugBindingsInitialized;\n')
-  file.write('Driver%s g_driver_%s;\n' % (set_name.upper(), set_name.lower()))
+  file.write('Driver{0!s} g_driver_{1!s};\n'.format(set_name.upper(), set_name.lower()))
   file.write('\n')
 
   # Write stub functions that take the place of some functions before a context
@@ -1825,26 +1820,25 @@ namespace gfx {
     else:
       num_dynamic = num_dynamic + 1
 
-  print "[%s] %d static bindings, %d dynamic bindings" % (
+  print "[{0!s}] {1:d} static bindings, {2:d} dynamic bindings".format(
       set_name, len(functions) - num_dynamic, num_dynamic)
 
   # Write function to initialize the function pointers that are always the same
   # and to initialize bindings where choice of the function depends on the
   # extension string or the GL version to point to stub functions.
   file.write('\n')
-  file.write('void Driver%s::InitializeStaticBindings() {\n' %
-             set_name.upper())
+  file.write('void Driver{0!s}::InitializeStaticBindings() {{\n'.format(
+             set_name.upper()))
 
   def WriteFuncBinding(file, known_as, version_name):
     file.write(
-        '  fn.%sFn = reinterpret_cast<%sProc>(GetGLProcAddress("%s"));\n' %
-        (known_as, known_as, version_name))
+        '  fn.{0!s}Fn = reinterpret_cast<{1!s}Proc>(GetGLProcAddress("{2!s}"));\n'.format(known_as, known_as, version_name))
 
   for func in functions:
     if 'static_binding' in func:
       WriteFuncBinding(file, func['known_as'], func['static_binding'])
     else:
-      file.write('  fn.%sFn = 0;\n' % func['known_as'])
+      file.write('  fn.{0!s}Fn = 0;\n'.format(func['known_as']))
 
   if set_name == 'gl':
     # Write the deferred bindings for GL that need a current context and depend
@@ -1868,8 +1862,7 @@ namespace gfx {
   for extension in sorted(used_extensions):
     # Extra space at the end of the extension name is intentional, it is used
     # as a separator
-    file.write('  ext.b_%s = extensions.find("%s ") != std::string::npos;\n' %
-        (extension, extension))
+    file.write('  ext.b_{0!s} = extensions.find("{1!s} ") != std::string::npos;\n'.format(extension, extension))
 
   def GetGLVersionCondition(gl_version):
     if GLVersionBindAlways(gl_version):
@@ -1878,10 +1871,10 @@ namespace gfx {
       else:
         return '!ver->is_es'
     elif gl_version.is_es:
-      return 'ver->IsAtLeastGLES(%du, %du)' % (
+      return 'ver->IsAtLeastGLES({0:d}u, {1:d}u)'.format(
           gl_version.major_version, gl_version.minor_version)
     else:
-      return 'ver->IsAtLeastGL(%du, %du)' % (
+      return 'ver->IsAtLeastGL({0:d}u, {1:d}u)'.format(
           gl_version.major_version, gl_version.minor_version)
 
   def GetBindingCondition(version):
@@ -1891,7 +1884,7 @@ namespace gfx {
           [GetGLVersionCondition(v) for v in version['gl_versions']])
     if 'extensions' in version and version['extensions']:
       conditions.extend(
-          ['ext.b_%s' % e for e in version['extensions']])
+          ['ext.b_{0!s}'.format(e) for e in version['extensions']])
     return ' || '.join(conditions)
 
   def WriteConditionalFuncBinding(file, func):
@@ -1903,12 +1896,12 @@ namespace gfx {
       version = func['versions'][i]
       cond = GetBindingCondition(version)
       if first_version:
-        file.write('  if (%s) {\n  ' % cond)
+        file.write('  if ({0!s}) {{\n  '.format(cond))
       else:
-        file.write('  else if (%s) {\n  ' % (cond))
+        file.write('  else if ({0!s}) {{\n  '.format((cond)))
 
       WriteFuncBinding(file, known_as, version['name'])
-      file.write('DCHECK(fn.%sFn);\n' % known_as)
+      file.write('DCHECK(fn.{0!s}Fn);\n'.format(known_as))
       file.write('}\n')
       i += 1
       first_version = False
@@ -1916,7 +1909,7 @@ namespace gfx {
   for func in functions:
     if not 'static_binding' in func:
       file.write('\n')
-      file.write('  debug_fn.%sFn = 0;\n' % func['known_as'])
+      file.write('  debug_fn.{0!s}Fn = 0;\n'.format(func['known_as']))
       WriteConditionalFuncBinding(file, func)
 
   # Some new function pointers have been added, so update them in debug bindings
@@ -1932,8 +1925,7 @@ namespace gfx {
     return_type = func['return_type']
     arguments = func['arguments']
     file.write('\n')
-    file.write('static %s GL_BINDING_CALL Debug_%s(%s) {\n' %
-        (return_type, func['known_as'], arguments))
+    file.write('static {0!s} GL_BINDING_CALL Debug_{1!s}({2!s}) {{\n'.format(return_type, func['known_as'], arguments))
     argument_names = re.sub(
         r'(const )?[a-zA-Z0-9_]+\** ([a-zA-Z0-9_]+)', r'\2', arguments)
     argument_names = re.sub(
@@ -1972,19 +1964,15 @@ namespace gfx {
       log_argument_names = " << " + log_argument_names
     function_name = func['known_as']
     if return_type == 'void':
-      file.write('  GL_SERVICE_LOG("%s" << "(" %s << ")");\n' %
-          (function_name, log_argument_names))
-      file.write('  g_driver_%s.debug_fn.%sFn(%s);\n' %
-          (set_name.lower(), function_name, argument_names))
+      file.write('  GL_SERVICE_LOG("{0!s}" << "(" {1!s} << ")");\n'.format(function_name, log_argument_names))
+      file.write('  g_driver_{0!s}.debug_fn.{1!s}Fn({2!s});\n'.format(set_name.lower(), function_name, argument_names))
       if 'logging_code' in func:
-        file.write("%s\n" % func['logging_code'])
+        file.write("{0!s}\n".format(func['logging_code']))
     else:
-      file.write('  GL_SERVICE_LOG("%s" << "(" %s << ")");\n' %
-          (function_name, log_argument_names))
-      file.write('  %s result = g_driver_%s.debug_fn.%sFn(%s);\n' %
-          (return_type, set_name.lower(), function_name, argument_names))
+      file.write('  GL_SERVICE_LOG("{0!s}" << "(" {1!s} << ")");\n'.format(function_name, log_argument_names))
+      file.write('  {0!s} result = g_driver_{1!s}.debug_fn.{2!s}Fn({3!s});\n'.format(return_type, set_name.lower(), function_name, argument_names))
       if 'logging_code' in func:
-        file.write("%s\n" % func['logging_code'])
+        file.write("{0!s}\n".format(func['logging_code']))
       else:
         file.write('  GL_SERVICE_LOG("GL_RESULT: " << result);\n')
       file.write('  return result;\n')
@@ -1993,23 +1981,23 @@ namespace gfx {
 
   # Write function to initialize the debug function pointers.
   file.write('\n')
-  file.write('void Driver%s::InitializeDebugBindings() {\n' %
-             set_name.upper())
+  file.write('void Driver{0!s}::InitializeDebugBindings() {{\n'.format(
+             set_name.upper()))
   for func in functions:
     first_name = func['known_as']
-    file.write('  if (!debug_fn.%sFn) {\n' % first_name)
-    file.write('    debug_fn.%sFn = fn.%sFn;\n' % (first_name, first_name))
-    file.write('    fn.%sFn = Debug_%s;\n' % (first_name, first_name))
+    file.write('  if (!debug_fn.{0!s}Fn) {{\n'.format(first_name))
+    file.write('    debug_fn.{0!s}Fn = fn.{1!s}Fn;\n'.format(first_name, first_name))
+    file.write('    fn.{0!s}Fn = Debug_{1!s};\n'.format(first_name, first_name))
     file.write('  }\n')
   file.write('  g_debugBindingsInitialized = true;\n')
   file.write('}\n')
 
   # Write function to clear all function pointers.
   file.write('\n')
-  file.write("""void Driver%s::ClearBindings() {
+  file.write("""void Driver{0!s}::ClearBindings() {{
   memset(this, 0, sizeof(*this));
-}
-""" % set_name.upper())
+}}
+""".format(set_name.upper()))
 
   def MakeArgNames(arguments):
     argument_names = re.sub(
@@ -2026,15 +2014,12 @@ namespace gfx {
     return_type = func['return_type']
     arguments = func['arguments']
     file.write('\n')
-    file.write('%s %sApiBase::%sFn(%s) {\n' %
-        (return_type, set_name.upper(), function_name, arguments))
+    file.write('{0!s} {1!s}ApiBase::{2!s}Fn({3!s}) {{\n'.format(return_type, set_name.upper(), function_name, arguments))
     argument_names = MakeArgNames(arguments)
     if return_type == 'void':
-      file.write('  driver_->fn.%sFn(%s);\n' %
-          (function_name, argument_names))
+      file.write('  driver_->fn.{0!s}Fn({1!s});\n'.format(function_name, argument_names))
     else:
-      file.write('  return driver_->fn.%sFn(%s);\n' %
-          (function_name, argument_names))
+      file.write('  return driver_->fn.{0!s}Fn({1!s});\n'.format(function_name, argument_names))
     file.write('}\n')
 
   # Write TraceGLApi functions
@@ -2043,17 +2028,14 @@ namespace gfx {
     return_type = func['return_type']
     arguments = func['arguments']
     file.write('\n')
-    file.write('%s Trace%sApi::%sFn(%s) {\n' %
-        (return_type, set_name.upper(), function_name, arguments))
+    file.write('{0!s} Trace{1!s}Api::{2!s}Fn({3!s}) {{\n'.format(return_type, set_name.upper(), function_name, arguments))
     argument_names = MakeArgNames(arguments)
-    file.write('  TRACE_EVENT_BINARY_EFFICIENT0("gpu", "TraceGLAPI::%s")\n' %
-               function_name)
+    file.write('  TRACE_EVENT_BINARY_EFFICIENT0("gpu", "TraceGLAPI::{0!s}")\n'.format(
+               function_name))
     if return_type == 'void':
-      file.write('  %s_api_->%sFn(%s);\n' %
-          (set_name.lower(), function_name, argument_names))
+      file.write('  {0!s}_api_->{1!s}Fn({2!s});\n'.format(set_name.lower(), function_name, argument_names))
     else:
-      file.write('  return %s_api_->%sFn(%s);\n' %
-          (set_name.lower(), function_name, argument_names))
+      file.write('  return {0!s}_api_->{1!s}Fn({2!s});\n'.format(set_name.lower(), function_name, argument_names))
     file.write('}\n')
 
   # Write NoContextGLApi functions
@@ -2063,12 +2045,11 @@ namespace gfx {
       return_type = func['return_type']
       arguments = func['arguments']
       file.write('\n')
-      file.write('%s NoContextGLApi::%sFn(%s) {\n' %
-          (return_type, function_name, arguments))
+      file.write('{0!s} NoContextGLApi::{1!s}Fn({2!s}) {{\n'.format(return_type, function_name, arguments))
       argument_names = MakeArgNames(arguments)
-      no_context_error = "Trying to call %s() without current GL context" % function_name
-      file.write('  NOTREACHED() <<  "%s";\n' % no_context_error)
-      file.write('  LOG(ERROR) <<  "%s";\n' % no_context_error)
+      no_context_error = "Trying to call {0!s}() without current GL context".format(function_name)
+      file.write('  NOTREACHED() <<  "{0!s}";\n'.format(no_context_error))
+      file.write('  LOG(ERROR) <<  "{0!s}";\n'.format(no_context_error))
       default_value = { 'GLenum': 'static_cast<GLenum>(0)',
                         'GLuint': '0U',
                         'GLint': '0',
@@ -2084,7 +2065,7 @@ namespace gfx {
       if return_type.endswith('*'):
         file.write('  return NULL;\n')
       elif return_type != 'void':
-        file.write('  return %s;\n' % default_value[return_type])
+        file.write('  return {0!s};\n'.format(default_value[return_type]))
       file.write('}\n')
 
   file.write('\n')
@@ -2113,8 +2094,7 @@ def GenerateMockBindingsHeader(file, functions):
 
   for key in sorted(uniquely_named_functions.iterkeys()):
     func = uniquely_named_functions[key]
-    file.write('static %s GL_BINDING_CALL Mock_%s(%s);\n' %
-        (func['return_type'], func['name'], func['arguments']))
+    file.write('static {0!s} GL_BINDING_CALL Mock_{1!s}({2!s});\n'.format(func['return_type'], func['name'], func['arguments']))
 
 
 def GenerateMockBindingsSource(file, functions):
@@ -2145,20 +2125,17 @@ void MakeFunctionUnique(const char *func_name) {
   for key in sorted_function_names:
     func = uniquely_named_functions[key]
     file.write('\n')
-    file.write('%s GL_BINDING_CALL MockGLInterface::Mock_%s(%s) {\n' %
-        (func['return_type'], func['name'], func['arguments']))
-    file.write('  MakeFunctionUnique("%s");\n' % func['name'])
+    file.write('{0!s} GL_BINDING_CALL MockGLInterface::Mock_{1!s}({2!s}) {{\n'.format(func['return_type'], func['name'], func['arguments']))
+    file.write('  MakeFunctionUnique("{0!s}");\n'.format(func['name']))
     arg_re = r'(const )?[a-zA-Z0-9]+((\s*const\s*)?\*)* ([a-zA-Z0-9]+)'
     argument_names = re.sub(arg_re, r'\4', func['arguments'])
     if argument_names == 'void':
       argument_names = ''
     function_name = func['known_as'][2:]
     if func['return_type'] == 'void':
-      file.write('  interface_->%s(%s);\n' %
-          (function_name, argument_names))
+      file.write('  interface_->{0!s}({1!s});\n'.format(function_name, argument_names))
     else:
-      file.write('  return interface_->%s(%s);\n' %
-          (function_name, argument_names))
+      file.write('  return interface_->{0!s}({1!s});\n'.format(function_name, argument_names))
     file.write('}\n')
 
   # Write an 'invalid' function to catch code calling through uninitialized
@@ -2175,8 +2152,8 @@ void MakeFunctionUnique(const char *func_name) {
       'MockGLInterface::GetGLProcAddress(const char* name) {\n')
   for key in sorted_function_names:
     name = uniquely_named_functions[key]['name']
-    file.write('  if (strcmp(name, "%s") == 0)\n' % name)
-    file.write('    return reinterpret_cast<void*>(Mock_%s);\n' % name)
+    file.write('  if (strcmp(name, "{0!s}") == 0)\n'.format(name))
+    file.write('    return reinterpret_cast<void*>(Mock_{0!s});\n'.format(name))
   # Always return a non-NULL pointer like some EGL implementations do.
   file.write('  return reinterpret_cast<void*>(&MockInvalidFunction);\n')
   file.write('}\n')
@@ -2200,14 +2177,13 @@ def GenerateEnumUtils(out_file, input_filenames):
           # check our own _CHROMIUM macro conflicts with khronos GL headers.
           elif dict[value] != name and (name.endswith('_CHROMIUM') or
               dict[value].endswith('_CHROMIUM')):
-            raise RunTimeError("code collision: %s and %s have the same code %s"
-                               %  (dict[value], name, value))
+            raise RunTimeError("code collision: {0!s} and {1!s} have the same code {2!s}".format(dict[value], name, value))
 
   out_file.write(LICENSE_AND_HEADER)
   out_file.write("static const GLEnums::EnumToString "
                  "enum_to_string_table[] = {\n")
   for value in dict:
-    out_file.write('  { %s, "%s", },\n' % (value, dict[value]))
+    out_file.write('  {{ {0!s}, "{1!s}", }},\n'.format(value, dict[value]))
   out_file.write("""};
 
 const GLEnums::EnumToString* const GLEnums::enum_to_string_table_ =
@@ -2255,7 +2231,7 @@ def ParseFunctionsFromHeader(header_file, extensions, versions):
       macro_depth += 1
       if version_match:
         if current_version:
-          raise RuntimeError('Nested GL version macro in %s at line %d' % (
+          raise RuntimeError('Nested GL version macro in {0!s} at line {1:d}'.format(
               header_file.name, line_num))
         current_version_depth = macro_depth
         es = version_match.group(1)
@@ -2276,7 +2252,7 @@ def ParseFunctionsFromHeader(header_file, extensions, versions):
     match = extension_start.match(line)
     if match and not version_match:
       if current_version and hdr != "gl.h":
-        raise RuntimeError('Nested GL version macro in %s at line %d' % (
+        raise RuntimeError('Nested GL version macro in {0!s} at line {1:d}'.format(
             header_file.name, line_num))
       current_extension = match.group(1)
       current_extension_depth = macro_depth
@@ -2382,7 +2358,7 @@ def FillExtensionsFromHeaders(functions, extension_headers, extra_extensions):
       # There should only be one version entry per name string.
       if len([v for v in func['versions'] if v['name'] == name]) > 1:
         raise RuntimeError(
-            'Duplicate version entries with same name for %s' % name)
+            'Duplicate version entries with same name for {0!s}'.format(name))
 
       # Make sure we know about all extensions and extension functions.
       extensions_from_headers = set([])
@@ -2395,11 +2371,11 @@ def FillExtensionsFromHeaders(functions, extension_headers, extra_extensions):
 
       in_both = explicit_extensions.intersection(extensions_from_headers)
       if len(in_both):
-        print "[%s] Specified redundant extensions for binding: %s" % (
+        print "[{0!s}] Specified redundant extensions for binding: {1!s}".format(
             name, ', '.join(in_both))
       diff = explicit_extensions - extensions_from_headers
       if len(diff):
-        print "[%s] Specified extra extensions for binding: %s" % (
+        print "[{0!s}] Specified extra extensions for binding: {1!s}".format(
             name, ', '.join(diff))
 
       all_extensions = extensions_from_headers.union(explicit_extensions)
@@ -2427,10 +2403,10 @@ def FillExtensionsFromHeaders(functions, extension_headers, extra_extensions):
 
   # Print out used function count by GL(ES) version.
   for v in sorted([v for v in used_functions_by_version if v.is_es]):
-    print "OpenGL ES %d.%d: %d used functions" % (
+    print "OpenGL ES {0:d}.{1:d}: {2:d} used functions".format(
         v.major_version, v.minor_version, len(used_functions_by_version[v]))
   for v in sorted([v for v in used_functions_by_version if not v.is_es]):
-    print "OpenGL %d.%d: %d used functions" % (
+    print "OpenGL {0:d}.{1:d}: {2:d} used functions".format(
         v.major_version, v.minor_version, len(used_functions_by_version[v]))
 
   return used_extensions
@@ -2446,7 +2422,7 @@ def ResolveHeader(header, header_paths):
       # may be incorrectly interpreted as escape characters.
       return result.replace(os.path.sep, '/')
 
-  raise Exception('Header %s not found.' % header)
+  raise Exception('Header {0!s} not found.'.format(header))
 
 
 def main(argv):
@@ -2495,7 +2471,7 @@ def main(argv):
       next_func_name = functions[index + 1]['known_as']
       if func_name.lower() > next_func_name.lower():
         raise Exception(
-            'function %s is not in alphabetical order' % next_func_name)
+            'function {0!s} is not in alphabetical order'.format(next_func_name))
     if options.verify_order:
       continue
 
@@ -2505,20 +2481,20 @@ def main(argv):
         functions, extension_headers, extensions)
 
     header_file = open(
-        os.path.join(directory, 'gl_bindings_autogen_%s.h' % set_name), 'wb')
+        os.path.join(directory, 'gl_bindings_autogen_{0!s}.h'.format(set_name)), 'wb')
     GenerateHeader(header_file, functions, set_name, used_extensions)
     header_file.close()
     ClangFormat(header_file.name)
 
     header_file = open(
-        os.path.join(directory, 'gl_bindings_api_autogen_%s.h' % set_name),
+        os.path.join(directory, 'gl_bindings_api_autogen_{0!s}.h'.format(set_name)),
         'wb')
     GenerateAPIHeader(header_file, functions, set_name)
     header_file.close()
     ClangFormat(header_file.name)
 
     source_file = open(
-        os.path.join(directory, 'gl_bindings_autogen_%s.cc' % set_name), 'wb')
+        os.path.join(directory, 'gl_bindings_autogen_{0!s}.cc'.format(set_name)), 'wb')
     GenerateSource(source_file, functions, set_name, used_extensions)
     source_file.close()
     ClangFormat(source_file.name)

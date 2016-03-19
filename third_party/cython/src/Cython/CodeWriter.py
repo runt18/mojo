@@ -75,7 +75,7 @@ class DeclarationWriter(TreeVisitor):
             self.visit(items[-1])
 
     def visit_Node(self, node):
-        raise AssertionError("Node not handled by serializer: %r" % node)
+        raise AssertionError("Node not handled by serializer: {0!r}".format(node))
 
     def visit_ModuleNode(self, node):
         self.visitchildren(node)
@@ -87,8 +87,8 @@ class DeclarationWriter(TreeVisitor):
         if node.include_file is None:
             file = u'*'
         else:
-            file = u'"%s"' % node.include_file
-        self.putline(u"cdef extern from %s:" % file)
+            file = u'"{0!s}"'.format(node.include_file)
+        self.putline(u"cdef extern from {0!s}:".format(file))
         self.indent()
         self.visit(node.body)
         self.dedent()
@@ -166,7 +166,7 @@ class DeclarationWriter(TreeVisitor):
             self.put(u' ')
             self.put(node.name)
             if node.cname is not None:
-                self.put(u' "%s"' % node.cname)
+                self.put(u' "{0!s}"'.format(node.cname))
         if extras:
             self.put(extras)
         self.endline(':')
@@ -193,9 +193,9 @@ class DeclarationWriter(TreeVisitor):
     def visit_CppClassNode(self, node):
         extras = ""
         if node.templates:
-            extras = u"[%s]" % ", ".join(node.templates)
+            extras = u"[{0!s}]".format(", ".join(node.templates))
         if node.base_classes:
-            extras += "(%s)" % ", ".join(node.base_classes)
+            extras += "({0!s})".format(", ".join(node.base_classes))
         self.visit_container_node(node, u"cdef cppclass", extras, node.attributes)
 
     def visit_CEnumDefNode(self, node):
@@ -204,7 +204,7 @@ class DeclarationWriter(TreeVisitor):
     def visit_CEnumDefItemNode(self, node):
         self.startline(node.name)
         if node.cname:
-            self.put(u' "%s"' % node.cname)
+            self.put(u' "{0!s}"'.format(node.cname))
         if node.value:
             self.put(u" = ")
             self.visit(node.value)
@@ -237,7 +237,7 @@ class DeclarationWriter(TreeVisitor):
         self.endline()
 
     def visit_FuncDefNode(self, node):
-        self.startline(u"def %s(" % node.name)
+        self.startline(u"def {0!s}(".format(node.name))
         self.comma_separated_list(node.args)
         self.endline(u"):")
         self.indent()
@@ -299,12 +299,12 @@ class DeclarationWriter(TreeVisitor):
 
     def visit_BinopNode(self, node):
         self.visit(node.operand1)
-        self.put(u" %s " % node.operator)
+        self.put(u" {0!s} ".format(node.operator))
         self.visit(node.operand2)
 
     def visit_AttributeNode(self, node):
         self.visit(node.obj)
-        self.put(u".%s" % node.attribute)
+        self.put(u".{0!s}".format(node.attribute))
 
     def visit_BoolNode(self, node):
         self.put(str(node.value))
@@ -410,7 +410,7 @@ class CodeWriter(DeclarationWriter):
     def visit_InPlaceAssignmentNode(self, node):
         self.startline()
         self.visit(node.lhs)
-        self.put(u" %s= " % node.operator)
+        self.put(u" {0!s}= ".format(node.operator))
         self.visit(node.rhs)
         self.endline()
 
@@ -468,7 +468,7 @@ class CodeWriter(DeclarationWriter):
         self.line("raise")
 
     def visit_ImportNode(self, node):
-        self.put(u"(import %s)" % node.module_name.value)
+        self.put(u"(import {0!s})".format(node.module_name.value))
 
     def visit_TempsBlockNode(self, node):
         """
@@ -478,7 +478,7 @@ class CodeWriter(DeclarationWriter):
         """
         idx = 0
         for handle in node.temps:
-            self.tempnames[handle] = "$%d_%d" % (self.tempblockindex, idx)
+            self.tempnames[handle] = "${0:d}_{1:d}".format(self.tempblockindex, idx)
             idx += 1
         self.tempblockindex += 1
         self.visit(node.body)

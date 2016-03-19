@@ -31,9 +31,9 @@ def main_run(args):
 
   rc = common.run_command([
       exe,
-      '--root=%s' % common.SRC_DIR,
+      '--root={0!s}'.format(common.SRC_DIR),
       'check',
-      '//out/%s' % args.build_config_fs,
+      '//out/{0!s}'.format(args.build_config_fs),
   ])
 
   # TODO(dpranke): Figure out how to get a list of failures out of gn check?

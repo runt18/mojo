@@ -28,7 +28,7 @@ def main_run(args):
 
   json.dump({
       'valid': True,
-      'failures': ['%s: %s' % (r[0], r[1]) for r in result_set],
+      'failures': ['{0!s}: {1!s}'.format(r[0], r[1]) for r in result_set],
   }, args.output)
 
   return rc

@@ -54,7 +54,7 @@ def SetEnvironmentAndGetRuntimeDllDirs():
     # values there.
     gyp_defines_dict = gyp.NameValueListToDict(gyp.ShlexEnv('GYP_DEFINES'))
     gyp_defines_dict['windows_sdk_path'] = win_sdk
-    os.environ['GYP_DEFINES'] = ' '.join('%s=%s' % (k, pipes.quote(str(v)))
+    os.environ['GYP_DEFINES'] = ' '.join('{0!s}={1!s}'.format(k, pipes.quote(str(v)))
         for k, v in gyp_defines_dict.iteritems())
     os.environ['WINDOWSSDKDIR'] = win_sdk
     os.environ['WDK_DIR'] = wdk
@@ -82,7 +82,7 @@ def _CopyRuntimeImpl(target, source):
   if (os.path.isdir(os.path.dirname(target)) and
       (not os.path.isfile(target) or
       os.stat(target).st_mtime != os.stat(source).st_mtime)):
-    print 'Copying %s to %s...' % (source, target)
+    print 'Copying {0!s} to {1!s}...'.format(source, target)
     if os.path.exists(target):
       os.unlink(target)
     shutil.copy2(source, target)
@@ -228,12 +228,12 @@ def GetToolchainDir():
     if os.path.isdir(default_sdk_path):
       os.environ['WINDOWSSDKDIR'] = default_sdk_path
 
-  print '''vs_path = "%s"
-sdk_path = "%s"
-vs_version = "%s"
-wdk_dir = "%s"
-runtime_dirs = "%s"
-''' % (
+  print '''vs_path = "{0!s}"
+sdk_path = "{1!s}"
+vs_version = "{2!s}"
+wdk_dir = "{3!s}"
+runtime_dirs = "{4!s}"
+'''.format(
       os.environ['GYP_MSVS_OVERRIDE_PATH'],
       os.environ['WINDOWSSDKDIR'],
       os.environ['GYP_MSVS_VERSION'],
@@ -250,7 +250,7 @@ def main():
       'copy_dlls': CopyDlls,
   }
   if len(sys.argv) < 2 or sys.argv[1] not in commands:
-    print >>sys.stderr, 'Expected one of: %s' % ', '.join(commands)
+    print >>sys.stderr, 'Expected one of: {0!s}'.format(', '.join(commands))
     return 1
   return commands[sys.argv[1]](*sys.argv[2:])
 

@@ -52,7 +52,7 @@ class Machine(object):
     if self.initial_states is not None:
       file.write("   Initial states:\n")
       for (name, state) in self.initial_states.iteritems():
-        file.write("      '%s': %d\n" % (name, state.number))
+        file.write("      '{0!s}': {1:d}\n".format(name, state.number))
     for s in self.states:
       s.dump(file)
 
@@ -102,11 +102,11 @@ class Node(object):
     return self.action is not None
 
   def __str__(self):
-    return "State %d" % self.number
+    return "State {0:d}".format(self.number)
 
   def dump(self, file):
     # Header
-    file.write("   State %d:\n" % self.number)
+    file.write("   State {0:d}:\n".format(self.number))
     # Transitions
 #        self.dump_transitions(file)
     self.transitions.dump(file)
@@ -114,7 +114,7 @@ class Node(object):
     action = self.action
     priority = self.action_priority
     if action is not None:
-      file.write("      %s [priority %d]\n" % (action, priority))
+      file.write("      {0!s} [priority {1:d}]\n".format(action, priority))
 
   def __lt__(self, other):
     return self.number < other.number
@@ -187,19 +187,19 @@ class FastMachine(object):
     file.write("Plex.FastMachine:\n")
     file.write("   Initial states:\n")
     for name, state in self.initial_states.iteritems():
-      file.write("      %s: %s\n" % (repr(name), state['number']))
+      file.write("      {0!s}: {1!s}\n".format(repr(name), state['number']))
     for state in self.states:
       self.dump_state(state, file)
 
   def dump_state(self, state, file):
     # Header
-    file.write("   State %d:\n" % state['number'])
+    file.write("   State {0:d}:\n".format(state['number']))
     # Transitions
     self.dump_transitions(state, file)
     # Action
     action = state['action']
     if action is not None:
-      file.write("      %s\n" % action)
+      file.write("      {0!s}\n".format(action))
 
   def dump_transitions(self, state, file):
     chars_leading_to_state = {}
@@ -224,11 +224,11 @@ class FastMachine(object):
     for ranges in ranges_list:
       key = self.ranges_to_string(ranges)
       state = ranges_to_state[ranges]
-      file.write("      %s --> State %d\n" % (key, state['number']))
+      file.write("      {0!s} --> State {1:d}\n".format(key, state['number']))
     for key in ('bol', 'eol', 'eof', 'else'):
       state = special_to_state.get(key, None)
       if state:
-        file.write("      %s --> State %d\n" % (key, state['number']))
+        file.write("      {0!s} --> State {1:d}\n".format(key, state['number']))
 
   def chars_to_ranges(self, char_list):
     char_list.sort()
@@ -253,4 +253,4 @@ class FastMachine(object):
     if c1 == c2:
       return repr(c1)
     else:
-      return "%s..%s" % (repr(c1), repr(c2))
+      return "{0!s}..{1!s}".format(repr(c1), repr(c2))

@@ -26,7 +26,7 @@ def err_if_nogil_initialized_check(pos, env, name='variable'):
         #error(pos, ERR_UNINITIALIZED % name)
 
 def concat_flags(*flags):
-    return "(%s)" % "|".join(flags)
+    return "({0!s})".format("|".join(flags))
 
 format_flag = "PyBUF_FORMAT"
 
@@ -70,8 +70,8 @@ memview_objstruct_cname = '__pyx_memoryview_obj'
 memviewslice_cname = u'__Pyx_memviewslice'
 
 def put_init_entry(mv_cname, code):
-    code.putln("%s.data = NULL;" % mv_cname)
-    code.putln("%s.memview = NULL;" % mv_cname)
+    code.putln("{0!s}.data = NULL;".format(mv_cname))
+    code.putln("{0!s}.memview = NULL;".format(mv_cname))
 
 def mangle_dtype_name(dtype):
     # a dumb wrapper for now; move Buffer.mangle_dtype_name in here later?
@@ -91,7 +91,7 @@ def put_acquire_memoryviewslice(lhs_cname, lhs_type, lhs_pos, rhs, code,
         rhstmp = rhs.result()
     else:
         rhstmp = code.funcstate.allocate_temp(lhs_type, manage_ref=False)
-        code.putln("%s = %s;" % (rhstmp, rhs.result_as(lhs_type)))
+        code.putln("{0!s} = {1!s};".format(rhstmp, rhs.result_as(lhs_type)))
 
     # Allow uninitialized assignment
     #code.putln(code.put_error_if_unbound(lhs_pos, rhs.entry))
@@ -109,7 +109,7 @@ def put_assign_to_memviewslice(lhs_cname, rhs, rhs_cname, memviewslicetype, code
     if not rhs.result_in_temp():
         rhs.make_owned_memoryviewslice(code)
 
-    code.putln("%s = %s;" % (lhs_cname, rhs_cname))
+    code.putln("{0!s} = {1!s};".format(lhs_cname, rhs_cname))
 
 def get_buf_flags(specs):
     is_c_contig, is_f_contig = is_cf_contig(specs)
@@ -204,7 +204,7 @@ def valid_memslice_dtype(dtype, i=0):
 
 def validate_memslice_dtype(pos, dtype):
     if not valid_memslice_dtype(dtype):
-        error(pos, "Invalid base type for memoryview slice: %s" % dtype)
+        error(pos, "Invalid base type for memoryview slice: {0!s}".format(dtype))
 
 
 class MemoryViewSliceBufferEntry(Buffer.BufferEntry):
@@ -212,7 +212,7 @@ class MemoryViewSliceBufferEntry(Buffer.BufferEntry):
         self.entry = entry
         self.type = entry.type
         self.cname = entry.cname
-        self.buf_ptr = "%s.data" % self.cname
+        self.buf_ptr = "{0!s}.data".format(self.cname)
 
         dtype = self.entry.type.dtype
         dtype = PyrexTypes.CPtrType(dtype)
@@ -238,9 +238,9 @@ class MemoryViewSliceBufferEntry(Buffer.BufferEntry):
         type_decl = self.type.dtype.declaration_code("")
 
         for dim, index, access, packing in axes:
-            shape = "%s.shape[%d]" % (self.cname, dim)
-            stride = "%s.strides[%d]" % (self.cname, dim)
-            suboffset = "%s.suboffsets[%d]" % (self.cname, dim)
+            shape = "{0!s}.shape[{1:d}]".format(self.cname, dim)
+            stride = "{0!s}.strides[{1:d}]".format(self.cname, dim)
+            suboffset = "{0!s}.suboffsets[{1:d}]".format(self.cname, dim)
 
             flag = get_memoryview_flag(access, packing)
 
@@ -250,28 +250,27 @@ class MemoryViewSliceBufferEntry(Buffer.BufferEntry):
                 #       or (dtype **) arithmetic, we won't know which unless
                 #       we check suboffsets
                 code.globalstate.use_utility_code(memviewslice_index_helpers)
-                bufp = ('__pyx_memviewslice_index_full(%s, %s, %s, %s)' %
-                                            (bufp, index, stride, suboffset))
+                bufp = ('__pyx_memviewslice_index_full({0!s}, {1!s}, {2!s}, {3!s})'.format(bufp, index, stride, suboffset))
 
             elif flag == "indirect":
-                bufp = "(%s + %s * %s)" % (bufp, index, stride)
-                bufp = ("(*((char **) %s) + %s)" % (bufp, suboffset))
+                bufp = "({0!s} + {1!s} * {2!s})".format(bufp, index, stride)
+                bufp = ("(*((char **) {0!s}) + {1!s})".format(bufp, suboffset))
 
             elif flag == "indirect_contiguous":
                 # Note: we do char ** arithmetic
-                bufp = "(*((char **) %s + %s) + %s)" % (bufp, index, suboffset)
+                bufp = "(*((char **) {0!s} + {1!s}) + {2!s})".format(bufp, index, suboffset)
 
             elif flag == "strided":
-                bufp = "(%s + %s * %s)" % (bufp, index, stride)
+                bufp = "({0!s} + {1!s} * {2!s})".format(bufp, index, stride)
 
             else:
                 assert flag == 'contiguous', flag
-                bufp = '((char *) (((%s *) %s) + %s))' % (type_decl, bufp, index)
+                bufp = '((char *) ((({0!s} *) {1!s}) + {2!s}))'.format(type_decl, bufp, index)
 
-            bufp = '( /* dim=%d */ %s )' % (dim, bufp)
+            bufp = '( /* dim={0:d} */ {1!s} )'.format(dim, bufp)
 
         if cast_result:
-            return "((%s *) %s)" % (type_decl, bufp)
+            return "(({0!s} *) {1!s})".format(type_decl, bufp)
 
         return bufp
 
@@ -304,10 +303,10 @@ class MemoryViewSliceBufferEntry(Buffer.BufferEntry):
         if not no_suboffset_dim:
             suboffset_dim = code.funcstate.allocate_temp(
                              PyrexTypes.c_int_type, False)
-            code.putln("%s = -1;" % suboffset_dim)
+            code.putln("{0!s} = -1;".format(suboffset_dim))
 
-        code.putln("%(dst)s.data = %(src)s.data;" % locals())
-        code.putln("%(dst)s.memview = %(src)s.memview;" % locals())
+        code.putln("{dst!s}.data = {src!s}.data;".format(**locals()))
+        code.putln("{dst!s}.memview = {src!s}.memview;".format(**locals()))
         code.put_incref_memoryviewslice(dst)
 
         dim = -1
@@ -344,7 +343,7 @@ class MemoryViewSliceBufferEntry(Buffer.BufferEntry):
                 # newaxis
                 attribs = [('shape', 1), ('strides', 0), ('suboffsets', -1)]
                 for attrib, value in attribs:
-                    code.putln("%s.%s[%d] = %d;" % (dst, attrib, new_ndim, value))
+                    code.putln("{0!s}.{1!s}[{2:d}] = {3:d};".format(dst, attrib, new_ndim, value))
 
                 new_ndim += 1
 
@@ -424,7 +423,7 @@ def get_memoryview_flag(access, packing):
         return 'contiguous'
 
 def get_is_contig_func_name(c_or_f, ndim):
-    return "__pyx_memviewslice_is_%s_contig%d" % (c_or_f, ndim)
+    return "__pyx_memviewslice_is_{0!s}_contig{1:d}".format(c_or_f, ndim)
 
 def get_is_contig_utility(c_contig, ndim):
     C = dict(context, ndim=ndim)
@@ -454,7 +453,7 @@ def copy_broadcast_memview_src_to_dst(src, dst, code):
     verify_direct_dimensions(dst)
 
     code.putln(code.error_goto_if_neg(
-            "%s(%s, %s, %d, %d, %d)" % (copy_src_to_dst_cname(),
+            "{0!s}({1!s}, {2!s}, {3:d}, {4:d}, {5:d})".format(copy_src_to_dst_cname(),
                                         src.result(), dst.result(),
                                         src.type.ndim, dst.type.ndim,
                                         dst.type.dtype.is_pyobject),
@@ -468,7 +467,7 @@ def get_1d_fill_scalar_func(type, code):
     context = dict(dtype_name=dtype_name, type_decl=type_decl)
     utility = load_memview_c_utility("FillStrided1DScalar", context)
     code.globalstate.use_utility_code(utility)
-    return '__pyx_fill_slice_%s' % dtype_name
+    return '__pyx_fill_slice_{0!s}'.format(dtype_name)
 
 def assign_scalar(dst, scalar, code):
     """
@@ -481,12 +480,12 @@ def assign_scalar(dst, scalar, code):
     slice_decl = dst.type.declaration_code("")
 
     code.begin_block()
-    code.putln("%s __pyx_temp_scalar = %s;" % (type_decl, scalar.result()))
+    code.putln("{0!s} __pyx_temp_scalar = {1!s};".format(type_decl, scalar.result()))
     if dst.result_in_temp() or (dst.base.is_name and
                                 isinstance(dst.index, ExprNodes.EllipsisNode)):
         dst_temp = dst.result()
     else:
-        code.putln("%s __pyx_temp_slice = %s;" % (slice_decl, dst.result()))
+        code.putln("{0!s} __pyx_temp_slice = {1!s};".format(slice_decl, dst.result()))
         dst_temp = "__pyx_temp_slice"
 
     # with slice_iter(dst.type, dst_temp, dst.type.ndim, code) as p:
@@ -494,9 +493,9 @@ def assign_scalar(dst, scalar, code):
     p = slice_iter_obj.start_loops()
 
     if dtype.is_pyobject:
-        code.putln("Py_DECREF(*(PyObject **) %s);" % p)
+        code.putln("Py_DECREF(*(PyObject **) {0!s});".format(p))
 
-    code.putln("*((%s *) %s) = __pyx_temp_scalar;" % (type_decl, p))
+    code.putln("*(({0!s} *) {1!s}) = __pyx_temp_scalar;".format(type_decl, p))
 
     if dtype.is_pyobject:
         code.putln("Py_INCREF(__pyx_temp_scalar);")
@@ -524,11 +523,11 @@ class ContigSliceIter(SliceIter):
 
         type_decl = self.slice_type.dtype.declaration_code("")
 
-        total_size = ' * '.join("%s.shape[%d]" % (self.slice_temp, i)
+        total_size = ' * '.join("{0!s}.shape[{1:d}]".format(self.slice_temp, i)
                                     for i in range(self.ndim))
-        code.putln("Py_ssize_t __pyx_temp_extent = %s;" % total_size)
+        code.putln("Py_ssize_t __pyx_temp_extent = {0!s};".format(total_size))
         code.putln("Py_ssize_t __pyx_temp_idx;")
-        code.putln("%s *__pyx_temp_pointer = (%s *) %s.data;" % (
+        code.putln("{0!s} *__pyx_temp_pointer = ({1!s} *) {2!s}.data;".format(
                             type_decl, type_decl, self.slice_temp))
         code.putln("for (__pyx_temp_idx = 0; "
                         "__pyx_temp_idx < __pyx_temp_extent; "
@@ -548,27 +547,27 @@ class StridedSliceIter(SliceIter):
 
         for i in range(self.ndim):
             t = i, self.slice_temp, i
-            code.putln("Py_ssize_t __pyx_temp_extent_%d = %s.shape[%d];" % t)
-            code.putln("Py_ssize_t __pyx_temp_stride_%d = %s.strides[%d];" % t)
-            code.putln("char *__pyx_temp_pointer_%d;" % i)
-            code.putln("Py_ssize_t __pyx_temp_idx_%d;" % i)
+            code.putln("Py_ssize_t __pyx_temp_extent_{0:d} = {1!s}.shape[{2:d}];".format(*t))
+            code.putln("Py_ssize_t __pyx_temp_stride_{0:d} = {1!s}.strides[{2:d}];".format(*t))
+            code.putln("char *__pyx_temp_pointer_{0:d};".format(i))
+            code.putln("Py_ssize_t __pyx_temp_idx_{0:d};".format(i))
 
-        code.putln("__pyx_temp_pointer_0 = %s.data;" % self.slice_temp)
+        code.putln("__pyx_temp_pointer_0 = {0!s}.data;".format(self.slice_temp))
 
         for i in range(self.ndim):
             if i > 0:
-                code.putln("__pyx_temp_pointer_%d = __pyx_temp_pointer_%d;" % (i, i - 1))
+                code.putln("__pyx_temp_pointer_{0:d} = __pyx_temp_pointer_{1:d};".format(i, i - 1))
 
             code.putln("for (__pyx_temp_idx_%d = 0; "
                             "__pyx_temp_idx_%d < __pyx_temp_extent_%d; "
                             "__pyx_temp_idx_%d++) {" % (i, i, i, i))
 
-        return "__pyx_temp_pointer_%d" % (self.ndim - 1)
+        return "__pyx_temp_pointer_{0:d}".format((self.ndim - 1))
 
     def end_loops(self):
         code = self.code
         for i in range(self.ndim - 1, -1, -1):
-            code.putln("__pyx_temp_pointer_%d += __pyx_temp_stride_%d;" % (i, i))
+            code.putln("__pyx_temp_pointer_{0:d} += __pyx_temp_stride_{1:d};".format(i, i))
             code.putln("}")
 
         code.end_block()
@@ -580,7 +579,7 @@ def copy_c_or_fortran_cname(memview):
     else:
         c_or_f = 'f'
 
-    return "__pyx_memoryview_copy_slice_%s_%s" % (
+    return "__pyx_memoryview_copy_slice_{0!s}_{1!s}".format(
             memview.specialization_suffix(), c_or_f)
 
 def get_copy_new_utility(pos, from_memview, to_memview):
@@ -814,11 +813,11 @@ def validate_axes_specs(positions, specs, is_c_contig, is_f_contig):
             valid_contig_dims = last_indirect_dimension + 1, len(specs) - 1
             if idx not in valid_contig_dims and access != 'ptr':
                 if last_indirect_dimension + 1 != len(specs) - 1:
-                    dims = "dimensions %d and %d" % valid_contig_dims
+                    dims = "dimensions {0:d} and {1:d}".format(*valid_contig_dims)
                 else:
-                    dims = "dimension %d" % valid_contig_dims[0]
+                    dims = "dimension {0:d}".format(valid_contig_dims[0])
 
-                raise CompileError(pos, "Only %s may be contiguous and direct" % dims)
+                raise CompileError(pos, "Only {0!s} may be contiguous and direct".format(dims))
 
             has_contig = access != 'ptr'
         elif packing == 'follow':
@@ -870,12 +869,12 @@ def _resolve_AttributeNode(env, node):
         mod = scope.lookup(modname)
         if not mod or not mod.as_module:
             raise CompileError(
-                    node.pos, "undeclared name not builtin: %s" % modname)
+                    node.pos, "undeclared name not builtin: {0!s}".format(modname))
         scope = mod.as_module
 
     entry = scope.lookup(path[-1])
     if not entry:
-        raise CompileError(node.pos, "No such attribute '%s'" % path[-1])
+        raise CompileError(node.pos, "No such attribute '{0!s}'".format(path[-1]))
 
     return entry
 

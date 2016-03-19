@@ -31,7 +31,7 @@ def get_free_disk_space(failures):
     return stat_result.f_frsize * stat_result.f_bavail / (
         1024.0 / 1024.0 / 1024.0)
 
-  failures.append('get_free_disk_space: OS %s not supported.' % os.name)
+  failures.append('get_free_disk_space: OS {0!s} not supported.'.format(os.name))
   return 0
 
 
@@ -94,7 +94,7 @@ def get_device_info(args, failures):
       results[k] = v[0]
     else:
       results[k] = 'MISMATCH'
-      results['%s_list' % k] = v
+      results['{0!s}_list'.format(k)] = v
       failures.append(k)
 
   return results

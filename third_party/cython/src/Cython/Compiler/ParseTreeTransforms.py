@@ -195,7 +195,7 @@ class PostParse(ScopeTrackingTransform):
         # unpack a lambda expression into the corresponding DefNode
         lambda_id = self.lambda_counter
         self.lambda_counter += 1
-        node.lambda_name = EncodedString(u'lambda%d' % lambda_id)
+        node.lambda_name = EncodedString(u'lambda{0:d}'.format(lambda_id))
         collector = YieldNodeCollector()
         collector.visitchildren(node.result_expr)
         if collector.yields or isinstance(node.result_expr, ExprNodes.YieldExprNode):
@@ -216,7 +216,7 @@ class PostParse(ScopeTrackingTransform):
         # unpack a generator expression into the corresponding DefNode
         genexpr_id = self.genexpr_counter
         self.genexpr_counter += 1
-        node.genexpr_name = EncodedString(u'genexpr%d' % genexpr_id)
+        node.genexpr_name = EncodedString(u'genexpr{0:d}'.format(genexpr_id))
 
         node.def_node = Nodes.DefNode(node.pos, name=node.name,
                                       doc=None,
@@ -485,16 +485,14 @@ def flatten_parallel_assignments(input, output):
             output.append([lhs,rhs])
             continue
         elif lhs_size - starred_targets > rhs_size:
-            error(lhs.pos, "need more than %d value%s to unpack"
-                  % (rhs_size, (rhs_size != 1) and 's' or ''))
+            error(lhs.pos, "need more than {0:d} value{1!s} to unpack".format(rhs_size, (rhs_size != 1) and 's' or ''))
             output.append([lhs,rhs])
             continue
         elif starred_targets:
             map_starred_assignment(lhs_targets, starred_assignments,
                                    lhs.args, rhs_args)
         elif lhs_size < rhs_size:
-            error(lhs.pos, "too many values to unpack (expected %d, got %d)"
-                  % (lhs_size, rhs_size))
+            error(lhs.pos, "too many values to unpack (expected {0:d}, got {1:d})".format(lhs_size, rhs_size))
             output.append([lhs,rhs])
             continue
         else:
@@ -684,7 +682,7 @@ class InterpretCompilerDirectives(CythonTransform, SkipDeclarations):
         else:
             if (directive not in Options.directive_defaults
                     and directive not in Options.directive_types):
-                error(pos, "Invalid directive: '%s'." % (directive,))
+                error(pos, "Invalid directive: '{0!s}'.".format(directive))
             return True
 
     # Set up processing and handle the cython: comments.
@@ -727,10 +725,10 @@ class InterpretCompilerDirectives(CythonTransform, SkipDeclarations):
                 self.parallel_directives[u"parallel"] = u"cython.parallel"
             elif full_name == u"cython.parallel.*":
                 for name in self.valid_parallel_directives:
-                    self.parallel_directives[name] = u"cython.parallel.%s" % name
+                    self.parallel_directives[name] = u"cython.parallel.{0!s}".format(name)
             elif (len(directive) != 3 or
                   directive[-1] not in self.valid_parallel_directives):
-                error(pos, "No such directive: %s" % full_name)
+                error(pos, "No such directive: {0!s}".format(full_name))
 
             self.module_scope.use_utility_code(
                 UtilityCode.load_cached("InitThreads", "ModuleSetupCode.c"))
@@ -854,7 +852,7 @@ class InterpretCompilerDirectives(CythonTransform, SkipDeclarations):
                     if kwds is not None and directivetype is not dict:
                         for keyvalue in kwds.key_value_pairs:
                             key, value = keyvalue
-                            sub_optname = "%s.%s" % (optname, key.value)
+                            sub_optname = "{0!s}.{1!s}".format(optname, key.value)
                             if Options.directive_types.get(sub_optname):
                                 directives.append(self.try_to_parse_directive(sub_optname, [value], None, keyvalue.pos))
                             else:
@@ -878,7 +876,7 @@ class InterpretCompilerDirectives(CythonTransform, SkipDeclarations):
                     return [(optname, None)]
                 else:
                     raise PostParseError(
-                        node.pos, "The '%s' directive should be used as a function call." % optname)
+                        node.pos, "The '{0!s}' directive should be used as a function call.".format(optname))
         return None
 
     def try_to_parse_directive(self, optname, args, kwds, pos):
@@ -888,39 +886,39 @@ class InterpretCompilerDirectives(CythonTransform, SkipDeclarations):
         elif directivetype is bool:
             if kwds is not None or len(args) != 1 or not isinstance(args[0], ExprNodes.BoolNode):
                 raise PostParseError(pos,
-                    'The %s directive takes one compile-time boolean argument' % optname)
+                    'The {0!s} directive takes one compile-time boolean argument'.format(optname))
             return (optname, args[0].value)
         elif directivetype is int:
             if kwds is not None or len(args) != 1 or not isinstance(args[0], ExprNodes.IntNode):
                 raise PostParseError(pos,
-                    'The %s directive takes one compile-time integer argument' % optname)
+                    'The {0!s} directive takes one compile-time integer argument'.format(optname))
             return (optname, int(args[0].value))
         elif directivetype is str:
             if kwds is not None or len(args) != 1 or not isinstance(
                     args[0], (ExprNodes.StringNode, ExprNodes.UnicodeNode)):
                 raise PostParseError(pos,
-                    'The %s directive takes one compile-time string argument' % optname)
+                    'The {0!s} directive takes one compile-time string argument'.format(optname))
             return (optname, str(args[0].value))
         elif directivetype is type:
             if kwds is not None or len(args) != 1:
                 raise PostParseError(pos,
-                    'The %s directive takes one type argument' % optname)
+                    'The {0!s} directive takes one type argument'.format(optname))
             return (optname, args[0])
         elif directivetype is dict:
             if len(args) != 0:
                 raise PostParseError(pos,
-                    'The %s directive takes no prepositional arguments' % optname)
+                    'The {0!s} directive takes no prepositional arguments'.format(optname))
             return optname, dict([(key.value, value) for key, value in kwds.key_value_pairs])
         elif directivetype is list:
             if kwds and len(kwds) != 0:
                 raise PostParseError(pos,
-                    'The %s directive takes no keyword arguments' % optname)
+                    'The {0!s} directive takes no keyword arguments'.format(optname))
             return optname, [ str(arg.value) for arg in args ]
         elif callable(directivetype):
             if kwds is not None or len(args) != 1 or not isinstance(
                     args[0], (ExprNodes.StringNode, ExprNodes.UnicodeNode)):
                 raise PostParseError(pos,
-                    'The %s directive takes one compile-time string argument' % optname)
+                    'The {0!s} directive takes one compile-time string argument'.format(optname))
             return (optname, directivetype(optname, str(args[0].value)))
         else:
             assert False
@@ -1079,14 +1077,14 @@ class ParallelRangeTransform(CythonTransform, SkipDeclarations):
             directive = '.'.join(self.parallel_directive)
         else:
             directive = self.parallel_directives[self.parallel_directive[0]]
-            directive = '%s.%s' % (directive,
+            directive = '{0!s}.{1!s}'.format(directive,
                                    '.'.join(self.parallel_directive[1:]))
             directive = directive.rstrip('.')
 
         cls = self.directive_to_node.get(directive)
         if cls is None and not (self.namenode_is_cython_module and
                                 self.parallel_directive[0] != 'parallel'):
-            error(node.pos, "Invalid directive: %s" % directive)
+            error(node.pos, "Invalid directive: {0!s}".format(directive))
 
         self.namenode_is_cython_module = False
         self.parallel_directive = None
@@ -1715,7 +1713,7 @@ if VALUE is not None:
                 }, pos = entry.pos))
 
         # create the class
-        str_format = u"%s(%s)" % (node.entry.type.name, ("%s, " * len(attributes))[:-2])
+        str_format = u"{0!s}({1!s})".format(node.entry.type.name, ("%s, " * len(attributes))[:-2])
         wrapper_class = self.struct_or_union_wrapper.substitute({
             u"INIT_ASSIGNMENTS": Nodes.StatListNode(node.pos, stats = init_assignments),
             u"IS_UNION": ExprNodes.BoolNode(node.pos, value = not node.entry.type.is_struct),
@@ -1785,7 +1783,7 @@ if VALUE is not None:
             entry = self.current_env().lookup(node.name)
             if (entry is None or entry.visibility != 'extern'
                 and not entry.scope.is_c_class_scope):
-                warning(node.pos, "cdef variable '%s' declared after it is used" % node.name, 2)
+                warning(node.pos, "cdef variable '{0!s}' declared after it is used".format(node.name), 2)
         self.visitchildren(node)
         return node
 
@@ -2081,7 +2079,7 @@ class AlignFunctionDefinitions(CythonTransform):
             if pxd_def.is_cclass:
                 return self.visit_CClassDefNode(node.as_cclass(), pxd_def)
             elif not pxd_def.scope or not pxd_def.scope.is_builtin_scope:
-                error(node.pos, "'%s' redeclared" % node.name)
+                error(node.pos, "'{0!s}' redeclared".format(node.name))
                 if pxd_def.pos:
                     error(pxd_def.pos, "previous declaration here")
                 return None
@@ -2102,7 +2100,7 @@ class AlignFunctionDefinitions(CythonTransform):
         pxd_def = self.scope.lookup(node.name)
         if pxd_def and (not pxd_def.scope or not pxd_def.scope.is_builtin_scope):
             if not pxd_def.is_cfunction:
-                error(node.pos, "'%s' redeclared" % node.name)
+                error(node.pos, "'{0!s}' redeclared".format(node.name))
                 if pxd_def.pos:
                     error(pxd_def.pos, "previous declaration here")
                 return None
@@ -2319,7 +2317,7 @@ class CreateClosureClasses(CythonTransform):
             node.needs_outer_scope = True
             return
 
-        as_name = '%s_%s' % (
+        as_name = '{0!s}_{1!s}'.format(
             target_module_scope.next_id(Naming.closure_class_prefix),
             node.entry.cname)
 
@@ -2532,7 +2530,7 @@ class TransformBuiltinMethods(EnvTransform):
             elif self.context.cython_scope.lookup_qualified_name(attribute):
                 pass
             else:
-                error(node.pos, u"'%s' not a valid cython attribute or is being used incorrectly" % attribute)
+                error(node.pos, u"'{0!s}' not a valid cython attribute or is being used incorrectly".format(attribute))
         return node
 
     def visit_ExecStatNode(self, node):
@@ -2556,20 +2554,17 @@ class TransformBuiltinMethods(EnvTransform):
         pos = node.pos
         if func_name in ('locals', 'vars'):
             if func_name == 'locals' and len(node.args) > 0:
-                error(self.pos, "Builtin 'locals()' called with wrong number of args, expected 0, got %d"
-                      % len(node.args))
+                error(self.pos, "Builtin 'locals()' called with wrong number of args, expected 0, got {0:d}".format(len(node.args)))
                 return node
             elif func_name == 'vars':
                 if len(node.args) > 1:
-                    error(self.pos, "Builtin 'vars()' called with wrong number of args, expected 0-1, got %d"
-                          % len(node.args))
+                    error(self.pos, "Builtin 'vars()' called with wrong number of args, expected 0-1, got {0:d}".format(len(node.args)))
                 if len(node.args) > 0:
                     return node # nothing to do
             return ExprNodes.LocalsExprNode(pos, self.current_scope_node(), lenv)
         else: # dir()
             if len(node.args) > 1:
-                error(self.pos, "Builtin 'dir()' called with wrong number of args, expected 0-1, got %d"
-                      % len(node.args))
+                error(self.pos, "Builtin 'dir()' called with wrong number of args, expected 0-1, got {0:d}".format(len(node.args)))
             if len(node.args) > 0:
                 # optimised in Builtin.py
                 return node
@@ -2646,12 +2641,12 @@ class TransformBuiltinMethods(EnvTransform):
         if function:
             if function in InterpretCompilerDirectives.unop_method_nodes:
                 if len(node.args) != 1:
-                    error(node.function.pos, u"%s() takes exactly one argument" % function)
+                    error(node.function.pos, u"{0!s}() takes exactly one argument".format(function))
                 else:
                     node = InterpretCompilerDirectives.unop_method_nodes[function](node.function.pos, operand=node.args[0])
             elif function in InterpretCompilerDirectives.binop_method_nodes:
                 if len(node.args) != 2:
-                    error(node.function.pos, u"%s() takes exactly two arguments" % function)
+                    error(node.function.pos, u"{0!s}() takes exactly two arguments".format(function))
                 else:
                     node = InterpretCompilerDirectives.binop_method_nodes[function](node.function.pos, operand1=node.args[0], operand2=node.args[1])
             elif function == u'cast':
@@ -2690,7 +2685,7 @@ class TransformBuiltinMethods(EnvTransform):
                 pass
             else:
                 error(node.function.pos,
-                      u"'%s' not a valid cython language construct" % function)
+                      u"'{0!s}' not a valid cython language construct".format(function))
 
         self.visitchildren(node)
 
@@ -2972,14 +2967,14 @@ class DebugTransform(CythonTransform):
             if entry.from_closure:
                 # We're dealing with a closure where a variable from an outer
                 # scope is accessed, get it from the scope object.
-                cname = '%s->%s' % (Naming.cur_scope_cname,
+                cname = '{0!s}->{1!s}'.format(Naming.cur_scope_cname,
                                     entry.outer_entry.cname)
 
-                qname = '%s.%s.%s' % (entry.scope.outer_scope.qualified_name,
+                qname = '{0!s}.{1!s}.{2!s}'.format(entry.scope.outer_scope.qualified_name,
                                       entry.scope.name,
                                       entry.name)
             elif entry.in_closure:
-                cname = '%s->%s' % (Naming.cur_scope_cname,
+                cname = '{0!s}->{1!s}'.format(Naming.cur_scope_cname,
                                     entry.cname)
                 qname = entry.qualified_name
             else:

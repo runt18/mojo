@@ -118,7 +118,7 @@ def FetchGitRevision(directory):
           break
   if not pos:
     return VersionInfo('git', hsh)
-  return VersionInfo('git', '%s-%s' % (hsh, pos))
+  return VersionInfo('git', '{0!s}-{1!s}'.format(hsh, pos))
 
 
 def FetchGitSVNURLAndRevision(directory, svn_url_regex):
@@ -265,7 +265,7 @@ def main(argv=None):
     if out_file is None:
       out_file = args.pop(0)
   if args:
-    sys.stderr.write('Unexpected arguments: %r\n\n' % args)
+    sys.stderr.write('Unexpected arguments: {0!r}\n\n'.format(args))
     parser.print_help()
     sys.exit(2)
 
@@ -282,7 +282,7 @@ def main(argv=None):
   if opts.revision_only:
     print version_info.revision
   else:
-    contents = "LASTCHANGE=%s\n" % version_info.revision
+    contents = "LASTCHANGE={0!s}\n".format(version_info.revision)
     if not out_file and not opts.header:
       sys.stdout.write(contents)
     else:

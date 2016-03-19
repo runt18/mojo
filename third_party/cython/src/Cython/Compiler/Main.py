@@ -113,7 +113,7 @@ class Context(object):
         # that module, provided its name is not a dotted name.
         debug_find_module = 0
         if debug_find_module:
-            print("Context.find_module: module_name = %s, relative_to = %s, pos = %s, need_pxd = %s" % (
+            print("Context.find_module: module_name = {0!s}, relative_to = {1!s}, pos = {2!s}, need_pxd = {3!s}".format(
                     module_name, relative_to, pos, need_pxd))
 
         scope = None
@@ -122,7 +122,7 @@ class Context(object):
             if pos is None:
                 pos = (module_name, 0, 0)
             raise CompileError(pos,
-                "'%s' is not a valid module name" % module_name)
+                "'{0!s}' is not a valid module name".format(module_name))
         if "." not in module_name and relative_to:
             if debug_find_module:
                 print("...trying relative import")
@@ -155,11 +155,11 @@ class Context(object):
                     if package_pathname and package_pathname.endswith('__init__.py'):
                         pass
                     else:
-                        error(pos, "'%s.pxd' not found" % module_name)
+                        error(pos, "'{0!s}.pxd' not found".format(module_name))
             if pxd_pathname:
                 try:
                     if debug_find_module:
-                        print("Context.find_module: Parsing %s" % pxd_pathname)
+                        print("Context.find_module: Parsing {0!s}".format(pxd_pathname))
                     rel_path = module_name.replace('.', os.sep) + os.path.splitext(pxd_pathname)[1]
                     if not pxd_pathname.endswith(rel_path):
                         rel_path = pxd_pathname # safety measure to prevent printing incorrect paths
@@ -196,11 +196,11 @@ class Context(object):
                 if pxd:
                     name = qualified_name
                     if name.startswith('python'):
-                        warning(pos, "'%s' is deprecated, use 'cpython'" % name, 1)
+                        warning(pos, "'{0!s}' is deprecated, use 'cpython'".format(name), 1)
                     elif name in ('stdlib', 'stdio'):
-                        warning(pos, "'%s' is deprecated, use 'libc.%s'" % (name, name), 1)
+                        warning(pos, "'{0!s}' is deprecated, use 'libc.{1!s}'".format(name, name), 1)
                     elif name in ('stl'):
-                        warning(pos, "'%s' is deprecated, use 'libcpp.*.*'" % name, 1)
+                        warning(pos, "'{0!s}' is deprecated, use 'libcpp.*.*'".format(name), 1)
         if pxd is None and Options.cimport_from_pyx:
             return self.find_pyx_file(qualified_name, pos)
         return pxd
@@ -216,7 +216,7 @@ class Context(object):
         path = self.search_include_directories(filename, "", pos,
                                                include=True)
         if not path:
-            error(pos, "'%s' not found" % filename)
+            error(pos, "'{0!s}' not found".format(filename))
         return path
 
     def search_include_directories(self, qualified_name, suffix, pos,
@@ -581,7 +581,7 @@ def compile_multiple(sources, options):
                 context = options.create_context()
             if not timestamps or context.c_file_out_of_date(source):
                 if verbose:
-                    sys.stderr.write("Compiling %s\n" % source)
+                    sys.stderr.write("Compiling {0!s}\n".format(source))
 
                 result = run_pipeline(source, options, context=context)
                 results.add(source, result)
@@ -626,7 +626,7 @@ def main(command_line = 0):
         sources = args
 
     if options.show_version:
-        sys.stderr.write("Cython version %s\n" % Version.version)
+        sys.stderr.write("Cython version {0!s}\n".format(Version.version))
     if options.working_path!="":
         os.chdir(options.working_path)
     try:

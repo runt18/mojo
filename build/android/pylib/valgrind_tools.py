@@ -37,9 +37,9 @@ def SetChromeTimeoutScale(device, scale):
   path = '/data/local/tmp/chrome_timeout_scale'
   if not scale or scale == 1.0:
     # Delete if scale is None/0.0/1.0 since the default timeout scale is 1.0
-    device.RunShellCommand('rm %s' % path)
+    device.RunShellCommand('rm {0!s}'.format(path))
   else:
-    device.WriteFile(path, '%f' % scale, as_root=True)
+    device.WriteFile(path, '{0:f}'.format(scale), as_root=True)
 
 
 class BaseTool(object):
@@ -171,9 +171,9 @@ class ValgrindTool(BaseTool):
   def CopyFiles(cls, device):
     """Copies Valgrind tools to the device."""
     device.RunShellCommand(
-        'rm -r %s; mkdir %s' % (ValgrindTool.VG_DIR, ValgrindTool.VG_DIR))
+        'rm -r {0!s}; mkdir {1!s}'.format(ValgrindTool.VG_DIR, ValgrindTool.VG_DIR))
     device.RunShellCommand(
-        'rm -r %s; mkdir %s' % (ValgrindTool.VGLOGS_DIR,
+        'rm -r {0!s}; mkdir {1!s}'.format(ValgrindTool.VGLOGS_DIR,
                                 ValgrindTool.VGLOGS_DIR))
     files = cls.GetFilesForTool()
     device.PushChangedFiles(
@@ -187,13 +187,13 @@ class ValgrindTool(BaseTool):
     self._device.RunShellCommand('setenforce 0')
     for prop in self._wrap_properties:
       self._device.RunShellCommand(
-          'setprop %s "logwrapper %s"' % (prop, self.GetTestWrapper()))
+          'setprop {0!s} "logwrapper {1!s}"'.format(prop, self.GetTestWrapper()))
     SetChromeTimeoutScale(self._device, self.GetTimeoutScale())
 
   def CleanUpEnvironment(self):
     """Cleans up device environment."""
     for prop in self._wrap_properties:
-      self._device.RunShellCommand('setprop %s ""' % (prop,))
+      self._device.RunShellCommand('setprop {0!s} ""'.format(prop))
     SetChromeTimeoutScale(self._device, None)
 
   @staticmethod
@@ -280,7 +280,7 @@ def CreateTool(tool_name, device):
   if ctor:
     return ctor(device)
   else:
-    print 'Unknown tool %s, available tools: %s' % (
+    print 'Unknown tool {0!s}, available tools: {1!s}'.format(
         tool_name, ', '.join(sorted(TOOL_REGISTRY.keys())))
     sys.exit(1)
 
@@ -298,7 +298,7 @@ def PushFilesForTool(tool_name, device):
   if clazz:
     clazz.CopyFiles(device)
   else:
-    print 'Unknown tool %s, available tools: %s' % (
+    print 'Unknown tool {0!s}, available tools: {1!s}'.format(
         tool_name, ', '.join(sorted(TOOL_REGISTRY.keys())))
     sys.exit(1)
 

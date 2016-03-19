@@ -55,8 +55,8 @@ def Compile(options):
   cmd = [os.path.join(SLAVE_SCRIPTS_DIR, 'compile.py'),
          '--build-tool=ninja',
          '--compiler=goma',
-         '--target=%s' % options.target,
-         '--goma-dir=%s' % bb_utils.GOMA_DIR]
+         '--target={0!s}'.format(options.target),
+         '--goma-dir={0!s}'.format(bb_utils.GOMA_DIR)]
   bb_annotations.PrintNamedStep('compile')
   if options.build_targets:
     build_targets = options.build_targets.split(',')
@@ -87,7 +87,7 @@ def BisectPerfRegression(options):
           '-w', os.path.join(constants.DIR_SOURCE_ROOT, os.pardir)])
   RunCmd([SrcPath('tools', 'run-bisect-perf-regression.py'),
           '-w', os.path.join(constants.DIR_SOURCE_ROOT, os.pardir),
-          '--build-properties=%s' % json.dumps(options.build_properties)] +
+          '--build-properties={0!s}'.format(json.dumps(options.build_properties))] +
           args)
 
 
@@ -119,7 +119,7 @@ def main(argv):
   parser = GetHostStepsOptParser()
   options, args = parser.parse_args(argv[1:])
   if args:
-    return sys.exit('Unused args %s' % args)
+    return sys.exit('Unused args {0!s}'.format(args))
 
   setattr(options, 'target', options.factory_properties.get('target', 'Debug'))
   setattr(options, 'extra_src',

@@ -29,7 +29,7 @@ def CreateStandaloneApk(options):
       shutil.copy(intermediate_path, options.output_apk_path)
 
   input_paths = [options.input_apk_path, options.libraries_top_dir]
-  record_path = '%s.standalone.stamp' % options.input_apk_path
+  record_path = '{0!s}.standalone.stamp'.format(options.input_apk_path)
   md5_check.CallAndRecordIfStale(
       DoZip,
       record_path=record_path,

@@ -582,9 +582,9 @@ class ProcPagemap(object):
       except (IOError, OSError):
         return None
       if len(buf) < chunk_size:
-        _LOGGER.warn('Failed to read pagemap at 0x%x in %d.' % (vma.begin, pid))
+        _LOGGER.warn('Failed to read pagemap at 0x{0:x} in {1:d}.'.format(vma.begin, pid))
       pagemap_values = struct.unpack(
-          '=%dQ' % (len(buf) / ProcPagemap._BYTES_PER_PAGEMAP_VALUE), buf)
+          '={0:d}Q'.format((len(buf) / ProcPagemap._BYTES_PER_PAGEMAP_VALUE)), buf)
       for pagemap_value in pagemap_values:
         vsize += ProcPagemap._BYTES_PER_OS_PAGE
         if pagemap_value & ProcPagemap._MASK_PRESENT:
@@ -716,7 +716,7 @@ def main(argv):
     try:
       pid = int(arg)
     except ValueError:
-      raise SyntaxError("%s is not an integer." % arg)
+      raise SyntaxError("{0!s} is not an integer.".format(arg))
     else:
       pids.append(pid)
 
@@ -725,20 +725,20 @@ def main(argv):
     procs[pid] = _ProcessMemory(pid)
     procs[pid].read_all()
 
-    print '=== PID: %d ===' % pid
+    print '=== PID: {0:d} ==='.format(pid)
 
-    print '   stat: %d' % procs[pid].stat.vsize
-    print '  statm: %d' % (procs[pid].statm.size * 4096)
-    print ' status: %d (Peak:%d)' % (procs[pid].status.vm_size * 1024,
+    print '   stat: {0:d}'.format(procs[pid].stat.vsize)
+    print '  statm: {0:d}'.format((procs[pid].statm.size * 4096))
+    print ' status: {0:d} (Peak:{1:d})'.format(procs[pid].status.vm_size * 1024,
                                      procs[pid].status.vm_peak * 1024)
-    print '  smaps: %d' % (procs[pid].smaps.size * 1024)
-    print 'pagemap: %d' % procs[pid].pagemap.vsize
-    print '   stat: %d' % (procs[pid].stat.rss * 4096)
-    print '  statm: %d' % (procs[pid].statm.resident * 4096)
-    print ' status: %d (Peak:%d)' % (procs[pid].status.vm_rss * 1024,
+    print '  smaps: {0:d}'.format((procs[pid].smaps.size * 1024))
+    print 'pagemap: {0:d}'.format(procs[pid].pagemap.vsize)
+    print '   stat: {0:d}'.format((procs[pid].stat.rss * 4096))
+    print '  statm: {0:d}'.format((procs[pid].statm.resident * 4096))
+    print ' status: {0:d} (Peak:{1:d})'.format(procs[pid].status.vm_rss * 1024,
                                      procs[pid].status.vm_hwm * 1024)
-    print '  smaps: %d' % (procs[pid].smaps.rss * 1024)
-    print 'pagemap: %d' % procs[pid].pagemap.present
+    print '  smaps: {0:d}'.format((procs[pid].smaps.rss * 1024))
+    print 'pagemap: {0:d}'.format(procs[pid].pagemap.present)
 
   return 0
 

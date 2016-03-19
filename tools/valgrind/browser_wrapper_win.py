@@ -36,13 +36,13 @@ wrapper_pid = str(os.getpid())
 # number of entries in the logdir at the end of wrapper_pid.
 # This number is monotonic and we can't have two simultaneously running wrappers
 # with the same PID.
-wrapper_pid += "_%d" % len(glob.glob(old_logdir + "\\*"))
+wrapper_pid += "_{0:d}".format(len(glob.glob(old_logdir + "\\*")))
 
-cmd_to_run[logdir_idx + 1] += "\\testcase.%s.logs" % wrapper_pid
+cmd_to_run[logdir_idx + 1] += "\\testcase.{0!s}.logs".format(wrapper_pid)
 os.makedirs(cmd_to_run[logdir_idx + 1])
 
 if testcase_name:
-  f = open(old_logdir + "\\testcase.%s.name" % wrapper_pid, "w")
+  f = open(old_logdir + "\\testcase.{0!s}.name".format(wrapper_pid), "w")
   print >>f, testcase_name
   f.close()
 

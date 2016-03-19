@@ -40,8 +40,8 @@ def GenerateDepsDirUsingIsolate(suite_name, isolate_file_path,
     isolate_abs_path = os.path.join(constants.DIR_SOURCE_ROOT, isolate_rel_path)
 
   isolated_abs_path = os.path.join(
-      constants.GetOutDirectory(), '%s.isolated' % suite_name)
-  assert os.path.exists(isolate_abs_path), 'Cannot find %s' % isolate_abs_path
+      constants.GetOutDirectory(), '{0!s}.isolated'.format(suite_name))
+  assert os.path.exists(isolate_abs_path), 'Cannot find {0!s}'.format(isolate_abs_path)
 
   i = isolator.Isolator(constants.ISOLATE_DEPS_DIR)
   i.Clear()

@@ -72,22 +72,22 @@ class TestGetFilesChanged(unittest.TestCase):
     self.assertGreater(len(devices), 0, 'No device attached!')
     self.ac = android_commands.AndroidCommands(device=devices[0])
     self.host_data_dir = os.path.realpath('test_push_data')
-    self.device_data_dir = '%s/test_push_data' % (
-        self.ac.RunShellCommand('realpath %s' %
-            self.ac.GetExternalStorage())[0])
+    self.device_data_dir = '{0!s}/test_push_data'.format((
+        self.ac.RunShellCommand('realpath {0!s}'.format(
+            self.ac.GetExternalStorage()))[0]))
 
     os.mkdir(self.host_data_dir)
     for i in xrange(1, 10):
-      with open('%s/%d.txt' % (self.host_data_dir, i), 'w') as f:
-        f.write('file #%d' % i)
+      with open('{0!s}/{1:d}.txt'.format(self.host_data_dir, i), 'w') as f:
+        f.write('file #{0:d}'.format(i))
 
-    self.ac.RunShellCommand('mkdir %s' % self.device_data_dir)
+    self.ac.RunShellCommand('mkdir {0!s}'.format(self.device_data_dir))
 
   def testGetFilesChangedAllNeeded(self):
     """ Tests GetFilesChanged when none of the files are on the device.
     """
-    expected = [('%s/%d.txt' % (self.host_data_dir, i),
-                 '%s/%d.txt' % (self.device_data_dir, i))
+    expected = [('{0!s}/{1:d}.txt'.format(self.host_data_dir, i),
+                 '{0!s}/{1:d}.txt'.format(self.device_data_dir, i))
                 for i in xrange(1, 10)]
     actual = self.ac.GetFilesChanged(self.host_data_dir, self.device_data_dir)
     self.assertSequenceEqual(expected, actual)
@@ -96,10 +96,10 @@ class TestGetFilesChanged(unittest.TestCase):
     """ Tests GetFilesChanged when some of the files are on the device.
     """
     for i in xrange(1, 5):
-      self.ac._adb.Push('%s/%d.txt' % (self.host_data_dir, i),
+      self.ac._adb.Push('{0!s}/{1:d}.txt'.format(self.host_data_dir, i),
                         self.device_data_dir)
-    expected = [('%s/%d.txt' % (self.host_data_dir, i),
-                 '%s/%d.txt' % (self.device_data_dir, i))
+    expected = [('{0!s}/{1:d}.txt'.format(self.host_data_dir, i),
+                 '{0!s}/{1:d}.txt'.format(self.device_data_dir, i))
                 for i in xrange(5, 10)]
     actual = self.ac.GetFilesChanged(self.host_data_dir, self.device_data_dir)
     self.assertSequenceEqual(expected, actual)
@@ -108,7 +108,7 @@ class TestGetFilesChanged(unittest.TestCase):
     """ Tests GetFilesChanged when all of the files are on the device.
     """
     for i in xrange(1, 10):
-      self.ac._adb.Push('%s/%d.txt' % (self.host_data_dir, i),
+      self.ac._adb.Push('{0!s}/{1:d}.txt'.format(self.host_data_dir, i),
                         self.device_data_dir)
     expected = []
     actual = self.ac.GetFilesChanged(self.host_data_dir, self.device_data_dir)
@@ -120,20 +120,20 @@ class TestGetFilesChanged(unittest.TestCase):
         This tests both with and without the ignore_filenames flag set.
     """
     for i in xrange(5, 10):
-      self.ac._adb.Push('%s/%d.txt' % (self.host_data_dir, i),
+      self.ac._adb.Push('{0!s}/{1:d}.txt'.format(self.host_data_dir, i),
                         self.device_data_dir)
-    os.rename('%s/5.txt' % (self.host_data_dir),
-              '%s/99.txt' % (self.host_data_dir))
+    os.rename('{0!s}/5.txt'.format((self.host_data_dir)),
+              '{0!s}/99.txt'.format((self.host_data_dir)))
 
-    expected = [('%s/%d.txt' % (self.host_data_dir, i),
-                 '%s/%d.txt' % (self.device_data_dir, i))
+    expected = [('{0!s}/{1:d}.txt'.format(self.host_data_dir, i),
+                 '{0!s}/{1:d}.txt'.format(self.device_data_dir, i))
                 for i in xrange(1, 5)]
     actual = self.ac.GetFilesChanged(self.host_data_dir, self.device_data_dir,
                                      ignore_filenames=True)
     self.assertSequenceEqual(expected, actual)
 
-    expected.append(('%s/99.txt' % self.host_data_dir,
-                     '%s/99.txt' % self.device_data_dir))
+    expected.append(('{0!s}/99.txt'.format(self.host_data_dir),
+                     '{0!s}/99.txt'.format(self.device_data_dir)))
     actual = self.ac.GetFilesChanged(self.host_data_dir, self.device_data_dir)
     self.assertSequenceEqual(expected, actual)
 
@@ -143,46 +143,46 @@ class TestGetFilesChanged(unittest.TestCase):
         This tests both with and without the ignore_filenames flag set.
     """
     for i in xrange(5, 10):
-      self.ac._adb.Push('%s/%d.txt' % (self.host_data_dir, i),
+      self.ac._adb.Push('{0!s}/{1:d}.txt'.format(self.host_data_dir, i),
                         self.device_data_dir)
-    shutil.copy('%s/5.txt' % self.host_data_dir,
-                '%s/99.txt' % self.host_data_dir)
+    shutil.copy('{0!s}/5.txt'.format(self.host_data_dir),
+                '{0!s}/99.txt'.format(self.host_data_dir))
 
-    expected = [('%s/%d.txt' % (self.host_data_dir, i),
-                 '%s/%d.txt' % (self.device_data_dir, i))
+    expected = [('{0!s}/{1:d}.txt'.format(self.host_data_dir, i),
+                 '{0!s}/{1:d}.txt'.format(self.device_data_dir, i))
                 for i in xrange(1, 5)]
     actual = self.ac.GetFilesChanged(self.host_data_dir, self.device_data_dir,
                                      ignore_filenames=True)
     self.assertSequenceEqual(expected, actual)
 
-    expected.append(('%s/99.txt' % self.host_data_dir,
-                     '%s/99.txt' % self.device_data_dir))
+    expected.append(('{0!s}/99.txt'.format(self.host_data_dir),
+                     '{0!s}/99.txt'.format(self.device_data_dir)))
     actual = self.ac.GetFilesChanged(self.host_data_dir, self.device_data_dir)
     self.assertSequenceEqual(expected, actual)
 
   def testGetFilesChangedIndividual(self):
     """ Tests GetFilesChanged when provided one file.
     """
-    expected = [('%s/1.txt' % self.host_data_dir,
-                 '%s/1.txt' % self.device_data_dir)]
-    actual = self.ac.GetFilesChanged('%s/1.txt' % self.host_data_dir,
-                                     '%s/1.txt' % self.device_data_dir)
+    expected = [('{0!s}/1.txt'.format(self.host_data_dir),
+                 '{0!s}/1.txt'.format(self.device_data_dir))]
+    actual = self.ac.GetFilesChanged('{0!s}/1.txt'.format(self.host_data_dir),
+                                     '{0!s}/1.txt'.format(self.device_data_dir))
     self.assertSequenceEqual(expected, actual)
 
   def testGetFilesChangedFileToDirectory(self):
     """ Tests GetFilesChanged when provided a file from the host and a
         directory on the device.
     """
-    expected = [('%s/1.txt' % self.host_data_dir,
-                 '%s' % self.device_data_dir)]
-    actual = self.ac.GetFilesChanged('%s/1.txt' % self.host_data_dir,
-                                     '%s' % self.device_data_dir)
+    expected = [('{0!s}/1.txt'.format(self.host_data_dir),
+                 '{0!s}'.format(self.device_data_dir))]
+    actual = self.ac.GetFilesChanged('{0!s}/1.txt'.format(self.host_data_dir),
+                                     '{0!s}'.format(self.device_data_dir))
     self.assertSequenceEqual(expected, actual)
 
   def tearDown(self):
     try:
       shutil.rmtree(self.host_data_dir)
-      self.ac.RunShellCommand('rm -rf %s' % self.device_data_dir)
+      self.ac.RunShellCommand('rm -rf {0!s}'.format(self.device_data_dir))
     except:
       pass
 

@@ -48,12 +48,12 @@ def run_gtest_apptest(shell, shell_args, apptest_url, apptest_args, timeout,
   # List the apptest fixtures so they can be run independently for isolation.
   fixtures = get_fixtures(shell, shell_args, apptest_url)
   if not fixtures:
-    print "No tests to run found in %s." % apptest_url
+    print "No tests to run found in {0!s}.".format(apptest_url)
     return False
 
   apptest_result = True
   for fixture in fixtures:
-    isolated_apptest_args = apptest_args + ["--gtest_filter=%s" % fixture]
+    isolated_apptest_args = apptest_args + ["--gtest_filter={0!s}".format(fixture)]
     success = run_apptest(shell, shell_args, apptest_url, isolated_apptest_args,
                           timeout, _gtest_apptest_output_test)
 
@@ -76,19 +76,19 @@ def get_fixtures(shell, shell_args, apptest):
   """
   arguments = []
   arguments.extend(shell_args)
-  arguments.append("--args-for=%s %s" % (apptest, "--gtest_list_tests"))
+  arguments.append("--args-for={0!s} {1!s}".format(apptest, "--gtest_list_tests"))
   arguments.append(apptest)
 
   (exit_code, output, did_time_out) = shell.run_and_get_output(arguments)
   if exit_code or did_time_out:
-    command_line = "mojo_shell " + " ".join(["%r" % x for x in arguments])
-    print "Failed to get test fixtures: %r" % command_line
+    command_line = "mojo_shell " + " ".join(["{0!r}".format(x) for x in arguments])
+    print "Failed to get test fixtures: {0!r}".format(command_line)
     print 72 * '-'
     print output
     print 72 * '-'
     return []
 
-  _logger.debug("Tests listed:\n%s" % output)
+  _logger.debug("Tests listed:\n{0!s}".format(output))
   return _gtest_list_tests(output)
 
 
@@ -103,8 +103,8 @@ def _gtest_list_tests(gtest_list_tests_output):
                                    flags=re.MULTILINE)
 
   if not re.match("^(\w*\.\r?\n(  \w*\r?\n)+)+", gtest_list_tests_output):
-    raise Exception("Unrecognized --gtest_list_tests output:\n%s" %
-                    gtest_list_tests_output)
+    raise Exception("Unrecognized --gtest_list_tests output:\n{0!s}".format(
+                    gtest_list_tests_output))
 
   output_lines = gtest_list_tests_output.split("\n")
 

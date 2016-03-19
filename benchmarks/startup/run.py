@@ -14,15 +14,15 @@ def run(args, paths):
   # MojoMain() is called. The overall execution time reflects the startup
   # performance of the mojo shell.
   startup_time = timeit.timeit(
-      ("subprocess.call(['%s', 'mojo:mojo_benchmark_startup'])" %
-           paths.mojo_shell_path),
+      ("subprocess.call(['{0!s}', 'mojo:mojo_benchmark_startup'])".format(
+           paths.mojo_shell_path)),
       "import subprocess", number=rounds)
 
   # The execution time of a noop executable is also measured, in order to offset
   # the cost of timeit()/subprocess.call()/etc.
   noop_time = timeit.timeit(
-      ("subprocess.call(['%s'])" %
-           os.path.join(paths.build_dir, 'mojo_benchmark_startup_noop')),
+      ("subprocess.call(['{0!s}'])".format(
+           os.path.join(paths.build_dir, 'mojo_benchmark_startup_noop'))),
       "import subprocess", number=rounds)
 
   # TODO(yzshen): Consider also testing the startup time when
@@ -31,5 +31,4 @@ def run(args, paths):
   # Convert the execution time to milliseconds and compute the average for
   # a single run.
   result = (startup_time - noop_time) * 1000 / rounds
-  return ("Result: rounds tested: %d; average startup time: %f ms" %
-          (rounds, result))
+  return ("Result: rounds tested: {0:d}; average startup time: {1:f} ms".format(rounds, result))

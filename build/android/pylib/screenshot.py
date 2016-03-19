@@ -35,7 +35,7 @@ class VideoRecorder(object):
       device = pylib.device.device_utils.DeviceUtils(device)
     self._device = device
     self._device_file = (
-        '%s/screen-recording.mp4' % device.GetExternalStoragePath())
+        '{0!s}/screen-recording.mp4'.format(device.GetExternalStoragePath()))
     self._recorder = None
     self._recorder_stdout = None
     self._is_started = False
@@ -46,7 +46,7 @@ class VideoRecorder(object):
     self._args += ['shell', 'screenrecord', '--verbose']
     self._args += ['--bit-rate', str(megabits_per_second * 1000 * 1000)]
     if size:
-      self._args += ['--size', '%dx%d' % size]
+      self._args += ['--size', '{0:d}x{1:d}'.format(*size)]
     if rotate:
       self._args += ['--rotate']
     self._args += [self._device_file]
@@ -91,9 +91,9 @@ class VideoRecorder(object):
     # DeviceUtils.
     host_file_name = (
         host_file
-        or 'screen-recording-%s.mp4' % time.strftime('%Y%m%dT%H%M%S',
-                                                     time.localtime()))
+        or 'screen-recording-{0!s}.mp4'.format(time.strftime('%Y%m%dT%H%M%S',
+                                                     time.localtime())))
     host_file_name = os.path.abspath(host_file_name)
     self._device.PullFile(self._device_file, host_file_name)
-    self._device.RunShellCommand('rm -f "%s"' % self._device_file)
+    self._device.RunShellCommand('rm -f "{0!s}"'.format(self._device_file))
     return host_file_name

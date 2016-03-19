@@ -97,8 +97,8 @@ class PerfControl(object):
 
   def _ForEachCpu(self, cmd):
     script = '; '.join([
-        'for CPU in %s' % self._cpu_file_list,
-        'do %s' % cmd,
+        'for CPU in {0!s}'.format(self._cpu_file_list),
+        'do {0!s}'.format(cmd),
         'echo -n "%~%$?%~%"',
         'done'
     ])
@@ -121,7 +121,7 @@ class PerfControl(object):
     self._WriteEachCpuFile('cpufreq/scaling_governor', value)
 
   def _SetScalingMaxFreq(self, value):
-    self._WriteEachCpuFile('cpufreq/scaling_max_freq', '%d' % value)
+    self._WriteEachCpuFile('cpufreq/scaling_max_freq', '{0:d}'.format(value))
 
   def _SetMaxGpuClock(self, value):
     self._device.WriteFile('/sys/class/kgsl/kgsl-3d0/max_gpuclk',

@@ -71,7 +71,7 @@ def ToolPath(tool, toolchain_info=None):
   else:
     raise Exception("Could not find tool chain")
 
-  toolchain_subdir = ("toolchains/%s/prebuilt/%s/bin" % (
+  toolchain_subdir = ("toolchains/{0!s}/prebuilt/{1!s}/bin".format(
                       toolchain_source, Uname()))
 
   return os.path.join(NDK_DIR,
@@ -425,7 +425,7 @@ def CallAddr2LineForSet(lib, unique_addrs):
   result = {}
   addrs = sorted(unique_addrs)
   for addr in addrs:
-    child.stdin.write("0x%s\n" % addr)
+    child.stdin.write("0x{0!s}\n".format(addr))
     child.stdin.flush()
     records = []
     first = True
@@ -560,4 +560,4 @@ def CallCppFilt(mangled_symbol):
 def FormatSymbolWithOffset(symbol, offset):
   if offset == 0:
     return symbol
-  return "%s+%d" % (symbol, offset)
+  return "{0!s}+{1:d}".format(symbol, offset)

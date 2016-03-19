@@ -110,7 +110,7 @@ def _get_handler_class_for_path(mappings):
         while len(buf) > 0:
           sha256.update(buf)
           buf = hashed.read(BLOCKSIZE)
-      self.etag = '"%s"' % sha256.hexdigest()
+      self.etag = '"{0!s}"'.format(sha256.hexdigest())
       return self.etag
 
     def send_head(self):
@@ -235,19 +235,17 @@ def start_http_server(mappings, host_port):
     return httpd.server_address
   except socket.error as v:
     error_code = v[0]
-    print 'Failed to start http server for %s on port %d: %s.' % (
+    print 'Failed to start http server for {0!s} on port {1:d}: {2!s}.'.format(
         str(mappings), host_port, os.strerror(error_code))
     if error_code == errno.EADDRINUSE:
       if sys.platform == 'darwin':
-        find_cmd = 'lsof -i :%d' % host_port
+        find_cmd = 'lsof -i :{0:d}'.format(host_port)
         terminate_cmd = (
-            'lsof -i :%d | grep LISTEN | awk \'{print $2}\' | xargs kill -9'
-            % host_port)
+            'lsof -i :{0:d} | grep LISTEN | awk \'{{print $2}}\' | xargs kill -9'.format(host_port))
       else:
-        find_cmd = 'fuser %d/tcp' % host_port
-        terminate_cmd = 'fuser -k %d/tcp' % host_port
-      print ('  Run `%s` to find out which process is using the port;'
-             % find_cmd)
-      print ('  or `%s` terminate it.' % terminate_cmd)
+        find_cmd = 'fuser {0:d}/tcp'.format(host_port)
+        terminate_cmd = 'fuser -k {0:d}/tcp'.format(host_port)
+      print ('  Run `{0!s}` to find out which process is using the port;'.format(find_cmd))
+      print ('  or `{0!s}` terminate it.'.format(terminate_cmd))
     print '---'
     raise

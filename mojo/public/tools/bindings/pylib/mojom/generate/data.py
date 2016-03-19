@@ -87,7 +87,7 @@ def LookupValue(values, name, scope, kind):
   # of a '.' in the requested name to identify this. Otherwise, we prepend the
   # enum name.
   if isinstance(kind, mojom.Enum) and '.' not in name:
-    name = '%s.%s' % (kind.spec.split(':', 1)[1], name)
+    name = '{0!s}.{1!s}'.format(kind.spec.split(':', 1)[1], name)
   for i in reversed(xrange(len(scope) + 1)):
     test_spec = '.'.join(scope[:i])
     if test_spec:
@@ -107,7 +107,7 @@ def FixupExpression(module, value, scope, kind):
     result = LookupValue(module.values, value[1], scope, kind)
     if result:
       if isinstance(result, tuple):
-        raise Exception('Unable to resolve expression: %r' % value[1])
+        raise Exception('Unable to resolve expression: {0!r}'.format(value[1]))
       return result
     if IsBuiltinValue(value[1]):
       return mojom.BuiltinValue(value[1])
@@ -119,7 +119,7 @@ def KindToData(kind):
 def MakeNullableKind(kind):
   if isinstance(kind, mojom.ReferenceKind):
     return kind.MakeNullableKind()
-  raise Exception('kind is not nullable: %s' % kind.spec)
+  raise Exception('kind is not nullable: {0!s}'.format(kind.spec))
 
 def KindFromData(kinds, data, scope):
   kind = LookupKind(kinds, data, scope)
@@ -414,7 +414,7 @@ def EnumFromData(module, data, parent_kind):
   name = enum.name
   if parent_kind:
     name = parent_kind.name + '.' + name
-  enum.spec = 'x:%s.%s' % (module.namespace, name)
+  enum.spec = 'x:{0!s}.{1!s}'.format(module.namespace, name)
   enum.parent_kind = parent_kind
   enum.fields = map(
       lambda field: EnumFieldFromData(module, enum, field, parent_kind),

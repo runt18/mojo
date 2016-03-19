@@ -203,7 +203,7 @@ class BatteryUtils(object):
                         package)
         return None
 
-    network_data_path = '/proc/uid_stat/%s/' % self._cache['uids'][package]
+    network_data_path = '/proc/uid_stat/{0!s}/'.format(self._cache['uids'][package])
     try:
       send_data = int(self._device.ReadFile(network_data_path + 'tcp_snd'))
     # If ReadFile throws exception, it means no network data usage file for
@@ -245,16 +245,14 @@ class BatteryUtils(object):
       if entry[_DUMP_VERSION_INDEX] not in ['8', '9']:
         # Wrong dumpsys version.
         raise device_errors.DeviceVersionError(
-            'Dumpsys version must be 8 or 9. %s found.'
-            % entry[_DUMP_VERSION_INDEX])
+            'Dumpsys version must be 8 or 9. {0!s} found.'.format(entry[_DUMP_VERSION_INDEX]))
       if _ROW_TYPE_INDEX < len(entry) and entry[_ROW_TYPE_INDEX] == 'uid':
         current_package = entry[_PACKAGE_NAME_INDEX]
         if (self._cache['uids'].get(current_package)
             and self._cache['uids'].get(current_package)
             != entry[_PACKAGE_UID_INDEX]):
           raise device_errors.CommandFailedError(
-              'Package %s found multiple times with differnt UIDs %s and %s'
-               % (current_package, self._cache['uids'][current_package],
+              'Package {0!s} found multiple times with differnt UIDs {1!s} and {2!s}'.format(current_package, self._cache['uids'][current_package],
                entry[_PACKAGE_UID_INDEX]))
         self._cache['uids'][current_package] = entry[_PACKAGE_UID_INDEX]
       elif (_PWI_POWER_CONSUMPTION_INDEX < len(entry)

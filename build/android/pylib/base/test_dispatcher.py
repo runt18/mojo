@@ -93,7 +93,7 @@ def _RunTestsFromQueue(runner, collection, out_results, watcher,
     """
     new_test_run_results = base_test_result.TestRunResults()
     for test_result in test_run_results.GetAll():
-      test_result.SetName('%s_%s' % (runner.device_serial[-4:],
+      test_result.SetName('{0!s}_{1!s}'.format(runner.device_serial[-4:],
                                      test_result.GetName()))
       new_test_run_results.AddResult(test_result)
     return new_test_run_results
@@ -103,7 +103,7 @@ def _RunTestsFromQueue(runner, collection, out_results, watcher,
     try:
       if not runner.device.IsOnline():
         # Device is unresponsive, stop handling tests on this device.
-        msg = 'Device %s is unresponsive.' % runner.device_serial
+        msg = 'Device {0!s} is unresponsive.'.format(runner.device_serial)
         logging.warning(msg)
         raise device_errors.DeviceUnreachableError(msg)
       result, retry = runner.RunTest(test.test)
@@ -171,7 +171,7 @@ def _RunAllTests(runners, test_collection_factory, num_retries, timeout=None,
   Returns:
     A tuple of (TestRunResults object, exit code)
   """
-  logging.warning('Running tests with %s test runners.' % (len(runners)))
+  logging.warning('Running tests with {0!s} test runners.'.format((len(runners))))
   results = []
   exit_code = 0
   run_results = base_test_result.TestRunResults()
@@ -195,8 +195,8 @@ def _RunAllTests(runners, test_collection_factory, num_retries, timeout=None,
     logging.error(e)
 
   if not all((len(tc) == 0 for tc in test_collections)):
-    logging.error('Only ran %d tests (all devices are likely offline).' %
-                  len(results))
+    logging.error('Only ran {0:d} tests (all devices are likely offline).'.format(
+                  len(results)))
     for tc in test_collections:
       run_results.AddResults(base_test_result.BaseTestResult(
           t, base_test_result.ResultType.UNKNOWN) for t in tc.test_names())
@@ -223,7 +223,7 @@ def _CreateRunners(runner_factory, devices, timeout=None):
   Returns:
     A list of TestRunner objects.
   """
-  logging.warning('Creating %s test runners.' % len(devices))
+  logging.warning('Creating {0!s} test runners.'.format(len(devices)))
   runners = []
   counter = _ThreadSafeCounter()
   threads = reraiser_thread.ReraiserThreadGroup(
@@ -329,4 +329,4 @@ def RunTests(tests, runner_factory, devices, shard=True,
     except device_errors.DeviceUnreachableError as e:
       logging.warning('Device unresponsive during TearDown: [%s]', e)
     except Exception as e:
-      logging.error('Unexpected exception caught during TearDown: %s' % str(e))
+      logging.error('Unexpected exception caught during TearDown: {0!s}'.format(str(e)))

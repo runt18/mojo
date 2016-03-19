@@ -28,7 +28,7 @@ def PrintTraceLines(trace_lines):
   print "  RELADDR   " + "FUNCTION".ljust(maxlen) + "  FILE:LINE"
   for tl in trace_lines:
     (addr, symbol_with_offset, location) = tl
-    print "  %8s  %s  %s" % (addr, symbol_with_offset.ljust(maxlen), location)
+    print "  {0:8!s}  {1!s}  {2!s}".format(addr, symbol_with_offset.ljust(maxlen), location)
   return
 
 
@@ -40,7 +40,7 @@ def PrintValueLines(value_lines):
   print "  ADDR      VALUE     " + "FUNCTION".ljust(maxlen) + "  FILE:LINE"
   for vl in value_lines:
     (addr, value, symbol_with_offset, location) = vl
-    print "  %8s  %8s  %s  %s" % (addr, value, symbol_with_offset.ljust(maxlen), location)
+    print "  {0:8!s}  {1:8!s}  {2!s}  {3!s}".format(addr, value, symbol_with_offset.ljust(maxlen), location)
   return
 
 UNKNOWN = "<unknown>"

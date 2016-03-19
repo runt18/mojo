@@ -118,8 +118,8 @@ def build(extensions):
         result = True
     except:
         import traceback
-        print('error building extensions %s' % (
-            [ext.name for ext in extensions],))
+        print('error building extensions {0!s}'.format(
+            [ext.name for ext in extensions]))
         traceback.print_exc()
         result = False
     return extensions, result
@@ -148,7 +148,7 @@ def parse_args():
     if not args:
         args = ['./Lib']
     elif len(args) > 1:
-        parser.error('only one argument expected, got %d' % len(args))
+        parser.error('only one argument expected, got {0:d}'.format(len(args)))
     return options, args
 
 
@@ -166,7 +166,7 @@ if __name__ == '__main__':
         try:
             import multiprocessing
             pool = multiprocessing.Pool(parallel_jobs)
-            print("Building in %d parallel processes" % parallel_jobs)
+            print("Building in {0:d} parallel processes".format(parallel_jobs))
         except (ImportError, OSError):
             print("Not building in parallel")
             parallel_jobs = 0
@@ -181,7 +181,7 @@ if __name__ == '__main__':
         pool.join()
         for ext, result in results:
             if not result:
-                print("building extension %s failed" % (ext[0].name,))
+                print("building extension {0!s} failed".format(ext[0].name))
     else:
         sys.argv[1:] = sys_args
         build(extensions)

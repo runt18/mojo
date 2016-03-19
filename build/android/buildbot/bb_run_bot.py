@@ -39,9 +39,9 @@ def DictDiff(d1, d2):
   diff = []
   for key in sorted(set(d1.keys() + d2.keys())):
     if key in d1 and d1[key] != d2.get(key):
-      diff.append('- %s=%s' % (key, pipes.quote(d1[key])))
+      diff.append('- {0!s}={1!s}'.format(key, pipes.quote(d1[key])))
     if key in d2 and d2[key] != d1.get(key):
-      diff.append('+ %s=%s' % (key, pipes.quote(d2[key])))
+      diff.append('+ {0!s}={1!s}'.format(key, pipes.quote(d2[key])))
   return '\n'.join(diff)
 
 
@@ -53,10 +53,10 @@ def GetEnvironment(host_obj, testing, extra_env_vars=None):
   envsetup_cmd = '. build/android/envsetup.sh'
   if testing:
     # Skip envsetup to avoid presubmit dependence on android deps.
-    print 'Testing mode - skipping "%s"' % envsetup_cmd
+    print 'Testing mode - skipping "{0!s}"'.format(envsetup_cmd)
     envsetup_cmd = ':'
   else:
-    print 'Running %s' % envsetup_cmd
+    print 'Running {0!s}'.format(envsetup_cmd)
   proc = subprocess.Popen(['bash', '-exc',
     envsetup_cmd + ' >&2; python build/android/buildbot/env_to_json.py'],
     stdout=subprocess.PIPE, stderr=subprocess.PIPE,
@@ -68,12 +68,12 @@ def GetEnvironment(host_obj, testing, extra_env_vars=None):
     sys.exit(1)
   env = json.loads(json_env)
   env['GYP_DEFINES'] = env.get('GYP_DEFINES', '') + \
-      ' OS=android fastbuild=1 use_goma=1 gomadir=%s' % bb_utils.GOMA_DIR
+      ' OS=android fastbuild=1 use_goma=1 gomadir={0!s}'.format(bb_utils.GOMA_DIR)
   if host_obj.target_arch:
-    env['GYP_DEFINES'] += ' target_arch=%s' % host_obj.target_arch
+    env['GYP_DEFINES'] += ' target_arch={0!s}'.format(host_obj.target_arch)
   extra_gyp = host_obj.extra_gyp_defines
   if extra_gyp:
-    env['GYP_DEFINES'] += ' %s' % extra_gyp
+    env['GYP_DEFINES'] += ' {0!s}'.format(extra_gyp)
     if re.search('(asan|clang)=1', extra_gyp):
       env.pop('CXX_target', None)
 
@@ -99,7 +99,7 @@ def GetCommands(options, bot_config):
   """
   property_args = bb_utils.EncodeProperties(options)
   commands = [[bot_config.host_obj.script,
-               '--steps=%s' % ','.join(bot_config.host_obj.host_steps)] +
+               '--steps={0!s}'.format(','.join(bot_config.host_obj.host_steps))] +
               property_args + (bot_config.host_obj.extra_args or [])]
 
   test_obj = bot_config.test_obj
@@ -131,7 +131,7 @@ def GetBotStepMap():
       'gl_unittests',
   ]
   flakiness_server = (
-      '--flakiness-server=%s' % constants.UPSTREAM_FLAKINESS_SERVER)
+      '--flakiness-server={0!s}'.format(constants.UPSTREAM_FLAKINESS_SERVER))
   experimental = ['--experimental']
   bisect_chrome_output_dir = os.path.abspath(
       os.path.join(os.path.dirname(__file__), os.pardir, os.pardir, os.pardir,
@@ -243,7 +243,7 @@ def GetBestMatch(id_map, id):
     substring_matches = [x for x in id_map.iterkeys() if x in id]
     if substring_matches:
       max_id = max(substring_matches, key=len)
-      print 'Using config from id="%s" (substring match).' % max_id
+      print 'Using config from id="{0!s}" (substring match).'.format(max_id)
       config = id_map[max_id]
   return config
 
@@ -266,7 +266,7 @@ def GetBotConfig(options, bot_step_map):
 
   bot_config = GetBestMatch(bot_step_map, bot_id)
   if not bot_config:
-    print 'Error: config for id="%s" cannot be inferred.' % bot_id
+    print 'Error: config for id="{0!s}" cannot be inferred.'.format(bot_id)
   return bot_config
 
 
@@ -299,7 +299,7 @@ def main(argv):
   parser = GetRunBotOptParser()
   options, args = parser.parse_args(argv[1:])
   if args:
-    parser.error('Unused args: %s' % args)
+    parser.error('Unused args: {0!s}'.format(args))
 
   bot_config = GetBotConfig(options, GetBotStepMap())
   if not bot_config:

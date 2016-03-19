@@ -265,7 +265,7 @@ class FusedCFuncDefNode(StatListNode):
 
     def _dtype_name(self, dtype):
         if dtype.is_typedef:
-            return '___pyx_%s' % dtype
+            return '___pyx_{0!s}'.format(dtype)
         return str(dtype).replace(' ', '_')
 
     def _dtype_type(self, dtype):
@@ -277,7 +277,7 @@ class FusedCFuncDefNode(StatListNode):
         if dtype.is_pyobject:
             return 'sizeof(void *)'
         else:
-            return "sizeof(%s)" % self._dtype_type(dtype)
+            return "sizeof({0!s})".format(self._dtype_type(dtype))
 
     def _buffer_check_numpy_dtype_setup_cases(self, pyx_code):
         "Setup some common cases to match dtypes against specializations"
@@ -313,7 +313,7 @@ class FusedCFuncDefNode(StatListNode):
             dtype = specialized_type.dtype
             pyx_code.context.update(
                 itemsize_match=self._sizeof_dtype(dtype) + " == itemsize",
-                signed_match="not (%s_is_signed ^ dtype_signed)" % self._dtype_name(dtype),
+                signed_match="not ({0!s}_is_signed ^ dtype_signed)".format(self._dtype_name(dtype)),
                 dtype=dtype,
                 specialized_type_name=specialized_type.specialization_string)
 
@@ -325,12 +325,12 @@ class FusedCFuncDefNode(StatListNode):
 
             for dtype_category, codewriter in dtypes:
                 if dtype_category:
-                    cond = '{{itemsize_match}} and arg.ndim == %d' % (
-                                                    specialized_type.ndim,)
+                    cond = '{{{{itemsize_match}}}} and arg.ndim == {0:d}'.format(
+                                                    specialized_type.ndim)
                     if dtype.is_int:
                         cond += ' and {{signed_match}}'
 
-                    if codewriter.indenter("if %s:" % cond):
+                    if codewriter.indenter("if {0!s}:".format(cond)):
                         # codewriter.putln("print 'buffer match found based on numpy dtype'")
                         codewriter.putln(self.match)
                         codewriter.putln("break")
@@ -364,17 +364,17 @@ class FusedCFuncDefNode(StatListNode):
 
         pyx_code.put_chunk(
             u"""
-                # try {{dtype}}
-                if itemsize == -1 or itemsize == {{sizeof_dtype}}:
-                    memslice = {{coerce_from_py_func}}(arg)
+                # try {{{{dtype}}}}
+                if itemsize == -1 or itemsize == {{{{sizeof_dtype}}}}:
+                    memslice = {{{{coerce_from_py_func}}}}(arg)
                     if memslice.memview:
                         __PYX_XDEC_MEMVIEW(&memslice, 1)
                         # print 'found a match for the buffer through format parsing'
-                        %s
+                        {0!s}
                         break
                     else:
                         __pyx_PyErr_Clear()
-            """ % self.match)
+            """.format(self.match))
 
     def _buffer_checks(self, buffer_types, pyx_code, decl_code, env):
         """
@@ -421,7 +421,7 @@ class FusedCFuncDefNode(StatListNode):
 
                 pyx_code.dedent()
         else:
-            pyx_code.putln("else: %s" % self.no_match)
+            pyx_code.putln("else: {0!s}".format(self.no_match))
 
     def _buffer_declarations(self, pyx_code, decl_code, all_buffer_types):
         """
@@ -461,7 +461,7 @@ class FusedCFuncDefNode(StatListNode):
             if dtype.is_typedef:
                  #decl_code.putln("ctypedef %s %s" % (dtype.resolve(),
                  #                                    self._dtype_name(dtype)))
-                decl_code.putln('ctypedef %s %s "%s"' % (dtype.resolve(),
+                decl_code.putln('ctypedef {0!s} {1!s} "{2!s}"'.format(dtype.resolve(),
                                                          self._dtype_name(dtype),
                                                          dtype.declaration_code("")))
 
@@ -769,8 +769,7 @@ class FusedCFuncDefNode(StatListNode):
             self.resulting_fused_function.generate_evaluation_code(code)
 
             code.putln(
-                "((__pyx_FusedFunctionObject *) %s)->__signatures__ = %s;" %
-                                    (self.resulting_fused_function.result(),
+                "((__pyx_FusedFunctionObject *) {0!s})->__signatures__ = {1!s};".format(self.resulting_fused_function.result(),
                                      self.__signatures__.result()))
             code.put_giveref(self.__signatures__.result())
 

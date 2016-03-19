@@ -21,7 +21,7 @@ class NonManglingModuleScope(Symtab.ModuleScope):
                 # Functions, classes etc. gets a manually defined prefix easily
                 # manually callable instead (the one passed to CythonUtilityCode)
                 prefix = self.prefix
-            return "%s%s" % (prefix, name)
+            return "{0!s}{1!s}".format(prefix, name)
         else:
             return Symtab.ModuleScope.mangle(self, prefix)
 

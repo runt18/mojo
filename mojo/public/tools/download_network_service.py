@@ -19,7 +19,7 @@ script_dir = os.path.dirname(os.path.realpath(__file__))
 
 
 def download_app(app, version, tools_directory):
-  prebuilt_directory = os.path.join(script_dir, "prebuilt/%s" % app)
+  prebuilt_directory = os.path.join(script_dir, "prebuilt/{0!s}".format(app))
   stamp_path = os.path.join(prebuilt_directory, "VERSION")
 
   try:
@@ -44,9 +44,9 @@ def download_app_for_platform(app, version, platform, tools_directory):
   depot_tools_path = find_depot_tools.add_depot_tools_to_path()
 
   binary_name = app + ".mojo"
-  gs_path = "gs://mojo/%s/%s/%s/%s.zip" % (app, version, platform, binary_name)
+  gs_path = "gs://mojo/{0!s}/{1!s}/{2!s}/{3!s}.zip".format(app, version, platform, binary_name)
   output_directory = os.path.join(script_dir,
-                                  "prebuilt/%s/%s" % (app, platform))
+                                  "prebuilt/{0!s}/{1!s}".format(app, platform))
 
   with tempfile.NamedTemporaryFile() as temp_zip_file:
     gs.download_from_public_bucket(gs_path, temp_zip_file.name,

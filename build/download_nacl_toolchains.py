@@ -18,7 +18,7 @@ def Main(args):
   package_version_dir = os.path.join(nacl_build_dir, 'package_version')
   package_version = os.path.join(package_version_dir, 'package_version.py')
   if not os.path.exists(package_version):
-    print "Can't find '%s'" % package_version
+    print "Can't find '{0!s}'".format(package_version)
     print 'Presumably you are intentionally building without NativeClient.'
     print 'Skipping NativeClient toolchain download.'
     sys.exit(0)

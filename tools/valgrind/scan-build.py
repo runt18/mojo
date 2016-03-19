@@ -95,12 +95,12 @@ class Builder(object):
     return self._waterfall.GetLatestBuild(self._name)
 
   def GetBuildPath(self, build_num):
-    return "%s/%s/builds/%d" % (
+    return "{0!s}/{1!s}/builds/{2:d}".format(
         self._waterfall._root_url, urllib.quote(self._name), build_num)
 
   def _FetchBuildLog(self, build_num):
-    local_build_path = "builds/%s" % self._name
-    local_build_file = os.path.join(local_build_path, "%d.log" % build_num)
+    local_build_path = "builds/{0!s}".format(self._name)
+    local_build_file = os.path.join(local_build_path, "{0:d}.log".format(build_num))
     return self._waterfall._cache.FetchData(local_build_file,
                                             self.GetBuildPath(build_num))
 
@@ -233,11 +233,11 @@ def main(argv):
           data['first_url'] = path
           result.append(data)
         else:
-          print "Earliest occurrence in build %d" % min_build
-          print "Latest occurrence in build %d" % max(occurrences)
-          print "Latest build: %d" % builder.LatestBuild()
+          print "Earliest occurrence in build {0:d}".format(min_build)
+          print "Latest occurrence in build {0:d}".format(max(occurrences))
+          print "Latest build: {0:d}".format(builder.LatestBuild())
           print path
-          print "%d total" % len(occurrences)
+          print "{0:d} total".format(len(occurrences))
     if args.json:
       json.dump(result, sys.stdout, indent=2, sort_keys=True)
 

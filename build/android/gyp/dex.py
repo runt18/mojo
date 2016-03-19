@@ -21,7 +21,7 @@ def DoDex(options, paths):
 
   dex_cmd += paths
 
-  record_path = '%s.md5.stamp' % options.dex_path
+  record_path = '{0!s}.md5.stamp'.format(options.dex_path)
   md5_check.CallAndRecordIfStale(
       lambda: build_utils.CheckOutput(dex_cmd, print_stderr=False),
       record_path=record_path,

@@ -55,7 +55,7 @@ def _PushDataDeps(device, test_options):
     if os.path.exists(host_test_files_path):
       host_device_file_tuples += [(
           host_test_files_path,
-          '%s/%s/%s' % (
+          '{0!s}/{1!s}/{2!s}'.format(
               device.GetExternalStoragePath(),
               DEVICE_DATA_DIR,
               dst_layer))]

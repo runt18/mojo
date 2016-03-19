@@ -212,10 +212,10 @@ class GdbDebuggerTestCase(DebuggerTestCase):
             python
 
             from Cython.Debugger.Tests import test_libcython_in_gdb
-            test_libcython_in_gdb.main(version=%r)
+            test_libcython_in_gdb.main(version={0!r})
 
             end
-            ''' % (sys.version_info[:2],))
+            '''.format(sys.version_info[:2]))
 
         self.gdb_command_file = cygdb.make_command_file(self.tempdir,
                                                         prefix_code)
@@ -274,9 +274,9 @@ class TestAll(GdbDebuggerTestCase):
             sys.stderr.write(err)
         elif exit_status >= 2:
             border = u'*' * 30
-            start  = u'%s   v INSIDE GDB v   %s' % (border, border)
-            end    = u'%s   ^ INSIDE GDB ^   %s' % (border, border)
-            errmsg = u'\n%s\n%s%s' % (start, err, end)
+            start  = u'{0!s}   v INSIDE GDB v   {1!s}'.format(border, border)
+            end    = u'{0!s}   ^ INSIDE GDB ^   {1!s}'.format(border, border)
+            errmsg = u'\n{0!s}\n{1!s}{2!s}'.format(start, err, end)
 
             sys.stderr.write(errmsg)
 

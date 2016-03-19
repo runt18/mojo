@@ -46,10 +46,10 @@ class LogcatMonitorTest(unittest.TestCase):
     for expected, actual in itertools.izip_longest(expected_iter, actual_iter):
       self.assertIsNotNone(
           expected,
-          msg='actual has unexpected elements starting with %s' % str(actual))
+          msg='actual has unexpected elements starting with {0!s}'.format(str(actual)))
       self.assertIsNotNone(
           actual,
-          msg='actual is missing elements starting with %s' % str(expected))
+          msg='actual is missing elements starting with {0!s}'.format(str(expected)))
       self.assertEqual(actual.group('proc_id'), expected[0])
       self.assertEqual(actual.group('thread_id'), expected[1])
       self.assertEqual(actual.group('log_level'), expected[2])

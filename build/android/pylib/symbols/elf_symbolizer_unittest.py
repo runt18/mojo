@@ -85,7 +85,7 @@ class ELFSymbolizerTest(unittest.TestCase):
           addr += _UNKNOWN_MOCK_ADDR
           exp_unknown = True
 
-      exp_name = 'mock_sym_for_addr_%d' % addr if not exp_unknown else None
+      exp_name = 'mock_sym_for_addr_{0:d}'.format(addr) if not exp_unknown else None
       exp_source_path = 'mock_src/mock_lib1.so.c' if not exp_unknown else None
       exp_source_line = addr if not exp_unknown else None
       cb_arg = (addr, exp_name, exp_source_path, exp_source_line, exp_inline)
@@ -103,7 +103,7 @@ class ELFSymbolizerTest(unittest.TestCase):
 
     # Test symbols with valid name but incomplete path.
     addr = _INCOMPLETE_MOCK_ADDR
-    exp_name = 'mock_sym_for_addr_%d' % addr
+    exp_name = 'mock_sym_for_addr_{0:d}'.format(addr)
     exp_source_path = None
     exp_source_line = None
     cb_arg = (addr, exp_name, exp_source_path, exp_source_line, False)
@@ -128,7 +128,7 @@ class ELFSymbolizerTest(unittest.TestCase):
         addr2line_timeout=0.5)
 
     for addr in xrange(num_symbols):
-      exp_name = 'mock_sym_for_addr_%d' % addr
+      exp_name = 'mock_sym_for_addr_{0:d}'.format(addr)
       exp_source_path = 'mock_src/mock_lib1.so.c'
       exp_source_line = addr
       cb_arg = (addr, exp_name, exp_source_path, exp_source_line, False)

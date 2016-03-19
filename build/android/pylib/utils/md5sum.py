@@ -40,7 +40,7 @@ def CalculateHostMd5Sums(paths):
   md5sum_bin_host_path = os.path.join(
       constants.GetOutDirectory(), 'md5sum_bin_host')
   if not os.path.exists(md5sum_bin_host_path):
-    raise IOError('File not built: %s' % md5sum_bin_host_path)
+    raise IOError('File not built: {0!s}'.format(md5sum_bin_host_path))
   out = cmd_helper.GetCmdOutput([md5sum_bin_host_path] + [p for p in paths])
 
   return _ParseMd5SumOutput(out.splitlines())
@@ -63,7 +63,7 @@ def CalculateDeviceMd5Sums(paths, device):
   if not device.FileExists(MD5SUM_DEVICE_BIN_PATH):
     md5sum_dist_path = os.path.join(constants.GetOutDirectory(), 'md5sum_dist')
     if not os.path.exists(md5sum_dist_path):
-      raise IOError('File not built: %s' % md5sum_dist_path)
+      raise IOError('File not built: {0!s}'.format(md5sum_dist_path))
     device.adb.Push(md5sum_dist_path, MD5SUM_DEVICE_LIB_PATH)
 
   out = []

@@ -36,7 +36,7 @@ def analyze_entrypoints(dart_sdk, package_root, entrypoints):
   try:
     subprocess.check_output(cmd, stderr=subprocess.STDOUT)
   except subprocess.CalledProcessError as e:
-    print('Failed analyzing %s' % entrypoints)
+    print('Failed analyzing {0!s}'.format(entrypoints))
     print(e.output)
     return e.returncode
   return 0
@@ -45,7 +45,7 @@ def analyze_entrypoints(dart_sdk, package_root, entrypoints):
 def analyze_package(dart_sdk, package_root, package):
   package_name = package[0]
   package_entrypoints = package[1]
-  print('Analyzing dart-pkg %s ' % package_name)
+  print('Analyzing dart-pkg {0!s} '.format(package_name))
   return analyze_entrypoints(dart_sdk, package_root, package_entrypoints)
 
 # Filter entrypoints for files that exist.
@@ -55,7 +55,7 @@ def filter_entrypoints(package_name, entrypoints):
     if os.path.isfile(entrypoint):
       result.append(entrypoint)
     else:
-      print('WARNING: Could not find %s from %s ' % (entrypoint, package_name))
+      print('WARNING: Could not find {0!s} from {1!s} '.format(entrypoint, package_name))
   return result
 
 def main():

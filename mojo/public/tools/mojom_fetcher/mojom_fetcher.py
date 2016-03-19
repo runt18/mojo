@@ -47,7 +47,7 @@ class UrlRewriter(object):
       for source in self._mappings.keys():
         if source in target or target in source:
           raise UrlRewriterException(
-              "%s and %s share a common subpath" % (source, target))
+              "{0!s} and {1!s} share a common subpath".format(source, target))
 
   def rewrite(self, path):
     for origin, destination in self._mappings.items():

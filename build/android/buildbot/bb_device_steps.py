@@ -141,7 +141,7 @@ def _RunTest(options, cmd, suite):
   args += ['--test-platform', 'android']
   if options.factory_properties.get('generate_gtest_json'):
     args.append('--generate-json-file')
-    args += ['-o', 'gtest-results/%s' % suite,
+    args += ['-o', 'gtest-results/{0!s}'.format(suite),
              '--annotate', 'gtest',
              '--build-number', str(options.build_properties.get('buildnumber',
                                                                 '')),
@@ -151,8 +151,8 @@ def _RunTest(options, cmd, suite):
   else:
     args += ['--target', 'Debug']
   if options.flakiness_server:
-    args += ['--flakiness-dashboard-server=%s' %
-                options.flakiness_server]
+    args += ['--flakiness-dashboard-server={0!s}'.format(
+                options.flakiness_server)]
   args += cmd
   RunCmd(args, cwd=DIR_BUILD_ROOT)
 
@@ -178,7 +178,7 @@ def RunTestSuites(options, suites, suites_options=None):
   if options.asan:
     args.append('--tool=asan')
   if options.gtest_filter:
-    args.append('--gtest-filter=%s' % options.gtest_filter)
+    args.append('--gtest-filter={0!s}'.format(options.gtest_filter))
 
   for suite in suites:
     bb_annotations.PrintNamedStep(suite)
@@ -198,12 +198,11 @@ def RunChromeDriverTests(options):
   """Run all the steps for running chromedriver tests."""
   bb_annotations.PrintNamedStep('chromedriver_annotation')
   RunCmd(['chrome/test/chromedriver/run_buildbot_steps.py',
-          '--android-packages=%s,%s,%s,%s' %
-          ('chrome_shell',
+          '--android-packages={0!s},{1!s},{2!s},{3!s}'.format('chrome_shell',
            'chrome_stable',
            'chrome_beta',
            'chromedriver_webview_shell'),
-          '--revision=%s' % _GetRevision(options),
+          '--revision={0!s}'.format(_GetRevision(options)),
           '--update-log'])
 
 def RunChromeProxyTests(options):
@@ -249,7 +248,7 @@ def InstallApk(options, test, print_step=False):
     print_step: Print a buildbot step
   """
   if print_step:
-    bb_annotations.PrintNamedStep('install_%s' % test.name.lower())
+    bb_annotations.PrintNamedStep('install_{0!s}'.format(test.name.lower()))
 
   args = ['--apk_package', test.apk_package]
   if options.target == 'Release':
@@ -270,7 +269,7 @@ def RunInstrumentationSuite(options, test, flunk_on_failure=True,
     Python: Run only host driven Python tests.
     official_build: Run official-build tests.
   """
-  bb_annotations.PrintNamedStep('%s_instrumentation_tests' % test.name.lower())
+  bb_annotations.PrintNamedStep('{0!s}_instrumentation_tests'.format(test.name.lower()))
 
   if test.apk:
     InstallApk(options, test)
@@ -282,14 +281,14 @@ def RunInstrumentationSuite(options, test, flunk_on_failure=True,
   if options.asan:
     args.append('--tool=asan')
   if options.flakiness_server:
-    args.append('--flakiness-dashboard-server=%s' %
-                options.flakiness_server)
+    args.append('--flakiness-dashboard-server={0!s}'.format(
+                options.flakiness_server))
   if options.coverage_bucket:
-    args.append('--coverage-dir=%s' % options.coverage_dir)
+    args.append('--coverage-dir={0!s}'.format(options.coverage_dir))
   if test.isolate_file_path:
-    args.append('--isolate-file-path=%s' % test.isolate_file_path)
+    args.append('--isolate-file-path={0!s}'.format(test.isolate_file_path))
   if test.host_driven_root:
-    args.append('--host-driven-root=%s' % test.host_driven_root)
+    args.append('--host-driven-root={0!s}'.format(test.host_driven_root))
   if test.annotation:
     args.extend(['-A', test.annotation])
   if test.exclude_annotation:
@@ -334,18 +333,18 @@ def RunWebkitLayoutTests(options):
 
   for flag in 'test_results_server', 'driver_name', 'additional_driver_flag':
     if flag in options.factory_properties:
-      cmd_args.extend(['--%s' % flag.replace('_', '-'),
+      cmd_args.extend(['--{0!s}'.format(flag.replace('_', '-')),
                        options.factory_properties.get(flag)])
 
   for f in options.factory_properties.get('additional_expectations', []):
     cmd_args.extend(
-        ['--additional-expectations=%s' % os.path.join(CHROME_SRC_DIR, *f)])
+        ['--additional-expectations={0!s}'.format(os.path.join(CHROME_SRC_DIR, *f))])
 
   # TODO(dpranke): Remove this block after
   # https://codereview.chromium.org/12927002/ lands.
   for f in options.factory_properties.get('additional_expectations_files', []):
     cmd_args.extend(
-        ['--additional-expectations=%s' % os.path.join(CHROME_SRC_DIR, *f)])
+        ['--additional-expectations={0!s}'.format(os.path.join(CHROME_SRC_DIR, *f))])
 
   exit_code = RunCmd(
       [SrcPath(os.path.join(BLINK_SCRIPTS_DIR, 'run-webkit-tests'))] + cmd_args)
@@ -384,10 +383,10 @@ def RunWebkitLayoutTests(options):
     base = 'https://storage.googleapis.com/chromium-layout-test-archives'
     builder_name = options.build_properties.get('buildername', '')
     build_number = str(options.build_properties.get('buildnumber', ''))
-    results_link = '%s/%s/%s/layout-test-results/results.html' % (
+    results_link = '{0!s}/{1!s}/{2!s}/layout-test-results/results.html'.format(
         base, EscapeBuilderName(builder_name), build_number)
     bb_annotations.PrintLink('results', results_link)
-    bb_annotations.PrintLink('(zip)', '%s/%s/%s/layout-test-results.zip' % (
+    bb_annotations.PrintLink('(zip)', '{0!s}/{1!s}/{2!s}/layout-test-results.zip'.format(
         base, EscapeBuilderName(builder_name), build_number))
     gs_bucket = 'gs://chromium-layout-test-archives'
     RunCmd([os.path.join(SLAVE_SCRIPTS_DIR, 'chromium',
@@ -452,8 +451,7 @@ def _PrintDashboardLink(link_text, tests, max_tests):
                     '/dashboards/flakiness_dashboard.html#'
                     'master=ChromiumWebkit&tests=')
 
-  bb_annotations.PrintLink('%d %s: %s' %
-                           (len(tests), link_text, test_list_text),
+  bb_annotations.PrintLink('{0:d} {1!s}: {2!s}'.format(len(tests), link_text, test_list_text),
                            dashboard_base + ','.join(tests))
 
 
@@ -602,7 +600,7 @@ def MakeGSPath(options, gs_base_dir):
   revision = _GetRevision(options)
   bot_id = options.build_properties.get('buildername', 'testing')
   randhash = hashlib.sha1(str(random.random())).hexdigest()
-  gs_path = '%s/%s/%s/%s' % (gs_base_dir, bot_id, revision, randhash)
+  gs_path = '{0!s}/{1!s}/{2!s}/{3!s}'.format(gs_base_dir, bot_id, revision, randhash)
   # remove double slashes, happens with blank revisions and confuses gsutil
   gs_path = re.sub('/+', '/', gs_path)
   return gs_path
@@ -621,9 +619,9 @@ def UploadHTML(options, gs_base_dir, dir_to_upload, link_text,
     gs_url: Google storage URL.
   """
   gs_path = MakeGSPath(options, gs_base_dir)
-  RunCmd([bb_utils.GSUTIL_PATH, 'cp', '-R', dir_to_upload, 'gs://%s' % gs_path])
+  RunCmd([bb_utils.GSUTIL_PATH, 'cp', '-R', dir_to_upload, 'gs://{0!s}'.format(gs_path)])
   bb_annotations.PrintLink(link_text,
-                           '%s/%s/%s' % (gs_url, gs_path, link_rel_path))
+                           '{0!s}/{1!s}/{2!s}'.format(gs_url, gs_path, link_rel_path))
 
 
 def GenerateJavaCoverageReport(options):
@@ -647,8 +645,8 @@ def LogcatDump(options):
           '--output-path', logcat_file, LOGCAT_DIR])
   gs_path = MakeGSPath(options, 'chromium-android/logcat_dumps')
   RunCmd([bb_utils.GSUTIL_PATH, 'cp', '-z', 'txt', logcat_file,
-          'gs://%s' % gs_path])
-  bb_annotations.PrintLink('logcat dump', '%s/%s' % (GS_AUTH_URL, gs_path))
+          'gs://{0!s}'.format(gs_path)])
+  bb_annotations.PrintLink('logcat dump', '{0!s}/{1!s}'.format(GS_AUTH_URL, gs_path))
 
 
 def RunStackToolSteps(options):
@@ -695,7 +693,7 @@ def MainTestWrapper(options):
 
     if options.coverage_bucket:
       coverage_html = GenerateJavaCoverageReport(options)
-      UploadHTML(options, '%s/java' % options.coverage_bucket, coverage_html,
+      UploadHTML(options, '{0!s}/java'.format(options.coverage_bucket), coverage_html,
                  'Coverage Report')
       shutil.rmtree(coverage_html, ignore_errors=True)
 
@@ -722,8 +720,8 @@ def GetDeviceStepsOptParser():
                     help='Run experiemental tests')
   parser.add_option('-f', '--test-filter', metavar='<filter>', default=[],
                     action='append',
-                    help=('Run a test suite. Test suites: "%s"' %
-                          '", "'.join(VALID_TESTS)))
+                    help=('Run a test suite. Test suites: "{0!s}"'.format(
+                          '", "'.join(VALID_TESTS))))
   parser.add_option('--gtest-filter',
                     help='Filter for running a subset of tests of a gtest test')
   parser.add_option('--asan', action='store_true', help='Run tests with asan.')
@@ -771,11 +769,11 @@ def main(argv):
   options, args = parser.parse_args(argv[1:])
 
   if args:
-    return sys.exit('Unused args %s' % args)
+    return sys.exit('Unused args {0!s}'.format(args))
 
   unknown_tests = set(options.test_filter) - VALID_TESTS
   if unknown_tests:
-    return sys.exit('Unknown tests %s' % list(unknown_tests))
+    return sys.exit('Unknown tests {0!s}'.format(list(unknown_tests)))
 
   setattr(options, 'target', options.factory_properties.get('target', 'Debug'))
 

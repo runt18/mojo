@@ -18,13 +18,13 @@ import sys
 def _GenerateCompileCommands(files):
   """Returns a JSON string containing a compilation database for the input."""
   return json.dumps([{'directory': '.',
-                      'command': 'clang++ -fsyntax-only -std=c++11 -c %s' % f,
+                      'command': 'clang++ -fsyntax-only -std=c++11 -c {0!s}'.format(f),
                       'file': f} for f in files], indent=2)
 
 
 def _NumberOfTestsToString(tests):
   """Returns an English sentence describing the number of tests."""
-  return "%d test%s" % (tests, 's' if tests != 1 else '')
+  return "{0:d} test{1!s}".format(tests, 's' if tests != 1 else '')
 
 
 # Before running this test script, please build the translation_unit clang tool
@@ -52,7 +52,7 @@ def main():
   run_tool = subprocess.Popen(args, stdout=subprocess.PIPE)
   stdout, _ = run_tool.communicate()
   if run_tool.returncode != 0:
-    print 'run_tool failed:\n%s' % stdout
+    print 'run_tool failed:\n{0!s}'.format(stdout)
     sys.exit(1)
 
   passed = 0
@@ -60,7 +60,7 @@ def main():
   for actual in source_files:
     actual += '.filepaths'
     expected = actual + '.expected'
-    print '[ RUN      ] %s' % os.path.relpath(actual)
+    print '[ RUN      ] {0!s}'.format(os.path.relpath(actual))
     expected_output = actual_output = None
     with open(expected, 'r') as f:
       expected_output = f.readlines()
@@ -70,14 +70,14 @@ def main():
     for expected_line, actual_line in zip(expected_output, actual_output):
       if '//' in actual_output:
         if actual_output.split('//')[1] != expected_output:
-          sys.stdout.write('expected: %s' % expected_output)
-          sys.stdout.write('actual: %s' % actual_output.split('//')[1])
+          sys.stdout.write('expected: {0!s}'.format(expected_output))
+          sys.stdout.write('actual: {0!s}'.format(actual_output.split('//')[1]))
           break
         else:
           continue
       if ntpath.basename(expected_line) != ntpath.basename(actual_line):
-        sys.stdout.write('expected: %s' % ntpath.basename(expected_line))
-        sys.stdout.write('actual: %s' % ntpath.basename(actual_line))
+        sys.stdout.write('expected: {0!s}'.format(ntpath.basename(expected_line)))
+        sys.stdout.write('actual: {0!s}'.format(ntpath.basename(actual_line)))
         has_same_filepaths = False
         break
     if not has_same_filepaths:
@@ -86,22 +86,22 @@ def main():
                                        fromfile=os.path.relpath(expected),
                                        tofile=os.path.relpath(actual)):
         sys.stdout.write(line)
-      print '[  FAILED  ] %s' % os.path.relpath(actual)
+      print '[  FAILED  ] {0!s}'.format(os.path.relpath(actual))
       # Don't clean up the file on failure, so the results can be referenced
       # more easily.
       continue
-    print '[       OK ] %s' % os.path.relpath(actual)
+    print '[       OK ] {0!s}'.format(os.path.relpath(actual))
     passed += 1
     os.remove(actual)
 
   if failed == 0:
     os.remove(compile_database)
 
-  print '[==========] %s ran.' % _NumberOfTestsToString(len(source_files))
+  print '[==========] {0!s} ran.'.format(_NumberOfTestsToString(len(source_files)))
   if passed > 0:
-    print '[  PASSED  ] %s.' % _NumberOfTestsToString(passed)
+    print '[  PASSED  ] {0!s}.'.format(_NumberOfTestsToString(passed))
   if failed > 0:
-    print '[  FAILED  ] %s.' % _NumberOfTestsToString(failed)
+    print '[  FAILED  ] {0!s}.'.format(_NumberOfTestsToString(failed))
 
 
 if __name__ == '__main__':

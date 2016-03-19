@@ -27,4 +27,4 @@ def get_signature(file_object, elffile_module):
                  itertools.izip_longest(result,
                                         data[i:i + len(result)],
                                         fillvalue='\0'))
-  return ''.join(["%02x" % x for x in result])
+  return ''.join(["{0:02x}".format(x) for x in result])

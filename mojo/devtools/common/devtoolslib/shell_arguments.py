@@ -165,13 +165,13 @@ def _configure_dev_server(shell, shell_args, dev_server_config, reuse_servers,
   port = dev_server_config.port if dev_server_config.port else 0
   server_url = shell.serve_local_directories(
       dev_server_config.mappings, port, reuse_servers)
-  shell_args.append('--map-origin=%s=%s' % (dev_server_config.host, server_url))
+  shell_args.append('--map-origin={0!s}={1!s}'.format(dev_server_config.host, server_url))
 
   if verbose:
-    print "Configured %s locally at %s to serve:" % (dev_server_config.host,
+    print "Configured {0!s} locally at {1!s} to serve:".format(dev_server_config.host,
                                                      server_url)
     for mapping_prefix, mapping_path in dev_server_config.mappings:
-      print "  /%s -> %s" % (mapping_prefix, mapping_path)
+      print "  /{0!s} -> {1!s}".format(mapping_prefix, mapping_path)
   return shell_args
 
 
@@ -228,7 +228,7 @@ def get_shell(shell_config, shell_args):
     for (mime_type,
          content_handler_url) in shell_config.content_handlers.iteritems():
       shell_args = append_to_argument(shell_args, '--content-handlers=',
-                                      '%s,%s' % (mime_type,
+                                      '{0!s},{1!s}'.format(mime_type,
                                                  content_handler_url))
 
   for dev_server_config in shell_config.dev_servers:

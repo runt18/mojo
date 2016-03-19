@@ -268,9 +268,9 @@ class Array(ReferenceKind):
   def __init__(self, kind=None, length=None):
     if kind is not None:
       if length is not None:
-        spec = 'a%d:%s' % (length, kind.spec)
+        spec = 'a{0:d}:{1!s}'.format(length, kind.spec)
       else:
-        spec = 'a:%s' % kind.spec
+        spec = 'a:{0!s}'.format(kind.spec)
 
       ReferenceKind.__init__(self, spec)
     else:
@@ -315,7 +315,7 @@ class InterfaceRequest(ReferenceKind):
     if kind is not None:
       if not isinstance(kind, Interface):
         raise Exception(
-            "Interface request requires %r to be an interface." % kind.spec)
+            "Interface request requires {0!r} to be an interface.".format(kind.spec))
       ReferenceKind.__init__(self, 'r:' + kind.spec)
     else:
       ReferenceKind.__init__(self)
@@ -469,7 +469,7 @@ def GetMojomTypeName(kind):
     return kind.name
   else:
     # These kinds (e.g., simple kinds, maps, and arrays) lack names.
-    raise Exception('Unexpected kind: %s' % kind)
+    raise Exception('Unexpected kind: {0!s}'.format(kind))
 
 def GetPackageName(kind):
   """Get the package name from the given kind's module."""
@@ -484,15 +484,15 @@ def GetMojomTypeIdentifier(kind):
     package = GetPackageName(kind.kind)
   else:
     # These kinds (e.g., simple kinds and fields) lack identifiers.
-    raise Exception('Unexpected kind: %s' % kind)
-  return "%s_%s__" % (package, GetMojomTypeName(kind))
+    raise Exception('Unexpected kind: {0!s}'.format(kind))
+  return "{0!s}_{1!s}__".format(package, GetMojomTypeName(kind))
 
 
 # Returns a string of the form package.path.TypeName - the full identifier
 # for an element.
 def GetMojomTypeFullIdentifier(kind, exported=True):
   """Get the Full Identifier for a Mojom Type. Format: package.path.TypeName"""
-  return '%s.%s' % (kind.module.namespace, GetMojomTypeName(kind))
+  return '{0!s}.{1!s}'.format(kind.module.namespace, GetMojomTypeName(kind))
 
 
 def IsBoolKind(kind):

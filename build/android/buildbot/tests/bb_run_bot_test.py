@@ -17,7 +17,7 @@ def RunBotProcesses(bot_process_map):
     _, err = proc.communicate()
     code |= proc.returncode
     if proc.returncode != 0:
-      print 'Error running the bot script with id="%s"' % bot, err
+      print 'Error running the bot script with id="{0!s}"'.format(bot), err
 
   return code
 

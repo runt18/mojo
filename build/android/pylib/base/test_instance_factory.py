@@ -21,4 +21,4 @@ def CreateTestInstance(args, error_func):
   elif args.command == 'uirobot':
     return uirobot_test_instance.UirobotTestInstance(args, error_func)
 
-  error_func('Unable to create %s test instance.' % args.command)
+  error_func('Unable to create {0!s} test instance.'.format(args.command))

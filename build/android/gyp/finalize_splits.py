@@ -31,10 +31,8 @@ def main():
 
   if options.densities:
     for density in options.densities.split(','):
-      options.unsigned_apk_path = ("%s-%s" %
-          (options.resource_packaged_apk_path, density))
-      options.final_apk_path = ("%s-density-%s.apk" %
-          (options.base_output_path, density))
+      options.unsigned_apk_path = ("{0!s}-{1!s}".format(options.resource_packaged_apk_path, density))
+      options.final_apk_path = ("{0!s}-density-{1!s}.apk".format(options.base_output_path, density))
       finalize_apk.FinalizeApk(options)
   else:
     raise Exception('Language splits not yet implemented')

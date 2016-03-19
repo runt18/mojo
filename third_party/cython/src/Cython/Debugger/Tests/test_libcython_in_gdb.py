@@ -69,7 +69,7 @@ class DebugTestCase(unittest.TestCase):
             'codefile.eggs']
 
     def read_var(self, varname, cast_to=None):
-        result = gdb.parse_and_eval('$cy_cvalue("%s")' % varname)
+        result = gdb.parse_and_eval('$cy_cvalue("{0!s}")'.format(varname))
         if cast_to:
             result = cast_to(result)
 
@@ -86,7 +86,7 @@ class DebugTestCase(unittest.TestCase):
 
     def break_and_run(self, source_line):
         break_lineno = test_libcython.source_to_lineno[source_line]
-        gdb.execute('cy break codefile:%d' % break_lineno, to_string=True)
+        gdb.execute('cy break codefile:{0:d}'.format(break_lineno), to_string=True)
         gdb.execute('run', to_string=True)
 
     def tearDown(self):
@@ -350,8 +350,7 @@ class TestExec(DebugTestCase):
             os.remove(self.tmpfilename)
 
     def eval_command(self, command):
-        gdb.execute('cy exec open(%r, "w").write(str(%s))' %
-                                                (self.tmpfilename, command))
+        gdb.execute('cy exec open({0!r}, "w").write(str({1!s}))'.format(self.tmpfilename, command))
         return self.tmpfile.read().strip()
 
     def test_cython_exec(self):

@@ -26,23 +26,22 @@ def UnzipSymbols(symbolfile, symdir=None):
     SymbolDownloadException: When the unzip fails.
   """
   if not symdir:
-    symdir = "%s/%s" % (_DEFAULT_SYMROOT, hash(symbolfile))
+    symdir = "{0!s}/{1!s}".format(_DEFAULT_SYMROOT, hash(symbolfile))
   if not os.path.exists(symdir):
     os.makedirs(symdir)
 
-  print "extracting %s..." % symbolfile
+  print "extracting {0!s}...".format(symbolfile)
   saveddir = os.getcwd()
   os.chdir(symdir)
   try:
     unzipcode = subprocess.call(["unzip", "-qq", "-o", symbolfile])
     if unzipcode > 0:
       os.remove(symbolfile)
-      raise SymbolDownloadException("failed to extract symbol files (%s)."
-                                    % symbolfile)
+      raise SymbolDownloadException("failed to extract symbol files ({0!s}).".format(symbolfile))
   finally:
     os.chdir(saveddir)
 
-  android_symbols = glob.glob("%s/out/target/product/*/symbols" % symdir)
+  android_symbols = glob.glob("{0!s}/out/target/product/*/symbols".format(symdir))
   if android_symbols:
     return (symdir, android_symbols[0])
   else:
@@ -67,7 +66,7 @@ def GetSymboledNameForMojoApp(path):
   name, ext = os.path.splitext(path)
   if ext != '.mojo':
     return path
-  return 'lib%s_library.so' % name
+  return 'lib{0!s}_library.so'.format(name)
 
 
 def GetSymbolMapping(lines):

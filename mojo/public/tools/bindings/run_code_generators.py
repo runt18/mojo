@@ -101,7 +101,7 @@ def LoadGenerators(generators_string):
     elif generator_name.endswith(".py"):
       generator_py_name = generator_name
     else:
-      print "Unknown generator name %s" % generator_name
+      print "Unknown generator name {0!s}".format(generator_name)
       sys.exit(1)
     generator_module = imp.load_source(os.path.basename(generator_py_name)[:-3],
                                        generator_py_name)

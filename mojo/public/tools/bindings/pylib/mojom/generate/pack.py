@@ -54,7 +54,7 @@ class PackedField(object):
       # TODO(mpcomplete): what about big enums?
       return cls.kind_to_size[mojom.INT32]
     if not kind in cls.kind_to_size:
-      raise Exception("Invalid kind: %s" % kind.spec)
+      raise Exception("Invalid kind: {0!s}".format(kind.spec))
     return cls.kind_to_size[kind]
 
   @classmethod

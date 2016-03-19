@@ -325,7 +325,7 @@ class NameAssignment(object):
         self.inferred_type = None
 
     def __repr__(self):
-        return '%s(entry=%r)' % (self.__class__.__name__, self.entry)
+        return '{0!s}(entry={1!r})'.format(self.__class__.__name__, self.entry)
 
     def infer_type(self):
         self.inferred_type = self.rhs.infer_type(self.entry.scope)
@@ -396,7 +396,7 @@ class NameReference(object):
         self.pos = node.pos
 
     def __repr__(self):
-        return '%s(entry=%r)' % (self.__class__.__name__, self.entry)
+        return '{0!s}(entry={1!r})'.format(self.__class__.__name__, self.entry)
 
 
 class ControlFlowState(list):
@@ -444,7 +444,7 @@ class GVContext(object):
 
     def nodeid(self, block):
         if block not in self.blockids:
-            self.blockids[block] = 'block%d' % self.nextid
+            self.blockids[block] = 'block{0:d}'.format(self.nextid)
             self.nextid += 1
         return self.blockids[block]
 
@@ -461,7 +461,7 @@ class GVContext(object):
 
     def render(self, fp, name, annotate_defs=False):
         """Render graphviz dot graph"""
-        fp.write('digraph %s {\n' % name)
+        fp.write('digraph {0!s} {{\n'.format(name))
         fp.write(' node [shape=box];\n')
         for child in self.children:
             child.render(fp, self, annotate_defs)
@@ -479,24 +479,24 @@ class GV(object):
         self.flow = flow
 
     def render(self, fp, ctx, annotate_defs=False):
-        fp.write(' subgraph %s {\n' % self.name)
+        fp.write(' subgraph {0!s} {{\n'.format(self.name))
         for block in self.flow.blocks:
             label = ctx.extract_sources(block)
             if annotate_defs:
                 for stat in block.stats:
                     if isinstance(stat, NameAssignment):
-                        label += '\n %s [definition]' % stat.entry.name
+                        label += '\n {0!s} [definition]'.format(stat.entry.name)
                     elif isinstance(stat, NameReference):
                         if stat.entry:
-                            label += '\n %s [reference]' % stat.entry.name
+                            label += '\n {0!s} [reference]'.format(stat.entry.name)
             if not label:
                 label = 'empty'
             pid = ctx.nodeid(block)
-            fp.write('  %s [label="%s"];\n' % (pid, ctx.escape(label)))
+            fp.write('  {0!s} [label="{1!s}"];\n'.format(pid, ctx.escape(label)))
         for block in self.flow.blocks:
             pid = ctx.nodeid(block)
             for child in block.children:
-                fp.write('  %s -> %s;\n' % (pid, ctx.nodeid(child)))
+                fp.write('  {0!s} -> {1!s};\n'.format(pid, ctx.nodeid(child)))
         fp.write(' }\n')
 
 
@@ -595,18 +595,15 @@ def check_definitions(flow, compiler_directives):
                         entry.type.is_pyobject or entry.type.is_unspecified)):
                     messages.error(
                         node.pos,
-                        "local variable '%s' referenced before assignment"
-                        % entry.name)
+                        "local variable '{0!s}' referenced before assignment".format(entry.name))
                 else:
                     messages.warning(
                         node.pos,
-                        "local variable '%s' referenced before assignment"
-                        % entry.name)
+                        "local variable '{0!s}' referenced before assignment".format(entry.name))
             elif warn_maybe_uninitialized:
                 messages.warning(
                     node.pos,
-                    "local variable '%s' might be referenced before assignment"
-                    % entry.name)
+                    "local variable '{0!s}' might be referenced before assignment".format(entry.name))
         elif Unknown in node.cf_state:
             # TODO: better cross-closure analysis to know when inner functions
             #       are being called before a variable is being set, and when
@@ -623,11 +620,11 @@ def check_definitions(flow, compiler_directives):
             and not assmt.entry.in_closure):
             if assmt.entry.cf_references and warn_unused_result:
                 if assmt.is_arg:
-                    messages.warning(assmt.pos, "Unused argument value '%s'" %
-                                     assmt.entry.name)
+                    messages.warning(assmt.pos, "Unused argument value '{0!s}'".format(
+                                     assmt.entry.name))
                 else:
-                    messages.warning(assmt.pos, "Unused result in '%s'" %
-                                     assmt.entry.name)
+                    messages.warning(assmt.pos, "Unused result in '{0!s}'".format(
+                                     assmt.entry.name))
             assmt.lhs.cf_used = False
 
     # Unused entries
@@ -638,12 +635,12 @@ def check_definitions(flow, compiler_directives):
                 # '_' is often used for unused variables, e.g. in loops
                 if entry.is_arg:
                     if warn_unused_arg:
-                        messages.warning(entry.pos, "Unused argument '%s'" %
-                                         entry.name)
+                        messages.warning(entry.pos, "Unused argument '{0!s}'".format(
+                                         entry.name))
                 else:
                     if warn_unused:
-                        messages.warning(entry.pos, "Unused entry '%s'" %
-                                         entry.name)
+                        messages.warning(entry.pos, "Unused entry '{0!s}'".format(
+                                         entry.name))
             entry.cf_used = False
 
     messages.report()

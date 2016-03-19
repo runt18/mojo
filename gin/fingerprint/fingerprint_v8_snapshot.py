@@ -41,7 +41,7 @@ def FingerprintFile(file_path):
 
 
 def WriteFingerprint(output_file, variable_name, fingerprint):
-  output_file.write('\nextern const unsigned char %s[] = { ' % variable_name)
+  output_file.write('\nextern const unsigned char {0!s}[] = {{ '.format(variable_name))
   for byte in fingerprint:
     output_file.write(str(ord(byte)) + ', ')
   output_file.write('};\n')

@@ -105,23 +105,23 @@ class TestServer(object):
     test_server_flags = test_server_flags or []
     cmd = ['python', os.path.join(src_dir, test_server_path),
            '--log-to-console',
-           ('--host=%s' % self.host),
-           ('--port=%d' % self.port),
+           ('--host={0!s}'.format(self.host)),
+           ('--port={0:d}'.format(self.port)),
            '--on-remote-server'] + test_server_flags
     self._test_server_process = subprocess.Popen(
           cmd, env={'PYTHONPATH': python_path})
-    test_url = 'http://%s:%d/%s' % (self.host, self.port,
+    test_url = 'http://{0!s}:{1:d}/{2!s}'.format(self.host, self.port,
         TEST_SERVER_CHECK_PARAMS[test_server_path]['url_path'])
     expected_response = TEST_SERVER_CHECK_PARAMS[test_server_path]['response']
     retries = 0
     while retries < 5:
       try:
         d = urllib2.urlopen(test_url).read()
-        logging.info('URL %s GOT: %s' % (test_url, d))
+        logging.info('URL {0!s} GOT: {1!s}'.format(test_url, d))
         if d.startswith(expected_response):
           break
       except Exception as e:
-        logging.info('URL %s GOT: %s' % (test_url, e))
+        logging.info('URL {0!s} GOT: {1!s}'.format(test_url, e))
       time.sleep(retries * 0.1)
       retries += 1
 

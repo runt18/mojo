@@ -20,7 +20,7 @@ def FindFiles(top, pattern, **kwargs):
 
 def main(argv):
   if len(argv) != 3:
-    print "usage: %s path pattern" % argv[0]
+    print "usage: {0!s} path pattern".format(argv[0])
     return 1
 
   for filename in FindFiles(argv[1], argv[2]):

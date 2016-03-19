@@ -64,8 +64,7 @@ def main():
 
   for artifact in artifacts:
     if not try_populate(artifact, library_paths, target):
-      print('Unable to locate %s in any of the following paths: %s' %
-            (artifact, library_paths))
+      print('Unable to locate {0!s} in any of the following paths: {1!s}'.format(artifact, library_paths))
       exit(1)
 
 

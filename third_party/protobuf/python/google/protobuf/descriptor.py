@@ -103,8 +103,8 @@ class DescriptorBase(object):
     try:
       options_class = getattr(descriptor_pb2, self._options_class_name)
     except AttributeError:
-      raise RuntimeError('Unknown options class name %s!' %
-                         (self._options_class_name))
+      raise RuntimeError('Unknown options class name {0!s}!'.format(
+                         (self._options_class_name)))
     self._options = options_class()
     return self._options
 
@@ -483,7 +483,7 @@ class FieldDescriptor(DescriptorBase):
     try:
       return FieldDescriptor._PYTHON_TO_CPP_PROTO_TYPE_MAP[proto_type]
     except KeyError:
-      raise TypeTransformationError('Unknown proto_type: %s' % proto_type)
+      raise TypeTransformationError('Unknown proto_type: {0!s}'.format(proto_type))
 
 
 class EnumDescriptor(_NestedDescriptorBase):

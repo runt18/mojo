@@ -36,7 +36,7 @@ def trim_cmd(cmd):
   """Removes internal flags from cmd since they're just used to communicate from
   the host machine to this script running on the swarm slaves."""
   sanitizers = ['asan', 'lsan', 'msan', 'tsan']
-  internal_flags = frozenset('--%s=%d' % (name, value)
+  internal_flags = frozenset('--{0!s}={1:d}'.format(name, value)
                              for name in sanitizers
                              for value in [0, 1])
   return [i for i in cmd if i not in internal_flags]
@@ -72,7 +72,7 @@ def get_sanitizer_env(cmd, asan, lsan, msan, tsan):
     # LSan is not sandbox-compatible, so we can use online symbolization. In
     # fact, it needs symbolization to be able to apply suppressions.
     symbolization_options = ['symbolize=1',
-                             'external_symbolizer_path=%s' % symbolizer_path]
+                             'external_symbolizer_path={0!s}'.format(symbolizer_path)]
   elif (asan or msan) and sys.platform not in ['win32', 'cygwin']:
     # ASan uses a script for offline symbolization, except on Windows.
     # Important note: when running ASan with leak detection enabled, we must use
@@ -128,9 +128,9 @@ def get_sanitizer_symbolize_command(json_path=None, executable_path=None):
   script_path = '../tools/valgrind/asan/asan_symbolize.py'
   cmd = [sys.executable, script_path]
   if json_path is not None:
-    cmd.append('--test-summary-json-file=%s' % json_path)
+    cmd.append('--test-summary-json-file={0!s}'.format(json_path))
   if executable_path is not None:
-    cmd.append('--executable-path=%s' % executable_path)
+    cmd.append('--executable-path={0!s}'.format(executable_path))
   return cmd
 
 
@@ -155,7 +155,7 @@ def symbolize_snippets_in_json(cmd, env):
     p = subprocess.Popen(symbolize_command, stderr=subprocess.PIPE, env=env)
     (_, stderr) = p.communicate()
   except OSError as e:
-      print 'Exception while symbolizing snippets: %s' % e
+      print 'Exception while symbolizing snippets: {0!s}'.format(e)
 
   if p.returncode != 0:
     print "Error: failed to symbolize snippets in JSON:\n"
@@ -205,8 +205,7 @@ def run_executable(cmd, env):
 
   print('Additional test environment:\n%s\n'
         'Command: %s\n' % (
-        '\n'.join('    %s=%s' %
-            (k, v) for k, v in sorted(extra_env.iteritems())),
+        '\n'.join('    {0!s}={1!s}'.format(k, v) for k, v in sorted(extra_env.iteritems())),
         ' '.join(cmd)))
   env.update(extra_env or {})
   try:
@@ -227,7 +226,7 @@ def run_executable(cmd, env):
     else:
       return subprocess.call(cmd, env=env)
   except OSError:
-    print >> sys.stderr, 'Failed to start %s' % cmd
+    print >> sys.stderr, 'Failed to start {0!s}'.format(cmd)
     raise
 
 

@@ -97,7 +97,7 @@ def GenerateTestResults(
     test_class = bundle.get('class', '')
     test_method = bundle.get('test', '')
     if test_class and test_method:
-      test_name = '%s#%s' % (test_class, test_method)
+      test_name = '{0!s}#{1!s}'.format(test_class, test_method)
     else:
       continue
 
@@ -175,10 +175,10 @@ class InstrumentationTestInstance(test_instance.TestInstance):
     else:
       self._apk_under_test = os.path.join(
           constants.GetOutDirectory(), constants.SDK_BUILD_APKS_DIR,
-          '%s.apk' % args.apk_under_test)
+          '{0!s}.apk'.format(args.apk_under_test))
 
     if not os.path.exists(self._apk_under_test):
-      error_func('Unable to find APK under test: %s' % self._apk_under_test)
+      error_func('Unable to find APK under test: {0!s}'.format(self._apk_under_test))
 
     if args.test_apk.endswith('.apk'):
       self._suite = os.path.splitext(os.path.basename(args.test_apk))[0]
@@ -187,19 +187,19 @@ class InstrumentationTestInstance(test_instance.TestInstance):
       self._suite = args.test_apk
       self._test_apk = os.path.join(
           constants.GetOutDirectory(), constants.SDK_BUILD_APKS_DIR,
-          '%s.apk' % args.test_apk)
+          '{0!s}.apk'.format(args.test_apk))
 
     self._test_jar = os.path.join(
         constants.GetOutDirectory(), constants.SDK_BUILD_TEST_JAVALIB_DIR,
-        '%s.jar' % self._suite)
+        '{0!s}.jar'.format(self._suite))
     self._test_support_apk = os.path.join(
         constants.GetOutDirectory(), constants.SDK_BUILD_TEST_JAVALIB_DIR,
-        '%sSupport.apk' % self._suite)
+        '{0!s}Support.apk'.format(self._suite))
 
     if not os.path.exists(self._test_apk):
-      error_func('Unable to find test APK: %s' % self._test_apk)
+      error_func('Unable to find test APK: {0!s}'.format(self._test_apk))
     if not os.path.exists(self._test_jar):
-      error_func('Unable to find test JAR: %s' % self._test_jar)
+      error_func('Unable to find test JAR: {0!s}'.format(self._test_jar))
 
     apk = apk_helper.ApkHelper(self.test_apk)
     self._test_package = apk.GetPackageName()
@@ -218,7 +218,7 @@ class InstrumentationTestInstance(test_instance.TestInstance):
       self._isolate_abs_path = os.path.abspath(args.isolate_file_path)
       self._isolate_delegate = isolate_delegate
       self._isolated_abs_path = os.path.join(
-          constants.GetOutDirectory(), '%s.isolated' % self._test_package)
+          constants.GetOutDirectory(), '{0!s}.isolated'.format(self._test_package))
     else:
       self._isolate_delegate = None
 
@@ -355,11 +355,11 @@ class InstrumentationTestInstance(test_instance.TestInstance):
     return self._data_deps
 
   def GetTests(self):
-    pickle_path = '%s-proguard.pickle' % self.test_jar
+    pickle_path = '{0!s}-proguard.pickle'.format(self.test_jar)
     try:
       tests = self._GetTestsFromPickle(pickle_path, self.test_jar)
     except self.ProguardPickleException as e:
-      logging.info('Getting tests from JAR via proguard. (%s)' % str(e))
+      logging.info('Getting tests from JAR via proguard. ({0!s})'.format(str(e)))
       tests = self._GetTestsFromProguard(self.test_jar)
       self._SaveTestsToPickle(pickle_path, self.test_jar, tests)
     return self._InflateTests(self._FilterTests(tests))
@@ -369,10 +369,10 @@ class InstrumentationTestInstance(test_instance.TestInstance):
 
   def _GetTestsFromPickle(self, pickle_path, jar_path):
     if not os.path.exists(pickle_path):
-      raise self.ProguardPickleException('%s does not exist.' % pickle_path)
+      raise self.ProguardPickleException('{0!s} does not exist.'.format(pickle_path))
     if os.path.getmtime(pickle_path) <= os.path.getmtime(jar_path):
       raise self.ProguardPickleException(
-          '%s newer than %s.' % (jar_path, pickle_path))
+          '{0!s} newer than {1!s}.'.format(jar_path, pickle_path))
 
     with open(pickle_path, 'r') as pickle_file:
       pickle_data = pickle.loads(pickle_file.read())
@@ -430,7 +430,7 @@ class InstrumentationTestInstance(test_instance.TestInstance):
   def _FilterTests(self, tests):
 
     def gtest_filter(c, m):
-      t = ['%s.%s' % (c['class'].split('.')[-1], m['method'])]
+      t = ['{0!s}.{1!s}'.format(c['class'].split('.')[-1], m['method'])]
       return (not self._test_filter
               or unittest_util.FilterTestNames(t, self._test_filter))
 

@@ -61,10 +61,10 @@ _kind_infos = {
 # The mojom_types.mojom and service_describer.mojom files are special because
 # they are used to generate mojom Type's and ServiceDescription implementations.
 _service_describer_pkg_short = "service_describer"
-_service_describer_pkg = "mojo/public/interfaces/bindings/%s" % \
-  _service_describer_pkg_short
+_service_describer_pkg = "mojo/public/interfaces/bindings/{0!s}".format( \
+  _service_describer_pkg_short)
 _mojom_types_pkg_short = "mojom_types"
-_mojom_types_pkg = "mojo/public/interfaces/bindings/%s" % _mojom_types_pkg_short
+_mojom_types_pkg = "mojo/public/interfaces/bindings/{0!s}".format(_mojom_types_pkg_short)
 
 def GetBitSize(kind):
   if isinstance(kind, (mojom.Union)):
@@ -83,24 +83,24 @@ def GetBitSize(kind):
 # and kind is nullable adds an '*' to type (example: ?string -> *string).
 def GetGoType(kind, nullable = True):
   if nullable and mojom.IsNullableKind(kind) and not mojom.IsUnionKind(kind):
-    return '*%s' % GetNonNullableGoType(kind)
+    return '*{0!s}'.format(GetNonNullableGoType(kind))
   return GetNonNullableGoType(kind)
 
 # Returns go type corresponding to provided kind. Ignores nullability of
 # top-level kind.
 def GetNonNullableGoType(kind):
   if mojom.IsStructKind(kind) or mojom.IsUnionKind(kind):
-    return '%s' % GetFullName(kind)
+    return '{0!s}'.format(GetFullName(kind))
   if mojom.IsArrayKind(kind):
     if kind.length:
-      return '[%s]%s' % (kind.length, GetGoType(kind.kind))
-    return '[]%s' % GetGoType(kind.kind)
+      return '[{0!s}]{1!s}'.format(kind.length, GetGoType(kind.kind))
+    return '[]{0!s}'.format(GetGoType(kind.kind))
   if mojom.IsMapKind(kind):
-    return 'map[%s]%s' % (GetGoType(kind.key_kind), GetGoType(kind.value_kind))
+    return 'map[{0!s}]{1!s}'.format(GetGoType(kind.key_kind), GetGoType(kind.value_kind))
   if mojom.IsInterfaceKind(kind):
-    return '%s_Pointer' % GetFullName(kind)
+    return '{0!s}_Pointer'.format(GetFullName(kind))
   if mojom.IsInterfaceRequestKind(kind):
-    return '%s_Request' % GetFullName(kind.kind)
+    return '{0!s}_Request'.format(GetFullName(kind.kind))
   if mojom.IsEnumKind(kind):
     return GetNameForNestedElement(kind)
   return _kind_infos[kind].go_type
@@ -146,7 +146,7 @@ def GetUnqualifiedNameForElement(element, exported=True):
 # The returned name consists of camel-cased parts separated by '_'.
 def GetNameForNestedElement(element):
   if element.parent_kind:
-    return "%s_%s" % (GetNameForElement(element.parent_kind),
+    return "{0!s}_{1!s}".format(GetNameForElement(element.parent_kind),
         FormatName(element.name))
   return GetFullName(element)
 
@@ -163,11 +163,11 @@ def GetNameForElement(element, exported=True):
                           mojom.Constant,
                           mojom.ConstantValue)):
     return GetNameForNestedElement(element)
-  raise Exception('Unexpected element: %s' % element)
+  raise Exception('Unexpected element: {0!s}'.format(element))
 
 def ExpressionToText(token):
   if isinstance(token, mojom.EnumValue):
-    return "%s_%s" % (GetNameForNestedElement(token.enum),
+    return "{0!s}_{1!s}".format(GetNameForNestedElement(token.enum),
         FormatName(token.name, True))
   if isinstance(token, mojom.ConstantValue):
     return GetNameForNestedElement(token)
@@ -208,7 +208,7 @@ def GetMojomTypeValue(kind, typepkg=''):
       kind_name = "Float"
     elif kind == mojom.DOUBLE:
       kind_name = "Double"
-    return '%sTypeSimpleType{%sSimpleType_%s}' % (typepkg, typepkg, kind_name)
+    return '{0!s}TypeSimpleType{{{1!s}SimpleType_{2!s}}}'.format(typepkg, typepkg, kind_name)
   elif mojom.IsAnyHandleKind(kind):
     kind_name = 'Unspecified'
     if kind == mojom.DCPIPE:
@@ -223,9 +223,9 @@ def GetMojomTypeValue(kind, typepkg=''):
       'Nullable: %s, Kind: %sHandleType_Kind_%s}}' % \
       (typepkg, typepkg, nullable, typepkg, kind_name)
   elif mojom.IsStringKind(kind):
-    return '%sTypeStringType{%sStringType{%s}}' % (typepkg, typepkg, nullable)
+    return '{0!s}TypeStringType{{{1!s}StringType{{{2!s}}}}}'.format(typepkg, typepkg, nullable)
   else:
-    raise Exception('Missing case for kind: %s' % kind)
+    raise Exception('Missing case for kind: {0!s}'.format(kind))
 
 def GetPackageName(module):
   return module.name.split('.')[0]
@@ -238,7 +238,7 @@ def GetPackageNameForElement(element):
 def GetQualifiedName(name, package=None, exported=True):
   if not package:
     return FormatName(name, exported)
-  return '%s.%s' % (package, FormatName(name, exported))
+  return '{0!s}.{1!s}'.format(package, FormatName(name, exported))
 
 def GetPackagePath(module):
   name = module.name.split('.')[0]
@@ -346,9 +346,9 @@ class Generator(generator.Generator):
       'mojom_imports': mojom_imports,
       'package': package,
       'structs': self.GetStructs(),
-      'descpkg': '%s.' % _service_describer_pkg_short \
+      'descpkg': '{0!s}.'.format(_service_describer_pkg_short) \
         if package != _service_describer_pkg_short else '',
-      'typepkg': '%s.' % _mojom_types_pkg_short \
+      'typepkg': '{0!s}.'.format(_mojom_types_pkg_short) \
         if package != _mojom_types_pkg_short else '',
       'unions': self.GetUnions()
     }
@@ -361,7 +361,7 @@ class Generator(generator.Generator):
     self.should_gen_mojom_types = "--generate_type_info" in args
 
     self.Write(self.GenerateSource(), os.path.join("go", "src",
-        GetPackagePath(self.module), "%s.go" % self.module.name))
+        GetPackagePath(self.module), "{0!s}.go".format(self.module.name)))
 
   def GetJinjaParameters(self):
     return {
@@ -450,21 +450,21 @@ class Generator(generator.Generator):
   # Overrides the implementation from the base class in order to customize the
   # struct and field names.
   def _GetStructFromMethod(self, method):
-    params_class = "%s_%s_Params" % (GetNameForElement(method.interface),
+    params_class = "{0!s}_{1!s}_Params".format(GetNameForElement(method.interface),
         GetNameForElement(method))
     struct = mojom.Struct(params_class, module=method.interface.module)
     for param in method.parameters:
-      struct.AddField("in%s" % GetNameForElement(param),
+      struct.AddField("in{0!s}".format(GetNameForElement(param)),
           param.kind, param.ordinal, attributes=param.attributes)
     return self._AddStructComputedData(False, struct)
 
   # Overrides the implementation from the base class in order to customize the
   # struct and field names.
   def _GetResponseStructFromMethod(self, method):
-    params_class = "%s_%s_ResponseParams" % (
+    params_class = "{0!s}_{1!s}_ResponseParams".format(
         GetNameForElement(method.interface), GetNameForElement(method))
     struct = mojom.Struct(params_class, module=method.interface.module)
     for param in method.response_parameters:
-      struct.AddField("out%s" % GetNameForElement(param),
+      struct.AddField("out{0!s}".format(GetNameForElement(param)),
           param.kind, param.ordinal, attributes=param.attributes)
     return self._AddStructComputedData(False, struct)

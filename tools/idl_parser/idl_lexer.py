@@ -204,18 +204,18 @@ class IDLLexer(object):
     # Generate a message containing the file and line number of a token.
     filename = self.Lexer().filename
     if filename:
-      return "%s(%d) : %s" % (filename, line + 1, msg)
-    return "<BuiltIn> : %s" % msg
+      return "{0!s}({1:d}) : {2!s}".format(filename, line + 1, msg)
+    return "<BuiltIn> : {0!s}".format(msg)
 
   def SourceLine(self, line, pos):
     # Create a source line marker
     caret = ' ' * pos + '^'
     # We decrement the line number since the array is 0 based while the
     # line numbers are 1 based.
-    return "%s\n%s" % (self.lines[line - 1], caret)
+    return "{0!s}\n{1!s}".format(self.lines[line - 1], caret)
 
   def ErrorMessage(self, line, pos, msg):
-    return "\n%s\n%s" % (
+    return "\n{0!s}\n{1!s}".format(
         self.FileLineMsg(line, msg),
         self.SourceLine(line, pos))
 

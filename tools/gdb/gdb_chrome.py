@@ -48,7 +48,7 @@ def typed_ptr(ptr):
     """
     # Returning this as a cast expression surrounded by parentheses
     # makes it easier to cut+paste inside of gdb.
-    return '((%s)%s)' % (ptr.dynamic_type, ptr)
+    return '(({0!s}){1!s})'.format(ptr.dynamic_type, ptr)
 
 
 def yield_fields(val):
@@ -103,27 +103,27 @@ pp_set.add_printer('FilePath', '^FilePath$', FilePathPrinter)
 
 class SizePrinter(Printer):
     def to_string(self):
-        return '%sx%s' % (self.val['width_'], self.val['height_'])
+        return '{0!s}x{1!s}'.format(self.val['width_'], self.val['height_'])
 pp_set.add_printer('gfx::Size', '^gfx::(Size|SizeF|SizeBase<.*>)$', SizePrinter)
 
 
 class PointPrinter(Printer):
     def to_string(self):
-        return '%s,%s' % (self.val['x_'], self.val['y_'])
+        return '{0!s},{1!s}'.format(self.val['x_'], self.val['y_'])
 pp_set.add_printer('gfx::Point', '^gfx::(Point|PointF|PointBase<.*>)$',
                    PointPrinter)
 
 
 class RectPrinter(Printer):
     def to_string(self):
-        return '%s %s' % (self.val['origin_'], self.val['size_'])
+        return '{0!s} {1!s}'.format(self.val['origin_'], self.val['size_'])
 pp_set.add_printer('gfx::Rect', '^gfx::(Rect|RectF|RectBase<.*>)$',
                    RectPrinter)
 
 
 class SmartPtrPrinter(Printer):
     def to_string(self):
-        return '%s%s' % (self.typename, typed_ptr(self.ptr()))
+        return '{0!s}{1!s}'.format(self.typename, typed_ptr(self.ptr()))
 
 
 class ScopedRefPtrPrinter(SmartPtrPrinter):
@@ -159,7 +159,7 @@ pp_set.add_printer('base::Callback', '^base::Callback<.*>$', CallbackPrinter)
 
 class LocationPrinter(Printer):
     def to_string(self):
-        return '%s()@%s:%s' % (self.val['function_name_'].string(),
+        return '{0!s}()@{1!s}:{2!s}'.format(self.val['function_name_'].string(),
                                self.val['file_name_'].string(),
                                self.val['line_number_'])
 pp_set.add_printer('tracked_objects::Location', '^tracked_objects::Location$',
@@ -168,7 +168,7 @@ pp_set.add_printer('tracked_objects::Location', '^tracked_objects::Location$',
 
 class PendingTaskPrinter(Printer):
     def to_string(self):
-        return 'From %s' % (self.val['posted_from'],)
+        return 'From {0!s}'.format(self.val['posted_from'])
 
     def children(self):
         for result in yield_fields(self.val):
@@ -182,7 +182,7 @@ class LockPrinter(Printer):
     def to_string(self):
         try:
             if self.val['owned_by_thread_']:
-                return 'Locked by thread %s' % self.val['owning_thread_id_']
+                return 'Locked by thread {0!s}'.format(self.val['owning_thread_id_'])
             else:
                 return 'Unlocked'
         except gdb.error:
@@ -231,7 +231,7 @@ class IpcMessagePrinter(Printer):
 
     def to_string(self):
         message_type = self.header()['type']
-        return '%s of kind %s line %s' % (
+        return '{0!s} of kind {1!s} line {2!s}'.format(
             self.val.dynamic_type,
             (message_type >> 16).cast(gdb.lookup_type('IPCMessageStart')),
             message_type & 0xffff)
@@ -273,7 +273,7 @@ class SiteInstanceImplPrinter(object):
         self.val = val.cast(val.dynamic_type)
 
     def to_string(self):
-        return 'SiteInstanceImpl@%s for %s' % (
+        return 'SiteInstanceImpl@{0!s} for {1!s}'.format(
             self.val.address, self.val['site_'])
 
     def children(self):
@@ -299,12 +299,12 @@ class RenderProcessHostImplPrinter(object):
             if child_process_launcher_ptr:
                 context = (child_process_launcher_ptr['context_']['ptr_'])
                 if context:
-                    pid = ' PID %s' % str(context['process_']['process_'])
+                    pid = ' PID {0!s}'.format(str(context['process_']['process_']))
         except gdb.error:
             # The definition of the Context type may not be available.
             # b/8242773
             pass
-        return 'RenderProcessHostImpl@%s%s' % (self.val.address, pid)
+        return 'RenderProcessHostImpl@{0!s}{1!s}'.format(self.val.address, pid)
 
     def children(self):
         yield ('id_', self.val['id_'])

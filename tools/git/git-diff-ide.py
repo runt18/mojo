@@ -33,7 +33,7 @@ def GitShell(args, ignore_return=False):
   (out, err) = job.communicate()
   if job.returncode != 0 and not ignore_return:
     print out
-    raise Exception("Error %d running command %s" % (
+    raise Exception("Error {0:d} running command {1!s}".format(
         job.returncode, args))
   return out.split('\n')
 
@@ -42,7 +42,7 @@ def PrintGitDiff(extra_args):
   """Outputs git diff extra_args with file:line inserted into relevant lines."""
   current_file = '';
   line_num = 0;
-  lines = GitShell('git diff %s' % ' '.join(extra_args))
+  lines = GitShell('git diff {0!s}'.format(' '.join(extra_args)))
   for line in lines:
     # Pass-through lines:
     #  diff --git a/file.c b/file.c

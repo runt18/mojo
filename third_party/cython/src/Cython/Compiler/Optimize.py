@@ -1262,9 +1262,9 @@ class EarlyReplaceBuiltinCalls(Visitor.EnvTransform):
 
     def _dispatch_to_handler(self, node, function, args, kwargs=None):
         if kwargs is None:
-            handler_name = '_handle_simple_function_%s' % function.name
+            handler_name = '_handle_simple_function_{0!s}'.format(function.name)
         else:
-            handler_name = '_handle_general_function_%s' % function.name
+            handler_name = '_handle_general_function_{0!s}'.format(function.name)
         handle_call = getattr(self, handler_name, None)
         if handle_call is not None:
             if kwargs is None:
@@ -1288,10 +1288,10 @@ class EarlyReplaceBuiltinCalls(Visitor.EnvTransform):
         else:
             arg_str = ''
         if expected is not None:
-            expected_str = 'expected %s, ' % expected
+            expected_str = 'expected {0!s}, '.format(expected)
         else:
             expected_str = ''
-        error(node.pos, "%s(%s) called with wrong number of args, %sfound %d" % (
+        error(node.pos, "{0!s}({1!s}) called with wrong number of args, {2!s}found {3:d}".format(
             function_name, arg_str, expected_str, len(args)))
 
     # specific handlers for simple call nodes
@@ -1899,10 +1899,10 @@ class OptimizeBuiltinCalls(Visitor.MethodDispatcherTransform):
         else:
             arg_str = ''
         if expected is not None:
-            expected_str = 'expected %s, ' % expected
+            expected_str = 'expected {0!s}, '.format(expected)
         else:
             expected_str = ''
-        error(node.pos, "%s(%s) called with wrong number of args, %sfound %d" % (
+        error(node.pos, "{0!s}({1!s}) called with wrong number of args, {2!s}found {3:d}".format(
             function_name, arg_str, expected_str, len(args)))
 
     ### generic fallbacks
@@ -2508,7 +2508,7 @@ class OptimizeBuiltinCalls(Visitor.MethodDispatcherTransform):
             type_name = 'Object'
         if len(args) == 1:
             return ExprNodes.PythonCapiCallNode(
-                node.pos, "__Pyx_Py%s_Pop" % type_name,
+                node.pos, "__Pyx_Py{0!s}_Pop".format(type_name),
                 self.PyObject_Pop_func_type,
                 args=args,
                 may_return_none=True,
@@ -2525,7 +2525,7 @@ class OptimizeBuiltinCalls(Visitor.MethodDispatcherTransform):
                 if widest == PyrexTypes.c_py_ssize_t_type:
                     args[1] = index
                     return ExprNodes.PythonCapiCallNode(
-                        node.pos, "__Pyx_Py%s_PopIndex" % type_name,
+                        node.pos, "__Pyx_Py{0!s}_PopIndex".format(type_name),
                         self.PyObject_PopIndex_func_type,
                         args=args,
                         may_return_none=True,
@@ -2631,7 +2631,7 @@ class OptimizeBuiltinCalls(Visitor.MethodDispatcherTransform):
             function_name = '__Pyx_Py_UNICODE_ISTITLE'
         else:
             utility_code = None
-            function_name = 'Py_UNICODE_%s' % method_name.upper()
+            function_name = 'Py_UNICODE_{0!s}'.format(method_name.upper())
         func_call = self._substitute_method_call(
             node, function,
             function_name, self.PyUnicode_uchar_predicate_func_type,
@@ -2665,7 +2665,7 @@ class OptimizeBuiltinCalls(Visitor.MethodDispatcherTransform):
             return node
         uchar = ustring.arg
         method_name = function.attribute
-        function_name = 'Py_UNICODE_TO%s' % method_name.upper()
+        function_name = 'Py_UNICODE_TO{0!s}'.format(method_name.upper())
         func_call = self._substitute_method_call(
             node, function,
             function_name, self.PyUnicode_uchar_conversion_func_type,
@@ -2749,7 +2749,7 @@ class OptimizeBuiltinCalls(Visitor.MethodDispatcherTransform):
         by a direct call to the corresponding C-API function.
         """
         if len(args) not in (2,3,4):
-            self._error_wrong_arg_count('%s.%s' % (type_name, method_name), node, args, "2-4")
+            self._error_wrong_arg_count('{0!s}.{1!s}'.format(type_name, method_name), node, args, "2-4")
             return node
         self._inject_int_default_argument(
             node, args, 2, PyrexTypes.c_py_ssize_t_type, "0")
@@ -2760,7 +2760,7 @@ class OptimizeBuiltinCalls(Visitor.MethodDispatcherTransform):
 
         method_call = self._substitute_method_call(
             node, function,
-            "__Pyx_Py%s_Tailmatch" % type_name.capitalize(),
+            "__Pyx_Py{0!s}_Tailmatch".format(type_name.capitalize()),
             self.PyString_Tailmatch_func_type,
             method_name, is_unbound_method, args,
             utility_code = utility_code)
@@ -2790,7 +2790,7 @@ class OptimizeBuiltinCalls(Visitor.MethodDispatcherTransform):
         direct call to the corresponding C-API function.
         """
         if len(args) not in (2,3,4):
-            self._error_wrong_arg_count('unicode.%s' % method_name, node, args, "2-4")
+            self._error_wrong_arg_count('unicode.{0!s}'.format(method_name), node, args, "2-4")
             return node
         self._inject_int_default_argument(
             node, args, 2, PyrexTypes.c_py_ssize_t_type, "0")
@@ -2909,7 +2909,7 @@ class OptimizeBuiltinCalls(Visitor.MethodDispatcherTransform):
             # try to find a specific encoder function
             codec_name = self._find_special_codec_name(encoding)
             if codec_name is not None:
-                encode_function = "PyUnicode_As%sString" % codec_name
+                encode_function = "PyUnicode_As{0!s}String".format(codec_name)
                 return self._substitute_method_call(
                     node, function, encode_function,
                     self.PyUnicode_AsXyzString_func_type,
@@ -3004,7 +3004,7 @@ class OptimizeBuiltinCalls(Visitor.MethodDispatcherTransform):
         if codec_name is not None:
             decode_function = ExprNodes.RawCNameExprNode(
                 node.pos, type=self.PyUnicode_DecodeXyz_func_ptr_type,
-                cname="PyUnicode_Decode%s" % codec_name)
+                cname="PyUnicode_Decode{0!s}".format(codec_name))
             encoding_node = ExprNodes.NullNode(node.pos)
         else:
             decode_function = ExprNodes.NullNode(node.pos)
@@ -3056,7 +3056,7 @@ class OptimizeBuiltinCalls(Visitor.MethodDispatcherTransform):
                 utility_code_name = 'decode_bytearray'
 
         node = ExprNodes.PythonCapiCallNode(
-            node.pos, '__Pyx_%s' % utility_code_name, helper_func_type,
+            node.pos, '__Pyx_{0!s}'.format(utility_code_name), helper_func_type,
             args=[string_node, start, stop, encoding_node, error_handling_node, decode_function],
             is_temp=node.is_temp,
             utility_code=UtilityCode.load_cached(utility_code_name, 'StringTools.c'),

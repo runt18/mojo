@@ -17,6 +17,6 @@ elif hasattr(os, 'times'):
   timekind = "cpu"
 else:
   stderr.write(
-    "Don't know how to get time on platform %s\n" % repr(platform))
+    "Don't know how to get time on platform {0!s}\n".format(repr(platform)))
   exit(1)
 

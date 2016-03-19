@@ -44,7 +44,7 @@ class ChromeTests:
       self._gtest_filter = options.gtest_filter
 
     if self._test not in self._test_list:
-      raise TestNotFound("Unknown test: %s" % test)
+      raise TestNotFound("Unknown test: {0!s}".format(test))
 
     if options.gtest_filter and options.gtest_filter != self._gtest_filter:
       raise MultipleGTestFiltersSpecified("Can not specify both --gtest_filter "
@@ -62,7 +62,7 @@ class ChromeTests:
     # an absolute Unix-style path
     self._source_dir = os.path.abspath(self._source_dir).replace('\\', '/')
     valgrind_test_script = os.path.join(script_dir, "valgrind_test.py")
-    self._command_preamble = ["--source-dir=%s" % (self._source_dir)]
+    self._command_preamble = ["--source-dir={0!s}".format((self._source_dir))]
 
     if not self._options.build_dir:
       dirs = [
@@ -82,7 +82,7 @@ class ChromeTests:
 
     if self._options.build_dir:
       build_dir = os.path.abspath(self._options.build_dir)
-      self._command_preamble += ["--build-dir=%s" % (self._options.build_dir)]
+      self._command_preamble += ["--build-dir={0!s}".format((self._options.build_dir))]
 
   def _EnsureBuildDirFound(self):
     if not self._options.build_dir:
@@ -103,13 +103,13 @@ class ChromeTests:
     tool_name = tool.ToolName();
     suppression_file = os.path.join(script_dir, tool_name, "suppressions.txt")
     if os.path.exists(suppression_file):
-      cmd.append("--suppressions=%s" % suppression_file)
+      cmd.append("--suppressions={0!s}".format(suppression_file))
     # Platform-specific suppression
     for platform in common.PlatformNames():
       platform_suppression_file = \
-          os.path.join(script_dir, tool_name, 'suppressions_%s.txt' % platform)
+          os.path.join(script_dir, tool_name, 'suppressions_{0!s}.txt'.format(platform))
       if os.path.exists(platform_suppression_file):
-        cmd.append("--suppressions=%s" % platform_suppression_file)
+        cmd.append("--suppressions={0!s}".format(platform_suppression_file))
 
     if self._options.valgrind_tool_flags:
       cmd += self._options.valgrind_tool_flags.split(" ")
@@ -122,7 +122,7 @@ class ChromeTests:
       self._EnsureBuildDirFound()
       exe_path = os.path.join(self._options.build_dir, exe)
       if not os.path.exists(exe_path):
-        raise ExecutableNotFound("Couldn't find '%s'" % exe_path)
+        raise ExecutableNotFound("Couldn't find '{0!s}'".format(exe_path))
 
       # Make sure we don't try to test ASan-built binaries
       # with other dynamic instrumentation-based tools.
@@ -148,7 +148,7 @@ class ChromeTests:
       # multiple process by default. Force the single-process mode back.
       cmd.append("--single-process-tests")
     if self._options.gtest_repeat:
-      cmd.append("--gtest_repeat=%s" % self._options.gtest_repeat)
+      cmd.append("--gtest_repeat={0!s}".format(self._options.gtest_repeat))
     if self._options.gtest_shuffle:
       cmd.append("--gtest_shuffle")
     if self._options.gtest_break_on_failure:
@@ -156,14 +156,14 @@ class ChromeTests:
     if self._options.test_launcher_bot_mode:
       cmd.append("--test-launcher-bot-mode")
     if self._options.test_launcher_total_shards is not None:
-      cmd.append("--test-launcher-total-shards=%d" % self._options.test_launcher_total_shards)
+      cmd.append("--test-launcher-total-shards={0:d}".format(self._options.test_launcher_total_shards))
     if self._options.test_launcher_shard_index is not None:
-      cmd.append("--test-launcher-shard-index=%d" % self._options.test_launcher_shard_index)
+      cmd.append("--test-launcher-shard-index={0:d}".format(self._options.test_launcher_shard_index))
     return cmd
 
   def Run(self):
     ''' Runs the test specified by command-line argument --test '''
-    logging.info("running test %s" % (self._test))
+    logging.info("running test {0!s}".format((self._test)))
     return self._test_list[self._test](self)
 
   def _AppendGtestFilter(self, tool, name, cmd):
@@ -176,14 +176,14 @@ class ChromeTests:
         ":" not in self._gtest_filter and
         "?" not in self._gtest_filter and
         "*" not in self._gtest_filter):
-      cmd.append("--gtest_filter=%s" % self._gtest_filter)
+      cmd.append("--gtest_filter={0!s}".format(self._gtest_filter))
       return
 
     filters = []
     gtest_files_dir = os.path.join(path_utils.ScriptDir(), "gtest_exclude")
 
     gtest_filter_files = [
-        os.path.join(gtest_files_dir, name + ".gtest-%s.txt" % tool.ToolName())]
+        os.path.join(gtest_files_dir, name + ".gtest-{0!s}.txt".format(tool.ToolName()))]
     # Use ".gtest.txt" files only for slow tools, as they now contain
     # Valgrind- and Dr.Memory-specific filters.
     # TODO(glider): rename the files to ".gtest_slow.txt"
@@ -191,9 +191,8 @@ class ChromeTests:
       gtest_filter_files += [os.path.join(gtest_files_dir, name + ".gtest.txt")]
     for platform_suffix in common.PlatformNames():
       gtest_filter_files += [
-        os.path.join(gtest_files_dir, name + ".gtest_%s.txt" % platform_suffix),
-        os.path.join(gtest_files_dir, name + ".gtest-%s_%s.txt" % \
-            (tool.ToolName(), platform_suffix))]
+        os.path.join(gtest_files_dir, name + ".gtest_{0!s}.txt".format(platform_suffix)),
+        os.path.join(gtest_files_dir, name + ".gtest-{0!s}_{1!s}.txt".format(tool.ToolName(), platform_suffix))]
     logging.info("Reading gtest exclude filter files:")
     for filename in gtest_filter_files:
       # strip the leading absolute path (may be very long on the bot)
@@ -201,9 +200,9 @@ class ChromeTests:
       readable_filename = filename.replace("\\", "/")  # '\' on Windows
       readable_filename = readable_filename.replace(self._source_dir, "")[1:]
       if not os.path.exists(filename):
-        logging.info("  \"%s\" - not found" % readable_filename)
+        logging.info("  \"{0!s}\" - not found".format(readable_filename))
         continue
-      logging.info("  \"%s\" - OK" % readable_filename)
+      logging.info("  \"{0!s}\" - OK".format(readable_filename))
       f = open(filename, 'r')
       for line in f.readlines():
         if line.startswith("#") or line.startswith("//") or line.isspace():
@@ -212,13 +211,13 @@ class ChromeTests:
         test_prefixes = ["FLAKY", "FAILS"]
         for p in test_prefixes:
           # Strip prefixes from the test names.
-          line = line.replace(".%s_" % p, ".")
+          line = line.replace(".{0!s}_".format(p), ".")
         # Exclude the original test name.
         filters.append(line)
         if line[-2:] != ".*":
           # List all possible prefixes if line doesn't end with ".*".
           for p in test_prefixes:
-            filters.append(line.replace(".", ".%s_" % p))
+            filters.append(line.replace(".", ".{0!s}_".format(p)))
     # Get rid of duplicates.
     filters = set(filters)
     gtest_filter = self._gtest_filter
@@ -231,7 +230,7 @@ class ChromeTests:
         gtest_filter = "-"
       gtest_filter += ":".join(filters)
     if gtest_filter:
-      cmd.append("--gtest_filter=%s" % gtest_filter)
+      cmd.append("--gtest_filter={0!s}".format(gtest_filter))
 
   @staticmethod
   def ShowTests():
@@ -261,7 +260,7 @@ class ChromeTests:
 
     # Append build_dir to LD_LIBRARY_PATH so external libraries can be loaded.
     if (os.getenv("LD_LIBRARY_PATH")):
-      os.putenv("LD_LIBRARY_PATH", "%s:%s" % (os.getenv("LD_LIBRARY_PATH"),
+      os.putenv("LD_LIBRARY_PATH", "{0!s}:{1!s}".format(os.getenv("LD_LIBRARY_PATH"),
                                               self._options.build_dir))
     else:
       os.putenv("LD_LIBRARY_PATH", self._options.build_dir)
@@ -544,7 +543,7 @@ class ChromeTests:
     cmd.append("--ignore_exit_code")
     # Now build script_cmd, the run-webkits-tests commandline.
     # Store each chunk in its own directory so that we can find the data later
-    chunk_dir = os.path.join("layout", "chunk_%05d" % chunk_num)
+    chunk_dir = os.path.join("layout", "chunk_{0:05d}".format(chunk_num))
     out_dir = os.path.join(path_utils.ScriptDir(), "latest")
     out_dir = os.path.join(out_dir, chunk_dir)
     if os.path.exists(out_dir):
@@ -565,7 +564,7 @@ class ChromeTests:
                   # run a separate DumpRenderTree for each test
                   "--batch-size=1",
                   "--fully-parallel",
-                  "--child-processes=%d" % jobs,
+                  "--child-processes={0:d}".format(jobs),
                   "--time-out-ms=800000",
                   "--no-retry-failures",  # retrying takes too much time
                   # http://crbug.com/176908: Don't launch a browser when done.
@@ -581,11 +580,11 @@ class ChromeTests:
       build_root, mode = os.path.split(self._options.build_dir)
       script_cmd.extend(["--build-directory", build_root, "--target", mode])
     if (chunk_size > 0):
-      script_cmd.append("--run-chunk=%d:%d" % (chunk_num, chunk_size))
+      script_cmd.append("--run-chunk={0:d}:{1:d}".format(chunk_num, chunk_size))
     if len(self._args):
       # if the arg is a txt file, then treat it as a list of tests
       if os.path.isfile(self._args[0]) and self._args[0][-4:] == ".txt":
-        script_cmd.append("--test-list=%s" % self._args[0])
+        script_cmd.append("--test-list={0!s}".format(self._args[0]))
       else:
         script_cmd.extend(self._args)
     self._AppendGtestFilter(tool, "layout", script_cmd)
@@ -629,7 +628,7 @@ class ChromeTests:
           chunk_num = 0
         f.close()
     except IOError, (errno, strerror):
-      logging.error("error reading from file %s (%d, %s)" % (chunk_file,
+      logging.error("error reading from file {0!s} ({1:d}, {2!s})".format(chunk_file,
                     errno, strerror))
     # Save the new chunk size before running the tests. Otherwise if a
     # particular chunk hangs the bot, the chunk number will never get
@@ -638,10 +637,10 @@ class ChromeTests:
     try:
       f = open(chunk_file, "w")
       chunk_num += 1
-      f.write("%d" % chunk_num)
+      f.write("{0:d}".format(chunk_num))
       f.close()
     except IOError, (errno, strerror):
-      logging.error("error writing to file %s (%d, %s)" % (chunk_file, errno,
+      logging.error("error writing to file {0!s} ({1:d}, {2!s})".format(chunk_file, errno,
                     strerror))
     # Since we're running small chunks of the layout tests, it's important to
     # mark the ones that have errors in them.  These won't be visible in the

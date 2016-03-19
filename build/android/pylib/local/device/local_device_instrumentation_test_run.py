@@ -126,7 +126,7 @@ class LocalDeviceInstrumentationTestRun(
 
   #override
   def _GetTestName(self, test):
-    return '%s#%s' % (test['class'], test['method'])
+    return '{0!s}#{1!s}'.format(test['class'], test['method'])
 
   #override
   def _RunTest(self, device, test):
@@ -145,7 +145,7 @@ class LocalDeviceInstrumentationTestRun(
       test_names, timeouts = zip(*(name_and_timeout(t) for t in test))
 
       test_name = ','.join(test_names)
-      target = '%s/%s' % (
+      target = '{0!s}/{1!s}'.format(
           self._test_instance.driver_package,
           self._test_instance.driver_name)
       extras.update(
@@ -154,12 +154,12 @@ class LocalDeviceInstrumentationTestRun(
       timeout = sum(timeouts)
     else:
       test_name = self._GetTestName(test)
-      target = '%s/%s' % (
+      target = '{0!s}/{1!s}'.format(
           self._test_instance.test_package, self._test_instance.test_runner)
       extras['class'] = test_name
       timeout = self._GetTimeoutFromAnnotations(test['annotations'], test_name)
 
-    logging.info('preparing to run %s: %s' % (test_name, test))
+    logging.info('preparing to run {0!s}: {1!s}'.format(test_name, test))
 
     time_ms = lambda: int(time.time() * 1e3)
     start_ms = time_ms()
@@ -193,7 +193,7 @@ class LocalDeviceInstrumentationTestRun(
       if k in annotations:
         timeout = v
     else:
-      logging.warning('Using default 1 minute timeout for %s' % test_name)
+      logging.warning('Using default 1 minute timeout for {0!s}'.format(test_name))
       timeout = 60
 
     try:

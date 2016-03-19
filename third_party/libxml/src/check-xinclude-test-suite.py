@@ -49,7 +49,7 @@ def testXInclude(filename, id):
     error_nr = 0
     error_msg = ''
 
-    print "testXInclude(%s, %s)" % (filename, id)
+    print "testXInclude({0!s}, {1!s})".format(filename, id)
     return 1
 
 def runTest(test, basedir):
@@ -78,7 +78,7 @@ def runTest(test, basedir):
     else:
         URI = uri
     if os.access(URI, os.R_OK) == 0:
-        print "Test %s missing: base %s uri %s" % (URI, basedir, uri)
+        print "Test {0!s} missing: base {1!s} uri {2!s}".format(URI, basedir, uri)
 	return -1
 
     expected = None
@@ -94,7 +94,7 @@ def runTest(test, basedir):
 	    if basedir != None:
 		output = basedir + "/" + output
 	    if os.access(output, os.R_OK) == 0:
-		print "Result for %s missing: %s" % (id, output)
+		print "Result for {0!s} missing: {1!s}".format(id, output)
 		output = None
 	    else:
 		try:
@@ -102,7 +102,7 @@ def runTest(test, basedir):
 		    expected = f.read()
 		    outputfile = output
 		except:
-		    print "Result for %s unreadable: %s" % (id, output)
+		    print "Result for {0!s} unreadable: {1!s}".format(id, output)
 
     try:
         # print "testing %s" % (URI)
@@ -114,13 +114,13 @@ def runTest(test, basedir):
 	if res >= 0 and expected != None:
 	    result = doc.serialize()
 	    if result != expected:
-	        print "Result for %s differs" % (id)
+	        print "Result for {0!s} differs".format((id))
 		open("xinclude.res", "w").write(result)
-		diff = os.popen("diff %s xinclude.res" % outputfile).read()
+		diff = os.popen("diff {0!s} xinclude.res".format(outputfile)).read()
 
 	doc.freeDoc()
     else:
-        print "Failed to parse %s" % (URI)
+        print "Failed to parse {0!s}".format((URI))
 	res = -1
 
     
@@ -131,40 +131,40 @@ def runTest(test, basedir):
 	    test_succeed = test_succeed + 1
 	elif res == 0:
 	    test_failed = test_failed + 1
-	    print "Test %s: no substitution done ???" % (id)
+	    print "Test {0!s}: no substitution done ???".format((id))
 	elif res < 0:
 	    test_error = test_error + 1
-	    print "Test %s: failed valid XInclude processing" % (id)
+	    print "Test {0!s}: failed valid XInclude processing".format((id))
     elif type == 'error':
 	if res > 0:
 	    test_error = test_error + 1
-	    print "Test %s: failed to detect invalid XInclude processing" % (id)
+	    print "Test {0!s}: failed to detect invalid XInclude processing".format((id))
 	elif res == 0:
 	    test_failed = test_failed + 1
-	    print "Test %s: Invalid but no substitution done" % (id)
+	    print "Test {0!s}: Invalid but no substitution done".format((id))
 	elif res < 0:
 	    test_succeed = test_succeed + 1
     elif type == 'optional':
 	if res > 0:
 	    test_succeed = test_succeed + 1
 	else:
-	    print "Test %s: failed optional test" % (id)
+	    print "Test {0!s}: failed optional test".format((id))
 
     # Log the ontext
     if res != 1:
-	log.write("Test ID %s\n" % (id))
-	log.write("   File: %s\n" % (URI))
+	log.write("Test ID {0!s}\n".format((id)))
+	log.write("   File: {0!s}\n".format((URI)))
 	content = string.strip(test.content)
 	while content[-1] == '\n':
 	    content = content[0:-1]
-	log.write("   %s:%s\n\n" % (type, content))
+	log.write("   {0!s}:{1!s}\n\n".format(type, content))
 	if error_msg != '':
-	    log.write("   ----\n%s   ----\n" % (error_msg))
+	    log.write("   ----\n{0!s}   ----\n".format((error_msg)))
 	    error_msg = ''
 	log.write("\n")
     if diff != None:
-        log.write("diff from test %s:\n" %(id))
-	log.write("   -----------\n%s\n   -----------\n" % (diff));
+        log.write("diff from test {0!s}:\n".format((id)))
+	log.write("   -----------\n{0!s}\n   -----------\n".format((diff)));
 
     return 0
 	    
@@ -187,7 +187,7 @@ def runTestCases(case):
         
 conf = libxml2.parseFile(CONF)
 if conf == None:
-    print "Unable to load %s" % CONF
+    print "Unable to load {0!s}".format(CONF)
     sys.exit(1)
 
 testsuite = conf.getRootElement()
@@ -209,7 +209,7 @@ while case != None:
 	old_test_failed = test_failed
 	old_test_error = test_error
         runTestCases(case)
-	print "   Ran %d tests: %d suceeded, %d failed and %d generated an error" % (
+	print "   Ran {0:d} tests: {1:d} suceeded, {2:d} failed and {3:d} generated an error".format(
 	       test_nr - old_test_nr, test_succeed - old_test_succeed,
 	       test_failed - old_test_failed, test_error - old_test_error)
     case = case.next
@@ -217,5 +217,5 @@ while case != None:
 conf.freeDoc()
 log.close()
 
-print "Ran %d tests: %d suceeded, %d failed and %d generated an error in %.2f s." % (
+print "Ran {0:d} tests: {1:d} suceeded, {2:d} failed and {3:d} generated an error in {4:.2f} s.".format(
       test_nr, test_succeed, test_failed, test_error, time.time() - start)

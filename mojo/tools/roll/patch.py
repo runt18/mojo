@@ -40,10 +40,10 @@ def patch(relative_patches_dir=os.curdir):
 
   os.chdir(utils.mojo_root_dir)
   for p in utils.find(["*.patch"], patches_dir):
-    print "applying patch %s" % os.path.basename(p)
+    print "applying patch {0!s}".format(os.path.basename(p))
     try:
       utils.system(["git", "apply", p])
-      utils.commit("applied patch %s" % os.path.basename(p))
+      utils.commit("applied patch {0!s}".format(os.path.basename(p)))
     except subprocess.CalledProcessError:
-      print "ERROR: patch %s failed to apply" % os.path.basename(p)
+      print "ERROR: patch {0!s} failed to apply".format(os.path.basename(p))
       raise

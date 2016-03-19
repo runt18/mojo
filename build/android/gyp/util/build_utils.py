@@ -94,7 +94,7 @@ def CheckOptions(options, parser, required=None):
     return
   for option_name in required:
     if getattr(options, option_name) is None:
-      parser.error('--%s is required' % option_name.replace('_', '-'))
+      parser.error('--{0!s} is required'.format(option_name.replace('_', '-')))
 
 
 def WriteJson(obj, path, only_if_changed=False):
@@ -189,9 +189,9 @@ def IsDeviceReady():
 
 def CheckZipPath(name):
   if os.path.normpath(name) != name:
-    raise Exception('Non-canonical zip path: %s' % name)
+    raise Exception('Non-canonical zip path: {0!s}'.format(name))
   if os.path.isabs(name):
-    raise Exception('Absolute zip path: %s' % name)
+    raise Exception('Absolute zip path: {0!s}'.format(name))
 
 
 def ExtractAll(zip_path, path=None, no_clobber=True, pattern=None):
@@ -212,8 +212,7 @@ def ExtractAll(zip_path, path=None, no_clobber=True, pattern=None):
         output_path = os.path.join(path, name)
         if os.path.exists(output_path):
           raise Exception(
-              'Path already exists from zip: %s %s %s'
-              % (zip_path, name, output_path))
+              'Path already exists from zip: {0!s} {1!s} {2!s}'.format(zip_path, name, output_path))
 
     z.extractall(path=path)
 

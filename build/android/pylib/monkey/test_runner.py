@@ -34,15 +34,15 @@ class TestRunner(base_test_runner.BaseTestRunner):
     timeout_ms = self._options.event_count * self._options.throttle * 1.5
 
     cmd = ['monkey',
-           '-p %s' % self._package,
-           ' '.join(['-c %s' % c for c in self._options.category]),
-           '--throttle %d' % self._options.throttle,
-           '-s %d' % (self._options.seed or random.randint(1, 100)),
+           '-p {0!s}'.format(self._package),
+           ' '.join(['-c {0!s}'.format(c) for c in self._options.category]),
+           '--throttle {0:d}'.format(self._options.throttle),
+           '-s {0:d}'.format((self._options.seed or random.randint(1, 100))),
            '-v ' * self._options.verbose_count,
            '--monitor-native-crashes',
            '--kill-process-after-error',
            self._options.extra_args,
-           '%d' % self._options.event_count]
+           '{0:d}'.format(self._options.event_count)]
     return self.device.RunShellCommand(' '.join(cmd), timeout=timeout_ms)
 
   def RunTest(self, test_name):
@@ -81,7 +81,7 @@ class TestRunner(base_test_runner.BaseTestRunner):
       crashed = False
 
     results = base_test_result.TestRunResults()
-    success_pattern = 'Events injected: %d' % self._options.event_count
+    success_pattern = 'Events injected: {0:d}'.format(self._options.event_count)
     if success_pattern in output and not crashed:
       result = base_test_result.BaseTestResult(
           test_name, base_test_result.ResultType.PASS, log=output)
@@ -92,9 +92,9 @@ class TestRunner(base_test_runner.BaseTestRunner):
         logging.warning('Starting MinidumpUploadService...')
         # TODO(jbudorick): Update this after upstreaming.
         minidump_intent = intent.Intent(
-            action='%s.crash.ACTION_FIND_ALL' % _CHROME_PACKAGE,
+            action='{0!s}.crash.ACTION_FIND_ALL'.format(_CHROME_PACKAGE),
             package=self._package,
-            activity='%s.crash.MinidumpUploadService' % _CHROME_PACKAGE)
+            activity='{0!s}.crash.MinidumpUploadService'.format(_CHROME_PACKAGE))
         try:
           self.device.RunShellCommand(
               ['am', 'startservice'] + minidump_intent.am_args,

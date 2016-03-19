@@ -65,8 +65,8 @@ def MultiFileFindReplace(original, replacement, file_globs):
       original_contents = f.read()
     contents = re.sub(original, replacement, original_contents)
     if contents == original_contents:
-      raise Exception('No change in file %s although matched in grep' %
-                      referee)
+      raise Exception('No change in file {0!s} although matched in grep'.format(
+                      referee))
     with open(referee, 'wb') as f:
       f.write(contents)
 
@@ -158,9 +158,9 @@ command line.''')
     f.close()
 
   for (original, replacement, file_globs) in search_replace_tasks:
-    print 'File globs:  %s' % file_globs
-    print 'Original:    %s' % original
-    print 'Replacement: %s' % replacement
+    print 'File globs:  {0!s}'.format(file_globs)
+    print 'Original:    {0!s}'.format(original)
+    print 'Replacement: {0!s}'.format(replacement)
     MultiFileFindReplace(original, replacement, file_globs)
   return 0
 

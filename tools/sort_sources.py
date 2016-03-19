@@ -95,8 +95,8 @@ from yes_no import YesNo
 
 SUFFIXES = ['c', 'cc', 'cpp', 'h', 'mm', 'rc', 'rc.version', 'ico', 'def',
             'release']
-SOURCE_PATTERN = re.compile(r'^\s+[\'"].*\.(%s)[\'"],$' %
-                            '|'.join([re.escape(x) for x in SUFFIXES]))
+SOURCE_PATTERN = re.compile(r'^\s+[\'"].*\.({0!s})[\'"],$'.format(
+                            '|'.join([re.escape(x) for x in SUFFIXES])))
 COMMENT_PATTERN = re.compile(r'^\s+#')
 
 
@@ -155,7 +155,7 @@ def ProcessFile(filename, should_confirm):
 
   new_lines = SortSources(original_lines)
   if original_lines == new_lines:
-    print '%s: no change' % filename
+    print '{0!s}: no change'.format(filename)
     return
 
   if should_confirm:

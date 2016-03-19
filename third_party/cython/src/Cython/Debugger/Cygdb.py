@@ -30,7 +30,7 @@ def make_command_file(path_to_debug_info, prefix_code='', no_import=False):
         debug_files = glob.glob(pattern)
 
         if not debug_files:
-            sys.exit('%s.\nNo debug files were found in %s. Aborting.' % (
+            sys.exit('{0!s}.\nNo debug files were found in {1!s}. Aborting.'.format(
                                    usage, os.path.abspath(path_to_debug_info)))
 
     fd, tempfilename = tempfile.mkstemp()
@@ -52,8 +52,8 @@ def make_command_file(path_to_debug_info, prefix_code='', no_import=False):
                 interpreter = interpreter_file.read()
             finally:
                 interpreter_file.close()
-            f.write("file %s\n" % interpreter)
-            f.write('\n'.join('cy import %s\n' % fn for fn in debug_files))
+            f.write("file {0!s}\n".format(interpreter))
+            f.write('\n'.join('cy import {0!s}\n'.format(fn) for fn in debug_files))
             f.write(textwrap.dedent('''\
                 python
                 import sys

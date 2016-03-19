@@ -60,8 +60,8 @@ class HostDrivenTestCase(object):
     # Use tagged_name when creating results, so that we can identify host-driven
     # tests in the overall results.
     self.test_name = test_name
-    self.qualified_name = '%s.%s' % (class_name, self.test_name)
-    self.tagged_name = '%s_%s' % (self._HOST_DRIVEN_TAG, self.qualified_name)
+    self.qualified_name = '{0!s}.{1!s}'.format(class_name, self.test_name)
+    self.tagged_name = '{0!s}_{1!s}'.format(self._HOST_DRIVEN_TAG, self.qualified_name)
 
   # TODO(bulach): make ports_to_forward not optional and move the Forwarder
   # mapping here.
@@ -158,8 +158,7 @@ class HostDrivenTestCase(object):
       tests = test_pkg.GetAllMatchingTests(None, None, test_filter)
       # Filters should always result in >= 1 test.
       if len(tests) == 0:
-        raise Exception('Java test filter "%s" returned no tests.'
-                        % test_filter)
+        raise Exception('Java test filter "{0!s}" returned no tests.'.format(test_filter))
       for test in tests:
         # We're only running one test at a time, so this TestRunResults object
         # will hold only one result.

@@ -30,12 +30,12 @@ class MojoEnumType(type):
     dictionary['__new__'] = None
     for value in dictionary.pop('VALUES', []):
       if not isinstance(value, tuple):
-        raise ValueError('incorrect value: %r' % value)
+        raise ValueError('incorrect value: {0!r}'.format(value))
       key, enum_value = value
       if isinstance(key, str) and isinstance(enum_value, int):
         dictionary[key] = enum_value
       else:
-        raise ValueError('incorrect value: %r' % value)
+        raise ValueError('incorrect value: {0!r}'.format(value))
     return type.__new__(mcs, name, bases, dictionary)
 
   def __setattr__(cls, key, value):
@@ -147,7 +147,7 @@ class MojoUnionType(type):
       # pylint: disable=W0212
       def Get(self):
         if self._cur_field != field:
-          raise AttributeError('%s is not currently set' % field.name,
+          raise AttributeError('{0!s} is not currently set'.format(field.name),
               field.name, self._cur_field.name)
         return self._data
 
@@ -215,7 +215,7 @@ class MojoUnionType(type):
     dictionary['__ne__'] = UnionNe
 
     def UnionStr(self):
-      return '<%s.%s(%s): %s>' % (
+      return '<{0!s}.{1!s}({2!s}): {3!s}>'.format(
           self.__class__.__name__,
           self._cur_field.name,
           self.tag,
@@ -263,8 +263,7 @@ class InterfaceProxy(object):
 def _StructInit(fields):
   def _Init(self, *args, **kwargs):
     if len(args) + len(kwargs) > len(fields):
-      raise TypeError('__init__() takes %d argument (%d given)' %
-                      (len(fields), len(args) + len(kwargs)))
+      raise TypeError('__init__() takes {0:d} argument ({1:d} given)'.format(len(fields), len(args) + len(kwargs)))
     self._fields = {}
     for f, a in zip(fields, args):
       self.__setattr__(f.name, a)
@@ -273,9 +272,9 @@ def _StructInit(fields):
       if not name in remaining_fields:
         if name in (x.name for x in fields[:len(args)]):
           raise TypeError(
-              '__init__() got multiple values for keyword argument %r' % name)
-        raise TypeError('__init__() got an unexpected keyword argument %r' %
-                        name)
+              '__init__() got multiple values for keyword argument {0!r}'.format(name))
+        raise TypeError('__init__() got an unexpected keyword argument {0!r}'.format(
+                        name))
       self.__setattr__(name, kwargs[name])
   return _Init
 

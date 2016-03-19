@@ -178,7 +178,7 @@ def compile_cython_modules(profile=False, compile_more=False, cython_with_refnan
                     try:
                         build_ext_orig.build_extension(self, ext, *args, **kargs)
                     except StandardError:
-                        print("Compilation of '%s' failed" % ext.sources[0])
+                        print("Compilation of '{0!s}' failed".format(ext.sources[0]))
             from Cython.Compiler.Main import compile
             from Cython import Utils
             if profile:
@@ -205,7 +205,7 @@ def compile_cython_modules(profile=False, compile_more=False, cython_with_refnan
                         if os.path.exists(pxd_source_file) and Utils.file_newer_than(pxd_source_file, c_last_modified):
                             source_is_newer = True
                 if source_is_newer:
-                    print("Compiling module %s ..." % module)
+                    print("Compiling module {0!s} ...".format(module))
                     result = compile(pyx_source_file)
                     c_source_file = result.c_file
                 if c_source_file:
@@ -230,13 +230,13 @@ def compile_cython_modules(profile=False, compile_more=False, cython_with_refnan
                 add_command_class("build_ext", build_ext)
         except Exception:
             print('''
-ERROR: %s
+ERROR: {0!s}
 
 Extension module compilation failed, looks like Cython cannot run
 properly on this system.  To work around this, pass the option
 "--no-cython-compile".  This will install a pure Python version of
 Cython without compiling its own sources.
-''' % sys.exc_info()[1])
+'''.format(sys.exc_info()[1]))
             raise
 
 cython_profile = '--cython-profile' in sys.argv

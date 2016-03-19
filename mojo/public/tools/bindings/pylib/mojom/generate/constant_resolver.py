@@ -18,8 +18,7 @@ def ResolveConstants(module, expression_to_text):
                            named_value.enum.fields), None)
       if not field:
         raise RuntimeError(
-            'Unable to get computed value for field %s of enum %s' %
-            (named_value.name, named_value.enum.name))
+            'Unable to get computed value for field {0!s} of enum {1!s}'.format(named_value.name, named_value.enum.name))
       if field not in computed:
         ResolveEnum(named_value.enum)
       return field.resolved_value
@@ -32,7 +31,7 @@ def ResolveConstants(module, expression_to_text):
     if constant in computed:
       return
     if constant in in_progress:
-      raise RuntimeError('Circular dependency for constant: %s' % constant.name)
+      raise RuntimeError('Circular dependency for constant: {0!s}'.format(constant.name))
     in_progress.add(constant)
     if isinstance(constant.value, (mojom.EnumValue, mojom.ConstantValue)):
       resolved_value = GetResolvedValue(constant.value)
@@ -52,7 +51,7 @@ def ResolveConstants(module, expression_to_text):
       if field in computed:
         return
       if field in in_progress:
-        raise RuntimeError('Circular dependency for enum: %s' % enum.name)
+        raise RuntimeError('Circular dependency for enum: {0!s}'.format(enum.name))
       in_progress.add(field)
       if field.value:
         if isinstance(field.value, mojom.EnumValue):
@@ -60,7 +59,7 @@ def ResolveConstants(module, expression_to_text):
         elif isinstance(field.value, str):
           resolved_value = int(field.value, 0)
         else:
-          raise RuntimeError('Unexpected value: %s' % field.value)
+          raise RuntimeError('Unexpected value: {0!s}'.format(field.value))
       else:
         resolved_value = default_value
       field.resolved_value = resolved_value

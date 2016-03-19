@@ -129,7 +129,7 @@ def CreateExtraRJavaFiles(
       package_r_java_dir = os.path.join(r_dir, *package.split('.'))
       build_utils.MakeDirectory(package_r_java_dir)
       package_r_java_path = os.path.join(package_r_java_dir, 'R.java')
-      new_r_java = re.sub(r'package [.\w]*;', u'package %s;' % package,
+      new_r_java = re.sub(r'package [.\w]*;', u'package {0!s};'.format(package),
                           r_java_contents)
       codecs.open(package_r_java_path, 'w', encoding='utf-8').write(new_r_java)
   else:
@@ -144,7 +144,7 @@ def CreateExtraRJavaFiles(
       for line in f:
         m = re.match(r'(int(?:\[\])?) (\w+) (\w+) (.+)$', line)
         if not m:
-          raise Exception('Unexpected line in R.txt: %s' % line)
+          raise Exception('Unexpected line in R.txt: {0!s}'.format(line))
         java_type, resource_type, name, value = m.groups()
         all_resources[(resource_type, name)] = (java_type, value)
 
@@ -165,7 +165,7 @@ def CreateExtraRJavaFile(
     for line in f:
       m = re.match(r'int(?:\[\])? (\w+) (\w+) ', line)
       if not m:
-        raise Exception('Unexpected line in R.txt: %s' % line)
+        raise Exception('Unexpected line in R.txt: {0!s}'.format(line))
       resource_type, name = m.groups()
       java_type, value = all_resources[(resource_type, name)]
       if resource_type not in resources:
@@ -294,7 +294,7 @@ def CombineZips(zip_files, output_path):
     for i, z in enumerate(zip_files):
       with zipfile.ZipFile(z, 'r') as inzip:
         for name in inzip.namelist():
-          new_name = '%d/%s' % (i, name)
+          new_name = '{0:d}/{1!s}'.format(i, name)
           outzip.writestr(new_name, inzip.read(name))
 
 

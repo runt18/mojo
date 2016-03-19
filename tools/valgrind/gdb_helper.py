@@ -22,12 +22,12 @@ def _GdbOutputToFileLine(output_line):
 def ResolveAddressesWithinABinary(binary_name, load_address, address_list):
   ''' For each address, return a pair (file, line num) '''
   commands = tempfile.NamedTemporaryFile()
-  commands.write('add-symbol-file "%s" %s\n' % (binary_name, load_address))
+  commands.write('add-symbol-file "{0!s}" {1!s}\n'.format(binary_name, load_address))
   for addr in address_list:
-    commands.write('info line *%s\n' % addr)
+    commands.write('info line *{0!s}\n'.format(addr))
   commands.write('quit\n')
   commands.flush()
-  gdb_commandline = 'gdb -batch -x %s 2>/dev/null' % commands.name
+  gdb_commandline = 'gdb -batch -x {0!s} 2>/dev/null'.format(commands.name)
   gdb_pipe = os.popen(gdb_commandline)
   result = gdb_pipe.readlines()
 
@@ -58,7 +58,7 @@ class AddressTable(object):
   def Add(self, binary, address):
     ''' Register a lookup request. '''
     if binary == '':
-      logging.warn('adding address %s in empty binary?' % address)
+      logging.warn('adding address {0!s} in empty binary?'.format(address))
     if binary in self._binaries:
       self._binaries[binary].append(address)
     else:

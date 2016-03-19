@@ -180,7 +180,7 @@ def RepeatedScalarProperty(cdescriptor):
     raise AttributeError('Assignment not allowed to repeated field '
                          '"%s" in protocol message object.' % cdescriptor.name)
 
-  doc = 'Magic attribute generated for "%s" proto field.' % cdescriptor.name
+  doc = 'Magic attribute generated for "{0!s}" proto field.'.format(cdescriptor.name)
   return property(Getter, Setter, doc=doc)
 
 
@@ -286,7 +286,7 @@ def RepeatedCompositeProperty(cdescriptor, message_type):
     raise AttributeError('Assignment not allowed to repeated field '
                          '"%s" in protocol message object.' % cdescriptor.name)
 
-  doc = 'Magic attribute generated for "%s" proto field.' % cdescriptor.name
+  doc = 'Magic attribute generated for "{0!s}" proto field.'.format(cdescriptor.name)
   return property(Getter, Setter, doc=doc)
 
 
@@ -301,19 +301,19 @@ class ExtensionDict(object):
   def __setitem__(self, extension, value):
     from google.protobuf import descriptor
     if not isinstance(extension, descriptor.FieldDescriptor):
-      raise KeyError('Bad extension %r.' % (extension,))
+      raise KeyError('Bad extension {0!r}.'.format(extension))
     cdescriptor = extension._cdescriptor
     if (cdescriptor.label != _LABEL_OPTIONAL or
         cdescriptor.cpp_type == _CPPTYPE_MESSAGE):
-      raise TypeError('Extension %r is repeated and/or a composite type.' % (
-          extension.full_name,))
+      raise TypeError('Extension {0!r} is repeated and/or a composite type.'.format(
+          extension.full_name))
     self._cmsg.SetScalar(cdescriptor, value)
     self._values[extension] = value
 
   def __getitem__(self, extension):
     from google.protobuf import descriptor
     if not isinstance(extension, descriptor.FieldDescriptor):
-      raise KeyError('Bad extension %r.' % (extension,))
+      raise KeyError('Bad extension {0!r}.'.format(extension))
 
     cdescriptor = extension._cdescriptor
     if (cdescriptor.label != _LABEL_REPEATED and
@@ -331,7 +331,7 @@ class ExtensionDict(object):
   def ClearExtension(self, extension):
     from google.protobuf import descriptor
     if not isinstance(extension, descriptor.FieldDescriptor):
-      raise KeyError('Bad extension %r.' % (extension,))
+      raise KeyError('Bad extension {0!r}.'.format(extension))
     self._cmsg.ClearFieldByDescriptor(extension._cdescriptor)
     if extension in self._values:
       del self._values[extension]
@@ -339,7 +339,7 @@ class ExtensionDict(object):
   def HasExtension(self, extension):
     from google.protobuf import descriptor
     if not isinstance(extension, descriptor.FieldDescriptor):
-      raise KeyError('Bad extension %r.' % (extension,))
+      raise KeyError('Bad extension {0!r}.'.format(extension))
     return self._cmsg.HasFieldByDescriptor(extension._cdescriptor)
 
   def _FindExtensionByName(self, name):
@@ -477,7 +477,7 @@ def _AddInitMethod(message_descriptor, cls):
     for field_name, field_value in kwargs.iteritems():
       field_cdescriptor = self.__descriptors.get(field_name, None)
       if not field_cdescriptor:
-        raise ValueError('Protocol message has no "%s" field.' % field_name)
+        raise ValueError('Protocol message has no "{0!s}" field.'.format(field_name))
       if field_cdescriptor.label == _LABEL_REPEATED:
         if field_cdescriptor.cpp_type == _CPPTYPE_MESSAGE:
           field_name = getattr(self, field_name)
@@ -558,7 +558,7 @@ def _AddMessageMethods(message_descriptor, cls):
   def SerializeToString(self):
     if not self.IsInitialized():
       raise message.EncodeError(
-          'Message %s is missing required fields: %s' % (
+          'Message {0!s} is missing required fields: {1!s}'.format(
           self._cmsg.full_name, ','.join(self.FindInitializationErrors())))
     return self._cmsg.SerializeToString()
 
