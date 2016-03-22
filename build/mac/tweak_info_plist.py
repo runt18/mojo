@@ -124,7 +124,7 @@ def _DoSCMKeys(plist, add_keys):
 
   # See if the operation failed.
   _RemoveKeys(plist, 'SCMRevision')
-  if scm_revision != None:
+  if scm_revision is not None:
     plist['SCMRevision'] = scm_revision
   elif add_keys:
     print >>sys.stderr, 'Could not determine SCM revision.  This may be OK.'

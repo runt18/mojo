@@ -154,8 +154,8 @@ class BatteryUtils(object):
       False otherwise.
     """
     self._DiscoverDeviceProfile()
-    return (self._cache['profile']['enable_command'] != None
-        and self._cache['profile']['charge_counter'] != None)
+    return (self._cache['profile']['enable_command'] is not None
+        and self._cache['profile']['charge_counter'] is not None)
 
   @decorators.WithTimeoutAndRetriesFromInstance()
   def GetFuelGaugeChargeCounter(self, timeout=None, retries=None):

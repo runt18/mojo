@@ -150,12 +150,12 @@ class Dependency(object):
       dep_mojom_path = os.path.join(
           import_dir_candidate, self.get_imported())
       if self._os_path_exists(dep_mojom_path):
-        if result != None:
+        if result is not None:
           raise DuplicateDependencyFoundException(self.get_imported())
         import_dir = os.path.relpath(import_dir_candidate, directory)
         result = (target_from_path(os.path.relpath(
             dep_mojom_path, directory)), import_dir)
-    if result == None:
+    if result is None:
       raise DependencyNotFoundException(self.get_imported())
     return result
 

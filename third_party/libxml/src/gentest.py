@@ -501,7 +501,7 @@ test.write("/* CUT HERE: everything below that line is generated */\n")
 # Open the input API description
 #
 doc = libxml2.readFile(srcPref + 'doc/libxml2-api.xml', None, 0)
-if doc == None:
+if doc is None:
     print "Failed to load doc/libxml2-api.xml"
     sys.exit(1)
 ctxt = doc.xpathNewContext()
@@ -542,7 +542,7 @@ for enum in enums:
     #
     # Skip any enums which are not in our filtered lists
     #
-    if (name == None) or ((name not in argtypes) and (name not in rettypes)):
+    if (name is None) or ((name not in argtypes) and (name not in rettypes)):
         continue;
     define = 0
 
@@ -552,7 +552,7 @@ for enum in enums:
 	vals = []
 	for value in values:
 	    vname = value.xpathEval('string(@name)')
-	    if vname == None:
+	    if vname is None:
 		continue;
 	    i = i + 1
 	    if i >= 5:
@@ -598,7 +598,7 @@ static void des_%s(int no ATTRIBUTE_UNUSED, %s val ATTRIBUTE_UNUSED, int nr ATTR
 headers = ctxt.xpathEval("/api/files/file")
 for file in headers:
     name = file.xpathEval('string(@name)')
-    if (name == None) or (name == ''):
+    if (name is None) or (name == ''):
         continue
 
     #
@@ -752,7 +752,7 @@ test_%s(void) {
 	test.write("    int mem_base;\n");
 
     # Declare the return value
-    if t_ret != None:
+    if t_ret is not None:
         test.write("    %s ret_val;\n" % (t_ret[1]))
 
     # Declare the arguments
@@ -785,7 +785,7 @@ test_%s(void) {
     # do the call, and clanup the result
     if extra_pre_call.has_key(name):
 	test.write("        %s\n"% (extra_pre_call[name]))
-    if t_ret != None:
+    if t_ret is not None:
 	test.write("\n        ret_val = %s(" % (name))
 	need = 0
 	for arg in t_args:

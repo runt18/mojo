@@ -88,7 +88,7 @@ def build_package_map():
 
 
 def print_package_map(package_map):
-  if (package_map == None) or (len(package_map) == 0):
+  if (package_map is None) or (len(package_map) == 0):
     print('No packages found in %s' % PACKAGES_DIR)
     return
 
@@ -113,7 +113,7 @@ def main():
     # Validate packages passed on command line before operating on any package.
     for package in args.packages:
       package_dir = package_map.get(package)
-      if package_dir == None:
+      if package_dir is None:
           print('ERROR: Do not know package %s' % package)
           print_package_map(package_map)
           return 1
@@ -121,7 +121,7 @@ def main():
     # Now update packages.
     for package in args.packages:
         package_dir = package_map.get(package)
-        assert(package_dir != None)
+        assert(package_dir is not None)
         pubspec = os.path.join(package_dir, 'pubspec.yaml')
         changelog = os.path.join(package_dir, 'CHANGELOG.md')
         new_version = update_pubspec(pubspec)

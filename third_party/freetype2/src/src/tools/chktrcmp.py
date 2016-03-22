@@ -55,14 +55,14 @@ trace_use_pat  = re.compile( '^[ \t]*#define[ \t]+FT_COMPONENT[ \t]+trace_' )
 for d in SRC_FILE_DIRS:
   for ( p, dlst, flst ) in os.walk( d ):
     for f in flst:
-      if c_pathname_pat.match( f ) != None:
+      if c_pathname_pat.match( f ) is not None:
         src_pathname = os.path.join( p, f )
 
         line_num = 0
         for src_line in open( src_pathname, 'r' ):
           line_num = line_num + 1
           src_line = src_line.strip()
-          if trace_use_pat.match( src_line ) != None:
+          if trace_use_pat.match( src_line ) is not None:
             component_name = trace_use_pat.sub( '', src_line )
             if component_name in USED_COMPONENT:
               USED_COMPONENT[component_name].append( "%s:%d" % ( src_pathname, line_num ) )
@@ -82,7 +82,7 @@ for f in TRACE_DEF_FILES:
   for hdr_line in open( f, 'r' ):
     line_num = line_num + 1
     hdr_line = hdr_line.strip()
-    if trace_def_pat_opn.match( hdr_line ) != None:
+    if trace_def_pat_opn.match( hdr_line ) is not None:
       component_name = trace_def_pat_opn.sub( '', hdr_line )
       component_name = trace_def_pat_cls.sub( '', component_name )
       if component_name in KNOWN_COMPONENT:

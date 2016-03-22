@@ -115,7 +115,7 @@ class ChromeTests:
       cmd += self._options.valgrind_tool_flags.split(" ")
     if self._options.keep_logs:
       cmd += ["--keep_logs"]
-    if valgrind_test_args != None:
+    if valgrind_test_args is not None:
       for arg in valgrind_test_args:
         cmd.append(arg)
     if exe:

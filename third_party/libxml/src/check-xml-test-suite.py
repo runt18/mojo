@@ -53,7 +53,7 @@ libxml2.registerErrorHandler(errorHandler, None)
 #
 def loadNoentDoc(filename):
     ctxt = libxml2.createFileParserCtxt(filename)
-    if ctxt == None:
+    if ctxt is None:
         return None
     ctxt.replaceEntities(1)
     ctxt.parseDocument()
@@ -79,7 +79,7 @@ def testNotWf(filename, id):
     error_msg = ''
 
     ctxt = libxml2.createFileParserCtxt(filename)
-    if ctxt == None:
+    if ctxt is None:
         return -1
     ret = ctxt.parseDocument()
 
@@ -87,7 +87,7 @@ def testNotWf(filename, id):
 	doc = ctxt.doc()
     except:
         doc = None
-    if doc != None:
+    if doc is not None:
 	doc.freeDoc()
     if ret == 0 or ctxt.wellFormed() != 0:
         print "%s: error: Well Formedness error not detected" % (id)
@@ -104,7 +104,7 @@ def testNotWfEnt(filename, id):
     error_msg = ''
 
     ctxt = libxml2.createFileParserCtxt(filename)
-    if ctxt == None:
+    if ctxt is None:
         return -1
     ctxt.replaceEntities(1)
     ret = ctxt.parseDocument()
@@ -113,7 +113,7 @@ def testNotWfEnt(filename, id):
 	doc = ctxt.doc()
     except:
         doc = None
-    if doc != None:
+    if doc is not None:
 	doc.freeDoc()
     if ret == 0 or ctxt.wellFormed() != 0:
         print "%s: error: Well Formedness error not detected" % (id)
@@ -130,7 +130,7 @@ def testNotWfEntDtd(filename, id):
     error_msg = ''
 
     ctxt = libxml2.createFileParserCtxt(filename)
-    if ctxt == None:
+    if ctxt is None:
         return -1
     ctxt.replaceEntities(1)
     ctxt.loadSubset(1)
@@ -140,7 +140,7 @@ def testNotWfEntDtd(filename, id):
 	doc = ctxt.doc()
     except:
         doc = None
-    if doc != None:
+    if doc is not None:
 	doc.freeDoc()
     if ret == 0 or ctxt.wellFormed() != 0:
         print "%s: error: Well Formedness error not detected" % (id)
@@ -157,7 +157,7 @@ def testWfEntDtd(filename, id):
     error_msg = ''
 
     ctxt = libxml2.createFileParserCtxt(filename)
-    if ctxt == None:
+    if ctxt is None:
         return -1
     ctxt.replaceEntities(1)
     ctxt.loadSubset(1)
@@ -167,10 +167,10 @@ def testWfEntDtd(filename, id):
 	doc = ctxt.doc()
     except:
         doc = None
-    if doc == None or ret != 0 or ctxt.wellFormed() == 0:
+    if doc is None or ret != 0 or ctxt.wellFormed() == 0:
         print "%s: error: wrongly failed to parse the document" % (id)
 	log.write("%s: error: wrongly failed to parse the document\n" % (id))
-	if doc != None:
+	if doc is not None:
 	    doc.freeDoc()
 	return 0
     if error_nr != 0:
@@ -190,7 +190,7 @@ def testError(filename, id):
     error_msg = ''
 
     ctxt = libxml2.createFileParserCtxt(filename)
-    if ctxt == None:
+    if ctxt is None:
         return -1
     ctxt.replaceEntities(1)
     ctxt.loadSubset(1)
@@ -200,7 +200,7 @@ def testError(filename, id):
 	doc = ctxt.doc()
     except:
         doc = None
-    if doc != None:
+    if doc is not None:
 	doc.freeDoc()
     if ctxt.wellFormed() == 0:
         print "%s: warning: failed to parse the document but accepted" % (id)
@@ -221,7 +221,7 @@ def testInvalid(filename, id):
     error_msg = ''
 
     ctxt = libxml2.createFileParserCtxt(filename)
-    if ctxt == None:
+    if ctxt is None:
         return -1
     ctxt.validate(1)
     ret = ctxt.parseDocument()
@@ -231,7 +231,7 @@ def testInvalid(filename, id):
     except:
         doc = None
     valid = ctxt.isValid()
-    if doc == None:
+    if doc is None:
         print "%s: error: wrongly failed to parse the document" % (id)
 	log.write("%s: error: wrongly failed to parse the document\n" % (id))
 	return 0
@@ -257,7 +257,7 @@ def testValid(filename, id):
     error_msg = ''
 
     ctxt = libxml2.createFileParserCtxt(filename)
-    if ctxt == None:
+    if ctxt is None:
         return -1
     ctxt.validate(1)
     ctxt.parseDocument()
@@ -267,7 +267,7 @@ def testValid(filename, id):
     except:
         doc = None
     valid = ctxt.isValid()
-    if doc == None:
+    if doc is None:
         print "%s: error: wrongly failed to parse the document" % (id)
 	log.write("%s: error: wrongly failed to parse the document\n" % (id))
 	return 0
@@ -293,10 +293,10 @@ def runTest(test):
 
     uri = test.prop('URI')
     id = test.prop('ID')
-    if uri == None:
+    if uri is None:
         print "Test without ID:", uri
 	return -1
-    if id == None:
+    if id is None:
         print "Test without URI:", id
 	return -1
     base = test.getBase(None)
@@ -305,7 +305,7 @@ def runTest(test):
         print "Test %s missing: base %s uri %s" % (URI, base, uri)
 	return -1
     type = test.prop('TYPE')
-    if type == None:
+    if type is None:
         print "Test %s missing TYPE" % (id)
 	return -1
 
@@ -348,7 +348,7 @@ def runTest(test):
 	content = string.strip(test.content)
 	while content[-1] == '\n':
 	    content = content[0:-1]
-	if extra != None:
+	if extra is not None:
 	    log.write("   %s:%s:%s\n" % (type, extra, content))
 	else:
 	    log.write("   %s:%s\n\n" % (type, content))
@@ -362,11 +362,11 @@ def runTest(test):
 
 def runTestCases(case):
     profile = case.prop('PROFILE')
-    if profile != None and \
+    if profile is not None and \
        string.find(profile, "IBM XML Conformance Test Suite - Production") < 0:
 	print "=>", profile
     test = case.children
-    while test != None:
+    while test is not None:
         if test.name == 'TEST':
 	    runTest(test)
 	if test.name == 'TESTCASES':
@@ -374,7 +374,7 @@ def runTestCases(case):
         test = test.next
         
 conf = loadNoentDoc(CONF)
-if conf == None:
+if conf is None:
     print "Unable to load %s" % CONF
     sys.exit(1)
 
@@ -384,13 +384,13 @@ if testsuite.name != 'TESTSUITE':
     sys.exit(1)
 
 profile = testsuite.prop('PROFILE')
-if profile != None:
+if profile is not None:
     print profile
 
 start = time.time()
 
 case = testsuite.children
-while case != None:
+while case is not None:
     if case.name == 'TESTCASES':
 	old_test_nr = test_nr
 	old_test_succeed = test_succeed

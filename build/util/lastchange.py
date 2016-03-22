@@ -276,7 +276,7 @@ def main(argv=None):
 
   version_info = FetchVersionInfo(opts.default_lastchange, src_dir)
 
-  if version_info.revision == None:
+  if version_info.revision is None:
     version_info.revision = '0'
 
   if opts.revision_only:

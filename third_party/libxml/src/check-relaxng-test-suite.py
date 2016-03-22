@@ -74,7 +74,7 @@ def handle_valid(node, schema):
 
     instance = ""
     child = node.children
-    while child != None:
+    while child is not None:
         if child.type != 'text':
 	    instance = instance + child.serialize()
 	child = child.next
@@ -84,7 +84,7 @@ def handle_valid(node, schema):
     except:
         doc = None
 
-    if doc == None:
+    if doc is None:
         log.write("\nFailed to parse correct instance:\n-----\n")
 	log.write(instance)
         log.write("\n-----\n")
@@ -115,7 +115,7 @@ def handle_invalid(node, schema):
 
     instance = ""
     child = node.children
-    while child != None:
+    while child is not None:
         if child.type != 'text':
 	    instance = instance + child.serialize()
 	child = child.next
@@ -125,7 +125,7 @@ def handle_invalid(node, schema):
     except:
         doc = None
 
-    if doc == None:
+    if doc is None:
         log.write("\nStrange: failed to parse incorrect instance:\n-----\n")
 	log.write(instance)
         log.write("\n-----\n")
@@ -155,7 +155,7 @@ def handle_correct(node):
 
     schema = ""
     child = node.children
-    while child != None:
+    while child is not None:
         if child.type != 'text':
 	    schema = schema + child.serialize()
 	child = child.next
@@ -165,7 +165,7 @@ def handle_correct(node):
 	rngs = rngp.relaxNGParse()
     except:
         rngs = None
-    if rngs == None:
+    if rngs is None:
         log.write("\nFailed to compile correct schema:\n-----\n")
 	log.write(schema)
         log.write("\n-----\n")
@@ -181,7 +181,7 @@ def handle_incorrect(node):
 
     schema = ""
     child = node.children
-    while child != None:
+    while child is not None:
         if child.type != 'text':
 	    schema = schema + child.serialize()
 	child = child.next
@@ -191,7 +191,7 @@ def handle_incorrect(node):
 	rngs = rngp.relaxNGParse()
     except:
         rngs = None
-    if rngs != None:
+    if rngs is not None:
         log.write("\nFailed to detect schema error in:\n-----\n")
 	log.write(schema)
         log.write("\n-----\n")
@@ -214,17 +214,17 @@ def handle_resource(node, dir):
     except:
         name = None
 
-    if name == None or name == '':
+    if name is None or name == '':
         log.write("resource has no name")
 	return;
         
-    if dir != None:
+    if dir is not None:
 #        name = libxml2.buildURI(name, dir)
         name = dir + '/' + name
 
     res = ""
     child = node.children
-    while child != None:
+    while child is not None:
         if child.type != 'text':
 	    res = res + child.serialize()
 	child = child.next
@@ -239,11 +239,11 @@ def handle_dir(node, dir):
     except:
         name = None
 
-    if name == None or name == '':
+    if name is None or name == '':
         log.write("resource has no name")
 	return;
         
-    if dir != None:
+    if dir is not None:
 #        name = libxml2.buildURI(name, dir)
         name = dir + '/' + name
 
@@ -296,7 +296,7 @@ def handle_testCase(node):
     valids = node.xpathEval('valid')
     invalids = node.xpathEval('invalid')
     nb_instances_tests = nb_instances_tests + len(valids) + len(invalids)
-    if schema != None:
+    if schema is not None:
         for valid in valids:
 	    handle_valid(valid, schema)
         for invalid in invalids:

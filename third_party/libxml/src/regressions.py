@@ -182,7 +182,7 @@ def runOneTest(testDescription, filename, inbase, errbase):
             for l in outfile:
                 print l
             print 'trouble with %s' % cmd
-    if experr != None:
+    if experr is not None:
         ret = compFiles(errfile, experr, inbase, 'test/')
         if ret != 0:
             print 'trouble with %s' % cmd

@@ -181,7 +181,7 @@ class CategoriesTest(googletest.TestCase):
           # prefer category Nd over N
           if len(category) > 1:
             return category
-          if short == None:
+          if short is None:
             short = category
     return short
 
