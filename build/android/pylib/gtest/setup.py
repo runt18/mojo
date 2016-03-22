@@ -136,8 +136,8 @@ def _FilterTestsUsingPrefixes(all_tests, pre=False, manual=False):
 
   for t in all_tests:
     test_case, test = t.split('.', 1)
-    if not any([test_case.startswith(prefix) or test.startswith(prefix) for
-                prefix in filter_prefixes]):
+    if not any( test_case.startswith(prefix) or test.startswith(prefix) for
+                prefix in filter_prefixes):
       filtered_tests.append(t)
   return filtered_tests
 

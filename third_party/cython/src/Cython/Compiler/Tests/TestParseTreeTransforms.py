@@ -214,7 +214,7 @@ class TestDebugTransform(DebuggerTestCase):
 
     def elem_hasattrs(self, elem, attrs):
         # we shall supporteth python 2.3 !
-        return all([attr in elem.attrib for attr in attrs])
+        return all( attr in elem.attrib for attr in attrs)
 
     def test_debug_info(self):
         try:
@@ -243,7 +243,7 @@ class TestDebugTransform(DebuggerTestCase):
             funcnames = ('codefile.spam', 'codefile.ham', 'codefile.eggs',
                          'codefile.closure', 'codefile.inner')
             required_xml_attrs = 'name', 'cname', 'qualified_name'
-            assert all([f in xml_funcs for f in funcnames])
+            assert all( f in xml_funcs for f in funcnames)
             spam, ham, eggs = [xml_funcs[funcname] for funcname in funcnames]
 
             self.assertEqual(spam.attrib['name'], 'spam')

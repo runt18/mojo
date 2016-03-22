@@ -480,7 +480,7 @@ def ReadDrMemorySuppressions(lines, supp_descriptor):
         if not line:
           # Blank line means end of suppression.
           break
-        if not any([regex.match(line) for regex in DRMEMORY_FRAME_PATTERNS]):
+        if not any( regex.match(line) for regex in DRMEMORY_FRAME_PATTERNS):
           raise SuppressionError(
               ('Unexpected stack frame pattern at line %d\n' +
                'Frames should be one of the following:\n' +
