@@ -38,7 +38,7 @@ class _DEFAULT_TIMEOUTS(object):
   LOLLIPOP = 600
   PRE_LOLLIPOP = 180
 
-  HELP_TEXT = '{}s on L, {}s on pre-L'.format(LOLLIPOP, PRE_LOLLIPOP)
+  HELP_TEXT = '{0}s on L, {1}s on pre-L'.format(LOLLIPOP, PRE_LOLLIPOP)
 
 
 class _PHASES(object):

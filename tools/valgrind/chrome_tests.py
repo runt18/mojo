@@ -249,9 +249,9 @@ class ChromeTests:
     print "----------------"
     for name, aliases in sorted(name_to_aliases.iteritems()):
       if aliases:
-        print "   {} (aka {})".format(name, ', '.join(aliases))
+        print "   {0} (aka {1})".format(name, ', '.join(aliases))
       else:
-        print "   {}".format(name)
+        print "   {0}".format(name)
 
   def SetupLdPath(self, requires_build_dir):
     if requires_build_dir:
