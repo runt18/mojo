@@ -128,9 +128,9 @@ class CalledProcessError(Exception):
   def __str__(self):
     # A user should be able to simply copy and paste the command that failed
     # into their shell.
-    copyable_command = '( cd {}; {} )'.format(os.path.abspath(self.cwd),
+    copyable_command = '( cd {0}; {1} )'.format(os.path.abspath(self.cwd),
         ' '.join(map(pipes.quote, self.args)))
-    return 'Command failed: {}\n{}'.format(copyable_command, self.output)
+    return 'Command failed: {0}\n{1}'.format(copyable_command, self.output)
 
 
 # This can be used in most cases like subprocess.check_output(). The output,
