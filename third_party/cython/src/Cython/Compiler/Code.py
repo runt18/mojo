@@ -275,10 +275,12 @@ class UtilityCodeBase(object):
         return cls(**kwargs)
 
     @classmethod
-    def load_cached(cls, utility_code_name, from_file=None, __cache={}):
+    def load_cached(cls, utility_code_name, from_file=None, __cache=None):
         """
         Calls .load(), but using a per-type cache based on utility name and file name.
         """
+        if __cache is None:
+                __cache = {}
         key = (cls, from_file, utility_code_name)
         try:
             return __cache[key]
@@ -500,7 +502,9 @@ class FunctionState(object):
     # can_trace        boolean         line tracing is supported in the current context
 
     # Not used for now, perhaps later
-    def __init__(self, owner, names_taken=set()):
+    def __init__(self, owner, names_taken=None):
+        if names_taken is None:
+            names_taken = set()
         self.names_taken = names_taken
         self.owner = owner
 
