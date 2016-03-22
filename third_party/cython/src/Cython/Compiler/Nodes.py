@@ -1080,8 +1080,8 @@ class TemplatedTypeNode(CBaseTypeNode):
 
             if sys.version_info[0] < 3:
                 # Py 2.x enforces byte strings as keyword arguments ...
-                options = dict([ (name.encode('ASCII'), value)
-                                 for name, value in options.items() ])
+                options = {name.encode('ASCII'): value
+                                 for name, value in options.items()}
 
             self.type = PyrexTypes.BufferType(base_type, **options)
 

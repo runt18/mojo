@@ -81,8 +81,8 @@ def _AttributeListToDict(attribute_list):
     return None
   assert isinstance(attribute_list, ast.AttributeList)
   # TODO(vtl): Check for duplicate keys here.
-  return dict([(attribute.key, attribute.value)
-                   for attribute in attribute_list])
+  return {attribute.key: attribute.value
+                   for attribute in attribute_list}
 
 def _EnumToDict(enum):
   def EnumValueToDict(enum_value):

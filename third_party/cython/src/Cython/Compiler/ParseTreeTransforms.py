@@ -910,7 +910,7 @@ class InterpretCompilerDirectives(CythonTransform, SkipDeclarations):
             if len(args) != 0:
                 raise PostParseError(pos,
                     'The %s directive takes no prepositional arguments' % optname)
-            return optname, dict([(key.value, value) for key, value in kwds.key_value_pairs])
+            return optname, {key.value: value for key, value in kwds.key_value_pairs}
         elif directivetype is list:
             if kwds and len(kwds) != 0:
                 raise PostParseError(pos,

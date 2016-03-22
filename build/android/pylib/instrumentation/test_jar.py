@@ -206,8 +206,7 @@ class TestJar(object):
       # |available_tests| are in adb instrument format: package.path.class#test.
 
       # Maps a 'class.test' name to each 'package.path.class#test' name.
-      sanitized_test_names = dict([
-          (t.split('.')[-1].replace('#', '.'), t) for t in available_tests])
+      sanitized_test_names = {t.split('.')[-1].replace('#', '.'): t for t in available_tests}
       # Filters 'class.test' names and populates |tests| with the corresponding
       # 'package.path.class#test' names.
       tests = [
